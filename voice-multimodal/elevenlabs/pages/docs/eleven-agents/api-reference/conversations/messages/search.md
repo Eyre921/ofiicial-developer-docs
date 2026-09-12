@@ -55,6 +55,17 @@ Successful Response
   - `page_size` (integer, optional)
 - `next_cursor` (string, optional) — Cursor for the next page of results
 
+## Errors
+
+### 422 Messages Search Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Request**

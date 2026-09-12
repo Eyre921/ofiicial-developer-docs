@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/tests/test-invocations/resub
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `test_run_ids` (list of string, required) — List of test run IDs to resubmit
 - `agent_id` (string, required) — Agent ID to resubmit tests for
 - `agent_config_override` (object, optional, nullable) — Configuration overrides to use for testing. If not provided, the agent's default configuration will be used.
@@ -1095,6 +1097,17 @@ Reference: https://elevenlabs.io/docs/api-reference/tests/test-invocations/resub
 Successful Response
 
 - `any`
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

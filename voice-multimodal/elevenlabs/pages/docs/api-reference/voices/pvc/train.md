@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/voices/pvc/train
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `model_id` (string, optional, nullable) — The model ID to use for the conversion.
 
 ## Response
@@ -40,6 +42,17 @@ Reference: https://elevenlabs.io/docs/api-reference/voices/pvc/train
 Successful Response
 
 - `status` (string, required) — The status of the start PVC voice training request. If the request was successful, the status will be 'ok'. Otherwise an error message with status 500 will be returned.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

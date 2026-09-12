@@ -24,6 +24,8 @@ All models default to `language=en` unless otherwise specified via the `language
 
 To request any Deepgram Model, change `MODEL_OPTION` to the Model you want to use.
 
+**`cURL`**
+
 ```curl cURL
 curl \  --request POST \
 --header 'Authorization: Token YOUR_DEEPGRAM_API_KEY' \
@@ -127,9 +129,13 @@ Deepgram Whisper Cloud is a fully managed API that gives you access to Deepgramâ
 
 Deepgram's Whisper Cloud models can be called with the following syntax:
 
+**`Text`**
+
 ```text Text
 https://api.deepgram.com/v1/listen?model=whisper
 ```
+
+**`Text`**
 
 ```text Text
 https://api.deepgram.com/v1/listen?model=whisper-SIZE

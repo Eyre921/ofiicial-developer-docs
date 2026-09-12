@@ -44,6 +44,8 @@ the project with the following content: `legacy-peer-deps=true`.
 
 In the `app.json` file, add the following permissions:
 
+**`app.json`**
+
 ```json app.json
 {
   "expo": {
@@ -89,6 +91,8 @@ emulator microphone settings.
 ## Add ElevenLabs Agents to your app
 
 Add the ElevenLabs Agents to your app by adding the following code to your `./App.tsx` file:
+
+**`./App.tsx`**
 
 ```tsx ./App.tsx
 import { ConversationProvider, useConversation } from "@elevenlabs/react-native";
@@ -502,6 +506,8 @@ A big part of building ElevenLabs agents is allowing the agent access and execut
 
 Create a new file to hold your client tools: `./utils/tools.ts` and add the following code:
 
+**`./utils/tools.ts`**
+
 ```ts ./utils/tools.ts
 import * as Battery from "expo-battery";
 import * as Brightness from "expo-brightness";
@@ -535,6 +541,8 @@ export { getBatteryLevel, changeBrightness, flashScreen };
 ### Dynamic variables
 
 In addition to the client tools, we're also injecting the platform (web, iOS, Android) as a [dynamic variable](https://elevenlabs.io/docs/eleven-agents/customization/personalization/dynamic-variables) both into the first message, and the prompt:
+
+**`./App.tsx`**
 
 ```tsx ./App.tsx
 // ...

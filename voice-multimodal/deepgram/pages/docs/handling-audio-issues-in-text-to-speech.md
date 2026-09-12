@@ -24,6 +24,8 @@ Currently, the Text-to-Speech WebSocket implementation does not support containe
 
 In the `linear16` audio encoding case, you will need to prepend a [`WAV` container header](https://en.wikipedia.org/wiki/WAV#WAV_file_header) to each audio segment you plan to play through the speakers. This is required for many media device implementations within a browser. In several cases for Python, this may be sufficient for a `WAV` header in the case of a file:
 
+**`Python`**
+
 ```python Python
 import wave
 
@@ -38,6 +40,8 @@ header.close()
 ```
 
 In many cases, file-based playback is not desired, and you may want to play the audio directly by streaming to the media device. For those cases, you may need to manipulate the audio stream and create the header bytes directly in front of the audio stream segments. In Go, this may look like the following:
+
+**`JavaScript`**
 
 ```javascript JavaScript
 // Add a wav audio container header to the file if you want to play the audio
@@ -62,6 +66,8 @@ const wavHeader = Buffer.from([
 // Concatenate the header to your audio buffer
 const audio = Buffer.concat([wavHeader, audioBuffer]);
 ```
+
+**`Python`**
 
 ```python Python
 # Add a wav audio container header to the file if you want to play the audio
@@ -117,6 +123,8 @@ header = bytes(
 )
 ```
 
+**`Go`**
+
 ```go Go
 // Add a wav audio container header to the file if you want to play the audio
 // using the AudioContext or media player like VLC, Media Player, or Apple Music
@@ -137,6 +145,8 @@ header := []byte{
 		0x00, 0x00, 0x00, 0x00, // Placeholder for data size
 	}
 ```
+
+**`C#`**
 
 ```csharp C#
 // Add a wav audio container header to the file if you want to play the audio
@@ -173,13 +183,13 @@ DC (Direct Current) offset refers to a mean amplitude displacement from zero in 
 
 **No DC Offset**
 
-![This audio doesn't contain a DC Offset.](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/97a0b8487dc4ef810db281c8c2607c9682ff2f90006a4f8d9316a90aec9a59da/images/af63e2a-no-dc-offset.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T113151Z&X-Amz-Expires=604800&X-Amz-Signature=68901df31498f9290c536aa877ff0df6041d411e7dce695e6b23c98ecc5a183d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![This audio doesn't contain a DC Offset.](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/97a0b8487dc4ef810db281c8c2607c9682ff2f90006a4f8d9316a90aec9a59da/images/af63e2a-no-dc-offset.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T113209Z&X-Amz-Expires=604800&X-Amz-Signature=aabe477a3c71e989690ea9c8b34e66fe65bc5a1df09cabdd8ef5eb42ffa42439&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 This audio doesn't contain a DC Offset.
 
 **DC Offset**
 
-![This audio does contain a DC Offset.](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/ba08ac25a978aeef5aa98a4b9b2a0a802d4e3699410d7c175f49e7d622a5bc82/images/b93157b-dc-offset.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T113151Z&X-Amz-Expires=604800&X-Amz-Signature=c95f743b1a6d18209fb2ea6a04861af602f92aa683bc1f9cefecda505e51ea47&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![This audio does contain a DC Offset.](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/ba08ac25a978aeef5aa98a4b9b2a0a802d4e3699410d7c175f49e7d622a5bc82/images/b93157b-dc-offset.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T113209Z&X-Amz-Expires=604800&X-Amz-Signature=631f3c0669d835dfbaa01625f9647d6b9e80522892dc155f430f149da12b6297&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 This audio does contain a DC Offset.
 
@@ -207,6 +217,8 @@ To Learn more about the the different text-to-speech encoding option see [this g
 
 For example, you could take an audio file that is having clicking noises and run:
 
+**`Shell`**
+
 ```shell Shell
 ffmpeg -f mulaw -codec:a pcm_mulaw -ar 8000 -ac 1 -i your_audio_file -f s16le -codec:a pcm_s16le -ar 8000 -ac 1 pipe:1 | aucat -c 0:0 -e s16le -f snd/1 -h raw -r 8000 -i
 ```
@@ -221,6 +233,8 @@ In some cases, additional headers might be added to the response, which could ca
 
 You can inspect your audio headers by first doing a `hexdump` before reading the audio file on your terminal.
 
+**`Shell`**
+
 ```shell Shell
 hexdump -C your_audio_file
 ```
@@ -228,6 +242,8 @@ hexdump -C your_audio_file
 In the terminal you'll see output as such, in this case we see duplicate wave headers and there are two RIFF headers in the audio.
 
 This is the source of the clicking.
+
+**`Shell`**
 
 ```shell Shell
 00000000 52 49 46 46 56 1d 00 00 57 41 56 45 66 6d 74 20 |RIFFV...WAVEfmt | 00000010 10 00 00 00 01 00 01 00 40 1f 00 00 80 3e 00 00 |........@....>..| 00000020 02 00 10 00 64 61 74 61 32 1d 00 00 52 49 46 46 |....data2...RIFF| 00000030 24 00 ff 7f 57 41 56 45 66 6d 74 20 10 00 00 00 |$...WAVEfmt ....| 00000040 01 00 01 00 40 1f 00 00 80 3e 00 00 02 00 10 00 |....@....>......| 00000050 64 61 74 61 00 00 ff 7f 0e f9 69 fb a6 ff 28 02 |data......i...(.| 00000060 15 04 3e 05 fd 02 81 00 9f fa 90 f5 d9 ee 02 eb |..>.............| 00000070 7d fb 1d 03 16 0b f8 15 c4 17 05 15 3b 0f a3 ff |}...........;...| 00000080 e9 f4 2f f1 42 ef 9f f4 59 fa cd fe 2d 08 7b 0f |../.B...Y...-.{.| 00000090 ae 10 cc 0d 18 07 f1 ff d0 fa ea f4 d4 f0 89 f3 |................|

@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/pronunciation-dictionaries/r
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `rule_strings` (list of string, required) — List of strings to remove from the pronunciation dictionary.
 
 ## Response
@@ -42,6 +44,17 @@ Successful Response
 - `id` (string, required) — The ID of the pronunciation dictionary.
 - `version_id` (string, required) — The version ID of the pronunciation dictionary.
 - `version_rules_num` (integer, required) — The number of rules in the version of the pronunciation dictionary.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

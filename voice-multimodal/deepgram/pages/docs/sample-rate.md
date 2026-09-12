@@ -22,6 +22,8 @@ To enable Sample Rate, when you call Deepgram's API, add a `sample_rate` paramet
 
 `sample_rate=SAMPLE_RATE_VALUE`
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \

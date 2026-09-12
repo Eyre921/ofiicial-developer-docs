@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/conversations/tags/update
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `title` (string, optional, nullable) — If provided, replaces the tag title. Omit to leave unchanged.
 - `description` (string, optional, nullable) — If provided, replaces the tag description. Omit to leave unchanged.
 
@@ -46,6 +48,17 @@ Successful Response
 - `title` (string, required)
 - `description` (string, required, nullable)
 - `created_at_unix_secs` (integer, required)
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

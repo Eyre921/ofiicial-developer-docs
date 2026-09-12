@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/w
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `assigned_agent_id` (string, optional)
 - `enable_messaging` (boolean, optional)
 - `enable_audio_message_response` (boolean, optional)
@@ -43,6 +45,17 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/w
 Successful Response
 
 - `any`
+
+## Errors
+
+### 422 Whatsapp Accounts Update Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

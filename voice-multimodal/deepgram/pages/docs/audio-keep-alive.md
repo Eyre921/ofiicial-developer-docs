@@ -22,6 +22,8 @@ Send a `KeepAlive` message every 3-5 seconds to prevent the 10-second timeout th
 
 To send the `KeepAlive` message, send the following JSON message to the server:
 
+**`JSON`**
+
 ```json JSON
 {
   "type": "KeepAlive"
@@ -38,6 +40,8 @@ Below are code examples to help you get started using `KeepAlive`.
 
 Construct a JSON message containing the `KeepAlive` type and send it over the WebSocket connection in each respective language.
 
+**`JavaScript`**
+
 ```javascript JavaScript
 const WebSocket = require("ws");
 
@@ -48,6 +52,8 @@ const ws = new WebSocket("wss://api.deepgram.com/v1/listen", { headers });
 const keepAliveMsg = JSON.stringify({ type: "KeepAlive" });
 ws.send(keepAliveMsg);
 ```
+
+**`Python`**
 
 ```python Python
 import json
@@ -60,6 +66,8 @@ ws = websocket.create_connection("wss://api.deepgram.com/v1/listen", header=head
 keep_alive_msg = json.dumps({"type": "KeepAlive"})
 ws.send(keep_alive_msg)
 ```
+
+**`Go`**
 
 ```go Go
 package main
@@ -96,6 +104,8 @@ func main() {
     }
 }
 ```
+
+**`C#`**
 
 ```csharp C#
 using System;
@@ -135,6 +145,8 @@ class Program
 }
 ```
 
+**`Java`**
+
 ```java Java
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -155,6 +167,8 @@ ws.sendText("{\"type\": \"KeepAlive\"}", true);
 ### Streaming Examples
 
 Make a streaming request and use `KeepAlive` to keep the connection open.
+
+**`JavaScript`**
 
 ```javascript JavaScript
 const WebSocket = require("ws");
@@ -208,6 +222,8 @@ function closeWebSocket() {
 // For example, when user stops recording or when the application exits
 // closeWebSocket();
 ```
+
+**`Python`**
 
 ```python Python
 import websocket
@@ -273,6 +289,8 @@ For more information on using Deepgram SDKs, refer to the SDKs documentation in 
 * [Go SDK](https://github.com/deepgram/deepgram-go-sdk)
 * [.NET SDK](https://github.com/deepgram/deepgram-dotnet-sdk)
 
+**`JavaScript`**
+
 ```javascript JavaScript
 const { DeepgramClient } = require("@deepgram/sdk");
 
@@ -329,6 +347,8 @@ const live = async () => {
 live();
 ```
 
+**`Python`**
+
 ```python Python
 # For more Python SDK migration guides, visit:
 # https://github.com/deepgram/deepgram-python-sdk/tree/main/docs
@@ -377,6 +397,8 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+
+**`Go`**
 
 ```go Go
 package main
@@ -435,6 +457,8 @@ func main() {
 	fmt.Printf("Program exiting...\n")
 }
 ```
+
+**`Java`**
 
 ```java Java
 import com.deepgram.DeepgramClient;

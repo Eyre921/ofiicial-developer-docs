@@ -20,7 +20,7 @@ Without environment variables, deploying an agent across multiple environments (
 
 Environment variables solve this by introducing a reusable, workspace-scoped resource that stores different values per environment. Tools and MCP servers reference these variables using template syntax, and the correct value is resolved at runtime based on the conversation's environment.
 
-![Environment variables overview](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/75bbfad6349ff43d078f62e75f7d3549858897158e55ada3dcdbf261a963b055/assets/images/conversational-ai/env-vars-overview.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T090146Z&X-Amz-Expires=604800&X-Amz-Signature=ac7f210dc9003d8f052fb4b7488ec59f644b26eaa95098a287e17dbefd418981&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Environment variables overview](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/75bbfad6349ff43d078f62e75f7d3549858897158e55ada3dcdbf261a963b055/assets/images/conversational-ai/env-vars-overview.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T094201Z&X-Amz-Expires=604800&X-Amz-Signature=7c3f488fdd13b0d6a4bce3f18a4098447586d888b9b4ff3a6a39ed22e4ff8024&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Core concepts
 
@@ -92,7 +92,7 @@ Click **Add variable** and choose the variable type:
 * **Secret**: Select an existing workspace secret for each environment
 * **Auth connection**: Select an existing auth connection for each environment
 
-![Create variable](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8ab18d57956167aaa152e10b4d2890b208c8ba826ef0cbbf9082c8e1602f5246/assets/images/conversational-ai/env-vars-create-variable.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T090146Z&X-Amz-Expires=604800&X-Amz-Signature=72ab289b68b320dd848457061c6c22fd2312fe6817400d1c96523f3755adaea3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Create variable](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8ab18d57956167aaa152e10b4d2890b208c8ba826ef0cbbf9082c8e1602f5246/assets/images/conversational-ai/env-vars-create-variable.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T094201Z&X-Amz-Expires=604800&X-Amz-Signature=4299e3de030df74883e156fd6e090169a0fb41a55772124e47de0adca7ef6ff6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Create via the API
 
@@ -200,7 +200,7 @@ await elevenlabs.conversationalAi.environmentVariables.create({
 
 Use the template syntax in the URL field of a [webhook tool](/docs/eleven-agents/customization/tools/webhook-tools) to make the base URL resolve per environment.
 
-![Environment variable in tool URL](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8a9d4a7fbd589565c57f52aa82200c28fe7fcfcc80ff9a3ec41a99ca315a9f50/assets/images/conversational-ai/env-vars-tool-url.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T090146Z&X-Amz-Expires=604800&X-Amz-Signature=e4a27225cddf1fde0896f384c5c1e353631901d6e36c9bc13fa071eea3c1ce57&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Environment variable in tool URL](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8a9d4a7fbd589565c57f52aa82200c28fe7fcfcc80ff9a3ec41a99ca315a9f50/assets/images/conversational-ai/env-vars-tool-url.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T094201Z&X-Amz-Expires=604800&X-Amz-Signature=79c80b1c24cd200d71fb3dd729a66bfdec5af8dbd2477568b75118bbb34c8d41&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 For example, a tool URL configured as:
 
@@ -217,6 +217,8 @@ https://{{system__env_api_host}}.example.com/{{system__env_api_version}}/weather
 ```
 
 #### API example
+
+**`Python`**
 
 ```python title="Python"
 
@@ -244,6 +246,8 @@ agent = client.conversational_ai.agents.create(
     },
 )
 ```
+
+**`JavaScript`**
 
 ```javascript title="JavaScript"
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
@@ -295,7 +299,7 @@ Pass an environment variable reference in the `request_headers` field:
 
 Auth connections (OAuth2, JWT, Basic Auth) can also be resolved per environment. This is useful when your staging and production environments use different OAuth clients or token endpoints.
 
-![Environment variable auth connection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/41115e31cac8c55360cb4f5783a4d03cf63ea51a6f5baa2812993d70d7c4a4d5/assets/images/conversational-ai/env-vars-tool-auth.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T090146Z&X-Amz-Expires=604800&X-Amz-Signature=e4e9e761b20d79fbe907196b6c0ae9ee255919327b4211afcc9fa8ce3916906a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Environment variable auth connection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/41115e31cac8c55360cb4f5783a4d03cf63ea51a6f5baa2812993d70d7c4a4d5/assets/images/conversational-ai/env-vars-tool-auth.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T094201Z&X-Amz-Expires=604800&X-Amz-Signature=30828eda5c2b882e577148d9d87925ff9ce43148c27bce09704c5d0804b23736&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 In the tool configuration, select an environment variable of type `auth_connection` instead of directly selecting an auth connection. The correct auth connection for the current environment is resolved at runtime.
 
@@ -361,7 +365,7 @@ The environment is set at conversation start time and persists for the entire co
 When testing in the dashboard, select the environment from the dropdown in the agent preview:
 
 ![Agent preview environment
-selector](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/052880e903ac2dc3539a0ed84feef5a3d31cd28c9b1345705c9003796d382803/assets/images/conversational-ai/env-vars-preview-selector.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T090146Z&X-Amz-Expires=604800&X-Amz-Signature=bedd1a7d6262bc6f595b4d3dc9e4613bca1cd9a28ccc05966993b27419c37124&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+selector](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/052880e903ac2dc3539a0ed84feef5a3d31cd28c9b1345705c9003796d382803/assets/images/conversational-ai/env-vars-preview-selector.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T094201Z&X-Amz-Expires=604800&X-Amz-Signature=77ed21d37f985b27b36f04cedb5a2271aa5d128ebe5fd9b7efad3e4b5d463013&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### WebSocket
 
@@ -375,6 +379,8 @@ wss://api.elevenlabs.io/v1/convai/conversation?agent_id=<agent_id>&environment=s
 
 When using WebRTC, pass the `environment` parameter when requesting a conversation token:
 
+**`Python`**
+
 ```python title="Python"
 from elevenlabs.client import ElevenLabs
 
@@ -387,6 +393,8 @@ environment="staging",
 
 ```
 
+**`JavaScript`**
+
 ```javascript title="JavaScript"
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
@@ -398,6 +406,8 @@ const token = await client.conversationalAi.conversation.getToken({
 });
 ```
 
+**`cURL`**
+
 ```bash title="cURL"
 curl "https://api.elevenlabs.io/v1/convai/conversation/token?agent_id=<agent_id>&environment=staging" \
   -H "xi-api-key: $ELEVENLABS_API_KEY"
@@ -408,7 +418,7 @@ curl "https://api.elevenlabs.io/v1/convai/conversation/token?agent_id=<agent_id>
 Phone numbers can be pinned to a specific environment and to a specific [agent branch](/docs/eleven-agents/operate/versioning), making it easy to route a test phone number to a dev branch of an agent whose tools execute against a dev API.
 
 ![Phone number environment and branch
-selectors](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ba83735f5cad2006555eb73a12a520c7c86fa3d576d8f69f481a8c75d315cf1d/assets/images/conversational-ai/env-vars-phone-number.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T090146Z&X-Amz-Expires=604800&X-Amz-Signature=1e5809d9868ad17778bfb0c3bf7c970d89385098368ac34aa4ee28e18062ae34&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+selectors](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ba83735f5cad2006555eb73a12a520c7c86fa3d576d8f69f481a8c75d315cf1d/assets/images/conversational-ai/env-vars-phone-number.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T094201Z&X-Amz-Expires=604800&X-Amz-Signature=cdf24f166143fc174d61cedea1641dc25c6905390c65c5399c20dab59440e63f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 For inbound calls, the environment is resolved in this order:
 
@@ -419,6 +429,8 @@ For inbound calls, the environment is resolved in this order:
 The same precedence applies to `branch_id`. Pre-call webhook URLs and headers, and post-call webhook URLs, then resolve `{{system__env_*}}` templates using the chosen environment.
 
 Pin a phone number to an environment and branch (requires `elevenlabs` Python SDK ≥ 2.47.0 or `@elevenlabs/elevenlabs-js` ≥ 2.47.0):
+
+**`Python`**
 
 ```python title="Python"
 import os
@@ -436,6 +448,8 @@ elevenlabs.conversational_ai.phone_numbers.update(
 )
 ```
 
+**`JavaScript`**
+
 ```typescript title="JavaScript"
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
@@ -446,6 +460,8 @@ await elevenlabs.conversationalAi.phoneNumbers.update("phnum_8901k4t9z5defmb8vh3
   branchId: "agtbrch_8901k4t9z5defmb8vh3e9361y7nj",
 });
 ```
+
+**`cURL`**
 
 ```bash title="cURL"
 curl -X PATCH "https://api.elevenlabs.io/v1/convai/phone-numbers/phnum_8901k4t9z5defmb8vh3e9361y7nj" \
@@ -506,6 +522,8 @@ Set up your webhook tools using template syntax:
 
 When starting a conversation, pass the target environment:
 
+**`Development`**
+
 ```python title="Development"
 conversation = client.conversational_ai.conversation.get_signed_url(
     agent_id="your-agent-id",
@@ -513,12 +531,16 @@ conversation = client.conversational_ai.conversation.get_signed_url(
 )
 ```
 
+**`Staging`**
+
 ```python title="Staging"
 conversation = client.conversational_ai.conversation.get_signed_url(
     agent_id="your-agent-id",
     environment="staging",
 )
 ```
+
+**`Production (default)`**
 
 ```python title="Production (default)"
 # No environment parameter needed — defaults to production
@@ -531,9 +553,9 @@ conversation = client.conversational_ai.conversation.get_signed_url(
 
 The environment is tracked for every conversation. Filter your analytics dashboards and conversation history by environment to isolate metrics per deployment stage.
 
-![Filter analytics by environment](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/640f45e330a6f58648bb79fb588b580bb1d938e20f46c453b6d0c0efdac04054/assets/images/conversational-ai/env-vars-filter-analytics.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T090146Z&X-Amz-Expires=604800&X-Amz-Signature=2e87f2b46113b97c36ad77d8e5462f91aa3fe60672dc1f6f97cade268900965a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Filter analytics by environment](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/640f45e330a6f58648bb79fb588b580bb1d938e20f46c453b6d0c0efdac04054/assets/images/conversational-ai/env-vars-filter-analytics.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T094201Z&X-Amz-Expires=604800&X-Amz-Signature=6486284e7951d84fa4e0ed392d4b15c901e4b8a224093e1b25acea46599fe5c9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-![Filter conversation history by environment](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/de6cdcdad31761a4e94928ea125503a555635eaf579521096b5f38d5ef931cd0/assets/images/conversational-ai/env-vars-conversation-history.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T090146Z&X-Amz-Expires=604800&X-Amz-Signature=9459cf90b0958d2a7924f2c2de375fb1a26e8841c0d5da6ce645cfe1abb28cb9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Filter conversation history by environment](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/de6cdcdad31761a4e94928ea125503a555635eaf579521096b5f38d5ef931cd0/assets/images/conversational-ai/env-vars-conversation-history.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T094201Z&X-Amz-Expires=604800&X-Amz-Signature=7e4bea79ac8efa66fa034fab38ff8aaefa0261bdf4f70b032b3d8e601aabb92c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Naming constraints
 

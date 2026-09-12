@@ -11,7 +11,7 @@ info:
 paths:
   /v1/agent/settings/think/models:
     get:
-      operationId: list
+      operationId: models_list
       summary: List Agent Think Models
       description: Retrieves the available think models that can be used for AI agent processing
       tags:
@@ -31,7 +31,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /v1/projects/{project_id}/agents:
     post:
-      operationId: create
+      operationId: configurations_create
       summary: Create an Agent Configuration
       description: >-
         Creates a new reusable agent configuration. The `config` field must be a valid JSON string representing the
@@ -74,7 +74,7 @@ paths:
             schema:
               $ref: '#/components/schemas/CreateAgentConfigurationV1Request'
     get:
-      operationId: list
+      operationId: configurations_list
       summary: List Agent Configurations
       description: >-
         Returns all agent configurations for the specified project. Configurations are returned in their uninterpolated
@@ -111,7 +111,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /v1/projects/{project_id}/agents/{agent_id}:
     get:
-      operationId: get
+      operationId: configurations_get
       summary: Get an Agent Configuration
       description: Returns the specified agent configuration in its uninterpolated form
       tags:
@@ -151,7 +151,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
     put:
-      operationId: update
+      operationId: configurations_update
       summary: Update Agent Metadata
       description: >-
         Updates the metadata associated with an agent configuration. The config itself is immutable—to change the
@@ -199,7 +199,7 @@ paths:
             schema:
               $ref: '#/components/schemas/UpdateAgentMetadataV1Request'
     delete:
-      operationId: delete
+      operationId: configurations_delete
       summary: Delete an Agent Configuration
       description: >-
         Deletes the specified agent configuration. Deleting an agent configuration can cause a production outage if your
@@ -242,7 +242,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /v1/projects/{project_id}/agent-variables:
     post:
-      operationId: create
+      operationId: variables_create
       summary: Create an Agent Variable
       description: >-
         Creates a new template variable. Variables follow the `DG_<VARIABLE_NAME>` naming format and can substitute any
@@ -284,7 +284,7 @@ paths:
             schema:
               $ref: '#/components/schemas/CreateAgentVariableV1Request'
     get:
-      operationId: list
+      operationId: variables_list
       summary: List Agent Variables
       description: Returns all template variables for the specified project
       tags:
@@ -319,7 +319,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /v1/projects/{project_id}/agent-variables/{variable_id}:
     get:
-      operationId: get
+      operationId: variables_get
       summary: Get an Agent Variable
       description: Returns the specified template variable
       tags:
@@ -359,7 +359,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
     patch:
-      operationId: update
+      operationId: variables_update
       summary: Update an Agent Variable
       description: Updates the value of an existing template variable
       tags:
@@ -405,7 +405,7 @@ paths:
             schema:
               $ref: '#/components/schemas/UpdateAgentVariableV1Request'
     delete:
-      operationId: delete
+      operationId: variables_delete
       summary: Delete an Agent Variable
       description: Deletes the specified template variable
       tags:
@@ -446,7 +446,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /v1/listen:
     post:
-      operationId: transcribe
+      operationId: media_transcribe
       summary: Transcribe and analyze pre-recorded audio and video
       description: Transcribe audio and video using Deepgram's speech-to-text REST API
       tags:
@@ -765,7 +765,7 @@ paths:
               $ref: '#/components/schemas/ListenV1RequestUrl'
   /v1/speak:
     post:
-      operationId: generate
+      operationId: audio_generate
       summary: Text to Speech transformation
       description: Convert text into natural-sounding speech using Deepgram's TTS REST API
       tags:
@@ -881,7 +881,7 @@ paths:
               $ref: '#/components/schemas/SpeakV1Request'
   /v1/read:
     post:
-      operationId: analyze
+      operationId: text_analyze
       summary: Analyze text content
       description: Analyze text content using Deepgrams text analysis API
       tags:
@@ -1003,7 +1003,7 @@ paths:
               $ref: '#/components/schemas/ReadV1Request'
   /v1/projects:
     get:
-      operationId: list
+      operationId: projects_list
       summary: List Projects
       description: Retrieves basic information about the projects associated with the API key
       tags:
@@ -1032,7 +1032,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /v1/projects/{project_id}:
     get:
-      operationId: get
+      operationId: projects_get
       summary: Get a Project
       description: Retrieves information about the specified project
       tags:
@@ -1083,7 +1083,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
     patch:
-      operationId: update
+      operationId: projects_update
       summary: Update a Project
       description: Updates the name or other properties of an existing project
       tags:
@@ -1123,7 +1123,7 @@ paths:
             schema:
               $ref: '#/components/schemas/UpdateProjectV1Request'
     delete:
-      operationId: delete
+      operationId: projects_delete
       summary: Delete a Project
       description: Deletes the specified project
       tags:
@@ -1158,7 +1158,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /v1/projects/{project_id}/leave:
     delete:
-      operationId: leave
+      operationId: projects_leave
       summary: Leave a Project
       description: Removes the authenticated account from the specific project
       tags:
@@ -1193,7 +1193,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /v1/projects/{project_id}/models:
     get:
-      operationId: list
+      operationId: models_list_2
       summary: List Project Models
       description: Returns metadata on all the latest models that a specific project has access to, including non-public models
       tags:
@@ -1234,7 +1234,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /v1/projects/{project_id}/models/{model_id}:
     get:
-      operationId: get
+      operationId: models_get
       summary: Get a Project Model
       description: Returns metadata for a specific model
       tags:
@@ -1275,7 +1275,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /v1/models:
     get:
-      operationId: list
+      operationId: models_list_3
       summary: List Models
       description: Returns metadata on all the latest public models. To retrieve custom models, use Get Project Models.
       tags:
@@ -1310,7 +1310,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /v1/models/{model_id}:
     get:
-      operationId: get
+      operationId: models_get_2
       summary: Get a specific Model
       description: Returns metadata for a specific public model
       tags:
@@ -1345,7 +1345,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /v1/projects/{project_id}/keys:
     get:
-      operationId: list
+      operationId: keys_list
       summary: List Project Keys
       description: Retrieves all API keys associated with the specified project
       tags:
@@ -1385,7 +1385,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
     post:
-      operationId: create
+      operationId: keys_create
       summary: Create a Project Key
       description: Creates a new API key with specified settings for the project
       tags:
@@ -1426,7 +1426,7 @@ paths:
               $ref: '#/components/schemas/CreateKeyV1Request'
   /v1/projects/{project_id}/keys/{key_id}:
     get:
-      operationId: get
+      operationId: keys_get
       summary: Get a Project Key
       description: Retrieves information about a specified API key
       tags:
@@ -1466,7 +1466,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
     delete:
-      operationId: delete
+      operationId: keys_delete
       summary: Delete a Project Key
       description: Deletes an API key for a specific project
       tags:
@@ -1507,7 +1507,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /v1/projects/{project_id}/members:
     get:
-      operationId: list
+      operationId: members_list
       summary: List Project Members
       description: Retrieves a list of members for a given project
       tags:
@@ -1542,7 +1542,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /v1/projects/{project_id}/members/{member_id}:
     delete:
-      operationId: delete
+      operationId: members_delete
       summary: Delete a Project Member
       description: Removes a member from the project using their unique member ID
       tags:
@@ -1583,7 +1583,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /v1/projects/{project_id}/members/{member_id}/scopes:
     get:
-      operationId: list
+      operationId: scopes_list
       summary: List Project Member Scopes
       description: Retrieves a list of scopes for a specific member
       tags:
@@ -1623,7 +1623,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
     put:
-      operationId: update
+      operationId: scopes_update
       summary: Update Project Member Scopes
       description: Updates the scopes for a specific member
       tags:
@@ -1670,7 +1670,7 @@ paths:
               $ref: '#/components/schemas/UpdateProjectMemberScopesV1Request'
   /v1/projects/{project_id}/invites:
     get:
-      operationId: list
+      operationId: invites_list
       summary: List Project Invites
       description: Generates a list of invites for a specific project
       tags:
@@ -1704,7 +1704,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
     post:
-      operationId: create
+      operationId: invites_create
       summary: Create a Project Invite
       description: Generates an invite for a specific project
       tags:
@@ -1745,7 +1745,7 @@ paths:
               $ref: '#/components/schemas/CreateProjectInviteV1Request'
   /v1/projects/{project_id}/invites/{email}:
     delete:
-      operationId: delete
+      operationId: invites_delete
       summary: Delete a Project Invite
       description: Deletes an invite for a specific project
       tags:
@@ -1786,7 +1786,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /v1/projects/{project_id}/requests:
     get:
-      operationId: list
+      operationId: requests_list
       summary: List Project Requests
       description: Generates a list of requests for a specific project
       tags:
@@ -1892,7 +1892,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /v1/projects/{project_id}/requests/{request_id}:
     get:
-      operationId: get
+      operationId: requests_get
       summary: Get a Project Request
       description: Retrieves a specific request for a specific project
       tags:
@@ -1933,7 +1933,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /v1/projects/{project_id}/usage:
     get:
-      operationId: get
+      operationId: usage_get
       summary: Get Project Usage
       description: >-
         Retrieves the usage for a specific project. Use Get Project Usage Breakdown for a more comprehensive usage
@@ -2237,7 +2237,7 @@ paths:
       deprecated: true
   /v1/projects/{project_id}/usage/fields:
     get:
-      operationId: list
+      operationId: fields_list
       summary: List Project Usage Fields
       description: Lists the features, models, tags, languages, and processing method used for requests in the specified project
       tags:
@@ -2286,7 +2286,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /v1/projects/{project_id}/usage/breakdown:
     get:
-      operationId: get
+      operationId: breakdown_get
       summary: Get Project Usage Breakdown
       description: >-
         Retrieves the usage breakdown for a specific project, with various filter options by API feature or by
@@ -2597,7 +2597,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /v1/projects/{project_id}/balances:
     get:
-      operationId: list
+      operationId: balances_list
       summary: Get Project Balances
       description: Generates a list of outstanding balances for the specified project
       tags:
@@ -2632,7 +2632,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /v1/projects/{project_id}/balances/{balance_id}:
     get:
-      operationId: get
+      operationId: balances_get
       summary: Get a Project Balance
       description: Retrieves details about the specified balance
       tags:
@@ -2673,7 +2673,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /v1/projects/{project_id}/billing/breakdown:
     get:
-      operationId: list
+      operationId: breakdown_list
       summary: Get Project Billing Breakdown
       description: Retrieves the billing summary for a specific project, with various filter options or by grouping options.
       tags:
@@ -2754,7 +2754,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /v1/projects/{project_id}/billing/fields:
     get:
-      operationId: list
+      operationId: fields_list_2
       summary: List Project Billing Fields
       description: >-
         Lists the accessors, deployment types, tags, and line items used for billing data in the specified time period.
@@ -2806,7 +2806,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /v1/projects/{project_id}/purchases:
     get:
-      operationId: list
+      operationId: purchases_list
       summary: List Project Purchases
       description: Returns the original purchased amount on an order transaction
       tags:
@@ -2851,7 +2851,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /v1/projects/{project_id}/self-hosted/distribution/credentials:
     get:
-      operationId: list
+      operationId: distributionCredentials_list
       summary: List Project Self-Hosted Distribution Credentials
       description: Lists sets of distribution credentials for the specified project
       tags:
@@ -2885,7 +2885,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
     post:
-      operationId: create
+      operationId: distributionCredentials_create
       summary: Create a Project Self-Hosted Distribution Credential
       description: Creates a set of distribution credentials for the specified project
       tags:
@@ -2943,7 +2943,7 @@ paths:
               $ref: '#/components/schemas/CreateProjectDistributionCredentialsV1Request'
   /v1/projects/{project_id}/self-hosted/distribution/credentials/{distribution_credentials_id}:
     get:
-      operationId: get
+      operationId: distributionCredentials_get
       summary: Get a Project Self-Hosted Distribution Credential
       description: Returns a set of distribution credentials for the specified project
       tags:
@@ -2983,7 +2983,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
     delete:
-      operationId: delete
+      operationId: distributionCredentials_delete
       summary: Delete a Project Self-Hosted Distribution Credential
       description: Deletes a set of distribution credentials for the specified project
       tags:
@@ -3024,7 +3024,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /v1/auth/grant:
     post:
-      operationId: grant
+      operationId: tokens_grant
       summary: Token-based Authentication
       description: >-
         Generates a temporary JSON Web Token (JWT) with a 30-second (by default) TTL and usage::write permission for
@@ -3062,7 +3062,7 @@ paths:
               $ref: '#/components/schemas/GrantV1Request'
   /v2/speak:
     post:
-      operationId: generate
+      operationId: audio_generate_2
       summary: Flux Text to Speech (batch)
       description: >-
         Synthesize a complete block of text into a single audio response using Deepgram's Flux TTS batch (REST) API. Use

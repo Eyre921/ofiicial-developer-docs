@@ -44,6 +44,17 @@ Successful Response
   - `conversation_id` (string, optional, nullable) — The ID of the conversation
   - `token_requester_user_id` (string, optional, nullable) — The user ID of the entity who requested the token
 
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

@@ -44,6 +44,23 @@ Successful Response
 - `values` (map from string to string or map from string to object or map from string to object, required)
 - `created_by_user_id` (string, optional, nullable)
 
+## Errors
+
+### 404 Not Found Error
+
+Environment variable not found
+
+- `any`
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

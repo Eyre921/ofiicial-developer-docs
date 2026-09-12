@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/conversations/tags/create
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `title` (string, required) — Display title of the tag.
 - `description` (string, optional, nullable) — Optional free-text description.
 
@@ -42,6 +44,17 @@ Successful Response
 - `title` (string, required)
 - `description` (string, required, nullable)
 - `created_at_unix_secs` (integer, required)
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

@@ -75,6 +75,8 @@ Create a Twilio function that receives incoming call data and forwards it to you
 
 2. Replace the entire file with the following code:
 
+   **`JavaScript`**
+
    ```javascript JavaScript
    exports.handler = function (context, event, callback) {
    	let twiml = new Twilio.twiml.VoiceResponse();
@@ -100,7 +102,7 @@ Now that you have created a function to receive incoming calls, apply it to your
 3. Under **Service**, select your service.
 4. Under **Function Path**, select `/inbound`.
 
-![When a call comes in, use a Function. Default service with the /inbound function path.](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/a5bb4a59be80060e756877b9fa500702e4695029ec2c7bb02d56dcacb8ddc94c/images/set-inbound-endpoint.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T113130Z&X-Amz-Expires=604800&X-Amz-Signature=b6140d92e9d2527724c377a2910384f3bea06a9fcd0ef621c175b8948d6139a3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![When a call comes in, use a Function. Default service with the /inbound function path.](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/a5bb4a59be80060e756877b9fa500702e4695029ec2c7bb02d56dcacb8ddc94c/images/set-inbound-endpoint.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T113147Z&X-Amz-Expires=604800&X-Amz-Signature=43c2887d35f53dbfbdb312768dcbd71caf43530d3f1451430c3cda28d1f5b8f1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Transcribing and Summarizing Calls
 
@@ -113,6 +115,8 @@ When a call is received, use Deepgram to transcribe it:
 1. Create a new Twilio function named `/transcribe`.
 
 2. Replace the boilerplate code with the following code:
+
+   **`JavaScript`**
 
    ```javascript JavaScript
    import { DeepgramClient } from "@deepgram/sdk";
@@ -133,6 +137,8 @@ This code uses the `CallSid` to look up the call to find additional call informa
 
 3. Generate a transcription of the call using Deepgram’s Node.js SDK:
 
+   **`JavaScript`**
+
    ```javascript JavaScript
    const result = await deepgram.listen.v1.media.transcribeUrl({
      url: RecordingUrl,
@@ -146,6 +152,8 @@ This code uses the `CallSid` to look up the call to find additional call informa
 
 From Deepgram's transcription, isolate the summary:
 
+**`JavaScript`**
+
 ```javascript JavaScript
 const summary = result.results.summary.short;
 ```
@@ -157,6 +165,8 @@ Now that you have a summary of the call, you can send it to both the caller and 
 ### Send the Summary via SMS
 
 Finally, you can send Deepgram's summary via SMS:
+
+**`JavaScript`**
 
 ```javascript JavaScript
 for (let number of [process.env.FORWARD_NUMBER, caller]) {
@@ -177,6 +187,8 @@ To test your implementation, call your Twilio number, pick it up on your "agent 
 ## Full Sample Code
 
 In case you need it for reference, we provide the full sample code used in this tutorial below:
+
+**`JavaScript`**
 
 ```javascript JavaScript
 // /inbound

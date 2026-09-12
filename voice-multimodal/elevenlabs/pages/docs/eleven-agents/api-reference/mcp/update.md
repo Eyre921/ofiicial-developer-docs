@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/update
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `approval_policy` (enum, optional, default: require_approval_all) — The approval mode to set for the MCP server
   - Allowed values: `auto_approve_all`, `require_approval_all`, `require_approval_per_tool`
 - `pre_tool_speech` (enum, optional, default: auto) — If set, overrides the server's pre_tool_speech setting for this tool.
@@ -197,6 +199,17 @@ Successful Response
   - `type`: `unknown`
     - `id` (string, required)
     - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
+
+## Errors
+
+### 422 Mcp Servers Update Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

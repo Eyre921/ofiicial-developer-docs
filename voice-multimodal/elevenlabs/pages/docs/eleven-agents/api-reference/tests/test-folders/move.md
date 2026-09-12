@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-fol
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `entity_ids` (list of string, required) — The IDs of tests or folders to move.
 - `move_to` (string, optional) — The folder to move the entities to. If not set, the entities will be moved to the root folder.
 
@@ -37,6 +39,17 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-fol
 Tests or folders successfully moved to another folder
 
 - `any`
+
+## Errors
+
+### 422 Tests Move Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

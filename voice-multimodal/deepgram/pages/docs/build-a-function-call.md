@@ -22,6 +22,8 @@ Include the function definition in your `Settings` message under the `agent.thin
 
 `get_weather` only reads data, so it is safe to dispatch as soon as the model asks for it. A function that changes something should set `defer_until_eot: true` instead, as [`end_call`](#end-call) does later in this guide. See [`defer_until_eot`](/docs/configure-voice-agent#agentthinkfunctionsdefer_until_eot).
 
+**`JSON`**
+
 ```json JSON
 {
   "type": "Settings",
@@ -57,6 +59,8 @@ Include the function definition in your `Settings` message under the `agent.thin
 
 Your client application must implement the logic to handle the `get_weather` request.
 
+**`JavaScript`**
+
 ```javascript JavaScript
 export const getWeather = async (location: string): Promise<string | null> => {
   const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
@@ -80,6 +84,8 @@ export const getWeather = async (location: string): Promise<string | null> => {
 };
 ```
 
+**`Python`**
+
 ```python Python
 import os
 import requests
@@ -101,6 +107,8 @@ def get_weather(location: str) -> Optional[str]:
         print(f"Error: {err}")
         return None
 ```
+
+**`C#`**
 
 ```CSharp C#
 using System;
@@ -160,6 +168,8 @@ public class Main
     public float Temp { get; set; }
 }
 ```
+
+**`Go`**
 
 ```Go Go
 package main
@@ -231,6 +241,8 @@ This guide doesn't cover the development of the **business logic** for this appl
 
 First, create a file called: `agent_functions.py`. Then in `agent_functions.py` set up the dependencies and import the business logic.
 
+**`Python`**
+
 ```python Python
 import json
 from datetime import datetime, timedelta
@@ -245,6 +257,8 @@ from business_logic import (
     prepare_farewell_message
 )
 ```
+
+**`Java`**
 
 ```java Java
 import com.deepgram.DeepgramClient;
@@ -273,6 +287,8 @@ We'll implement the following functions in `agent_functions.py` to handle custom
 
 ### Find Customer
 
+**`Python`**
+
 ```python Python
 async def find_customer(params):
     """Look up a customer by phone, email, or ID."""
@@ -283,6 +299,8 @@ async def find_customer(params):
     result = await get_customer(phone=phone, email=email, customer_id=customer_id)
     return result
 ```
+
+**`Java`**
 
 ```java Java
 public Map<String, Object> findCustomer(Map<String, Object> params) {
@@ -296,6 +314,8 @@ public Map<String, Object> findCustomer(Map<String, Object> params) {
 
 ### Get Appointments
 
+**`Python`**
+
 ```python Python
 async def get_appointments(params):
     """Get appointments for a customer."""
@@ -306,6 +326,8 @@ async def get_appointments(params):
     result = await get_customer_appointments(customer_id)
     return result
 ```
+
+**`Java`**
 
 ```java Java
 public Map<String, Object> getAppointments(Map<String, Object> params) {
@@ -320,6 +342,8 @@ public Map<String, Object> getAppointments(Map<String, Object> params) {
 
 ### Get Orders
 
+**`Python`**
+
 ```python Python
 async def get_orders(params):
     """Get orders for a customer."""
@@ -330,6 +354,8 @@ async def get_orders(params):
     result = await get_customer_orders(customer_id)
     return result
 ```
+
+**`Java`**
 
 ```java Java
 public Map<String, Object> getOrders(Map<String, Object> params) {
@@ -344,6 +370,8 @@ public Map<String, Object> getOrders(Map<String, Object> params) {
 
 ### Create Appointment
 
+**`Python`**
+
 ```python Python
 async def create_appointment(params):
     """Schedule a new appointment."""
@@ -357,6 +385,8 @@ async def create_appointment(params):
     result = await schedule_appointment(customer_id, date, service)
     return result
 ```
+
+**`Java`**
 
 ```java Java
 public Map<String, Object> createAppointment(Map<String, Object> params) {
@@ -374,6 +404,8 @@ public Map<String, Object> createAppointment(Map<String, Object> params) {
 
 ### Check Availability
 
+**`Python`**
+
 ```python Python
 async def check_availability(params):
     """Check available appointment slots."""
@@ -386,6 +418,8 @@ async def check_availability(params):
     result = await get_available_appointment_slots(start_date, end_date)
     return result
 ```
+
+**`Java`**
 
 ```java Java
 public Map<String, Object> checkAvailability(Map<String, Object> params) {
@@ -406,6 +440,8 @@ public Map<String, Object> checkAvailability(Map<String, Object> params) {
 
 ### Agent Filler
 
+**`Python`**
+
 ```python Python
 
 async def agent_filler(websocket, params):
@@ -415,6 +451,8 @@ async def agent_filler(websocket, params):
     result = await prepare_agent_filler_message(websocket, **params)
     return result
 ```
+
+**`Java`**
 
 ```java Java
 public Map<String, Object> agentFiller(
@@ -427,6 +465,8 @@ public Map<String, Object> agentFiller(
 
 Ending a call cannot be undone, so this function sets `defer_until_eot: true` in its definition below. The agent holds the call until the user's turn is confirmed, and discards it if the user keeps speaking. See [`defer_until_eot`](/docs/configure-voice-agent#agentthinkfunctionsdefer_until_eot).
 
+**`Python`**
+
 ```python Python
 
 async def end_call(websocket, params):
@@ -437,6 +477,8 @@ async def end_call(websocket, params):
     result = await prepare_farewell_message(websocket, farewell_type)
     return result
 ```
+
+**`Java`**
 
 ```java Java
 public Map<String, Object> endCall(
@@ -457,6 +499,8 @@ Each function definition follows a JSON Schema format with:
 * Parameters specification
 * Required fields
 * Enumerated values where applicable
+
+**`Python`**
 
 ```python Python
 # Function definitions that will be sent to the Voice Agent API
@@ -647,6 +691,8 @@ FUNCTION_DEFINITIONS = [
 ]
 ```
 
+**`Java`**
+
 ```java Java
 // Function definitions sent to the Voice Agent API.
 // In the Java SDK, define these as AgentV1Function objects.
@@ -770,6 +816,8 @@ List<AgentV1Function> functionDefinitions = List.of(
 
 Finally in `agent_functions.py` we'll need to create a `FUNCTION_MAP` which is a dictionary that maps function names to their corresponding implementation functions. It serves as a routing mechanism to connect the function definitions with their actual implementations.
 
+**`Python`**
+
 ```python Python
 # Map function names to their implementations
 FUNCTION_MAP = {
@@ -782,6 +830,8 @@ FUNCTION_MAP = {
     "end_call": end_call
 }
 ```
+
+**`Java`**
 
 ```java Java
 // Map function names to their implementations
@@ -804,6 +854,8 @@ Next create a file called: `agent_templates.py`. Then in `agent_templates.py` se
 ### Configure the Voice Agent Prompt & Settings
 
 Now in the `agent_templates.py` file we'll define the prompt for the Voice Agent.
+
+**`Python`**
 
 ```python Python
 from common.agent_functions import FUNCTION_DEFINITIONS
@@ -884,6 +936,8 @@ Remember: ANY phrase indicating you're about to look something up MUST be done t
 """
 ```
 
+**`Java`**
+
 ```java Java
 // The prompt template is the same string across all languages.
 // In Java, define it as a constant and inject the current date:
@@ -907,6 +961,8 @@ String prompt = String.format(promptTemplate,
 ```
 
 Next in the same file we'll define the settings for the Voice Agent.
+
+**`Python`**
 
 ```python Python
 VOICE = "aura-2-thalia-en"
@@ -973,6 +1029,8 @@ AGENT_SETTINGS = {
 SETTINGS = {"type": "Settings", "audio": AUDIO_SETTINGS, "agent": AGENT_SETTINGS}
 ```
 
+**`Java`**
+
 ```java Java
 // Build the agent settings using the Java SDK builder pattern
 AgentV1Settings settings = AgentV1Settings.builder()
@@ -1014,6 +1072,8 @@ AgentV1Settings settings = AgentV1Settings.builder()
 ```
 
 Finally in the same file we'll define the factory class `AgentTemplates` which will be used to configure the Voice Agent. This class will be used to configure the Voice Agent for different industries.
+
+**`Python`**
 
 ```python Python
 class AgentTemplates:
@@ -1163,6 +1223,8 @@ class AgentTemplates:
 
 ```
 
+**`Java`**
+
 ```java Java
 /**
  * Factory class that configures the Voice Agent for different industries.
@@ -1253,9 +1315,13 @@ This guide doesn't cover the development of the **client** for this application.
 
 In the `client.py` file we'll need reference `agent_templates.py` which will define the settings for the Voice Agent.
 
+**`Python`**
+
 ```python Python
 settings = self.agent_templates.settings
 ```
+
+**`Java`**
 
 ```java Java
 DeepgramClient client = DeepgramClient.builder().build();

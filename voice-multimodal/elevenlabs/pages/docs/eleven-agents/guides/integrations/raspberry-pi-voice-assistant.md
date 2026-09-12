@@ -60,6 +60,8 @@ pip install "elevenlabs[pyaudio]"
 
 Now create a new python file called `hotword.py` and add the following code:
 
+**`hotword.py`**
+
 ```python hotword.py
 import os
 import signal

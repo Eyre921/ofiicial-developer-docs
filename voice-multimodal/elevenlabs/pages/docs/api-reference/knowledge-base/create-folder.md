@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/knowledge-base/create-folder
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `name` (string, required) — A custom, human-readable name for the document.
 - `parent_folder_id` (string, optional, nullable) — If set, the created document or folder will be placed inside the given folder.
 - `enable_auto_sync` (boolean, optional, default: false) — Whether to enable auto-sync for this URL document.
@@ -43,6 +45,17 @@ Successful Response
 - `name` (string, required)
 - `folder_path` (list of object, optional) — The folder path segments leading to this entity, from root to parent folder.
   - `id` (string, required)
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

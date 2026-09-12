@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/pronunciation-dictionaries/u
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `archived` (boolean, optional) — Whether to archive the pronunciation dictionary.
 - `name` (string, optional) — The name of the pronunciation dictionary, used for identification only.
 
@@ -50,6 +52,17 @@ Successful Response
 - `creation_time_unix` (integer, required) — The creation time of the pronunciation dictionary in Unix timestamp.
 - `archived_time_unix` (integer, optional, nullable) — The archive time of the pronunciation dictionary in Unix timestamp.
 - `description` (string, optional, nullable) — The description of the pronunciation dictionary.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

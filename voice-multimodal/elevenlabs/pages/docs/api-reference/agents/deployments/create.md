@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/deployments/create
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `deployment_request` (object, required) — Request to create a new deployment
   - `requests` (list of object, required) — List of deployment requests
     - `branch_id` (string, required) — ID of the branch to deploy
@@ -45,6 +47,17 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/deployments/create
 Successful Response
 
 - `traffic_percentage_branch_id_map` (map from string to double, optional) — Map of branch IDs to traffic percentages
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

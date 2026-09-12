@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/music/create-composition-pla
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `prompt` (string, required) — A simple text prompt to compose a plan from.
 - `music_length_ms` (integer, optional, nullable) — The length of the composition plan to generate in milliseconds. Must be between 3000ms and 600000ms. Optional - if not provided, the model will choose a length based on the prompt.
 - `source_composition_plan` (object or object, optional, nullable) — An optional composition plan to use as a source for the new composition plan.
@@ -69,7 +71,7 @@ Reference: https://elevenlabs.io/docs/api-reference/music/create-composition-pla
           - `start_ms` (integer, required)
           - `end_ms` (integer, required)
 - `model_id` (enum, optional, default: music_v1) — The model to use for the generation.
-  - Allowed values: `music_v1`, `music_v2`
+  - Allowed values: `music_v1`, `music_v2`, `music_v2_5`
 
 ## Response
 
@@ -116,6 +118,17 @@ Successful Response
         - `range` (object, required) — The time range to extract from the song.
           - `start_ms` (integer, required)
           - `end_ms` (integer, required)
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

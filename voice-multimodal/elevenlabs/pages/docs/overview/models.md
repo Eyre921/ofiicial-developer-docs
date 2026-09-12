@@ -98,6 +98,16 @@ Entity detection, 65 entity types
 
 ### Music
 
+#### [Eleven Music v2.5](/docs/overview/models#eleven-music)
+
+Our most advanced music model
+
+Improved quality and prompt adherence
+
+Richer melodies, deeper arrangements, and more layered instruments.
+
+Same workflows and support: composition plans, audio reference, and inpainting
+
 #### [Eleven Music v2](/docs/overview/models#eleven-music)
 
 Studio-grade music with natural language prompts in any style
@@ -116,22 +126,23 @@ Edit the sound and lyrics of individual sections or the whole song
 
 The ElevenLabs API offers a range of audio models optimized for different use cases, quality levels, and performance requirements.
 
-| Model ID                     | Description                                                                                       | Languages                                                                                                                                                                     |
-| ---------------------------- | ------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `eleven_v3`                  | Human-like and expressive speech generation                                                       | [70+ languages](/docs/overview/models#supported-languages)                                                                                                                    |
-| `eleven_v3_conversational`   | Our most expressive, realtime speech synthesis model (\~280ms†)                                   | [70+ languages](/docs/overview/models#supported-languages)                                                                                                                    |
-| `eleven_ttv_v3`              | Human-like and expressive voice design model (Text to Voice)                                      | [70+ languages](/docs/overview/models#supported-languages)                                                                                                                    |
-| `eleven_multilingual_v2`     | Our most lifelike model with rich emotional expression                                            | `en`, `ja`, `zh`, `de`, `hi`, `fr`, `ko`, `pt`, `it`, `es`, `id`, `nl`, `tr`, `fil`, `pl`, `sv`, `bg`, `ro`, `ar`, `cs`, `el`, `fi`, `hr`, `ms`, `sk`, `da`, `ta`, `uk`, `ru` |
-| `eleven_flash_v2_5`          | Ultra-fast model optimized for real-time use (\~75ms†)                                            | All `eleven_multilingual_v2` languages plus: `hu`, `no`, `vi`                                                                                                                 |
-| `eleven_flash_v2`            | Ultra-fast model optimized for real-time use (\~75ms†)                                            | `en`                                                                                                                                                                          |
-| `eleven_multilingual_sts_v2` | State-of-the-art multilingual voice changer model (Speech to Speech)                              | `en`, `ja`, `zh`, `de`, `hi`, `fr`, `ko`, `pt`, `it`, `es`, `id`, `nl`, `tr`, `fil`, `pl`, `sv`, `bg`, `ro`, `ar`, `cs`, `el`, `fi`, `hr`, `ms`, `sk`, `da`, `ta`, `uk`, `ru` |
-| `eleven_multilingual_ttv_v2` | State-of-the-art multilingual voice designer model (Text to Voice)                                | `en`, `ja`, `zh`, `de`, `hi`, `fr`, `ko`, `pt`, `it`, `es`, `id`, `nl`, `tr`, `fil`, `pl`, `sv`, `bg`, `ro`, `ar`, `cs`, `el`, `fi`, `hr`, `ms`, `sk`, `da`, `ta`, `uk`, `ru` |
-| `eleven_english_sts_v2`      | English-only voice changer model (Speech to Speech)                                               | `en`                                                                                                                                                                          |
-| `scribe_v2_realtime`         | Real-time speech recognition model                                                                | [90+ languages](/docs/overview/capabilities/speech-to-text#supported-languages)                                                                                               |
-| `scribe_v2`                  | State-of-the-art speech recognition model                                                         | [90+ languages](/docs/overview/capabilities/speech-to-text#supported-languages)                                                                                               |
-| `eleven_text_to_sound_v2`    | Sound effects generation from text prompts                                                        | N/A                                                                                                                                                                           |
-| `music_v2`                   | Studio-grade music generation from text prompts, composition plans and previously generated songs | `en`, `es`, `de`, `ja`, and more                                                                                                                                              |
-| `music_v1`                   | Studio-grade music generation from text prompts. Outclassed by `music_v2`                         | `en`, `es`, `de`, `ja`, and more                                                                                                                                              |
+| Model ID                     | Description                                                                                                                                                                            | Languages                                                                                                                                                                     |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `eleven_v3`                  | Human-like and expressive speech generation                                                                                                                                            | [70+ languages](/docs/overview/models#supported-languages)                                                                                                                    |
+| `eleven_v3_conversational`   | Our most expressive, realtime speech synthesis model (\~280ms†)                                                                                                                        | [70+ languages](/docs/overview/models#supported-languages)                                                                                                                    |
+| `eleven_ttv_v3`              | Human-like and expressive voice design model (Text to Voice)                                                                                                                           | [70+ languages](/docs/overview/models#supported-languages)                                                                                                                    |
+| `eleven_multilingual_v2`     | Our most lifelike model with rich emotional expression                                                                                                                                 | `en`, `ja`, `zh`, `de`, `hi`, `fr`, `ko`, `pt`, `it`, `es`, `id`, `nl`, `tr`, `fil`, `pl`, `sv`, `bg`, `ro`, `ar`, `cs`, `el`, `fi`, `hr`, `ms`, `sk`, `da`, `ta`, `uk`, `ru` |
+| `eleven_flash_v2_5`          | Ultra-fast model optimized for real-time use (\~75ms†)                                                                                                                                 | All `eleven_multilingual_v2` languages plus: `hu`, `no`, `vi`                                                                                                                 |
+| `eleven_flash_v2`            | Ultra-fast model optimized for real-time use (\~75ms†)                                                                                                                                 | `en`                                                                                                                                                                          |
+| `eleven_multilingual_sts_v2` | State-of-the-art multilingual voice changer model (Speech to Speech)                                                                                                                   | `en`, `ja`, `zh`, `de`, `hi`, `fr`, `ko`, `pt`, `it`, `es`, `id`, `nl`, `tr`, `fil`, `pl`, `sv`, `bg`, `ro`, `ar`, `cs`, `el`, `fi`, `hr`, `ms`, `sk`, `da`, `ta`, `uk`, `ru` |
+| `eleven_multilingual_ttv_v2` | State-of-the-art multilingual voice designer model (Text to Voice)                                                                                                                     | `en`, `ja`, `zh`, `de`, `hi`, `fr`, `ko`, `pt`, `it`, `es`, `id`, `nl`, `tr`, `fil`, `pl`, `sv`, `bg`, `ro`, `ar`, `cs`, `el`, `fi`, `hr`, `ms`, `sk`, `da`, `ta`, `uk`, `ru` |
+| `eleven_english_sts_v2`      | English-only voice changer model (Speech to Speech)                                                                                                                                    | `en`                                                                                                                                                                          |
+| `scribe_v2_realtime`         | Real-time speech recognition model                                                                                                                                                     | [90+ languages](/docs/overview/capabilities/speech-to-text#supported-languages)                                                                                               |
+| `scribe_v2`                  | State-of-the-art speech recognition model                                                                                                                                              | [90+ languages](/docs/overview/capabilities/speech-to-text#supported-languages)                                                                                               |
+| `eleven_text_to_sound_v2`    | Sound effects generation from text prompts                                                                                                                                             | N/A                                                                                                                                                                           |
+| `music_v2_5`                 | Our most advanced music model. Studio-grade generation from text prompts, composition plans and previously generated songs, with improved quality and prompt adherence over `music_v2` | `en`, `es`, `de`, `ja`, and more                                                                                                                                              |
+| `music_v2`                   | Studio-grade music generation from text prompts, composition plans and previously generated songs                                                                                      | `en`, `es`, `de`, `ja`, and more                                                                                                                                              |
+| `music_v1`                   | Studio-grade music generation from text prompts. Outclassed by `music_v2` and `music_v2_5`                                                                                             | `en`, `es`, `de`, `ja`, and more                                                                                                                                              |
 
 † Excluding application & network latency
 
@@ -424,7 +435,7 @@ As a general rule of thumb, a concurrency limit of 5 can typically support up to
 This is because of the speed it takes for audio to be generated relative to the time it takes for the TTS request to be processed.
 The diagram below is an example of how 4 concurrent calls with different users can be facilitated while only hitting 2 concurrent requests.
 
-![Concurrency limits](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/dcc5e3bd18993a9f862bd526f3dc1b32cfa89003a58ded6f4f6a7bda1bd5a2ea/assets/images/product-guides/speech-to-text/tts-concurrency.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T075748Z&X-Amz-Expires=604800&X-Amz-Signature=53905b1261f38d594ec0b9540e15894b3d1d7a2ae527525cd5cde8b12bc8e912&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Concurrency limits](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/dcc5e3bd18993a9f862bd526f3dc1b32cfa89003a58ded6f4f6a7bda1bd5a2ea/assets/images/product-guides/speech-to-text/tts-concurrency.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T231044Z&X-Amz-Expires=604800&X-Amz-Signature=66570be7a7ca2f26188cff260382e97217c00fb281af53937d360e689b7f7349&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Building AI Voice Agents
 
@@ -482,6 +493,8 @@ For example, to test an agent system designed to support 100 simultaneous conver
 This example uses [locust](https://locust.io/) as the testing framework with direct API calls to the ElevenLabs API.
 
 It follows the example listed above, testing a conversational agent system with each user sending 1 request every 20 seconds.
+
+**`Python`**
 
 ```python title="Python" {12}
 import json

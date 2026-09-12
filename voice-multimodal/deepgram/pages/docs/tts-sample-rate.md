@@ -28,6 +28,8 @@ You can use the following cURL command in a terminal or your favorite API client
 
 **Sample rate of 24 kHz**:
 
+**`cURL`**
+
 ```bash cURL
 curl --request POST \
      --url "https://api.deepgram.com/v1/speak?model=aura-2-thalia-en&encoding=linear16&sample_rate=24000" \
@@ -54,6 +56,8 @@ Upon successful processing of the request, you will receive an audio file contai
 The audio file is streamed back to you, so you may begin playback as soon as the first byte arrives. Read the guide [Streaming Audio Outputs](/docs/streaming-the-audio-output) to learn how to begin playing the stream immediately versus waiting for the entire file to arrive.
 
 ### Response Headers Example
+
+**`http`**
 
 ```text http
 HTTP/1.1 200 OK

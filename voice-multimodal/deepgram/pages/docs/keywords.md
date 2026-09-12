@@ -36,6 +36,8 @@ To enable Keywords, when you call Deepgram’s API, add a `keywords` parameter i
 
 To transcribe audio from a file on your computer, run the following cURL command in a terminal or your favorite API client.
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \

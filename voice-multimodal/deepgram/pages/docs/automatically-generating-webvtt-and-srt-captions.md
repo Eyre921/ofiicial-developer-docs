@@ -42,6 +42,8 @@ Web Video Text Track (WebVTT) files generally consist of a sequence of text segm
 
 An example WebVTT file:
 
+**`.vtt`**
+
 ```text .vtt
 WEBVTT
 
@@ -88,6 +90,8 @@ have today.
 SubRip Text (SRT) files also generally consist of a sequence of text segments associated with a time-interval. To learn more, visit the open source [Matroska multimedia container format website](https://www.matroska.org/technical/subtitles.html#srt-subtitles).
 
 An example SRT file:
+
+**`.srt`**
 
 ```text .srt
 1
@@ -139,9 +143,13 @@ Locate a hosted audio file that you would like to caption and make note of its U
 
 Open your terminal, navigate to the location on your drive where you want to create your project, and install the Deepgram SDK.
 
+**`JavaScript`**
+
 ```shell JavaScript
 npm i @deepgram/sdk @deepgram/captions
 ```
+
+**`Python`**
 
 ```shell Python
 pip install deepgram-sdk
@@ -155,6 +163,8 @@ In your terminal, create a new `index.js` or `index.py` file in your project's l
 
 Initialize your dependencies:
 
+**`JavaScript`**
+
 ```javascript JavaScript
 import fs from "fs";
 import { DeepgramClient } from "@deepgram/sdk";
@@ -162,6 +172,8 @@ import { webvtt, srt } from "@deepgram/captions";
 
 const deepgram = new DeepgramClient({ apiKey: "YOUR_API_KEY" });
 ```
+
+**`Python`**
 
 ```python Python
 # For more Python SDK migration guides, visit:
@@ -180,6 +192,8 @@ Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additi
 
 To receive timestamps of phrases to include in your caption files, ask Deepgram to include [utterances](/docs/utterances/) (a chain of words or, more simply, a phrase):
 
+**`JavaScript`**
+
 ```javascript JavaScript
 const result = await deepgram.listen.v1.media.transcribeUrl({
   url: "YOUR_FILE_LOCATION",
@@ -187,6 +201,8 @@ const result = await deepgram.listen.v1.media.transcribeUrl({
   utterances: true,
 });
 ```
+
+**`Python`**
 
 ```python Python
 response = deepgram.listen.v1.media.transcribe_url(
@@ -202,6 +218,8 @@ Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additi
 
 With JavaScript, open a writable stream, so you will be able to insert text directly into your file. When you open your stream, you should pass in the `a` flag, so that any time you write data to the stream, it will be appended to the end. Add inside the `.then()` block.
 
+**`JavaScript`**
+
 ```javascript JavaScript
 // WebVTT Filename
 const stream = fs.createWriteStream("output.vtt", { flags: "a" });
@@ -214,11 +232,15 @@ const stream = fs.createWriteStream("output.srt", { flags: "a" });
 
 The WebVTT and SRT formats are very similar, and each requires a block of text per utterance.
 
+**`JavaScript`**
+
 ```javascript JavaScript
 const captions = webvtt(result);
 
 stream.write(captions);
 ```
+
+**`Python`**
 
 ```python Python
 # Using the Python Caption project at:
@@ -235,11 +257,15 @@ vtt_captions = webvtt(transcription)
 
 Deepgram provides seconds back as a number (`15.4` means 15.4 seconds), but both formats require times as `HH:MM:SS.milliseconds` and getting the end of a `Date().toISOString()` will achieve this for us.
 
+**`JavaScript`**
+
 ```javascript JavaScript
 const captions = srt(result);
 
 stream.write(captions);
 ```
+
+**`Python`**
 
 ```python Python
 # Using the Python Caption project at:

@@ -51,6 +51,17 @@ Successful Response
 - `pages_skipped` (integer, optional, default: 0)
 - `pages_failed` (integer, optional, default: 0)
 
+## Errors
+
+### 422 Crawl Jobs Get Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Request**

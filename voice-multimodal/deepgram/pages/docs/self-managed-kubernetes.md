@@ -36,6 +36,8 @@ If you are operating in a VPC, you should use a managed Kubernetes service inste
 
 Update your package repositories and install dependencies for the Kubernetes repository: ​
 
+**`Shell`**
+
 ```shell Shell
 sudo apt-get update
 sudo apt-get install -y apt-transport-https ca-certificates curl
@@ -43,17 +45,23 @@ sudo apt-get install -y apt-transport-https ca-certificates curl
 
 ​ Download the public signing key from Google: ​
 
+**`cURL`**
+
 ```bash cURL
 curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-archive-keyring.gpg
 ```
 
 *Note: Distributions prior to 22.04 may not have the `/etc/apt/keyrings` folder. You can create this directory, making it world-readable and writeable only by admins.* ​ Add the Kubernetes official repository: ​
 
+**`Shell`**
+
 ```shell Shell
 echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
 ```
 
 ​ Update packages and install Kubernetes tools: ​
+
+**`Shell`**
 
 ```shell Shell
 sudo apt-get update
@@ -73,6 +81,8 @@ When updating tooling you must use a kubectl version that is within one minor ve
 
 In order to run nodes and pods you must first create a cluster. This is done using the `kubeadm` command:
 
+**`Shell`**
+
 ```shell Shell
 kubeadm init --ignore-preflight-errors Swap
 ```
@@ -80,6 +90,8 @@ kubeadm init --ignore-preflight-errors Swap
 Kubeadm will run verification checks and report any errors, then it will download the required containerized components and initialize a control-plane. You can see configuration options for initialization [here](https://kubernetes.io/docs/reference/config-api/kubeadm-config.v1beta3/), including how set node taints.
 
 Once the control-plane is initialized you will receive instructions to store the cluster configuration and deploy a pod network. Examples below (instructions may differ based on your system):
+
+**`Shell`**
 
 ```shell Shell
 mkdir -p $HOME/.kube
@@ -89,6 +101,8 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 You will also be presented with a `kubeadm join` command which should be saved for later use joining worker nodes to the master node. ​ Upon completion you should now be able to query your control-plan and see the standard Kubernetes pods running: ​
 
+**`Shell`**
+
 ```shell Shell
 kubectl get pod -n kube-system
 ```
@@ -97,11 +111,15 @@ kubectl get pod -n kube-system
 
 By default Kubernetes does not deploy a CNI for pod communication. Before cluster DNS will start and pods be able to communicate you must install an add-on for the CNI you wish to deploy in your cluster as follows: ​
 
+**`Shell`**
+
 ```shell Shell
 kubectl apply -f <add-on.yaml>
 ```
 
 As an example, if you were to deploy the [Calico network](https://www.tigera.io/project-calico/) in your cluster you would install the add-on as follows: ​
+
+**`Shell`**
 
 ```shell Shell
 kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/calico.yaml
@@ -113,11 +131,15 @@ A comprehensive though not exhaustive list of common network add-ons is availabl
 
 Once the master node is setup you can begin joining worker nodes to the cluster. If you copied the join command output when the cluster was initialized this can be used on each worker node directly. In the event that you did not save the join command you may recover it using `kubeadm` as follows: ​
 
+**`Shell`**
+
 ```shell Shell
 kubeadm token create --print-join-command
 ```
 
 After joining nodes to the cluster you can utilize the `kubectl` command to verify the status of the cluster nodes: ​
+
+**`Shell`**
 
 ```shell Shell
 kubectl get nodes
@@ -127,11 +149,15 @@ kubectl get nodes
 
 Kubernets supports metric aggregates from nodes within the cluster, however this is not setup by default upon cluster initialization. If you wish to utilize the Kubernetes [metrics server](https://github.com/kubernetes-sigs/metrics-server) you may deploy the latest version using `kubectl`: ​
 
+**`Shell`**
+
 ```shell Shell
 kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
 ```
 
 ​ After deployment you may then query the compute utilization of nodes using the `top` command from the CLI:
+
+**`Shell`**
 
 ```shell Shell
 kubectl top nodes
@@ -173,6 +199,8 @@ The `deepgram-self-hosted` Helm chart takes two Secret references. One is a set 
 
 ​Your Deepgram Account Representative should provide you with download links to at least one voice AI model. Copy the provided model files into a dedicated directory on the host machine.
 
+**`Shell`**
+
 ```shell Shell
 mkdir deepgram-models
 cd deepgram-models
@@ -187,6 +215,8 @@ Deepgram maintains the official `deepgram-self-hosted` Helm Chart. You can refer
 
 1. [Fetch the repository info](https://github.com/deepgram/self-hosted-resources/blob/main/charts/deepgram-self-hosted/README.md#get-repository-info).
 
+   **`Shell`**
+
    ```shell Shell
    helm repo add deepgram https://deepgram.github.io/self-hosted-resources
    helm repo update
@@ -197,6 +227,8 @@ Deepgram maintains the official `deepgram-self-hosted` Helm Chart. You can refer
 3. In your `values.yaml`, modify the `scaling.replicas.{api,engine}` as desired.
 
 4. In your `values.yaml` file, insert the name of your local `PersistentVolume` you created in the previous section.
+
+   **`yaml`**
 
    ```yaml yaml
    engine:
@@ -209,6 +241,8 @@ Deepgram maintains the official `deepgram-self-hosted` Helm Chart. You can refer
    ```
 
 5. Install the Helm Chart with your `values.yaml` file.
+
+   **`Shell`**
 
    ```shell Shell
    helm install deepgram deepgram/deepgram-self-hosted \
@@ -229,6 +263,9 @@ Deepgram maintains the official `deepgram-self-hosted` Helm Chart. You can refer
 Test your environment and container setup with a local file.
 
 1. Get the name of one of the Deepgram API Pods.
+
+   **`Shell`**
+
    ```shell Shell
    API_POD_NAME=$(
        kubectl get pods \
@@ -239,6 +276,9 @@ Test your environment and container setup with a local file.
    ```
 
 2. Launch an ephemeral container to send your test request from.
+
+   **`Shell`**
+
    ```shell Shell
    kubectl debug $API_POD_NAME \
        -it \
@@ -247,11 +287,16 @@ Test your environment and container setup with a local file.
    ```
 
 3. Inside the ephemeral container, download a sample file from Deepgram (or supply your own file).
+
+   **`Shell`**
+
    ```shell Shell
    wget https://dpgr.am/bueller.wav
    ```
 
 4. Send your audio file to your local Deepgram setup for transcription.
+
+   **`cURL`**
 
    ```bash cURL
    curl \

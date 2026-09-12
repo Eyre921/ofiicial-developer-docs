@@ -1066,6 +1066,17 @@ Successful Response
       - Allowed values: `pending`, `passed`, `failed`
   - `workflow_node_id` (string, optional)
 
+## Errors
+
+### 422 Invocations Get Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

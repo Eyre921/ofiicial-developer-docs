@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/widget/create
 
 ### Body (multipart/form-data)
 
+This endpoint expects a multipart form containing a file.
+
 - `avatar_file` (file, required) — An image file to be used as the agent's avatar.
 
 ## Response
@@ -41,6 +43,17 @@ Successful Response
 
 - `agent_id` (string, required)
 - `avatar_url` (string, optional)
+
+## Errors
+
+### 422 Avatar Create Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

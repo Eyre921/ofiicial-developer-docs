@@ -24,6 +24,8 @@ To enable Utterance Split, when you call Deepgram’s API, add an `utt_split` pa
 
 To transcribe audio from a file on your computer, run the following curl command in a terminal or your favorite API client and define the utterance split value you'd wish to use:
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \

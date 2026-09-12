@@ -40,6 +40,17 @@ Successful Response
 - `charged_seconds` (double, required) — Seconds actually billed, after the free-regeneration allowance. Zero when the re-dub cost nothing — either the allowance covered all of it, or the project's included generation did.
 - `free_regeneration_seconds_remaining` (double, required) — Free-regeneration seconds left for this language target after this re-dub. The allowance is the source's own duration.
 
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

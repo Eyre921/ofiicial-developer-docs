@@ -20,6 +20,8 @@ Deepgram has several SDKs that can make the API easier to use. Follow these step
 
 ### Add Dependencies
 
+**`JavaScript`**
+
 ```shell JavaScript
 # Install the SDK
 npm install @deepgram/sdk
@@ -27,6 +29,8 @@ npm install @deepgram/sdk
 # Add the dependencies
 npm install dotenv
 ```
+
+**`Python`**
 
 ```shell Python
 # Install the SDK
@@ -36,6 +40,8 @@ pip install deepgram-sdk
 pip install python-dotenv
 ```
 
+**`Go`**
+
 ```shell Go
 # Install the SDK
 go get github.com/deepgram/deepgram-go-sdk
@@ -43,12 +49,16 @@ go get github.com/deepgram/deepgram-go-sdk
 # Importing the Deepgram Go SDK should pull in all dependencies required
 ```
 
+**`C#`**
+
 ```shell C#
 # Install the SDK
 dotnet add package Deepgram
 
 # Importing the Deepgram .NET SDK should pull in all dependencies required
 ```
+
+**`Java`**
 
 ```shell Java
 # Install the Deepgram Java SDK
@@ -66,6 +76,8 @@ dotnet add package Deepgram
 ```
 
 ### Make the Request with the SDK
+
+**`JavaScript`**
 
 ```javascript JavaScript
 const fs = require("fs");
@@ -154,6 +166,8 @@ const writeFile = () => {
 live();
 ```
 
+**`Python`**
+
 ```python Python
 # For more Python SDK migration guides, visit:
 # https://github.com/deepgram/deepgram-python-sdk/tree/main/docs
@@ -229,6 +243,8 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+
+**`Go`**
 
 ```go Go
 package main
@@ -364,6 +380,8 @@ func main() {
 }
 ```
 
+**`Java`**
+
 ```java Java
 // Main.java (Java example)
 // https://github.com/deepgram/deepgram-java-sdk
@@ -421,6 +439,8 @@ public class Main {
     }
 }
 ```
+
+**`C#`**
 
 ```csharp C#
 using Deepgram.Models.Authenticate.v1;
@@ -575,6 +595,8 @@ To establish a connection, you must provide a few parameters on the URL to descr
 
 Send the desired text to transform to audio using the WebSocket message below:
 
+**`JSON`**
+
 ```json JSON
 {
   "type": "Speak",
@@ -583,6 +605,8 @@ Send the desired text to transform to audio using the WebSocket message below:
 ```
 
 When you have queued enough text, you can obtain the corresponding audio by sending a `Flush` command.
+
+**`JSON`**
 
 ```json JSON
 {
@@ -595,6 +619,8 @@ Upon successfully sending the `Flush`, you will receive an audio byte stream fro
 ### Closing the Connection
 
 When you are finished with the WebSocket, you can close the connection by sending the following `Close` command.
+
+**`JSON`**
 
 ```json JSON
 {

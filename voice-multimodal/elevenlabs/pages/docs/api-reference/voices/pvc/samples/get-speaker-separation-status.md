@@ -47,6 +47,17 @@ Successful Response
     - `end` (double, required) — The end time of the utterance in seconds.
 - `selected_speaker_ids` (list of string, optional, nullable) — The IDs of the selected speakers.
 
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

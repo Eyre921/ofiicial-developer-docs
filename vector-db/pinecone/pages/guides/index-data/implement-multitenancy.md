@@ -11,7 +11,7 @@ Implement multitenancy in Pinecone with one namespace per tenant on a serverless
 This page shows you how to implement multitenancy in Pinecone using a **serverless index with one namespace per tenant**.
 
 <Note>
-  For design guidance on choosing between namespaces, metadata filtering, and other approaches, see [Design for multi-tenancy](/guides/index-data/data-modeling#design-for-multi-tenancy).
+  For design guidance on choosing between namespaces, metadata filtering, and other approaches, see [Design for multitenancy](/guides/index-data/design-for-multitenancy).
 </Note>
 
 <Note>
@@ -814,7 +814,7 @@ When tenant isolation is not a strict requirement, or when you need to query acr
 
   Anti-pattern: Avoid filtering by large lists of individual user IDs. Instead, use access control groups (organization, project, role), namespaces, or post-filter client-side (for semantic search).
 
-  For detailed guidance on choosing between namespaces and metadata filtering, see [Design for multi-tenancy](/guides/index-data/data-modeling#design-for-multi-tenancy).
+  For detailed guidance on choosing between namespaces and metadata filtering, see [Design for multitenancy](/guides/index-data/design-for-multitenancy).
 </Warning>
 
 For more background on this approach, see [Multitenancy in Vector Databases](https://www.pinecone.io/learn/series/vector-databases-in-production-for-busy-engineers/vector-database-multi-tenancy/).

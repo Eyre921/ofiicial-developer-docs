@@ -42,7 +42,7 @@ Reference: https://elevenlabs.io/docs/api-reference/conversations/messages/text-
 - `has_feedback_comment` (boolean, optional, nullable) — Filter conversations with user feedback comments.
 - `user_id` (string, optional, nullable) — Filter conversations by the user ID who initiated them.
 - `evaluation_params` (list of string, optional, nullable) — Evaluation filters. Repeat param. Format: criteria_id:result. Example: eval=value_framing:success
-- `data_collection_params` (list of string, optional, nullable) — Data collection filters. Repeat param. Format: id:op:value where op is one of eq|neq|gt|gte|lt|lte|in|exists|missing. For in, pipe-delimit values.
+- `data_collection_params` (list of string, optional, nullable) — Data collection filters. Repeat param. Format: id:op:value where op is one of eq|gt|gte|lt|lte|missing.
 - `dynamic_variable_params` (list of string, optional, nullable) — Dynamic variable filters. Repeat param. Format: name:op:value where op is one of eq|gt|gte|lt|lte. Comparison operators require a numeric value. Names containing ':' cannot be expressed.
 - `tool_names` (list of string, optional, nullable) — Filter conversations by tool names used during the call.
 - `tool_names_successful` (list of string, optional, nullable) — Filter conversations by tool names that had successful calls.
@@ -90,6 +90,17 @@ Successful Response
   - `page` (integer, optional, nullable)
   - `page_size` (integer, optional, nullable)
 - `next_cursor` (string, optional, nullable) — Cursor for the next page of results
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

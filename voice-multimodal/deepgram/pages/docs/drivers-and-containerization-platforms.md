@@ -38,6 +38,8 @@ This guide will contain instructions that should be adaptable for many Linux dis
 
 Update your server’s operating system package manager to get information on updated versions of packages and their dependencies, and upgrade these packages as needed.
 
+**`Shell`**
+
 ```shell Shell
 # Ubuntu
 sudo apt update
@@ -49,6 +51,8 @@ sudo dnf update -y
 ### Install GNU Toolchain Components
 
 Install the GNU Compiler Collection (`gcc`) , GNU Make (`make`), and GNU Web Get (`wget`) tool:
+
+**`Shell`**
 
 ```shell Shell
 # Ubuntu
@@ -65,11 +69,15 @@ The Nouveau kernel driver is incompatible with NVIDIA drivers, so you will need 
 
 1. In your terminal, create a new configuration file at `/etc/modprobe.d/blacklist-nouveau.conf` to blacklist the Nouveau drivers.
 
+   **`Shell`**
+
    ```shell Shell
    sudo sh -c 'printf "blacklist nouveau\noptions nouveau modeset=0\n" > /etc/modprobe.d/blacklist-nouveau.conf'
    ```
 
 2. Regenerate the kernel with the new conf file added:
+
+   **`Shell`**
 
    ```shell Shell
    # Ubuntu
@@ -80,11 +88,15 @@ The Nouveau kernel driver is incompatible with NVIDIA drivers, so you will need 
 
 3. Unload the Nouveau drivers:
 
+   **`Shell`**
+
    ```shell Shell
    sudo rmmod nouveau
    ```
 
 4. Verify that Nouveau has been removed:
+
+   **`Shell`**
 
    ```shell Shell
    lsmod | grep nouveau
@@ -95,6 +107,8 @@ The Nouveau kernel driver is incompatible with NVIDIA drivers, so you will need 
 ### Install Kernel Development Tools
 
 Many Linux distributions require Linux kernel development tools to be installed to support installing the NVIDIA drivers.
+
+**`Shell`**
 
 ```shell Shell
 # Ubuntu
@@ -135,6 +149,8 @@ If you are using Oracle Cloud Infrastructure and you are using a [Shielded insta
 
 8. Download the latest driver for your GPU on your deployment environment:
 
+   **`Shell`**
+
    ```shell Shell
    wget LINK_TO_LATEST_NVIDIA_GPU_DRIVER
    ```
@@ -142,6 +158,8 @@ If you are using Oracle Cloud Infrastructure and you are using a [Shielded insta
    Be sure to replace the `LINK_TO_LATEST_NVIDIA_GPU_DRIVER` placeholder value with the URL to the latest driver for the GPU you are using.
 
 9. Install the drivers:
+
+   **`Shell`**
 
    ```shell Shell
    # Ubuntu
@@ -211,12 +229,16 @@ Container Composition tools allow users to define and manage multi-container app
 
 Docker Compose V2 is now included with Docker. The plugin for CLI use should be installed with the [Install Container Runtime](#install-container-runtime) steps. If not, you can install it independently:
 
+**`Shell`**
+
 ```shell Shell
 # Ubuntu
 sudo apt install -y docker-compose-plugin
 ```
 
 Test the installation:
+
+**`Shell`**
 
 ```shell Shell
 docker compose version
@@ -227,6 +249,8 @@ You should expect the command output to return version 2.X.X.
 #### Podman
 
 The open source community maintains a `podman-compose` tool that seeks to be compatible with Docker Compose. You can install this with their [instructions on GitHub](https://github.com/containers/podman-compose#installation), and test your installation:
+
+**`Shell`**
 
 ```shell Shell
 podman-compose version
@@ -246,6 +270,8 @@ For the `Configuration` step, follow the standard instructions, *not* the `Rootl
 
 After you've setup the NVIDIA Docker runtime, you can test it with the following command:
 
+**`Shell`**
+
 ```shell Shell
 docker run --runtime=nvidia --rm --gpus all ubuntu nvidia-smi
 ```
@@ -257,6 +283,8 @@ Podman has implemented support for the Container Device Interface (CDI) standard
 Make sure to complete the `Installation` specific to your distribution ***and*** the `Configuration` step [specific to Podman](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#configuring-podman).
 
 After you've setup the NVIDIA container toolkit with CDI, you can test it with the following command:
+
+**`Shell`**
 
 ```shell Shell
  podman run --rm --device nvidia.com/gpu=all ubuntu nvidia-smi

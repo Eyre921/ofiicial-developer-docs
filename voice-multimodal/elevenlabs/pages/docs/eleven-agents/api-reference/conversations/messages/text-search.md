@@ -42,7 +42,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/
 - `has_feedback_comment` (boolean, optional) — Filter conversations with user feedback comments.
 - `user_id` (string, optional) — Filter conversations by the user ID who initiated them.
 - `evaluation_params` (string, optional) — Evaluation filters. Repeat param. Format: criteria_id:result. Example: eval=value_framing:success
-- `data_collection_params` (string, optional) — Data collection filters. Repeat param. Format: id:op:value where op is one of eq|neq|gt|gte|lt|lte|in|exists|missing. For in, pipe-delimit values.
+- `data_collection_params` (string, optional) — Data collection filters. Repeat param. Format: id:op:value where op is one of eq|gt|gte|lt|lte|missing.
 - `dynamic_variable_params` (string, optional) — Dynamic variable filters. Repeat param. Format: name:op:value where op is one of eq|gt|gte|lt|lte. Comparison operators require a numeric value. Names containing ':' cannot be expressed.
 - `tool_names` (string, optional) — Filter conversations by tool names used during the call.
 - `tool_names_successful` (string, optional) — Filter conversations by tool names that had successful calls.
@@ -90,6 +90,17 @@ Successful Response
   - `page` (integer, optional)
   - `page_size` (integer, optional)
 - `next_cursor` (string, optional) — Cursor for the next page of results
+
+## Errors
+
+### 422 Messages Text Search Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

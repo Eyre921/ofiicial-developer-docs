@@ -30,6 +30,8 @@ You can include up to 50 search terms per request.
 
 To transcribe audio from a file on your computer, run the following cURL command in a terminal or your favorite API client.
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -65,6 +67,8 @@ The term "epistemology" in this audio file is sufficiently technical that our mo
 
 In our terminal, we run the following cURL command:
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -77,6 +81,8 @@ curl \
 Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 When the file is finished processing (often after only a few seconds), you’ll receive a JSON response that has the following basic structure:
+
+**`JSON`**
 
 ```json JSON
 {
@@ -101,6 +107,8 @@ When the file is finished processing (often after only a few seconds), you’ll 
 
 Let's look more closely at the `alternatives` object:
 
+**`JSON`**
+
 ```json JSON
 ...
 "alternatives":[
@@ -118,6 +126,8 @@ Let's look more closely at the `alternatives` object:
 The audio file contains multiple occurrences of the word "epistemology". Nova 2 correctly transcribes `epistemology` each instance correctly.
 
 Now, let's take a look at the `search` object:
+
+**`JSON`**
 
 ```json JSON
 ...

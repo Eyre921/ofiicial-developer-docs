@@ -39,6 +39,8 @@ OpenCode, Codex, Pi, Cursor, and VS Code support Foundry routing in FireConnect 
 
 <Warning>
   Use an **Azure API key** from Foundry, not a Fireworks key (`fw_...`) or Fire Pass key (`fpk_...`). Fire Pass is not supported on the Foundry path.
+
+  FireRouter is also not available on the Foundry path. To use `--model firerouter`, first switch to the direct Fireworks gateway with `fireconnect configure --provider fireworks`.
 </Warning>
 
 ## Configure once, then enable harnesses
@@ -46,12 +48,20 @@ OpenCode, Codex, Pi, Cursor, and VS Code support Foundry routing in FireConnect 
 `fireconnect configure` sets the **Foundry provider and endpoint**. It does **not** set your Fireworks API key. Use `fireconnect login` for that when routing through the Fireworks gateway.
 
 ```bash theme={null}
-export AZURE_API_KEY=<your-azure-api-key>
+export AZURE_API_KEY="YOUR_AZURE_API_KEY"
 
 fireconnect configure \
   --provider azure \
-  --base-url https://<resource>.services.ai.azure.com \
-  --api-key $AZURE_API_KEY
+  --base-url "https://YOUR_RESOURCE.services.ai.azure.com"
+```
+
+If no Azure key is already configured, this stores an `{env:AZURE_API_KEY}` reference. Otherwise, FireConnect keeps the existing configured key. To store the current environment value literally instead, pass it explicitly:
+
+```bash theme={null}
+fireconnect configure \
+  --provider azure \
+  --base-url "https://YOUR_RESOURCE.services.ai.azure.com" \
+  --api-key "$AZURE_API_KEY"
 ```
 
 FireConnect stores a top-level `provider` and `azure` block in `~/.fireconnect/config.json`. After configuring, enable harnesses normally:
@@ -83,8 +93,8 @@ Find the endpoint in the Microsoft Foundry portal under **Project settings**.
 
 ### API key storage
 
-* Pass `--api-key` to write the Azure key into `~/.fireconnect/config.json`
-* Or export `AZURE_API_KEY` before `configure`. FireConnect stores an environment reference instead.
+* Export `AZURE_API_KEY` and omit `--api-key` to store an environment reference when no Azure key is already configured
+* Pass `--api-key` to write the Azure key literally into `~/.fireconnect/config.json`
 
 ## One-off Foundry routing
 
@@ -93,7 +103,7 @@ Route a single harness through Foundry without changing global config:
 ```bash theme={null}
 fireconnect opencode on \
   --azure \
-  --base-url https://<resource>.services.ai.azure.com \
+  --base-url "https://YOUR_RESOURCE.services.ai.azure.com" \
   --api-key $AZURE_API_KEY \
   --model FW-MiniMax-M2.5
 ```
@@ -151,7 +161,7 @@ The Azure endpoint and key remain stored in `~/.fireconnect/config.json` but are
 
 ### Remove FireConnect from a harness entirely
 
-Use `off` to restore the config snapshot from **before FireConnect was first enabled** for that harness. Your original provider settings are restored byte-for-byte:
+Use `off` to remove FireConnect from a harness. When a pre-FireConnect backup is available, `off` restores it; otherwise it removes FireConnect-managed settings:
 
 ```bash theme={null}
 fireconnect pi off

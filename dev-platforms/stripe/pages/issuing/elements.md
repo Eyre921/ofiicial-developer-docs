@@ -22,6 +22,8 @@ Create a server-side ephemeral key, then pass it back to the browser for Stripe.
 
 The first step to integrating with Issuing Elements is to create a secure, server-side endpoint to generate ephemeral keys for the card you want to show. Your Issuing Elements web integration calls this endpoint. When creating ephemeral keys, specify an API version of `2020-03-02` or later and include the ephemeral key nonce, which you create in your web integration.
 
+The endpoint accepts a JSON request containing `card_id` and `nonce`, and returns a JSON response containing `ephemeralKeySecret`.
+
 Here’s how you might implement an ephemeral key creation endpoint in web applications framework across various languages:
 
 #### Node.js
@@ -30,10 +32,9 @@ Here’s how you might implement an ephemeral key creation endpoint in web appli
 // This example sets up an endpoint using the Express framework.
 
 const express = require('express');
-const bodyParser = require('body-parser');
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
 
 // Don't put any keys in code. See https://docs.stripe.com/keys-best-practices.
 const stripe = require('stripe')('<<YOUR_SECRET_KEY>>');
@@ -65,10 +66,9 @@ To create a secure endpoint as a Connect user, add `Stripe-Account` in the heade
 ```javascript
 
 const express = require('express');
-const bodyParser = require('body-parser');
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
 
 const stripe = require('stripe')('sk_test_51SwlWHCo8vLtpLsixyTaljaqf0iIAgSoH5A2TG21adZ9nas0LWFGEwJhpmAKZ3LaM0nMhR0a7AWzCR3CBxnyyQrK000Y8iN4CQ');
 
@@ -101,9 +101,7 @@ First, include Stripe.js on your page. For more information on how to set up Str
 Create a `Stripe` instance and an ephemeral key nonce for the card you want to retrieve using [stripe.createEphemeralKeyNonce](https://docs.stripe.com/js/issuing/create_ephemeral_key_nonce). Use the nonce to retrieve the ephemeral key by calling the [server-side endpoint](https://docs.stripe.com/issuing/elements.md#create-secure-endpoint) that you created:
 
 ```javascript
-
 const stripe = Stripe('<<YOUR_PUBLISHABLE_KEY>>');
-
 
 // Initialize Elements which you'll need later
 const elements = stripe.elements();
@@ -221,6 +219,7 @@ element.mount("#my-parent-container");
 | Expiry date | `issuingCardExpiryDisplay` | Any card |
 | PIN | `issuingCardPinDisplay` | Any card |
 | Copy button | `issuingCardCopyButton` | Any card |
+| Add to Wallet Button | `issuingAddToWalletButton` | Any card |
 
 > In a sandbox, all card data, including the number and CVC, is returned for any card type, regardless of the restrictions above. In live mode, `issuingCardNumberDisplay` and `issuingCardCvcDisplay` return data for virtual cards only by default. To display the number and CVC for physical cards in live mode, you must request access to the `allow_retrieve_physical_card_details` feature by [contacting Stripe support](https://support.stripe.com/contact).
 
@@ -358,6 +357,83 @@ const hideAndShowSuccess = (iconElementId, successIconElementId) => {
 cardNumberCopy.on('click', () => {
   hideAndShowSuccess('card-number-copy', 'card-number-copy-success');
 });
+```
+
+#### Add to Wallet Element [Private preview]
+
+This section applies to creating the `issuingAddToWalletButton` element for web push provisioning.
+
+Initialize a separate Stripe instance with the Add to Wallet beta flags:
+
+```javascript
+const stripe = Stripe('<<YOUR_PUBLISHABLE_KEY>>', {
+  betas: [
+    'issuing_add_to_wallet_button_element_1',
+    'issuing_elements_2',
+  ]
+});
+const elements = stripe.elements();
+```
+
+When a cardholder clicks the **Add to Apple Wallet** or **Add to Google Wallet** button, the wallet provider prompts them to sign in. After they sign in, the cardholder receives a prompt to select which devices to add the card to.
+
+Review the [Add To Apple Wallet badge guidelines](https://developer.apple.com/wallet/add-to-apple-wallet-guidelines/) and [Google Wallet brand guidelines](https://developers.google.com/wallet/generic/resources/brand-guidelines) before embedding the Apple Wallet or Google Wallet component on your website.
+
+### Options
+
+| Name | Type | Usage | Required |
+| --- | --- | --- | --- |
+| `issuingCard` | `string` | The ID of your issued card (for example, `ic_abc123`) | Yes |
+| `nonce` | `string` | Your ephemeral key nonce | Yes |
+| `ephemeralKeySecret` | `string` | The `secret` component of your ephemeral key | Yes |
+| `wallet` | `string` | Which wallet to add the card to. Supported values are `apple` and `google`. | Yes |
+| `buttonHeight` | `number` | The height of the button in pixels. It defaults to 44px. It must be between 36px and 55px. | No |
+
+### Events
+
+The Element sends the following events, which you can listen to using `button.on(eventName, handler)`:
+
+| Name | Usage |
+| --- | --- |
+| `'click'` | Called on a click of the button. |
+| `'success'` | Called on completion of the add to Wallet flow. |
+
+### Example
+
+**Apple Wallet:**
+
+```javascript
+const appleButton = elements.create('issuingAddToWalletButton', {
+  issuingCard: cardId,
+  nonce: nonce,
+  ephemeralKeySecret: ephemeralKeySecret,
+  wallet: 'apple',
+  buttonHeight: 50,
+})
+
+/* Optionally, register event listeners */
+appleButton.on('click', () => {});
+appleButton.on('success', () => {});
+
+appleButton.mount("#apple-wallet-button");
+```
+
+**Google Wallet:**
+
+```javascript
+const googleButton = elements.create('issuingAddToWalletButton', {
+  issuingCard: cardId,
+  nonce: nonce,
+  ephemeralKeySecret: ephemeralKeySecret,
+  wallet: 'google',
+  buttonHeight: 50,
+})
+
+/* Optionally, register event listeners */
+googleButton.on('click', () => {});
+googleButton.on('success', () => {});
+
+googleButton.mount("#google-wallet-button");
 ```
 
 ## Security requirements

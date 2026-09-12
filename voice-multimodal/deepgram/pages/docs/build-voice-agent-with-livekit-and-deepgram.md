@@ -40,6 +40,8 @@ This implementation is a starting reference for building your own voice agent wi
 
 Create a new directory, set up your environment, and install the LiveKit agents framework along with the Deepgram and Silero plugins:
 
+**`Python`**
+
 ```bash title="Python"
 mkdir deepgram-livekit-agent
 cd deepgram-livekit-agent
@@ -47,6 +49,8 @@ python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install "livekit-agents[openai]" livekit-plugins-deepgram livekit-plugins-silero python-dotenv
 ```
+
+**`Node.js`**
 
 ```bash title="Node.js"
 mkdir deepgram-livekit-agent
@@ -82,6 +86,8 @@ The key components are:
 * **`generate_reply`** — triggers the agent's first message so it greets the user without waiting for input.
 
 Create `agent.py` (Python) or `agent.ts` (Node.js):
+
+**`Python`**
 
 ```python title="Python"
 # agent.py
@@ -144,6 +150,8 @@ if __name__ == "__main__":
     cli.run_app(server)
 ```
 
+**`Node.js`**
+
 ```typescript title="Node.js"
 // agent.ts
 
@@ -204,9 +212,13 @@ cli.runApp(new ServerOptions({ agent: fileURLToPath(import.meta.url) }));
 
 Start the agent in development mode. The `dev` flag connects the agent to your LiveKit Cloud project and automatically registers it to handle incoming sessions:
 
+**`Python`**
+
 ```bash title="Python"
 python agent.py dev
 ```
+
+**`Node.js`**
 
 ```bash title="Node.js"
 npx tsx agent.ts dev

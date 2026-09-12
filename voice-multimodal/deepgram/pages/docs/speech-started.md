@@ -26,6 +26,8 @@ To enable the SpeechStarted event, include the parameter `vad_events=true` in yo
 
 You'll then begin receiving messages upon speech starting.
 
+**`Python`**
+
 ```python Python
 
 # For more Python SDK migration guides, visit:
@@ -48,6 +50,8 @@ You'll then begin receiving messages upon speech starting.
             endpointing=300
    ) as connection:
 ```
+
+**`Java`**
 
 ```java Java
 import com.deepgram.DeepgramClient;
@@ -76,6 +80,8 @@ wsClient.connect(options).get(10, TimeUnit.SECONDS);
 ## Results
 
 The JSON message sent when the start of speech is detected looks similar to this:
+
+**`JSON`**
 
 ```json JSON
 {

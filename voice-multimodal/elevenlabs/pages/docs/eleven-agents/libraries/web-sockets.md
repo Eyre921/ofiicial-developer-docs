@@ -118,6 +118,8 @@ Alternatively, you can replace the className attributes with your own CSS styles
 
 Define the types for WebSocket events:
 
+**`app/types/websocket.ts`**
+
 ```typescript app/types/websocket.ts
 type BaseEvent = {
   type: string;
@@ -196,6 +198,8 @@ export type ElevenLabsWebSocketEvent =
 #### Create WebSocket hook
 
 Create a custom hook to manage the WebSocket connection:
+
+**`app/hooks/useAgentConversation.ts`**
 
 ```typescript app/hooks/useAgentConversation.ts
 'use client';
@@ -319,6 +323,8 @@ export const useAgentConversation = () => {
 #### Create the conversation component
 
 Create a component to use the WebSocket hook:
+
+**`app/components/Conversation.tsx`**
 
 ```typescript app/components/Conversation.tsx
 'use client';

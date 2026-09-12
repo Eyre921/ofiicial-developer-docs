@@ -32,6 +32,8 @@ Reference: https://elevenlabs.io/docs/api-reference/speech-to-text/convert
 
 ### Body (multipart/form-data)
 
+This endpoint expects a multipart form containing an optional file.
+
 - `model_id` (string, required) — The ID of the model to use for transcription.
 - `file` (file, optional) — The file to transcribe (100ms minimum audio length). All major audio and video formats are supported. Exactly one of the file or cloud_storage_url parameters must be provided. The file size must be less than 5.0GB.
 - `language_code` (string, optional) — An ISO-639-1 or ISO-639-3 language_code corresponding to the language of the audio file. Can sometimes improve transcription performance if known beforehand. Defaults to null, in this case the language is predicted automatically.
@@ -139,6 +141,17 @@ Synchronous transcription result
 ### 202
 
 Asynchronous request accepted
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

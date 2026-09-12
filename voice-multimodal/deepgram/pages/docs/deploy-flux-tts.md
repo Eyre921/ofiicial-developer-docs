@@ -40,6 +40,8 @@ Flux TTS requires a couple of configuration changes in your self-hosted Deepgram
 
 In your Deepgram Engine configuration, enable Flux TTS and select the model. Both `uuid` and `max_batch_size` are required when `enabled = true`.
 
+**`Deepgram Engine Configuration`**
+
 ```toml Deepgram Engine Configuration
 [flux_tts]
 enabled = true
@@ -52,6 +54,8 @@ max_batch_size = 0 # Placeholder; not a working value. See the warning below.
 ### API
 
 In your Deepgram API configuration, make sure that the `/v2/speak` endpoint is enabled. This endpoint is new for Flux TTS. Aura and Aura-2 are served via the `/v1/speak` endpoint.
+
+**`Deepgram API Configuration`**
 
 ```toml Deepgram API Configuration
 [features]
@@ -81,6 +85,8 @@ Unless you have HTTPS/TLS configured, use the `http://` and `ws://` protocols. B
 
 ### Batch (REST)
 
+**`Shell`**
+
 ```shell Shell
 curl --request POST \
    --header "Content-Type: application/json" \
@@ -92,6 +98,8 @@ curl --request POST \
 You should receive a response with the audio output. You can copy this file locally to manually evaluate the synthesized speech.
 
 ### Streaming (WebSocket)
+
+**`Shell`**
 
 ```shell Shell
 # Connect with wscat for testing.

@@ -51,6 +51,17 @@ Successful Response
   - `most_recent_failure_error_code` (integer, optional, nullable) — The most recent error code returned from the callback URL.
   - `most_recent_failure_timestamp` (integer, optional, nullable) — The most recent time the webhook failed, failures are any non-200 codes returned by the callback URL.
 
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

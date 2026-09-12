@@ -110,6 +110,8 @@ wss://api.deepgram.com/v2/listen?model=flux-general-en&encoding=linear16&sample_
 
 ### Simple Mode (Default)
 
+**`Python`**
+
 ```python Python
 async with client.listen.v2.connect(
     model="flux-general-en",
@@ -117,6 +119,8 @@ async with client.listen.v2.connect(
 ) as connection:
     pass
 ```
+
+**`Java`**
 
 ```java Java
 import com.deepgram.api.DeepgramClient;
@@ -137,6 +141,8 @@ wsClient.connect(V2WebSocketOptions.builder()
 
 ### Low-Latency Mode
 
+**`Python`**
+
 ```python Python
 async with client.listen.v2.connect(
     model="flux-general-en",
@@ -146,6 +152,8 @@ async with client.listen.v2.connect(
 ) as connection:
     pass
 ```
+
+**`Java`**
 
 ```java Java
 V2WebSocketClient wsClient = client.listen().v2().v2WebSocket();
@@ -164,6 +172,8 @@ wsClient.connect(V2WebSocketOptions.builder()
 
 ### High-Reliability Mode
 
+**`Python`**
+
 ```python Python
 async with client.listen.v2.connect(
     model="flux-general-en",
@@ -172,6 +182,8 @@ async with client.listen.v2.connect(
 ) as connection:
     pass
 ```
+
+**`Java`**
 
 ```java Java
 V2WebSocketClient wsClient = client.listen().v2().v2WebSocket();
@@ -189,6 +201,8 @@ wsClient.connect(V2WebSocketOptions.builder()
 
 ### Complex Pipeline Mode
 
+**`Python`**
+
 ```python Python
 async with client.listen.v2.connect(
     model="flux-general-en",
@@ -198,6 +212,8 @@ async with client.listen.v2.connect(
 ) as connection:
     pass
 ```
+
+**`Java`**
 
 ```java Java
 V2WebSocketClient wsClient = client.listen().v2().v2WebSocket();
@@ -216,6 +232,8 @@ wsClient.connect(V2WebSocketOptions.builder()
 
 ### Multilingual Mode
 
+**`Python`**
+
 ```python Python
 async with client.listen.v2.connect(
     model="flux-general-multi",
@@ -231,6 +249,8 @@ async with client.listen.v2.connect(
     pass
 ```
 
+**`JavaScript`**
+
 ```typescript JavaScript
 const connection = await client.listen.v2.connect({
   model: "flux-general-multi",
@@ -244,6 +264,8 @@ const connection = await client.listen.v2.connect({
 connection.connect();
 await connection.waitForOpen();
 ```
+
+**`Java`**
 
 ```java Java
 import com.deepgram.DeepgramClient;
@@ -276,6 +298,8 @@ wsClient.sendConfigure(
         .build()
 ).get(5, TimeUnit.SECONDS);
 ```
+
+**`Direct WebSocket`**
 
 ```text Direct WebSocket
 wss://api.deepgram.com/v2/listen?model=flux-general-multi&language_hint=en&language_hint=es&eot_threshold=0.7&encoding=linear16&sample_rate=16000

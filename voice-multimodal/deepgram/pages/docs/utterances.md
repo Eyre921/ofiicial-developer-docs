@@ -26,6 +26,8 @@ To enable utterances, use the following parameter in the query string when you c
 
 To transcribe audio from a file on your computer, run the following curl command in a terminal or your favorite API client.
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -40,6 +42,8 @@ Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additi
 ## Analyze Response
 
 When the file is finished processing, you’ll receive a JSON response. Let’s look more closely at the `utterances` object:
+
+**`JSON`**
 
 ```json JSON
 ...
@@ -77,6 +81,8 @@ You may also want to enable speaker diarization, which will detect and identify 
 
 To transcribe audio from a file on your computer, run the following curl command in a terminal or your favorite API client.
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -89,6 +95,8 @@ curl \
 Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 When the file is finished processing, you’ll receive a JSON response that has the same basic structure as before. Let’s take a closer look at the new `utterances` object:
+
+**`JSON`**
 
 ```json JSON
 ...
@@ -117,6 +125,8 @@ In this response, notice that the content of `transcript` in each utterance is n
 * `punctuated_word`: Word being processed with added punctuation, if any.
 
 To improve readability, you can use a JSON processor to parse the JSON. In this example, we use [JQ](https://stedolan.github.io/jq/).
+
+**`cURL`**
 
 ```bash cURL
 curl \

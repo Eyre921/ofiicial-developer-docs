@@ -75,6 +75,8 @@ The main difference between the two is WebSockets versus HTTP requests. Using We
 
 Twilio Media Streams uses 8 kHz μ-law audio. Configure the Speech Engine to accept and emit the same format so the bridge does not need to transcode.
 
+**`configure_engine.py`**
+
 ```python title="configure_engine.py"
 import asyncio
 import os
@@ -99,6 +101,8 @@ async def update_engine():
 
 asyncio.run(update_engine())
 ```
+
+**`configure-engine.mts`**
 
 ```typescript title="configure-engine.mts"
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
@@ -132,9 +136,13 @@ The bridge serves three routes:
 
 #### Install dependencies
 
+**`Python`**
+
 ```bash title="Python"
 pip install "elevenlabs" "aiohttp" "twilio" "python-dotenv"
 ```
+
+**`Node`**
 
 ```bash title="Node"
 npm install @elevenlabs/elevenlabs-js express ws twilio dotenv openai
@@ -143,6 +151,8 @@ npm install @elevenlabs/elevenlabs-js express ws twilio dotenv openai
 #### Mint a signed URL for the Speech Engine
 
 The bridge requests a signed URL each time a new call arrives. The URL embeds the Speech Engine ID and a one-time signature, so the bridge never needs the raw API key.
+
+**`bridge.py`**
 
 ```python title="bridge.py"
 from elevenlabs import AsyncElevenLabs
@@ -155,6 +165,8 @@ async def signed_url() -> str:
     )
     return response.signed_url
 ```
+
+**`bridge.mts`**
 
 ```typescript title="bridge.mts"
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
@@ -174,6 +186,8 @@ async function signedUrl(): Promise<string> {
 #### Serve the TwiML response
 
 When a call arrives, Twilio POSTs to `/incoming-call`. The response is TwiML that opens a Media Stream to the bridge's own `/media-stream` WebSocket.
+
+**`bridge.py`**
 
 ```python title="bridge.py"
 from aiohttp import web
@@ -198,6 +212,8 @@ async def incoming_call(request: web.Request) -> web.Response:
     )
     return web.Response(text=twiml, content_type="text/xml")
 ```
+
+**`bridge.mts`**
 
 ```typescript title="bridge.mts"
 import express from "express";
@@ -227,6 +243,8 @@ app.post(
 #### Bridge the Media Stream
 
 The Media Stream is a WebSocket that sends a sequence of JSON events: `connected`, `start`, `media` (the audio payload), and `stop`. The bridge opens a Speech Engine conversation WebSocket on `start` and relays audio in both directions until the stream closes.
+
+**`bridge.py`**
 
 ```python title="bridge.py" maxLines=0
 import asyncio
@@ -300,6 +318,8 @@ async def media_stream(request: web.Request) -> web.WebSocketResponse:
 
     return twilio_ws
 ```
+
+**`bridge.mts`**
 
 ```typescript title="bridge.mts" maxLines=0
 import { WebSocket, WebSocketServer } from "ws";
@@ -389,6 +409,8 @@ The `interruption` event from Speech Engine triggers a `clear` event on the Twil
 
 The brain server is the standard Speech Engine server shown in the [quickstart](/docs/eleven-api/guides/cookbooks/speech-engine). The only addition is the shared-secret check on the WebSocket upgrade — accept the connection only if `x-api-key` matches the value you set on the Speech Engine.
 
+**`bridge.py`**
+
 ```python title="bridge.py" maxLines=0
 import os
 
@@ -428,6 +450,8 @@ def make_app() -> web.Application:
 if __name__ == "__main__":
     web.run_app(make_app(), port=3001)
 ```
+
+**`bridge.mts`**
 
 ```typescript title="bridge.mts" maxLines=0
 httpServer.on("upgrade", async (req, socket, head) => {

@@ -12,7 +12,7 @@ Create, describe, list, and delete namespaces in Pinecone serverless indexes, in
   This feature requires the `2025-10` version of the API or later.
 </Note>
 
-Namespaces are created automatically as you [upsert](/guides/index-data/upsert-data) records. However, you can also create namespaces ahead of time using the [`create_namespace`](/reference/api/latest/data-plane/createnamespace) operation. Specify a name for the namespace and, optionally, the [metadata fields to index](/guides/index-data/create-an-index#metadata-indexing).
+Namespaces are created automatically as you [upsert](/guides/index-data/upsert-data) records. However, you can also create namespaces ahead of time using the [`create_namespace`](/reference/api/latest/data-plane/createnamespace) operation. Specify a name for the namespace and, optionally, the [metadata fields to index](/guides/index-data/configure-metadata-indexing).
 
 <CodeGroup>
   ```python Python theme={null}

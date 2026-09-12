@@ -40,6 +40,8 @@ With Deepgram's well-calibrated scores, a threshold around 0.65 works well as an
 
 Evaluate precision and recall at multiple thresholds on a sample of your own data to find the right balance for your use case.
 
+**`Python`**
+
 ```python Python
 # Flag words below a confidence threshold
 threshold = 0.65
@@ -52,6 +54,8 @@ for word in low_confidence_words:
     print(f"  '{word['word']}' (confidence: {word['confidence']:.3f}, "
           f"time: {word['start']:.2f}s - {word['end']:.2f}s)")
 ```
+
+**`Java`**
 
 ```java Java
 // Flag words below a confidence threshold
@@ -78,6 +82,8 @@ Adapt the threshold automatically based on audio difficulty:
 
 Noisy audio produces lower mean confidence, which shifts the threshold accordingly.
 
+**`Python`**
+
 ```python Python
 import statistics
 
@@ -96,6 +102,8 @@ print(f"Expected errors: {expected_errors} out of {len(words)} words")
 for word in flagged:
     print(f"  '{word['word']}' (confidence: {word['confidence']:.3f})")
 ```
+
+**`Java`**
 
 ```java Java
 import java.util.Comparator;
@@ -160,6 +168,8 @@ Use confidence values from final transcripts for any downstream decision-making.
 ## API Reference
 
 Word confidence appears in the `words` array within each `alternatives` object in the API response:
+
+**`JSON`**
 
 ```json JSON
 {

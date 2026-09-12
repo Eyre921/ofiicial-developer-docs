@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/w
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `whatsapp_phone_number_id` (string, required)
 - `whatsapp_user_id` (string, required)
 - `whatsapp_call_permission_request_template_name` (string, required)
@@ -102,6 +104,17 @@ Successful Response
 - `success` (boolean, required)
 - `message` (string, required)
 - `conversation_id` (string, optional)
+
+## Errors
+
+### 422 Whatsapp Outbound Call Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

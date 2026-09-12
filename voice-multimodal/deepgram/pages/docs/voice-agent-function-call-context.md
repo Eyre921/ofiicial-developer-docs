@@ -29,6 +29,8 @@ Function call context is included in the conversation history using the `History
 
 Function call context can be disabled by setting `settings.flags.history` to `false` in the agent configuration. History is enabled by default.
 
+**`JSON`**
+
 ```json JSON
 {
   "type": "Settings",

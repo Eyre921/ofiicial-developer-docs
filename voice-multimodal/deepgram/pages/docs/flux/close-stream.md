@@ -24,6 +24,8 @@ In conversational audio processing, there are scenarios where you need to stop a
 
 To send the `CloseStream` message, you need to send the following JSON message to the server:
 
+**`JSON`**
+
 ```json JSON
 {
   "type": "CloseStream"
@@ -31,6 +33,8 @@ To send the `CloseStream` message, you need to send the following JSON message t
 ```
 
 Upon receiving `CloseStream`, the server emits `Update` messages for any audio it has already received, then closes the connection. A representative interim `Update`:
+
+**`JSON`**
 
 ```json JSON
 {

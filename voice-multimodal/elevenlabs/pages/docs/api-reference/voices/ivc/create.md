@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/voices/ivc/create
 
 ### Body (multipart/form-data)
 
+This endpoint expects a multipart form with multiple files.
+
 - `name` (string, required) — The name that identifies this voice. This will be displayed in the dropdown of the website.
 - `files` (files, required) — A list of file paths to audio recordings intended for voice cloning.
 - `remove_background_noise` (boolean, optional) — If set will remove background noise for voice samples using our audio isolation model. If the samples do not include background noise, it can make the quality worse.
@@ -41,6 +43,17 @@ Successful Response
 
 - `voice_id` (string, required) — The ID of the newly created voice.
 - `requires_verification` (boolean, required) — Whether the voice requires verification
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

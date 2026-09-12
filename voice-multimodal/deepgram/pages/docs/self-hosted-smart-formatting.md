@@ -70,12 +70,16 @@ Add the appropriate entity-detector model files to your Engine's `models` direct
 
 For **streaming** STT, add the following to `engine.toml`:
 
+**`engine.toml`**
+
 ```toml engine.toml
 [features]
 streaming_ner = true
 ```
 
 For **pre-recorded (batch)** STT, add the following to `api.toml`:
+
+**`api.toml`**
 
 ```toml api.toml
 [features]

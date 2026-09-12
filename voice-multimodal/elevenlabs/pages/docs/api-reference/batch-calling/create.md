@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/batch-calling/create
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `call_name` (string, required)
 - `agent_id` (string, required)
 - `recipients` (list of object, required)
@@ -146,6 +148,17 @@ Successful Response
 - `target_concurrency_limit` (integer, required, nullable) — Maximum number of simultaneous calls for this batch. When set, dispatch is governed by this limit rather than workspace/agent capacity percentages.
 - `agent_name` (string, required)
 - `branch_name` (string, required, nullable)
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

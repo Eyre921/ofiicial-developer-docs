@@ -50,33 +50,48 @@ Successful Response
 - `failure_reason` (enum, optional, nullable) — Reason the finetune failed or was blocked, if applicable.
   - Allowed values: `audio_processing_failed`, `copyright_violation`, `training_failed`
 
+## Errors
+
+### 403 Forbidden Error
+
+Missing permissions to manage music finetunes.
+
+- `any`
+
+### 404 Not Found Error
+
+Finetune not found.
+
+- `any`
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
-
-**Request**
-
-```json
-{}
-```
 
 **Response**
 
 ```json
 {
-  "id": "finetune_8a7c3d2f9b4e4a1d9f6c7b8e",
-  "name": "Chillwave Sunset Mix",
+  "id": "string",
+  "name": "string",
   "tags": [
-    "chillwave",
-    "electronic",
-    "sunset vibes"
+    "string"
   ],
   "model_id": "music_v1",
   "created_at": "2024-01-15T09:30:00Z",
   "visibility": "private",
   "created_by": "self",
-  "status": "in_progress",
-  "training_progress": 0.45,
-  "primary_genre": "electronic",
-  "failure_reason": null
+  "status": "pending",
+  "training_progress": 1.1,
+  "primary_genre": "string",
+  "failure_reason": "audio_processing_failed"
 }
 ```
 
@@ -109,7 +124,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
@@ -118,11 +132,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/music/finetunes/finetune_id"
 
-	payload := strings.NewReader("{}")
-
-	req, _ := http.NewRequest("GET", url, payload)
-
-	req.Header.Add("Content-Type", "application/json")
+	req, _ := http.NewRequest("GET", url, nil)
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -145,8 +155,6 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["Content-Type"] = 'application/json'
-request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -157,8 +165,6 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/music/finetunes/finetune_id")
-  .header("Content-Type", "application/json")
-  .body("{}")
   .asString();
 ```
 
@@ -168,12 +174,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/music/finetunes/finetune_id', [
-  'body' => '{}',
-  'headers' => [
-    'Content-Type' => 'application/json',
-  ],
-]);
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/music/finetunes/finetune_id');
 
 echo $response->getBody();
 ```
@@ -183,25 +184,16 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/music/finetunes/finetune_id");
 var request = new RestRequest(Method.GET);
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = ["Content-Type": "application/json"]
-let parameters = [] as [String : Any]
-
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
-
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/music/finetunes/finetune_id")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
-request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

@@ -34,6 +34,8 @@ Below is an example of how to make your first API request to your self-hosted de
 
 Note that the `api_key` field cannot be a blank string as it is a required parameter for the Python SDK, but it does not need to be a valid Deepgram API key, as authorization with Deepgram for self-hosted deployments is configured through the container, not at the individual request level.
 
+**`Python`**
+
 ```python Python
 # For more Python SDK migration guides, visit:
 # https://github.com/deepgram/deepgram-python-sdk/tree/main/docs
@@ -77,6 +79,8 @@ self_hosted_env = DeepgramClientEnvironment(
 
 The .NET SDK provides `DeepgramHttpClientOptions `(pre-recorded) and `DeepgramWsClientOptions` (streaming) classes, through which you can pass your host address. Below is a streaming example. Note that you should provide the `/v1` suffix to the base address.
 
+**`C#`**
+
 ```csharp C#
 var apiKey = "<your API key>";
 var options = new DeepgramWsClientOptions(){
@@ -87,11 +91,15 @@ var liveClient = new LiveClient(apiKey, options);
 
 If you encounter the following error message, note that you are receiving a 400 (bad request) when a 101 (successful stream) is expected.
 
+**`Text`**
+
 ```text Text
 Error: "The server returned status code \u0027400\u0027 when status code \u0027101\u0027 was expected."
 ```
 
 Ensure that your request parameters are specifying a model that you have available on your self-hosted instance. For example, when you intend to serve requests through a Nova-3 model, specify the following params:
+
+**`C#`**
 
 ```csharp C#
 var liveSchema = new LiveSchema()
@@ -107,6 +115,8 @@ If that model is not present in your `models/` directory, the above error will o
 
 To modify the `Host` option in [type-client.go](https://github.com/deepgram/deepgram-go-sdk/blob/v1.3.6/pkg/client/interfaces/types-client.go):
 
+**`Go`**
+
 ```go Go
 // ClientOptions defines any options for the client
 type ClientOptions struct {
@@ -120,6 +130,8 @@ type ClientOptions struct {
 
 You can create an object of type `ClientOptions` and then set the `Host` value.
 
+**`Go`**
+
 ```go Go
 	// create a Deepgram client
 	c := client.New("", interfaces.ClientOptions{
@@ -131,6 +143,8 @@ You can create an object of type `ClientOptions` and then set the `Host` value.
 ## JavaScript SDK
 
 To modify the URL, you can pass the `url` property within the global object to a new client.
+
+**`JavaScript`**
 
 ```javascript JavaScript
 const { DeepgramClient } = require("@deepgram/sdk");
@@ -144,6 +158,8 @@ const client = new DeepgramClient({
 ## Java SDK
 
 Use `Environment.custom()` to point all API traffic (REST and WebSocket) to your self-hosted endpoint.
+
+**`Java`**
 
 ```java Java
 import com.deepgram.DeepgramClient;

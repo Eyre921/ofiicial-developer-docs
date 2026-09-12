@@ -48,6 +48,8 @@ You will need to enable programmatic access to AWS to use the AWS SDKs. After lo
 
 3. Add the following text to the shared `credentials` file.
 
+   **`markdown`**
+
    ```text markdown
    [default]
    aws_access_key_id = AKIAIOSFODNN7EXAMPLE
@@ -68,11 +70,13 @@ To install `boto3`, run `pip install boto3`.
 
 Once you have an audio file uploaded to one of your S3 buckets, you can generate a presigned URL very easily from the AWS S3 website: Click on your audio file, then going to “Object actions” in the top-right corner, and click “Share with a presigned URL”.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/6632c1f9c4d2fbc48535b1b87dfe5ee661212c8096dee9205ad4b51f7b605152/images/855c249-create-presigned-url-ui.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T113111Z&X-Amz-Expires=604800&X-Amz-Signature=6d5da504dc1c509fab4cba720fffe4b8545ab3bff2ce156813054d288f9a10ed&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/6632c1f9c4d2fbc48535b1b87dfe5ee661212c8096dee9205ad4b51f7b605152/images/855c249-create-presigned-url-ui.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T113127Z&X-Amz-Expires=604800&X-Amz-Signature=2fe277cf555989cda65fe59dae474b8545fa59a943ee4f4255edc91f887b78cd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 The presigned URL will be copied to your clipboard, and if you paste it into your browser’s URL bar the file will be downloaded to your computer. If you carefully inspect the URL, you will notice query parameters such as `Amz-Security-Token` and `X-Amz-Expires`. These query parameters contain the credentials for secure access to your files.
 
 We will use the [AWS Python SDK](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html) (installed via `pip install boto3`) to programmatically create presigned URLs. The below code creates a presigned URL that retrieves a file from S3:
+
+**`Python`**
 
 ```python Python
 from botocore.client import Config
@@ -92,6 +96,8 @@ get_url = s3_client.generate_presigned_url(
     ExpiresIn=EXPIRATION_TIME_IN_SECONDS,
 )
 ```
+
+**`Java`**
 
 ```java Java
 import software.amazon.awssdk.regions.Region;
@@ -128,6 +134,8 @@ Nice work! Now you can include the `get_url` in your Deepgram API call to send t
 
 To programmatically create a presigned URL that uploads a file to S3, use the code below:
 
+**`Python`**
+
 ```python Python
 TRANSCRIPT_FILE_PATH_IN_S3 = "transcripts/NASA-first-all-female-space-walk.json"
 EXPIRATION_TIME_IN_SECONDS = 10 * 60  # 10 minutes
@@ -142,6 +150,8 @@ put_url = s3_client.generate_presigned_url(
     ExpiresIn=EXPIRATION_TIME_IN_SECONDS,
 )
 ```
+
+**`Java`**
 
 ```java Java
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
@@ -168,6 +178,8 @@ The presigned `PUT` URL's expiration time must take into account the time it tak
 
 Finally, you can combine the GET and PUT URLs in an API request to Deepgram to perform the transcription:
 
+**`Python`**
+
 ```python Python
 # For more Python SDK migration guides, visit:
 # https://github.com/deepgram/deepgram-python-sdk/tree/main/docs
@@ -187,6 +199,8 @@ def transcribe_audio(get_url: str, put_url: str):
         callback_method="put"
     )
 ```
+
+**`Java`**
 
 ```java Java
 import com.deepgram.api.DeepgramClient;
@@ -213,6 +227,8 @@ Presigned URLs that upload files to S3 can use either the `PUT` or `POST` HTTP m
 ## Putting It All Together
 
 Below is the full code for 1) generating presigned URLs, 2) sending your audio data to Deepgram, and 3) uploading transcripts directly into S3:
+
+**`Python`**
 
 ```python Python
 # For more Python SDK migration guides, visit:
@@ -280,6 +296,8 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+
+**`Java`**
 
 ```java Java
 import com.deepgram.api.DeepgramClient;
@@ -349,6 +367,8 @@ AWS Lambda functions are popular in serverless architectures and integrate seaml
 
 If you are using a serverless infrastructure, you may want to use AWS Lambda functions to generate presigned URLs. Make sure the Lambda's Execution Role contains permissions for the `S3:PutObject` and `S3:GetObject` actions. Below is an example policy statement:
 
+**`JSON`**
+
 ```json JSON
 {
 	"Sid": "allow-presigned-url-access",
@@ -367,6 +387,8 @@ If you are using a serverless infrastructure, you may want to use AWS Lambda fun
 ### Accessing Deepgram from AWS Lambda
 
 For a single REST call like this one, you don't need any third-party packages. Python's standard library includes `urllib.request`, which ships with every Lambda Python runtime — so there's no need for the Deepgram SDK, a `requests` dependency, a Lambda Layer, or a container image. Below is the full code that can be used in a Lambda function (Python 3.13).
+
+**`Python`**
 
 ```python Python
 import urllib.request
@@ -457,6 +479,8 @@ Event notifications can trigger a Lambda function, and the event notification wi
 
 If you are receiving `AccessDenied` messages such as the one below, it's likely the presigned URL has expired. Try setting a longer expiration time when creating the URL. Note that the presigned `PUT` URL's expiration time must take into account the time it takes for the audio to be transcribed.
 
+**`XML`**
+
 ```xml XML
 <?xml version="1.0" encoding="UTF-8"?>
 <Error>
@@ -470,7 +494,7 @@ If you are receiving `AccessDenied` messages such as the one below, it's likely 
 </Error>
 ```
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/be123ff2fc9316134ec567bfc0b49112842613f844dd6c21d04f43ce6774da96/images/9f93eca-presigned-url-error-message-1.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T113111Z&X-Amz-Expires=604800&X-Amz-Signature=c4f6e7c18af8f909110bd4da3390a53c955ca65c248e0dd1a08b49e865a657c2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/be123ff2fc9316134ec567bfc0b49112842613f844dd6c21d04f43ce6774da96/images/9f93eca-presigned-url-error-message-1.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T113127Z&X-Amz-Expires=604800&X-Amz-Signature=f1e355c2c3684234063a1b8e6688b4ddc462b5c1cd98b010a60980e256fc49fe&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ---
 

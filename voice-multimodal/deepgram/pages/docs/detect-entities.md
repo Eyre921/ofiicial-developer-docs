@@ -38,6 +38,8 @@ When Entity Detection is enabled, [Punctuation](/docs/punctuation) will also be 
 
 To transcribe audio from a file on your computer, run the following curl command in a terminal or your favorite API client.
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -52,6 +54,8 @@ Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.dee
 ### Streaming Audio
 
 To enable Entity Detection for streaming audio, establish a WebSocket connection with the `detect_entities=true` parameter. Remember that streaming Entity Detection is supported on Nova, Nova-2, Nova-3, and Enhanced models.
+
+**`JavaScript`**
 
 ```javascript JavaScript
 // Example filename: index.js
@@ -127,6 +131,8 @@ const live = async () => {
 
 live();
 ```
+
+**`Python`**
 
 ```python Python
 # Example filename: main.py
@@ -235,6 +241,8 @@ The response structure differs between pre-recorded and streaming transcription.
 
 When the file is finished processing (often after only a few seconds), you'll receive a JSON response that has the following basic structure:
 
+**`JSON`**
+
 ```json JSON
 {
   "metadata": {
@@ -256,6 +264,8 @@ When the file is finished processing (often after only a few seconds), you'll re
 ```
 
 Let's look more closely at the `alternatives` object:
+
+**`JSON`**
 
 ```json JSON
 "alternatives":[
@@ -299,6 +309,8 @@ Let's look more closely at the `alternatives` object:
 For streaming transcription, entities are included in **final results only** (when `is_final: true`). Interim results do not contain the `entities` array.
 
 Here's an example of a streaming response with Entity Detection enabled:
+
+**`JSON - Final Result with Entities`**
 
 ```json JSON - Final Result with Entities
 {
@@ -371,6 +383,8 @@ This will result in entities being missed or incomplete in many cases. Only use 
 
 To use `no_delay` with Entity Detection:
 
+**`JavaScript`**
+
 ```javascript JavaScript
 const connection = await deepgram.listen.v1.connect({
   model: "nova-3",
@@ -379,6 +393,8 @@ const connection = await deepgram.listen.v1.connect({
   no_delay: "true"  // Forces immediate finalization, may miss entities
 });
 ```
+
+**`Python`**
 
 ```python Python
 with deepgram.listen.v1.connect(

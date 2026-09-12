@@ -54,6 +54,17 @@ Successful Response
   - `message` (string, required)
 - `messages_omitted` (boolean, optional, default: false) — True when the chat messages were omitted because the conversation was too long. Fetch the full transcript for the messages.
 
+## Errors
+
+### 422 Conversations Get Summary Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/studio/create-podcast
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `model_id` (string, required) — The ID of the model to be used for this Studio project, you can query GET /v1/models to list all available models.
 - `mode` (object or object, required) — The type of podcast to generate. Can be 'conversation', an interaction between two voices, or 'bulletin', a monologue.
   - PodcastConversationMode
@@ -255,6 +257,17 @@ Successful Response
   - `agent_settings` (object, optional, nullable) — Agent-related settings for the project
     - `tool_settings` (map from string to object, optional)
       - `skip_confirmation` (boolean, optional, default: false)
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

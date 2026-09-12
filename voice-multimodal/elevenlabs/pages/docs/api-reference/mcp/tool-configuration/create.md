@@ -35,6 +35,8 @@ Reference: https://elevenlabs.io/docs/api-reference/mcp/tool-configuration/creat
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `tool_name` (string, required) — The name of the MCP tool
 - `pre_tool_speech` (enum, optional, nullable, default: auto) — If set, overrides the server's pre_tool_speech setting for this tool.
   - Allowed values: `auto`, `force`, `off`
@@ -204,6 +206,23 @@ Successful Response
   - `type`: `unknown` (DependentUnknownAgentIdentifier)
     - `id` (string, required)
     - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
+
+## Errors
+
+### 409 Conflict Error
+
+Tool config override already exists
+
+- `any`
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

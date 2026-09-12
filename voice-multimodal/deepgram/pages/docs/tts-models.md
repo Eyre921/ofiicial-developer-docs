@@ -20,6 +20,8 @@ To select a model, use the syntax `model=aura-2-thalia-en`
 
 ## Example
 
+**`CURL`**
+
 ```curl CURL
 curl "https://api.deepgram.com/v1/speak?model=aura-2-thalia-en" \
 > -H "Content-Type: application/json" \

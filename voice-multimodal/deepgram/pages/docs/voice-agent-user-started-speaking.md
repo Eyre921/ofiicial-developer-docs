@@ -22,6 +22,8 @@ The `UserStartedSpeaking` message is sent by the server to notify the client tha
 
 The server will send a `UserStartedSpeaking` message every time the user begins a new utterance. If the client is playing agent audio when this message is received, it should stop playback immediately and discard all of its buffered agent audio.
 
+**`JSON`**
+
 ```json JSON
 {
   "type": "UserStartedSpeaking"

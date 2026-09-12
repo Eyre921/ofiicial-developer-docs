@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-fol
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `name` (string, required) — The new name for the folder
 
 ## Response
@@ -45,6 +47,17 @@ Folder successfully updated
   - `id` (string, required)
   - `name` (string, optional, default: )
 - `children_count` (integer, optional, default: 0) — The number of direct children (tests and subfolders) in this folder
+
+## Errors
+
+### 422 Folders Update Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

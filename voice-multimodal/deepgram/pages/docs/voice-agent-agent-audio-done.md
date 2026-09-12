@@ -20,6 +20,8 @@ The server sends `AgentAudioDone` immediately after the last audio chunk for an 
 
 ## Example payload
 
+**`JSON`**
+
 ```json JSON
 {
   "type": "AgentAudioDone"

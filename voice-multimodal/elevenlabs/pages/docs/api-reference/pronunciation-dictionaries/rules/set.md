@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/pronunciation-dictionaries/r
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `rules` (list of object or object, required) — List of pronunciation rules. Rule can be either: an alias rule: \{'string\_to\_replace': 'a', 'type': 'alias', 'alias': 'b', } or a phoneme rule: \{'string\_to\_replace': 'a', 'type': 'phoneme', 'phoneme': 'b', 'alphabet': 'ipa' }
   - PronunciationDictionaryAliasRuleRequestModel
     - `string_to_replace` (string, required) — The string to replace. Must be a non-empty string.
@@ -55,6 +57,17 @@ Successfully set rules on the pronunciation dictionary
 - `id` (string, required) — The ID of the pronunciation dictionary.
 - `version_id` (string, required) — The version ID of the pronunciation dictionary.
 - `version_rules_num` (integer, required) — The number of rules in the version of the pronunciation dictionary.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

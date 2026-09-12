@@ -46,7 +46,7 @@ fireconnect vscode status   # read-only; works while VS Code is running
 
 ## Browse and switch models
 
-Direct Fireworks routing uses the **chat-completions** API. Kimi models support vision; GLM models are text-only.
+Direct Fireworks routing uses the **chat-completions** API. Kimi models support vision. Standard and Fast GLM models such as `glm-latest` and `glm-fast-latest` are text-only; `glm-flash-latest` and GLM 5.3 Flash support vision.
 
 ```bash theme={null}
 fireconnect model list --search glm
@@ -110,18 +110,18 @@ This restores your previous `chatLanguageModels.json` from the backup in `~/.fir
 
 ## Fireworks on Microsoft Foundry
 
-VS Code supports **Fireworks on Microsoft Foundry** (CLI: `--provider azure` or `on --azure`). See [Microsoft Foundry in FireConnect](/ecosystem/fireconnect/microsoft-foundry) and the [portal setup guide](/ecosystem/integrations/azure-foundry).
+VS Code supports **Fireworks on Microsoft Foundry** (CLI: `--provider azure` or `on --azure`). FireRouter is not available on the Foundry path; run `fireconnect configure --provider fireworks` before using `--model firerouter`. See [Microsoft Foundry in FireConnect](/ecosystem/fireconnect/microsoft-foundry) and the [portal setup guide](/ecosystem/integrations/azure-foundry).
 
 <Warning>
   Foundry routing requires a standard Azure API key. Fire Pass keys (`fpk_...`) are not supported. **Quit VS Code** before `on` or `off`.
 </Warning>
 
 ```bash theme={null}
-export AZURE_API_KEY=<your-azure-api-key>
+export AZURE_API_KEY="YOUR_AZURE_API_KEY"
 
 fireconnect configure \
   --provider azure \
-  --base-url https://<resource>.services.ai.azure.com \
+  --base-url "https://YOUR_RESOURCE.services.ai.azure.com" \
   --api-key $AZURE_API_KEY
 
 fireconnect vscode on --model FW-GLM-5.2
@@ -132,7 +132,7 @@ One-off routing without changing global config:
 ```bash theme={null}
 fireconnect vscode on \
   --azure \
-  --base-url https://<resource>.services.ai.azure.com \
+  --base-url "https://YOUR_RESOURCE.services.ai.azure.com" \
   --model FW-MiniMax-M2.5
 ```
 

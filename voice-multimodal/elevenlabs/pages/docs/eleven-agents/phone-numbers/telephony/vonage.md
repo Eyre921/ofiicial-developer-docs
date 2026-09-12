@@ -40,6 +40,8 @@ cp .env.example .env
 
 Add your credentials to `.env`:
 
+**`.env`**
+
 ```bash title=".env"
 ELEVENLABS_API_KEY = YOUR_API_KEY;
 ELEVENLABS_AGENT_ID = YOUR_AGENT_ID;

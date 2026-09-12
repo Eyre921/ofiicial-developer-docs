@@ -373,7 +373,7 @@ This is a subtle failure mode specific to multi-LoRA deployments. If the deploym
 firectl deployment-shape-version list --base-model accounts/<your-account>/models/<your-model-version>
 ```
 
-Or query the API directly with the `latest_validated=true` filter (see [List Deployment Shape Versions](/api-reference/list-deployment-shape-versions)):
+Or query the API directly with the `latest_validated=true` filter (see [List Deployment Shape Versions](/api-reference/list-deployment-shape-versions)). For general shape discovery — "which shapes work with this model?" — use [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions) instead; the filter query here is for checking which exact model version each validated shape version binds:
 
 ```bash theme={null}
 curl -s "https://api.fireworks.ai/v1/accounts/-/deploymentShapes/-/versions?filter=snapshot.base_model%3D%22accounts%2F<your-account>%2Fmodels%2F<your-model-version>%22%20AND%20latest_validated%3Dtrue&order_by=create_time%20desc" \

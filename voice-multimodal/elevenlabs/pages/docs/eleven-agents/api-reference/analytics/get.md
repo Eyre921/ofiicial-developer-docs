@@ -37,6 +37,17 @@ Successful Response
 
 - `count` (integer, required) — The number of active ongoing conversations.
 
+## Errors
+
+### 422 Live Count Get Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

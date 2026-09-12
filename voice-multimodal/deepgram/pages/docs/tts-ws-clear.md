@@ -20,6 +20,8 @@ After sending the optional `Clear` message, the TTS websocket will clear the int
 
 To send the `Clear` message, you need to send the following JSON message to the server:
 
+**`JSON`**
+
 ```json JSON
 {
     "type": "Clear"
@@ -29,6 +31,8 @@ To send the `Clear` message, you need to send the following JSON message to the 
 ## `Clear` Confirmation
 
 Upon receiving the `Clear` message, the server will process all remaining audio data and return the following:
+
+**`JSON`**
 
 ```json JSON
 {

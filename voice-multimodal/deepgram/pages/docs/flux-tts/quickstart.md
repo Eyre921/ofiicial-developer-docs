@@ -97,6 +97,8 @@ The core pattern is: stream LLM tokens in as they arrive, then flush at the end 
 
 **SDK support is live.** The [Python](https://github.com/deepgram/deepgram-python-sdk) (`deepgram-sdk`) and [JavaScript](https://github.com/deepgram/deepgram-js-sdk) (`@deepgram/sdk`) SDKs expose a `speak.v2` client for `/v2/speak`. For a full runnable integration, start from the [template apps](/docs/flux-tts/template-apps). The **Direct WebSocket** path is available for languages without SDK support yet.
 
+**`Python (deepgram-sdk)`**
+
 ```python Python (deepgram-sdk)
 import threading
 
@@ -126,6 +128,8 @@ with client.speak.v2.connect(model="flux-haley-en") as connection:
     connection.send_close()
 ```
 
+**`JavaScript (@deepgram/sdk)`**
+
 ```javascript JavaScript (@deepgram/sdk)
 const { DeepgramClient } = require('@deepgram/sdk');
 
@@ -151,6 +155,8 @@ for (const token of llmTokens) {
 connection.sendFlush({ type: 'Flush' });
 connection.sendClose({ type: 'Close' });
 ```
+
+**`Direct WebSocket`**
 
 ```bash Direct WebSocket
 # Connect with wscat for testing.
@@ -187,6 +193,8 @@ Build new voice-agent integrations on `/v2/speak`. Stay on `/v1/speak` if you de
 
 * **Streaming (WebSocket)** — `wss://api.deepgram.com/v2/speak`. The conversational path covered throughout these docs: text streams in, audio streams back, turns are interruptible. Use it for live voice agents that need low time-to-first-byte and barge-in.
 * **Batch (REST)** — `POST https://api.deepgram.com/v2/speak`. Submit a complete block of text, receive the full audio in one response. Use it for pre-generating fixed audio (IVR prompts, notifications, audiobook lines) where the whole text is known up front and interruption isn't needed.
+
+**`Batch request`**
 
 ```bash Batch request
 curl "https://api.deepgram.com/v2/speak?model=flux-haley-en" \

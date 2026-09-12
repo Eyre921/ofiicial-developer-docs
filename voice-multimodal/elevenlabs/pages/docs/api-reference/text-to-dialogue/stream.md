@@ -33,6 +33,8 @@ Reference: https://elevenlabs.io/docs/api-reference/text-to-dialogue/stream
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `inputs` (list of object, required) — A list of dialogue inputs, each containing text and a voice ID which will be converted into speech. The maximum number of unique voice IDs is 10. For reliable generation, keep the total character count across all `inputs[].text` values at or below 2,000 characters per request. Longer requests can terminate early in streaming responses or return a validation error.
   - `text` (string, required) — The text to be converted into speech.
   - `voice_id` (string, required) — The ID of the voice to be used for the generation.
@@ -54,6 +56,17 @@ Reference: https://elevenlabs.io/docs/api-reference/text-to-dialogue/stream
 Streaming audio data
 
 - Streaming response of `string`.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

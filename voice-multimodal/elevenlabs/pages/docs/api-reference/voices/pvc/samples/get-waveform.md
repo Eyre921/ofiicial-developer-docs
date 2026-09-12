@@ -38,6 +38,17 @@ Successful Response
 - `sample_id` (string, required) — The ID of the sample.
 - `visual_waveform` (list of double, required) — The visual waveform of the sample, represented as a list of floats.
 
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

@@ -64,6 +64,8 @@ To enable Language Detection, when you call Deepgram’s API, add a `detect_lang
 
 To transcribe audio from a file on your computer, run the following cURL command in a terminal or your favorite API client.
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -78,6 +80,8 @@ Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.dee
 ## Analyze Response
 
 When the file is finished processing (often after only a few seconds), you’ll receive a JSON response that has the following basic structure:
+
+**`JSON`**
 
 ```json JSON
 {

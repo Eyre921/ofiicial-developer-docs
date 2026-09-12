@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/analytics/workspace/usage
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `start_time` (integer, required) — Start of the time range as a Unix timestamp in milliseconds. Must be at least 2020-01-01.
 - `end_time` (integer, required) — End of the time range as a Unix timestamp in milliseconds. Must be at least 2020-01-01.
 - `interval_seconds` (integer, optional, default: 60) — Bucket size in seconds. Each row in the response covers this many seconds of the selected time range. For example, pass 3600 for hourly buckets or 86400 for daily buckets. Whether `time_zone` shifts bucket boundaries depends on this value: whole-day multiples (e.g. 86400) align to local midnight; whole-hour multiples up to 24 hours (e.g. 3600, 14400) align to local hour boundaries from midnight; sub-hour values and other sizes remain UTC-anchored regardless of `time_zone`.
@@ -51,6 +53,17 @@ Successful Response
 - `rows` (list of list of string or integer or double or boolean or string, required)
 - `column_units` (list of enum, required)
   - Allowed values: `ms`, `s`, `min`, `duration`, `credits`, `usd`, `eur`, `inr`, `pln`, `ratio`, `rating`
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

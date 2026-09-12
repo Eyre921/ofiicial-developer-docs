@@ -12,7 +12,7 @@ path: docs/eleven-agents/best-practices/prompting-guide
 
 Effective prompting transforms [ElevenLabs Agents](/docs/eleven-agents/overview) from robotic to lifelike.
 
-![ElevenLabs Agents prompting guide](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/255df05f53675feaf54c765c4ee294fda00a7c14de1b02f155922012bf0a5433/assets/images/conversational-ai/prompting-guide.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T085155Z&X-Amz-Expires=604800&X-Amz-Signature=07eba53da934d78a571ad3264cdbcd74ebb63db6f31ea8ad061de5ccb871bb69&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![ElevenLabs Agents prompting guide](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/255df05f53675feaf54c765c4ee294fda00a7c14de1b02f155922012bf0a5433/assets/images/conversational-ai/prompting-guide.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T093625Z&X-Amz-Expires=604800&X-Amz-Signature=cb3190df5aa69a417b9003a019f7593a241df6578cee3c16ff41e8284b87dd75&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 A system prompt is the personality and policy blueprint of your AI agent. In enterprise use, it tends to be elaborate—defining the agent's role, goals, allowable tools, step-by-step instructions for certain tasks, and guardrails describing what the agent should not do. The way you structure this prompt directly impacts reliability.
 
@@ -27,7 +27,7 @@ read and update an agent's system prompt directly, so you can draft, review, and
 conversationally.
 
 ![Enterprise agent reliability
-framework](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/18c7dd3bf58a6715656d588834a278dbc1f368eaed2cbf91aeea3e977c2631ed/assets/images/conversational-ai/system-prompt-principles.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T085155Z&X-Amz-Expires=604800&X-Amz-Signature=8396d2d8b6062767dd67cda115dc8dab40b07e90c716fda0cfad2c1073bc6960&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+framework](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/18c7dd3bf58a6715656d588834a278dbc1f368eaed2cbf91aeea3e977c2631ed/assets/images/conversational-ai/system-prompt-principles.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T093625Z&X-Amz-Expires=604800&X-Amz-Signature=28f98ca6f20a3eadcee22404ffe938219f7ecc9b6be999e28c3aa85994e83f97&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Prompt engineering fundamentals
 
@@ -41,9 +41,13 @@ Separating instructions into dedicated sections with markdown headings helps the
 
 **Why this matters for reliability:** Models are tuned to pay extra attention to certain headings (especially `# Guardrails`), and clear section boundaries prevent instruction bleed where rules from one context affect another.
 
+**`Less effective approach`**
+
 ```mdx title="Less effective approach"
 You are a customer service agent. Be polite and helpful. Never share sensitive data. You can look up orders and process refunds. Always verify identity first. Keep responses under 3 sentences unless the user asks for details.
 ```
+
+**`Recommended approach`**
 
 ```mdx title="Recommended approach"
 # Personality
@@ -70,11 +74,15 @@ Keep every instruction short, clear, and action-based. Remove filler words and r
 
 **Why this matters for reliability:** Concise instructions reduce ambiguity and token usage. Every unnecessary word is a potential source of misinterpretation.
 
+**`Less effective approach`**
+
 ```mdx title="Less effective approach"
 # Tone
 
 When you're talking to customers, you should try to be really friendly and approachable, making sure that you're speaking in a way that feels natural and conversational, kind of like how you'd talk to a friend, but still maintaining a professional demeanor that represents the company well.
 ```
+
+**`Recommended approach`**
 
 ```mdx title="Recommended approach"
 # Tone
@@ -91,6 +99,8 @@ Highlight critical steps by adding "This step is important" at the end of the li
 
 **Why this matters for reliability:** In complex prompts, models may prioritize recent context over earlier instructions. Emphasis and repetition ensure critical rules aren't overlooked.
 
+**`Less effective approach`**
+
 ```mdx title="Less effective approach"
 # Goal
 
@@ -98,6 +108,8 @@ Verify customer identity before accessing their account.
 Look up order details and provide status updates.
 Process refund requests when eligible.
 ```
+
+**`Recommended approach`**
 
 ```mdx title="Recommended approach"
 # Goal
@@ -150,6 +162,8 @@ When using the `system_prompt` normalization setting, the LLM writes out symbols
 
 If a tool parameter expects a correctly formatted value (e.g., `john@gmail.com` not `john at gmail dot com`), the LLM needs to know this. Include the expected format directly in the tool parameter description with an example.
 
+**`Less effective: vague parameter description`**
+
 ```mdx title="Less effective: vague parameter description"
 ## `lookupAccount` tool parameters
 
@@ -157,6 +171,8 @@ If a tool parameter expects a correctly formatted value (e.g., `john@gmail.com` 
 - `phone` (required): "The user's phone number."
 - `confirmation_code` (required): "The user's confirmation code."
 ```
+
+**`Recommended: explicit format in parameter description`**
 
 ```mdx title="Recommended: explicit format in parameter description"
 ## `lookupAccount` tool parameters
@@ -171,6 +187,8 @@ If a tool parameter expects a correctly formatted value (e.g., `john@gmail.com` 
 List all non-negotiable rules the model must always follow in a dedicated `# Guardrails` section. Models are tuned to pay extra attention to this heading.
 
 **Why this matters for reliability:** Guardrails prevent inappropriate responses and ensure compliance with policies. Centralizing them in a dedicated section makes them easier to audit and update.
+
+**`Recommended approach`**
 
 ```mdx title="Recommended approach"
 # Guardrails
@@ -206,6 +224,8 @@ When creating a tool, add descriptions to all parameters. This helps the LLM con
 ### Explain when and how to use each tool in the system prompt
 
 Clearly define in your system prompt when and how each tool should be used. Don't rely solely on tool descriptions—provide usage context and sequencing logic.
+
+**`Recommended approach`**
 
 ```mdx title="Recommended approach"
 # Tools
@@ -252,11 +272,15 @@ This step is important: Always confirm refund details with the customer before c
 
 When tools require structured identifiers (emails, phone numbers, codes), make the expected format explicit in the parameter description with an example. This is especially important because normalization and speech-to-text transcription can produce spoken-form values in the conversation context. See [structured data for tool inputs](#structured-data-for-tool-inputs) for background.
 
+**`Less effective: vague parameter description`**
+
 ```mdx title="Less effective: vague parameter description"
 ## `lookupAccount` tool parameters
 
 - `email` (required): "The customer's email address."
 ```
+
+**`Recommended: explicit format with example`**
 
 ```mdx title="Recommended: explicit format with example"
 ## `lookupAccount` tool parameters
@@ -269,6 +293,8 @@ When tools require structured identifiers (emails, phone numbers, codes), make t
 Tools can sometimes fail due to network issues, missing data, or other errors. Include clear instructions in your system prompt for recovery.
 
 **Why this matters for reliability:** Tool failures are inevitable in production. Without explicit handling instructions, agents may hallucinate responses or provide incorrect information.
+
+**`Recommended approach`**
 
 ```mdx title="Recommended approach"
 # Tool error handling
@@ -325,6 +351,8 @@ For complex tasks, design multi-agent workflows that hand off tasks between spec
 
 When designing multi-agent workflows, specify exactly when and how control should transfer between agents or to human operators.
 
+**`Orchestrator agent example`**
+
 ```mdx title="Orchestrator agent example"
 # Goal
 
@@ -347,6 +375,8 @@ Route customer requests to the appropriate specialist agent based on intent.
    - Any account identifiers already collected
 4. Do not repeat information collection that already occurred
 ```
+
+**`Specialist agent example`**
 
 ```mdx title="Specialist agent example"
 # Personality
@@ -473,6 +503,8 @@ The following examples demonstrate how to apply the principles outlined in this 
 
 ### Example 1: Technical support agent
 
+**`Technical support specialist`**
+
 ```mdx title="Technical support specialist" maxLines=60
 # Personality
 
@@ -562,6 +594,8 @@ If any tool call fails:
 * ✓ Explicit error handling instructions
 
 ### Example 2: Customer service refund agent
+
+**`Refund processing specialist`**
 
 ```mdx title="Refund processing specialist" maxLines=50
 # Personality

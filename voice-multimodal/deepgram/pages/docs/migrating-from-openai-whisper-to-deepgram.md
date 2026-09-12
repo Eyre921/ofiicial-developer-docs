@@ -70,6 +70,8 @@ Once you’ve selected your [model](/docs/model/) Deepgram provides many feature
 
 #### Open API Default JSON Response
 
+**`JSON`**
+
 ```json JSON
 {
   "text": "Yeah, as much as it's worth celebrating the first spacewalk with an all-female team, I think many of us are looking forward to it just being normal. And I think if it signifies anything, it is to honor the women who came before us who were skilled and qualified and didn't get the same opportunities that we have today."
@@ -79,6 +81,8 @@ Once you’ve selected your [model](/docs/model/) Deepgram provides many feature
 #### Deepgram Default JSON Response
 
 ##### Interim Response
+
+**`JSON`**
 
 ```json JSON
 {
@@ -135,6 +139,8 @@ Once you’ve selected your [model](/docs/model/) Deepgram provides many feature
 ```
 
 ##### Final Result
+
+**`JSON`**
 
 ```json JSON
 {

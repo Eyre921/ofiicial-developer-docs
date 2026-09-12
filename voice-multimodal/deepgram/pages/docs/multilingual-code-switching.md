@@ -30,6 +30,8 @@ To enable Multilingual Codeswitching on Nova-2 or Nova-3, use the following lang
 
 To transcribe audio from a file on your computer that contains multiple languages, run the following cURL command in a terminal or your favorite API client.
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -66,6 +68,8 @@ Flux returns detected languages in every `TurnInfo` event via the `languages` fi
 ### Pre-Recorded Audio
 
 When the file is finished processing, you’ll receive a JSON response that has the following basic structure:
+
+**`JSON`**
 
 ```json JSON
 
@@ -156,6 +160,8 @@ In this response, we see that each channel contains:
 ### Streaming Audio
 
 When streaming audio, a Results JSON message has the following structure:
+
+**`JSON`**
 
 ```json JSON
 {

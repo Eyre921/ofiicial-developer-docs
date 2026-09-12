@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/music/finetunes/update
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `name` (string, optional, nullable) — Updated name for the finetune.
 - `tags` (list of string, optional, nullable) — Replacement set of tags.
 - `primary_genre` (string, optional, nullable) — Updated primary musical genre.
@@ -59,6 +61,29 @@ Successful Response
 - `failure_reason` (enum, optional, nullable) — Reason the finetune failed or was blocked, if applicable.
   - Allowed values: `audio_processing_failed`, `copyright_violation`, `training_failed`
 
+## Errors
+
+### 403 Forbidden Error
+
+Missing permissions to manage music finetunes.
+
+- `any`
+
+### 404 Not Found Error
+
+Finetune not found.
+
+- `any`
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Request**
@@ -71,20 +96,18 @@ Successful Response
 
 ```json
 {
-  "id": "ft_9a8b7c6d5e4f3g2h1i0j",
-  "name": "Chillwave Sunset Mix",
+  "id": "string",
+  "name": "string",
   "tags": [
-    "chillwave",
-    "electronic",
-    "summer vibes"
+    "string"
   ],
   "model_id": "music_v1",
   "created_at": "2024-01-15T09:30:00Z",
   "visibility": "private",
   "created_by": "self",
   "status": "pending",
-  "training_progress": 0,
-  "primary_genre": "electronic",
+  "training_progress": 1.1,
+  "primary_genre": "string",
   "failure_reason": "audio_processing_failed"
 }
 ```

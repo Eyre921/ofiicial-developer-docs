@@ -43,11 +43,15 @@ Create a new **Endpoint Configuration** that references the Model and uses the s
 
 Call [`UpdateEndpoint`](https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_UpdateEndpoint.html) with the existing Endpoint name and the new Endpoint Configuration name.
 
+**`AWS CLI`**
+
 ```bash title="AWS CLI"
 aws sagemaker update-endpoint \
   --endpoint-name my-deepgram-streaming-stt \
   --endpoint-config-name my-deepgram-streaming-stt-config-v2
 ```
+
+**`Boto3`**
 
 ```python title="Boto3"
 import boto3

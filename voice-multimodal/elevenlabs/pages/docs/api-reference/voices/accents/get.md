@@ -41,6 +41,17 @@ Successful Response
   - `code` (string, required) — The full accent code, e.g. `en-american`.
   - `name` (string, required) — The human-readable accent name, e.g. `American`.
 
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

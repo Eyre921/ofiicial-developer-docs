@@ -33,6 +33,8 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/procedures/update
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `name` (string, required) — Procedure name
 - `content` (string, required) — Procedure content
 - `type` (enum, required, default: free_form) — Procedure type
@@ -52,6 +54,17 @@ Successful Response
   - Allowed values: `free_form`, `deterministic`, `folder`
 - `trigger` (string, optional, default: ) — When the agent should use this procedure. Empty string means this is a sub-procedure that should only start when another procedure references it.
 - `folder_parent_id` (string, optional, nullable) — Procedure ID of the folder this procedure is placed in. None means root.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

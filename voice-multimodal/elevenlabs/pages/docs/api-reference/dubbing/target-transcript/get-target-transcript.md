@@ -46,6 +46,17 @@ Successful Response
 - `revision` (integer, required) — The target's revision at read time.
 - `source_language` (string, optional, nullable) — BCP-47 language tag of the source transcript.
 
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

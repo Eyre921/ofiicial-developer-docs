@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branche
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `parent_version_id` (string, required) — ID of the version to branch from
 - `name` (string, required) — Name of the branch. It is unique within the agent.
 - `description` (string, required) — Description for the branch
@@ -401,6 +403,17 @@ Successful Response
 
 - `created_branch_id` (string, required) — ID of the created branch
 - `created_version_id` (string, required) — ID of the first version on the created branch
+
+## Errors
+
+### 422 Branches Create Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

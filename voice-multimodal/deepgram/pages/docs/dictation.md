@@ -26,6 +26,8 @@ The Punctuation feature must be enabled for Dictation to work. Be sure to add `d
 
 To transcribe audio with dictation enabled, run the following cURL command in a terminal or your favorite API client:
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -50,11 +52,15 @@ Once dictation is enabled, the results will appear in the transcript with the sp
 
 #### Before Dictation
 
+**`Text`**
+
 ```text Text
 Patient presents with a headache comma nausea comma and vomiting period They report the headache started two days ago period Vital signs are within normal limits period
 ```
 
 #### After Dictation
+
+**`Text`**
 
 ```text Text
 Patient presents with a headache, nausea, and vomiting. They report the headache started two days ago. Vital signs are within normal limits.

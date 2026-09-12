@@ -22,6 +22,8 @@ The `Welcome` message serves as the initial handshake between a voice agent and 
 
 The server will immediately send a `Welcome` message as soon as the websocket opens.
 
+**`JSON`**
+
 ```json JSON
 {
   "type": "Welcome",

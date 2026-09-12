@@ -32,6 +32,8 @@ Reference: https://elevenlabs.io/docs/api-reference/text-to-voice/design
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `voice_description` (string, required) — Description to use for the created voice.
 - `model_id` (enum, optional, default: eleven_multilingual_ttv_v2) — Model to use for the voice generation. Possible values: eleven_multilingual_ttv_v2, eleven_ttv_v3.
   - Allowed values: `eleven_multilingual_ttv_v2`, `eleven_ttv_v3`
@@ -61,6 +63,17 @@ Successful Response
   - `duration_secs` (double, required) — The duration of the preview in seconds.
   - `language` (string, required, nullable) — The language of the preview.
 - `text` (string, required) — The text used to preview the voices.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

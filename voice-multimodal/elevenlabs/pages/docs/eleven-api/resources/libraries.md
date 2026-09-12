@@ -21,18 +21,26 @@ ElevenLabs provides officially supported libraries that are updated with the lat
 
 The [ElevenLabs CLI](/docs/eleven-agents/operate/cli) brings the REST API to your terminal. Homebrew (macOS) and Scoop (Windows) are the recommended install methods.
 
+**`Homebrew (macOS)`**
+
 ```bash title="Homebrew (macOS)"
 brew install elevenlabs/tap/elevenlabs
 ```
+
+**`Scoop (Windows)`**
 
 ```powershell title="Scoop (Windows)"
 scoop bucket add elevenlabs https://github.com/elevenlabs/scoop-bucket
 scoop install elevenlabs
 ```
 
+**`npm`**
+
 ```bash title="npm"
 npm install -g @elevenlabs/cli
 ```
+
+**`curl`**
 
 ```bash title="curl"
 curl --proto '=https' --tlsv1.2 -LsSf https://github.com/elevenlabs/cli/releases/latest/download/elevenlabs-cli-installer.sh | sh

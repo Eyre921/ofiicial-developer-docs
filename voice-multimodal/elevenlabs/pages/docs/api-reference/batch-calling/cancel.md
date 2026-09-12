@@ -66,6 +66,17 @@ Successful Response
 - `agent_name` (string, required)
 - `branch_name` (string, required, nullable)
 
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/phone-numbers/update
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `agent_id` (string, optional, nullable)
 - `label` (string, optional, nullable)
 - `inbound_trunk_config` (object, optional, nullable)
@@ -140,6 +142,17 @@ Successful Response
         - Allowed values: `G722/8000`, `PCMU/8000`, `PCMA/8000`
     - `supports_inbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports inbound calls
     - `supports_outbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports outbound calls
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/studio/create-pronunciation-
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `pronunciation_dictionary_locators` (list of object, required) — A list of pronunciation dictionary locators (pronunciation\_dictionary\_id, version\_id) encoded as a list of JSON strings for pronunciation dictionaries to be applied to the text. A list of json encoded strings is required as adding projects may occur through formData as opposed to jsonBody. To specify multiple dictionaries use multiple --form lines in your curl, such as --form 'pronunciation\_dictionary\_locators="\{"pronunciation\_dictionary\_id":"Vmd4Zor6fplcA7WrINey","version\_id":"hRPaxjlTdR7wFMhV4w0b"}"' --form 'pronunciation\_dictionary\_locators="\{"pronunciation\_dictionary\_id":"JzWtcGQMJ6bnlWwyMo7e","version\_id":"lbmwxiLu4q6txYxgdZqn"}"'.
   - `pronunciation_dictionary_id` (string, required)
   - `version_id` (string, required, nullable)
@@ -43,6 +45,17 @@ Reference: https://elevenlabs.io/docs/api-reference/studio/create-pronunciation-
 Successful Response
 
 - `status` (string, required) — The status of the create pronunciation dictionary request. If the request was successful, the status will be 'ok'. Otherwise an error message with status 500 will be returned.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/duplica
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `name` (string, optional) — A name to make the agent easier to find
 
 ## Response
@@ -40,6 +42,17 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/duplica
 Successful Response
 
 - `agent_id` (string, required) — ID of the created agent
+
+## Errors
+
+### 422 Agents Duplicate Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

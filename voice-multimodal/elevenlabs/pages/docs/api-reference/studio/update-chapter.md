@@ -32,6 +32,8 @@ Reference: https://elevenlabs.io/docs/api-reference/studio/update-chapter
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `name` (string, optional, nullable) — The name of the chapter, used for identification only.
 - `content` (object, optional, nullable) — The chapter content to use.
   - `blocks` (list of object, required)
@@ -84,6 +86,17 @@ Successful Response
       - `voice_id` (string, required, deprecated) — The voice ID.
       - `credits_needed_to_convert` (integer, optional, nullable) — The number of credits needed to convert the remaining audio for this voice.
   - `last_conversion_error` (string, optional, nullable) — The last conversion error of the chapter.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

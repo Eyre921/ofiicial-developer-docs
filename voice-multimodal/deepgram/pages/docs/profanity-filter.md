@@ -85,6 +85,8 @@ To enable Profanity Filtering, use the following parameter in the query string w
 
 To transcribe audio from a file on your computer, run the following cURL command in a terminal or your favorite API client.
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -99,6 +101,8 @@ Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.dee
 ## Results
 
 Filtered results will appear in the transcript as \*\*\*\*
+
+**`JSON`**
 
 ```json JSON
 {

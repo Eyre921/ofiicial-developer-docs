@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/voices/pvc/verification/capt
 
 ### Body (multipart/form-data)
 
+This endpoint expects a multipart form containing a file.
+
 - `recording` (file, required) — Audio recording of the user
 
 ## Response
@@ -40,6 +42,17 @@ Reference: https://elevenlabs.io/docs/api-reference/voices/pvc/verification/capt
 Successful Response
 
 - `status` (string, required) — The status of the verify PVC captcha request. If the request was successful, the status will be 'ok'. Otherwise an error message with status 500 will be returned.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

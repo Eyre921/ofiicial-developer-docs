@@ -28,6 +28,8 @@ Use a TCP check on the open port (port 8080 by default).
 
 Query the status of the `/v1/status/engine`endpoint and check whether it is in a `"Connected"` state with at least one Engine container.
 
+**`cURL`**
+
 ```bash cURL
 curl --silent http://localhost:PORT/v1/status/engine | grep --quiet -e '^{\"engine_connection_status\"\:\"Connected\".*}$'
 ```
@@ -37,6 +39,8 @@ Make sure to replace the `PORT` placeholder with the port your container is list
 ### Model Metadata
 
 Make a GET request to list all models the Engine has loaded, along with their metadata. For broader information, see the [Model Metadata endpoint documentation](/guides/fundamentals/model-metadata). When pointed at a self-hosted deployment, this endpoint is helpful to confirm that models present in your models directory are being loaded by the container as expected.
+
+**`cURL`**
 
 ```bash cURL
 curl --location 'http://localhost:8080/v1/models'
@@ -60,6 +64,8 @@ When selecting a container port, do not select port `8080`, as this is used on t
 
 Within your `docker-compose.yml` file you must publish the internal container port to the external host port, as shown below. See [Published Ports](https://docs.docker.com/network/#published-ports) in the official Docker documentation for more details.
 
+**`yaml`**
+
 ```yaml yaml
 services:
   engine:
@@ -69,6 +75,8 @@ services:
 ```
 
 To modify the Engine configuration, edit your `engine.toml` file to specify the container port to publish metrics to:
+
+**`toml`**
 
 ```toml toml
 # To support metrics we need to expose an Engine endpoint
@@ -476,6 +484,8 @@ Use a TCP check on the open status port (port 8080 by default).
 ### Readiness Probe
 
 Query the status of the `/v1/status`endpoint and check the connection state.
+
+**`cURL`**
 
 ```bash cURL
 curl --silent http://localhost:8080/v1/status | grep --quiet -e '^{.*\"state\"\:\"\(Connected\|TrustBased\)\".*}$'

@@ -27,8 +27,10 @@ Reference: https://elevenlabs.io/docs/api-reference/music/upload
 
 ### Body (multipart/form-data)
 
+This endpoint expects a multipart form containing a file.
+
 - `file` (file, required) — The audio file to upload.
-- `extract_composition_plan` (boolean or enum, optional) — Whether to generate and return the composition plan for the uploaded song. Pass a model id (`music_v1` or `music_v2`) to control which composition plan format is returned. Passing `true`/`false` is deprecated; `true` defaults to the `music_v1` plan format. Enabling this will increase the latency.
+- `extract_composition_plan` (boolean or enum, optional) — Whether to generate and return the composition plan for the uploaded song. Pass a model id (`music_v1`, `music_v2` or `music_v2_5`) to control which composition plan format is returned. Passing `true`/`false` is deprecated; `true` defaults to the `music_v1` plan format. Enabling this will increase the latency.
 - `with_timestamps` (boolean, optional) — Whether to transcribe the uploaded song and return word-level timestamps. If True, the response will include words_timestamps but will increase the latency.
 - `with_waveform_visual` (boolean, optional) — Whether to return the visual waveform of the uploaded song.
 
@@ -83,6 +85,17 @@ Successfully uploaded music file with optional composition plan
   - `start_ms` (integer, required)
   - `end_ms` (integer, required)
 - `waveform_visual` (list of integer, optional, nullable) — A low-resolution waveform of the uploaded song, for showing a preview of it. Holds 4 values per second of audio, from -1000 to 1000. Stereo is mixed down to a single channel. Only present if `with_waveform_visual` was True in the request body.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

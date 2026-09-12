@@ -34,6 +34,8 @@ In short, diarization focuses on giving information about different speakers, wh
 
 You can use Deepgram's Multichannel feature by sending `multichannel=true` in a request via the [API](/reference/deepgram-api-overview) or an [SDK](/home). When you do so, you are telling Deepgram to transcribe each audio channel independently, and Deepgram will return a response that contains separate channels for each channel from the audio:
 
+**`JSON`**
+
 ```json JSON
 "channels": [
   {
@@ -60,6 +62,8 @@ You can use Deepgram's Multichannel feature by sending `multichannel=true` in a 
 ### Deepgram's Diarization Feature
 
 You can use Deepgram's Diarization feature by sending `diarize=true` in a request via the [API](/reference/deepgram-api-overview) or an [SDK](/home). When you do so, you are telling Deepgram that you want to know which unique person spoke each word in the transcript, and Deepgram will return a response that identifies each word as having been spoken by a different person by labelling it with a `speaker` property: `speaker: 0`, `speaker: 1`, and so on.
+
+**`JSON`**
 
 ```json JSON
 [
@@ -194,11 +198,15 @@ To really understand when to use Multichannel and when to use Diarization, let's
 
 **A person is doing a sound check to see whether sound is coming from two different inputs**
 
+**`JSON`**
+
 ```json JSON
 transcript: "hello and welcome to the sound test we're starting from the left channel then follows right channel left channel right channel left channel right channel and once again let channel know alright thank you so much listening to me and have a nice day"
 ```
 
 In this scenario, because the same person is speaking on both audio channels, Diarization would not be useful. However, it could be useful to break the transcript into separate audio channels using Deepgram's Multichannel feature. If you do so, you should see the following transcript returned:
+
+**`JSON`**
 
 ```json JSON
 "channels": [
@@ -227,11 +235,15 @@ In this scenario, because the same person is speaking on both audio channels, Di
 
 **A florist is taking an order from a customer**
 
+**`JSON`**
+
 ```json JSON
 transcript: "thank you for calling marcus flowers hello i'd like to order flowers and i think you have what i'm looking for i'd be happy to take care of your order may i have your name please",
 ```
 
 In this scenario, because only one individual is on each channel, Diarization would not be useful (each speaker would be returned as `speaker: 0` since they are on separate channels). However, it could be useful to break the transcript into separate audio channels using Deepgram's Multichannel feature. If you do so, you should see the following transcript returned:
+
+**`JSON`**
 
 ```json JSON
 "channels": [
@@ -276,11 +288,15 @@ In this scenario, because only one individual is on each channel, Diarization wo
 
 **A news broadcast has multiple presenters**
 
+**`JSON`**
+
 ```json JSON
 transcript: "from npr news this is all things considered i'm robert siegel and i'm michelle norris"
 ```
 
 In this scenario, because only one audio channel exists, Multichannel will probably not provide you with enough information. However, Diarization could provide information to help you identify each person speaking. In particular, analyzing both `start` and `end` properties alongside the speaker information can help you find sections of audio where people talk over each other, which commonly occurs in natural conversation. If you use Diarization, you should see the following transcript returned:
+
+**`JSON`**
 
 ```json JSON
 "channels": [
@@ -409,6 +425,8 @@ Read on for explanations to some common scenarios that may seem unusual.
 
 If your audio has two different people speaking, each on a different audio channel, using both Multichannel and Diarization will return two distinct transcripts for each channel with both speakers identified as the first speaker. Having both speakers identified as the first speaker may seem unusual, but it is correct--because only one person is speaking on each distinct audio channel, each person is the one speaker (`speaker: 0`) on their specific channel:
 
+**`JSON`**
+
 ```json JSON
 "channels": [
   {
@@ -451,6 +469,8 @@ If your audio has two different people speaking, each on a different audio chann
 ### When using the Multichannel feature, Deepgram returns the same transcript on each channel
 
 Sometimes when you believe an audio file is multichannel and expect Deepgram to return multiple different transcripts, you receive a response that contains separate channels with identical transcripts. In this case, you may have encountered a joint stereo audio file. Sometimes, to save file space when creating or converting an audio file, multichannel audio will undergo a process that mixes the channels into one main channel. Deepgram will still identify that the audio contains two channels, but the returned transcript for each channel will be the same (all speaking parts, regardless of how many speakers the audio contains, will be combined as one transcript):
+
+**`JSON`**
 
 ```json JSON
 "channels": [

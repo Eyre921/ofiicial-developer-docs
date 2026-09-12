@@ -18,6 +18,8 @@ In addition to the installation guide posted at [UMS Deepgram SR - Deb Installat
 
 In the `umsdeepgram.xml` configuration file, add a `service-endpoint` child element to the `service-endpoints` element. You must specify the self-hosted deployment’s IP address and port number in the `service-uri` attribute. The URI's path is `/v1/listen/stream`, and the protocol should use only a web socket (`ws`), not a secure web socket (`wss`).
 
+**`XML`**
+
 ```xml XML
 <service-endpoints load-balancing="round-robin" fail-over="true">
       <service-endpoint enable="true" service-uri="ws://SELF_HOSTED_IP_ADDRESS:SELF_HOSTED_PORT/v1/listen/stream"/>
@@ -25,6 +27,8 @@ In the `umsdeepgram.xml` configuration file, add a `service-endpoint` child elem
 ```
 
 This can coexist alongside a hosted service-endpoint.
+
+**`XML`**
 
 ```xml XML
 <service-endpoints load-balancing="round-robin" fail-over="true">
@@ -40,6 +44,8 @@ Authorization is performed at the request level for the hosted Deepgram API by i
 For the UniMRCP plugin, the `deepgram.subscription.key` file must exist and match the schema specified in the plugin installation instructions. For the hosted Deepgram API, this means setting the `auth-key` field with a valid Deepgram API key. If you are using both the hosted API and your own self-hosted environment, make sure to set this value.
 
 If you are exclusively using your self-hosted environment, the `auth-key` value can be empty, such as:
+
+**`JSON`**
 
 ```json JSON
 {

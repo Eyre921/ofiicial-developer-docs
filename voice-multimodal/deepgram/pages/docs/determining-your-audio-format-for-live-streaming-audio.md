@@ -59,6 +59,8 @@ Alternatively, you can use `ffprobe` (part of the ffmpeg package, which is a cro
 
 To use `ffprobe`, from a terminal, run:
 
+**`Shell`**
+
 ```shell Shell
 ffprobe PATH_TO_FILE
 ```

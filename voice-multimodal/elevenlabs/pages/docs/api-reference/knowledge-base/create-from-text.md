@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/knowledge-base/create-from-t
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `text` (string, required) — Text content to be added to the knowledge base.
 - `name` (string, optional, nullable) — A custom, human-readable name for the document.
 - `parent_folder_id` (string, optional, nullable) — If set, the created document or folder will be placed inside the given folder.
@@ -41,6 +43,17 @@ Successful Response
 - `name` (string, required)
 - `folder_path` (list of object, optional) — The folder path segments leading to this entity, from root to parent folder.
   - `id` (string, required)
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

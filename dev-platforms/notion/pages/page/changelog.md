@@ -4,6 +4,22 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+<Update label="September 10, 2026">
+  ### AI search accepts filters, and `notion-search` routes content queries to it
+
+  [`notion-ai-search`](/guides/mcp/mcp-supported-tools) now accepts the exact filters and sort options that `notion-search` accepts, and it accepts an empty query for filter-only browsing. These options return Notion-only workspace results so the constraints are enforced exactly, and the response still reports `type: "ai_search"`. Omit them to search Notion and connected sources together. Filtering by editor, last-edited date, multiple teamspaces, title only, or content status, and sorting by date, still require Business or Enterprise. User lookup remains on `notion-search` with `query_type: "user"`.
+
+  Content searches sent to `notion-search` now run AI search when the connection can use it. When `notion-fetch` with the id `self` reports `current_tool_access.ai_search.status` as `available`, a keyword content query sent to `notion-search` searches Notion and connected sources and reports `type: "ai_search"`, so clients that haven't adopted `notion-ai-search` keep getting unified results. A call that passes an exact filter, an empty query, or a sort other than `relevance` stays on Notion workspace search. Routing respects the connection's tool list: a connection that can't use `notion-ai-search` keeps its content searches on workspace search, and the legacy `content_search_mode: "ai_search"` parameter returns a permission error for that connection. The 30-requests-per-minute limit on `notion-search` counts these calls either way.
+
+  ### Session URL shorthand for Custom Agent session tools
+
+  Notion MCP's [Custom Agent session tools](/guides/mcp/mcp-supported-tools) now accept the shorthand `session://<sessionId>` and `thread://<sessionId>` for `session_url`, resolving both in the connected workspace. The full form `session://<spaceId>/<sessionId>` that session tools return still works, and a full URL whose workspace ID differs from the connected workspace still returns HTTP 400 `validation_error`.
+
+  ### Validation and conflict errors from Custom Agent session tools
+
+  Notion MCP's [Custom Agent session tools](/guides/mcp/mcp-supported-tools) now return HTTP 400 `validation_error` for malformed URLs, URLs for a resource other than a session, or full URLs naming another workspace, and `notion-send-message-to-session` returns a conflict error when the session already has a run in progress. Both cases previously returned a generic failure. Valid URLs for missing, inaccessible, or unsupported sessions return HTTP 404 `object_not_found`. Wait for the run to finish with `notion-wait-session` before sending another message.
+</Update>
+
 <Update label="September 9, 2026">
   ### Faster retries and plan-based rate limits
 

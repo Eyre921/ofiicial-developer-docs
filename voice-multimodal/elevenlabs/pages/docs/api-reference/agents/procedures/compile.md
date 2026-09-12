@@ -393,6 +393,25 @@ Successful Response
           - `source`: `omit` (OmitSchemaOverride)
   - `prevent_subagent_loops` (boolean, required, default: false) — Whether to prevent loops in the workflow execution.
 
+## Errors
+
+### 400 Bad Request Error
+
+Structured procedure validation failed.
+
+- `errors` (map from string to list of object, required) — Validation errors keyed by procedure ID.
+  - `path` (string, required) — JSON path to the error, e.g. 'trigger', 'steps[0].instruction'
+  - `message` (string, required) — Human-readable error message
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

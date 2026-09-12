@@ -1413,7 +1413,7 @@ post /v1/accounts/{account_id}/deployments
 
 [Deployment shapes](/guides/ondemand-deployments#deployment-shapes) are pre-configured templates optimized for speed, cost, or efficiency. To create a deployment with a specific shape, pass the `deploymentShape` field in the request body along with `baseModel`.
 
-Use the [List Deployment Shape Versions](/api-reference/list-deployment-shape-versions) endpoint to find available shapes for your model.
+Use the [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions) endpoint to find available shapes for your model: it takes a deployment create request and returns the validated shape versions compatible with that model, ready to pass as `deploymentShape`.
 
 ```bash theme={null}
 curl -X POST "https://api.fireworks.ai/v1/accounts/YOUR_ACCOUNT_ID/deployments" \
@@ -1435,7 +1435,7 @@ curl -X POST "https://api.fireworks.ai/v1/accounts/YOUR_ACCOUNT_ID/deployments" 
 
 Shapes are validated, so the hardware, precision, and serving configuration are known to work together. Omitting `deploymentShape` — whether or not you set `acceleratorType`, `acceleratorCount`, or `precision` — creates the deployment without a shape. Deployments without a shape are the most common cause of failed deployment creations, and the unshaped path may be deprecated in the future: always pass `deploymentShape`. See [What is a deployment shape?](/faq-new/deployment-infrastructure/what-is-a-deployment-shape) for how to find shapes for your model.
 
-Each model is validated only on the accelerator type, GPU count, and precision combinations covered by its shapes — many models support just one. Check [List Deployment Shape Versions](/api-reference/list-deployment-shape-versions) before overriding `acceleratorType` or `acceleratorCount`: an unsupported combination typically fails at creation with a generic `Internal error occurred` message that does not name the hardware mismatch.
+Each model is validated only on the accelerator type, GPU count, and precision combinations covered by its shapes — many models support just one. Check [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions) before overriding `acceleratorType` or `acceleratorCount`: an unsupported combination typically fails at creation with a generic `Internal error occurred` message that does not name the hardware mismatch.
 
 
 # Create dpo job
@@ -2148,6 +2148,54 @@ Source: https://docs.fireworks.ai/api-reference/list-users
 
 get /v1/accounts/{account_id}/users
 
+
+
+# Match Deployment Shape Versions
+Source: https://docs.fireworks.ai/api-reference/match-deployment-shape-versions
+
+post /v1/accounts/{account_id}/deploymentShapeVersions:match
+Returns the deployment shape versions compatible with the provided deployment create request. Use this to discover a validated shape before creating a deployment with `deployment_shape` set - shapeless deployments (raw accelerator type/count) skip validated-configuration checks and are far more likely to fail at creation.
+
+Use this endpoint to discover the deployment shape versions compatible with a model before creating a deployment. Pass a [Create Deployment](/api-reference/create-deployment) request in the body — at minimum `createDeploymentRequest.deployment.baseModel` — and the response returns the latest validated shape versions that can serve that model, ready to pass as `deploymentShape`.
+
+Match applies the full server-side compatibility logic for you: PEFT base-model resolution (for LoRA addons and live merge, shapes are matched against the PEFT base model), model-type and parameter-count tiers, embedding vs. non-embedding models, the MULTI\_LORA capability gate when `enableAddons` is set, and hiding of FP4 shapes for full-parameter fine-tunes. [List Deployment Shape Versions](/api-reference/list-deployment-shape-versions) only lists versions of a shape you already know and cannot answer "which shapes work with this model?" — use Match for that.
+
+<Note>
+  The account in the URL must be **your own account** — the account that will own the deployment (you must be a member of it, so `accounts/fireworks` fails with a permission error). The model in the request body, however, can live in any account you can deploy from, including publisher accounts like `accounts/fireworks`; public shapes from the publisher's account flow into the results.
+</Note>
+
+## Example: Match shapes for a model
+
+```bash theme={null}
+curl -X POST "https://api.fireworks.ai/v1/accounts/YOUR_ACCOUNT_ID/deploymentShapeVersions:match" \
+  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "createDeploymentRequest": {
+      "deployment": {
+        "baseModel": "accounts/fireworks/models/gpt-oss-120b"
+      }
+    }
+  }'
+```
+
+To match shapes for a deployment with LoRA addons enabled, include `enableAddons` in the request — only shapes with the MULTI\_LORA capability are returned:
+
+```bash theme={null}
+curl -X POST "https://api.fireworks.ai/v1/accounts/YOUR_ACCOUNT_ID/deploymentShapeVersions:match" \
+  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "createDeploymentRequest": {
+      "deployment": {
+        "baseModel": "accounts/fireworks/models/gpt-oss-120b",
+        "enableAddons": true
+      }
+    }
+  }'
+```
+
+Then pass one of the returned shape versions as `deploymentShape` in the [Create Deployment](/api-reference/create-deployment) request. See [What is a deployment shape?](/faq-new/deployment-infrastructure/what-is-a-deployment-shape) for why you should always create deployments from a shape.
 
 
 # Create Chat Completion
@@ -3589,32 +3637,17 @@ fireconnect claude on --opus glm-fast-latest --sonnet auto-instant
 fireconnect claude status
 ```
 
-Slot flags are independent — `--opus firerouter` changes only Opus and leaves main alone. Use `native` as a slot value to leave it unpinned so Claude Code picks Anthropic's default for that role (still routed through Fireworks).
+Model flags directly override the named slot. Set every slot you want to control explicitly. Use `native` as a slot value to leave a slot unpinned so Claude Code chooses its default for that role.
 
-Re-running `on` without flags preserves your current mapping when FireConnect is already active (including `/model` changes made inside Claude Code).
-
-### Example model mapping
-
-When you run `fireconnect claude on` without model flags, FireConnect applies the mapping below. First-time setup opens an interactive picker unless you pass `--non-interactive`. Override any slot with `--model`, `--opus`, `--sonnet`, `--haiku`, `--fable`, or `--subagent`.
-
-| Alias    | Standard key (`fw_...`)                               | Fire Pass key (`fpk_...`) |
-| -------- | ----------------------------------------------------- | ------------------------- |
-| main     | Claude default (unpinned)                             | `kimi-fast-latest`        |
-| opus     | `firerouter` on first connect; otherwise `glm-latest` | `kimi-fast-latest`        |
-| sonnet   | `deepseek-pro-latest`                                 | `kimi-fast-latest`        |
-| haiku    | `deepseek-flash-latest`                               | `kimi-fast-latest`        |
-| fable    | `glm-flash-latest` (vision)                           | `kimi-fast-latest`        |
-| subagent | `deepseek-flash-latest`                               | `kimi-fast-latest`        |
-
-On **first connect** with a standard key and FireRouter auth available, Opus is auto-pinned to `firerouter` and Sonnet moves to `glm-latest`. Reopen the wizard anytime:
+Re-running `on` without flags preserves your current mapping when FireConnect is already active (including `/model` changes made inside Claude Code). Reopen the wizard anytime:
 
 ```bash theme={null}
 fireconnect claude on --interactive
 ```
 
-Use `--non-interactive` to skip the wizard and apply saved preferences or defaults. `--interactive` cannot be combined with model flags like `--model` or `--opus`.
+Use `--non-interactive` to skip the wizard and apply saved preferences or the current profile. `--interactive` cannot be combined with model flags like `--model` or `--opus`.
 
-The wizard is Fable-first and shows every slot on one screen. Pick a model per slot — no separate fast/non-fast profile toggle.
+Use the wizard to choose aliases, or use explicit model flags for a reproducible configuration.
 
 ### Smart router mixes
 
@@ -3629,23 +3662,7 @@ fireconnect claude on --sonnet auto-instant      # latency-first mix
 
 ## What gets written
 
-FireConnect writes these settings to `~/.claude/settings.json`. Claude Code authenticates via the `X-Fireworks-Api-Key` custom header (not `apiKeyHelper`). The Fireworks key is written to the file with mode `0600`.
-
-Example settings after first connect with a standard key:
-
-```json theme={null}
-{
-  "env": {
-    "ANTHROPIC_BASE_URL": "https://api.fireworks.ai/inference",
-    "ANTHROPIC_DEFAULT_OPUS_MODEL": "firerouter[1m]",
-    "ANTHROPIC_DEFAULT_SONNET_MODEL": "glm-latest[1m]",
-    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "deepseek-flash-latest[1m]",
-    "ANTHROPIC_DEFAULT_FABLE_MODEL": "glm-flash-latest[1m]",
-    "CLAUDE_CODE_SUBAGENT_MODEL": "deepseek-flash-latest[1m]",
-    "ANTHROPIC_CUSTOM_HEADERS": "X-Fireworks-Api-Key: YOUR_FIREWORKS_API_KEY"
-  }
-}
-```
+FireConnect writes the selected mapping to `~/.claude/settings.json`. Claude Code authenticates via the `X-Fireworks-Api-Key` custom header (not `apiKeyHelper`). The Fireworks key is written to the file with mode `0600`.
 
 **Why the custom header?** The gateway authenticates via `X-Fireworks-Api-Key`, which wins over any stray `ANTHROPIC_API_KEY` / `ANTHROPIC_AUTH_TOKEN` — so a leftover Anthropic key can't silently break routing.
 
@@ -3654,14 +3671,14 @@ Example settings after first connect with a standard key:
 `on` also:
 
 * Denies Anthropic **server-side** `WebSearch` / `WebFetch` tools the gateway can't run, and installs the Fireworks [WebSearch MCP](/ecosystem/fireconnect/websearch-mcp) when your account is eligible
-* Installs a **status line** showing routed models and Fireworks-rate session cost (see [Status line](#status-line)). Your own `statusLine` is never replaced
+* Installs a **status line** showing routed models and estimated session cost (see [Status line](#status-line)). Your own `statusLine` is never replaced
 * Sends privacy-safe attribution headers (`X-Title`, `HTTP-Referer`) where supported
 
-FireConnect saves a backup of your previous provider settings to `~/.fireconnect/claude/` so `fireconnect claude off` can restore them byte-for-byte. Legacy pins like `deepseek-v4-flash` migrate to `deepseek-flash-latest` on the next `on`.
+FireConnect saves a backup of your previous provider settings to `~/.fireconnect/claude/`. When that backup is available, `fireconnect claude off` restores it byte-for-byte; otherwise it removes FireConnect-managed settings. Legacy pins like `deepseek-v4-flash` migrate to `deepseek-flash-latest` on the next `on`.
 
 ## Status line
 
-When you don't already have a custom `statusLine`, `on` installs one that shows which models actually served the session and what they cost at Fireworks rates:
+When you don't already have a custom `statusLine`, `on` installs one that shows which models actually served the session and their estimated cost:
 
 ```text theme={null}
 ━━━━━━━━━━━━ ━ ━ · $70.39
@@ -3670,7 +3687,7 @@ When you don't already have a custom `statusLine`, `on` installs one that shows 
 
 The first line is a **multi-color bar** sized by each backend model's share of session spend, followed by the session total. The second line names each model with its cost and cache hit rate. FireRouter sessions show the whole mix at a glance — not just the latest model.
 
-The cost uses the same pricing engine as `fireconnect claude usage`, not Claude Code's Anthropic list-price estimate. A `~` prefix means some model had no published rate and fell back to a reference price.
+The cost uses Fireworks serverless rates for Fireworks models and Anthropic list rates for Anthropic models. Calls without a matched rate remain in usage totals but are not assigned a dollar cost.
 
 `off` removes the status line. **If you already have a `statusLine`, FireConnect leaves it alone** — delete yours and re-run `fireconnect claude` to opt in.
 
@@ -3690,22 +3707,65 @@ fireconnect model list --refresh
 fireconnect claude on --sonnet kimi-latest
 ```
 
-`fireconnect model list` shows serverless endpoints and pricing (cached for one hour; works offline). `fireconnect claude status` shows your current mapping, every slot including defaults, and Fireworks rates per slot.
+`fireconnect model list` shows serverless endpoints and pricing (cached for one hour; works offline). `fireconnect claude status` shows your current mapping, every slot including defaults, and available rates per slot.
 
 Fire Pass keys only list Fire Pass routers. FireConnect rejects `--model firerouter` with Fire Pass (`fpk_...`) on every harness; use an `fw_...` key.
 
 ## FireRouter
 
-Route requests through [FireRouter](/ecosystem/firerouter/overview):
+Route requests through [FireRouter](/ecosystem/firerouter/overview). The default `firerouter` model ID is more likely to use **GLM 5.3** for lower-complexity work and **Claude Opus 5** for harder work. See [current routing pair](/ecosystem/firerouter/overview#current-routing-pair).
+
+### Choose where FireRouter is used
+
+Use `--model` for Main or a slot-specific flag for an alias:
 
 ```bash theme={null}
 fireconnect claude on --model firerouter
-fireconnect claude on --opus firerouter --anthropic-api-key sk-ant-...
+fireconnect claude on --opus firerouter
 ```
 
-Use `--model firerouter` for main, or slot flags like `--opus firerouter`. Pass `--anthropic-api-key sk-ant-...` on `on`, or store it once with `fireconnect configure --anthropic-api-key sk-ant-...`.
+<Warning>
+  On first setup, FireConnect assigns models to slots you do not specify. Use `--interactive` to choose alias slots. To control the complete mapping including Main, set every slot explicitly. Use `native` to leave a slot unpinned.
+</Warning>
 
-Bias savings vs quality with `--routing-preference` (`1`-`5`; default `3`):
+```bash theme={null}
+fireconnect claude on --interactive
+
+# FireRouter on Main; leave every alias unpinned
+fireconnect claude on --model firerouter \
+  --opus native --sonnet native --haiku native \
+  --fable native --subagent native
+```
+
+### Custom routing pairs
+
+```bash theme={null}
+fireconnect claude on --sonnet firerouter/claude-opus-5/glm-5p3-fast   # custom pair
+```
+
+Use a [slash-delimited FireRouter slug](/ecosystem/firerouter/overview#choose-different-models) on any slot (`firerouter/<primary>/<redirect>`, …) to change which models FireRouter can pick.
+
+Anthropic credentials are needed only when the slug includes a Claude model (including bare `firerouter`). A Fireworks-only slug such as `firerouter/kimi-k3/glm-5p2-fast` needs only the Fireworks API key.
+
+### Anthropic auth for pass-through
+
+The default bare `firerouter` route's Claude Opus 5 leg needs Anthropic credentials. With FireConnect you usually **do not** pass a new key:
+
+* **Claude subscription or browser OAuth** — Claude Code already attaches Anthropic auth on each request; Fireworks forwards it for pass-through.
+* **Anthropic API key** — if Claude Code is configured with `ANTHROPIC_API_KEY`, that works too.
+* **Explicit BYOK** — pass `--anthropic-api-key sk-ant-...` on `on`, or store once with `fireconnect configure --anthropic-api-key sk-ant-...`.
+* **Workspace BYOK** — when enabled on your Fireworks account, no local Anthropic key is required.
+
+### See which models served the session
+
+After assistant messages run, check:
+
+1. **Status line** (installed by `on` unless you already have a custom `statusLine`) — lists backend models that served the session (for example `Claude Opus 5` or `GLM 5.3`) and estimated session cost. Before a billed response, it may show `FireRouter` rather than a resolved backend. See [Status line](#status-line).
+2. **`fireconnect claude status`** — shows the configured slot mapping and which slots use FireRouter. It does not show per-request routing decisions.
+
+### Tune cost vs quality
+
+Set routing preference with `--routing-preference` on `on` (`1`–`5` or a named level):
 
 ```bash theme={null}
 fireconnect claude on --model firerouter --routing-preference 4
@@ -3714,9 +3774,11 @@ fireconnect claude on --model firerouter --routing-preference 4
 
 See [Routing preferences](/ecosystem/firerouter/routing-preferences).
 
+Omit the flag to use FireRouter's default. Re-running `on` without `--routing-preference` clears a preference that FireConnect previously wrote.
+
 ## Usage and live meter
 
-Claude Code's `/model` picker shows Anthropic list prices, not Fireworks rates. Use `fireconnect claude usage` to estimate real Fireworks spend from session logs.
+Claude Code's `/model` picker shows Anthropic list prices. Use `fireconnect claude usage` to estimate session cost from Fireworks serverless rates and Anthropic list rates.
 
 On a TTY, `usage` opens a session picker (last 3 days by default), then a live cost meter. Tab: agents pane. Esc: session list. q: quit.
 
@@ -3848,7 +3910,7 @@ Run `fireconnect help` for the overview, or `fireconnect claude help` (and simil
 fireconnect status --json   # machine-readable sign-in and key-storage details
 ```
 
-`~/.fireconnect/config.json` stores a reference such as `{keychain:fireworks-api-key}` or `{env:FIREWORKS_API_KEY}`. It never stores a literal key in global config.
+For direct Fireworks routing, `~/.fireconnect/config.json` normally stores a keychain or environment reference such as `{keychain:fireworks-api-key}` or `{env:FIREWORKS_API_KEY}`. Explicit Anthropic keys and Azure keys passed with `--api-key` may be stored literally. FireConnect writes the file with mode `0600` when it contains a literal key.
 
 ## Global configuration
 
@@ -3857,7 +3919,7 @@ fireconnect status --json   # machine-readable sign-in and key-storage details
 ```bash theme={null}
 fireconnect configure \
   --provider azure \
-  --base-url https://<resource>.services.ai.azure.com \
+  --base-url "https://YOUR_RESOURCE.services.ai.azure.com" \
   --api-key $AZURE_API_KEY
 
 fireconnect configure --anthropic-api-key sk-ant-...
@@ -3903,7 +3965,7 @@ See **[Models](/ecosystem/fireconnect/models)** for a cross-harness quick refere
 Claude Code-only flags:
 
 * `--interactive`: open the model mapping wizard (cannot combine with model flags)
-* `--non-interactive`: skip first-run onboarding; use saved preferences or example defaults
+* `--non-interactive`: skip first-run onboarding and use saved preferences or automatic setup
 
 On the Foundry path, pass your model with `--model` (for example, `--model FW-GLM-5.2`).
 
@@ -3911,10 +3973,13 @@ On the Foundry path, pass your model with `--model` (for example, `--model FW-GL
   `--main` is a retired alias for `--model` in v0.9.0+. Prefer `--model` in new scripts.
 </Tip>
 
-FireRouter flags (when using `firerouter`):
+FireRouter flags (when a slot uses `firerouter`):
 
-* `--anthropic-api-key sk-ant-...`: BYOK for Claude Opus 5 pass-through (where the harness supports it)
-* `--routing-preference <1-5>`: savings vs. quality (Claude Code, OpenCode, Pi, VS Code). See [Routing preferences](/ecosystem/firerouter/routing-preferences)
+* `--model firerouter`: sets **main** to FireRouter. On first setup, FireConnect assigns models to unspecified aliases; on later runs, saved or active alias mappings are preserved
+* `--opus firerouter` (Claude Code): sets Opus to FireRouter. Set `--sonnet` explicitly when you need a specific Sonnet mapping
+* `native`: leave a Claude slot unpinned (CLI spelling; the wizard shows **Claude default**). This removes the model pin; it does not change the configured provider endpoint
+* `--anthropic-api-key sk-ant-...`: optional BYOK for Claude Opus 5 pass-through (where the harness supports it). Usually unnecessary in Claude Code when you already have subscription, OAuth, or API-key auth
+* `--routing-preference <level>`: `1`–`5` or `max-intelligence`, `more-intelligence`, `balanced`, `more-savings`, or `max-savings` — CLI flag only, no in-app slider (Claude Code, OpenCode, Pi, VS Code). See [Routing preferences](/ecosystem/firerouter/routing-preferences)
 
 ## API key resolution
 
@@ -3941,26 +4006,25 @@ Only needed if you still have old scripts or muscle memory. Day-to-day use is `f
 
 <AccordionGroup>
   <Accordion title="Pre-0.5.0 syntax">
-    | Before                              | After                                         |
-    | ----------------------------------- | --------------------------------------------- |
-    | `fireconnect on`                    | `fireconnect claude on`                       |
-    | `fireconnect off`                   | `fireconnect claude off`                      |
-    | `fireconnect status`                | `fireconnect claude status`                   |
-    | `fireconnect list`                  | `fireconnect claude status`                   |
-    | `fireconnect set --main <id>`       | `fireconnect claude on --model <id>`          |
-    | `fireconnect reset`                 | `fireconnect claude on` (re-applies defaults) |
-    | `fireconnect on --harness opencode` | `fireconnect opencode on`                     |
+    | Before                              | After                                                                                         |
+    | ----------------------------------- | --------------------------------------------------------------------------------------------- |
+    | `fireconnect on`                    | `fireconnect claude on`                                                                       |
+    | `fireconnect off`                   | `fireconnect claude off`                                                                      |
+    | `fireconnect status`                | `fireconnect claude status`                                                                   |
+    | `fireconnect list`                  | `fireconnect claude status`                                                                   |
+    | `fireconnect set --main <id>`       | `fireconnect claude on --model <id>`                                                          |
+    | `fireconnect reset`                 | `fireconnect claude on` (preserves the saved or active mapping; use model flags to change it) |
+    | `fireconnect on --harness opencode` | `fireconnect opencode on`                                                                     |
   </Accordion>
 
   <Accordion title="v0.9.5 changes">
     | Feature          | Details                                                                                                                              |
     | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-    | Status line      | Session cost bar in Claude Code showing per-model Fireworks spend and cache rates. Your own `statusLine` is preserved.               |
+    | Status line      | Session cost bar in Claude Code showing per-model estimated cost and cache rates. Your own `statusLine` is preserved.                |
     | ChatGPT app      | `fireconnect chatgpt` is an alias for `codex` — routes both Codex CLI and ChatGPT desktop from one config. Quit the app before `on`. |
     | Smart routers    | Pin `auto` or `auto-instant` on Claude slots for open-model mixes (preview).                                                         |
-    | Claude defaults  | Sonnet → `deepseek-pro-latest`, Opus → `glm-latest`, Fable → `glm-flash-latest`. FireRouter still auto-pins Opus on first connect.   |
     | Model list cache | Catalog cached for 1 hour, works offline, `--refresh` refetches. Lists `auto`, `auto-instant`, and FireRouter.                       |
-    | `claude status`  | Shows every slot, including defaults you never explicitly set.                                                                       |
+    | `claude status`  | Shows every resolved slot, including slots you never explicitly set.                                                                 |
     | GLM 5.3          | `glm-5p3` and `glm-5p3-flash` added; US-only `glm-5p3-flash-us` pricing corrected.                                                   |
   </Accordion>
 
@@ -3973,13 +4037,12 @@ Only needed if you still have old scripts or muscle memory. Day-to-day use is `f
   </Accordion>
 
   <Accordion title="v0.9.3 changes">
-    | Feature              | Details                                                                                                                                                                       |
-    | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | Claude defaults      | First connect uses `firerouter` for Opus; otherwise Opus defaults to `deepseek-pro-latest`. Sonnet stays on Claude's default, and Haiku/subagents use `deepseek-flash-latest` |
-    | Deprecated Flash pin | Existing Claude `deepseek-v4-flash` defaults migrate to `deepseek-flash-latest` on the next `claude on`                                                                       |
-    | Mixed models         | Claude Code can mix Anthropic and Fireworks models while routed through FireConnect                                                                                           |
-    | Harness replacement  | `fireconnect deepseek` for DeepSeek Harness replaces `fireconnect deepagents`                                                                                                 |
-    | Demo command         | Use `fireconnect claude demo`; the old top-level `fireconnect demo` form is deprecated                                                                                        |
+    | Feature              | Details                                                                                             |
+    | -------------------- | --------------------------------------------------------------------------------------------------- |
+    | Deprecated Flash pin | Existing Claude `deepseek-v4-flash` pins migrate to `deepseek-flash-latest` on the next `claude on` |
+    | Mixed models         | Claude Code can mix Anthropic and Fireworks models while routed through FireConnect                 |
+    | Harness replacement  | `fireconnect deepseek` for DeepSeek Harness replaces `fireconnect deepagents`                       |
+    | Demo command         | Use `fireconnect claude demo`; the old top-level `fireconnect demo` form is deprecated              |
   </Accordion>
 
   <Accordion title="v0.9.2 changes">
@@ -3997,17 +4060,16 @@ Only needed if you still have old scripts or muscle memory. Day-to-day use is `f
     | `fireconnect upgrade`     | In-place upgrade for curl/git installs; interactive terminals may prompt **Upgrade now?**                                                                               |
     | Seamless upgrade          | From 0.9.0 on, harness settings (including Claude Code) are preserved across upgrade/reinstall                                                                          |
     | Upgrade from before 0.9.0 | With Claude connected, FireConnect restores original Claude settings before updating; run `fireconnect claude on` afterward. In CI, set `FIRECONNECT_AUTO_OFF_CLAUDE=1` |
-    | Claude `--interactive`    | Model mapping wizard with fast/non-fast profile toggle; preferences persist per key type                                                                                |
   </Accordion>
 
   <Accordion title="v0.9.0 changes">
-    | Before                               | After                                                  |
-    | ------------------------------------ | ------------------------------------------------------ |
-    | `fireconnect <harness> model list`   | `fireconnect model list`                               |
-    | `fireconnect <harness> model select` | `fireconnect <harness> on --model <id>` or slot flags  |
-    | `fireconnect <harness> model reset`  | `fireconnect <harness> on` (re-applies defaults)       |
-    | `--main <id>` on `on`                | `--model <id>`                                         |
-    | Claude `apiKeyHelper` auth           | `X-Fireworks-Api-Key` custom header in `settings.json` |
+    | Before                               | After                                                                                            |
+    | ------------------------------------ | ------------------------------------------------------------------------------------------------ |
+    | `fireconnect <harness> model list`   | `fireconnect model list`                                                                         |
+    | `fireconnect <harness> model select` | `fireconnect <harness> on --model <id>` or slot flags                                            |
+    | `fireconnect <harness> model reset`  | `fireconnect <harness> on` (preserves the saved or active mapping; use model flags to change it) |
+    | `--main <id>` on `on`                | `--model <id>`                                                                                   |
+    | Claude `apiKeyHelper` auth           | `X-Fireworks-Api-Key` custom header in `settings.json`                                           |
   </Accordion>
 </AccordionGroup>
 
@@ -4104,7 +4166,7 @@ export ANTHROPIC_API_KEY=sk-ant-...   # optional BYOK for pass-through to Claude
 fireconnect codex on --model firerouter --anthropic-api-key sk-ant-...
 ```
 
-FireConnect rejects `--model firerouter` with Fire Pass (`fpk_...`) on every harness; use an `fw_...` key. Codex also does not support Fire Pass for direct routing. FireRouter BYOK reads `ANTHROPIC_API_KEY` from your shell (Codex does not support `--routing-preference`).
+FireConnect rejects `--model firerouter` with Fire Pass (`fpk_...`) on every harness; use an `fw_...` key. Codex also does not support Fire Pass for direct routing. Export `ANTHROPIC_API_KEY` yourself, or pass `--anthropic-api-key` and FireConnect will export it for Codex. Codex does not support `--routing-preference`.
 
 <Warning>
   **MiniMax models are not supported in Codex.** Codex uses the Fireworks Responses API and may insert assistant messages between `tool_calls` and `tool_results`. MiniMax chat templates require `tool_results` to follow `tool_calls` directly. Use Chat Completions harnesses (for example Claude Code or OpenCode) for MiniMax.
@@ -4147,7 +4209,7 @@ fireconnect codex on --config-path /path/to/config.toml
 
 ## Fireworks on Microsoft Foundry
 
-Codex supports **Fireworks on Microsoft Foundry** (CLI: `--provider azure` or `on --azure`). See the [FireConnect overview](/ecosystem/fireconnect/microsoft-foundry) and [Microsoft Foundry integration guide](/ecosystem/integrations/azure-foundry) for portal setup.
+Codex supports **Fireworks on Microsoft Foundry** (CLI: `--provider azure` or `on --azure`). FireRouter is not available on the Foundry path; run `fireconnect configure --provider fireworks` before using `--model firerouter`. See the [FireConnect overview](/ecosystem/fireconnect/microsoft-foundry) and [Microsoft Foundry integration guide](/ecosystem/integrations/azure-foundry) for portal setup.
 
 <Warning>
   Foundry routing requires a standard Azure API key. Fire Pass keys (`fpk_...`) are not supported. FireConnect does not write a Fireworks model catalog on the Foundry path. Set your deployment with `--model`.
@@ -4156,11 +4218,11 @@ Codex supports **Fireworks on Microsoft Foundry** (CLI: `--provider azure` or `o
 ### Configure and enable
 
 ```bash theme={null}
-export AZURE_API_KEY=<your-azure-api-key>
+export AZURE_API_KEY="YOUR_AZURE_API_KEY"
 
 fireconnect configure \
   --provider azure \
-  --base-url https://<resource>.services.ai.azure.com \
+  --base-url "https://YOUR_RESOURCE.services.ai.azure.com" \
   --api-key $AZURE_API_KEY
 
 fireconnect codex on --model FW-GLM-5.2
@@ -4169,7 +4231,7 @@ fireconnect codex on --model FW-GLM-5.2
 One-off routing:
 
 ```bash theme={null}
-fireconnect codex on --azure --base-url https://<resource>.services.ai.azure.com --model FW-MiniMax-M2.5
+fireconnect codex on --azure --base-url "https://YOUR_RESOURCE.services.ai.azure.com" --model FW-MiniMax-M2.5
 ```
 
 ### What gets written
@@ -4344,18 +4406,18 @@ FireConnect automates these steps and makes it easy to swap models from the term
 
 ## Fireworks on Microsoft Foundry
 
-Cursor supports **Fireworks on Microsoft Foundry** (CLI: `--provider azure` or `on --azure`). See [Microsoft Foundry in FireConnect](/ecosystem/fireconnect/microsoft-foundry) and the [portal setup guide](/ecosystem/integrations/azure-foundry).
+Cursor supports **Fireworks on Microsoft Foundry** (CLI: `--provider azure` or `on --azure`). FireRouter is not available on the Foundry path; run `fireconnect configure --provider fireworks` before using `--model firerouter`. See [Microsoft Foundry in FireConnect](/ecosystem/fireconnect/microsoft-foundry) and the [portal setup guide](/ecosystem/integrations/azure-foundry).
 
 <Warning>
   Foundry routing requires a standard Azure API key. Fire Pass keys (`fpk_...`) are not supported. **Quit Cursor** before `on` or `off`.
 </Warning>
 
 ```bash theme={null}
-export AZURE_API_KEY=<your-azure-api-key>
+export AZURE_API_KEY="YOUR_AZURE_API_KEY"
 
 fireconnect configure \
   --provider azure \
-  --base-url https://<resource>.services.ai.azure.com \
+  --base-url "https://YOUR_RESOURCE.services.ai.azure.com" \
   --api-key $AZURE_API_KEY
 
 fireconnect cursor on --model FW-GLM-5.2
@@ -4366,7 +4428,7 @@ One-off routing without changing global config:
 ```bash theme={null}
 fireconnect cursor on \
   --azure \
-  --base-url https://<resource>.services.ai.azure.com \
+  --base-url "https://YOUR_RESOURCE.services.ai.azure.com" \
   --model FW-MiniMax-M2.5
 ```
 
@@ -4670,6 +4732,8 @@ OpenCode, Codex, Pi, Cursor, and VS Code support Foundry routing in FireConnect 
 
 <Warning>
   Use an **Azure API key** from Foundry, not a Fireworks key (`fw_...`) or Fire Pass key (`fpk_...`). Fire Pass is not supported on the Foundry path.
+
+  FireRouter is also not available on the Foundry path. To use `--model firerouter`, first switch to the direct Fireworks gateway with `fireconnect configure --provider fireworks`.
 </Warning>
 
 ## Configure once, then enable harnesses
@@ -4677,12 +4741,20 @@ OpenCode, Codex, Pi, Cursor, and VS Code support Foundry routing in FireConnect 
 `fireconnect configure` sets the **Foundry provider and endpoint**. It does **not** set your Fireworks API key. Use `fireconnect login` for that when routing through the Fireworks gateway.
 
 ```bash theme={null}
-export AZURE_API_KEY=<your-azure-api-key>
+export AZURE_API_KEY="YOUR_AZURE_API_KEY"
 
 fireconnect configure \
   --provider azure \
-  --base-url https://<resource>.services.ai.azure.com \
-  --api-key $AZURE_API_KEY
+  --base-url "https://YOUR_RESOURCE.services.ai.azure.com"
+```
+
+If no Azure key is already configured, this stores an `{env:AZURE_API_KEY}` reference. Otherwise, FireConnect keeps the existing configured key. To store the current environment value literally instead, pass it explicitly:
+
+```bash theme={null}
+fireconnect configure \
+  --provider azure \
+  --base-url "https://YOUR_RESOURCE.services.ai.azure.com" \
+  --api-key "$AZURE_API_KEY"
 ```
 
 FireConnect stores a top-level `provider` and `azure` block in `~/.fireconnect/config.json`. After configuring, enable harnesses normally:
@@ -4714,8 +4786,8 @@ Find the endpoint in the Microsoft Foundry portal under **Project settings**.
 
 ### API key storage
 
-* Pass `--api-key` to write the Azure key into `~/.fireconnect/config.json`
-* Or export `AZURE_API_KEY` before `configure`. FireConnect stores an environment reference instead.
+* Export `AZURE_API_KEY` and omit `--api-key` to store an environment reference when no Azure key is already configured
+* Pass `--api-key` to write the Azure key literally into `~/.fireconnect/config.json`
 
 ## One-off Foundry routing
 
@@ -4724,7 +4796,7 @@ Route a single harness through Foundry without changing global config:
 ```bash theme={null}
 fireconnect opencode on \
   --azure \
-  --base-url https://<resource>.services.ai.azure.com \
+  --base-url "https://YOUR_RESOURCE.services.ai.azure.com" \
   --api-key $AZURE_API_KEY \
   --model FW-MiniMax-M2.5
 ```
@@ -4782,7 +4854,7 @@ The Azure endpoint and key remain stored in `~/.fireconnect/config.json` but are
 
 ### Remove FireConnect from a harness entirely
 
-Use `off` to restore the config snapshot from **before FireConnect was first enabled** for that harness. Your original provider settings are restored byte-for-byte:
+Use `off` to remove FireConnect from a harness. When a pre-FireConnect backup is available, `off` restores it; otherwise it removes FireConnect-managed settings:
 
 ```bash theme={null}
 fireconnect pi off
@@ -4890,27 +4962,27 @@ Prefer `*-latest` / `*-fast-latest` unless you need a pin.
 
 ## Which model when
 
-| ID                      | Use when                                                        | Notes                                                                                            |
-| ----------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| `kimi-fast-latest`      | Default interactive coding; screenshots / UI                    | Vision. Default for single-model harnesses and Claude `fable` on Fire Pass.                      |
-| `kimi-latest`           | Strong agentic coding with vision, lower \$/token than Fast     | Vision. Standard path.                                                                           |
-| `deepseek-pro-latest`   | Strong text-only coding and reasoning                           | Text-only. Claude `sonnet` default.                                                              |
-| `deepseek-flash-latest` | Haiku / subagent / high-volume background work                  | Text-only. Default for Claude `haiku` and `subagent`.                                            |
-| `glm-flash-latest`      | Vision-capable GLM for Fable / image tasks                      | Vision. Claude `fable` default on standard keys.                                                 |
-| `glm-fast-latest`       | Fast text-only agent loops                                      | Text-only. 1M context.                                                                           |
-| `glm-latest`            | Cheaper text-only coding / long context                         | Text-only. Claude `opus` default when FireRouter is not selected.                                |
-| `firerouter`            | Auto-route easy work to open models, hard work to Claude Opus 5 | See [FireRouter](/ecosystem/firerouter/overview). Auto-pinned to Claude `opus` on first connect. |
-| `auto`                  | Fireworks default open-model mix                                | Preview. Available on every Claude slot.                                                         |
-| `auto-instant`          | Latency-first open-model mix                                    | Preview. Available on Claude Sonnet.                                                             |
+| ID                      | Use when                                                        | Notes                                                                                                                                                                                        |
+| ----------------------- | --------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `kimi-fast-latest`      | Interactive coding; screenshots / UI                            | Vision.                                                                                                                                                                                      |
+| `kimi-latest`           | Strong agentic coding with vision, lower \$/token than Fast     | Vision. Standard path.                                                                                                                                                                       |
+| `deepseek-pro-latest`   | Strong text-only coding and reasoning                           | Text-only.                                                                                                                                                                                   |
+| `deepseek-flash-latest` | Haiku / subagent / high-volume background work                  | Text-only.                                                                                                                                                                                   |
+| `glm-flash-latest`      | Vision-capable GLM for Fable / image tasks                      | Vision.                                                                                                                                                                                      |
+| `glm-fast-latest`       | Fast text-only agent loops                                      | Text-only. 1M context.                                                                                                                                                                       |
+| `glm-latest`            | Cheaper text-only coding / long context                         | Text-only.                                                                                                                                                                                   |
+| `firerouter`            | Auto-route easy work to open models, hard work to Claude Opus 5 | See [FireRouter](/ecosystem/firerouter/overview). Use `--model firerouter` for Main, a slot flag for one alias, or `--interactive` to choose aliases. Use `native` to leave a slot unpinned. |
+| `auto`                  | Fireworks default open-model mix                                | Preview. Available on every Claude slot.                                                                                                                                                     |
+| `auto-instant`          | Latency-first open-model mix                                    | Preview. Available on Claude Sonnet.                                                                                                                                                         |
 
 Also useful from `fireconnect model list`: `minimax-latest` / `qwen-plus-latest` (cheaper vision), `kimi-k2p7-code` / `kimi-k2p7-code-fast` (code-focused Kimi), `glm-5p3` / `glm-5p3-flash`.
 
 <Note>
-  The pinned `deepseek-v4-flash` serverless model is deprecated. FireConnect v0.9.3+ migrates existing Claude defaults to `deepseek-flash-latest` on the next `claude on`. Prefer `-latest` aliases so future model upgrades don't require another config change.
+  The pinned `deepseek-v4-flash` serverless model is deprecated. FireConnect v0.9.3+ migrates existing Claude pins to `deepseek-flash-latest` on the next `claude on`. Prefer `-latest` aliases so future model upgrades don't require another config change.
 </Note>
 
 <Warning>
-  GLM and DeepSeek Flash/Pro are **text-only**. Pasting images on those slots in Claude Code can break the session. Recover with `/rewind`, or use a Kimi or GLM Flash ID. See [Claude Code troubleshooting](/ecosystem/fireconnect/claude-code#troubleshooting).
+  `glm-latest`, `glm-fast-latest`, and DeepSeek Flash/Pro are **text-only**. Pasting images on those slots in Claude Code can break the session. Recover with `/rewind`, or use a Kimi, `glm-flash-latest`, or GLM 5.3 Flash model. See [Claude Code troubleshooting](/ecosystem/fireconnect/claude-code#troubleshooting).
 </Warning>
 
 ## US-only
@@ -4933,8 +5005,8 @@ Beginning September 1, 2026, US-only endpoints launched from that date are price
 
 ## Limits
 
-* **Fire Pass** (`fpk_...`): Claude defaults to `kimi-fast-latest`. Catalog is limited. Not on Codex. FireConnect rejects `--model firerouter` with a Fire Pass key on **every** harness; use an `fw_...` account key for FireRouter.
-* **Foundry**: pass the Azure deployment name (`FW-GLM-5.2`), not a short ID. Claude Code and DeepSeek Harness do not support Foundry.
+* **Fire Pass** (`fpk_...`): Catalog is limited. Not on Codex. FireConnect rejects `--model firerouter` with a Fire Pass key on **every** harness; use an `fw_...` account key for FireRouter.
+* **Foundry**: pass the Azure deployment name (`FW-GLM-5.2`), not a short Fireworks ID. FireRouter is not available on the Foundry path. Claude Code and DeepSeek Harness do not support Foundry.
 * **FireRouter**: standard key only (`fw_...`), not Fire Pass. Cursor / DeepSeek Harness need workspace BYOK for Anthropic pass-through.
 
 ## Troubleshooting
@@ -5071,16 +5143,16 @@ fireconnect opencode on --config-path /path/to/opencode.json
 
 ## Fireworks on Microsoft Foundry
 
-OpenCode supports **Fireworks on Microsoft Foundry** (CLI: `--provider azure` or `on --azure`). See the [FireConnect overview](/ecosystem/fireconnect/microsoft-foundry) and [Microsoft Foundry integration guide](/ecosystem/integrations/azure-foundry) for portal setup.
+OpenCode supports **Fireworks on Microsoft Foundry** (CLI: `--provider azure` or `on --azure`). FireRouter is not available on the Foundry path; run `fireconnect configure --provider fireworks` before using `--model firerouter`. See the [FireConnect overview](/ecosystem/fireconnect/microsoft-foundry) and [Microsoft Foundry integration guide](/ecosystem/integrations/azure-foundry) for portal setup.
 
 ### Configure and enable
 
 ```bash theme={null}
-export AZURE_API_KEY=<your-azure-api-key>
+export AZURE_API_KEY="YOUR_AZURE_API_KEY"
 
 fireconnect configure \
   --provider azure \
-  --base-url https://<resource>.services.ai.azure.com \
+  --base-url "https://YOUR_RESOURCE.services.ai.azure.com" \
   --api-key $AZURE_API_KEY
 
 fireconnect opencode on --model FW-GLM-5.2
@@ -5091,7 +5163,7 @@ One-off routing without changing global config:
 ```bash theme={null}
 fireconnect opencode on \
   --azure \
-  --base-url https://<resource>.services.ai.azure.com \
+  --base-url "https://YOUR_RESOURCE.services.ai.azure.com" \
   --model FW-MiniMax-M2.5
 ```
 
@@ -5138,7 +5210,7 @@ Source: https://docs.fireworks.ai/ecosystem/fireconnect/overview
 
 Route coding harnesses through Fireworks AI, with Microsoft Foundry support for compatible tools
 
-[FireConnect](https://github.com/fw-ai/fireconnect) is an open-source CLI that routes agentic coding harnesses through Fireworks models. Install once, sign in once, then flip any supported harness on or off — no proxy to run, no wrapper to launch. `on` rewrites the tool's config; `off` restores your original file **byte-for-byte**.
+[FireConnect](https://github.com/fw-ai/fireconnect) is an open-source CLI that routes agentic coding harnesses through Fireworks models. Install once, sign in once, then flip any supported harness on or off — no proxy to run, no wrapper to launch. `on` updates the harness config. `off` restores saved pre-FireConnect settings when a backup is available; otherwise it removes FireConnect-managed settings.
 
 Choose where inference runs:
 
@@ -5151,7 +5223,7 @@ Choose where inference runs:
 
 ## Quick start
 
-**1. Install**
+### Install
 
 ```bash theme={null}
 curl -fsSL https://raw.githubusercontent.com/fw-ai/fireconnect/main/install.sh | bash
@@ -5169,21 +5241,7 @@ fireconnect login        # browser sign-in, or paste a fw_… / fpk_… key
 fireconnect claude       # first run opens the model mapping wizard
 ```
 
-Example output:
-
-```text theme={null}
-✓ Claude Code → Fireworks
-Model mapping
-  Fable     → glm-flash-latest
-  Opus      → firerouter
-  Sonnet    → deepseek-pro-latest
-  Haiku     → deepseek-flash-latest
-  Subagents → deepseek-flash-latest
-
-✓ Web search → fireworks-websearch (installed)
-
-Restart Claude Code to use the new setup.
-```
+Use the wizard to choose Claude Code alias slots, or configure them explicitly with `--model`, `--opus`, `--sonnet`, `--haiku`, `--fable`, and `--subagent`. Eligible accounts also get the `fireworks-websearch` MCP (see [WebSearch MCP](/ecosystem/fireconnect/websearch-mcp)).
 
 **4. Restart the tool, then verify**
 
@@ -5225,7 +5283,7 @@ fireconnect logout    # clear stored credentials
 fireconnect status    # sign-in state, key storage, and harness state
 ```
 
-Fire Pass keys (`fpk_...`) work during `login` or `on`. FireConnect detects the key type and applies the correct defaults.
+Fire Pass keys (`fpk_...`) work during `login` or `on`. FireConnect detects the key type and configures supported models.
 
 See [CLI reference: Sign in options](/ecosystem/fireconnect/cli-reference#sign-in-options) for `--with-token`, `--account`, `logout --revoke`, and `configure`.
 
@@ -5274,21 +5332,6 @@ fireconnect <harness> on --model glm-fast-latest
 
 `<harness>` is one of: `claude`, `opencode`, `codex`, `chatgpt`, `pi`, `cursor`, `vscode`, `deepseek`. Full walkthrough: **[Models](/ecosystem/fireconnect/models)**.
 
-### Default models
-
-| Slot / harness                                         | Default                                                                   |
-| ------------------------------------------------------ | ------------------------------------------------------------------------- |
-| Claude `main`                                          | Claude default (unpinned)                                                 |
-| Claude `opus`                                          | `firerouter` on first connect with a standard key; otherwise `glm-latest` |
-| Claude `sonnet`                                        | `deepseek-pro-latest`                                                     |
-| Claude `fable`                                         | `glm-flash-latest` (vision)                                               |
-| Claude `haiku`                                         | `deepseek-flash-latest` (text-only)                                       |
-| Claude `subagent`                                      | `deepseek-flash-latest` (text-only)                                       |
-| OpenCode, Codex, Pi, Cursor, VS Code, DeepSeek Harness | `kimi-fast-latest`                                                        |
-| Fire Pass (`fpk_...`)                                  | `kimi-fast-latest` everywhere                                             |
-
-Fire Pass keys are detected automatically — no flags needed. Override anytime with flags or the [model mapping wizard](/ecosystem/fireconnect/claude-code#change-models).
-
 ## Harness support
 
 | Harness          | Fireworks gateway | Fire Pass | Microsoft Foundry | [FireRouter](/ecosystem/firerouter/overview) | Guide                                               |
@@ -5304,18 +5347,22 @@ Fire Pass keys are detected automatically — no flags needed. Override anytime 
 **Notes**
 
 * **Foundry**: not on Claude Code or DeepSeek Harness.
+* **FireRouter + Foundry**: FireRouter requires the direct Fireworks gateway; it is not available on the Microsoft Foundry path, even for harnesses that support both independently.
 * **Fire Pass**: not on Codex or Foundry. FireConnect rejects `--model firerouter` with a Fire Pass (`fpk_...`) key on **every** harness; use an `fw_...` account key for FireRouter.
 * **FireRouter**: Cursor and DeepSeek Harness need workspace BYOK for Anthropic pass-through.
-* **Web search MCP**: Claude Code auto-install only; any harness can add the HTTP MCP manually. See [WebSearch MCP](/ecosystem/fireconnect/websearch-mcp).
+* **Web search MCP**: Claude Code auto-install only (eligible accounts); other harnesses can add the HTTP MCP manually. See [WebSearch MCP](/ecosystem/fireconnect/websearch-mcp).
 * **Cursor / VS Code**: quit the IDE before `on` or `off`. `status` is read-only.
 
 ## FireRouter and smart routers
 
-[FireRouter](/ecosystem/firerouter/overview) routes simple requests to cheaper open models and hard requests to Claude Opus 5. Select it like any other model:
+[FireRouter](/ecosystem/firerouter/overview) routes simple requests to cheaper open models and hard requests to Claude Opus 5. The default pair is **GLM 5.3** (redirect) and **Claude Opus 5** (pass-through).
+
+On Claude Code, use `--model firerouter` for Main or a slot flag such as `--opus firerouter` for one alias. Use `--interactive` to choose alias slots, and use `native` to leave a slot unpinned. See [Claude Code — FireRouter](/ecosystem/fireconnect/claude-code#firerouter).
 
 ```bash theme={null}
-fireconnect <harness> on --model firerouter
-fireconnect claude on --opus firerouter --routing-preference balanced
+fireconnect claude on --model firerouter
+fireconnect opencode on --model firerouter
+fireconnect claude on --model firerouter --routing-preference balanced
 ```
 
 **Smart router mixes** (preview): pin `auto` for Fireworks' default open-model mix, or `auto-instant` for latency-first routing:
@@ -5412,7 +5459,7 @@ fireconnect pi on --model firerouter --anthropic-api-key sk-ant-...
 
 ```bash theme={null}
 fireconnect pi on              # Enable Fireworks routing
-fireconnect pi off             # Restore original settings and auth
+fireconnect pi off             # Restore original settings, auth, and model catalog
 fireconnect pi status          # Check current provider and model
 fireconnect pi help            # Show harness-specific help
 ```
@@ -5431,7 +5478,7 @@ fireconnect pi on --model glm-5p2
 fireconnect pi off
 ```
 
-This restores your previous `settings.json` and `auth.json` from the backup in `~/.fireconnect/pi/`.
+This restores your previous `settings.json`, `auth.json`, and `models.json` from the backup in `~/.fireconnect/pi/`.
 
 ### Use a non-default settings file
 
@@ -5441,16 +5488,16 @@ fireconnect pi on --settings-path /path/to/settings.json
 
 ## Fireworks on Microsoft Foundry
 
-Pi supports **Fireworks on Microsoft Foundry** (CLI: `--provider azure` or `on --azure`). See the [FireConnect overview](/ecosystem/fireconnect/microsoft-foundry) and [Microsoft Foundry integration guide](/ecosystem/integrations/azure-foundry) for portal setup.
+Pi supports **Fireworks on Microsoft Foundry** (CLI: `--provider azure` or `on --azure`). FireRouter is not available on the Foundry path; run `fireconnect configure --provider fireworks` before using `--model firerouter`. See the [FireConnect overview](/ecosystem/fireconnect/microsoft-foundry) and [Microsoft Foundry integration guide](/ecosystem/integrations/azure-foundry) for portal setup.
 
 ### Configure and enable
 
 ```bash theme={null}
-export AZURE_API_KEY=<your-azure-api-key>
+export AZURE_API_KEY="YOUR_AZURE_API_KEY"
 
 fireconnect configure \
   --provider azure \
-  --base-url https://<resource>.services.ai.azure.com \
+  --base-url "https://YOUR_RESOURCE.services.ai.azure.com" \
   --api-key $AZURE_API_KEY
 
 fireconnect pi on --model FW-GLM-5.2
@@ -5459,7 +5506,7 @@ fireconnect pi on --model FW-GLM-5.2
 One-off routing:
 
 ```bash theme={null}
-fireconnect pi on --azure --base-url https://<resource>.services.ai.azure.com --model FW-MiniMax-M2.5
+fireconnect pi on --azure --base-url "https://YOUR_RESOURCE.services.ai.azure.com" --model FW-MiniMax-M2.5
 ```
 
 ### What gets written
@@ -5535,7 +5582,7 @@ fireconnect vscode status   # read-only; works while VS Code is running
 
 ## Browse and switch models
 
-Direct Fireworks routing uses the **chat-completions** API. Kimi models support vision; GLM models are text-only.
+Direct Fireworks routing uses the **chat-completions** API. Kimi models support vision. Standard and Fast GLM models such as `glm-latest` and `glm-fast-latest` are text-only; `glm-flash-latest` and GLM 5.3 Flash support vision.
 
 ```bash theme={null}
 fireconnect model list --search glm
@@ -5599,18 +5646,18 @@ This restores your previous `chatLanguageModels.json` from the backup in `~/.fir
 
 ## Fireworks on Microsoft Foundry
 
-VS Code supports **Fireworks on Microsoft Foundry** (CLI: `--provider azure` or `on --azure`). See [Microsoft Foundry in FireConnect](/ecosystem/fireconnect/microsoft-foundry) and the [portal setup guide](/ecosystem/integrations/azure-foundry).
+VS Code supports **Fireworks on Microsoft Foundry** (CLI: `--provider azure` or `on --azure`). FireRouter is not available on the Foundry path; run `fireconnect configure --provider fireworks` before using `--model firerouter`. See [Microsoft Foundry in FireConnect](/ecosystem/fireconnect/microsoft-foundry) and the [portal setup guide](/ecosystem/integrations/azure-foundry).
 
 <Warning>
   Foundry routing requires a standard Azure API key. Fire Pass keys (`fpk_...`) are not supported. **Quit VS Code** before `on` or `off`.
 </Warning>
 
 ```bash theme={null}
-export AZURE_API_KEY=<your-azure-api-key>
+export AZURE_API_KEY="YOUR_AZURE_API_KEY"
 
 fireconnect configure \
   --provider azure \
-  --base-url https://<resource>.services.ai.azure.com \
+  --base-url "https://YOUR_RESOURCE.services.ai.azure.com" \
   --api-key $AZURE_API_KEY
 
 fireconnect vscode on --model FW-GLM-5.2
@@ -5621,7 +5668,7 @@ One-off routing without changing global config:
 ```bash theme={null}
 fireconnect vscode on \
   --azure \
-  --base-url https://<resource>.services.ai.azure.com \
+  --base-url "https://YOUR_RESOURCE.services.ai.azure.com" \
   --model FW-MiniMax-M2.5
 ```
 
@@ -5767,41 +5814,56 @@ Source: https://docs.fireworks.ai/ecosystem/firerouter/authentication
 
 BYOK headers and API keys for FireRouter
 
-FireRouter uses a **bring-your-own-key** contract. The service validates your Fireworks key on every request and forwards your provider key only on pass-through legs to closed-source models. FireRouter does not store provider keys server-side.
+Every request is authenticated with a Fireworks API key. Provider credentials sent on individual requests are forwarded only to the selected provider and are not persisted by FireRouter. If workspace BYOK is provisioned on your Fireworks account, Fireworks stores the provider credential in your workspace and supplies it server-side. Contact the Fireworks team to enable workspace BYOK.
 
-## Required keys
+## Credentials
 
-| Key                              | Header or env                                    | Used for                                           |
-| -------------------------------- | ------------------------------------------------ | -------------------------------------------------- |
-| Fireworks API key (`fw_...`)     | `Authorization: Bearer` or `X-Fireworks-Api-Key` | FireRouter auth and redirected Fireworks inference |
-| Anthropic API key (`sk-ant-...`) | `x-anthropic-api-key`                            | Calls to Claude models                             |
-| OpenAI API key (`sk-...`)        | `x-openai-api-key`                               | Calls to OpenAI models                             |
+| Credential                   | Header or env                                      | When it is needed                                  |
+| ---------------------------- | -------------------------------------------------- | -------------------------------------------------- |
+| Fireworks API key (`fw_...`) | `Authorization: Bearer` or `X-Fireworks-Api-Key`   | FireRouter auth and redirected Fireworks inference |
+| Anthropic credential         | `x-anthropic-api-key`, or auth sent by Claude Code | To make Claude models eligible                     |
+| OpenAI API key (`sk-...`)    | `x-openai-api-key`                                 | To make OpenAI models eligible                     |
 
-The default `firerouter` model uses **Claude Opus 5** as its primary model, so every request requires an Anthropic key. FireRouter fails closed when the primary model's credential is missing; it does not silently restrict the route to Fireworks models.
+FireRouter requires a standard Fireworks API key (`fw_...`). Fire Pass keys (`fpk_...`) are not supported.
 
-For a model-specific [FireRouter slug](/ecosystem/firerouter/overview#choose-different-models), the first model's credential is required. Later models are eligible only when their credentials are present. Slugs that contain only Fireworks models need no additional provider key beyond the Fireworks API key.
+The default `firerouter` model uses **Claude Opus 5** as its primary model. Anthropic credentials make that pass-through leg eligible. Without them, FireRouter removes Claude Opus 5 from the candidate pool and can still serve an eligible Fireworks-hosted model such as GLM 5.3.
+
+For a model-specific [FireRouter slug](/ecosystem/firerouter/overview#choose-different-models), each provider-hosted member is eligible only when its credential is available. A request pinned directly to a provider-hosted model fails with `no_credential` when that credential is unavailable. Slugs containing only Fireworks-hosted models need no additional provider key.
+
+## Claude Code with FireConnect
+
+When Claude Code is routed through [FireConnect](/ecosystem/fireconnect/claude-code#firerouter), Anthropic auth usually comes from **Claude Code itself**, not a separate FireConnect prompt:
+
+| Source                                               | Works for FireRouter pass-through?                                  |
+| ---------------------------------------------------- | ------------------------------------------------------------------- |
+| Claude subscription login                            | Yes                                                                 |
+| Browser OAuth (`/login` in Claude Code)              | Yes                                                                 |
+| `ANTHROPIC_API_KEY` in Claude Code settings or env   | Yes                                                                 |
+| `--anthropic-api-key` on `fireconnect claude on`     | Yes                                                                 |
+| `fireconnect configure --anthropic-api-key`          | Yes                                                                 |
+| Workspace BYOK provisioned on your Fireworks account | Yes (server-side; requires Fireworks team enablement; no local key) |
+
+FireConnect does not prompt for Anthropic credentials during Claude Code setup. Claude Code attaches its existing Anthropic login at request time. For direct HTTP calls, send `x-anthropic-api-key` when you want Claude models to be eligible; omit it to route only among eligible Fireworks-hosted members.
 
 ## Fireworks key header
 
 Send your Fireworks API key with either header:
 
-```bash theme={null}
+```text theme={null}
 -H "Authorization: Bearer $FIREWORKS_API_KEY"
 # or
 -H "X-Fireworks-Api-Key: $FIREWORKS_API_KEY"
 ```
 
-`X-FireRouter-Fireworks-Key` is also accepted. New integrations should prefer `X-Fireworks-Api-Key`.
-
 ## Anthropic provider key
 
 The canonical header for Anthropic pass-through is:
 
-```bash theme={null}
+```text theme={null}
 -H "x-anthropic-api-key: $ANTHROPIC_API_KEY"
 ```
 
-`x-api-key` and `Authorization: Bearer` are also accepted for Anthropic clients that send credentials that way. For new integrations, prefer `x-anthropic-api-key`.
+`x-api-key` and `Authorization: Bearer` are also accepted as Anthropic credentials. If either carries the Anthropic credential, send the Fireworks key separately as `X-Fireworks-Api-Key`; one `Authorization` header cannot carry both credentials. New integrations should prefer `x-anthropic-api-key`.
 
 Example:
 
@@ -5810,14 +5872,14 @@ curl https://api.fireworks.ai/inference/v1/chat/completions \
   -H "Authorization: Bearer $FIREWORKS_API_KEY" \
   -H "x-anthropic-api-key: $ANTHROPIC_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"model": "firerouter", "messages": [...]}'
+  -d '{"model":"firerouter","messages":[{"role":"user","content":"Say pong."}]}'
 ```
 
 ## OpenAI provider key
 
 When the selected FireRouter slug includes an OpenAI model, send your OpenAI API key as:
 
-```bash theme={null}
+```text theme={null}
 -H "x-openai-api-key: $OPENAI_API_KEY"
 ```
 
@@ -5837,12 +5899,15 @@ client = OpenAI(
 
 ## Common errors
 
-| Response                        | Cause                                                        | Fix                                                                                           |
-| ------------------------------- | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
-| `401 Missing Fireworks API key` | Fireworks key header missing or empty                        | Set `X-Fireworks-Api-Key` to your `fw_...` key                                                |
-| `401 invalid Fireworks API key` | Key rejected                                                 | Confirm the key is valid in the [dashboard](https://app.fireworks.ai/settings/users/api-keys) |
-| `400` with `no_credential`      | Required provider key missing or sent under the wrong header | Send the key under the provider-specific header                                               |
-| Provider `401`                  | Provider key is invalid                                      | Check the key sent as `x-anthropic-api-key` or `x-openai-api-key`                             |
+| Response                                         | Cause                                                                                 | Fix                                                                                                  |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `401` with `You must provide an API key`         | Fireworks key header missing or empty                                                 | Send `Authorization: Bearer $FIREWORKS_API_KEY` or `X-Fireworks-Api-Key`                             |
+| `401` with `The API key you provided is invalid` | Gateway rejected the key                                                              | Confirm a valid `fw_...` key in the [dashboard](https://app.fireworks.ai/settings/users/api-keys)    |
+| `403` with Fire Pass authorization error         | A Fire Pass key (`fpk_...`) was used                                                  | Use a standard Fireworks API key (`fw_...`)                                                          |
+| `403` with data residency error                  | Data residency is enabled on the Fireworks account                                    | Use a residency-compatible pinned serverless model                                                   |
+| `404` with `Model id not found`                  | Unknown model ID, FireRouter access denial, or model entitlement denial               | Confirm the model ID and account access; contact Fireworks if you expect access                      |
+| `400` with `no_credential`                       | A pinned provider model or preference `1` requires an unavailable provider credential | Send the provider credential, choose a route with another eligible member, or use preference `2`–`5` |
+| Provider `401`                                   | Provider key is invalid                                                               | Check the key sent as `x-anthropic-api-key` or `x-openai-api-key`                                    |
 
 ## Related
 
@@ -5857,7 +5922,7 @@ Source: https://docs.fireworks.ai/ecosystem/firerouter/claude-code
 Configure FireRouter in Claude Code by editing settings.json
 
 <Tip>
-  **Prefer FireConnect.** Run `fireconnect claude on --model firerouter` (v0.9.0+) instead of editing JSON by hand. See [Claude Code](/ecosystem/fireconnect/claude-code#firerouter) and [Models](/ecosystem/fireconnect/models).
+  **Prefer FireConnect.** Use `--model firerouter` for Main, a slot flag such as `--opus firerouter` for one alias, or `--interactive` to choose aliases. See [Claude Code — FireRouter](/ecosystem/fireconnect/claude-code#choose-where-firerouter-is-used).
 </Tip>
 
 This page is only for manual `~/.claude/settings.json` setup when you cannot use FireConnect.
@@ -5866,24 +5931,33 @@ This page is only for manual `~/.claude/settings.json` setup when you cannot use
 
 * [Claude Code](https://claude.ai/code) installed
 * A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`)
-* An Anthropic API key if you need pass-through to Claude Opus 5. See [Authentication](/ecosystem/firerouter/authentication).
+* Optional Anthropic credentials to make Claude Opus 5 eligible — usually your existing Claude Code login (subscription, OAuth, or API key). Without them, FireRouter can still use eligible Fireworks-hosted models. See [Authentication](/ecosystem/firerouter/authentication#claude-code-with-fireconnect).
 
-Add one of the configs below to `~/.claude/settings.json` (on Windows: `%USERPROFILE%\.claude\settings.json`), then restart Claude Code.
+Merge the `env` keys from one configuration below into your existing `~/.claude/settings.json` (on Windows: `%USERPROFILE%\.claude\settings.json`). Do not replace unrelated settings. Then restart Claude Code.
 
 ## With a Claude subscription
 
-You do not need to pass any access or API token. Use `ANTHROPIC_CUSTOM_HEADERS` to pass your Fireworks API key.
+You do not need to add an Anthropic token to this file. Use `ANTHROPIC_CUSTOM_HEADERS` to pass your Fireworks API key. Claude Code sends your existing login with each request.
+
+**Route Main through FireRouter without adding or changing other alias pins.** All Claude Code requests still use the Fireworks base URL:
 
 ```json theme={null}
 {
   "env": {
     "ANTHROPIC_BASE_URL": "https://api.fireworks.ai/inference",
     "ANTHROPIC_MODEL": "firerouter[1m]",
+    "ANTHROPIC_CUSTOM_HEADERS": "x-fireworks-api-key: YOUR_FIREWORKS_API_KEY"
+  }
+}
+```
+
+**Route the Opus alias through FireRouter.** Select Opus from `/model`; this does not add or change other alias pins, and all requests still use the Fireworks base URL:
+
+```json theme={null}
+{
+  "env": {
+    "ANTHROPIC_BASE_URL": "https://api.fireworks.ai/inference",
     "ANTHROPIC_DEFAULT_OPUS_MODEL": "firerouter[1m]",
-    "ANTHROPIC_DEFAULT_FABLE_MODEL": "glm-fast-latest[1m]",
-    "ANTHROPIC_DEFAULT_SONNET_MODEL": "kimi-latest",
-    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "deepseek-flash-latest[1m]",
-    "CLAUDE_CODE_SUBAGENT_MODEL": "deepseek-flash-latest",
     "ANTHROPIC_CUSTOM_HEADERS": "x-fireworks-api-key: YOUR_FIREWORKS_API_KEY"
   }
 }
@@ -5891,18 +5965,13 @@ You do not need to pass any access or API token. Use `ANTHROPIC_CUSTOM_HEADERS` 
 
 ## With an Anthropic API key
 
-Add `ANTHROPIC_API_KEY` for pass-through. You still need `ANTHROPIC_CUSTOM_HEADERS` for your Fireworks API key.
+Add `ANTHROPIC_API_KEY` to make Claude Opus 5 eligible. You still need `ANTHROPIC_CUSTOM_HEADERS` for your Fireworks API key. This example routes Main through FireRouter without adding or changing other alias pins:
 
 ```json theme={null}
 {
   "env": {
     "ANTHROPIC_BASE_URL": "https://api.fireworks.ai/inference",
     "ANTHROPIC_MODEL": "firerouter[1m]",
-    "ANTHROPIC_DEFAULT_OPUS_MODEL": "firerouter[1m]",
-    "ANTHROPIC_DEFAULT_FABLE_MODEL": "glm-fast-latest[1m]",
-    "ANTHROPIC_DEFAULT_SONNET_MODEL": "kimi-latest",
-    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "deepseek-flash-latest[1m]",
-    "CLAUDE_CODE_SUBAGENT_MODEL": "deepseek-flash-latest",
     "ANTHROPIC_CUSTOM_HEADERS": "x-fireworks-api-key: YOUR_FIREWORKS_API_KEY",
     "ANTHROPIC_API_KEY": "YOUR_ANTHROPIC_API_KEY"
   }
@@ -5917,13 +5986,13 @@ Add FireRouter to a LiteLLM Proxy deployment
 
 Add FireRouter to an existing [LiteLLM Proxy](/ecosystem/integrations/litellm) deployment so developers request one model instead of choosing between open and closed-source models on every call.
 
-FireRouter uses bring-your-own-key (BYOK): your Fireworks API key pays for redirected calls, and an Anthropic API key pays for pass-through to Claude Opus 5. See [Authentication](/ecosystem/firerouter/authentication). FireRouter does not store provider keys.
+Your Fireworks API key authenticates FireRouter and pays for Fireworks-hosted calls. An Anthropic credential makes Claude Opus 5 eligible and pays for that provider's calls. Provider keys sent on individual requests are not persisted by FireRouter. See [Authentication](/ecosystem/firerouter/authentication).
 
 ## Prerequisites
 
-* A running LiteLLM Proxy on **v1.95.0** configured for Fireworks (see [LiteLLM integration](/ecosystem/integrations/litellm))
+* A running LiteLLM Proxy on **v1.98.0** configured for Fireworks (see [LiteLLM integration](/ecosystem/integrations/litellm))
 * A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`)
-* An **Anthropic API key** (`sk-ant-...`) for pass-through
+* Optional: an **Anthropic API key** (`sk-ant-...`) to make Claude Opus 5 eligible for the default `firerouter` slug. It is not needed for a Fireworks-only slug or when workspace BYOK is provisioned.
 
 ## Add FireRouter to `config.yaml`
 
@@ -5937,15 +6006,15 @@ model_list:
         x-anthropic-api-key: os.environ/ANTHROPIC_API_KEY
 ```
 
-Always use the full router resource ID in `litellm_params.model`. LiteLLM rewrites short names like `fireworks_ai/firerouter` to `accounts/fireworks/models/firerouter`, which FireRouter does not recognize.
+Use a router-qualified ID in `litellm_params.model`, such as `fireworks_ai/routers/firerouter` or the full `fireworks_ai/accounts/fireworks/routers/firerouter` shown above. Do not use bare `fireworks_ai/firerouter`, which LiteLLM interprets as a model rather than a router.
 
-Set `ANTHROPIC_API_KEY` on the LiteLLM server so pass-through requests include `x-anthropic-api-key` automatically. Developers do not need to send the Anthropic key on each request when it is configured here.
+Set `ANTHROPIC_API_KEY` on the LiteLLM server when you want pass-through requests to include `x-anthropic-api-key` automatically. Developers do not need to send the Anthropic key on each request when it is configured here. Omit `extra_headers` for Fireworks-only routing or workspace BYOK.
 
 <Note>
   A server-side Anthropic key is shared across all callers of that proxy deployment. If each developer should bring their own Anthropic key, omit `extra_headers` and have clients send `x-anthropic-api-key` on each request instead (see below).
 </Note>
 
-Start or restart the proxy with both keys exported:
+For server-managed Anthropic credentials, start or restart the proxy with both keys exported:
 
 ```bash theme={null}
 export FIREWORKS_AI_API_KEY="fw_..."
@@ -5955,7 +6024,7 @@ litellm --config config.yaml
 
 ## Call FireRouter
 
-Clients authenticate to LiteLLM with a virtual key:
+If LiteLLM virtual keys are configured, clients authenticate to LiteLLM with a virtual key:
 
 ```bash theme={null}
 curl http://localhost:4000/chat/completions \
@@ -5969,7 +6038,14 @@ curl http://localhost:4000/chat/completions \
 
 Optional routing preference:
 
-```bash theme={null}
+```yaml theme={null}
+litellm_settings:
+  model_group_settings:
+    forward_client_headers_to_llm_api:
+      - accounts/fireworks/routers/firerouter
+```
+
+```text theme={null}
 -H "x-routing-preference: 4"
 ```
 
@@ -5977,7 +6053,7 @@ See [Routing preferences](/ecosystem/firerouter/routing-preferences) for values 
 
 ## Per-developer Anthropic keys
 
-If each caller should use their own Anthropic key, omit `extra_headers` from the model config and have clients send the header on every request:
+If each caller should use their own Anthropic key, omit `extra_headers` from the model config, enable the header-forwarding configuration above, and have clients send the header on every request:
 
 ```bash theme={null}
 curl http://localhost:4000/chat/completions \
@@ -5990,15 +6066,15 @@ curl http://localhost:4000/chat/completions \
   }'
 ```
 
-Enable [client header forwarding](https://docs.litellm.ai/docs/proxy/forward_client_headers) for the `accounts/fireworks/routers/firerouter` model group if your LiteLLM version does not forward `x-` headers by default.
+See [client header forwarding](https://docs.litellm.ai/docs/proxy/forward_client_headers) for configuration details.
 
 ## API key layout
 
-| Key                              | Who holds it                                                     | Used for                                 |
-| -------------------------------- | ---------------------------------------------------------------- | ---------------------------------------- |
-| Fireworks API key (`fw_...`)     | LiteLLM server                                                   | FireRouter auth and redirected inference |
-| LiteLLM virtual key              | Each developer or service                                        | Proxy authentication and spend tracking  |
-| Anthropic API key (`sk-ant-...`) | LiteLLM server (`extra_headers`) or each caller (request header) | Claude pass-through billing              |
+| Key                                 | Who holds it                                                               | Used for                                                      |
+| ----------------------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| Fireworks API key (`fw_...`)        | LiteLLM server                                                             | FireRouter auth and redirected inference                      |
+| LiteLLM virtual key (if configured) | Each developer or service                                                  | Proxy authentication and spend tracking                       |
+| Anthropic API key (`sk-ant-...`)    | Optional: LiteLLM server (`extra_headers`) or each caller (request header) | Makes Claude models eligible and pays for Claude pass-through |
 
 ## Related
 
@@ -6013,13 +6089,9 @@ Source: https://docs.fireworks.ai/ecosystem/firerouter/overview
 
 Route LLM requests between closed-source and open models with FireRouter
 
-FireRouter is a managed routing service for **any LLM workload**. Request a FireRouter model through the [Fireworks inference API](/tools-sdks/openai-compatibility), and FireRouter scores each turn to select a model from the configured set. By default, it routes between a Fireworks open model and a closed-source model.
+FireRouter is a managed routing service for supported text-generation workloads. Request a FireRouter virtual model through the [Fireworks inference API](/tools-sdks/openai-compatibility), and FireRouter selects an eligible backend according to the configured route. By default, it routes between a Fireworks open model and a closed-source model.
 
-The result is lower cost on simpler requests without giving up closed-source quality on harder ones.
-
-<Note>
-  FireRouter is in **research preview**. APIs, routing behavior, and the models in the routing pair may change. This documentation is updated to reflect the current configuration.
-</Note>
+The goal is to reduce cost on simpler requests while retaining access to a closed-source model for harder ones.
 
 ## When to use FireRouter
 
@@ -6028,40 +6100,54 @@ Use FireRouter when you want **automatic cost optimization** without picking a d
 * You want closed-source quality (for example Claude Opus) on hard prompts but do not need it on every call.
 * Many of your requests are straightforward (summaries, formatting, simple Q\&A) and can be served by a Fireworks open model.
 * You want to select the models available to the router without choosing a target for every request.
-* For the default configuration, you are able to send both a Fireworks API key and a provider API key on each request.
+* For the default configuration, Anthropic credentials make Claude Opus 5 eligible. Without them, FireRouter can still use eligible Fireworks-hosted models. Direct API clients send `x-anthropic-api-key`; Claude Code can send its existing login on each request.
 
 ## How it works
 
-FireRouter evaluates each new user request. The default `firerouter` configuration picks one of two paths:
+During ranked decisions, the default `firerouter` configuration compares two paths:
 
-| Path             | When                                      | What runs                                        | Billing                           |
-| ---------------- | ----------------------------------------- | ------------------------------------------------ | --------------------------------- |
-| **Redirect**     | Simple or low-complexity work             | A Fireworks open model (by default GLM 5.3)      | Your Fireworks API key            |
-| **Pass-through** | Hard reasoning, judgment, or long context | A closed-source model (by default Claude Opus 5) | Your provider API key (Anthropic) |
+| Path             | When                                                                                  | What runs                                        | Billing                           |
+| ---------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------ | --------------------------------- |
+| **Redirect**     | More likely when the open model's predicted success and cost produce the better value | A Fireworks open model (by default GLM 5.3)      | Your Fireworks API key            |
+| **Pass-through** | More likely when the closed-source model's predicted success justifies its cost       | A closed-source model (by default Claude Opus 5) | Your provider API key (Anthropic) |
 
 FireRouter uses a bring-your-own-key (BYOK) model:
 
 * Your **Fireworks API key** authenticates to FireRouter and pays for calls to Fireworks models.
 * A third-party **provider API key** pays for calls to that provider's models.
 
-FireRouter never stores your provider keys server-side. You send them on each request.
+Provider keys sent on individual requests are not persisted by FireRouter. If workspace BYOK is provisioned on your Fireworks account, Fireworks stores the credential in your workspace and supplies it server-side. Contact the Fireworks team to enable workspace BYOK.
 
 ## FireConnect
 
-The easiest way to use FireRouter in coding harnesses is [FireConnect](/ecosystem/fireconnect/overview). As of FireConnect **v0.9.0**, select FireRouter like any other model:
+The easiest way to use FireRouter in coding harnesses is [FireConnect](/ecosystem/fireconnect/overview). As of FireConnect **v0.9.0**, select FireRouter like any other model.
+
+**Claude Code.** Use `--model firerouter` for Main or a slot flag such as `--opus firerouter` for one alias. Use `--interactive` to choose alias slots, and use `native` to leave a slot unpinned. On first setup, specify every slot you want to control. See [Claude Code — FireRouter](/ecosystem/fireconnect/claude-code#firerouter).
 
 ```bash theme={null}
 fireconnect login
 fireconnect claude on --model firerouter
 ```
 
+**Other harnesses:**
+
+```bash theme={null}
+fireconnect opencode on --model firerouter
+```
+
 See [FireConnect Models](/ecosystem/fireconnect/models) for how `firerouter` fits next to other short IDs, and [Harness support](/ecosystem/fireconnect/overview#harness-support) for which harnesses support FireRouter. Per-harness details (Claude slot flags, Codex Anthropic env, routing preference) live on each harness page.
 
 Upgrade FireConnect before enabling FireRouter on an older install. See [Upgrade FireConnect](/ecosystem/fireconnect/overview#upgrade-fireconnect).
 
-Pass `--anthropic-api-key sk-ant-...` on `on`, or store a key once with `fireconnect configure --anthropic-api-key sk-ant-...`. The default `firerouter` requires an Anthropic key because Claude Opus 5 is its primary model; FireRouter fails closed instead of silently restricting the route to GLM. See [Authentication](/ecosystem/firerouter/authentication).
+### Anthropic credentials with FireConnect
+
+The default `firerouter` needs Anthropic credentials to make **Claude Opus 5** eligible. With **Claude Code**, you usually do not add a new key: Claude Code sends its subscription login, browser OAuth token, or configured `ANTHROPIC_API_KEY` with each request. You can also pass `--anthropic-api-key sk-ant-...` on `on`, store one with `fireconnect configure --anthropic-api-key sk-ant-...`, or use workspace BYOK provisioned by the Fireworks team. Direct API clients send `x-anthropic-api-key` to enable Claude pass-through. Without Anthropic credentials, the default router can still serve eligible Fireworks-hosted models. See [Authentication](/ecosystem/firerouter/authentication).
 
 Cursor and DeepSeek Harness need workspace BYOK for Anthropic pass-through because they cannot attach a local Anthropic key.
+
+### See which model served a request
+
+After assistant messages run, FireConnect's Claude Code **status line** lists backend models that served the session — for example `Claude Opus 5` or `GLM 5.3`. Before a billed response, it may show `FireRouter` rather than a resolved backend.
 
 ## Endpoint
 
@@ -6076,7 +6162,15 @@ Common API paths:
 | Wire format        | Path                                                     |
 | ------------------ | -------------------------------------------------------- |
 | Chat Completions   | `https://api.fireworks.ai/inference/v1/chat/completions` |
+| Completions        | `https://api.fireworks.ai/inference/v1/completions`      |
+| OpenAI Responses   | `https://api.fireworks.ai/inference/v1/responses`        |
 | Anthropic Messages | `https://api.fireworks.ai/inference/v1/messages`         |
+
+### Availability limitations
+
+* FireRouter requires a standard Fireworks API key (`fw_...`); Fire Pass keys (`fpk_...`) are not supported.
+* FireRouter is not available for Fireworks accounts with data residency enabled. Requests return `403`; use a residency-compatible pinned serverless model.
+* Microsoft Foundry Responses requests are not supported through FireRouter.
 
 ## Model ID
 
@@ -6095,7 +6189,11 @@ accounts/fireworks/routers/firerouter
 
 For [LiteLLM](/ecosystem/firerouter/litellm), use the full router path in `litellm_params.model`.
 
-FireRouter decides the target model for each request based on request complexity. The model ID selects the set of models FireRouter can route to.
+For ranked decisions, FireRouter compares eligible models using predicted success and cost. The model ID selects the configured route.
+
+<Warning>
+  Use `firerouter` or a `firerouter/...` slug when you want automatic routing. A bare model ID such as `claude-opus-5` or `gpt-5.6-sol` is treated as a pin and is not ranked against route members. Normal same-model retry and configured deployment-fallback behavior may still apply.
+</Warning>
 
 ### Current routing pair
 
@@ -6108,11 +6206,15 @@ The short `firerouter` model ID currently routes between:
 
 These models are subject to change as FireRouter is updated. This page reflects the current configuration.
 
-Because the default pass-through target is Claude Opus 5, supply an Anthropic API key to use that path. See [Authentication](/ecosystem/firerouter/authentication).
+Because the default pass-through target is Claude Opus 5, supply Anthropic credentials to use that path. With FireConnect + Claude Code, your existing Claude login is usually enough. Direct API callers send `x-anthropic-api-key`. See [Authentication](/ecosystem/firerouter/authentication).
+
+<Note>
+  The response can name a different Fireworks-hosted model when a configured member is ineligible for the request or a provider attempt needs an operational fallback. The pair above describes the default ranked choices, not the fallback chain.
+</Note>
 
 ### Choose different models
 
-Use a slash-delimited FireRouter slug to change the models available to the router. The first model is the primary; the remaining models are alternatives that FireRouter ranks for each request. Each member must be an exact deployed model ID or a unique model alias.
+Use a slash-delimited FireRouter slug to change the models available to the router. The first model is the primary; the remaining models are alternatives considered during ranked decisions. Each member must be an exact deployed model ID or a unique model alias.
 
 Examples:
 
@@ -6124,18 +6226,18 @@ Examples:
 | `firerouter/claude-opus-5/kimi-k3/glm-5p2-fast`          | Claude Opus 5, Kimi K3, and GLM 5.2 Fast            |
 | `firerouter/gpt-5.6-sol/glm-5p2-fast`                    | GPT 5.6 Sol and GLM 5.2 Fast                        |
 
-Set the selected slug in the `model` field just as you would use `firerouter`. FireRouter still chooses the target for each request.
+Set the selected slug in the `model` field just as you would use `firerouter`. The slug defines the route's candidate set.
 
-The primary model's credential is required. A later model is eligible only when its credential is present. Use `x-anthropic-api-key` for Claude models and `x-openai-api-key` for OpenAI models. See [Authentication](/ecosystem/firerouter/authentication).
+Each provider-hosted member is eligible only when its credential is available. A missing credential removes that member from the candidate pool; eligible Fireworks-hosted members can still serve the request. A slug containing only Fireworks-hosted models needs only the Fireworks API key. Use `x-anthropic-api-key` for Claude models and `x-openai-api-key` for OpenAI models. See [Authentication](/ecosystem/firerouter/authentication).
 
 ## Client integrations
 
-| Integration                                                     | When to use                                                                             |
-| --------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| [FireConnect](/ecosystem/fireconnect/overview)                  | One-command setup for coding harnesses (recommended). Select with `--model firerouter`. |
-| [Quickstart](/ecosystem/firerouter/quickstart)                  | Direct HTTP calls (curl, OpenAI SDK, any OpenAI-compatible client)                      |
-| [Claude Code (manual setup)](/ecosystem/firerouter/claude-code) | Manual `settings.json` setup without FireConnect                                        |
-| [LiteLLM](/ecosystem/firerouter/litellm)                        | Add FireRouter to a LiteLLM Proxy deployment                                            |
+| Integration                                                     | When to use                                                                                                                                                                                           |
+| --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [FireConnect](/ecosystem/fireconnect/overview)                  | One-command setup for coding harnesses (recommended). Use `--model firerouter` on single-model harnesses; on Claude Code, see [slot mapping behavior](/ecosystem/fireconnect/claude-code#firerouter). |
+| [Quickstart](/ecosystem/firerouter/quickstart)                  | Direct HTTP calls (curl, OpenAI SDK, any OpenAI-compatible client)                                                                                                                                    |
+| [Claude Code (manual setup)](/ecosystem/firerouter/claude-code) | Manual `settings.json` setup without FireConnect                                                                                                                                                      |
+| [LiteLLM](/ecosystem/firerouter/litellm)                        | Add FireRouter to a LiteLLM Proxy deployment                                                                                                                                                          |
 
 ## What FireRouter is not
 
@@ -6161,7 +6263,7 @@ The primary model's credential is required. A later model is eligible only when 
   </Card>
 
   <Card title="Routing preferences" icon="sliders" href="/ecosystem/firerouter/routing-preferences">
-    Tune the quality vs. savings dial
+    Tune cost vs. quality with `x-routing-preference`
   </Card>
 
   <Card title="LiteLLM" icon="server" href="/ecosystem/firerouter/litellm">
@@ -6177,12 +6279,14 @@ Make your first FireRouter API call
 
 This guide shows how to call FireRouter directly through the Fireworks inference API. See the [overview](/ecosystem/firerouter/overview) for how routing works and the [authentication](/ecosystem/firerouter/authentication) page for header details.
 
-For coding harnesses, use [FireConnect](/ecosystem/fireconnect/overview): `fireconnect <harness> on --model firerouter` (v0.9.0+). For manual Claude Code setup, see [Claude Code (manual setup)](/ecosystem/firerouter/claude-code).
+For coding harnesses, use [FireConnect](/ecosystem/fireconnect/overview): `fireconnect <harness> on --model firerouter`. Claude Code supports Main plus named aliases; see [Claude Code — FireRouter](/ecosystem/fireconnect/claude-code#choose-where-firerouter-is-used) to configure each slot explicitly. For manual `settings.json` setup, see [Claude Code (manual setup)](/ecosystem/firerouter/claude-code).
 
 ## Prerequisites
 
 * A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`)
-* An **Anthropic API key** (`sk-ant-...`) for the default pass-through to Claude Opus 5
+* Optional **Anthropic credentials** to make Claude Opus 5 eligible — an API key (`sk-ant-...`) for direct HTTP calls, or your existing Claude Code login when using [FireConnect](/ecosystem/fireconnect/claude-code#firerouter). Without them, FireRouter can still use eligible Fireworks-hosted models.
+
+Fire Pass keys (`fpk_...`) and accounts with data residency enabled cannot use FireRouter. See [Availability limitations](/ecosystem/firerouter/overview#availability-limitations).
 
 ## Chat Completions
 
@@ -6199,7 +6303,7 @@ curl https://api.fireworks.ai/inference/v1/chat/completions \
   }'
 ```
 
-With the default `firerouter` model ID, simple prompts are usually redirected to GLM 5.3 (`glm-5p3`) on Fireworks. Harder prompts pass through to Claude Opus 5 (`claude-opus-5`) using your Anthropic key.
+With the default `firerouter` model ID, simple prompts are more likely to use GLM 5.3 (`glm-5p3`) on Fireworks. Harder prompts are more likely to use Claude Opus 5 (`claude-opus-5`) when Anthropic credentials are available. Routing is policy-driven; prompt difficulty alone does not guarantee either result for an individual request.
 
 To use a different model combination, replace `firerouter` with one of the [model-specific FireRouter slugs](/ecosystem/firerouter/overview#choose-different-models).
 
@@ -6222,11 +6326,9 @@ curl https://api.fireworks.ai/inference/v1/messages \
   }'
 ```
 
-## Verify routing
+## Observe routing
 
-1. Send a trivial prompt (for example "rename foo to bar"). Expect a fast response routed to the open model.
-2. Send a hard reasoning prompt. With the default `firerouter` model ID, expect pass-through to Claude Opus 5.
-3. Optionally set `x-routing-preference` to bias routing. See [Routing preferences](/ecosystem/firerouter/routing-preferences).
+Send both a simple prompt and a harder reasoning prompt, then inspect the `model` field in each response. It names the backend that served the request (for example `glm-5p3` or `claude-opus-5`), not `firerouter`. Simple prompts are more likely to use the Fireworks model and harder prompts are more likely to use the primary model, but neither result is guaranteed for an individual request. Use `x-routing-preference` to bias the decision. See [Routing preferences](/ecosystem/firerouter/routing-preferences).
 
 You can also send the Fireworks key as `X-Fireworks-Api-Key` instead of `Authorization: Bearer`. See [Authentication](/ecosystem/firerouter/authentication) for the full header reference.
 
@@ -6244,27 +6346,33 @@ Source: https://docs.fireworks.ai/ecosystem/firerouter/routing-preferences
 
 Tune FireRouter between closed-source quality and open-model savings
 
-FireRouter scores each request to `firerouter` and routes to either a closed-source model (pass-through) or a Fireworks open model (redirect). The **`x-routing-preference`** request header lets you bias that decision toward quality or savings.
+FireRouter routes each new user turn sent to `firerouter` to either a closed-source model (pass-through) or a Fireworks open model (redirect). The **`x-routing-preference`** request header controls the quality-versus-cost tradeoff.
+
+Set the preference per request with the HTTP header below, or pass `--routing-preference` when you run `fireconnect <harness> on`.
 
 ## Preference levels
 
 Send an integer from **1** (most quality-protective) to **5** (most savings-focused):
 
-| Value | Name                | Behavior                                                           |
-| ----- | ------------------- | ------------------------------------------------------------------ |
-| `1`   | `max-intelligence`  | Strongest bias toward pass-through; use when quality is critical   |
-| `2`   | `more-intelligence` | Favor closed-source models on borderline requests                  |
-| `3`   | `balanced`          | Default when the header is omitted. FireRouter's standard tradeoff |
-| `4`   | `more-savings`      | Favor open-model redirects on borderline requests                  |
-| `5`   | `max-savings`       | Strongest bias toward redirect; maximize cost savings              |
+| Value | Name                | Behavior                                                                                                                       |
+| ----- | ------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `1`   | `max-intelligence`  | For ranked routes, force the route's primary with no cross-model fallback. Retryable failures may receive one same-model retry |
+| `2`   | `more-intelligence` | Increase intelligence weighting relative to balanced                                                                           |
+| `3`   | `balanced`          | Default when the header is omitted. FireRouter's standard tradeoff                                                             |
+| `4`   | `more-savings`      | Increase cost weighting relative to balanced                                                                                   |
+| `5`   | `max-savings`       | For ranked routes, rank eligible models by cost                                                                                |
+
+In-order routes keep their configured model order instead of using this ranking.
 
 ## HTTP header
 
 Set the header on each request:
 
-```bash theme={null}
+```text theme={null}
 -H "x-routing-preference: 4"
 ```
+
+The HTTP header accepts only the integers `1`–`5`. Names such as `balanced` are FireConnect CLI values, not HTTP header values.
 
 Example with curl:
 
@@ -6292,6 +6400,8 @@ fireconnect opencode on --model firerouter --routing-preference 2
 fireconnect pi on --model firerouter --routing-preference 5
 ```
 
+On Claude Code, `--routing-preference` requires at least one slot set to `firerouter`. See [Choose where FireRouter is used](/ecosystem/fireconnect/claude-code#choose-where-firerouter-is-used).
+
 Supported on Claude Code, OpenCode, Pi, and VS Code. Values are `1`–`5` or the level names (`max-intelligence`, `balanced`, `max-savings`, etc.). The flag applies when at least one configured slot uses `firerouter`. Codex, Cursor, and DeepSeek Harness do not support `--routing-preference`.
 
 You can also store a global Anthropic BYOK key once:
@@ -6306,12 +6416,12 @@ fireconnect configure --anthropic-api-key sk-ant-...
 * **Tasks where quality is critical** (security review, complex reasoning, nuanced writing): try `1` or `2` to keep closed-source models on harder prompts.
 * **Evaluating routing**: start at `3` (balanced), then move one step at a time and compare cost and output quality.
 
-FireRouter caches routing decision within a conversation, so preference changes can take a few turns to take effect without restarting your client.
+For eligible tool-call continuations, modes `2`–`4` may reuse the model selected for the same user turn when route caching is available. Modes `1` and `5` do not use this route cache.
 
 ## Related
 
 * [Overview](/ecosystem/firerouter/overview): how redirect vs. pass-through works
-* [FireConnect overview](/ecosystem/fireconnect/overview#firerouter): enable FireRouter in coding harnesses
+* [FireConnect overview](/ecosystem/fireconnect/overview#firerouter-and-smart-routers): enable FireRouter in coding harnesses
 * [Quickstart](/ecosystem/firerouter/quickstart): API call examples
 * [LiteLLM](/ecosystem/firerouter/litellm): add FireRouter to LiteLLM Proxy
 
@@ -6829,14 +6939,14 @@ Use [LiteLLM Proxy](https://docs.litellm.ai/docs/proxy/quick_start) as a shared 
 ## Prerequisites
 
 * A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`)
-* LiteLLM v1.95.0 installed (`pip install "litellm[proxy]==1.95.0"`)
+* LiteLLM v1.98.0 installed (`pip install "litellm[proxy]==1.98.0"`)
 
 ## Configure Fireworks models
 
-Create a `config.yaml` with one entry per model you want to expose. Use the `fireworks_ai/` provider prefix and the **full** Fireworks model or router ID:
+Create a `config.yaml` with one entry per model you want to expose. Use the `fireworks_ai/` provider prefix and a model- or router-qualified Fireworks ID:
 
 <Note>
-  Always use full resource paths (for example `accounts/fireworks/models/glm-5p2` or `accounts/fireworks/routers/firerouter`). LiteLLM rewrites short names to `accounts/fireworks/models/...`, which breaks router endpoints like FireRouter.
+  For FireRouter, use `fireworks_ai/routers/firerouter` or the full `fireworks_ai/accounts/fireworks/routers/firerouter` path. Do not use bare `fireworks_ai/firerouter`, which LiteLLM interprets as a model.
 </Note>
 
 ```yaml theme={null}
@@ -6846,9 +6956,9 @@ model_list:
       model: fireworks_ai/accounts/fireworks/models/glm-5p2
       api_key: os.environ/FIREWORKS_AI_API_KEY
 
-  - model_name: accounts/fireworks/routers/kimi-k2p6-turbo
+  - model_name: accounts/fireworks/routers/kimi-k2p6-fast
     litellm_params:
-      model: fireworks_ai/accounts/fireworks/routers/kimi-k2p6-turbo
+      model: fireworks_ai/accounts/fireworks/routers/kimi-k2p6-fast
       api_key: os.environ/FIREWORKS_AI_API_KEY
 ```
 
@@ -6863,7 +6973,7 @@ litellm --config config.yaml
 
 ## Call a model
 
-Clients authenticate to LiteLLM with a [virtual key](https://docs.litellm.ai/docs/proxy/virtual_keys):
+If [LiteLLM virtual keys](https://docs.litellm.ai/docs/proxy/virtual_keys) are configured, clients authenticate with a virtual key:
 
 ```bash theme={null}
 curl http://localhost:4000/chat/completions \
@@ -6877,16 +6987,16 @@ curl http://localhost:4000/chat/completions \
 
 ## API key layout
 
-| Key                          | Who holds it                         | Used for                                |
-| ---------------------------- | ------------------------------------ | --------------------------------------- |
-| Fireworks API key (`fw_...`) | LiteLLM server (env or secret store) | Upstream Fireworks inference            |
-| LiteLLM virtual key          | Each developer or service            | Proxy authentication and spend tracking |
+| Key                                 | Who holds it                         | Used for                                |
+| ----------------------------------- | ------------------------------------ | --------------------------------------- |
+| Fireworks API key (`fw_...`)        | LiteLLM server (env or secret store) | Upstream Fireworks inference            |
+| LiteLLM virtual key (if configured) | Each developer or service            | Proxy authentication and spend tracking |
 
 A common pattern is one Fireworks service-account API key on the LiteLLM server, with per-developer virtual keys for access control and attribution.
 
 ## FireRouter
 
-To add automatic routing between closed-source and open models, register [FireRouter](/ecosystem/firerouter/overview) in the same `model_list`. FireRouter requires an Anthropic API key for pass-through. See [FireRouter with LiteLLM](/ecosystem/firerouter/litellm).
+To add automatic routing between closed-source and open models, register [FireRouter](/ecosystem/firerouter/overview) in the same `model_list`. An Anthropic credential makes Claude models eligible; it is optional for Fireworks-only routes or when workspace BYOK is provisioned. See [FireRouter with LiteLLM](/ecosystem/firerouter/litellm).
 
 ## Related
 
@@ -7602,7 +7712,25 @@ The shape list is also the authoritative way to discover which GPU types, GPU co
   </Tab>
 
   <Tab title="REST API">
-    Call [List Deployment Shape Versions](/api-reference/list-deployment-shape-versions) to find shapes for your model, then pass the shape name as `deploymentShape` in the [Create Deployment](/api-reference/create-deployment) request body:
+    Call [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions) with a deployment create request for your model. It returns the validated shape versions compatible with that model, with the server-side compatibility rules (PEFT base-model resolution, per-model hardware tiers, addon gating) applied for you:
+
+    ```bash theme={null}
+    # YOUR_ACCOUNT_ID is the account that will own the deployment, not the
+    # model's publisher. The model in the body can live anywhere you can
+    # deploy it, e.g. accounts/fireworks.
+    curl -X POST "https://api.fireworks.ai/v1/accounts/YOUR_ACCOUNT_ID/deploymentShapeVersions:match" \
+      -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "createDeploymentRequest": {
+          "deployment": {
+            "baseModel": "accounts/fireworks/models/gpt-oss-120b"
+          }
+        }
+      }'
+    ```
+
+    Then pass one of the returned shape versions as `deploymentShape` in the [Create Deployment](/api-reference/create-deployment) request body:
 
     ```bash theme={null}
     curl -X POST "https://api.fireworks.ai/v1/accounts/YOUR_ACCOUNT_ID/deployments" \
@@ -8867,7 +8995,7 @@ This is a subtle failure mode specific to multi-LoRA deployments. If the deploym
 firectl deployment-shape-version list --base-model accounts/<your-account>/models/<your-model-version>
 ```
 
-Or query the API directly with the `latest_validated=true` filter (see [List Deployment Shape Versions](/api-reference/list-deployment-shape-versions)):
+Or query the API directly with the `latest_validated=true` filter (see [List Deployment Shape Versions](/api-reference/list-deployment-shape-versions)). For general shape discovery — "which shapes work with this model?" — use [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions) instead; the filter query here is for checking which exact model version each validated shape version binds:
 
 ```bash theme={null}
 curl -s "https://api.fireworks.ai/v1/accounts/-/deploymentShapes/-/versions?filter=snapshot.base_model%3D%22accounts%2F<your-account>%2Fmodels%2F<your-model-version>%22%20AND%20latest_validated%3Dtrue&order_by=create_time%20desc" \
@@ -15556,7 +15684,7 @@ With an active Fire Pass you get:
 
 ## Using your Fire Pass
 
-Fire Pass is designed for use with personal agentic coding harnesses. For Claude Code, OpenCode, Codex, and Pi, use [FireConnect](/ecosystem/fireconnect/overview) — it detects `fpk_...` keys and applies Fire Pass defaults automatically. Below are setup guides for other supported tools.
+Fire Pass is designed for use with personal agentic coding harnesses. For Claude Code, OpenCode, Codex, and Pi, use [FireConnect](/ecosystem/fireconnect/overview) — it detects `fpk_...` keys and configures supported models. Below are setup guides for other supported tools.
 
 ### General Configuration
 
@@ -15657,9 +15785,7 @@ If your tool supports custom API endpoints, you can configure it manually using 
     All Claude Code setup lives on the [Claude Code integration guide](/ecosystem/fireconnect/claude-code):
 
     * [FireConnect overview](/ecosystem/fireconnect/overview#install) (recommended)
-    * [Using Fire Pass with Claude Code](/ecosystem/fireconnect/claude-code#using-fire-pass)
-
-    With FireConnect, Fire Pass keys route all model aliases to `kimi-fast-latest`.
+    * [Configure Claude Code models](/ecosystem/fireconnect/claude-code#change-models)
   </Accordion>
 
   <Accordion title="Kilo Code">
@@ -25614,15 +25740,16 @@ Reserved Throughput comes with SLAs and is only available on certain models. Pri
 | [Kimi K3 US](https://app.fireworks.ai/models/fireworks/kimi-k3)                                                   | \$3.30 / \$0.33 / \$16.50 | \$4.125 / \$0.4125 / \$20.625 |                     |
 | [Kimi K2.7 Code](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)                                        | \$0.95 / \$0.19 / \$4.00  | \$1.425 / \$0.285 / \$6.00    |                     |
 | [Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)                                                  | \$0.95 / \$0.16 / \$4.00  | \$1.50 / \$0.22 / \$6.00      |                     |
+| [DeepSeek V4.1 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash)                              | \$0.22 / \$0.007 / \$0.66 | \$0.275 / \$0.00875 / \$0.825 |                     |
 | [DeepSeek V4 Pro (0813)](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro-0813)                          | \$1.32 / \$0.044 / \$3.96 | \$1.65 / \$0.055 / \$4.95     |                     |
 | [DeepSeek V4 Flash (0731)](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)                      | \$0.22 / \$0.007 / \$0.66 | \$0.275 / \$0.00875 / \$0.825 | ✓                   |
 | [DeepSeek V4 Flash Vision Exp](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-vision-exp)            | \$0.22 / \$0.007 / \$0.66 | \$0.275 / \$0.00875 / \$0.825 |                     |
 | [GLM 5.3 Flash](https://app.fireworks.ai/models/fireworks/glm-5p3-flash)                                          | \$0.15 / \$0.03 / \$0.50  | —                             |                     |
 | [GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3)                                                      | \$1.40 / \$0.26 / \$4.40  | \$1.75 / \$0.325 / \$5.50     | ✓                   |
+| [GLM 5.3 Fast](https://app.fireworks.ai/models/fireworks/glm-5p3)                                                 | \$2.10 / \$0.39 / \$6.60  | —                             |                     |
 | [GLM 5.2](https://app.fireworks.ai/models/fireworks/glm-5p2)                                                      | \$1.40 / \$0.14 / \$4.40  | \$1.75 / \$0.18 / \$5.50      |                     |
 | [GLM 5.2 Fast](https://app.fireworks.ai/models/fireworks/glm-5p2)                                                 | \$2.10 / \$0.21 / \$6.60  | —                             |                     |
 | [GLM 5.2 Fast US](https://app.fireworks.ai/models/fireworks/glm-5p2)                                              | \$2.10 / \$0.21 / \$6.60  | —                             |                     |
-| [Qwen 3.7 Plus](https://app.fireworks.ai/models/fireworks/qwen3p7-plus)                                           | \$0.40 / \$0.08 / \$1.60  | —                             |                     |
 | [Qwen 3.8 Max](https://app.fireworks.ai/models/fireworks/qwen3p8-max)                                             | \$2.00 / \$0.25 / \$6.00  | \$3.00 / \$0.375 / \$9.00     |                     |
 | [MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3)                                                | \$0.30 / \$0.06 / \$1.20  | \$0.45 / \$0.09 / \$1.80      |                     |
 | [OpenAI GPT OSS 120B](https://app.fireworks.ai/models/fireworks/gpt-oss-120b)                                     | \$0.15 / \$0.015 / \$0.60 | \$0.18 / \$0.018 / \$0.72     |                     |

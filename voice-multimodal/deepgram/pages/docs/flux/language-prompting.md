@@ -97,6 +97,8 @@ wss://api.deepgram.com/v2/listen?model=flux-general-multi&language_hint=en&langu
 
 ## SDK Usage
 
+**`Python`**
+
 ```python Python
 from deepgram import AsyncDeepgramClient
 from deepgram.core.events import EventType
@@ -122,6 +124,8 @@ async with client.listen.v2.connect(
     await connection.start_listening()
 ```
 
+**`JavaScript`**
+
 ```typescript JavaScript
 import { DeepgramClient } from "@deepgram/sdk";
 
@@ -145,6 +149,8 @@ connection.on("message", (message) => {
 connection.connect();
 await connection.waitForOpen();
 ```
+
+**`Java`**
 
 ```java Java
 import com.deepgram.DeepgramClient;

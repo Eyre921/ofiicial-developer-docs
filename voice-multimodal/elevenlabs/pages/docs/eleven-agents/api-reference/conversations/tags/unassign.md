@@ -29,6 +29,17 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/
 - `conversation_id` (string, required)
 - `tag_id` (string, required)
 
+## Errors
+
+### 422 Tags Unassign Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **SDK Code**

@@ -31,7 +31,20 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `move_to` (string, optional) — The folder to move the entities to. If not set, the entities will be moved to the root folder.
+
+## Errors
+
+### 422 Documents Move Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

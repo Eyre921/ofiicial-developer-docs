@@ -173,6 +173,8 @@ deepgram-sagemaker-terraform/
 
 Create `variables.tf` with the input variables the configuration needs. The only required value is the Model Package ARN from your Marketplace subscription.
 
+**`variables.tf`**
+
 ```hcl title="variables.tf"
 variable "aws_region" {
   description = "AWS region where the SageMaker Endpoint will be deployed."
@@ -297,6 +299,8 @@ variable "async_s3_failure_path" {
 ## Main configuration
 
 Create `main.tf` with the provider, IAM role, and SageMaker resources. The configuration uses the Model Package ARN from your AWS Marketplace subscription to create the model without referencing a container image directly.
+
+**`main.tf`**
 
 ```hcl title="main.tf" maxLines=20
 ###############################################################################
@@ -549,6 +553,8 @@ resource "aws_cloudwatch_metric_alarm" "async_has_backlog" {
 
 Create `outputs.tf` to surface the endpoint details after `terraform apply` completes.
 
+**`outputs.tf`**
+
 ```hcl title="outputs.tf"
 output "endpoint_name" {
   description = "Name of the deployed SageMaker Endpoint."
@@ -579,6 +585,8 @@ output "async_s3_output_path" {
 ## Example variable values
 
 Create a `terraform.tfvars` file with your specific values. Replace the `model_package_arn` with the ARN from your AWS Marketplace subscription.
+
+**`terraform.tfvars`**
 
 ```hcl title="terraform.tfvars"
 aws_region            = "us-east-1"
@@ -704,6 +712,8 @@ deepgram_engine_env = {
 ### VPC configuration
 
 To deploy the endpoint inside a VPC, add a `vpc_config` block to the `aws_sagemaker_model` resource:
+
+**`VPC configuration`**
 
 ```hcl title="VPC configuration"
 resource "aws_sagemaker_model" "deepgram" {

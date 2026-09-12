@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/t
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `agent_id` (string, required)
 - `agent_phone_number_id` (string, required)
 - `to_number` (string, required)
@@ -108,6 +110,17 @@ Successful Response
 - `message` (string, required)
 - `conversation_id` (string, optional)
 - `callSid` (string, optional)
+
+## Errors
+
+### 422 Twilio Outbound Call Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

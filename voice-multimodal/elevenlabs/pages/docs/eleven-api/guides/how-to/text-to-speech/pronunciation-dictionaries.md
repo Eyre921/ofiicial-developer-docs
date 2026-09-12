@@ -41,6 +41,8 @@ This rule will use the "IPA" alphabet and update the pronunciation for `tomato` 
 
 You can use AI tools like Claude or ChatGPT to help generate IPA or CMU notations for specific words.
 
+**`dictionary.pls`**
+
 ```xml title="dictionary.pls"
 <?xml version="1.0" encoding="UTF-8"?>
 <lexicon version="1.0"

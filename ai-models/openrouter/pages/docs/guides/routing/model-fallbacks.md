@@ -180,7 +180,7 @@ const message = await anthropic.beta.messages.create({
 
 ## Using with the OpenAI SDK
 
-To use the `models` array with the OpenAI SDK, include it in the `extra_body` parameter. In the example below, `~openai/gpt-latest` will be tried first, and the `models` array will be tried in order as fallbacks.
+To use the `models` array with the OpenAI SDK, include it in the `extra_body` parameter. In the example below, `~openai/gpt-sol-latest` will be tried first, and the `models` array will be tried in order as fallbacks.
 
 <Template
   data={{
@@ -197,7 +197,7 @@ API_KEY_REF,
     )
 
     completion = openai_client.chat.completions.create(
-        model="~openai/gpt-latest",
+        model="~openai/gpt-sol-latest",
         extra_body={
             "models": ["~anthropic/claude-sonnet-latest", "gryphe/mythomax-l2-13b"],
         },
@@ -223,7 +223,7 @@ API_KEY_REF,
     async function main() {
       // @ts-expect-error
       const completion = await openrouterClient.chat.completions.create({
-        model: '~openai/gpt-latest',
+        model: '~openai/gpt-sol-latest',
         models: ['~anthropic/claude-sonnet-latest', 'gryphe/mythomax-l2-13b'],
         messages: [
           {

@@ -32,6 +32,8 @@ Reference: https://elevenlabs.io/docs/api-reference/music/separate-stems
 
 ### Body (multipart/form-data)
 
+This endpoint expects a multipart form containing a file.
+
 - `file` (file, required) — The audio file to separate into stems.
 - `stem_variation_id` (enum, optional) — The id of the stem variation to use.
 - `sign_with_c2pa` (boolean, optional) — Whether to sign the generated song with C2PA. Applicable only for mp3 files.
@@ -43,6 +45,17 @@ Reference: https://elevenlabs.io/docs/api-reference/music/separate-stems
 ZIP archive containing separated audio stems. Each stem is provided as a separate audio file in the requested output format.
 
 - File download.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

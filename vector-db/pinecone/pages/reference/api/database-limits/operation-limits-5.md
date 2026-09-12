@@ -113,8 +113,8 @@ Large `$in` operators can impact query performance and cost. Filters with thousa
 
 If you need to filter by more than 10,000 values, consider these alternatives:
 
-* **Use namespaces for tenant isolation**: Instead of filtering by tenant IDs within a single namespace, create separate namespaces for each tenant or tenant group. This can also reduce query costs. See [Design for multi-tenancy](/guides/index-data/data-modeling#design-for-multi-tenancy).
-* **Use broader access control groups**: Instead of filtering by individual user IDs, filter by organization, project, or role. This reduces the number of values in your `$in` filter. See [Design for multi-tenancy](/guides/index-data/data-modeling#use-access-control-groups-instead-of-individual-ids).
+* **Use namespaces for tenant isolation**: Instead of filtering by tenant IDs within a single namespace, create separate namespaces for each tenant or tenant group. This can also reduce query costs. See [Design for multitenancy](/guides/index-data/design-for-multitenancy).
+* **Use broader access control groups**: Instead of filtering by individual user IDs, filter by organization, project, or role. This reduces the number of values in your `$in` filter. See [Design for multitenancy](/guides/index-data/design-for-multitenancy#use-access-control-groups-instead-of-individual-ids).
 * **Post-filter client-side**: Retrieve a larger top K without filtering (for example, top 1000), then filter results client-side.
 * **Run multiple queries**: Split your filter into multiple queries with smaller `$in` operators and combine the results client-side.
 

@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/phone-numbers/create
 
 ### Body (application/json)
 
+This endpoint expects an object or object or object.
+
 - `object or object or object`
   - CreateTwilioPhoneNumberRequest
     - `phone_number` (string, required) — Phone number
@@ -97,6 +99,17 @@ Reference: https://elevenlabs.io/docs/api-reference/phone-numbers/create
 Successful Response
 
 - `phone_number_id` (string, required) — Phone entity ID
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

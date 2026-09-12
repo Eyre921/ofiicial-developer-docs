@@ -32,6 +32,8 @@ Reference: https://elevenlabs.io/docs/api-reference/service-accounts/api-keys/up
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `is_enabled` (boolean or "no_update", optional, default: no_update) — Whether to enable or disable the API key.
 - `name` (string, optional, nullable) — The name of the XI API key to use (used for identification purposes only).
 - `permissions` (list of enum or enum, optional, default: no_update) — The permissions of the XI API.
@@ -46,6 +48,17 @@ Reference: https://elevenlabs.io/docs/api-reference/service-accounts/api-keys/up
 Successful Response
 
 - `any`
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

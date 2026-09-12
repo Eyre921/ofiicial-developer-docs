@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/triage-tickets/add-turn-comm
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `turn_index` (integer, required) — Zero-based index of the transcript turn this comment refers to.
 - `comment` (string, required) — What went wrong at this turn.
 
@@ -68,6 +70,17 @@ Successful Response
 - `assignee_user_id` (string, required, nullable)
 - `created_at_unix_secs` (integer, required)
 - `updated_at_unix_secs` (integer, required)
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

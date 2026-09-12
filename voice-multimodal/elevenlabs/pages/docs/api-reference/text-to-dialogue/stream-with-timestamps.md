@@ -33,6 +33,8 @@ Reference: https://elevenlabs.io/docs/api-reference/text-to-dialogue/stream-with
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `inputs` (list of object, required) — A list of dialogue inputs, each containing text and a voice ID which will be converted into speech. The maximum number of unique voice IDs is 10. For reliable generation, keep the total character count across all `inputs[].text` values at or below 2,000 characters per request. Longer requests can terminate early in streaming responses or return a validation error.
   - `text` (string, required) — The text to be converted into speech.
   - `voice_id` (string, required) — The ID of the voice to be used for the generation.
@@ -54,6 +56,33 @@ Reference: https://elevenlabs.io/docs/api-reference/text-to-dialogue/stream-with
 Stream of transcription chunks
 
 - Streaming response of `object`.
+- `audio_base64` (string, required) — Base64 encoded audio data
+- `voice_segments` (list of object, required) — Voice segments for the audio
+  - `voice_id` (string, required) — The voice ID used for this segment
+  - `start_time_seconds` (double, required) — Start time of this voice segment
+  - `end_time_seconds` (double, required) — End time of this voice segment
+  - `character_start_index` (integer, required) — Start index in the characters array
+  - `character_end_index` (integer, required) — End index in the characters array (exclusive)
+  - `dialogue_input_index` (integer, required) — Line of the dialogue (script) that this segment is a part of.
+- `alignment` (object, optional, nullable) — Timestamp information for each character in the original text
+  - `characters` (list of string, required)
+  - `character_start_times_seconds` (list of double, required)
+  - `character_end_times_seconds` (list of double, required)
+- `normalized_alignment` (object, optional, nullable) — Timestamp information for each character in the normalized text
+  - `characters` (list of string, required)
+  - `character_start_times_seconds` (list of double, required)
+  - `character_end_times_seconds` (list of double, required)
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

@@ -35,6 +35,8 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/drafts/
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `conversation_config` (map from string to any, required) — Conversation config for the draft
 - `platform_settings` (map from string to any, required) — Platform settings for the draft
 - `workflow` (object, required) — Workflow for the draft
@@ -402,6 +404,17 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/drafts/
 Successful Response
 
 - `any`
+
+## Errors
+
+### 422 Drafts Create Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

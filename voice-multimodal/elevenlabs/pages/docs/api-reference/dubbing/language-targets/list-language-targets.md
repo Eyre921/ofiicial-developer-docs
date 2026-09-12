@@ -64,6 +64,17 @@ Successful Response
     - `message` (string, required) — Human-readable description of the warning, for display. The wording may change at any time, so we recommend branching on `type` instead.
 - `next_cursor` (string, optional, nullable) — Opaque cursor to pass back as `cursor` for the next page, or null when there are no more results.
 
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

@@ -39,6 +39,8 @@ Smart Format enables Deepgram's Punctuation feature. If you've set `smart_format
 
 To transcribe audio from a file on your computer, run the following cURL command in a terminal or your favorite API client.
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -78,6 +80,8 @@ For more control over finalization timing:
 Setting `no_delay=true` forces immediate finalization of streaming transcripts without waiting for entity completion. NOTE: This will result in skipping formatting altogether in many cases.
 
 To override the default waiting behavior and return results immediately, add the parameter `no_delay=true` to your streaming API request:
+
+**`cURL`**
 
 ```bash cURL
 curl \

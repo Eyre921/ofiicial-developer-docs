@@ -149,6 +149,8 @@ def finalize_response(transcript):
     pass
 ```
 
+**`C#`**
+
 ```csharp C#
 public void OnMessage(FluxMessage message)
 {

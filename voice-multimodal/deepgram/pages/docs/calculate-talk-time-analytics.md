@@ -47,6 +47,8 @@ To run this project on your local computer you will need to clone the repository
 
 Either clone or download the[GitHub repository](https://github.com/deepgram-devs/talk-time-analytics) to your local machine in a new directory:
 
+**`Bash`**
+
 ```bash Bash
 # Clone this repo
 git clone https://github.com/deepgram-devs/talk-time-analytics.git
@@ -66,6 +68,8 @@ Your application will need to know more about you before it can run. Copy the `.
 
 In the directory where you downloaded the code, run the following command to bring in the dependencies needed for this project:
 
+**`Bash`**
+
 ```bash Bash
 npm install
 ```
@@ -73,6 +77,8 @@ npm install
 #### Start the Server
 
 Now that you have configured your application and put the dependencies in place, your application is ready to go! Run it with:
+
+**`Bash`**
 
 ```bash Bash
 npm start
@@ -87,6 +93,8 @@ The application is an Express app that uses Chart.js to create a pie chart that 
 ### Sending Data to the Deepgram API
 
 When a user uploads a file, we call the `requestDeepgramAPI` function. This function calls the Deepgram API via an `https` request. The key parameter on this request is `diarize=true`. This parameter tells the Deepgram API to recognize speaker changes. When activated, the Deepgram API will assign a zero-based speaker index to each word in the transcript.
+
+**`JavaScript`**
 
 ```javascript JavaScript
 function requestDeepgramAPI({ res, filename, fileUrl, contentType, payload }) {
@@ -123,6 +131,8 @@ function requestDeepgramAPI({ res, filename, fileUrl, contentType, payload }) {
 Once the response is returned from the Deepgram API, we pass the transcript data to the `computeSpeakingTime` function. In that function, we create a new `Map<number, number>` named `timePerSpeaker`.
 
 The Deepgram API specifies the start, end, and duration of each word identifies. That information, paired with the indexed speaker returned by the diarization feature of the API, allows us to iterate through each word calculating the full length of time that speaker spoke.
+
+**`JavaScript`**
 
 ```javascript JavaScript
 function computeSpeakingTime(transcript) {

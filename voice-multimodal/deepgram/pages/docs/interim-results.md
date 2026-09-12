@@ -30,6 +30,8 @@ To enable Interim Results, when you call Deepgram’s API, add an `interim_resul
 
 `interim_results=true`
 
+**`Python`**
+
 ```python Python
 
 # see https://github.com/deepgram/deepgram-python-sdk/blob/main/examples/streaming/async_microphone/main.py
@@ -53,6 +55,8 @@ To enable Interim Results, when you call Deepgram’s API, add an `interim_resul
        endpointing=300
    ) as connection:
 ```
+
+**`Java`**
 
 ```java Java
 import com.deepgram.DeepgramClient;
@@ -83,6 +87,8 @@ wsClient.connect(options).get(10, TimeUnit.SECONDS);
 Let’s look at some interim transcripts and analyze their content.
 
 Our first interim result has the following content:
+
+**`JSON`**
 
 ```json JSON
 {
@@ -126,6 +132,8 @@ In this response, we see that:
 * `is_final` is `false`, indicating that Deepgram will continue waiting to see if more data will improve its predictions.
 
 The next interim response has the following content:
+
+**`JSON`**
 
 ```json JSON
 {

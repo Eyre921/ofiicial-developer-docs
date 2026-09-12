@@ -96,6 +96,17 @@ Successful Response
 - `total_count` (integer, optional, default: 0) — The total number of shared voices matching the query.
 - `last_sort_id` (string, optional, nullable)
 
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

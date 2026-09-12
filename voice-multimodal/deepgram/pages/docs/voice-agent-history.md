@@ -37,6 +37,8 @@ History can be disabled by setting `settings.flags.history` to `false` in the ag
 
 ### Example Payload
 
+**`Conversation History`**
+
 ```json Conversation History
 {
   "type": "Settings",
@@ -98,6 +100,8 @@ Each function call in the history includes:
 | `response`    | String  | The response/result returned by the function                      |
 
 ### Example Payload
+
+**`Function Call History`**
 
 ```json Function Call History
 {

@@ -28,6 +28,8 @@ The suggested maximum number of terms for Find and Replace is 200. Above 200 ter
 
 To transcribe audio from a file on your computer, run the following curl command in a terminal or your favorite API client.
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -89,6 +91,8 @@ We want to replace the term "kpis" in this audio file with the full term "Key Pe
 
 In our terminal, we run the following command:
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -101,6 +105,8 @@ curl \
 Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 When the file is finished processing, you’ll receive a JSON response. Let's look more closely at the `words` object within the `alternatives` object within this response. Notice that the audio contains an occurrence of the word "kpis":
+
+**`JSON`**
 
 ```json JSON
 ...
@@ -124,6 +130,8 @@ When the file is finished processing, you’ll receive a JSON response. Let's lo
 ```
 
 However, this has been replaced with "Key Performance Indicators".
+
+**`JSON`**
 
 ```json JSON
 {

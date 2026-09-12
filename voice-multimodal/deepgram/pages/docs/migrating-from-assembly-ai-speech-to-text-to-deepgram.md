@@ -51,6 +51,8 @@ Both AssemblyAI and Deepgram provide robust speech-to-text APIs, but they have d
 
 Create a `.env` file in your project directory and add your AssemblyAI API key:
 
+**`.env`**
+
 ```text .env
 ASSEMBLYAI_API_KEY=your_assemblyai_api_key_here
 ```
@@ -58,6 +60,8 @@ ASSEMBLYAI_API_KEY=your_assemblyai_api_key_here
 #### How to configure Deepgram API key
 
 Similarly, add your Deepgram API key to the `.env` file:
+
+**`.env`**
 
 ```text .env
 DEEPGRAM_API_KEY=your_deepgram_api_key_here
@@ -67,9 +71,13 @@ DEEPGRAM_API_KEY=your_deepgram_api_key_here
 
 For AssemblyAI:
 
+**`JavaScript`**
+
 ```shell JavaScript
 npm install assemblyai dotenv
 ```
+
+**`Python`**
 
 ```shell Python
 pip install assemblyai python-dotenv
@@ -77,9 +85,13 @@ pip install assemblyai python-dotenv
 
 For Deepgram:
 
+**`JavaScript`**
+
 ```shell JavaScript
 npm install @deepgram/sdk dotenv
 ```
+
+**`Python`**
 
 ```shell Python
 pip install deepgram-sdk python-dotenv
@@ -91,6 +103,8 @@ pip install deepgram-sdk python-dotenv
 
 **AssemblyAI Initialization**:
 
+**`JavaScript`**
+
 ```javascript JavaScript
 import { AssemblyAI } from "assemblyai";
 import dotenv from "dotenv";
@@ -101,6 +115,8 @@ const client = new AssemblyAI({
   apiKey: process.env.ASSEMBLYAI_API_KEY,
 });
 ```
+
+**`Python`**
 
 ```python Python
 import assemblyai as aai
@@ -114,6 +130,8 @@ aai.settings.api_key = os.getenv("ASSEMBLYAI_API_KEY")
 
 **Deepgram Initialization**:
 
+**`JavaScript`**
+
 ```javascript JavaScript
 import { DeepgramClient } from "@deepgram/sdk";
 import dotenv from "dotenv";
@@ -122,6 +140,8 @@ dotenv.config();
 
 const deepgram = new DeepgramClient({ apiKey: process.env.DEEPGRAM_API_KEY });
 ```
+
+**`Python`**
 
 ```python Python
 # For more Python SDK migration guides, visit:
@@ -143,6 +163,8 @@ deepgram = DeepgramClient(api_key=API_KEY)
 
 **AssemblyAI**:
 
+**`JavaScript`**
+
 ```javascript JavaScript
 const data = {
   audio_url: "https://dpgr.am/spacewalk.wav", // the audio_url for the audio being transcribed is included
@@ -151,11 +173,15 @@ const data = {
 };
 ```
 
+**`Python`**
+
 ```python Python
 config = aai.TranscriptionConfig(speech_model="nano", speaker_labels= True)
 ```
 
 **Deepgram**:
+
+**`JavaScript`**
 
 ```javascript JavaScript
 const options = {
@@ -165,6 +191,8 @@ const options = {
 };
 ```
 
+**`Python`**
+
 ```python Python
 ```
 
@@ -173,6 +201,8 @@ const options = {
 Here is the entire code sample that shows how to transcribe audio using a remote URL.
 
 **AssemblyAI**:
+
+**`JavaScript`**
 
 ```javascript JavaScript
 import { AssemblyAI } from "assemblyai";
@@ -198,6 +228,8 @@ const run = async () => {
 
 run();
 ```
+
+**`Python`**
 
 ```python Python
 # For more Python SDK migration guides, visit:
@@ -227,6 +259,8 @@ else:
 
 **Deepgram**:
 
+**`JavaScript`**
+
 ```javascript JavaScript
 import { DeepgramClient } from "@deepgram/sdk";
 import dotenv from "dotenv";
@@ -245,6 +279,8 @@ const run = async () => {
 
 run();
 ```
+
+**`Python`**
 
 ```python Python
 # For more Python SDK migration guides, visit:
@@ -289,6 +325,8 @@ Here is the entire code sample that shows how to transcribe audio using a local 
 
 **AssemblyAI**:
 
+**`JavaScript`**
+
 ```javascript JavaScript
 import { AssemblyAI } from "assemblyai";
 import dotenv from "dotenv";
@@ -313,6 +351,8 @@ const run = async () => {
 
 run();
 ```
+
+**`Python`**
 
 ```python Python
 import assemblyai as aai
@@ -344,6 +384,8 @@ if __name__ == "__main__":
 
 **Deepgram**:
 
+**`JavaScript`**
+
 ```javascript JavaScript
 import { DeepgramClient } from "@deepgram/sdk";
 import fs from "fs";
@@ -365,6 +407,8 @@ const run = async () => {
 
 run();
 ```
+
+**`Python`**
 
 ```python Python
 # For more Python SDK migration guides, visit:
@@ -408,6 +452,8 @@ if __name__ == "__main__":
 
 **AssemblyAI**:
 
+**`JSON`**
+
 ```json JSON
 {
   "id": "some_id",
@@ -427,6 +473,8 @@ if __name__ == "__main__":
 ```
 
 **Deepgram**:
+
+**`JSON`**
 
 ```json JSON
 {

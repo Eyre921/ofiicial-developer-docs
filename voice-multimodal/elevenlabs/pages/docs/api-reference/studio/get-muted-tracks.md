@@ -36,6 +36,17 @@ Successful Response
 
 - `chapter_ids` (list of string, required) — List of chapter IDs that have muted tracks.
 
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

@@ -38,6 +38,8 @@ Some turn endings are unambiguous and don't require the model to infer them. `Fo
 
 Send the following JSON as a WebSocket text frame. The message has no additional fields — it operates on the turn currently in progress.
 
+**`JSON`**
+
 ```json JSON
 {
   "type": "ForceEndTurn"
@@ -47,6 +49,8 @@ Send the following JSON as a WebSocket text frame. The message has no additional
 ## Response
 
 When a turn is active, the server responds with a standard `EndOfTurn` message. The `trigger` field is set to `manual`, and the `transcript` reflects all audio received before the `ForceEndTurn` message arrived.
+
+**`JSON`**
 
 ```json JSON
 {

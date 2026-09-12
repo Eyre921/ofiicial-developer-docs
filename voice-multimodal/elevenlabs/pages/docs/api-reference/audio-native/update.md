@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/audio-native/update
 
 ### Body (multipart/form-data)
 
+This endpoint expects a multipart form containing an optional file.
+
 - `file` (file, optional) — Either txt or HTML input file containing the article content. HTML should be formatted as follows '&lt;html&gt;&lt;body&gt;&lt;div&gt;&lt;p&gt;Your content&lt;/p&gt;&lt;h5&gt;More of your content&lt;/h5&gt;&lt;p&gt;Some more of your content&lt;/p&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;'
 - `auto_convert` (boolean, optional) — Whether to auto convert the project to audio or not.
 - `auto_publish` (boolean, optional) — Whether to auto publish the new project snapshot after it's converted.
@@ -45,6 +47,17 @@ Successful Response
 - `converting` (boolean, required) — Whether the project is currently being converted.
 - `publishing` (boolean, required) — Whether the project is currently being published.
 - `html_snippet` (string, required) — The HTML snippet to embed the Audio Native player.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

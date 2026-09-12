@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/pronunciation-dictionaries/c
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `rules` (list of object or object, required) — List of pronunciation rules. Rule can be either: an alias rule: \{'string\_to\_replace': 'a', 'type': 'alias', 'alias': 'b', } or a phoneme rule: \{'string\_to\_replace': 'a', 'type': 'phoneme', 'phoneme': 'b', 'alphabet': 'ipa' }
   - PronunciationDictionaryAliasRuleRequestModel
     - `string_to_replace` (string, required) — The string to replace. Must be a non-empty string.
@@ -61,6 +63,17 @@ Successful Response
 - `permission_on_resource` (enum, required, nullable) — The permission on the resource of the pronunciation dictionary.
   - Allowed values: `admin`, `editor`, `commenter`, `viewer`
 - `description` (string, optional, nullable) — The description of the pronunciation dictionary.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

@@ -44,6 +44,8 @@ Flux delivers first-of-its-kind model-integrated end-of-turn detection, configur
 
 ### Example
 
+**`JSON`**
+
 ```json JSON
 {
   "agent": {
@@ -60,6 +62,8 @@ Flux delivers first-of-its-kind model-integrated end-of-turn detection, configur
 ```
 
 ### Multilingual example
+
+**`JSON`**
 
 ```json JSON
 {
@@ -92,6 +96,8 @@ For multilingual prompting strategies and examples see [Flux Language Prompting]
 For the full list of Nova models and supported languages see [Models & Languages Overview](/docs/models-languages-overview).
 
 ### Example
+
+**`JSON`**
 
 ```json JSON
 {

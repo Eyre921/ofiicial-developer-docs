@@ -95,6 +95,8 @@ Each layer pulls in the layer below as a dependency, and re-exports the parts yo
 
 Browser applications must never expose API keys to the client. Use a **token factory** — a function that returns a short-lived token from your server.
 
+**`Client`**
+
 ```javascript title="Client"
 const config = {
   auth: {
@@ -106,6 +108,8 @@ const config = {
   agent: "YOUR_AGENT_ID",
 };
 ```
+
+**`Server (Node.js)`**
 
 ```javascript title="Server (Node.js)"
 app.get("/api/deepgram-token", async (req, res) => {
@@ -132,11 +136,15 @@ The `apiKey` option exists for local development only. Never ship it in client-s
 
 Configure the agent by referencing one you created in the [Deepgram Console](https://console.deepgram.com), or define the full configuration inline:
 
+**`By Agent ID`**
+
 ```javascript title="By Agent ID"
 const config = {
   agent: "YOUR_AGENT_ID",
 };
 ```
+
+**`Inline Configuration`**
 
 ```javascript title="Inline Configuration"
 const config = {

@@ -8,11 +8,11 @@ path: docs/eleven-api/guides/how-to/music/inpainting
 
 # Music inpainting
 
-Music inpainting with the `music_v2` model lets you modify specific parts of a song while keeping the rest intact. Store a generated song, then reference its parts in a composition plan to keep them unchanged, regenerate them, or condition new audio on the original.
+Music inpainting with the `music_v2` or `music_v2_5` model lets you modify specific parts of a song while keeping the rest intact. Store a generated song, then reference its parts in a composition plan to keep them unchanged, regenerate them, or condition new audio on the original.
 
 ## How it works
 
-A `music_v2` composition plan is an ordered list of **chunks**. Each chunk is one of two types:
+A `music_v2` or `music_v2_5` composition plan is an ordered list of **chunks**. Each chunk is one of two types:
 
 * **Generation chunk** — generates new audio from `text` and styles. Use it to regenerate a section or add new material.
 * **Audio reference chunk** — inserts a slice of a stored song unchanged. Use it to keep a section of an existing song exactly as it is.
@@ -102,7 +102,7 @@ const compositionPlan = response.compositionPlan; // undefined if extractComposi
 
 ### Keep and regenerate chunks
 
-Build a plan that mixes audio reference chunks (kept) with generation chunks (regenerated), then pass it to `compose` with `model_id="music_v2"`:
+Build a plan that mixes audio reference chunks (kept) with generation chunks (regenerated), then pass it to `compose` with `model_id="music_v2"` (or `model_id="music_v2_5"`):
 
 ```python
 # Keep the first 30 seconds, regenerate the rest with a new style

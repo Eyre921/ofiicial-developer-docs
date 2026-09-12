@@ -72,6 +72,8 @@ Additionally, Google provides the following values by default:
 
 **Interim Result**
 
+**`JSON`**
+
 ```json JSON
 {
 	"channel": {
@@ -121,6 +123,8 @@ Additionally, Google provides the following values by default:
 ```
 
 **Final Result**
+
+**`JSON`**
 
 ```json JSON
 {
@@ -183,6 +187,8 @@ As an example, we used a WAV audio file that contains the first 20 seconds of a 
 `search=epistemology`
 
 **Response**
+
+**`JSON`**
 
 ```json JSON
 "search":[
@@ -272,6 +278,8 @@ Deepgram supports both transcription of files on your local machine and transcri
 
 **Deepgram**
 
+**`Python`**
+
 ```python Python
 # For more Python SDK migration guides, visit:
 # https://github.com/deepgram/deepgram-python-sdk/tree/main/docs
@@ -303,6 +311,8 @@ asyncio.run(main())
 To see more, [visit Deepgram's Python SDK GitHub repo](https://github.com/deepgram/deepgram-python-sdk).
 
 **Google**
+
+**`Python`**
 
 ```python Python
 # Import the Google Cloud client library

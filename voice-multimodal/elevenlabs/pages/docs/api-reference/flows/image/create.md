@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/flows/image/create
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `object`
   - `model_id`: `bytedance-seedream-5-lite` (BytedanceSeedream5LiteRequest)
     - `prompt` (string, required) — A text description of the image to generate.
@@ -240,6 +242,17 @@ Successful Response
 
 - `id` (string, required) — The unique identifier of the generation. Pass it to the corresponding GET endpoint to retrieve the output.
 - `status` ("pending", required) — A newly created generation is always `pending`.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

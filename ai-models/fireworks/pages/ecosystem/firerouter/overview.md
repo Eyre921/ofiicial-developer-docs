@@ -6,13 +6,9 @@ path: ecosystem/firerouter/overview
 
 Route LLM requests between closed-source and open models with FireRouter
 
-FireRouter is a managed routing service for **any LLM workload**. Request a FireRouter model through the [Fireworks inference API](/tools-sdks/openai-compatibility), and FireRouter scores each turn to select a model from the configured set. By default, it routes between a Fireworks open model and a closed-source model.
+FireRouter is a managed routing service for supported text-generation workloads. Request a FireRouter virtual model through the [Fireworks inference API](/tools-sdks/openai-compatibility), and FireRouter selects an eligible backend according to the configured route. By default, it routes between a Fireworks open model and a closed-source model.
 
-The result is lower cost on simpler requests without giving up closed-source quality on harder ones.
-
-<Note>
-  FireRouter is in **research preview**. APIs, routing behavior, and the models in the routing pair may change. This documentation is updated to reflect the current configuration.
-</Note>
+The goal is to reduce cost on simpler requests while retaining access to a closed-source model for harder ones.
 
 ## When to use FireRouter
 
@@ -21,40 +17,54 @@ Use FireRouter when you want **automatic cost optimization** without picking a d
 * You want closed-source quality (for example Claude Opus) on hard prompts but do not need it on every call.
 * Many of your requests are straightforward (summaries, formatting, simple Q\&A) and can be served by a Fireworks open model.
 * You want to select the models available to the router without choosing a target for every request.
-* For the default configuration, you are able to send both a Fireworks API key and a provider API key on each request.
+* For the default configuration, Anthropic credentials make Claude Opus 5 eligible. Without them, FireRouter can still use eligible Fireworks-hosted models. Direct API clients send `x-anthropic-api-key`; Claude Code can send its existing login on each request.
 
 ## How it works
 
-FireRouter evaluates each new user request. The default `firerouter` configuration picks one of two paths:
+During ranked decisions, the default `firerouter` configuration compares two paths:
 
-| Path             | When                                      | What runs                                        | Billing                           |
-| ---------------- | ----------------------------------------- | ------------------------------------------------ | --------------------------------- |
-| **Redirect**     | Simple or low-complexity work             | A Fireworks open model (by default GLM 5.3)      | Your Fireworks API key            |
-| **Pass-through** | Hard reasoning, judgment, or long context | A closed-source model (by default Claude Opus 5) | Your provider API key (Anthropic) |
+| Path             | When                                                                                  | What runs                                        | Billing                           |
+| ---------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------ | --------------------------------- |
+| **Redirect**     | More likely when the open model's predicted success and cost produce the better value | A Fireworks open model (by default GLM 5.3)      | Your Fireworks API key            |
+| **Pass-through** | More likely when the closed-source model's predicted success justifies its cost       | A closed-source model (by default Claude Opus 5) | Your provider API key (Anthropic) |
 
 FireRouter uses a bring-your-own-key (BYOK) model:
 
 * Your **Fireworks API key** authenticates to FireRouter and pays for calls to Fireworks models.
 * A third-party **provider API key** pays for calls to that provider's models.
 
-FireRouter never stores your provider keys server-side. You send them on each request.
+Provider keys sent on individual requests are not persisted by FireRouter. If workspace BYOK is provisioned on your Fireworks account, Fireworks stores the credential in your workspace and supplies it server-side. Contact the Fireworks team to enable workspace BYOK.
 
 ## FireConnect
 
-The easiest way to use FireRouter in coding harnesses is [FireConnect](/ecosystem/fireconnect/overview). As of FireConnect **v0.9.0**, select FireRouter like any other model:
+The easiest way to use FireRouter in coding harnesses is [FireConnect](/ecosystem/fireconnect/overview). As of FireConnect **v0.9.0**, select FireRouter like any other model.
+
+**Claude Code.** Use `--model firerouter` for Main or a slot flag such as `--opus firerouter` for one alias. Use `--interactive` to choose alias slots, and use `native` to leave a slot unpinned. On first setup, specify every slot you want to control. See [Claude Code — FireRouter](/ecosystem/fireconnect/claude-code#firerouter).
 
 ```bash theme={null}
 fireconnect login
 fireconnect claude on --model firerouter
 ```
 
+**Other harnesses:**
+
+```bash theme={null}
+fireconnect opencode on --model firerouter
+```
+
 See [FireConnect Models](/ecosystem/fireconnect/models) for how `firerouter` fits next to other short IDs, and [Harness support](/ecosystem/fireconnect/overview#harness-support) for which harnesses support FireRouter. Per-harness details (Claude slot flags, Codex Anthropic env, routing preference) live on each harness page.
 
 Upgrade FireConnect before enabling FireRouter on an older install. See [Upgrade FireConnect](/ecosystem/fireconnect/overview#upgrade-fireconnect).
 
-Pass `--anthropic-api-key sk-ant-...` on `on`, or store a key once with `fireconnect configure --anthropic-api-key sk-ant-...`. The default `firerouter` requires an Anthropic key because Claude Opus 5 is its primary model; FireRouter fails closed instead of silently restricting the route to GLM. See [Authentication](/ecosystem/firerouter/authentication).
+### Anthropic credentials with FireConnect
+
+The default `firerouter` needs Anthropic credentials to make **Claude Opus 5** eligible. With **Claude Code**, you usually do not add a new key: Claude Code sends its subscription login, browser OAuth token, or configured `ANTHROPIC_API_KEY` with each request. You can also pass `--anthropic-api-key sk-ant-...` on `on`, store one with `fireconnect configure --anthropic-api-key sk-ant-...`, or use workspace BYOK provisioned by the Fireworks team. Direct API clients send `x-anthropic-api-key` to enable Claude pass-through. Without Anthropic credentials, the default router can still serve eligible Fireworks-hosted models. See [Authentication](/ecosystem/firerouter/authentication).
 
 Cursor and DeepSeek Harness need workspace BYOK for Anthropic pass-through because they cannot attach a local Anthropic key.
+
+### See which model served a request
+
+After assistant messages run, FireConnect's Claude Code **status line** lists backend models that served the session — for example `Claude Opus 5` or `GLM 5.3`. Before a billed response, it may show `FireRouter` rather than a resolved backend.
 
 ## Endpoint
 
@@ -69,7 +79,15 @@ Common API paths:
 | Wire format        | Path                                                     |
 | ------------------ | -------------------------------------------------------- |
 | Chat Completions   | `https://api.fireworks.ai/inference/v1/chat/completions` |
+| Completions        | `https://api.fireworks.ai/inference/v1/completions`      |
+| OpenAI Responses   | `https://api.fireworks.ai/inference/v1/responses`        |
 | Anthropic Messages | `https://api.fireworks.ai/inference/v1/messages`         |
+
+### Availability limitations
+
+* FireRouter requires a standard Fireworks API key (`fw_...`); Fire Pass keys (`fpk_...`) are not supported.
+* FireRouter is not available for Fireworks accounts with data residency enabled. Requests return `403`; use a residency-compatible pinned serverless model.
+* Microsoft Foundry Responses requests are not supported through FireRouter.
 
 ## Model ID
 
@@ -88,7 +106,11 @@ accounts/fireworks/routers/firerouter
 
 For [LiteLLM](/ecosystem/firerouter/litellm), use the full router path in `litellm_params.model`.
 
-FireRouter decides the target model for each request based on request complexity. The model ID selects the set of models FireRouter can route to.
+For ranked decisions, FireRouter compares eligible models using predicted success and cost. The model ID selects the configured route.
+
+<Warning>
+  Use `firerouter` or a `firerouter/...` slug when you want automatic routing. A bare model ID such as `claude-opus-5` or `gpt-5.6-sol` is treated as a pin and is not ranked against route members. Normal same-model retry and configured deployment-fallback behavior may still apply.
+</Warning>
 
 ### Current routing pair
 
@@ -101,11 +123,15 @@ The short `firerouter` model ID currently routes between:
 
 These models are subject to change as FireRouter is updated. This page reflects the current configuration.
 
-Because the default pass-through target is Claude Opus 5, supply an Anthropic API key to use that path. See [Authentication](/ecosystem/firerouter/authentication).
+Because the default pass-through target is Claude Opus 5, supply Anthropic credentials to use that path. With FireConnect + Claude Code, your existing Claude login is usually enough. Direct API callers send `x-anthropic-api-key`. See [Authentication](/ecosystem/firerouter/authentication).
+
+<Note>
+  The response can name a different Fireworks-hosted model when a configured member is ineligible for the request or a provider attempt needs an operational fallback. The pair above describes the default ranked choices, not the fallback chain.
+</Note>
 
 ### Choose different models
 
-Use a slash-delimited FireRouter slug to change the models available to the router. The first model is the primary; the remaining models are alternatives that FireRouter ranks for each request. Each member must be an exact deployed model ID or a unique model alias.
+Use a slash-delimited FireRouter slug to change the models available to the router. The first model is the primary; the remaining models are alternatives considered during ranked decisions. Each member must be an exact deployed model ID or a unique model alias.
 
 Examples:
 
@@ -117,18 +143,18 @@ Examples:
 | `firerouter/claude-opus-5/kimi-k3/glm-5p2-fast`          | Claude Opus 5, Kimi K3, and GLM 5.2 Fast            |
 | `firerouter/gpt-5.6-sol/glm-5p2-fast`                    | GPT 5.6 Sol and GLM 5.2 Fast                        |
 
-Set the selected slug in the `model` field just as you would use `firerouter`. FireRouter still chooses the target for each request.
+Set the selected slug in the `model` field just as you would use `firerouter`. The slug defines the route's candidate set.
 
-The primary model's credential is required. A later model is eligible only when its credential is present. Use `x-anthropic-api-key` for Claude models and `x-openai-api-key` for OpenAI models. See [Authentication](/ecosystem/firerouter/authentication).
+Each provider-hosted member is eligible only when its credential is available. A missing credential removes that member from the candidate pool; eligible Fireworks-hosted members can still serve the request. A slug containing only Fireworks-hosted models needs only the Fireworks API key. Use `x-anthropic-api-key` for Claude models and `x-openai-api-key` for OpenAI models. See [Authentication](/ecosystem/firerouter/authentication).
 
 ## Client integrations
 
-| Integration                                                     | When to use                                                                             |
-| --------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| [FireConnect](/ecosystem/fireconnect/overview)                  | One-command setup for coding harnesses (recommended). Select with `--model firerouter`. |
-| [Quickstart](/ecosystem/firerouter/quickstart)                  | Direct HTTP calls (curl, OpenAI SDK, any OpenAI-compatible client)                      |
-| [Claude Code (manual setup)](/ecosystem/firerouter/claude-code) | Manual `settings.json` setup without FireConnect                                        |
-| [LiteLLM](/ecosystem/firerouter/litellm)                        | Add FireRouter to a LiteLLM Proxy deployment                                            |
+| Integration                                                     | When to use                                                                                                                                                                                           |
+| --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [FireConnect](/ecosystem/fireconnect/overview)                  | One-command setup for coding harnesses (recommended). Use `--model firerouter` on single-model harnesses; on Claude Code, see [slot mapping behavior](/ecosystem/fireconnect/claude-code#firerouter). |
+| [Quickstart](/ecosystem/firerouter/quickstart)                  | Direct HTTP calls (curl, OpenAI SDK, any OpenAI-compatible client)                                                                                                                                    |
+| [Claude Code (manual setup)](/ecosystem/firerouter/claude-code) | Manual `settings.json` setup without FireConnect                                                                                                                                                      |
+| [LiteLLM](/ecosystem/firerouter/litellm)                        | Add FireRouter to a LiteLLM Proxy deployment                                                                                                                                                          |
 
 ## What FireRouter is not
 
@@ -154,7 +180,7 @@ The primary model's credential is required. A later model is eligible only when 
   </Card>
 
   <Card title="Routing preferences" icon="sliders" href="/ecosystem/firerouter/routing-preferences">
-    Tune the quality vs. savings dial
+    Tune cost vs. quality with `x-routing-preference`
   </Card>
 
   <Card title="LiteLLM" icon="server" href="/ecosystem/firerouter/litellm">

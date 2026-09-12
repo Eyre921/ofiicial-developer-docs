@@ -36,6 +36,8 @@ Reference: https://elevenlabs.io/docs/api-reference/mcp/tool-configuration/updat
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `pre_tool_speech` (enum, optional, nullable, default: auto) — If set, overrides the server's pre_tool_speech setting for this tool.
   - Allowed values: `auto`, `force`, `off`
 - `interruption_mode` (enum, optional, nullable, default: allow) — If set, overrides the server's interruption_mode setting for this tool.
@@ -204,6 +206,23 @@ Successful Response
   - `type`: `unknown` (DependentUnknownAgentIdentifier)
     - `id` (string, required)
     - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
+
+## Errors
+
+### 404 Not Found Error
+
+Tool config override not found
+
+- `any`
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

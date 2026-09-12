@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/service-accounts/api-keys/cr
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `name` (string, required)
 - `permissions` (list of enum or "all", required) — The permissions of the XI API.
 - `character_limit` (integer, optional, nullable) — The character limit of the XI API key. If provided this will limit the usage of this api key to n characters per month where n is the chosen value. Requests that incur charges will fail after reaching this monthly limit.
@@ -45,6 +47,17 @@ Successful Response
 
 - `xi-api-key` (string, required)
 - `key_id` (string, required)
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

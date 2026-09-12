@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/legacy/knowledge-base/add-to
 
 ### Body (multipart/form-data)
 
+This endpoint expects a multipart form containing an optional file.
+
 - `name` (string, optional) — A custom, human-readable name for the document.
 - `url` (string, optional) — URL to a page of documentation that the agent will have access to in order to interact with users.
 - `file` (file, optional) — Documentation that the agent will have access to in order to interact with users.
@@ -45,6 +47,17 @@ Successful Response
 - `name` (string, required)
 - `folder_path` (list of object, optional) — The folder path segments leading to this entity, from root to parent folder.
   - `id` (string, required)
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

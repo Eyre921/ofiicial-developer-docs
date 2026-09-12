@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/webhooks/create
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `settings` (object, required) — Webhook settings object containing auth_type and corresponding configuration
   - `auth_type` ("hmac", required) — The authentication type for this webhook
   - `name` (string, required) — The display name for this webhook
@@ -41,6 +43,17 @@ Successful Response
 
 - `webhook_id` (string, required)
 - `webhook_secret` (string, optional, nullable)
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

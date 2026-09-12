@@ -36,6 +36,8 @@ Reference: https://elevenlabs.io/docs/api-reference/text-to-voice/remix
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `voice_description` (string, required) — Description of the changes to make to the voice.
 - `text` (string, optional, nullable) — Text to generate, text length has to be between 100 and 1000.
 - `auto_generate_text` (boolean, optional, default: false) — Whether to automatically generate a text suitable for the voice description.
@@ -60,6 +62,17 @@ Successful Response
   - `duration_secs` (double, required) — The duration of the preview in seconds.
   - `language` (string, required, nullable) — The language of the preview.
 - `text` (string, required) — The text used to preview the voices.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

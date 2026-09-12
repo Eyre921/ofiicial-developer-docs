@@ -12,7 +12,7 @@ Compare data ingestion options in Pinecone: bulk import from object storage, ups
 
 ## Import from object storage
 
-[Importing from object storage](/guides/index-data/import-data) is the most efficient and cost-effective method to load large numbers of records into an index. You store your data as Parquet files in object storage, integrate your object storage with Pinecone, and then start an asynchronous, long-running operation that imports and indexes your records.
+[Importing from object storage](/guides/index-data/import-data) is the most efficient and cost-effective method to load large numbers of records or documents into an index. You store your data in object storage (Parquet for vector indexes, [JSON Lines (JSONL)](https://jsonlines.org/) for document indexes), integrate your object storage with Pinecone, and then start an asynchronous, long-running operation that imports and indexes your data.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability) and available only on [Standard and Enterprise plans](https://www.pinecone.io/pricing/).
@@ -20,7 +20,7 @@ Compare data ingestion options in Pinecone: bulk import from object storage, ups
 
 ## Upsert
 
-For ongoing ingestion into an index, either one record at a time or in batches, use the [upsert](/guides/index-data/upsert-data) operation. [Batch upserting](/guides/index-data/upsert-data#upsert-in-batches) can improve throughput performance and is a good option for larger numbers of records if you cannot work around import's current [limitations](/guides/index-data/import-data#import-limits).
+For ongoing ingestion into an index, one record or document at a time, or in batches, use the [upsert](/guides/index-data/upsert-data) operation. [Batch upserting](/guides/index-data/upsert-data#upsert-in-batches) can improve throughput performance and is a good option for larger numbers of records or documents if you can't work around import's current [limitations](/guides/index-data/import-data#import-limits).
 
 ## When you only need embeddings
 

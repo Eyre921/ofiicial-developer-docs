@@ -18,6 +18,8 @@ This is useful if you want to use a feature of the Deepgram API that isn't offic
 
 ## Example
 
+**`JavaScript`**
+
 ```javascript JavaScript
 // install our SDK @deepgram/sdk
 
@@ -40,6 +42,8 @@ The Deepgram Python SDK has defined option parameters, but also allows for arbit
 This is useful if you want to use a feature of the Deepgram API that isn't officially supported in the Python SDK.
 
 ## Example
+
+**`Threaded`**
 
 ```python Threaded
 # Install the SDK: pip install deepgram-sdk
@@ -75,6 +79,8 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+
+**`Async IO`**
 
 ```python Async IO
 # Install the SDK: pip install deepgram-sdk
@@ -120,6 +126,8 @@ The Deepgram .NET SDK has defined option parameters, but also allows for arbitra
 This is useful if you want to use a feature of the Deepgram API that isn't officially supported in the .NET SDK.
 
 ## Example
+
+**`C#`**
 
 ```csharp C#
 //Install the SDK: dotnet add package Deepgram
@@ -171,6 +179,8 @@ The Deepgram Go SDK has defined option parameters, but also allows for arbitrary
 This is useful if you want to use a feature of the Deepgram API that isn't officially supported in the Go SDK.
 
 ## Example
+
+**`Go`**
 
 ```go Go
 // Install the SDK: go get github.com/deepgram/deepgram-go-sdk
@@ -247,6 +257,8 @@ The Deepgram Java SDK uses a typed builder pattern for all request parameters. F
 
 ## Example
 
+**`Java`**
+
 ```java Java
 // Install: Add to pom.xml:
 // <dependency>
@@ -281,6 +293,8 @@ System.out.println(response);
 
 `flux-general-multi` uses the `language_hint` query parameter on the `/v2/listen` WebSocket endpoint.
 
+**`JavaScript`**
+
 ```javascript JavaScript
 import { DeepgramClient } from "@deepgram/sdk";
 
@@ -297,6 +311,8 @@ const connection = await client.listen.v2.connect({
 connection.connect();
 await connection.waitForOpen();
 ```
+
+**`Python`**
 
 ```python Python
 from deepgram import AsyncDeepgramClient
@@ -315,6 +331,8 @@ async with client.listen.v2.connect(
 ) as connection:
     await connection.start_listening()
 ```
+
+**`Java`**
 
 ```java Java
 // Example: set language hints with Configure.

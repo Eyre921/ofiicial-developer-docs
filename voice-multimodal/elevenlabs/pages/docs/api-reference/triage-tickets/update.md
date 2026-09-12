@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/triage-tickets/update
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `status` (enum, optional, nullable) — If provided, updates the ticket status. Omit to leave unchanged.
   - Allowed values: `open`, `in_progress`, `resolved`, `merged`
 - `assignee_user_id` (string, optional, nullable) — If provided, updates who is responsible for resolving this ticket. Must be a workspace member with at least viewer access to the agent. Pass null to unassign. Omit to leave unchanged.
@@ -69,6 +71,17 @@ Successful Response
 - `assignee_user_id` (string, required, nullable)
 - `created_at_unix_secs` (integer, required)
 - `updated_at_unix_secs` (integer, required)
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

@@ -35,6 +35,8 @@ supabase init
 
 You can configure the Supabase CLI to automatically generate a storage bucket by adding this configuration in the `config.toml` file:
 
+**`./supabase/config.toml`**
+
 ```toml ./supabase/config.toml
 [storage.buckets.audio]
 public = false
@@ -50,6 +52,8 @@ project. Should you want to push this to your hosted Supabase project, you can r
 ### Configure background tasks for Supabase Edge Functions
 
 To use background tasks in Supabase Edge Functions when developing locally, you need to add the following configuration in the `config.toml` file:
+
+**`./supabase/config.toml`**
 
 ```toml ./supabase/config.toml
 [edge_runtime]
@@ -73,6 +77,8 @@ If you're using VS Code or Cursor, select `y` when the CLI prompts "Generate VS 
 
 Within the `supabase/functions` directory, create a new `.env` file and add the following variables:
 
+**`supabase/functions/.env`**
+
 ```env supabase/functions/.env
 # Find / create an API key at https://elevenlabs.io/app/settings/api-keys
 ELEVENLABS_API_KEY=your_api_key
@@ -91,6 +97,8 @@ Since Supabase Edge Function uses the [Deno runtime](https://deno.land/), you do
 ## Code the Supabase Edge Function
 
 In your newly created `supabase/functions/text-to-speech/index.ts` file, add the following code:
+
+**`supabase/functions/text-to-speech/index.ts`**
 
 ```ts supabase/functions/text-to-speech/index.ts
 // Setup type definitions for built-in Supabase Runtime APIs

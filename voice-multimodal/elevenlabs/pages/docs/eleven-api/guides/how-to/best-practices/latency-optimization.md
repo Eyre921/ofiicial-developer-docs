@@ -112,6 +112,8 @@ const elevenlabs = new ElevenLabsClient({
 });
 ```
 
+**`cURL`**
+
 ```bash cURL
 curl -X POST -v "https://api.us.elevenlabs.io/v1/text-to-speech/{voice_id}" \
   -H "Accept: audio/mpeg" \

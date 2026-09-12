@@ -63,6 +63,17 @@ Successful Response
 - `qa_comment` (string, optional)
 - `assignee_user_id` (string, optional)
 
+## Errors
+
+### 422 Triage Tickets Get Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

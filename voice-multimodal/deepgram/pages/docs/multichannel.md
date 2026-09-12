@@ -26,6 +26,8 @@ You can use a maximum of `20` channels.
 
 To transcribe audio from a file on your computer, run the following curl command in a terminal or your favorite API client.
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -47,6 +49,8 @@ Note that the response structure differs depending on whether audio is submitted
 
 ### Pre-Recorded Response
 
+**`JSON`**
+
 ```json JSON
 {
 	"metadata": {
@@ -66,6 +70,8 @@ Note that the response structure differs depending on whether audio is submitted
 For this response, the `channels` property under `metadata` will be set to `2` because our sample audio track has two channels.
 
 Let's look more closely at the `channels` object under `results`:
+
+**`JSON`**
 
 ```json JSON
 ...
@@ -110,6 +116,8 @@ This makes sense because our sample audio file is a split stereo file with speak
 
 ### Streaming Response
 
+**`JSON`**
+
 ```json JSON
 {
   "metadata": {
@@ -128,6 +136,8 @@ This makes sense because our sample audio file is a split stereo file with speak
 For this response, the `channel_index` property will be set to `[0, 2]` . The second number in the array is the number of channels (in this case, 2). The first number is the channel that the transcript in the message belongs to. In our example, you will see messages with `[0, 2]` representing transcription of the first channel, and `[1, 2]` for transcription of the second channel.
 
 Let's look more closely at the results of the stream. Deepgram will send back separate messages for each channel, like so:
+
+**`JSON`**
 
 ```json JSON
 {
@@ -222,6 +232,8 @@ Let's look more closely at the results of the stream. Deepgram will send back se
 ```
 
 This first message represents the transcription of the first channel. It will be followed by another message representing the transcription of the second channel, marked with `channel_index: [1, 2]`
+
+**`JSON`**
 
 ```json JSON
 {

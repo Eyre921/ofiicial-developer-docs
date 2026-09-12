@@ -26,6 +26,8 @@ To enable Extra Metadata, when you call Deepgram’s API, add an `extra` paramet
 
 To transcribe audio from a file on your computer, run the following cURL command in a terminal or your favorite API client.
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -39,6 +41,8 @@ Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/guides/fundamental
 ## Response
 
 If you included `extra=myKey:someValue` in your request, the key-value pair would be passed through to the response in the following format:
+
+**`JSON`**
 
 ```json JSON
 {

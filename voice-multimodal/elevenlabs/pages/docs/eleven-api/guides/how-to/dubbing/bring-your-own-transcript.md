@@ -20,6 +20,8 @@ By default, the Dubbing API transcribes your source media and machine-translates
 
 A transcript is a JSON file with a single top-level `segments` array. Each segment is one utterance: the text spoken, when it starts and ends, and optionally who speaks it.
 
+**`transcript.json`**
+
 ```json title="transcript.json"
 {
   "segments": [
@@ -143,6 +145,8 @@ for (const segment of transcript.segments) {
 ### Seed translations at project creation
 
 For a single target language, you can skip the separate `translations` map by including a `translation` on every segment in the transcript file and passing `target_language` when creating the project. The language target is created queued with your translations and begins generating once the project is ready.
+
+**`transcript.json`**
 
 ```json title="transcript.json"
 {

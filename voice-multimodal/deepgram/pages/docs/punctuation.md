@@ -24,6 +24,8 @@ To enable punctuation, use the following parameter in the query string when you 
 
 To transcribe audio from a file on your computer, run the following cURL command in a terminal or your favorite API client.
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \

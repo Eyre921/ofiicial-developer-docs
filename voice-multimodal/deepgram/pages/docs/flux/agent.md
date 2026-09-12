@@ -130,6 +130,8 @@ Here's a sample voice agent implementation using Flux with the `EndOfTurn` only 
 npm install @deepgram/sdk
 ```
 
+**`C#`**
+
 ```csharp C#
 // Install the Deepgram .NET SDK (Flux support requires v6.9.0+)
 // https://github.com/deepgram/deepgram-dotnet-sdk
@@ -154,9 +156,13 @@ Install the additional dependencies:
 pip install python-dotenv
 ```
 
+**`JavaScript`**
+
 ```javascript JavaScript
 npm install dotenv
 ```
+
+**`C#`**
 
 ```csharp C#
 // No additional NuGet packages are required — HttpClient (used for the OpenAI
@@ -201,6 +207,8 @@ load_dotenv()
 AUDIO_FILE = "audio/spacewalk_linear16.wav"  # Raw: linear16, linear32, mulaw, alaw, opus, ogg-opus; Containerized: linear16 in WAV, opus in Ogg
 ```
 
+**`JavaScript`**
+
 ```javascript JavaScript
 import fs from "node:fs/promises";
 import { config as loadEnv } from "dotenv";
@@ -211,6 +219,8 @@ loadEnv();
 const AUDIO_FILE = "audio/spacewalk_linear16.wav";
 const client = new DeepgramClient();
 ```
+
+**`C#`**
 
 ```csharp C#
 using System.Net.Http.Headers;
@@ -270,6 +280,8 @@ COMING SOON!
         return
 ```
 
+**`JavaScript`**
+
 ```javascript JavaScript
 const audioData = await fs.readFile(AUDIO_FILE);
 
@@ -319,6 +331,8 @@ if (!transcript) {
   return;
 }
 ```
+
+**`C#`**
 
 ```csharp C#
 Console.WriteLine("\n🎤 Transcribing with Flux...");
@@ -408,6 +422,8 @@ COMING SOON!
         print(f"✓ Fallback response: '{response}'")
 ```
 
+**`JavaScript`**
+
 ```javascript JavaScript
 console.log("\n🤖 Generating OpenAI response...");
 
@@ -447,6 +463,8 @@ try {
   console.log(`✓ Fallback response: '${response}'`);
 }
 ```
+
+**`C#`**
 
 ```csharp C#
 Console.WriteLine("\n🤖 Generating OpenAI response...");
@@ -516,6 +534,8 @@ COMING SOON!
         await asyncio.wait_for(tts_done.wait(), timeout=15.0)
 ```
 
+**`JavaScript`**
+
 ```javascript JavaScript
 console.log("\n🔊 Generating TTS...");
 const ttsAudio = [];
@@ -549,6 +569,8 @@ await ttsDone;
 ttsConnection.sendClose({ type: "Close" });
 ttsConnection.close();
 ```
+
+**`C#`**
 
 ```csharp C#
 Console.WriteLine("\n🔊 Generating TTS...");
@@ -614,6 +636,8 @@ if __name__ == "__main__":
 
 ```
 
+**`JavaScript`**
+
 ```javascript JavaScript
 function createWavHeader(dataLength, sampleRate = 16000) {
   const header = Buffer.alloc(44);
@@ -648,6 +672,8 @@ console.log("\n🎉 Demo complete!");
 console.log(`📝 User: '${transcript}'`);
 console.log(`🤖 Agent: '${response}'`);
 ```
+
+**`C#`**
 
 ```csharp C#
 if (ttsAudio.Length > 0)
@@ -860,6 +886,8 @@ if __name__ == "__main__":
         print(f"❌ Error: {e}")
 ```
 
+**`JavaScript`**
+
 ```javascript JavaScript
 import fs from "node:fs/promises";
 import { config as loadEnv } from "dotenv";
@@ -1038,6 +1066,8 @@ main().catch((error) => {
   console.error(`❌ Error: ${error}`);
 });
 ```
+
+**`C#`**
 
 ```csharp C#
 using System.Net.Http.Headers;

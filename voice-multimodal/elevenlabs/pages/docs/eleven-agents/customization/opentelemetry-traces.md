@@ -71,7 +71,7 @@ In the ElevenAgents Dashboard, create a workspace webhook with your HTTPS URL an
 
 Open [Agents settings](https://elevenlabs.io/app/agents/settings), assign the webhook as the post-call webhook, enable the **Transcript** event, and turn on **OpenTelemetry transcript payloads**.
 
-![Post-call webhook settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/eb5d768612d6461a21bc3127611f60724be3e1a55005af43faf48f2d7bf23807/assets/images/conversational-ai/postcallwebhooksettings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T113251Z&X-Amz-Expires=604800&X-Amz-Signature=d6a454a7e0f703085dcb11ab4de4bb2eac44697deb98bc045dce2af16ba06d1a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Post-call webhook settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/eb5d768612d6461a21bc3127611f60724be3e1a55005af43faf48f2d7bf23807/assets/images/conversational-ai/postcallwebhooksettings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T094157Z&X-Amz-Expires=604800&X-Amz-Signature=d869a95346c3d6b469314c43b7995fa4c60135e624cb40dd0eb2fd9cbc32936d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Configure via the CLI
 
@@ -110,6 +110,8 @@ elevenlabs agents push --agent "<agent-name>"
 
 #### Configure via the API
 
+**`Python`**
+
 ```python title="Python"
 import os
 
@@ -127,6 +129,8 @@ elevenlabs.conversational_ai.settings.update(
     },
 )
 ```
+
+**`TypeScript`**
 
 ```typescript title="TypeScript"
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
@@ -210,6 +214,8 @@ Requires an API key with `CONVAI_READ`. With `format=json` (default), `otlp_trac
 | Transcript | `transcript` is still returned; `otlp_traces` is additive    |
 | File URLs  | Signed URLs in span attributes expire after about 15 minutes |
 
+**`Python`**
+
 ```python title="Python"
 import os
 
@@ -227,6 +233,8 @@ conversation = elevenlabs.conversational_ai.conversations.get(
 otlp_traces = conversation.otlp_traces
 ```
 
+**`TypeScript`**
+
 ```typescript title="TypeScript"
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
@@ -241,6 +249,8 @@ const conversation = await elevenlabs.conversationalAi.conversations.get({
 
 const otlpTraces = conversation.otlpTraces;
 ```
+
+**`cURL`**
 
 ```bash title="cURL"
 curl -s "https://api.elevenlabs.io/v1/convai/conversations/conv_9001k1zph3fkeh5s8xg9z90swaqa?format=opentelemetry" \
@@ -309,6 +319,8 @@ the same `traceId`.
 
 ### Example connection
 
+**`TypeScript`**
+
 ```typescript title="TypeScript"
 import WebSocket from "ws";
 
@@ -330,6 +342,8 @@ ws.on("message", (raw) => {
   }
 });
 ```
+
+**`Python`**
 
 ```python title="Python"
 import asyncio

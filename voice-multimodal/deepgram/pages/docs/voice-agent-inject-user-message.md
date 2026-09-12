@@ -22,6 +22,8 @@ The `InjectUserMessage` message provides a way to have the agent "hear" somethin
 
 To send the `InjectUserMessage` message, you need to send the following JSON message to the server:
 
+**`JSON`**
+
 ```json JSON
 {
   "type": "InjectUserMessage",

@@ -46,6 +46,17 @@ Successful Response
   - `character_start_times_seconds` (list of double, required)
   - `character_end_times_seconds` (list of double, required)
 
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

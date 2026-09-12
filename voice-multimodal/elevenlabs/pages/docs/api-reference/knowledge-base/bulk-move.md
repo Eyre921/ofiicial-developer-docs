@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/knowledge-base/bulk-move
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `document_ids` (list of string, required) — The ids of documents or folders from the knowledge base.
 - `move_to` (string, optional, nullable) — The folder to move the entities to. If not set, the entities will be moved to the root folder.
 
@@ -35,6 +37,17 @@ Reference: https://elevenlabs.io/docs/api-reference/knowledge-base/bulk-move
 ### 200
 
 Successful Response
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

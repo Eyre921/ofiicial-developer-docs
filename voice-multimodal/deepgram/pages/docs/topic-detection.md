@@ -33,6 +33,8 @@ To enable Topic Detection, use the following parameter in the query string when 
 
 To transcribe audio from a file on your computer, run the following curl command in a terminal or your favorite API client.
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -56,6 +58,8 @@ Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.dee
 ## Analyze Response
 
 When the file is finished processing, you’ll receive a JSON response that has the following basic structure:
+
+**`JSON`**
 
 ```json JSON
 {
@@ -96,6 +100,8 @@ The response object values for `topics` are:
 
 If you request Topic Detection with an unsupported language by specifying a language code such as `topics=true&language=es` or `topics=true&detect_language=true` where the detected language is unsupported, you will get the warning message below.
 
+**`JSON`**
+
 ```json JSON
 "warnings": [
   {
@@ -113,6 +119,8 @@ If you request Topic Detection with an unsupported language by specifying a lang
 **Example Warning**
 
 Here is an example of the JSON structure of a request with warning object.
+
+**`JSON`**
 
 ```json JSON
 {

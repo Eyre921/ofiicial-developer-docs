@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/ba
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `segments` (map from string to object, required) — Map of segment ID to the partial update to apply to that segment. At least one entry and at most 500.
   - `text` (string, optional, nullable) — New text for the segment.
   - `speaker_id` (string, optional, nullable) — New speaker ID for the segment.
@@ -51,6 +53,17 @@ Successful Response
   - `end_s` (double, required) — End time of the segment, in seconds.
   - `external_id` (string, optional, nullable) — The caller-supplied external ID for this segment, if one was provided.
 - `revision` (integer, required) — The project's source-transcript revision after the edits.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

@@ -35,6 +35,8 @@ All fields are floats in seconds, and each is optional (omitted when not applica
 
 ## Example Payload
 
+**`JSON`**
+
 ```json JSON
 {
   "type": "LatencyReport",

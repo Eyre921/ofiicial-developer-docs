@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/simulat
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `simulation_specification` (object, required) — A specification detailing how the conversation should be simulated
   - `simulated_user_config` (object, required)
     - `first_message` (string, optional, default: ) — If non-empty, the first message the agent will say. If empty, the agent waits for the user to start the discussion.
@@ -897,6 +899,17 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/simulat
   - `max_score` (integer, optional, default: 100) — Maximum value of the numeric score scale (minimum is always 0). Only used when scoring_mode is 'numeric_uniform'.
   - `score_instructions` (string, optional) — Optional free-text instructions describing how to assign values on the numeric scale. Only used when scoring_mode is 'numeric_uniform'.
 - `new_turns_limit` (integer, optional, default: 10000) — Maximum number of new turns to generate in the conversation simulation
+
+## Errors
+
+### 422 Agents Simulate Conversation Stream Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

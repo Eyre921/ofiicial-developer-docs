@@ -36,6 +36,17 @@ Successful Response
 
 - `number_of_pages` (double, required)
 
+## Errors
+
+### 422 Knowledge Base Size Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

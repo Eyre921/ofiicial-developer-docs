@@ -18,6 +18,8 @@ Endpointing detects pauses in speech and returns `speech_final: true` when a pau
 
 1. Set the `endpointing` parameter to a millisecond value in your WebSocket connection:
 
+**`Python`**
+
 ```python Python
 with client.listen.v1.connect(
     model="nova-3",
@@ -25,6 +27,8 @@ with client.listen.v1.connect(
     endpointing=300  # 300ms of silence triggers speech_final
 ) as connection:
 ```
+
+**`Java`**
 
 ```java Java
 import com.deepgram.api.DeepgramClient;
@@ -41,6 +45,8 @@ wsClient.connect(V1WebSocketOptions.builder()
 ```
 
 2. Handle responses where `speech_final: true`:
+
+**`JSON`**
 
 ```json JSON
 {
@@ -66,6 +72,8 @@ Interim results provide preliminary transcripts as audio streams in, marked with
 
 1. Set `interim_results=true` in your WebSocket connection:
 
+**`Python`**
+
 ```python Python
 with client.listen.v1.connect(
     model="nova-3",
@@ -74,6 +82,8 @@ with client.listen.v1.connect(
     endpointing=300
 ) as connection:
 ```
+
+**`Java`**
 
 ```java Java
 V1WebSocketClient wsClient = client.listen().v1().v1WebSocket();
@@ -96,6 +106,8 @@ When using both features together, concatenate finalized transcripts to build co
 
 1. Enable both features in your WebSocket connection:
 
+**`Python`**
+
 ```python Python
 with client.listen.v1.connect(
     model="nova-3",
@@ -104,6 +116,8 @@ with client.listen.v1.connect(
     endpointing=300
 ) as connection:
 ```
+
+**`Java`**
 
 ```java Java
 V1WebSocketClient wsClient = client.listen().v1().v1WebSocket();
@@ -123,6 +137,8 @@ wsClient.connect(V1WebSocketOptions.builder()
 4. Clear the buffer and start collecting the next utterance.
 
 The following example shows how `is_final` and `speech_final` interact when a speaker dictates a credit card number:
+
+**`JSON`**
 
 ```json JSON
 1 0.000-1.100 ["is_final": false] ["speech_final": false] yeah so
@@ -144,6 +160,8 @@ For applications requiring complete sentences, add timing-based segmentation on 
 
 1. Enable punctuation in your WebSocket connection:
 
+**`Python`**
+
 ```python Python
 with client.listen.v1.connect(
     model="nova-3",
@@ -153,6 +171,8 @@ with client.listen.v1.connect(
     punctuate=True
 ) as connection:
 ```
+
+**`Java`**
 
 ```java Java
 V1WebSocketClient wsClient = client.listen().v1().v1WebSocket();

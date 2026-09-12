@@ -25,6 +25,8 @@ Before you start, you'll need to follow the steps in the [Make Your First API Re
 
 Next, try it with CURL. Add your own API key where it says `YOUR_DEEPGRAM_API_KEY` and then run the following example in a terminal or your favorite API client.
 
+**`cURL`**
+
 ```bash cURL
 curl --request POST \
      --header "Content-Type: application/json" \
@@ -47,6 +49,8 @@ If your request results in an error, the error message can be seen by opening th
 
 To see the error message in your terminal, add this to your CURL request:
 
+**`cURL`**
+
 ```bash cURL
 --fail-with-body \
 --silent \
@@ -54,6 +58,8 @@ To see the error message in your terminal, add this to your CURL request:
 ```
 
 This example will capture the error message using the [JQ](https://jqlang.org/) JSON processor library and remove the output file `tts.mp3` automatically.
+
+**`cURL`**
 
 ```bash cURL
 curl --request POST \
@@ -76,12 +82,16 @@ Deepgram has several SDKs that can make it easier to use the API. Follow these s
 
 Open your terminal, navigate to the location on your drive where you want to create your project, and install the Deepgram SDK.
 
+**`JavaScript`**
+
 ```shell JavaScript
 # Install the Deepgram JS SDK
 # https://github.com/deepgram/deepgram-js-sdk
 
 npm install @deepgram/sdk
 ```
+
+**`Python`**
 
 ```shell Python
 # Install the Deepgram Python SDK
@@ -90,6 +100,8 @@ npm install @deepgram/sdk
 pip install deepgram-sdk
 ```
 
+**`Go`**
+
 ```shell Go
 # Install the Deepgram Go SDK
 # https://github.com/deepgram/deepgram-go-sdk
@@ -97,9 +109,13 @@ pip install deepgram-sdk
 go get github.com/deepgram/deepgram-go-sdk
 ```
 
+**`C#`**
+
 ```shell C#
 dotnet add package Deepgram
 ```
+
+**`Java`**
 
 ```shell Java
 # Install the Deepgram Java SDK
@@ -118,11 +134,15 @@ dotnet add package Deepgram
 
 ### Add Dependencies
 
+**`JavaScript`**
+
 ```shell JavaScript
 # Install dotenv to protect your api key
 
 npm install dotenv
 ```
+
+**`Python`**
 
 ```shell Python
 # Install python-dotenv to protect your api key
@@ -130,15 +150,21 @@ npm install dotenv
 pip install python-dotenv
 ```
 
+**`Go`**
+
 ```shell Go
 # Importing the Deepgram Go SDK should pull in all dependencies required
 ```
+
+**`C#`**
 
 ```shell C#
 # Importing the Deepgram Go SDK should pull in all dependencies required
 ```
 
 ### Make the Request with the SDK
+
+**`JavaScript`**
 
 ```javascript JavaScript
 const { DeepgramClient } = require("@deepgram/sdk");
@@ -204,6 +230,8 @@ const getAudioBuffer = async (response) => {
 getAudio();
 ```
 
+**`Python`**
+
 ```python Python
 # For more Python SDK migration guides, visit:
 # https://github.com/deepgram/deepgram-python-sdk/tree/main/docs
@@ -238,6 +266,8 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+
+**`Go`**
 
 ```go Go
 package main
@@ -304,6 +334,8 @@ func main() {
 }
 ```
 
+**`C#`**
+
 ```csharp C#
 using Deepgram.Models.Speak.v1.REST;
 
@@ -338,6 +370,8 @@ namespace SampleApp
     }
 }
 ```
+
+**`Java`**
 
 ```java Java
 // Main.java (Java example)
@@ -382,6 +416,8 @@ Upon successful processing of the request, you will receive an audio file contai
 The audio file is streamed back to you, so you may begin playback as soon as the first byte arrives. Read the guide [Streaming Audio Outputs](/docs/streaming-the-audio-output) to learn how to begin playing the stream immediately versus waiting for the entire file to arrive.
 
 ### Example Response Headers
+
+**`http`**
 
 ```text http
 HTTP/1.1 200 OK

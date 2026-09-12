@@ -32,6 +32,8 @@ Reference: https://elevenlabs.io/docs/api-reference/voices/voice-library/share
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `new_name` (string, required) — The name that identifies this voice. This will be displayed in the dropdown of the website.
 - `bookmarked` (boolean, optional, default: true)
 
@@ -42,6 +44,17 @@ Reference: https://elevenlabs.io/docs/api-reference/voices/voice-library/share
 Successful Response
 
 - `voice_id` (string, required) — The ID of the voice.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

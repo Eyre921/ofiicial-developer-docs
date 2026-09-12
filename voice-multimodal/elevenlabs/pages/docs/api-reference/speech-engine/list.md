@@ -59,6 +59,17 @@ Successful Response
 - `has_more` (boolean, required) — Whether there are more results
 - `next_cursor` (string, optional, nullable) — Cursor for fetching the next page
 
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

@@ -59,6 +59,8 @@ Depending on the SDK, set `mip_opt_out` either as a first-class parameter (Java,
 
 Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -67,6 +69,8 @@ curl \
   --data-binary @youraudio.wav \
   --url 'https://api.deepgram.com/v1/listen?mip_opt_out=true'
 ```
+
+**`JavaScript`**
 
 ```javascript JavaScript
 // Install the SDK: npm -i @deepgram/sdk
@@ -82,6 +86,8 @@ const result = await deepgram.listen.v1.media.transcribeUrl({
   mip_opt_out: true,
 });
 ```
+
+**`Python`**
 
 ```python Python
 #  Install the SDK: pip install deepgram-sdk
@@ -117,6 +123,8 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+
+**`Go`**
 
 ```go Go
 // Install the SDK: go get github.com/deepgram/deepgram-go-sdk
@@ -200,6 +208,8 @@ func main() {
 }
 ```
 
+**`C#`**
+
 ```csharp C#
 //Install the SDK: dotnet add package Deepgram
 
@@ -251,6 +261,8 @@ namespace PreRecorded
 }
 ```
 
+**`Java`**
+
 ```java Java
 // Add to pom.xml: com.deepgram:deepgram-java-sdk
 
@@ -280,6 +292,8 @@ Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additi
 
 #### Streaming Audio
 
+**`JavaScript`**
+
 ```javascript JavaScript
 // Install the SDK: npm -i @deepgram/sdk
 
@@ -297,6 +311,8 @@ const connection = await deepgram.listen.v1.connect({
 });
 
 ```
+
+**`Python`**
 
 ```python Python
 # Install the SDK: pip install deepgram-sdk
@@ -388,6 +404,8 @@ if __name__ == "__main__":
     main()
 ```
 
+**`Go`**
+
 ```go Go
 // Install the SDK: go get github.com/deepgram/deepgram-go-sdk
 
@@ -463,6 +481,8 @@ func main() {
   fmt.Printf("\n\nProgram exiting...\n")
 }
 ```
+
+**`C#`**
 
 ```csharp C#
 //Install the SDK: dotnet add package Deepgram
@@ -548,6 +568,8 @@ namespace SampleApp
 }
 ```
 
+**`Java`**
+
 ```java Java
 // Add to pom.xml: com.deepgram:deepgram-java-sdk
 
@@ -619,6 +641,8 @@ Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additi
 
 #### Rest API
 
+**`curl`**
+
 ```curl curl
   curl --request POST \
     --url 'https://api.deepgram.com/v1/speak?model=aura-2-thalia-en&mip_opt_out=true' \
@@ -627,6 +651,8 @@ Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additi
     --data '{"text": "Hello, how can I help you today?"}' \
     --output mip_opt_out.wav
 ```
+
+**`JavaScript`**
 
 ```javascript JavaScript
 // Install the SDK: npm -i @deepgram/sdk
@@ -652,6 +678,8 @@ await pipeline(response.stream, fileStream);
 
 getAudio();
 ```
+
+**`Python`**
 
 ```python Python
 # Install the SDK: pip install deepgram-sdk
@@ -695,6 +723,8 @@ if __name__ == "__main__":
   main()
 
 ```
+
+**`Go`**
 
 ```go Go
 // Install the SDK: go get github.com/deepgram/deepgram-go-sdk
@@ -768,6 +798,8 @@ ctx = interfaces.WithCustomParameters(ctx, params)
 
 ```
 
+**`C#`**
+
 ```csharp C#
 // Install the SDK: dotnet add package Deepgram
 
@@ -809,6 +841,8 @@ namespace SampleApp
 }
 ```
 
+**`Java`**
+
 ```java Java
 // Add to pom.xml: com.deepgram:deepgram-java-sdk
 
@@ -840,6 +874,8 @@ public class Main {
 ```
 
 #### Streaming API
+
+**`JavaScript`**
 
 ```javascript JavaScript
 // Install the SDK: npm -i @deepgram/sdk
@@ -935,6 +971,8 @@ live();
 
 ```
 
+**`Python`**
+
 ```python Python
 # Install the SDK: pip install deepgram-sdk
 # For more Python SDK migration guides, visit:
@@ -1004,6 +1042,8 @@ if __name__ == "__main__":
   main()
 
 ```
+
+**`Go`**
 
 ```go Go
 // Install the SDK: go get github.com/deepgram/deepgram-go-sdk
@@ -1328,6 +1368,8 @@ func main() {
 
 ```
 
+**`C#`**
+
 ```csharp C#
 // Install the SDK: dotnet add package Deepgram
 
@@ -1517,6 +1559,8 @@ namespace SampleApp
 }
 ```
 
+**`Java`**
+
 ```java Java
 // Add to pom.xml: com.deepgram:deepgram-java-sdk
 
@@ -1582,6 +1626,8 @@ public class Main {
 ### Voice Agent Example
 
 Here is an example of opting out for Voice Agent requests using the `Settings` message.
+
+**`JSON`**
 
 ```json JSON
 {

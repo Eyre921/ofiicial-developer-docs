@@ -25,10 +25,14 @@ support the `eleven_v3` model. For **Eleven v3** dialogue over a WebSocket, see 
 
 Install required dependencies:
 
+**`Python`**
+
 ```python Python
 pip install python-dotenv
 pip install websockets
 ```
+
+**`TypeScript`**
 
 ```typescript TypeScript
 npm install dotenv
@@ -38,6 +42,8 @@ npm install ws
 
 Next, create a `.env` file in your project directory and add your API key:
 
+**`.env`**
+
 ```bash .env
 ELEVENLABS_API_KEY=your_elevenlabs_api_key_here
 ```
@@ -45,6 +51,8 @@ ELEVENLABS_API_KEY=your_elevenlabs_api_key_here
 ## Initiate the websocket connection
 
 After choosing a voice from the Voice Library and the text to speech model you wish to use, initiate a WebSocket connection to the text to speech API.
+
+**`text-to-speech-websocket.py`**
 
 ```python text-to-speech-websocket.py
 import os
@@ -66,6 +74,8 @@ async def text_to_speech_ws_streaming(voice_id, model_id):
     async with websockets.connect(uri) as websocket:
        ...
 ```
+
+**`text-to-speech-websocket.ts`**
 
 ```typescript text-to-speech-websocket.ts
 import * as dotenv from "dotenv";
@@ -105,6 +115,8 @@ const writeStream = fs.createWriteStream(outputDir + "/test.mp3", {
 
 Once the WebSocket connection is open, set up voice settings first. Next, send the text message to the API.
 
+**`text-to-speech-websocket.py`**
+
 ```python text-to-speech-websocket.py
 async def text_to_speech_ws_streaming(voice_id, model_id):
     async with websockets.connect(uri) as websocket:
@@ -123,6 +135,8 @@ async def text_to_speech_ws_streaming(voice_id, model_id):
         # Send empty string to indicate the end of the text sequence which will close the WebSocket connection
         await websocket.send(json.dumps({"text": ""}))
 ```
+
+**`text-to-speech-websocket.ts`**
 
 ```typescript text-to-speech-websocket.ts
 const text =
@@ -151,6 +165,8 @@ websocket.on("open", async () => {
 ## Save the audio to file
 
 Read the incoming message from the WebSocket connection and write the audio chunks to a local file.
+
+**`text-to-speech-websocket.py`**
 
 ```python text-to-speech-websocket.py
 import asyncio
@@ -190,6 +206,8 @@ async def text_to_speech_ws_streaming(voice_id, model_id):
 asyncio.run(text_to_speech_ws_streaming(voice_id, model_id))
 ```
 
+**`text-to-speech-websocket.ts`**
+
 ```typescript text-to-speech-websocket.ts
 // Helper function to write the audio encoded in base64 string into local file
 function writeToLocal(base64str: any, writeStream: fs.WriteStream) {
@@ -219,9 +237,13 @@ websocket.on("close", () => {
 
 You can run the script by executing the following command in your terminal. An mp3 audio file will be saved in the `output` directory.
 
+**`Python`**
+
 ```python Python
 python text-to-speech-websocket.py
 ```
+
+**`TypeScript`**
 
 ```typescript TypeScript
 npx tsx text-to-speech-websocket.ts
@@ -241,7 +263,7 @@ To manage this, you can use the `chunk_length_schedule` parameter when either in
 
 Here's an example of how this works with the default settings for `chunk_length_schedule`:
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/077efc232570b0f92355aed2d6766b66bba815e335466e81cd64f8dfcce10ada/assets/images/developer-guides/buffering-explainer.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T075313Z&X-Amz-Expires=604800&X-Amz-Signature=ae19326e13321c7ad9fd95f4f0aaaf1fcb3b294506def9ff218fe4a0e5e8aeff&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/077efc232570b0f92355aed2d6766b66bba815e335466e81cd64f8dfcce10ada/assets/images/developer-guides/buffering-explainer.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T080121Z&X-Amz-Expires=604800&X-Amz-Signature=e30a17f0871104ee5615f0e6b939d5c4f0a52d93060321d7baff2901895b5c45&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 In the above diagram, audio is only generated after the second message is sent to the server. This is because the first message is below the threshold of 120 characters, while the second message brings the total number of characters above the threshold. The third message is above the threshold of 160 characters, so audio is immediately generated and returned to the client.
 
@@ -271,7 +293,7 @@ websocket.send(
 
 In the case that you want force the immediate return of the audio, you can use `flush: true` to clear out the buffer and force generate any buffered text. This can be useful, for example, when you have reached the end of a document and want to generate audio for the final section.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/84011e01024effe1bba1556f0007c7947165a0101bce3a41f8b955d1a9788a9c/assets/images/developer-guides/buffering-flush-explainer.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T075313Z&X-Amz-Expires=604800&X-Amz-Signature=493fe447a25afed777f7dc45fa936de593a10c44252afa7f60d9f221bd2fcf52&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/84011e01024effe1bba1556f0007c7947165a0101bce3a41f8b955d1a9788a9c/assets/images/developer-guides/buffering-flush-explainer.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T080121Z&X-Amz-Expires=604800&X-Amz-Signature=5cfa76faf9fbc91d3e24aba04842356339ec12fd6b3c16da90ae4ec2dadcd4b7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 This can be specified on a per-message basis by setting `flush: true` in the message.
 

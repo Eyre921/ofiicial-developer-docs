@@ -74,6 +74,17 @@ Successful Response
 - `referral_link_code` (string, optional, nullable) — The referral link code of the user.
 - `partnerstack_partner_default_link` (string, optional, nullable) — The Partnerstack partner default link of the user.
 
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/analytics/workspace/requests
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `start_time` (integer, optional, nullable) — Start of the time range as a Unix timestamp in milliseconds.
 - `end_time` (integer, optional, nullable) — End of the time range as a Unix timestamp in milliseconds.
 - `limit` (integer, optional, default: 100)
@@ -51,6 +53,17 @@ Successful Response
 - `rows` (list of list of string or integer or double or boolean or string, required)
 - `column_units` (list of enum, required)
   - Allowed values: `ms`, `s`, `min`, `duration`, `credits`, `usd`, `eur`, `inr`, `pln`, `ratio`, `rating`
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

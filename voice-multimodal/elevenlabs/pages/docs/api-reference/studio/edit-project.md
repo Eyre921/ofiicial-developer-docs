@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/studio/edit-project
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `name` (string, required) — The name of the Studio project, used for identification only.
 - `default_title_voice_id` (string, required) — The voice_id that corresponds to the default voice used for new titles.
 - `default_paragraph_voice_id` (string, required) — The voice_id that corresponds to the default voice used for new paragraphs.
@@ -232,6 +234,17 @@ Successful Response
   - `agent_settings` (object, optional, nullable) — Agent-related settings for the project
     - `tool_settings` (map from string to object, optional)
       - `skip_confirmation` (boolean, optional, default: false)
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

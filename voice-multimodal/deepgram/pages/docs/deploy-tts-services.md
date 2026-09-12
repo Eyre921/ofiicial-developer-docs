@@ -96,6 +96,8 @@ Flux TTS is documented separately. See [Deploying Flux TTS](/docs/deploy-flux-tt
 
 Use the image repository credentials you generated in the [self-service licensing and credentials](/docs/self-hosted-self-service-tutorial#create-container-image-distribution-credentials) guide to login to Quay on your deployment environment. Once your credentials are cached locally, you should not have to log in again (until after you manually log out).
 
+**`Shell`**
+
 ```shell Shell
 # Complete with login information generated in Deepgram Console
 docker login quay.io
@@ -122,6 +124,8 @@ Recommended for production deployments requiring scaling, high availability, and
 Configuration files are available in the [self-hosted-resources repository](https://github.com/deepgram/self-hosted-resources).
 
 1. Create your configuration directory:
+
+   **`Shell`**
 
    ```shell Shell
    mkdir -p config
@@ -174,6 +178,8 @@ While these are the same container images used for STT deployments, **Deepgram s
 TTS functionality is enabled through specific configuration files, environment variables, and GPU assignments detailed below.
 
 Make sure to export your self-hosted API key secret in your deployment environment.
+
+**`shell`**
 
 ```bash shell
 export DEEPGRAM_API_KEY=API_KEY_SECRET
@@ -236,6 +242,8 @@ To make sure your Deepgram self-hosted TTS deployment is properly configured and
 
 Now that you have your configuration files setup up and in the correct location to be used by the container, use Docker Compose to run the container:
 
+**`Shell`**
+
 ```shell Shell
 cd config
 
@@ -252,6 +260,8 @@ sudo --preserve-env=DEEPGRAM_API_KEY docker compose -f docker-compose.aura-2.yml
 If you get an error similar to the following, you may not have the minimum NVIDIA driver version required for Deepgram services to run properly. Please see [Drivers and Containerization Platforms](/docs/drivers-and-containerization-platforms#download-and-install-the-official-drivers) for instructions on installing/upgrading to the latest driver version.
 
 You can then view the running containers with the container process status command, and optionally view the logs of each container to verify their status.
+
+**`Shell`**
 
 ```shell Shell
 docker ps
@@ -292,6 +302,8 @@ Test your environment and container setup with sample TTS requests.
 
    **Test English Service (Aura-2):**
 
+   **`Shell`**
+
    ```shell Shell
    curl --request POST \
       --header "Content-Type: application/json" \
@@ -302,6 +314,8 @@ Test your environment and container setup with sample TTS requests.
 
    **Test Spanish Service (Aura-2, if deployed):**
 
+   **`Shell`**
+
    ```shell Shell
    curl --request POST \
       --header "Content-Type: application/json" \
@@ -311,6 +325,8 @@ Test your environment and container setup with sample TTS requests.
    ```
 
    **Test Multiple English Instances (if deployed):**
+
+   **`Shell`**
 
    ```shell Shell
    # Test first English instance

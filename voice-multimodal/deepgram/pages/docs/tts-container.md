@@ -24,6 +24,8 @@ The container format value must adhere to the [Audio Format Combinations table](
 
 To enable the Container feature, include the `container` parameter in the query string with the desired container format value.
 
+**`Text`**
+
 ```text Text
 https://api.deepgram.com/v1/speak?encoding=linear16&container=wav
 ```
@@ -35,6 +37,8 @@ If you are using the [TTS Web Socket](/reference/text-to-speech/speak-streaming)
 You can use the following cURL command in a terminal or your favorite API client to synthesize text into speech with a specific container.
 
 **WAV container format**:
+
+**`cURL`**
 
 ```bash cURL
 curl --request POST \
@@ -65,6 +69,8 @@ Upon successful processing of the request, you will receive an audio file contai
 The audio file is streamed back to you, so you may begin playback as soon as the first byte arrives. Read the guide [Streaming Audio Outputs](/docs/streaming-the-audio-output) to learn how to begin playing the stream immediately versus waiting for the entire file to arrive.
 
 ### Response Headers Example
+
+**`http`**
 
 ```text http
 HTTP/1.1 200 OK

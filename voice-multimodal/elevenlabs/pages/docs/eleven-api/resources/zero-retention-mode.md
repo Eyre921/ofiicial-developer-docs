@@ -68,6 +68,8 @@ For detailed instructions, see [Zero Retention Mode (per-agent)](/docs/eleven-ag
 
 For example, in the Text to Speech API, you can set the query parameter [enable\_logging](https://elevenlabs.io/docs/api-reference/text-to-speech#parameter-enable-logging) to a `false` value:
 
+**`Python`**
+
 ```python title="Python" {12}
 from elevenlabs import ElevenLabs
 
@@ -85,6 +87,8 @@ response = elevenlabs.text_to_speech.convert(
 
 ```
 
+**`JavaScript`**
+
 ```javascript title="JavaScript" {9}
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
@@ -97,6 +101,8 @@ await elevenlabs.textToSpeech.convert(voiceId, {
   enableLogging: false,
 });
 ```
+
+**`cURL`**
 
 ```bash title="cURL"
 curl --request POST \

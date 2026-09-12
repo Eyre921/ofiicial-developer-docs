@@ -8,13 +8,13 @@ Add FireRouter to a LiteLLM Proxy deployment
 
 Add FireRouter to an existing [LiteLLM Proxy](/ecosystem/integrations/litellm) deployment so developers request one model instead of choosing between open and closed-source models on every call.
 
-FireRouter uses bring-your-own-key (BYOK): your Fireworks API key pays for redirected calls, and an Anthropic API key pays for pass-through to Claude Opus 5. See [Authentication](/ecosystem/firerouter/authentication). FireRouter does not store provider keys.
+Your Fireworks API key authenticates FireRouter and pays for Fireworks-hosted calls. An Anthropic credential makes Claude Opus 5 eligible and pays for that provider's calls. Provider keys sent on individual requests are not persisted by FireRouter. See [Authentication](/ecosystem/firerouter/authentication).
 
 ## Prerequisites
 
-* A running LiteLLM Proxy on **v1.95.0** configured for Fireworks (see [LiteLLM integration](/ecosystem/integrations/litellm))
+* A running LiteLLM Proxy on **v1.98.0** configured for Fireworks (see [LiteLLM integration](/ecosystem/integrations/litellm))
 * A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`)
-* An **Anthropic API key** (`sk-ant-...`) for pass-through
+* Optional: an **Anthropic API key** (`sk-ant-...`) to make Claude Opus 5 eligible for the default `firerouter` slug. It is not needed for a Fireworks-only slug or when workspace BYOK is provisioned.
 
 ## Add FireRouter to `config.yaml`
 
@@ -28,15 +28,15 @@ model_list:
         x-anthropic-api-key: os.environ/ANTHROPIC_API_KEY
 ```
 
-Always use the full router resource ID in `litellm_params.model`. LiteLLM rewrites short names like `fireworks_ai/firerouter` to `accounts/fireworks/models/firerouter`, which FireRouter does not recognize.
+Use a router-qualified ID in `litellm_params.model`, such as `fireworks_ai/routers/firerouter` or the full `fireworks_ai/accounts/fireworks/routers/firerouter` shown above. Do not use bare `fireworks_ai/firerouter`, which LiteLLM interprets as a model rather than a router.
 
-Set `ANTHROPIC_API_KEY` on the LiteLLM server so pass-through requests include `x-anthropic-api-key` automatically. Developers do not need to send the Anthropic key on each request when it is configured here.
+Set `ANTHROPIC_API_KEY` on the LiteLLM server when you want pass-through requests to include `x-anthropic-api-key` automatically. Developers do not need to send the Anthropic key on each request when it is configured here. Omit `extra_headers` for Fireworks-only routing or workspace BYOK.
 
 <Note>
   A server-side Anthropic key is shared across all callers of that proxy deployment. If each developer should bring their own Anthropic key, omit `extra_headers` and have clients send `x-anthropic-api-key` on each request instead (see below).
 </Note>
 
-Start or restart the proxy with both keys exported:
+For server-managed Anthropic credentials, start or restart the proxy with both keys exported:
 
 ```bash theme={null}
 export FIREWORKS_AI_API_KEY="fw_..."
@@ -46,7 +46,7 @@ litellm --config config.yaml
 
 ## Call FireRouter
 
-Clients authenticate to LiteLLM with a virtual key:
+If LiteLLM virtual keys are configured, clients authenticate to LiteLLM with a virtual key:
 
 ```bash theme={null}
 curl http://localhost:4000/chat/completions \
@@ -60,7 +60,14 @@ curl http://localhost:4000/chat/completions \
 
 Optional routing preference:
 
-```bash theme={null}
+```yaml theme={null}
+litellm_settings:
+  model_group_settings:
+    forward_client_headers_to_llm_api:
+      - accounts/fireworks/routers/firerouter
+```
+
+```text theme={null}
 -H "x-routing-preference: 4"
 ```
 
@@ -68,7 +75,7 @@ See [Routing preferences](/ecosystem/firerouter/routing-preferences) for values 
 
 ## Per-developer Anthropic keys
 
-If each caller should use their own Anthropic key, omit `extra_headers` from the model config and have clients send the header on every request:
+If each caller should use their own Anthropic key, omit `extra_headers` from the model config, enable the header-forwarding configuration above, and have clients send the header on every request:
 
 ```bash theme={null}
 curl http://localhost:4000/chat/completions \
@@ -81,15 +88,15 @@ curl http://localhost:4000/chat/completions \
   }'
 ```
 
-Enable [client header forwarding](https://docs.litellm.ai/docs/proxy/forward_client_headers) for the `accounts/fireworks/routers/firerouter` model group if your LiteLLM version does not forward `x-` headers by default.
+See [client header forwarding](https://docs.litellm.ai/docs/proxy/forward_client_headers) for configuration details.
 
 ## API key layout
 
-| Key                              | Who holds it                                                     | Used for                                 |
-| -------------------------------- | ---------------------------------------------------------------- | ---------------------------------------- |
-| Fireworks API key (`fw_...`)     | LiteLLM server                                                   | FireRouter auth and redirected inference |
-| LiteLLM virtual key              | Each developer or service                                        | Proxy authentication and spend tracking  |
-| Anthropic API key (`sk-ant-...`) | LiteLLM server (`extra_headers`) or each caller (request header) | Claude pass-through billing              |
+| Key                                 | Who holds it                                                               | Used for                                                      |
+| ----------------------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| Fireworks API key (`fw_...`)        | LiteLLM server                                                             | FireRouter auth and redirected inference                      |
+| LiteLLM virtual key (if configured) | Each developer or service                                                  | Proxy authentication and spend tracking                       |
+| Anthropic API key (`sk-ant-...`)    | Optional: LiteLLM server (`extra_headers`) or each caller (request header) | Makes Claude models eligible and pays for Claude pass-through |
 
 ## Related
 

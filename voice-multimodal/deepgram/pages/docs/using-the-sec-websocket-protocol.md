@@ -66,6 +66,8 @@ When utilizing custom subprotocols in WebSocket communications, several security
 
 To use the `Sec-WebSocket-Protocol` header with [Deepgram's Listen WebSocket endpoint,](/reference/speech-to-text/listen-streaming) follow this example:
 
+**`http`**
+
 ```text http
 GET /listen HTTP/1.1
 Host: wss://api.deepgram.com/
@@ -83,6 +85,8 @@ Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additi
 ## TTS WebSocket Example
 
 To use the `Sec-WebSocket-Protocol` header with [Deepgram's Speak WebSocket endpoint](/reference/text-to-speech/speak-streaming), follow this example:
+
+**`http`**
 
 ```text http
 GET /speak HTTP/1.1

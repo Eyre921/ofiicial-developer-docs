@@ -32,6 +32,8 @@ Reference: https://elevenlabs.io/docs/api-reference/dubbing/target-transcript/ba
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `segments` (map from string to object, required) — Map of segment ID to the translation edit to apply to that segment. At least one entry and at most 500.
   - `translation` (string, optional, nullable) — New translated text, or null to mark the segment for re-translation.
 
@@ -49,6 +51,17 @@ Successful Response
   - `source_text` (string, required) — The source-language text of the segment.
   - `translation` (string, optional, nullable) — The translated text, or null if not translated yet (needs translation).
 - `revision` (integer, required) — The target's revision after the edits.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

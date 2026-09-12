@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/integrations/exotel/outbound
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `agent_id` (string, required)
 - `agent_phone_number_id` (string, required)
 - `to_number` (string, required)
@@ -108,6 +110,17 @@ Successful Response
 - `message` (string, required)
 - `conversation_id` (string, required, nullable)
 - `callSid` (string, required, nullable) — Exotel CallSid for the originated call
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

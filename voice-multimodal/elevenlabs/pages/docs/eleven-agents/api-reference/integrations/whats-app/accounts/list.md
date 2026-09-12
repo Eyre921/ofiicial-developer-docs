@@ -47,6 +47,17 @@ Successful Response
   - `assigned_agent_name` (string, optional)
   - `is_token_expired` (boolean, optional, default: false)
 
+## Errors
+
+### 422 Whatsapp Accounts List Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

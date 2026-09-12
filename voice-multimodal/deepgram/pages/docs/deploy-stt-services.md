@@ -32,6 +32,8 @@ You will also need to complete the [Self Service Licensing & Credentials](/docs/
 
 Use the image repository credentials you generated in the [self-service licensing and credentials](/docs/self-hosted-self-service-tutorial#create-a-set-of-container-image-distribution-credentials) guide to login to Quay on your deployment environment. Once your credentials are cached locally, you should not have to log in again (until after you manually log out).
 
+**`Shell`**
+
 ```shell Shell
 # Complete with login information generated in Deepgram Console
 docker login quay.io
@@ -50,6 +52,8 @@ See the [License Proxy](/docs/license-proxy) guide for more details on the benef
 Before you can run your self-hosted deployment, you must configure the required components. To do this, you will need to customize your configuration files and create a directory to house models that have been encrypted for use in your requests.
 
 1. In your home directory, create the following directories. This is where you will save your Docker Compose files, Deepgram configuration files, and Deepgram model files.
+
+   **`Shell`**
 
    ```shell Shell
    mkdir config
@@ -145,6 +149,8 @@ The Docker Compose or Podman Compose configuration file makes it possible to spi
 
 Make sure to export your self-hosted API key secret in your deployment environment.
 
+**`shell`**
+
 ```bash shell
 export DEEPGRAM_API_KEY=API_KEY_SECRET
 ```
@@ -162,6 +168,8 @@ To make sure your Deepgram self-hosted deployment is properly configured and run
 ### Start the Deepgram Containers
 
 Now that you have your configuration files and AI models set up and in the correct location to be used by the container, use Docker Compose to run the container:
+
+**`Shell`**
 
 ```shell Shell
 cd config
@@ -183,6 +191,8 @@ If you get an error similar to the following, you may not have the minimum NVIDI
 
 You can then view the running containers with the container process status command, and optionally view the logs of each container to verify their status.
 
+**`Shell`**
+
 ```shell Shell
 docker ps
 # Take note of the "Container ID" for each Deepgram container
@@ -202,10 +212,16 @@ Unless you have HTTPS or TLS running on your API instance, construct your Deepgr
 Test your environment and container setup with a local file.
 
 1. Download a sample file from Deepgram (or supply your own file).
+
+   **`Shell`**
+
    ```shell Shell
    wget https://dpgr.am/bueller.wav
    ```
 2. Send your audio file to your local Deepgram setup for transcription.
+
+   **`Shell`**
+
    ```shell Shell
    # If needed, adjust the query parameters to match the directions from your Deepgram Account Representative
    curl -X POST --data-binary @bueller.wav "http://localhost:8080/v1/listen?model=nova-3&smart_format=true"

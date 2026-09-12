@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/history/download
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `history_item_ids` (list of string, required) — A list of history items to download, you can get IDs of history items and other metadata using the GET https://api.elevenlabs.io/v1/history endpoint.
 - `output_format` (string, optional, nullable) — Output format to transcode the audio file, can be wav or default.
 
@@ -37,6 +39,24 @@ Reference: https://elevenlabs.io/docs/api-reference/history/download
 The requested audio file, or a zip file containing multiple audio files when multiple history items are requested.
 
 - File download.
+
+## Errors
+
+### 400 Bad Request Error
+
+Invalid request
+
+- `error` (string, optional)
+- `message` (string, optional)
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

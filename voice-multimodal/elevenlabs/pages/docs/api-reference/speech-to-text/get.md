@@ -166,6 +166,17 @@ The transcript data
     - `transcription_id` (string, optional, nullable) — The transcription ID of the response.
     - `audio_duration_secs` (double, optional, nullable) — The duration of the audio that was transcribed across all channels in seconds.
 
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

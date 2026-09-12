@@ -1628,6 +1628,17 @@ Successful Response
   - `target_value` (any, optional) — Value on the target branch tip.
 - `source_identical_to_target` (boolean, optional, default: false) — True when the merge/rebase would be a no-op, i.e. the merged result is identical to the source branch tip. The rebase endpoint rejects in this case.
 
+## Errors
+
+### 422 Branches Preview Rebase Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

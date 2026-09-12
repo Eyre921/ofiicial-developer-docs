@@ -32,6 +32,8 @@ Currently, the Text-to-Speech WebSocket implementation does not support[ contain
 
 In the `linear16` audio encoding case, you will need to prepend a [`WAV` container header](https://en.wikipedia.org/wiki/WAV#WAV_file_header) to each audio segment you plan to play through the speakers. This is required for many media device implementations within a browser. In several cases for Python, this may be sufficient for a `WAV` header in the case of a file:
 
+**`Python`**
+
 ```python Python
 import wave
 
@@ -46,6 +48,8 @@ header.close()
 ```
 
 In many cases, file-based playback is not desired, and you may want to play the audio directly by streaming to the media device. For those cases, you may need to manipulate the audio stream and create the header bytes directly in front of the audio stream segments:
+
+**`JavaScript`**
 
 ```javascript JavaScript
 // Add a wav audio container header to the file if you want to play the audio
@@ -70,6 +74,8 @@ const wavHeader = Buffer.from([
 // Concatenate the header to your audio buffer
 const audio = Buffer.concat([wavHeader, audioBuffer]);
 ```
+
+**`Python`**
 
 ```python Python
 # Add a wav audio container header to the file if you want to play the audio
@@ -125,6 +131,8 @@ header = bytes(
 )
 ```
 
+**`Go`**
+
 ```go Go
 // Add a wav audio container header to the file if you want to play the audio
 // using the AudioContext or media player like VLC, Media Player, or Apple Music
@@ -145,6 +153,8 @@ header := []byte{
 		0x00, 0x00, 0x00, 0x00, // Placeholder for data size
 	}
 ```
+
+**`C#`**
 
 ```csharp C#
 // Add a wav audio container header to the file if you want to play the audio
@@ -167,6 +177,8 @@ byte[] header = new byte[]
   0x00, 0x00, 0x00, 0x00, // Placeholder for data size
 };
 ```
+
+**`Java`**
 
 ```java Java
 // Add a wav audio container header to the file if you want to play the audio
@@ -210,6 +222,8 @@ There are numerous ways to mitigate this. Some of these include:
 ### Using Echo Cancellation
 
 Some browsers provide built-in **echo cancellation** that can help reduce cases where the agent hears its own voice. You can enable this when capturing microphone input:
+
+**`JavaScript`**
 
 ```javascript JavaScript
 navigator.mediaDevices

@@ -37,6 +37,8 @@ A text source can be sent to Deepgram as text (a text string or local text file)
 
 This example shows how to analyze a **local text file** as your text source.
 
+**`JavaScript`**
+
 ```javascript JavaScript
 const { DeepgramClient } = require("@deepgram/sdk");
 const fs = require("fs");
@@ -65,6 +67,8 @@ const analyzeText = async () => {
 
 analyzeText();
 ```
+
+**`Python`**
 
 ```python Python
 # For more Python SDK migration guides, visit:
@@ -110,6 +114,8 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+
+**`Go`**
 
 ```go Go
 package main
@@ -179,6 +185,8 @@ func main() {
 }
 ```
 
+**`Java`**
+
 ```java Java
 // Main.java (Java example)
 // https://github.com/deepgram/deepgram-java-sdk
@@ -217,6 +225,8 @@ public class Main {
 
 This example shows how to analyze a **hosted url file** as your text source.
 
+**`JavaScript`**
+
 ```javascript JavaScript
 const { DeepgramClient } = require("@deepgram/sdk");
 
@@ -241,6 +251,8 @@ const analyzeUrl = async () => {
 
 analyzeUrl();
 ```
+
+**`Python`**
 
 ```python Python
 # For more Python SDK migration guides, visit:
@@ -280,6 +292,8 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+
+**`Go`**
 
 ```go Go
 package main
@@ -349,6 +363,8 @@ func main() {
 }
 ```
 
+**`Java`**
+
 ```java Java
 // Main.java (Java example)
 // https://github.com/deepgram/deepgram-java-sdk
@@ -386,11 +402,15 @@ public class Main {
 
 Run your application from the terminal.
 
+**`JavaScript`**
+
 ```javascript JavaScript
 # Run your application using the file you created in the previous step
 # Example: node index.js
 node index.js
 ```
+
+**`Python`**
 
 ```shell Python
 # Run your application using the file you created in the previous step
@@ -398,12 +418,16 @@ node index.js
 python YOUR_PROJECT_NAME.py
 ```
 
+**`Go`**
+
 ```shell Go
 # Run your application using the file you created in the previous step
 # Example: go run main.go
 
 go run YOUR_PROJECT_NAME.go
 ```
+
+**`Java`**
 
 ```shell Java
 mvn compile exec:java -Dexec.mainClass="Main"
@@ -416,6 +440,8 @@ Your results will appear in your shell.
 ## Analyze the Response
 
 When the file is finished processing (often after only a few seconds), you’ll receive a JSON response:
+
+**`summarization`**
 
 ```json summarization
 {
@@ -436,6 +462,8 @@ When the file is finished processing (often after only a few seconds), you’ll 
   }
 }
 ```
+
+**`topic detection`**
 
 ```json topic detection
 {
@@ -491,6 +519,8 @@ When the file is finished processing (often after only a few seconds), you’ll 
 }
 ```
 
+**`intent recognition`**
+
 ```json intent recognition
 {
   "metadata": {
@@ -526,6 +556,8 @@ When the file is finished processing (often after only a few seconds), you’ll 
   }
 }
 ```
+
+**`sentiment analysis`**
 
 ```json sentiment analysis
 {
@@ -634,6 +666,8 @@ Here are a few constraints to keep in mind when making your request.
 
 At this time, text analysis features only work for English language texts. You must add a language parameter and set it to English when you make a text analysis request.
 
+**`Python`**
+
 ```python Python
 response = client.read.v1.text.analyze(
     request={"text": "Your text here"},
@@ -645,6 +679,8 @@ response = client.read.v1.text.analyze(
 ### Token Limit
 
 The input token limit is 150K tokens. When that limit is exceeded, a `400` error will be thrown.
+
+**`JSON`**
 
 ```json JSON
 {

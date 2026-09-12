@@ -59,6 +59,23 @@ Billing breakdown response
     - `line_item` (string, optional, nullable) — Optional line item identifier, null unless grouped by line item.
     - `tags` (list of string, optional, nullable) — Optional list of tags, null unless grouped by tags.
 
+## Errors
+
+### 400 Bad Request Error
+
+Invalid Request
+
+- `string or object or object`
+  - ErrorResponseLegacyError
+    - `err_code` (string, optional) — The error code
+    - `err_msg` (string, optional) — The error message
+    - `request_id` (string, optional) — The request ID
+  - ErrorResponseModernError
+    - `category` (string, optional) — The category of the error
+    - `message` (string, optional) — A message about the error
+    - `details` (string, optional) — A description of the error
+    - `request_id` (string, optional) — The unique identifier of the request
+
 ## Examples
 
 **Response**

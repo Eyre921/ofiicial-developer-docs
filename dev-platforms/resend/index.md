@@ -1,6 +1,6 @@
 # dev-platforms/resend 文档索引
 
-> 共 361 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 362 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -123,6 +123,7 @@
 - `docs/api-reference/webhooks/list-events` — [List Events](pages/docs/api-reference/webhooks/list-events.md) · [原文](https://resend.com/docs/api-reference/webhooks/list-events)
 - `docs/api-reference/webhooks/list-webhooks` — [List Webhooks](pages/docs/api-reference/webhooks/list-webhooks.md) · [原文](https://resend.com/docs/api-reference/webhooks/list-webhooks)
 - `docs/api-reference/webhooks/replay-event` — [Replay Event](pages/docs/api-reference/webhooks/replay-event.md) · [原文](https://resend.com/docs/api-reference/webhooks/replay-event)
+- `docs/api-reference/webhooks/rotate-signing-secret` — [Rotate Signing Secret](pages/docs/api-reference/webhooks/rotate-signing-secret.md) · [原文](https://resend.com/docs/api-reference/webhooks/rotate-signing-secret)
 - `docs/api-reference/webhooks/update-webhook` — [Update Webhook](pages/docs/api-reference/webhooks/update-webhook.md) · [原文](https://resend.com/docs/api-reference/webhooks/update-webhook)
 - `docs/api-vs-sdk` — [Resend API vs SDK](pages/docs/api-vs-sdk.md) · [原文](https://resend.com/docs/api-vs-sdk)
 - `docs/appwrite-integration` — [Send emails with Appwrite and Resend](pages/docs/appwrite-integration.md) · [原文](https://resend.com/docs/appwrite-integration)

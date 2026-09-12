@@ -87,7 +87,7 @@ export ANTHROPIC_API_KEY=sk-ant-...   # optional BYOK for pass-through to Claude
 fireconnect codex on --model firerouter --anthropic-api-key sk-ant-...
 ```
 
-FireConnect rejects `--model firerouter` with Fire Pass (`fpk_...`) on every harness; use an `fw_...` key. Codex also does not support Fire Pass for direct routing. FireRouter BYOK reads `ANTHROPIC_API_KEY` from your shell (Codex does not support `--routing-preference`).
+FireConnect rejects `--model firerouter` with Fire Pass (`fpk_...`) on every harness; use an `fw_...` key. Codex also does not support Fire Pass for direct routing. Export `ANTHROPIC_API_KEY` yourself, or pass `--anthropic-api-key` and FireConnect will export it for Codex. Codex does not support `--routing-preference`.
 
 <Warning>
   **MiniMax models are not supported in Codex.** Codex uses the Fireworks Responses API and may insert assistant messages between `tool_calls` and `tool_results`. MiniMax chat templates require `tool_results` to follow `tool_calls` directly. Use Chat Completions harnesses (for example Claude Code or OpenCode) for MiniMax.
@@ -130,7 +130,7 @@ fireconnect codex on --config-path /path/to/config.toml
 
 ## Fireworks on Microsoft Foundry
 
-Codex supports **Fireworks on Microsoft Foundry** (CLI: `--provider azure` or `on --azure`). See the [FireConnect overview](/ecosystem/fireconnect/microsoft-foundry) and [Microsoft Foundry integration guide](/ecosystem/integrations/azure-foundry) for portal setup.
+Codex supports **Fireworks on Microsoft Foundry** (CLI: `--provider azure` or `on --azure`). FireRouter is not available on the Foundry path; run `fireconnect configure --provider fireworks` before using `--model firerouter`. See the [FireConnect overview](/ecosystem/fireconnect/microsoft-foundry) and [Microsoft Foundry integration guide](/ecosystem/integrations/azure-foundry) for portal setup.
 
 <Warning>
   Foundry routing requires a standard Azure API key. Fire Pass keys (`fpk_...`) are not supported. FireConnect does not write a Fireworks model catalog on the Foundry path. Set your deployment with `--model`.
@@ -139,11 +139,11 @@ Codex supports **Fireworks on Microsoft Foundry** (CLI: `--provider azure` or `o
 ### Configure and enable
 
 ```bash theme={null}
-export AZURE_API_KEY=<your-azure-api-key>
+export AZURE_API_KEY="YOUR_AZURE_API_KEY"
 
 fireconnect configure \
   --provider azure \
-  --base-url https://<resource>.services.ai.azure.com \
+  --base-url "https://YOUR_RESOURCE.services.ai.azure.com" \
   --api-key $AZURE_API_KEY
 
 fireconnect codex on --model FW-GLM-5.2
@@ -152,7 +152,7 @@ fireconnect codex on --model FW-GLM-5.2
 One-off routing:
 
 ```bash theme={null}
-fireconnect codex on --azure --base-url https://<resource>.services.ai.azure.com --model FW-MiniMax-M2.5
+fireconnect codex on --azure --base-url "https://YOUR_RESOURCE.services.ai.azure.com" --model FW-MiniMax-M2.5
 ```
 
 ### What gets written

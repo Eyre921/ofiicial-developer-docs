@@ -42,6 +42,17 @@ Successful Response
 - `token` (string, required)
 - `conversation_id` (string, required)
 
+## Errors
+
+### 422 Conversations Get Webrtc Token Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

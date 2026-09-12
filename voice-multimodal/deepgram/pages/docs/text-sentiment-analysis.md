@@ -23,6 +23,8 @@ Text Intelligence  English (all available regions)
 
 Sentiment Analysis accepts an input text, divides it into a list of segments comprised of sections of the text, and identifies the sentiment of each segment. It also assigns an average sentiment to the entire text.
 
+**`JSON`**
+
 ```json JSON
 "results": {
     "sentiments": {
@@ -62,6 +64,8 @@ To enable Sentiment, use the following parameter in the query string when you ca
 
 To analyze text from a file on your computer, run the following curl command in a terminal or your favorite API client.
 
+**`cURL`**
+
 ```bash cURL
 curl -vX POST \
  -H "Authorization: Token YOUR_DEEPGRAM_API_KEY" \
@@ -75,6 +79,8 @@ Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.dee
 ### Basic URL Request
 
 To analyze text from a hosted file, run the following curl command in a terminal or your favorite API client. (Try testing it out with the hosted file [https://static.deepgram.com/examples/aura.txt](https://static.deepgram.com/examples/aura.txt).)
+
+**`cURL`**
 
 ```bash cURL
 curl -vX POST \
@@ -96,6 +102,8 @@ Read our [Text Intelligence Getting Started guide](/docs/text-intelligence), whi
 ## Analyze Response
 
 When the file is finished processing, you’ll receive a JSON response that has the following basic structure:
+
+**`JSON`**
 
 ```json JSON
 {
@@ -160,6 +168,8 @@ The `sentiment` values added to objects are:
 
 If you request Sentiment Analysis with an unsupported language by specifying a language code such as `sentiment=true&language=es` or `sentiment=true&detect_language=true` where the detected language is unsupported, you will get the error message below.
 
+**`JSON`**
+
 ```json JSON
 {
   "err_code":"INVALID_QUERY_PARAMETER",
@@ -174,6 +184,8 @@ If you request Sentiment Analysis with an unsupported language by specifying a l
 
 If the request's input length exceeded the 150k token rate limit per request, you will get the error message below.
 
+**`JSON`**
+
 ```json JSON
 {
   "err_code": "TOKEN_LIMIT_EXCEEDED",
@@ -187,6 +199,8 @@ If the request's input length exceeded the 150k token rate limit per request, yo
 **Status** 400
 
 If the request sent contained only the feature parameter (`sentiment`) but not the `language` parameter, you will receive this error.
+
+**`JSON`**
 
 ```json JSON
 {

@@ -149,6 +149,8 @@ You can check client-side logs for evidence of interrupted uploads or timeouts. 
 
 When requests are made in excess of Deepgram's [rate limits](https://developers.deepgram.com/docs/getting-started-with-pre-recorded-audio#rate-limits), a `429 Too Many Requests` is returned with the following error. An [exponential-backoff retry strategy](https://deepgram.com/learn/api-back-off-strategies) is recommended to accommodate rate-limiting when submitting a large volume of concurrent requests.
 
+**`json`**
+
 ```json json
 {
   "err_code": "TOO_MANY_REQUESTS",

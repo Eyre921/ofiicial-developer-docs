@@ -14,6 +14,7 @@ url: https://docs.sentry.io/api/explore/
 Explore allow you to slice and dice your events
 
 * #### [List an Organization's AI Conversations](https://docs.sentry.io/api/explore/list-an-organizations-ai-conversations.md)
+* #### [List an Organization's Trace Metrics](https://docs.sentry.io/api/explore/list-an-organizations-trace-metrics.md)
 * #### [Query Explore Events in Table Format](https://docs.sentry.io/api/explore/query-explore-events-in-table-format.md)
 * #### [Query Explore Events in Timeseries Format](https://docs.sentry.io/api/explore/query-explore-events-in-timeseries-format.md)
 * #### [Retrieve an Organization's AI Conversation](https://docs.sentry.io/api/explore/retrieve-an-organizations-ai-conversation.md)
@@ -22,6 +23,7 @@ Explore allow you to slice and dice your events
 ## Pages in this section
 
 - [List an Organization's AI Conversations](https://docs.sentry.io/api/explore/list-an-organizations-ai-conversations.md)
+- [List an Organization's Trace Metrics](https://docs.sentry.io/api/explore/list-an-organizations-trace-metrics.md)
 - [Query Explore Events in Table Format](https://docs.sentry.io/api/explore/query-explore-events-in-table-format.md)
 - [Query Explore Events in Timeseries Format](https://docs.sentry.io/api/explore/query-explore-events-in-timeseries-format.md)
 - [Retrieve an Organization's AI Conversation](https://docs.sentry.io/api/explore/retrieve-an-organizations-ai-conversation.md)

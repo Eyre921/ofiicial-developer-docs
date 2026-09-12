@@ -26,7 +26,6 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Security overview](#security-overview-docs-nav-links-security-overview-mdx)
 - [Data Controls](#data-controls-docs-data-controls-mdx)
 - [Data retention and model training](#data-retention-and-model-training-docs-data-retention-and-model-training-mdx)
-- [API Reference](#api-reference-docs-api-reference-overview-mdx)
 - [Quickstart](#quickstart-docs-pre-recorded-audio-getting-started-transcribe-an-audio-file-mdx)
 - [Model selection](#model-selection-docs-pre-recorded-audio-select-the-speech-model-mdx)
 - [Prompting and Keyterms](#prompting-and-keyterms-docs-pre-recorded-audio-universal-3-5-pro-prompting-mdx)
@@ -148,16 +147,27 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Evaluate Streaming transcription accuracy with WER](#evaluate-streaming-transcription-accuracy-with-wer-docs-streaming-guides-evaluate-streaming-wer-mdx)
 - [Determine Optimal Turn Detection Settings from Historical Audio Analysis](#determine-optimal-turn-detection-settings-from-historical-audio-analysis-docs-streaming-guides-turn-detection-improvement-using-async-mdx)
 - [Transcribe a short audio file](#transcribe-a-short-audio-file-docs-sync-stt-getting-started-transcribe-a-short-audio-file-mdx)
+- [Transcribe live audio](#transcribe-live-audio-docs-sync-stt-getting-started-transcribe-live-audio-mdx)
 - [Prompting and Keyterms](#prompting-and-keyterms-docs-sync-stt-prompting-and-keyterms-mdx)
 - [Conversation context](#conversation-context-docs-sync-stt-conversation-context-mdx)
 - [Language selection](#language-selection-docs-sync-stt-language-selection-mdx)
 - [Word timestamps](#word-timestamps-docs-sync-stt-word-timestamps-mdx)
 - [Transcribe a short audio file](#transcribe-a-short-audio-file-docs-api-reference-sync-api-transcribe-mdx)
+- [Transcribe live audio](#transcribe-live-audio-docs-api-reference-sync-api-transcribe-live-mdx)
 - [Pre-warm a connection](#pre-warm-a-connection-docs-api-reference-sync-api-warm-mdx)
 - [Audio requirements](#audio-requirements-docs-sync-stt-audio-requirements-mdx)
 - [Error handling](#error-handling-docs-sync-stt-error-handling-mdx)
 - [Cloud endpoints & data residency](#cloud-endpoints-data-residency-docs-sync-stt-endpoints-and-data-zones-mdx)
 - [Connection pre-warming](#connection-pre-warming-docs-sync-stt-connection-pre-warming-mdx)
+- [Dictation API](#dictation-api-docs-dictation-mdx)
+- [Transcript rewriting](#transcript-rewriting-docs-dictation-transcript-rewriting-mdx)
+- [Prompting and keyterms](#prompting-and-keyterms-docs-dictation-prompting-and-keyterms-mdx)
+- [Language selection](#language-selection-docs-dictation-language-selection-mdx)
+- [Transcribe dictated audio](#transcribe-dictated-audio-docs-api-reference-dictation-api-transcribe-live-mdx)
+- [Audio requirements](#audio-requirements-docs-dictation-audio-requirements-mdx)
+- [Error handling](#error-handling-docs-dictation-error-handling-mdx)
+- [Cloud endpoints & data residency](#cloud-endpoints-data-residency-docs-dictation-endpoints-and-data-zones-mdx)
+- [Connection pre-warming](#connection-pre-warming-docs-dictation-connection-pre-warming-mdx)
 - [Voice Agent API](#voice-agent-api-docs-voice-agents-voice-agent-api-mdx)
 - [Build with AI coding tools](#build-with-ai-coding-tools-docs-voice-agents-voice-agent-api-build-with-ai-tools-mdx)
 - [Supported languages](#supported-languages-docs-voice-agents-voice-agent-api-supported-languages-mdx)
@@ -455,7 +465,7 @@ Follow the quickstart for the product you're building with:
     Apply safety, privacy, and compliance controls to your audio pipeline.
   
 
-Note: Voice Agent and LLM Gateway are not currently supported in the AssemblyAI SDK. To use these products, or to use any other product via the REST API directly, see the [API reference](/api-reference/overview).
+Note: Voice Agent and LLM Gateway are not currently supported in the AssemblyAI SDK. To use them, see the [Voice Agent API reference](/voice-agents/voice-agent-api/api-spec/voice-agent-websocket) and the [LLM Gateway API reference](/llm-gateway/api-reference/create-chat-completion). Every other product has its own API reference section under its tab in the sidebar.
 
 ---
 
@@ -869,7 +879,7 @@ curl -s "https://streaming.assemblyai.com/v3/token?expires_in_seconds=60" \
 
 **Python:**
 ```python
-# pip install "assemblyai>=1.0.0"
+# pip install assemblyai
 import os
 from assemblyai.streaming.v3 import (
     StreamingClient,
@@ -4316,34 +4326,6 @@ Fireworks AI has [ZDR by default](https://docs.fireworks.ai/guides/security_comp
 See DigitalOcean's [inference data privacy documentation](https://docs.digitalocean.com/products/inference/details/data-privacy/) for more information.
 
 AssemblyAI has opted out of model training with all LLM Gateway providers. Please note this is separate from whether AssemblyAI may train our models with your data, and the model training environment differs from the production environment. You can find more information on model training in our [Model Training section](#model-training). If you would like to opt out of model training, please see our [Opt-Out FAQ](/faq/how-to-opt-out-of-data-sharing-for-our-model-improvement-program).
-
----
-
-<a id="api-reference-docs-api-reference-overview-mdx"></a>
-
-# API Reference
-
-URL: https://www.assemblyai.com/docs/api-reference/overview
-Source: docs/api-reference/overview.mdx
-Navigation: API Reference > Overview
-Description: Choose an API to view its full reference.
-
-Pick a product to jump to its full API reference. Each product tab has its own reference section with all endpoints, request and response schemas, and example calls.
-
-  
-    Get clean, customizable transcripts in 99 languages with industry-leading accuracy and natural language prompting.
-  
-  
-    Real-time transcription your notetaker, agents, and captions can depend on.
-  
-  
-    Send an audio file in a single HTTP request, get a transcript back in milliseconds. No polling, no session management.
-  
-  
-    One OpenAI-compatible API for every frontier model — with automatic fallbacks, zero markup, and zero data retention.
-  
-  
-    Stream audio in, get audio back. We handle the rest so you can focus on your product.
 
 ---
 
@@ -12777,7 +12759,7 @@ If you'd prefer to use one of our official SDKs, check our [documentation for th
   uses cURL commands to demonstrate API usage. In this guide, we will use Python
   code snippets to illustrate the same functionality across both APIs. If you
   prefer to use cURL, you can find the equivalent commands in the [AssemblyAI
-  API Reference](/api-reference/overview).
+  API Reference](/pre-recorded-audio/api-reference/transcripts/submit).
 
 ## Side-by-side code comparison
 
@@ -43020,6 +43002,228 @@ If you get stuck, contact our support team at [support@assemblyai.com](mailto:su
 
 ---
 
+<a id="transcribe-live-audio-docs-sync-stt-getting-started-transcribe-live-audio-mdx"></a>
+
+# Transcribe live audio
+
+URL: https://www.assemblyai.com/docs/sync-stt/getting-started/transcribe-live-audio
+Source: docs/sync-stt/getting-started/transcribe-live-audio.mdx
+Navigation: Sync STT > Getting started
+Description: Upload audio to the Sync API as it is recorded, so the transcript is ready almost as soon as the speaker stops.
+
+## Overview
+
+[`transcribe()`](/sync-stt/getting-started/transcribe-a-short-audio-file) needs the whole clip before it can send anything. Live upload starts the request immediately and uploads audio as your code produces it, so authorization, the upload, and every speech segment but the last are done by the time the speaker stops. What is left to wait for is the final segment.
+
+The SDKs expose this two ways. Use a **session** when your audio arrives through a callback — a microphone library, a WebRTC track, a telephony media stream:
+
+```python
+from assemblyai.sync.v1 import SyncTranscriber, SyncTranscriptionConfig
+
+transcriber = SyncTranscriber()
+config = SyncTranscriptionConfig(sample_rate=16000, channels=1)
+
+session = transcriber.open_live(config)
+# ... hand each captured chunk to session.write(chunk) ...
+session.close()          # end the audio
+result = session.result()  # wait for the transcript
+print(result.text)
+```
+
+```javascript
+import { AssemblyAI } from "assemblyai";
+
+const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
+
+const session = client.sync.openLive({ sample_rate: 16000, channels: 1 });
+// ... hand each captured chunk to session.write(chunk) ...
+session.close(); // end the audio
+const result = await session.result(); // wait for the transcript
+console.log(result.text);
+```
+
+Or hand it an iterable or stream you already have, and wait for the result:
+
+```python
+result = transcriber.transcribe_live(chunks, config=config)
+print(result.text)
+```
+
+```javascript
+const result = await client.sync.transcribeLive(chunks, {
+  sample_rate: 16000,
+  channels: 1,
+});
+console.log(result.text);
+```
+
+Both return the same result as `transcribe()` and post to `POST https://sync.assemblyai.com/v1/transcribe/live`.
+
+  **For short audio only**
+
+  Live upload is for short clips: the Sync API caps audio at 120 seconds, and it
+  returns one finished transcript when the audio ends. If you need words back
+  _while_ the speaker is still talking, or you need to capture more than 2 minutes
+  of audio, use the
+  [Real-time STT API](/streaming/getting-started/transcribe-streaming-audio), which
+  opens a WebSocket connection for up to 3 hours.
+
+  It is worth using only when the audio is genuinely still being produced —
+  streaming a file that already exists on disk is slower than
+  [`transcribe()`](/sync-stt/getting-started/transcribe-a-short-audio-file), which
+  sends it in one piece.
+
+## Before you begin
+
+To complete this guide, you need:
+
+- **An API key** — copy it from [API Keys](https://www.assemblyai.com/dashboard/home) and set it once:
+
+  ```bash
+  export ASSEMBLYAI_API_KEY=<your-key>
+  ```
+
+- **A live audio source** — a microphone, a recorder process, an in-progress call. This guide uses the microphone.
+- **Python 3.8+** for the Python SDK, or **Node.js 18+** for the JavaScript SDK.
+- Microphone examples below use [`sounddevice`](https://python-sounddevice.readthedocs.io/) (Python) and [SoX](https://sourceforge.net/projects/sox/) (JavaScript). Any capture library works — all you need is a callback that hands you audio chunks.
+
+## Transcribe from a microphone
+
+A capture library calls you back with a chunk of audio each time one is ready. Open a session, `write()` each chunk from the callback, then `close()` and collect the `result()` when the speaker stops. Raw microphone audio is PCM, which carries no header, so set `sample_rate` and `channels` on the config.
+
+```python expandable
+import queue
+import threading
+
+import sounddevice as sd  # pip install sounddevice
+
+from assemblyai.sync.v1 import SyncTranscriber, SyncTranscriptionConfig
+
+RATE = 16000
+config = SyncTranscriptionConfig(sample_rate=RATE, channels=1)
+
+def microphone(stop: threading.Event):
+    """Yields PCM chunks from the default microphone until stop is set."""
+    chunks: "queue.Queue[bytes]" = queue.Queue()
+    with sd.RawInputStream(
+        samplerate=RATE,
+        channels=1,
+        dtype="int16",
+        callback=lambda data, *_: chunks.put(bytes(data)),
+    ):
+        while not stop.is_set():
+            try:
+                yield chunks.get(timeout=0.1)
+            except queue.Empty:
+                pass
+
+stop = threading.Event()
+threading.Thread(
+    target=lambda: (input("Recording, press Enter to stop... "), stop.set()),
+    daemon=True,
+).start()
+
+result = SyncTranscriber().transcribe_live(microphone(stop), config=config)
+print(result.text)
+```
+
+```javascript expandable
+import { spawn } from "node:child_process";
+import { AssemblyAI } from "assemblyai";
+
+const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
+const RATE = 16000;
+
+// SoX writes raw 16-bit mono PCM to stdout while it records.
+const recorder = spawn("sox", [
+  "--default-device", "--no-show-progress",
+  "--rate", String(RATE), "--channels", "1",
+  "--encoding", "signed-integer", "--bits", "16",
+  "--type", "raw", "-",
+]);
+
+const session = client.sync.openLive({ sample_rate: RATE, channels: 1 });
+
+// write() never blocks, so it is safe to call from the capture callback.
+recorder.stdout.on("data", (chunk) => session.write(chunk));
+recorder.stdout.on("end", () => session.close()); // ends the audio
+
+console.log("Recording, press Ctrl+C to stop...");
+process.on("SIGINT", () => recorder.kill()); // stop speaking, stop recording
+
+const result = await session.result(); // closes if needed, then waits
+console.log(result.text);
+```
+
+  Leaving the session in the normal way (`close()`, or the recorder ending) uploads
+  everything you sent. To throw a recording away without transcribing it — the user
+  cancelled, the call dropped — use `session.abort()` instead; `result()` then raises.
+
+## Pull from a stream you already have
+
+When your audio already comes as something you can iterate — an async generator, a recorder process's stdout, a `ReadableStream` — hand it straight to `transcribe_live()` (Python) / `transcribeLive()` (JavaScript). It reads the source to the end, then returns the transcript. `open_live()` is this method with a queue in front of it for callback sources.
+
+```python
+import subprocess
+
+from assemblyai.sync.v1 import SyncTranscriber, SyncTranscriptionConfig
+
+config = SyncTranscriptionConfig(sample_rate=16000, channels=1)
+
+# A recorder process still writing audio to its stdout.
+recorder = subprocess.Popen(
+    ["rec", "-q", "-t", "raw", "-r", "16000", "-c", "1",
+     "-b", "16", "-e", "signed", "-"],
+    stdout=subprocess.PIPE,
+)
+
+result = SyncTranscriber().transcribe_live(recorder.stdout, config=config)
+print(result.text)
+```
+
+```javascript
+import { spawn } from "node:child_process";
+import { AssemblyAI } from "assemblyai";
+
+const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
+
+// A recorder process still writing audio to its stdout (a Node Readable).
+const recorder = spawn("rec", [
+  "-q", "-t", "raw", "-r", "16000", "-c", "1",
+  "-b", "16", "-e", "signed", "-",
+]);
+
+const result = await client.sync.transcribeLive(recorder.stdout, {
+  sample_rate: 16000,
+  channels: 1,
+});
+console.log(result.text);
+```
+
+The Python method takes any iterable of `bytes` (synchronous or `async`, file objects included); `AsyncSyncTranscriber.transcribe_live()` is the `asyncio` counterpart. The JavaScript method takes an async iterable, a Node stream, or a web `ReadableStream<Uint8Array>`. Both reject a whole buffer, a `Blob`, or a path by name — audio you already hold belongs in [`transcribe()`](/sync-stt/getting-started/transcribe-a-short-audio-file).
+
+## What to keep in mind
+
+- **Keep producing until you're done.** An upload that goes silent for too long is aborted server-side. Finish by ending the stream (or calling `close()`), not by pausing it.
+- **The saving comes from overlap.** All but the last speech segment are transcribed while you record, so the win grows with clip length. Below roughly a minute there is only one segment, so the only saving is the elided upload.
+- **Errors can surface mid-upload.** Authorization, rate-limit, and capacity failures can arrive part-way through the upload rather than at the end, as a `SyncTranscriptError`. Call [`warm()`](/sync-stt/connection-pre-warming) before you start recording to open the connection ahead of time.
+- **The audio limit is unchanged.** The Sync API still caps audio at 120 seconds. The default request budget is 180 seconds, covering the recording as well as the transcription.
+
+## Next steps
+
+- [Transcribe a short audio file](/sync-stt/getting-started/transcribe-a-short-audio-file) — the buffered path, for audio you already hold whole
+- [Connection pre-warming](/sync-stt/connection-pre-warming) — open the connection before recording starts
+- [Prompting and keyterms](/sync-stt/prompting-and-keyterms) — improve accuracy with contextual prompts and keyterm biasing
+- [Word timestamps](/sync-stt/word-timestamps) — get per-word `start`/`end` timings
+- [Error handling](/sync-stt/error-handling) — status codes and retry guidance
+- [API reference](/api-reference/sync-api/transcribe-live) — full endpoint documentation
+
+## Need help?
+
+If you get stuck, contact our support team at [support@assemblyai.com](mailto:support@assemblyai.com) or create a [support ticket](https://www.assemblyai.com/contact/support). Include the `session_id` from the response to help us look up your request.
+
+---
+
 <a id="prompting-and-keyterms-docs-sync-stt-prompting-and-keyterms-mdx"></a>
 
 # Prompting and Keyterms
@@ -43044,7 +43248,7 @@ Universal-3.5 Pro is trained to use context about the audio — its domain, topi
 
 Write the `prompt` as a **description of your audio**, not as instructions to the model. Transcription behavior — punctuation, formatting, verbatim style — is already optimized out of the box, and a managed default prompt is applied when you don't provide one.
 
-- Maximum length: **4096 characters**
+- Maximum length: **6000 characters**
 - When omitted, a managed default prompt is applied
 - `language_code` is **ignored** when a custom `prompt` is set — state the language as part of your description if you need both (see [Specifying the language](#specifying-the-language))
 
@@ -43189,7 +43393,7 @@ curl -X POST https://sync.assemblyai.com/transcribe \
 The `keyterms_prompt` field biases the model toward specific tokens — useful for proper nouns, product names, technical jargon, or any term the model might otherwise mishear.
 
 - Value: an array of strings
-- Maximum total length: **2048 characters** across all terms
+- Maximum: **100 terms**, **8000 characters** total across all terms
 - Whitespace is stripped and empty terms are ignored
 
 Keyterms are the right tool when you have an explicit vocabulary list — contact names, product catalogs, medical terms — rather than a description of the conversation. Like contextual prompting, keyterms biasing is robust to terms that don't end up being spoken, so you can pass your full list with every request.
@@ -43410,7 +43614,7 @@ The `conversation_context` field lets you supply dialogue that preceded the audi
 Include turns from either side of the conversation as separate list items in chronological order (oldest first, most recent last), where a single string is treated as one turn.
 
 - Value: an array of strings (one per turn) or a single string (treated as one turn)
-- Maximum: **100 turns / 4096 characters total** — context over either cap is trimmed, not rejected
+- Maximum: **500 turns / 16000 characters total** — context over either cap is trimmed, not rejected
 - If the context exceeds a cap or the model's context window, the oldest turns (those at the start of the list) are dropped first
 - Entries carry no speaker labels — include the agent's replies and the caller's utterances as separate entries
 
@@ -43786,6 +43990,20 @@ Metadata:
 
 ---
 
+<a id="transcribe-live-audio-docs-api-reference-sync-api-transcribe-live-mdx"></a>
+
+# Transcribe live audio
+
+URL: https://www.assemblyai.com/docs/api-reference/sync-api/transcribe-live
+Source: docs/api-reference/sync-api/transcribe-live.mdx
+Navigation: Sync STT > API reference
+Description: Upload audio to the Sync API as it is recorded and receive the transcript when the audio ends.
+
+Metadata:
+- openapi: ../specs/sync-api.yaml POST /v1/transcribe/live
+
+---
+
 <a id="pre-warm-a-connection-docs-api-reference-sync-api-warm-mdx"></a>
 
 # Pre-warm a connection
@@ -43881,13 +44099,41 @@ Description: AssemblyAI Sync STT endpoints for global routing and US/EU data res
 
 Choose the endpoint that best fits your application's requirements — whether that's using the default endpoint to route to the nearest data center, or ensuring your audio data stays within a given data residency zone such as EU or US.
 
+## Data processing locations
+
+All Sync STT audio and transcription data is processed in AWS regions located in the United States and the European Union:
+
+**US**
+
+| AWS region  | Location      |
+| ----------- | ------------- |
+| `us-east-1` | N. Virginia   |
+| `us-east-2` | Ohio          |
+| `us-west-1` | N. California |
+| `us-west-2` | Oregon        |
+
+**EU**
+
+| AWS region     | Location  |
+| -------------- | --------- |
+| `eu-central-1` | Frankfurt |
+| `eu-north-1`   | Stockholm |
+| `eu-south-1`   | Milan     |
+| `eu-south-2`   | Spain     |
+| `eu-west-1`    | Ireland   |
+| `eu-west-3`    | Paris     |
+
+Which of these locations processes your data depends on the endpoint you call, as described below.
+
 ## Endpoints
 
 | Endpoint | URL | Region |
 |----------|-----|--------|
 | Global (default) | `https://sync.assemblyai.com/transcribe` | Nearest region |
-| US data residency | `https://sync.us.assemblyai.com/transcribe` | us-west-2, us-east-1 |
-| EU data residency | `https://sync.eu.assemblyai.com/transcribe` | eu-north-1 |
+| US data residency | `https://sync.us.assemblyai.com/transcribe` | US locations listed above |
+| EU data residency | `https://sync.eu.assemblyai.com/transcribe` | EU locations listed above |
+
+  The global endpoint routes to the nearest available region, so your data may be processed in any of the US or EU locations listed above. If you need data to stay in one of those zones, call the US or EU endpoint explicitly rather than relying on the default.
 
 ## Which endpoint should I use?
 
@@ -44287,6 +44533,1531 @@ curl https://sync.assemblyai.com/warm \
 ```
 
 The SDKs expose this directly — `SyncTranscriber.warm()` in Python, `client.sync.warm()` in JavaScript. Call it when recording starts, then call `transcribe()` as usual on the same transcriber or client.
+
+---
+
+<a id="dictation-api-docs-dictation-mdx"></a>
+
+# Dictation API
+
+URL: https://www.assemblyai.com/docs/dictation
+Source: docs/dictation.mdx
+Navigation: Dictation API > Getting started
+Description: Turn a spoken utterance into a clean dictation in under a second, with the verbatim transcript alongside it.
+
+## Overview
+
+Send a spoken utterance in a single HTTP call and get back text your user can
+send as-is: filler gone, self-corrections resolved to what the speaker landed
+on, punctuation and capitalization applied, and the names and terms they care
+about spelled the way they spell them. The verbatim transcript always comes
+back alongside it, so you have both.
+
+Cleanup runs by default. With no configuration at all, the cleaned-up text
+arrives in `llm_response` and the words exactly as spoken arrive in `text`. Set
+`llm_instruction` when your app needs a particular shape instead, such as a
+bulleted task list or a clinical note.
+
+Dictation runs on Universal-3.5 Pro across 19 languages and accepts up to 120
+seconds of audio per call. You can start the request before the user stops
+talking, so most of the utterance is uploaded by the time they finish; see
+[Uploading while recording](#uploading-while-recording).
+
+```python
+import assemblyai as aai
+
+aai.settings.api_key = "<YOUR_API_KEY>"
+
+result = aai.DictationTranscriber().transcribe_live("clip.wav")
+
+print(result.text)  # verbatim transcript
+print(result.llm_response)  # cleaned-up text, ready to send
+print(result.final_text)  # the cleaned-up text, falling back to the transcript
+```
+
+```python
+import requests
+
+with open("clip.wav", "rb") as f:
+    audio = f.read()
+
+response = requests.post(
+    "https://dictation.assemblyai.com/v1/transcribe/live",
+    headers={"Authorization": "<YOUR_API_KEY>"},
+    files={
+        # `config` first, and always present — `{}` means "no settings".
+        "config": (None, "{}", "application/json"),
+        "audio": ("clip.wav", audio, "audio/wav"),
+    },
+    timeout=90,
+)
+response.raise_for_status()
+result = response.json()
+
+print(result["text"])  # verbatim transcript
+print(result["llm_response"])  # cleaned-up text, ready to send
+```
+
+```javascript
+import { readFileSync } from "fs";
+
+const audio = readFileSync("clip.wav");
+const form = new FormData();
+// `config` first, and always present — `{}` means "no settings".
+form.append("config", new Blob(["{}"], { type: "application/json" }));
+form.append("audio", new Blob([audio], { type: "audio/wav" }), "clip.wav");
+
+const response = await fetch("https://dictation.assemblyai.com/v1/transcribe/live", {
+  method: "POST",
+  headers: { Authorization: "<YOUR_API_KEY>" },
+  body: form,
+});
+
+if (!response.ok) {
+  const error = await response.json();
+  throw new Error(error.error || error.detail);
+}
+
+const result = await response.json();
+console.log(result.text); // verbatim transcript
+console.log(result.llm_response); // cleaned-up text, ready to send
+```
+
+```bash
+curl -X POST https://dictation.assemblyai.com/v1/transcribe/live \
+  -H 'Authorization: <YOUR_API_KEY>' \
+  -F 'config={};type=application/json' \
+  -F 'audio=@clip.wav;type=audio/wav'
+```
+
+  Dictation is a separate service from Sync, Pre-recorded, and Streaming STT.
+  It has its own hostname (`dictation.assemblyai.com`) and its own request
+  shape. The [Python SDK](https://github.com/AssemblyAI/assemblyai-python-sdk)
+  wraps it as `DictationTranscriber`; in every other language, call it over
+  HTTP.
+
+## Before you begin
+
+To call the Dictation API, you need:
+
+- **An API key** — browse to [API Keys](https://www.assemblyai.com/dashboard/home) in your dashboard and copy your key.
+- **An audio clip** in WAV format, or raw 16-bit PCM. Maximum 120 seconds.
+- **A client** — either the AssemblyAI Python SDK (`pip install assemblyai`), or any HTTP client: cURL, Python 3.8+ with `requests` or `httpx`, or Node.js 18+ with `fetch`.
+
+## Endpoint
+
+```
+POST https://dictation.assemblyai.com/v1/transcribe/live
+```
+
+Send the parts in order — `config` first, then `audio`. The endpoint reads the
+body as it arrives, so you can start the request while the user is still
+speaking and upload the audio as it is captured; see [Uploading while
+recording](#uploading-while-recording).
+
+`/v1/transcribe/stream` is the path this endpoint shipped under and still
+reaches the same handler. There is no unversioned alias.
+
+## Authentication
+
+Pass your AssemblyAI API key in the `Authorization` header as the raw key, with no `Bearer` prefix:
+
+```
+Authorization: <YOUR_API_KEY>
+```
+
+  An invalid API key returns `404 Not Found` with `{"detail": "Invalid API
+  key"}`, not `401`. Treat any `404` from this endpoint as an auth failure.
+
+## Request
+
+The body is `multipart/form-data` with two parts, in this order:
+
+| Part | Content |
+|---|---|
+| `config` (required) | A JSON object (Content-Type `application/json`). See [Config parameters](#config-parameters). Send `{}` to transcribe with defaults, including the default rewrite. |
+| `audio` (required) | The audio bytes. Set the part's Content-Type to `audio/wav` for WAV or `audio/pcm` for raw 16-bit PCM. Maximum 120 seconds of audio. |
+
+Config comes first, and is required, because the server starts transcribing
+the audio as it arrives and cannot begin without it. An `audio` part that
+arrives before `config`, or a request with no `config` part at all, is
+rejected with `400`.
+
+**WAV and raw PCM only.** Compressed formats — MP3, M4A, FLAC, OGG, WebM —
+are rejected with `415`.
+
+### Config parameters
+
+Every field except `llm_instruction` controls transcription. `llm_instruction` customizes the transcript rewrite, which is applied by default — see [Rewriting the transcript](#rewriting-the-transcript).
+
+| Field | Type | Meaning |
+|---|---|---|
+| `sample_rate` | integer | Sample rate of the audio. Required for raw PCM (for example `16000`). Ignored for WAV — the sample rate is read from the file header. |
+| `channels` | integer | Channel count. Required for raw PCM. |
+| `language_codes` | array of strings | Language(s) of the audio as ISO codes. Supported: `en`, `es`, `de`, `fr`, `it`, `pt`, `tr`, `nl`, `sv`, `no`, `da`, `fi`, `hi`, `vi`, `ar`, `he`, `ja`, `ur`, `zh`. Defaults to `["en"]`. |
+| `stt_prompt` | string | Context for the transcription: a description of what the audio is about, such as `"A doctor dictating a patient visit note."` (max 6000 characters). It describes the situation rather than instructing the model, and is prepended to the base transcription prompt, which always applies. Also accepted as `prompt` — send one or the other, or the request is rejected with `400`. |
+| `keyterms_prompt` | array of strings | Terms to bias transcription toward, such as names or jargon (max 100 terms / 8000 characters total). Same parameter name as the Streaming and Pre-recorded APIs. The legacy names `keyterms` and `word_boost` are also accepted — send only one of the three, or the request is rejected with `400`. |
+| `llm_instruction` | string | Plain-English description of the rewrite you want (max 2048 characters). Replaces the default cleanup task; omit it to keep the default. See [Rewriting the transcript](#rewriting-the-transcript). |
+
+Over HTTP, unknown fields are forwarded to the transcription engine as-is, so transcription parameters added in the future work without dictation-side changes.
+
+  `DictationConfig` in the Python SDK is stricter: it accepts exactly the
+  fields in the table above and rejects anything else with a validation error,
+  rather than passing it through. That turns a typo, or a Sync-only option
+  used by mistake, into an error instead of a setting that quietly does
+  nothing. To send a field the SDK does not know about yet, build the `config`
+  part over HTTP.
+
+### Rewriting the transcript
+
+Cleanup is applied by default. Omitting `llm_instruction`, or the whole `config` part, runs the default cleanup task: filler comes out, self-corrections resolve to what the speaker landed on, and punctuation and capitalization are applied. The speaker's own phrasing and tone survive it.
+
+To ask for a different shape instead, set `llm_instruction` to a plain-English description of the task you want (max 2048 characters). It replaces the default cleanup task:
+
+```json
+{ "llm_instruction": "Format as a bulleted task list. Keep names verbatim." }
+```
+
+The rewrite never replaces the transcription. `text` is always the verbatim transcript, and the rewritten version arrives separately in `llm_response`.
+
+See [Transcript rewriting](/dictation/transcript-rewriting) for how to write a good instruction, what the service enforces for you, and why dictated commands are never carried out.
+
+## Uploading while recording
+
+The endpoint transcribes the audio it has while the rest is still arriving, so
+a client that uploads during the recording gets its transcript sooner. What the
+user waits for after they stop speaking is the last stretch of audio rather
+than the whole clip. The saving grows with clip length; on a clip of a few
+seconds there is little uploaded-but-unprocessed audio to save.
+
+Three rules apply to a chunked upload:
+
+- The `config` part must arrive **before** the first audio byte.
+- Don't let the connection go silent for long stretches mid-body — an
+  abandoned upload is timed out rather than held open.
+- A chunked body can't be replayed. Keep the audio in memory if you want to
+  retry a failed request.
+
+Raw PCM is the easiest format to stream, since it needs no container header —
+declare `sample_rate` and `channels` in `config` and send frames as they come
+off the microphone.
+
+The Python SDK does the framing for you. `transcribe_live()` takes an iterator
+of audio chunks, and `open_live()` takes audio pushed in from a callback — a
+microphone library, a WebRTC track, a telephony media stream:
+
+```python
+import assemblyai as aai
+
+aai.settings.api_key = "<YOUR_API_KEY>"
+
+config = aai.DictationConfig(
+    sample_rate=16000,
+    channels=1,
+    llm_instruction="Remove filler words and tidy the punctuation.",
+)
+
+def record():
+    """Your microphone loop, yielding 16-bit PCM bytes."""
+    while recording:
+        yield stream.read(4096)
+
+result = aai.DictationTranscriber().transcribe_live(record(), config)
+
+print(result.text)
+print(result.llm_response)
+```
+
+```python
+import assemblyai as aai
+import sounddevice as sd
+
+aai.settings.api_key = "<YOUR_API_KEY>"
+
+config = aai.DictationConfig(sample_rate=16000, channels=1)
+
+with aai.DictationTranscriber() as transcriber:
+    with transcriber.open_live(config) as session:
+        stream = sd.RawInputStream(
+            samplerate=16000,
+            channels=1,
+            dtype="int16",
+            callback=lambda data, *_: session.write(bytes(data)),
+        )
+        with stream:
+            input("Dictating, press Enter to stop... ")
+
+    print(session.result().final_text)
+```
+
+`AsyncDictationTranscriber` is the asyncio counterpart, with the same two
+methods. Call `transcriber.warm()` when you know audio is coming — as the user
+reaches for the record button — to pay the DNS, TCP and TLS setup before the
+first byte rather than in front of it.
+
+Without the SDK, frame the multipart body yourself:
+
+```python expandable
+import json
+import requests
+
+BOUNDARY = "----dictation-example"
+CONFIG = {
+    "sample_rate": 16000,
+    "channels": 1,
+    "llm_instruction": "Remove filler words and tidy the punctuation.",
+}
+
+def multipart_body(frames):
+    """Yield the config part, then each audio frame as it is captured."""
+    yield (
+        f"--{BOUNDARY}\r\n"
+        'Content-Disposition: form-data; name="config"\r\n'
+        "Content-Type: application/json\r\n\r\n"
+        f"{json.dumps(CONFIG)}\r\n"
+        f"--{BOUNDARY}\r\n"
+        'Content-Disposition: form-data; name="audio"; filename="audio"\r\n'
+        "Content-Type: audio/pcm\r\n\r\n"
+    ).encode()
+    for frame in frames:
+        yield frame
+    yield f"\r\n--{BOUNDARY}--\r\n".encode()
+
+# `record()` is your microphone loop, yielding 16-bit PCM bytes.
+response = requests.post(
+    "https://dictation.assemblyai.com/v1/transcribe/live",
+    headers={
+        "Authorization": "<YOUR_API_KEY>",
+        "Content-Type": f"multipart/form-data; boundary={BOUNDARY}",
+    },
+    data=multipart_body(record()),
+    timeout=90,
+)
+response.raise_for_status()
+result = response.json()
+
+print(result["text"])
+print(result["llm_response"])
+```
+
+Passing a generator to `data=` makes `requests` send the body with chunked
+transfer encoding, which is what lets the upload start before the audio is
+complete. A body with a `Content-Length` is also accepted, and still streams —
+the server does not wait for the full body before it begins.
+
+## Response
+
+A successful call returns `200` with JSON:
+
+| Field | Type | Meaning |
+|---|---|---|
+| `text` | string | The verbatim transcript. Never altered by the LLM. |
+| `words` | array | Per-word objects `{ text, confidence }`. |
+| `confidence` | number | Overall transcription confidence, 0–1. |
+| `llm_response` | string or `null` | The rewritten text. `null` when the rewrite failed. |
+| `llm_error` | string or `null` | `"timeout"` or `"error"` when the rewrite failed. |
+| `audio_duration_ms` | number | Duration of the submitted audio. |
+| `session_id` | string | Request identifier. Include it when reporting problems. |
+| `request_time_ms` | number | Total server-side processing time. |
+| `sync_time_ms` | number | Transcription portion of `request_time_ms`. |
+
+  Rewrites are best-effort. A rewrite failure still returns `200` with the
+  transcription. If `llm_response` is `null` and `text` is present, use
+  `text`. Never treat a non-`null` `llm_error` as a failed request.
+
+## Errors
+
+Most errors return `{"error": "...", "error_code": "..."}`. The ones relayed
+from the transcription service, an invalid API key (`404`) and an unsupported
+audio format (`415`), use a `{"status", "title", "detail"}` body instead, so
+read both shapes. Note that an invalid API key returns `404` rather than `401`.
+
+Set the HTTP client timeout to 90 seconds. Typical short clips respond in under
+one second. The rewrite has a 5-second internal deadline, after which the
+response returns with `llm_error: "timeout"` and the transcription intact.
+
+See [Error handling](/dictation/error-handling) for the full status code table
+and retry guidance.
+
+## Examples
+
+The knobs do different jobs. `stt_prompt` and `keyterms_prompt` steer the ASR model while it writes the transcript down — the first describes the situation, the second lists the exact terms to expect. `llm_instruction` tells the LLM what to do with that transcript *after* it is written.
+
+### Clinical dictation
+
+A doctor dictating a visit note. `stt_prompt` tells the model what kind of audio this is, `keyterms_prompt` pins the exact drug names, and `llm_instruction` turns the spoken rambling into a chart-ready note.
+
+```python expandable
+import assemblyai as aai
+
+aai.settings.api_key = "<YOUR_API_KEY>"
+
+config = aai.DictationConfig(
+    stt_prompt="A doctor dictating a patient visit note.",
+    keyterms_prompt=["amoxicillin", "lisinopril", "metoprolol"],
+    llm_instruction=(
+        "Remove filler words and rewrite as a concise clinical chart note."
+    ),
+)
+
+result = aai.DictationTranscriber().transcribe_live("clip.wav", config)
+
+transcript = result.text
+rewrite = result.final_text  # the cleaned-up text, falling back to the transcript
+```
+
+```python expandable
+import json
+import requests
+
+config = {
+    "stt_prompt": "A doctor dictating a patient visit note.",
+    "keyterms_prompt": ["amoxicillin", "lisinopril", "metoprolol"],
+    "llm_instruction": (
+        "Remove filler words and rewrite as a concise clinical chart note."
+    ),
+}
+
+with open("clip.wav", "rb") as f:
+    audio = f.read()
+
+response = requests.post(
+    "https://dictation.assemblyai.com/v1/transcribe/live",
+    headers={"Authorization": "<YOUR_API_KEY>"},
+    files={
+        "config": (None, json.dumps(config), "application/json"),
+        "audio": ("clip.wav", audio, "audio/wav"),
+    },
+    timeout=90,
+)
+response.raise_for_status()
+result = response.json()
+
+transcript = result["text"]
+rewrite = result["llm_response"] or transcript  # fall back on rewrite failure
+```
+
+```javascript expandable
+import { readFileSync } from "fs";
+
+const config = {
+  stt_prompt: "A doctor dictating a patient visit note.",
+  keyterms_prompt: ["amoxicillin", "lisinopril", "metoprolol"],
+  llm_instruction:
+    "Remove filler words and rewrite as a concise clinical chart note.",
+};
+
+const audio = readFileSync("clip.wav");
+const form = new FormData();
+form.append(
+  "config",
+  new Blob([JSON.stringify(config)], { type: "application/json" }),
+);
+form.append("audio", new Blob([audio], { type: "audio/wav" }), "clip.wav");
+
+const response = await fetch("https://dictation.assemblyai.com/v1/transcribe/live", {
+  method: "POST",
+  headers: { Authorization: "<YOUR_API_KEY>" },
+  body: form,
+});
+
+if (!response.ok) {
+  const error = await response.json();
+  throw new Error(error.error || error.detail);
+}
+
+const result = await response.json();
+const transcript = result.text;
+const rewrite = result.llm_response ?? transcript; // fall back on rewrite failure
+```
+
+```bash
+curl -X POST https://dictation.assemblyai.com/v1/transcribe/live \
+  -H 'Authorization: <YOUR_API_KEY>' \
+  -F 'config={"stt_prompt": "A doctor dictating a patient visit note.", "keyterms_prompt": ["amoxicillin", "lisinopril", "metoprolol"], "llm_instruction": "Remove filler words and rewrite as a concise clinical chart note."};type=application/json' \
+  -F 'audio=@clip.wav;type=audio/wav'
+```
+
+### Travel booking summary
+
+A travel agent dictating a client booking summary. `keyterms_prompt` pins the specific destination and airline names, and `llm_instruction` reshapes the transcript into a confirmation the client can read.
+
+```python expandable
+import assemblyai as aai
+
+aai.settings.api_key = "<YOUR_API_KEY>"
+
+config = aai.DictationConfig(
+    keyterms_prompt=["Reykjavik", "Cancun", "Lufthansa"],
+    llm_instruction=(
+        "Remove filler words and rewrite as a short, friendly booking "
+        "confirmation addressed to the client."
+    ),
+)
+
+result = aai.DictationTranscriber().transcribe_live("clip.wav", config)
+
+transcript = result.text
+rewrite = result.final_text  # the cleaned-up text, falling back to the transcript
+```
+
+```python expandable
+import json
+import requests
+
+config = {
+    "keyterms_prompt": ["Reykjavik", "Cancun", "Lufthansa"],
+    "llm_instruction": (
+        "Remove filler words and rewrite as a short, friendly booking "
+        "confirmation addressed to the client."
+    ),
+}
+
+with open("clip.wav", "rb") as f:
+    audio = f.read()
+
+response = requests.post(
+    "https://dictation.assemblyai.com/v1/transcribe/live",
+    headers={"Authorization": "<YOUR_API_KEY>"},
+    files={
+        "config": (None, json.dumps(config), "application/json"),
+        "audio": ("clip.wav", audio, "audio/wav"),
+    },
+    timeout=90,
+)
+response.raise_for_status()
+result = response.json()
+
+transcript = result["text"]
+rewrite = result["llm_response"] or transcript
+```
+
+```javascript expandable
+import { readFileSync } from "fs";
+
+const config = {
+  keyterms_prompt: ["Reykjavik", "Cancun", "Lufthansa"],
+  llm_instruction:
+    "Remove filler words and rewrite as a short, friendly booking confirmation addressed to the client.",
+};
+
+const audio = readFileSync("clip.wav");
+const form = new FormData();
+form.append(
+  "config",
+  new Blob([JSON.stringify(config)], { type: "application/json" }),
+);
+form.append("audio", new Blob([audio], { type: "audio/wav" }), "clip.wav");
+
+const response = await fetch("https://dictation.assemblyai.com/v1/transcribe/live", {
+  method: "POST",
+  headers: { Authorization: "<YOUR_API_KEY>" },
+  body: form,
+});
+
+if (!response.ok) {
+  const error = await response.json();
+  throw new Error(error.error || error.detail);
+}
+
+const result = await response.json();
+const transcript = result.text;
+const rewrite = result.llm_response ?? transcript;
+```
+
+```bash
+curl -X POST https://dictation.assemblyai.com/v1/transcribe/live \
+  -H 'Authorization: <YOUR_API_KEY>' \
+  -F 'config={"keyterms_prompt": ["Reykjavik", "Cancun", "Lufthansa"], "llm_instruction": "Remove filler words and rewrite as a short, friendly booking confirmation addressed to the client."};type=application/json' \
+  -F 'audio=@clip.wav;type=audio/wav'
+```
+
+## Next steps
+
+- [Transcript rewriting](/dictation/transcript-rewriting) — reshape the transcript with `llm_instruction`
+- [Prompting and keyterms](/dictation/prompting-and-keyterms) — steer the transcript with context and exact terms
+- [Language selection](/dictation/language-selection) — transcribe in one or more of 19 languages
+- [Audio requirements](/dictation/audio-requirements) — duration, sample width, and format constraints
+- [Error handling](/dictation/error-handling) — status codes and retry guidance
+- [Cloud endpoints & data residency](/dictation/endpoints-and-data-zones) — global routing and the US/EU data zones
+- [Connection pre-warming](/dictation/connection-pre-warming) — take the TLS handshake off the critical path
+- [API reference](/api-reference/dictation-api/transcribe-live) — the full request and response schema
+
+---
+
+<a id="transcript-rewriting-docs-dictation-transcript-rewriting-mdx"></a>
+
+# Transcript rewriting
+
+URL: https://www.assemblyai.com/docs/dictation/transcript-rewriting
+Source: docs/dictation/transcript-rewriting.mdx
+Navigation: Dictation API > Features
+Description: Reshape a dictated transcript with llm_instruction, alongside the verbatim one.
+
+Dictation cleans the transcript up and returns the result in `llm_response`,
+alongside the verbatim transcript in `text`. This is the one feature Dictation
+has that the other speech-to-text APIs do not: you get the words as spoken and
+text your user can send, from the same call.
+
+Cleanup is applied by default. Omitting `llm_instruction`, or the whole
+`config` part, runs the default cleanup task: filler comes out,
+self-corrections resolve to what the speaker landed on, and punctuation and
+capitalization are applied. The speaker's own phrasing and tone survive it, so
+the result still reads like them.
+
+```python
+import assemblyai as aai
+
+aai.settings.api_key = "<YOUR_API_KEY>"
+
+result = aai.DictationTranscriber().transcribe_live("clip.wav")
+
+# text:         "um so can we uh move the the meeting to thursday
+#                i think friday works better actually"
+# llm_response: "Can we move the meeting to Friday? That works better."
+print(result.text)
+print(result.llm_response)
+```
+
+## Customizing the rewrite
+
+Set `llm_instruction` to a plain-English description of the task you want, up
+to 2048 characters. It replaces the default cleanup task rather than adding to
+it:
+
+```json
+{ "llm_instruction": "Remove filler words and fix punctuation." }
+```
+
+An explicit `"llm_instruction": null` means the same as omitting the field, so
+the default cleanup task still runs.
+
+```python
+import assemblyai as aai
+
+aai.settings.api_key = "<YOUR_API_KEY>"
+
+config = aai.DictationConfig(
+    llm_instruction="Rewrite as a concise clinical chart note.",
+)
+
+result = aai.DictationTranscriber().transcribe_live("clip.wav", config)
+
+print(result.text)        # the verbatim transcript
+print(result.final_text)  # the rewrite, falling back to the transcript
+```
+
+```python
+import json
+import requests
+
+config = {"llm_instruction": "Rewrite as a concise clinical chart note."}
+
+with open("clip.wav", "rb") as f:
+    audio = f.read()
+
+response = requests.post(
+    "https://dictation.assemblyai.com/v1/transcribe/live",
+    headers={"Authorization": "<YOUR_API_KEY>"},
+    files={
+        "config": (None, json.dumps(config), "application/json"),
+        "audio": ("clip.wav", audio, "audio/wav"),
+    },
+    timeout=90,
+)
+response.raise_for_status()
+result = response.json()
+
+print(result["text"])
+print(result["llm_response"])
+```
+
+```javascript
+import { readFileSync } from "fs";
+
+const config = { llm_instruction: "Rewrite as a concise clinical chart note." };
+
+const audio = readFileSync("clip.wav");
+const form = new FormData();
+form.append(
+  "config",
+  new Blob([JSON.stringify(config)], { type: "application/json" })
+);
+form.append("audio", new Blob([audio], { type: "audio/wav" }), "clip.wav");
+
+const response = await fetch(
+  "https://dictation.assemblyai.com/v1/transcribe/live",
+  { method: "POST", headers: { Authorization: "<YOUR_API_KEY>" }, body: form }
+);
+
+const result = await response.json();
+console.log(result.text);
+console.log(result.llm_response);
+```
+
+```bash
+curl -X POST https://dictation.assemblyai.com/v1/transcribe/live \
+  -H 'Authorization: <YOUR_API_KEY>' \
+  -F 'config={"llm_instruction": "Rewrite as a concise clinical chart note."};type=application/json' \
+  -F 'audio=@clip.wav;type=audio/wav'
+```
+
+## Writing a good instruction
+
+Describe only the transformation. Rules about output format, refusing to answer
+the text, and handling already-clean input are enforced by the service, so
+adding your own versions of them wastes instruction budget and can conflict
+with what the service already does.
+
+| Instead of | Write |
+|---|---|
+| "You are a helpful medical scribe. Output only the note, nothing else. If the input is already clean, return it unchanged. Rewrite as a chart note." | "Rewrite as a concise clinical chart note." |
+| "Return JSON with a summary field." | Describe the prose you want, then parse it yourself |
+
+Some instructions that work well:
+
+- `"Remove filler words and tidy the punctuation."`
+- `"Rewrite as a short, friendly booking confirmation addressed to the client."`
+- `"Turn this into a bulleted list of action items."`
+- `"Rewrite as a concise clinical chart note."`
+
+## The transcript is always preserved
+
+The rewrite never replaces the transcription. `text` is always the verbatim
+transcript, and the rewritten version arrives separately in `llm_response`. If
+you need to show one value, `final_text` in the Python SDK returns the rewrite
+when there is one and the transcript otherwise.
+
+The rewrite is also best-effort. If it fails, the response is still `200`,
+`llm_response` is `null`, and `llm_error` says why. See
+[Error handling](/dictation/error-handling#a-failed-rewrite-is-not-a-failed-request).
+
+## Dictated commands are not executed
+
+The transcript is passed to the model as fenced data, with instructions not to
+act on anything inside it. Dictated speech routinely contains questions and
+commands like "translate this into French" or "ignore what I just said". Those
+are rewritten as speech rather than carried out.
+
+## Related features
+
+- [Prompting and keyterms](/dictation/prompting-and-keyterms) shapes the
+  transcript as it is written, where `llm_instruction` reshapes it afterwards.
+- [Language selection](/dictation/language-selection) sets the language the
+  audio is transcribed in.
+
+---
+
+<a id="prompting-and-keyterms-docs-dictation-prompting-and-keyterms-mdx"></a>
+
+# Prompting and keyterms
+
+URL: https://www.assemblyai.com/docs/dictation/prompting-and-keyterms
+Source: docs/dictation/prompting-and-keyterms.mdx
+Navigation: Dictation API > Features
+Description: Contextual prompting and keyterms biasing for dictated transcription.
+
+Two config fields steer the transcript as it is written:
+
+| Field | Job | Limit |
+|---|---|---|
+| `stt_prompt` | Describes the situation the audio comes from | 6000 characters |
+| `keyterms_prompt` | Lists exact terms to expect | 100 terms, 8000 characters total |
+
+Both act on the transcription itself, before any LLM pass. They are a different
+lever from [`llm_instruction`](/dictation/transcript-rewriting), which reshapes
+the transcript after it has been written.
+
+## Contextual prompting
+
+`stt_prompt` describes what the audio is about. It gives the decoder situational
+context, which helps it resolve ambiguous audio toward words that make sense in
+that setting:
+
+```json
+{ "stt_prompt": "A doctor dictating a patient visit note." }
+```
+
+Describe the situation rather than instructing the model. `stt_prompt` is
+prepended to the base transcription prompt, which always applies, so you are
+adding context rather than replacing behaviour.
+
+| Instead of | Write |
+|---|---|
+| "Transcribe this accurately and fix any errors." | "A doctor dictating a patient visit note." |
+| "Output medical terminology." | "A cardiologist dictating notes after a stress test, referring to medications and dosages." |
+
+The field is also accepted as `prompt`. Send one or the other; sending both is
+rejected with `400`.
+
+## Keyterms prompting
+
+`keyterms_prompt` lists the exact strings you expect to appear: names, drug
+names, product SKUs, internal jargon. It biases the decoder toward those
+spellings.
+
+```json
+{ "keyterms_prompt": ["amoxicillin", "lisinopril", "metoprolol"] }
+```
+
+This is the same parameter name as the Streaming and Pre-recorded APIs. The
+legacy names `keyterms` and `word_boost` are also accepted; send only one of
+the three, or the request is rejected with `400`.
+
+Keep the list to terms that are genuinely hard to transcribe. Common words do
+not need boosting and dilute the list.
+
+## Using both together
+
+The two fields do different jobs and work well in combination. `stt_prompt`
+tells the model what kind of audio this is; `keyterms_prompt` pins the exact
+spellings it should expect.
+
+```python
+import assemblyai as aai
+
+aai.settings.api_key = "<YOUR_API_KEY>"
+
+config = aai.DictationConfig(
+    stt_prompt="A doctor dictating a patient visit note.",
+    keyterms_prompt=["amoxicillin", "lisinopril", "metoprolol"],
+)
+
+result = aai.DictationTranscriber().transcribe_live("clip.wav", config)
+print(result.text)
+```
+
+```python
+import json
+import requests
+
+config = {
+    "stt_prompt": "A doctor dictating a patient visit note.",
+    "keyterms_prompt": ["amoxicillin", "lisinopril", "metoprolol"],
+}
+
+with open("clip.wav", "rb") as f:
+    audio = f.read()
+
+response = requests.post(
+    "https://dictation.assemblyai.com/v1/transcribe/live",
+    headers={"Authorization": "<YOUR_API_KEY>"},
+    files={
+        "config": (None, json.dumps(config), "application/json"),
+        "audio": ("clip.wav", audio, "audio/wav"),
+    },
+    timeout=90,
+)
+response.raise_for_status()
+print(response.json()["text"])
+```
+
+```javascript
+import { readFileSync } from "fs";
+
+const config = {
+  stt_prompt: "A doctor dictating a patient visit note.",
+  keyterms_prompt: ["amoxicillin", "lisinopril", "metoprolol"],
+};
+
+const audio = readFileSync("clip.wav");
+const form = new FormData();
+form.append(
+  "config",
+  new Blob([JSON.stringify(config)], { type: "application/json" })
+);
+form.append("audio", new Blob([audio], { type: "audio/wav" }), "clip.wav");
+
+const response = await fetch(
+  "https://dictation.assemblyai.com/v1/transcribe/live",
+  { method: "POST", headers: { Authorization: "<YOUR_API_KEY>" }, body: form }
+);
+console.log((await response.json()).text);
+```
+
+```bash
+curl -X POST https://dictation.assemblyai.com/v1/transcribe/live \
+  -H 'Authorization: <YOUR_API_KEY>' \
+  -F 'config={"stt_prompt": "A doctor dictating a patient visit note.", "keyterms_prompt": ["amoxicillin", "lisinopril", "metoprolol"]};type=application/json' \
+  -F 'audio=@clip.wav;type=audio/wav'
+```
+
+Add `llm_instruction` on top when you also want the transcript reshaped. The
+three fields compose: `stt_prompt` and `keyterms_prompt` decide what the
+transcript says, `llm_instruction` decides what `llm_response` looks like. See
+[Transcript rewriting](/dictation/transcript-rewriting).
+
+## Limits
+
+Exceeding a limit is rejected with `400`:
+
+| Field | Limit |
+|---|---|
+| `stt_prompt` | 6000 characters |
+| `keyterms_prompt` | 100 terms, 8000 characters across all terms |
+
+`DictationConfig` in the Python SDK validates both client-side at the same
+values, so an over-long prompt raises before the request goes out. It also
+strips whitespace from each keyterm and drops empty ones.
+
+## Related features
+
+- [Transcript rewriting](/dictation/transcript-rewriting) reshapes the
+  transcript after it is written.
+- [Language selection](/dictation/language-selection) sets the language of the
+  audio.
+
+---
+
+<a id="language-selection-docs-dictation-language-selection-mdx"></a>
+
+# Language selection
+
+URL: https://www.assemblyai.com/docs/dictation/language-selection
+Source: docs/dictation/language-selection.mdx
+Navigation: Dictation API > Features
+Description: Steer Dictation transcription toward one or more languages with the language_codes field.
+
+Pass `language_codes` in the `config` part to steer transcription toward a
+specific language. The field always takes a list, so use a single-element list
+such as `["es"]` for monolingual audio, and several codes for multilingual or
+code-switching audio.
+
+- Accepts ISO 639-1 codes in a list: `["es"]`, or `["en", "es"]`
+- Defaults to English (`en`) when omitted
+- Applies to the transcript only. The rewrite in `llm_response` follows the
+  language of the transcript unless your
+  [`llm_instruction`](/dictation/transcript-rewriting) says otherwise.
+
+```python
+import assemblyai as aai
+
+aai.settings.api_key = "<YOUR_API_KEY>"
+
+config = aai.DictationConfig(language_codes=["es"])
+
+result = aai.DictationTranscriber().transcribe_live("clip.wav", config)
+print(result.text)
+```
+
+```python
+import json
+import requests
+
+config = {"language_codes": ["es"]}
+
+with open("clip.wav", "rb") as f:
+    audio = f.read()
+
+response = requests.post(
+    "https://dictation.assemblyai.com/v1/transcribe/live",
+    headers={"Authorization": "<YOUR_API_KEY>"},
+    files={
+        "config": (None, json.dumps(config), "application/json"),
+        "audio": ("clip.wav", audio, "audio/wav"),
+    },
+    timeout=90,
+)
+response.raise_for_status()
+print(response.json()["text"])
+```
+
+```javascript
+import { readFileSync } from "fs";
+
+const config = { language_codes: ["es"] };
+
+const audio = readFileSync("clip.wav");
+const form = new FormData();
+form.append(
+  "config",
+  new Blob([JSON.stringify(config)], { type: "application/json" })
+);
+form.append("audio", new Blob([audio], { type: "audio/wav" }), "clip.wav");
+
+const response = await fetch(
+  "https://dictation.assemblyai.com/v1/transcribe/live",
+  { method: "POST", headers: { Authorization: "<YOUR_API_KEY>" }, body: form }
+);
+console.log((await response.json()).text);
+```
+
+```bash
+curl -X POST https://dictation.assemblyai.com/v1/transcribe/live \
+  -H 'Authorization: <YOUR_API_KEY>' \
+  -F 'config={"language_codes": ["es"]};type=application/json' \
+  -F 'audio=@clip.wav;type=audio/wav'
+```
+
+## Multilingual audio
+
+Pass several codes when a single clip moves between languages, which is common
+in dictation from bilingual speakers:
+
+```json
+{ "language_codes": ["en", "es"] }
+```
+
+List only the languages you actually expect. Extra codes give the model more
+ways to be wrong on ambiguous audio.
+
+## Supported languages
+
+| Code | Language | Code | Language |
+|------|----------|------|----------|
+| `en` | English | `da` | Danish |
+| `es` | Spanish | `fi` | Finnish |
+| `de` | German | `hi` | Hindi |
+| `fr` | French | `vi` | Vietnamese |
+| `it` | Italian | `ar` | Arabic |
+| `pt` | Portuguese | `he` | Hebrew |
+| `tr` | Turkish | `ja` | Japanese |
+| `nl` | Dutch | `ur` | Urdu |
+| `sv` | Swedish | `zh` | Mandarin |
+| `no` | Norwegian | | |
+
+## Related features
+
+- [Prompting and keyterms](/dictation/prompting-and-keyterms) steers the
+  transcript within the chosen language.
+- [Transcript rewriting](/dictation/transcript-rewriting) reshapes the
+  transcript after it is written.
+
+---
+
+<a id="transcribe-dictated-audio-docs-api-reference-dictation-api-transcribe-live-mdx"></a>
+
+# Transcribe dictated audio
+
+URL: https://www.assemblyai.com/docs/api-reference/dictation-api/transcribe-live
+Source: docs/api-reference/dictation-api/transcribe-live.mdx
+Navigation: Dictation API > API reference
+Description: Send a spoken utterance to the Dictation API and receive send-ready cleaned-up text alongside the verbatim transcript.
+
+Metadata:
+- openapi: ../specs/dictation.yaml POST /v1/transcribe/live
+
+---
+
+<a id="audio-requirements-docs-dictation-audio-requirements-mdx"></a>
+
+# Audio requirements
+
+URL: https://www.assemblyai.com/docs/dictation/audio-requirements
+Source: docs/dictation/audio-requirements.mdx
+Navigation: Dictation API > Advanced
+Description: Duration, format, and sample-rate constraints for Dictation audio.
+
+The Dictation API accepts short clips with the following constraints:
+
+| Constraint | Value |
+|------------|-------|
+| Maximum duration | 120 s |
+| Sample width | 16-bit only |
+| Formats | WAV (`audio/wav`) or raw PCM S16LE (`audio/pcm`) |
+
+Set the `audio` part's Content-Type to match the format you send. Compressed
+formats (MP3, M4A, FLAC, OGG, and WebM) are rejected with `415`.
+
+## WAV and raw PCM
+
+For WAV, the sample rate and channel count are read from the file header, and
+the `sample_rate` and `channels` config fields are ignored.
+
+For raw PCM there is no header to read, so both fields are required in the
+`config` part:
+
+```json
+{ "sample_rate": 16000, "channels": 1 }
+```
+
+Raw PCM is the easier format to upload while the user is still speaking, since
+frames can go on the wire as they come off the microphone with no container to
+finalize. See [Uploading while recording](/dictation#uploading-while-recording).
+
+## When audio is rejected
+
+Audio that violates a constraint is rejected with a `400`, `413`, or `415`. On
+a chunked upload the `413` can arrive part-way through the request rather than
+at the end, because the server is measuring the audio as it arrives. See
+[Error handling](/dictation/error-handling) for the full table.
+
+For audio longer than 120 seconds, use
+[Pre-recorded STT](/pre-recorded-audio/getting-started/transcribe-an-audio-file).
+For a live transcript while the speaker is still talking, use
+[Real-time STT](/streaming/getting-started/transcribe-streaming-audio).
+
+---
+
+<a id="error-handling-docs-dictation-error-handling-mdx"></a>
+
+# Error handling
+
+URL: https://www.assemblyai.com/docs/dictation/error-handling
+Source: docs/dictation/error-handling.mdx
+Navigation: Dictation API > Advanced
+Description: Dictation API error responses, status codes, and retry guidance.
+
+Most errors return a JSON body with an `error` message and a machine-readable
+`error_code`:
+
+```json
+{ "error": "request must be multipart/form-data with a `config` part followed by an `audio` part", "error_code": "bad_request" }
+```
+
+Errors relayed from the transcription service use a different shape, with
+`status`, `title`, and `detail` fields. Read both when surfacing an error:
+
+```json
+{ "status": 404, "title": "Not Found", "detail": "Invalid API key" }
+```
+
+## Status codes
+
+| HTTP | Body shape | Cause |
+|------|-----------|-------|
+| 400 | `error` / `error_code` | Missing or empty `audio` part, a missing `config` part or one sent after `audio`, malformed `config` JSON, or a `config` field that fails validation |
+| 401 | `error` / `error_code` | No credential supplied |
+| 404 | `status` / `title` / `detail` | Invalid API key |
+| 413 | `error` / `error_code` | Audio exceeded the size cap (`audio_too_large`) |
+| 415 | `status` / `title` / `detail` | The `audio` part is not `audio/wav` or `audio/pcm` |
+| 429 | `error` / `error_code` | Rate limit exceeded |
+| 502 | `error` / `error_code` | Transcription upstream unavailable |
+| 503 | `error` / `error_code` | Server at capacity (`capacity_exceeded`) |
+| 504 | `error` / `error_code` | Transcription upstream timed out |
+
+  An invalid API key returns `404`, not `401`. Treat any `404` from this
+  endpoint as an auth failure rather than a missing route.
+
+## A failed rewrite is not a failed request
+
+The transcript rewrite is best-effort and is never allowed to fail the call. If
+the rewrite fails, the response is still `200`, `text` still holds the verbatim
+transcript, `llm_response` is `null`, and `llm_error` says what went wrong:
+
+| `llm_error` | Meaning |
+|-------------|---------|
+| `timeout` | The rewrite passed its 5-second internal deadline |
+| `error` | The rewrite failed for another reason |
+
+Fall back to `text` when `llm_response` is `null`. Never treat a non-`null`
+`llm_error` as a failed request. In the Python SDK, `result.final_text` already
+does this: it returns the rewrite when there is one and the transcript
+otherwise.
+
+## Errors in the Python SDK
+
+A failed request raises `DictationError`, which carries the pieces you need to
+decide what to do next:
+
+| Attribute | Meaning |
+|-----------|---------|
+| `status_code` | The HTTP status from the table above |
+| `error_code` | The machine-readable code, when the response carried one |
+| `retry_after` | Seconds to wait, from the `Retry-After` header on a `429` or `503` |
+
+```python
+import time
+
+import assemblyai as aai
+
+aai.settings.api_key = "<YOUR_API_KEY>"
+
+try:
+    result = aai.DictationTranscriber().transcribe_live("clip.wav")
+except aai.DictationError as error:
+    if error.retry_after:
+        time.sleep(error.retry_after)
+    raise RuntimeError(
+        f"Dictation failed ({error.status_code}/{error.error_code}): {error}"
+    )
+```
+
+`retry_after` is `None` when the response carried no `Retry-After` header, so
+fall back to your own backoff rather than assuming a value is present.
+
+## Retry guidance
+
+- **429, 502, 503, and 504** are transient. Back off and retry.
+- **400, 413, and 415** mean the request itself is wrong. Fix the audio or the
+  config before retrying. See [Audio requirements](/dictation/audio-requirements)
+  for the constraints.
+- **401 and 404** are credential problems. Retrying will not help.
+
+A chunked upload cannot be replayed, so keep the audio in memory if you want to
+retry a failed request. Set the HTTP client timeout to 90 seconds; typical short
+clips respond in under a second.
+
+## Need help?
+
+If you get stuck, contact our support team at
+[support@assemblyai.com](mailto:support@assemblyai.com) or create a
+[support ticket](https://www.assemblyai.com/contact/support). Include the
+`session_id` from the response, or the failing request's timestamp and endpoint
+if no response was returned, to help us look up your request.
+
+---
+
+<a id="cloud-endpoints-data-residency-docs-dictation-endpoints-and-data-zones-mdx"></a>
+
+# Cloud endpoints & data residency
+
+URL: https://www.assemblyai.com/docs/dictation/endpoints-and-data-zones
+Source: docs/dictation/endpoints-and-data-zones.mdx
+Navigation: Dictation API > Advanced
+Description: AssemblyAI Dictation endpoints for global routing and US/EU data residency.
+
+Choose the endpoint that best fits your application's requirements, whether
+that's routing to the nearest data center for the lowest latency or ensuring
+your audio data stays within a given data residency zone.
+
+## Data processing locations
+
+All Dictation audio and transcription data is processed in AWS regions located
+in the United States and the European Union:
+
+**US**
+
+| AWS region  | Location      |
+| ----------- | ------------- |
+| `us-east-1` | N. Virginia   |
+| `us-east-2` | Ohio          |
+| `us-west-1` | N. California |
+| `us-west-2` | Oregon        |
+
+**EU**
+
+| AWS region     | Location  |
+| -------------- | --------- |
+| `eu-central-1` | Frankfurt |
+| `eu-north-1`   | Stockholm |
+| `eu-south-1`   | Milan     |
+| `eu-south-2`   | Spain     |
+| `eu-west-1`    | Ireland   |
+| `eu-west-3`    | Paris     |
+
+Which of these locations processes your data depends on the endpoint you call,
+as described below.
+
+## Endpoints
+
+| Endpoint | URL | Region |
+|----------|-----|--------|
+| Global (default) | `https://dictation.assemblyai.com` | Nearest region |
+| US data residency | `https://dictation.us.assemblyai.com` | US locations listed above |
+| EU data residency | `https://dictation.eu.assemblyai.com` | EU locations listed above |
+
+The request format, headers, and parameters are identical on all three. Only
+the host changes.
+
+  The global endpoint routes to the nearest available region, so your data may
+  be processed in any of the US or EU locations listed above. If you need data
+  to stay in one of those zones, call the US or EU endpoint explicitly rather
+  than relying on the default.
+
+## Which endpoint should I use?
+
+- **Optimizing for latency?** Use the **Global endpoint**
+  (`dictation.assemblyai.com`). It routes your request to the region with the
+  fastest response time for you, and needs no configuration change.
+- **Need US data residency?** Use the **US endpoint**
+  (`dictation.us.assemblyai.com`). Your audio and transcription data remains
+  within the US.
+- **Need EU data residency?** Use the **EU endpoint**
+  (`dictation.eu.assemblyai.com`). Your audio and transcription data remains
+  within the EU.
+
+## How to use it
+
+Replace the base URL with the endpoint you want. In the Python SDK the base URL
+comes from the `dictation_base_url` setting, which defaults to the global
+endpoint. The examples below use the US data zone; for the EU data zone,
+replace `us` with `eu`.
+
+```python title="Global (default)"
+import assemblyai as aai
+
+aai.settings.api_key = "<YOUR_API_KEY>"
+
+result = aai.DictationTranscriber().transcribe_live("clip.wav")
+print(result.text)
+```
+
+```python title="US data residency"
+import assemblyai as aai
+
+aai.settings.api_key = "<YOUR_API_KEY>"
+aai.settings.dictation_base_url = "https://dictation.us.assemblyai.com"
+
+result = aai.DictationTranscriber().transcribe_live("clip.wav")
+print(result.text)
+```
+
+```python title="EU data residency"
+import assemblyai as aai
+
+aai.settings.api_key = "<YOUR_API_KEY>"
+aai.settings.dictation_base_url = "https://dictation.eu.assemblyai.com"
+
+result = aai.DictationTranscriber().transcribe_live("clip.wav")
+print(result.text)
+```
+
+```python title="Global (default)"
+import requests
+
+with open("clip.wav", "rb") as f:
+    audio = f.read()
+
+response = requests.post(
+    "https://dictation.assemblyai.com/v1/transcribe/live",
+    headers={"Authorization": "<YOUR_API_KEY>"},
+    files={
+        "config": (None, "{}", "application/json"),
+        "audio": ("clip.wav", audio, "audio/wav"),
+    },
+    timeout=90,
+)
+response.raise_for_status()
+print(response.json()["text"])
+```
+
+```python title="US data residency"
+import requests
+
+with open("clip.wav", "rb") as f:
+    audio = f.read()
+
+response = requests.post(
+    "https://dictation.us.assemblyai.com/v1/transcribe/live",
+    headers={"Authorization": "<YOUR_API_KEY>"},
+    files={
+        "config": (None, "{}", "application/json"),
+        "audio": ("clip.wav", audio, "audio/wav"),
+    },
+    timeout=90,
+)
+response.raise_for_status()
+print(response.json()["text"])
+```
+
+```python title="EU data residency"
+import requests
+
+with open("clip.wav", "rb") as f:
+    audio = f.read()
+
+response = requests.post(
+    "https://dictation.eu.assemblyai.com/v1/transcribe/live",
+    headers={"Authorization": "<YOUR_API_KEY>"},
+    files={
+        "config": (None, "{}", "application/json"),
+        "audio": ("clip.wav", audio, "audio/wav"),
+    },
+    timeout=90,
+)
+response.raise_for_status()
+print(response.json()["text"])
+```
+
+```javascript title="Global (default)"
+import { readFileSync } from "fs";
+
+const audio = readFileSync("clip.wav");
+const form = new FormData();
+form.append("config", new Blob(["{}"], { type: "application/json" }));
+form.append("audio", new Blob([audio], { type: "audio/wav" }), "clip.wav");
+
+const response = await fetch(
+  "https://dictation.assemblyai.com/v1/transcribe/live",
+  { method: "POST", headers: { Authorization: "<YOUR_API_KEY>" }, body: form }
+);
+console.log((await response.json()).text);
+```
+
+```javascript title="US data residency"
+import { readFileSync } from "fs";
+
+const audio = readFileSync("clip.wav");
+const form = new FormData();
+form.append("config", new Blob(["{}"], { type: "application/json" }));
+form.append("audio", new Blob([audio], { type: "audio/wav" }), "clip.wav");
+
+const response = await fetch(
+  "https://dictation.us.assemblyai.com/v1/transcribe/live",
+  { method: "POST", headers: { Authorization: "<YOUR_API_KEY>" }, body: form }
+);
+console.log((await response.json()).text);
+```
+
+```javascript title="EU data residency"
+import { readFileSync } from "fs";
+
+const audio = readFileSync("clip.wav");
+const form = new FormData();
+form.append("config", new Blob(["{}"], { type: "application/json" }));
+form.append("audio", new Blob([audio], { type: "audio/wav" }), "clip.wav");
+
+const response = await fetch(
+  "https://dictation.eu.assemblyai.com/v1/transcribe/live",
+  { method: "POST", headers: { Authorization: "<YOUR_API_KEY>" }, body: form }
+);
+console.log((await response.json()).text);
+```
+
+```bash title="Global (default)"
+curl -X POST https://dictation.assemblyai.com/v1/transcribe/live \
+  -H 'Authorization: <YOUR_API_KEY>' \
+  -F 'config={};type=application/json' \
+  -F 'audio=@clip.wav;type=audio/wav'
+```
+
+```bash title="US data residency"
+curl -X POST https://dictation.us.assemblyai.com/v1/transcribe/live \
+  -H 'Authorization: <YOUR_API_KEY>' \
+  -F 'config={};type=application/json' \
+  -F 'audio=@clip.wav;type=audio/wav'
+```
+
+```bash title="EU data residency"
+curl -X POST https://dictation.eu.assemblyai.com/v1/transcribe/live \
+  -H 'Authorization: <YOUR_API_KEY>' \
+  -F 'config={};type=application/json' \
+  -F 'audio=@clip.wav;type=audio/wav'
+```
+
+  Pre-warming is per host. A connection warmed against the global endpoint is
+  no use to a request aimed at a data zone endpoint, so warm the same host you
+  are about to transcribe against. See
+  [Connection pre-warming](/dictation/connection-pre-warming).
+
+---
+
+<a id="connection-pre-warming-docs-dictation-connection-pre-warming-mdx"></a>
+
+# Connection pre-warming
+
+URL: https://www.assemblyai.com/docs/dictation/connection-pre-warming
+Source: docs/dictation/connection-pre-warming.mdx
+Navigation: Dictation API > Advanced
+Description: Use the /warm endpoint to take the TLS handshake off the critical path of a dictation request.
+
+A request that opens its connection on demand pays the full DNS lookup, TCP
+handshake, and TLS handshake before the first audio byte can leave. For a
+distant client that is a network round trip or more, and on a dictation of a
+few seconds it is a noticeable share of the total wait.
+
+The `GET /warm` endpoint takes that setup off the critical path. Call it as soon
+as you know audio is coming, typically the moment the user reaches for the
+record button, and the connection is established in the background while they
+are still getting ready to speak. The transcription request then starts
+uploading audio immediately.
+
+## How `/warm` works
+
+`GET /warm` is an unauthenticated no-op:
+
+```bash
+curl https://dictation.assemblyai.com/warm
+```
+
+```json
+{ "warm": "toasty" }
+```
+
+No API key is required, and the response body carries no information. The value
+of the call is the open connection it leaves in your HTTP client's pool.
+
+```python
+import assemblyai as aai
+
+aai.settings.api_key = "<YOUR_API_KEY>"
+
+with aai.DictationTranscriber() as transcriber:
+    # Call as soon as you know audio is coming (e.g. the user taps record).
+    transcriber.warm()
+
+    # Same transcriber, so this reuses the warmed connection.
+    result = transcriber.transcribe_live("clip.wav")
+    print(result.text)
+```
+
+`warm()` returns `True` once the connection is open and `False` if it could not
+be opened, and never raises. `AsyncDictationTranscriber.warm()` is the
+coroutine equivalent, which pairs well with
+`asyncio.create_task(transcriber.warm())` so the handshake overlaps whatever
+your app is doing next.
+
+```python
+import requests
+
+session = requests.Session()
+
+# Call as soon as you know audio is coming (e.g. the user taps record).
+session.get("https://dictation.assemblyai.com/warm", timeout=10)
+
+# Same session, so this reuses the warmed connection.
+with open("clip.wav", "rb") as f:
+    response = session.post(
+        "https://dictation.assemblyai.com/v1/transcribe/live",
+        headers={"Authorization": "<YOUR_API_KEY>"},
+        files={
+            "config": (None, "{}", "application/json"),
+            "audio": ("clip.wav", f, "audio/wav"),
+        },
+        timeout=90,
+    )
+print(response.json()["text"])
+```
+
+```javascript
+import { readFileSync } from "fs";
+
+// Call as soon as you know audio is coming (e.g. the user taps record).
+// Node's fetch keeps the connection alive in its pool by default.
+await fetch("https://dictation.assemblyai.com/warm");
+
+// Same process, so this reuses the warmed connection.
+const audio = readFileSync("clip.wav");
+const form = new FormData();
+form.append("config", new Blob(["{}"], { type: "application/json" }));
+form.append("audio", new Blob([audio], { type: "audio/wav" }), "clip.wav");
+
+const response = await fetch(
+  "https://dictation.assemblyai.com/v1/transcribe/live",
+  { method: "POST", headers: { Authorization: "<YOUR_API_KEY>" }, body: form }
+);
+console.log((await response.json()).text);
+```
+
+## When to call it
+
+A warmed connection only helps if it is still in the pool when the transcription
+request goes out, and if that request travels through the same HTTP client and
+the same host.
+
+- **Same client.** The warm call and the transcription must share a connection
+  pool. A fresh `requests.Session`, `httpx.Client`, or `AssemblyAI` instance for
+  the transcription gets a fresh connection and pays the handshake anyway.
+- **Same host.** Pre-warming is per host, so a connection warmed against
+  `dictation.assemblyai.com` is no use to a request aimed at
+  `dictation.eu.assemblyai.com`. Warm the host you are about to call. See
+  [Cloud endpoints & data residency](/dictation/endpoints-and-data-zones).
+- **Not too early.** Idle connections are evicted after a short window. In the
+  Python SDK that window is `settings.keepalive_expiry`, which inherits httpx's
+  5-second default unless you raise it. Warm shortly before the request rather
+  than at application startup, or raise `keepalive_expiry` so one call covers a
+  longer pause.
+
+If the connection has been evicted or closed by the time you transcribe, the
+request silently opens a fresh one and pays the full handshake. The warm-up
+bought nothing, but nothing breaks either.
+
+The ideal moment is when you know audio is coming but do not have it yet. In a
+dictation app that is the moment the user starts recording: the handshake then
+runs concurrently with the recording, and by the time they stop speaking the
+connection is open and fresh. `/warm` is idempotent and cheap, so calling it
+again to refresh an aging connection is fine.
 
 ---
 
@@ -71582,9 +73353,9 @@ You can find cURL examples throughout our API reference documentation. Each endp
 
 ## Where to find cURL examples
 
-Visit the [API reference section](/api-reference/overview) of our documentation. Each API endpoint page includes cURL code examples.
+Visit the [API reference section](/pre-recorded-audio/api-reference/files/upload) of our documentation. Each API endpoint page includes cURL code examples.
 
-For example, the [Submit a file for transcription page](/api-reference/transcripts/submit) shows the cURL request format for submitting audio files.
+For example, the [Submit a file for transcription page](/pre-recorded-audio/api-reference/transcripts/submit) shows the cURL request format for submitting audio files.
 
 ## Converting other code examples to cURL
 
@@ -72492,7 +74263,7 @@ curl -s "https://streaming.assemblyai.com/v3/token?expires_in_seconds=60" \
 
 **Python:**
 ```python
-# pip install "assemblyai>=1.0.0"
+# pip install assemblyai
 import os
 from assemblyai.streaming.v3 import (
     StreamingClient,
@@ -74011,7 +75782,7 @@ while True:
     Install the required library
 
     ```bash
-    pip install "assemblyai>=1.0.0"
+    pip install assemblyai
     ```
 
     

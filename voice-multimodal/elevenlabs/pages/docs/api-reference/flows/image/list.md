@@ -55,6 +55,17 @@ Successful Response
 - `next_cursor` (string, required, nullable) — Pass as `cursor` to fetch the next page. `null` when there is no further page.
 - `has_more` (boolean, required) — Whether more generations exist beyond this page.
 
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

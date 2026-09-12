@@ -28,6 +28,8 @@ Make a request without writing any code! Head to the [Deepgram Playground](https
 
 Run the following cURL command in your shell. Be sure to replace the `DEEPGRAM_API_KEY` with your own key.
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -61,11 +63,15 @@ If you intend to use one of Deepgram's SDKs to make your request, you must insta
 
 Open your terminal, navigate to the location on your drive where you want to create your project, and install the Deepgram SDK.
 
+**`Python`**
+
 ```shell Python
 # Install the Deepgram Python SDK
 # https://github.com/deepgram/deepgram-python-sdk
 pip install deepgram-sdk
 ```
+
+**`JavaScript`**
 
 ```shell JavaScript
 # Install the Deepgram JavaScript SDK
@@ -73,17 +79,23 @@ pip install deepgram-sdk
 npm install @deepgram/sdk
 ```
 
+**`.NET`**
+
 ```shell .NET
 # Install the Deepgram .NET SDK
 # https://github.com/deepgram/deepgram-dotnet-sdk
 dotnet add package Deepgram
 ```
 
+**`Go`**
+
 ```shell Go
 # Install the Deepgram Go SDK
 # https://github.com/deepgram/deepgram-go-sdk
 go get github.com/deepgram/deepgram-go-sdk
 ```
+
+**`Java (Maven)`**
 
 ```xml Java (Maven)
 <!-- Add the Deepgram Java SDK to your pom.xml -->

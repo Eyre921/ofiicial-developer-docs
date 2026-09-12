@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/voices/pvc/verification/requ
 
 ### Body (multipart/form-data)
 
+This endpoint expects a multipart form with multiple files.
+
 - `files` (files, required) — Verification documents
 - `extra_text` (string, optional) — Extra text to be used in the manual verification process.
 
@@ -41,6 +43,17 @@ Reference: https://elevenlabs.io/docs/api-reference/voices/pvc/verification/requ
 Successful Response
 
 - `status` (string, required) — The status of the request PVC manual verification request. If the request was successful, the status will be 'ok'. Otherwise an error message with status 500 will be returned.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

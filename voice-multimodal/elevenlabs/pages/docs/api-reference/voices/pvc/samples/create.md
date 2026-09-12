@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/voices/pvc/samples/create
 
 ### Body (multipart/form-data)
 
+This endpoint expects a multipart form with multiple files.
+
 - `files` (files, required) — Audio files used to create the voice.
 - `remove_background_noise` (boolean, optional) — If set will remove background noise for voice samples using our audio isolation model. If the samples do not include background noise, it can make the quality worse.
 
@@ -64,6 +66,17 @@ Successful Response
     - `selected_speaker_ids` (list of string, optional, nullable) — The IDs of the selected speakers.
   - `trim_start` (integer, optional, nullable)
   - `trim_end` (integer, optional, nullable)
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

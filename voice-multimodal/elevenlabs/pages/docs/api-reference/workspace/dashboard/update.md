@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/workspace/dashboard/update
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `charts` (list of object, optional)
   - `type`: `call_success` (DashboardCallSuccessChartModel)
     - `name` (string, required)
@@ -52,6 +54,17 @@ Successful Response
   - `type`: `data_collection` (DashboardDataCollectionChartModel)
     - `data_collection_id` (string, required)
     - `name` (string, required)
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

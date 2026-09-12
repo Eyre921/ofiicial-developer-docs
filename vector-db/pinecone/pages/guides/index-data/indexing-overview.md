@@ -1,5 +1,5 @@
 ---
-title: "Indexing overview"
+title: "Index data overview"
 source: https://docs.pinecone.io/guides/index-data/indexing-overview
 path: guides/index-data/indexing-overview
 ---
@@ -140,21 +140,9 @@ Integrated-embedding indexes are created with `pc.create_index_for_model` and re
 4. Use the same external embedding model to convert a query to a vector.
 5. [Search](/guides/search/search-overview) with your query vector directly.
 
-## Data ingestion
-
-<Tip>
-  To control costs when ingesting large datasets (10,000,000+ records), use [import](/guides/index-data/import-data) instead of upsert.
-</Tip>
-
-There are two ways to ingest data into an index:
-
-* [Importing from object storage](/guides/index-data/import-data) is the most efficient and cost-effective way to load large numbers of records or documents into an index. You store your data in object storage (Parquet for vector indexes, [JSON Lines (JSONL)](https://jsonlines.org/) for document indexes), integrate your object storage with Pinecone, and then start an asynchronous, long-running operation that imports and indexes your data.
-
-* [Upserting](/guides/index-data/upsert-data) is intended for ongoing writes to an index. [Batch upserting](/guides/index-data/upsert-data#upsert-in-batches) can improve throughput performance and is a good option for larger numbers of records or documents (up to 1000 per batch) if you can't work around import's current limitations.
-
 ## Metadata
 
-Every record has an ID and a vector, and every document has an `_id` and the fields its schema declares. Either can also carry metadata: extra key-value fields you filter on at query time. In a vector index, you pass metadata as an explicit object with each vector. With integrated embedding or in a document index, extra fields you upsert are stored as metadata automatically. Pinecone indexes metadata for filtering, so a query can include a [metadata filter](/guides/search/filter-by-metadata) to limit the search. Searches without a metadata filter don't consider metadata and search the entire namespace.
+Every record has an ID and a vector, and every document has an `_id` and the fields its schema declares. Either can also carry metadata: extra key-value fields you filter on at query time. In a vector index, you pass metadata as an explicit object with each vector. With integrated embedding or in a document index, extra fields you upsert are stored as metadata automatically. Pinecone indexes metadata for filtering, so a query can include a [metadata filter](/guides/search/filter-by-metadata) to limit the search. Searches without a metadata filter don't consider metadata and search the entire namespace. All metadata fields are indexed by default; to index only the fields you filter on, see [Configure metadata indexing](/guides/index-data/configure-metadata-indexing).
 
 ### Metadata format
 

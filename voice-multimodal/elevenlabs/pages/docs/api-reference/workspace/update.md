@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/workspace/update
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `conversation_initiation_client_data_webhook` (object, optional, nullable)
   - `url` (string, required) — The URL to send the webhook to
   - `request_headers` (map from string to string or object, required) — The headers to send with the webhook request
@@ -68,6 +70,17 @@ Successful Response
 - `conversation_embedding_retention_days` (integer, optional, nullable) — Days to retain conversation embeddings. None means use the system default (30 days).
 - `default_livekit_stack` (enum, optional, default: standard)
   - Allowed values: `standard`, `static`
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

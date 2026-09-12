@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `items` (list of object, required) — List of requested RAG indexes. Minimum 1, maximum 100 items.
   - `document_id` (string, required) — ID of the knowledgebase document for which to retrieve the index
   - `create_if_missing` (boolean, required) — Whether to create the RAG index if it does not exist
@@ -54,6 +56,17 @@ Successful Response
     - `error_code` (integer, required)
     - `error_message` (string, required)
     - `error_status` (string, required)
+
+## Errors
+
+### 422 Knowledge Base Get or Create Rag Indexes Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

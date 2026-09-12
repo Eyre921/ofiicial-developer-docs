@@ -147,6 +147,11 @@ separate line items on your invoice for reserved and on-demand usage.
 Storage is billed separately and continues to accrue charges even when no
 cluster is using it. Delete unused volumes to stop storage charges.
 
+### Are there data ingress or egress fees?
+
+No, Together AI does not charge for data transfer into or out of your cluster, so you can move datasets, checkpoints, and results freely. You pay only for
+compute and storage.
+
 ### Can I pause a cluster to save costs?
 
 Reserved clusters cannot be paused – you're charged for the full reservation

@@ -24,6 +24,8 @@ If you need to get information on a custom model (non-public) you can use the Ge
 
 #### Request
 
+**`cURL`**
+
 ```bash cURL
 curl --location 'https://api.deepgram.com/v1/models' \
 ```
@@ -31,6 +33,8 @@ curl --location 'https://api.deepgram.com/v1/models' \
 For this endpoint you **do not** need to provide your [Deepgram API Key](/docs/create-additional-api-keys).
 
 #### Result
+
+**`JSON`**
 
 ```json JSON
 {
@@ -83,6 +87,8 @@ Returns metadata on all the latest models that a specific project has access to,
 
 #### Request
 
+**`cURL`**
+
 ```bash cURL
 curl --location 'https://api.deepgram.com/v1/projects/YOUR_PROJECT_ID/models' \
 --header 'Authorization: Token YOUR_DEEPGRAM_API_KEY'
@@ -91,6 +97,8 @@ curl --location 'https://api.deepgram.com/v1/projects/YOUR_PROJECT_ID/models' \
 Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys) and replace `YOUR_PROJECT_ID`with your [Deepgram Project ID](/guides/deep-dives/managing-projects).
 
 #### Result
+
+**`JSON`**
 
 ```json JSON
 {
@@ -143,6 +151,8 @@ Returns the metadata for a specific model. If the model is not found a `404` err
 
 #### Request
 
+**`cURL`**
+
 ```bash cURL
 curl --location 'https://api.deepgram.com/v1/models/MODEL_UUID' \
 ```
@@ -150,6 +160,8 @@ curl --location 'https://api.deepgram.com/v1/models/MODEL_UUID' \
 For this endpoint you **do not** need to provide your [Deepgram API Key](/docs/create-additional-api-keys).
 
 #### Results
+
+**`JSON`**
 
 ```json JSON
 {
@@ -175,6 +187,8 @@ Returns the metadata for a specific model that a particular project has access t
 
 #### Request
 
+**`cURL`**
+
 ```bash cURL
 curl --location 'https://api.deepgram.com/v1/projects/YOUR_PROJECT_ID/models/MODEL_UUID' \
 --header 'Authorization: Token YOUR_DEEPGRAM_API_KEY'
@@ -183,6 +197,8 @@ curl --location 'https://api.deepgram.com/v1/projects/YOUR_PROJECT_ID/models/MOD
 Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys) and replace `YOUR_PROJECT_ID`with your [Deepgram Project ID](/guides/deep-dives/managing-projects) and replace `MODEL_UUID`with the specific Model UUID.
 
 #### Results
+
+**`JSON`**
 
 ```json JSON
 {

@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/environment-variables/update
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `values` (map from string to string or object or object, required) — Values to replace. Set to null to remove an environment (except 'production').
   - EnvironmentVariableSecretValueRequest
     - `secret_id` (string, required)
@@ -52,6 +54,29 @@ Successful Response
 - `workspace_id` (string, required)
 - `values` (map from string to string or map from string to object or map from string to object, required)
 - `created_by_user_id` (string, optional, nullable)
+
+## Errors
+
+### 400 Bad Request Error
+
+Invalid parameters or type mismatch
+
+- `any`
+
+### 404 Not Found Error
+
+Environment variable not found
+
+- `any`
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

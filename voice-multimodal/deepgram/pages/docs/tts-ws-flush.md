@@ -22,6 +22,8 @@ Very frequent flushes can affect audio output quality.
 
 To send the `Flush` message, you need to send the following JSON message to the server:
 
+**`JSON`**
+
 ```json JSON
 {
     "type": "Flush"
@@ -33,6 +35,8 @@ To send the `Flush` message, you need to send the following JSON message to the 
 Upon receiving the `Flush` message, the server will process all remaining text data and return the final audio results.
 
 ### Example Response
+
+**`JSON`**
 
 ```json JSON
 {

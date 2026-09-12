@@ -46,6 +46,8 @@ Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additi
 
 Replace `YOUR_PROJECT_ID`with your Deepgram project id.
 
+**`cURL`**
+
 ```bash cURL
 curl --request GET \
      --url 'https://api.deepgram.com/v1/projects/YOUR_PROJECT_ID/requests?start=2023-10-01&end=2023-10-05&status=succeeded' \
@@ -54,6 +56,8 @@ curl --request GET \
 ```
 
 A response will be returned as such:
+
+**`JSON`**
 
 ```json JSON
 {
@@ -78,6 +82,8 @@ Summarized usage data is not limited to 90 days.
 
 Replace `YOUR_PROJECT_ID`with your Deepgram project id.
 
+**`cURL`**
+
 ```bash cURL
 curl --request GET \
      --url 'https://api.deepgram.com/v1/projects/YOUR_PROJECT_ID/usage?start=2023-10-01&end=2023-10-05' \
@@ -86,6 +92,8 @@ curl --request GET \
 ```
 
 A response will be returned:
+
+**`JSON`**
 
 ```json JSON
 {

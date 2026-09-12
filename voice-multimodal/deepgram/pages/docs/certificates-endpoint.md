@@ -41,13 +41,19 @@ This endpoint is available on all self-hosted container images:
 
 ## Making a Request
 
+**`cURL (API)`**
+
 ```shell cURL (API)
 curl http://localhost:8080/v1/certificates
 ```
 
+**`cURL (Engine)`**
+
 ```shell cURL (Engine)
 curl http://localhost:9991/v1/certificates
 ```
+
+**`Python`**
 
 ```python Python
 import requests
@@ -59,6 +65,8 @@ print(f"End of support: {cert['end_of_support']}")
 print(f"End of life: {cert['end_of_life']}")
 print(f"Instance ID: {cert['instance_id']}")
 ```
+
+**`JavaScript`**
 
 ```javascript JavaScript
 const response = await fetch('http://localhost:8080/v1/certificates');
@@ -90,6 +98,8 @@ This message appears in the logs for API, Engine, License Proxy, and Billing con
 ## Monitoring Certificate Expiry
 
 Check the `eol` field periodically to ensure your deployment renews before certificate expiration. A recommended approach:
+
+**`Python`**
 
 ```python Python
 from datetime import datetime, timezone

@@ -37,11 +37,15 @@ You need:
 
 The fastest way to scaffold a new agent project is with the [LiveKit CLI](https://docs.livekit.io/intro/basics/cli/) (`lk`). Alternatively, clone a starter template from GitHub ([Python](https://github.com/livekit-examples/agent-starter-python), [Node.js](https://github.com/livekit-examples/agent-starter-node)).
 
+**`Python`**
+
 ```bash title="Python"
 lk agent init my-agent --template agent-starter-python
 cd my-agent
 uv sync
 ```
+
+**`Node.js`**
 
 ```bash title="Node.js"
 lk agent init my-agent --template agent-starter-node
@@ -92,9 +96,13 @@ Browse available voices in the [Deepgram voice library](/docs/tts-models).
 
 Start the agent in development mode. The required model files ([VAD](/docs/understanding-end-of-speech-detection), turn detection) are now downloaded automatically:
 
+**`Python`**
+
 ```bash title="Python"
 uv run src/agent.py dev
 ```
+
+**`Node.js`**
 
 ```bash title="Node.js"
 pnpm run dev
@@ -118,9 +126,13 @@ The steps above use LiveKit Inference, which hosts Deepgram models through LiveK
 
 ### Install the plugin
 
+**`Python`**
+
 ```bash title="Python"
 uv add "livekit-agents[deepgram]~=1.4"
 ```
+
+**`Node.js`**
 
 ```bash title="Node.js"
 pnpm add @livekit/agents-plugin-deepgram@1.x

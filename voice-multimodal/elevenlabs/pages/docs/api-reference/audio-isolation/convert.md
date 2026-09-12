@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/audio-isolation/convert
 
 ### Body (multipart/form-data)
 
+This endpoint expects a multipart form containing a file.
+
 - `audio` (file, required) — The audio file from which vocals/speech will be isolated from.
 - `file_format` (enum, optional) — The format of input audio. Options are 'pcm_s16le_16' or 'other' For `pcm_s16le_16`, the input audio must be 16-bit PCM at a 16kHz sample rate, single channel (mono), and little-endian byte order. Latency will be lower than with passing an encoded waveform.
 - `preview_b64` (string, optional) — Optional preview image base64 for tracking this generation.
@@ -36,6 +38,17 @@ Reference: https://elevenlabs.io/docs/api-reference/audio-isolation/convert
 ### 200
 
 Successful Response
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

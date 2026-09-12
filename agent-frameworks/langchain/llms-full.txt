@@ -2034,9 +2034,9 @@ LangSmith has two tiers of traces based on Data Retention with the following cha
 | **Price**            | [See pricing page](https://www.langchain.com/pricing-langsmith) | [See pricing page](https://www.langchain.com/pricing-langsmith) |
 | **Retention Period** | 14 days          | 180 days       |
 
-<Note>
-Enterprise customers can customize the extended retention period per workspace. Changes apply to new traces only—existing traces are unaffected. See [Customize extended retention policy](/langsmith/data-purging-compliance#customize-extended-retention-policy).
-</Note>
+<Warning>
+Starting September 14, 2026, the maximum long-lived trace retention period for SaaS customers is changing to 180 days. Enterprise customers can still customize the extended retention period per workspace up to this new maximum. Changes apply to new traces only—existing traces are unaffected. See [Customize extended retention policy](/langsmith/data-purging-compliance#customize-extended-retention-policy).
+</Warning>
 
 **Data deletion after retention ends**
 
@@ -11964,6 +11964,12 @@ For organizations with **multiple workspaces only**: For simplicity, LangSmith i
 
 LangSmith has two trace tiers: base traces and extended traces. Base traces have the base retention and are short-lived (14 days), while extended traces have extended retention and are long-lived (180 days by default, [customizable for Enterprise customers](/langsmith/data-purging-compliance#customize-extended-retention-policy)). For more information, refer to the [data retention conceptual docs](/langsmith/usage-and-billing#data-retention).
 
+<Warning>
+Starting September 14, 2026, the maximum long-lived trace retention period for SaaS customers is changing to 180 days. Enterprise customers can still customize the extended retention period per workspace up to this new maximum. Changes apply to new traces only—existing traces are unaffected.
+</Warning>
+
+
+
 Set the desired default trace tier by selecting an option below the **Default data retention** label. All traces will have this tier by default when they are registered. Note that because extended traces cost more than base traces, selecting **Extended** as your default data retention option will result in less overall traces allowed in the billing period. By default, updating this setting will only apply to future incoming traces. To apply to all existing traces in the workspace, select the checkbox.
 
 If the default data retention is set to **Base** you can optionally use the slider to distribute trace limits across base and extended tracess. LangSmith automatically provides a suggestion for this distribution but you can tailor this to your needs. For example, if you are running lots of automations or other features that may upgrade a trace to extended, you may want to increase your extended trace limits. To see the complete list of features that may upgrade a trace, [see here](https://docs.langchain.com/langsmith/usage-and-billing#how-it-works:~:text=Data%20retention%20auto%2Dupgrades).
@@ -11977,11 +11983,11 @@ The extended data retention limit can cause features other than tracing to stop 
 
 #### Customize extended retention period ([Enterprise](/langsmith/pricing-plans) only)
 
-[Enterprise](/langsmith/pricing-plans) customers can customize the extended data retention period at the workspace level to meet compliance requirements. The default is 180 days, but this can be adjusted based on your organization's needs. For more information, refer to [Customize extended retention policy](/langsmith/data-purging-compliance#customize-extended-retention-policy).
+[Enterprise](/langsmith/pricing-plans) customers can customize the extended data retention period at the workspace level to meet compliance requirements. The default is 180 days (as of September 14, 2026), but this can be adjusted based on your organization's needs. For more information, refer to [Customize extended retention policy](/langsmith/data-purging-compliance#customize-extended-retention-policy).
 
 #### Change project-level default retention
 
-Data retention settings are adjustable per tracing project. At the project level, you choose between two tiers: base (14 days) or extended (180 days). To customize the extended duration up to the 180-day maximum, use [workspace-level configuration](/langsmith/data-purging-compliance#customize-extended-retention-policy) (Enterprise only).
+Data retention settings are adjustable per tracing project. At the project level, you choose between two tiers: base (14 days) or extended (180 days). To customize the extended duration up to 180 days, use [workspace-level configuration](/langsmith/data-purging-compliance#customize-extended-retention-policy) (Enterprise only).
 
 Navigate to **Projects** > ***Your project name*** > Select **Retention** and select the desired default retention. This will only affect retention (and pricing) for **traces going forward**.
 
@@ -12170,7 +12176,7 @@ The table below summarizes the split:
 
 LangChain provisions the following in your account:
 
-- **VPC**: A dedicated VPC spread across the region's availability zones, fully private by default. It uses VPC endpoints for private communication to AWS services, and PrivateLink for communication between the data plane and the control plane.
+- **VPC**: By default, a dedicated VPC spread across the region's availability zones, with private ingress. It uses VPC endpoints for private communication to AWS services, and PrivateLink for communication between the data plane and the control plane. With [BYOVPC](/langsmith/byoc-byovpc), you create and manage the VPC and its base network resources instead.
 - **Managed databases**: RDS for relational workloads, and ElastiCache for caching.
 - **Storage**: S3 buckets for the blob store holding trace data, VPC flow logs, and ClickHouse backups.
 - **EKS**: A private EKS cluster with managed add-ons.
@@ -12182,13 +12188,15 @@ LangChain provisions the following in your account:
 
 LangChain needs cross-account IAM permissions to provision and manage resources within your AWS account. These permissions let LangChain:
 
-- **Provision infrastructure**: Create and configure the VPC, subnets, security groups, and other networking components.
+- **Provision infrastructure**: Create and configure the VPC, subnets, security groups, and other networking components. With BYOVPC, the role retains workload networking permissions, while you manage the base network.
 - **Manage the Kubernetes cluster**: Deploy and maintain the EKS cluster, its node groups, and cluster add-ons.
 - **Create storage resources**: Provision RDS, ElastiCache, and the S3 buckets used for application data and backups.
 - **Create IAM roles**: Create and configure the roles used by Kubernetes service accounts and supporting services.
 - **Operate supporting services**: Deploy and manage ingress and autoscaling, and scale and upgrade LangSmith workloads.
 
 Permissions are granted through a single cross-account IAM role that you create during onboarding by applying the [`langsmith-byoc-role` Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role).
+
+For BYOVPC, disable base VPC creation permissions and scope security group creation to your supplied VPC IDs. See [Create the reduced-permission IAM role](/langsmith/byoc-byovpc#create-the-reduced-permission-iam-role).
 
 LangChain provides the external ID used in the role's trust policy. Copy it using the button next to the **Data Planes** header in **Settings > Data Planes**, and use it when applying the module. The role's `ExternalId` condition must match this value.
 
@@ -12223,6 +12231,8 @@ All communication between the control plane and your data plane travels over AWS
 - **Data plane to control plane (runtime path)**: The data plane calls the control plane to authenticate requests, validate API keys, resolve roles and permissions, and load organization and workspace configuration.
 
 Container images are pulled read-only from LangChain's control plane ECR repositories through VPC endpoints.
+
+With BYOVPC, you configure the customer-side AWS service endpoints and data-plane-to-control-plane PrivateLink endpoint. LangChain manages the endpoint service for the cluster management path. See [Configure connectivity](/langsmith/byoc-byovpc#configure-connectivity).
 
 ### DNS and ingress
 
@@ -12260,7 +12270,7 @@ LangSmith BYOC can integrate with AWS Marketplace.
 
 ## Billable AWS services
 
-Every data plane creates the following resources in your account. AWS charges for them at its own rates, independently of your LangSmith contract.
+The following resources contribute to data plane costs in your account. AWS charges for them at its own rates, independently of your LangSmith contract. With [BYOVPC](/langsmith/byoc-byovpc), networking costs depend on the gateways, endpoints, and logging you configure and manage.
 
 | Service | What it covers | Billing basis |
 |---------|----------------|---------------|
@@ -12302,6 +12312,8 @@ AWS enforces default quotas per region and per account. Defaults are often too l
 
 For current default values, see [AWS service quotas](https://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html).
 
+With BYOVPC, account for existing resource usage and your chosen endpoint and egress configuration when checking quotas. Your supplied subnets must also meet the [subnet size and available IP requirements](/langsmith/byoc-byovpc#configure-the-vpc-and-subnets).
+
 If provisioning stalls or fails, an exhausted quota is a common cause, alongside missing permissions and service control policies. See [What happens if provisioning fails?](/langsmith/byoc-faq).
 
 ## See also
@@ -12322,6 +12334,180 @@ If provisioning stalls or fails, an exhausted quota is a common cause, alongside
 </div>
 
 
+# Bring your own VPC on AWS
+Source: https://docs.langchain.com/langsmith/byoc-byovpc
+
+Bring your own VPC (BYOVPC) deploys a LangSmith BYOC data plane into an existing VPC that you create and manage. It lets you control the network configuration while LangChain provisions and operates the EKS cluster, databases, storage, and other workload resources. For a VPC provisioned by LangChain, follow the standard [BYOC onboarding guide](/langsmith/byoc-onboarding).
+
+You own the:
+
+- VPC
+- Subnets
+- Routing
+- Gateways
+- VPC endpoints
+- Flow logs
+- Egress controls.
+
+LangChain retains the permissions needed to manage workload security groups, the PrivateLink endpoint service for access to your data plane's EKS API, and other LangSmith infrastructure inside the VPC (such as databases).
+
+## Before you begin
+
+Complete the [BYOC prerequisites](/langsmith/byoc#prerequisites) and enable BYOC on your organization. Create the VPC:
+
+- In the same AWS account as the cross-account IAM role, and
+- In the region where you plan to deploy the data plane.
+
+## Meet the network requirements
+
+LangSmith checks the following requirements when you supply a VPC, including one created with the reference module.
+
+### Configure the VPC and subnets
+
+- **Ownership and region**: The VPC and every supplied subnet must belong to the AWS account containing the IAM role, exist in the requested region, and be in the `available` state.
+- **VPC configuration**: Use default instance tenancy and a primary RFC 1918 IPv4 CIDR from `/16` through `/18`. Enable both DNS support and DNS hostnames.
+- **Availability zones**: Supply exactly one application subnet and one database subnet in each of two or three standard regional availability zones. If you supply public subnets, provide one in each of the same zones.
+- **Subnet ranges**: Every subnet must have a private IPv4 CIDR within the VPC's primary CIDR. Supplied subnet CIDRs must not overlap.
+- **Subnet IDs and tags**: Each subnet ID must be unique across all tiers.
+
+| Subnet tier | Minimum subnet size | Minimum available IPv4 addresses per subnet |
+|-------------|---------------------|--------------------------------------------|
+| Private application | `/20` or larger | 256 |
+| Private database | `/26` or larger | 16 |
+| Public, when supplied | `/26` or larger | 16 |
+
+Larger subnets have smaller prefix lengths. Both subnet size and available address count must meet the requirements.
+
+### Configure routes
+
+The VPC must have a main route table. Validation uses each subnet's explicit route table association, or the main route table if there is no explicit association.
+
+- **Private application subnets**: Each must have an active IPv4 default route (`0.0.0.0/0`) to customer-managed egress, such as a NAT gateway or transit gateway. A direct route to an internet gateway does not satisfy this requirement.
+- **Public subnets**: Each supplied public subnet must have an active IPv4 default route to an internet gateway attached to the VPC.
+- **Database subnets**: The reference module keeps these isolated, without a default egress route.
+
+### Configure network ACLs
+
+Each supplied subnet must have an associated network ACL that permits the traffic below. Validation evaluates rules in priority order, including deny rules.
+
+| Subnet tier | Direction | Protocol and ports | Source or destination |
+|-------------|-----------|--------------------|-----------------------|
+| All supplied subnets | Inbound and outbound | TCP and UDP, ports 1–65535 | VPC primary CIDR |
+| Private application | Outbound | TCP 443 | `0.0.0.0/0` |
+| Private application | Inbound | TCP 1024–65535, for return traffic | `0.0.0.0/0` |
+| Public | Inbound | TCP 443 | `0.0.0.0/0` |
+| Public | Outbound | TCP 1024–65535, for return traffic | `0.0.0.0/0` |
+
+These are network ACL requirements. Workload security groups and your egress controls also govern which connections succeed.
+
+## Create the VPC with Terraform
+
+<Note>
+Using the Terraform module is optional. You can create the VPC with your own tooling and use the module as a reference to meet the [network requirements](#meet-the-network-requirements).
+</Note>
+
+{/* Publishing dependency: publish modules/byoc/aws/byovpc and the role module's allow_vpc_creation_permissions and vpc_ids inputs in the Terraform repository before publishing this guide. */}
+
+The [`byovpc` Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/byovpc) creates a network aligned with the LangSmith data plane requirements. Use it to create a VPC, or configure an existing VPC to meet the [network requirements](#meet-the-network-requirements).
+
+To create the VPC:
+
+1. Configure the AWS provider for your target account and [supported region](/langsmith/byoc#regions-and-cloud-providers).
+2. Add the module to your Terraform configuration. Select a private CIDR range that does not overlap with networks you plan to peer with.
+3. Initialize Terraform, review the plan, and apply it in your account.
+
+The following configuration uses the module's default subnet layout and enables AWS service endpoints, control plane PrivateLink, and flow logs:
+
+```hcl
+provider "aws" {
+  region = "us-west-2"
+}
+
+module "langsmith_byovpc" {
+  source = "github.com/langchain-ai/terraform//modules/byoc/aws/byovpc?ref=main"
+
+  name           = "langsmith-production"
+  vpc_cidr_block = "10.0.0.0/16"
+
+  enable_vpc_endpoints             = true
+  enable_control_plane_privatelink = true
+  enable_vpc_flow_logs             = true
+}
+
+output "langsmith_network_config" {
+  value = module.langsmith_byovpc.langsmith_network_config
+}
+```
+
+The `langsmith_network_config` output contains the VPC ID and subnet IDs to supply when you create the data plane.
+
+### Configure connectivity
+
+The VPC module lets you configure:
+
+- AWS service endpoints.
+- Control plane PrivateLink and private DNS.
+- VPC flow logs.
+- Public subnets for internet-facing load balancers.
+- NAT and internet gateways, or customer-managed centralized egress.
+
+For configuration options and requirements, see the [`byovpc` Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/byovpc).
+
+## Create the reduced-permission IAM role
+
+The [`langsmith-byoc-role` Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role) creates the cross-account role LangChain assumes to manage the data plane.
+
+To create the role:
+
+1. Copy the external ID using the button next to the **Data Planes** header in **Settings > Data Planes**. Pass it as `external_id`. The role's trust policy must use this value in its `ExternalId` condition.
+2. Set `allow_vpc_creation_permissions = false` and supply the VPC ID in the `vpc_ids` input.
+3. If you require internet-facing load balancers, set `allow_public_ingress = true`. Otherwise, leave it disabled.
+4. Review and apply the role module, then retain its `crossplane_role_arn` output for data plane creation.
+
+With VPC creation permissions disabled, the role cannot create or manage the base VPC, subnets, internet and NAT gateways, Elastic IPs, route tables and routes, customer-side VPC endpoints, or VPC flow logs. It retains workload networking permissions, including tagged security groups, VPC endpoint services, and permissions needed by Karpenter. Security group creation is limited to the VPC IDs in `vpc_ids`.
+
+## Supply the VPC and subnet IDs
+
+When creating the data plane, supply the name, AWS region, and IAM role ARN from [onboarding](/langsmith/byoc-onboarding), together with the following network values:
+
+| Value | Terraform module output | Data plane creation field |
+|-------|-------------------------|---------------------------|
+| VPC ID | `vpc_id` | `byovpc_id` |
+| Private application subnet IDs | `private_app_subnet_ids` | `byovpc_private_app_subnet_ids` |
+| Private database subnet IDs | `private_db_subnet_ids` | `byovpc_private_db_subnet_ids` |
+| Public subnet IDs, required for public load balancers | `public_subnet_ids` | `byovpc_public_subnet_ids` |
+
+LangSmith validates the network before provisioning. Correct any reported network or IAM permission errors, then submit the request again. Validation checks the AWS configuration; you remain responsible for working connectivity through any custom routing, DNS, endpoint policies, and egress filters.
+
+After creation, continue with [provisioning and private connectivity (Step 4)](/langsmith/byoc-onboarding).
+
+## Maintain the network
+
+Keep the customer-managed network available throughout the data plane's lifetime. You manage changes to routes, gateways, endpoints, DNS, network ACLs, and flow logs.
+
+The VPC, availability zones, and private subnet configuration cannot be changed after creation. You cannot convert a data plane between a LangChain-managed VPC and BYOVPC.
+
+Deleting a data plane removes LangChain-managed resources. Your VPC and other customer-managed network resources remain under your control and require separate cleanup after the data plane is deprovisioned.
+
+## See also
+
+- [BYOC onboarding](/langsmith/byoc-onboarding)
+- [BYOC architecture](/langsmith/byoc-architecture)
+- [BYOC shared responsibility model](/langsmith/byoc-shared-responsibility)
+- [BYOC FAQ](/langsmith/byoc-faq)
+
+---
+
+<div className="source-links">
+<Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
+</Callout>
+<Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-byovpc.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+</Callout>
+</div>
+
+
 # BYOC FAQ
 Source: https://docs.langchain.com/langsmith/byoc-faq
 
@@ -12336,7 +12522,17 @@ No. LangChain recommends a fresh account for clearer billing, and because some p
 </Accordion>
 
 <Accordion title="Can I install BYOC into an existing VPC?">
-Not today. LangChain provisions a dedicated VPC for each data plane. Support for deploying into an existing VPC is planned.
+Yes. With [Bring your own VPC (BYOVPC)](/langsmith/byoc-byovpc), you supply a VPC and subnets. You can create the VPC with the [reference Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/byovpc) or use an existing VPC that meets the network requirements.
+
+To remove VPC creation permissions from the customer role, set `allow_vpc_creation_permissions = false` in the [`langsmith-byoc-role` Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role) and include your VPC ID in `vpc_ids`.
+</Accordion>
+
+<Accordion title="Can I deploy multiple data planes in the same VPC?">
+No. Deploying multiple data planes in the same VPC is not supported today. Use a separate VPC for each data plane.
+</Accordion>
+
+<Accordion title="Can I move an existing data plane into my own VPC?">
+No. Moving an existing data plane to a different VPC is not supported, nor is changing its VPC and subnet configuration after creation.
 </Accordion>
 
 <Accordion title="Can I install BYOC into an existing EKS cluster?">
@@ -12374,9 +12570,7 @@ Contact the LangChain team. Once the permissions are corrected, provisioning rec
 </Accordion>
 
 <Accordion title="What VPC CIDR range should I use?">
-A private RFC 1918 range between `/18` and `/16`. LangChain provisions a dedicated VPC for the data plane in that range.
-
-If you plan to use VPC peering, select a range that does not overlap with the VPC you intend to peer with. The CIDR range cannot be changed after provisioning.
+A private RFC 1918 range between `/18` and `/16`. If you plan to use VPC peering, select a range that does not overlap with the VPC you intend to peer with. The CIDR range cannot be changed after provisioning.
 </Accordion>
 
 <Accordion title="How do I reach a data plane with a private endpoint?">
@@ -12465,12 +12659,16 @@ See [Connectivity](/langsmith/byoc-architecture#connectivity).
 </Accordion>
 
 <Accordion title="Can I restrict outbound network traffic from the data plane?">
-Yes. BYOC supports a network firewall that controls egress from the data plane. Contact the LangChain team to enable it.
+Yes. 
+
+For a LangChain-managed VPC, BYOC supports a network firewall that controls egress from the data plane. Contact the LangChain team to enable it.
 
 Once enabled, the firewall denies all outbound traffic by default. You then configure an allow list of the destinations the data plane is permitted to reach:
 
 - **Domains**: Fully qualified domain names, such as a model provider API endpoint or a public Docker registry.
 - **CIDR ranges**: IP ranges, such as an internal service or a private subnet.
+
+With BYOVPC, you manage your own firewall and egress controls. Your network must continue to meet the [BYOVPC network requirements](/langsmith/byoc-byovpc#meet-the-network-requirements).
 </Accordion>
 
 <Accordion title="Can I use my own private registry?">
@@ -12753,6 +12951,8 @@ Source: https://docs.langchain.com/langsmith/byoc-onboarding
 
 Before you start, review the [prerequisites](/langsmith/byoc#prerequisites).
 
+By default, LangChain creates a VPC for your data plane. To create and manage the network yourself, follow [Bring your own VPC on AWS](/langsmith/byoc-byovpc) before creating the IAM role and data plane below.
+
 <Steps>
 
 <Step title="Enable BYOC on your organization">
@@ -12766,6 +12966,8 @@ LangChain provides the external ID for the IAM role. Navigate to **Settings > Da
 
 Apply the [`langsmith-byoc-role` Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role) in your AWS account using the copied external ID. This creates the cross-account role LangChain assumes to provision and manage the data plane. The role's trust policy must use this value in its `ExternalId` condition.
 
+For BYOVPC, set `allow_vpc_creation_permissions = false` and supply your VPC ID in `vpc_ids`. See [Create the reduced-permission IAM role](/langsmith/byoc-byovpc#create-the-reduced-permission-iam-role).
+
 <Note>
 LangChain recommends a fresh AWS account dedicated to LangSmith BYOC.
 </Note>
@@ -12778,12 +12980,14 @@ Navigate to **Settings > Data Planes** and create a data plane with the followin
 - **Name**: Lowercase letters, digits, and hyphens, up to 24 characters.
 - **AWS region**: One of the [supported regions](/langsmith/byoc#regions-and-cloud-providers).
 - **AWS IAM role ARN**: The ARN of the role you created in the previous step, which LangSmith assumes in your account.
-- **VPC CIDR range**: A private RFC 1918 range, from `/16` to `/18`.
+- **Network configuration**: For a LangChain-managed VPC, supply a private RFC 1918 CIDR range from `/16` to `/18`. For BYOVPC, supply the [VPC and subnet IDs](/langsmith/byoc-byovpc#supply-the-vpc-and-subnet-ids) instead of a CIDR range.
 - **Load balancer access**: Private by default, which keeps the ingress load balancer reachable only from your VPC. Set it to **Public** to make the load balancer internet-facing.
 </Step>
 
 <Step title="Wait for provisioning">
 LangChain provisions the infrastructure on your behalf. The data plane moves from `Requested` to `Provisioning` to `Active`.
+
+For BYOVPC, LangSmith validates your VPC and subnets before provisioning, then creates the workload infrastructure inside your VPC.
 
 <Note>
 End-to-end provisioning of a data plane takes around 60 to 90 minutes.
@@ -12847,7 +13051,7 @@ LangChain scales your data plane as load changes, so you do not need to size or 
 
 ## High availability
 
-Data planes are provisioned for high availability by default. The VPC spans the availability zones in your region, and RDS and ElastiCache run Multi-AZ with automatic failover.
+Data planes are provisioned for high availability by default. The deployment spans multiple availability zones in your region, and RDS and ElastiCache run Multi-AZ with automatic failover.
 
 <Note>
 To run a data plane without high availability, contact the LangChain team.
@@ -12904,7 +13108,7 @@ If break-glass access is needed, the LangChain team reaches out with instruction
 
 - **LangSmith audit logs**: Operations on data plane resources are recorded in the data plane and accessible at your data plane endpoint. Control plane actions, such as creating a user, are audited in the control plane. For how to access both, see [Audit logs](/langsmith/audit-logs).
 - **EKS audit logs**: Sent to CloudWatch in your account, so you can monitor the commands that were run.
-- **VPC flow logs**: Recorded in an S3 bucket in your account.
+- **VPC flow logs**: Recorded in an S3 bucket in your account. With [BYOVPC](/langsmith/byoc-byovpc), you configure VPC flow logs yourself.
 
 Setting up alerts on those logs is your responsibility.
 
@@ -12952,6 +13156,19 @@ For the multi-tenant SaaS equivalent, see the [LangSmith shared responsibility m
 | **Upgrades and patching** | <ul><li>Roll out upgrades and patches to BYOC-managed components</li><li>Coordinate for major changes and maintenance windows</li></ul> | <ul><li>Plan change management internally, including stakeholder communication and staging validation</li><li>Follow your own change control processes</li></ul> |
 
 For details on how upgrades, autoscaling, and maintenance windows work, see [BYOC operations](/langsmith/byoc-operations).
+
+<Note>
+With [BYOVPC](/langsmith/byoc-byovpc), you also create and maintain:
+- VPC
+- Subnets 
+- Routes, 
+- Gateways
+- Customer-side VPC endpoints
+- Flow logs
+- Egress controls
+
+LangChain validates the supplied network before provisioning and manages the workload infrastructure inside it. Customer-managed network resources remain your responsibility during operation and after data plane deletion.
+</Note>
 
 ## Data and security
 
@@ -26640,7 +26857,7 @@ For detailed information about data retention configuration and management, plea
 This feature is available for [Enterprise](/langsmith/pricing-plans) plan customers. For [self-hosted](/langsmith/self-hosted) Enterprise customers, refer to the [workspace-level configuration section](#workspace-level-extended-retention-for-self-hosted).
 </Note>
 
-[Enterprise](/langsmith/pricing-plans) customers can customize the extended data retention period for traces at the [workspace](/langsmith/administration-overview#workspaces) level to meet specific compliance requirements. By default, extended retention is set to 180 days, but you can adjust this based on your organization's needs. Changes to the retention period apply to new traces only.
+[Enterprise](/langsmith/pricing-plans) customers can customize the extended data retention period for traces at the [workspace](/langsmith/administration-overview#workspaces) level to meet specific compliance requirements. Beginning September 14, 2026, the maximum long-lived trace retention period for SaaS customers is 180 days. You can adjust the retention period below this maximum based on your organization's needs. Changes to the retention period apply to new traces only.
 
 <Note>
 Changes to the retention period apply to new traces only. Existing traces are not affected.
@@ -26658,7 +26875,7 @@ Organization Admins and Operators (`organization:manage`) can configure retentio
     1. Select **Usage configuration** from the left-hand menu.
     1. Find the workspace in the list that you would like to configure.
     1. Click on the value under the **Data retention policy** column for that workspace.
-    1. On the **workspace usage configurations** modal, customize the extended policy using the dropdown for **Extended - All traces are retained for** option. Available durations are: 30d, 60d, 90d, 120d, 150d, 180d, 240d, 300d, 365d, and 400d.
+    1. On the **workspace usage configurations** modal, customize the extended policy using the dropdown for **Extended - All traces are retained for** option. Available durations for SaaS customers are: 30d, 60d, 90d, 120d, 150d, and 180d (maximum as of September 14, 2026). Self-hosted deployments are not subject to this cap.
     1. Select **Save**.
   </Tab>
   <Tab title="API">
@@ -54898,13 +55115,11 @@ Output:
 # Define a Managed Deep Agent
 Source: https://docs.langchain.com/langsmith/javascript/managed-deep-agents-agent-definition
 
-The agent definition selects the model and core capabilities of a Managed Deep Agent.
+The agent definition selects the model and core capabilities of a managed deep agent.
 
 <Note>
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
-
-## Project structure
 
 The agent entry lives at the project root:
 
@@ -54915,14 +55130,14 @@ my-agent/
   agent.ts
 ```
 
-Export the agent definition as a named `agent`. You can also use `agent.tsx`.
+You can also use `agent.tsx`.
 
 
-## Define an agent
+For the full project layout, see [Project structure](/langsmith/javascript/managed-deep-agents-project-structure).
 
 
 
-Use `defineDeepAgent`:
+To define the agent, use `defineDeepAgent`:
 
 <CodeGroup>
 ```ts OpenAI
@@ -54953,66 +55168,26 @@ export const agent = defineDeepAgent({
 ```
 </CodeGroup>
 
+
+Configure the system prompt, skills, memory, sandbox, identity, channels, and schedules through their project files rather than the agent definition. See [Project structure](/langsmith/javascript/managed-deep-agents-project-structure).
+
+## Parameters
 
 
 
 | Parameter | What it does |
 |---|---|
-| [`name`](#name) | Sets the agent and default deployment name |
-| [`model`](#model) | Selects the chat model |
-| [`tools`](#tools) | Adds tools the agent can call |
-| [`middleware`](#middleware) | Adds behavior around model calls, tool calls, and the agent lifecycle |
-| [`subagents`](#subagents) | Defines specialized agents for delegated tasks |
-| [`permissions`](#permissions) | Controls path-level access for filesystem tools |
-| [`interruptOn`](#human-in-the-loop) | Pauses before selected tool calls for human approval |
-| [`responseFormat`](#structured-output) | Defines a structured output schema |
+| `name` | Required. Set the agent and default deployment name. Pass a static string that starts with a letter and contains only letters, numbers, underscores, or hyphens, such as `"research-assistant"`.<br /><br /> Managed Deep Agents uses the name as the LangGraph assistant ID and the default LangSmith deployment name. You can override the deployment name with `mda deploy --name` without changing the agent definition. |
+| `model` | Set the chat model the agent uses. The simplest option is a `provider:model` string. Add the provider's API key to `.env` so the model works locally and in the deployment.<br /><br /> Pass a LangChain chat model instance instead when you need to configure model parameters in code. For model options and supported providers, see [Models](/oss/javascript/deepagents/models).<br /><br /> To connect to LLM Gateway, see [Use LLM Gateway](#use-llm-gateway). |
+| `tools` | Add tools the agent can call. Pass tools in the `tools` array so the agent can call application logic or external services.<br /><br /> Define tools in local modules, import them into the agent entry, and add them to the definition. See [Custom tools](/langsmith/javascript/managed-deep-agents-tools). To add tools from remote MCP servers without importing them into the agent entry, use [MCP connectors](/langsmith/javascript/managed-deep-agents-mcp-connectors). |
+| `middleware` | Add behavior around model calls, tool calls, and the agent lifecycle. Pass middleware in the `middleware` array. Middleware runs in array order. See [Custom middleware](/langsmith/javascript/managed-deep-agents-middleware). |
+| `subagents` | Define specialized agents for delegated tasks. Pass subagent definitions when the agent should delegate specialized or context-heavy work. Each subagent can have its own prompt, model, and tools. See [Subagents](/oss/javascript/deepagents/subagents). |
+| `permissions` | Control path-level access for filesystem tools. Pass filesystem permission rules to control which paths the agent's built-in filesystem tools can read or write. See [Permissions](/oss/javascript/deepagents/permissions). |
+| `interruptOn` | Pause before selected tool calls for human approval. Set `interruptOn` to pause before selected tool calls, so a person can approve, edit, or reject the call before it runs. See [Human-in-the-loop](/langsmith/javascript/managed-deep-agents-tools#human-in-the-loop). |
+| `responseFormat` | Set when the agent must return data that matches a schema instead of an unconstrained text response. See [Structured output](/oss/javascript/langchain/structured-output). |
 
 
-## Name
-
-`name` is required. Pass a static string that starts with a letter and contains only letters, numbers, underscores, or hyphens, such as `"research-assistant"`.
-
-Managed Deep Agents uses the name as the LangGraph assistant ID and the default LangSmith deployment name. You can override the deployment name with `mda deploy --name` without changing the agent definition.
-
-## Model
-
-Set `model` to the chat model the agent uses. The simplest option is a `provider:model` string. Add the provider's API key to `.env` so the model works locally and in the deployment.
-
-
-
-<CodeGroup>
-```ts OpenAI
-import { defineDeepAgent } from "managed-deepagents";
-
-export const agent = defineDeepAgent({
-  name: "research-assistant",
-  model: "openai:gpt-5.5",
-});
-```
-
-```ts Anthropic
-import { defineDeepAgent } from "managed-deepagents";
-
-export const agent = defineDeepAgent({
-  name: "research-assistant",
-  model: "anthropic:claude-sonnet-4-6",
-});
-```
-
-```ts Google Gemini
-import { defineDeepAgent } from "managed-deepagents";
-
-export const agent = defineDeepAgent({
-  name: "research-assistant",
-  model: "google-genai:gemini-3.6-flash",
-});
-```
-</CodeGroup>
-
-
-Pass a LangChain chat model instance instead when you need to configure model parameters in code. For model options and supported providers, see [Models](/oss/javascript/deepagents/models).
-
-### Use LLM Gateway
+## Use LLM Gateway
 
 You can use [LLM Gateway](/langsmith/llm-gateway) to apply rate limits, fallbacks, and other policies to model calls.
 
@@ -55038,51 +55213,11 @@ The gateway routes each request by model ID. `moonshotai/kimi-k3` is a LangChain
 
 For more information, see [LLM Gateway](/langsmith/llm-gateway).
 
-## Tools
+To scaffold a project that uses Gateway from the start, pass `--gateway` when initializing:
 
-
-
-Pass tools in the `tools` array to let the agent call application logic or external services.
-
-
-Define tools in local modules, import them into the agent entry, and add them to the definition. See [Custom tools](/langsmith/javascript/managed-deep-agents-tools). To add tools from remote MCP servers without importing them into the agent entry, use [MCP connectors](/langsmith/javascript/managed-deep-agents-mcp-connectors).
-
-## Middleware
-
-
-
-Pass middleware in the `middleware` array to add behavior around model calls, tool calls, and the agent lifecycle. Middleware runs in array order.
-
-
-See [Custom middleware](/langsmith/javascript/managed-deep-agents-middleware).
-
-## Subagents
-
-Pass subagent definitions in `subagents` when the agent should delegate specialized or context-heavy work. Each subagent can have its own prompt, model, and tools. See [Subagents](/oss/javascript/deepagents/subagents).
-
-## Permissions
-
-Pass filesystem permission rules in `permissions` to control which paths the agent's built-in filesystem tools can read or write. See [Permissions](/oss/javascript/deepagents/permissions).
-
-## Human-in-the-loop
-
-
-
-Set `interruptOn` to pause before selected tool calls.
-
-
-Use this for actions that require a person to approve, edit, or reject the call before it runs. See [Human-in-the-loop](/langsmith/javascript/managed-deep-agents-tools#human-in-the-loop).
-
-## Structured output
-
-
-
-Set `responseFormat` when the agent must return data that matches a schema instead of an unconstrained text response.
-
-
-See [Structured output](/oss/javascript/langchain/structured-output).
-
-Configure the system prompt, skills, memory, sandbox, identity, channels, and schedules through their project files rather than the agent definition. See [Project structure](/langsmith/javascript/managed-deep-agents-project-structure).
+```bash
+mda init my-agent --gateway
+```
 
 ---
 
@@ -55991,7 +56126,7 @@ A user-owned connection resolves against the caller identity that Managed Deep A
 | LangSmith Studio | The signed-in LangSmith user. |
 | SDK client or custom frontend | The identity that the project's [identity declaration](/langsmith/javascript/managed-deep-agents-identity) authenticates. |
 
-The default identity declaration verifies a LangSmith API key. That key authenticates the calling client, not an individual person, so every caller who presents it resolves to the same identity. To give each signed-in person their own credentials, declare [Supabase identity](/langsmith/javascript/managed-deep-agents-identity#authenticate-end-users-with-supabase).
+The default identity declaration verifies a LangSmith API key. That key authenticates the calling client, not an individual person, so every caller who presents it resolves to the same identity. To give each signed-in person their own credentials, declare [Supabase identity](/langsmith/javascript/managed-deep-agents-identity#configure-identity-with-supabase).
 
 Code never passes a user ID to `connections.get(...)`. The runtime resolves the caller and returns that person's credential.
 
@@ -57158,24 +57293,39 @@ When `LANGSMITH_API_KEY` is available, the LangSmith plugin records the Harbor r
 # Add identity to Managed Deep Agents
 Source: https://docs.langchain.com/langsmith/javascript/managed-deep-agents-identity
 
-Identity controls who can call your Managed Deep Agents deployment. By default, identity is secure: `mda init` configures authentication with a LangSmith API key.
-
-That default answers whether a caller is allowed. To also keep each signed-in person's conversations private, use [Supabase](#authenticate-end-users-with-supabase).
+Identity controls who can invoke your managed deep agent, such as apps and SDK clients that start runs or send messages.
 
 <Note>
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
-## Choose a path
+Put the identity declaration at the project root:
+
+
+
+```text
+my-agent/
+  agent.ts
+  identity.ts
+```
+
+
+For the full project layout, see [Project structure](/langsmith/javascript/managed-deep-agents-project-structure).
+
+## Choose the identity provider
+
+By default, `mda init` requires callers to present a LangSmith API key. Anyone who has that key can use the same deployment and may see the same threads. To give each signed-in end user private conversations, use Supabase instead:
 
 | Goal | Use |
 | --- | --- |
-| Lock down the deployment for SDK clients, scripts, and services | LangSmith API key (default) |
-| Signed-in end users with private chats | Supabase |
+| Lock down the deployment for SDK clients, scripts, and services | [LangSmith API key (default)](#configure-identity-with-a-langsmith-api-key) |
+| Signed-in end users with private chats | [Supabase](#configure-identity-with-supabase) |
 
-## Default: LangSmith API key
+For more information, see [Project structure](/langsmith/javascript/managed-deep-agents-project-structure).
 
-`mda init` scaffolds this secure default. Callers must present a valid LangSmith workspace API key. Managed Deep Agents verifies the key with LangSmith Cloud.
+## Configure identity with a LangSmith API key
+
+`mda init` scaffolds this identity provider as a secure default. Callers must present a valid LangSmith workspace API key. Managed Deep Agents verifies the key with LangSmith Cloud.
 
 
 
@@ -57190,30 +57340,28 @@ export const identity = defineIdentity({
 
 Clients send the key as `x-api-key`. You do not need to add verification endpoint or tenant settings to your project `.env`. LangSmith Cloud supplies those.
 
-Anyone with the key can reach the deployment, so treat the key as a secret. This default does not give each end user private threads. If Alice must not see Bob's threads, use [Supabase](#authenticate-end-users-with-supabase).
+<Warning>
+Anyone with the key can reach the deployment, so treat the key as a secret. This default does not give each end user private threads. If Alice must not see Bob's threads, use [Supabase](#configure-identity-with-supabase).
+</Warning>
 
-## Project structure
+## Configure identity with Supabase
 
-The identity declaration lives at the project root:
+Use Supabase when a browser or another client calls the deployment as a signed-in entity. Each user gets private threads. Managed Deep Agents configures that ownership for you. For more information on the underlying LangSmith Deployment pattern, see [Make conversations private](/langsmith/resource-auth).
 
+<Steps>
+  <Step title="Enable auth in Supabase" id="enable-auth-in-supabase">
 
+In the Supabase dashboard, enable the auth provider you will use (for example email/password).
 
-```text
-my-agent/
-  agent.ts
-  identity.ts
-```
+  </Step>
+  <Step title="Copy the project reference" id="copy-the-project-reference">
 
+Copy the project reference: the subdomain before `.supabase.co` in your project URL.
 
-## Authenticate end users with Supabase
+  </Step>
+  <Step title="Declare identity" id="declare-supabase-identity">
 
-Use Supabase when a browser or another client calls the deployment as a signed-in person. Each user gets private threads. Managed Deep Agents configures that ownership for you. For more information on the underlying LangSmith Deployment pattern, see [Make conversations private](/langsmith/resource-auth).
-
-To configure Supabase authentication:
-
-1. In the Supabase dashboard, enable the auth provider you will use (for example email/password).
-2. Copy the project reference: the subdomain before `.supabase.co` in your project URL.
-3. Declare identity with that project reference:
+Declare identity with that project reference:
 
 
 
@@ -57228,7 +57376,10 @@ export const identity = defineIdentity({
 
 Pass `url` instead of the project reference for a custom auth domain.
 
-4. In the client app, set the Supabase project URL and publishable (anon) key. Sign the user in, then send the access token on every deployment request:
+  </Step>
+  <Step title="Send the access token from the client" id="send-the-access-token">
+
+In the client app, set the Supabase project URL and publishable key (labeled `anon` in the Supabase dashboard). Sign the user in, then send the access token on every deployment request:
 
 
 
@@ -57244,13 +57395,16 @@ await fetch(`${deploymentUrl}/threads/${threadId}/runs`, {
 ```
 
 
-The publishable (anon) key is only for the client to sign in with Supabase. Do not send a LangSmith API key in this mode. The Bearer token is the caller identity.
+The publishable key (labeled `anon` in the Supabase dashboard) is only for the client to sign in with Supabase. Do not send a LangSmith API key in this mode. The Bearer token is the caller identity.
 
 Managed Deep Agents verifies the JWT against the project's JWKS URL derived from your project reference (`https://<project-ref>.supabase.co/auth/v1/.well-known/jwks.json`).
 
 <Note>
 Adding Supabase identity to an existing deployment does not add owner metadata to existing threads. Plan and test a migration before relying on identity-based access for those threads.
 </Note>
+
+  </Step>
+</Steps>
 
 ## Test and deploy
 
@@ -57273,28 +57427,27 @@ Authentication failures return 401. For the LangSmith API-key default, confirm t
 # Add instructions to Managed Deep Agents
 Source: https://docs.langchain.com/langsmith/javascript/managed-deep-agents-instructions
 
-Instructions define the agent's behavior. They make up the core of the agent's system prompt. You can define them in a simple markdown file and they are picked up automatically by the agent.
+Instructions define always-on agent behavior. They form the core of the agent's system prompt.
 
 <Note>
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
-## Project structure
-
-The `instructions.md` file lives at the project root:
+Put the instructions for your agent into `instructions.md` at the project root:
 
 
 
 ```text
 my-agent/
-  agent.ts
   instructions.md
 ```
 
 
+For the full project layout, see [Project structure](/langsmith/javascript/managed-deep-agents-project-structure).
+
 ## Add instructions
 
-Create or modify `instructions.md`:
+Create or modify `instructions.md` to define the agent's role, behavior, constraints, and guidance for using its tools:
 
 ```markdown instructions.md
 # Assistant
@@ -57302,19 +57455,26 @@ Create or modify `instructions.md`:
 You are a helpful assistant.
 ```
 
-Use this file to define the agent's role, behavior, constraints, and guidance for using its tools.
+MDA inserts instructions into the agent's system prompt on every run.
+The agent cannot modify these instructions at runtime.
 
-## How the agent uses instructions
+## Deployment
 
-Instructions are inserted into the agents system prompt on every run. They are always present and help guide the agents behavior.
+When you run `mda deploy`, MDA syncs `instructions.md` to the agent's [Context Hub](/langsmith/use-the-context-hub).
 
-## Syncing to Context Hub
+You can then edit the instructions in the LangSmith UI and have those changes apply to the agent.
 
-When you run `mda deploy` to deploy the agent, instructions are automatically synced to the agent's [Context Hub](/langsmith/use-the-context-hub) repo. You can then edit the instructions in the LangSmith UI and have your changes automatically propagated to the agent.
+It is best to keep the `instructions.md` file in the repo as the source of truth for lasting changes, as later deployments sync the project copy again.
 
-## How instructions compare to other concepts
+## When to use instructions
 
-Use [skills](/langsmith/javascript/managed-deep-agents-skills) for task-specific procedures that the agent loads only when relevant. Use [memory](/langsmith/javascript/managed-deep-agents-memory) for knowledge the agent learns and retains across threads.
+| Concept | Role | Loaded when |
+| --- | --- | --- |
+| **Instructions** | Always-on system prompt | Every run |
+| **[Skills](/langsmith/javascript/managed-deep-agents-skills)** | Task-specific procedures | When the agent selects them |
+| **[Memory](/langsmith/javascript/managed-deep-agents-memory)** | Knowledge the agent can update | When durable memory is enabled |
+
+For more information, see [Project structure](/langsmith/javascript/managed-deep-agents-project-structure).
 
 ---
 
@@ -57421,8 +57581,6 @@ Most remote MCP servers require authentication. A [connection](/langsmith/javasc
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
-## Project structure
-
 Declare MCP servers in a module directly under `tools/`:
 
 
@@ -57434,10 +57592,19 @@ my-agent/
     mcp.ts
 ```
 
-The module must export a named `mcp`.
 
+For the full project layout, see [Project structure](/langsmith/javascript/managed-deep-agents-project-structure).
 
-## Add MCP servers
+To implement application logic in the project instead, use an [authored tool](/langsmith/javascript/managed-deep-agents-tools).
+
+## Add an MCP servers
+
+Use an MCP server when tools already live on a remote MCP server and you want MDA to load them without importing them into the agent definition.
+
+<Steps>
+  <Step title="Declare the connector" id="declare-the-connector">
+
+Use `connectors.mcp` to declare one or more remote servers:
 
 
 
@@ -57457,9 +57624,17 @@ export const mcp = defineMcp({
 ```
 
 
-Managed Deep Agents supports Streamable HTTP (`"http"`) and legacy SSE (`"sse"`) transports. Stdio MCP servers are not supported. Expose a stdio server over HTTP or implement its operation as an [authored tool](/langsmith/javascript/managed-deep-agents-tools).
 
-## Select tools
+
+The module must export a named `connector`.
+
+
+Managed Deep Agents supports Streamable HTTP (`"http"`) and legacy SSE (`"sse"`) transports. Stdio MCP servers are not supported. Expose a stdio server over HTTP or implement its operation as an [authored tool](/langsmith/javascript/managed-deep-agents-tools) instead.
+
+For connection options, see [Manage connections](/langsmith/javascript/managed-deep-agents-connections).
+
+  </Step>
+  <Step title="Select tools (Optional)" id="select-tools">
 
 By default, Managed Deep Agents exposes every tool from each server. To expose only selected tools, set an allowlist inside that server's configuration:
 
@@ -57479,6 +57654,19 @@ To expose every tool except selected tools, replace `includeTools` with `exclude
 You can use both options together. The denylist applies after the allowlist, and the same tool cannot appear in both lists.
 
 Selection uses raw MCP tool names before Managed Deep Agents prefixes them. Tool names are prefixed with the server name by default to avoid collisions. For example, the `search_docs_by_lang_chain` tool from the `langchainDocs` server is exposed as `langchainDocs__search_docs_by_lang_chain`.
+
+  </Step>
+  <Step title="Pass credentials (Optional)" id="pass-credentials">
+
+If an MCP server requires credentials, declare a connection on the server config and create that connection in the workspace.
+
+- **MCP OAuth**: For servers that advertise OAuth and support automatic client registration, create with `mda connections create <slug>` (inferred from the MCP declaration) or `mda connections create <slug> --mcp <url>`. You do not supply a client ID or secret.
+- **Opaque secret or general OAuth**: For a static API key, or for a BYOT OAuth app you register yourself, create an opaque secret or general OAuth connection, then set the server's `connection` option to `connections.get(...)`.
+
+For create modes, owners, and runtime authorization, see [Manage connections](/langsmith/javascript/managed-deep-agents-connections).
+
+  </Step>
+</Steps>
 
 ## Configure MCP servers
 
@@ -57502,20 +57690,19 @@ The MCP definition also accepts these options:
 | `prefix_tool_name_with_server_name` / `prefixToolNameWithServerName` | `true` | Prefix each tool with `{server}__`. |
 | `throw_on_load_error` / `throwOnLoadError` | `true` | Fail loading instead of starting with a partial tool set. |
 
-## Compare MCP with other capabilities
+## Deployment
 
-- **MCP servers** provide remotely hosted tools.
-- **[Authored tools](/langsmith/javascript/managed-deep-agents-tools)** implement application logic in the project and are passed through the agent definition.
-- **[Channels](/langsmith/javascript/managed-deep-agents-channels)** receive external messages that start agent runs and deliver responses.
+`mda dev` and `mda deploy` discover connector modules under `connectors/` and include them in the managed configuration. Connectors are not synced to Context Hub.
 
-## Use MCP servers that require authentication
+## When to use MCP connectors
 
-If an MCP server requires credentials, declare a connection on the server config and create that connection in the workspace.
+| Concept | Kind | How it reaches the agent |
+| --- | --- | --- |
+| **MCP servers** | Managed configuration | Declared under `tools/`; no import into the agent entry |
+| **[Authored tools](/langsmith/javascript/managed-deep-agents-tools)** | Application code | Import and pass in the agent definition |
+| **[Channels](/langsmith/javascript/managed-deep-agents-channels)** | Managed configuration | Receive external messages that start agent runs and deliver responses |
 
-- **MCP OAuth**: For servers that advertise OAuth and support automatic client registration, create with `mda connections create <slug>` (inferred from the MCP declaration) or `mda connections create <slug> --mcp <url>`. You do not supply a client ID or secret.
-- **Opaque secret or general OAuth**: For a static API key, or for a BYOT OAuth app you register yourself, create an opaque secret or general OAuth connection, then set the server's `connection` option to `connections.get(...)`.
-
-For create modes, owners, and runtime authorization, see [Manage connections](/langsmith/javascript/managed-deep-agents-connections).
+For more information, see [Project structure](/langsmith/javascript/managed-deep-agents-project-structure).
 
 ---
 
@@ -57532,17 +57719,15 @@ For create modes, owners, and runtime authorization, see [Manage connections](/l
 # Add memory to Managed Deep Agents
 Source: https://docs.langchain.com/langsmith/javascript/managed-deep-agents-memory
 
-Normally, a managed deep agent's conversational memory is scoped to a thread or session. Durable memory is optional knowledge that an agent can retain **across** threads and sessions.
+Normally, a managed deep agent's conversational memory is scoped to a thread or session. Durable memory is optional knowledge that an agent can retain across threads and sessions. Managed Deep Agents do not have durable memory by default.
 
-When enabled, durable memory is backed by [Context Hub](/langsmith/use-the-context-hub). The deployment gets one read/write tree at `/memories/agent/`, shared by every caller. Managed Deep Agents do **not** have durable memory by default.
+When enabled, durable memory is backed by the [Context Hub](/langsmith/use-the-context-hub). The deployment gets one read/write tree at `/memories/agent/`, shared by every caller.
 
 <Note>
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
-## Project structure
-
-The optional memory declaration lives at the project root:
+To enable durable memory, put a memory declaration at the project root:
 
 
 
@@ -57553,17 +57738,14 @@ my-agent/
 ```
 
 
-## Memory compared to related state
-
-| Concept | Role | Scope |
-| --- | --- | --- |
-| **Instructions and skills** | Deploy-owned agent behavior | Shared by the deployment and read-only to the agent |
-| **Thread state** | Conversation continuity | One thread |
-| **Durable memory** | Knowledge learned and retained in Context Hub | Shared by the deployment across threads |
-
-Memory is not your system prompt. Define always-on behavior in [instructions](/langsmith/javascript/managed-deep-agents-instructions) and task-specific procedures in [skills](/langsmith/javascript/managed-deep-agents-skills); use memory for durable knowledge the agent learns while it runs.
+For the full project layout, see [Project structure](/langsmith/javascript/managed-deep-agents-project-structure).
 
 ## Enable memory
+
+Use durable memory for knowledge the agent should learn while it runs and reuse across threads. For always-on behavior, use [instructions](/langsmith/javascript/managed-deep-agents-instructions) instead. For task-specific procedures, use [skills](/langsmith/javascript/managed-deep-agents-skills) instead.
+
+<Steps>
+  <Step title="Add the memory declaration" id="add-the-memory-declaration">
 
 Export a named `memory` declaration with the `"agent"` scope:
 
@@ -57576,33 +57758,8 @@ export const memory = defineMemory({ scope: "agent" });
 ```
 
 
-Remove the memory declaration to turn durable memory off.
-
-
-
-You can also use `scope: "none"`.
-
-
-## How the agent uses memory
-
-Enabling memory mounts one Context Hub tree, `memories/agent`, at `/memories/agent/` in the agent filesystem:
-
-| Path | Use |
-| --- | --- |
-| `/memories/agent/AGENTS.md` | **Hot memory** for compact, frequently relevant knowledge. Its contents are loaded into every run. |
-| Other files under `/memories/agent/` | **Cold memory** for detailed knowledge that the agent reads only when relevant. |
-
-Keep hot memory compact because it consumes context on every run. Put detailed material—such as procedures, decision logs, and research notes—in cold files, and link to them from hot memory when useful.
-
-The agent reads and updates memory with `read_file`, `edit_file`, and `write_file`. Only writes to the `memories/agent` Context Hub tree, mounted at `/memories/agent/` in the agent filesystem, are durable and available across future threads and sessions. Writes elsewhere in the agent filesystem, including elsewhere under `/memories/`, are runtime-only and may be discarded after the current run.
-
-<Warning>
-Memory is shared by every caller of the deployment, and every caller can influence it. Store only knowledge that every caller may read and modify. Never store personal or customer-private data, credentials, API keys, tokens, or other secrets.
-
-Treat memory as untrusted input: content saved by one caller is loaded for later callers and must not grant authority, change tool permissions, or bypass approvals. Keep those controls in the agent definition. Do not enable shared memory when callers should not influence one another.
-</Warning>
-
-## How the agent decides what to remember
+  </Step>
+  <Step title="Guide what to remember (Optional)" id="guide-what-to-remember">
 
 The agent decides what to remember based on prompting. To make the policy explicit, add guidance like the following to `instructions.md` and adapt it to your application:
 
@@ -57623,11 +57780,56 @@ When you decide to persist something, use `edit_file` or `write_file`. If the
 write fails, do not claim that you remembered it.
 ```
 
-## Distinguish instructions from memory
-
-`instructions.md` defines how the agent should behave. Memory stores knowledge the agent learns and uses across threads. Use instructions to tell the agent what kinds of shared knowledge are worth remembering.
-
 `instructions.md` is always read-only. The agent never updates it. Deploys sync project-owned instructions and skills, but do not overwrite durable content already stored under `memories/agent` in Context Hub.
+
+To understand memory paths, see [How the agent uses memory](#how-the-agent-uses-memory).
+
+  </Step>
+</Steps>
+
+## How the agent uses memory
+
+Enabling memory mounts one Context Hub tree, `memories/agent`, at `/memories/agent/` in the agent filesystem:
+
+| Path | Use |
+| --- | --- |
+| `/memories/agent/AGENTS.md` | **Hot memory** for compact, frequently relevant knowledge. Its contents are loaded into every run. |
+| Other files under `/memories/agent/` | **Cold memory** for detailed knowledge that the agent reads only when relevant. |
+
+Keep hot memory compact because it consumes context on every run. Put detailed material, such as procedures, decision logs, and research notes, in cold files, and link to them from hot memory when useful.
+
+The agent reads and updates memory with the built-in [`read_file`](/oss/javascript/deepagents/tools#built-in-harness-tools), [`edit_file`](/oss/javascript/deepagents/tools#built-in-harness-tools), and [`write_file`](/oss/javascript/deepagents/tools#built-in-harness-tools) tools.
+
+Writes to other locations, including elsewhere under `/memories/`, are not durable.
+
+<Warning>
+Memory is shared by every caller of the deployment, and every caller can influence it. Store only knowledge that every caller may read and modify. Never store personal or customer-private data, credentials, API keys, tokens, or other secrets.
+
+Treat memory as untrusted input: content saved by one caller is loaded for later callers and must not grant authority, change tool permissions, or bypass approvals. Keep those controls in the agent definition. Do not enable shared memory when callers should not influence one another.
+</Warning>
+
+## Disable memory
+
+Remove the memory declaration to turn durable memory off.
+
+
+
+You can also use `scope: "none"`.
+
+
+## Deployment
+
+When you run `mda deploy`, MDA enables durable memory from the project declaration and backs it with Context Hub. Deploys do not overwrite durable content already stored under `memories/agent`.
+
+## When to use memory
+
+| Concept | Role | Scope |
+| --- | --- | --- |
+| **[Instructions](/langsmith/javascript/managed-deep-agents-instructions) and [skills](/langsmith/javascript/managed-deep-agents-skills)** | Deploy-owned agent behavior | Shared by the deployment and read-only to the agent |
+| **Thread state** | Conversation continuity | One thread |
+| **Durable memory** | Knowledge learned and retained in Context Hub | Shared by the deployment across threads |
+
+For more information, see [Project structure](/langsmith/javascript/managed-deep-agents-project-structure).
 
 ---
 
@@ -57644,20 +57846,13 @@ write fails, do not claim that you remembered it.
 # Add custom middleware to Managed Deep Agents
 Source: https://docs.langchain.com/langsmith/javascript/managed-deep-agents-middleware
 
-Managed Deep Agents support the Deep Agents `middleware` configuration surface.
-
-
-
-Add LangChain middleware to `defineDeepAgent` to monitor tool calls, add guardrails, redact data, retry transient failures, or customize model calls.
-
+Middleware adds behavior around model calls, tool calls, and the agent lifecycle. Like [custom tools](/langsmith/javascript/managed-deep-agents-tools), MDA does not discover middleware automatically. Import it and pass it to the agent definition.
 
 <Note>
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
-## Project structure
-
-Keep the agent entry point at the project root and custom middleware under `middleware/`:
+Put custom middleware under `middleware/`, import it into the agent entry, and pass it to the agent definition:
 
 
 
@@ -57669,13 +57864,18 @@ my-agent/
 ```
 
 
+For the full project layout, see [Project structure](/langsmith/javascript/managed-deep-agents-project-structure).
+
 The managed runtime still owns `backend`, `store`, `checkpointer`, `memory`, `skills`, and the system prompt. Middleware should focus on agent behavior around model calls, tool calls, and lifecycle hooks.
 
-For deeper hook, state, and context details, see [custom middleware](/oss/javascript/langchain/middleware/custom).
+## Add middleware
 
-## Use prebuilt middleware
+Use middleware to redact PII, enforce call limits, retry failures, fall back between models, select models dynamically, or log and inspect tool calls.
 
-You can use LangChain [prebuilt middleware](/oss/javascript/langchain/middleware/built-in) directly in the agent definition.
+<Steps>
+  <Step title="Use prebuilt middleware" id="use-prebuilt-middleware">
+
+You can use LangChain [prebuilt middleware](/oss/javascript/langchain/middleware/built-in) directly in the agent definition:
 
 
 
@@ -57694,12 +57894,10 @@ export const agent = defineDeepAgent({
 ```
 
 
-Middleware is the right place for cross-cutting behavior such as PII handling, rate limits, retry policies, model fallbacks, dynamic model selection, and tool-call monitoring.
+  </Step>
+  <Step title="Define custom middleware (Optional)" id="define-custom-middleware">
 
-
-## Add a custom middleware module
-
-For a more advanced option, you can also define [custom middleware](/oss/javascript/langchain/middleware/custom).
+For a more advanced option, define [custom middleware](/oss/javascript/langchain/middleware/custom) in a local module.
 
 
 
@@ -57718,8 +57916,7 @@ export const logToolCalls = createMiddleware({
 ```
 
 
-
-Import the middleware into the project-root agent entry and pass it in the `middleware` list.
+Import the middleware into the project-root agent entry and pass it in the `middleware` list:
 
 
 
@@ -57736,18 +57933,33 @@ export const agent = defineDeepAgent({
 ```
 
 
-`mda dev` and `mda deploy` copy the project files into the compiled build.
-
 
 
 Your middleware imports should work the same way they do in a normal local TypeScript project.
 
+
+  </Step>
+</Steps>
 
 ## Use runtime context
 
 Middleware can read per-run context through the normal LangChain runtime APIs. Use context for user IDs, organization IDs, feature flags, request metadata, or credentials that should not be part of the model prompt by default.
 
 For examples, see [Custom middleware](/oss/javascript/langchain/middleware/custom).
+
+## Deployment
+
+`mda dev` and `mda deploy` copy project files into the compiled build, including modules under `middleware/`. Middleware is not synced to Context Hub; it ships with the agent code.
+
+## When to use middleware
+
+| Concept | Kind | How it reaches the agent |
+| --- | --- | --- |
+| **Middleware** | Application code | Import and pass in the agent definition |
+| **[Custom tools](/langsmith/javascript/managed-deep-agents-tools)** | Application code | Import and pass in the agent definition |
+| **[Instructions](/langsmith/javascript/managed-deep-agents-instructions)** | Managed context | Always-on system prompt |
+
+For more information, see [Project structure](/langsmith/javascript/managed-deep-agents-project-structure).
 
 ---
 
@@ -57857,11 +58069,7 @@ For the full layout, see [Project structure](/langsmith/javascript/managed-deep-
 # Managed Deep Agents project structure
 Source: https://docs.langchain.com/langsmith/javascript/managed-deep-agents-project-structure
 
-A Managed Deep Agents project has a required agent entry and optional files that enable managed capabilities.
-
-
-
-It is a regular TypeScript project.
+A Managed Deep Agents project is a normal TypeScript package with one required root agent entry. Other paths are either ordinary modules you import, or files and directories that MDA discovers to enable managed capabilities.
 
 
 <Note>
@@ -57893,8 +58101,8 @@ my-agent/
 ├── identity.ts
 ├── memory.ts
 
-├── package.json                    # Dependencies and secrets
-├── .env
+├── package.json                    # Dependencies
+├── .env                            # Local and deploy secrets
 
 └── evals/                          # Harbor workspace
     ├── harbor-job.json
@@ -57907,25 +58115,44 @@ my-agent/
 
 
 
-The only required file is `agent.ts` or `agent.tsx` at the project root. It must export a named `agent` created with `defineDeepAgent`.
-
-
-Use only one agent entry in a project. See [Agent definition](/langsmith/javascript/managed-deep-agents-agent-definition).
-
-## How Managed Deep Agents treats project files
-
-
-
-- **Managed context**: `instructions.md` defines the system prompt. Each directory under `skills/` contains task-specific instructions. Managed Deep Agents syncs both to Context Hub.
-- **Application code**: Files under `tools/` and `middleware/` are ordinary project modules. Import them from the agent entry. Other local modules work the same way.
-- **Managed configuration**: Root `identity.ts` and `memory.ts`, direct children of `channels/`, `connectors/`, and `schedules/`, and `sandbox/index.ts` enable their corresponding capabilities. MCP connector modules export a named `connector`.
-- **Dependencies and secrets**: Declare dependencies in `package.json`. Managed Deep Agents loads `.env` locally and forwards eligible values as deployment secrets, but never includes `.env` files in the build archive.
-- **Evals**: Managed Deep Agents evals are Harbor evals. Run `mda evals init -i` and develop tasks with a coding agent and the `eval-engineering` skill. Generated runtime files stay under `.mda/evals/` and are not included in the deployed agent build.
-
-
-
+The only required file is `agent.ts` or `agent.tsx` at the project root containing the [agent definition](/langsmith/javascript/managed-deep-agents-agent-definition) as a named `agent`. It must export a named `agent` created with `defineDeepAgent`. Use only one agent entry in a project.
 
 The layout above shows the common `.ts` names. TypeScript managed declarations also accept the supported `.tsx`, `.mts`, or `.cts` variants.
+
+
+## How MDA treats project files
+
+
+
+- **Managed context**: [`instructions.md`](/langsmith/javascript/managed-deep-agents-instructions) defines the system prompt. Each directory under [`skills/`](/langsmith/javascript/managed-deep-agents-skills) contains task-specific instructions, such as a `SKILL.md` and any supporting files. MDA syncs both `instructions.md` and `skills/` to Context Hub.
+- **Application code**: Files under [`tools/`](/langsmith/javascript/managed-deep-agents-tools) and [`middleware/`](/langsmith/javascript/managed-deep-agents-middleware) are ordinary project modules. Import them from the agent entry.
+- **Managed configuration**: Certain paths enable capabilities when present. For `channels/`, `connectors/`, and `schedules/`, only direct children are managed declarations; nested modules are not.
+
+    | Path | Enables |
+    | --- | --- |
+    | `identity.ts` | [Caller authentication](/langsmith/javascript/managed-deep-agents-identity) |
+    | `memory.ts` | [Durable memory](/langsmith/javascript/managed-deep-agents-memory) |
+    | `channels/<name>.ts` | [Messaging channels](/langsmith/javascript/managed-deep-agents-channels) |
+    | `connectors/<name>.ts` | [MCP connectors](/langsmith/javascript/managed-deep-agents-mcp-connectors) |
+    | `schedules/<name>.ts` | [Cron schedules](/langsmith/javascript/managed-deep-agents-schedules) |
+    | `sandbox/index.ts` | [Sandbox filesystem and shell](/langsmith/javascript/managed-deep-agents-sandboxes) |
+
+    MCP connector modules export a named `connector`.
+
+- **Dependencies and secrets**: Declare dependencies in `package.json`. MDA loads `.env` locally and forwards non-reserved values as deployment secrets. Reserved platform variables and `.env` files are not included in the build archive. For more information, see [Deploy a Managed Deep Agent](/langsmith/javascript/managed-deep-agents-deploy).
+- **Evals**: Managed Deep Agents [evals](/langsmith/javascript/managed-deep-agents-evals) are Harbor evals. Run `mda evals init -i` and develop tasks with a coding agent and the `eval-engineering` skill. Generated runtime files stay under `.mda/evals/` and are not included in the deployed agent build.
+
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/langsmith/javascript/managed-deep-agents-quickstart">
+    Create and deploy your first Managed Deep Agent with the `mda` CLI.
+  </Card>
+  <Card title="Tutorial" icon="book" href="/langsmith/javascript/managed-deep-agents-tutorial">
+    Add durable memory and a daily schedule to the quickstart research assistant.
+  </Card>
+</CardGroup>
 
 ---
 
@@ -58309,16 +58536,13 @@ Open that URL. You should see the deployment in a ready state. Send the same res
 # Add a sandbox to Managed Deep Agents
 Source: https://docs.langchain.com/langsmith/javascript/managed-deep-agents-sandboxes
 
-Agents often want to write or execute code when doing their job.
 A sandbox gives a managed deep agent an isolated filesystem and shell for working with files, running code, and executing commands.
 
 <Note>
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
-## Project structure
-
-Keep the agent entry point at the project root and the sandbox declaration under `sandbox/`. Add `sandbox/setup.sh` only if you want to provision a snapshot:
+Put the sandbox declaration under `sandbox/`. Add `sandbox/setup.sh` only if you want to provision a snapshot:
 
 
 
@@ -58331,9 +58555,13 @@ my-agent/
 ```
 
 
+For the full project layout, see [Project structure](/langsmith/javascript/managed-deep-agents-project-structure).
+
 ## Configure a sandbox
 
-`mda init` scaffolds a sandbox declaration. Managed Deep Agents enables the sandbox only while the `sandbox/` directory is present. Delete the directory to opt out, such as for an agent that only needs its prompt, memory, and tools.
+Use a sandbox when the agent needs to write files, run code, or execute shell commands.
+
+`mda init` scaffolds a sandbox declaration. Managed Deep Agents enables the sandbox only while the `sandbox/` directory is present.
 
 `mda init` does not create `setup.sh`. Add that file yourself if the snapshot should install packages, clone a tree, or otherwise change the image.
 
@@ -58422,13 +58650,27 @@ Put `GHCR_TOKEN` in the project `.env` or the process environment. After bake, M
 
 ## How the agent uses the sandbox
 
-The agent uses filesystem tools such as `ls`, `read_file`, `write_file`, `edit_file`, `delete`, `glob`, and `grep`, and runs shell commands with `execute`. Use `instructions.md` to specify where the agent should work and what it must not modify.
+The agent uses built-in filesystem tools such as [`ls`](/oss/javascript/deepagents/tools#built-in-harness-tools), [`read_file`](/oss/javascript/deepagents/tools#built-in-harness-tools), [`write_file`](/oss/javascript/deepagents/tools#built-in-harness-tools), [`edit_file`](/oss/javascript/deepagents/tools#built-in-harness-tools), [`delete`](/oss/javascript/deepagents/tools#built-in-harness-tools), [`glob`](/oss/javascript/deepagents/tools#built-in-harness-tools), and [`grep`](/oss/javascript/deepagents/tools#built-in-harness-tools), and runs shell commands with [`execute`](/oss/javascript/deepagents/tools#built-in-harness-tools). Use [instructions](/langsmith/javascript/managed-deep-agents-instructions) to specify where the agent should work and what it must not modify.
 
-## Sandbox lifecycle
+## Disable the sandbox
 
-Managed Deep Agents owns sandbox naming, recipe bake, reuse, recovery, and cleanup. Each durable thread gets its own sandbox, cloned from the current recipe snapshot.
+Delete the `sandbox/` directory to opt out, such as for an agent that only needs its prompt, memory, and tools.
 
-`mda delete` removes the managed sandboxes for the deployment, the `{deployment}--setup-*` recipe snapshots, and the deployment-owned registry when one exists. For platform-level lifecycle details, see [Sandboxes](/langsmith/sandboxes).
+For existing deployments, deleting the deployment with `mda delete` also deletes the managed sandboxes associated with it, the `{deployment}--setup-*` recipe snapshots, and the deployment-owned registry when one exists.
+
+## Deployment
+
+Managed Deep Agents owns sandbox naming, recipe bake, reuse, recovery, and cleanup. Each durable thread gets its own sandbox, cloned from the current recipe snapshot. For platform-level lifecycle details, see [Sandboxes](/langsmith/sandboxes).
+
+## When to use a sandbox
+
+| Goal | Use |
+| --- | --- |
+| Write files, run code, or execute shell commands in isolation | Sandbox |
+| Store durable knowledge across threads | [Memory](/langsmith/javascript/managed-deep-agents-memory) |
+| Always-on behavior without a filesystem | [Instructions](/langsmith/javascript/managed-deep-agents-instructions) |
+
+For more information, see [Project structure](/langsmith/javascript/managed-deep-agents-project-structure).
 
 ---
 
@@ -58632,15 +58874,13 @@ If you deploy with `--no-wait`, the CLI triggers the remote build and exits befo
 # Add skills to Managed Deep Agents
 Source: https://docs.langchain.com/langsmith/javascript/managed-deep-agents-skills
 
-Skills package task-specific procedures and context into reusable directories. You can define them in markdown files, and they are picked up automatically by the agent.
+Skills package task-specific procedures and supporting files into reusable directories. MDA discovers them automatically. The agent loads a skill's full contents only when the task matches the description in the frontmatter.
 
 <Note>
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
-## Project structure
-
-Keep the agent entry point at the project root and define each skill under `skills/`:
+Put each skill under `skills/` at the project root:
 
 
 
@@ -58653,7 +58893,14 @@ my-agent/
 ```
 
 
+For the full project layout, see [Project structure](/langsmith/javascript/managed-deep-agents-project-structure).
+
 ## Add a skill
+
+Use skills for procedures the agent should follow only when a task matches the description in the frontmatter:
+
+<Steps>
+  <Step title="Create a skill directory" id="create-a-skill-directory">
 
 Each skill directory needs a `SKILL.md` file with `name` and `description` frontmatter:
 
@@ -58672,29 +58919,54 @@ Use this skill when a task needs more than a direct answer.
 3. Summarize findings before responding to the user.
 ```
 
-A skill directory can also contain supporting scripts, reference files, and templates. Reference these files from `SKILL.md` so the agent knows when to use them.
+For skill authoring patterns and the complete format, see [Skills](/oss/javascript/deepagents/skills).
+
+To understand progressive disclosure, see [How the agent uses skills](#how-the-agent-uses-skills).
+
+  </Step>
+  <Step title="Add supporting files (Optional)" id="add-supporting-files">
+
+A skill directory can also contain supporting scripts, reference files, and templates. Reference these files from `SKILL.md` so the agent knows when to use them:
+
+
+
+```text
+skills/
+  research/
+    SKILL.md
+    templates/
+      report.md
+    scripts/
+      fetch_sources.ts
+```
+
+
+  </Step>
+</Steps>
 
 ## How the agent uses skills
 
 At startup, the agent sees each skill's `name` and `description`. When a task matches a skill's description, the agent reads the full `SKILL.md` and follows its instructions. Supporting files are loaded only when needed.
 
-This progressive disclosure gives the agent access to detailed procedures without adding every skill's full contents to its context.
+The agent cannot modify skills at runtime.
 
-## Syncing to Context Hub
+## Deployment
 
-When you run `mda deploy`, every UTF-8 file under `skills/` is automatically synced to the agent's [Context Hub](/langsmith/use-the-context-hub) repo. You can then edit skills in the LangSmith UI and make the changes available to the agent.
+When you run `mda deploy`, MDA syncs every UTF-8 file under `skills/` to the agent's [Context Hub](/langsmith/use-the-context-hub).
 
-A later deployment syncs the project copies again and removes deployed skill files that no longer exist locally.
+You can then edit skills in the LangSmith UI and apply those changes to the agent.
 
-## How skills compare to other concepts
+It is best to keep the skill files in the repo as the source of truth for lasting changes, as later deployments sync the project copies again and remove deployed skill files that do not exist locally.
 
-Skills is context that is loaded dynamically, when the agent chooses to. The agent cannot modify them.
+## When to use skills
 
-Use [instructions](/langsmith/javascript/managed-deep-agents-instructions) for behavior that should ALWAYS be loaded by the agent.
+| Concept | Role | Loaded when |
+| --- | --- | --- |
+| **[Instructions](/langsmith/javascript/managed-deep-agents-instructions)** | Always-on system prompt | Every run |
+| **Skills** | Task-specific procedures | When the agent selects them |
+| **[Memory](/langsmith/javascript/managed-deep-agents-memory)** | Knowledge the agent can update | When durable memory is enabled |
 
-Use [memory](/langsmith/javascript/managed-deep-agents-memory) for knowledge you want the agent to be able to update.
-
-For skill authoring patterns and the complete format, see [Skills](/oss/javascript/deepagents/skills).
+For more information, see [Project structure](/langsmith/javascript/managed-deep-agents-project-structure).
 
 ---
 
@@ -58711,7 +58983,7 @@ For skill authoring patterns and the complete format, see [Skills](/oss/javascri
 # Add custom tools to Managed Deep Agents
 Source: https://docs.langchain.com/langsmith/javascript/managed-deep-agents-tools
 
-Tools extend what your agent can do by letting it interact with external systems, such as fetching real-time data, querying databases, executing code, and taking actions. A tool is a callable function with defined inputs and outputs. The model uses the tool's description and the conversation context to decide when to call it and which arguments to provide.
+Custom tools are application code the agent can call for fetching real-time data, querying databases, executing code, and taking actions. Unlike [instructions](/langsmith/javascript/managed-deep-agents-instructions) and [skills](/langsmith/javascript/managed-deep-agents-skills), MDA does not discover them automatically.
 
 To load tools from a remote MCP server, see [Connect to MCP servers](/langsmith/javascript/managed-deep-agents-mcp-connectors).
 
@@ -58719,9 +58991,7 @@ To load tools from a remote MCP server, see [Connect to MCP servers](/langsmith/
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
-## Project structure
-
-Keep the agent entry point at the project root and authored tools under `tools/`:
+Put authored tools under `tools/`, import them into the agent entry, and pass them to the agent definition:
 
 
 
@@ -58733,7 +59003,16 @@ my-agent/
 ```
 
 
-## Add a tool module
+For the full project layout, see [Project structure](/langsmith/javascript/managed-deep-agents-project-structure).
+
+To load tools from a remote MCP server without importing them into the agent entry, use an [MCP connector](/langsmith/javascript/managed-deep-agents-mcp-connectors) instead.
+
+## Add a tool
+
+Use authored tools for business logic, private APIs, database access, and other code that belongs in your agent project.
+
+<Steps>
+  <Step title="Define a tool module" id="define-a-tool-module">
 
 
 
@@ -58754,9 +59033,12 @@ export const lookupCustomer = tool(
 ```
 
 
-## Attach tools to the agent
+Use clear, unique tool names to avoid collisions. For more about LangChain tool definitions, see [Tools](/oss/javascript/langchain/tools).
 
-Import the tools into the project-root agent entry and pass them in the `tools` list.
+  </Step>
+  <Step title="Attach the tool to the agent" id="attach-the-tool">
+
+Import the tool into the project-root agent entry and pass it in the `tools` list:
 
 
 
@@ -58773,22 +59055,19 @@ export const agent = defineDeepAgent({
 ```
 
 
-`mda dev` and `mda deploy` copy the project files into the compiled build.
-
 
 
 Your imports should work the same way they do in a normal local TypeScript project.
 
 
-Use clear, unique tool names to avoid collisions.
-
-## Human-in-the-loop
+  </Step>
+  <Step title="Add human-in-the-loop (Optional)" id="human-in-the-loop">
 
 Pause the agent before sensitive tool calls so a person can approve, edit, or reject them.
 
 
 
-Set `interruptOn` in the agent definition, and optionally set `permissions` to gate tool and filesystem access.
+Set `interruptOn` in the agent definition, and optionally set `permissions` to gate tool and filesystem access:
 
 
 
@@ -58816,7 +59095,33 @@ The `interruptOn` field applies the same interrupt behavior as LangChain's [huma
 
 For decision types (approve, edit, reject), conditional interrupts, and permission rules, see the Deep Agents [Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop) and [Permissions](/oss/javascript/deepagents/permissions) guides.
 
-### Respond to an interrupt
+To resume a paused run, see [Respond to an interrupt](#respond-to-an-interrupt).
+
+  </Step>
+</Steps>
+
+## Use secrets and context
+
+Tools can read deployment secrets from environment variables. Put local values in `.env` for `mda dev`; `mda deploy` forwards non-reserved `.env` values as hosted deployment secrets.
+
+For per-run values such as request metadata or feature flags, use the normal LangChain runtime context patterns for tools. See [how to access context from within your tools](/oss/javascript/langchain/tools#access-context).
+
+## Deployment
+
+`mda dev` and `mda deploy` copy project files into the compiled build, including modules under `tools/`. Tools are not synced to Context Hub; they ship with the agent code.
+
+## When to use tools
+
+| Concept | Kind | How it reaches the agent |
+| --- | --- | --- |
+| **Tools** | Application code | Import and pass in the agent definition |
+| **[MCP connectors](/langsmith/javascript/managed-deep-agents-mcp-connectors)** | Managed configuration | Declared under `connectors/`; no import into the agent entry |
+| **[Skills](/langsmith/javascript/managed-deep-agents-skills)** | Managed context | Procedures the agent loads when relevant |
+| **[Instructions](/langsmith/javascript/managed-deep-agents-instructions)** | Managed context | Always-on system prompt |
+
+For more information, see [Project structure](/langsmith/javascript/managed-deep-agents-project-structure).
+
+## Respond to an interrupt
 
 When a run hits an interrupt, it pauses and waits for a human response before continuing.
 
@@ -82569,13 +82874,11 @@ def test_foo() -> None:
 # Define a Managed Deep Agent
 Source: https://docs.langchain.com/langsmith/python/managed-deep-agents-agent-definition
 
-The agent definition selects the model and core capabilities of a Managed Deep Agent.
+The agent definition selects the model and core capabilities of a managed deep agent.
 
 <Note>
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
-
-## Project structure
 
 The agent entry lives at the project root:
 
@@ -82584,14 +82887,12 @@ my-agent/
   agent.py
 ```
 
-Export the agent definition as a named `agent`.
 
 
 
+For the full project layout, see [Project structure](/langsmith/python/managed-deep-agents-project-structure).
 
-## Define an agent
-
-Use `define_deep_agent`:
+To define the agent, use `define_deep_agent`:
 
 <CodeGroup>
 ```python OpenAI
@@ -82624,66 +82925,26 @@ agent = define_deep_agent(
 
 
 
+
+Configure the system prompt, skills, memory, sandbox, identity, channels, and schedules through their project files rather than the agent definition. See [Project structure](/langsmith/python/managed-deep-agents-project-structure).
+
+## Parameters
 
 | Parameter | What it does |
 |---|---|
-| [`name=`](#name) | Sets the agent and default deployment name |
-| [`model=`](#model) | Selects the chat model |
-| [`tools=`](#tools) | Adds tools the agent can call |
-| [`middleware=`](#middleware) | Adds behavior around model calls, tool calls, and the agent lifecycle |
-| [`subagents=`](#subagents) | Defines specialized agents for delegated tasks |
-| [`permissions=`](#permissions) | Controls path-level access for filesystem tools |
-| [`interrupt_on=`](#human-in-the-loop) | Pauses before selected tool calls for human approval |
-| [`response_format=`](#structured-output) | Defines a structured output schema |
+| `name=` | Required. Pass a static string that starts with a letter and contains only letters, numbers, underscores, or hyphens, such as `"research-assistant"`.<br /><br /> Managed Deep Agents uses the name as the LangGraph assistant ID and the default LangSmith deployment name. You can override the deployment name with `mda deploy --name` without changing the agent definition. |
+| `model=` | Set the chat model the agent uses. The simplest option is a `provider:model` string. Add the provider's API key to `.env` so the model works locally and in the deployment.<br /><br /> Pass a LangChain chat model instance instead when you need to configure model parameters in code. For model options and supported providers, see [Models](/oss/python/deepagents/models).<br /><br /> To connect to LLM Gateway, see [Use LLM Gateway](#use-llm-gateway). |
+| `tools=` | Adds tools the agent can call. Pass tools in the `tools` list so the agent can call application logic or external services.<br /><br /> Define tools in local modules, import them into the agent entry, and add them to the definition. See [Custom tools](/langsmith/python/managed-deep-agents-tools). To add tools from remote MCP servers without importing them into the agent entry, use [MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors). |
+| `middleware=` | Adds behavior around model calls, tool calls, and the agent lifecycle. Pass middleware in the `middleware` list. Middleware runs in list order. See [Custom middleware](/langsmith/python/managed-deep-agents-middleware). |
+| `subagents=` | Defines specialized agents for delegated tasks. Pass subagent definitions when the agent should delegate specialized or context-heavy work. Each subagent can have its own prompt, model, and tools. See [Subagents](/oss/python/deepagents/subagents). |
+| `permissions=` | Controls path-level access for filesystem tools. Pass filesystem permission rules to control which paths the agent's built-in filesystem tools can read or write. See [Permissions](/oss/python/deepagents/permissions). |
+| `interrupt_on=` | Pauses before selected tool calls for human approval. Set `interrupt_on` to pause before selected tool calls, so a person can approve, edit, or reject the call before it runs. See [Human-in-the-loop](/langsmith/python/managed-deep-agents-tools#human-in-the-loop). |
+| `response_format=` | Set when the agent must return data that matches a schema instead of an unconstrained text response. See [Structured output](/oss/python/langchain/structured-output). |
 
 
 
 
-## Name
-
-`name` is required. Pass a static string that starts with a letter and contains only letters, numbers, underscores, or hyphens, such as `"research-assistant"`.
-
-Managed Deep Agents uses the name as the LangGraph assistant ID and the default LangSmith deployment name. You can override the deployment name with `mda deploy --name` without changing the agent definition.
-
-## Model
-
-Set `model` to the chat model the agent uses. The simplest option is a `provider:model` string. Add the provider's API key to `.env` so the model works locally and in the deployment.
-
-<CodeGroup>
-```python OpenAI
-from managed_deepagents import define_deep_agent
-
-agent = define_deep_agent(
-    name="research-assistant",
-    model="openai:gpt-5.5",
-)
-```
-
-```python Anthropic
-from managed_deepagents import define_deep_agent
-
-agent = define_deep_agent(
-    name="research-assistant",
-    model="anthropic:claude-sonnet-4-6",
-)
-```
-
-```python Google Gemini
-from managed_deepagents import define_deep_agent
-
-agent = define_deep_agent(
-    name="research-assistant",
-    model="google_genai:gemini-3.6-flash",
-)
-```
-</CodeGroup>
-
-
-
-
-Pass a LangChain chat model instance instead when you need to configure model parameters in code. For model options and supported providers, see [Models](/oss/python/deepagents/models).
-
-### Use LLM Gateway
+## Use LLM Gateway
 
 You can use [LLM Gateway](/langsmith/llm-gateway) to apply rate limits, fallbacks, and other policies to model calls.
 
@@ -82709,51 +82970,11 @@ The gateway routes each request by model ID. `moonshotai/kimi-k3` is a LangChain
 
 For more information, see [LLM Gateway](/langsmith/llm-gateway).
 
-## Tools
+To scaffold a project that uses Gateway from the start, pass `--gateway` when initializing:
 
-Pass tools in the `tools` list to let the agent call application logic or external services.
-
-
-
-
-Define tools in local modules, import them into the agent entry, and add them to the definition. See [Custom tools](/langsmith/python/managed-deep-agents-tools). To add tools from remote MCP servers without importing them into the agent entry, use [MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors).
-
-## Middleware
-
-Pass middleware in the `middleware` list to add behavior around model calls, tool calls, and the agent lifecycle. Middleware runs in list order.
-
-
-
-
-See [Custom middleware](/langsmith/python/managed-deep-agents-middleware).
-
-## Subagents
-
-Pass subagent definitions in `subagents` when the agent should delegate specialized or context-heavy work. Each subagent can have its own prompt, model, and tools. See [Subagents](/oss/python/deepagents/subagents).
-
-## Permissions
-
-Pass filesystem permission rules in `permissions` to control which paths the agent's built-in filesystem tools can read or write. See [Permissions](/oss/python/deepagents/permissions).
-
-## Human-in-the-loop
-
-Set `interrupt_on` to pause before selected tool calls.
-
-
-
-
-Use this for actions that require a person to approve, edit, or reject the call before it runs. See [Human-in-the-loop](/langsmith/python/managed-deep-agents-tools#human-in-the-loop).
-
-## Structured output
-
-Set `response_format` when the agent must return data that matches a schema instead of an unconstrained text response.
-
-
-
-
-See [Structured output](/oss/python/langchain/structured-output).
-
-Configure the system prompt, skills, memory, sandbox, identity, channels, and schedules through their project files rather than the agent definition. See [Project structure](/langsmith/python/managed-deep-agents-project-structure).
+```bash
+mda init my-agent --gateway
+```
 
 ---
 
@@ -83508,7 +83729,7 @@ A user-owned connection resolves against the caller identity that Managed Deep A
 | LangSmith Studio | The signed-in LangSmith user. |
 | SDK client or custom frontend | The identity that the project's [identity declaration](/langsmith/python/managed-deep-agents-identity) authenticates. |
 
-The default identity declaration verifies a LangSmith API key. That key authenticates the calling client, not an individual person, so every caller who presents it resolves to the same identity. To give each signed-in person their own credentials, declare [Supabase identity](/langsmith/python/managed-deep-agents-identity#authenticate-end-users-with-supabase).
+The default identity declaration verifies a LangSmith API key. That key authenticates the calling client, not an individual person, so every caller who presents it resolves to the same identity. To give each signed-in person their own credentials, declare [Supabase identity](/langsmith/python/managed-deep-agents-identity#configure-identity-with-supabase).
 
 Code never passes a user ID to `connections.get(...)`. The runtime resolves the caller and returns that person's credential.
 
@@ -84479,24 +84700,39 @@ When `LANGSMITH_API_KEY` is available, the LangSmith plugin records the Harbor r
 # Add identity to Managed Deep Agents
 Source: https://docs.langchain.com/langsmith/python/managed-deep-agents-identity
 
-Identity controls who can call your Managed Deep Agents deployment. By default, identity is secure: `mda init` configures authentication with a LangSmith API key.
-
-That default answers whether a caller is allowed. To also keep each signed-in person's conversations private, use [Supabase](#authenticate-end-users-with-supabase).
+Identity controls who can invoke your managed deep agent, such as apps and SDK clients that start runs or send messages.
 
 <Note>
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
-## Choose a path
+Put the identity declaration at the project root:
+
+```text
+my-agent/
+  agent.py
+  identity.py
+```
+
+
+
+
+For the full project layout, see [Project structure](/langsmith/python/managed-deep-agents-project-structure).
+
+## Choose the identity provider
+
+By default, `mda init` requires callers to present a LangSmith API key. Anyone who has that key can use the same deployment and may see the same threads. To give each signed-in end user private conversations, use Supabase instead:
 
 | Goal | Use |
 | --- | --- |
-| Lock down the deployment for SDK clients, scripts, and services | LangSmith API key (default) |
-| Signed-in end users with private chats | Supabase |
+| Lock down the deployment for SDK clients, scripts, and services | [LangSmith API key (default)](#configure-identity-with-a-langsmith-api-key) |
+| Signed-in end users with private chats | [Supabase](#configure-identity-with-supabase) |
 
-## Default: LangSmith API key
+For more information, see [Project structure](/langsmith/python/managed-deep-agents-project-structure).
 
-`mda init` scaffolds this secure default. Callers must present a valid LangSmith workspace API key. Managed Deep Agents verifies the key with LangSmith Cloud.
+## Configure identity with a LangSmith API key
+
+`mda init` scaffolds this identity provider as a secure default. Callers must present a valid LangSmith workspace API key. Managed Deep Agents verifies the key with LangSmith Cloud.
 
 ```python identity.py
 from managed_deepagents import auth, define_identity
@@ -84509,30 +84745,28 @@ identity = define_identity(auth=auth.langsmith_api_key())
 
 Clients send the key as `x-api-key`. You do not need to add verification endpoint or tenant settings to your project `.env`. LangSmith Cloud supplies those.
 
-Anyone with the key can reach the deployment, so treat the key as a secret. This default does not give each end user private threads. If Alice must not see Bob's threads, use [Supabase](#authenticate-end-users-with-supabase).
+<Warning>
+Anyone with the key can reach the deployment, so treat the key as a secret. This default does not give each end user private threads. If Alice must not see Bob's threads, use [Supabase](#configure-identity-with-supabase).
+</Warning>
 
-## Project structure
+## Configure identity with Supabase
 
-The identity declaration lives at the project root:
+Use Supabase when a browser or another client calls the deployment as a signed-in entity. Each user gets private threads. Managed Deep Agents configures that ownership for you. For more information on the underlying LangSmith Deployment pattern, see [Make conversations private](/langsmith/resource-auth).
 
-```text
-my-agent/
-  agent.py
-  identity.py
-```
+<Steps>
+  <Step title="Enable auth in Supabase" id="enable-auth-in-supabase">
 
+In the Supabase dashboard, enable the auth provider you will use (for example email/password).
 
+  </Step>
+  <Step title="Copy the project reference" id="copy-the-project-reference">
 
+Copy the project reference: the subdomain before `.supabase.co` in your project URL.
 
-## Authenticate end users with Supabase
+  </Step>
+  <Step title="Declare identity" id="declare-supabase-identity">
 
-Use Supabase when a browser or another client calls the deployment as a signed-in person. Each user gets private threads. Managed Deep Agents configures that ownership for you. For more information on the underlying LangSmith Deployment pattern, see [Make conversations private](/langsmith/resource-auth).
-
-To configure Supabase authentication:
-
-1. In the Supabase dashboard, enable the auth provider you will use (for example email/password).
-2. Copy the project reference: the subdomain before `.supabase.co` in your project URL.
-3. Declare identity with that project reference:
+Declare identity with that project reference:
 
 ```python identity.py
 from managed_deepagents import auth, define_identity
@@ -84547,7 +84781,10 @@ identity = define_identity(
 
 Pass `url` instead of the project reference for a custom auth domain.
 
-4. In the client app, set the Supabase project URL and publishable (anon) key. Sign the user in, then send the access token on every deployment request:
+  </Step>
+  <Step title="Send the access token from the client" id="send-the-access-token">
+
+In the client app, set the Supabase project URL and publishable key (labeled `anon` in the Supabase dashboard). Sign the user in, then send the access token on every deployment request:
 
 ```python
 import httpx
@@ -84565,13 +84802,16 @@ response = httpx.post(
 
 
 
-The publishable (anon) key is only for the client to sign in with Supabase. Do not send a LangSmith API key in this mode. The Bearer token is the caller identity.
+The publishable key (labeled `anon` in the Supabase dashboard) is only for the client to sign in with Supabase. Do not send a LangSmith API key in this mode. The Bearer token is the caller identity.
 
 Managed Deep Agents verifies the JWT against the project's JWKS URL derived from your project reference (`https://<project-ref>.supabase.co/auth/v1/.well-known/jwks.json`).
 
 <Note>
 Adding Supabase identity to an existing deployment does not add owner metadata to existing threads. Plan and test a migration before relying on identity-based access for those threads.
 </Note>
+
+  </Step>
+</Steps>
 
 ## Test and deploy
 
@@ -84594,28 +84834,27 @@ Authentication failures return 401. For the LangSmith API-key default, confirm t
 # Add instructions to Managed Deep Agents
 Source: https://docs.langchain.com/langsmith/python/managed-deep-agents-instructions
 
-Instructions define the agent's behavior. They make up the core of the agent's system prompt. You can define them in a simple markdown file and they are picked up automatically by the agent.
+Instructions define always-on agent behavior. They form the core of the agent's system prompt.
 
 <Note>
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
-## Project structure
-
-The `instructions.md` file lives at the project root:
+Put the instructions for your agent into `instructions.md` at the project root:
 
 ```text
 my-agent/
-  agent.py
   instructions.md
 ```
 
 
 
 
+For the full project layout, see [Project structure](/langsmith/python/managed-deep-agents-project-structure).
+
 ## Add instructions
 
-Create or modify `instructions.md`:
+Create or modify `instructions.md` to define the agent's role, behavior, constraints, and guidance for using its tools:
 
 ```markdown instructions.md
 # Assistant
@@ -84623,19 +84862,26 @@ Create or modify `instructions.md`:
 You are a helpful assistant.
 ```
 
-Use this file to define the agent's role, behavior, constraints, and guidance for using its tools.
+MDA inserts instructions into the agent's system prompt on every run.
+The agent cannot modify these instructions at runtime.
 
-## How the agent uses instructions
+## Deployment
 
-Instructions are inserted into the agents system prompt on every run. They are always present and help guide the agents behavior.
+When you run `mda deploy`, MDA syncs `instructions.md` to the agent's [Context Hub](/langsmith/use-the-context-hub).
 
-## Syncing to Context Hub
+You can then edit the instructions in the LangSmith UI and have those changes apply to the agent.
 
-When you run `mda deploy` to deploy the agent, instructions are automatically synced to the agent's [Context Hub](/langsmith/use-the-context-hub) repo. You can then edit the instructions in the LangSmith UI and have your changes automatically propagated to the agent.
+It is best to keep the `instructions.md` file in the repo as the source of truth for lasting changes, as later deployments sync the project copy again.
 
-## How instructions compare to other concepts
+## When to use instructions
 
-Use [skills](/langsmith/python/managed-deep-agents-skills) for task-specific procedures that the agent loads only when relevant. Use [memory](/langsmith/python/managed-deep-agents-memory) for knowledge the agent learns and retains across threads.
+| Concept | Role | Loaded when |
+| --- | --- | --- |
+| **Instructions** | Always-on system prompt | Every run |
+| **[Skills](/langsmith/python/managed-deep-agents-skills)** | Task-specific procedures | When the agent selects them |
+| **[Memory](/langsmith/python/managed-deep-agents-memory)** | Knowledge the agent can update | When durable memory is enabled |
+
+For more information, see [Project structure](/langsmith/python/managed-deep-agents-project-structure).
 
 ---
 
@@ -84733,8 +84979,6 @@ Most remote MCP servers require authentication. A [connection](/langsmith/python
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
-## Project structure
-
 Declare MCP servers in a module directly under `tools/`:
 
 ```text
@@ -84744,12 +84988,21 @@ my-agent/
     mcp.py
 ```
 
-The module must export a module-level `mcp`.
 
 
 
+For the full project layout, see [Project structure](/langsmith/python/managed-deep-agents-project-structure).
 
-## Add MCP servers
+To implement application logic in the project instead, use an [authored tool](/langsmith/python/managed-deep-agents-tools).
+
+## Add an MCP servers
+
+Use an MCP server when tools already live on a remote MCP server and you want MDA to load them without importing them into the agent definition.
+
+<Steps>
+  <Step title="Declare the connector" id="declare-the-connector">
+
+Use `connectors.mcp` to declare one or more remote servers:
 
 Use `define_mcp` to declare one or more remote servers:
 
@@ -84769,9 +85022,17 @@ mcp = define_mcp(
 
 
 
-Managed Deep Agents supports Streamable HTTP (`"http"`) and legacy SSE (`"sse"`) transports. Stdio MCP servers are not supported. Expose a stdio server over HTTP or implement its operation as an [authored tool](/langsmith/python/managed-deep-agents-tools).
+The module must export a module-level `connector`.
 
-## Select tools
+
+
+
+Managed Deep Agents supports Streamable HTTP (`"http"`) and legacy SSE (`"sse"`) transports. Stdio MCP servers are not supported. Expose a stdio server over HTTP or implement its operation as an [authored tool](/langsmith/python/managed-deep-agents-tools) instead.
+
+For connection options, see [Manage connections](/langsmith/python/managed-deep-agents-connections).
+
+  </Step>
+  <Step title="Select tools (Optional)" id="select-tools">
 
 By default, Managed Deep Agents exposes every tool from each server. To expose only selected tools, set an allowlist inside that server's configuration:
 
@@ -84791,6 +85052,19 @@ To expose every tool except selected tools, replace `include_tools` with `exclud
 You can use both options together. The denylist applies after the allowlist, and the same tool cannot appear in both lists.
 
 Selection uses raw MCP tool names before Managed Deep Agents prefixes them. Tool names are prefixed with the server name by default to avoid collisions. For example, the `search_docs_by_lang_chain` tool from the `langchainDocs` server is exposed as `langchainDocs__search_docs_by_lang_chain`.
+
+  </Step>
+  <Step title="Pass credentials (Optional)" id="pass-credentials">
+
+If an MCP server requires credentials, declare a connection on the server config and create that connection in the workspace.
+
+- **MCP OAuth**: For servers that advertise OAuth and support automatic client registration, create with `mda connections create <slug>` (inferred from the MCP declaration) or `mda connections create <slug> --mcp <url>`. You do not supply a client ID or secret.
+- **Opaque secret or general OAuth**: For a static API key, or for a BYOT OAuth app you register yourself, create an opaque secret or general OAuth connection, then set the server's `connection` option to `connections.get(...)`.
+
+For create modes, owners, and runtime authorization, see [Manage connections](/langsmith/python/managed-deep-agents-connections).
+
+  </Step>
+</Steps>
 
 ## Configure MCP servers
 
@@ -84814,20 +85088,19 @@ The MCP definition also accepts these options:
 | `prefix_tool_name_with_server_name` / `prefixToolNameWithServerName` | `true` | Prefix each tool with `{server}__`. |
 | `throw_on_load_error` / `throwOnLoadError` | `true` | Fail loading instead of starting with a partial tool set. |
 
-## Compare MCP with other capabilities
+## Deployment
 
-- **MCP servers** provide remotely hosted tools.
-- **[Authored tools](/langsmith/python/managed-deep-agents-tools)** implement application logic in the project and are passed through the agent definition.
-- **[Channels](/langsmith/python/managed-deep-agents-channels)** receive external messages that start agent runs and deliver responses.
+`mda dev` and `mda deploy` discover connector modules under `connectors/` and include them in the managed configuration. Connectors are not synced to Context Hub.
 
-## Use MCP servers that require authentication
+## When to use MCP connectors
 
-If an MCP server requires credentials, declare a connection on the server config and create that connection in the workspace.
+| Concept | Kind | How it reaches the agent |
+| --- | --- | --- |
+| **MCP servers** | Managed configuration | Declared under `tools/`; no import into the agent entry |
+| **[Authored tools](/langsmith/python/managed-deep-agents-tools)** | Application code | Import and pass in the agent definition |
+| **[Channels](/langsmith/python/managed-deep-agents-channels)** | Managed configuration | Receive external messages that start agent runs and deliver responses |
 
-- **MCP OAuth**: For servers that advertise OAuth and support automatic client registration, create with `mda connections create <slug>` (inferred from the MCP declaration) or `mda connections create <slug> --mcp <url>`. You do not supply a client ID or secret.
-- **Opaque secret or general OAuth**: For a static API key, or for a BYOT OAuth app you register yourself, create an opaque secret or general OAuth connection, then set the server's `connection` option to `connections.get(...)`.
-
-For create modes, owners, and runtime authorization, see [Manage connections](/langsmith/python/managed-deep-agents-connections).
+For more information, see [Project structure](/langsmith/python/managed-deep-agents-project-structure).
 
 ---
 
@@ -84844,17 +85117,15 @@ For create modes, owners, and runtime authorization, see [Manage connections](/l
 # Add memory to Managed Deep Agents
 Source: https://docs.langchain.com/langsmith/python/managed-deep-agents-memory
 
-Normally, a managed deep agent's conversational memory is scoped to a thread or session. Durable memory is optional knowledge that an agent can retain **across** threads and sessions.
+Normally, a managed deep agent's conversational memory is scoped to a thread or session. Durable memory is optional knowledge that an agent can retain across threads and sessions. Managed Deep Agents do not have durable memory by default.
 
-When enabled, durable memory is backed by [Context Hub](/langsmith/use-the-context-hub). The deployment gets one read/write tree at `/memories/agent/`, shared by every caller. Managed Deep Agents do **not** have durable memory by default.
+When enabled, durable memory is backed by the [Context Hub](/langsmith/use-the-context-hub). The deployment gets one read/write tree at `/memories/agent/`, shared by every caller.
 
 <Note>
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
-## Project structure
-
-The optional memory declaration lives at the project root:
+To enable durable memory, put a memory declaration at the project root:
 
 ```text
 my-agent/
@@ -84865,17 +85136,14 @@ my-agent/
 
 
 
-## Memory compared to related state
-
-| Concept | Role | Scope |
-| --- | --- | --- |
-| **Instructions and skills** | Deploy-owned agent behavior | Shared by the deployment and read-only to the agent |
-| **Thread state** | Conversation continuity | One thread |
-| **Durable memory** | Knowledge learned and retained in Context Hub | Shared by the deployment across threads |
-
-Memory is not your system prompt. Define always-on behavior in [instructions](/langsmith/python/managed-deep-agents-instructions) and task-specific procedures in [skills](/langsmith/python/managed-deep-agents-skills); use memory for durable knowledge the agent learns while it runs.
+For the full project layout, see [Project structure](/langsmith/python/managed-deep-agents-project-structure).
 
 ## Enable memory
+
+Use durable memory for knowledge the agent should learn while it runs and reuse across threads. For always-on behavior, use [instructions](/langsmith/python/managed-deep-agents-instructions) instead. For task-specific procedures, use [skills](/langsmith/python/managed-deep-agents-skills) instead.
+
+<Steps>
+  <Step title="Add the memory declaration" id="add-the-memory-declaration">
 
 Export a named `memory` declaration with the `"agent"` scope:
 
@@ -84888,33 +85156,8 @@ memory = define_memory(scope="agent")
 
 
 
-Remove the memory declaration to turn durable memory off.
-
-You can also use `scope="none"`.
-
-
-
-
-## How the agent uses memory
-
-Enabling memory mounts one Context Hub tree, `memories/agent`, at `/memories/agent/` in the agent filesystem:
-
-| Path | Use |
-| --- | --- |
-| `/memories/agent/AGENTS.md` | **Hot memory** for compact, frequently relevant knowledge. Its contents are loaded into every run. |
-| Other files under `/memories/agent/` | **Cold memory** for detailed knowledge that the agent reads only when relevant. |
-
-Keep hot memory compact because it consumes context on every run. Put detailed material—such as procedures, decision logs, and research notes—in cold files, and link to them from hot memory when useful.
-
-The agent reads and updates memory with `read_file`, `edit_file`, and `write_file`. Only writes to the `memories/agent` Context Hub tree, mounted at `/memories/agent/` in the agent filesystem, are durable and available across future threads and sessions. Writes elsewhere in the agent filesystem, including elsewhere under `/memories/`, are runtime-only and may be discarded after the current run.
-
-<Warning>
-Memory is shared by every caller of the deployment, and every caller can influence it. Store only knowledge that every caller may read and modify. Never store personal or customer-private data, credentials, API keys, tokens, or other secrets.
-
-Treat memory as untrusted input: content saved by one caller is loaded for later callers and must not grant authority, change tool permissions, or bypass approvals. Keep those controls in the agent definition. Do not enable shared memory when callers should not influence one another.
-</Warning>
-
-## How the agent decides what to remember
+  </Step>
+  <Step title="Guide what to remember (Optional)" id="guide-what-to-remember">
 
 The agent decides what to remember based on prompting. To make the policy explicit, add guidance like the following to `instructions.md` and adapt it to your application:
 
@@ -84935,11 +85178,56 @@ When you decide to persist something, use `edit_file` or `write_file`. If the
 write fails, do not claim that you remembered it.
 ```
 
-## Distinguish instructions from memory
-
-`instructions.md` defines how the agent should behave. Memory stores knowledge the agent learns and uses across threads. Use instructions to tell the agent what kinds of shared knowledge are worth remembering.
-
 `instructions.md` is always read-only. The agent never updates it. Deploys sync project-owned instructions and skills, but do not overwrite durable content already stored under `memories/agent` in Context Hub.
+
+To understand memory paths, see [How the agent uses memory](#how-the-agent-uses-memory).
+
+  </Step>
+</Steps>
+
+## How the agent uses memory
+
+Enabling memory mounts one Context Hub tree, `memories/agent`, at `/memories/agent/` in the agent filesystem:
+
+| Path | Use |
+| --- | --- |
+| `/memories/agent/AGENTS.md` | **Hot memory** for compact, frequently relevant knowledge. Its contents are loaded into every run. |
+| Other files under `/memories/agent/` | **Cold memory** for detailed knowledge that the agent reads only when relevant. |
+
+Keep hot memory compact because it consumes context on every run. Put detailed material, such as procedures, decision logs, and research notes, in cold files, and link to them from hot memory when useful.
+
+The agent reads and updates memory with the built-in [`read_file`](/oss/python/deepagents/tools#built-in-harness-tools), [`edit_file`](/oss/python/deepagents/tools#built-in-harness-tools), and [`write_file`](/oss/python/deepagents/tools#built-in-harness-tools) tools.
+
+Writes to other locations, including elsewhere under `/memories/`, are not durable.
+
+<Warning>
+Memory is shared by every caller of the deployment, and every caller can influence it. Store only knowledge that every caller may read and modify. Never store personal or customer-private data, credentials, API keys, tokens, or other secrets.
+
+Treat memory as untrusted input: content saved by one caller is loaded for later callers and must not grant authority, change tool permissions, or bypass approvals. Keep those controls in the agent definition. Do not enable shared memory when callers should not influence one another.
+</Warning>
+
+## Disable memory
+
+Remove the memory declaration to turn durable memory off.
+
+You can also use `scope="none"`.
+
+
+
+
+## Deployment
+
+When you run `mda deploy`, MDA enables durable memory from the project declaration and backs it with Context Hub. Deploys do not overwrite durable content already stored under `memories/agent`.
+
+## When to use memory
+
+| Concept | Role | Scope |
+| --- | --- | --- |
+| **[Instructions](/langsmith/python/managed-deep-agents-instructions) and [skills](/langsmith/python/managed-deep-agents-skills)** | Deploy-owned agent behavior | Shared by the deployment and read-only to the agent |
+| **Thread state** | Conversation continuity | One thread |
+| **Durable memory** | Knowledge learned and retained in Context Hub | Shared by the deployment across threads |
+
+For more information, see [Project structure](/langsmith/python/managed-deep-agents-project-structure).
 
 ---
 
@@ -84956,20 +85244,13 @@ write fails, do not claim that you remembered it.
 # Add custom middleware to Managed Deep Agents
 Source: https://docs.langchain.com/langsmith/python/managed-deep-agents-middleware
 
-Managed Deep Agents support the Deep Agents `middleware` configuration surface.
-
-Add LangChain middleware to `define_deep_agent` to monitor tool calls, add guardrails, redact data, retry transient failures, or customize model calls.
-
-
-
+Middleware adds behavior around model calls, tool calls, and the agent lifecycle. Like [custom tools](/langsmith/python/managed-deep-agents-tools), MDA does not discover middleware automatically. Import it and pass it to the agent definition.
 
 <Note>
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
-## Project structure
-
-Keep the agent entry point at the project root and custom middleware under `middleware/`:
+Put custom middleware under `middleware/`, import it into the agent entry, and pass it to the agent definition:
 
 ```text
 my-agent/
@@ -84981,13 +85262,18 @@ my-agent/
 
 
 
+For the full project layout, see [Project structure](/langsmith/python/managed-deep-agents-project-structure).
+
 The managed runtime still owns `backend`, `store`, `checkpointer`, `memory`, `skills`, and the system prompt. Middleware should focus on agent behavior around model calls, tool calls, and lifecycle hooks.
 
-For deeper hook, state, and context details, see [custom middleware](/oss/python/langchain/middleware/custom).
+## Add middleware
 
-## Use prebuilt middleware
+Use middleware to redact PII, enforce call limits, retry failures, fall back between models, select models dynamically, or log and inspect tool calls.
 
-You can use LangChain [prebuilt middleware](/oss/python/langchain/middleware/built-in) directly in the agent definition.
+<Steps>
+  <Step title="Use prebuilt middleware" id="use-prebuilt-middleware">
+
+You can use LangChain [prebuilt middleware](/oss/python/langchain/middleware/built-in) directly in the agent definition:
 
 ```python agent.py
 from langchain.agents.middleware import ModelCallLimitMiddleware, PIIMiddleware
@@ -85006,15 +85292,13 @@ agent = define_deep_agent(
 
 
 
-Middleware is the right place for cross-cutting behavior such as PII handling, rate limits, retry policies, model fallbacks, dynamic model selection, and tool-call monitoring.
+  </Step>
+  <Step title="Define custom middleware (Optional)" id="define-custom-middleware">
 
-
-## Add a custom middleware module
-
-For a more advanced option, you can also define [custom middleware](/oss/python/langchain/middleware/custom).
+For a more advanced option, define [custom middleware](/oss/python/langchain/middleware/custom) in a local module.
 
 <Note>
-Managed Deep Agents use `ainvoke` and `astream`, so custom middleware must use async hooks. Synchronous hooks remain supported with Deep Agents `invoke` and `stream`.
+Middleware is a shared LangChain primitive. Managed Deep Agents always invoke the agent with `ainvoke` and `astream`, so custom middleware must use async hooks. Synchronous hooks remain available when you call [Deep Agents](/oss/python/deepagents/overview) with `invoke` or `stream`.
 </Note>
 
 ```python middleware/audit.py
@@ -85040,8 +85324,7 @@ async def log_tool_calls(
 
 
 
-
-Import the middleware into the project-root agent entry and pass it in the `middleware` list.
+Import the middleware into the project-root agent entry and pass it in the `middleware` list:
 
 ```python agent.py
 from managed_deepagents import define_deep_agent
@@ -85058,18 +85341,33 @@ agent = define_deep_agent(
 
 
 
-`mda dev` and `mda deploy` copy the project files into the compiled build.
-
 Your middleware imports should work the same way they do in a normal local Python project.
 
 
 
+
+  </Step>
+</Steps>
 
 ## Use runtime context
 
 Middleware can read per-run context through the normal LangChain runtime APIs. Use context for user IDs, organization IDs, feature flags, request metadata, or credentials that should not be part of the model prompt by default.
 
 For examples, see [Custom middleware](/oss/python/langchain/middleware/custom).
+
+## Deployment
+
+`mda dev` and `mda deploy` copy project files into the compiled build, including modules under `middleware/`. Middleware is not synced to Context Hub; it ships with the agent code.
+
+## When to use middleware
+
+| Concept | Kind | How it reaches the agent |
+| --- | --- | --- |
+| **Middleware** | Application code | Import and pass in the agent definition |
+| **[Custom tools](/langsmith/python/managed-deep-agents-tools)** | Application code | Import and pass in the agent definition |
+| **[Instructions](/langsmith/python/managed-deep-agents-instructions)** | Managed context | Always-on system prompt |
+
+For more information, see [Project structure](/langsmith/python/managed-deep-agents-project-structure).
 
 ---
 
@@ -85270,9 +85568,7 @@ For the full layout, see [Project structure](/langsmith/python/managed-deep-agen
 # Managed Deep Agents project structure
 Source: https://docs.langchain.com/langsmith/python/managed-deep-agents-project-structure
 
-A Managed Deep Agents project has a required agent entry and optional files that enable managed capabilities.
-
-It is a regular Python project.
+A Managed Deep Agents project is a normal Python package with one required root agent entry. Other paths are either ordinary modules you import, or files and directories that MDA discovers to enable managed capabilities.
 
 
 
@@ -85306,8 +85602,8 @@ my-agent/
 ├── identity.py
 ├── memory.py
 
-├── pyproject.toml                  # Dependencies and secrets
-├── .env
+├── pyproject.toml                  # Dependencies
+├── .env                            # Local and deploy secrets
 
 └── evals/                          # Harbor workspace
     ├── harbor-job.json
@@ -85318,25 +85614,44 @@ my-agent/
         └── tests/
 ```
 
-The only required file is `agent.py` at the project root. It must export a named `agent` created with `define_deep_agent`.
+The only required file is `agent.py` at the project root containing the [agent definition](/langsmith/python/managed-deep-agents-agent-definition) as a named `agent`. It must export a named `agent` created with `define_deep_agent`. Use only one agent entry in a project.
 
 
 
 
-Use only one agent entry in a project. See [Agent definition](/langsmith/python/managed-deep-agents-agent-definition).
+## How MDA treats project files
 
-## How Managed Deep Agents treats project files
+- **Managed context**: [`instructions.md`](/langsmith/python/managed-deep-agents-instructions) defines the system prompt. Each directory under [`skills/`](/langsmith/python/managed-deep-agents-skills) contains task-specific instructions, such as a `SKILL.md` and any supporting files. MDA syncs both `instructions.md` and `skills/` to Context Hub.
+- **Application code**: Files under [`tools/`](/langsmith/python/managed-deep-agents-tools) and [`middleware/`](/langsmith/python/managed-deep-agents-middleware) are ordinary project modules. Import them from the agent entry. Other local modules work the same way.
+- **Managed configuration**: Certain paths enable capabilities when present. For `channels/`, `connectors/`, and `schedules/`, only direct children are managed declarations; nested modules are not.
 
-- **Managed context**: `instructions.md` defines the system prompt. Each directory under `skills/` contains task-specific instructions. Managed Deep Agents syncs both to Context Hub.
-- **Application code**: Files under `tools/` and `middleware/` are ordinary project modules. Import them from the agent entry. Other local modules work the same way.
-- **Managed configuration**: Root `identity.py` and `memory.py`, direct children of `channels/`, `connectors/`, and `schedules/`, and `sandbox/__init__.py` enable their corresponding capabilities. MCP connector modules export a module-level `connector`.
-- **Dependencies and secrets**: Declare dependencies in `pyproject.toml`. Managed Deep Agents loads `.env` locally and forwards eligible values as deployment secrets, but never includes `.env` files in the build archive.
-- **Evals**: Managed Deep Agents evals are Harbor evals. Run `mda evals init -i` and develop tasks with a coding agent and the `eval-engineering` skill. Generated runtime files stay under `.mda/evals/` and are not included in the deployed agent build.
+    | Path | Enables |
+    | --- | --- |
+    | `identity.py` | [Caller authentication](/langsmith/python/managed-deep-agents-identity) |
+    | `memory.py` | [Durable memory](/langsmith/python/managed-deep-agents-memory) |
+    | `channels/<name>.py` | [Messaging channels](/langsmith/python/managed-deep-agents-channels) |
+    | `connectors/<name>.py` | [MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors) |
+    | `schedules/<name>.py` | [Cron schedules](/langsmith/python/managed-deep-agents-schedules) |
+    | `sandbox/__init__.py` | [Sandbox filesystem and shell](/langsmith/python/managed-deep-agents-sandboxes) |
+
+    MCP connector modules export a module-level `connector`.
+
+- **Dependencies and secrets**: Declare dependencies in `pyproject.toml`. MDA loads `.env` locally and forwards non-reserved values as deployment secrets. Reserved platform variables and `.env` files are not included in the build archive. For more information, see [Deploy a Managed Deep Agent](/langsmith/python/managed-deep-agents-deploy).
+- **Evals**: Managed Deep Agents [evals](/langsmith/python/managed-deep-agents-evals) are Harbor evals. Run `mda evals init -i` and develop tasks with a coding agent and the `eval-engineering` skill. Generated runtime files stay under `.mda/evals/` and are not included in the deployed agent build.
 
 
 
 
-The layout above shows the common `.py` names.
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/langsmith/python/managed-deep-agents-quickstart">
+    Create and deploy your first Managed Deep Agent with the `mda` CLI.
+  </Card>
+  <Card title="Tutorial" icon="book" href="/langsmith/python/managed-deep-agents-tutorial">
+    Add durable memory and a daily schedule to the quickstart research assistant.
+  </Card>
+</CardGroup>
 
 ---
 
@@ -85675,16 +85990,13 @@ Open that URL. You should see the deployment in a ready state. Send the same res
 # Add a sandbox to Managed Deep Agents
 Source: https://docs.langchain.com/langsmith/python/managed-deep-agents-sandboxes
 
-Agents often want to write or execute code when doing their job.
 A sandbox gives a managed deep agent an isolated filesystem and shell for working with files, running code, and executing commands.
 
 <Note>
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
-## Project structure
-
-Keep the agent entry point at the project root and the sandbox declaration under `sandbox/`. Add `sandbox/setup.sh` only if you want to provision a snapshot:
+Put the sandbox declaration under `sandbox/`. Add `sandbox/setup.sh` only if you want to provision a snapshot:
 
 ```text
 my-agent/
@@ -85697,9 +86009,13 @@ my-agent/
 
 
 
+For the full project layout, see [Project structure](/langsmith/python/managed-deep-agents-project-structure).
+
 ## Configure a sandbox
 
-`mda init` scaffolds a sandbox declaration. Managed Deep Agents enables the sandbox only while the `sandbox/` directory is present. Delete the directory to opt out, such as for an agent that only needs its prompt, memory, and tools.
+Use a sandbox when the agent needs to write files, run code, or execute shell commands.
+
+`mda init` scaffolds a sandbox declaration. Managed Deep Agents enables the sandbox only while the `sandbox/` directory is present.
 
 `mda init` does not create `setup.sh`. Add that file yourself if the snapshot should install packages, clone a tree, or otherwise change the image.
 
@@ -85788,13 +86104,27 @@ Put `GHCR_TOKEN` in the project `.env` or the process environment. After bake, M
 
 ## How the agent uses the sandbox
 
-The agent uses filesystem tools such as `ls`, `read_file`, `write_file`, `edit_file`, `delete`, `glob`, and `grep`, and runs shell commands with `execute`. Use `instructions.md` to specify where the agent should work and what it must not modify.
+The agent uses built-in filesystem tools such as [`ls`](/oss/python/deepagents/tools#built-in-harness-tools), [`read_file`](/oss/python/deepagents/tools#built-in-harness-tools), [`write_file`](/oss/python/deepagents/tools#built-in-harness-tools), [`edit_file`](/oss/python/deepagents/tools#built-in-harness-tools), [`delete`](/oss/python/deepagents/tools#built-in-harness-tools), [`glob`](/oss/python/deepagents/tools#built-in-harness-tools), and [`grep`](/oss/python/deepagents/tools#built-in-harness-tools), and runs shell commands with [`execute`](/oss/python/deepagents/tools#built-in-harness-tools). Use [instructions](/langsmith/python/managed-deep-agents-instructions) to specify where the agent should work and what it must not modify.
 
-## Sandbox lifecycle
+## Disable the sandbox
 
-Managed Deep Agents owns sandbox naming, recipe bake, reuse, recovery, and cleanup. Each durable thread gets its own sandbox, cloned from the current recipe snapshot.
+Delete the `sandbox/` directory to opt out, such as for an agent that only needs its prompt, memory, and tools.
 
-`mda delete` removes the managed sandboxes for the deployment, the `{deployment}--setup-*` recipe snapshots, and the deployment-owned registry when one exists. For platform-level lifecycle details, see [Sandboxes](/langsmith/sandboxes).
+For existing deployments, deleting the deployment with `mda delete` also deletes the managed sandboxes associated with it, the `{deployment}--setup-*` recipe snapshots, and the deployment-owned registry when one exists.
+
+## Deployment
+
+Managed Deep Agents owns sandbox naming, recipe bake, reuse, recovery, and cleanup. Each durable thread gets its own sandbox, cloned from the current recipe snapshot. For platform-level lifecycle details, see [Sandboxes](/langsmith/sandboxes).
+
+## When to use a sandbox
+
+| Goal | Use |
+| --- | --- |
+| Write files, run code, or execute shell commands in isolation | Sandbox |
+| Store durable knowledge across threads | [Memory](/langsmith/python/managed-deep-agents-memory) |
+| Always-on behavior without a filesystem | [Instructions](/langsmith/python/managed-deep-agents-instructions) |
+
+For more information, see [Project structure](/langsmith/python/managed-deep-agents-project-structure).
 
 ---
 
@@ -85998,15 +86328,13 @@ If you deploy with `--no-wait`, the CLI triggers the remote build and exits befo
 # Add skills to Managed Deep Agents
 Source: https://docs.langchain.com/langsmith/python/managed-deep-agents-skills
 
-Skills package task-specific procedures and context into reusable directories. You can define them in markdown files, and they are picked up automatically by the agent.
+Skills package task-specific procedures and supporting files into reusable directories. MDA discovers them automatically. The agent loads a skill's full contents only when the task matches the description in the frontmatter.
 
 <Note>
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
-## Project structure
-
-Keep the agent entry point at the project root and define each skill under `skills/`:
+Put each skill under `skills/` at the project root:
 
 ```text
 my-agent/
@@ -86019,7 +86347,14 @@ my-agent/
 
 
 
+For the full project layout, see [Project structure](/langsmith/python/managed-deep-agents-project-structure).
+
 ## Add a skill
+
+Use skills for procedures the agent should follow only when a task matches the description in the frontmatter:
+
+<Steps>
+  <Step title="Create a skill directory" id="create-a-skill-directory">
 
 Each skill directory needs a `SKILL.md` file with `name` and `description` frontmatter:
 
@@ -86038,29 +86373,54 @@ Use this skill when a task needs more than a direct answer.
 3. Summarize findings before responding to the user.
 ```
 
-A skill directory can also contain supporting scripts, reference files, and templates. Reference these files from `SKILL.md` so the agent knows when to use them.
+For skill authoring patterns and the complete format, see [Skills](/oss/python/deepagents/skills).
+
+To understand progressive disclosure, see [How the agent uses skills](#how-the-agent-uses-skills).
+
+  </Step>
+  <Step title="Add supporting files (Optional)" id="add-supporting-files">
+
+A skill directory can also contain supporting scripts, reference files, and templates. Reference these files from `SKILL.md` so the agent knows when to use them:
+
+```text
+skills/
+  research/
+    SKILL.md
+    templates/
+      report.md
+    scripts/
+      fetch_sources.py
+```
+
+
+
+
+  </Step>
+</Steps>
 
 ## How the agent uses skills
 
 At startup, the agent sees each skill's `name` and `description`. When a task matches a skill's description, the agent reads the full `SKILL.md` and follows its instructions. Supporting files are loaded only when needed.
 
-This progressive disclosure gives the agent access to detailed procedures without adding every skill's full contents to its context.
+The agent cannot modify skills at runtime.
 
-## Syncing to Context Hub
+## Deployment
 
-When you run `mda deploy`, every UTF-8 file under `skills/` is automatically synced to the agent's [Context Hub](/langsmith/use-the-context-hub) repo. You can then edit skills in the LangSmith UI and make the changes available to the agent.
+When you run `mda deploy`, MDA syncs every UTF-8 file under `skills/` to the agent's [Context Hub](/langsmith/use-the-context-hub).
 
-A later deployment syncs the project copies again and removes deployed skill files that no longer exist locally.
+You can then edit skills in the LangSmith UI and apply those changes to the agent.
 
-## How skills compare to other concepts
+It is best to keep the skill files in the repo as the source of truth for lasting changes, as later deployments sync the project copies again and remove deployed skill files that do not exist locally.
 
-Skills is context that is loaded dynamically, when the agent chooses to. The agent cannot modify them.
+## When to use skills
 
-Use [instructions](/langsmith/python/managed-deep-agents-instructions) for behavior that should ALWAYS be loaded by the agent.
+| Concept | Role | Loaded when |
+| --- | --- | --- |
+| **[Instructions](/langsmith/python/managed-deep-agents-instructions)** | Always-on system prompt | Every run |
+| **Skills** | Task-specific procedures | When the agent selects them |
+| **[Memory](/langsmith/python/managed-deep-agents-memory)** | Knowledge the agent can update | When durable memory is enabled |
 
-Use [memory](/langsmith/python/managed-deep-agents-memory) for knowledge you want the agent to be able to update.
-
-For skill authoring patterns and the complete format, see [Skills](/oss/python/deepagents/skills).
+For more information, see [Project structure](/langsmith/python/managed-deep-agents-project-structure).
 
 ---
 
@@ -86077,7 +86437,7 @@ For skill authoring patterns and the complete format, see [Skills](/oss/python/d
 # Add custom tools to Managed Deep Agents
 Source: https://docs.langchain.com/langsmith/python/managed-deep-agents-tools
 
-Tools extend what your agent can do by letting it interact with external systems, such as fetching real-time data, querying databases, executing code, and taking actions. A tool is a callable function with defined inputs and outputs. The model uses the tool's description and the conversation context to decide when to call it and which arguments to provide.
+Custom tools are application code the agent can call for fetching real-time data, querying databases, executing code, and taking actions. Unlike [instructions](/langsmith/python/managed-deep-agents-instructions) and [skills](/langsmith/python/managed-deep-agents-skills), MDA does not discover them automatically.
 
 To load tools from a remote MCP server, see [Connect to MCP servers](/langsmith/python/managed-deep-agents-mcp-connectors).
 
@@ -86085,9 +86445,7 @@ To load tools from a remote MCP server, see [Connect to MCP servers](/langsmith/
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
-## Project structure
-
-Keep the agent entry point at the project root and authored tools under `tools/`:
+Put authored tools under `tools/`, import them into the agent entry, and pass them to the agent definition:
 
 ```text
 my-agent/
@@ -86099,7 +86457,16 @@ my-agent/
 
 
 
-## Add a tool module
+For the full project layout, see [Project structure](/langsmith/python/managed-deep-agents-project-structure).
+
+To load tools from a remote MCP server without importing them into the agent entry, use an [MCP connector](/langsmith/python/managed-deep-agents-mcp-connectors) instead.
+
+## Add a tool
+
+Use authored tools for business logic, private APIs, database access, and other code that belongs in your agent project.
+
+<Steps>
+  <Step title="Define a tool module" id="define-a-tool-module">
 
 ```python tools/customer.py
 from langchain.tools import tool
@@ -86118,9 +86485,12 @@ def lookup_customer(customer_id: str) -> str:
 
 
 
-## Attach tools to the agent
+Use clear, unique tool names to avoid collisions. For more about LangChain tool definitions, see [Tools](/oss/python/langchain/tools).
 
-Import the tools into the project-root agent entry and pass them in the `tools` list.
+  </Step>
+  <Step title="Attach the tool to the agent" id="attach-the-tool">
+
+Import the tool into the project-root agent entry and pass it in the `tools` list:
 
 ```python agent.py
 from managed_deepagents import define_deep_agent
@@ -86137,20 +86507,17 @@ agent = define_deep_agent(
 
 
 
-`mda dev` and `mda deploy` copy the project files into the compiled build.
-
 Your imports should work the same way they do in a normal local Python project.
 
 
 
 
-Use clear, unique tool names to avoid collisions.
-
-## Human-in-the-loop
+  </Step>
+  <Step title="Add human-in-the-loop (Optional)" id="human-in-the-loop">
 
 Pause the agent before sensitive tool calls so a person can approve, edit, or reject them.
 
-Set `interrupt_on` in the agent definition, and optionally set `permissions` to gate tool and filesystem access.
+Set `interrupt_on` in the agent definition, and optionally set `permissions` to gate tool and filesystem access:
 
 
 
@@ -86178,7 +86545,33 @@ The `interrupt_on` field applies the same interrupt behavior as LangChain's [hum
 
 For decision types (approve, edit, reject), conditional interrupts, and permission rules, see the Deep Agents [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop) and [Permissions](/oss/python/deepagents/permissions) guides.
 
-### Respond to an interrupt
+To resume a paused run, see [Respond to an interrupt](#respond-to-an-interrupt).
+
+  </Step>
+</Steps>
+
+## Use secrets and context
+
+Tools can read deployment secrets from environment variables. Put local values in `.env` for `mda dev`; `mda deploy` forwards non-reserved `.env` values as hosted deployment secrets.
+
+For per-run values such as request metadata or feature flags, use the normal LangChain runtime context patterns for tools. See [how to access context from within your tools](/oss/python/langchain/tools#access-context).
+
+## Deployment
+
+`mda dev` and `mda deploy` copy project files into the compiled build, including modules under `tools/`. Tools are not synced to Context Hub; they ship with the agent code.
+
+## When to use tools
+
+| Concept | Kind | How it reaches the agent |
+| --- | --- | --- |
+| **Tools** | Application code | Import and pass in the agent definition |
+| **[MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors)** | Managed configuration | Declared under `connectors/`; no import into the agent entry |
+| **[Skills](/langsmith/python/managed-deep-agents-skills)** | Managed context | Procedures the agent loads when relevant |
+| **[Instructions](/langsmith/python/managed-deep-agents-instructions)** | Managed context | Always-on system prompt |
+
+For more information, see [Project structure](/langsmith/python/managed-deep-agents-project-structure).
+
+## Respond to an interrupt
 
 When a run hits an interrupt, it pauses and waits for a human response before continuing.
 
@@ -90270,7 +90663,7 @@ You can combine both approaches for fine-grained control over your observability
 # Sandbox auth proxy
 Source: https://docs.langchain.com/langsmith/sandbox-auth-proxy
 
-The auth proxy lets sandbox code call external APIs (OpenAI, Anthropic, GitHub, etc.) without hardcoding credentials. When configured on a sandbox, a proxy sidecar automatically injects authentication headers into matching outbound requests using your workspace secrets or write-only credentials you provide in the proxy config.
+The auth proxy lets sandbox code call external APIs (OpenAI, Anthropic, GitHub, etc.) without hardcoding credentials. When configured on a sandbox, an egress proxy running outside the sandbox automatically injects authentication headers into matching outbound requests using your workspace secrets or write-only credentials you provide in the proxy config.
 
 <Warning>
 You must configure your secrets (e.g., `OPENAI_API_KEY`) in your LangSmith [workspace](/langsmith/administration-overview#workspaces) settings before creating a sandbox that references them.
@@ -90278,16 +90671,30 @@ You must configure your secrets (e.g., `OPENAI_API_KEY`) in your LangSmith [work
 
 ## Egress and network access control
 
-The same `proxy_config` that injects credentials also controls which destinations a sandbox can reach.
+The same `proxy_config` that injects credentials also controls which destinations a sandbox can reach. Access control is enforced per connection on the sandbox host, so changes to `access_control` take effect immediately.
+
+### How egress works
+
+- **Access control applies to every outbound TCP connection**, HTTP or not.
+- **HTTPS to a host matched by a rule or callback is decrypted by the proxy** so it can inject headers; sandboxes trust the proxy's CA. HTTPS to unmatched hosts and every non-HTTP connection, including PostgreSQL, SSH, and Redis, passes through unchanged. Ports 80 and 443 are reserved for HTTP and TLS; a non-HTTP protocol on either port does not work.
+- **Address destinations by hostname.** A direct raw TCP connection to a literal IP address on a non-HTTP port is dropped, even when that IP is on an `allow_list`. HTTPS to a literal IP is dropped too, because the proxy needs a hostname in the TLS handshake. Only cleartext HTTP on port 80 works against a literal IP.
+- **Only TCP leaves the sandbox.** UDP (including QUIC) and ICMP are dropped.
 
 ### Default egress posture
 
-By default (no `access_control` configured):
+With no `access_control`, **every hostname is reachable on every TCP port**, unless your organization is on [restricted egress](#organization-level-restricted-egress). The only exception is hosts that resolve to private, loopback, or cloud-metadata addresses, which the proxy always refuses to dial. Add an `access_control` to restrict this.
 
-- **HTTP and HTTPS (ports 80 and 443) to any host are allowed.** Outbound HTTP(S) is transparently routed through the proxy, where your `rules` and `callbacks` inject credentials.
-- **All other raw TCP is blocked.** Connections to non-HTTP ports—databases (`psql`/`dbt` on 5432), SSH (22), Redis (6379), and so on—are dropped unless you explicitly allow them.
+To allow HTTP and HTTPS to any host while blocking every other port, use a port-qualified allow list. `*` matches every hostname:
 
-This means raw protocols are not blocked because the proxy "can't speak" them—they are blocked by default and opened per host and port via `access_control`.
+```json
+{
+  "access_control": {
+    "allow_list": ["*:80", "*:443"]
+  }
+}
+```
+
+Add `host:PORT` entries to open specific raw TCP destinations on top of that, such as `db.example.com:5432`.
 
 ### Allow and deny lists
 
@@ -90295,12 +90702,14 @@ Add an `access_control` object to `proxy_config` with **either** an `allow_list`
 
 | Mode | Behavior |
 |------|----------|
-| `allow_list` | **Default-deny.** Only listed destinations are reachable—including HTTP/HTTPS. If you set an `allow_list`, you must also list every HTTP(S) host the sandbox needs. |
-| `deny_list` | **Default-allow for HTTP/HTTPS.** All HTTP(S) hosts remain reachable except those listed. A `deny_list` cannot open raw TCP ports. |
+| `allow_list` | **Default-deny.** Only listed destinations are reachable, on any protocol. List every host the sandbox needs, including the HTTP(S) hosts your `rules` and `callbacks` target. |
+| `deny_list` | **Default-allow.** Every destination is reachable, on any protocol, except those listed. |
 
-<Note>
-Raw TCP egress (e.g. PostgreSQL on 5432) can **only** be enabled with an `allow_list` entry that specifies an explicit non-HTTP port (`host:PORT`). The default posture and `deny_list` mode only ever permit HTTP/HTTPS.
-</Note>
+Both lists apply to HTTP, HTTPS, and raw TCP alike. Neither mode distinguishes protocols; use a port suffix to restrict an entry to one port.
+
+<Warning>
+A `deny_list` only blocks the hosts you list. `{"deny_list": ["example.com"]}` blocks `example.com` on every port and leaves every other host reachable on every port, including DNS, SSH, and database ports. To turn off raw TCP everywhere, use an `allow_list` such as `["*:80", "*:443"]`.
+</Warning>
 
 ### Pattern syntax
 
@@ -90308,16 +90717,24 @@ Each `allow_list`/`deny_list` entry uses the following forms:
 
 | Pattern | Meaning |
 |---------|---------|
-| `host` | Bare host → ports **80 and 443 only** (HTTP/S). |
-| `host:PORT` | Host on exactly `PORT`. `:22` grants only 22, **not** additive with 80/443—list the host twice if you need both. |
-| `*.example.com` | Glob (RFC 1034-style). The apex (`example.com`) is **not** included. |
-| `~regex` | Opaque regex match; no port suffix parsing. |
-| `1.2.3.4` / `10.0.0.0/8` | Literal IP or CIDR. CIDRs **cannot** carry a port (HTTP/S only in allow mode; block all ports in deny mode). |
-| `[::1]:22` | IPv6 literal uses the bracketed form when specifying a port. |
+| `host` | Bare host → **every port**. |
+| `host:PORT` | Host on exactly `PORT`. `db.example.com:5432` covers only 5432; add another entry for any other port. |
+| `*.example.com` | Glob (RFC 1034-style). The apex (`example.com`) is **not** included. May carry a port. |
+| `~regex` | Regex matched against the hostname, every port. No port suffix is parsed. |
+| `1.2.3.4` / `[::1]` | Literal IP. May carry a port: `1.2.3.4:443`, `[::1]:22`. |
+| `10.0.0.0/8` | CIDR. Cannot carry a port. |
+
+Matching is on the destination exactly as the sandbox addressed it. A hostname entry matches requests made to that hostname; an IP or CIDR entry matches requests made to a literal IP address. Neither is resolved: `deny_list: ["203.0.113.0/24"]` does not block `foo.example.com` even when it resolves into that range, and `allow_list: ["203.0.113.7"]` does not allow it either. Because raw TCP and HTTPS to a literal IP are dropped before access control runs (see [How egress works](#how-egress-works)), IP and CIDR entries only ever affect cleartext HTTP requests on port 80 that name the IP directly.
+
+Entries that do not parse—`example.com:abc`, `example.com:99999`, or a CIDR with a port—are rejected when the sandbox is created or updated.
+
+### Organization-level restricted egress
+
+An organization can be placed on **restricted egress**. When it is, LangSmith replaces each sandbox's `access_control` with a fixed allow list of package registries, OS package mirrors, source-code and container-image hosts, CDNs, and model-provider APIs, each pinned to specific ports (HTTPS, plus HTTP for the Ubuntu and Debian mirrors). Caller-supplied `allow_list` and `deny_list` values are accepted by the API but have no effect while the policy is active.
 
 ### Connecting to a database (raw TCP)
 
-To let sandbox code reach an external PostgreSQL database with `psql`, `dbt`, or any driver, allow-list the host on its port. Because `allow_list` is default-deny, also list any HTTP(S) hosts the sandbox needs:
+To let sandbox code reach an external PostgreSQL database with `psql`, `dbt`, or any driver, allow-list the host on its port. Because `allow_list` is default-deny, also list any HTTP(S) hosts the sandbox needs. Pin them to `:443` unless you need other ports too:
 
 ```bash
 curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
@@ -90329,7 +90746,7 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
       "access_control": {
         "allow_list": [
           "db.example.com:5432",
-          "api.openai.com"
+          "api.openai.com:443"
         ]
       }
     }
@@ -90355,7 +90772,7 @@ client.create_sandbox(
     name="db-sandbox",
     proxy_config={
         "access_control": {
-            "allow_list": ["db.example.com:5432", "api.openai.com"]
+            "allow_list": ["db.example.com:5432", "api.openai.com:443"]
         }
     },
 )
@@ -90370,7 +90787,7 @@ await client.createSandbox({
   name: "db-sandbox",
   proxyConfig: {
     access_control: {
-      allow_list: ["db.example.com:5432", "api.openai.com"],
+      allow_list: ["db.example.com:5432", "api.openai.com:443"],
     },
   },
 });
@@ -90380,19 +90797,32 @@ await client.createSandbox({
 
 ## Configure auth proxy rules
 
-Add a `proxy_config` when creating a sandbox, or update an existing sandbox by patching its `proxy_config`. Each rule specifies:
+Add a `proxy_config` when creating a sandbox, or update an existing sandbox by patching its `proxy_config`. A `proxy_config` has:
 
 | Field | Description |
 |-------|-------------|
-| `match_hosts` | Hosts to intercept (supports globs like `*.github.com`) |
-| `match_paths` | Paths to match (empty = all paths) |
-| `headers` | Headers to inject, each with a `name`, `type`, and `value` |
+| `rules` | Header-injection and provider-auth rules. Enabled header rules are matched first-match-wins in list order; `aws` and `gcp` rules match their providers' hosts regardless of position |
+| `callbacks` | Dynamic credential lookups; see [Callback credential example](#callback-credential-example) |
+| `access_control` | `allow_list` or `deny_list`; see [Allow and deny lists](#allow-and-deny-lists) |
+| `description` | Optional, up to 1024 characters. What this configuration lets the sandbox reach, for handing to an agent |
+
+Each rule specifies:
+
+| Field | Description |
+|-------|-------------|
+| `name` | Required. Identifier for the rule |
+| `type` | Omit for header injection; `aws` or `gcp` for provider auth |
+| `match_hosts` | Required for header rules; rejected on `aws` and `gcp` rules. Bare hostnames, or a leading `*.` wildcard in front of a registrable domain (`*.github.com`, not `*.com` or `*`). No scheme, path, or port. The wildcard does not match the apex domain |
+| `match_paths` | Paths to match (empty = all paths). Header rules only |
+| `headers` | Headers to inject, each with a `name`, `type`, and `value`. Header rules only |
+| `aws` / `gcp` | Provider credentials; see [Authenticate AWS requests](#authenticate-aws-requests) and [Authenticate GCP requests](#authenticate-gcp-requests) |
 | `env_vars` | Environment variables to set in the sandbox while the rule is enabled |
-| `no_proxy` | Hosts to bypass the proxy entirely (e.g. `localhost`) |
+| `enabled` | Defaults to `true` |
+| `description` | Optional, up to 1024 characters. What this rule lets the sandbox reach |
 
 ### Header types
 
-Each header has a `type` that controls how its value is stored and displayed:
+Each header has a required `type` that controls how its value is stored and displayed:
 
 | Type | Description |
 |------|-------------|
@@ -90408,9 +90838,13 @@ Values are plaintext and are returned by the API, so never put a secret in `env_
 
 Environment variables resolve in this order, from lowest precedence to highest:
 
-1. **Enabled proxy rules**: When two enabled rules declare the same name, the later rule in `rules` wins.
-2. **The sandbox's own `env_vars`**: Explicit per-sandbox values override values from rules.
-3. **Variables managed by an enabled AWS or GCP auth rule**: A rule that declares one of these names is rejected when the matching auth rule is enabled.
+1. **The snapshot image's `ENV`**, when the sandbox opted into `apply_image_config`.
+2. **Enabled proxy rules**: When two enabled rules declare the same name, the later rule in `rules` wins.
+3. **The sandbox's own `env_vars`**: Explicit per-sandbox values override values from rules.
+
+Variables managed by an enabled AWS or GCP auth rule (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_EC2_METADATA_DISABLED`, `AWS_CA_BUNDLE`; `CLOUDSDK_AUTH_ACCESS_TOKEN`, `CLOUDSDK_CORE_CUSTOM_CA_CERTS_FILE`) sit outside this order: a rule or a sandbox `env_vars` entry that declares one of them is rejected while the matching auth rule is enabled.
+
+Every sandbox also has the common CA-bundle environment variables pointed at the system trust store, which includes the proxy's CA, so tools that pin their own bundle still verify proxy-injected hosts. Set any of them yourself to override.
 
 ```json
 {
@@ -90425,9 +90859,9 @@ Environment variables resolve in this order, from lowest precedence to highest:
 
 ## Authenticate AWS requests
 
-Use an AWS auth rule when sandbox code needs to call AWS services with an AWS SDK or CLI. The proxy keeps the real AWS credentials outside the sandbox, then signs supported outbound HTTPS requests with AWS SigV4.
+Use an AWS auth rule when sandbox code needs to call AWS services with an AWS SDK or CLI. The proxy keeps the real AWS credentials outside the sandbox, then signs outbound HTTPS requests to `*.amazonaws.com` endpoints with AWS SigV4.
 
-This is useful when agent code needs to inspect S3 objects, call Bedrock, or use another supported AWS HTTPS endpoint without exposing long-lived AWS access keys in sandbox files, environment variables, shell history, or logs. The sandbox receives compatibility AWS credential placeholders so SDK credential detection works, while the proxy signs the outbound request with the configured credentials.
+This is useful when agent code needs to inspect S3 objects, call Bedrock, or use another AWS endpoint without exposing long-lived AWS access keys in sandbox files, environment variables, shell history, or logs. The sandbox receives placeholder `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` values (plus `AWS_EC2_METADATA_DISABLED=true` and `AWS_CA_BUNDLE`) so SDK credential detection works, while the proxy replaces whatever the request carries with a real SigV4 signature. Only `service.region.amazonaws.com` hosts, S3 virtual-hosted and path-style hosts, and a few global endpoints such as `iam`, `sts`, and `s3` are signed; plaintext HTTP to a matched AWS host is rejected with `403`.
 
 <Warning>
 Do not set real AWS access keys as sandbox environment variables. Configure them as `workspace_secret` or `opaque` proxy values. Plaintext AWS credential values are rejected.
@@ -90520,7 +90954,7 @@ await client.createSandbox({
 
 </CodeGroup>
 
-After the sandbox is ready, use AWS SDKs or CLIs normally inside the sandbox. The SDK or CLI can discover the placeholder AWS environment variables, and the proxy applies the real SigV4 signature to outbound AWS requests.
+After the sandbox is ready, use AWS SDKs or CLIs normally inside the sandbox. The SDK or CLI discovers the placeholder AWS environment variables, and the proxy applies the real SigV4 signature to outbound AWS requests. The proxy does not set a region: set `AWS_REGION` through the sandbox's `env_vars` or the rule's `env_vars`, or most SDK and CLI calls fail before they reach the proxy.
 
 <Note>
 AWS auth proxy rules currently support access key ID and secret access key credentials. They do not include a session token or assume-role configuration.
@@ -90528,9 +90962,9 @@ AWS auth proxy rules currently support access key ID and secret access key crede
 
 ## Authenticate GCP requests
 
-Use a GCP auth rule when sandbox code needs to call Google APIs with Google SDKs or CLIs. The proxy keeps the service account JSON outside the sandbox, then authenticates supported outbound HTTPS requests to Google API hosts matched by the sandbox proxy.
+Use a GCP auth rule when sandbox code needs to call Google APIs with Google SDKs or CLIs. The proxy keeps the service account JSON outside the sandbox, then authenticates outbound HTTPS requests to `googleapis.com` and its subdomains.
 
-This is useful when agent code needs to inspect GCS objects or call another Google API without exposing service account JSON in sandbox files, environment variables, shell history, or logs. The sandbox receives compatibility credentials so SDK credential detection works, while the proxy authenticates the outbound request with the configured service account.
+This is useful when agent code needs to inspect GCS objects or call another Google API without exposing service account JSON in sandbox files, environment variables, shell history, or logs. The sandbox receives a placeholder `CLOUDSDK_AUTH_ACCESS_TOKEN` (plus `CLOUDSDK_CORE_CUSTOM_CA_CERTS_FILE`) so `gcloud` runs, while the proxy replaces whatever authorization the request carries with a token minted from the configured service account. Google client libraries that discover credentials through Application Default Credentials do not read these variables and fail to find credentials; only `gcloud` and direct HTTPS calls are supported.
 
 <Warning>
 Do not set real service account JSON as a sandbox environment variable. Configure it as a `workspace_secret` or `opaque` proxy value. Plaintext GCP credential values are rejected.
@@ -90541,7 +90975,7 @@ GCP auth rules are different from header injection rules:
 - Set `type` to `gcp`.
 - Put credentials under `gcp.service_account_json`.
 - Set `gcp.scopes` to a non-empty list of OAuth scopes.
-- The proxy matches Google API hosts automatically and authenticates those requests with the configured service account.
+- The proxy matches `googleapis.com` and its subdomains automatically and authenticates those requests with the configured service account. Hosts under `google.com` are not matched. Plaintext HTTP to a matched host is rejected with `403`.
 - Configure at most one GCP auth rule per sandbox. The limit counts every GCP rule, including disabled ones.
 
 The SDK `gcp_auth` and `gcpAuth` helpers build this same rule shape.
@@ -90625,7 +91059,7 @@ await client.createSandbox({
 
 </CodeGroup>
 
-After the sandbox is ready, use Google SDKs or CLIs normally inside the sandbox for supported Google API requests. The SDK or CLI can discover the compatibility credentials, and the proxy applies the real GCP authentication without exposing service account JSON inside the sandbox.
+After the sandbox is ready, use `gcloud` or direct HTTPS calls to `googleapis.com` hosts normally inside the sandbox. The proxy applies the real GCP authentication without exposing service account JSON inside the sandbox.
 
 ## Single API example
 
@@ -90655,7 +91089,7 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
   }'
 ```
 
-The sandbox can now call OpenAI with no API key setup—the proxy injects it automatically.
+Requests to `api.openai.com` are now authenticated by the proxy; no real key is stored in the sandbox. SDKs that refuse to start without an API key still need a placeholder—set one with the rule's `env_vars`, as in the [GitHub example](#github-example).
 
 ## Multiple API example
 
@@ -90708,8 +91142,7 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
             }
           ]
         }
-      ],
-      "no_proxy": ["localhost", "127.0.0.1"]
+      ]
     }
   }'
 ```
@@ -90773,12 +91206,16 @@ def configure_github_proxy(sandbox_name: str, github_token: str) -> None:
         f"{endpoint}/v2/sandboxes/boxes/{sandbox_name}",
         headers={"x-api-key": os.environ["LANGSMITH_API_KEY"]},
         json={"proxy_config": {"rules": github_proxy_rules(github_token)}},
-        timeout=30.0,
+        timeout=180.0,
     )
     response.raise_for_status()
 ```
 
 Call `configure_github_proxy` after creating or reattaching to a sandbox. GitHub App installation tokens expire, so refresh the proxy config whenever you reuse a sandbox for a new run.
+
+<Warning>
+`PATCH` replaces the stored `proxy_config` wholesale. If the sandbox also uses `access_control` or `callbacks`, include them in every update or they are dropped. Opaque header values you leave empty are carried over from the current config.
+</Warning>
 
 The `github-api` rule sets `GH_TOKEN` to a non-secret placeholder, which satisfies the `gh` CLI's local credential check. Commands then run without a per-command prefix:
 
@@ -90855,11 +91292,12 @@ Callbacks are configured alongside rules under `proxy_config`:
 | Field | Description |
 |-------|-------------|
 | `match_hosts` | Hosts to intercept (same syntax as rules; supports globs like `*.github.com`). |
-| `url` | Your callback endpoint. Must be an `http://` or `https://` URL reachable from the proxy. |
+| `url` | Your callback endpoint. Must be an `http://` or `https://` URL that resolves to a public address; private, loopback, Kubernetes-internal, and cloud-metadata targets are rejected. |
 | `request_headers` | Headers attached to the proxy → callback request, e.g., an HMAC or shared secret your endpoint uses to verify the request. Only `plaintext` and `opaque` types are permitted (no `workspace_secret`). |
-| `ttl_seconds` | How long resolved headers are cached before re-invoking the callback. Must be between 60 and 3600. |
+| `ttl_seconds` | Required. How long resolved headers are cached before re-invoking the callback. Must be between 60 and 3600. |
+| `full_request` | When `true`, every request to a matched host invokes the callback (nothing is cached) and the body includes a `request` snapshot: `method`, `url`, `scheme`, `host`, `path`, `query`, `headers`, and up to 1 MiB of the body as `body_base64` (`body_truncated` marks a cut). |
 
-**Static rules win.** If any rule in `rules` matches the host, the callback is skipped for that host. Within rules, first-match-wins; the same applies between callbacks if multiple match.
+**Static rules win.** If an enabled header-injection rule matches both the host and the path, the callback is skipped for that request. Within rules, first-match-wins; the same applies between callbacks if multiple match.
 
 ### Callback contract
 
@@ -90868,10 +91306,22 @@ The proxy makes the following request whenever it needs to resolve credentials f
 ```
 POST <callback.url>
 Content-Type: application/json
-<request_headers from your config, attached verbatim>
+X-LangSmith-Signature-JWT: <signature>
+<request_headers from your config, attached verbatim except Content-Type and X-LangSmith-Signature-JWT, which the proxy always sets>
 
-{"host": "api.example.com", "port": 443}
+{
+  "host": "api.example.com",
+  "port": 443,
+  "identity": {
+    "tenant_id": "<workspace-uuid>",
+    "sandbox_id": "<sandbox-uuid>",
+    "organization_id": "<organization-uuid>",
+    "ls_user_id": "<creator-uuid>"
+  }
+}
 ```
+
+`identity` tells your endpoint which sandbox is asking, so one callback URL can serve many sandboxes and mint per-sandbox or per-user credentials. `ls_user_id` is the creating user and is omitted when the sandbox was created with a workspace or service key. Ignore fields and headers you do not recognize; the proxy may add more.
 
 Your endpoint must respond `2xx` with a JSON body:
 
@@ -90884,7 +91334,21 @@ Your endpoint must respond `2xx` with a JSON body:
 }
 ```
 
-The proxy injects every header in the response into the sandbox's outbound request and caches the response for `ttl_seconds`. Any non-2xx response, transport error, or malformed JSON fails closed: the sandbox's request is rejected with `502 callback resolution failed` (no headers injected, response not cached).
+The proxy injects every header in the response into the sandbox's outbound request and caches the response for `ttl_seconds`. Any non-2xx response, transport error, or malformed JSON fails closed: the sandbox's request is rejected with `502 callback resolution failed` (no headers injected, response not cached). Redirects are not followed and count as failures.
+
+### Verify callback requests
+
+`request_headers` let your endpoint check a shared secret you chose. To verify that a request came from LangSmith and was not altered in transit, check the `X-LangSmith-Signature-JWT` header. It is a JWT signed with an Ed25519 key (`alg: EdDSA`) whose public half is published at `<LANGSMITH_ENDPOINT>/.well-known/jwks.json`, selected by the token's `kid`.
+
+| Claim | Expected value |
+|-------|----------------|
+| `iss` | Your LangSmith endpoint origin, e.g. `https://api.smith.langchain.com` |
+| `sub` | `langsmith-sandbox-callback` |
+| `aud` | Your callback URL, exactly as configured |
+| `exp` | Five minutes after issue; reject expired tokens |
+| `body_sha256` | Hex SHA-256 of the raw request body |
+
+Verify the signature against the JWKS, check every claim above, hash the body you received, and compare it to `body_sha256`. Then trust `identity` in the body.
 
 ### Example
 
@@ -137632,9 +138096,9 @@ LangSmith has two tiers of traces based on Data Retention with the following cha
 | **Price**            | [See pricing page](https://www.langchain.com/pricing-langsmith) | [See pricing page](https://www.langchain.com/pricing-langsmith) |
 | **Retention Period** | 14 days          | 180 days       |
 
-<Note>
-Enterprise customers can customize the extended retention period per workspace. Changes apply to new traces only—existing traces are unaffected. See [Customize extended retention policy](/langsmith/data-purging-compliance#customize-extended-retention-policy).
-</Note>
+<Warning>
+Starting September 14, 2026, the maximum long-lived trace retention period for SaaS customers is changing to 180 days. Enterprise customers can still customize the extended retention period per workspace up to this new maximum. Changes apply to new traces only—existing traces are unaffected. See [Customize extended retention policy](/langsmith/data-purging-compliance#customize-extended-retention-policy).
+</Warning>
 
 **Data deletion after retention ends**
 

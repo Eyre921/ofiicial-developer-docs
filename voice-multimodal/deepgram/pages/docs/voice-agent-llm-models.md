@@ -64,6 +64,8 @@ See the [Amazon Bedrock](#amazon-bedrock) section below for credentials and endp
 
 #### Example using Deepgram's managed OpenAI LLM
 
+**`JSON`**
+
 ```json JSON
   // ... other settings ...
   "think": {
@@ -77,6 +79,8 @@ See the [Amazon Bedrock](#amazon-bedrock) section below for credentials and endp
 ```
 
 #### Example using a custom OpenAI endpoint (BYO)
+
+**`JSON`**
 
 ```json JSON
   // ... other settings ...
@@ -109,6 +113,8 @@ See the [Amazon Bedrock](#amazon-bedrock) section below for credentials and endp
 
 #### Example using Deepgram's managed Anthropic LLM
 
+**`JSON`**
+
 ```json JSON
   // ... other settings ...
   "think": {
@@ -122,6 +128,8 @@ See the [Amazon Bedrock](#amazon-bedrock) section below for credentials and endp
 ```
 
 #### Example using a custom Anthropic endpoint (BYO)
+
+**`JSON`**
 
 ```json JSON
   // ... other settings ...
@@ -166,6 +174,8 @@ For defaults, regional availability, and configuration details, see [Regional En
 
 #### Example using Deepgram's managed Google LLM
 
+**`JSON`**
+
 ```json JSON
   // ... other settings ...
   "think": {
@@ -185,6 +195,8 @@ When using a custom endpoint, the `model` property is not supported.
 The desired model is specified as part of the endpoint URL instead.
 
 Use [API keys](https://ai.google.dev/gemini-api/docs/api-key) from [Google AI Studio](https://aistudio.google.com/app/api-keys) for Gemini models. Keys from Vertex AI, Workspace Gemini, or Gemini Enterprise will not work with the Agent API.
+
+**`JSON`**
 
 ```json JSON
   // ... other settings ...
@@ -210,6 +222,8 @@ Use [API keys](https://ai.google.dev/gemini-api/docs/api-key) from [Google AI St
 | `nvidia` | `nemotron-3-nano-30B-A3B` | `Standard`   |
 
 #### Example using Deepgram's managed NVIDIA LLM
+
+**`JSON`**
 
 ```json JSON
   // ... other settings ...
@@ -244,6 +258,8 @@ Amazon Bedrock is a BYO provider. Deepgram does not host Bedrock models, so `end
 
 Use long-lived IAM access keys when your application has stable credentials.
 
+**`JSON`**
+
 ```json JSON
   // ... other settings ...
   "think": {
@@ -268,6 +284,8 @@ Use long-lived IAM access keys when your application has stable credentials.
 #### STS (temporary) credentials
 
 Use STS credentials when your application assumes a role and rotates tokens. Add the `session_token` returned by your STS call.
+
+**`JSON`**
 
 ```json JSON
   // ... other settings ...
@@ -297,6 +315,8 @@ If you need an OpenAI-compatible proxy in front of Bedrock (for logging, header 
 
 ## Example Payload
 
+**`JSON`**
+
 ```json JSON
 // ... other settings ...
  "think": {
@@ -325,6 +345,8 @@ Deepgram tests against major LLM providers including OpenAI, Anthropic, and Goog
 * **Use a custom endpoint from one of the supported major LLM providers.** If you have your own contract or deployment with a supported provider (such as OpenAI, Anthropic, or Google), set the `provider.type` to match that provider and supply your own `endpoint.url` and `endpoint.headers`.
 
 In both cases, configure the `provider.type` to one of the supported provider values and set the `endpoint.url` and `endpoint.headers` fields to the correct values for your provider or gateway.
+
+**`JSON`**
 
 ```json JSON
   // ... other settings ...
@@ -361,6 +383,8 @@ Fallback providers do not need to use the same `provider.type`. You can mix prov
 
 ### Example
 
+**`JSON`**
+
 ```json JSON
 {
   "agent": {
@@ -392,10 +416,14 @@ The current list of providers and models is exposed by a public API endpoint. Qu
 
 GET [https://agent.deepgram.com/v1/agent/settings/think/models](https://agent.deepgram.com/v1/agent/settings/think/models)
 
+**`List supported models`**
+
 ```curl List supported models
 curl https://agent.deepgram.com/v1/agent/settings/think/models
 
 ```
+
+**`List supported models`**
 
 ```python List supported models
 import requests
@@ -406,6 +434,8 @@ response = requests.get(url)
 print(response.json())
 
 ```
+
+**`List supported models`**
 
 ```typescript List supported models
 const res = await fetch(

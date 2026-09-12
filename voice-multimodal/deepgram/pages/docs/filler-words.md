@@ -38,6 +38,8 @@ Currently, Filler Words are only available for Deepgram's Nova, Nova-2 and Nova-
 
 **Example**
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \

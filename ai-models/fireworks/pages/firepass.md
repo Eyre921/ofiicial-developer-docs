@@ -41,7 +41,7 @@ With an active Fire Pass you get:
 
 ## Using your Fire Pass
 
-Fire Pass is designed for use with personal agentic coding harnesses. For Claude Code, OpenCode, Codex, and Pi, use [FireConnect](/ecosystem/fireconnect/overview) — it detects `fpk_...` keys and applies Fire Pass defaults automatically. Below are setup guides for other supported tools.
+Fire Pass is designed for use with personal agentic coding harnesses. For Claude Code, OpenCode, Codex, and Pi, use [FireConnect](/ecosystem/fireconnect/overview) — it detects `fpk_...` keys and configures supported models. Below are setup guides for other supported tools.
 
 ### General Configuration
 
@@ -142,9 +142,7 @@ If your tool supports custom API endpoints, you can configure it manually using 
     All Claude Code setup lives on the [Claude Code integration guide](/ecosystem/fireconnect/claude-code):
 
     * [FireConnect overview](/ecosystem/fireconnect/overview#install) (recommended)
-    * [Using Fire Pass with Claude Code](/ecosystem/fireconnect/claude-code#using-fire-pass)
-
-    With FireConnect, Fire Pass keys route all model aliases to `kimi-fast-latest`.
+    * [Configure Claude Code models](/ecosystem/fireconnect/claude-code#change-models)
   </Accordion>
 
   <Accordion title="Kilo Code">

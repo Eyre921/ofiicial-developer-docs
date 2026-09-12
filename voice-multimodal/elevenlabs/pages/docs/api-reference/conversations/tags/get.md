@@ -41,6 +41,17 @@ Successful Response
 - `description` (string, required, nullable)
 - `created_at_unix_secs` (integer, required)
 
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Request**

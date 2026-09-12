@@ -22,6 +22,8 @@ The `SettingsApplied` message confirms that the server has successfully received
 
 The server will send a `SettingsApplied` message as confirmation that the server received the [Settings](/docs/voice-agent-settings) message.
 
+**`JSON`**
+
 ```json JSON
 {
   "type": "SettingsApplied"

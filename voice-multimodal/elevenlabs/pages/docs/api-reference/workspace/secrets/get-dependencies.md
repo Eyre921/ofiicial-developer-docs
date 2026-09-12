@@ -44,6 +44,17 @@ Successful Response
 - `dependencies` (list of object or list of object or list of object, required)
 - `next_cursor` (string, optional, nullable) — Cursor for fetching the next page of dependencies
 
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Request**

@@ -75,7 +75,7 @@ fireconnect pi on --model firerouter --anthropic-api-key sk-ant-...
 
 ```bash theme={null}
 fireconnect pi on              # Enable Fireworks routing
-fireconnect pi off             # Restore original settings and auth
+fireconnect pi off             # Restore original settings, auth, and model catalog
 fireconnect pi status          # Check current provider and model
 fireconnect pi help            # Show harness-specific help
 ```
@@ -94,7 +94,7 @@ fireconnect pi on --model glm-5p2
 fireconnect pi off
 ```
 
-This restores your previous `settings.json` and `auth.json` from the backup in `~/.fireconnect/pi/`.
+This restores your previous `settings.json`, `auth.json`, and `models.json` from the backup in `~/.fireconnect/pi/`.
 
 ### Use a non-default settings file
 
@@ -104,16 +104,16 @@ fireconnect pi on --settings-path /path/to/settings.json
 
 ## Fireworks on Microsoft Foundry
 
-Pi supports **Fireworks on Microsoft Foundry** (CLI: `--provider azure` or `on --azure`). See the [FireConnect overview](/ecosystem/fireconnect/microsoft-foundry) and [Microsoft Foundry integration guide](/ecosystem/integrations/azure-foundry) for portal setup.
+Pi supports **Fireworks on Microsoft Foundry** (CLI: `--provider azure` or `on --azure`). FireRouter is not available on the Foundry path; run `fireconnect configure --provider fireworks` before using `--model firerouter`. See the [FireConnect overview](/ecosystem/fireconnect/microsoft-foundry) and [Microsoft Foundry integration guide](/ecosystem/integrations/azure-foundry) for portal setup.
 
 ### Configure and enable
 
 ```bash theme={null}
-export AZURE_API_KEY=<your-azure-api-key>
+export AZURE_API_KEY="YOUR_AZURE_API_KEY"
 
 fireconnect configure \
   --provider azure \
-  --base-url https://<resource>.services.ai.azure.com \
+  --base-url "https://YOUR_RESOURCE.services.ai.azure.com" \
   --api-key $AZURE_API_KEY
 
 fireconnect pi on --model FW-GLM-5.2
@@ -122,7 +122,7 @@ fireconnect pi on --model FW-GLM-5.2
 One-off routing:
 
 ```bash theme={null}
-fireconnect pi on --azure --base-url https://<resource>.services.ai.azure.com --model FW-MiniMax-M2.5
+fireconnect pi on --azure --base-url "https://YOUR_RESOURCE.services.ai.azure.com" --model FW-MiniMax-M2.5
 ```
 
 ### What gets written

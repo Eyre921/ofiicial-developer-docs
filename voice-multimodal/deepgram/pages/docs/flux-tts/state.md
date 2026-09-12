@@ -79,6 +79,8 @@ A single agent turn that completes normally — the agent says "Sure, I can help
 
 **1. The client streams tokens.** The first `Speak` starts the turn.
 
+**`Client →`**
+
 ```json Client →
 {"type": "Speak", "text": "Sure, "}
 {"type": "Speak", "text": "I can help you "}
@@ -87,6 +89,8 @@ A single agent turn that completes normally — the agent says "Sure, I can help
 
 **2. The server opens the turn and streams audio.**
 
+**`Server ←`**
+
 ```json Server ←
 {"type": "SpeechStarted", "speech_id": "dg_sp_a1b2c3d4e5f6"}
 // binary audio frames stream as generation proceeds
@@ -94,11 +98,15 @@ A single agent turn that completes normally — the agent says "Sure, I can help
 
 **3. The client ends the turn.**
 
+**`Client →`**
+
 ```json Client →
 {"type": "Flush"}
 ```
 
 **4. The server finishes the audio and reports the turn.** All of the turn's audio has arrived between `SpeechStarted` and this `SpeechMetadata`.
+
+**`Server ←`**
 
 ```json Server ←
 {"type": "Flushed", "speech_id": "dg_sp_a1b2c3d4e5f6"}

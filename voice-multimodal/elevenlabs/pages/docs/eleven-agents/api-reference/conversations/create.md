@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `feedback` (enum, optional) — Either 'like' or 'dislike' to indicate the feedback for the conversation.
   - Allowed values: `like`, `dislike`
 
@@ -41,6 +43,17 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/
 Successful Response
 
 - `any`
+
+## Errors
+
+### 422 Feedback Create Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

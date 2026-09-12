@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/phone-numbers/
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `object`
   - `provider`: `twilio`
     - `label` (string, required) — Label for the phone number
@@ -94,6 +96,17 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/phone-numbers/
 Successful Response
 
 - `phone_number_id` (string, required) — Phone entity ID
+
+## Errors
+
+### 422 Phone Numbers Create Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

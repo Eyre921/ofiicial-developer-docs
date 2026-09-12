@@ -29,6 +29,8 @@ Reference: https://developers.deepgram.com/reference/manage/keys/create
 
 ### Body (application/json)
 
+This endpoint expects an any or any.
+
 - `any or any`
 
 ## Response
@@ -43,6 +45,23 @@ API key created successfully
 - `scopes` (list of string, optional) — The scopes for the API key
 - `tags` (list of string, optional) — The tags for the API key
 - `expiration_date` (string, optional) — The expiration date of the API key
+
+## Errors
+
+### 400 Bad Request Error
+
+Invalid Request
+
+- `string or object or object`
+  - ErrorResponseLegacyError
+    - `err_code` (string, optional) — The error code
+    - `err_msg` (string, optional) — The error message
+    - `request_id` (string, optional) — The request ID
+  - ErrorResponseModernError
+    - `category` (string, optional) — The category of the error
+    - `message` (string, optional) — A message about the error
+    - `details` (string, optional) — A description of the error
+    - `request_id` (string, optional) — The unique identifier of the request
 
 ## Examples
 

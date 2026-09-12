@@ -34,6 +34,23 @@ Successfully removed account from project
 
 - `message` (string, optional) — confirmation message
 
+## Errors
+
+### 400 Bad Request Error
+
+Invalid Request
+
+- `string or object or object`
+  - ErrorResponseLegacyError
+    - `err_code` (string, optional) — The error code
+    - `err_msg` (string, optional) — The error message
+    - `request_id` (string, optional) — The request ID
+  - ErrorResponseModernError
+    - `category` (string, optional) — The category of the error
+    - `message` (string, optional) — A message about the error
+    - `details` (string, optional) — A description of the error
+    - `request_id` (string, optional) — The unique identifier of the request
+
 ## Examples
 
 **Request**

@@ -18,7 +18,7 @@ This tutorial will guide you through creating a web client that can interact wit
 
 Looking for a complete example? Check out our [Next.js demo on GitHub](https://github.com/elevenlabs/examples/tree/main/agents/nextjs/quickstart).
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c1bc26a84d079cebcdfe6b4eb602bd27476d5afc92419e9ddfb92b755ca8058e/assets/images/conversational-ai/nextjs-guide.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T100016Z&X-Amz-Expires=604800&X-Amz-Signature=cbbfa2bb2f67d7579ee9a929efb3a46b3f3471651eccc81ddf1a414813232547&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c1bc26a84d079cebcdfe6b4eb602bd27476d5afc92419e9ddfb92b755ca8058e/assets/images/conversational-ai/nextjs-guide.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T094114Z&X-Amz-Expires=604800&X-Amz-Signature=76f5bbc94e444b8e7eddfab22c3a85d17e655c417fdb4f131dfd5c5cbc47b7b6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Setup
 
@@ -52,13 +52,15 @@ Run the following command to start the development server and open the provided 
 npm run dev
 ```
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/537e2c5609df75b2fd15bf3a37c86da75410de053dfb0c76267a72d7b8d9914a/assets/images/conversational-ai/nextjs-splash.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T100016Z&X-Amz-Expires=604800&X-Amz-Signature=ab400dbc98409ac72a6b876e52fb9164fa312325322a302e5cdbf998cff989a1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/537e2c5609df75b2fd15bf3a37c86da75410de053dfb0c76267a72d7b8d9914a/assets/images/conversational-ai/nextjs-splash.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T094114Z&X-Amz-Expires=604800&X-Amz-Signature=3a111b85e5a5f4f8b53389371106e7792885ef90005b42c2a4d349053438e36a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Implement ElevenLabs Agents
 
 #### Create the conversation component
 
 Create a new file `app/components/conversation.tsx`:
+
+**`app/components/conversation.tsx`**
 
 ```tsx app/components/conversation.tsx
 'use client';
@@ -127,6 +129,8 @@ export function Conversation() {
 
 Replace the contents of `app/page.tsx` with:
 
+**`app/page.tsx`**
+
 ```tsx app/page.tsx
 'use client';
 
@@ -165,6 +169,8 @@ a signed URL from your server. This section explains how to set this up.
 
 Create a `.env.local` file in your project root:
 
+**`.env.local`**
+
 ```yaml .env.local
 ELEVENLABS_API_KEY=your-api-key-here
 NEXT_PUBLIC_AGENT_ID=your-agent-id-here
@@ -176,6 +182,8 @@ NEXT_PUBLIC_AGENT_ID=your-agent-id-here
 #### Create an API route
 
 Create a new file `app/api/get-signed-url/route.ts`:
+
+**`app/api/get-signed-url/route.ts`**
 
 ```tsx app/api/get-signed-url/route.ts
 import { NextResponse } from 'next/server';
@@ -209,6 +217,8 @@ export async function GET() {
 #### Update the Conversation component
 
 Modify your `conversation.tsx` to fetch and use the signed URL:
+
+**`app/components/conversation.tsx`**
 
 ```tsx app/components/conversation.tsx {5-12,19,23}
 // ... existing imports ...

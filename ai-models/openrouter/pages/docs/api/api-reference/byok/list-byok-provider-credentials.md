@@ -171,9 +171,11 @@ paths:
               - akashml
               - alibaba
               - amazon-bedrock
+              - amazon-bedrock/claude-on-aws
               - amazon-nova
               - ambient
               - anthropic
+              - anthropic/2
               - arcee-ai
               - atlas-cloud
               - avian
@@ -186,6 +188,7 @@ paths:
               - chutes
               - cirrascale
               - clarifai
+              - claude-on-aws
               - cloudflare
               - cohere
               - coreweave
@@ -626,9 +629,11 @@ components:
         - akashml
         - alibaba
         - amazon-bedrock
+        - amazon-bedrock/claude-on-aws
         - amazon-nova
         - ambient
         - anthropic
+        - anthropic/2
         - arcee-ai
         - atlas-cloud
         - avian
@@ -641,6 +646,7 @@ components:
         - chutes
         - cirrascale
         - clarifai
+        - claude-on-aws
         - cloudflare
         - cohere
         - coreweave

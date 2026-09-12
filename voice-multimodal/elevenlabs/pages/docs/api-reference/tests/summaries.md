@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/tests/summaries
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `test_ids` (list of string, required) — List of test IDs to fetch. No duplicates allowed. Prefer at most 1000 IDs per request.
 
 ## Response
@@ -61,6 +63,17 @@ Successful Response
   - `children_count` (integer, optional, nullable) — Number of direct children (tests and subfolders) for folders only
   - `conversation_initiation_source` (enum, optional, nullable, default: unknown) — Channel the test simulates the conversation as. Null for folders or default behavior.
     - Allowed values: `unknown`, `android_sdk`, `node_js_sdk`, `react_native_sdk`, `react_sdk`, `js_sdk`, `python_sdk`, `widget`, `sip_trunk`, `twilio`, `exotel`, `genesys`, `avaya`, `audiocodes`, `swift_sdk`, `whatsapp`, `twilio_sms`, `flutter_sdk`, `zendesk_integration`, `slack_integration`, `telegram_integration`, `intercom_integration`, `freshdesk_integration`, `salesforce_integration`, `template_preview`, `genesys_bot_connector`, `subagent_tool`
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

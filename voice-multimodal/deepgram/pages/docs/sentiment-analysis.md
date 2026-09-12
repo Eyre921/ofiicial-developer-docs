@@ -37,6 +37,8 @@ To enable Sentiment, use the following parameter in the query string when you ca
 
 To transcribe audio from a file on your computer, run the following curl command in a terminal or your favorite API client.
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -58,6 +60,8 @@ Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.dee
 ## Analyze Response
 
 When the file is finished processing, you’ll receive a JSON response that has the following basic structure:
+
+**`JSON`**
 
 ```json JSON
 "metadata": {...},
@@ -116,6 +120,8 @@ The `sentiment` values added to objects are:
 
 If you request Sentiment Analysis with an unsupported language by specifying a language code such as `sentiment=true&language=es` or `sentiment=true&detect_language=true` where the detected language is unsupported, you will get the warning message below.
 
+**`JSON`**
+
 ```json JSON
 "warnings": [
   {
@@ -133,6 +139,8 @@ If you request Sentiment Analysis with an unsupported language by specifying a l
 **Example Warning**
 
 Here is an example of the JSON structure of a request with warning object.
+
+**`JSON`**
 
 ```json JSON
 {

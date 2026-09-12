@@ -38,6 +38,8 @@ The `InjectAgentMessage` message is a JSON message you can send to immediately t
 
 ### `default`: wait for silence
 
+**`JSON`**
+
 ```json JSON
 {
   "type": "InjectAgentMessage",
@@ -48,6 +50,8 @@ The `InjectAgentMessage` message is a JSON message you can send to immediately t
 
 ### `queue`: append after any current ConversationText
 
+**`JSON`**
+
 ```json JSON
 {
   "type": "InjectAgentMessage",
@@ -57,6 +61,8 @@ The `InjectAgentMessage` message is a JSON message you can send to immediately t
 ```
 
 ### `interrupt`: replace the current agent speech
+
+**`JSON`**
 
 ```json JSON
 {
@@ -70,6 +76,8 @@ The `InjectAgentMessage` message is a JSON message you can send to immediately t
 
 The server sends an [`AgentAudioDone`](/docs/voice-agent-agent-audio-done) message after the last `InjectAgentMessage` is spoken.
 
+**`JSON`**
+
 ```json JSON
 {
   "type": "AgentAudioDone"
@@ -79,6 +87,8 @@ The server sends an [`AgentAudioDone`](/docs/voice-agent-agent-audio-done) messa
 ### `InjectionRefused`
 
 When `behavior` is `default` or `queue` and the request arrives while the *user* is mid-turn, the server ignores the request and replies with `InjectionRefused`. If the *agent* is mid-turn, the server returns `InjectionRefused` only when `behavior` is `default`. The `interrupt` behavior is never refused: the agent speaks even while the user or agent is mid-turn.
+
+**`JSON`**
 
 ```json JSON
 {

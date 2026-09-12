@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/knowledge-base/update
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `name` (string, optional, nullable) — A custom, human-readable name for the document.
 - `content` (string, optional, nullable) — Updated content for the document. Only supported for text documents, URL documents with auto-sync disabled, and file documents.
 
@@ -207,6 +209,17 @@ Successful Response
       - `id` (string, required)
       - `name` (string, required, nullable)
     - `is_frozen` (boolean, optional, default: false)
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

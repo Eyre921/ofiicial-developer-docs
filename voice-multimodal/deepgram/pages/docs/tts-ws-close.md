@@ -18,6 +18,8 @@ To close the websocket connection, you can either send an websocket `Close` fram
 
 To send the `Close` message, you need to send the following JSON message to the server:
 
+**`JSON`**
+
 ```json JSON
 {
     "type": "Close"

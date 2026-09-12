@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/integrations/whats-app/outbo
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `whatsapp_phone_number_id` (string, required)
 - `whatsapp_user_id` (string, required)
 - `template_name` (string, required)
@@ -132,6 +134,17 @@ Reference: https://elevenlabs.io/docs/api-reference/integrations/whats-app/outbo
 Successful Response
 
 - `conversation_id` (string, required)
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

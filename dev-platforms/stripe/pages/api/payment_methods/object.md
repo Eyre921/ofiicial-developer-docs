@@ -86,7 +86,7 @@ Possible enum values:
   If this is an Alma PaymentMethod, this hash contains details about the Alma payment method.
 
 - `amazon_pay` (object, nullable)
-  If this is a AmazonPay PaymentMethod, this hash contains details about the AmazonPay payment method.
+  If this is an AmazonPay PaymentMethod, this hash contains details about the AmazonPay payment method.
 
 - [`au_becs_debit`](https://docs.stripe.com/api/payment_methods/object.md?query=au_becs_debit) (object, nullable)
   If this is an `au_becs_debit` PaymentMethod, this hash contains details about the bank account.

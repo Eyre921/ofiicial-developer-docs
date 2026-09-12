@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/dash
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `charts` (list of object, optional)
   - `type`: `call_success`
     - `name` (string, required)
@@ -52,6 +54,17 @@ Successful Response
   - `type`: `data_collection`
     - `data_collection_id` (string, required)
     - `name` (string, required)
+
+## Errors
+
+### 422 Settings Update Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

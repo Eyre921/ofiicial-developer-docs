@@ -174,9 +174,13 @@ The system determines health based on the success rate of recent inference reque
 
 Query the status endpoint with a simple GET request:
 
+**`cURL`**
+
 ```shell cURL
 curl http://localhost:8080/v1/status
 ```
+
+**`Python`**
 
 ```python Python
 import requests
@@ -189,6 +193,8 @@ print(f"Active stream requests: {status['active_stream_requests']}")
 print(f"Active Flux streams: {status['active_listen_v2_stream_requests']}")
 ```
 
+**`JavaScript`**
+
 ```javascript JavaScript
 const response = await fetch('http://localhost:8080/v1/status');
 const status = await response.json();
@@ -197,6 +203,8 @@ console.log(`Active batch requests: ${status.active_batch_requests}`);
 console.log(`Active stream requests: ${status.active_stream_requests}`);
 console.log(`Active Flux streams: ${status.active_listen_v2_stream_requests}`);
 ```
+
+**`Java`**
 
 ```java Java
 import java.net.URI;
@@ -269,6 +277,8 @@ spec:
 ### Monitoring and Alerting
 
 The status endpoint is valuable for monitoring dashboards and alerting systems:
+
+**`Python Monitoring Script`**
 
 ```python Python Monitoring Script
 import requests

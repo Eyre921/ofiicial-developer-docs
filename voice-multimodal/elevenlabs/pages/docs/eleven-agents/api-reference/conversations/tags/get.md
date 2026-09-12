@@ -41,6 +41,17 @@ Successful Response
 - `created_at_unix_secs` (integer, required)
 - `description` (string, optional)
 
+## Errors
+
+### 422 Tags Get Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

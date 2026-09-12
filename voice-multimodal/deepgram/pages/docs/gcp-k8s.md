@@ -55,6 +55,8 @@ Google Kubernetes Engine (GKE) is a managed Kubernetes service to run Kubernetes
 
 1. Create a new GKE cluster with `gcloud`, and get the zones where your cluster is created.
 
+   **`Shell`**
+
    ```shell Shell
    CLUSTER_NAME=deepgram-self-hosted
    CLUSTER_LOCATION=us-west1
@@ -80,6 +82,8 @@ Google Kubernetes Engine (GKE) is a managed Kubernetes service to run Kubernetes
    `num-nodes` configures the number of nodes in the node pool ***in each of the cluster's zones***. If your cluster is configured in 3 zones, setting`num-nodes` to 1 will result in 1 node per zone, or 3 nodes across the entire cluster.
 
    We restrict the `engine-pool` to one cluster zone because [you can't use regional persistent disks on VMs that use G2 standard machine types](https://cloud.google.com/compute/docs/accelerator-optimized-machines#g2_standard_limitations). This guide uses a zonal persistent disk as a workaround, which means we must limit the nodes in `engine-pool` to a single zone in order to mount the disk.
+
+   **`Shell`**
 
    ```shell Shell
    gcloud container node-pools create api-pool \
@@ -114,6 +118,8 @@ Google Kubernetes Engine (GKE) is a managed Kubernetes service to run Kubernetes
 
 3. Create a dedicated namespace for Deepgram resources.
 
+   **`Shell`**
+
    ```shell Shell
    kubectl create namespace dg-self-hosted
    kubectl config set-context --current --namespace=dg-self-hosted
@@ -124,6 +130,8 @@ Google Kubernetes Engine (GKE) is a managed Kubernetes service to run Kubernetes
 When deploying workloads in a non-default namespace (such as `dg-self-hosted`), GKE does not automatically provision quotas for the `system-node-critical` and `system-cluster-critical` priority classes in that namespace. GPU driver DaemonSets (and other node-critical system workloads) rely on these priorities to schedule correctly.
 
 Create a `ResourceQuota` in your Deepgram namespace to enable these priorities:
+
+**`ResourceQuota Resource`**
 
 ```yaml "ResourceQuota Resource"
 apiVersion: v1
@@ -155,6 +163,8 @@ The `deepgram-self-hosted` Helm chart mounts the Persistent Disk through a `Read
 
 1. Create a Google Persistent Disk to store Deepgram model files and share them across multiple Deepgram Engine pods.
 
+   **`Shell`**
+
    ```shell Shell
    DISK_NAME=deepgram-model-storage
    DISK_URI=$(
@@ -169,6 +179,8 @@ The `deepgram-self-hosted` Helm chart mounts the Persistent Disk through a `Read
    ```
 
 2. Create a temporary writable `PersistentVolume` and `PersistentVolumeClaim` that point at the disk you just provisioned. The PV uses `ReadWriteOnce` and `Retain` so the underlying disk is preserved when you delete the PV later. The `nodeAffinity` block keeps the downloader pod in the same zone as the zonal Persistent Disk so the disk can attach.
+
+   **`Shell`**
 
    ```shell Shell
    cat <<EOF | kubectl apply -f -
@@ -216,6 +228,8 @@ The `deepgram-self-hosted` Helm chart mounts the Persistent Disk through a `Read
 
    Replace the `wget` lines below with the model URLs supplied by your Deepgram Account Representative.
 
+   **`Shell`**
+
    ```shell Shell
    cat <<'EOF' | kubectl apply -f -
    apiVersion: batch/v1
@@ -253,12 +267,16 @@ The `deepgram-self-hosted` Helm chart mounts the Persistent Disk through a `Read
 
 4. Wait for the Job to complete successfully.
 
+   **`Shell`**
+
    ```shell Shell
    kubectl wait -n dg-self-hosted --for=condition=complete job/dg-model-downloader --timeout=30m
    kubectl logs -n dg-self-hosted job/dg-model-downloader
    ```
 
 5. Delete the Job and the temporary writable PV and PVC. Because the PV uses `persistentVolumeReclaimPolicy: Retain`, the underlying Google Persistent Disk is preserved with the model files intact.
+
+   **`Shell`**
 
    ```shell Shell
    kubectl delete -n dg-self-hosted job dg-model-downloader
@@ -304,6 +322,8 @@ Deepgram maintains the official `deepgram-self-hosted` Helm Chart. You can refer
 
 1. [Fetch the repository info](https://github.com/deepgram/self-hosted-resources/blob/main/charts/deepgram-self-hosted/README.md#get-repository-info).
 
+   **`Shell`**
+
    ```shell Shell
    helm repo add deepgram https://deepgram.github.io/self-hosted-resources
    helm repo update
@@ -333,6 +353,8 @@ Deepgram maintains the official `deepgram-self-hosted` Helm Chart. You can refer
 
 4. Install the Helm Chart with your `values.yaml` file.
 
+   **`Shell`**
+
    ```shell Shell
    helm install deepgram deepgram/deepgram-self-hosted \
        -f my-values.yaml \
@@ -355,6 +377,9 @@ Deepgram maintains the official `deepgram-self-hosted` Helm Chart. You can refer
 Test your environment and container setup with a local file.
 
 1. Get the name of one of the Deepgram API Pods.
+
+   **`Shell`**
+
    ```shell Shell
    API_POD_NAME=$(
        kubectl get pods \
@@ -365,6 +390,9 @@ Test your environment and container setup with a local file.
    ```
 
 2. Launch an ephemeral container to send your test request from.
+
+   **`Shell`**
+
    ```shell Shell
    kubectl debug $API_POD_NAME \
        -it \
@@ -373,11 +401,16 @@ Test your environment and container setup with a local file.
    ```
 
 3. Inside the ephemeral container, download a sample file from Deepgram (or supply your own file).
+
+   **`Shell`**
+
    ```shell Shell
    wget https://dpgr.am/bueller.wav
    ```
 
 4. Send your audio file to your local Deepgram setup for transcription.
+
+   **`cURL`**
 
    ```bash cURL
    curl \

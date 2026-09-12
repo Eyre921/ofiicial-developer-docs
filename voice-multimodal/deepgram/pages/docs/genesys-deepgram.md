@@ -40,6 +40,8 @@ Once you've installed Transcription Connector, it will appear under **Admin > In
 
 Under **Configuration > Advanced**, provide a JSON object to customize the Deepgram request. For example:
 
+**`JSON`**
+
 ```json JSON
 {
   "model": "nova-3",

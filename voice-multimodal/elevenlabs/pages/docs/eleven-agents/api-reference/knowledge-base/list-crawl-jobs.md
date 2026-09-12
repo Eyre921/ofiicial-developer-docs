@@ -55,6 +55,17 @@ Successful Response
   - `pages_failed` (integer, optional, default: 0)
 - `next_cursor` (string, optional)
 
+## Errors
+
+### 422 Crawl Jobs List Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Request**

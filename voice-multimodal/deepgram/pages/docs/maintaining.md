@@ -52,6 +52,8 @@ An individual inference request to your self-hosted environment will require one
 
 For example, if you make a speech-to-text request that doesn't have the appropriate language or streaming/batch mode available, you may see this error:
 
+**`JSON`**
+
 ```json JSON
 {
   "err_code":"Bad Request",
@@ -119,11 +121,15 @@ You can identify the latest self-hosted release in the [Deepgram Changelog](http
 
 2. Refresh your container image repository credentials:
 
+   **`Shell`**
+
    ```shell Shell
    docker login quay.io
    ```
 
 3. Restart existing containers. The new image tags in your Compose file will be automatically detected and the necessary container images will be downloaded and deployed.
+
+   **`Shell`**
 
    ```shell Shell
    # Docker
@@ -145,6 +151,8 @@ Besides the container image tags, there may be other updates to configuration fi
 ### Docker/Podman
 
 Updated files may include the Compose file and the API/Engine/License Proxy `toml` configuration files. If you modify your configuration files, you will need to restart your existing containers for changes to take effect.
+
+**`Shell`**
 
 ```shell Shell
 # Docker

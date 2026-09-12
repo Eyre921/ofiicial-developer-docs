@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base
 
 ### Body (multipart/form-data)
 
+This endpoint expects a multipart form containing a file.
+
 - `file` (file, required) — Documentation that the agent will have access to in order to interact with users.
 
 ## Response
@@ -203,6 +205,17 @@ Successful Response
       - `id` (string, required)
       - `name` (string, optional)
     - `is_frozen` (boolean, optional, default: false)
+
+## Errors
+
+### 422 Document Update File Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

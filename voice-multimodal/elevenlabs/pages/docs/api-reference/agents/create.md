@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/create
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `conversation_config` (object, required) — Conversation configuration for an agent
   - `asr` (object, optional) — Configuration for conversational transcription
     - `quality` (enum, optional, default: high) — The quality of the transcription
@@ -1503,6 +1505,17 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/create
 Successful Response
 
 - `agent_id` (string, required) — ID of the created agent
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

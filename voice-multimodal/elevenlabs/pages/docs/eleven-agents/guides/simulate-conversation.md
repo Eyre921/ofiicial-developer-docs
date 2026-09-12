@@ -31,6 +31,8 @@ Search through your agent's conversation history and find instances where your a
 
 Create a request to the simulation endpoint using the ElevenLabs SDK.
 
+**`Python`**
+
 ```python title="Python"
 from dotenv import load_dotenv
 from elevenlabs import (
@@ -69,6 +71,8 @@ response = elevenlabs.conversational_ai.agents.simulate_conversation(
 print(response)
 
 ```
+
+**`TypeScript`**
 
 ```typescript title="TypeScript"
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
@@ -110,6 +114,8 @@ reference for [Simulate conversation](/docs/api-reference/agents/simulate-conver
 The SDK provides a comprehensive JSON object that includes the entire conversation transcript and detailed analysis.
 
 **Simulated Conversation**: Captures each interaction turn between the simulated user and the agent, detailing messages and tool usage.
+
+**`Example conversation history`**
 
 ```json title="Example conversation history"
 [
@@ -210,6 +216,8 @@ The SDK provides a comprehensive JSON object that includes the entire conversati
 ```
 
 **Analysis**: Offers insights into evaluation criteria outcomes, data collection metrics, and a summary of the conversation transcript.
+
+**`Example analysis`**
 
 ```json title="Example analysis"
 {

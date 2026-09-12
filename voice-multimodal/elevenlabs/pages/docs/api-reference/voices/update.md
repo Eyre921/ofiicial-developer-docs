@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/voices/update
 
 ### Body (multipart/form-data)
 
+This endpoint expects a multipart form with multiple files.
+
 - `name` (string, required) — The name that identifies this voice. This will be displayed in the dropdown of the website.
 - `files` (files, optional) — Audio files to add to the voice
 - `remove_background_noise` (boolean, optional) — If set will remove background noise for voice samples using our audio isolation model. If the samples do not include background noise, it can make the quality worse.
@@ -45,6 +47,17 @@ Reference: https://elevenlabs.io/docs/api-reference/voices/update
 Successful Response
 
 - `status` (string, required) — The status of the voice edit request. If the request was successful, the status will be 'ok'. Otherwise an error message with status 500 will be returned.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

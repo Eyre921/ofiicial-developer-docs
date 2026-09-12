@@ -610,7 +610,6 @@ These providers co-designed the integration protocol with Stripe. The protocol s
 | GitLab | CI/CD, observability, storage |
 | Here.now | Hosting |
 | HeyGen | AI |
-| Hugging Face | AI, hosting, storage |
 | Inngest | Queue |
 | Kernel | Browser, AI |
 | Klaviyo | Email, messaging |
@@ -678,7 +677,7 @@ Use Stripe Projects when the user asks to:
 
 - Provision a database, cache, auth service, hosting, analytics, observability, or any third-party infrastructure
 - Get an API key, credentials, secret, or token for a third-party service
-- Sign up for or connect a service like Neon, Supabase, PlanetScale, Upstash, Clerk, Auth0, WorkOS, Vercel, Netlify, Railway, Render, Fly.io, Cloudflare, Sentry, PostHog, Mixpanel, Amplitude, OpenRouter, Hugging Face, Elevenlabs, Twilio, Resend, Algolia, Chroma, Turso, Inngest, Browserbase, Daytona, Runloop, Privy, Squarespace, GitLab, AgentMail
+- Sign up for or connect a service like Neon, Supabase, PlanetScale, Upstash, Clerk, Auth0, WorkOS, Vercel, Netlify, Railway, Render, Fly.io, Cloudflare, Sentry, PostHog, Mixpanel, Amplitude, OpenRouter, Elevenlabs, Twilio, Resend, Algolia, Chroma, Turso, Inngest, Browserbase, Daytona, Runloop, Privy, Squarespace, GitLab, AgentMail
 - Set up an LLM provider, model provider, vector database, message queue, object storage, email sending, search, or feature flags
 - Browse what services are available, check project status, list provisioned resources, or view environment variables
 - Any mention of projects.dev, Stripe Projects, the Stripe Projects catalog, or adding/provisioning/connecting a cloud service

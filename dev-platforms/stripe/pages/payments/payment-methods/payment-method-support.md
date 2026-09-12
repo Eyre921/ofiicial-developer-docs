@@ -126,11 +126,11 @@ To determine which payment methods each Stripe product supports, refer to the fo
 
 | Payment method | [Connect](https://docs.stripe.com/connect.md) | [Checkout](https://docs.stripe.com/payments/checkout.md) | [Payment Links](https://docs.stripe.com/payment-links.md) | [Payment Element](https://docs.stripe.com/payments/payment-element.md) | [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md) | [Mobile Payment Element](https://docs.stripe.com/payments/mobile.md) | [Subscriptions](https://docs.stripe.com/subscriptions.md) | [Invoicing](https://docs.stripe.com/invoicing.md) | [Customer Portal](https://docs.stripe.com/customer-management.md) | [Terminal](https://docs.stripe.com/terminal.md) |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| [Affirm](https://docs.stripe.com/payments/affirm.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | ✓ Supported 4 | ✓ Supported | - Unsupported | ✓ Supported |
+| [Affirm](https://docs.stripe.com/payments/affirm.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | - Unsupported | ✓ Supported 4 | - Unsupported | ✓ Supported |
 | [Afterpay/Clearpay](https://docs.stripe.com/payments/afterpay-clearpay.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | - Unsupported | (Private preview) | - Unsupported | - Unsupported |
 | [Alma](https://docs.stripe.com/payments/alma.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | - Unsupported |
 | [Billie](https://docs.stripe.com/payments/billie.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | - Unsupported |
-| [Klarna](https://docs.stripe.com/payments/klarna.md) | ✓ Supported | ✓ Supported 1 | ✓ Supported | ✓ Supported | ✓ Supported3 | ✓ Supported | ✓ Supported 4 | ✓ Supported | - Unsupported | (Private preview) |
+| [Klarna](https://docs.stripe.com/payments/klarna.md) | ✓ Supported | ✓ Supported 1 | ✓ Supported | ✓ Supported | ✓ Supported3 | ✓ Supported | ✓ Supported | ✓ Supported 4 | - Unsupported | (Private preview) |
 | [Kriya](https://docs.stripe.com/payments/kriya.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | - Unsupported | - Unsupported | - Unsupported |
 | [Mondu](https://docs.stripe.com/payments/mondu.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | - Unsupported | - Unsupported | - Unsupported |
 | [Scalapay](https://docs.stripe.com/payments/scalapay.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | - Unsupported | - Unsupported | - Unsupported |
@@ -138,7 +138,7 @@ To determine which payment methods each Stripe product supports, refer to the fo
 | [Sunbit](https://docs.stripe.com/payments/sunbit.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | - Unsupported |
 | [Zip](https://docs.stripe.com/payments/zip.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | - Unsupported |
 
-1 Not supported when using Checkout in subscription mode.2 Not supported when using Checkout in setup mode.3 Not supported when saving payment details during payment (`setup_future_usage`).4 Invoices and Subscriptions only support the [send_invoice](https://docs.stripe.com/api/invoices/object.md#invoice_object-collection_method) collection method.
+1 Not supported when using Checkout in subscription mode.2 Not supported when using Checkout in setup mode.3 Not supported when saving payment details during payment (`setup_future_usage`).4 Only supports the [send_invoice](https://docs.stripe.com/api/invoices/object.md#invoice_object-collection_method) collection method.
 
 ### Cards product support 
 

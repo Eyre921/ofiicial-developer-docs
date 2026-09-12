@@ -53,6 +53,8 @@ Send multiple redaction values by repeating the parameter: `redact=pci&redact=nu
 
 To transcribe pre-recorded audio and remove `PCI` data from a file, run:
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -63,6 +65,8 @@ curl \
 ```
 
 To remove both `PCI` and `PII` data, repeat the parameter:
+
+**`cURL`**
 
 ```bash cURL
 curl \

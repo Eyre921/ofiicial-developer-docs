@@ -49,6 +49,8 @@ Flux TTS voices are served only on `agent.speak.provider.version`: `v2`, and Aur
 
 #### Example
 
+**`JSON`**
+
 ```json JSON
 {
   "agent": {
@@ -92,6 +94,8 @@ For a complete list of Deepgram Aura TTS models see [TTS Voice Selection](/docs/
 
 #### Example
 
+**`JSON`**
+
 ```json JSON
 {
   "speak": {
@@ -115,6 +119,8 @@ Deepgram also provides managed support for Cartesia TTS. For a complete list of 
 | `agent.speak.provider.speed` | String or Number | Speaking rate control. Accepts `slowest`, `slow`, `normal`, `fast`, `fastest`, or a numerical value for more granular control. See [Cartesia speed documentation](https://docs.cartesia.ai/build-with-cartesia/capability-guides/volume-speed-emotion). |
 
 ### Example
+
+**`JSON`**
 
 ```json JSON
 {
@@ -153,6 +159,8 @@ For OpenAI you can refer to [OpenAI's text-to-speech guide](https://developers.o
 
 #### Example
 
+**`JSON`**
+
 ```json JSON
 {
   "agent": {
@@ -190,6 +198,8 @@ We support any of [ElevenLabs' Turbo 2.5](https://elevenlabs.io/docs/models#turb
 
 #### Example
 
+**`JSON`**
+
 ```json JSON
 {
   "agent": {
@@ -213,6 +223,8 @@ We support any of [ElevenLabs' Turbo 2.5](https://elevenlabs.io/docs/models#turb
 #### Example (eleven\_v3 via HTTPS)
 
 Because `eleven_v3` does not support WebSocket streaming, use the HTTPS REST endpoint:
+
+**`JSON`**
 
 ```json JSON
 {
@@ -251,6 +263,8 @@ For Cartesia you can [use their API](https://docs.cartesia.ai/api-reference/voic
 | `agent.speak.endpoint.headers`    | Object | Headers for authentication     |
 
 #### Example
+
+**`JSON`**
 
 ```json JSON
 {
@@ -292,6 +306,8 @@ If no engine is specified, Amazon (AWS) Polly defaults to Standard. If the chose
 
 #### STS Example
 
+**`JSON`**
+
 ```json JSON
 {
   "agent": {
@@ -318,6 +334,8 @@ If no engine is specified, Amazon (AWS) Polly defaults to Standard. If the chose
 ```
 
 #### IAM Example
+
+**`JSON`**
 
 ```json JSON
 {
@@ -359,6 +377,8 @@ The fallback is per-request — each new agent utterance starts again from the f
 Fallback providers do not need to use the same `provider.type`. You can mix providers (for example, `deepgram` primary with an `open_ai` fallback) to maximize availability across independent infrastructure.
 
 ### Example
+
+**`JSON`**
 
 ```json JSON
 {

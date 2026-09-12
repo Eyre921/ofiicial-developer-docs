@@ -104,6 +104,8 @@ UtteranceEnd relies on Deepgram's `interim_results` feature and Deepgram's Inter
 
 When using `utterance_end_ms`, setting `interim_results=true` is also required.
 
+**`Python`**
+
 ```python Python
 
 # see https://github.com/deepgram/deepgram-python-sdk/blob/main/examples/streaming/async_microphone/main.py
@@ -127,6 +129,8 @@ When using `utterance_end_ms`, setting `interim_results=true` is also required.
        endpointing=300
    ) as connection:
 ```
+
+**`Java`**
 
 ```java Java
 import com.deepgram.DeepgramClient;
@@ -157,6 +161,8 @@ wsClient.connect(options).get(10, TimeUnit.SECONDS);
 
 The UtteranceEnd JSON message will look similar to this:
 
+**`JSON`**
+
 ```json JSON
 {
   "channel": [
@@ -179,6 +185,8 @@ If you receive `last_word_end: -1`, this indicates that the result was already f
 If you compare this to the Results response below, you will see that the `last_word_end` from the UtteranceEnd response matches the data in the `alternatives[0].words[1].end` field of the Results response. This is due to the gap identified after the final word.
 
 In addition, you can see `is_final=true`, which is sent because of the `interim_results` feature.
+
+**`JSON`**
 
 ```json JSON
 {

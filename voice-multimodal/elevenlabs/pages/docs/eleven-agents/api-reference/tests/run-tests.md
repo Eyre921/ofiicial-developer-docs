@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/run-test
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `tests` (list of object, required) — List of tests to run on the agent
   - `test_id` (string, required) — ID of the test to run
   - `workflow_node_id` (string, optional) — ID of the workflow node to run the test on. If not provided, the test will be run on the agent's default workflow node.
@@ -2134,6 +2136,17 @@ Successful Response
     - `status` (enum, required)
       - Allowed values: `pending`, `passed`, `failed`
   - `workflow_node_id` (string, optional)
+
+## Errors
+
+### 422 Agents Run Tests Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

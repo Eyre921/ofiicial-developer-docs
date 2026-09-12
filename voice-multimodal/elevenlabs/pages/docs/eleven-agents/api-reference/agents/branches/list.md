@@ -74,6 +74,17 @@ Successful Response
   - `page` (integer, optional)
   - `page_size` (integer, optional)
 
+## Errors
+
+### 422 Branches List Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

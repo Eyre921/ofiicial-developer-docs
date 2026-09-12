@@ -52,6 +52,23 @@ Successful Response
 - `has_more` (boolean, required)
 - `next_cursor` (string, optional)
 
+## Errors
+
+### 400 Environment Variables List Request Bad Request Error
+
+Invalid environment filter
+
+- `any`
+
+### 422 Environment Variables List Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Request**

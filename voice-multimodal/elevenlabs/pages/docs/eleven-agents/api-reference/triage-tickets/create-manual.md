@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `qa_comment` (string, required) — What the ticket is about, e.g. a follow-up task for the agent. This is shown as the ticket title.
 
 ## Response
@@ -67,6 +69,17 @@ Successful Response
 - `last_seen_unix_secs` (integer, optional)
 - `qa_comment` (string, optional)
 - `assignee_user_id` (string, optional)
+
+## Errors
+
+### 422 Triage Tickets Create Manual Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `object`
   - `type`: `llm`
     - `name` (string, required)
@@ -1379,6 +1381,17 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create
 Successful Response
 
 - `id` (string, required)
+
+## Errors
+
+### 422 Tests Create Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

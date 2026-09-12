@@ -40,6 +40,8 @@ To receive incoming transcripts on your server, you need to create an webhook co
 
 Since webhooks send a `POST` request to your application, your webhook consumer will need to create a `POST` route handler in your application. So the webhook consumer receiving transcripts on your server might look something like this:
 
+**`javascript`**
+
 ```javascript javascript
 // Require, initialize, and configure Express
 const express = require("express");
@@ -71,6 +73,8 @@ To send a request to Deepgram and receive the transcript on your server, you nee
 
 To transcribe audio from a file on your computer, for example, run the following cURL command in a terminal or your favorite API client:
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -85,6 +89,8 @@ Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additi
 ### See Results
 
 When you supply a callback URL in your request to Deepgram's API, we will immediately respond with a `request_id`:
+
+**`JSON`**
 
 ```json JSON
 { "request_id": "c22bea24-ecd3-4b53-bcbf-8ef087d905a5" }

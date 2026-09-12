@@ -26,6 +26,8 @@ If this limit is reached when Deepgram attempts a callback request, `bodyParser`
 
 For bodyParser being used as middleware, you need to configure the parser with a new limit.
 
+**`JavaScript`**
+
 ```javascript JavaScript
 // parse application/json
 jsonParser = bodyParser.json({
@@ -41,6 +43,8 @@ rawParser = bodyParser.raw({
 ### Next.js API Routes Solution
 
 To resolve this error in in Next.js API Routes, you need to configure the parser with a new limit. At the top of your API Routes file, include additional config.
+
+**`JavaScript`**
 
 ```javascript JavaScript
 export const config = {

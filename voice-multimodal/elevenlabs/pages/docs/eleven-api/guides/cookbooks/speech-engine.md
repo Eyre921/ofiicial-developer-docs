@@ -52,6 +52,8 @@ This tutorial uses OpenAI's API for the LLM. You need an OpenAI API key set in t
 
 Store the key as a managed secret and pass it to the SDKs either as a environment variable via an `.env` file, or directly in your app’s configuration depending on your preference.
 
+**`.env`**
+
 ```js title=".env"
 ELEVENLABS_API_KEY=<your_api_key_here>
 ```
@@ -79,6 +81,8 @@ Copy the forwarding URL (e.g. `https://abc123.ngrok.io`).
 #### Create a Speech Engine instance
 
 Use the SDK to create a Speech Engine instance, passing your ngrok URL with the `/ws` path appended as the WebSocket URL.
+
+**`create_engine.py`**
 
 ```python title="create_engine.py"
 import asyncio
@@ -108,6 +112,8 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
+**`create-engine.mts`**
+
 ```typescript title="create-engine.mts"
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 import "dotenv/config";
@@ -132,6 +138,8 @@ Run this script and copy the Speech Engine ID (e.g. `seng_8k3m9xr4hjnfg983brhmhk
 #### Create the server
 
 Create a file called `server.py` or `server.mts` with the following contents. This sets up a server, attaches Speech Engine on the `/ws` path, and uses OpenAI to generate responses.
+
+**`server.py`**
 
 ```python maxLines=0 title="server.py"
 import asyncio
@@ -197,6 +205,8 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+
+**`server.mts`**
 
 ```typescript maxLines=0 title="server.mts"
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
@@ -291,6 +301,8 @@ npm install @elevenlabs/client
 
 Add a server-side endpoint that generates a conversation token. This keeps your API key out of the browser and uses WebRTC for the best audio quality.
 
+**`token_server.py`**
+
 ```python title="token_server.py"
 import os
 
@@ -321,6 +333,8 @@ def get_token():
 if __name__ == "__main__":
     app.run(port=3002)
 ```
+
+**`token-server.mts`**
 
 ```typescript title="token-server.mts"
 import express from "express";
@@ -353,6 +367,8 @@ app.listen(3002, () => {
 Fetch the conversation token from your server and use it to start a session.
 
 #### React
+
+**`App.tsx`**
 
 ```tsx title="App.tsx"
 import { useConversation } from "@elevenlabs/react";
@@ -399,6 +415,8 @@ export default function App() {
 ```
 
 #### JavaScript
+
+**`main.ts`**
 
 ```typescript title="main.ts"
 import { Conversation } from "@elevenlabs/client";

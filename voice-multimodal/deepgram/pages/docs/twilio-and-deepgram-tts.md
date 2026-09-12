@@ -60,6 +60,8 @@ Before you can use Deepgram, you'll need to [create a Deepgram account](https://
 
 Install ngrok and authenticate it once with the token from your ngrok dashboard.
 
+**`macOS`**
+
 ```bash macOS
 brew install ngrok
 ngrok config add-authtoken YOUR_NGROK_AUTHTOKEN
@@ -69,6 +71,8 @@ ngrok config add-authtoken YOUR_NGROK_AUTHTOKEN
 
 Clone the companion repository, which holds the complete `app.py` and `requirements.txt` referenced throughout this guide.
 
+**`Shell`**
+
 ```bash Shell
 git clone https://github.com/deepgram-devs/twilio-tts.git
 cd twilio-tts
@@ -76,12 +80,16 @@ cd twilio-tts
 
 Install the dependencies and set up configuration. The dependency list is short: `fastapi`, `uvicorn`, `deepgram-sdk`, `python-dotenv`, and `twilio`.
 
+**`Shell`**
+
 ```bash Shell
 pip install -r requirements.txt
 cp .env.example .env
 ```
 
 The `.env` file holds two values your application reads on startup, plus two optional security values covered later.
+
+**`.env`**
 
 ```bash .env
 DEEPGRAM_API_KEY=YOUR_DEEPGRAM_API_KEY
@@ -95,6 +103,8 @@ This app needs no LLM key and no speech-to-text — it only generates speech. Te
 ## Step 2: Serve TwiML with `<Connect><Stream>`
 
 When a call connects, Twilio asks your webhook what to do. You answer with TwiML, Twilio's XML instruction set. The key instruction here is [`<Connect><Stream>`](https://www.twilio.com/docs/voice/twiml/stream), which opens a **bidirectional** WebSocket — that return path lets you send generated audio back into the call.
+
+**`Python`**
 
 ```python Python
 @app.post("/twiml")
@@ -115,6 +125,8 @@ That one design choice separates playback from transcription. Playing audio *int
 ## Step 3: Generate speech with Deepgram Flux TTS
 
 [Flux TTS](/docs/flux-tts/overview) is Deepgram's streaming, turn-based text-to-speech built for voice-agent pipelines. You open a WebSocket, send text as a `Speak` message, and `Flush` to end the turn. The server replies with a `SpeechStarted` marker, a run of binary audio frames, and a `SpeechMetadata` summary once the turn's audio is complete — that last message is your cue to stop reading. Requesting mulaw at 8 kHz matches Twilio's Media Streams format exactly, so the bytes drop straight into media frames with no transcoding.
+
+**`Python`**
 
 ```python Python
 from deepgram.speak.v2 import SpeakV2Error, SpeakV2Speak, SpeakV2SpeechMetadata
@@ -144,6 +156,8 @@ Flux model strings follow the format `flux-{voice}-{language}` (for example, `fl
 ## Step 4: Stream the audio into the call
 
 As audio arrives from Flux, forward it to Twilio as `media` frames. Flux emits arbitrarily sized chunks, so buffer them and re-slice into exact 20 ms frames (160 bytes of mulaw). Pace the frames at real time so you don't dump the whole clip into Twilio's buffer at once. After the last frame, send a `mark`; Twilio echoes it back once playback reaches that point, which is your cue that the message finished playing.
+
+**`Python`**
 
 ```python Python
 async def speak(twilio_ws, stream_sid, text):
@@ -175,6 +189,8 @@ Every message you send back must carry the call's `streamSid`, which you capture
 
 The `/media` WebSocket ties it together. Accept the socket, and on Twilio's `start` event generate and stream the message. Then wait for your `end-of-speech` mark to come back and hang up. The handler skips inbound `media` events (the caller's own audio), because this app never listens.
 
+**`Python`**
+
 ```python Python
 @app.websocket("/media")
 async def media(twilio_ws: WebSocket) -> None:
@@ -200,6 +216,8 @@ With TwiML answering the call, Flux generating the audio, and the mark timing th
 ## Step 6: Run and test
 
 Start the application and open a tunnel so Twilio can reach it.
+
+**`Shell`**
 
 ```bash Shell
 python app.py                   # or: uvicorn app:app --port 5050 --reload

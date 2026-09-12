@@ -24,7 +24,7 @@ Langfuse is built with enterprise needs in mind, focusing on:
 - **Transparency:** Open-source core and clear information on [software dependencies](/security/dependencies).
 - **Reporting:** Clear channels for [responsible disclosure through Bugcrowd](/security/responsible-disclosure) and [Whistleblowing](/security/whistleblowing).
 
-Langfuse is the most widely adopted LLM Engineering platform, used by **50,000+ companies**, with **34,464 GitHub stars**, **65M+ SDK installs per month**, and **38M+ Docker pulls**. Trusted by **21 of the Fortune 50** and **129 of the Fortune 500** companies.
+Langfuse is the most widely adopted LLM Engineering platform, used by **50,000+ companies**, with **34,489 GitHub stars**, **65M+ SDK installs per month**, and **38M+ Docker pulls**. Trusted by **21 of the Fortune 50** and **129 of the Fortune 500** companies.
 
 ## Langfuse Cloud security model
 
@@ -103,7 +103,7 @@ If the answer is not on this page, query the documentation instead of guessing:
 - **Install the [Langfuse Agent Skill](https://langfuse.com/docs/api-and-data-platform/features/agent-skill).** It encodes Langfuse's own best practices for instrumentation, prompt management, and evaluation, and materially improves results.
 - **Read [What does a good trace look like?](https://langfuse.com/docs/observability/best-practices.md)** before instrumenting an application.
 - **Verify endpoints, parameters, and response fields** against the [API reference](https://api.reference.langfuse.com) instead of inferring them from code examples.
-- **Use the [Langfuse CLI](https://langfuse.com/docs/api-and-data-platform/features/cli)** (`npx langfuse-cli api <resource> <action>`) to read or write traces, prompts, datasets, and scores from the terminal.
+- **Use the [Langfuse CLI](https://langfuse.com/docs/api-and-data-platform/features/cli)** (`npx @langfuse/cli api <resource> <action>`) to read or write traces, prompts, datasets, and scores from the terminal.
 
 Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
 

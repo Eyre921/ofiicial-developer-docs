@@ -32,6 +32,8 @@ Reference: https://elevenlabs.io/docs/api-reference/music/compose
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `prompt` (string, optional, nullable) — A simple text prompt to generate a song from. Cannot be used in conjunction with `composition_plan`.
 - `composition_plan` (object or object, optional, nullable) — A detailed composition plan to guide music generation. Cannot be used in conjunction with `prompt`.
   - MusicPrompt
@@ -74,11 +76,11 @@ Reference: https://elevenlabs.io/docs/api-reference/music/compose
           - `end_ms` (integer, required)
 - `music_length_ms` (integer, optional, nullable) — The length of the song to generate in milliseconds. Used only in conjunction with `prompt`. Must be between 3000ms and 600000ms. Optional - if not provided, the model will choose a length based on the prompt.
 - `model_id` (enum, optional, default: music_v1) — The model to use for the generation.
-  - Allowed values: `music_v1`, `music_v2`
+  - Allowed values: `music_v1`, `music_v2`, `music_v2_5`
 - `seed` (integer, optional, nullable) — Random seed to initialize the music generation process. Providing the same seed with the same parameters can help achieve more consistent results, but exact reproducibility is not guaranteed and outputs may change across system updates. Cannot be used in conjunction with prompt.
 - `force_instrumental` (boolean, optional, default: false) — If true, guarantees that the generated song will be instrumental. If false, the song may or may not be instrumental depending on the `prompt`. Can only be used with `prompt`.
 - `finetune_id` (string, optional, nullable) — The ID of the finetune to use for the generation
-- `respect_sections_durations` (boolean, optional, default: true) — Controls how strictly section durations in the `composition_plan` are enforced. Only used with `composition_plan` and only applies to `music_v1`; for `music_v2` section durations are always enforced and this is ignored. When false for `music_v1`, the model may adjust individual section durations for better quality and latency, while preserving the total song duration from the plan.
+- `respect_sections_durations` (boolean, optional, default: true) — Controls how strictly section durations in the `composition_plan` are enforced. Only used with `composition_plan` and only applies to `music_v1`; for `music_v2` and `music_v2_5` section durations are always enforced and this is ignored. When false for `music_v1`, the model may adjust individual section durations for better quality and latency, while preserving the total song duration from the plan.
 - `store_for_inpainting` (boolean, optional, default: false) — Whether to store the generated song for inpainting.
 - `sign_with_c2pa` (boolean, optional, default: false) — Whether to sign the generated song with C2PA. Applicable only for mp3 files.
 
@@ -89,6 +91,17 @@ Reference: https://elevenlabs.io/docs/api-reference/music/compose
 The generated audio file in the format specified
 
 - File download.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

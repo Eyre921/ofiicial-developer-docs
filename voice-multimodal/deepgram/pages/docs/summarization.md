@@ -33,6 +33,8 @@ You can also use `summarize=true`, which will return the V2 response structure.
 
 To transcribe audio from a file on your computer, run the following curl command in a terminal or your favorite API client.
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -57,6 +59,8 @@ Summarization requires a minimum of greater than 50 words for summarization. For
 ## Analyze Response
 
 When the file is finished processing, you’ll receive a JSON response that has the following basic structure:
+
+**`JSON`**
 
 ```json JSON
 {
@@ -88,6 +92,8 @@ This summarization feature produces one summary across all channels so that the 
 
 If you request Summarization with an unsupported language by specifying a language code such as `summarize=v2&language=es`, you will get an error message like the one below.
 
+**`JSON`**
+
 ```json JSON
 {
     "err_code": "Bad Request",
@@ -99,6 +105,8 @@ If you request Summarization with an unsupported language by specifying a langua
 #### Warning
 
 If you request Summarization with automatic language detection such as `summarize=v2&detect_language=true`, where the detected language is unsupported (Spanish, for example), you will get the response, including a transcript and a warning object.
+
+**`JSON`**
 
 ```json JSON
 "warnings": [
@@ -117,6 +125,8 @@ If you request Summarization with automatic language detection such as `summariz
 **Example Warning**
 
 Here is an example of the JSON structure of a request with warning object:
+
+**`JSON`**
 
 ```json JSON
 {

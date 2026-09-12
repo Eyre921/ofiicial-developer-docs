@@ -33,6 +33,8 @@ Reference: https://elevenlabs.io/docs/api-reference/dubbing/target-transcript/up
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `translation` (string, optional, nullable) — New translated text, or null to mark the segment for re-translation.
 
 ## Response
@@ -49,6 +51,17 @@ Successful Response
   - `source_text` (string, required) — The source-language text of the segment.
   - `translation` (string, optional, nullable) — The translated text, or null if not translated yet (needs translation).
 - `revision` (integer, required) — The target's revision after this edit.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

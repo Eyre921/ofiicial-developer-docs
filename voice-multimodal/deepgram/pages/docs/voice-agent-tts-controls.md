@@ -27,6 +27,8 @@ Speed applies to both [Flux TTS](/docs/flux-tts/overview) (`agent.speak.provider
 
 Speed is a session-level setting on the agent's `speak` provider, and both Deepgram TTS families support it. Configure it when you initialize the agent, and every response from the agent uses that rate.
 
+**`Flux TTS (v2)`**
+
 ```json title="Flux TTS (v2)"
 {
   "type": "Settings",
@@ -42,6 +44,8 @@ Speed is a session-level setting on the agent's `speak` provider, and both Deepg
   }
 }
 ```
+
+**`Aura (v1)`**
 
 ```json title="Aura (v1)"
 {
@@ -72,6 +76,8 @@ The `speed` parameter is also supported for Cartesia TTS in Voice Agent sessions
 ## Expressivity: set the delivery register at the session level
 
 `agent.speak.provider.expressivity` shifts a Flux TTS voice's delivery along a calm to animated axis. Like speed, it is a session-level setting on the `speak` provider, and the value applies to every response the agent speaks.
+
+**`Flux TTS (v2)`**
 
 ```json title="Flux TTS (v2)"
 {

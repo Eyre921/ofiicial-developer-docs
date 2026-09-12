@@ -54,6 +54,8 @@ Each entry in the `keyterms` array is a plain term or phrase. Like the query-str
 
 Thresholds must be nested under a `"thresholds"` object. Individual threshold properties can be sent without including all three.
 
+**`Update Thresholds Only`**
+
 ```json Update Thresholds Only
 {
   "type": "Configure",
@@ -64,12 +66,16 @@ Thresholds must be nested under a `"thresholds"` object. Individual threshold pr
 }
 ```
 
+**`Update Keyterms Only`**
+
 ```json Update Keyterms Only
 {
   "type": "Configure",
   "keyterms": ["product_name", "feature_name", "company_name"]
 }
 ```
+
+**`Update Both`**
 
 ```json Update Both
 {
@@ -83,6 +89,8 @@ Thresholds must be nested under a `"thresholds"` object. Individual threshold pr
 }
 ```
 
+**`Clear All Keyterms`**
+
 ```json Clear All Keyterms
 {
   "type": "Configure",
@@ -90,12 +98,16 @@ Thresholds must be nested under a `"thresholds"` object. Individual threshold pr
 }
 ```
 
+**`Update Language Hints (flux-general-multi)`**
+
 ```json Update Language Hints (flux-general-multi)
 {
   "type": "Configure",
   "language_hints": ["en", "es", "fr"]
 }
 ```
+
+**`Update Language Hints and Thresholds`**
 
 ```json Update Language Hints and Thresholds
 {
@@ -108,6 +120,8 @@ Thresholds must be nested under a `"thresholds"` object. Individual threshold pr
   "keyterms": ["product_name"]
 }
 ```
+
+**`Clear Language Hints (revert to auto-detect)`**
 
 ```json Clear Language Hints (revert to auto-detect)
 {

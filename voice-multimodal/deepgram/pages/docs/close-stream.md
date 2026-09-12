@@ -22,6 +22,8 @@ In real-time audio processing, there are scenarios where you may need to force t
 
 To send the `CloseStream` message, you need to send the following JSON message to the server:
 
+**`JSON`**
+
 ```json JSON
 {
   "type": "CloseStream"
@@ -29,6 +31,8 @@ To send the `CloseStream` message, you need to send the following JSON message t
 ```
 
 Upon receiving the `CloseStream` message, the server will process all remaining audio data and return the following:
+
+**`JSON`**
 
 ```json JSON
 {
@@ -46,6 +50,8 @@ Upon receiving the `CloseStream` message, the server will process all remaining 
 
 Below are code examples to help you get started using `CloseStream`.
 
+**`JavaScript`**
+
 ```javascript JavaScript
 const WebSocket = require("ws");
 
@@ -61,6 +67,8 @@ ws.on('open', function open() {
 });
 ```
 
+**`Python`**
+
 ```python Python
 import json
 import websocket
@@ -74,6 +82,8 @@ closestream_msg = json.dumps({"type": "CloseStream"})
 # Send CloseStream message
 ws.send(closestream_msg)
 ```
+
+**`Go`**
 
 ```go Go
 package main
@@ -111,6 +121,8 @@ func main() {
     }
 }
 ```
+
+**`C#`**
 
 ```csharp C#
 using System;
@@ -159,6 +171,8 @@ class Program
     }
 }
 ```
+
+**`Java`**
 
 ```java Java
 import java.net.URI;

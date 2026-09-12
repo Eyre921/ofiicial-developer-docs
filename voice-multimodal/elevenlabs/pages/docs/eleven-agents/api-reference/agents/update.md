@@ -36,6 +36,8 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/update
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `conversation_config` (object, optional) — Conversation configuration for an agent
   - `asr` (object, optional) — Configuration for conversational transcription
     - `quality` ("high", optional) — The quality of the transcription
@@ -3095,6 +3097,17 @@ Successful Response
   - `referenced_dynamic_variables` (list of string, optional) — Dynamic variable names used in the procedure content
   - `folder_parent_id` (string, optional) — Procedure ID of the folder this procedure is placed in. None means root.
 - `default_hold_audio_url` (string, optional, default: https://eleven-public-cdn-common.elevenlabs.io/convai/ambient-audio-assets/elevator1.mp3) — URL of the default hold tone played to queued callers when no custom hold audio is uploaded, so the dashboard can preview it.
+
+## Errors
+
+### 422 Agents Update Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

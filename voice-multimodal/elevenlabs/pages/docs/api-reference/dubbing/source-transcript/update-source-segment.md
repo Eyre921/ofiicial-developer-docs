@@ -32,6 +32,8 @@ Reference: https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/up
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `text` (string, optional, nullable) — New text for the segment.
 - `speaker_id` (string, optional, nullable) — New speaker ID for the segment.
 - `start_s` (double, optional, nullable) — New start time, in seconds.
@@ -51,6 +53,17 @@ Successful Response
   - `end_s` (double, required) — End time of the segment, in seconds.
   - `external_id` (string, optional, nullable) — The caller-supplied external ID for this segment, if one was provided.
 - `revision` (integer, required) — The project's source-transcript revision after this edit.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

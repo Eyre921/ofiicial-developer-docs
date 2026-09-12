@@ -56,7 +56,9 @@ Git Contributors can access Deploy Preview and branch deploy links as long as th
 
 ### Visual Editor access
 
-By default, all Developers, Publishers, and [Internal Builders](#internal-builder) in a team can access that team's Visual Editor dashboard. Reviewers can access Deploy Preview and branch deploy links from Visual Editor. 
+Visual Editor is only available for teams that already have it. For all other teams, the **Visual editor dashboard** link is hidden from team navigation and the **Visual Editor** section is hidden from project configuration. Learn more in the [Visual Editor docs](/manage/visual-editor/overview/).
+
+On a team with the Visual Editor enabled, all Developers, Publishers, and [Internal Builders](#internal-builder) can access that team's Visual Editor dashboard by default. Reviewers can access Deploy Preview and branch deploy links from Visual Editor. 
 
 Within Visual Editor workspace, Owners, Developers, and Publishers can customize more granular access to Visual Editor projects, which are sites that have Visual Editor enabled and configured. Learn more about [editorial permissions](/manage/visual-editor/editorial-permissions/) for Visual Editor.
 

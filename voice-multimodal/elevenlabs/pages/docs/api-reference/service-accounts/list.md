@@ -82,6 +82,17 @@ Successful Response
     - `permission_level` (enum, required) — The permission level to grant to the group
       - Allowed values: `admin`, `editor`, `viewer`
 
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

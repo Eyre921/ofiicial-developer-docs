@@ -40,6 +40,17 @@ Successful Response
 - `media_type` (string, required) — The media type of the audio.
 - `duration_secs` (double, required) — The duration of the audio in seconds.
 
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

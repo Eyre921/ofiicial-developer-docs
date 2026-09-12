@@ -101,6 +101,17 @@ Successful Response
 - `has_used_starter_coupon_on_account` (boolean, optional, default: false) — True if any workspace owned by this user's auth account has redeemed the starter first-month discount coupon.
 - `has_used_creator_coupon_on_account` (boolean, optional, default: false) — True if any workspace owned by this user's auth account has redeemed the creator first-month discount coupon.
 
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

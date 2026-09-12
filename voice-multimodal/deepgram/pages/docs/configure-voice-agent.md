@@ -229,6 +229,8 @@ Below is an in-depth example of a complete `Settings` message. Every field shown
 * BYO LLM `think.endpoint`: [LLM Models](/docs/voice-agent-llm-models). `context_length` is documented under `agent.think.context_length` above and is only configurable with a custom `think.endpoint`.
 * Server-side functions add an `endpoint` object to the function (the function below is client-side); see `agent.think.functions.endpoint` in the parameter table above and the snippet after the example. For the call flow, see [Build a Function Call](/docs/build-a-function-call).
 
+  **`JSON`**
+
   ```json JSON
   {
     "type": "Settings",
@@ -325,6 +327,8 @@ Below is an in-depth example of a complete `Settings` message. Every field shown
   ```
 
 The function above runs client-side: your application receives the [Function Call Request](/docs/voice-agent-function-call-request) and returns the result. To have Deepgram call the function server-side instead, add an `endpoint` object to it. The server resolves the URL when it applies `Settings`, so the endpoint must be reachable:
+
+**`JSON`**
 
 ```json JSON
 {

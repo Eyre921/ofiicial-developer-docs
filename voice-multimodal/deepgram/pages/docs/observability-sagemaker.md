@@ -494,6 +494,8 @@ You can also view alarms in the [CloudWatch console](https://console.aws.amazon.
 
 Combine the key metrics into a single dashboard for at-a-glance monitoring. The following AWS CLI command creates a dashboard with widgets for concurrency, GPU utilization, errors, and latency.
 
+**`Create a CloudWatch dashboard`**
+
 ```bash title="Create a CloudWatch dashboard"
 aws cloudwatch put-dashboard \
   --dashboard-name deepgram-sagemaker \

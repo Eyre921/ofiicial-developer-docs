@@ -24,6 +24,8 @@ For a detailed explanation of all the options available for the `Settings` messa
 
 This example uses a very basic `Settings` to establish a connection. To send the `Settings` message, you need to send the following JSON message to the server:
 
+**`JSON`**
+
 ```json JSON
 {
 "type": "Settings",
@@ -67,6 +69,8 @@ This example uses a very basic `Settings` to establish a connection. To send the
 ```
 
 Upon receiving the `Settings` message, the server will process all remaining audio data and return the following [`SettingsApplied`](/docs/voice-agent-setting-applied-message) message.
+
+**`JSON`**
 
 ```json JSON
 {

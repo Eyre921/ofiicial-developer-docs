@@ -20,6 +20,8 @@ You do not need to handle these events unless you want to verify that an update 
 
 The server sends `ListenUpdated` after applying an [`UpdateListen`](/docs/voice-agent-update-listen) message.
 
+**`JSON`**
+
 ```json JSON
 {
   "type": "ListenUpdated"
@@ -29,6 +31,8 @@ The server sends `ListenUpdated` after applying an [`UpdateListen`](/docs/voice-
 ## `ThinkUpdated`
 
 The server sends `ThinkUpdated` after applying an [`UpdateThink`](/docs/voice-agent-update-think) message. Because `UpdateThink` replaces the entire Think provider configuration (model, prompt, endpoint, and functions), `ThinkUpdated` confirms that the full replacement landed.
+
+**`JSON`**
 
 ```json JSON
 {
@@ -40,6 +44,8 @@ The server sends `ThinkUpdated` after applying an [`UpdateThink`](/docs/voice-ag
 
 The server sends `SpeakUpdated` after applying an [`UpdateSpeak`](/docs/voice-agent-update-speak) message.
 
+**`JSON`**
+
 ```json JSON
 {
   "type": "SpeakUpdated"
@@ -49,6 +55,8 @@ The server sends `SpeakUpdated` after applying an [`UpdateSpeak`](/docs/voice-ag
 ## `PromptUpdated`
 
 The server sends `PromptUpdated` after applying an [`UpdatePrompt`](/docs/voice-agent-update-prompt) message.
+
+**`JSON`**
 
 ```json JSON
 {

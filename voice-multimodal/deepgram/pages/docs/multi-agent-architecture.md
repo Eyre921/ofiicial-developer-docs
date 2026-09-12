@@ -74,11 +74,15 @@ This implementation creates separate Voice Agent sessions for each specialized a
 
 A critical implementation detail: the audio forwarding task starts once and persists throughout all agent transitions. This ensures the Twilio WebSocket remains active while agents switch:
 
+**`Python`**
+
 ```python Python
 # Audio task starts ONCE and persists
 if not self.audio_task or self.audio_task.done():
     self.audio_task = asyncio.create_task(self.forward_twilio_audio())
 ```
+
+**`Java`**
 
 ```java Java
 // Audio task starts ONCE and persists across agent transitions
@@ -91,6 +95,8 @@ if (audioTask == null || audioTask.isDone()) {
 
 Voice Agent connections are async context managers that require manual lifecycle management:
 
+**`Python`**
+
 ```python Python
 # Creating connection
 self.current_agent_context = self.current_client.agent.v1.connect()
@@ -99,6 +105,8 @@ self.current_agent_connection = await self.current_agent_context.__aenter__()
 # Closing connection (keep audio task alive during transitions)
 await self.close_current_agent(keep_audio_task=True)
 ```
+
+**`Java`**
 
 ```java Java
 // Creating connection
@@ -114,6 +122,8 @@ closeCurrentAgent(/* keepAudioTask */ true);
 
 Functions must be called with proper timing to maintain conversation flow:
 
+**`Python`**
+
 ```python Python
 # 1. Send response to current agent
 response = AgentV1FunctionCallResponseMessage(...)
@@ -125,6 +135,8 @@ await asyncio.sleep(0.5)
 # 3. Then perform the action (e.g., transition)
 await self.transition_to_agent(next_agent)
 ```
+
+**`Java`**
 
 ```java Java
 // 1. Send response to current agent
@@ -178,6 +190,8 @@ When an agent calls `handoff_to_next_agent`, the orchestrator:
 
 Each agent is configured with settings for STT, LLM, TTS, and functions:
 
+**`Python`**
+
 ```python Python
 from deepgram.agent.v1.types import AgentV1Settings
 
@@ -196,6 +210,8 @@ def get_qualifier_config(context: str = "") -> AgentV1Settings:
         )
     )
 ```
+
+**`Java`**
 
 ```java Java
 import com.deepgram.resources.agent.v1.types.*;
@@ -235,6 +251,8 @@ Functions include detailed descriptions to guide the LLM's behavior. See `agents
 
 Key pattern: Functions should wait for customer confirmation:
 
+**`Python`**
+
 ```python Python
 HANDOFF_FUNCTION = AgentV1Function(
     name="handoff_to_next_agent",
@@ -247,6 +265,8 @@ HANDOFF_FUNCTION = AgentV1Function(
     """
 )
 ```
+
+**`Java`**
 
 ```java Java
 AgentV1Function handoffFunction = AgentV1Function.builder()

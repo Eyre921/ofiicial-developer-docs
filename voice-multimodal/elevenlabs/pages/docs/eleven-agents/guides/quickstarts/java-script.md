@@ -42,6 +42,8 @@ npm install vite @elevenlabs/client
 
 Add this to your `package.json`:
 
+**`package.json`**
+
 ```json package.json {4}
 {
     "scripts": {
@@ -68,7 +70,9 @@ elevenlabs-conversational-ai/
 
 In `index.html`, set up a simple user interface:
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5ad9dea65eddc50beaf444e5d319dc5094df0f4183e50f7ed01900394b3ff9d2/assets/images/conversational-ai/vite-guide.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T100019Z&X-Amz-Expires=604800&X-Amz-Signature=ddd818e8525610ad9772704a7c51a5e887cf8164796ee45f3569d164ec468926&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5ad9dea65eddc50beaf444e5d319dc5094df0f4183e50f7ed01900394b3ff9d2/assets/images/conversational-ai/vite-guide.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T094113Z&X-Amz-Expires=604800&X-Amz-Signature=258c36934e7ea3dbe8c54d5fb13b2e41aa27d4f6fd4be3a0a465424f84f14e47&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+
+**`index.html`**
 
 ```html index.html
 <!DOCTYPE html>
@@ -96,6 +100,8 @@ In `index.html`, set up a simple user interface:
 #### Implement the Conversation Logic
 
 In `script.js`, implement the functionality:
+
+**`script.js`**
 
 ```javascript script.js
 import { Conversation } from '@elevenlabs/client';
@@ -164,6 +170,8 @@ This authentication step is only required for private agents. If you're using a 
 
 Create a `.env` file in your project root:
 
+**`.env`**
+
 ```env .env
 ELEVENLABS_API_KEY=your-api-key-here
 AGENT_ID=your-agent-id-here
@@ -188,6 +196,8 @@ elevenlabs-conversational-ai/
 ```
 
 #### Create the Server
+
+**`backend/server.js`**
 
 ```javascript backend/server.js
 require("dotenv").config();
@@ -232,6 +242,8 @@ app.listen(PORT, () => {
 #### Update the Client Code
 
 Modify your `script.js` to fetch and use the signed URL:
+
+**`script.js`**
 
 ```javascript script.js {2-10,16,19,20}
 // ... existing imports and variables ...
@@ -282,6 +294,8 @@ async function startConversation() {
 Signed URLs expire after a short period. However, any conversations initiated before expiration will continue uninterrupted. In a production environment, implement proper error handling and URL refresh logic for starting new conversations.
 
 #### Update the package.json
+
+**`package.json`**
 
 ```json package.json {4,5}
 {

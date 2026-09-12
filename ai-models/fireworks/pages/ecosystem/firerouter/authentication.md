@@ -6,41 +6,56 @@ path: ecosystem/firerouter/authentication
 
 BYOK headers and API keys for FireRouter
 
-FireRouter uses a **bring-your-own-key** contract. The service validates your Fireworks key on every request and forwards your provider key only on pass-through legs to closed-source models. FireRouter does not store provider keys server-side.
+Every request is authenticated with a Fireworks API key. Provider credentials sent on individual requests are forwarded only to the selected provider and are not persisted by FireRouter. If workspace BYOK is provisioned on your Fireworks account, Fireworks stores the provider credential in your workspace and supplies it server-side. Contact the Fireworks team to enable workspace BYOK.
 
-## Required keys
+## Credentials
 
-| Key                              | Header or env                                    | Used for                                           |
-| -------------------------------- | ------------------------------------------------ | -------------------------------------------------- |
-| Fireworks API key (`fw_...`)     | `Authorization: Bearer` or `X-Fireworks-Api-Key` | FireRouter auth and redirected Fireworks inference |
-| Anthropic API key (`sk-ant-...`) | `x-anthropic-api-key`                            | Calls to Claude models                             |
-| OpenAI API key (`sk-...`)        | `x-openai-api-key`                               | Calls to OpenAI models                             |
+| Credential                   | Header or env                                      | When it is needed                                  |
+| ---------------------------- | -------------------------------------------------- | -------------------------------------------------- |
+| Fireworks API key (`fw_...`) | `Authorization: Bearer` or `X-Fireworks-Api-Key`   | FireRouter auth and redirected Fireworks inference |
+| Anthropic credential         | `x-anthropic-api-key`, or auth sent by Claude Code | To make Claude models eligible                     |
+| OpenAI API key (`sk-...`)    | `x-openai-api-key`                                 | To make OpenAI models eligible                     |
 
-The default `firerouter` model uses **Claude Opus 5** as its primary model, so every request requires an Anthropic key. FireRouter fails closed when the primary model's credential is missing; it does not silently restrict the route to Fireworks models.
+FireRouter requires a standard Fireworks API key (`fw_...`). Fire Pass keys (`fpk_...`) are not supported.
 
-For a model-specific [FireRouter slug](/ecosystem/firerouter/overview#choose-different-models), the first model's credential is required. Later models are eligible only when their credentials are present. Slugs that contain only Fireworks models need no additional provider key beyond the Fireworks API key.
+The default `firerouter` model uses **Claude Opus 5** as its primary model. Anthropic credentials make that pass-through leg eligible. Without them, FireRouter removes Claude Opus 5 from the candidate pool and can still serve an eligible Fireworks-hosted model such as GLM 5.3.
+
+For a model-specific [FireRouter slug](/ecosystem/firerouter/overview#choose-different-models), each provider-hosted member is eligible only when its credential is available. A request pinned directly to a provider-hosted model fails with `no_credential` when that credential is unavailable. Slugs containing only Fireworks-hosted models need no additional provider key.
+
+## Claude Code with FireConnect
+
+When Claude Code is routed through [FireConnect](/ecosystem/fireconnect/claude-code#firerouter), Anthropic auth usually comes from **Claude Code itself**, not a separate FireConnect prompt:
+
+| Source                                               | Works for FireRouter pass-through?                                  |
+| ---------------------------------------------------- | ------------------------------------------------------------------- |
+| Claude subscription login                            | Yes                                                                 |
+| Browser OAuth (`/login` in Claude Code)              | Yes                                                                 |
+| `ANTHROPIC_API_KEY` in Claude Code settings or env   | Yes                                                                 |
+| `--anthropic-api-key` on `fireconnect claude on`     | Yes                                                                 |
+| `fireconnect configure --anthropic-api-key`          | Yes                                                                 |
+| Workspace BYOK provisioned on your Fireworks account | Yes (server-side; requires Fireworks team enablement; no local key) |
+
+FireConnect does not prompt for Anthropic credentials during Claude Code setup. Claude Code attaches its existing Anthropic login at request time. For direct HTTP calls, send `x-anthropic-api-key` when you want Claude models to be eligible; omit it to route only among eligible Fireworks-hosted members.
 
 ## Fireworks key header
 
 Send your Fireworks API key with either header:
 
-```bash theme={null}
+```text theme={null}
 -H "Authorization: Bearer $FIREWORKS_API_KEY"
 # or
 -H "X-Fireworks-Api-Key: $FIREWORKS_API_KEY"
 ```
 
-`X-FireRouter-Fireworks-Key` is also accepted. New integrations should prefer `X-Fireworks-Api-Key`.
-
 ## Anthropic provider key
 
 The canonical header for Anthropic pass-through is:
 
-```bash theme={null}
+```text theme={null}
 -H "x-anthropic-api-key: $ANTHROPIC_API_KEY"
 ```
 
-`x-api-key` and `Authorization: Bearer` are also accepted for Anthropic clients that send credentials that way. For new integrations, prefer `x-anthropic-api-key`.
+`x-api-key` and `Authorization: Bearer` are also accepted as Anthropic credentials. If either carries the Anthropic credential, send the Fireworks key separately as `X-Fireworks-Api-Key`; one `Authorization` header cannot carry both credentials. New integrations should prefer `x-anthropic-api-key`.
 
 Example:
 
@@ -49,14 +64,14 @@ curl https://api.fireworks.ai/inference/v1/chat/completions \
   -H "Authorization: Bearer $FIREWORKS_API_KEY" \
   -H "x-anthropic-api-key: $ANTHROPIC_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"model": "firerouter", "messages": [...]}'
+  -d '{"model":"firerouter","messages":[{"role":"user","content":"Say pong."}]}'
 ```
 
 ## OpenAI provider key
 
 When the selected FireRouter slug includes an OpenAI model, send your OpenAI API key as:
 
-```bash theme={null}
+```text theme={null}
 -H "x-openai-api-key: $OPENAI_API_KEY"
 ```
 
@@ -76,12 +91,15 @@ client = OpenAI(
 
 ## Common errors
 
-| Response                        | Cause                                                        | Fix                                                                                           |
-| ------------------------------- | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
-| `401 Missing Fireworks API key` | Fireworks key header missing or empty                        | Set `X-Fireworks-Api-Key` to your `fw_...` key                                                |
-| `401 invalid Fireworks API key` | Key rejected                                                 | Confirm the key is valid in the [dashboard](https://app.fireworks.ai/settings/users/api-keys) |
-| `400` with `no_credential`      | Required provider key missing or sent under the wrong header | Send the key under the provider-specific header                                               |
-| Provider `401`                  | Provider key is invalid                                      | Check the key sent as `x-anthropic-api-key` or `x-openai-api-key`                             |
+| Response                                         | Cause                                                                                 | Fix                                                                                                  |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `401` with `You must provide an API key`         | Fireworks key header missing or empty                                                 | Send `Authorization: Bearer $FIREWORKS_API_KEY` or `X-Fireworks-Api-Key`                             |
+| `401` with `The API key you provided is invalid` | Gateway rejected the key                                                              | Confirm a valid `fw_...` key in the [dashboard](https://app.fireworks.ai/settings/users/api-keys)    |
+| `403` with Fire Pass authorization error         | A Fire Pass key (`fpk_...`) was used                                                  | Use a standard Fireworks API key (`fw_...`)                                                          |
+| `403` with data residency error                  | Data residency is enabled on the Fireworks account                                    | Use a residency-compatible pinned serverless model                                                   |
+| `404` with `Model id not found`                  | Unknown model ID, FireRouter access denial, or model entitlement denial               | Confirm the model ID and account access; contact Fireworks if you expect access                      |
+| `400` with `no_credential`                       | A pinned provider model or preference `1` requires an unavailable provider credential | Send the provider credential, choose a route with another eligible member, or use preference `2`–`5` |
+| Provider `401`                                   | Provider key is invalid                                                               | Check the key sent as `x-anthropic-api-key` or `x-openai-api-key`                                    |
 
 ## Related
 

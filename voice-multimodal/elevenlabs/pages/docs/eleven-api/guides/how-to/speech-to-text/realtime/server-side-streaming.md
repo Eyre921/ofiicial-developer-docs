@@ -358,6 +358,8 @@ async function sendAudio() {
 }
 ```
 
+**`Python WebSocket example`**
+
 ```python title="Python WebSocket example"
 # Use this example if you are unable to use the SDK
 import asyncio
@@ -447,6 +449,8 @@ async def transcribe():
 
 asyncio.run(transcribe())
 ```
+
+**`TypeScript WebSocket example`**
 
 ```typescript title="TypeScript WebSocket example"
     // Use this example if you are unable to use the SDK

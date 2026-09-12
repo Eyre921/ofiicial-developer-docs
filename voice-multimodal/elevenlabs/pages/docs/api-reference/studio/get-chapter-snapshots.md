@@ -42,6 +42,17 @@ Successful Response
   - `created_at_unix` (integer, required) — The creation date of the chapter snapshot.
   - `name` (string, required) — The name of the chapter snapshot.
 
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

@@ -41,6 +41,17 @@ Successful Response
 
 - `signed_url` (string, required)
 
+## Errors
+
+### 422 Conversations Get Signed URL Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

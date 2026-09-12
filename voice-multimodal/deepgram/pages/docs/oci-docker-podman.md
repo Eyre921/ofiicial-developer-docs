@@ -91,6 +91,8 @@ To complete the rest of the installation, including configuring your environment
 
 4. Connect to your OCI instance:
 
+   **`Shell`**
+
    ```shell Shell
    ssh -i /path/to/private-key.key USERNAME@IP_ADDR
    ```

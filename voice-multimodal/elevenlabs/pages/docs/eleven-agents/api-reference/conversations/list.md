@@ -42,7 +42,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/
 - `has_feedback_comment` (boolean, optional) — Filter conversations with user feedback comments.
 - `user_id` (string, optional) — Filter conversations by the user ID who initiated them.
 - `evaluation_params` (string, optional) — Evaluation filters. Repeat param. Format: criteria_id:result. Example: eval=value_framing:success
-- `data_collection_params` (string, optional) — Data collection filters. Repeat param. Format: id:op:value where op is one of eq|neq|gt|gte|lt|lte|in|exists|missing. For in, pipe-delimit values.
+- `data_collection_params` (string, optional) — Data collection filters. Repeat param. Format: id:op:value where op is one of eq|gt|gte|lt|lte|missing.
 - `dynamic_variable_params` (string, optional) — Dynamic variable filters. Repeat param. Format: name:op:value where op is one of eq|gt|gte|lt|lte. Comparison operators require a numeric value. Names containing ':' cannot be expressed.
 - `data_collection_ids` (string, optional) — Data collection field IDs to include in each conversation summary. Repeat param. When omitted, data_collection_results is not returned.
 - `evaluation_criteria_ids` (string, optional) — Evaluation criteria IDs to include in each conversation summary. Repeat param. When omitted, evaluation_criteria_results is not returned.
@@ -122,6 +122,17 @@ Successful Response
   - `tag_ids` (list of string, optional) — Conversation tag ids assigned to this conversation.
 - `has_more` (boolean, required)
 - `next_cursor` (string, optional)
+
+## Errors
+
+### 422 Conversations List Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

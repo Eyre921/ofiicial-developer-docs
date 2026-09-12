@@ -2671,7 +2671,6 @@ path: api/pagelist/en/free-pro-team-latest
 /en/rest/code-quality
 /en/rest/code-quality/code-quality
 /en/rest/code-scanning
-/en/rest/code-scanning/ai-scan
 /en/rest/code-scanning/code-scanning
 /en/rest/code-security
 /en/rest/code-security/configurations

@@ -32,6 +32,8 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedu
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `name` (string, optional, default: ) — Procedure name
 - `content` (string, optional, default: ) — Initial procedure content
 - `type` (enum, optional, default: free_form) — Procedure type
@@ -46,6 +48,17 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedu
 Successful Response
 
 - `procedure_id` (string, required) — ID of the created procedure
+
+## Errors
+
+### 422 Procedures Create Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

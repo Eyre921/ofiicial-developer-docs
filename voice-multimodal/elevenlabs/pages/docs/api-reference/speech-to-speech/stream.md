@@ -38,6 +38,8 @@ Reference: https://elevenlabs.io/docs/api-reference/speech-to-speech/stream
 
 ### Body (multipart/form-data)
 
+This endpoint expects a multipart form containing a file.
+
 - `audio` (file, required) — The audio file which holds the content and emotion that will control the generated speech.
 - `model_id` (string, optional) — Identifier of the model that will be used, you can query them using GET /v1/models. The model needs to have support for speech to speech, you can check this using the can_do_voice_conversion property.
 - `voice_settings` (string, optional) — Voice settings overriding stored settings for the given voice. They are applied only on the given request. Needs to be send as a JSON encoded string.
@@ -52,6 +54,17 @@ Reference: https://elevenlabs.io/docs/api-reference/speech-to-speech/stream
 Streaming audio data
 
 - Streaming response of `string`.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

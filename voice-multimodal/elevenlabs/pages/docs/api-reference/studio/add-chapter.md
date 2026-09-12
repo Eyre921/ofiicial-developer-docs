@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/studio/add-chapter
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `name` (string, required) — The name of the chapter, used for identification only.
 - `from_url` (string, optional, nullable) — An optional URL from which we will extract content to initialize the Studio project. If this is set, 'from_url' and 'from_content' must be null. If neither 'from_url', 'from_document', 'from_content' are provided we will initialize the Studio project as blank.
 
@@ -75,6 +77,17 @@ Successful Response
       - `voice_id` (string, required, deprecated) — The voice ID.
       - `credits_needed_to_convert` (integer, optional, nullable) — The number of credits needed to convert the remaining audio for this voice.
   - `last_conversion_error` (string, optional, nullable) — The last conversion error of the chapter.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

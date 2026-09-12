@@ -13,6 +13,8 @@ API.
 
 Review the API reference for the [Realtime Speech to Text API](/docs/api-reference/speech-to-text/v-1-speech-to-text-realtime) for more information on the API and its options.
 
+`committed_transcript` is the stable, final event for each segment. The public API does not emit a separate `final_transcript` event.
+
 ## Sent events
 
 | Event               | Description                       | When to use                        |
@@ -24,7 +26,7 @@ Review the API reference for the [Realtime Speech to Text API](/docs/api-referen
 | Event                                  | Description                                                                                          | When received                                                                                                                                              |
 | -------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `session_started`                      | Confirms connection and returns session configuration                                                | Immediately after WebSocket connection is established                                                                                                      |
-| `partial_transcript`                   | Live transcript update                                                                               | During audio processing, before a commit is made                                                                                                           |
+| `partial_transcript`                   | Live transcript update for the in-progress segment. Later partials replace earlier ones              | During audio processing, before a commit is made                                                                                                           |
 | `committed_transcript`                 | Settled transcript for a segment. This is the stable, final text for the segment and will not change | After a commit (either manual or VAD triggered)                                                                                                            |
 | `committed_transcript_with_timestamps` | Committed transcript with word-level timestamps and the detected `language_code`                     | Sent after the committed transcript. Only received when `include_timestamps=true` or `include_language_detection=true` is included in the query parameters |
 | `committed_transcript_entities`        | Entities detected in the committed transcript segment, with character offsets                        | Sent shortly after each committed transcript. Only received when `entity_detection` is included in the query parameters                                    |

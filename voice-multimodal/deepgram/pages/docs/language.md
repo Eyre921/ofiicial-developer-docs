@@ -24,6 +24,8 @@ For a full list of languages and compatible models see our [Model & Language Ove
 
 To transcribe audio from a file on your computer, run the following curl command in a terminal or your favorite API client.
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \

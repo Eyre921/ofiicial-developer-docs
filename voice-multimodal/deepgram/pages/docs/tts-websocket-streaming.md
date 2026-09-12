@@ -84,6 +84,8 @@ if __name__ == "__main__":
     main()
 ```
 
+**`Node.Js`**
+
 ```javascript Node.Js
 const { DeepgramClient } = require('@deepgram/sdk');
 const { Speaker } = require('speaker');

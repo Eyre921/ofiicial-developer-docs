@@ -30,6 +30,8 @@ In this guide, we use `jq`, which is an excellent command-line utility that allo
 
 Open your terminal, and run the following curl command:
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -52,13 +54,15 @@ Let’s look more closely at this request:
 
 When you run this command and it is finished processing (often after only a few seconds), you’ll receive a JSON response that looks similar to the following:
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/317326d600ee839975a185fad761e37495c8d6269e411de69cffffeb96f731bd/images/080c686-full-output.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T113131Z&X-Amz-Expires=604800&X-Amz-Signature=ca9c4bb24657bad4bdb39657266b86bc1f51efd19932ffcf0f93d50985511fe9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/317326d600ee839975a185fad761e37495c8d6269e411de69cffffeb96f731bd/images/080c686-full-output.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T113147Z&X-Amz-Expires=604800&X-Amz-Signature=092551b465114319f54d5096c2c022b4d54c84c39e805acdf496e658f4f04b41&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 This may look daunting, so let's look at a way to make both our curl request and our response easier to read.
 
 ## Shortening Your curl Request
 
 Now that you've seen a full curl request and understand the required parameters, let's look at a more concise way to make the same request:
+
+**`cURL`**
 
 ```bash cURL
 curl https://api.deepgram.com/v1/listen?punctuate=true \
@@ -86,6 +90,8 @@ The following `jq` expression will extract just the transcript from the returned
 
 To use it, add it to the end of your curl request:
 
+**`cURL`**
+
 ```bash cURL
 curl https://api.deepgram.com/v1/listen?punctuate=true \
   -H "Authorization: Token YOUR_DEEPGRAM_API_KEY" \
@@ -98,11 +104,13 @@ Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additi
 
 When you run this command and it is finished processing (often after only a few seconds), you’ll receive a JSON response that looks similar to the following:
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/4e327ad3b8562595dbc6590b7b8d56e215974c91d53bfce7cdfd692e94c08b2b/images/7e3313c-jq.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T113131Z&X-Amz-Expires=604800&X-Amz-Signature=be8ade8004e90376ffbd6533c2d25e36ba9e3ccc90d6bd260b12467749edd569&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/4e327ad3b8562595dbc6590b7b8d56e215974c91d53bfce7cdfd692e94c08b2b/images/7e3313c-jq.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T113147Z&X-Amz-Expires=604800&X-Amz-Signature=05e21bb1eda8b6e9e9b2eeaddfb2e5981d81bb8099f0bb4a501d35c3067368ad&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Saving Output to a File
 
 Once you have the transcript extracted and formatted using `jq`, you can redirect the output to a new file by appending `> output.txt` to any command that prints to the terminal. For example:
+
+**`cURL`**
 
 ```bash cURL
 curl https://api.deepgram.com/v1/listen?punctuate=true \
@@ -118,6 +126,8 @@ curl https://api.deepgram.com/v1/listen?punctuate=true \
 To process multiple files, you can create `.sh` files containing multiple lines of `bash` script to execute from your terminal.
 
 Create a new file called `transcripts.sh`, and open it in a code editor. Populate it with the following:
+
+**`Shell`**
 
 ```shell Shell
 #!/bin/bash
@@ -159,6 +169,8 @@ In this file, notice:
 
 Run the file in your terminal:
 
+**`Shell`**
+
 ```shell Shell
 ./transcripts.sh
 ```
@@ -167,11 +179,15 @@ Run the file in your terminal:
 
 `jq` is a remarkable powerful tool that you can use to format data in more advanced ways. For example, the following expression will loop through the `results.utterances` array and format a string for each item, interpolating the speaker identifier and transcript text:
 
+**`Shell`**
+
 ```shell Shell
 echo $RESPONSE | jq -r '.results.utterances[] | "[Speaker:\(.speaker)] \(.transcript)"' > $filename.txt
 ```
 
 When you run a previous curl command with this `jq` appended and it is finished processing, you’ll receive a JSON response formatted in the following way:
+
+**`JSON`**
 
 ```json JSON
 [Speaker:0] agreement on other things that are really good. Nancy, would you like to say something?

@@ -28,6 +28,8 @@ To enable Paragraphs, when you call Deepgram’s API, add a `paragraphs` paramet
 
 To transcribe audio from a file on your computer, run the following cURL command in a terminal or your favorite API client.
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -43,6 +45,8 @@ Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additi
 
 In our terminal, we run the following cURL command:
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -55,6 +59,8 @@ curl \
 Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 When the file is finished processing, you’ll receive a JSON response.
+
+**`JSON`**
 
 ```json JSON
 ...

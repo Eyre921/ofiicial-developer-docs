@@ -145,18 +145,18 @@ FireConnect automates these steps and makes it easy to swap models from the term
 
 ## Fireworks on Microsoft Foundry
 
-Cursor supports **Fireworks on Microsoft Foundry** (CLI: `--provider azure` or `on --azure`). See [Microsoft Foundry in FireConnect](/ecosystem/fireconnect/microsoft-foundry) and the [portal setup guide](/ecosystem/integrations/azure-foundry).
+Cursor supports **Fireworks on Microsoft Foundry** (CLI: `--provider azure` or `on --azure`). FireRouter is not available on the Foundry path; run `fireconnect configure --provider fireworks` before using `--model firerouter`. See [Microsoft Foundry in FireConnect](/ecosystem/fireconnect/microsoft-foundry) and the [portal setup guide](/ecosystem/integrations/azure-foundry).
 
 <Warning>
   Foundry routing requires a standard Azure API key. Fire Pass keys (`fpk_...`) are not supported. **Quit Cursor** before `on` or `off`.
 </Warning>
 
 ```bash theme={null}
-export AZURE_API_KEY=<your-azure-api-key>
+export AZURE_API_KEY="YOUR_AZURE_API_KEY"
 
 fireconnect configure \
   --provider azure \
-  --base-url https://<resource>.services.ai.azure.com \
+  --base-url "https://YOUR_RESOURCE.services.ai.azure.com" \
   --api-key $AZURE_API_KEY
 
 fireconnect cursor on --model FW-GLM-5.2
@@ -167,7 +167,7 @@ One-off routing without changing global config:
 ```bash theme={null}
 fireconnect cursor on \
   --azure \
-  --base-url https://<resource>.services.ai.azure.com \
+  --base-url "https://YOUR_RESOURCE.services.ai.azure.com" \
   --model FW-MiniMax-M2.5
 ```
 

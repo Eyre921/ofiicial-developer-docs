@@ -55,9 +55,13 @@ Nova-3 has the following model options which can be called by using the followin
 
 **Examples**
 
+**`Text`**
+
 ```text Text
 https://api.deepgram.com/v1/listen?model=nova-2
 ```
+
+**`Text`**
 
 ```text Text
 https://api.deepgram.com/v1/listen?model=nova-2-phonecall
@@ -83,9 +87,13 @@ Nova-2 has the following model options which can be called by using the followin
 
 **Examples**
 
+**`Text`**
+
 ```text Text
 https://api.deepgram.com/v1/listen?model=nova
 ```
+
+**`Text`**
 
 ```text Text
 https://api.deepgram.com/v1/listen?model=nova-phonecall
@@ -103,9 +111,13 @@ Nova has the following model options which can be called by using the following 
 
 **Examples**
 
+**`Text`**
+
 ```text Text
 https://api.deepgram.com/v1/listen?model=enhanced
 ```
+
+**`Text`**
 
 ```text Text
 https://api.deepgram.com/v1/listen?model=enhanced-phonecall
@@ -129,9 +141,13 @@ The Enhanced models can be called with the following syntax:
 
 **Examples**
 
+**`Text`**
+
 ```text Text
 https://api.deepgram.com/v1/listen?model=base
 ```
+
+**`Text`**
 
 ```text Text
 https://api.deepgram.com/v1/listen?model=base-phonecall
@@ -159,9 +175,13 @@ Custom models are only available to Enterprise customers. See [Deepgram Pricing 
 
 **Examples**
 
+**`Text`**
+
 ```text Text
 https://api.deepgram.com/v1/listen?model=whisper
 ```
+
+**`Text`**
 
 ```text Text
 https://api.deepgram.com/v1/listen?model=whisper-SIZE
@@ -184,6 +204,8 @@ Additional rate limits apply to Whisper due to poor scalability. Requests to Whi
 ## Try it out
 
 To transcribe audio from a file on your computer using a particular model, run the following curl command in a terminal or your favorite API client.
+
+**`CURL`**
 
 ```bash CURL
 curl \

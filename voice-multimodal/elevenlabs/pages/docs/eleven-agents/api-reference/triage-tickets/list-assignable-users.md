@@ -41,6 +41,17 @@ Successful Response
   - `has_access` (boolean, required) — Whether this workspace member currently has at least viewer access to the agent. Members without access are still returned so they can be surfaced (e.g. grayed out) and granted access before being assigned.
   - `first_name` (string, optional)
 
+## Errors
+
+### 422 Triage Tickets List Assignable Users Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

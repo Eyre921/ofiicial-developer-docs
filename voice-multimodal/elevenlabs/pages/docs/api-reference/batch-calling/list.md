@@ -71,6 +71,17 @@ Successful Response
 - `next_doc` (string, optional, nullable) — The next document, used to paginate through the batch calls
 - `has_more` (boolean, optional, default: false) — Whether there are more batch calls to paginate through
 
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

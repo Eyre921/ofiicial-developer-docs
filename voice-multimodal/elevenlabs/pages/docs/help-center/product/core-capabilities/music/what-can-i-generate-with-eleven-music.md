@@ -11,8 +11,8 @@ path: docs/help-center/product/core-capabilities/music/what-can-i-generate-with-
 Eleven Music is a versatile model that gives you control over many aspects of audio creation. You can generate:
 
 * **Full Songs with Vocals:** Create complete tracks with AI-generated lyrics and
-  vocals in a variety of languages. Music v2 supports more natural vocal performances and more
-  complex delivery patterns, including fast rap and dense lyrical phrasing.
+  vocals in a variety of languages. Music v2 and v2.5 support more natural vocal performances and
+  more complex delivery patterns, including fast rap and dense lyrical phrasing.
 * **Instrumental Tracks:** Generate purely instrumental music across any genre, from
   cinematic scores to ambient lo-fi beats.
 * **Specific Song Structures:** Use sectional generation to build a song piece by

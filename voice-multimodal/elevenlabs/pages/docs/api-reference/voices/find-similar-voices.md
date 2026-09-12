@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/voices/find-similar-voices
 
 ### Body (multipart/form-data)
 
+This endpoint expects a multipart form containing an optional file.
+
 - `audio_file` (file, optional)
 - `similarity_threshold` (double, optional) — Threshold for voice similarity between provided sample and library voices. Values range from 0 to 2. The smaller the value the more similar voices will be returned.
 - `top_k` (integer, optional) — Number of most similar voices to return. If similarity_threshold is provided, less than this number of voices may be returned. Values range from 1 to 100.
@@ -79,6 +81,17 @@ Successful Response
 - `has_more` (boolean, required) — Whether there are more shared voices in subsequent pages.
 - `total_count` (integer, optional, default: 0) — The total number of shared voices matching the query.
 - `last_sort_id` (string, optional, nullable)
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

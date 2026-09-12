@@ -32,6 +32,8 @@ Reference: https://elevenlabs.io/docs/api-reference/voices/pvc/samples/update
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `remove_background_noise` (boolean, optional, default: false) — If set will remove background noise for voice samples using our audio isolation model. If the samples do not include background noise, it can make the quality worse.
 - `selected_speaker_ids` (list of string, optional, nullable) — Speaker IDs to be used for PVC training. Make sure you send all the speaker IDs you want to use for PVC training in one request because the last request will override the previous ones.
 - `trim_start_time` (integer, optional, nullable) — The start time of the audio to be used for PVC training. Time should be in milliseconds
@@ -45,6 +47,17 @@ Reference: https://elevenlabs.io/docs/api-reference/voices/pvc/samples/update
 Successful Response
 
 - `voice_id` (string, required) — The ID of the voice.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

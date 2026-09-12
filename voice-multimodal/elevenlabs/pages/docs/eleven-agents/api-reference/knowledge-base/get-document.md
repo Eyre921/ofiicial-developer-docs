@@ -203,6 +203,17 @@ Successful Response
       - `name` (string, optional)
     - `is_frozen` (boolean, optional, default: false)
 
+## Errors
+
+### 422 Documents Get Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

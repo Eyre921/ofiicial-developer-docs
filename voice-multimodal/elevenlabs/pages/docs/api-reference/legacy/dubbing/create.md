@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/legacy/dubbing/create
 
 ### Body (multipart/form-data)
 
+This endpoint expects a multipart form with multiple files.
+
 - `file` (file, optional) — A list of file paths to audio recordings intended for voice cloning
 - `csv_file` (file, optional) — CSV file containing transcription/translation metadata
 - `foreground_audio_file` (file, optional) — For use only with csv input
@@ -56,6 +58,17 @@ Successful Response
 
 - `dubbing_id` (string, required) — The ID of the dubbing project.
 - `expected_duration_sec` (double, required) — The expected duration of the dubbing project in seconds.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

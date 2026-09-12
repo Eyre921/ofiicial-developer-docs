@@ -38,7 +38,25 @@ The shape list is also the authoritative way to discover which GPU types, GPU co
   </Tab>
 
   <Tab title="REST API">
-    Call [List Deployment Shape Versions](/api-reference/list-deployment-shape-versions) to find shapes for your model, then pass the shape name as `deploymentShape` in the [Create Deployment](/api-reference/create-deployment) request body:
+    Call [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions) with a deployment create request for your model. It returns the validated shape versions compatible with that model, with the server-side compatibility rules (PEFT base-model resolution, per-model hardware tiers, addon gating) applied for you:
+
+    ```bash theme={null}
+    # YOUR_ACCOUNT_ID is the account that will own the deployment, not the
+    # model's publisher. The model in the body can live anywhere you can
+    # deploy it, e.g. accounts/fireworks.
+    curl -X POST "https://api.fireworks.ai/v1/accounts/YOUR_ACCOUNT_ID/deploymentShapeVersions:match" \
+      -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "createDeploymentRequest": {
+          "deployment": {
+            "baseModel": "accounts/fireworks/models/gpt-oss-120b"
+          }
+        }
+      }'
+    ```
+
+    Then pass one of the returned shape versions as `deploymentShape` in the [Create Deployment](/api-reference/create-deployment) request body:
 
     ```bash theme={null}
     curl -X POST "https://api.fireworks.ai/v1/accounts/YOUR_ACCOUNT_ID/deployments" \

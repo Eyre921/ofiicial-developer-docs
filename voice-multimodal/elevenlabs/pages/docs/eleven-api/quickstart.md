@@ -26,6 +26,8 @@ npx skills add elevenlabs/skills --skill text-to-speech
 
 Store the key as a managed secret and pass it to the SDKs either as a environment variable via an `.env` file, or directly in your app’s configuration depending on your preference.
 
+**`.env`**
+
 ```js title=".env"
 ELEVENLABS_API_KEY=<your_api_key_here>
 ```
@@ -50,18 +52,26 @@ npm install dotenv
 
 Install the ElevenLabs CLI. Homebrew (macOS) and Scoop (Windows) are recommended.
 
+**`Homebrew (macOS)`**
+
 ```bash title="Homebrew (macOS)"
 brew install elevenlabs/tap/elevenlabs
 ```
+
+**`Scoop (Windows)`**
 
 ```powershell title="Scoop (Windows)"
 scoop bucket add elevenlabs https://github.com/elevenlabs/scoop-bucket
 scoop install elevenlabs
 ```
 
+**`npm`**
+
 ```bash title="npm"
 npm install -g @elevenlabs/cli
 ```
+
+**`curl`**
 
 ```bash title="curl"
 curl --proto '=https' --tlsv1.2 -LsSf https://github.com/elevenlabs/cli/releases/latest/download/elevenlabs-cli-installer.sh | sh

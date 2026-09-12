@@ -32,6 +32,8 @@ Reference: https://elevenlabs.io/docs/api-reference/text-to-sound-effects/conver
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `text` (string, required) — The text that will get converted into a sound effect.
 - `loop` (boolean, optional, default: false) — Whether to create a sound effect that loops smoothly. Only available for the 'eleven_text_to_sound_v2 model'.
 - `duration_seconds` (double, optional, nullable) — The duration of the sound which will be generated in seconds. Must be at least 0.5 and at most 30. If set to None we will guess the optimal duration using the prompt. Defaults to None.
@@ -46,6 +48,17 @@ Reference: https://elevenlabs.io/docs/api-reference/text-to-sound-effects/conver
 The generated sound effect as an MP3 file
 
 - File download.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

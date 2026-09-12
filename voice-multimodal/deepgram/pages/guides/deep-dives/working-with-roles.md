@@ -50,6 +50,8 @@ Self-hosted API keys can also be created with Console project roles. To do so, s
 
 Here is an example of an self-hosted API key which includes both the `member` project role as well as the `self-hosted:products` scopes.
 
+**`JSON`**
+
 ```json JSON
 {
   "member": {

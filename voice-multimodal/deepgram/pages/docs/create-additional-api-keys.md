@@ -49,6 +49,8 @@ Refer to the API Reference [Create Key](/reference/manage/keys/create) for more 
 
 **Example Request**
 
+**`cURL`**
+
 ```bash cURL
 curl --request POST \
      --url https://api.deepgram.com/v1/projects/your_project_id/keys \

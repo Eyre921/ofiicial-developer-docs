@@ -24,6 +24,8 @@ Unlike [`UpdatePrompt`](/docs/voice-agent-update-prompt), which adds to the exis
 
 To send the `UpdateThink` message, you need to send the following JSON message to the server:
 
+**`JSON`**
+
 ```json JSON
 {
     "type": "UpdateThink",
@@ -38,6 +40,8 @@ To send the `UpdateThink` message, you need to send the following JSON message t
 ```
 
 Upon receiving the `UpdateThink` message, the server will process all remaining audio data and return a [`ThinkUpdated`](/docs/voice-agent-acknowledgements#thinkupdated) message.
+
+**`JSON`**
 
 ```json JSON
 {

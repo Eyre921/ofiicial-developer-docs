@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/studio/update-content
 
 ### Body (multipart/form-data)
 
+This endpoint expects a multipart form containing an optional file.
+
 - `from_url` (string, optional) — An optional URL from which we will extract content to initialize the Studio project. If this is set, 'from_url' and 'from_content' must be null. If neither 'from_url', 'from_document', 'from_content' are provided we will initialize the Studio project as blank.
 - `from_document` (file, optional) — An optional .epub, .pdf, .txt or similar file can be provided. If provided, we will initialize the Studio project with its content. If this is set, 'from_url' and 'from_content' must be null. If neither 'from_url', 'from_document', 'from_content' are provided we will initialize the Studio project as blank.
 - `from_content_json` (string, optional) — An optional content to initialize the Studio project with. If this is set, 'from\_url' and 'from\_document' must be null. If neither 'from\_url', 'from\_document', 'from\_content' are provided we will initialize the Studio project as blank. Example: \[\{"name": "Chapter A", "blocks": \[\{"sub\_type": "p", "nodes": \[\{"voice\_id": "6lCwbsX1yVjD49QmpkT0", "text": "A", "type": "tts\_node"}, \{"voice\_id": "6lCwbsX1yVjD49QmpkT1", "text": "B", "type": "tts\_node"}]}, \{"sub\_type": "h1", "nodes": \[\{"voice\_id": "6lCwbsX1yVjD49QmpkT0", "text": "C", "type": "tts\_node"}, \{"voice\_id": "6lCwbsX1yVjD49QmpkT1", "text": "D", "type": "tts\_node"}]}]}, \{"name": "Chapter B", "blocks": \[\{"sub\_type": "p", "nodes": \[\{"voice\_id": "6lCwbsX1yVjD49QmpkT0", "text": "E", "type": "tts\_node"}, \{"voice\_id": "6lCwbsX1yVjD49QmpkT1", "text": "F", "type": "tts\_node"}]}, \{"sub\_type": "h2", "nodes": \[\{"voice\_id": "6lCwbsX1yVjD49QmpkT0", "text": "G", "type": "tts\_node"}, \{"voice\_id": "6lCwbsX1yVjD49QmpkT1", "text": "H", "type": "tts\_node"}]}]}]
@@ -229,6 +231,17 @@ Successful Response
   - `agent_settings` (object, optional, nullable) — Agent-related settings for the project
     - `tool_settings` (map from string to object, optional)
       - `skip_confirmation` (boolean, optional, default: false)
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

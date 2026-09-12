@@ -41,6 +41,8 @@ To enable Keyterm Prompting, add a `keyterm` parameter in the query string and s
 
 To transcribe audio from a file on your computer, run the following cURL command in a terminal or your favorite API client.
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -114,6 +116,8 @@ You can pass in multiple keyterms in your query string in several ways. Do not s
 
 To boost multiple separate keyterms, repeat the `keyterm` parameter so each keyterm is processed individually.
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -125,6 +129,8 @@ curl \
 
 To boost one multi-word phrase as a single keyterm, join the words with an encoded space `%20`:
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -135,6 +141,8 @@ curl \
 ```
 
 In query parameters, you can also join the words of a phrase with a plus `+`:
+
+**`cURL`**
 
 ```bash cURL
 curl \
@@ -148,6 +156,8 @@ curl \
 ## Key Term Limits
 
 Key Terms are limited to 500 tokens per request; anything beyond that will return an error like so:
+
+**`Error`**
 
 ```text Error
 Keyterm limit exceeded. The maximum number of tokens across all keyterms is 500.

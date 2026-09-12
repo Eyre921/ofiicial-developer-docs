@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/knowledge-base/compute-rag-i
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `model` (enum, required, default: e5_mistral_7b_instruct)
   - Allowed values: `e5_mistral_7b_instruct`, `multilingual_e5_large_instruct`
 
@@ -48,6 +50,17 @@ Successful Response
 - `progress_percentage` (double, required)
 - `document_model_index_usage` (object, required)
   - `used_bytes` (integer, required)
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

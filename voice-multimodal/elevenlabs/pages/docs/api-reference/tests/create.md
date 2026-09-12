@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/tests/create
 
 ### Body (application/json)
 
+This endpoint expects an object or object or object.
+
 - `object or object or object`
   - CreateResponseUnitTestRequest
     - `name` (string, required)
@@ -1382,6 +1384,17 @@ Reference: https://elevenlabs.io/docs/api-reference/tests/create
 Successful Response
 
 - `id` (string, required)
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

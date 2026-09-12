@@ -30,9 +30,13 @@ quickstart first if you haven't.
 
 #### Install the SDK
 
+**`React`**
+
 ```bash title="React"
 npm install @elevenlabs/react @elevenlabs/elevenlabs-js
 ```
+
+**`JavaScript`**
 
 ```bash title="JavaScript"
 npm install @elevenlabs/client @elevenlabs/elevenlabs-js
@@ -68,6 +72,8 @@ Transcription can be done either via the microphone or manually chunking your ow
 For a full list of parameters and options the API supports, please refer to the [API reference](/docs/api-reference/speech-to-text/v-1-speech-to-text-realtime).
 
 #### Microphone
+
+**`React`**
 
 ```typescript title="React"
 import { useScribe } from "@elevenlabs/react";
@@ -120,6 +126,8 @@ function MyComponent() {
   );
 }
 ```
+
+**`JavaScript`**
 
 ```typescript title="JavaScript"
 // Client side
@@ -183,6 +191,8 @@ connection.close();
 ```
 
 #### Manual audio chunking
+
+**`React`**
 
 ```typescript title="React"
 import { useScribe, AudioFormat } from "@elevenlabs/react";
@@ -249,6 +259,8 @@ function FileTranscription() {
   );
 }
 ```
+
+**`JavaScript`**
 
 ```typescript title="JavaScript"
 import { Scribe, AudioFormat, RealtimeEvents, CommitStrategy } from "@elevenlabs/client";

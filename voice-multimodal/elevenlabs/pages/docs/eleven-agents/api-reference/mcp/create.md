@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/create
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `config` (object, required) — Configuration details for the MCP Server.
   - `url` (string or object, required) — The URL of the MCP server, if this contains a secret please store as a workspace secret, otherwise store as a plain string. Must use https
     - Conv AI Secret Locator
@@ -253,6 +255,17 @@ Successful Response
   - `type`: `unknown`
     - `id` (string, required)
     - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
+
+## Errors
+
+### 422 Mcp Servers Create Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/api-keys/set-third-party-dis
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `third_party_disable_allowed` (boolean, optional, nullable) — `true` forces every key in the workspace to be disable-able by its holder; `false` forbids it for every key; `null` clears the override (per-key values and the plan default apply).
 
 ## Response
@@ -36,6 +38,17 @@ Reference: https://elevenlabs.io/docs/api-reference/api-keys/set-third-party-dis
 Successful Response
 
 - `any`
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

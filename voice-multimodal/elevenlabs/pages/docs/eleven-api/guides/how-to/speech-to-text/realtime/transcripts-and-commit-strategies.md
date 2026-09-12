@@ -37,6 +37,8 @@ const connection = await elevenlabs.speechToText.realtime.connect({
 });
 ```
 
+**`React`**
+
 ```typescript title="React"
 const connection = useScribe({
   modelId: "scribe_v2_realtime",
@@ -47,6 +49,8 @@ const connection = useScribe({
   },
 });
 ```
+
+**`JavaScript`**
 
 ```typescript title="JavaScript"
 const connection = Scribe.connect({
@@ -121,6 +125,8 @@ With the VAD strategy, the transcription engine automatically detects speech and
 
 When transcribing audio from the microphone in the [client-side integration](/docs/eleven-api/guides/how-to/speech-to-text/realtime/client-side-streaming), it is recommended to use the VAD strategy.
 
+**`Client`**
+
 ```typescript title="Client"
 import { Scribe, AudioFormat, CommitStrategy } from "@elevenlabs/client";
 
@@ -156,6 +162,8 @@ connection = await elevenlabs.speech_to_text.realtime.connect(
     )
 )
 ```
+
+**`TypeScript`**
 
 ```typescript title="TypeScript"
 import { ElevenLabsClient, AudioFormat, CommitStrategy } from '@elevenlabs/elevenlabs-js';

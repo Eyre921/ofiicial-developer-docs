@@ -35,6 +35,8 @@ Network latency has two distinct parts:
 
 For a quick approximation of TCP round-trip time using cURL:
 
+**`cURL`**
+
 ```bash cURL
 curl -sSf -w "latency: %{time_connect}\n" -so /dev/null https://api.deepgram.com
 ```

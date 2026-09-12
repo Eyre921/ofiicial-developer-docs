@@ -65,6 +65,17 @@ Successful Response
 - `has_more` (boolean, required) — Whether there are more agents to paginate through
 - `next_cursor` (string, optional, nullable) — The next cursor to paginate through the agents
 
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

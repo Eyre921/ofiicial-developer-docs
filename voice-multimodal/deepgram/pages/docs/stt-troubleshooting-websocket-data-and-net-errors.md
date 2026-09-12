@@ -64,6 +64,8 @@ These code samples demonstrate how to connect to Deepgram’s API using WebSocke
 
 Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
+**`Python`**
+
 ```python Python
 import websockets
 import json
@@ -87,6 +89,8 @@ async def main():
 
 asyncio.run(main())
 ```
+
+**`JavaScript`**
 
 ```javascript JavaScript
 const WebSocket = require('ws');

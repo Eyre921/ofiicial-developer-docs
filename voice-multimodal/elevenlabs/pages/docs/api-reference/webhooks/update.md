@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/webhooks/update
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `is_disabled` (boolean, required) — Whether to disable or enable the webhook
 - `name` (string, required) — The display name of the webhook (used for display purposes only).
 - `retry_enabled` (boolean, optional, nullable) — Whether to enable automatic retries for transient failures (5xx, 429, timeout)
@@ -45,6 +47,17 @@ Reference: https://elevenlabs.io/docs/api-reference/webhooks/update
 Successful Response
 
 - `status` (string, required) — The status of the workspace webhook patch request. If the request was successful, the status will be 'ok'. Otherwise an error message with status 500 will be returned.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

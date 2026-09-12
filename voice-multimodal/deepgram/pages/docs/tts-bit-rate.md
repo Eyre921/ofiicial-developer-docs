@@ -26,6 +26,8 @@ To enable the Bit Rate feature, include the `bit_rate` parameter in the query st
 
 ### Example:
 
+**`Text`**
+
 ```text Text
 https://api.deepgram.com/v1/speak?encoding=mp3&bit_rate=32000
 ```
@@ -35,6 +37,8 @@ https://api.deepgram.com/v1/speak?encoding=mp3&bit_rate=32000
 You can use the following cURL command in a terminal or your favorite API client to synthesize text into speech with a specific bitrate.
 
 **MP3 encoding with bitrate of 32 kbits/second:**:
+
+**`cURL`**
 
 ```bash cURL
 curl --request POST \
@@ -63,6 +67,8 @@ Upon successful processing of the request, you will receive an audio file contai
 The audio file is streamed back to you, so you may begin playback as soon as the first byte arrives. Read the guide [Streaming Audio Outputs](/docs/streaming-the-audio-output) to learn how to begin playing the stream immediately versus waiting for the entire file to arrive.
 
 ### Response Headers Example
+
+**`http`**
 
 ```text http
 HTTP/1.1 200 OK

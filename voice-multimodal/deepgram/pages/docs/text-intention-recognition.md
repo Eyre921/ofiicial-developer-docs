@@ -23,6 +23,8 @@ Text Intelligence  English (all available regions)
 
 Intent Recognition accepts an input text, divides it into a list of segments comprised of sections of the text, and assigns a description of intent to each text segment.
 
+**`JSON`**
+
 ```json JSON
 "results": {
     "intents": {
@@ -67,6 +69,8 @@ To enable Intent Recognition, use the following parameter in the query string wh
 
 To analyze text from a file on your computer, run the following curl command in a terminal or your favorite API client.
 
+**`cURL`**
+
 ```bash cURL
 curl -vX POST \
  -H "Authorization: Token YOUR_DEEPGRAM_API_KEY" \
@@ -81,6 +85,8 @@ Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.dee
 
 To analyze text from a hosted file, run the following curl command in a terminal or your favorite API client. (Try testing it out with the hosted file [https://static.deepgram.com/examples/aura.txt](https://static.deepgram.com/examples/aura.txt))
 
+**`cURL`**
+
 ```bash cURL
 curl -vX POST \
  -H "Authorization: Token YOUR_DEEPGRAM_API_KEY" \
@@ -94,6 +100,8 @@ curl -vX POST \
 To tell the model to only return intents from your own custom list of intents, add `custom_intent_mode=strict` and `custom_intent=` followed by the list of intents. (Use the URL encoding`%20` to represent a space between each word in the list.)
 
 If you want to return your own custom list of intents *in addition* to Deegpram's list of intents, set `custom_intent_mode=extended` and add your custom list.
+
+**`cURL`**
 
 ```bash cURL
 curl -vX POST \
@@ -118,6 +126,8 @@ Read our [Text Intelligence Getting Started guide](/docs/text-intelligence), whi
 ## Analyze Response
 
 When the file is finished processing, you’ll receive a JSON response that has the following basic structure:
+
+**`JSON`**
 
 ```json JSON
 {
@@ -175,6 +185,8 @@ The response object values for `intents` are:
 
 If you request Intent Recognition with an unsupported language by specifying a language code such as `intents=true&language=es` or `intents=true&detect_language=true` where the detected language is unsupported, you will get the error message below.
 
+**`JSON`**
+
 ```json JSON
 {
   "err_code":"INVALID_QUERY_PARAMETER",
@@ -189,6 +201,8 @@ If you request Intent Recognition with an unsupported language by specifying a l
 
 If the request's input length exceeded the 150k token rate limit per request, you will get the error message below.
 
+**`JSON`**
+
 ```json JSON
 {
   "err_code": "TOKEN_LIMIT_EXCEEDED",
@@ -202,6 +216,8 @@ If the request's input length exceeded the 150k token rate limit per request, yo
 **Status** 400
 
 If the request sent contained only the feature parameter (`intents`) but not the `language` parameter, you will receive this error.
+
+**`JSON`**
 
 ```json JSON
 {

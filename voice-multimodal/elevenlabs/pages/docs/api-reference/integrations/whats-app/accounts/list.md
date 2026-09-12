@@ -47,6 +47,17 @@ Successful Response
   - `enable_typing_indicator` (boolean, optional, default: true)
   - `is_token_expired` (boolean, optional, default: false)
 
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

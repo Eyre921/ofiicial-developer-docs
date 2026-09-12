@@ -64,6 +64,8 @@ If you set `use_multi_channel: true` but provide a single-channel (mono) audio f
 receive a standard single-channel response, not the multichannel format. The multichannel response
 format is only returned when the audio file actually contains multiple channels.
 
+**`Single channel response`**
+
 ```python title="Single channel response"
 {
   "language_code": "en",
@@ -72,6 +74,8 @@ format is only returned when the audio file actually contains multiple channels.
   "words": [...]
 }
 ```
+
+**`Multichannel response`**
 
 ```python title="Multichannel response"
 {
@@ -94,6 +98,8 @@ format is only returned when the audio file actually contains multiple channels.
 }
 ```
 
+**`Combined response (multichannel_output_style=combined)`**
+
 ```python title="Combined response (multichannel_output_style=combined)"
 {
   "language_code": "en",
@@ -113,6 +119,8 @@ With `multichannel_output_style=combined`, the response uses the same flat shape
 ### Basic multichannel transcription
 
 Here's a complete example of transcribing a stereo audio file with two speakers:
+
+**`Python`**
 
 ```python title="Python"
 from elevenlabs import ElevenLabs
@@ -143,6 +151,8 @@ if hasattr(result, 'transcripts'): # Multichannel response
         print(f"Text: {result.text}")
 
 ```
+
+**`JavaScript`**
 
 ```javascript title="JavaScript"
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
@@ -177,6 +187,8 @@ async function transcribeMultichannel(audioFilePath) {
 }
 ```
 
+**`cURL`**
+
 ```bash title="cURL"
 curl -X POST "https://api.elevenlabs.io/v1/speech-to-text" \
   -H "xi-api-key: YOUR_API_KEY" \
@@ -190,6 +202,8 @@ curl -X POST "https://api.elevenlabs.io/v1/speech-to-text" \
 ### Creating conversation transcripts
 
 The easiest way to get a time-ordered, conversation-style transcript is to request `multichannel_output_style=combined` — the API returns a single `words` list, already sorted by start time, with a `channel_index` and `speaker_id` on each word:
+
+**`Combined output (recommended)`**
 
 ```python title="Combined output (recommended)"
 with open("stereo_interview.wav", "rb") as audio_file:
@@ -363,6 +377,8 @@ $$
 
 For large multichannel files, consider streaming or chunking:
 
+**`Python`**
+
 ```python title="Python"
 def process_large_multichannel_file(file_path, chunk_duration=300):
     """Process large files in chunks (5-minute segments)"""
@@ -410,6 +426,8 @@ def process_large_multichannel_file(file_path, chunk_duration=300):
     return all_transcripts
 
 ```
+
+**`JavaScript`**
 
 ```javascript title="JavaScript"
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";

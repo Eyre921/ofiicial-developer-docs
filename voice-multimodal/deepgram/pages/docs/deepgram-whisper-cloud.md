@@ -38,6 +38,8 @@ Before you start, you'll need to follow the steps in the [Make Your First API Re
 
 Transcribe a remote file using Deepgram's Whisper API with the following request.
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -52,6 +54,8 @@ If you would like to use a Deepgram SDK to make the request, follow the steps in
 Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 ### Analyze Response
+
+**`JSON`**
 
 ```json JSON
 {
@@ -113,11 +117,15 @@ Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additi
 
 To enable Deepgram’s Whisper API, add a model parameter in the query string and set it to `model=whisper`
 
+**`Bash`**
+
 ```bash Bash
 https://api.deepgram.com/v1/listen?model=whisper
 ```
 
 To enable a specific size of the Whisper model, set the model parameter to `model=whisper-size`.
+
+**`Bash`**
 
 ```bash Bash
 https://api.deepgram.com/v1/listen?model=whisper-SIZE

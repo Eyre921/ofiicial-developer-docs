@@ -25,7 +25,7 @@ Created in collaboration with labels, publishers, and artists, Eleven Music is c
 
 ## Audio Reference
 
-Audio Reference lets you upload a short audio track to guide the style and sound of a new Music v2 generation. This gives the model an additional creative reference alongside your text prompt.
+Audio Reference lets you upload a short audio track to guide the style and sound of a new Music v2 or v2.5 generation. This gives the model an additional creative reference alongside your text prompt.
 
 To use Audio Reference, navigate to **Music** > **Generations** and use the **+ Reference** button in the **Prompt** section to add an audio reference.
 
@@ -37,7 +37,7 @@ Audio Reference is intended to guide a generation toward a similar style and sou
 designed for genre transformation — for example, uploading a jazz track and requesting a rap
 version may not produce reliable results.
 
-Audio Reference is available with Music v2 on all paid plans.
+Audio Reference is available with Music v2 and v2.5 on all paid plans.
 
 ## Music Finetunes
 
@@ -100,6 +100,13 @@ Learn how to train a custom music model on your own audio.
 
 ## Key facts
 
+#### What is Music v2.5?
+
+Music v2.5 is our most advanced music model. It builds on Music v2 with improved audio quality
+and prompt adherence, and supports the same workflows, including composition plans, Audio
+Reference and inpainting. Select it in the model dropdown in the Eleven Music interface, or pass
+`model_id="music_v2_5"` in the API. Music v2 remains available.
+
 #### What is Music v2?
 
 Music v2 is the next generation of ElevenLabs' AI music model, with improved prompt adherence,
@@ -147,7 +154,7 @@ Generated audio is available in MP3 (44.1kHz, 128-192kbps) and WAV formats.
 #### What is Audio Reference?
 
 Audio Reference lets you upload a track of up to approximately 30 seconds to guide the style and sound of a new
-Music v2 generation. The uploaded track is used as creative guidance alongside your prompt, and every upload is
+Music v2 or v2.5 generation. The uploaded track is used as creative guidance alongside your prompt, and every upload is
 screened for copyright compliance.
 
 #### Can Audio Reference remix a song or change its genre?

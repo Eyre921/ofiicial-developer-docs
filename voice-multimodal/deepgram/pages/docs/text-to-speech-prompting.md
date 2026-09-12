@@ -24,6 +24,8 @@ A comma (`,`) or a period (`.`) present in your text will be treated as a very *
 "Hello, how can I help you today? ... Are you there ... Hello?"
 ```
 
+**`cURL`**
+
 ```bash cURL
     curl --request POST \
      --header "Content-Type: application/json" \
@@ -56,6 +58,8 @@ Silent pauses are pauses that have a higher probability of staying silent in the
 "To confirm, is your registration number BY. . 3984. . 0297?"
 ```
 
+**`cURL`**
+
 ```bash cURL
 curl --request POST \
      --header "Content-Type: application/json" \
@@ -73,6 +77,8 @@ Filler words such as `um` and `uh` can also be used to offer a more natural soun
 ```
 "Hello, how can I help you today? um Are you there uh Hello?"
 ```
+
+**`cURL`**
 
 ```bash cURL
   curl --request POST \
@@ -93,6 +99,8 @@ While we do not offer pronunciation control as part of our API, you can create s
 ```
 "Can I confirm that your name, spelled Teee Aitch Eigh Elle Eye Eigh, is pronounced as Taylia?"
 ```
+
+**`cURL`**
 
 ```bash cURL
 curl --request POST \
@@ -118,6 +126,8 @@ You can add natural pauses between groups of 2 - 4 alphabets to include pauses.
 "To confirm, is your referral code Queue Why. Eigh Beee?"
 ```
 
+**`cURL`**
+
 ```bash cURL
 curl --request POST \
      --header "Content-Type: application/json" \
@@ -135,6 +145,8 @@ In most cases, acronyms can be handled by just providing the letters of the acro
 ```
 "I love watching NBA Basketball."
 ```
+
+**`cURL`**
 
 ```bash cURL
 curl --request POST \
@@ -155,6 +167,8 @@ Explicitly add the word `and` to tell the model to pronounce the entire phrase a
 ```
 "The total is 1235, or twelve hundred and thirty-five."
 ```
+
+**`cURL`**
 
 ```bash cURL
 curl --request POST \
@@ -177,6 +191,8 @@ If you are having trouble with words rooted in different languages in your text,
 ```
 "I want to rendezvous with you."
 ```
+
+**`cURL`**
 
 ```bash cURL
  curl --request POST \

@@ -22,6 +22,8 @@ To enable Callback, when you call Deepgram’s API, add a `callback` parameter i
 
 `callback=URL`
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -66,6 +68,8 @@ If the HTTP status code of the response to the callback `POST` request is unsucc
 ## Using `CallBack_Method`
 
 To enable the Callback Method, include the `callback_method` parameter in the query string. By default, the method supports `POST`, but you can specify `PUT` instead.
+
+**`cURL`**
 
 ```bash cURL
 curl \

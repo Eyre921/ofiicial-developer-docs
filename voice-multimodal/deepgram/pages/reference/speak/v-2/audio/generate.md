@@ -44,6 +44,8 @@ Reference: https://developers.deepgram.com/reference/speak/v-2/audio/generate
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `text` (string, required) — The text content to be converted to speech. The server normalizes and preprocesses the text before synthesis. Inline pause and pronunciation controls are not yet applied; they are stripped from the text before synthesis.
 
 ## Response
@@ -53,6 +55,23 @@ Reference: https://developers.deepgram.com/reference/speak/v-2/audio/generate
 Returns the synthesized audio in the requested encoding as a binary stream. When a `callback` URL is supplied, the request is processed asynchronously and the response body is instead a JSON acknowledgement (Content-Type `application/json`) of the form \{"request\_id": "..."}, with the audio delivered to the callback URL. Because this endpoint is typed as a binary audio stream, SDK callers that set `callback` receive this JSON acknowledgement through the audio byte iterator as raw bytes and must join the chunks and parse `request_id` themselves.
 
 - `request_id` (string, required) — Unique identifier for tracking the asynchronous request
+
+## Errors
+
+### 400 Bad Request Error
+
+Invalid Request. Inline pause and pronunciation controls are not applied and are stripped rather than rejected.
+
+- `string or object or object`
+  - ErrorResponseLegacyError
+    - `err_code` (string, optional) — The error code
+    - `err_msg` (string, optional) — The error message
+    - `request_id` (string, optional) — The request ID
+  - ErrorResponseModernError
+    - `category` (string, optional) — The category of the error
+    - `message` (string, optional) — A message about the error
+    - `details` (string, optional) — A description of the error
+    - `request_id` (string, optional) — The unique identifier of the request
 
 ## Examples
 

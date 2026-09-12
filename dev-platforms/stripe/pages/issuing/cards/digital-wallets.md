@@ -15,4 +15,5 @@ This article has multiple variants. Fetch one of the following URLs to view spec
 - [iOS](https://docs.stripe.com/issuing/cards/digital-wallets.md?platform=ios)
 - [Android](https://docs.stripe.com/issuing/cards/digital-wallets.md?platform=android)
 - [React Native](https://docs.stripe.com/issuing/cards/digital-wallets.md?platform=react-native)
+- [Web](https://docs.stripe.com/issuing/cards/digital-wallets.md?platform=web)
 

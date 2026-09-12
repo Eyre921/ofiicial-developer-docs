@@ -6,7 +6,7 @@ path: ecosystem/fireconnect/overview
 
 Route coding harnesses through Fireworks AI, with Microsoft Foundry support for compatible tools
 
-[FireConnect](https://github.com/fw-ai/fireconnect) is an open-source CLI that routes agentic coding harnesses through Fireworks models. Install once, sign in once, then flip any supported harness on or off — no proxy to run, no wrapper to launch. `on` rewrites the tool's config; `off` restores your original file **byte-for-byte**.
+[FireConnect](https://github.com/fw-ai/fireconnect) is an open-source CLI that routes agentic coding harnesses through Fireworks models. Install once, sign in once, then flip any supported harness on or off — no proxy to run, no wrapper to launch. `on` updates the harness config. `off` restores saved pre-FireConnect settings when a backup is available; otherwise it removes FireConnect-managed settings.
 
 Choose where inference runs:
 
@@ -19,7 +19,7 @@ Choose where inference runs:
 
 ## Quick start
 
-**1. Install**
+### Install
 
 ```bash theme={null}
 curl -fsSL https://raw.githubusercontent.com/fw-ai/fireconnect/main/install.sh | bash
@@ -37,21 +37,7 @@ fireconnect login        # browser sign-in, or paste a fw_… / fpk_… key
 fireconnect claude       # first run opens the model mapping wizard
 ```
 
-Example output:
-
-```text theme={null}
-✓ Claude Code → Fireworks
-Model mapping
-  Fable     → glm-flash-latest
-  Opus      → firerouter
-  Sonnet    → deepseek-pro-latest
-  Haiku     → deepseek-flash-latest
-  Subagents → deepseek-flash-latest
-
-✓ Web search → fireworks-websearch (installed)
-
-Restart Claude Code to use the new setup.
-```
+Use the wizard to choose Claude Code alias slots, or configure them explicitly with `--model`, `--opus`, `--sonnet`, `--haiku`, `--fable`, and `--subagent`. Eligible accounts also get the `fireworks-websearch` MCP (see [WebSearch MCP](/ecosystem/fireconnect/websearch-mcp)).
 
 **4. Restart the tool, then verify**
 
@@ -93,7 +79,7 @@ fireconnect logout    # clear stored credentials
 fireconnect status    # sign-in state, key storage, and harness state
 ```
 
-Fire Pass keys (`fpk_...`) work during `login` or `on`. FireConnect detects the key type and applies the correct defaults.
+Fire Pass keys (`fpk_...`) work during `login` or `on`. FireConnect detects the key type and configures supported models.
 
 See [CLI reference: Sign in options](/ecosystem/fireconnect/cli-reference#sign-in-options) for `--with-token`, `--account`, `logout --revoke`, and `configure`.
 
@@ -142,21 +128,6 @@ fireconnect <harness> on --model glm-fast-latest
 
 `<harness>` is one of: `claude`, `opencode`, `codex`, `chatgpt`, `pi`, `cursor`, `vscode`, `deepseek`. Full walkthrough: **[Models](/ecosystem/fireconnect/models)**.
 
-### Default models
-
-| Slot / harness                                         | Default                                                                   |
-| ------------------------------------------------------ | ------------------------------------------------------------------------- |
-| Claude `main`                                          | Claude default (unpinned)                                                 |
-| Claude `opus`                                          | `firerouter` on first connect with a standard key; otherwise `glm-latest` |
-| Claude `sonnet`                                        | `deepseek-pro-latest`                                                     |
-| Claude `fable`                                         | `glm-flash-latest` (vision)                                               |
-| Claude `haiku`                                         | `deepseek-flash-latest` (text-only)                                       |
-| Claude `subagent`                                      | `deepseek-flash-latest` (text-only)                                       |
-| OpenCode, Codex, Pi, Cursor, VS Code, DeepSeek Harness | `kimi-fast-latest`                                                        |
-| Fire Pass (`fpk_...`)                                  | `kimi-fast-latest` everywhere                                             |
-
-Fire Pass keys are detected automatically — no flags needed. Override anytime with flags or the [model mapping wizard](/ecosystem/fireconnect/claude-code#change-models).
-
 ## Harness support
 
 | Harness          | Fireworks gateway | Fire Pass | Microsoft Foundry | [FireRouter](/ecosystem/firerouter/overview) | Guide                                               |
@@ -172,18 +143,22 @@ Fire Pass keys are detected automatically — no flags needed. Override anytime 
 **Notes**
 
 * **Foundry**: not on Claude Code or DeepSeek Harness.
+* **FireRouter + Foundry**: FireRouter requires the direct Fireworks gateway; it is not available on the Microsoft Foundry path, even for harnesses that support both independently.
 * **Fire Pass**: not on Codex or Foundry. FireConnect rejects `--model firerouter` with a Fire Pass (`fpk_...`) key on **every** harness; use an `fw_...` account key for FireRouter.
 * **FireRouter**: Cursor and DeepSeek Harness need workspace BYOK for Anthropic pass-through.
-* **Web search MCP**: Claude Code auto-install only; any harness can add the HTTP MCP manually. See [WebSearch MCP](/ecosystem/fireconnect/websearch-mcp).
+* **Web search MCP**: Claude Code auto-install only (eligible accounts); other harnesses can add the HTTP MCP manually. See [WebSearch MCP](/ecosystem/fireconnect/websearch-mcp).
 * **Cursor / VS Code**: quit the IDE before `on` or `off`. `status` is read-only.
 
 ## FireRouter and smart routers
 
-[FireRouter](/ecosystem/firerouter/overview) routes simple requests to cheaper open models and hard requests to Claude Opus 5. Select it like any other model:
+[FireRouter](/ecosystem/firerouter/overview) routes simple requests to cheaper open models and hard requests to Claude Opus 5. The default pair is **GLM 5.3** (redirect) and **Claude Opus 5** (pass-through).
+
+On Claude Code, use `--model firerouter` for Main or a slot flag such as `--opus firerouter` for one alias. Use `--interactive` to choose alias slots, and use `native` to leave a slot unpinned. See [Claude Code — FireRouter](/ecosystem/fireconnect/claude-code#firerouter).
 
 ```bash theme={null}
-fireconnect <harness> on --model firerouter
-fireconnect claude on --opus firerouter --routing-preference balanced
+fireconnect claude on --model firerouter
+fireconnect opencode on --model firerouter
+fireconnect claude on --model firerouter --routing-preference balanced
 ```
 
 **Smart router mixes** (preview): pin `auto` for Fireworks' default open-model mix, or `auto-instant` for latency-first routing:

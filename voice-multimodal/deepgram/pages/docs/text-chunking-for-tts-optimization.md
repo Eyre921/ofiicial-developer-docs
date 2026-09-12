@@ -24,6 +24,8 @@ This example breaks down lengthy text inputs into chunks determined by a maximum
 
 This is a straightforward example which does not take into consideration characteristics of the text structure, such as clause and sentence boundaries. For some types of text, this is acceptable and will not have a negative effect on the quality of speech.
 
+**`SDK - Python`**
+
 ```python SDK - Python
 # For more Python SDK migration guides, visit:
 # https://github.com/deepgram/deepgram-python-sdk/tree/main/docs
@@ -78,6 +80,8 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+
+**`Java`**
 
 ```java Java
 import com.deepgram.DeepgramClient;
@@ -147,6 +151,8 @@ The regular expression in the code tells the program to break the text into chun
 
 These are two grammatical rules for identifying clauses, but you may decide to include more.
 
+**`SDK - Python`**
+
 ```python SDK - Python
 # For more Python SDK migration guides, visit:
 # https://github.com/deepgram/deepgram-python-sdk/tree/main/docs
@@ -202,6 +208,8 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+
+**`Java`**
 
 ```java Java
 import com.deepgram.DeepgramClient;
@@ -268,6 +276,8 @@ public class ChunkByClauseBoundaries {
 The goal of dynamic chunking is to adjust the chunk sizes dynamically based on various factors, which may include adaptive rules or algorithms to determine how to split the text into chunks.
 
 This next example implements a more flexible chunking strategy that adjusts chunk sizes dynamically based on the length and structure of the input text. It retains the rule from the previous example - to chunk based on clause/sentence boundaries - but it then looks at each chunk and determines the character count of the chunk. If the count exceeds a maximum character length, it chunks further into subchunks, where subchunks are defined by a comma but cannot be less than three characters.
+
+**`SDK - Python`**
 
 ```python SDK - Python
 # For more Python SDK migration guides, visit:
@@ -346,6 +356,8 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+
+**`Java`**
 
 ```java Java
 import com.deepgram.DeepgramClient;
@@ -440,6 +452,8 @@ Instead of turning each chunk into an audio file such as an MP3 file, you might 
 
 In this example, the text is chunked by sentence boundaries. Then each chunk is sent to Deepgram to be processed into audio, but when the first byte of audio arrives back to you, it is played immediately in a stream. Each audio stream is played consecutively in the order that the text splits them into chunks.
 
+**`Python - SDK`**
+
 ```python Python - SDK
 
 # For more Python SDK migration guides, visit:
@@ -496,6 +510,8 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+
+**`Java`**
 
 ```java Java
 import com.deepgram.DeepgramClient;

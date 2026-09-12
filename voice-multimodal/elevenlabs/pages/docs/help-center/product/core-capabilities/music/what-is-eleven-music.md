@@ -15,9 +15,10 @@ Eleven Music offers:
 * **Complete Music Tracks** from a single text prompt
 * **Granular Control** of genre, mood, style, structure, and instrumentation
 * **Vocals & Lyrics** across multiple languages, including English, Spanish, German,
-  and Japanese, with Music v2 supporting more natural vocal performances and complex delivery
-  patterns such as fast rap
-* **Audio Reference** to guide Music v2 generations with a short uploaded track
+  and Japanese, with Music v2 and v2.5 supporting more natural vocal performances and complex
+  delivery patterns such as fast rap
+* **Audio Reference** to guide Music v2 and v2.5 generations with a short uploaded
+  track
 * **Post-Generation Editing** to adjust sections and lyrics of those sections via the
   UI
 * **Studio-Ready Exports** in MP3 for professional workflows

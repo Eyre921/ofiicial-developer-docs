@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 384 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 385 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -105,6 +105,7 @@
 - `api-reference/list-secrets` — [List Secrets](pages/api-reference/list-secrets.md) · [原文](https://docs.fireworks.ai/api-reference/list-secrets)
 - `api-reference/list-supervised-fine-tuning-jobs` — [List Supervised Fine-tuning Jobs](pages/api-reference/list-supervised-fine-tuning-jobs.md) · [原文](https://docs.fireworks.ai/api-reference/list-supervised-fine-tuning-jobs)
 - `api-reference/list-users` — [List Users](pages/api-reference/list-users.md) · [原文](https://docs.fireworks.ai/api-reference/list-users)
+- `api-reference/match-deployment-shape-versions` — [Match Deployment Shape Versions](pages/api-reference/match-deployment-shape-versions.md) · [原文](https://docs.fireworks.ai/api-reference/match-deployment-shape-versions)
 - `api-reference/post-chatcompletions` — [Create Chat Completion](pages/api-reference/post-chatcompletions.md) · [原文](https://docs.fireworks.ai/api-reference/post-chatcompletions)
 - `api-reference/post-completions` — [Create Completion](pages/api-reference/post-completions.md) · [原文](https://docs.fireworks.ai/api-reference/post-completions)
 - `api-reference/post-responses` — [Create Response](pages/api-reference/post-responses.md) · [原文](https://docs.fireworks.ai/api-reference/post-responses)

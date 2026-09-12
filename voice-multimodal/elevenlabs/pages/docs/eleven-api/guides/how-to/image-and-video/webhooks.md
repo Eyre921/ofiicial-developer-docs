@@ -339,6 +339,8 @@ app.post('/webhook', express.text({ type: 'application/json' }), async (req, res
 
 Example webhook handler using Next.js API route:
 
+**`app/api/webhook/route.ts`**
+
 ```typescript app/api/webhook/route.ts
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';

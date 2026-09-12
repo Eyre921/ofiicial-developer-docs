@@ -30,7 +30,7 @@ Clone the [Dialogflow Example](https://github.com/deepgram/dialogflow-example) r
 
 Dialogflow agents can accept user input in the form of audio or text. If you send audio to an agent, Google will transcribe it with their own speech-to-text engine. In order to use Deepgram's transcription, we need to transcribe the audio outside of Dialogflow and send the resulting text to our agent. If we also want to use Deepgram's text-to-speech for the bot's voice, we must configure Dialogflow to return agent responses as text. This diagram depicts the full process:
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/2bff12016a25152ac9274d36282420b0395a1f99f876710a76055d7f45be2c04/images/c213cc7-dialogflow-architecture-tts.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T113112Z&X-Amz-Expires=604800&X-Amz-Signature=ed072caa6e2a953849dd1435319de7e968e0eecbfc9f1f25c4b8758c9b65ea6f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/2bff12016a25152ac9274d36282420b0395a1f99f876710a76055d7f45be2c04/images/c213cc7-dialogflow-architecture-tts.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T113128Z&X-Amz-Expires=604800&X-Amz-Signature=ed86316fdd9e8e2a9947d151849edcf41ab7ddc63e79f53894842f42640ee5f4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 1. The user speaks into their microphone.
 2. The integration continuously streams the user's speech to Deepgram.
@@ -47,6 +47,8 @@ Dialogflow agents can accept user input in the form of audio or text. If you sen
 At any given time, `server.js` is in one of two states. In the **awaiting utterance** state, it is collecting transcripts from Deepgram and looking for an indication that the user has finished their thought. In the **awaiting bot reply** state, it is discarding transcripts because we've already sent the utterance to Dialogflow and it is now the bot's turn to speak.
 
 This is the code that runs when `server.js` receives a transcription result from Deepgram (note the two states):
+
+**`JavaScript`**
 
 ```javascript JavaScript
 function handleDgResults(start, duration, isFinal, speechFinal, transcript, words) {

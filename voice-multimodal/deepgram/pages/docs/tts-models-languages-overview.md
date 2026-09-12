@@ -26,6 +26,8 @@ All models default to `language=en` (via the voice's model string). A `model` is
 
 To request a voice, set the `model` to the voice you want. Aura-2 and Aura use `/v1/speak`:
 
+**`cURL (Aura-2, /v1/speak)`**
+
 ```bash cURL (Aura-2, /v1/speak)
 curl "https://api.deepgram.com/v1/speak?model=aura-2-thalia-en" \
   -H "Authorization: Token YOUR_DEEPGRAM_API_KEY" \

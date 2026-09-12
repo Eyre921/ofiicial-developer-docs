@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/simulate-conversation
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `simulation_specification` (object, required) — A specification detailing how the conversation should be simulated
   - `simulated_user_config` (object, required)
     - `first_message` (string, optional, default: ) — If non-empty, the first message the agent will say. If empty, the agent waits for the user to start the discussion.
@@ -894,6 +896,17 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/simulate-conversation
 ### 200
 
 Successful Response
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

@@ -38,6 +38,8 @@ Open your terminal, navigate to the location on your drive where you want to cre
 # pip install deepgram-sdk
 ```
 
+**`C#`**
+
 ```csharp C#
 // Install the Deepgram .NET SDK
 // https://github.com/deepgram/deepgram-dotnet-sdk
@@ -51,6 +53,8 @@ Open your terminal, navigate to the location on your drive where you want to cre
 
 // go get github.com/deepgram/deepgram-go-sdk
 ```
+
+**`Java`**
 
 ```java Java
 // Install the Deepgram Java SDK
@@ -82,6 +86,8 @@ Open your terminal, navigate to the location on your drive where you want to cre
 # pip install httpx
 ```
 
+**`C#`**
+
 ```csharp C#
 // In your .csproj file, add the Package Reference:
 
@@ -97,6 +103,8 @@ Open your terminal, navigate to the location on your drive where you want to cre
 ### Transcribe Audio from a Remote Stream
 
 The following code shows how to transcribe audio from a remote audio stream.
+
+**`JavaScript`**
 
 ```javascript JavaScript
 // Example filename: index.js
@@ -152,6 +160,8 @@ const live = async () => {
 
 live();
 ```
+
+**`Python`**
 
 ```python Python
 # Example filename: main.py
@@ -246,6 +256,8 @@ if __name__ == "__main__":
     main()
 ```
 
+**`C#`**
+
 ```csharp C#
 // Example filename: Program.cs
 
@@ -324,6 +336,8 @@ namespace SampleApp
     }
 }
 ```
+
+**`Go`**
 
 ```go Go
 // Example filename: main.go
@@ -407,6 +421,8 @@ func main() {
 }
 ```
 
+**`Java`**
+
 ```java Java
 // Example filename: Main.java
 // https://github.com/deepgram/deepgram-java-sdk
@@ -479,12 +495,16 @@ If you would like to try out making a Deepgram speech-to-text request in a speci
 
 In order to see the results from Deepgram, you must run the application. Run your application from the terminal. Your transcripts will appear in your shell.
 
+**`JavaScript`**
+
 ```javascript JavaScript
 # Run your application using the file you created in the previous step
 # Example: node index.js
 
 node YOUR_FILE_NAME.js
 ```
+
+**`Python`**
 
 ```shell Python
 # Run your application using the file you created in the previous step
@@ -493,6 +513,8 @@ node YOUR_FILE_NAME.js
 python YOUR_FILE_NAME.py
 ```
 
+**`C#`**
+
 ```shell C#
 # Run your application using the file you created in the previous step
 # Example: dotnet run Program.cs
@@ -500,12 +522,16 @@ python YOUR_FILE_NAME.py
 dotnet run YOUR_FILE_NAME.cs
 ```
 
+**`Go`**
+
 ```shell Go
 # Run your application using the file you created in the previous step
 # Example: go run main.go
 
 go run YOUR_FILE_NAME.go
 ```
+
+**`Java`**
 
 ```shell Java
 mvn compile exec:java -Dexec.mainClass="Main"
@@ -516,6 +542,8 @@ Deepgram does not store transcripts, so the Deepgram API response is the only op
 ### Analyze the Response
 
 The responses that are returned will look similar to this:
+
+**`JSON`**
 
 ```json JSON
 {

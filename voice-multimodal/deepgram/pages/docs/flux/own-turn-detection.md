@@ -23,6 +23,8 @@ Two settings put you in control:
 
 Then send a [`ForceEndTurn`](/docs/flux/force-end-turn) message whenever your own detector decides the turn is over. Flux ends the turn and emits an `EndOfTurn` with `"trigger": "manual"`.
 
+**`Python`**
+
 ```python Python
 import json
 import websockets
@@ -38,6 +40,8 @@ async with websockets.connect(url, additional_headers=headers) as ws:
     # When your turn detector fires:
     await ws.send(json.dumps({"type": "ForceEndTurn"}))
 ```
+
+**`Direct WebSocket`**
 
 ```text Direct WebSocket
 wss://api.deepgram.com/v2/listen?model=flux-general-en&eot_threshold=1.0&eot_timeout_ms=30000
@@ -64,6 +68,8 @@ Keep `eot_timeout_ms` as a backstop, not a primary mechanism. If it fires often,
 
 This loop wires an external detector to Flux. When your detector fires, it sends a `ForceEndTurn`; Flux replies with an `EndOfTurn` you treat as final.
 
+**`JavaScript`**
+
 ```javascript JavaScript
 // Send audio frames to Flux as you receive them.
 function onAudioFrame(frame) {
@@ -86,6 +92,8 @@ ws.onmessage = (event) => {
   }
 };
 ```
+
+**`Python`**
 
 ```python Python
 import json

@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/pronunciation-dictionaries/c
 
 ### Body (multipart/form-data)
 
+This endpoint expects a multipart form containing an optional file.
+
 - `name` (string, required) — The name of the pronunciation dictionary, used for identification only.
 - `file` (file, optional) — A lexicon .pls file which we will use to initialize the project with.
 - `description` (string, optional) — A description of the pronunciation dictionary, used for identification only.
@@ -47,6 +49,17 @@ Successful Response
 - `permission_on_resource` (enum, required, nullable) — The permission on the resource of the pronunciation dictionary.
   - Allowed values: `admin`, `editor`, `commenter`, `viewer`
 - `description` (string, optional, nullable) — The description of the pronunciation dictionary.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

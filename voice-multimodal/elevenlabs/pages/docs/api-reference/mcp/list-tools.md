@@ -63,6 +63,17 @@ Successful Response
   - `_meta` (map from string to any, optional, nullable)
 - `error_message` (string, optional, nullable) — Error message if the operation was not successful.
 
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

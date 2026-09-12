@@ -63,6 +63,8 @@ pip install "pipecat-ai[openai]" "elevenlabs" "python-dotenv"
 
 The brain has two pieces: a `TextSink` processor that drains streamed text into an `asyncio.Queue`, and a `run_pipecat_brain` coroutine that builds a one-turn pipeline and yields chunks as an async iterator.
 
+**`brain.py`**
+
 ```python title="brain.py" maxLines=0
 import asyncio
 import os
@@ -152,6 +154,8 @@ The pipeline contains only the LLM service and the sink — no STT or TTS proces
 ## Wire it into the Speech Engine server
 
 The Speech Engine SDK's `send_response` accepts a string or any async iterable of strings, so you can pass `run_pipecat_brain(transcript)` directly. Convert the `ConversationMessage` objects Speech Engine provides into plain dicts before passing them to the brain.
+
+**`server.py`**
 
 ```python title="server.py" maxLines=0
 import asyncio

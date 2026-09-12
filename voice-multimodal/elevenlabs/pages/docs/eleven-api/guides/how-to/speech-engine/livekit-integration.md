@@ -70,6 +70,8 @@ Developer Preview. For production deployments, prefer the Python worker.
 
 LiveKit's `AudioStream` resamples incoming Opus tracks to whatever PCM sample rate you request, so you can match Speech Engine's input directly. Update the Speech Engine to accept 16 kHz PCM for ASR input and emit 24 kHz PCM for TTS output.
 
+**`configure_engine.py`**
+
 ```python title="configure_engine.py"
 import asyncio
 import os
@@ -88,6 +90,8 @@ async def update_engine():
 
 asyncio.run(update_engine())
 ```
+
+**`configure-engine.mts`**
 
 ```typescript title="configure-engine.mts"
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
@@ -111,9 +115,13 @@ The worker is a long-running process that connects to your LiveKit server, waits
 
 #### Install dependencies
 
+**`Python`**
+
 ```bash title="Python"
 pip install "livekit-agents" "livekit-api" "elevenlabs" "aiohttp" "python-dotenv"
 ```
+
+**`Node`**
 
 ```bash title="Node"
 npm install @livekit/agents @livekit/rtc-node @elevenlabs/elevenlabs-js ws dotenv
@@ -122,6 +130,8 @@ npm install @livekit/agents @livekit/rtc-node @elevenlabs/elevenlabs-js ws doten
 #### Mint a Speech Engine signed URL
 
 The worker requests a short-lived signed URL for the Speech Engine conversation WebSocket. The signed URL embeds the engine ID and a one-time signature, so the worker can open the WebSocket without exposing your API key.
+
+**`bridge.py`**
 
 ```python title="bridge.py"
 from elevenlabs import AsyncElevenLabs
@@ -134,6 +144,8 @@ async def signed_url() -> str:
     )
     return response.signed_url
 ```
+
+**`bridge.mts`**
 
 ```typescript title="bridge.mts"
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
@@ -153,6 +165,8 @@ async function signedUrl(): Promise<string> {
 #### Define the worker entrypoint
 
 Each time the worker is dispatched to a room, its entrypoint runs. The entrypoint connects to the room, opens a Speech Engine conversation WebSocket, and starts two audio bridges: one for caller audio going to Speech Engine, and one for synthesized audio coming back.
+
+**`bridge.py`**
 
 ```python title="bridge.py" maxLines=0
 import asyncio
@@ -259,6 +273,8 @@ if __name__ == "__main__":
         agent_name="elevenlabs-bridge",
     ))
 ```
+
+**`bridge.mts`**
 
 ```typescript title="bridge.mts" maxLines=0
 import {
@@ -390,9 +406,13 @@ Two ordering details matter for correctness:
 
 #### Start the worker
 
+**`Python`**
+
 ```bash title="Python"
 python bridge.py dev
 ```
+
+**`Node`**
 
 ```bash title="Node"
 npx tsx bridge.mts dev
@@ -405,6 +425,8 @@ The worker connects to your LiveKit server and waits for job assignments. It doe
 ## Dispatch the worker to a room
 
 Because the worker has an `agent_name`, it uses explicit dispatch — it only joins rooms when your backend tells it to. The simplest pattern is to include a `RoomAgentDispatch` in the LiveKit access token that the browser uses to connect.
+
+**`token_server.py`**
 
 ```python title="token_server.py"
 import os
@@ -443,6 +465,8 @@ app.run(port=3002)
 
 ```
 
+**`token-server.mts`**
+
 ```typescript title="token-server.mts"
 import express from "express";
 import { AccessToken } from "livekit-server-sdk";
@@ -480,6 +504,8 @@ When a browser uses this token to create or join a room, LiveKit dispatches the 
 ## Connect from the browser
 
 The browser only needs the standard LiveKit client — it does not interact with Speech Engine directly.
+
+**`App.tsx`**
 
 ```typescript title="App.tsx"
 import { Room, RoomEvent, Track } from "livekit-client";

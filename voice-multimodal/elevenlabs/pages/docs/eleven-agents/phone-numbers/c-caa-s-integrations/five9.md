@@ -107,6 +107,8 @@ You can return any additional `X-` header your Five9 flow needs. Each header val
 
 BYE headers return the final values of the agent's dynamic variables to Five9. Map each dynamic variable name to a header name using `attributes_to_headers` on the phone number's `inbound_trunk_config`. Both variables your agent sets and [system dynamic variables](/docs/eleven-agents/customization/personalization/dynamic-variables#system-dynamic-variables) such as `system__conversation_id` can be mapped:
 
+**`Python`**
+
 ```python title="Python"
 import os
 from dotenv import load_dotenv
@@ -129,6 +131,8 @@ elevenlabs.conversational_ai.phone_numbers.update(
 )
 ```
 
+**`JavaScript`**
+
 ```typescript title="JavaScript"
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
@@ -145,6 +149,8 @@ await elevenlabs.conversationalAi.phoneNumbers.update("phnum_8901k4t9z5defmb8vh3
   },
 });
 ```
+
+**`cURL`**
 
 ```bash title="cURL"
 curl -X PATCH "https://api.elevenlabs.io/v1/convai/phone-numbers/phnum_8901k4t9z5defmb8vh3e9361y7nj" \

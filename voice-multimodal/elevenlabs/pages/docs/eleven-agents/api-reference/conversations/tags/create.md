@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `title` (string, required) — Display title of the tag.
 - `description` (string, optional) — Optional free-text description.
 
@@ -42,6 +44,17 @@ Successful Response
 - `title` (string, required)
 - `created_at_unix_secs` (integer, required)
 - `description` (string, optional)
+
+## Errors
+
+### 422 Tags Create Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

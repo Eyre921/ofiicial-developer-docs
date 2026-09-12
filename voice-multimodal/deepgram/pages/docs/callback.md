@@ -24,6 +24,8 @@ To enable Callback, when you call Deepgram’s API, add a `callback` parameter i
 
 To transcribe audio from a file on your computer, run the following cURL command in a terminal or your favorite API client.
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -69,6 +71,8 @@ If the HTTP status code of the response to the callback `POST` request is unsucc
 ## Using `CallBack_Method`
 
 To enable the Callback Method, include the `callback_method` parameter in the query string. By default, the method supports `POST`, but you can specify `PUT` instead.
+
+**`cURL`**
 
 ```bash cURL
 curl \

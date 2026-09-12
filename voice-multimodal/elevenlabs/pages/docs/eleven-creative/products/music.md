@@ -26,7 +26,7 @@ Describe your song using natural language prompts. Refer to our [Prompting Guide
 
 #### Add an Audio Reference (optional)
 
-Upload a short audio track (up to approximately 30 seconds) to guide the style and sound of your Music v2
+Upload a short audio track (up to approximately 30 seconds) to guide the style and sound of your Music v2 or v2.5
 generation. Every uploaded reference is screened for copyright compliance. Audio Reference influences sound,
 production style, instrumentation, tempo, and mood — it does not copy or remix the uploaded audio.
 
@@ -70,7 +70,7 @@ Eleven Music is a versatile model that gives you control over many aspects of mu
 #### Full Songs with Vocals
 
 Create complete tracks with AI-generated lyrics and vocals in multiple languages, including English, Spanish,
-German, and Japanese. Music v2 supports more natural vocal performances and more complex delivery patterns,
+German, and Japanese. Music v2 and v2.5 support more natural vocal performances and more complex delivery patterns,
 including fast rap and dense lyrical phrasing. You can provide your own lyrics or ask the model to generate
 lyrics based on your prompt.
 
@@ -274,6 +274,10 @@ Use the **Share** button to:
 * Customize the visualizer that accompanies your track.
 * Share your creations with collaborators or audiences.
 
+## Music v2.5
+
+Music v2.5 is our most advanced music model. It builds on Music v2 with improved audio quality and prompt adherence, and supports the same capabilities, including Audio Reference, composition plans and inpainting. Select it from the model dropdown in the Eleven Music interface, or pass `model_id="music_v2_5"` in the API.
+
 ## Music v2
 
 Music v2 is the default model in the Eleven Music interface. It offers improved prompt adherence, composition, prompt understanding, multilingual output, and vocal delivery over Music v1.
@@ -287,7 +291,7 @@ Music v2 capabilities include:
 * Improved inpainting
 * Sound effects embedded inside tracks
 
-Audio Reference is available on all Music v2 plans, including Free. Every uploaded reference track is screened for copyright compliance.
+Audio Reference is available on all Music v2 and v2.5 plans, including Free. Every uploaded reference track is screened for copyright compliance.
 
 ## Availability & API Access
 
@@ -335,9 +339,10 @@ start creating.
       * **Complete Music Tracks** from a single text prompt
       * **Granular Control** of genre, mood, style, structure, and instrumentation
       * **Vocals & Lyrics** across multiple languages, including English, Spanish, German,
-        and Japanese, with Music v2 supporting more natural vocal performances and complex delivery
-        patterns such as fast rap
-      * **Audio Reference** to guide Music v2 generations with a short uploaded track
+        and Japanese, with Music v2 and v2.5 supporting more natural vocal performances and complex
+        delivery patterns such as fast rap
+      * **Audio Reference** to guide Music v2 and v2.5 generations with a short uploaded
+        track
       * **Post-Generation Editing** to adjust sections and lyrics of those sections via the
         UI
       * **Studio-Ready Exports** in MP3 for professional workflows
@@ -369,8 +374,8 @@ start creating.
       Eleven Music is a versatile model that gives you control over many aspects of audio creation. You can generate:
 
       * **Full Songs with Vocals:** Create complete tracks with AI-generated lyrics and
-        vocals in a variety of languages. Music v2 supports more natural vocal performances and more
-        complex delivery patterns, including fast rap and dense lyrical phrasing.
+        vocals in a variety of languages. Music v2 and v2.5 support more natural vocal performances and
+        more complex delivery patterns, including fast rap and dense lyrical phrasing.
       * **Instrumental Tracks:** Generate purely instrumental music across any genre, from
         cinematic scores to ambient lo-fi beats.
       * **Specific Song Structures:** Use sectional generation to build a song piece by
@@ -436,12 +441,12 @@ start creating.
       * In the song structure, find the section you want the new section to follow. On the left-hand side of that section, you'll see a "+" symbol that will say "Add section below" when you hover over.\
 
 
-        ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6c23aeecbe607b133b6940ae30a60ba168772a8c351f68cfa42cec1f8705c95c/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T094346Z&X-Amz-Expires=604800&X-Amz-Signature=a3653d9732ff8945c375a979105aa22419eef62a0e04bdf0f3cd31b0baccde8c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+        ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6c23aeecbe607b133b6940ae30a60ba168772a8c351f68cfa42cec1f8705c95c/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T064539Z&X-Amz-Expires=604800&X-Amz-Signature=abe342e39b30182d0b42ce3a6f4b6da853786edd9d2d0bfe75bc13cda7bd06e1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       * In the timeline, scroll to the end of your song structure and click the "+" sign, which will add a new empty section at the end.\
 
 
-        ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/071d9a8998758844dd15d1c512c5bbd3d335950c7b4ca784604182042eb14c80/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T094346Z&X-Amz-Expires=604800&X-Amz-Signature=eba58871fb63dbac5717f3bd38b15d657e502d4affc2fd6ded7b2a3b0e5a6505&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+        ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/071d9a8998758844dd15d1c512c5bbd3d335950c7b4ca784604182042eb14c80/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T064539Z&X-Amz-Expires=604800&X-Amz-Signature=84ddeb5656569e3f8890240e80dedeb0a2e90de2428b84602350d0b43846d548&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       * Once you've added this new empty section, you can drag it to extend the duration, add lyrics, or a descriptive prompt (e.g., "\[energetic guitar solo]").
 
@@ -459,7 +464,7 @@ start creating.
       * Hover over the section you want to edit and click the **"Edit styles of this section"** link.\
 
 
-        ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c9086f7935759344e852854e10af5a38b27760359897a7c315824c1c6e2ef124/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music-3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T094346Z&X-Amz-Expires=604800&X-Amz-Signature=fe906b57a2c43cf68be44f97b7138e3438105ac64123f2f4e19aeb5be1557c9e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+        ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c9086f7935759344e852854e10af5a38b27760359897a7c315824c1c6e2ef124/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music-3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T064539Z&X-Amz-Expires=604800&X-Amz-Signature=8d3834e7ed0d9a627c5e4a86f041123eb0e00d11b9c57f8b68fc4b0f4a082abe&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       * A "Section styles" window will pop up. Here you can:
 
@@ -478,7 +483,7 @@ start creating.
       * Hover over the section you wish to remove in the timeline.\
 
 
-        ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c8506897c18519729967118d2d2f1136f302023a890685b8aba786d1034c8943/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music-4.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T094346Z&X-Amz-Expires=604800&X-Amz-Signature=e459be18bbce54b494b12f2a8fecb5dba826799142fecbd37c287a1d13215bb5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+        ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c8506897c18519729967118d2d2f1136f302023a890685b8aba786d1034c8943/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music-4.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T064539Z&X-Amz-Expires=604800&X-Amz-Signature=865c972724c7088febe7e7b6b5f8c13ecffa2c7c49fe400e38c9da3b4a55f670&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       * Click the delete icon, the "X", in the upper left corner of the section.
 
@@ -499,13 +504,13 @@ start creating.
     <td>
       #### What is Audio Reference?
 
-      Audio Reference lets you upload a short audio track to guide the style and sound of a new Music v2 generation. The uploaded track is used as creative guidance alongside your text prompt.
+      Audio Reference lets you upload a short audio track to guide the style and sound of a new Music v2 or v2.5 generation. The uploaded track is used as creative guidance alongside your text prompt.
 
       You can upload a reference track of up to approximately 30 seconds in commonly used audio formats. Every uploaded reference is screened for copyright compliance before it can be used.
 
       Audio Reference influences characteristics such as the overall sound, production style, instrumentation, tempo, and mood of the generated track. It does not copy or remix the uploaded audio, and the result remains a newly generated composition.
 
-      Audio Reference is available with Music v2 on all paid subscriptions.
+      Audio Reference is available with Music v2 and v2.5 on all paid subscriptions.
     </td>
   </tr>
 

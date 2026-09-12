@@ -22,6 +22,8 @@ The `ConversationText` message facilitates real-time communication by relaying s
 
 The server will send a `ConversationText` message every time the agent hears the user say something, and every time the agent speaks something. These can be used on the client side to display the conversation messages as they happen in real-time.
 
+**`JSON`**
+
 ```json JSON
 {
   "type": "ConversationText",

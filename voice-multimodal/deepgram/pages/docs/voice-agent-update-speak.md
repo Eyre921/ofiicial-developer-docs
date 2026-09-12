@@ -22,6 +22,8 @@ The `UpdateSpeak` message is a JSON message that allows you to switch the Speak 
 
 To send the `UpdateSpeak` message, you need to send the following JSON message to the server:
 
+**`JSON`**
+
 ```json JSON
 {
     "type": "UpdateSpeak",
@@ -38,6 +40,8 @@ To send the `UpdateSpeak` message, you need to send the following JSON message t
 Upon receiving the `UpdateSpeak` message, the server will process all remaining audio data and return a [`SpeakUpdated`](/docs/voice-agent-acknowledgements#speakupdated) message.
 
 With [Flux TTS](/docs/voice-agent-tts-models#flux-tts), the new voice takes effect on the agent's next turn — a turn already being spoken finishes in the voice that started it. `SpeakUpdated` confirms the change will be used; an update that cannot be applied returns an `Error` instead.
+
+**`JSON`**
 
 ```json JSON
 {

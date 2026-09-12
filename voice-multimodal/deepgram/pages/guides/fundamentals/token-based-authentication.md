@@ -49,6 +49,8 @@ Direct access to the Deepgram API is particularly useful for client-side/untrust
 
 To create a JWT token, you can use the `/auth/grant` endpoint using the Authorization header with the `token` scheme.
 
+**`cURL`**
+
 ```Curl cURL
 curl -X POST https://api.deepgram.com/v1/auth/grant \
    -H "Authorization: Token YOUR_DEEPGRAM_API_KEY"
@@ -57,6 +59,8 @@ curl -X POST https://api.deepgram.com/v1/auth/grant \
 Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 ## Response
+
+**`JSON`**
 
 ```JSON JSON
 {
@@ -68,6 +72,8 @@ Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additi
 To use the JWT token, you can then pass it in the `Authorization` header of your request to any Deepgram API that supports token-based authentication using the `Bearer` scheme.
 
 ## Example
+
+**`cURL`**
 
 ```Curl cURL
  curl -X POST https://api.deepgram.com/v1/listen \

@@ -491,6 +491,8 @@ while the agent or an active procedure uses blocking guardrails.
 This event and the corresponding SDK callback are experimental. Their behavior and shape may
 change in any release.
 
+**`Event payload`**
+
 ```json title="Event payload" focus={3-7}
 {
   "type": "agent_reasoning_response_part",
@@ -503,6 +505,8 @@ change in any release.
 ```
 
 Start and stop events use an empty `text` value.
+
+**`Handle reasoning events`**
 
 ```javascript title="Handle reasoning events" focus={6-14}
 import { Conversation } from '@elevenlabs/client';

@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/text-to-voice/create
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `voice_name` (string, required) — Name to use for the created voice.
 - `voice_description` (string, required) — Description to use for the created voice.
 - `generated_voice_id` (string, required) — The generated_voice_id to create; obtain it from POST /v1/text-to-voice/design, POST /v1/text-to-voice/:voice_id/remix, or the response headers when generating previews.
@@ -202,6 +204,17 @@ Successful Response
 - `labelling_status` (enum, optional, nullable) — The review pipeline status of the voice.
   - Allowed values: `in_review`, `review_complete`
 - `recording_quality_reason` (string, optional, nullable) — The reason for the recording quality assessment, as determined by the review pipeline.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

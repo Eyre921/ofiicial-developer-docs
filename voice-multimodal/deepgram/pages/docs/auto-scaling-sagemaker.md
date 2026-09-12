@@ -69,6 +69,8 @@ This applies to both real-time and asynchronous endpoints.
 
 The following endpoint configuration lists `ml.g6.2xlarge` as the preferred instance type and falls back to `ml.g6e.2xlarge` if the first pool is unavailable:
 
+**`Boto3`**
+
 ```python title="Boto3"
 import boto3
 

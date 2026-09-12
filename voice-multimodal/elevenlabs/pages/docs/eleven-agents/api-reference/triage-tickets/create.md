@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `conversation_id` (string, required) — Conversation this ticket is about.
 - `qa_comment` (string, optional) — The QA finding covering the whole conversation.
 - `turn_comments` (list of object, optional) — Optional turn-level comments on what went wrong.
@@ -67,6 +69,17 @@ Successful Response
 - `last_seen_unix_secs` (integer, optional)
 - `qa_comment` (string, optional)
 - `assignee_user_id` (string, optional)
+
+## Errors
+
+### 422 Triage Tickets Create Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

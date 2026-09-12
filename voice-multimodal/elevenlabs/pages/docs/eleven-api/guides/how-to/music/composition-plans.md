@@ -8,7 +8,7 @@ path: docs/eleven-api/guides/how-to/music/composition-plans
 
 # Composition plans
 
-Composition plans provide fine-grained control over music generation. A `music_v2` plan is an ordered list of chunks, where each chunk defines a section of the song with its own styles, lyrics, and duration. Use text prompts for quick prototyping and composition plans when you need specific chunk structure, precise lyrics timing, or complex arrangements.
+Composition plans provide fine-grained control over music generation. A `music_v2` or `music_v2_5` plan is an ordered list of chunks, where each chunk defines a section of the song with its own styles, lyrics, and duration. Use text prompts for quick prototyping and composition plans when you need specific chunk structure, precise lyrics timing, or complex arrangements.
 
 Composition plans and text prompts are mutually exclusive. Use one or the other, not both.
 
@@ -85,8 +85,8 @@ Composition plans and text prompts are mutually exclusive. Use one or the other,
 
 <elevenlabs-audio-player audio-title="Pop Song" audio-src="https://storage.googleapis.com/eleven-public-cdn/documentation_assets/audio/example-pop-song.mp3" />
 
-Chunk-based composition plans require the `music_v2` model. Pass `model_id="music_v2"` when
-composing.
+Chunk-based composition plans require a v2 model (`music_v2` or `music_v2_5`). Pass
+`model_id="music_v2"` or `model_id="music_v2_5"` when composing.
 
 ## Quickstart
 
@@ -229,11 +229,15 @@ The `text` field combines the section name, lyrics, and inline directions:
 
 Use curly braces for short, inline cues. For broader characteristics that apply to the whole chunk — genre, instrumentation, or overall vocal style — use `positive_styles` instead.
 
+**`Incorrect`**
+
 ```json title="Incorrect"
 {
   "text": "[Verse]\n(soft female vocals) I've been waiting\n(instrumental break)\nfor you"
 }
 ```
+
+**`Correct`**
 
 ```json title="Correct"
 {

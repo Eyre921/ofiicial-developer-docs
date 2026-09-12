@@ -15,6 +15,8 @@ ElevenAgents works.
 
 Add the ElevenLabs SDK to your Android project by including the following dependency in your app-level `build.gradle` file:
 
+**`build.gradle.kts`**
+
 ```kotlin build.gradle.kts
 dependencies {
     // ElevenLabs Agents SDK (Android)

@@ -25,6 +25,8 @@ Reference: https://developers.deepgram.com/reference/auth/tokens/grant
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `ttl_seconds` (double, optional) — Time to live in seconds for the token. Defaults to 30 seconds.
 
 ## Response
@@ -35,6 +37,23 @@ Grant response
 
 - `access_token` (string, required) — JSON Web Token (JWT)
 - `expires_in` (double, optional) — Time in seconds until the JWT expires
+
+## Errors
+
+### 400 Bad Request Error
+
+Invalid Request
+
+- `string or object or object`
+  - ErrorResponseLegacyError
+    - `err_code` (string, optional) — The error code
+    - `err_msg` (string, optional) — The error message
+    - `request_id` (string, optional) — The request ID
+  - ErrorResponseModernError
+    - `category` (string, optional) — The category of the error
+    - `message` (string, optional) — A message about the error
+    - `details` (string, optional) — A description of the error
+    - `request_id` (string, optional) — The unique identifier of the request
 
 ## Examples
 

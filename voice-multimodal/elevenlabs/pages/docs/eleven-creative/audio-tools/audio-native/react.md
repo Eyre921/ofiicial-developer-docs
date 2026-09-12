@@ -17,6 +17,8 @@ This guide will show how to integrate Audio Native into React apps. The focus wi
 
 After completing the steps in the [Audio Native overview](/docs/eleven-creative/audio-tools/audio-native), you'll have an embed code snippet. Here's an example snippet:
 
+**`Embed code snippet`**
+
 ```html title="Embed code snippet"
   <div
     id="elevenlabs-audionative-widget"
@@ -34,6 +36,8 @@ After completing the steps in the [Audio Native overview](/docs/eleven-creative/
 ```
 
 We can extract the data from the snippet to create a customizable React component.
+
+**`ElevenLabsAudioNative.tsx`**
 
 ```tsx title="ElevenLabsAudioNative.tsx" maxLines=0
 // ElevenLabsAudioNative.tsx
@@ -96,6 +100,8 @@ The above component can be found on [GitHub](https://github.com/elevenlabs/examp
 
 Before using the component on your page, you need to retrieve your public user ID from the original code snippet. Copy the contents of `data-publicuserid` from the embed code snippet and insert it into the `publicUserId` prop of the component.
 
+**`page.tsx`**
+
 ```tsx title="page.tsx" maxLines=0
 import { ElevenLabsAudioNative } from './path/to/ElevenLabsAudioNative';
 
@@ -116,6 +122,8 @@ export default function Page() {
 #### Customize the player with component props
 
 The component props can be used to customize the player. For example, you can change the size, text color, and background color.
+
+**`page.tsx`**
 
 ```tsx title="page.tsx" maxLines=0
 import { ElevenLabsAudioNative } from './path/to/ElevenLabsAudioNative';

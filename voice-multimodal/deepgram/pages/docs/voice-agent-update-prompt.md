@@ -24,6 +24,8 @@ Prompt length is limited to 25,000 characters for managed LLMs and unlimited for
 
 To send the `UpdatePrompt` message, you need to send the following JSON message to the server:
 
+**`JSON`**
+
 ```json JSON
 {
   "type": "UpdatePrompt",
@@ -32,6 +34,8 @@ To send the `UpdatePrompt` message, you need to send the following JSON message 
 ```
 
 Upon receiving the `UpdatePrompt` message, the server will process all remaining audio data and return a [`PromptUpdated`](/docs/voice-agent-acknowledgements#promptupdated) message.
+
+**`JSON`**
 
 ```json JSON
 {

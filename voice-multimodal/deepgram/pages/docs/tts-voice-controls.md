@@ -128,6 +128,8 @@ Speed and pronunciation controls can be used together in the same request.
 
 ### Healthcare example
 
+**`Python`**
+
 ```python Python
 from deepgram import DeepgramClient
 from deepgram.core.request_options import RequestOptions
@@ -151,6 +153,8 @@ audio_bytes = b"".join(response)
 with open("medical_instructions.mp3", "wb") as f:
     f.write(audio_bytes)
 ```
+
+**`Java`**
 
 ```java Java
 import com.deepgram.DeepgramClient;
@@ -185,6 +189,8 @@ try (FileOutputStream fos = new FileOutputStream("medical_instructions.mp3")) {
 }
 ```
 
+**`cURL`**
+
 ```curl cURL
 curl -X POST "https://api.deepgram.com/v1/speak?model=aura-2-thalia-en&speed=0.8" \
      -H "Authorization: token DEEPGRAM_API_KEY" \
@@ -196,6 +202,8 @@ curl -X POST "https://api.deepgram.com/v1/speak?model=aura-2-thalia-en&speed=0.8
 Use raw string (`r'...'`) with escaped braces `\{` and `\}` for pronunciation control in Python.
 
 ### Brand consistency example
+
+**`Python`**
 
 ```python Python
 from deepgram import DeepgramClient
@@ -215,6 +223,8 @@ audio_bytes = b"".join(response)
 with open("brand_pronunciation.mp3", "wb") as f:
     f.write(audio_bytes)
 ```
+
+**`Java`**
 
 ```java Java
 import com.deepgram.DeepgramClient;

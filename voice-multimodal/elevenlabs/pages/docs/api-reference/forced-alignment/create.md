@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/forced-alignment/create
 
 ### Body (multipart/form-data)
 
+This endpoint expects a multipart form containing a file.
+
 - `file` (file, required) — The file to align. All major audio formats are supported. The file size must be less than 1GB.
 - `text` (string, required) — The text to align with the audio. The input text can be in any format, however diarization is not supported at this time.
 
@@ -46,6 +48,17 @@ Successful Response
   - `end` (double, required) — The end time of the word in seconds.
   - `loss` (double, required) — The average alignment loss/confidence score for this word, calculated from its constituent characters.
 - `loss` (double, required) — The average alignment loss/confidence score for the entire transcript, calculated from all characters.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/workspace/auth-connections/c
 
 ### Body (application/json)
 
+This endpoint expects an object or object or object or object or object or object or object.
+
 - `object or object or object or object or object or object or object`
   - CreateOAuth2ClientCredsRequest
     - `name` (string, required)
@@ -540,6 +542,17 @@ Successful Response
       - `integration_connections` (list of object, optional, default: [])
         - `id` (string, required)
         - `name` (string, required)
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

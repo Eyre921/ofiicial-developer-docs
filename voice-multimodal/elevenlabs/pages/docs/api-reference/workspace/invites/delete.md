@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/workspace/invites/delete
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `email` (string, required) — The email of the customer
 
 ## Response
@@ -36,6 +38,17 @@ Reference: https://elevenlabs.io/docs/api-reference/workspace/invites/delete
 Successful Response
 
 - `status` (string, required) — The status of the workspace invite deletion request. If the request was successful, the status will be 'ok'. Otherwise an error message with status 500 will be returned.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

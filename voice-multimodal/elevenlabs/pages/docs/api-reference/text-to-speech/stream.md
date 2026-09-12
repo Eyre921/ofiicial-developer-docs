@@ -38,6 +38,8 @@ Reference: https://elevenlabs.io/docs/api-reference/text-to-speech/stream
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `text` (string, required) — The text that will get converted into speech.
 - `model_id` (string, optional, default: eleven_multilingual_v2) — Identifier of the model that will be used, you can query them using GET /v1/models. The model needs to have support for text to speech, you can check this using the can_do_text_to_speech property.
 - `language_code` (string, optional, nullable) — Language code (ISO 639-1) used to enforce a language for the model and text normalization. If the model does not support the provided language code, it will be ignored. This parameter is not supported for multilingual_v2 models.
@@ -67,6 +69,17 @@ Reference: https://elevenlabs.io/docs/api-reference/text-to-speech/stream
 Streaming audio data
 
 - Streaming response of `string`.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

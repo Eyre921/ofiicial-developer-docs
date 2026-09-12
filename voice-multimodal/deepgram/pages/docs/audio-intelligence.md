@@ -37,6 +37,8 @@ An audio source can be sent to Deepgram as an audio file or as a url of a hosted
 
 This example shows how to analyze a **local audio file** as your audio source.
 
+**`JavaScript`**
+
 ```javascript JavaScript
 const { DeepgramClient } = require("@deepgram/sdk");
 const fs = require("fs");
@@ -64,6 +66,8 @@ const transcribeFile = async () => {
 
 transcribeFile();
 ```
+
+**`Python`**
 
 ```python Python
 # For more Python SDK migration guides, visit:
@@ -110,6 +114,8 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+
+**`Go`**
 
 ```go Go
 package main
@@ -178,6 +184,8 @@ func main() {
 }
 ```
 
+**`Java`**
+
 ```java Java
 // Main.java (Java example)
 // https://github.com/deepgram/deepgram-java-sdk
@@ -226,6 +234,8 @@ public class Main {
 
 This example shows how to analyze a **remote audio file** (a URL that hosts your audio file).
 
+**`JavaScript`**
+
 ```javascript JavaScript
 const { DeepgramClient } = require("@deepgram/sdk");
 
@@ -250,6 +260,8 @@ const transcribeUrl = async () => {
 
 transcribeUrl();
 ```
+
+**`Python`**
 
 ```python Python
 # For more Python SDK migration guides, visit:
@@ -290,6 +302,8 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+
+**`Go`**
 
 ```go Go
 package main
@@ -356,6 +370,8 @@ func main() {
 }
 ```
 
+**`Java`**
+
 ```java Java
 // Main.java (Java example)
 // https://github.com/deepgram/deepgram-java-sdk
@@ -403,11 +419,15 @@ public class Main {
 
 Run your application from the terminal.
 
+**`JavaScript`**
+
 ```shell JavaScript
 # Run your application using the file you created in the previous step
 # Example: node index.js
 node index.js
 ```
+
+**`Python`**
 
 ```shell Python
 # Run your application using the file you created in the previous step
@@ -415,12 +435,16 @@ node index.js
 python YOUR_PROJECT_NAME.py
 ```
 
+**`Go`**
+
 ```shell Go
 # Run your application using the file you created in the previous step
 # Example: go run main.go
 
 go run YOUR_PROJECT_NAME.go
 ```
+
+**`Java`**
 
 ```shell Java
 mvn compile exec:java -Dexec.mainClass="Main"
@@ -433,6 +457,8 @@ Your results will appear in your shell.
 ## Analyze the Response
 
 When the file is finished processing (often after only a few seconds), you’ll receive a JSON response. (Note that some sections are omitted in order to demonstrate relevant properties.)
+
+**`summarization`**
 
 ```json summarization
 {
@@ -471,6 +497,8 @@ When the file is finished processing (often after only a few seconds), you’ll 
   }
 }
 ```
+
+**`topic detection`**
 
 ```json topic detection
 {
@@ -525,6 +553,8 @@ When the file is finished processing (often after only a few seconds), you’ll 
 }
 ```
 
+**`intent recognition`**
+
 ```json intent recognition
 {
   "metadata": {
@@ -574,6 +604,8 @@ When the file is finished processing (often after only a few seconds), you’ll 
   }
 }
 ```
+
+**`sentiment analysis`**
 
 ```json sentiment analysis
 {
@@ -720,6 +752,8 @@ At this time, audio analysis features only work for English language transcripti
 ### Token Limit
 
 The input token limit is 150K tokens. When that limit is exceeded, a `400` error will be thrown
+
+**`JSON`**
 
 ```json JSON
 {

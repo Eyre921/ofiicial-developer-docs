@@ -1,6 +1,6 @@
 # ai-models/anthropic-claude-code 文档索引
 
-> 共 191 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 192 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -99,6 +99,7 @@
 - `permissions` — [Configure permissions](pages/permissions.md) · [原文](https://code.claude.com/docs/en/permissions)
 - `platforms` — [Platforms and integrations](pages/platforms.md) · [原文](https://code.claude.com/docs/en/platforms)
 - `plugin-dependencies` — [Constrain plugin dependency versions](pages/plugin-dependencies.md) · [原文](https://code.claude.com/docs/en/plugin-dependencies)
+- `plugin-evals` — [Test plugins with evals](pages/plugin-evals.md) · [原文](https://code.claude.com/docs/en/plugin-evals)
 - `plugin-hints` — [Recommend your plugin from your CLI](pages/plugin-hints.md) · [原文](https://code.claude.com/docs/en/plugin-hints)
 - `plugin-marketplaces` — [Create and distribute a plugin marketplace](pages/plugin-marketplaces.md) · [原文](https://code.claude.com/docs/en/plugin-marketplaces)
 - `plugin-relevance` — [Recommend plugins for your org](pages/plugin-relevance.md) · [原文](https://code.claude.com/docs/en/plugin-relevance)

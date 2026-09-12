@@ -50,7 +50,7 @@ Run `fireconnect help` for the overview, or `fireconnect claude help` (and simil
 fireconnect status --json   # machine-readable sign-in and key-storage details
 ```
 
-`~/.fireconnect/config.json` stores a reference such as `{keychain:fireworks-api-key}` or `{env:FIREWORKS_API_KEY}`. It never stores a literal key in global config.
+For direct Fireworks routing, `~/.fireconnect/config.json` normally stores a keychain or environment reference such as `{keychain:fireworks-api-key}` or `{env:FIREWORKS_API_KEY}`. Explicit Anthropic keys and Azure keys passed with `--api-key` may be stored literally. FireConnect writes the file with mode `0600` when it contains a literal key.
 
 ## Global configuration
 
@@ -59,7 +59,7 @@ fireconnect status --json   # machine-readable sign-in and key-storage details
 ```bash theme={null}
 fireconnect configure \
   --provider azure \
-  --base-url https://<resource>.services.ai.azure.com \
+  --base-url "https://YOUR_RESOURCE.services.ai.azure.com" \
   --api-key $AZURE_API_KEY
 
 fireconnect configure --anthropic-api-key sk-ant-...
@@ -105,7 +105,7 @@ See **[Models](/ecosystem/fireconnect/models)** for a cross-harness quick refere
 Claude Code-only flags:
 
 * `--interactive`: open the model mapping wizard (cannot combine with model flags)
-* `--non-interactive`: skip first-run onboarding; use saved preferences or example defaults
+* `--non-interactive`: skip first-run onboarding and use saved preferences or automatic setup
 
 On the Foundry path, pass your model with `--model` (for example, `--model FW-GLM-5.2`).
 
@@ -113,10 +113,13 @@ On the Foundry path, pass your model with `--model` (for example, `--model FW-GL
   `--main` is a retired alias for `--model` in v0.9.0+. Prefer `--model` in new scripts.
 </Tip>
 
-FireRouter flags (when using `firerouter`):
+FireRouter flags (when a slot uses `firerouter`):
 
-* `--anthropic-api-key sk-ant-...`: BYOK for Claude Opus 5 pass-through (where the harness supports it)
-* `--routing-preference <1-5>`: savings vs. quality (Claude Code, OpenCode, Pi, VS Code). See [Routing preferences](/ecosystem/firerouter/routing-preferences)
+* `--model firerouter`: sets **main** to FireRouter. On first setup, FireConnect assigns models to unspecified aliases; on later runs, saved or active alias mappings are preserved
+* `--opus firerouter` (Claude Code): sets Opus to FireRouter. Set `--sonnet` explicitly when you need a specific Sonnet mapping
+* `native`: leave a Claude slot unpinned (CLI spelling; the wizard shows **Claude default**). This removes the model pin; it does not change the configured provider endpoint
+* `--anthropic-api-key sk-ant-...`: optional BYOK for Claude Opus 5 pass-through (where the harness supports it). Usually unnecessary in Claude Code when you already have subscription, OAuth, or API-key auth
+* `--routing-preference <level>`: `1`–`5` or `max-intelligence`, `more-intelligence`, `balanced`, `more-savings`, or `max-savings` — CLI flag only, no in-app slider (Claude Code, OpenCode, Pi, VS Code). See [Routing preferences](/ecosystem/firerouter/routing-preferences)
 
 ## API key resolution
 
@@ -143,26 +146,25 @@ Only needed if you still have old scripts or muscle memory. Day-to-day use is `f
 
 <AccordionGroup>
   <Accordion title="Pre-0.5.0 syntax">
-    | Before                              | After                                         |
-    | ----------------------------------- | --------------------------------------------- |
-    | `fireconnect on`                    | `fireconnect claude on`                       |
-    | `fireconnect off`                   | `fireconnect claude off`                      |
-    | `fireconnect status`                | `fireconnect claude status`                   |
-    | `fireconnect list`                  | `fireconnect claude status`                   |
-    | `fireconnect set --main <id>`       | `fireconnect claude on --model <id>`          |
-    | `fireconnect reset`                 | `fireconnect claude on` (re-applies defaults) |
-    | `fireconnect on --harness opencode` | `fireconnect opencode on`                     |
+    | Before                              | After                                                                                         |
+    | ----------------------------------- | --------------------------------------------------------------------------------------------- |
+    | `fireconnect on`                    | `fireconnect claude on`                                                                       |
+    | `fireconnect off`                   | `fireconnect claude off`                                                                      |
+    | `fireconnect status`                | `fireconnect claude status`                                                                   |
+    | `fireconnect list`                  | `fireconnect claude status`                                                                   |
+    | `fireconnect set --main <id>`       | `fireconnect claude on --model <id>`                                                          |
+    | `fireconnect reset`                 | `fireconnect claude on` (preserves the saved or active mapping; use model flags to change it) |
+    | `fireconnect on --harness opencode` | `fireconnect opencode on`                                                                     |
   </Accordion>
 
   <Accordion title="v0.9.5 changes">
     | Feature          | Details                                                                                                                              |
     | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-    | Status line      | Session cost bar in Claude Code showing per-model Fireworks spend and cache rates. Your own `statusLine` is preserved.               |
+    | Status line      | Session cost bar in Claude Code showing per-model estimated cost and cache rates. Your own `statusLine` is preserved.                |
     | ChatGPT app      | `fireconnect chatgpt` is an alias for `codex` — routes both Codex CLI and ChatGPT desktop from one config. Quit the app before `on`. |
     | Smart routers    | Pin `auto` or `auto-instant` on Claude slots for open-model mixes (preview).                                                         |
-    | Claude defaults  | Sonnet → `deepseek-pro-latest`, Opus → `glm-latest`, Fable → `glm-flash-latest`. FireRouter still auto-pins Opus on first connect.   |
     | Model list cache | Catalog cached for 1 hour, works offline, `--refresh` refetches. Lists `auto`, `auto-instant`, and FireRouter.                       |
-    | `claude status`  | Shows every slot, including defaults you never explicitly set.                                                                       |
+    | `claude status`  | Shows every resolved slot, including slots you never explicitly set.                                                                 |
     | GLM 5.3          | `glm-5p3` and `glm-5p3-flash` added; US-only `glm-5p3-flash-us` pricing corrected.                                                   |
   </Accordion>
 
@@ -175,13 +177,12 @@ Only needed if you still have old scripts or muscle memory. Day-to-day use is `f
   </Accordion>
 
   <Accordion title="v0.9.3 changes">
-    | Feature              | Details                                                                                                                                                                       |
-    | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | Claude defaults      | First connect uses `firerouter` for Opus; otherwise Opus defaults to `deepseek-pro-latest`. Sonnet stays on Claude's default, and Haiku/subagents use `deepseek-flash-latest` |
-    | Deprecated Flash pin | Existing Claude `deepseek-v4-flash` defaults migrate to `deepseek-flash-latest` on the next `claude on`                                                                       |
-    | Mixed models         | Claude Code can mix Anthropic and Fireworks models while routed through FireConnect                                                                                           |
-    | Harness replacement  | `fireconnect deepseek` for DeepSeek Harness replaces `fireconnect deepagents`                                                                                                 |
-    | Demo command         | Use `fireconnect claude demo`; the old top-level `fireconnect demo` form is deprecated                                                                                        |
+    | Feature              | Details                                                                                             |
+    | -------------------- | --------------------------------------------------------------------------------------------------- |
+    | Deprecated Flash pin | Existing Claude `deepseek-v4-flash` pins migrate to `deepseek-flash-latest` on the next `claude on` |
+    | Mixed models         | Claude Code can mix Anthropic and Fireworks models while routed through FireConnect                 |
+    | Harness replacement  | `fireconnect deepseek` for DeepSeek Harness replaces `fireconnect deepagents`                       |
+    | Demo command         | Use `fireconnect claude demo`; the old top-level `fireconnect demo` form is deprecated              |
   </Accordion>
 
   <Accordion title="v0.9.2 changes">
@@ -199,17 +200,16 @@ Only needed if you still have old scripts or muscle memory. Day-to-day use is `f
     | `fireconnect upgrade`     | In-place upgrade for curl/git installs; interactive terminals may prompt **Upgrade now?**                                                                               |
     | Seamless upgrade          | From 0.9.0 on, harness settings (including Claude Code) are preserved across upgrade/reinstall                                                                          |
     | Upgrade from before 0.9.0 | With Claude connected, FireConnect restores original Claude settings before updating; run `fireconnect claude on` afterward. In CI, set `FIRECONNECT_AUTO_OFF_CLAUDE=1` |
-    | Claude `--interactive`    | Model mapping wizard with fast/non-fast profile toggle; preferences persist per key type                                                                                |
   </Accordion>
 
   <Accordion title="v0.9.0 changes">
-    | Before                               | After                                                  |
-    | ------------------------------------ | ------------------------------------------------------ |
-    | `fireconnect <harness> model list`   | `fireconnect model list`                               |
-    | `fireconnect <harness> model select` | `fireconnect <harness> on --model <id>` or slot flags  |
-    | `fireconnect <harness> model reset`  | `fireconnect <harness> on` (re-applies defaults)       |
-    | `--main <id>` on `on`                | `--model <id>`                                         |
-    | Claude `apiKeyHelper` auth           | `X-Fireworks-Api-Key` custom header in `settings.json` |
+    | Before                               | After                                                                                            |
+    | ------------------------------------ | ------------------------------------------------------------------------------------------------ |
+    | `fireconnect <harness> model list`   | `fireconnect model list`                                                                         |
+    | `fireconnect <harness> model select` | `fireconnect <harness> on --model <id>` or slot flags                                            |
+    | `fireconnect <harness> model reset`  | `fireconnect <harness> on` (preserves the saved or active mapping; use model flags to change it) |
+    | `--main <id>` on `on`                | `--model <id>`                                                                                   |
+    | Claude `apiKeyHelper` auth           | `X-Fireworks-Api-Key` custom header in `settings.json`                                           |
   </Accordion>
 </AccordionGroup>
 

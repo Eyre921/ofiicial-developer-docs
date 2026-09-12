@@ -49,6 +49,8 @@ Numerals are supported on both Flux models:
 
 On Flux, set `numerals` as a query parameter when you open the connection. Flux does not support toggling `numerals` mid-stream through the `Configure` message.
 
+**`Direct WebSocket`**
+
 ```text Direct WebSocket
 wss://api.deepgram.com/v2/listen?model=flux-general-en&numerals=true&encoding=linear16&sample_rate=16000
 ```
@@ -63,6 +65,8 @@ To transcribe audio from a file on your computer, run the following cURL command
 
 Be sure to replace the placeholder `YOUR_DEEPGRAM_API_KEY` with your Deepgram API Key. You can [create an API Key](/guides/fundamentals/authenticating#create-an-api-key) in the [Deepgram Console](https://console.deepgram.com).
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -75,6 +79,8 @@ curl \
 ### Toggling Numerals during a real-time stream
 
 In addition to the query string parameter, if you're sending real-time streaming data, you can turn Numerals on or off at any point during the stream. To do so, send the following JSON message to the websocket:
+
+**`JSON`**
 
 ```json JSON
 {

@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/integrations/twilio/register
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `agent_id` (string, required)
 - `from_number` (string, required)
 - `to_number` (string, required)
@@ -99,6 +101,17 @@ Reference: https://elevenlabs.io/docs/api-reference/integrations/twilio/register
 ### 200
 
 Successful Response
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

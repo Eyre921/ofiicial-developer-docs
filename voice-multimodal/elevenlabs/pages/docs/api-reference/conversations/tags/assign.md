@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/conversations/tags/assign
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `tag_ids` (list of string, required) — Tag IDs to add to the conversation. Re-assigning an existing tag is a no-op.
 
 ## Response
@@ -38,6 +40,17 @@ Reference: https://elevenlabs.io/docs/api-reference/conversations/tags/assign
 ### 204
 
 Successful Response
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

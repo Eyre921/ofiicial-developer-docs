@@ -93,6 +93,8 @@ For comprehensive parameter documentation and tuning guidance, see the [End-of-T
 
 ## Using Flux: SDK vs Direct WebSocket
 
+**`SDK (Recommended)`**
+
 ```python SDK (Recommended)
 from deepgram import AsyncDeepgramClient
 
@@ -113,6 +115,8 @@ async with client.listen.v2.connect(
     pass
 ```
 
+**`Direct WebSocket`**
+
 ```bash Direct WebSocket
 # Example using wscat for testing
 wscat -H "Authorization: Token YOUR_DEEPGRAM_API_KEY" \
@@ -120,6 +124,8 @@ wscat -H "Authorization: Token YOUR_DEEPGRAM_API_KEY" \
 
 # Then send binary audio data
 ```
+
+**`JavaScript SDK`**
 
 ```javascript JavaScript SDK
 import { DeepgramClient } from "@deepgram/sdk";
@@ -144,6 +150,8 @@ connection.on("message", (message) => {
 connection.connect();
 await connection.waitForOpen();
 ```
+
+**`Java SDK`**
 
 ```java Java SDK
 import com.deepgram.DeepgramClient;
@@ -220,6 +228,8 @@ graph LR
 npm install @deepgram/sdk
 ```
 
+**`C#`**
+
 ```csharp C#
 // Install the Deepgram .NET SDK (Flux support requires v6.9.0+)
 // https://github.com/deepgram/deepgram-dotnet-sdk
@@ -234,6 +244,8 @@ COMING SOON!
 
 // $ go get github.com/deepgram/deepgram-go-sdk
 ```
+
+**`Java`**
 
 ```java Java
 <!-- Add to pom.xml -->
@@ -256,9 +268,13 @@ Install the additional dependencies:
 pip install python-dotenv
 ```
 
+**`JavaScript`**
+
 ```javascript JavaScript
 npm install fluent-ffmpeg
 ```
+
+**`C#`**
 
 ```csharp C#
 // No additional NuGet packages are required.
@@ -269,6 +285,8 @@ npm install fluent-ffmpeg
 ```Go
 COMING SOON!
 ```
+
+**`Java`**
 
 ```java Java
 // No additional dependencies required.
@@ -327,6 +345,8 @@ Replace `your_deepgram_api_key` with your actual Deepgram API key.
 
 **Purpose**: Sets up the foundation for real-time streaming transcription with visual quality indicators, making it easy to spot transcription accuracy at a glance.
 
+**`Python`**
+
 ```python Python
 import asyncio
 import subprocess
@@ -363,6 +383,8 @@ def get_confidence_color(confidence: float) -> str:
 
 ```
 
+**`JavaScript`**
+
 ```javascript JavaScript
 import ffmpeg from "fluent-ffmpeg";
 import { DeepgramClient } from "@deepgram/sdk";
@@ -386,6 +408,8 @@ function getConfidenceColor(confidence) {
   return colors.red;
 }
 ```
+
+**`C#`**
 
 ```csharp C#
 using System.Diagnostics;
@@ -414,6 +438,8 @@ string GetConfidenceColor(double confidence)
 ```Go
 COMING SOON!
 ```
+
+**`Java`**
 
 ```java Java
 import com.deepgram.DeepgramClient;
@@ -452,6 +478,8 @@ The main function orchestrates real-time transcription of streaming audio URLs:
 * **Error Handling:** Manages FFmpeg errors and connection timeouts (60s default)
 
 The function handles both the audio conversion requirement (Flux only accepts `linear16`) and real-time streaming coordination between multiple async processes.
+
+**`Python`**
 
 ```python Python
 async def main():
@@ -554,6 +582,8 @@ if __name__ == "__main__":
 
 ```
 
+**`JavaScript`**
+
 ```javascript JavaScript
 import ffmpeg from "fluent-ffmpeg";
 import { DeepgramClient } from "@deepgram/sdk";
@@ -600,6 +630,8 @@ async function main() {
 
 main().catch(console.error);
 ```
+
+**`C#`**
 
 ```csharp C#
 // Initialize logging (defaults to "Info" level).
@@ -673,6 +705,8 @@ Library.Terminate();
 COMING SOON!
 ```
 
+**`Java`**
+
 ```java Java
 public static void main(String[] args) throws Exception {
     DeepgramClient deepgram = DeepgramClient.builder().build();
@@ -731,6 +765,8 @@ public static void main(String[] args) throws Exception {
 ### 6. Complete Code Example
 
 Here's the complete working example that combines all the steps. You can also find this code on [GitHub](https://github.com/deepgram-devs/deepgram-demos-flux-streaming-transcription).
+
+**`Java`**
 
 ```java Java
 import com.deepgram.DeepgramClient;

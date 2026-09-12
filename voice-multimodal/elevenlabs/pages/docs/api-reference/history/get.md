@@ -66,6 +66,17 @@ Successful Response
   - `voice_name` (string, required) — The name of the voice used for this dialogue input line.
 - `output_format` (string, optional, nullable) — The output format the audio was originally generated in.
 
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/hold-audio/create
 
 ### Body (multipart/form-data)
 
+This endpoint expects a multipart form containing a file.
+
 - `hold_audio_file` (file, required) — An MP3 or WAV file played on loop to callers waiting in the agent's concurrency wait queue. Maximum size 40 MB, maximum duration 180 seconds.
 
 ## Response
@@ -46,6 +48,17 @@ Successful Response
   - `original_filename` (string, required) — Filename of the uploaded clip as provided by the user
   - `duration_secs` (double, required) — Duration of the uploaded clip in seconds
   - `size_bytes` (integer, required) — Size of the uploaded clip in bytes
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

@@ -29,6 +29,8 @@ Reference: https://developers.deepgram.com/reference/voice-agent/agent-configura
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `config` (string, required) — A valid JSON string representing the agent block of a Settings message
 - `metadata` (map from string to string, optional) — A map of arbitrary key-value pairs for labeling or organizing the agent configuration
 - `api_version` (integer, optional, default: 1) — API version. Defaults to 1
@@ -42,6 +44,23 @@ Agent configuration created successfully
 - `agent_id` (string, required) — The unique identifier of the newly created agent configuration
 - `config` (object, required) — The parsed agent configuration object
 - `metadata` (map from string to string, optional) — Metadata associated with the agent configuration
+
+## Errors
+
+### 400 Bad Request Error
+
+Invalid Request
+
+- `string or object or object`
+  - ErrorResponseLegacyError
+    - `err_code` (string, optional) — The error code
+    - `err_msg` (string, optional) — The error message
+    - `request_id` (string, optional) — The request ID
+  - ErrorResponseModernError
+    - `category` (string, optional) — The category of the error
+    - `message` (string, optional) — A message about the error
+    - `details` (string, optional) — A description of the error
+    - `request_id` (string, optional) — The unique identifier of the request
 
 ## Examples
 

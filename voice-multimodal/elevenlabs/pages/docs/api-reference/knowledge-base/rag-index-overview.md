@@ -35,6 +35,17 @@ Successful Response
     - Allowed values: `e5_mistral_7b_instruct`, `multilingual_e5_large_instruct`
   - `used_bytes` (integer, required)
 
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

@@ -47,6 +47,8 @@ Keyterms can only be updated mid-session for Flux models. Nova-3 keyterms are fi
 
 To send the `UpdateListen` message, send the following JSON message to the server:
 
+**`Nova (V1)`**
+
 ```json Nova (V1)
 {
     "type": "UpdateListen",
@@ -60,6 +62,8 @@ To send the `UpdateListen` message, send the following JSON message to the serve
     }
 }
 ```
+
+**`Flux (V2)`**
 
 ```json Flux (V2)
 {
@@ -80,6 +84,8 @@ To send the `UpdateListen` message, send the following JSON message to the serve
 ```
 
 Upon receiving the `UpdateListen` message, the server applies the changes and returns a [`ListenUpdated`](/docs/voice-agent-acknowledgements#listenupdated) message.
+
+**`JSON`**
 
 ```json JSON
 {

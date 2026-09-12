@@ -22,6 +22,8 @@ The `AgentThinking` message informs the client when the agent is processing inte
 
 The server will send an `AgentThinking` message to inform the client of a non-verbalized agent thought. When functions are available, some LLMs use these thoughts to decide which functions to call.
 
+**`JSON`**
+
 ```json JSON
 {
   "type": "AgentThinking",

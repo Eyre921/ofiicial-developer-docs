@@ -25,6 +25,8 @@ Use `<break time="x.xs" />` for natural pauses up to 3 seconds.
 Using too many break tags in a single generation can cause instability. The AI might speed up, or
 introduce additional noises or audio artifacts. We are working on resolving this.
 
+**`Example`**
+
 ```text Example
 "Hold on, let me think." <break time="1.5s" /> "Alright, I've got it."
 ```
@@ -33,6 +35,8 @@ introduce additional noises or audio artifacts. We are working on resolving this
 * **Voice-Specific Behavior:** Different voices may handle pauses differently, especially those trained with filler sounds like "uh" or "ah."
 
 Alternatives to `<break>` include dashes (- or --) for short pauses or ellipses (...) for hesitant tones. However, these are less consistent.
+
+**`Example`**
 
 ```text Example
 
@@ -48,6 +52,8 @@ The [Eleven v3](/docs/overview/models#eleven-v3) model (`eleven_v3`) includes na
 
 Unlike older models that require XML-style phoneme tags, v3 natively understands IPA symbols when wrapped in forward slashes directly in your text:
 
+**`Syntax`**
+
 ```text Syntax
 "/IPA_transcription/"
 ```
@@ -60,6 +66,8 @@ The IPA transcription should be:
 
 **Code examples**
 
+**`Python`**
+
 ```python title="Python"
 from elevenlabs import ElevenLabs
 
@@ -71,6 +79,8 @@ audio = client.text_to_speech.convert(
 )
 ```
 
+**`TypeScript`**
+
 ```typescript title="TypeScript"
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
@@ -81,6 +91,8 @@ const audio = await client.textToSpeech.convert("21m00Tcm4TlvDq8ikWAM", {
   modelId: "eleven_v3",
 });
 ```
+
+**`cURL`**
 
 ```bash title="cURL"
 curl -X POST https://api.elevenlabs.io/v1/text-to-speech/{voice_id} \
@@ -94,6 +106,8 @@ curl -X POST https://api.elevenlabs.io/v1/text-to-speech/{voice_id} \
 
 You can include multiple IPA transcriptions in a single text string:
 
+**`Python`**
+
 ```python title="Python"
 from elevenlabs import ElevenLabs
 
@@ -105,6 +119,8 @@ audio = client.text_to_speech.convert(
     model_id="eleven_v3",
 )
 ```
+
+**`TypeScript`**
 
 ```typescript title="TypeScript"
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
@@ -149,11 +165,15 @@ Specify pronunciation using [SSML phoneme tags](https://en.wikipedia.org/wiki/Sp
 
 Phoneme tags are only compatible with the `eleven_flash_v2` [model](/docs/overview/models).
 
+**`CMU Arpabet Example`**
+
 ```xml CMU Arpabet Example
 <phoneme alphabet="cmu-arpabet" ph="M AE1 D IH0 S AH0 N">
   Madison
 </phoneme>
 ```
+
+**`IPA Example`**
 
 ```xml IPA Example
 <phoneme alphabet="ipa" ph="ˈæktʃuəli">
@@ -167,11 +187,15 @@ Phoneme tags only work for individual words. If you have a name with a first and
 
 Ensure correct stress marking for multi-syllable words to maintain accurate pronunciation:
 
+**`Correct usage`**
+
 ```xml Correct usage
 <phoneme alphabet="cmu-arpabet" ph="P R AH0 N AH0 N S IY EY1 SH AH0 N">
   pronunciation
 </phoneme>
 ```
+
+**`Incorrect usage`**
 
 ```xml Incorrect usage
 <phoneme alphabet="cmu-arpabet" ph="P R AH N AH N S IY EY SH AH N">
@@ -223,6 +247,8 @@ Both phonemes and aliases are sets of rules that specify a word or phrase they a
 
 Here are examples of pronunciation dictionaries in both CMU Arpabet and IPA, including a phoneme to specify the pronunciation of "Apple" and an alias to replace "UN" with "United Nations":
 
+**`CMU Arpabet Example`**
+
 ```xml CMU Arpabet Example
 <?xml version="1.0" encoding="UTF-8"?>
 <lexicon version="1.0"
@@ -241,6 +267,8 @@ Here are examples of pronunciation dictionaries in both CMU Arpabet and IPA, inc
   </lexeme>
 </lexicon>
 ```
+
+**`IPA Example`**
 
 ```xml IPA Example
 <?xml version="1.0" encoding="UTF-8"?>
@@ -272,6 +300,8 @@ To generate a pronunciation dictionary `.pls` file, there are a few open source 
 
 Convey emotions through narrative context or explicit dialogue tags. This approach helps the AI understand the tone and emotion to emulate.
 
+**`Example`**
+
 ```text Example
 You're leaving?" she asked, her voice trembling with sadness. "That's it!" he exclaimed triumphantly.
 ```
@@ -287,6 +317,8 @@ For control over the speed of the generated audio, you can use the speed setting
 The default value is 1.0, which means that the speed is not adjusted. Values below 1.0 will slow the voice down, to a minimum of 0.7. Values above 1.0 will speed up the voice, to a maximum of 1.2. Extreme values may affect the quality of the generated speech.
 
 Pacing can also be controlled by writing in a natural, narrative style.
+
+**`Example`**
 
 ```text Example
 "I… I thought you'd understand," he said, his voice slowing with disappointment.
@@ -448,6 +480,8 @@ Example input and output:
 
 If using code to prompt an LLM, you can use regular expressions to normalize the text before providing it to the model. This is a more advanced technique and requires some knowledge of regular expressions. Here are some simple examples:
 
+**`normalize_text.py`**
+
 ```python title="normalize_text.py" maxLines=0
 # Be sure to install the inflect library before running this code
 import inflect
@@ -496,6 +530,8 @@ print(normalize_text("$1,234.56"))   # "one thousand two hundred thirty-four dol
 print(normalize_text("555-555-5555"))  # "five five five, five five five, five five five five"
 
 ```
+
+**`normalizeText.ts`**
 
 ```typescript title="normalizeText.ts" maxLines=0
 // Be sure to install the number-to-words library before running this code
@@ -592,7 +628,7 @@ to use v3 features.
 The stability slider is the most important setting in v3, controlling how closely the generated voice adheres to the original reference audio.
 
 ![Stability settings in Eleven
-v3](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/291b91ec752d09b8c87004ae7091811eb8b5996c349288c88ed0c7afa1272999/assets/images/product-guides/text-to-speech/text-to-speech-v3-settings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T075637Z&X-Amz-Expires=604800&X-Amz-Signature=c2caa11eb402cc0742613bc28782819c6bd45b9ea4ed61c90a8869060bb18721&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+v3](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/291b91ec752d09b8c87004ae7091811eb8b5996c349288c88ed0c7afa1272999/assets/images/product-guides/text-to-speech/text-to-speech-v3-settings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T112924Z&X-Amz-Expires=604800&X-Amz-Signature=8ccd5b1af9d78109070a9912d8005c0e9a5473ddbaa5998b38d2a269fc365d0a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 * **Creative:** More emotional and expressive, but prone to hallucinations.
 * **Natural:** Closest to the original voice recording—balanced and neutral.
@@ -618,6 +654,8 @@ These tags control vocal delivery and emotional expression:
 * `[sighs]`, `[exhales]`
 * `[sarcastic]`, `[curious]`, `[excited]`, `[crying]`, `[snorts]`, `[mischievously]`
 
+**`Example`**
+
 ```text Example
 [whispers] I never knew it could be this way, but I'm glad we're here.
 ```
@@ -629,6 +667,8 @@ Add environmental sounds and effects:
 * `[gunshot]`, `[applause]`, `[clapping]`, `[explosion]`
 * `[swallows]`, `[gulps]`
 
+**`Example`**
+
 ```text Example
 [applause] Thank you all for coming tonight! [gunshot] What was that?
 ```
@@ -639,6 +679,8 @@ Experimental tags for creative applications:
 
 * `[strong X accent]` (replace X with desired accent)
 * `[sings]`, `[woo]`, `[fart]`
+
+**`Example`**
 
 ```text Example
 [strong French accent] "Zat's life, my friend — you can't control everysing."
@@ -654,6 +696,8 @@ Punctuation significantly affects delivery in v3:
 * **Ellipses (...)** add pauses and weight
 * **Capitalization** increases emphasis
 * **Standard punctuation** provides natural speech rhythm
+
+**`Example`**
 
 ```text Example
 "It was a VERY long day [sigh] … nobody listens anymore."

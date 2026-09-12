@@ -32,6 +32,8 @@ Consider a user inputting the prompt: **"Tell me a story about a dragon."**
 
 The code below demonstrates the simple use case of feeding simple text into the websocket.
 
+**`Python`**
+
 ```python Python
 import json
 import os
@@ -194,6 +196,8 @@ if __name__ == "__main__":
 
 ```
 
+**`Java`**
+
 ```java Java
 import com.deepgram.DeepgramClient;
 import com.deepgram.resources.speak.v1.websocket.V1WebSocketClient;
@@ -254,6 +258,8 @@ public class SimpleTextToSpeechWs {
 ## Using a Text Stream from ChatGPT
 
 The code below demonstrates using the OpenAI API to initiate a conversation with ChatGPT and take the resulting stream to feed into the websocket. Ensure the response format is set to stream.
+
+**`Python`**
 
 ```python Python
 import json
@@ -449,6 +455,8 @@ if __name__ == "__main__":
     main()
 ```
 
+**`Java`**
+
 ```java Java
 import com.deepgram.DeepgramClient;
 import com.deepgram.resources.speak.v1.websocket.V1WebSocketClient;
@@ -525,6 +533,8 @@ public class ChatGptToTtsWs {
 ## Using a Text Stream from Anthropic
 
 The code below demonstrates using the Anthropic API to initiate a conversation with Claude and take the resulting stream to feed into the websocket. Ensure the response format is set to stream.
+
+**`Python`**
 
 ```python Python
 import json
@@ -722,6 +732,8 @@ def _play(audio_out: queue, stream, stop):
 if __name__ == "__main__":
     main()
 ```
+
+**`Java`**
 
 ```java Java
 import com.deepgram.DeepgramClient;

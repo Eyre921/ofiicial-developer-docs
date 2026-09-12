@@ -44,6 +44,17 @@ Successful Response
 - `document_model_index_usage` (object, required)
   - `used_bytes` (integer, required)
 
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

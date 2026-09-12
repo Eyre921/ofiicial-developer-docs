@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/tools/update
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `tool_config` (object, required) — Configuration for the tool
   - `type`: `client` (ClientToolConfig)
     - `description` (string, required) — Description of when the tool should be used and what it does.
@@ -672,6 +674,17 @@ Successful Response
         - `pattern` (string, required) — A regex pattern to match the agent's response against.
     - `path` (string, required)
   - `is_error` (boolean, optional, default: false) — If true, the mock result is surfaced to the LLM as a tool error rather than a successful result.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

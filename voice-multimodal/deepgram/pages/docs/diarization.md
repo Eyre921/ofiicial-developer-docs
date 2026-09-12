@@ -41,6 +41,8 @@ Specifying `diarize_model` both enables diarization **and** selects the model ve
 
 Use the `diarize_model` parameter to enable diarization and select the model version in a single parameter:
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -57,6 +59,8 @@ The `diarize` parameter is deprecated. Use `diarize_model` instead for both batc
 The boolean `diarize` parameter continues to work and always routes to the v1 diarizer:
 
 `diarize=true`
+
+**`cURL`**
 
 ```bash cURL
 curl \
@@ -99,6 +103,8 @@ When the file is finished processing, you'll receive a JSON response. Let's look
 
 When using diarization for pre-recorded audio, both `speaker` and `speaker_confidence` values will be returned:
 
+**`JSON`**
+
 ```json JSON
 ...
 "alternatives":[
@@ -123,6 +129,8 @@ When using diarization for pre-recorded audio, both `speaker` and `speaker_confi
 
 When using diarization for live streaming audio, only the `speaker` value will be returned:
 
+**`JSON`**
+
 ```json JSON
 ...
 "alternatives":[
@@ -145,6 +153,8 @@ When using diarization for live streaming audio, only the `speaker` value will b
 ### Diarizer Model Metadata
 
 When a diarizer runs, the response `metadata` includes a `diarize_info` object that identifies the diarizer build that produced the speaker labels. It appears alongside `model_info` in both pre-recorded and streaming responses, which makes the resolved model visible when `diarize_model=latest` resolves to different versions across batch and streaming:
+
+**`JSON`**
 
 ```json JSON
 "metadata": {
@@ -180,6 +190,8 @@ When a diarizer runs, the response `metadata` includes a `diarize_info` object t
 ## Format Response
 
 To improve readability, you can use a JSON processor to parse the JSON. In this example, we use [JQ](https://stedolan.github.io/jq/) and further improve readability by turning on Deepgram's [punctuation](/docs/punctuation/) and [utterances](/docs/utterances/) features:
+
+**`cURL`**
 
 ```bash cURL
 curl \

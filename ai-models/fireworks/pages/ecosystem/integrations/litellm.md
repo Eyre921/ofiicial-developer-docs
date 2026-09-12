@@ -11,14 +11,14 @@ Use [LiteLLM Proxy](https://docs.litellm.ai/docs/proxy/quick_start) as a shared 
 ## Prerequisites
 
 * A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`)
-* LiteLLM v1.95.0 installed (`pip install "litellm[proxy]==1.95.0"`)
+* LiteLLM v1.98.0 installed (`pip install "litellm[proxy]==1.98.0"`)
 
 ## Configure Fireworks models
 
-Create a `config.yaml` with one entry per model you want to expose. Use the `fireworks_ai/` provider prefix and the **full** Fireworks model or router ID:
+Create a `config.yaml` with one entry per model you want to expose. Use the `fireworks_ai/` provider prefix and a model- or router-qualified Fireworks ID:
 
 <Note>
-  Always use full resource paths (for example `accounts/fireworks/models/glm-5p2` or `accounts/fireworks/routers/firerouter`). LiteLLM rewrites short names to `accounts/fireworks/models/...`, which breaks router endpoints like FireRouter.
+  For FireRouter, use `fireworks_ai/routers/firerouter` or the full `fireworks_ai/accounts/fireworks/routers/firerouter` path. Do not use bare `fireworks_ai/firerouter`, which LiteLLM interprets as a model.
 </Note>
 
 ```yaml theme={null}
@@ -28,9 +28,9 @@ model_list:
       model: fireworks_ai/accounts/fireworks/models/glm-5p2
       api_key: os.environ/FIREWORKS_AI_API_KEY
 
-  - model_name: accounts/fireworks/routers/kimi-k2p6-turbo
+  - model_name: accounts/fireworks/routers/kimi-k2p6-fast
     litellm_params:
-      model: fireworks_ai/accounts/fireworks/routers/kimi-k2p6-turbo
+      model: fireworks_ai/accounts/fireworks/routers/kimi-k2p6-fast
       api_key: os.environ/FIREWORKS_AI_API_KEY
 ```
 
@@ -45,7 +45,7 @@ litellm --config config.yaml
 
 ## Call a model
 
-Clients authenticate to LiteLLM with a [virtual key](https://docs.litellm.ai/docs/proxy/virtual_keys):
+If [LiteLLM virtual keys](https://docs.litellm.ai/docs/proxy/virtual_keys) are configured, clients authenticate with a virtual key:
 
 ```bash theme={null}
 curl http://localhost:4000/chat/completions \
@@ -59,16 +59,16 @@ curl http://localhost:4000/chat/completions \
 
 ## API key layout
 
-| Key                          | Who holds it                         | Used for                                |
-| ---------------------------- | ------------------------------------ | --------------------------------------- |
-| Fireworks API key (`fw_...`) | LiteLLM server (env or secret store) | Upstream Fireworks inference            |
-| LiteLLM virtual key          | Each developer or service            | Proxy authentication and spend tracking |
+| Key                                 | Who holds it                         | Used for                                |
+| ----------------------------------- | ------------------------------------ | --------------------------------------- |
+| Fireworks API key (`fw_...`)        | LiteLLM server (env or secret store) | Upstream Fireworks inference            |
+| LiteLLM virtual key (if configured) | Each developer or service            | Proxy authentication and spend tracking |
 
 A common pattern is one Fireworks service-account API key on the LiteLLM server, with per-developer virtual keys for access control and attribution.
 
 ## FireRouter
 
-To add automatic routing between closed-source and open models, register [FireRouter](/ecosystem/firerouter/overview) in the same `model_list`. FireRouter requires an Anthropic API key for pass-through. See [FireRouter with LiteLLM](/ecosystem/firerouter/litellm).
+To add automatic routing between closed-source and open models, register [FireRouter](/ecosystem/firerouter/overview) in the same `model_list`. An Anthropic credential makes Claude models eligible; it is optional for Fireworks-only routes or when workspace BYOK is provisioned. See [FireRouter with LiteLLM](/ecosystem/firerouter/litellm).
 
 ## Related
 

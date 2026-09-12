@@ -20,11 +20,15 @@ for information refer to the [Interim Results feature page.](/docs/interim-resul
 
 [Download our final Python example script](https://res.cloudinary.com/deepgram/raw/upload/v1682358489/devex/show-final_e9za6a.py) and run the example code:
 
+**`SHELL`**
+
 ```sh SHELL
 python3 show-final.py -k 'YOUR_DEEPGRAM_API_KEY' /PATH/TO/AUDIO.wav
 ```
 
 After execution, the script prints out the transcript for each response it receives and shows the `is_final` status for each message:
+
+**`JSON`**
 
 ```json JSON
 Channels = 2, Sample Rate = 48000 Hz, Sample width = 2 bytes, Size = 18540124 bytes
@@ -81,11 +85,15 @@ To calculate [WER](https://blog.deepgram.com/what-is-word-error-rate/), concaten
 
 Let’s look at an example. [Download our WER Python example script](https://res.cloudinary.com/deepgram/raw/upload/v1682358520/devex/concat-final_p2jgsp.py), prepare an audio file (or [use our sample WAV file](https://res.cloudinary.com/deepgram/video/upload/v1681921235/devex/interview_speech-analytics_phntpw.wav)), and run the example code:
 
+**`SHELL`**
+
 ```sh SHELL
 python3 concat-final.py -k 'YOUR_DEEPGRAM_API_KEY' /PATH/TO/audio.wav
 ```
 
 When run, the script concatenates the final transcripts returned by Deepgram and prints the result:
+
+**`JSON`**
 
 ```json JSON
 Channels = 2, Sample Rate = 48000 Hz, Sample width = 2 bytes, Size = 18540124 bytes

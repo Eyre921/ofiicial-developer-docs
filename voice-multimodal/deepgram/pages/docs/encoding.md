@@ -24,6 +24,8 @@ To enable Encoding, when you call Deepgram’s API, add an `encoding` parameter 
 
 `encoding=OPTION`
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \

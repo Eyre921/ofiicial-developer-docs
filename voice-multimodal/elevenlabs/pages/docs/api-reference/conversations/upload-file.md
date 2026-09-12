@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/conversations/upload-file
 
 ### Body (multipart/form-data)
 
+This endpoint expects a multipart form containing a file.
+
 - `file` (file, required) — Image or PDF file to upload
 
 ## Response
@@ -40,6 +42,17 @@ Reference: https://elevenlabs.io/docs/api-reference/conversations/upload-file
 Successful Response
 
 - `file_id` (string, required)
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

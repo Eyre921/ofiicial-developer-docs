@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/service-accounts/create
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `name` (string, required)
 - `default_sharing_groups` (list of object, optional, nullable) — List of groups with their permission levels to share with by default. Each entry should specify a group_id and a permission_level (admin, editor, or viewer).
   - `group_id` (string, required) — The ID of the group to share with
@@ -40,6 +42,17 @@ Reference: https://elevenlabs.io/docs/api-reference/service-accounts/create
 Successful Response
 
 - `service-account-user-id` (string, required)
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

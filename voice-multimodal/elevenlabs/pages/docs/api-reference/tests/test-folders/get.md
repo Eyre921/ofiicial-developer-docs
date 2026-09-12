@@ -41,6 +41,17 @@ Folder details retrieved successfully
   - `name` (string, optional, default: )
 - `children_count` (integer, optional, default: 0) — The number of direct children (tests and subfolders) in this folder
 
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Request**

@@ -35,6 +35,8 @@ Reference: https://elevenlabs.io/docs/api-reference/dubbing/language-targets/cre
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `target_language` (string, required) — BCP-47 language tag to dub the project into (for example, `fr` or `es-MX`). Must be one of the [languages the project's dubbing model supports](https://elevenlabs.io/docs/help-center/product/dubbing/which-languages-are-supported-in-dubbing), and a region-qualified tag must be one of the supported dialects.
 - `voice_settings` (object, optional, nullable) — Voice settings applied to every speaker in this language. Omit to use the defaults.
   - `cloning_strength` (integer, optional, default: 7) — How strongly the dubbed speakers clone the source voices, 0 to 10.
@@ -67,6 +69,17 @@ Successful Response
   - `type` ("voices_not_permitted", required) — Identifies this warning; branch on it to read the other fields.
   - `speaker_ids` (list of string, required) — Speakers whose voices were not permitted for cloning. The dub used a replacement voice for each of them; all other speakers are unaffected.
   - `message` (string, required) — Human-readable description of the warning, for display. The wording may change at any time, so we recommend branching on `type` instead.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

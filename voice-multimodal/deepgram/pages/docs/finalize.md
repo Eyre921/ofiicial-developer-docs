@@ -22,6 +22,8 @@ In real-time audio processing, there are scenarios where you may need to force t
 
 To send the `Finalize` message, you need to send the following JSON message to the server:
 
+**`JSON`**
+
 ```json JSON
 {
   "type": "Finalize"
@@ -29,6 +31,8 @@ To send the `Finalize` message, you need to send the following JSON message to t
 ```
 
 You can optionally specify a `channel` field to finalize a specific channel. If the `channel` field is omitted, all channels in the audio will be finalized. Note that channel indexing starts at 0, so to finalize only the *first* channel you need to send:
+
+**`JSON`**
 
 ```json JSON
 {
@@ -40,6 +44,8 @@ You can optionally specify a `channel` field to finalize a specific channel. If 
 Upon receiving the Finalize message, the server will process all remaining audio data and return the final results. You may receive a response with the `from_finalize` attribute set to `true`, indicating that the finalization process is complete. This response typically occurs when there is a noticeable amount of audio buffered in the server.
 
 If you specified a `channel` to be finalized, use the response's `channel_index` field to check which channel was finalized.
+
+**`JSON`**
 
 ```json JSON
 {
@@ -57,6 +63,8 @@ Below are code examples to help you get started using `Finalize`.
 
 These snippets demonstrate how to construct a JSON message containing the "Finalize" type and send it over the WebSocket connection in each respective language.
 
+**`JavaScript`**
+
 ```javascript JavaScript
 const WebSocket = require("ws");
 
@@ -72,6 +80,8 @@ ws.on('open', function open() {
 });
 ```
 
+**`Python`**
+
 ```python Python
 import json
 import websocket
@@ -85,6 +95,8 @@ finalize_msg = json.dumps({"type": "Finalize"})
 # Send Finalize message
 ws.send(finalize_msg)
 ```
+
+**`Go`**
 
 ```go Go
 package main
@@ -121,6 +133,8 @@ func main() {
     }
 }
 ```
+
+**`C#`**
 
 ```csharp C#
 using System;
@@ -160,6 +174,8 @@ class Program
 }
 ```
 
+**`Java`**
+
 ```java Java
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -183,6 +199,8 @@ WebSocket ws = client.newWebSocketBuilder()
 ### Streaming Examples
 
 Here are more complete examples that make a streaming request and use Finalize. Try running these examples to see how Finalize can be sent to Deepgram, forcing the API to process all unprocessed audio data and immediately return the results.
+
+**`JavaScript`**
 
 ```javascript JavaScript
 const WebSocket = require("ws");
@@ -272,6 +290,8 @@ process.on("SIGINT", () => {
 });
 ```
 
+**`Python`**
+
 ```python Python
 from websocket import WebSocketApp
 import websocket
@@ -358,6 +378,8 @@ ws = WebSocketApp(ws_url, on_open=on_open, on_message=on_message, on_close=on_cl
 
 ws.run_forever()
 ```
+
+**`Java`**
 
 ```java Java
 import com.deepgram.DeepgramClient;

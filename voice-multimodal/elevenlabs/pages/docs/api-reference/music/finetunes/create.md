@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/music/finetunes/create
 
 ### Body (multipart/form-data)
 
+This endpoint expects a multipart form with multiple files.
+
 - `name` (string, required) — Name for the finetune (5-200 characters).
 - `primary_genre` (string, required) — Primary musical genre of the finetune.
 - `files` (files, optional) — Audio files to train on.
@@ -55,3 +57,26 @@ Successful Response
 - `primary_genre` (string, optional, nullable) — Primary musical genre of the finetune.
 - `failure_reason` (enum, optional, nullable) — Reason the finetune failed or was blocked, if applicable.
   - Allowed values: `audio_processing_failed`, `copyright_violation`, `training_failed`
+
+## Errors
+
+### 403 Forbidden Error
+
+Missing permissions to manage music finetunes.
+
+- `any`
+
+### 404 Not Found Error
+
+Finetune not found.
+
+- `any`
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)

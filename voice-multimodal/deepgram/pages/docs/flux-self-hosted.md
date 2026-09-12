@@ -55,6 +55,8 @@ Deepgram offers two Flux models for self-hosted deployments:
 
 You must specify which model to load using the `model_name` field in your Engine configuration. If `model_name` is not set, Engine defaults to `flux-general-en`.
 
+**`Deepgram Engine Configuration`**
+
 ```toml Deepgram Engine Configuration
 [flux]
 enabled = true
@@ -112,6 +114,8 @@ In your Deepgram Engine configuration, enable Flux using the `[flux]` section sh
 
 In your Deepgram API configuration, make sure that the `/v2/listen` endpoint is enabled. This endpoint is new for Flux.
 Earlier Deepgram Speech-to-Text (STT) models (including Nova-3 and Nova-2) are served via the `/v1/listen` endpoint.
+
+**`Deepgram API Configuration`**
 
 ```toml Deepgram API Configuration
 [features]

@@ -53,6 +53,8 @@ for i, chunk in enumerate(chunks):
 # Chunk 3: How does it sound?
 ```
 
+**`Node.Js`**
+
 ```javascript Node.Js
 function chunkBySentence(text) {
   // Split text at sentence boundaries (periods, question marks, exclamation points)
@@ -156,6 +158,8 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+
+**`Node.Js`**
 
 ```javascript Node.Js
 // Text chunking utility for sentence-based splitting
@@ -266,6 +270,8 @@ async def process_chunks_sequential(chunks, tts_function):
         results.append(result)
     return results
 ```
+
+**`Node.Js`**
 
 ```javascript Node.Js
 async function processChunksSequential(chunks, ttsFunction) {

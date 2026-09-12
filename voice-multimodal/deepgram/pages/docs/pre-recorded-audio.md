@@ -61,12 +61,16 @@ To transcribe pre-recorded audio using one of Deepgram's SDKs, follow these step
 
 Open your terminal, navigate to your project directory, and install the Deepgram SDK along with any required dependencies.
 
+**`JavaScript`**
+
 ```shell JavaScript
 # Install the Deepgram JS SDK and dotenv
 # https://github.com/deepgram/deepgram-js-sdk
 
 npm install @deepgram/sdk dotenv
 ```
+
+**`Python`**
 
 ```shell Python
 # Install the Deepgram Python SDK and python-dotenv
@@ -75,6 +79,8 @@ npm install @deepgram/sdk dotenv
 pip install deepgram-sdk python-dotenv
 ```
 
+**`C#`**
+
 ```shell C#
 # Install the Deepgram .NET SDK
 # https://github.com/deepgram/deepgram-dotnet-sdk
@@ -82,12 +88,16 @@ pip install deepgram-sdk python-dotenv
 dotnet add package Deepgram
 ```
 
+**`Go`**
+
 ```shell Go
 # Install the Deepgram Go SDK
 # https://github.com/deepgram/deepgram-go-sdk
 
 go get github.com/deepgram/deepgram-go-sdk
 ```
+
+**`Java`**
 
 ```shell Java
 # Install the Deepgram Java SDK
@@ -107,6 +117,8 @@ go get github.com/deepgram/deepgram-go-sdk
 ### Transcribe a remote file
 
 Create a new file in your project and add the following code to transcribe a remote audio file by URL:
+
+**`JavaScript`**
 
 ```javascript JavaScript
 // index.js (node example)
@@ -133,6 +145,8 @@ const transcribeUrl = async () => {
 
 transcribeUrl();
 ```
+
+**`Python`**
 
 ```python Python
 # main.py (python example)
@@ -165,6 +179,8 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+
+**`C#`**
 
 ```csharp C#
 // Program.cs (.NET example)
@@ -201,6 +217,8 @@ namespace PreRecorded
     }
 }
 ```
+
+**`Go`**
 
 ```go Go
 // main.go (Go example)
@@ -268,6 +286,8 @@ func main() {
 }
 ```
 
+**`Java`**
+
 ```java Java
 // Main.java (Java example)
 // https://github.com/deepgram/deepgram-java-sdk
@@ -317,6 +337,8 @@ To transcribe a **local file** instead of a remote URL, use the `transcribeFile`
 
 ### Transcribe a local file
 
+**`JavaScript`**
+
 ```javascript JavaScript
 // index.js (node example)
 
@@ -346,6 +368,8 @@ const transcribeFile = async () => {
 
 transcribeFile();
 ```
+
+**`Python`**
 
 ```python Python
 # For more Python SDK migration guides, visit:
@@ -387,6 +411,8 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+
+**`C#`**
 
 ```csharp C#
 // Program.cs (.NET example)
@@ -431,6 +457,8 @@ namespace PreRecorded
     }
 }
 ```
+
+**`Go`**
 
 ```go Go
 // main.go (Go example)
@@ -498,6 +526,8 @@ func main() {
 }
 ```
 
+**`Java`**
+
 ```java Java
 // Main.java (Java example)
 // https://github.com/deepgram/deepgram-java-sdk
@@ -544,21 +574,31 @@ For language-specific examples that don't use Deepgram's SDKs, see the [recipes 
 
 Run your application from the terminal. Your transcript appears in your shell.
 
+**`JavaScript`**
+
 ```shell JavaScript
 node index.js
 ```
+
+**`Python`**
 
 ```shell Python
 python main.py
 ```
 
+**`C#`**
+
 ```shell C#
 dotnet run
 ```
 
+**`Go`**
+
 ```shell Go
 go run main.go
 ```
+
+**`Java`**
 
 ```shell Java
 mvn compile exec:java -Dexec.mainClass="Main"
@@ -569,6 +609,8 @@ Deepgram does not store transcripts, so the API response is the only opportunity
 ### Analyze the response
 
 When the file finishes processing (often after only a few seconds), you receive a JSON response:
+
+**`JSON`**
 
 ```json JSON
 {

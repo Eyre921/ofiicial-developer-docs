@@ -64,6 +64,8 @@ Amazon Elastic Kubernetes Service (Amazon EKS) is a managed Kubernetes service t
 
 2. Create a new Kubernetes cluster in Amazon EKS using the `ClusterConfig` manifest. This `eksctl` command will create several [AWS CloudFormation Stacks](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/stacks.html), which manage the inter-connected creation of a cluster, dedicated VPC, dedicated IAM, node groups, and other necessary resources.
 
+   **`Shell`**
+
    ```shell Shell
    eksctl create cluster -f PATH_TO_CLUSTER_CONFIG_YAML
    ```
@@ -71,6 +73,8 @@ Amazon Elastic Kubernetes Service (Amazon EKS) is a managed Kubernetes service t
    Make sure to replace the `PATH_TO_CLUSTER_CONFIG_YAML` placeholder with the path to the template file you downloaded on your local machine.
 
 3. Record metadata from your new cluster in shell variables for use in future steps.
+
+   **`Shell`**
 
    ```shell Shell
    CLUSTER_NAME="deepgram-self-hosted-cluster" # Replace name if modified in your ClusterConfig under `metadata.name`
@@ -87,6 +91,8 @@ Amazon Elastic Kubernetes Service (Amazon EKS) is a managed Kubernetes service t
    ```
 
 4. Create (or retrieve existing) an [Amazon Elastic File System](https://aws.amazon.com/efs/) (EFS) to store Deepgram model files and share them across multiple Deepgram Engine pods.
+
+   **`Shell`**
 
    ```shell Shell
     FS_ID=$(
@@ -105,6 +111,8 @@ Amazon Elastic Kubernetes Service (Amazon EKS) is a managed Kubernetes service t
    ```
 
 5. Install the Amazon EFS CSI driver to allow nodes within your cluster to access the EFS you created. Use the service account role we created via our `ClusterConfig` file, and wait until installation is complete.
+
+   **`Shell`**
 
    ```shell Shell
    csi_svc_acct_role_arn=$(
@@ -125,6 +133,8 @@ Amazon Elastic Kubernetes Service (Amazon EKS) is a managed Kubernetes service t
    ```
 
 6. `eksctl` automatically creates several [security groups](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html) when it provisions your cluster. One of these security groups facilitates communication between AWS-managed nodes and other AWS resources. Find this security group and record its ID for the next step.
+
+   **`Shell`**
 
    ```shell Shell
    ng_name=$(
@@ -162,6 +172,8 @@ Amazon Elastic Kubernetes Service (Amazon EKS) is a managed Kubernetes service t
 
 7. Create mount targets on the EFS with the proper security group. This will allow all Deepgram Engine pods shared access to the EFS to read the model files that will be stored there.
 
+   **`Shell`**
+
    ```shell Shell
    subnet_ids=$(
        aws eks describe-cluster \
@@ -181,6 +193,8 @@ Amazon Elastic Kubernetes Service (Amazon EKS) is a managed Kubernetes service t
 
 8. Record the Role ARN that will be used later to Install the [Kubernetes Autoscaler](https://github.com/kubernetes/autoscaler/tree/master), a component that automatically adjusts the size of a Kubernetes Cluster so that all pods have a place to run and there are no unneeded nodes.
 
+   **`Shell`**
+
    ```shell Shell
    CAS_SVC_ACCT_ROLE_ARN=$(
        aws iam get-role \
@@ -191,6 +205,8 @@ Amazon Elastic Kubernetes Service (Amazon EKS) is a managed Kubernetes service t
    ```
 
 9. Create a dedicated namespace for Deepgram resources.
+
+   **`Shell`**
 
    ```shell Shell
    kubectl create namespace dg-self-hosted
@@ -235,6 +251,8 @@ Deepgram maintains the official `deepgram-self-hosted` Helm Chart. You can refer
 
 1. [Fetch the repository info](https://github.com/deepgram/self-hosted-resources/blob/main/charts/deepgram-self-hosted/README.md#get-repository-info).
 
+   **`Shell`**
+
    ```shell Shell
    helm repo add deepgram https://deepgram.github.io/self-hosted-resources
    helm repo update
@@ -248,9 +266,13 @@ Deepgram maintains the official `deepgram-self-hosted` Helm Chart. You can refer
 
 4. In your `values.yaml` file, insert your Amazon EFS ID into the `engine.modelManager.volumes.aws.efs.fileSystemId` value. You can get the ID from the shell variable you created previously.
 
+   **`Shell`**
+
    ```shell Shell
    echo $FS_ID
    ```
+
+   **`yaml`**
 
    ```yaml yaml
    engine:
@@ -263,6 +285,8 @@ Deepgram maintains the official `deepgram-self-hosted` Helm Chart. You can refer
    ```
 
 5. Your Deepgram Account Representative will have provided you with a list of links to models for inference (file extension `.dg`). In your `values.yaml` file, insert each of these model links in the `engine.modelManager.models.links` list.
+
+   **`yaml`**
 
    ```yaml yaml
    engine:
@@ -277,12 +301,16 @@ Deepgram maintains the official `deepgram-self-hosted` Helm Chart. You can refer
 
 6. In your `values.yaml` file, insert the AWS Role ARN to be used by the Cluster Autoscaler. If needed, adjust the cluster name and region as well.
 
+   **`Shell`**
+
    ```shell Shell
    echo $CAS_SVC_ACCT_NAME
    echo $CAS_SVC_ACCT_ROLE_ARN
    echo $CLUSTER_NAME
    echo $CLUSTER_REGION
    ```
+
+   **`yaml`**
 
    ```yaml yaml
    cluster-autoscaler:
@@ -303,6 +331,8 @@ Deepgram maintains the official `deepgram-self-hosted` Helm Chart. You can refer
 
 7. Install the Helm Chart with your `values.yaml` file.
 
+   **`Shell`**
+
    ```shell Shell
    helm install deepgram deepgram/deepgram-self-hosted \
        -f my-values.yaml \
@@ -320,6 +350,9 @@ Deepgram maintains the official `deepgram-self-hosted` Helm Chart. You can refer
 Test your Deepgram deployment on Amazon EKS with an audio file.
 
 1. Launch an ephemeral pod to send your test request from.
+
+   **`Shell`**
+
    ```shell Shell
    kubectl run --namespace dg-self-hosted api-client \
        --stdin --tty --rm \
@@ -328,11 +361,16 @@ Test your Deepgram deployment on Amazon EKS with an audio file.
    ```
 
 2. Inside the ephemeral pod, download a sample file from Deepgram (or supply your own file).
+
+   **`Shell`**
+
    ```shell Shell
    wget https://dpgr.am/bueller.wav
    ```
 
 3. Send your audio file to your local Deepgram setup for transcription.
+
+   **`Shell`**
 
    ```shell Shell
    curl \

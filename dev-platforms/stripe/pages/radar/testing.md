@@ -8,7 +8,7 @@ path: radar/testing
 
 Use the following information to test your fraud prevention strategy.
 
-Use the following test credit card numbers to create payments in a *sandbox* (A sandbox is an isolated test environment that allows you to test Stripe functionality in your account without affecting your live integration. Use sandboxes to safely experiment with new features and changes) environment with a specific risk level. Create test payments in either the [Stripe Dashboard](https://dashboard.stripe.com/test/payments) (in a sandbox) or by calling [create a charge](https://docs.stripe.com/api.md#create_charge) with your [test API key](https://docs.stripe.com/keys.md).
+Use the following test credit card numbers to create payments in a *sandbox* (A sandbox is an isolated test environment that allows you to test Stripe functionality in your account without affecting your live integration. Use sandboxes to safely experiment with new features and changes) environment with a specific risk level. Create test payments in either the [Stripe Dashboard](https://dashboard.stripe.com/test/payments) (in a sandbox) or by calling [create a charge](https://docs.stripe.com/api.md#create_charge) with your [test API key](https://docs.stripe.com/keys.md). You can also use these cards with the [Payment Evaluation API](https://docs.stripe.com/radar/multiprocessor.md) to force the corresponding `fraudulent_payment` risk level.
 
 #### Card numbers
 

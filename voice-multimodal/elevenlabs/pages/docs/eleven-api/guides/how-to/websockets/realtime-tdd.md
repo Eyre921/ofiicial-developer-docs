@@ -22,9 +22,13 @@ both protocols, see [Text to Speech vs Text to Dialogue WebSockets](/docs/eleven
 
 ## Setup
 
+**`Python`**
+
 ```python Python
 pip install python-dotenv websockets
 ```
+
+**`TypeScript`**
 
 ```typescript TypeScript
 npm install dotenv ws
@@ -32,6 +36,8 @@ npm install @types/dotenv @types/ws --save-dev
 ```
 
 Create a `.env` file:
+
+**`.env`**
 
 ```bash .env
 ELEVENLABS_API_KEY=your_elevenlabs_api_key_here
@@ -42,6 +48,8 @@ Pick a **voice ID** from the [Voice Library](https://elevenlabs.io/voice-library
 ## Open the WebSocket
 
 Connect to `wss://api.elevenlabs.io/v1/text-to-dialogue/stream-input` with query parameters such as `model_id` and `output_format`. You can send the API key in the `xi-api-key` header or in the first JSON message (shown here in the body for a single pattern across languages).
+
+**`text-to-dialogue-websocket.py`**
 
 ```python text-to-dialogue-websocket.py
 import asyncio
@@ -62,6 +70,8 @@ URI = (
     f"?model_id={MODEL_ID}&output_format=mp3_44100_128"
 )
 ```
+
+**`text-to-dialogue-websocket.ts`**
 
 ```typescript text-to-dialogue-websocket.ts
 import * as dotenv from "dotenv";
@@ -90,6 +100,8 @@ const writeStream = fs.createWriteStream(`${outputDir}/dialogue-ws.mp3`, { flags
 Send a **first message** that includes `voices` (required) and `xi_api_key` if you did not set the `xi-api-key` header. Then send one or more frames with `inputs`: each item has `text`, `voice_id`, and optional `new_turn`.
 
 The server buffers text until it has enough context (about **40 characters** and **8 words**), then emits `audio` chunks. Response fields use **snake\_case** (for example `is_final`).
+
+**`text-to-dialogue-websocket.py`**
 
 ```python text-to-dialogue-websocket.py
 async def stream_dialogue():
@@ -137,6 +149,8 @@ async def stream_dialogue():
 asyncio.run(stream_dialogue())
 ```
 
+**`text-to-dialogue-websocket.ts`**
+
 ```typescript text-to-dialogue-websocket.ts
 websocket.on("open", () => {
   websocket.send(
@@ -182,9 +196,13 @@ websocket.on("close", () => {
 
 ## Run the script
 
+**`Python`**
+
 ```python Python
 python text-to-dialogue-websocket.py
 ```
+
+**`TypeScript`**
 
 ```typescript TypeScript
 npx tsx text-to-dialogue-websocket.ts

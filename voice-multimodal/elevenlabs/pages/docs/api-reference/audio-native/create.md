@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/audio-native/create
 
 ### Body (multipart/form-data)
 
+This endpoint expects a multipart form containing an optional file.
+
 - `name` (string, required) — Project name.
 - `image` (string, optional) — (Deprecated) Image URL used in the player. If not provided, default image set in the Player settings is used.
 - `author` (string, optional) — Author used in the player and inserted at the start of the uploaded article. If not provided, the default author set in the Player settings is used.
@@ -51,6 +53,17 @@ Successful Response
 - `project_id` (string, required) — The ID of the created Audio Native project.
 - `converting` (boolean, required) — Whether the project is currently being converted.
 - `html_snippet` (string, required) — The HTML snippet to embed the Audio Native player.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

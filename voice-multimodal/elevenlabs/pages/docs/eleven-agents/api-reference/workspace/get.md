@@ -46,6 +46,17 @@ Successful Response
 - `default_livekit_stack` (enum, optional, default: standard)
   - Allowed values: `standard`, `static`
 
+## Errors
+
+### 422 Settings Get Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

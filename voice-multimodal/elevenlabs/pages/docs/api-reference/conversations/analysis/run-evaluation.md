@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/conversations/analysis/run-e
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `evaluation_id` (string, required) — ID of the single evaluation criterion to rerun.
 - `scope` (enum, optional, default: conversation)
   - Allowed values: `conversation`, `agent`
@@ -761,6 +763,17 @@ Successful Response
 - `environment` (string, optional, default: production)
 - `tag_ids` (list of string, optional) — Conversation tag ids assigned to this conversation.
 - `otlp_traces` (map from string to any, optional, nullable) — OpenTelemetry trace payload when the request uses format=opentelemetry; otherwise omitted.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

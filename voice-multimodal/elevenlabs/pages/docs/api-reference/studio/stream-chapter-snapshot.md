@@ -33,6 +33,8 @@ Reference: https://elevenlabs.io/docs/api-reference/studio/stream-chapter-snapsh
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `convert_to_mpeg` (boolean, optional, default: false) — Whether to convert the audio to mpeg format.
 
 ## Response
@@ -42,6 +44,17 @@ Reference: https://elevenlabs.io/docs/api-reference/studio/stream-chapter-snapsh
 Streaming audio data
 
 - Streaming response of `string`.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

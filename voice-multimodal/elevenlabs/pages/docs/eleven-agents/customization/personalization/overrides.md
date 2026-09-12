@@ -69,7 +69,7 @@ For security reasons, overrides are disabled by default. Enable the fields you w
 
 Navigate to your agent's settings and select the **Security** tab. Enable the `First message`, `System prompt`, `Tools`, `Knowledge base`, `ASR keywords`, and any other overrides you need, such as `LLM`.
 
-![Enable overrides](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/496f20380ffe29fc46275bbfe5c6eaabdb5e211c780188243a018b38715ea779/assets/images/conversational-ai/enable-overrides.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T083650Z&X-Amz-Expires=604800&X-Amz-Signature=bc54ce522e47a8bbfc8a2e7c4ed5dbe5008ee74b11d84d6bd487be622c6a6e79&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Enable overrides](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/496f20380ffe29fc46275bbfe5c6eaabdb5e211c780188243a018b38715ea779/assets/images/conversational-ai/enable-overrides.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T075745Z&X-Amz-Expires=604800&X-Amz-Signature=ce6c0390d2bc3689aa100f51498cda9bee9979762ee679a3c28e9103bc5dbbd9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Update via the CLI
 
@@ -170,6 +170,8 @@ await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd9
 
 In your code, where the conversation is started, pass the overrides as a parameter. Tool and knowledge base overrides replace the default arrays for that conversation. ASR keyword overrides replace the agent's default keyword list for that conversation (maximum 50 keywords).
 
+**`Conversation initiation payload`**
+
 ```json title="Conversation initiation payload" focus={4-15}
 {
   "conversation_config_override": {
@@ -194,6 +196,8 @@ In your code, where the conversation is started, pass the overrides as a paramet
 ```
 
 Ensure you have the latest [SDK](/docs/eleven-agents/libraries/python) installed.
+
+**`Python`**
 
 ```python title="Python" focus={3-28} maxLines=28
 from elevenlabs.conversational_ai.conversation import Conversation, ConversationInitiationData
@@ -243,6 +247,8 @@ conversation = Conversation(
 conversation.start_session()
 ```
 
+**`JavaScript`**
+
 ```javascript title="JavaScript" focus={4-29} maxLines=29
 ...
 const conversation = await Conversation.startSession({
@@ -284,6 +290,8 @@ const conversation = await Conversation.startSession({
 })
 ```
 
+**`Swift`**
+
 ```swift title="Swift" focus={3-16} maxLines=16
 import ElevenLabsSDK
 
@@ -321,6 +329,8 @@ let conversation = try await ElevenLabsSDK.Conversation.startSession(
   callbacks: callbacks
 )
 ```
+
+**`Widget`**
 
 ```html title="Widget"
   <elevenlabs-convai

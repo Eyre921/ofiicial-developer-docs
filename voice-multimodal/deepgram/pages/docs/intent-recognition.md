@@ -33,6 +33,8 @@ To enable Intent Recognition, use the following parameter in the query string wh
 
 To transcribe audio from a file on your computer, run the following curl command in a terminal or your favorite API client.
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -43,6 +45,8 @@ curl \
 ```
 
 ### Enable Feature with Custom Intents
+
+**`cURL`**
 
 ```bash cURL
 curl \
@@ -67,6 +71,8 @@ Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.dee
 ## Analyze Response
 
 When the file is finished processing, you’ll receive a JSON response that has the following basic structure:
+
+**`JSON`**
 
 ```json JSON
 {
@@ -107,6 +113,8 @@ The response object values for `intents` are:
 
 If you request Intent Recognition with an unsupported language by specifying a language code such as `intents=true&language=es` or `intents=true&detect_language=true` where the detected language is unsupported, you will get the warning message below.
 
+**`JSON`**
+
 ```json JSON
 "warnings": [
   {
@@ -124,6 +132,8 @@ If you request Intent Recognition with an unsupported language by specifying a l
 **Example Warning**
 
 Here is an example of the JSON structure of a request with warning object.
+
+**`JSON`**
 
 ```json JSON
 {

@@ -160,6 +160,8 @@ To secure your ElevenLabs agent, you need to enable authentication in the `Secur
 
 Once authentication is enabled, you will need to create a signed URL in a secure server-side environment to initiate a conversation with the agent. In Next.js, you can do this by setting up a new API route.
 
+**`./app/api/signed-url/route.ts`**
+
 ```tsx ./app/api/signed-url/route.ts
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 import { NextResponse } from "next/server";
@@ -185,6 +187,8 @@ export async function GET() {
 ### Start the conversation session
 
 To start the conversation, first, call your API route to get the signed URL, then use the `useConversation` hook to set up the conversation session.
+
+**`./page.tsx`**
 
 ```tsx ./page.tsx {1,4,20-25,31-46}
 import { useConversation } from "@elevenlabs/react";
@@ -251,6 +255,8 @@ In the agent configuration earlier, you registered the `set_ui_state` client too
 
 This is also where you can pass in the dynamic variables to the conversation.
 
+**`./page.tsx`**
+
 ```tsx ./page.tsx {3-5,7-11}
 const convId = await conversation.startSession({
   signedUrl,
@@ -272,6 +278,8 @@ const convId = await conversation.startSession({
 In the `Training` step, the agent will ask the user to upload documents or submit URLs to public websites with information that should be available to their agent. Here you can utilise the new `after` function of [Next.js 15](https://nextjs.org/docs/app/api-reference/functions/after) to allow uploading of documents in the background.
 
 Create a new `upload` server action to handle the knowledge base creation upon form submission. Once all knowledge base documents have been created, store the conversation ID and the knowledge base IDs in the Redis database.
+
+**`./app/actions/upload.ts`**
 
 ```tsx ./app/actions/upload.ts {26,32,44,56-60}
 "use server";
@@ -354,6 +362,8 @@ There's a few steps that are happening here, namely:
 3. Create a ElevenLabs agent for the users based on the `agent_description` they provided.
 4. Retrieve the knowledge base documents from the conversation state stored in Redis and attach the knowledge base to the agent.
 5. Send an email to the user to notify them that their custom ElevenLabs agent is ready to chat.
+
+**`./app/api/convai-webhook/route.ts`**
 
 ```ts ./app/api/convai-webhook/route.ts
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
@@ -481,6 +491,8 @@ Let's go through each step in detail.
 
 When the webhook request is received, we first verify the webhook secret and construct the webhook payload.
 
+**`./app/api/convai-webhook/route.ts`**
+
 ```ts ./app/api/convai-webhook/route.ts
 // ...
 
@@ -527,6 +539,8 @@ async function getRedisDataWithRetry(
 
 Using the `voice_description` from the webhook payload, we create a custom voice design.
 
+**`./app/api/convai-webhook/route.ts`**
+
 ```ts ./app/api/convai-webhook/route.ts {5}
 // ...
 
@@ -547,6 +561,8 @@ const voice = await elevenlabs.textToVoice.createVoiceFromPreview({
 ### Retrieve the knowledge base documents from the conversation state stored in Redis
 
 The uploading of the documents might take longer than the webhook data analysis, so we'll need to poll the conversation state in Redis until the documents have been uploaded.
+
+**`./app/api/convai-webhook/route.ts`**
 
 ```ts ./app/api/convai-webhook/route.ts
 // ...
@@ -585,6 +601,8 @@ async function getRedisDataWithRetry(
 
 Create the ElevenLabs agent for the user based on the `agent_description` they provided and attach the newly created voice design and knowledge base to the agent.
 
+**`./app/api/convai-webhook/route.ts`**
+
 ```ts ./app/api/convai-webhook/route.ts {7,11}
 // ...
 
@@ -613,6 +631,8 @@ console.log("Agent created", { agent: agent.agentId });
 
 Once the agent is created, you can send an email to the user to notify them that their custom ElevenLabs agent is ready to chat.
 
+**`./app/api/convai-webhook/route.ts`**
+
 ```ts ./app/api/convai-webhook/route.ts
 import { Resend } from "resend";
 
@@ -633,6 +653,8 @@ await resend.emails.send({
 ```
 
 You can use [new.email](https://new.email/), a handy tool from the Resend team, to vibe design your email templates. Once you're happy with the template, create a new component and add in the agent ID as a prop.
+
+**`./components/email/post-call-webhook-email.tsx`**
 
 ```tsx ./components/email/post-call-webhook-email.tsx {14}
 import {

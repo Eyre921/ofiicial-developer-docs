@@ -36,6 +36,8 @@ This will wait until 500 milliseconds of silence has passed to finalize and retu
 
 Endpointing may be disabled by setting `endpointing=false`. If endpointing is disabled, transcriptions will be returned at a cadence determined by Deepgram's chunking algorithms.
 
+**`Python`**
+
 ```python Python
 
 # For more Python SDK migration guides, visit:
@@ -58,6 +60,8 @@ Endpointing may be disabled by setting `endpointing=false`. If endpointing is di
             endpointing=300
    ) as connection:
 ```
+
+**`Java`**
 
 ```java Java
 import com.deepgram.DeepgramClient;
@@ -86,6 +90,8 @@ wsClient.connect(options).get(10, TimeUnit.SECONDS);
 ## Results
 
 When enabled, the transcript for each received streaming response shows a key called `speech_final`.
+
+**`JSON`**
 
 ```json JSON
 {

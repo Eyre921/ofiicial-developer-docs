@@ -61,6 +61,8 @@ To implement the WebSocket Client correctly, you must implement based on the Web
 
 You want first to declare a WebSocket class of some sort specific to your implementation language:
 
+**`Text`**
+
 ```text Text
 // This class could simply be called WebSocketClient
 // However, since this is specifically for Deepgram, it could be called DeepgramClient
@@ -189,6 +191,8 @@ When establishing a connection, you must pass the required parameters defined by
 ### Thread: Receive and Process Messages
 
 If successfully connected, you should start receiving transcription messages (albeit empty) in the [Response Schema](/reference/speech-to-text/listen-streaming#response-schema) defined below.
+
+**`JSON`**
 
 ```json JSON
 {

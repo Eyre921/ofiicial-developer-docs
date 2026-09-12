@@ -22,6 +22,8 @@ Send `KeepAlive` only during a period when the client is not sending audio. Whil
 
 ## Example payload
 
+**`JSON`**
+
 ```json JSON
 {
   "type": "KeepAlive"

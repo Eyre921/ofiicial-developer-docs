@@ -30,18 +30,26 @@ conversational management.
 
 Homebrew (macOS) and Scoop (Windows) are the recommended install methods and ship a standalone binary.
 
+**`Homebrew (macOS)`**
+
 ```bash title="Homebrew (macOS)"
 brew install elevenlabs/tap/elevenlabs
 ```
+
+**`Scoop (Windows)`**
 
 ```powershell title="Scoop (Windows)"
 scoop bucket add elevenlabs https://github.com/elevenlabs/scoop-bucket
 scoop install elevenlabs
 ```
 
+**`npm`**
+
 ```bash title="npm"
 npm install -g @elevenlabs/cli
 ```
+
+**`curl`**
 
 ```bash title="curl"
 curl --proto '=https' --tlsv1.2 -LsSf https://github.com/elevenlabs/cli/releases/latest/download/elevenlabs-cli-installer.sh | sh
@@ -115,9 +123,13 @@ For CI, set `ELEVENLABS_API_KEY` in the environment or a `.env` file instead of 
 
 ### Authentication commands
 
+**`Login`**
+
 ```bash title="Login"
 elevenlabs auth login
 ```
+
+**`Logout`**
 
 ```bash title="Logout"
 elevenlabs auth logout
@@ -175,9 +187,13 @@ General-purpose AI assistant with balanced creativity (temperature 0.3) and vers
 
 ### Template commands
 
+**`List available templates`**
+
 ```bash title="List available templates"
 elevenlabs agents templates list
 ```
+
+**`Show template configuration`**
 
 ```bash title="Show template configuration"
 elevenlabs agents templates show <template>
@@ -187,9 +203,13 @@ elevenlabs agents templates show <template>
 
 Keep your local configurations synchronized with the ElevenLabs platform:
 
+**`Push all agents`**
+
 ```bash title="Push all agents"
 elevenlabs agents push
 ```
+
+**`Preview changes (dry run)`**
 
 ```bash title="Preview changes (dry run)"
 elevenlabs agents push --dry-run
@@ -197,23 +217,33 @@ elevenlabs agents push --dry-run
 
 ### Status and monitoring
 
+**`Check agent status`**
+
 ```bash title="Check agent status"
 elevenlabs agents status
 ```
 
 ### Import and export
 
+**`Import existing agents`**
+
 ```bash title="Import existing agents"
 elevenlabs agents pull
 ```
+
+**`Import specific agent`**
 
 ```bash title="Import specific agent"
 elevenlabs agents pull --agent <agent_id>
 ```
 
+**`Update agents`**
+
 ```bash title="Update agents"
 elevenlabs agents pull --update
 ```
+
+**`List all agents`**
 
 ```bash title="List all agents"
 elevenlabs agents list

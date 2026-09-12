@@ -23,6 +23,8 @@ Text Intelligence  English (all available regions)
 
 Summarization accepts an input text and analyzes the text. It then summarizes the content of the submitted text and returns a brief summary in the JSON response.
 
+**`JSON`**
+
 ```json JSON
  "results": {
     "summary": {
@@ -41,6 +43,8 @@ To enable Summarization, use the following parameter in the query string when yo
 
 To analyze text from a file on your computer, run the following curl command in a terminal or your favorite API client.
 
+**`cURL`**
+
 ```bash cURL
  curl -vX POST \
 	-H "Authorization: Token YOUR_DEEPGRAM_API_KEY" \
@@ -54,6 +58,8 @@ Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.dee
 ### Basic URL Request
 
 To analyze text from a hosted file, run the following curl command in a terminal or your favorite API client. (Try testing it out with the hosted file [https://static.deepgram.com/examples/aura.txt](https://static.deepgram.com/examples/aura.txt))
+
+**`cURL`**
 
 ```bash cURL
 curl -vX POST \
@@ -77,6 +83,8 @@ Summarization requires a minimum of greater than 50 words for summarization. For
 ## Analyze Response
 
 When the file is finished processing, you’ll receive a JSON response that has the following basic structure:
+
+**`JSON`**
 
 ```json JSON
 {
@@ -110,6 +118,8 @@ The `summary` object contains:
 
 If you request Summarization with an unsupported language by specifying a language code such as `summarize=true&language=es` or `summarize=true&detect_language=true` where the detected language is unsupported, you will get the error message below.
 
+**`JSON`**
+
 ```json JSON
 {
   "err_code":"INVALID_QUERY_PARAMETER",
@@ -124,6 +134,8 @@ If you request Summarization with an unsupported language by specifying a langua
 
 If the request's input length exceeded the 150k token rate limit per request, you will get the error message below.
 
+**`JSON`**
+
 ```json JSON
 {
   "err_code": "TOKEN_LIMIT_EXCEEDED",
@@ -137,6 +149,8 @@ If the request's input length exceeded the 150k token rate limit per request, yo
 **Status** 400
 
 If the request sent contained only the feature parameter (`summarize`) but not the `language` parameter, you will receive this error.
+
+**`JSON`**
 
 ```json JSON
 {

@@ -29,6 +29,8 @@ Some turn endings are unambiguous and don't require the model to infer them. `Fo
 
 To send the `ForceEndTurn` message, send the following JSON message to the server. The message has no additional fields — it applies to the turn currently in progress.
 
+**`JSON`**
+
 ```json JSON
 {
   "type": "ForceEndTurn"

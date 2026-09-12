@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/voices/pvc/create
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `name` (string, required) — The name that identifies this voice. This will be displayed in the dropdown of the website.
 - `language` (string, required) — Language used in the samples.
 - `description` (string, optional, nullable) — Description to use for the created voice.
@@ -39,6 +41,17 @@ Reference: https://elevenlabs.io/docs/api-reference/voices/pvc/create
 Successful Response
 
 - `voice_id` (string, required) — The ID of the voice.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

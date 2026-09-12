@@ -51,6 +51,17 @@ Successful Response
     - `cost_discount_multiplier` (double, optional, default: 1) — Discount multiplier applied to cost estimates. Defaults to 1.0 (no discount).
   - `concurrency_group` (string, optional) — The concurrency group for the model.
 
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Response**

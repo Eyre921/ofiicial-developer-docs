@@ -49,32 +49,17 @@ fireconnect claude on --opus glm-fast-latest --sonnet auto-instant
 fireconnect claude status
 ```
 
-Slot flags are independent — `--opus firerouter` changes only Opus and leaves main alone. Use `native` as a slot value to leave it unpinned so Claude Code picks Anthropic's default for that role (still routed through Fireworks).
+Model flags directly override the named slot. Set every slot you want to control explicitly. Use `native` as a slot value to leave a slot unpinned so Claude Code chooses its default for that role.
 
-Re-running `on` without flags preserves your current mapping when FireConnect is already active (including `/model` changes made inside Claude Code).
-
-### Example model mapping
-
-When you run `fireconnect claude on` without model flags, FireConnect applies the mapping below. First-time setup opens an interactive picker unless you pass `--non-interactive`. Override any slot with `--model`, `--opus`, `--sonnet`, `--haiku`, `--fable`, or `--subagent`.
-
-| Alias    | Standard key (`fw_...`)                               | Fire Pass key (`fpk_...`) |
-| -------- | ----------------------------------------------------- | ------------------------- |
-| main     | Claude default (unpinned)                             | `kimi-fast-latest`        |
-| opus     | `firerouter` on first connect; otherwise `glm-latest` | `kimi-fast-latest`        |
-| sonnet   | `deepseek-pro-latest`                                 | `kimi-fast-latest`        |
-| haiku    | `deepseek-flash-latest`                               | `kimi-fast-latest`        |
-| fable    | `glm-flash-latest` (vision)                           | `kimi-fast-latest`        |
-| subagent | `deepseek-flash-latest`                               | `kimi-fast-latest`        |
-
-On **first connect** with a standard key and FireRouter auth available, Opus is auto-pinned to `firerouter` and Sonnet moves to `glm-latest`. Reopen the wizard anytime:
+Re-running `on` without flags preserves your current mapping when FireConnect is already active (including `/model` changes made inside Claude Code). Reopen the wizard anytime:
 
 ```bash theme={null}
 fireconnect claude on --interactive
 ```
 
-Use `--non-interactive` to skip the wizard and apply saved preferences or defaults. `--interactive` cannot be combined with model flags like `--model` or `--opus`.
+Use `--non-interactive` to skip the wizard and apply saved preferences or the current profile. `--interactive` cannot be combined with model flags like `--model` or `--opus`.
 
-The wizard is Fable-first and shows every slot on one screen. Pick a model per slot — no separate fast/non-fast profile toggle.
+Use the wizard to choose aliases, or use explicit model flags for a reproducible configuration.
 
 ### Smart router mixes
 
@@ -89,23 +74,7 @@ fireconnect claude on --sonnet auto-instant      # latency-first mix
 
 ## What gets written
 
-FireConnect writes these settings to `~/.claude/settings.json`. Claude Code authenticates via the `X-Fireworks-Api-Key` custom header (not `apiKeyHelper`). The Fireworks key is written to the file with mode `0600`.
-
-Example settings after first connect with a standard key:
-
-```json theme={null}
-{
-  "env": {
-    "ANTHROPIC_BASE_URL": "https://api.fireworks.ai/inference",
-    "ANTHROPIC_DEFAULT_OPUS_MODEL": "firerouter[1m]",
-    "ANTHROPIC_DEFAULT_SONNET_MODEL": "glm-latest[1m]",
-    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "deepseek-flash-latest[1m]",
-    "ANTHROPIC_DEFAULT_FABLE_MODEL": "glm-flash-latest[1m]",
-    "CLAUDE_CODE_SUBAGENT_MODEL": "deepseek-flash-latest[1m]",
-    "ANTHROPIC_CUSTOM_HEADERS": "X-Fireworks-Api-Key: YOUR_FIREWORKS_API_KEY"
-  }
-}
-```
+FireConnect writes the selected mapping to `~/.claude/settings.json`. Claude Code authenticates via the `X-Fireworks-Api-Key` custom header (not `apiKeyHelper`). The Fireworks key is written to the file with mode `0600`.
 
 **Why the custom header?** The gateway authenticates via `X-Fireworks-Api-Key`, which wins over any stray `ANTHROPIC_API_KEY` / `ANTHROPIC_AUTH_TOKEN` — so a leftover Anthropic key can't silently break routing.
 
@@ -114,14 +83,14 @@ Example settings after first connect with a standard key:
 `on` also:
 
 * Denies Anthropic **server-side** `WebSearch` / `WebFetch` tools the gateway can't run, and installs the Fireworks [WebSearch MCP](/ecosystem/fireconnect/websearch-mcp) when your account is eligible
-* Installs a **status line** showing routed models and Fireworks-rate session cost (see [Status line](#status-line)). Your own `statusLine` is never replaced
+* Installs a **status line** showing routed models and estimated session cost (see [Status line](#status-line)). Your own `statusLine` is never replaced
 * Sends privacy-safe attribution headers (`X-Title`, `HTTP-Referer`) where supported
 
-FireConnect saves a backup of your previous provider settings to `~/.fireconnect/claude/` so `fireconnect claude off` can restore them byte-for-byte. Legacy pins like `deepseek-v4-flash` migrate to `deepseek-flash-latest` on the next `on`.
+FireConnect saves a backup of your previous provider settings to `~/.fireconnect/claude/`. When that backup is available, `fireconnect claude off` restores it byte-for-byte; otherwise it removes FireConnect-managed settings. Legacy pins like `deepseek-v4-flash` migrate to `deepseek-flash-latest` on the next `on`.
 
 ## Status line
 
-When you don't already have a custom `statusLine`, `on` installs one that shows which models actually served the session and what they cost at Fireworks rates:
+When you don't already have a custom `statusLine`, `on` installs one that shows which models actually served the session and their estimated cost:
 
 ```text theme={null}
 ━━━━━━━━━━━━ ━ ━ · $70.39
@@ -130,7 +99,7 @@ When you don't already have a custom `statusLine`, `on` installs one that shows 
 
 The first line is a **multi-color bar** sized by each backend model's share of session spend, followed by the session total. The second line names each model with its cost and cache hit rate. FireRouter sessions show the whole mix at a glance — not just the latest model.
 
-The cost uses the same pricing engine as `fireconnect claude usage`, not Claude Code's Anthropic list-price estimate. A `~` prefix means some model had no published rate and fell back to a reference price.
+The cost uses Fireworks serverless rates for Fireworks models and Anthropic list rates for Anthropic models. Calls without a matched rate remain in usage totals but are not assigned a dollar cost.
 
 `off` removes the status line. **If you already have a `statusLine`, FireConnect leaves it alone** — delete yours and re-run `fireconnect claude` to opt in.
 
@@ -150,22 +119,65 @@ fireconnect model list --refresh
 fireconnect claude on --sonnet kimi-latest
 ```
 
-`fireconnect model list` shows serverless endpoints and pricing (cached for one hour; works offline). `fireconnect claude status` shows your current mapping, every slot including defaults, and Fireworks rates per slot.
+`fireconnect model list` shows serverless endpoints and pricing (cached for one hour; works offline). `fireconnect claude status` shows your current mapping, every slot including defaults, and available rates per slot.
 
 Fire Pass keys only list Fire Pass routers. FireConnect rejects `--model firerouter` with Fire Pass (`fpk_...`) on every harness; use an `fw_...` key.
 
 ## FireRouter
 
-Route requests through [FireRouter](/ecosystem/firerouter/overview):
+Route requests through [FireRouter](/ecosystem/firerouter/overview). The default `firerouter` model ID is more likely to use **GLM 5.3** for lower-complexity work and **Claude Opus 5** for harder work. See [current routing pair](/ecosystem/firerouter/overview#current-routing-pair).
+
+### Choose where FireRouter is used
+
+Use `--model` for Main or a slot-specific flag for an alias:
 
 ```bash theme={null}
 fireconnect claude on --model firerouter
-fireconnect claude on --opus firerouter --anthropic-api-key sk-ant-...
+fireconnect claude on --opus firerouter
 ```
 
-Use `--model firerouter` for main, or slot flags like `--opus firerouter`. Pass `--anthropic-api-key sk-ant-...` on `on`, or store it once with `fireconnect configure --anthropic-api-key sk-ant-...`.
+<Warning>
+  On first setup, FireConnect assigns models to slots you do not specify. Use `--interactive` to choose alias slots. To control the complete mapping including Main, set every slot explicitly. Use `native` to leave a slot unpinned.
+</Warning>
 
-Bias savings vs quality with `--routing-preference` (`1`-`5`; default `3`):
+```bash theme={null}
+fireconnect claude on --interactive
+
+# FireRouter on Main; leave every alias unpinned
+fireconnect claude on --model firerouter \
+  --opus native --sonnet native --haiku native \
+  --fable native --subagent native
+```
+
+### Custom routing pairs
+
+```bash theme={null}
+fireconnect claude on --sonnet firerouter/claude-opus-5/glm-5p3-fast   # custom pair
+```
+
+Use a [slash-delimited FireRouter slug](/ecosystem/firerouter/overview#choose-different-models) on any slot (`firerouter/<primary>/<redirect>`, …) to change which models FireRouter can pick.
+
+Anthropic credentials are needed only when the slug includes a Claude model (including bare `firerouter`). A Fireworks-only slug such as `firerouter/kimi-k3/glm-5p2-fast` needs only the Fireworks API key.
+
+### Anthropic auth for pass-through
+
+The default bare `firerouter` route's Claude Opus 5 leg needs Anthropic credentials. With FireConnect you usually **do not** pass a new key:
+
+* **Claude subscription or browser OAuth** — Claude Code already attaches Anthropic auth on each request; Fireworks forwards it for pass-through.
+* **Anthropic API key** — if Claude Code is configured with `ANTHROPIC_API_KEY`, that works too.
+* **Explicit BYOK** — pass `--anthropic-api-key sk-ant-...` on `on`, or store once with `fireconnect configure --anthropic-api-key sk-ant-...`.
+* **Workspace BYOK** — when enabled on your Fireworks account, no local Anthropic key is required.
+
+### See which models served the session
+
+After assistant messages run, check:
+
+1. **Status line** (installed by `on` unless you already have a custom `statusLine`) — lists backend models that served the session (for example `Claude Opus 5` or `GLM 5.3`) and estimated session cost. Before a billed response, it may show `FireRouter` rather than a resolved backend. See [Status line](#status-line).
+2. **`fireconnect claude status`** — shows the configured slot mapping and which slots use FireRouter. It does not show per-request routing decisions.
+
+### Tune cost vs quality
+
+Set routing preference with `--routing-preference` on `on` (`1`–`5` or a named level):
 
 ```bash theme={null}
 fireconnect claude on --model firerouter --routing-preference 4
@@ -174,9 +186,11 @@ fireconnect claude on --model firerouter --routing-preference 4
 
 See [Routing preferences](/ecosystem/firerouter/routing-preferences).
 
+Omit the flag to use FireRouter's default. Re-running `on` without `--routing-preference` clears a preference that FireConnect previously wrote.
+
 ## Usage and live meter
 
-Claude Code's `/model` picker shows Anthropic list prices, not Fireworks rates. Use `fireconnect claude usage` to estimate real Fireworks spend from session logs.
+Claude Code's `/model` picker shows Anthropic list prices. Use `fireconnect claude usage` to estimate session cost from Fireworks serverless rates and Anthropic list rates.
 
 On a TTY, `usage` opens a session picker (last 3 days by default), then a live cost meter. Tab: agents pane. Esc: session list. q: quit.
 

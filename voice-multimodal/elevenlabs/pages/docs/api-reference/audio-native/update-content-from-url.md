@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/api-reference/audio-native/update-content-
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `url` (string, required) — URL of the page to extract content from.
 - `author` (string, optional, nullable) — Author used in the player and inserted at the start of the uploaded article. If not provided, the default author set in the Player settings is used.
 - `title` (string, optional, nullable) — Title used in the player and inserted at the top of the uploaded article. If not provided, the default title set in the Player settings is used.
@@ -41,6 +43,17 @@ Successful Response
 - `converting` (boolean, required) — Whether the project is currently being converted.
 - `publishing` (boolean, required) — Whether the project is currently being published.
 - `html_snippet` (string, required) — The HTML snippet to embed the Audio Native player.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

@@ -237,7 +237,7 @@ Set `node_type` to `b1` or `t1`. The first time you switch an index to dedicated
 
 #### Metadata schema
 
-Serverless and BYOC indexes support a `schema` block that controls [metadata indexing](/guides/index-data/create-an-index#metadata-indexing). By default, all metadata is indexed. When `schema` is present, only the fields you list with `filterable = true` are indexed.
+Serverless and BYOC indexes support a `schema` block that controls [metadata indexing](/guides/index-data/configure-metadata-indexing). By default, all metadata is indexed. When `schema` is present, only the fields you list with `filterable = true` are indexed.
 
 ```terraform theme={null}
 resource "pinecone_index" "example_index_schema" {

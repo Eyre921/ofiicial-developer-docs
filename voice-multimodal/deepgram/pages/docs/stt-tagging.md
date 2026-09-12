@@ -24,6 +24,8 @@ To enable Tagging, when you call Deepgram’s API, add a `tag` parameter in the 
 
 To transcribe audio from a file on your computer, run the following cURL command in a terminal or your favorite API client. Please be aware that once you have set a tag, you cannot modify it.
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -39,6 +41,8 @@ Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additi
 Once applied, you can identify tags associated with API requests returned by the [Get All Requests](/reference/manage/requests/list), [Get Request](/reference/manage/requests/get), and [Get Fields](/reference/manage/billing/fields/get) endpoints.
 
 You can also directly query requests by tag at the [Summarize Usage](/reference/manage/usage/get) endpoint.
+
+**`cURL`**
 
 ```bash cURL
 curl \

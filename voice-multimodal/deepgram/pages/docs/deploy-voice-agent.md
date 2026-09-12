@@ -27,6 +27,8 @@ Two files are provided for AWS deployments:
 * `05-voice-agent-aws.cluster-config.yaml` — EKS cluster configuration with dedicated node groups for API, Engine (GPU), and License Proxy workloads.
 * `05-voice-agent-aws.values.yaml` — Helm values file with Voice Agent enabled, including STT, TTS, and end-of-turn Engine replicas.
 
+**`Shell`**
+
 ```shell Shell
 BASE_URL="https://raw.githubusercontent.com/deepgram/self-hosted-resources/refs/heads/main"
 curl -sSL "$BASE_URL/charts/deepgram-self-hosted/samples/05-voice-agent-aws.cluster-config.yaml" -o cluster-config.yaml
@@ -68,6 +70,8 @@ The Voice Agent sample configuration (`05-voice-agent-aws`) provisions dedicated
 
 Check that all pods are running:
 
+**`Shell`**
+
 ```shell Shell
 kubectl get pods
 # Confirm that api, engine (STT, TTS, EOT), and license-proxy pods are Running
@@ -82,6 +86,8 @@ To make sure your Deepgram self-hosted Voice Agent deployment is properly config
 
 Forward the API service to test locally:
 
+**`Shell`**
+
 ```shell Shell
 kubectl port-forward svc/deepgram-api 8080:8080
 ```
@@ -95,10 +101,16 @@ Unless you have HTTPS or TLS running on your API instance, construct your Deepgr
 Test the Speech-to-Text service with a sample audio file.
 
 1. Download a sample file from Deepgram (or supply your own file).
+
+   **`Shell`**
+
    ```shell Shell
    wget https://dpgr.am/bueller.wav
    ```
 2. Send your audio file to your local Deepgram setup for transcription.
+
+   **`Shell`**
+
    ```shell Shell
    curl -X POST --data-binary @bueller.wav "http://localhost:8080/v1/listen?model=nova-3"
    ```
@@ -110,6 +122,8 @@ You should receive a JSON response with the transcription and associated metadat
 ### Test TTS
 
 Test the Text-to-Speech service with a sample speak request.
+
+**`Shell`**
 
 ```shell Shell
 curl --request POST \
@@ -127,6 +141,8 @@ The [Voice Agent Getting Started](/docs/voice-agent) guide walks through buildin
 
 **Hosted (default):**
 
+**`Python`**
+
 ```python Python
 api_key = os.getenv("DEEPGRAM_API_KEY")
 client = DeepgramClient(api_key=api_key)
@@ -135,10 +151,14 @@ with client.agent.v1.connect() as connection:
     print("Created WebSocket connection...")
 ```
 
+**`JavaScript`**
+
 ```javascript JavaScript
 const deepgram = new DeepgramClient({ apiKey: process.env.DEEPGRAM_API_KEY });
 const connection = await deepgram.agent.v1.connect();
 ```
+
+**`Java`**
 
 ```java Java
 DeepgramClient client = DeepgramClient.builder()
@@ -147,6 +167,8 @@ DeepgramClient client = DeepgramClient.builder()
 ```
 
 **Self-hosted** — set the `baseUrl` to your port-forwarded or load-balanced endpoint:
+
+**`Python`**
 
 ```python Python
 import os
@@ -172,6 +194,8 @@ with client.agent.v1.connect() as connection:
     print("Created WebSocket connection...")
 ```
 
+**`JavaScript`**
+
 ```javascript JavaScript
 const deepgram = new DeepgramClient({
   apiKey: process.env.DEEPGRAM_API_KEY,
@@ -180,6 +204,8 @@ const deepgram = new DeepgramClient({
 
 const connection = await deepgram.agent.v1.connect();
 ```
+
+**`Java`**
 
 ```java Java
 Environment selfHostedEnv = Environment.custom()

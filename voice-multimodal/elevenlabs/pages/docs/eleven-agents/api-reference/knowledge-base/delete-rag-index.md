@@ -44,6 +44,17 @@ Successful Response
 - `document_model_index_usage` (object, required)
   - `used_bytes` (integer, required)
 
+## Errors
+
+### 422 Conversational AI Delete Document Rag Index Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Request**

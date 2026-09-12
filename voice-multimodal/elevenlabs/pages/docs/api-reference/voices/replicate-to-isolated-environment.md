@@ -31,6 +31,8 @@ Reference: https://elevenlabs.io/docs/api-reference/voices/replicate-to-isolated
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `target_workspace_id` (string, required) — ID of the workspace to replicate the voice into. It must belong to the same consolidated billing group as the calling workspace; the target's data residency is derived from that link.
 - `preserve_voice_id` (boolean, optional, default: true) — When true (default) the replicated voice keeps the same voice ID in the target residency; set to false to assign a new voice ID.
 
@@ -41,6 +43,17 @@ Reference: https://elevenlabs.io/docs/api-reference/voices/replicate-to-isolated
 Successful Response
 
 - `voice_id` (string, required) — Voice ID of the replicated voice in the target residency.
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

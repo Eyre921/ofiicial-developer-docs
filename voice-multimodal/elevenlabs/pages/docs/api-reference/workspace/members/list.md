@@ -37,6 +37,17 @@ Successful Response
   - `is_owner` (boolean, required) — Whether the member is the workspace owner.
   - `is_locked` (boolean, required) — Whether the member's account is locked in this workspace.
 
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
+
 ## Examples
 
 **Request**

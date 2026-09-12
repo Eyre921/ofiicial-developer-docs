@@ -28,6 +28,8 @@ To enable the Measurements feature, you need to set the `measurements` parameter
 
 To transcribe audio with the Measurements feature enabled, use the following cURL command:
 
+**`cURL`**
+
 ```bash cURL
 curl \
   --request POST \
@@ -50,6 +52,8 @@ Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additi
 When the Measurements feature is enabled, the transcribed text will contain abbreviations for measured units.
 
 ### Response Example
+
+**`JSON`**
 
 ```json JSON
 {

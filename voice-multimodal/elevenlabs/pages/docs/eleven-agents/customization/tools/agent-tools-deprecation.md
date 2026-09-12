@@ -62,6 +62,8 @@ No one-off scripts are required — your agents continue to work unchanged.
 
 All tool management lives under a dedicated endpoint:
 
+**`Tool management`**
+
 ```http title="Tool management"
 POST | GET | PATCH | DELETE  https://api.elevenlabs.io/v1/convai/tools
 ```
@@ -99,6 +101,8 @@ After 23 July, delete any unused standalone tools via the toolbox endpoint.
 A request must include **either** `prompt.tool_ids` **or** the legacy `prompt.tools` array —
 **never both**. Sending both fields results in an error.
 
+**`Legacy format (deprecated)`**
+
 ```json title="Legacy format (deprecated)"
 {
   "conversation_config": {
@@ -125,6 +129,8 @@ A request must include **either** `prompt.tool_ids` **or** the legacy `prompt.to
   }
 }
 ```
+
+**`New format (recommended) – client tool via ID + system tool`**
 
 ```json title="New format (recommended) – client tool via ID + system tool"
 {

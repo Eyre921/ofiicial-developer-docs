@@ -24,6 +24,8 @@ The following two examples demonstrate how to play the audio as soon as the firs
 
 ### Single Text Source Payload
 
+**`Python`**
+
 ```python Python
 import requests
 
@@ -49,6 +51,8 @@ with open(audio_file_path, 'wb') as file_stream:
 
 print("Audio download complete")
 ```
+
+**`JavaScript`**
 
 ```javascript JavaScript
 const fs = require("fs");
@@ -91,6 +95,8 @@ req.on("error", (error) => {
 req.write(payload);
 req.end();
 ```
+
+**`Go`**
 
 ```go Go
 package main
@@ -147,6 +153,8 @@ func main() {
 }
 ```
 
+**`Java`**
+
 ```java Java
 import com.deepgram.DeepgramClient;
 import com.deepgram.resources.speak.v1.audio.requests.SpeakV1Request;
@@ -170,6 +178,8 @@ System.out.println("Audio download complete");
 ```
 
 ### Chunked Text Source Payload
+
+**`Python`**
 
 ```python Python
 import re
@@ -216,6 +226,8 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+
+**`JavaScript`**
 
 ```javascript JavaScript
 const https = require("https");
@@ -285,6 +297,8 @@ async function main() {
 main();
 ```
 
+**`Java`**
+
 ```java Java
 import com.deepgram.DeepgramClient;
 import com.deepgram.resources.speak.v1.audio.requests.SpeakV1Request;
@@ -316,6 +330,8 @@ try (OutputStream out = Files.newOutputStream(Path.of("output.mp3"))) {
 }
 System.out.println("Audio file creation completed.");
 ```
+
+**`Go`**
 
 ```go Go
 package main
@@ -418,6 +434,8 @@ This adaptive buffering approach helps optimize audio playback performance, ensu
 
 **Buffer Prediction Algorithm Example**:
 
+**`Python`**
+
 ```python Python
 class BufferPredictor:
     def __init__(self):
@@ -435,6 +453,8 @@ bandwidth = get_available_bandwidth()
 buffer_predictor.adjust_buffer_size(network_latency, bandwidth)
 print("Adjusted buffer size:", buffer_predictor.buffer_size)
 ```
+
+**`JavaScript`**
 
 ```javascript JavaScript
 class BufferPredictor {
@@ -456,6 +476,8 @@ const bandwidth = getAvailableBandwidth();
 bufferPredictor.adjustBufferSize(networkLatency, bandwidth);
 console.log("Adjusted buffer size:", bufferPredictor.bufferSize);
 ```
+
+**`Go`**
 
 ```go Go
 package main

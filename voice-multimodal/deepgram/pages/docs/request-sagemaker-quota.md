@@ -10,7 +10,7 @@ path: docs/request-sagemaker-quota
 
 # Requesting SageMaker Quota
 
-> How to check and increase AWS service quotas for SageMaker endpoint instance types (ml.g5.2xlarge, ml.g6.2xlarge, ml.g6e.2xlarge) required by Deepgram deployments.
+> How to check and increase AWS service quotas for SageMaker endpoint instance types (ml.g4dn.2xlarge, ml.g5.2xlarge, ml.g6.2xlarge, ml.g6e.2xlarge, ml.g7.2xlarge, ml.g7e.2xlarge) required by Deepgram deployments.
 
 AWS enforces default [service quotas](https://docs.aws.amazon.com/general/latest/gr/sagemaker.html) on the number of SageMaker endpoint instances you can run per account per region. Before you can deploy Deepgram on Amazon SageMaker, you may need to request a quota increase for the GPU-accelerated instance types that Deepgram requires.
 
@@ -18,11 +18,14 @@ AWS enforces default [service quotas](https://docs.aws.amazon.com/general/latest
 
 Deepgram SageMaker deployments use the following instance types. Each maps to a separate service quota.
 
-| Instance type    | GPU         | Quota name                          |
-| ---------------- | ----------- | ----------------------------------- |
-| `ml.g5.2xlarge`  | NVIDIA A10G | `ml.g5.2xlarge for endpoint usage`  |
-| `ml.g6.2xlarge`  | NVIDIA L4   | `ml.g6.2xlarge for endpoint usage`  |
-| `ml.g6e.2xlarge` | NVIDIA L40S | `ml.g6e.2xlarge for endpoint usage` |
+| Instance type     | GPU                           | Quota name                           |
+| ----------------- | ----------------------------- | ------------------------------------ |
+| `ml.g4dn.2xlarge` | NVIDIA T4                     | `ml.g4dn.2xlarge for endpoint usage` |
+| `ml.g5.2xlarge`   | NVIDIA A10G                   | `ml.g5.2xlarge for endpoint usage`   |
+| `ml.g6.2xlarge`   | NVIDIA L4                     | `ml.g6.2xlarge for endpoint usage`   |
+| `ml.g6e.2xlarge`  | NVIDIA L40S                   | `ml.g6e.2xlarge for endpoint usage`  |
+| `ml.g7.2xlarge`   | NVIDIA RTX PRO 4500 Blackwell | `ml.g7.2xlarge for endpoint usage`   |
+| `ml.g7e.2xlarge`  | NVIDIA RTX PRO 6000 Blackwell | `ml.g7e.2xlarge for endpoint usage`  |
 
 Quota values represent the maximum number of instances of that type you can run simultaneously across all SageMaker endpoints in a single AWS region. A quota of `0` means you cannot deploy that instance type until you request an increase.
 
@@ -55,10 +58,10 @@ aws service-quotas list-service-quotas \
   --output table
 ```
 
-To check all three instance types at once:
+To check all supported instance types at once:
 
 ```bash
-for INSTANCE in g5.2xlarge g6.2xlarge g6e.2xlarge; do
+for INSTANCE in g4dn.2xlarge g5.2xlarge g6.2xlarge g6e.2xlarge g7.2xlarge g7e.2xlarge; do
   echo "=== ml.$INSTANCE ==="
   aws service-quotas list-service-quotas \
     --service-code sagemaker \
@@ -91,7 +94,7 @@ Select **Request**. AWS reviews most SageMaker quota requests within a few hours
 
 #### Repeat for each instance type
 
-If you need quota for additional instance types (`ml.g6.2xlarge`, `ml.g6e.2xlarge`), repeat these steps for each.
+If you need quota for additional instance types (`ml.g4dn.2xlarge`, `ml.g6.2xlarge`, `ml.g6e.2xlarge`, `ml.g7.2xlarge`, `ml.g7e.2xlarge`), repeat these steps for each.
 
 #### AWS CLI
 

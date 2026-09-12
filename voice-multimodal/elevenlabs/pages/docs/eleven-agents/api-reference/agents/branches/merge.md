@@ -36,6 +36,8 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branche
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `archive_source_branch` (boolean, optional, default: true) — Whether to archive the source branch after merging
 - `force` (boolean, optional, default: false) — Force source branch changes onto the target, overriding timestamp-based conflict resolution
 
@@ -46,6 +48,17 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branche
 Successful Response
 
 - `any`
+
+## Errors
+
+### 422 Branches Merge Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

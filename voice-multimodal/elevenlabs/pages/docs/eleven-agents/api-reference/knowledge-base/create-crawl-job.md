@@ -27,6 +27,8 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base
 
 ### Body (application/json)
 
+This endpoint expects an object.
+
 - `url` (string, required) — URL to a page of documentation that the agent will have access to in order to interact with users.
 - `max_depth` (integer, optional, default: 3) — Maximum depth for crawling (1-5), defaults to 3.
 - `max_pages` (integer, optional, default: 1000) — Maximum number of pages to crawl (1-10,000), defaults to 1000.
@@ -51,6 +53,17 @@ Successful Response
 - `created_at` (integer, required)
 - `folder_path` (list of object, optional) — The folder path segments leading to the root folder, from root to parent folder.
   - `id` (string, required)
+
+## Errors
+
+### 422 Crawl Jobs Create Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of object, optional)
+  - `loc` (list of string or integer, required)
+  - `msg` (string, required)
+  - `type` (string, required)
 
 ## Examples
 

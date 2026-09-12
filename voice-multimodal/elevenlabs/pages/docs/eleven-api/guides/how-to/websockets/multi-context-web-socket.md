@@ -163,6 +163,8 @@ npm install @types/dotenv @types/ws --save-dev
 
 Create a .env file in your project directory to store your API key:
 
+**`.env`**
+
 ```python .env
 ELEVENLABS_API_KEY=your_elevenlabs_api_key_here
 ```
