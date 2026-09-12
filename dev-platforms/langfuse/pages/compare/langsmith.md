@@ -1,11 +1,12 @@
 ---
 title: "LangSmith"
-source: https://langfuse.com/resources/engineering/langsmith-alternative.md
-path: resources/engineering/langsmith-alternative
+source: https://langfuse.com/compare/langsmith.md
+path: compare/langsmith
 ---
 
 ---
 title: LangSmith Alternative? Langfuse vs. LangSmith for AI Engineering
+shortTitle: LangSmith
 seoTitle: "LangSmith Alternative: Langfuse vs. LangSmith"
 description: Langfuse is the open-source LangSmith alternative. September 2026 comparison of MIT self-hosting, ClickHouse vs SmithDB, evals, and unit pricing with no seats.
 tags: [comparison, integration]
@@ -283,7 +284,7 @@ Follow the [step-by-step migration guide](/resources/engineering/migrate-from-la
 
 SmithDB is LangSmith's proprietary trace database (May 2026), written in Rust on Apache DataFusion and Vortex, with trace data on object storage. LangChain reports up to 15× faster core experiences. Langfuse runs on open-source ClickHouse with an observations-first data model, so Cloud and self-hosted share the same architecture. See [Storage: ClickHouse vs SmithDB](#storage).
 
-  This comparison is out of date? Please [raise a pull request](https://github.com/langfuse/langfuse-docs/tree/main/content/resources/engineering) with up-to-date information.
+  This comparison is out of date? Please [raise a pull request](https://github.com/langfuse/langfuse-docs/blob/main/content/compare/langsmith.mdx) with up-to-date information.
 
 <!-- agent-instructions -->
 
@@ -291,7 +292,7 @@ SmithDB is LangSmith's proprietary trace database (May 2026), written in Rust on
 
 ## Agent Instructions
 
-This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/resources/engineering/langsmith-alternative.md`.
+This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/compare/langsmith.md`.
 
 ### Querying these docs
 

@@ -39,6 +39,8 @@ Scribe v2 builds on the core model with additional capabilities designed for mor
 
 We recommend **Scribe v2** when high-accuracy transcription is required. It's available through our [website](https://elevenlabs.io/app/speech-to-text) and [API](/docs/api-reference/speech-to-text/convert). When using Speech to Text via our website, Scribe v2 is the default model.
 
+For medical and clinical audio, use **Scribe v2 Medical** (`scribe_v2_medical`) through the same API. It is billed at the same rate as Scribe v2.
+
 For real-time use cases, we recommend **Scribe v2 Realtime**, available through [ElevenAgents](https://elevenlabs.io/app/agents) and via [API](/docs/api-reference/speech-to-text/convert).
 
 For more details, see our [Speech to Text documentation.](/docs/capabilities/speech-to-text)

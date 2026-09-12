@@ -30,19 +30,19 @@ ElevenLabs provides AI voice infrastructure: text-to-speech, speech-to-text, voi
 
 ## Choose your path
 
-[![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/12097a437e55f60c199946cf59c9528eb8349d110142394833d67fe93b50e68d/assets/images/overview/voice-library-bg.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T064127Z&X-Amz-Expires=604800&X-Amz-Signature=3e58375ff477d7393f9bcce6e16bbd2e931c2be791ed6c07fd8d7c32c8e42f8b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)](/docs/eleven-creative/overview)
+[![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/12097a437e55f60c199946cf59c9528eb8349d110142394833d67fe93b50e68d/assets/images/overview/voice-library-bg.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T233214Z&X-Amz-Expires=604800&X-Amz-Signature=4c62eda20cf453b08dd84eabef46ca80eaf8efd6886c76533110b26788afe22d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)](/docs/eleven-creative/overview)
 
 ### ElevenCreative
 
 Learn how to use the ElevenCreative platform with step-by-step guides
 
-[![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7375358c43ac5dd1a170937123f0874e01b3d8b6cf178c282805588a11d39593/assets/images/agents/agents-overview-integrate.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T064127Z&X-Amz-Expires=604800&X-Amz-Signature=6e7d4d504569ce3099096ac1f9bfc5bd826cc1c0c290bf667c08e58b4134544a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)](/docs/eleven-agents/overview)
+[![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7375358c43ac5dd1a170937123f0874e01b3d8b6cf178c282805588a11d39593/assets/images/agents/agents-overview-integrate.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T233214Z&X-Amz-Expires=604800&X-Amz-Signature=91f1194785feb94afb6c2622be0a622c663bff74b012d260649af95af6bf5cd2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)](/docs/eleven-agents/overview)
 
 ### ElevenAgents
 
 Learn how to build, launch, and scale agents with ElevenLabs
 
-[![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/002b2432fa6ab18befc9f1a6e7fadf348f46506a5a5a72a2358ba1e7f92d8ded/assets/images/overview/scribe-code-bg.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T064127Z&X-Amz-Expires=604800&X-Amz-Signature=8e7be0c77cc5218100124672cecf04d71fbd7d8de0d7696e29209f9a38cbcc18&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)](/docs/eleven-api/quickstart)
+[![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/002b2432fa6ab18befc9f1a6e7fadf348f46506a5a5a72a2358ba1e7f92d8ded/assets/images/overview/scribe-code-bg.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T233214Z&X-Amz-Expires=604800&X-Amz-Signature=73d2365a741476fe1072da0a403d1129009a9d4228481bb063e5c06e039f838b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)](/docs/eleven-api/quickstart)
 
 ### ElevenAPI
 
@@ -115,6 +115,24 @@ Speaker diarization, up to 32 speakers
 Dynamic audio tagging
 
 Smart language detection
+
+#### [Scribe v2 Medical](/docs/overview/models#scribe-v2-medical)
+
+Speech recognition model for medical and clinical audio
+
+Same API and pricing as Scribe v2
+
+15% fewer errors than Scribe v2 when scoring on isolated medical terms
+
+Same accuracy on everyday speech as Scribe v2
+
+Keyterm prompting, up to 1000 terms
+
+Entity detection, including PHI categories
+
+Precise word-level timestamps
+
+Speaker diarization, up to 32 speakers
 
 #### [Scribe v2 Realtime](/docs/overview/models#scribe-v2-realtime)
 

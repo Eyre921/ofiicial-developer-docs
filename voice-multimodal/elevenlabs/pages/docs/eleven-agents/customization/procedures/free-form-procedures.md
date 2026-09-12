@@ -21,7 +21,7 @@ Use a free-form procedure when the agent can adapt wording and order to fit the 
 Here is a refund procedure in the editor:
 
 ![Refund procedure
-example](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e1264b7a4f94403453087d30ef0894e72d412ba69378e6b8cb1b675e53e887b7/assets/images/conversational-ai/procedures/refund-procedure-example.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T093746Z&X-Amz-Expires=604800&X-Amz-Signature=39c66a5d7494bcc8c19c287acc46be1a5b112cc73bca2ad1ae3b7642876144d7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+example](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e1264b7a4f94403453087d30ef0894e72d412ba69378e6b8cb1b675e53e887b7/assets/images/conversational-ai/procedures/refund-procedure-example.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T231551Z&X-Amz-Expires=604800&X-Amz-Signature=37c93133654950861ff195593ab1140034dc6a6fe8f945ed677ffe028ae0e345&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 A procedure has two main parts: a trigger and content. Both can contain inline references to other resources, shown in the screenshot above as tags with wrench icons. Each procedure also has a name shown in the dashboard.
 
@@ -67,12 +67,12 @@ An inline procedure reference must use a procedure from the same agent. See [Lim
 
 A reference in the trigger lets the procedure fire based on a resource's output, for example *When `get_user` returns tier 'gold'*. A reference in content tells the agent to invoke or consult the resource at that step.
 
-![Slash menu in the procedure editor](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8625ffec0f5584619e6ccb97720fd86f2e8d3cd0061308ad87b57f176e5535e3/assets/images/conversational-ai/procedures/slash-menu.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T093746Z&X-Amz-Expires=604800&X-Amz-Signature=d3661386015fe2cae5df0e75aff65cee7e3dd203af47834f351e83241e2aac59&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Slash menu in the procedure editor](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8625ffec0f5584619e6ccb97720fd86f2e8d3cd0061308ad87b57f176e5535e3/assets/images/conversational-ai/procedures/slash-menu.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T231551Z&X-Amz-Expires=604800&X-Amz-Signature=58655736b7e6aa6e05e81c0319cee2772805b568e52afb09338f014b24524de8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 If a referenced resource is deleted later, or your account loses access to it, the tag shows as broken. The **Errors** badge at the top of the editor lists these references: *invalid* if the resource no longer exists, or *unavailable* if it exists but your account does not have access. Open the badge to see which step is affected and fix or remove the reference.
 
 ![Errors dialog listing invalid
-references](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e9ec6b19be2992da80a726883baf53265a5d5b38621373cd7e60375c944674cd/assets/images/conversational-ai/procedures/reference-tags.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T093746Z&X-Amz-Expires=604800&X-Amz-Signature=ee003d0c4e44faa0a40763d72e2243e32d1a008d281722f0ec6ba3aa5ef6700e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+references](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e9ec6b19be2992da80a726883baf53265a5d5b38621373cd7e60375c944674cd/assets/images/conversational-ai/procedures/reference-tags.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T231551Z&X-Amz-Expires=604800&X-Amz-Signature=579c2b27e0c05e1128f07d9ff445830f0b5f87be81ec110fd4bcae0a08305916&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Sub-procedures
 
@@ -90,7 +90,7 @@ Supported formats: `PDF`, `DOCX`, `TXT`, `MD`, `HTML`, `EPUB`. Files must be 20 
 
 The importer analyzes the document, identifies up to 10 distinct procedures, and creates a draft for each one with a generated name, trigger, and content. Open each draft to refine it. If your document contains more than 10 SOPs, split it into smaller files before uploading.
 
-![Upload SOP dialog](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/716601fc90dea757e23971e5aabe063e6a66fc0f75878247dc9f1fc3011f5197/assets/images/conversational-ai/procedures/upload-sop.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T093746Z&X-Amz-Expires=604800&X-Amz-Signature=f5bf3de51fd580a7917be52aa8af102082d7586f5aeff9a913df4251df0ec5fa&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Upload SOP dialog](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/716601fc90dea757e23971e5aabe063e6a66fc0f75878247dc9f1fc3011f5197/assets/images/conversational-ai/procedures/upload-sop.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T231551Z&X-Amz-Expires=604800&X-Amz-Signature=92aa3cc350d6326f28d77b1a0c4f36639d404500adb0263bbe404720ce508270&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Manage a free-form procedure
 

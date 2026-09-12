@@ -1,11 +1,12 @@
 ---
 title: "Braintrust"
-source: https://langfuse.com/resources/engineering/best-braintrustdata-alternatives.md
-path: resources/engineering/best-braintrustdata-alternatives
+source: https://langfuse.com/compare/braintrust.md
+path: compare/braintrust
 ---
 
 ---
 title: Braintrust Alternative? Langfuse vs. Braintrust for AI Engineering
+shortTitle: Braintrust
 seoTitle: "Braintrust Alternative: Langfuse vs. Braintrust"
 description: Langfuse is the open-source Braintrust alternative. August 2026 comparison of MIT self-hosting, ClickHouse vs Brainstore, unit vs GB pricing, and evals.
 tags: [comparison, integration]
@@ -255,7 +256,7 @@ The meters differ: Langfuse counts traces, observations, and scores as units (Co
 
 Run both in parallel, swap the SDK wrappers or repoint your OpenTelemetry exporter, import datasets via API, and keep your autoevals scorers. Most teams see first traces the same day; history stays in Braintrust. Follow the [migration guide](/resources/engineering/migrate-from-braintrust) or see [Switching from Braintrust](#switching-from-braintrust).
 
-  This comparison is out of date? Please [raise a pull request](https://github.com/langfuse/langfuse-docs/tree/main/content/resources/engineering) with up-to-date information.
+  This comparison is out of date? Please [raise a pull request](https://github.com/langfuse/langfuse-docs/blob/main/content/compare/braintrust.mdx) with up-to-date information.
 
 <!-- agent-instructions -->
 
@@ -263,7 +264,7 @@ Run both in parallel, swap the SDK wrappers or repoint your OpenTelemetry export
 
 ## Agent Instructions
 
-This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/resources/engineering/best-braintrustdata-alternatives.md`.
+This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/compare/braintrust.md`.
 
 ### Querying these docs
 

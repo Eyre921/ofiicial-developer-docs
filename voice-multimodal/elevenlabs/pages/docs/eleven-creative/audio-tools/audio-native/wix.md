@@ -19,7 +19,7 @@ Navigate to your Wix site, sign in and open the settings page for the page you w
 
 Click the "+" symbol at the top of your content and select "HTML Code" from the menu.
 
-![Audio Native](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5f9626bac119a2647568eac68a7f47877c5590a0f9d40bb77d7d34288d82852c/assets/images/product-guides/audio-native/audio-native-wix-1.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T093505Z&X-Amz-Expires=604800&X-Amz-Signature=909808cdb693f121c42a4b0e7b38a1e220ca5de6f57ca39b7c574dfe0b826611&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Audio Native](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5f9626bac119a2647568eac68a7f47877c5590a0f9d40bb77d7d34288d82852c/assets/images/product-guides/audio-native/audio-native-wix-1.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T233234Z&X-Amz-Expires=604800&X-Amz-Signature=5cc26316f95232bbe7618d7efb6ae1e7c976912826742df1e7fc2dd1bce62ae3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Paste the Audio Native embed code into the HTML box and click "Save".
 
@@ -41,7 +41,7 @@ Paste the Audio Native embed code into the HTML box and click "Save".
     <script src="https://elevenlabs.io/player/audioNativeHelper.js" type="text/javascript"></script>
 ```
 
-![Audio Native](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/719f1f2d8f01aa94ea6550fc62666ec4c4dac024e3f26a8eed925de0f8c54e3d/assets/images/product-guides/audio-native/audio-native-wix-2.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T093505Z&X-Amz-Expires=604800&X-Amz-Signature=bd15a4f5f26a16b27e25423aeb3ae437f59461fb8134a7df4cf19ecee0395770&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Audio Native](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/719f1f2d8f01aa94ea6550fc62666ec4c4dac024e3f26a8eed925de0f8c54e3d/assets/images/product-guides/audio-native/audio-native-wix-2.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T233234Z&X-Amz-Expires=604800&X-Amz-Signature=9c844b75ae47eac684e72767de7d36fba185ce21e119c6aeb6e7cd80fc98608f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Publish the page
 
@@ -51,4 +51,4 @@ Click the "Publish" button in the top right corner of the editor.
 
 Finally, navigate to the live version of the blog post. You should see a message to let you know that the Audio Native project is being created. After a few minutes the text in your blog will be converted to an audio article and the embedded audio player will appear.
 
-![Audio Native](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4bf9e321cac2007f1cf570410dc2e6a610fe209acad0c0caca4a049484e7ff22/assets/images/product-guides/audio-native/audio-native-wix-3.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T093505Z&X-Amz-Expires=604800&X-Amz-Signature=db973443c3a5717a7e0c6d019646809d657fec17886bba132796b7f439dacda4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Audio Native](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4bf9e321cac2007f1cf570410dc2e6a610fe209acad0c0caca4a049484e7ff22/assets/images/product-guides/audio-native/audio-native-wix-3.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T233234Z&X-Amz-Expires=604800&X-Amz-Signature=dae50ed1dee34435cb3f366b520a5630bcc08543e048185a98fbd49a406d1fa3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)

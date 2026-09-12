@@ -237,6 +237,7 @@ When available, applicable events include a top-level `team_ids` array containin
 * **workspace.settings.internal\_integration\_creation\_policy\_updated**: The workspace policy controlling who can create internal integrations was updated.
 * **workspace.settings.invite\_link\_reset**: A user reset the workspace invite link.
 * **workspace.settings.invite\_link\_setting\_updated**: A user enabled or disabled the workspace invite link.
+* **workspace.settings.member\_add\_policy\_updated**: A user updated who can add members to the workspace.
 * **workspace.settings.membership\_request\_setting\_updated**: A user enabled or disabled new workspace membership requests.
 * **workspace.settings.name\_updated**: A user updated the workspace's name.
 * **workspace.settings.notion\_mcp\_personal\_access\_token\_policy\_updated**: The workspace policy controlling who can use personal access tokens with Notion MCP was updated.

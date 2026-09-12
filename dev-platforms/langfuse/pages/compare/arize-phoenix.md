@@ -1,11 +1,12 @@
 ---
 title: "Arize / Phoenix"
-source: https://langfuse.com/resources/engineering/best-phoenix-arize-alternatives.md
-path: resources/engineering/best-phoenix-arize-alternatives
+source: https://langfuse.com/compare/arize-phoenix.md
+path: compare/arize-phoenix
 ---
 
 ---
 title: Arize Alternative? Langfuse vs. Arize AX and Arize Phoenix
+shortTitle: Arize / Phoenix
 seoTitle: "Langfuse vs. Arize AX and Arize Phoenix"
 description: Langfuse is the open-source alternative to Arize AX and Phoenix. September 2026 comparison of unit vs span+GB pricing, evals, and the Dynatrace acquisition.
 tags: [comparison]
@@ -248,7 +249,7 @@ No. Langfuse already ran on ClickHouse. The [announcement](/blog/joining-clickho
 
 Keep your OpenInference instrumentation and point it at Langfuse's OTLP endpoint, then recreate datasets, prompts, and evaluators. See [Switching from Arize](#switching-from-arize).
 
-  This comparison is out of date? Please [raise a pull request](https://github.com/langfuse/langfuse-docs/tree/main/content/resources/engineering) with up-to-date information.
+  This comparison is out of date? Please [raise a pull request](https://github.com/langfuse/langfuse-docs/blob/main/content/compare/arize-phoenix.mdx) with up-to-date information.
 
 <!-- agent-instructions -->
 
@@ -256,7 +257,7 @@ Keep your OpenInference instrumentation and point it at Langfuse's OTLP endpoint
 
 ## Agent Instructions
 
-This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/resources/engineering/best-phoenix-arize-alternatives.md`.
+This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/compare/arize-phoenix.md`.
 
 ### Querying these docs
 

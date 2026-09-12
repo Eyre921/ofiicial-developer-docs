@@ -82,6 +82,24 @@ Dynamic audio tagging
 
 Smart language detection
 
+#### [Scribe v2 Medical](/docs/overview/models#scribe-v2-medical)
+
+Speech recognition model for medical and clinical audio
+
+Same API and pricing as Scribe v2
+
+15% fewer errors than Scribe v2 when scoring on isolated medical terms
+
+Same accuracy on everyday speech as Scribe v2
+
+Keyterm prompting, up to 1000 terms
+
+Entity detection, including PHI categories
+
+Precise word-level timestamps
+
+Speaker diarization, up to 32 speakers
+
 #### [Scribe v2 Realtime](/docs/overview/models#scribe-v2-realtime)
 
 Real-time speech recognition model
@@ -139,6 +157,7 @@ The ElevenLabs API offers a range of audio models optimized for different use ca
 | `eleven_english_sts_v2`      | English-only voice changer model (Speech to Speech)                                                                                                                                    | `en`                                                                                                                                                                          |
 | `scribe_v2_realtime`         | Real-time speech recognition model                                                                                                                                                     | [90+ languages](/docs/overview/capabilities/speech-to-text#supported-languages)                                                                                               |
 | `scribe_v2`                  | State-of-the-art speech recognition model                                                                                                                                              | [90+ languages](/docs/overview/capabilities/speech-to-text#supported-languages)                                                                                               |
+| `scribe_v2_medical`          | Speech recognition model specialized for medical and clinical audio                                                                                                                    | [90+ languages](/docs/overview/capabilities/speech-to-text#supported-languages)                                                                                               |
 | `eleven_text_to_sound_v2`    | Sound effects generation from text prompts                                                                                                                                             | N/A                                                                                                                                                                           |
 | `music_v2_5`                 | Our most advanced music model. Studio-grade generation from text prompts, composition plans and previously generated songs, with improved quality and prompt adherence over `music_v2` | `en`, `es`, `de`, `ja`, and more                                                                                                                                              |
 | `music_v2`                   | Studio-grade music generation from text prompts, composition plans and previously generated songs                                                                                      | `en`, `es`, `de`, `ja`, and more                                                                                                                                              |
@@ -344,6 +363,36 @@ Key features:
 
 Read more about Scribe v2 [here](/docs/overview/capabilities/speech-to-text).
 
+## Scribe v2 Medical
+
+Scribe v2 Medical is a batch speech recognition model specialized for medical and clinical audio. It is a fine-tune of Scribe v2 that improves recognition of drug names, anatomy, pathology, and clinical dictation while matching Scribe v2's accuracy on everyday speech. It uses the same Speech to Text API as Scribe v2 and is billed at the same rate. Pass `scribe_v2_medical` as `model_id`.
+
+This model is well-suited for:
+
+* **Clinical documentation**: Ambient encounters and notes where medical terms surface mid-conversation
+* **Dictation**: Dense sequences of medications, dosages, and findings
+* **Intake and coordination calls**: Patients describing their own conditions, often over the phone
+* **Compliance workflows**: Combine with [entity detection](/docs/eleven-api/guides/how-to/speech-to-text/batch/entity-detection) for PHI categories
+
+Key features:
+
+* Same request shape as Scribe v2 (`keyterms`, `entity_detection`, `no_verbatim`, diarization, timestamps)
+* Improved recognition of medication names, anatomy, and pathology terms
+* No regression on everyday speech versus Scribe v2
+* Support for 90+ languages
+* Speaker diarization for multi-speaker audio
+* Dynamic audio tagging
+* Entity detection, including PHI categories
+
+Scribe v2 Medical is a batch model. For live transcription, use Scribe v2 Realtime.
+
+Scribe v2 Medical is eligible for HIPAA, with Business Associate Agreements available to Enterprise customers as well as Zero Retention Mode (ZRM). With ZRM enabled, audio input and text output are deleted immediately after each request completes. ElevenLabs retains nothing, and your application receives the full API response and retains transcripts under your own controls.
+
+Companies requiring HIPAA compliance must contact [ElevenLabs Sales](https://elevenlabs.io/contact-sales) to sign a Business Associate Agreement (BAA) before
+sending protected health information.
+
+Read more about Speech to Text [here](/docs/overview/capabilities/speech-to-text).
+
 ## Scribe v2 Realtime
 
 Scribe v2 Realtime, our fastest and most accurate live speech recognition model, delivers state-of-the-art accuracy in over 90 languages with an ultra-low 150ms of latency.
@@ -435,7 +484,7 @@ As a general rule of thumb, a concurrency limit of 5 can typically support up to
 This is because of the speed it takes for audio to be generated relative to the time it takes for the TTS request to be processed.
 The diagram below is an example of how 4 concurrent calls with different users can be facilitated while only hitting 2 concurrent requests.
 
-![Concurrency limits](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/dcc5e3bd18993a9f862bd526f3dc1b32cfa89003a58ded6f4f6a7bda1bd5a2ea/assets/images/product-guides/speech-to-text/tts-concurrency.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T231044Z&X-Amz-Expires=604800&X-Amz-Signature=66570be7a7ca2f26188cff260382e97217c00fb281af53937d360e689b7f7349&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Concurrency limits](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/dcc5e3bd18993a9f862bd526f3dc1b32cfa89003a58ded6f4f6a7bda1bd5a2ea/assets/images/product-guides/speech-to-text/tts-concurrency.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T113041Z&X-Amz-Expires=604800&X-Amz-Signature=faff4c702f026b66dba5d588e5925bae66d46f2c2e9a8ca6cc707ab0e7dcdd77&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Building AI Voice Agents
 

@@ -60,7 +60,8 @@ Optimised for real-time conversational applications.
 
 #### Transcription
 
-Use `scribe_v2` for batch transcription or `scribe_v2_realtime` for real-time transcription.
+Use `scribe_v2` for batch transcription, `scribe_v2_medical` for medical and clinical audio, or
+`scribe_v2_realtime` for real-time transcription.
 
 State-of-the-art accuracy across 90+ languages with speaker diarisation and word-level timestamps.
 

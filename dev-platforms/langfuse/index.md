@@ -1,6 +1,6 @@
 # dev-platforms/langfuse 文档索引
 
-> 共 17 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 19 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -9,6 +9,14 @@
 - `pricing-self-host` — [Self-hosted pricing and license](pages/pricing-self-host.md) · [原文](https://langfuse.com/pricing-self-host.md)
 - `security` — [Security](pages/security.md) · [原文](https://langfuse.com/security.md)
 - `self-hosting` — [Self-hosting](pages/self-hosting.md) · [原文](https://langfuse.com/self-hosting.md)
+
+## compare
+
+- `compare/arize-phoenix` — [Arize / Phoenix](pages/compare/arize-phoenix.md) · [原文](https://langfuse.com/compare/arize-phoenix.md)
+- `compare/braintrust` — [Braintrust](pages/compare/braintrust.md) · [原文](https://langfuse.com/compare/braintrust.md)
+- `compare/datadog` — [Datadog Agent Observability](pages/compare/datadog.md) · [原文](https://langfuse.com/compare/datadog.md)
+- `compare/galileo` — [Galileo](pages/compare/galileo.md) · [原文](https://langfuse.com/compare/galileo.md)
+- `compare/langsmith` — [LangSmith](pages/compare/langsmith.md) · [原文](https://langfuse.com/compare/langsmith.md)
 
 ## docs
 
@@ -20,11 +28,8 @@
 
 ## resources
 
-- `resources/engineering/best-braintrustdata-alternatives` — [Braintrust](pages/resources/engineering/best-braintrustdata-alternatives.md) · [原文](https://langfuse.com/resources/engineering/best-braintrustdata-alternatives.md)
-- `resources/engineering/best-phoenix-arize-alternatives` — [Arize / Phoenix](pages/resources/engineering/best-phoenix-arize-alternatives.md) · [原文](https://langfuse.com/resources/engineering/best-phoenix-arize-alternatives.md)
 - `resources/engineering/evaluate-existing-application` — [Test an existing application and reuse graders](pages/resources/engineering/evaluate-existing-application.md) · [原文](https://langfuse.com/resources/engineering/evaluate-existing-application.md)
 - `resources/engineering/hallucination-detection` — [hallucinations](pages/resources/engineering/hallucination-detection.md) · [原文](https://langfuse.com/resources/engineering/hallucination-detection.md)
-- `resources/engineering/langsmith-alternative` — [LangSmith](pages/resources/engineering/langsmith-alternative.md) · [原文](https://langfuse.com/resources/engineering/langsmith-alternative.md)
 - `resources/engineering/rag-faithfulness-evaluation` — [Evaluate grounding](pages/resources/engineering/rag-faithfulness-evaluation.md) · [原文](https://langfuse.com/resources/engineering/rag-faithfulness-evaluation.md)
 
 ## security

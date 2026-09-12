@@ -52,6 +52,24 @@ Dynamic audio tagging
 
 Smart language detection
 
+#### [Scribe v2 Medical](/docs/overview/models#scribe-v2-medical)
+
+Speech recognition model for medical and clinical audio
+
+Same API and pricing as Scribe v2
+
+15% fewer errors than Scribe v2 when scoring on isolated medical terms
+
+Same accuracy on everyday speech as Scribe v2
+
+Keyterm prompting, up to 1000 terms
+
+Entity detection, including PHI categories
+
+Precise word-level timestamps
+
+Speaker diarization, up to 32 speakers
+
 #### [Scribe v2 Realtime](/docs/overview/models#scribe-v2-realtime)
 
 Real-time speech recognition model
@@ -463,8 +481,8 @@ $$
 
 For example, a 15 minute audio file will be transcribed with a concurrency of 2, while a 120 minute audio file will be transcribed with a concurrency of 4.
 
-The above calculation is only applicable to Scribe v2. For Scribe v2 Realtime, see the
-[concurrency limit chart](/docs/overview/models#concurrency-and-priority).
+The above calculation is only applicable to Scribe v2 and Scribe v2 Medical. For Scribe v2
+Realtime, see the [concurrency limit chart](/docs/overview/models#concurrency-and-priority).
 
 ## Advanced features
 
@@ -473,7 +491,7 @@ for detailed pricing information.
 
 ### Keyterm prompting
 
-Keyterm prompting is available with Scribe v2 (batch) and Scribe v2 Realtime.
+Keyterm prompting is available with Scribe v2, Scribe v2 Medical (batch), and Scribe v2 Realtime.
 
 Highlight words or phrases to bias the model towards transcribing them. This is useful for transcribing specific words or sentences that are not common in the audio, such as product names, names, or other specific terms. Keyterms are more powerful than biased keywords or customer vocabularies offered by other models, because it relies on the context to decide whether to transcribe that term or not. Batch supports up to 1000 keyterms (50 characters each), while realtime supports up to 50 keyterms (20 characters each).
 
@@ -481,7 +499,7 @@ To learn more about how to use keyterm prompting, see the [keyterm prompting doc
 
 ### No verbatim mode
 
-No verbatim mode is available with Scribe v2 (batch) and Scribe v2 Realtime.
+No verbatim mode is available with Scribe v2, Scribe v2 Medical (batch), and Scribe v2 Realtime.
 
 When `no_verbatim` is enabled, the model removes filler words, false starts and disfluencies from the transcript. This produces a cleaner output suitable for subtitles, summaries, or any use case where readability is more important than capturing every spoken word.
 

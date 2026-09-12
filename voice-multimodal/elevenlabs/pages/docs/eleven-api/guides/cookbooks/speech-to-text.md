@@ -163,6 +163,9 @@ npx tsx example.mts
 
 You should see the transcription of the audio file printed to the console.
 
+For medical and clinical audio, set `model_id` to `scribe_v2_medical`. The request shape
+is the same as `scribe_v2` and is billed at the same rate. See [Scribe v2 Medical](/docs/overview/models#scribe-v2-medical).
+
 #### CLI
 
 Download the sample audio, then transcribe it:
@@ -179,6 +182,8 @@ elevenlabs speech-to-text convert \
 ```
 
 The transcription is printed to your terminal.
+
+For medical and clinical audio, pass `--model-id scribe_v2_medical`.
 
 ## Next steps
 

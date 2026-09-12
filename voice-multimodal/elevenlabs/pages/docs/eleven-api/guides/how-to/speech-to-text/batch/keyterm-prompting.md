@@ -12,16 +12,16 @@ path: docs/eleven-api/guides/how-to/speech-to-text/batch/keyterm-prompting
 
 ## Overview
 
-Keyterm prompting is available with the Scribe v2 model (batch and realtime) and comes at an
-additional cost. See the [API pricing page](https://elevenlabs.io/pricing?price.section=speech_to_text\&price.sections=speech_to_text,speech_to_text#pricing-table)
+Keyterm prompting is available with Scribe v2, Scribe v2 Medical (batch), and Scribe v2 Realtime,
+and comes at an additional cost. See the [API pricing page](https://elevenlabs.io/pricing?price.section=speech_to_text\&price.sections=speech_to_text,speech_to_text#pricing-table)
 for detailed pricing information.
 
 Keyterm prompting is a feature that allows you to highlight words or phrases to bias the model towards transcribing them. This is useful for transcribing specific words or sentences that are not common in the audio, such as product names, names, or other specific terms. Keyterms are more powerful than biased keywords or customer vocabularies offered by other models, because it relies on the context to decide whether to transcribe that term or not.
 
-|                            | Batch (Scribe v2) | Realtime (Scribe v2 Realtime) |
-| -------------------------- | ----------------- | ----------------------------- |
-| Max keyterms               | 1000              | 50                            |
-| Max characters per keyterm | 50                | 20                            |
+|                            | Batch (Scribe v2 / Scribe v2 Medical) | Realtime (Scribe v2 Realtime) |
+| -------------------------- | ------------------------------------- | ----------------------------- |
+| Max keyterms               | 1000                                  | 50                            |
+| Max characters per keyterm | 50                                    | 20                            |
 
 For example, if your company name is not a common phrase or has a unique spelling or pronunciation you can use keyterms to ensure the model transcribes correctly. Take the following audio:
 

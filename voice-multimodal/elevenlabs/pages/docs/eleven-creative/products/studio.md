@@ -8,7 +8,7 @@ path: docs/eleven-creative/products/studio
 
 # ElevenCreative Studio
 
-![Studio hero](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/15dea5969c5aa5e8209a420f41fe58f1493e5075f2450d27d5c425224cc45136/assets/images/product-guides/studio/studio-hero.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=f44d5a0b0aa9beee6ae3e1ab1ebe4927962e9de5686bc3a3122c059878a031be&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Studio hero](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/15dea5969c5aa5e8209a420f41fe58f1493e5075f2450d27d5c425224cc45136/assets/images/product-guides/studio/studio-hero.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=46208ba0ab9c2b1ff0f7f37ceb0e2802fa93642a2de510a5f4994f590faf4d6a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Overview
 
@@ -232,7 +232,7 @@ To upgrade your plan, visit your [Subscription page](https://elevenlabs.io/app/s
 Once you've added content, either by importing it or creating it yourself, you can use the **Export**
 button to render your chapter or project in one step. Narration will be generated where needed, and the output will be audio or video depending on your tracks and settings.
 
-![Export your project](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1fa385f21b435fa915e1cecfd34309b8695a208fdbabd8ab9e9f823dca1a9744/assets/images/product-guides/studio/studio-export.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=e6445161a9b348bb5fff2edebabe0051122a846eae1e2e2f1813255ad9f15020&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Export your project](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1fa385f21b435fa915e1cecfd34309b8695a208fdbabd8ab9e9f823dca1a9744/assets/images/product-guides/studio/studio-export.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=e813bac9040b2f75321d6a3383c0958918fc5a9d452bd5f2ac8a6e861ca7473d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 This will automatically generate and download an audio or video file, but you can still edit your project after this.
 
@@ -243,7 +243,7 @@ version of your project that includes the updated media.
 
 #### Timeline and tracks
 
-![Studio timeline editing](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9b700138300740db9507fbd4fe4f0ca16cdd917eae6705e84d5764eef2e9aa6c/assets/images/product-guides/studio/studio-timeline-editing.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=41480e8977eacc7c791e56041dd98c7d47126781e9fb25bce1a0e03a740c57b7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Studio timeline editing](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9b700138300740db9507fbd4fe4f0ca16cdd917eae6705e84d5764eef2e9aa6c/assets/images/product-guides/studio/studio-timeline-editing.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=a11df2fd1c53587d5074b84bc5014697a5d000edb4ab1124ba1b4ecc946db0d2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 The timeline gives you a chapter‑wide view of your project so you can see narration, music, SFX, and video at a glance.
 
@@ -329,11 +329,11 @@ Breaks affect generated speech delivery only; they don't move or pause other tim
 
 For an overview of Actor Mode, see [this video](https://www.youtube.com/watch?v=Kj2dgXITrPw).
 
-![Actor Mode pop-up](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8468aa50ffb04f6460e535a9693b59f09354836609d104f62b1549d5d8a181a1/assets/images/product-guides/studio/studio-actor-mode-popup.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=19cbdc40ed42d3741e9c27276be1f74079997e59ae425b0563d1c401afc3107d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Actor Mode pop-up](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8468aa50ffb04f6460e535a9693b59f09354836609d104f62b1549d5d8a181a1/assets/images/product-guides/studio/studio-actor-mode-popup.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=47d9f6076397357f64d518c9d7820edf6f70dc04586205bf232d51e8455999c4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Either upload or record your audio, and you will then see the option to listen back to the audio or remove it. You will also see how many credits it will cost to generate the selected text using the audio you've provided.
 
-![Actor Mode pop-up](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/71dccdcc6f102001b78f75972202e8e8964c20318c1bbfbe9188d7ed06bd3b42/assets/images/product-guides/studio/studio-actor-mode-popup-2.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=5c230160708097ab52026e1a436358d521cf5306b255ac79239293dac76f58e3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Actor Mode pop-up](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/71dccdcc6f102001b78f75972202e8e8964c20318c1bbfbe9188d7ed06bd3b42/assets/images/product-guides/studio/studio-actor-mode-popup-2.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=890cb6ff737e0f2cfb2a8e63279c3cf283616b1619da99fbac141a65793b19ed&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 If you're happy with the audio, click **Generate**, and your audio will be used to guide the delivery of the selected text.
 
@@ -343,7 +343,7 @@ Actor Mode will replicate all aspects of the audio you provide, including the ac
 
 #### Video track and voiceovers
 
-![Studio video track](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0941dee25f9cff9bb94fccb9fb947b18f3335c2465fb51c7f04ebfe63c71b865/assets/images/product-guides/studio/studio-video-track.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=fd4bf68b948517ead063f83cfa88af39d4a2ada129d0f0f2425c6c20422c6d74&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Studio video track](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0941dee25f9cff9bb94fccb9fb947b18f3335c2465fb51c7f04ebfe63c71b865/assets/images/product-guides/studio/studio-video-track.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=c1c968bed441e3c6a13b0d9ac69f1bea8603f0789835e08d5945eb1f10eb28be&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Add a **video track** to voice over existing footage or to pair narration with b‑roll. Import a video file or add a blank track, then align the narration to key visual beats on the timeline. When needed, enable **captions** and choose a **template** to match your style.
 
@@ -351,7 +351,7 @@ Add a **video track** to voice over existing footage or to pair narration with b
 
 #### Captions
 
-![Studio caption templates](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/39bfa2a25125691d8ab3775b2bc12e332f86b0c308259520c747eedf54eaa6c4/assets/images/product-guides/studio/studio-caption-templates.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=7fbb2dfff68415f585c3083f254905805fe9d7c8bc200c4d2990ff685ba2cdf4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Studio caption templates](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/39bfa2a25125691d8ab3775b2bc12e332f86b0c308259520c747eedf54eaa6c4/assets/images/product-guides/studio/studio-caption-templates.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=3727d97e8f3f31f8ec32df4cc1e2dc25c3bcce89b641dd162d25c1ca510d1d5d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Convert narration into styled captions for accessibility and engagement. Captions are generated automatically and can be customized with templates for colors, fonts, and placement. Edit text and timing directly on the timeline to correct any mismatches, then export your video with burned‑in captions.
 
@@ -361,7 +361,7 @@ Convert narration into styled captions for accessibility and engagement. Caption
 
 Upload or record audio files for your project. You can drag and drop files into the panel, click **Upload file**, or use the **Record** button to capture audio directly. Toggle between **This project** and **Workspace** to browse files. Uploaded audio cannot be published to distribution platforms.
 
-![Insert audio](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aa8200aa951210ff95bf59c5e8641ec78b761c5267e7906329065796283c5616/assets/images/product-guides/studio/studio-audio.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=1f527a1efd15028a295c96ab17e8a8131501a2a8e0d3610d807651c9d14996d9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Insert audio](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aa8200aa951210ff95bf59c5e8641ec78b761c5267e7906329065796283c5616/assets/images/product-guides/studio/studio-audio.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=80662eb35412c44b9accef1ebde8e108f095825c6cfba0f6c18febc5574d7b0a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Music
 
@@ -369,13 +369,13 @@ Upload or record audio files for your project. You can drag and drop files into 
 
 Generate music directly in ElevenCreative Studio and place it on its own track in the timeline. Create new songs from prompts (choose a vibe and length) or import existing tracks. Music clips can be trimmed duplicated and moved to match the narration, and you can adjust volume per clip. When the source is stereo, stereo is preserved.
 
-![Insert music](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b88b6ddc5576d0f4af3e94cdce222477588909eff93d2afb9513f5a3019e4378/assets/images/product-guides/studio/studio-music.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=7acbf82773509b918d87ddc474e61d2e1f6059554071e92c7fbbb3a6b58a1438&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Insert music](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b88b6ddc5576d0f4af3e94cdce222477588909eff93d2afb9513f5a3019e4378/assets/images/product-guides/studio/studio-music.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=5a16c2b8e234fc47d10f6e89e78327f9d31114d2072e2c981819c4c7616c2719&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Sound effects
 
 #### Sound effects
 
-![Insert sound effect](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/abe0c420f9a3838495f04e8023f398aca1d7e5e6a7b73f0cde6c1deda83a722b/assets/images/product-guides/studio/studio-sound-effect.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=57134fb587f4416226e57c0074d6c6253416643cd289052e7b86b10a75fbce4f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Insert sound effect](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/abe0c420f9a3838495f04e8023f398aca1d7e5e6a7b73f0cde6c1deda83a722b/assets/images/product-guides/studio/studio-sound-effect.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=fa9ecaf4929390b3ed54bcfeeb5f0f18e825076269a5631191bf0d6f8f81ee70&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Add sound effects as separate clips on the timeline. You can position them anywhere, layer multiple effects, and adjust their timing precisely with trimming and duplication.
 
@@ -390,11 +390,11 @@ ElevenCreative Studio API.
 
 #### Lock paragraph
 
-![Lock paragraph Button](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c3baa6ca96dd301ab1ef394be5d681d799daf690cde0e2dd156578c5162302cb/assets/images/product-guides/studio/studio-lock.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=9d04c28e6be601157d9210d91fac39ee09a2a4356cebaae04bf228c478181ff1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Lock paragraph Button](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c3baa6ca96dd301ab1ef394be5d681d799daf690cde0e2dd156578c5162302cb/assets/images/product-guides/studio/studio-lock.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=7db70cdf5f39c63c21db9273db3b8ddc51d7165f6686c6a0faaaf17fa4ee0662&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Once you're happy with the performance of a paragraph, you can use the **Lock paragraph** button to prevent any further changes.
 
-![Locked paragraph](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/dad2aea00d4161889d8cf55256f8a01fcd2863cc130a474bda66b7928252c547/assets/images/product-guides/studio/studio-locked-paragraph.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=fd7cdbd9607a4c95c603f80a6818ad8e4580787ee3a400102d0f6578d368b770&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Locked paragraph](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/dad2aea00d4161889d8cf55256f8a01fcd2863cc130a474bda66b7928252c547/assets/images/product-guides/studio/studio-locked-paragraph.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=370f41d4d39f9bd868a9f8abbe35a77c48b9f4daefc0021fd58a91078bea064f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Locked paragraphs are indicated by a lock icon to the left of the paragraph. If you want to unlock a paragraph, you can do this by clicking the **Lock paragraph** button again. Locking applies to narration content; you can continue editing timeline clips like video, music, and SFX.
 
@@ -402,7 +402,7 @@ Locked paragraphs are indicated by a lock icon to the left of the paragraph. If 
 
 #### Keyboard shortcuts
 
-![Keyboard Shortcuts](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b6cec86ddc69edfe0e5059f7baf9498bfb9a89a463eec1882536b09f342a6564/assets/images/product-guides/studio/studio-keyboard-shortcuts.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=6d2e2070499fdc5f9bd0fc76d09c903378fe35117bb3e202007a16ee0ff87ecd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Keyboard Shortcuts](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b6cec86ddc69edfe0e5059f7baf9498bfb9a89a463eec1882536b09f342a6564/assets/images/product-guides/studio/studio-keyboard-shortcuts.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=5537157272e8caa2fd0c9315649f8ad4d52ca4c10d84131c2d73ace15d084086&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 There are a range of keyboard shortcuts that can be used in ElevenCreative Studio to speed up your workflow. To see a list of all available keyboard shortcuts, click the **Project options** button, then select **Keyboard shortcuts**.
 
@@ -424,7 +424,7 @@ If you’re unhappy with a voice, but you’re happy with the delivery of the na
 
 ### Voice settings
 
-![Studio voice settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/15a9c18bec595b6716f5d33102c8c31b007a598f065b70f0e2cf8f6ee18bf2f1/assets/images/product-guides/studio/studio-voice-settings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=03d7e64c3eee32357e8e00af1009343e2f00e0a3bb7fad597094e2efffc272e1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Studio voice settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/15a9c18bec595b6716f5d33102c8c31b007a598f065b70f0e2cf8f6ee18bf2f1/assets/images/product-guides/studio/studio-voice-settings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=d4b5fed066396bb3bd82283b7d03ebe44bfaff9d350e31f1c4c1bfe8d8de8448&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Our users have found different workflows that work for them. The most common setting is stability around 50 and similarity near 75, with minimal changes thereafter. Of course, this all depends on the original voice and the style of performance you're aiming for.
 
@@ -470,7 +470,7 @@ This setting boosts the similarity to the original speaker. However, using this 
 
 ### Pronunciation dictionaries
 
-![Studio pronunciation dictionaries](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/529a45f8a99dd533047caade26211cacfae53245a43f791efe34d8723555619c/assets/images/product-guides/studio/studio-pronunciation-dictionaries.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=4982d307ac80a3f598b13af0bf0e49c265e9516599b2e6ff52e6c67c9f6fffb7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Studio pronunciation dictionaries](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/529a45f8a99dd533047caade26211cacfae53245a43f791efe34d8723555619c/assets/images/product-guides/studio/studio-pronunciation-dictionaries.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=1854ea2366987e4926d8e077b3788d3db93d6f9762e5d735feeba429200f34f6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Sometimes you may want to specify the pronunciation of certain words, such as character or brand names, or specify how acronyms should be read. Pronunciation dictionaries allow this functionality by enabling you to upload a lexicon or dictionary file that includes rules about how specified words should be pronounced, either using a phonetic alphabet (phoneme tags) or word substitutions (alias tags).
 
@@ -531,7 +531,7 @@ You can access and download all previous exports, of both chapters and projects,
 
 From the editor, create a read‑only link so others can play your timeline and review your mix without downloading files. You can revoke access at any time. Commenting is also available, including anonymous comments.
 
-![Studio share project](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f2cf13471019a920e4b8483b40fb4a92b6d70f85da6bdfd82a7560287fa20efd/assets/images/product-guides/studio/studio-share-project.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=6faaa0da5db2d6f86208dc26ae553cc7cf3121ca6b82596f0dbae1223fc16b19&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Studio share project](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f2cf13471019a920e4b8483b40fb4a92b6d70f85da6bdfd82a7560287fa20efd/assets/images/product-guides/studio/studio-share-project.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=d8e9bf05c914823d2d015381a9f29e1a7c11070e177d5a4850574df0d48e914b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Commenting
 
@@ -550,7 +550,7 @@ When feedback is addressed, mark the thread as **Resolved**; it will collapse in
     <td>
       #### Free regenerations
 
-      ![Studio free regenerations](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ac7e53c3ac7f58bb0f0d6ff90618779dd80a5a93e6c39237e35d775eb60979a8/assets/images/product-guides/studio/studio-free-regen.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=8b059c88c2471a11920ee35d2aefe4b0e64b1ce476296e2366420e8ed5fea1f4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![Studio free regenerations](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ac7e53c3ac7f58bb0f0d6ff90618779dd80a5a93e6c39237e35d775eb60979a8/assets/images/product-guides/studio/studio-free-regen.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=dc5e0993cba27c9ab1d9a8b43897afd0a6bda426a15735db888c52a916484a69&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       In ElevenCreative Studio, provided you don't change the text or voice, you can regenerate a selected paragraph or section of text twice for free.
 
@@ -638,11 +638,11 @@ When feedback is addressed, mark the thread as **Resolved**; it will collapse in
 
       To manage chapters in an existing project, go to **Project options** in the top left corner, then select **Manage chapters**. This will open the **Chapters sidebar**.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/70c468910efa03c84f4cd309a937cbe537c223c2f1e6598db37eef6bd26e4f0d/assets/images/help-center/product/studio/studio-manage-chapters.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=efadd0de61d0f708bd6b88ca88cfc05095d73a425eddc26f987fd3e709151818&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/70c468910efa03c84f4cd309a937cbe537c223c2f1e6598db37eef6bd26e4f0d/assets/images/help-center/product/studio/studio-manage-chapters.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=a8fd1af639c7fd38c8edadd98569e0d7838d639d8d1c1b96f5672ce2d0e6fb36&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       You can add a new chapter using the **+** button. You can also rename and remove chapters using the **Chapter actions** (three dots) button, and drag and drop the chapters to rearrange them.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0a498e857491f4974398d85b788ad49025892cf3aeed63913b03ce6e28d5d0cf/assets/images/help-center/product/studio/studio-chapter-options.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=f421caee593675a40caff74b78f15976628ccfed5d8fa3e1563cd564db314461&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0a498e857491f4974398d85b788ad49025892cf3aeed63913b03ce6e28d5d0cf/assets/images/help-center/product/studio/studio-chapter-options.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=d537f0b05e168796075e4d4cc5a242bff188b1736525c55f3cce17ff0be7b10e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
     </td>
   </tr>
 
@@ -656,7 +656,7 @@ When feedback is addressed, mark the thread as **Resolved**; it will collapse in
 
       If the selection is eligible for a free regeneration, you will see that the Generate/Regenerate button in the toolbar says **Regenerate**, and if you hover over it, you will see a notification letting you know how many free regenerations are remaining.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f3af89ec341d3d0e493219796067b35ce8d129e6d51edc70178f6a1ea22d4977/assets/images/help-center/product/studio/does-it-cost-credits-to-regenerate-in-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=99439f4480f91bec6c48f11fb61f79fcf76ea113317226f03b2ebd76a9f6741d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f3af89ec341d3d0e493219796067b35ce8d129e6d51edc70178f6a1ea22d4977/assets/images/help-center/product/studio/does-it-cost-credits-to-regenerate-in-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=a2a548c17e9277bd4ca75f396910c1f559061018e3300c046e1be610a9522f45&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       If your selection isn't eligible for a free regeneration, the button will say **Generate**, and you will be charged for the generation.
     </td>
@@ -677,7 +677,7 @@ When feedback is addressed, mark the thread as **Resolved**; it will collapse in
       * To add a video that you've generated using Image & Video, click **Video** in the sidebar. You'll see your previously generated videos and can import using the **+** button.
       * You can also generate a video directly in Studio using the Video prompt, which you can access by clicking **Video** in the sidebar.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9bd8a0e0c3d81158b4fe3416484c762c58aead9246a55ee5dd7c7b68400bb0e3/assets/images/help-center/product/studio/how-can-i-create-a-voiceover-for-my-video-using-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=b760c2ca2f8e30594572bae0e5ec28678a60181c03617e69fe3f9f75efa55ace&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9bd8a0e0c3d81158b4fe3416484c762c58aead9246a55ee5dd7c7b68400bb0e3/assets/images/help-center/product/studio/how-can-i-create-a-voiceover-for-my-video-using-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=e9f6b014b3bc6def4c3ca363510f9ecc5079d7628436a435dc7b06af79f890e6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       You can:
 
@@ -718,7 +718,7 @@ When feedback is addressed, mark the thread as **Resolved**; it will collapse in
 
       Each voice will be designated with a different color icon to the left of the paragraph, and the text associated with each voice will be highlighted in a corresponding color.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c494f027a94c3dd43aafbd04502528db546941aa975f48db11c818d09114b428/assets/images/help-center/product/studio/can-i-assign-more-than-one-voice-to-a-paragraph-in-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=85faa0875a9b159cba012828e309e15ec4f81f02609faad518829c6ee83a54a2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c494f027a94c3dd43aafbd04502528db546941aa975f48db11c818d09114b428/assets/images/help-center/product/studio/can-i-assign-more-than-one-voice-to-a-paragraph-in-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=26bf7f83c601d91f57c066e03ff7375ebba2a1d7f497afa8bcdf9a1558b4a9e7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
     </td>
   </tr>
 
@@ -730,7 +730,7 @@ When feedback is addressed, mark the thread as **Resolved**; it will collapse in
 
       You need to have generated audio for the whole paragraph before you will see the option to regenerate selection.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ae346d2ef88d73816edfae816d42a6d4028d3fcc7f441fae9c12683dab620c43/assets/images/help-center/product/studio/can-i-regenerate-individual-words-in-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=ec346f9d87797ab7d4967fca629dd768f4ee965774f87bbed6e3c246d6a44af3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ae346d2ef88d73816edfae816d42a6d4028d3fcc7f441fae9c12683dab620c43/assets/images/help-center/product/studio/can-i-regenerate-individual-words-in-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=5af21edbac0ed21a19d036ee4a45679a7aa3068fb4f959e42f3c276bb359ca26&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
     </td>
   </tr>
 
@@ -742,23 +742,23 @@ When feedback is addressed, mark the thread as **Resolved**; it will collapse in
 
       Simply highlight the section, sentence, or paragraph where you wish to change the voice, then select a voice that fits your character or narration using the voice selection drop-down in the **Edit Speech** sidebar to the left. When you change the voice, you'll need to generate new audio.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c494f027a94c3dd43aafbd04502528db546941aa975f48db11c818d09114b428/assets/images/help-center/product/studio/how-can-i-change-the-voice-and-settings-across-multiple-paragraphs-in-studio-select.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=4fe8e3a2c15864660ea92b7c5885cf4880f8e8176e02bd05dd3beb24972b88ec&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c494f027a94c3dd43aafbd04502528db546941aa975f48db11c818d09114b428/assets/images/help-center/product/studio/how-can-i-change-the-voice-and-settings-across-multiple-paragraphs-in-studio-select.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=35c364aca739978b05f06c37f0adc7cedf7a5afe5e7ba2af21c93885d7395f71&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       When finished, you’ll see the voice orb to the left of your paragraph change, and your text will be highlighted in the same color – a simple way to see which sentences have which voice. For a quick keyboard shortcut to show all voices and their color orbs per paragraph, press `Cmd+Opt+A` or `Ctrl+Alt+A`
 
       You can also adjust the voice settings including stability, similarity, speaker boost, and more, to exaggerate and customize your output. You can use **Override settings** to change the settings for just the selected text or paragraph, or adjust the settings for all paragraphs using the **Voice settings** button in the **Edit Speech** sidebar.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/fc16a0359403c83cb0ab2bfa05a8bfc557445fe801268928f7dfb3d41c5e30d8/assets/images/help-center/product/studio/how-can-i-change-the-voice-and-settings-across-multiple-paragraphs-in-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=79448e37e26ccf9e18c8edc036cd9798b1b608e6b15fb21d9906dcb63f409240&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/fc16a0359403c83cb0ab2bfa05a8bfc557445fe801268928f7dfb3d41c5e30d8/assets/images/help-center/product/studio/how-can-i-change-the-voice-and-settings-across-multiple-paragraphs-in-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=a29cfb949b282aa2966afaf9accd443d9c115cf3b3324a157a73c9c7c66df351&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       #### To change the voice for all paragraphs
 
       If you want to change the voice for every paragraph currently associated with a specific voice, you can do this from **Voice settings** for the voice you want to change. In **Voice settings**, you'll see a button to **Replace voice across project**.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/589ae2db60a6da7f8020af9f10945a6ea5e93b0639b992c368dfbf1ee8c5da28/assets/images/help-center/product/studio/how-can-i-change-the-voice-and-settings-across-multiple-paragraphs-in-studio-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=deee0320a27ff014c3237d0300e1ae2bad547ac9ada509d24dded0011bd50d42&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/589ae2db60a6da7f8020af9f10945a6ea5e93b0639b992c368dfbf1ee8c5da28/assets/images/help-center/product/studio/how-can-i-change-the-voice-and-settings-across-multiple-paragraphs-in-studio-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=88b935de702f9304a6d964a08f8025ff6f740b52c5a1752b9e5c4b3f1dd3231f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       Click this, and you'll then see the **Replace voice** pop-up, which shows you how many paragraphs will need regenerating when you make this change.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e86270d8223680d9379acc3c340e976e4186f8179553d8837e4199349e2d2e3c/assets/images/help-center/product/studio/how-can-i-change-the-voice-and-settings-across-multiple-paragraphs-in-studio-3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=b2657cc1a6c1ebc05fea1ba6a8fdc3926078cdda35cda91db583632d99e44a57&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e86270d8223680d9379acc3c340e976e4186f8179553d8837e4199349e2d2e3c/assets/images/help-center/product/studio/how-can-i-change-the-voice-and-settings-across-multiple-paragraphs-in-studio-3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=168e43d345aaa551d2b0d82cc6eaa9d723b03092b759bbdba5438a12300e527b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       Choose your new voice in the **Replace with** drop-down, then click **Replace and clear impacted audio** to confirm the change.
 
@@ -852,11 +852,11 @@ When feedback is addressed, mark the thread as **Resolved**; it will collapse in
 
       You can add aliases and phonemes from directly within Studio by clicking the **Open pronunciations editor** button.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/08c03ab47aca4dd436e2c1380f41838bfbdd5b23fa7c4ca2ef8a7055cf676013/assets/images/help-center/product/studio/studio-pronunciations.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=acf40d7e3e0f037a397e592ccc95f68d6bb368c7b2c634b9dba969f754d708bc&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/08c03ab47aca4dd436e2c1380f41838bfbdd5b23fa7c4ca2ef8a7055cf676013/assets/images/help-center/product/studio/studio-pronunciations.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=cdd2097ef319399ff088b7d1b63bd8cf5ec6f07880816589beac4bf07ffe7d90&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       If you do this while you have a word selected, this word will automatically populate the input field. Otherwise, you can enter the word yourself. You can use the Play button in the Output to preview how it will sound.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/af89c0002944f33b1982157fd8fc0070201ade4b282bf1d39cffe9a731e1c97e/assets/images/help-center/product/studio/studio-pronunciations-editor.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=55834de401001715e90938a0e5b9e3104adc7dea2acb4ec04d35258e3044ffc6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/af89c0002944f33b1982157fd8fc0070201ade4b282bf1d39cffe9a731e1c97e/assets/images/help-center/product/studio/studio-pronunciations-editor.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=5f832baaea018fbbe95c121606600ab3c6546f57ac2a30db883a107117b4d10d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       When you add a new rule, you can either select an existing dictionary to add the rule to, or create a new dictionary. If you add the rule to an existing dictionary, this will automatically connect it to your project.
     </td>
@@ -870,13 +870,13 @@ When feedback is addressed, mark the thread as **Resolved**; it will collapse in
 
       In the image below, the highlighted paragraph has audio generated, whereas the second one does not.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f5a047c2eb727975df8391ead8e0946961360e2e153fe9de6199fa8301620bfd/assets/images/help-center/product/studio/studio-generated-light.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=658e954ff19c673da99ce70a5e7921348f572d4e889d7401b9aca36dc5da41a3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f5a047c2eb727975df8391ead8e0946961360e2e153fe9de6199fa8301620bfd/assets/images/help-center/product/studio/studio-generated-light.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=bd0fc510efcb73ecca52be6797d1b72f6d2ae519732536c05c15d155b3f26bb4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       In Dark Mode, this color scheme adjusts slightly: a light grey line still represents ungenerated audio, while a white line indicates that the paragraph has been converted to audio.
 
       The image below demonstrates this: audio has been generated for the highlighted paragraph, but not for the second one.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0e18235843df57486ec2e38e2dd764f5977250d4c098d3f6b0e53d0719211c9a/assets/images/help-center/product/studio/studio-generated-dark.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=06548ff551296d869c0716bb0d833bec66d9c7f12f7547cb1d95ddf588bcff9d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0e18235843df57486ec2e38e2dd764f5977250d4c098d3f6b0e53d0719211c9a/assets/images/help-center/product/studio/studio-generated-dark.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=93403dd07050130e46d72ff83b876e872582c81f6b303a610d7f9a0ec5d0e1fd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
     </td>
   </tr>
 
@@ -888,7 +888,7 @@ When feedback is addressed, mark the thread as **Resolved**; it will collapse in
 
       The lock button locks the current version of the selected paragraph. This means that you no longer have the option to regenerate the paragraph, change the voice or settings, or access the generation history for the paragraph. You can unlock a paragraph at any time by clicking the lock button.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/dff703798c741bfd2965b03e503db5e0091ca7de04702946acf153334022c51e/assets/images/help-center/product/studio/studio-lock.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=dfd0a0af8be02aa7458abc010bc16ca8ab5048331c33b656c0ed7b01ff90d699&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/dff703798c741bfd2965b03e503db5e0091ca7de04702946acf153334022c51e/assets/images/help-center/product/studio/studio-lock.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=01f94f89b871f243862d340622450e2e9e70171590990c16186f5762ffd01466&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       This feature is only available after you have generated audio for the selected paragraph.
     </td>
@@ -925,7 +925,7 @@ When feedback is addressed, mark the thread as **Resolved**; it will collapse in
 
       This feature is enabled automatically, and it is done in the backend when you convert your whole chapter or project in one step from the Export dialog.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b03718f3e7b25a4f6e5fb0a99ef534239483dc54dd64d6f358db7ef04cda8ea8/assets/images/help-center/product/studio/studio-export.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=987f47965e3e8167879b1c09621f2ab642780e8548bdf970b894828d912c88e2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b03718f3e7b25a4f6e5fb0a99ef534239483dc54dd64d6f358db7ef04cda8ea8/assets/images/help-center/product/studio/studio-export.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=3bddd917ba7491396f64f71eb9bcc4e9127e5af7c08b99a23cf1b2c9d3c1f545&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
     </td>
   </tr>
 
@@ -935,7 +935,7 @@ When feedback is addressed, mark the thread as **Resolved**; it will collapse in
 
       Generation History allows you to listen to, download and restore previous audio generations for each paragraph.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ae1cf11978757a256a23e019b15c5469f72754709daf7f9bfa5d4c1b90e7ebe4/assets/images/help-center/product/studio/studio-generation-history.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=6ae81dcbd357c6813d7bdc6e9baa0e84dc9f4cdfff270e90383331b26cb6b10d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ae1cf11978757a256a23e019b15c5469f72754709daf7f9bfa5d4c1b90e7ebe4/assets/images/help-center/product/studio/studio-generation-history.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=1972c6fb0747f92ce1c2e4ac353813407683e52ab3c45ed47021b78d38596c85&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 
 
@@ -947,7 +947,7 @@ When feedback is addressed, mark the thread as **Resolved**; it will collapse in
 
       You can also remove generations, but please bear in mind that removing a generation is permanent, and it cannot be recovered. To remove a generation, click **More actions** (three dots) > **Remove**.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b9153e995e6984e9d6af639df51542efe2f5a46c09e0a00b354ee9f02fbcbc05/assets/images/help-center/product/studio/studio-generation-history-detail.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=e5737cadef119b7ce43c32ee50639bceb9b1caf21a8e21cdfc9871073ec57492&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b9153e995e6984e9d6af639df51542efe2f5a46c09e0a00b354ee9f02fbcbc05/assets/images/help-center/product/studio/studio-generation-history-detail.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=de21f1371d5fc641fa0cd675da929f3b3f10933fcc53e4734de1fdfd0633acbc&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
     </td>
   </tr>
 
@@ -957,7 +957,7 @@ When feedback is addressed, mark the thread as **Resolved**; it will collapse in
 
       The timeline is a visual representation of the audio in your Studio project, displayed as a horizontal track at the bottom of the interface. It’s enabled by default in all Studio projects.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3a621f89c3a57397df02c1fd6afd303cc1fd732daf24b64c71643bc5b0293f5a/assets/images/help-center/product/studio/what-is-the-timeline-in-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=0d48314f7f499a07fadca9e94e4cabb299f9a8e9c4cb8999cb42ef76e8145f2f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3a621f89c3a57397df02c1fd6afd303cc1fd732daf24b64c71643bc5b0293f5a/assets/images/help-center/product/studio/what-is-the-timeline-in-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=0fc971353ed1af2df73c6810b04d550c83e56775f41c6f15f90f54a7924901a2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       The timeline gives you a clearer way to view and control the structure of your content. Clips appear automatically as you enter text, and you can rearrange them by dragging and dropping to adjust the flow of your audio.
 
@@ -965,13 +965,13 @@ When feedback is addressed, mark the thread as **Resolved**; it will collapse in
 
       Click the **Expand/Collapse** button in the top-right of the timeline to adjust the view:
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/47f78b252909cc8ea351be1030d4c9a81f124d3e457ac6d5356b25c4a173fe9c/assets/images/help-center/product/studio/studio-expand-collapse.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=b494e16a85c891196f7f12a19b55c14d7a9fa2b4927890b4a1076821de5b7621&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/47f78b252909cc8ea351be1030d4c9a81f124d3e457ac6d5356b25c4a173fe9c/assets/images/help-center/product/studio/studio-expand-collapse.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=c67abd8fb8c1ad94fb363425c0d108ed171091abad7ac0de6ae7351b0c1d55b6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 
 
       Use the **Zoom In** and **Zoom Out** buttons to change how much of the timeline is visible:
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/934f1a9cea93d5a297ee718025c489fb7f3a41bf2ec231787b35af8b8255097f/assets/images/help-center/product/studio/studio-zoom.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=b8a597d073f7d810314d151f2d3a61f12efad5b6091ff15d57f1cffbd97e32b3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/934f1a9cea93d5a297ee718025c489fb7f3a41bf2ec231787b35af8b8255097f/assets/images/help-center/product/studio/studio-zoom.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=6f2906f9bc493d3a9b352ebdb7ffe3fcf90f96040cc02fa1257a38b62467e97d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
     </td>
   </tr>
 
@@ -1003,7 +1003,7 @@ When feedback is addressed, mark the thread as **Resolved**; it will collapse in
 
       If you choose to export your full project, Studio will automatically convert any paragraphs that are not yet converted throughout all chapters in your project, which will cost credits. If this is the case, you will be notified of how many credits it will cost before you confirm the export.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/93aa484ecbad755a27957509e4bf9252a8e0c3f06a882985c6494c2e2449d299/assets/images/help-center/product/studio/why-arent-my-changes-reflected-in-my-download-from-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=2fdef0ff725db5f54e7e336320420b1c3f7a9082c79334a92a2dec767b93b5c3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/93aa484ecbad755a27957509e4bf9252a8e0c3f06a882985c6494c2e2449d299/assets/images/help-center/product/studio/why-arent-my-changes-reflected-in-my-download-from-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=b4d7c827be3ded7df2a2ff85805e7714ecb14a12c94332c87455fdd703f2309b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       If you have already generated audio for all paragraphs, there will be no cost, but the audio still needs to be exported to a new version before it is reflected in your download. You will be notified when the conversion is complete and your download is ready.
 
@@ -1023,7 +1023,7 @@ When feedback is addressed, mark the thread as **Resolved**; it will collapse in
 
       To create a new version of your chapter or project, which will then be downloaded, you need to use the **Export** button. You have the option to create a new export of either the current chapter, or your entire project. If you've made any changes since your last export, you will see a confirmation of how many credits it will take to create the new export. You'll only be charged credits for paragraphs that have not already been converted, or that have been edited since your last export and therefore need to be converted again.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/93aa484ecbad755a27957509e4bf9252a8e0c3f06a882985c6494c2e2449d299/assets/images/help-center/product/studio/why-cant-i-download-from-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T082258Z&X-Amz-Expires=604800&X-Amz-Signature=301e3d1076c87ba3cb5daa089f6fec27236f1a5b919de57a88b7bf3cf45cf340&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/93aa484ecbad755a27957509e4bf9252a8e0c3f06a882985c6494c2e2449d299/assets/images/help-center/product/studio/why-cant-i-download-from-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260912%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260912T211644Z&X-Amz-Expires=604800&X-Amz-Signature=dd6b969931fe29f27b26e235cb68b9db4c7514a1c8a59931f05a16a52199a920&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       You can also access all your previous exports. To do this, click the **Export** button, then select the **History** tab.
     </td>
