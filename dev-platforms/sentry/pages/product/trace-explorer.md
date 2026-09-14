@@ -46,6 +46,13 @@ The [**Trace Explorer**](https://sentry.io/orgredirect/organizations/:orgslug/tr
 
 With these tools, the new Trace Explorer gives you powerful ways to understand your application's performance, identify bottlenecks, and make informed optimizations.
 
+### [Agent Tracing](https://docs.sentry.io/product/trace-explorer.md#agent-tracing)
+
+Set up [Agent Tracing](https://docs.sentry.io/platform-redirect.md?next=%2Fagent-tracing%2F) to capture traces for agents in Trace Explorer. [agent traces](https://docs.sentry.io/product/agents.md) include model calls, tool executions, and token usage, so you can use the same search and aggregation tools when debugging agents.
+
+* **Finding slow agent runs**: Search for `span.op:gen_ai.invoke_agent` and visualize `p90(span.duration)` grouped by `gen_ai.agent.name` to compare traces for agents.
+* **Debugging tool calls**: Search for `span.op:gen_ai.execute_tool` and visualize `avg(span.duration)` grouped by `gen_ai.tool.name` to find tools that stall your agent.
+
 You plan type determines your query window: Developer: 7 days | Team: 14 days | Business: 30 days.
 
 ## [Browsing Span and Trace Samples](https://docs.sentry.io/product/trace-explorer.md#browsing-span-and-trace-samples)

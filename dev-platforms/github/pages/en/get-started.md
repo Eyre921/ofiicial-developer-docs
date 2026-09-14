@@ -24,7 +24,7 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [Hello World](/en/get-started/using-github/hello-world)
 
-  <p>Follow this Hello World exercise to learn GitHub's pull request workflow.</p>
+  Follow this Hello World exercise to learn GitHub's pull request workflow.
 
 * [Getting started with your GitHub account](/en/get-started/onboarding/getting-started-with-your-github-account)
 
@@ -32,7 +32,7 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [GitHub's plans](/en/get-started/learning-about-github/githubs-plans)
 
-  <p>An overview of GitHub's pricing plans.</p>
+  An overview of GitHub's pricing plans.
 
 * [Quickstart for writing on GitHub](/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/quickstart-for-writing-on-github)
 

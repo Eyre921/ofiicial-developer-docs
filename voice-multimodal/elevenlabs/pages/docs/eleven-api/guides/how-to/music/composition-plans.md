@@ -85,8 +85,8 @@ Composition plans and text prompts are mutually exclusive. Use one or the other,
 
 <elevenlabs-audio-player audio-title="Pop Song" audio-src="https://storage.googleapis.com/eleven-public-cdn/documentation_assets/audio/example-pop-song.mp3" />
 
-Chunk-based composition plans require a v2 model (`music_v2` or `music_v2_5`). Pass
-`model_id="music_v2"` or `model_id="music_v2_5"` when composing.
+Chunk-based composition plans require `music_v2` or `music_v2_5`. Pass `model_id="music_v2_5"`
+when composing.
 
 ## Quickstart
 
@@ -123,7 +123,7 @@ composition_plan = {
 
 audio = elevenlabs.music.compose(
     composition_plan=composition_plan,
-    model_id="music_v2",
+    model_id="music_v2_5",
     # with_timestamps=True,  # Optional: return word-level timestamps
 )
 
@@ -161,7 +161,7 @@ const compositionPlan = {
 
 const audio = await elevenlabs.music.compose({
   compositionPlan,
-  modelId: "music_v2",
+  modelId: "music_v2_5",
   // withTimestamps: true,  // Optional: return word-level timestamps
 });
 ```
@@ -174,26 +174,26 @@ Generate a composition plan from a text description, then modify it before gener
 plan = elevenlabs.music.composition_plan.create(
     prompt="An upbeat pop song about summer adventures",
     music_length_ms=60000,
-    model_id="music_v2"
+    model_id="music_v2_5"
 )
 
 # Modify the generated plan
 plan["chunks"][0]["text"] = "[Verse 1]\nCustom lyrics here"
 
-audio = elevenlabs.music.compose(composition_plan=plan, model_id="music_v2")
+audio = elevenlabs.music.compose(composition_plan=plan, model_id="music_v2_5")
 ```
 
 ```typescript
 const plan = await elevenlabs.music.compositionPlan.create({
   prompt: "An upbeat pop song about summer adventures",
   musicLengthMs: 60000,
-  modelId: "music_v2",
+  modelId: "music_v2_5",
 });
 
 // Modify the generated plan
 plan.chunks[0].text = "[Verse 1]\nCustom lyrics here";
 
-const audio = await elevenlabs.music.compose({ compositionPlan: plan, modelId: "music_v2" });
+const audio = await elevenlabs.music.compose({ compositionPlan: plan, modelId: "music_v2_5" });
 ```
 
 ## Structure reference

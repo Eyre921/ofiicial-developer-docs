@@ -106,7 +106,7 @@ Replace the placeholders:
 
 * `<FINE_TUNED_MODEL_ID>`: the trained model to eval, not a base model.
 * `<YOUR_DEPLOYMENT_ID>` / `<YOUR_DISPLAY_NAME>`: a name of your choice for the eval deployment.
-* `<DEPLOYMENT_SHAPE>`: the deployment shape to use for that model.
+* `<DEPLOYMENT_SHAPE>`: the deployment shape to use for that model. Find one with `firectl deployment-shape-version match --model accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>` — for fine-tuned models, the server matches shapes against the model's base model. See [Deployment shapes](/guides/ondemand-deployments#deployment-shapes).
 
 ### Worked example
 

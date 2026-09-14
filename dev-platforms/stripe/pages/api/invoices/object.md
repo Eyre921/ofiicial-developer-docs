@@ -326,7 +326,7 @@ Possible enum values:
   This is the transaction number that appears on email receipts sent for this invoice.
 
 - [`rendering`](https://docs.stripe.com/api/invoices/object.md?query=rendering) (object, nullable)
-  The rendering-related settings that control how the invoice is displayed on customer-facing surfaces such as PDF and Hosted Invoice Page.
+  The rendering-related settings that control how invoices render in customer-facing interfaces such as the PDF or hosted invoice page.
 
 - [`shipping_cost`](https://docs.stripe.com/api/invoices/object.md?query=shipping_cost) (object, nullable)
   The details of the cost of shipping, including the ShippingRate applied on the invoice.

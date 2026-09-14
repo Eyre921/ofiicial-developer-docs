@@ -146,6 +146,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Transcribe audio files with Streaming](#transcribe-audio-files-with-streaming-docs-streaming-guides-streaming-transcribe-audio-file-mdx)
 - [Evaluate Streaming transcription accuracy with WER](#evaluate-streaming-transcription-accuracy-with-wer-docs-streaming-guides-evaluate-streaming-wer-mdx)
 - [Determine Optimal Turn Detection Settings from Historical Audio Analysis](#determine-optimal-turn-detection-settings-from-historical-audio-analysis-docs-streaming-guides-turn-detection-improvement-using-async-mdx)
+- [Quickstart](#quickstart-docs-sync-stt-getting-started-quickstart-mdx)
 - [Transcribe a short audio file](#transcribe-a-short-audio-file-docs-sync-stt-getting-started-transcribe-a-short-audio-file-mdx)
 - [Transcribe live audio](#transcribe-live-audio-docs-sync-stt-getting-started-transcribe-live-audio-mdx)
 - [Prompting and Keyterms](#prompting-and-keyterms-docs-sync-stt-prompting-and-keyterms-mdx)
@@ -42525,6 +42526,120 @@ if __name__ == "__main__":
 
 ---
 
+<a id="quickstart-docs-sync-stt-getting-started-quickstart-mdx"></a>
+
+# Quickstart
+
+URL: https://www.assemblyai.com/docs/sync-stt/getting-started/quickstart
+Source: docs/sync-stt/getting-started/quickstart.mdx
+Navigation: Sync STT > Getting started
+Description: Go from a microphone to a finished transcript in one HTTP call, with the upload happening while the person is still talking.
+
+The Sync API turns up to 120 seconds of speech into one finished transcript, returned in the same HTTP call. No job to poll, no WebSocket to manage. This page gets you from a microphone to that transcript on the fastest path the API offers. The upload runs while the person is still speaking, so what you wait for at the end is only the last stretch of audio.
+
+## Before you begin
+
+- **An API key.** Copy it from [API Keys](https://www.assemblyai.com/dashboard/home) and set it once:
+
+  ```bash
+  export ASSEMBLYAI_API_KEY=<your-key>
+  ```
+
+- **The SDK.**
+
+  
+  
+
+  ```bash
+  pip install -U assemblyai sounddevice
+  ```
+
+  
+  
+
+  ```bash
+  npm install assemblyai
+  ```
+
+  The JavaScript example records with [SoX](https://sourceforge.net/projects/sox/) (`brew install sox` or `apt install sox`).
+
+  
+  
+
+## Transcribe from a microphone
+
+Open a session, hand it audio as you capture it, and read the result when the speaker stops.
+
+```python
+import sounddevice as sd
+from assemblyai.sync.v1 import SyncTranscriber, SyncTranscriptionConfig
+
+RATE = 16000
+config = SyncTranscriptionConfig(sample_rate=RATE, channels=1)
+
+with SyncTranscriber() as transcriber:
+    with transcriber.open_live(config) as session:
+        microphone = sd.RawInputStream(
+            samplerate=RATE, channels=1, dtype="int16",
+            callback=lambda data, *_: session.write(bytes(data)),
+        )
+        with microphone:
+            input("Recording. Speak now, then press Enter to stop... ")
+
+    result = session.result()
+    print(result.text)
+    print(f"confidence={result.confidence:.2f} audio_duration_ms={result.audio_duration_ms}")
+    print(f"session_id={result.session_id} request_time_ms={result.request_time_ms}")
+```
+
+```javascript
+import { spawn } from "node:child_process";
+import { AssemblyAI } from "assemblyai";
+
+const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
+const RATE = 16000;
+
+const session = client.sync.openLive({ sample_rate: RATE, channels: 1 });
+
+// SoX writes raw 16-bit mono PCM to stdout while it records.
+const microphone = spawn("sox", [
+  "--default-device", "--no-show-progress",
+  "--rate", String(RATE), "--channels", "1",
+  "--encoding", "signed-integer", "--bits", "16", "--type", "raw", "-",
+]);
+microphone.stdout.on("data", (chunk) => session.write(chunk));
+microphone.stdout.on("end", () => session.close());
+
+console.log("Recording. Speak now, then press Ctrl+C to stop...");
+process.on("SIGINT", () => microphone.kill());
+
+const result = await session.result();
+console.log(result);
+```
+
+Run it, say a sentence, and stop the recording. You'll see the transcript, followed by the rest of the result:
+
+```text
+Hi, I'm calling about my Best Buy order...
+confidence=0.87 audio_duration_ms=3010
+session_id=eb92c4ff-4bbb-429f-9b99-7279d7fe738f request_time_ms=243.7
+```
+
+The result carries the full `text`, the overall `confidence`, `audio_duration_ms`, a `session_id` to quote if you contact support, `request_time_ms`, the server-side processing time, and `words` with a confidence for each (plus `start`/`end` when you request [timestamps](/sync-stt/word-timestamps)). Microphone audio is raw PCM with no header, which is why the config names the sample rate and channel count.
+
+## Where to next
+
+- [Transcribe a short audio file](/sync-stt/getting-started/transcribe-a-short-audio-file): audio you already have in full, plus every request option: model, language, word timestamps, raw PCM, and calling the API without an SDK.
+- [Transcribe live audio](/sync-stt/getting-started/transcribe-live-audio): hand `transcribe_live()` any source that produces audio over time, such as a call, a WebSocket, or an upload from a browser.
+- [Connection pre-warming](/sync-stt/connection-pre-warming): call `warm()` the moment you know audio is coming to take the handshake off the critical path.
+- [API reference](/api-reference/sync-api/transcribe-live): every header, part, and field.
+
+## Need help?
+
+Contact [support@assemblyai.com](mailto:support@assemblyai.com) or open a [support ticket](https://www.assemblyai.com/contact/support). Include the `session_id` from the response.
+
+---
+
 <a id="transcribe-a-short-audio-file-docs-sync-stt-getting-started-transcribe-a-short-audio-file-mdx"></a>
 
 # Transcribe a short audio file
@@ -42544,6 +42659,7 @@ import os
 from assemblyai.sync.v1 import SyncTranscriber
 
 transcriber = SyncTranscriber(api_key=os.environ["ASSEMBLYAI_API_KEY"])
+transcriber.warm()  # open the connection ahead of the request
 result = transcriber.transcribe("./sample.wav")
 print(result.text)
 ```
@@ -42553,9 +42669,12 @@ import { AssemblyAI } from "assemblyai";
 
 const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 
+await client.sync.warm(); // open the connection ahead of the request
 const result = await client.sync.transcribe("./sample.wav");
 console.log(result.text);
 ```
+
+`warm()` opens the HTTPS connection ahead of the request. Call it as soon as you know audio is coming, so the handshake is done by the time you have the clip; [Connection pre-warming](/sync-stt/connection-pre-warming) explains what it saves.
 
 The Sync API uses our flagship Universal-3.5 Pro model and accepts audio from 80 milliseconds up to 120 seconds. It transcribes with state-of-the-art accuracy in [19 languages](/sync-stt/language-selection#supported-languages).
 
@@ -42568,7 +42687,10 @@ Not using an SDK? The same flow works over plain HTTP — see [Using the HTTP AP
   short call recordings, or voice agent pipelines that handle turn detection
   externally and submit completed utterances for transcription. For audio longer
   than 120 seconds, use [Pre-recorded STT](/pre-recorded-audio/getting-started/transcribe-an-audio-file).
-  For live microphone audio, use [Real-time STT](/streaming/getting-started/transcribe-streaming-audio).
+  For audio still being recorded, upload it as you capture it with
+  [live audio](/sync-stt/getting-started/transcribe-live-audio); for words returned
+  _while_ the speaker is still talking, use
+  [Real-time STT](/streaming/getting-started/transcribe-streaming-audio).
 
 ## Before you begin
 
@@ -42605,6 +42727,7 @@ import os
 from assemblyai.sync.v1 import SyncTranscriber
 
 transcriber = SyncTranscriber(api_key=os.environ["ASSEMBLYAI_API_KEY"])
+transcriber.warm()  # open the connection ahead of the request
 result = transcriber.transcribe("./sample.wav")
 print(result.text)
 ```
@@ -42614,6 +42737,7 @@ import { AssemblyAI } from "assemblyai";
 
 const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 
+await client.sync.warm(); // open the connection ahead of the request
 const result = await client.sync.transcribe("./sample.wav");
 console.log(result.text);
 ```
@@ -42638,10 +42762,12 @@ The call above works with no extra configuration. Pass a config to change how th
 from assemblyai.sync.v1 import SyncTranscriptionConfig
 
 config = SyncTranscriptionConfig(model="universal-3-5-pro")
+transcriber.warm()  # open the connection ahead of the request
 result = transcriber.transcribe("./sample.wav", config=config)
 ```
 
 ```javascript
+await client.sync.warm(); // open the connection ahead of the request
 const result = await client.sync.transcribe("./sample.wav", {
   model: "universal-3-5-pro",
 });
@@ -42655,10 +42781,12 @@ Pass [`language_codes`](/sync-stt/language-selection) as a list of ISO 639-1 cod
 from assemblyai.sync.v1 import SyncTranscriptionConfig
 
 config = SyncTranscriptionConfig(language_codes=["es"])
+transcriber.warm()  # open the connection ahead of the request
 result = transcriber.transcribe("./sample.wav", config=config)
 ```
 
 ```javascript
+await client.sync.warm(); // open the connection ahead of the request
 const result = await client.sync.transcribe("./sample.wav", {
   language_codes: ["es"],
 });
@@ -42672,6 +42800,7 @@ Per-word timings are opt-in. Set [`timestamps=True`](/sync-stt/word-timestamps) 
 from assemblyai.sync.v1 import SyncTranscriptionConfig
 
 config = SyncTranscriptionConfig(timestamps=True)
+transcriber.warm()  # open the connection ahead of the request
 result = transcriber.transcribe("./sample.wav", config=config)
 
 for word in result.words:
@@ -42679,6 +42808,7 @@ for word in result.words:
 ```
 
 ```javascript
+await client.sync.warm(); // open the connection ahead of the request
 const result = await client.sync.transcribe("./sample.wav", {
   timestamps: true,
 });
@@ -42697,6 +42827,7 @@ from assemblyai.sync.v1 import SyncTranscriptionConfig
 
 config = SyncTranscriptionConfig(sample_rate=16000, channels=1)
 
+transcriber.warm()  # open the connection ahead of the request
 with open("./sample.pcm", "rb") as f:
     result = transcriber.transcribe(f.read(), config=config)
 
@@ -42708,6 +42839,7 @@ import { readFileSync } from "fs";
 
 const audio = readFileSync("./sample.pcm");
 
+await client.sync.warm(); // open the connection ahead of the request
 const result = await client.sync.transcribe(audio, {
   sample_rate: 16000,
   channels: 1,
@@ -42737,6 +42869,7 @@ config = SyncTranscriptionConfig(
 
 with SyncTranscriber(api_key=os.environ["ASSEMBLYAI_API_KEY"]) as transcriber:
     try:
+        transcriber.warm()  # open the connection ahead of the request
         result = transcriber.transcribe("./sample.wav", config=config)
     except SyncTranscriptError as error:
         # error_code is machine-readable (bad_audio, audio_too_large,
@@ -42761,6 +42894,7 @@ import { AssemblyAI, SyncTranscriptError } from "assemblyai";
 const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 
 try {
+  await client.sync.warm(); // open the connection ahead of the request
   const result = await client.sync.transcribe("./sample.wav", {
     model: "universal-3-5-pro",
     language_codes: ["en"],
@@ -42807,7 +42941,25 @@ try {
 | `result.session_id` | Server-generated UUID. Include this when contacting support. |
 | `result.request_time_ms` | End-to-end server-side processing time for the request, in milliseconds. |
 
-Failed requests raise `SyncTranscriptError`, which carries the HTTP status, a machine-readable error code (for example `bad_audio`, `audio_too_large`, `capacity_exceeded`, `inference_timeout`), and a retry-after value in seconds for `429`/`503` responses — named `status_code`/`error_code`/`retry_after` in the Python SDK and `status`/`errorCode`/`retryAfter` in the JavaScript SDK. See [Error handling](/sync-stt/error-handling) for status codes and retry guidance.
+## Errors
+
+Errors return a JSON body in one of two shapes. Audio, capacity, and inference
+failures use `{"error_code", "message"}`, where `error_code` is machine-readable:
+`bad_audio`, `audio_too_short`, `audio_too_large`, `unsupported_media_type`,
+`capacity_exceeded`, `service_unavailable`, `inference_timeout`, or
+`inference_error`. Auth failures (`401`) and rate limits (`429`) use
+`{"detail"}`. Read both shapes.
+
+The SDKs raise `SyncTranscriptError` for every failed request. It carries the
+HTTP status, the error code, and the `Retry-After` value in seconds on `429`
+and `503` responses: `status_code`/`error_code`/`retry_after` in Python and
+`status`/`errorCode`/`retryAfter` in JavaScript.
+
+A request that exceeds the 30-second server deadline returns `504` with
+`inference_timeout`. The audio itself is capped at 120 seconds.
+
+See [Error handling](/sync-stt/error-handling) for the full status code table
+and retry guidance.
 
 ## Using the HTTP API directly
 
@@ -43013,51 +43165,9 @@ Description: Upload audio to the Sync API as it is recorded, so the transcript i
 
 ## Overview
 
-[`transcribe()`](/sync-stt/getting-started/transcribe-a-short-audio-file) needs the whole clip before it can send anything. Live upload starts the request immediately and uploads audio as your code produces it, so authorization, the upload, and every speech segment but the last are done by the time the speaker stops. What is left to wait for is the final segment.
+[`transcribe()`](/sync-stt/getting-started/transcribe-a-short-audio-file) needs the whole clip before it can send anything. `transcribe_live()` starts the request on the first chunk and uploads audio as your code produces it, so by the time the speaker stops, most of the work is already done. What is left to wait for is the tail of the audio.
 
-The SDKs expose this two ways. Use a **session** when your audio arrives through a callback — a microphone library, a WebRTC track, a telephony media stream:
-
-```python
-from assemblyai.sync.v1 import SyncTranscriber, SyncTranscriptionConfig
-
-transcriber = SyncTranscriber()
-config = SyncTranscriptionConfig(sample_rate=16000, channels=1)
-
-session = transcriber.open_live(config)
-# ... hand each captured chunk to session.write(chunk) ...
-session.close()          # end the audio
-result = session.result()  # wait for the transcript
-print(result.text)
-```
-
-```javascript
-import { AssemblyAI } from "assemblyai";
-
-const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
-
-const session = client.sync.openLive({ sample_rate: 16000, channels: 1 });
-// ... hand each captured chunk to session.write(chunk) ...
-session.close(); // end the audio
-const result = await session.result(); // wait for the transcript
-console.log(result.text);
-```
-
-Or hand it an iterable or stream you already have, and wait for the result:
-
-```python
-result = transcriber.transcribe_live(chunks, config=config)
-print(result.text)
-```
-
-```javascript
-const result = await client.sync.transcribeLive(chunks, {
-  sample_rate: 16000,
-  channels: 1,
-});
-console.log(result.text);
-```
-
-Both return the same result as `transcribe()` and post to `POST https://sync.assemblyai.com/v1/transcribe/live`.
+Both return the same result and post to `POST https://sync.assemblyai.com/v1/transcribe/live`.
 
   **For short audio only**
 
@@ -43068,8 +43178,8 @@ Both return the same result as `transcribe()` and post to `POST https://sync.ass
   [Real-time STT API](/streaming/getting-started/transcribe-streaming-audio), which
   opens a WebSocket connection for up to 3 hours.
 
-  It is worth using only when the audio is genuinely still being produced —
-  streaming a file that already exists on disk is slower than
+  It is worth using only when the audio is genuinely still being produced.
+  Streaming a file that already exists on disk is slower than
   [`transcribe()`](/sync-stt/getting-started/transcribe-a-short-audio-file), which
   sends it in one piece.
 
@@ -43083,15 +43193,19 @@ To complete this guide, you need:
   export ASSEMBLYAI_API_KEY=<your-key>
   ```
 
-- **A live audio source** — a microphone, a recorder process, an in-progress call. This guide uses the microphone.
+- **A live audio source** — a microphone, an in-progress call, an upload from a browser. This guide uses the microphone.
 - **Python 3.8+** for the Python SDK, or **Node.js 18+** for the JavaScript SDK.
-- Microphone examples below use [`sounddevice`](https://python-sounddevice.readthedocs.io/) (Python) and [SoX](https://sourceforge.net/projects/sox/) (JavaScript). Any capture library works — all you need is a callback that hands you audio chunks.
+- The microphone examples use [`sounddevice`](https://python-sounddevice.readthedocs.io/) (Python) and [SoX](https://sourceforge.net/projects/sox/) (JavaScript). Any source that hands you audio chunks works.
 
-## Transcribe from a microphone
+## Transcribe live audio
 
-A capture library calls you back with a chunk of audio each time one is ready. Open a session, `write()` each chunk from the callback, then `close()` and collect the `result()` when the speaker stops. Raw microphone audio is PCM, which carries no header, so set `sample_rate` and `channels` on the config.
+`transcribe_live()` in Python and `transcribeLive()` in JavaScript take a source that produces audio over time, upload each chunk as it arrives, and return the transcript once the source ends.
 
-```python expandable
+Microphone audio is raw PCM with no header, so the config names the sample rate and channel count.
+
+The source is any iterable of `bytes`. This generator records from the default microphone until you press Enter. The capture callback puts each chunk on a queue and the generator drains it, so recording continues while `transcribe_live()` is busy on the network. A blocking `read()` inside the generator would instead overflow the device buffer and silently drop audio whenever the upload stalls:
+
+```python
 import queue
 import threading
 
@@ -43102,84 +43216,27 @@ from assemblyai.sync.v1 import SyncTranscriber, SyncTranscriptionConfig
 RATE = 16000
 config = SyncTranscriptionConfig(sample_rate=RATE, channels=1)
 
-def microphone(stop: threading.Event):
-    """Yields PCM chunks from the default microphone until stop is set."""
-    chunks: "queue.Queue[bytes]" = queue.Queue()
+def microphone():
+    """Yield raw 16-bit PCM from the default microphone until Enter is pressed."""
+    chunks = queue.Queue()
+
+    def stop():
+        input("Recording. Speak now, then press Enter to stop... ")
+        chunks.put(None)
+
     with sd.RawInputStream(
-        samplerate=RATE,
-        channels=1,
-        dtype="int16",
+        samplerate=RATE, channels=1, dtype="int16",
         callback=lambda data, *_: chunks.put(bytes(data)),
     ):
-        while not stop.is_set():
-            try:
-                yield chunks.get(timeout=0.1)
-            except queue.Empty:
-                pass
+        threading.Thread(target=stop, daemon=True).start()
+        while (chunk := chunks.get()) is not None:
+            yield chunk
 
-stop = threading.Event()
-threading.Thread(
-    target=lambda: (input("Recording, press Enter to stop... "), stop.set()),
-    daemon=True,
-).start()
-
-result = SyncTranscriber().transcribe_live(microphone(stop), config=config)
+result = SyncTranscriber().transcribe_live(microphone(), config=config)
 print(result.text)
 ```
 
-```javascript expandable
-import { spawn } from "node:child_process";
-import { AssemblyAI } from "assemblyai";
-
-const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
-const RATE = 16000;
-
-// SoX writes raw 16-bit mono PCM to stdout while it records.
-const recorder = spawn("sox", [
-  "--default-device", "--no-show-progress",
-  "--rate", String(RATE), "--channels", "1",
-  "--encoding", "signed-integer", "--bits", "16",
-  "--type", "raw", "-",
-]);
-
-const session = client.sync.openLive({ sample_rate: RATE, channels: 1 });
-
-// write() never blocks, so it is safe to call from the capture callback.
-recorder.stdout.on("data", (chunk) => session.write(chunk));
-recorder.stdout.on("end", () => session.close()); // ends the audio
-
-console.log("Recording, press Ctrl+C to stop...");
-process.on("SIGINT", () => recorder.kill()); // stop speaking, stop recording
-
-const result = await session.result(); // closes if needed, then waits
-console.log(result.text);
-```
-
-  Leaving the session in the normal way (`close()`, or the recorder ending) uploads
-  everything you sent. To throw a recording away without transcribing it — the user
-  cancelled, the call dropped — use `session.abort()` instead; `result()` then raises.
-
-## Pull from a stream you already have
-
-When your audio already comes as something you can iterate — an async generator, a recorder process's stdout, a `ReadableStream` — hand it straight to `transcribe_live()` (Python) / `transcribeLive()` (JavaScript). It reads the source to the end, then returns the transcript. `open_live()` is this method with a queue in front of it for callback sources.
-
-```python
-import subprocess
-
-from assemblyai.sync.v1 import SyncTranscriber, SyncTranscriptionConfig
-
-config = SyncTranscriptionConfig(sample_rate=16000, channels=1)
-
-# A recorder process still writing audio to its stdout.
-recorder = subprocess.Popen(
-    ["rec", "-q", "-t", "raw", "-r", "16000", "-c", "1",
-     "-b", "16", "-e", "signed", "-"],
-    stdout=subprocess.PIPE,
-)
-
-result = SyncTranscriber().transcribe_live(recorder.stdout, config=config)
-print(result.text)
-```
+The source is any async iterable, Node `Readable`, or web `ReadableStream`. Node has no built-in microphone, so this example uses [SoX](https://sourceforge.net/projects/sox/) to record raw PCM to stdout and passes that stream straight in:
 
 ```javascript
 import { spawn } from "node:child_process";
@@ -43187,24 +43244,57 @@ import { AssemblyAI } from "assemblyai";
 
 const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 
-// A recorder process still writing audio to its stdout (a Node Readable).
-const recorder = spawn("rec", [
-  "-q", "-t", "raw", "-r", "16000", "-c", "1",
-  "-b", "16", "-e", "signed", "-",
+// Records 16 kHz, 16-bit, mono PCM to stdout until the process exits.
+const microphone = spawn("sox", [
+  "--default-device", "--no-show-progress",
+  "--rate", "16000", "--channels", "1",
+  "--encoding", "signed-integer", "--bits", "16", "--type", "raw", "-",
 ]);
 
-const result = await client.sync.transcribeLive(recorder.stdout, {
+console.log("Recording. Speak now, then press Ctrl+C to stop...");
+process.on("SIGINT", () => microphone.kill()); // ends the stream
+
+const result = await client.sync.transcribeLive(microphone.stdout, {
   sample_rate: 16000,
   channels: 1,
 });
 console.log(result.text);
 ```
 
-The Python method takes any iterable of `bytes` (synchronous or `async`, file objects included); `AsyncSyncTranscriber.transcribe_live()` is the `asyncio` counterpart. The JavaScript method takes an async iterable, a Node stream, or a web `ReadableStream<Uint8Array>`. Both reject a whole buffer, a `Blob`, or a path by name — audio you already hold belongs in [`transcribe()`](/sync-stt/getting-started/transcribe-a-short-audio-file).
+Run it, say a sentence, and the transcript prints when the recording ends.
+
+### Use your own audio source
+
+The call is the same for any source that produces audio over time. Replace the microphone with whatever you already have:
+
+```python
+# Frames from a phone call, a WebSocket, or a file still being written.
+result = transcriber.transcribe_live(frames_from_call(), config=config)
+```
+
+`async` generators work too, with `AsyncSyncTranscriber.transcribe_live()`.
+
+```javascript
+// A browser posting PCM to your server as it records: `req` is a Readable.
+const result = await client.sync.transcribeLive(req, {
+  sample_rate: 16000,
+  channels: 1,
+});
+```
+
+A `fetch` response body or an async generator over WebSocket messages works the same way.
+
+If your audio arrives through a **callback** rather than something you can iterate, such as a capture library or a WebRTC track, open a session instead: `open_live()` returns an object you `write()` each chunk to and `close()` when the speaker stops. The [Quickstart](/sync-stt/getting-started/quickstart) has a runnable microphone version.
+
+  Ending the source normally uploads everything you sent. To throw a recording
+  away without transcribing it, because the user cancelled or the call dropped,
+  use `session.abort()`; `result()` then raises.
+
+Audio you already hold in full, such as a buffer, a `Blob`, or a file on disk, belongs in [`transcribe()`](/sync-stt/getting-started/transcribe-a-short-audio-file). Streaming a finished clip is slower than sending it whole.
 
 ## What to keep in mind
 
-- **Keep producing until you're done.** An upload that goes silent for too long is aborted server-side. Finish by ending the stream (or calling `close()`), not by pausing it.
+- **Keep producing until you're done.** An upload that goes silent for too long is aborted server-side. Finish by ending the source (or calling `close()`), not by pausing it.
 - **The saving comes from overlap.** All but the last speech segment are transcribed while you record, so the win grows with clip length. Below roughly a minute there is only one segment, so the only saving is the elided upload.
 - **Errors can surface mid-upload.** Authorization, rate-limit, and capacity failures can arrive part-way through the upload rather than at the end, as a `SyncTranscriptError`. Call [`warm()`](/sync-stt/connection-pre-warming) before you start recording to open the connection ahead of time.
 - **The audio limit is unchanged.** The Sync API still caps audio at 120 seconds. The default request budget is 180 seconds, covering the recording as well as the transcription.
@@ -43305,6 +43395,7 @@ config = SyncTranscriptionConfig(
 )
 
 transcriber = SyncTranscriber(api_key="<YOUR_API_KEY>", config=config)
+transcriber.warm()  # open the connection ahead of the request
 result = transcriber.transcribe("sample.wav")
 print(result.text)
 ```
@@ -43314,6 +43405,7 @@ import { AssemblyAI } from "assemblyai";
 
 const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 
+await client.sync.warm(); // open the connection ahead of the request
 const result = await client.sync.transcribe("sample.wav", {
   prompt: "Cardiology consultation about chest pain symptoms.",
 });
@@ -43418,6 +43510,7 @@ config = SyncTranscriptionConfig(
 )
 
 transcriber = SyncTranscriber(api_key="<YOUR_API_KEY>", config=config)
+transcriber.warm()  # open the connection ahead of the request
 result = transcriber.transcribe("sample.wav")
 print(result.text)
 ```
@@ -43427,6 +43520,7 @@ import { AssemblyAI } from "assemblyai";
 
 const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 
+await client.sync.warm(); // open the connection ahead of the request
 const result = await client.sync.transcribe("sample.wav", {
   keyterms_prompt: ["AssemblyAI", "LeMUR", "U3-Pro"],
 });
@@ -43508,6 +43602,7 @@ config = SyncTranscriptionConfig(
 )
 
 transcriber = SyncTranscriber(api_key="<YOUR_API_KEY>", config=config)
+transcriber.warm()  # open the connection ahead of the request
 result = transcriber.transcribe("sample.wav")
 print(result.text)
 ```
@@ -43517,6 +43612,7 @@ import { AssemblyAI } from "assemblyai";
 
 const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 
+await client.sync.warm(); // open the connection ahead of the request
 const result = await client.sync.transcribe("sample.wav", {
   prompt: "Cardiology consultation about chest pain symptoms.",
   keyterms_prompt: ["Dr. Smith", "ECG", "hypertension"],
@@ -43632,6 +43728,7 @@ config = SyncTranscriptionConfig(
 )
 
 transcriber = SyncTranscriber(api_key="<YOUR_API_KEY>", config=config)
+transcriber.warm()  # open the connection ahead of the request
 result = transcriber.transcribe("sample.wav")
 print(result.text)
 ```
@@ -43641,6 +43738,7 @@ import { AssemblyAI } from "assemblyai";
 
 const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 
+await client.sync.warm(); // open the connection ahead of the request
 const result = await client.sync.transcribe("sample.wav", {
   conversation_context: [
     "Hi, thank you for calling. How can I help?",
@@ -43755,6 +43853,7 @@ from assemblyai.sync.v1 import SyncTranscriber, SyncTranscriptionConfig
 config = SyncTranscriptionConfig(language_codes=["es"])
 
 transcriber = SyncTranscriber(api_key="<YOUR_API_KEY>", config=config)
+transcriber.warm()  # open the connection ahead of the request
 result = transcriber.transcribe("sample.wav")
 print(result.text)
 ```
@@ -43764,6 +43863,7 @@ import { AssemblyAI } from "assemblyai";
 
 const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 
+await client.sync.warm(); // open the connection ahead of the request
 const result = await client.sync.transcribe("sample.wav", {
   language_codes: ["es"],
 });
@@ -43875,6 +43975,7 @@ from assemblyai.sync.v1 import SyncTranscriber, SyncTranscriptionConfig
 config = SyncTranscriptionConfig(timestamps=True)
 
 transcriber = SyncTranscriber(api_key="<YOUR_API_KEY>", config=config)
+transcriber.warm()  # open the connection ahead of the request
 result = transcriber.transcribe("sample.wav")
 for word in result.words:
     print(f"{word.start} - {word.end}  {word.text}")
@@ -43885,6 +43986,7 @@ import { AssemblyAI } from "assemblyai";
 
 const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 
+await client.sync.warm(); // open the connection ahead of the request
 const result = await client.sync.transcribe("sample.wav", {
   timestamps: true,
 });
@@ -44149,6 +44251,7 @@ Replace the base URL in your request with the appropriate endpoint. The request 
 from assemblyai.sync.v1 import SyncTranscriber
 
 transcriber = SyncTranscriber(api_key="<YOUR_API_KEY>")
+transcriber.warm()  # open the connection ahead of the request
 result = transcriber.transcribe("sample.wav")
 print(result.text)
 ```
@@ -44165,6 +44268,7 @@ client = Client(
 )
 
 transcriber = SyncTranscriber(client=client)
+transcriber.warm()  # open the connection ahead of the request
 result = transcriber.transcribe("sample.wav")
 print(result.text)
 ```
@@ -44181,6 +44285,7 @@ client = Client(
 )
 
 transcriber = SyncTranscriber(client=client)
+transcriber.warm()  # open the connection ahead of the request
 result = transcriber.transcribe("sample.wav")
 print(result.text)
 ```
@@ -44190,6 +44295,7 @@ import { AssemblyAI } from "assemblyai";
 
 const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 
+await client.sync.warm(); // open the connection ahead of the request
 const result = await client.sync.transcribe("sample.wav");
 console.log(result.text);
 ```
@@ -44202,6 +44308,7 @@ const client = new AssemblyAI({
   syncBaseUrl: "https://sync.us.assemblyai.com",
 });
 
+await client.sync.warm(); // open the connection ahead of the request
 const result = await client.sync.transcribe("sample.wav");
 console.log(result.text);
 ```
@@ -44214,6 +44321,7 @@ const client = new AssemblyAI({
   syncBaseUrl: "https://sync.eu.assemblyai.com",
 });
 
+await client.sync.warm(); // open the connection ahead of the request
 const result = await client.sync.transcribe("sample.wav");
 console.log(result.text);
 ```
@@ -44558,7 +44666,7 @@ arrives in `llm_response` and the words exactly as spoken arrive in `text`. Set
 `llm_instruction` when your app needs a particular shape instead, such as a
 bulleted task list or a clinical note.
 
-Dictation runs on Universal-3.5 Pro across 19 languages and accepts up to 120
+Dictation runs on Universal-3.5 Pro across 32 languages and accepts up to 120
 seconds of audio per call. You can start the request before the user stops
 talking, so most of the utterance is uploaded by the time they finish; see
 [Uploading while recording](#uploading-while-recording).
@@ -44666,8 +44774,10 @@ Pass your AssemblyAI API key in the `Authorization` header as the raw key, with 
 Authorization: <YOUR_API_KEY>
 ```
 
-  An invalid API key returns `404 Not Found` with `{"detail": "Invalid API
-  key"}`, not `401`. Treat any `404` from this endpoint as an auth failure.
+  A missing or invalid API key returns `401 Unauthorized` with a
+  `{"status", "title", "detail"}` body: `{"status": 401, "title":
+  "Unauthorized", "detail": "Invalid API key"}` when the key is wrong, and
+  `"Missing Authorization header"` when there is no key at all.
 
 ## Request
 
@@ -44683,8 +44793,9 @@ the audio as it arrives and cannot begin without it. An `audio` part that
 arrives before `config`, or a request with no `config` part at all, is
 rejected with `400`.
 
-**WAV and raw PCM only.** Compressed formats — MP3, M4A, FLAC, OGG, WebM —
-are rejected with `415`.
+**WAV and raw PCM only.** This endpoint decodes audio as it arrives, and
+compressed formats (MP3, M4A, FLAC, OGG, WebM) cannot be decoded incrementally,
+so they are rejected with `415`. Decode them to WAV or PCM before sending.
 
 ### Config parameters
 
@@ -44694,19 +44805,12 @@ Every field except `llm_instruction` controls transcription. `llm_instruction` c
 |---|---|---|
 | `sample_rate` | integer | Sample rate of the audio. Required for raw PCM (for example `16000`). Ignored for WAV — the sample rate is read from the file header. |
 | `channels` | integer | Channel count. Required for raw PCM. |
-| `language_codes` | array of strings | Language(s) of the audio as ISO codes. Supported: `en`, `es`, `de`, `fr`, `it`, `pt`, `tr`, `nl`, `sv`, `no`, `da`, `fi`, `hi`, `vi`, `ar`, `he`, `ja`, `ur`, `zh`. Defaults to `["en"]`. |
+| `language_codes` | array of strings | Language(s) of the audio as ISO codes. See [Language selection](/dictation/language-selection#supported-languages) for the full list. Defaults to `["en"]`. |
 | `stt_prompt` | string | Context for the transcription: a description of what the audio is about, such as `"A doctor dictating a patient visit note."` (max 6000 characters). It describes the situation rather than instructing the model, and is prepended to the base transcription prompt, which always applies. Also accepted as `prompt` — send one or the other, or the request is rejected with `400`. |
 | `keyterms_prompt` | array of strings | Terms to bias transcription toward, such as names or jargon (max 100 terms / 8000 characters total). Same parameter name as the Streaming and Pre-recorded APIs. The legacy names `keyterms` and `word_boost` are also accepted — send only one of the three, or the request is rejected with `400`. |
 | `llm_instruction` | string | Plain-English description of the rewrite you want (max 2048 characters). Replaces the default cleanup task; omit it to keep the default. See [Rewriting the transcript](#rewriting-the-transcript). |
 
-Over HTTP, unknown fields are forwarded to the transcription engine as-is, so transcription parameters added in the future work without dictation-side changes.
-
-  `DictationConfig` in the Python SDK is stricter: it accepts exactly the
-  fields in the table above and rejects anything else with a validation error,
-  rather than passing it through. That turns a typo, or a Sync-only option
-  used by mistake, into an error instead of a setting that quietly does
-  nothing. To send a field the SDK does not know about yet, build the `config`
-  part over HTTP.
+The config accepts exactly the fields above. An unknown field is rejected with a `400` rather than ignored, so a typo surfaces as an error instead of a setting that quietly does nothing.
 
 ### Rewriting the transcript
 
@@ -44860,6 +44964,7 @@ A successful call returns `200` with JSON:
 | `session_id` | string | Request identifier. Include it when reporting problems. |
 | `request_time_ms` | number | Total server-side processing time. |
 | `sync_time_ms` | number | Transcription portion of `request_time_ms`. |
+| `auth_time_ms` | number | Authentication portion of `request_time_ms`. |
 
   Rewrites are best-effort. A rewrite failure still returns `200` with the
   transcription. If `llm_response` is `null` and `text` is present, use
@@ -44867,10 +44972,11 @@ A successful call returns `200` with JSON:
 
 ## Errors
 
-Most errors return `{"error": "...", "error_code": "..."}`. The ones relayed
-from the transcription service, an invalid API key (`404`) and an unsupported
-audio format (`415`), use a `{"status", "title", "detail"}` body instead, so
-read both shapes. Note that an invalid API key returns `404` rather than `401`.
+Most errors return a `{"status", "title", "detail"}` body, including auth
+failures (`401`), config validation failures (`400`), and unsupported audio
+formats (`415`). The `{"error", "error_code"}` shape is used only for the
+errors Dictation raises while parsing the request itself, such as a malformed
+`config` part. Read both shapes.
 
 Set the HTTP client timeout to 90 seconds. Typical short clips respond in under
 one second. The rewrite has a 5-second internal deadline, after which the
@@ -45076,7 +45182,7 @@ curl -X POST https://dictation.assemblyai.com/v1/transcribe/live \
 
 - [Transcript rewriting](/dictation/transcript-rewriting) — reshape the transcript with `llm_instruction`
 - [Prompting and keyterms](/dictation/prompting-and-keyterms) — steer the transcript with context and exact terms
-- [Language selection](/dictation/language-selection) — transcribe in one or more of 19 languages
+- [Language selection](/dictation/language-selection) — transcribe in one or more of 32 languages
 - [Audio requirements](/dictation/audio-requirements) — duration, sample width, and format constraints
 - [Error handling](/dictation/error-handling) — status codes and retry guidance
 - [Cloud endpoints & data residency](/dictation/endpoints-and-data-zones) — global routing and the US/EU data zones
@@ -45423,7 +45529,7 @@ specific language. The field always takes a list, so use a single-element list
 such as `["es"]` for monolingual audio, and several codes for multilingual or
 code-switching audio.
 
-- Accepts ISO 639-1 codes in a list: `["es"]`, or `["en", "es"]`
+- Accepts ISO language codes in a list: `["es"]`, or `["en", "es"]`
 - Defaults to English (`en`) when omitted
 - Applies to the transcript only. The rewrite in `llm_response` follows the
   language of the transcript unless your
@@ -45503,18 +45609,27 @@ ways to be wrong on ambiguous audio.
 
 ## Supported languages
 
+The endpoint accepts 32 codes. Anything outside this set is rejected with a
+`400` that lists the full set in its `detail`.
+
 | Code | Language | Code | Language |
 |------|----------|------|----------|
-| `en` | English | `da` | Danish |
-| `es` | Spanish | `fi` | Finnish |
-| `de` | German | `hi` | Hindi |
-| `fr` | French | `vi` | Vietnamese |
-| `it` | Italian | `ar` | Arabic |
-| `pt` | Portuguese | `he` | Hebrew |
-| `tr` | Turkish | `ja` | Japanese |
-| `nl` | Dutch | `ur` | Urdu |
-| `sv` | Swedish | `zh` | Mandarin |
-| `no` | Norwegian | | |
+| `en` | English | `ko` | Korean |
+| `es` | Spanish | `ca` | Catalan |
+| `de` | German | `gl` | Galician |
+| `fr` | French | `ru` | Russian |
+| `it` | Italian | `ro` | Romanian |
+| `pt` | Portuguese | `et` | Estonian |
+| `tr` | Turkish | `fa` | Persian |
+| `nl` | Dutch | `yue` | Cantonese |
+| `sv` | Swedish | `af` | Afrikaans |
+| `no` | Norwegian | `mr` | Marathi |
+| `da` | Danish | `zu` | Zulu |
+| `fi` | Finnish | `xh` | Xhosa |
+| `hi` | Hindi | `nn` | Norwegian Nynorsk |
+| `vi` | Vietnamese | `ar` | Arabic |
+| `he` | Hebrew | `ja` | Japanese |
+| `ur` | Urdu | `zh` | Mandarin |
 
 ## Related features
 
@@ -45556,8 +45671,10 @@ The Dictation API accepts short clips with the following constraints:
 | Sample width | 16-bit only |
 | Formats | WAV (`audio/wav`) or raw PCM S16LE (`audio/pcm`) |
 
-Set the `audio` part's Content-Type to match the format you send. Compressed
-formats (MP3, M4A, FLAC, OGG, and WebM) are rejected with `415`.
+Set the `audio` part's Content-Type to match the format you send. This endpoint
+decodes audio as it arrives, and compressed formats (MP3, M4A, FLAC, OGG, and
+WebM) cannot be decoded incrementally, so they are rejected with `415`. Decode
+them to WAV or raw PCM before sending.
 
 ## WAV and raw PCM
 
@@ -45598,36 +45715,39 @@ Source: docs/dictation/error-handling.mdx
 Navigation: Dictation API > Advanced
 Description: Dictation API error responses, status codes, and retry guidance.
 
-Most errors return a JSON body with an `error` message and a machine-readable
-`error_code`:
+Most errors return a JSON body with `status`, `title`, and `detail` fields:
 
 ```json
-{ "error": "request must be multipart/form-data with a `config` part followed by an `audio` part", "error_code": "bad_request" }
+{ "status": 401, "title": "Unauthorized", "detail": "Invalid API key" }
 ```
 
-Errors relayed from the transcription service use a different shape, with
-`status`, `title`, and `detail` fields. Read both when surfacing an error:
+A second shape, with an `error` message and a machine-readable `error_code`,
+is used only for the errors Dictation raises while parsing the request itself,
+before the config is validated:
 
 ```json
-{ "status": 404, "title": "Not Found", "detail": "Invalid API key" }
+{ "error": "`config` is not valid JSON: Expecting property name enclosed in double quotes", "error_code": "bad_request" }
 ```
+
+Read both when surfacing an error. In practice, checking `detail` first and
+falling back to `error` covers every case.
 
 ## Status codes
 
 | HTTP | Body shape | Cause |
 |------|-----------|-------|
-| 400 | `error` / `error_code` | Missing or empty `audio` part, a missing `config` part or one sent after `audio`, malformed `config` JSON, or a `config` field that fails validation |
-| 401 | `error` / `error_code` | No credential supplied |
-| 404 | `status` / `title` / `detail` | Invalid API key |
-| 413 | `error` / `error_code` | Audio exceeded the size cap (`audio_too_large`) |
+| 400 | `error` / `error_code` | A malformed request body: a missing or empty `audio` part, a missing `config` part or one sent after `audio`, or `config` that is not valid JSON |
+| 400 | `status` / `title` / `detail` | A well-formed `config` that fails validation: an unknown field, a value out of range, or a field over its length limit |
+| 401 | `status` / `title` / `detail` | Missing `Authorization` header, or an invalid API key |
+| 413 | `status` / `title` / `detail` | Audio exceeded the size cap |
 | 415 | `status` / `title` / `detail` | The `audio` part is not `audio/wav` or `audio/pcm` |
-| 429 | `error` / `error_code` | Rate limit exceeded |
-| 502 | `error` / `error_code` | Transcription upstream unavailable |
-| 503 | `error` / `error_code` | Server at capacity (`capacity_exceeded`) |
-| 504 | `error` / `error_code` | Transcription upstream timed out |
+| 429 | `status` / `title` / `detail` | Rate limit exceeded |
+| 502 | `status` / `title` / `detail` | Transcription upstream unavailable |
+| 503 | `status` / `title` / `detail` | Server at capacity |
+| 504 | `status` / `title` / `detail` | Transcription upstream timed out |
 
-  An invalid API key returns `404`, not `401`. Treat any `404` from this
-  endpoint as an auth failure rather than a missing route.
+  Both auth failures return `401`. A missing header gives `detail: "Missing
+  Authorization header"`, and a bad key gives `detail: "Invalid API key"`.
 
 ## A failed rewrite is not a failed request
 
@@ -45682,7 +45802,7 @@ fall back to your own backoff rather than assuming a value is present.
 - **400, 413, and 415** mean the request itself is wrong. Fix the audio or the
   config before retrying. See [Audio requirements](/dictation/audio-requirements)
   for the constraints.
-- **401 and 404** are credential problems. Retrying will not help.
+- **401** is a credential problem. Retrying will not help.
 
 A chunked upload cannot be replayed, so keep the audio in memory if you want to
 retry a failed request. Set the HTTP client timeout to 90 seconds; typical short
@@ -58781,16 +58901,15 @@ Description: Available models on LLM Gateway
 
 | Model | ID | Supported parameters | Providers | Default Provider | Max Context | Retirement Date |
 | --- | --- | --- | --- | --- | --- | --- |
-| **Haiku 4.5** | `claude-haiku-4-5-20251001` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `Bedrock` | `Bedrock` | `200000` |  |
-| **Opus 4.5** | `claude-opus-4-5-20251101` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `Bedrock` | `Bedrock` | `200000` |  |
-| **Qwen3.5 4B Fast** | `qwen3.5-4b-32k-fast` | `max_tokens`, `temperature`, `stream` | `AssemblyAI` | `AssemblyAI` | `32768` |  |
-| **Opus 4.6** | `claude-opus-4-6` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `Bedrock` | `Bedrock` | `200000` |  |
-| **Opus 4.7** | `claude-opus-4-7` | `max_tokens`, `tools`, `tool_choice`, `stream` | `Bedrock` | `Bedrock` | `1000000` |  |
-| **Opus 4.8** | `claude-opus-4-8` | `max_tokens`, `tools`, `tool_choice`, `stream` | `Bedrock` | `Bedrock` | `1000000` |  |
-| **Opus 5** | `claude-opus-5` | `max_tokens`, `tools`, `tool_choice`, `stream` | `Bedrock` | `Bedrock` | `200000` |  |
-| **Sonnet 4.5** | `claude-sonnet-4-5-20250929` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `Bedrock` | `Bedrock` | `200000` |  |
-| **Sonnet 4.6** | `claude-sonnet-4-6` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `Bedrock` | `Bedrock` | `200000` |  |
-| **Sonnet 5** | `claude-sonnet-5` | `max_tokens`, `tools`, `tool_choice`, `stream` | `Bedrock` | `Bedrock` | `200000` |  |
+| **Haiku 4.5** | `claude-haiku-4-5-20251001` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `AWS Bedrock` | `AWS Bedrock` | `200000` |  |
+| **Opus 4.5** | `claude-opus-4-5-20251101` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `AWS Bedrock` | `AWS Bedrock` | `200000` |  |
+| **Opus 4.6** | `claude-opus-4-6` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `AWS Bedrock` | `AWS Bedrock` | `200000` |  |
+| **Opus 4.7** | `claude-opus-4-7` | `max_tokens`, `tools`, `tool_choice`, `stream` | `AWS Bedrock` | `AWS Bedrock` | `1000000` |  |
+| **Opus 4.8** | `claude-opus-4-8` | `max_tokens`, `tools`, `tool_choice`, `stream` | `AWS Bedrock` | `AWS Bedrock` | `1000000` |  |
+| **Opus 5** | `claude-opus-5` | `max_tokens`, `tools`, `tool_choice`, `stream` | `AWS Bedrock` | `AWS Bedrock` | `200000` |  |
+| **Sonnet 4.5** | `claude-sonnet-4-5-20250929` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `AWS Bedrock` | `AWS Bedrock` | `200000` |  |
+| **Sonnet 4.6** | `claude-sonnet-4-6` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `AWS Bedrock` | `AWS Bedrock` | `200000` |  |
+| **Sonnet 5** | `claude-sonnet-5` | `max_tokens`, `tools`, `tool_choice`, `stream` | `AWS Bedrock` | `AWS Bedrock` | `200000` |  |
 | **Gemini 2.5 Flash** | `gemini-2.5-flash` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `Vertex` | `Vertex` | `1048576` |  |
 | **Gemini 2.5 Flash Lite** | `gemini-2.5-flash-lite` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `Vertex` | `Vertex` | `1048576` |  |
 | **Gemini 2.5 Pro** | `gemini-2.5-pro` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `Vertex` | `Vertex` | `200000` |  |
@@ -58799,9 +58918,12 @@ Description: Available models on LLM Gateway
 | **Gemini 3.5 Flash Lite** | `gemini-3.5-flash-lite` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `Vertex` | `Vertex` | `1048575` |  |
 | **Gemini 3.6 Flash** | `gemini-3.6-flash` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `Vertex` | `Vertex` | `1048575` |  |
 | **Gemini 3.7 Flash** | `gemini-3.7-flash` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `Vertex` | `Vertex` | `1048575` |  |
-| **gemma-4-31b** | `gemma-4-31b` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `Bedrock Mantle` | `Bedrock Mantle` | `256000` |  |
-| **GPT OSS 120B** | `gpt-oss-120b` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice` | `Bedrock` | `Bedrock` | `131072` |  |
-| **GPT OSS 20B** | `gpt-oss-20b` | `max_tokens`, `temperature`, `tools`, `tool_choice` | `Bedrock` | `Bedrock` | `131072` |  |
+| **Gemini 3.8 Flash** | `gemini-3.8-flash` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `Vertex` | `Vertex` | `1048575` |  |
+| **gemma-4-31b** | `gemma-4-31b` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `AWS Bedrock` | `AWS Bedrock` | `256000` |  |
+| **Minimax M3** | `minimax-m3` | `max_tokens`, `tools`, `tool_choice`, `response_format`, `stream`, `reasoning_effort` | `Fireworks` | `Fireworks` | `512000` |  |
+| **Kimi K3** | `kimi-k3` | `max_tokens`, `tools`, `tool_choice`, `response_format`, `stream`, `reasoning_effort` | `Fireworks` | `Fireworks` | `1040000` |  |
+| **GPT OSS 120B** | `gpt-oss-120b` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice` | `AWS Bedrock` | `AWS Bedrock` | `131072` |  |
+| **GPT OSS 20B** | `gpt-oss-20b` | `max_tokens`, `temperature`, `tools`, `tool_choice` | `AWS Bedrock` | `AWS Bedrock` | `131072` |  |
 | **GPT-4.1** | `gpt-4.1` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `stream` | `Open AI` | `Open AI` | `1047576` |  |
 | **GPT-5** | `gpt-5` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `stream`, `response_format` | `Open AI` | `Open AI` | `400000` |  |
 | **GPT-5 Nano** | `gpt-5-nano` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `Open AI` | `Open AI` | `400000` |  |
@@ -58812,8 +58934,10 @@ Description: Available models on LLM Gateway
 | **GPT-5.6 Luna** | `gpt-5.6-luna` | `max_tokens`, `response_format`, `tools`, `tool_choice`, `stream` | `Open AI` | `Open AI` | `270000` |  |
 | **GPT-5.6 Sol** | `gpt-5.6-sol` | `max_tokens`, `response_format`, `tools`, `tool_choice`, `stream` | `Open AI` | `Open AI` | `270000` |  |
 | **GPT-5.6 Terra** | `gpt-5.6-terra` | `max_tokens`, `response_format`, `tools`, `tool_choice`, `stream` | `Open AI` | `Open AI` | `270000` |  |
-| **Qwen3 32B** | `qwen3-32B` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `Bedrock` | `Bedrock` | `200000` |  |
-| **Qwen3 Next 80B A3B** | `qwen3-next-80b-a3b` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `Bedrock` | `Bedrock` | `200000` |  |
+| **GPT-6 Astra** | `gpt-6-astra` | `max_tokens`, `tools`, `tool_choice`, `stream` | `Open AI`, `AWS Bedrock` | `Open AI` | `270000` |  |
+| **Qwen3 32B** | `qwen3-32B` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `AWS Bedrock` | `AWS Bedrock` | `200000` |  |
+| **Qwen3 Next 80B A3B** | `qwen3-next-80b-a3b` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `AWS Bedrock` | `AWS Bedrock` | `200000` |  |
+| **Qwen3.5 4B Fast** | `qwen3.5-4b-32k-fast` | `max_tokens`, `temperature`, `stream` | `AssemblyAI` | `AssemblyAI` | `32768` |  |
 
 ### Pricing details
 
@@ -58821,7 +58945,6 @@ Description: Available models on LLM Gateway
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | **Haiku 4.5** | `claude-haiku-4-5-20251001` | $1 | $5 | $0.1 | $1.25 | $2 | +10% |
 | **Opus 4.5** | `claude-opus-4-5-20251101` | $5 | $25 | $0.5 | $6.25 | $10 | +10% |
-| **Qwen3.5 4B Fast** | `qwen3.5-4b-32k-fast` | $0.1 | $0.5 |  |  |  |  |
 | **Opus 4.6** | `claude-opus-4-6` | $5 | $25 | $0.5 | $6.25 | $10 | +10% |
 | **Opus 4.7** | `claude-opus-4-7` | $5 | $25 | $0.5 | $6.25 | $10 | +10% |
 | **Opus 4.8** | `claude-opus-4-8` | $5 | $25 | $0.5 | $6.25 | $10 | +10% |
@@ -58837,7 +58960,10 @@ Description: Available models on LLM Gateway
 | **Gemini 3.5 Flash Lite** | `gemini-3.5-flash-lite` | $0.3 | $2.5 | $0.03 |  |  | +10% |
 | **Gemini 3.6 Flash** | `gemini-3.6-flash` | $1.5 | $7.5 | $0.15 |  |  | +10% |
 | **Gemini 3.7 Flash** | `gemini-3.7-flash` | $0.75 | $3.75 | $0.075 |  |  | +10% |
+| **Gemini 3.8 Flash** | `gemini-3.8-flash` | $0.75 | $3.75 | $0.075 |  |  | +10% |
 | **gemma-4-31b** | `gemma-4-31b` | $0.14 | $0.4 |  |  |  |  |
+| **Minimax M3** | `minimax-m3` | $0.3 | $1.2 | $0.06 |  |  |  |
+| **Kimi K3** | `kimi-k3` | $3 | $15 | $0.3 |  |  |  |
 | **GPT OSS 120B** | `gpt-oss-120b` | $0.15 | $0.6 |  |  |  |  |
 | **GPT OSS 20B** | `gpt-oss-20b` | $0.07 | $0.3 |  |  |  |  |
 | **GPT-4.1** | `gpt-4.1` | $2 | $8 | $0.5 |  |  | +10% |
@@ -58850,8 +58976,10 @@ Description: Available models on LLM Gateway
 | **GPT-5.6 Luna** | `gpt-5.6-luna` | $1 | $6 | $0.1 | $1.25 |  | +10% |
 | **GPT-5.6 Sol** | `gpt-5.6-sol` | $4 | $20 | $0.4 | $5 |  | +10% |
 | **GPT-5.6 Terra** | `gpt-5.6-terra` | $2.5 | $15 | $0.25 | $3.125 |  | +10% |
+| **GPT-6 Astra** | `gpt-6-astra` | $10 | $50 | $1 | $12.5 |  | +10% |
 | **Qwen3 32B** | `qwen3-32B` | $0.15 | $0.6 |  |  |  |  |
 | **Qwen3 Next 80B A3B** | `qwen3-next-80b-a3b` | $0.15 | $1.2 |  |  |  |  |
+| **Qwen3.5 4B Fast** | `qwen3.5-4b-32k-fast` | $0.1 | $0.5 |  |  |  |  |
 
   For information on data retention and model training policies for each
   provider, see [Data Retention and Model Training](/data-retention-and-model-training#llm-gateway-production-environment).

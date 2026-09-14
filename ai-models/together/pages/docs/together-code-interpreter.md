@@ -4,7 +4,7 @@ source: https://docs.together.ai/docs/together-code-interpreter
 path: docs/together-code-interpreter
 ---
 
-Execute LLM-generated code seamlessly with a simple API call.
+Execute LLM-generated code in a sandboxed environment.
 
 <Tip>Using a coding agent? Install the [together-sandboxes](https://github.com/togethercomputer/skills/tree/main/skills/together-sandboxes) skill to let your agent write correct sandbox code automatically. [Learn more](/docs/agent-skills).</Tip>
 

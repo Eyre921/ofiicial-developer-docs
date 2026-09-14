@@ -6,7 +6,7 @@ path: docs/dedicated-endpoints/adapter
 
 Serve a custom LoRA adapter uploaded from Hugging Face or S3.
 
-Run inference on your own [LoRA (Low-Rank Adaptation) adapters](/docs/fine-tuning/lora-vs-full) by uploading them to Together AI and deploying them for [dedicated model inference](/docs/dedicated-endpoints/overview). You can import adapters from Hugging Face Hub or upload them from an S3 archive, including adapters you trained outside of Together AI.
+Run inference on your own [low-rank adapter (LoRA)](/docs/fine-tuning/lora-vs-full) by uploading it to Together AI and deploying it for [dedicated model inference](/docs/dedicated-endpoints/overview). You can import adapters from Hugging Face Hub or upload them from an S3 archive, including adapters you trained outside of Together AI.
 
 To upload a full fine-tuned model instead of an adapter, see [Upload a fine-tuned model](/docs/dedicated-endpoints/custom-models).
 

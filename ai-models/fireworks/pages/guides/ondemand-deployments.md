@@ -25,7 +25,7 @@ Need higher GPU quotas or want to reserve capacity? [Contact us](https://firewor
 **Create a deployment:**
 
 ```bash theme={null}
-firectl deployment-shape-version list --base-model accounts/fireworks/models/<MODEL_NAME>
+firectl deployment-shape-version match --model accounts/fireworks/models/<MODEL_NAME>
 
 # This command returns your accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID> - save it for querying
 firectl deployment create accounts/fireworks/models/<MODEL_NAME> \
@@ -210,21 +210,15 @@ Deployment shapes are the primary way to configure deployments. They're pre-conf
 **Usage:**
 
 ```bash theme={null}
-# List available shapes
-firectl deployment-shape-version list --base-model <model-id>
+# Match available shapes (the deployable set for your account)
+firectl deployment-shape-version match --model <model-id>
 
 # Create with a shape (shorthand)
 firectl deployment create accounts/fireworks/models/deepseek-v3 --deployment-shape throughput
 ```
 
 <Note>
-  `--base-model` only accepts base models; it fails on LoRA addon and live-merge models. For those, match shapes for the model directly — the server resolves the PEFT base model:
-
-  ```bash theme={null}
-  firectl deployment-shape-version match --model accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>
-  ```
-
-  Over the API, the equivalent is [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions).
+  `match` reports the deployable set. Shapes your account cannot deploy on are dropped, exact base-model matches are preferred over same-model-type and parameter-count siblings, and LoRA addon and live-merge models are matched against their base model. Over the API, the equivalent is [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions). To see every validated shape matching a base model instead (including ones your account cannot use), use `firectl deployment-shape-version list --base-model <model-id>` — base models only, it fails on LoRA addon and live-merge models. `match` does not take addons into account. For a deployment with `--enable-addons`, use the [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions) API with `enableAddons` set.
 </Note>
 
 ```bash theme={null}
@@ -284,10 +278,10 @@ Choose GPU type with `--accelerator-type`:
 GPU availability varies by [region](/deployments/regions). See the [Create Deployment API reference](/api-reference/create-deployment#body-accelerator-type) for the authoritative list of supported accelerator types.
 
 <Note>
-  **Not every model runs on every GPU.** Each model is validated only on specific accelerator type, GPU count, and precision combinations — many models support just one or two entries from the list above. To see what a model supports, list its deployment shapes:
+  **Not every model runs on every GPU.** Each model is validated only on specific accelerator type, GPU count, and precision combinations — many models support just one or two entries from the list above. To see what a model supports, match its deployment shapes:
 
   ```bash theme={null}
-  firectl deployment-shape-version list --base-model accounts/fireworks/models/<MODEL_NAME>
+  firectl deployment-shape-version match --model accounts/fireworks/models/<MODEL_NAME>
   ```
 
   The `GPUS`, `ACCELERATOR`, and `PRECISION` columns are the validated combinations; the model's page in the [Fireworks console](https://app.fireworks.ai) shows the same options under dedicated deployments. Setting `--accelerator-type` or `--accelerator-count` to a combination no shape validates will typically fail at creation — often with a generic `Internal error occurred` message that does not name the hardware mismatch. If you need hardware no shape covers, [contact us](https://fireworks.ai/contact).
@@ -304,7 +298,7 @@ See the [Autoscaling guide](/deployments/autoscaling) for configuration options.
 Use multiple GPUs to improve latency and throughput. First check whether a multi-GPU [deployment shape](#deployment-shapes) already exists for your model:
 
 ```bash theme={null}
-firectl deployment-shape-version list --base-model <MODEL_NAME>
+firectl deployment-shape-version match --model <MODEL_NAME>
 ```
 
 If no multi-GPU shape fits, start from the closest shape and override the GPU count with `--accelerator-count` — see the warning under [GPU hardware](#gpu-hardware) for why omitting `--deployment-shape` entirely should be a last resort:

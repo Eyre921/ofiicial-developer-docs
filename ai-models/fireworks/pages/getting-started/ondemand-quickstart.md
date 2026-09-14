@@ -76,10 +76,10 @@ firectl signin
 
 This command will create a deployment of GPT OSS 120B optimized for speed. It will take a few minutes to complete. The resulting deployment will scale up to 1 replica.
 
-First, list the validated shapes for the model and choose a shape with the `FAST` preset type:
+First, match the validated shapes for the model and choose a shape with the `FAST` preset type:
 
 ```bash theme={null}
-firectl deployment-shape-version list --base-model accounts/fireworks/models/gpt-oss-120b
+firectl deployment-shape-version match --model accounts/fireworks/models/gpt-oss-120b
 ```
 
 Then copy `<SHAPE_NAME>` from the `SHAPE NAME (version-id)` column (the resource name before the parenthesized version ID):

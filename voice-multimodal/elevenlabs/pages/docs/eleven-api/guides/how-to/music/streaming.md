@@ -37,7 +37,7 @@ elevenlabs = ElevenLabs(
 stream = elevenlabs.music.stream(
     prompt="Create an intense, fast-paced electronic track for a high-adrenaline video game scene. Use driving synth arpeggios, punchy drums, distorted bass, glitch effects, and aggressive rhythmic textures. The tempo should be fast, 130–150 bpm, with rising tension, quick transitions, and dynamic energy bursts.",
     music_length_ms=10000,
-    model_id="music_v2",
+    model_id="music_v2_5",
 )
 
 # Create a BytesIO object to hold the audio data in memory
@@ -64,7 +64,7 @@ const elevenlabs = new ElevenLabsClient();
 const stream = await elevenlabs.music.stream({
   prompt: "Create an intense, fast-paced electronic track for a high-adrenaline video game scene. Use driving synth arpeggios, punchy drums, distorted bass, glitch effects, and aggressive rhythmic textures. The tempo should be fast, 130–150 bpm, with rising tension, quick transitions, and dynamic energy bursts.",
   musicLengthMs: 10000,
-  modelId: "music_v2",
+  modelId: "music_v2_5",
 });
 
 const chunks: Buffer[] = [];

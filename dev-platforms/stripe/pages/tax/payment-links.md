@@ -18,6 +18,8 @@ Stripe only calculates tax in jurisdictions where you have an active [tax regist
 > 
 > If you sell digital products, [Managed Payments](https://docs.stripe.com/payments/managed-payments/tax-compliance.md) allows you to offload tax liability to Stripe so we’re directly responsible for handling sales tax, VAT, or GST globally. As a merchant of record solution, Managed Payments also handles fraud prevention, dispute management, and customer support on all transactions.
 
+Before you start, confirm that your Stripe Tax settings are complete.
+
 #### Dashboard
 
 To [create a payment link](https://docs.stripe.com/payment-links/create.md) in the Dashboard:

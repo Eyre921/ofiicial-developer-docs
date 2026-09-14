@@ -20,7 +20,7 @@ When burst pricing is enabled for an agent:
 
 1. **Normal capacity**: Calls within your subscription limit are charged at standard rates
 2. **Burst capacity**: Additional calls (up to a concurrency of 3x your usual limit or 300, whichever is lower) are accepted but charged at 2x the normal rate
-3. **Over-capacity rejection**: Calls exceeding the burst limit are rejected with an error
+3. **Over-capacity rejection**: Calls exceeding the burst limit are rejected with an error, unless [call queueing](/docs/eleven-agents/guides/call-queueing) is enabled for the agent, in which case callers are held in a queue until capacity frees up
 
 ### Capacity calculations
 
@@ -58,7 +58,7 @@ Burst pricing is configured per agent in the call limits settings.
 
 #### Update via the dashboard
 
-Open your agent in the dashboard, navigate to the **Advanced** tab, scroll to **Call Limits**, and toggle on **Burst pricing**. Save your changes.
+Open your agent in the dashboard, navigate to the **Security** tab, scroll to **Limits**, and toggle on **Enable bursting**. Save your changes.
 
 #### Update via the CLI
 

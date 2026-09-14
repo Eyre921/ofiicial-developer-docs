@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 385 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 386 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -351,6 +351,7 @@
 - `tools-sdks/firectl/commands/deployment-scale` — [firectl deployment scale](pages/tools-sdks/firectl/commands/deployment-scale.md) · [原文](https://docs.fireworks.ai/tools-sdks/firectl/commands/deployment-scale)
 - `tools-sdks/firectl/commands/deployment-shape-version-get` — [firectl deployment-shape-version get](pages/tools-sdks/firectl/commands/deployment-shape-version-get.md) · [原文](https://docs.fireworks.ai/tools-sdks/firectl/commands/deployment-shape-version-get)
 - `tools-sdks/firectl/commands/deployment-shape-version-list` — [firectl deployment-shape-version list](pages/tools-sdks/firectl/commands/deployment-shape-version-list.md) · [原文](https://docs.fireworks.ai/tools-sdks/firectl/commands/deployment-shape-version-list)
+- `tools-sdks/firectl/commands/deployment-shape-version-match` — [firectl deployment-shape-version match](pages/tools-sdks/firectl/commands/deployment-shape-version-match.md) · [原文](https://docs.fireworks.ai/tools-sdks/firectl/commands/deployment-shape-version-match)
 - `tools-sdks/firectl/commands/deployment-undelete` — [firectl deployment undelete](pages/tools-sdks/firectl/commands/deployment-undelete.md) · [原文](https://docs.fireworks.ai/tools-sdks/firectl/commands/deployment-undelete)
 - `tools-sdks/firectl/commands/deployment-update` — [firectl deployment update](pages/tools-sdks/firectl/commands/deployment-update.md) · [原文](https://docs.fireworks.ai/tools-sdks/firectl/commands/deployment-update)
 - `tools-sdks/firectl/commands/dpo-job-cancel` — [firectl dpo-job cancel](pages/tools-sdks/firectl/commands/dpo-job-cancel.md) · [原文](https://docs.fireworks.ai/tools-sdks/firectl/commands/dpo-job-cancel)

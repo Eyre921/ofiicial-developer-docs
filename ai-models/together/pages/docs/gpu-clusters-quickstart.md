@@ -4,7 +4,7 @@ source: https://docs.together.ai/docs/gpu-clusters-quickstart
 path: docs/gpu-clusters-quickstart
 ---
 
-Get started with GPU Clusters in minutes.
+Create a reserved or on-demand GPU cluster and connect to it.
 
 ## Create a cluster
 
@@ -20,26 +20,26 @@ Follow these steps to create your first GPU cluster:
 
 Select the billing mode that fits your needs:
 
-* **Reserved** – Pay upfront to reserve capacity for 1-90 days with discounted pricing
-* **On-demand** – Pay hourly with no commitment; terminate anytime
+* **Reserved:** Pay upfront to reserve capacity for 1-90 days with discounted pricing.
+* **On-demand:** Pay hourly with no commitment. Terminate anytime.
 
-[Learn more about capacity types →](/docs/gpu-clusters-capacity-types)
+[Learn more about capacity types →](/docs/gpu-clusters-overview#capacity-options)
 
 ### 3. Configure your cluster
 
-**Cluster Size**
+**Cluster size**
 
-* Select the number and type of GPUs (e.g., `8xH100`)
-* Available options: H100, H200, B200
+* Select the number and type of GPUs (for example, `8xH100`).
+* Available options: H100, H200, and B200.
 
-**Cluster Name**
+**Cluster name**
 
-* Enter a descriptive name for easy identification
+* Enter a descriptive name.
 
-**Cluster Type**
+**Cluster type**
 
-* **Kubernetes** – For containerized workloads and K8s-native tools
-* **Slurm** – For HPC-style batch scheduling and traditional workflows
+* **Kubernetes:** For containerized workloads and Kubernetes-native tools.
+* **Slurm:** For HPC-style batch scheduling and traditional workflows.
 
 **Region**
 
@@ -47,43 +47,43 @@ Select the billing mode that fits your needs:
 * Select a specific datacenter region instead if you need the cluster in a particular location.
 * Changing the GPU type resets the region to **Any region** and clears any selected shared volume, because volumes are region-specific.
 
-**Duration** (Reserved only)
+**Duration** (reserved only)
 
-* Choose reservation length: 1-90 days
+* Choose reservation length: 1-90 days.
 
-**Shared Volume**
+**Shared volume**
 
-* Create and name your persistent storage volume
-* Minimum size: 1 TiB
-* Can be resized later as needed
+* Create and name your persistent storage volume.
+* Minimum size: 1 TiB.
+* Can be resized later as needed.
 
-**Optional Settings**
+**Optional settings**
 
-* Select NVIDIA driver version
-* Select CUDA version
+* Select NVIDIA driver version.
+* Select CUDA version.
 
 ### 4. Create and verify
 
-1. Select **Proceed** to create your cluster
-2. Monitor the cluster status in the UI as it provisions
-3. Wait for status to transition to **Ready**
+1. Select **Proceed** to create your cluster.
+2. Monitor the cluster status in the UI as it provisions.
+3. Wait for status to transition to **Ready**.
 
 Your cluster is now ready to use!
 
-## Next steps
+## Connect to the cluster
 
 ### For Kubernetes clusters
 
 1. **Install kubectl**
-   * [MacOS installation guide](https://kubernetes.io/docs/tasks/tools/install-kubectl-macos/)
-   * Or use your preferred method for your OS
+   * [macOS installation guide](https://kubernetes.io/docs/tasks/tools/install-kubectl-macos/).
+   * Or use your preferred method for your OS.
 
 2. **Download kubeconfig**
 
    Use the [Together CLI](/reference/cli/clusters) to download the cluster's credentials to your local `~/.kube/config`. Find your cluster ID with `tg beta clusters list`:
 
 ```bash theme={null}
-tg beta clusters get-credentials [CLUSTER_ID] --set-default-context
+tg beta clusters get-credentials <CLUSTER_ID> --set-default-context
 ```
 
 3. **Verify connectivity**
@@ -95,8 +95,8 @@ kubectl get nodes
 You should see all worker and control plane nodes listed.
 
 4. **Start using your cluster**
-   * [Deploy workloads](/docs/gpu-clusters-management#kubernetes-usage)
-   * [Access the K8s Dashboard](/docs/gpu-clusters-management#kubernetes-dashboard)
+   * [Deploy workloads](/docs/gpu-clusters-management#kubernetes-usage).
+   * [Access the Kubernetes dashboard](/docs/gpu-clusters-management#kubernetes-dashboard).
 
 ### For Slurm clusters
 
@@ -117,16 +117,16 @@ squeue         # View job queue
 ```
 
 4. **Start submitting jobs**
-   * [Learn about Slurm commands](/docs/slurm)
-   * Submit batch jobs with `sbatch`
-   * Run interactive jobs with `srun`
+   * [Learn about Slurm commands](/docs/slurm).
+   * Submit batch jobs with `sbatch`.
+   * Run interactive jobs with `srun`.
 
 5. **Optional: Download kubeconfig**
 
    Slurm clusters run on Kubernetes, so if you need `kubectl` access to the underlying cluster API, any project member can download the kubeconfig from the cluster details page or with the Together CLI:
 
 ```bash theme={null}
-tg beta clusters get-credentials [CLUSTER_ID] --set-default-context
+tg beta clusters get-credentials <CLUSTER_ID> --set-default-context
 ```
 
 SSH to the login node remains the primary workflow for submitting jobs. See [Download cluster kubeconfig](/docs/gpu-clusters-management#download-cluster-kubeconfig) for console steps and OIDC visibility rules.
@@ -165,20 +165,20 @@ nvidia-smi
 
 ### Can't see my nodes
 
-* Check cluster status in the UI (should be "Ready")
-* Re-download the latest credentials with `tg beta clusters get-credentials [CLUSTER_ID]`
+* Check cluster status in the UI (should be **Ready**).
+* Re-download the latest credentials with `tg beta clusters get-credentials <CLUSTER_ID>`.
 
 ### SSH connection refused
 
-* Verify your SSH key was added before cluster creation
-* Check the connection command in the cluster UI
-* Ensure you're using the correct hostname
+* Verify your SSH key was added before cluster creation.
+* Check the connection command in the cluster UI.
+* Ensure you're using the correct hostname.
 
 ### Capacity unavailable
 
-* Use the "Notify Me" option to get alerts when capacity is available
-* Try a different region
-* Contact [support@together.ai](mailto:support@together.ai) for custom requirements
+* Use the **Notify Me** option to get alerts when capacity is available.
+* Try a different region.
+* Contact [support@together.ai](mailto:support@together.ai) for custom requirements.
 
 ## Next steps
 

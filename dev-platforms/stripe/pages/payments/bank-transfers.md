@@ -98,7 +98,42 @@ Stripe accounts in the following countries can accept bank transfer payments:
 - SK
 - SM
 - US |
-| GBP | - GB |
+| GBP | - AT
+- AU
+- BE
+- BG
+- CA
+- CY
+- CZ
+- DE
+- DK
+- EE
+- ES
+- FI
+- FR
+- GB
+- GR
+- HK
+- HR
+- HU
+- IE
+- IT
+- LT
+- LU
+- LV
+- MC
+- MT
+- NL
+- NO
+- PL
+- PT
+- RO
+- SE
+- SG
+- SI
+- SK
+- SM
+- US |
 | JPY | - JP |
 | MXN | - MX |
 
@@ -165,7 +200,7 @@ Stripe-incurred fees appear on the [Balances](https://dashboard.stripe.com/balan
 
 ## Cross-border payments 
 
- Bank transfers users in the United States can accept EUR payments from customers in SEPA countries. 
+Bank transfers users in the United States can accept EUR payments from customers in SEPA countries and GBP payments from customers in the United Kingdom.
 
 With cross-border bank transfers, you create payments in the currency local to the customer’s country and the customer gets a virtual bank account number local to their country. You don’t have to have an account setup for the customer’s country to use cross-border bank transfers. Cross-border bank transfers incur additional fees that are visible in the Dashboard.
 

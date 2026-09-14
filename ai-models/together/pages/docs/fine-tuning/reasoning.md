@@ -19,31 +19,29 @@ This page covers the reasoning data shape, supported models, and launch paramete
 The following models support reasoning fine-tuning. See [supported models](/docs/fine-tuning/supported-models) for context lengths and batch limits.
 
 <Accordion title="Supported models">
-  | Organization | Model                                              | API ID                                               |
-  | ------------ | -------------------------------------------------- | ---------------------------------------------------- |
-  | DeepSeek     | DeepSeek V4 Flash 0731                             | `deepseek-ai/DeepSeek-V4-Flash-0731`                 |
-  | DeepSeek     | DeepSeek V4 Flash                                  | `deepseek-ai/DeepSeek-V4-Flash`                      |
-  | NVIDIA       | NVIDIA Nemotron 3 Nano Omni 30B A3B Reasoning BF16 | `nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning-BF16` |
-  | Qwen         | Qwen3.8 27B                                        | `Qwen/Qwen3.8-27B`                                   |
-  | Qwen         | Qwen3.5 397B A17B                                  | `Qwen/Qwen3.5-397B-A17B`                             |
-  | Qwen         | Qwen3.5 122B A10B                                  | `Qwen/Qwen3.5-122B-A10B`                             |
-  | Qwen         | Qwen3.5 35B A3B                                    | `Qwen/Qwen3.5-35B-A3B`                               |
-  | Qwen         | Qwen3.5 35B A3B Base                               | `Qwen/Qwen3.5-35B-A3B-Base`                          |
-  | Qwen         | Qwen3.5 27B                                        | `Qwen/Qwen3.5-27B`                                   |
-  | Qwen         | Qwen3.5 9B                                         | `Qwen/Qwen3.5-9B`                                    |
-  | Qwen         | Qwen3.5 4B                                         | `Qwen/Qwen3.5-4B`                                    |
-  | Qwen         | Qwen3.5 2B                                         | `Qwen/Qwen3.5-2B`                                    |
-  | Qwen         | Qwen3.5 0.8B                                       | `Qwen/Qwen3.5-0.8B`                                  |
-  | Qwen         | Qwen3.6 35B A3B                                    | `Qwen/Qwen3.6-35B-A3B`                               |
-  | Qwen         | Qwen3.6 27B                                        | `Qwen/Qwen3.6-27B`                                   |
-  | Z.ai         | GLM 5.3                                            | `zai-org/GLM-5.3`                                    |
-  | Z.ai         | GLM 5.2                                            | `zai-org/GLM-5.2`                                    |
-  | Z.ai         | GLM 5.1                                            | `zai-org/GLM-5.1`                                    |
-  | OpenAI       | GPT-OSS 20B                                        | `openai/gpt-oss-20b`                                 |
-  | OpenAI       | GPT-OSS 120B                                       | `openai/gpt-oss-120b`                                |
-  | Google       | Gemma 4 31B IT                                     | `google/gemma-4-31B-it`                              |
-  | Google       | Gemma 4 31B IT VLM                                 | `google/gemma-4-31B-it-VLM`                          |
-  | Google       | Gemma 4 26B A4B IT                                 | `google/gemma-4-26B-A4B-it`                          |
+  | Organization | Model                  | API ID                               |
+  | ------------ | ---------------------- | ------------------------------------ |
+  | DeepSeek     | DeepSeek V4 Flash 0731 | `deepseek-ai/DeepSeek-V4-Flash-0731` |
+  | DeepSeek     | DeepSeek V4 Flash      | `deepseek-ai/DeepSeek-V4-Flash`      |
+  | Z.ai         | GLM 5.3                | `zai-org/GLM-5.3`                    |
+  | Z.ai         | GLM 5.2                | `zai-org/GLM-5.2`                    |
+  | Z.ai         | GLM 5.1                | `zai-org/GLM-5.1`                    |
+  | Qwen         | Qwen3.8 27B            | `Qwen/Qwen3.8-27B`                   |
+  | Qwen         | Qwen3.6 35B A3B        | `Qwen/Qwen3.6-35B-A3B`               |
+  | Qwen         | Qwen3.5 9B             | `Qwen/Qwen3.5-9B`                    |
+  | Qwen         | Qwen3.5 4B             | `Qwen/Qwen3.5-4B`                    |
+  | Qwen         | Qwen3.5 2B             | `Qwen/Qwen3.5-2B`                    |
+  | Qwen         | Qwen3.5 0.8B           | `Qwen/Qwen3.5-0.8B`                  |
+  | Qwen         | Qwen3.6 27B            | `Qwen/Qwen3.6-27B`                   |
+  | Qwen         | Qwen3.5 397B A17B      | `Qwen/Qwen3.5-397B-A17B`             |
+  | Qwen         | Qwen3.5 122B A10B      | `Qwen/Qwen3.5-122B-A10B`             |
+  | Qwen         | Qwen3.5 35B A3B        | `Qwen/Qwen3.5-35B-A3B`               |
+  | Qwen         | Qwen3.5 27B            | `Qwen/Qwen3.5-27B`                   |
+  | Google       | Gemma 4 31B IT         | `google/gemma-4-31B-it`              |
+  | Google       | Gemma 4 31B IT VLM     | `google/gemma-4-31B-it-VLM`          |
+  | Google       | Gemma 4 26B A4B IT     | `google/gemma-4-26B-A4B-it`          |
+  | OpenAI       | GPT-OSS 20B            | `openai/gpt-oss-20b`                 |
+  | OpenAI       | GPT-OSS 120B           | `openai/gpt-oss-120b`                |
 </Accordion>
 
 ## Prepare your data

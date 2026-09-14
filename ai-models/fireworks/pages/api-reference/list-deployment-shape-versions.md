@@ -8,6 +8,8 @@ get /v1/accounts/{account_id}/deploymentShapes/{deployment_shape_id}/versions
 
 Use this endpoint to query available deployment shape versions for a given model. Use `-` as a wildcard for both `account_id` and `deployment_shape_id` to search across all accounts and shapes.
 
+To find which shapes work with a model — with the compatibility rules applied server-side — use [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions) instead. This endpoint is for listing versions of shapes you already know, for example to check which exact model version each validated version binds.
+
 ## Example: List shapes for a model
 
 To list validated deployment shapes for a specific model, use the `filter` parameter with `snapshot.base_model` and `latest_validated=true`:

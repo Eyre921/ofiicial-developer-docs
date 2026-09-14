@@ -40,9 +40,7 @@ You can use multiple charge types, if that’s appropriate for your business.
 
 Create a charge directly on a connected account. The account’s customers are often unaware of your platform’s existence. You can specify an application fee, which transfers to your platform’s account balance when the connected account collects the payment.
 
-> Your connected accounts must have the [card_payments capability](https://docs.stripe.com/connect/account-capabilities.md) active in order to use direct charges.
-
-> Direct charges aren’t recommended for [legacy v1 Express and Custom accounts](https://docs.stripe.com/connect/accounts.md). Switch to [v2 accounts](https://docs.stripe.com/connect/accounts-v2.md), or use [destination charges](https://docs.stripe.com/connect/destination-charges.md) with these accounts instead.
+> Your connected accounts must have the [card_payments capability](https://docs.stripe.com/connect/account-capabilities.md) active in order to use direct charges. Direct charges aren’t recommended for [legacy v1 Express and Custom accounts](https://docs.stripe.com/connect/accounts.md)—switch to [v2 accounts](https://docs.stripe.com/connect/accounts-v2.md), or use [destination charges](https://docs.stripe.com/connect/destination-charges.md) with these accounts instead.
 
 This charge type works best for platforms that provide software as a service. For example, Shopify provides tools for building online storefronts, and Thinkific enables educators to sell online courses.
 

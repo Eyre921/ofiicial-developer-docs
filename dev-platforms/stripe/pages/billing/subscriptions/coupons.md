@@ -220,7 +220,7 @@ If you’ve implemented the *customer portal* (The customer portal is a secure, 
 
 > Subscriptions apply promotion code and price updates separately, which might cause unexpected updates. For example, a payment failure can cause a price upgrade to fail, but the promotion code included with the price upgrade succeeds.
 
-> The customer portal displays promotion codes that have been applied to a subscription. If you don’t want to allow customers to apply the promotion code themselves or potentially share it with others, you should either [set limits on the promotion code](https://docs.stripe.com/billing/subscriptions/coupons.md#promo-code-config) or [apply a coupon](https://docs.stripe.com/billing/subscriptions/coupons.md#discount-subscriptions) directly.
+The customer portal displays promotion codes that have been applied to a subscription. If you don’t want to allow customers to apply the promotion code themselves or potentially share it with others, you should either [set limits on the promotion code](https://docs.stripe.com/billing/subscriptions/coupons.md#promo-code-config) or [apply a coupon](https://docs.stripe.com/billing/subscriptions/coupons.md#discount-subscriptions) directly.
 
 Customize controls and limits on promotion codes by specifying eligible customers, first time orders, minimum order values, expiration dates, and redemption limits.
 

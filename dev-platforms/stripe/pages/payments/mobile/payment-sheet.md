@@ -14,6 +14,8 @@ The Payment Sheet is a prebuilt UI that presents payment methods in a sheet and 
 > 
 > The Payment Sheet doesn’t support *customer-configured Accounts* (Account configurations represent role-based functionality that you can enable for accounts, such as merchant, customer, or recipient). It only supports `Customer` objects.
 
+If you’re building an Android integration, review the following before you continue.
+
 > #### US apps selling digital goods
 > 
 > Android apps in the US that sell digital goods can process payments in-app using the Payment Sheet. If you sell digital goods on iOS, see how to implement an app-to-web flow using Stripe Checkout in [Sell in-app digital goods and subscriptions](https://docs.stripe.com/mobile/digital-goods/checkout.md).

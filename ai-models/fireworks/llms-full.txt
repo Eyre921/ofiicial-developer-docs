@@ -2021,6 +2021,8 @@ get /v1/accounts/{account_id}/deploymentShapes/{deployment_shape_id}/versions
 
 Use this endpoint to query available deployment shape versions for a given model. Use `-` as a wildcard for both `account_id` and `deployment_shape_id` to search across all accounts and shapes.
 
+To find which shapes work with a model — with the compatibility rules applied server-side — use [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions) instead. This endpoint is for listing versions of shapes you already know, for example to check which exact model version each validated version binds.
+
 ## Example: List shapes for a model
 
 To list validated deployment shapes for a specific model, use the `filter` parameter with `snapshot.base_model` and `latest_validated=true`:
@@ -2156,9 +2158,9 @@ Source: https://docs.fireworks.ai/api-reference/match-deployment-shape-versions
 post /v1/accounts/{account_id}/deploymentShapeVersions:match
 Returns the deployment shape versions compatible with the provided deployment create request. Use this to discover a validated shape before creating a deployment with `deployment_shape` set - shapeless deployments (raw accelerator type/count) skip validated-configuration checks and are far more likely to fail at creation.
 
-Use this endpoint to discover the deployment shape versions compatible with a model before creating a deployment. Pass a [Create Deployment](/api-reference/create-deployment) request in the body — at minimum `createDeploymentRequest.deployment.baseModel` — and the response returns the latest validated shape versions that can serve that model, ready to pass as `deploymentShape`.
+Use this endpoint to discover the deployment shape versions compatible with a model before creating a deployment. Pass a [Create Deployment](/api-reference/create-deployment) request in the body — at minimum `createDeploymentRequest.deployment.baseModel` — and the response returns the latest validated shape versions that can serve that model, ready to pass as `deploymentShape`. The CLI equivalent is `firectl deployment-shape-version match --model <model>`.
 
-Match applies the full server-side compatibility logic for you: PEFT base-model resolution (for LoRA addons and live merge, shapes are matched against the PEFT base model), model-type and parameter-count tiers, embedding vs. non-embedding models, the MULTI\_LORA capability gate when `enableAddons` is set, and hiding of FP4 shapes for full-parameter fine-tunes. [List Deployment Shape Versions](/api-reference/list-deployment-shape-versions) only lists versions of a shape you already know and cannot answer "which shapes work with this model?" — use Match for that.
+Match applies the full server-side compatibility logic for you. For LoRA addons and live-merge models, shapes are matched against the model's base model. It also handles model-type and parameter-count tiers, embedding vs. non-embedding models, the MULTI\_LORA capability gate when `enableAddons` is set, and hiding of FP4 shapes for full-parameter fine-tunes. [List Deployment Shape Versions](/api-reference/list-deployment-shape-versions) only lists versions of a shape you already know and cannot answer "which shapes work with this model?" — use Match for that.
 
 <Note>
   The account in the URL must be **your own account** — the account that will own the deployment (you must be a member of it, so `accounts/fireworks` fails with a permission error). The model in the request body, however, can live in any account you can deploy from, including publisher accounts like `accounts/fireworks`; public shapes from the publisher's account flow into the results.
@@ -2179,7 +2181,7 @@ curl -X POST "https://api.fireworks.ai/v1/accounts/YOUR_ACCOUNT_ID/deploymentSha
   }'
 ```
 
-To match shapes for a deployment with LoRA addons enabled, include `enableAddons` in the request — only shapes with the MULTI\_LORA capability are returned:
+To match shapes for a deployment with LoRA addons enabled, include `enableAddons` in the request — only shapes with the MULTI\_LORA capability are returned. (`firectl deployment-shape-version match` does not take addons into account, so addon deployments need this API call.)
 
 ```bash theme={null}
 curl -X POST "https://api.fireworks.ai/v1/accounts/YOUR_ACCOUNT_ID/deploymentShapeVersions:match" \
@@ -7697,10 +7699,10 @@ The shape list is also the authoritative way to discover which GPU types, GPU co
 
 <Tabs>
   <Tab title="firectl">
-    List the shapes available for your model:
+    Match the shapes available for your model:
 
     ```bash theme={null}
-    firectl deployment-shape-version list --base-model accounts/fireworks/models/gpt-oss-120b
+    firectl deployment-shape-version match --model accounts/fireworks/models/gpt-oss-120b
     ```
 
     Then pass the shape's name to `--deployment-shape` when creating the deployment:
@@ -7712,7 +7714,7 @@ The shape list is also the authoritative way to discover which GPU types, GPU co
   </Tab>
 
   <Tab title="REST API">
-    Call [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions) with a deployment create request for your model. It returns the validated shape versions compatible with that model, with the server-side compatibility rules (PEFT base-model resolution, per-model hardware tiers, addon gating) applied for you:
+    Call [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions) with a deployment create request for your model — the same match the `firectl deployment-shape-version match` command runs. It returns the validated shape versions compatible with that model, applying the server-side compatibility rules for you — for LoRA addons and live-merge models, shapes are matched against the model's base model. To get shapes filtered for LoRA addon serving (`enableAddons`), include it in the request. The CLI command does not take addons into account:
 
     ```bash theme={null}
     # YOUR_ACCOUNT_ID is the account that will own the deployment, not the
@@ -8673,7 +8675,7 @@ The result is a deployment that is indistinguishable from a fully trained model 
 
 ### Deploy with live merge
 
-Match shapes for the live-merge model — the server resolves its PEFT base model:
+Match shapes for the live-merge model — the server matches shapes against its base model:
 
 ```bash theme={null}
 firectl deployment-shape-version match \
@@ -9011,13 +9013,13 @@ This is a subtle failure mode specific to multi-LoRA deployments. If the deploym
 
 **Why it happens.** A deployment shape is validated against a specific base model version, not just a model family. A shape such as `deploymentShapes/<model>-h200-multilora` may have validated versions that bind one model version but **not** another version of the same family. Deploying a model version that no validated shape version binds triggers the silent drop.
 
-**How to detect it.** Before (or after) creating the deployment, confirm a validated shape version exists for the **exact** model version you are deploying, not just the family. List the validated shape versions for your model:
+**How to detect it.** Before (or after) creating the deployment, confirm a validated shape version exists for the **exact** model version you are deploying, not just the family. Use the list command, since Match doesn't show which exact model version each shape version binds:
 
 ```bash theme={null}
 firectl deployment-shape-version list --base-model accounts/<your-account>/models/<your-model-version>
 ```
 
-Or query the API directly with the `latest_validated=true` filter (see [List Deployment Shape Versions](/api-reference/list-deployment-shape-versions)). For general shape discovery — "which shapes work with this model?" — use [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions) instead; the filter query here is for checking which exact model version each validated shape version binds:
+You can also call [List Deployment Shape Versions](/api-reference/list-deployment-shape-versions) with the `latest_validated=true` filter:
 
 ```bash theme={null}
 curl -s "https://api.fireworks.ai/v1/accounts/-/deploymentShapes/-/versions?filter=snapshot.base_model%3D%22accounts%2F<your-account>%2Fmodels%2F<your-model-version>%22%20AND%20latest_validated%3Dtrue&order_by=create_time%20desc" \
@@ -9345,7 +9347,7 @@ Replace the placeholders:
 
 * `<FINE_TUNED_MODEL_ID>`: the trained model to eval, not a base model.
 * `<YOUR_DEPLOYMENT_ID>` / `<YOUR_DISPLAY_NAME>`: a name of your choice for the eval deployment.
-* `<DEPLOYMENT_SHAPE>`: the deployment shape to use for that model.
+* `<DEPLOYMENT_SHAPE>`: the deployment shape to use for that model. Find one with `firectl deployment-shape-version match --model accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>` — for fine-tuned models, the server matches shapes against the model's base model. See [Deployment shapes](/guides/ondemand-deployments#deployment-shapes).
 
 ### Worked example
 
@@ -16919,10 +16921,10 @@ firectl signin
 
 This command will create a deployment of GPT OSS 120B optimized for speed. It will take a few minutes to complete. The resulting deployment will scale up to 1 replica.
 
-First, list the validated shapes for the model and choose a shape with the `FAST` preset type:
+First, match the validated shapes for the model and choose a shape with the `FAST` preset type:
 
 ```bash theme={null}
-firectl deployment-shape-version list --base-model accounts/fireworks/models/gpt-oss-120b
+firectl deployment-shape-version match --model accounts/fireworks/models/gpt-oss-120b
 ```
 
 Then copy `<SHAPE_NAME>` from the `SHAPE NAME (version-id)` column (the resource name before the parenthesized version ID):
@@ -19356,7 +19358,7 @@ Need higher GPU quotas or want to reserve capacity? [Contact us](https://firewor
 **Create a deployment:**
 
 ```bash theme={null}
-firectl deployment-shape-version list --base-model accounts/fireworks/models/<MODEL_NAME>
+firectl deployment-shape-version match --model accounts/fireworks/models/<MODEL_NAME>
 
 # This command returns your accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID> - save it for querying
 firectl deployment create accounts/fireworks/models/<MODEL_NAME> \
@@ -19541,21 +19543,15 @@ Deployment shapes are the primary way to configure deployments. They're pre-conf
 **Usage:**
 
 ```bash theme={null}
-# List available shapes
-firectl deployment-shape-version list --base-model <model-id>
+# Match available shapes (the deployable set for your account)
+firectl deployment-shape-version match --model <model-id>
 
 # Create with a shape (shorthand)
 firectl deployment create accounts/fireworks/models/deepseek-v3 --deployment-shape throughput
 ```
 
 <Note>
-  `--base-model` only accepts base models; it fails on LoRA addon and live-merge models. For those, match shapes for the model directly — the server resolves the PEFT base model:
-
-  ```bash theme={null}
-  firectl deployment-shape-version match --model accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>
-  ```
-
-  Over the API, the equivalent is [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions).
+  `match` reports the deployable set. Shapes your account cannot deploy on are dropped, exact base-model matches are preferred over same-model-type and parameter-count siblings, and LoRA addon and live-merge models are matched against their base model. Over the API, the equivalent is [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions). To see every validated shape matching a base model instead (including ones your account cannot use), use `firectl deployment-shape-version list --base-model <model-id>` — base models only, it fails on LoRA addon and live-merge models. `match` does not take addons into account. For a deployment with `--enable-addons`, use the [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions) API with `enableAddons` set.
 </Note>
 
 ```bash theme={null}
@@ -19615,10 +19611,10 @@ Choose GPU type with `--accelerator-type`:
 GPU availability varies by [region](/deployments/regions). See the [Create Deployment API reference](/api-reference/create-deployment#body-accelerator-type) for the authoritative list of supported accelerator types.
 
 <Note>
-  **Not every model runs on every GPU.** Each model is validated only on specific accelerator type, GPU count, and precision combinations — many models support just one or two entries from the list above. To see what a model supports, list its deployment shapes:
+  **Not every model runs on every GPU.** Each model is validated only on specific accelerator type, GPU count, and precision combinations — many models support just one or two entries from the list above. To see what a model supports, match its deployment shapes:
 
   ```bash theme={null}
-  firectl deployment-shape-version list --base-model accounts/fireworks/models/<MODEL_NAME>
+  firectl deployment-shape-version match --model accounts/fireworks/models/<MODEL_NAME>
   ```
 
   The `GPUS`, `ACCELERATOR`, and `PRECISION` columns are the validated combinations; the model's page in the [Fireworks console](https://app.fireworks.ai) shows the same options under dedicated deployments. Setting `--accelerator-type` or `--accelerator-count` to a combination no shape validates will typically fail at creation — often with a generic `Internal error occurred` message that does not name the hardware mismatch. If you need hardware no shape covers, [contact us](https://fireworks.ai/contact).
@@ -19635,7 +19631,7 @@ See the [Autoscaling guide](/deployments/autoscaling) for configuration options.
 Use multiple GPUs to improve latency and throughput. First check whether a multi-GPU [deployment shape](#deployment-shapes) already exists for your model:
 
 ```bash theme={null}
-firectl deployment-shape-version list --base-model <MODEL_NAME>
+firectl deployment-shape-version match --model <MODEL_NAME>
 ```
 
 If no multi-GPU shape fits, start from the closest shape and override the GPU count with `--accelerator-count` — see the warning under [GPU hardware](#gpu-hardware) for why omitting `--deployment-shape` entirely should be a last resort:
@@ -25079,7 +25075,7 @@ to the `Precisions` list.
 
 By default, creating a deployment uses the FP16 checkpoint. To use a quantized FP8 checkpoint, first ensure the model has been prepared for FP8 (see [Checking available precisions](#checking-available-precisions) above).
 
-Do not deploy without a [deployment shape](/guides/ondemand-deployments#deployment-shapes) — a shape that includes FP8 precision is the only validated path. List the model's shapes with `firectl deployment-shape-version list --base-model <MODEL>` and look for one with the precision you want.
+Do not deploy without a [deployment shape](/guides/ondemand-deployments#deployment-shapes) — a shape that includes FP8 precision is the only validated path. Match the model's shapes with `firectl deployment-shape-version match --model <MODEL>` and look for one with the precision you want in the `PRECISION` column.
 
 If no FP8 shape exists for your model, start from the closest shape and override the precision with `--precision`. Do not create the deployment without a shape entirely: it skips validation, is the most common cause of failed deployment creations, and the unshaped path may be deprecated in the future:
 
@@ -27704,13 +27700,13 @@ firectl deployment create [flags]
 ```
 
 <Warning>
-  **Do not create deployments without a shape.** Always pass `--deployment-shape`. Deployments created without a shape skip validation, are the most common cause of failed deployment creations, and the unshaped path may be deprecated in the future. List shapes for your model with [`firectl deployment-shape-version list`](/tools-sdks/firectl/commands/deployment-shape-version-list), and see [Deployment shapes](/guides/ondemand-deployments#deployment-shapes) for details.
+  **Do not create deployments without a shape.** Always pass `--deployment-shape`. Deployments created without a shape skip validation, are the most common cause of failed deployment creations, and the unshaped path may be deprecated in the future. Find shapes for your model with [`firectl deployment-shape-version match`](/tools-sdks/firectl/commands/deployment-shape-version-match), and see [Deployment shapes](/guides/ondemand-deployments#deployment-shapes) for details.
 </Warning>
 
 ### Examples
 
 ```
-firectl deployment-shape-version list --base-model accounts/fireworks/models/falcon-7b
+firectl deployment-shape-version match --model accounts/fireworks/models/falcon-7b
 firectl deployment create accounts/fireworks/models/falcon-7b \
   --deployment-shape <SHAPE_NAME>
 firectl deployment create accounts/fireworks/models/falcon-7b \
@@ -27967,6 +27963,53 @@ firectl deployment-shape-version list
   -o, --output string       Set the output format to "text" or "json". (default "text")
       --page-size int32     The maximum number of resources to list.
       --page-token string   The page to list. A number from 0 to the total number of pages (number of entities / page size).
+```
+
+### Global flags
+
+```
+  -a, --account-id string   The Fireworks account ID. If not specified, reads account_id from ~/.fireworks/auth.ini.
+      --api-key string      An API key used to authenticate with Fireworks.
+  -p, --profile string      fireworks auth and settings profile to use.
+```
+
+
+# firectl deployment-shape-version match
+Source: https://docs.fireworks.ai/tools-sdks/firectl/commands/deployment-shape-version-match
+
+Prints the deployment shape versions this account can deploy a model on.
+
+### Usage
+
+Prints the validated deployment shape versions compatible with a model, restricted to the shapes the account can actually deploy on.
+
+Unlike 'deployment-shape-version list --base-model', which shows every validated shape matching the model, this returns the deployable set for the account: shapes not usable by the account are dropped, exact base-model matches are preferred over same model-type and parameter-count siblings, and PEFT addons are resolved to their base model.
+
+This runs the same server-side matching the shape picker in 'firectl create deployment' uses, but only on the model. It does not take the rest of a deployment's configuration into account, so it reports the default (non-addon) result: shapes are not filtered down to those advertising MULTI\_LORA, which a deployment created with --enable-addons requires.
+
+A bare model ID is resolved against the account being matched for, so public models must be given as a full name (accounts/fireworks/models/...).
+
+Superusers are exempt from both server-side account scopes, so for them this returns every visible shape and --account has no effect on the result.
+
+```
+firectl deployment-shape-version match [flags]
+```
+
+### Examples
+
+```
+firectl deployment-shape-version match --model accounts/fireworks/models/llama-v3p1-8b-instruct
+firectl deployment-shape-version match --model my-lora-addon
+firectl deployment-shape-version match --model my-lora-addon --account my-other-account
+```
+
+### Flags
+
+```
+      --account string   The account to match shapes for, and to resolve a bare --model ID against. Defaults to the signed-in account. Unlike the global --account-id, this does not change which account you authenticate as.
+  -h, --help             help for match
+      --model string     The model to match deployment shape versions against. A bare model ID is resolved against the account being matched for; give a full model name (accounts/<account-id>/models/<model-id>) for anything else, including public models. Required.
+  -o, --output string    Set the output format to "text" or "json". (default "text")
 ```
 
 ### Global flags

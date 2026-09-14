@@ -19,20 +19,20 @@ Follow this guide to help you prepare for tax season.
 > #### Key dates
 > 
 > - **November 3**: If you’re using e-delivery, Stripe begins outreach to your connected accounts.
-- **January 5**:  Last recommended day to enable Stripe [outreach](https://docs.stripe.com/connect/platform-express-dashboard-taxes.md#how-to-use-this-guide) to your connected accounts to automatically collect paperless delivery consent and tax information.
+- **January 4**:  Last recommended day to enable Stripe [outreach](https://docs.stripe.com/connect/platform-express-dashboard-taxes.md#how-to-use-this-guide) to your connected accounts to automatically collect paperless delivery consent and tax information.
 - **January 12**: (Tentative) The first date you can e-file tax forms in your Stripe Dashboard.
 - **January 15**: Last day that Stripe *could* send pre-filing outreach to your connected accounts
 - **January 22**: Latest recommended date to e-file tax forms in your Stripe Dashboard to have forms postmarked by the IRS deadline.
-- **January 31**: The IRS deadline to postmark 1099 tax forms to your connected accounts.
-- **February 13**: The last day that identity updates will automatically sync onto 1099 tax form drafts for tax year 2025.
+- **February 1**: The IRS deadline to postmark 1099 tax forms to your connected accounts.
+- **February 12**: The last day that identity updates will automatically sync onto 1099 tax form drafts for tax year 2025.
 
-> Action forms in the `Needs attention` state to get missing name, address, and taxpayer ID (SSN or EIN) details from your connected accounts. You need this information for filing.
+Action forms in the `Needs attention` state to get missing name, address, and taxpayer ID (SSN or EIN) details from your connected accounts—you need this information for filing.
 
 ## Get ready for tax season
 
 - [Configure](https://docs.stripe.com/connect/get-started-tax-reporting.md#set-tax-form-default-settings) your platform’s tax settings for tax year 2025. You need to do this even if you previously used the Stripe 1099 tax reporting product.
 - Start reviewing [forms in the Needs attention state](https://docs.stripe.com/connect/identify-forms-missing-information.md) with missing tax information.
-- Starting in August, you can edit tax forms [in your Dashboard](https://docs.stripe.com/connect/modify-tax-forms.md?method=dashboard) or through [CSV](https://docs.stripe.com/connect/modify-tax-forms.md?method=csv).
+- Starting in September, you can edit tax forms [in your Dashboard](https://docs.stripe.com/connect/modify-tax-forms.md?method=dashboard) or through [CSV](https://docs.stripe.com/connect/modify-tax-forms.md?method=csv).
   - Provide any [missing identity information](https://docs.stripe.com/connect/identify-forms-missing-information.md) required for filing.
   - (Optional) [Update form totals](https://docs.stripe.com/connect/modify-tax-forms.md) to reflect payment transactions outside of Stripe.
   - (Optional) [Export transaction logs](https://docs.stripe.com/connect/calculation-methods.md#export-transaction-logs) to check which Stripe transactions have contributed to a 1099 form’s total.
@@ -50,7 +50,7 @@ Follow this guide to help you prepare for tax season.
 
 ## Review tax form totals and identity information [December 31]
 
-- Stripe begins [outreach](https://docs.stripe.com/connect/platform-express-dashboard-taxes-walkthrough.md) to your connected accounts starting the week of November 3 if you have opted into e-delivery / outreach from Stripe. We recommend opting in by **January 5** so we can contact all of your accounts for pre-filing confirmation by January 15, the last possible day for automated outreach from Stripe. Note, we don’t send outreach emails to platforms’ connected accounts until *7 days* after you enable the setting.
+- Stripe begins [outreach](https://docs.stripe.com/connect/platform-express-dashboard-taxes-walkthrough.md) to your connected accounts starting the week of November 3 if you have opted into e-delivery / outreach from Stripe. We recommend opting in by **January 4** so we can contact all of your accounts for pre-filing confirmation by January 15, the last possible day for automated outreach from Stripe. Note, we don’t send outreach emails to platforms’ connected accounts until *7 days* after you enable the setting.
 - Continue [actioning forms](https://docs.stripe.com/connect/identify-forms-missing-information.md) in `Needs attention` and reach out to accounts with missing information.
 - Audit tax calculations on some 1099 tax forms.
 - Verify your [tax form settings](https://dashboard.stripe.com/settings/connect/tax_forms) so you’re ready to file 1099 tax forms in January.
@@ -61,8 +61,8 @@ Follow this guide to help you prepare for tax season.
 - [File tax forms](https://docs.stripe.com/connect/file-tax-forms.md) in your Stripe Dashboard no later than January 22. You can begin filing forms on January 12.
   - When you press ‘File’ Stripe files any forms in a ‘Ready’ or ‘Ready!’ state.
     - If you have forms in a ‘Needs Attention’ state and wish to file them, you need to [explicitly update the filing requirement](https://docs.stripe.com/connect/modify-tax-forms.md?method=csv#tax-form-status) for these forms before filing.
-- Stripe e-delivers or postmarks tax forms for postal delivery by January 31.
-- After February 13, payee identity updates (name, TIN, address) stop flowing onto the 1099 tax forms that haven’t been filed yet. This doesn’t impact forms that you already filed by February 13.
+- Stripe e-delivers or postmarks tax forms for postal delivery by February 1.
+- After February 12, payee identity updates (name, TIN, address) stop flowing onto the 1099 tax forms that haven’t been filed yet. This doesn’t impact forms that you already filed by February 12.
 
 ## Set tax form default settings
 

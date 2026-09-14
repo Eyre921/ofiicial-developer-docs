@@ -16,15 +16,19 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   Learn what Copilot is and what you can do with it.
 
-* [Quickstart for GitHub Copilot](/en/copilot/get-started/quickstart)
+* [Quickstart for using GitHub Copilot on GitHub.com](/en/copilot/get-started/quickstart-for-using-github-copilot-on-github-com)
 
-  Quickly learn how to use GitHub Copilot.
+  Understand code and work faster by asking questions and assigning coding tasks to Copilot cloud agent without leaving GitHub.
 
 ## Articles
 
-* [Quickstart for GitHub Copilot](/en/copilot/get-started/quickstart)
+* [Quickstart for using GitHub Copilot on GitHub.com](/en/copilot/get-started/quickstart-for-using-github-copilot-on-github-com)
 
-  Quickly learn how to use GitHub Copilot.
+  Understand code and work faster by asking questions and assigning coding tasks to Copilot cloud agent without leaving GitHub.
+
+* [Quickstart for using GitHub Copilot in your IDE](/en/copilot/get-started/quickstart-for-using-github-copilot-in-your-ide)
+
+  Use Copilot in your IDE to explain concepts, complete code, propose edits, and validate files with agent mode.
 
 * [Getting started with GitHub Copilot CLI](/en/copilot/get-started/cli-quickstart)
 

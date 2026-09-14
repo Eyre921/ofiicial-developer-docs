@@ -42799,7 +42799,8 @@ You can use the following optional settings to customize the OpenAI provider ins
 - **baseURL** _string_
 
   Use a different URL prefix for API calls, e.g. to use proxy servers.
-  The default prefix is `https://api.openai.com/v1`.
+  It defaults to the `OPENAI_BASE_URL` environment variable, and then to
+  `https://api.openai.com/v1`.
 
 - **apiKey** _string_
 
@@ -73600,6 +73601,83 @@ const result = streamText({
 });
 ```
 
+### ToolLoopAgent
+
+You can provide a sequence of mock responses to test an agent that calls a tool
+and continues to a final response:
+
+```ts
+import { ToolLoopAgent, tool } from 'ai';
+import { MockLanguageModelV3 } from 'ai/test';
+import { expect, it } from 'vitest';
+import { z } from 'zod';
+
+it('executes a tool and continues the loop', async () => {
+  const weatherRequests: string[] = [];
+  const usage = {
+    inputTokens: {
+      total: 10,
+      noCache: 10,
+      cacheRead: undefined,
+      cacheWrite: undefined,
+    },
+    outputTokens: {
+      total: 5,
+      text: 5,
+      reasoning: undefined,
+    },
+  };
+
+  const model = new MockLanguageModelV3({
+    doGenerate: [
+      {
+        content: [
+          {
+            type: 'tool-call',
+            toolCallId: 'call-1',
+            toolName: 'weather',
+            input: '{"city":"San Francisco"}',
+          },
+        ],
+        finishReason: { unified: 'tool-calls', raw: undefined },
+        usage,
+        warnings: [],
+      },
+      {
+        content: [
+          { type: 'text', text: 'It is 72°F in San Francisco.' },
+        ],
+        finishReason: { unified: 'stop', raw: undefined },
+        usage,
+        warnings: [],
+      },
+    ],
+  });
+
+  const agent = new ToolLoopAgent({
+    model,
+    tools: {
+      weather: tool({
+        description: 'Get the weather for a city.',
+        inputSchema: z.object({ city: z.string() }),
+        execute: async ({ city }) => {
+          weatherRequests.push(city);
+          return { temperature: 72 };
+        },
+      }),
+    },
+  });
+
+  const result = await agent.generate({
+    prompt: 'What is the weather in San Francisco?',
+  });
+
+  expect(weatherRequests).toEqual(['San Francisco']);
+  expect(result.text).toBe('It is 72°F in San Francisco.');
+  expect(model.doGenerateCalls).toHaveLength(2);
+});
+```
+
 ### Simulate UI Message Stream Responses
 
 You can also simulate [UI Message Stream](/docs/ai-sdk-ui/stream-protocol#ui-message-stream) responses for testing,
@@ -83984,7 +84062,8 @@ You can use the following optional settings to customize the OpenAI provider ins
 - **baseURL** _string_
 
   Use a different URL prefix for API calls, e.g. to use proxy servers.
-  The default prefix is `https://api.openai.com/v1`.
+  It defaults to the `OPENAI_BASE_URL` environment variable, and then to
+  `https://api.openai.com/v1`.
   The default OpenAI model factory (`openai('model-id')`) uses the Responses
   API. If your custom base URL only supports the Chat Completions API, create
   chat models with `openai.chat('model-id')` instead, or use the
@@ -129101,6 +129180,81 @@ const result = streamText({
 });
 ```
 
+### ToolLoopAgent
+
+You can provide a sequence of mock responses to test an agent that calls a tool
+and continues to a final response:
+
+```ts
+import { ToolLoopAgent, tool } from 'ai';
+import { MockLanguageModelV4 } from 'ai/test';
+import { expect, it } from 'vitest';
+import { z } from 'zod';
+
+it('executes a tool and continues the loop', async () => {
+  const weatherRequests: string[] = [];
+  const usage = {
+    inputTokens: {
+      total: 10,
+      noCache: 10,
+      cacheRead: undefined,
+      cacheWrite: undefined,
+    },
+    outputTokens: {
+      total: 5,
+      text: 5,
+      reasoning: undefined,
+    },
+  };
+
+  const model = new MockLanguageModelV4({
+    doGenerate: [
+      {
+        content: [
+          {
+            type: 'tool-call',
+            toolCallId: 'call-1',
+            toolName: 'weather',
+            input: '{"city":"San Francisco"}',
+          },
+        ],
+        finishReason: { unified: 'tool-calls', raw: undefined },
+        usage,
+        warnings: [],
+      },
+      {
+        content: [{ type: 'text', text: 'It is 72°F in San Francisco.' }],
+        finishReason: { unified: 'stop', raw: undefined },
+        usage,
+        warnings: [],
+      },
+    ],
+  });
+
+  const agent = new ToolLoopAgent({
+    model,
+    tools: {
+      weather: tool({
+        description: 'Get the weather for a city.',
+        inputSchema: z.object({ city: z.string() }),
+        execute: async ({ city }) => {
+          weatherRequests.push(city);
+          return { temperature: 72 };
+        },
+      }),
+    },
+  });
+
+  const result = await agent.generate({
+    prompt: 'What is the weather in San Francisco?',
+  });
+
+  expect(weatherRequests).toEqual(['San Francisco']);
+  expect(result.text).toBe('It is 72°F in San Francisco.');
+  expect(model.doGenerateCalls).toHaveLength(2);
+});
+```
+
 ### Simulate UI Message Stream Responses
 
 You can also simulate [UI Message Stream](/docs/ai-sdk-ui/stream-protocol#ui-message-stream-example) responses for testing,
@@ -138163,8 +138317,23 @@ export default function Chat() {
 Errors can be processed by passing an [`onError`](/docs/reference/ai-sdk-ui/use-chat#on-error) callback function as an option to the [`useChat`](/docs/reference/ai-sdk-ui/use-chat) or [`useCompletion`](/docs/reference/ai-sdk-ui/use-completion) hooks.
 The callback function receives an error object as an argument.
 
-```tsx file="app/page.tsx" highlight="6-9"
+AI SDK-created client errors use exported error classes with marker-based
+`.isInstance()` guards:
+
+| Error class                                                                                         | AI SDK UI failure                                                                         |
+| --------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| [`APICallError`](/docs/reference/ai-sdk-errors/ai-api-call-error)                                   | A chat transport or completion request returns a non-successful HTTP response.            |
+| [`EmptyResponseBodyError`](/docs/reference/ai-sdk-errors/ai-empty-response-body-error)              | A successful chat transport or completion response has no body.                           |
+| [`UIMessageStreamError`](/docs/reference/ai-sdk-errors/ai-ui-message-stream-error)                  | A completion data stream reports an error or a UI message stream contains invalid chunks. |
+| [`InvalidArgumentError`](/docs/reference/ai-sdk-errors/ai-invalid-argument-error)                   | An invalid stream protocol or message ID is used.                                         |
+| [`UnsupportedFunctionalityError`](/docs/reference/ai-sdk-errors/ai-unsupported-functionality-error) | A `FileList` is used in an environment that does not support it.                          |
+
+Errors thrown by custom fetch implementations, callbacks, and stream parsers
+continue to propagate unchanged.
+
+```tsx file="app/page.tsx" highlight="2,9-15"
 import { useChat } from '@ai-sdk/react';
+import { APICallError, EmptyResponseBodyError } from 'ai';
 
 export default function Page() {
   const {
@@ -138172,11 +138341,22 @@ export default function Page() {
   } = useChat({
     // handle error:
     onError: error => {
-      console.error(error);
+      if (APICallError.isInstance(error)) {
+        console.error('Request failed with status:', error.statusCode);
+      } else if (EmptyResponseBodyError.isInstance(error)) {
+        console.error('The server returned no response body.');
+      } else {
+        console.error(error);
+      }
     },
   });
 }
 ```
+
+For AI SDK UI requests, `APICallError.requestBodyValues` is `undefined` so
+prompts and messages are not copied into client-facing error objects. The
+response text remains available as `message` and `responseBody`; display a
+generic message to users to avoid leaking server information.
 
 ### Injecting Errors for Testing
 
@@ -140281,6 +140461,10 @@ This error occurs when an API call fails.
 - `data`: Any additional data associated with the error (optional)
 - `cause`: The underlying error that caused the API call to fail (optional)
 
+When this error is created for an AI SDK UI chat transport or completion
+request, `requestBodyValues` is `undefined` so prompts and messages are not
+copied into the client-facing error object.
+
 ## Checking for this Error
 
 You can check if an error is an instance of `AI_APICallError` using:
@@ -141301,10 +141485,12 @@ description: Learn how to fix AI_UIMessageStreamError
 
 # AI_UIMessageStreamError
 
-This error occurs when a UI message stream contains invalid or out-of-sequence chunks.
+This error occurs when a UI message stream reports an error or contains invalid
+or out-of-sequence chunks.
 
 Common causes:
 
+- Receiving an `error` chunk in a completion data stream
 - Receiving a `text-delta` chunk without a preceding `text-start` chunk
 - Receiving a `text-end` chunk without a preceding `text-start` chunk
 - Receiving a `reasoning-delta` chunk without a preceding `reasoning-start` chunk
@@ -141317,7 +141503,9 @@ This error often surfaces when an upstream request fails **before any tokens are
 ## Properties
 
 - `chunkType`: The type of chunk that caused the error (e.g., `text-delta`, `reasoning-end`, `tool-input-delta`)
-- `chunkId`: The ID associated with the failing chunk (part ID or toolCallId)
+- `chunkId`: The ID associated with the failing chunk (part ID or toolCallId).
+  This is an empty string for chunks, such as completion `error` chunks, that do
+  not have an ID.
 - `message`: The error message with details about what went wrong
 
 ## Checking for this Error
@@ -144780,7 +144968,8 @@ You can use the following optional settings to customize the OpenAI provider ins
 - **baseURL** _string_
 
   Use a different URL prefix for API calls, e.g. to use proxy servers.
-  The default prefix is `https://api.openai.com/v1`.
+  It defaults to the `OPENAI_BASE_URL` environment variable, and then to
+  `https://api.openai.com/v1`.
   The default OpenAI model factory (`openai('model-id')`) uses the Responses
   API. If your custom base URL only supports the Chat Completions API, create
   chat models with `openai.chat('model-id')` instead, or use the
@@ -172224,6 +172413,86 @@ NIM language models also support structured data generation with [`Output`](/doc
 </Note>
 
 ---
+title: ModelRush
+description: Use the ModelRush OpenAI compatible API with the AI SDK.
+---
+
+# ModelRush Provider
+
+[ModelRush](https://modelrush.ai/) provides access to AI models through an OpenAI-compatible API. You can use its Chat Completions endpoint with the AI SDK through the `@ai-sdk/openai-compatible` module.
+
+## Setup
+
+Install the OpenAI Compatible provider:
+
+<InstallPackages packages="@ai-sdk/openai-compatible" />
+
+Create a ModelRush API key and set it as a server-side environment variable:
+
+```bash
+export MODELRUSH_API_KEY=your-api-key
+```
+
+See the [ModelRush quick start](https://modelrush.ai/docs/quickstart) for instructions on creating an API key.
+
+## Provider Instance
+
+Create a ModelRush provider instance with `createOpenAICompatible`:
+
+```ts
+import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
+
+const modelrush = createOpenAICompatible({
+  name: 'modelrush',
+  apiKey: process.env.MODELRUSH_API_KEY,
+  baseURL: 'https://api.modelrush.ai/v1',
+});
+```
+
+## Language Models
+
+Create a chat model with the `.chatModel()` factory method and a ModelRush model ID:
+
+```ts
+const model = modelrush.chatModel('modelrush/deepseek-v4-flash-0731');
+```
+
+### Example
+
+Use `generateText` to generate text with the model:
+
+```ts
+import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
+import { generateText } from 'ai';
+
+const modelrush = createOpenAICompatible({
+  name: 'modelrush',
+  apiKey: process.env.MODELRUSH_API_KEY,
+  baseURL: 'https://api.modelrush.ai/v1',
+});
+
+const { text } = await generateText({
+  model: modelrush.chatModel('modelrush/deepseek-v4-flash-0731'),
+  prompt: 'Explain what an API gateway does in one sentence.',
+});
+
+console.log(text);
+```
+
+## Supported Models and Capabilities
+
+This integration uses ModelRush's OpenAI-compatible Chat Completions endpoint for text generation. The example model, `modelrush/deepseek-v4-flash-0731`, accepts text chat messages and returns text.
+
+Use the [ModelRush models endpoint](https://modelrush.ai/docs/api/models) or [model catalog](https://modelrush.ai/models) to find current model IDs and model-specific capabilities and limits. Other ModelRush modalities are outside the scope of this OpenAI-compatible chat integration.
+
+## Resources
+
+- [ModelRush AI SDK example](https://github.com/Moonveil-AI/modelrush-developer-tools/tree/main/examples/ai-sdk)
+- [ModelRush quick start](https://modelrush.ai/docs/quickstart)
+- [ModelRush Chat Completions documentation](https://modelrush.ai/docs/models/chat)
+- [AI SDK OpenAI Compatible provider](/providers/openai-compatible-providers)
+
+---
 title: Clarifai
 description: Use Clarifai OpenAI compatible API with the AI SDK.
 ---
@@ -172552,6 +172821,7 @@ We provide detailed documentation for the following OpenAI compatible providers:
 
 - [LM Studio](/providers/openai-compatible-providers/lmstudio)
 - [NIM](/providers/openai-compatible-providers/nim)
+- [ModelRush](/providers/openai-compatible-providers/modelrush)
 - [Heroku](/providers/openai-compatible-providers/heroku)
 - [Clarifai](/providers/openai-compatible-providers/clarifai)
 - [NEAR AI Cloud](/providers/openai-compatible-providers/nearai)

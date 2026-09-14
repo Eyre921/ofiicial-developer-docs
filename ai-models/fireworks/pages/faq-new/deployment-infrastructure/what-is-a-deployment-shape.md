@@ -23,10 +23,10 @@ The shape list is also the authoritative way to discover which GPU types, GPU co
 
 <Tabs>
   <Tab title="firectl">
-    List the shapes available for your model:
+    Match the shapes available for your model:
 
     ```bash theme={null}
-    firectl deployment-shape-version list --base-model accounts/fireworks/models/gpt-oss-120b
+    firectl deployment-shape-version match --model accounts/fireworks/models/gpt-oss-120b
     ```
 
     Then pass the shape's name to `--deployment-shape` when creating the deployment:
@@ -38,7 +38,7 @@ The shape list is also the authoritative way to discover which GPU types, GPU co
   </Tab>
 
   <Tab title="REST API">
-    Call [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions) with a deployment create request for your model. It returns the validated shape versions compatible with that model, with the server-side compatibility rules (PEFT base-model resolution, per-model hardware tiers, addon gating) applied for you:
+    Call [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions) with a deployment create request for your model — the same match the `firectl deployment-shape-version match` command runs. It returns the validated shape versions compatible with that model, applying the server-side compatibility rules for you — for LoRA addons and live-merge models, shapes are matched against the model's base model. To get shapes filtered for LoRA addon serving (`enableAddons`), include it in the request. The CLI command does not take addons into account:
 
     ```bash theme={null}
     # YOUR_ACCOUNT_ID is the account that will own the deployment, not the

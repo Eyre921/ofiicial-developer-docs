@@ -110,7 +110,7 @@ elevenlabs = ElevenLabs(
 track = elevenlabs.music.compose(
     prompt="Create an intense, fast-paced electronic track for a high-adrenaline video game scene. Use driving synth arpeggios, punchy drums, distorted bass, glitch effects, and aggressive rhythmic textures. The tempo should be fast, 130–150 bpm, with rising tension, quick transitions, and dynamic energy bursts.",
     music_length_ms=10000,
-    model_id="music_v2",
+    model_id="music_v2_5",
 )
 
 # Save the track to a file
@@ -132,7 +132,7 @@ const elevenlabs = new ElevenLabsClient();
 const track = await elevenlabs.music.compose({
   prompt: "Create an intense, fast-paced electronic track for a high-adrenaline video game scene. Use driving synth arpeggios, punchy drums, distorted bass, glitch effects, and aggressive rhythmic textures. The tempo should be fast, 130–150 bpm, with rising tension, quick transitions, and dynamic energy bursts.",
   musicLengthMs: 10000,
-  modelId: "music_v2",
+  modelId: "music_v2_5",
 });
 
 // Save the track to a file
@@ -159,7 +159,7 @@ Generate a track and save it to a file:
 elevenlabs music compose \
   --prompt "Create an intense, fast-paced electronic track for a high-adrenaline video game scene. Use driving synth arpeggios, punchy drums, distorted bass, glitch effects, and aggressive rhythmic textures. The tempo should be fast, 130–150 bpm, with rising tension, quick transitions, and dynamic energy bursts." \
   --music-length-ms 10000 \
-  --model-id music_v2 \
+  --model-id music_v2_5 \
   --output music.mp3
 ```
 
@@ -191,7 +191,7 @@ api_key=os.getenv("ELEVENLABS_API_KEY"),
 composition_plan = elevenlabs.music.composition_plan.create(
     prompt="Create an intense, fast-paced electronic track for a high-adrenaline video game scene. Use driving synth arpeggios, punchy drums, distorted bass, glitch effects, and aggressive rhythmic textures. The tempo should be fast, 130–150 bpm, with rising tension, quick transitions, and dynamic energy bursts.",
     music_length_ms=10000,
-    model_id="music_v2",
+    model_id="music_v2_5",
 )
 
 print(composition_plan)
@@ -206,7 +206,7 @@ const elevenlabs = new ElevenLabsClient();
 const compositionPlan = await elevenlabs.music.compositionPlan.create({
   prompt: "Create an intense, fast-paced electronic track for a high-adrenaline video game scene. Use driving synth arpeggios, punchy drums, distorted bass, glitch effects, and aggressive rhythmic textures. The tempo should be fast, 130–150 bpm, with rising tension, quick transitions, and dynamic energy bursts.",
   musicLengthMs: 10000,
-  modelId: "music_v2",
+  modelId: "music_v2_5",
 });
 
 console.log(JSON.stringify(compositionPlan, null, 2));
@@ -268,7 +268,7 @@ A composition plan can be used to generate music by passing it to the `compose` 
 # You can pass in composition_plan or prompt, but not both.
 composition = elevenlabs.music.compose(
     composition_plan=composition_plan,
-    model_id="music_v2",
+    model_id="music_v2_5",
 )
 
 play(composition)
@@ -278,7 +278,7 @@ play(composition)
 // You can pass in compositionPlan or prompt, but not both.
 const composition = await elevenlabs.music.compose({
     compositionPlan,
-    modelId: "music_v2",
+    modelId: "music_v2_5",
 });
 
 await play(composition);
@@ -292,7 +292,7 @@ For each music generation a composition plan is created from the prompt. You can
 track_details = elevenlabs.music.compose_detailed(
     prompt="Create an intense, fast-paced electronic track for a high-adrenaline video game scene. Use driving synth arpeggios, punchy drums, distorted bass, glitch effects, and aggressive rhythmic textures. The tempo should be fast, 130–150 bpm, with rising tension, quick transitions, and dynamic energy bursts.",
     music_length_ms=10000,
-    model_id="music_v2",
+    model_id="music_v2_5",
 )
 
 print(track_details.json) # json contains composition_plan and song_metadata. The composition plan will include lyrics (if applicable)
@@ -304,7 +304,7 @@ print(track_details.filename)
 const trackDetails = await elevenlabs.music.composeDetailed({
   prompt: 'Create an intense, fast-paced electronic track for a high-adrenaline video game scene. Use driving synth arpeggios, punchy drums, distorted bass, glitch effects, and aggressive rhythmic textures. The tempo should be fast, 30–150 bpm, with rising tension, quick transitions, and dynamic energy bursts.',
   musicLengthMs: 10000,
-  modelId: "music_v2",
+  modelId: "music_v2_5",
 });
 
 console.log(JSON.stringify(trackDetails.json, null, 2)); // json contains composition_plan and song_metadata. The composition plan will include lyrics (if applicable)
@@ -326,7 +326,7 @@ try:
     track = elevenlabs.music.compose(
         prompt="A song that sounds like 'Bohemian Rhapsody'",
         music_length_ms=10000,
-        model_id="music_v2",
+        model_id="music_v2_5",
     )
   except Exception as e:
       if e.body['detail']['status'] == 'bad_prompt':
@@ -342,7 +342,7 @@ try {
   const track = await elevenlabs.music.compose({
     prompt: "A song that sounds like 'Bohemian Rhapsody'",
     musicLengthMs: 10000,
-    modelId: "music_v2",
+    modelId: "music_v2_5",
   });
 } catch (error) {
   if (error.body.detail.status === 'bad_prompt') {

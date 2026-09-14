@@ -38,6 +38,40 @@ SDKs. Understanding them is crucial for advanced implementations and debugging.
 }
 ```
 
+#### queue\_status
+
+* Sent only to callers held in the [call queue](/docs/eleven-agents/guides/call-queueing) while the agent is at its concurrency limit
+* `waiting` is sent once, after `conversation_initiation_metadata` and before any hold audio
+* `admitted` or `timed_out` is sent once when the wait ends. `timed_out` is followed by a WebSocket close with code 4300
+* Always sent to queued callers. It does not need to be enabled in the agent's `client_events` configuration
+
+While a caller is queued, hold audio arrives as regular `audio` events. Use this event to show a
+waiting state instead of treating the hold audio as agent speech.
+
+```json
+// Example queue status event structure
+{
+  "type": "queue_status",
+  "queue_status_event": {
+    "status": "waiting"  // "waiting" | "admitted" | "timed_out"
+  }
+}
+```
+
+```javascript
+// Example queue status handler
+websocket.on('queue_status', (event) => {
+  const { status } = event.queue_status_event;
+  if (status === 'waiting') {
+    showWaitingState();
+  } else if (status === 'admitted') {
+    hideWaitingState();
+  } else if (status === 'timed_out') {
+    showAllAgentsBusyMessage();
+  }
+});
+```
+
 #### ping
 
 * Health check event requiring immediate response
@@ -605,6 +639,8 @@ sequenceDiagram
     Server->>Client: agent_response_correction
 
 ```
+
+When an agent is at its concurrency limit and [call queueing](/docs/eleven-agents/guides/call-queueing) is enabled, the server sends `queue_status` events between `conversation_initiation_metadata` and the first `audio` event. Hold audio is delivered as `audio` events until the caller is admitted.
 
 ### Best practices
 

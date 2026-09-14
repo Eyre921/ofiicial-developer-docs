@@ -108,6 +108,8 @@ Your platform must then check whether connected accounts have configured Stripe 
 > 
 > Before setting `automatic_tax[enabled]: true` on a payment, verify that the connected account’s tax settings are active. If a connected account hasn’t completed their tax setup (head office location, preset tax code, and at least one registration), enabling `automatic_tax` results in errors or zero-tax calculations. Use the [Tax Settings API](https://docs.stripe.com/tax/settings-api.md#checking-settings) to confirm the account’s `status` is `active` before enabling automatic tax on their payments.
 
+You can check the status of your connected accounts directly from this page.
+
 > [Sign in](https://dashboard.stripe.com/login?redirect=https%3A%2F%2Fdocs.stripe.com%2Ftax%2Ftax-for-platforms) to check if your connected accounts are ready to use Stripe Tax.
 
 On the Connected accounts page in your Dashboard, you can [filter the list on accounts that are ready to use Stripe Tax](https://dashboard.stripe.com/connect/accounts/view/v/enabled?status%5B0%5D=enabled&taxSettingsStatus=active). You can also export those accounts with the following Stripe Tax-related columns:

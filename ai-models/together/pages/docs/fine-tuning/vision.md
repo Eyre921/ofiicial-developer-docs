@@ -18,15 +18,15 @@ The following models support vision-language fine-tuning. See [supported models]
   | Organization | Model                                  | API ID                                              |
   | ------------ | -------------------------------------- | --------------------------------------------------- |
   | Qwen         | Qwen3.8 27B                            | `Qwen/Qwen3.8-27B`                                  |
-  | Qwen         | Qwen3.5 27B                            | `Qwen/Qwen3.5-27B`                                  |
   | Qwen         | Qwen3.5 9B                             | `Qwen/Qwen3.5-9B`                                   |
   | Qwen         | Qwen3.5 4B                             | `Qwen/Qwen3.5-4B`                                   |
   | Qwen         | Qwen3.5 2B                             | `Qwen/Qwen3.5-2B`                                   |
   | Qwen         | Qwen3.5 0.8B                           | `Qwen/Qwen3.5-0.8B`                                 |
   | Qwen         | Qwen3.6 27B                            | `Qwen/Qwen3.6-27B`                                  |
+  | Qwen         | Qwen3.5 27B                            | `Qwen/Qwen3.5-27B`                                  |
+  | Google       | Gemma 4 31B IT VLM                     | `google/gemma-4-31B-it-VLM`                         |
   | Meta         | Llama 4 Scout 17B 16E Instruct VLM     | `meta-llama/Llama-4-Scout-17B-16E-Instruct-VLM`     |
   | Meta         | Llama 4 Maverick 17B 128E Instruct VLM | `meta-llama/Llama-4-Maverick-17B-128E-Instruct-VLM` |
-  | Google       | Gemma 4 31B IT VLM                     | `google/gemma-4-31B-it-VLM`                         |
 </Accordion>
 
 ## Prepare your data

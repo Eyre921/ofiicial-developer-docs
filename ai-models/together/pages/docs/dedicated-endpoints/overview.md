@@ -23,7 +23,7 @@ Dedicated model inference uses the same [inference APIs](/docs/inference/overvie
   If you're running a stock model in production and want a defined SLA without managing hardware, contact sales for [provisioned throughput](/docs/inference/provisioned-throughput).
 </Tip>
 
-You can deploy an endpoint from the console, through the API, or with the CLI:
+You can deploy an endpoint from the console, through the API, or with the [Together CLI](/reference/cli/endpoints-beta):
 
 ```bash theme={null}
 # deploy a model to a new endpoint
@@ -69,19 +69,6 @@ The [quickstart](/docs/dedicated-endpoints/quickstart) breaks down this flow and
     Migrate a dedicated endpoint to the new DMI resource model.
   </Card>
 </CardGroup>
-
-## Together CLI
-
-The easiest way to manage dedicated model inference is by using the [Together CLI](/reference/cli/endpoints-beta). Each command creates and wires up the underlying resources for you:
-
-| Command                    | Description                                                                                                                                                       |
-| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `tg beta endpoints deploy` | Deploys a model: creates an endpoint, attaches a deployment, and routes all traffic to it.                                                                        |
-| `tg beta endpoints ab`     | Starts an [A/B test](/docs/dedicated-endpoints/ab-tests): adds a variant deployment and splits traffic between it and a control.                                  |
-| `tg beta endpoints shadow` | Starts a [shadow experiment](/docs/dedicated-endpoints/shadow-experiments): mirrors a fraction of live traffic to a new deployment without serving its responses. |
-| `tg beta endpoints rm`     | Deletes any endpoint, deployment, or experiment by its ID.                                                                                                        |
-
-To learn more about the underlying resources, see [Concepts](/docs/dedicated-endpoints/concepts).
 
 ## Project scope
 

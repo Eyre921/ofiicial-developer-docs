@@ -19,15 +19,10 @@ In the Dashboard, create the custom payment method type your customers will pay 
 Go to [Custom payment method types](https://dashboard.stripe.com/settings/custom_payment_methods) in the Dashboard. At the end of these steps, you’ll have one or more custom payment method types defined that you can offer your customers when they checkout.
 
 1. Create a custom payment method type.
-2. Set the display name and logo for the custom payment method type. Alternatively, use one of over 50 preset methods for common payment methods processed outside of Stripe.
-
-> Set your own display name and logo if you use a custom front end or want the logo to display when interacting with the custom payment method through the [Payment Methods API](https://docs.stripe.com/api/payment_methods.md). A preset is suitable if you rely on Payment Element to render the custom payment method.
-
-> Make sure your custom payment method display name and logo align with our [marks policy](https://docs.stripe.com/payments/payment-methods/custom-payment-methods.md#marks-requirements).
-
-1. Click **Create** to make a new payment method type, `SamplePayCard`, which you can then use to set up a custom payment method.
-2. You can see the created custom payment method type details in the Dashboard.
-3. Custom payment method types aren’t retrievable through the API. We recommend storing the ID in your database and retrieving it during payment method creation.
+2. Set the display name and logo for the custom payment method type. Alternatively, use one of over 50 preset methods for common payment methods processed outside of Stripe. Set your own display name and logo if you use a custom front end or want the logo to display when interacting with the custom payment method through the [Payment Methods API](https://docs.stripe.com/api/payment_methods.md); a preset is suitable if you rely on Payment Element to render the custom payment method. Make sure your custom payment method display name and logo align with our [marks policy](https://docs.stripe.com/payments/payment-methods/custom-payment-methods.md#marks-requirements).
+3. Click **Create** to make a new payment method type, `SamplePayCard`, which you can then use to set up a custom payment method.
+4. You can see the created custom payment method type details in the Dashboard.
+5. Custom payment method types aren’t retrievable through the API. We recommend storing the ID in your database and retrieving it during payment method creation.
 
 ### Payment Methods 
 

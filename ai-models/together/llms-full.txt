@@ -336,7 +336,7 @@ Kubernetes' API server can validate JSON Web Tokens (JWTs) issued by an external
 
 ## Username claim
 
-The username claim is the field in the OIDC token that Kubernetes uses as the identity for RBAC. Supported values are `email`, `preferred_username`, or `sub`. Choose based on what your IdP reliably provides; `email` gives the simplest RBAC experience because the `--user` value is just the user's email address.
+The username claim is the field in the OIDC token that Kubernetes uses as the identity for RBAC. Supported values are `email`, `preferred_username`, or `sub`. Choose based on what your IdP reliably provides. `email` gives the simplest RBAC experience because the `--user` value is just the user's email address.
 
 <Note>
   **The username claim affects the RBAC `--user` value.** The format Kubernetes uses for the identity depends on which claim you choose:
@@ -1310,7 +1310,7 @@ Source: https://docs.together.ai/docs/dedicated-endpoints/adapter
 
 Serve a custom LoRA adapter uploaded from Hugging Face or S3.
 
-Run inference on your own [LoRA (Low-Rank Adaptation) adapters](/docs/fine-tuning/lora-vs-full) by uploading them to Together AI and deploying them for [dedicated model inference](/docs/dedicated-endpoints/overview). You can import adapters from Hugging Face Hub or upload them from an S3 archive, including adapters you trained outside of Together AI.
+Run inference on your own [low-rank adapter (LoRA)](/docs/fine-tuning/lora-vs-full) by uploading it to Together AI and deploying it for [dedicated model inference](/docs/dedicated-endpoints/overview). You can import adapters from Hugging Face Hub or upload them from an S3 archive, including adapters you trained outside of Together AI.
 
 To upload a full fine-tuned model instead of an adapter, see [Upload a fine-tuned model](/docs/dedicated-endpoints/custom-models).
 
@@ -3065,7 +3065,7 @@ Dedicated model inference uses the same [inference APIs](/docs/inference/overvie
   If you're running a stock model in production and want a defined SLA without managing hardware, contact sales for [provisioned throughput](/docs/inference/provisioned-throughput).
 </Tip>
 
-You can deploy an endpoint from the console, through the API, or with the CLI:
+You can deploy an endpoint from the console, through the API, or with the [Together CLI](/reference/cli/endpoints-beta):
 
 ```bash theme={null}
 # deploy a model to a new endpoint
@@ -3111,19 +3111,6 @@ The [quickstart](/docs/dedicated-endpoints/quickstart) breaks down this flow and
     Migrate a dedicated endpoint to the new DMI resource model.
   </Card>
 </CardGroup>
-
-## Together CLI
-
-The easiest way to manage dedicated model inference is by using the [Together CLI](/reference/cli/endpoints-beta). Each command creates and wires up the underlying resources for you:
-
-| Command                    | Description                                                                                                                                                       |
-| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `tg beta endpoints deploy` | Deploys a model: creates an endpoint, attaches a deployment, and routes all traffic to it.                                                                        |
-| `tg beta endpoints ab`     | Starts an [A/B test](/docs/dedicated-endpoints/ab-tests): adds a variant deployment and splits traffic between it and a control.                                  |
-| `tg beta endpoints shadow` | Starts a [shadow experiment](/docs/dedicated-endpoints/shadow-experiments): mirrors a fraction of live traffic to a new deployment without serving its responses. |
-| `tg beta endpoints rm`     | Deletes any endpoint, deployment, or experiment by its ID.                                                                                                        |
-
-To learn more about the underlying resources, see [Concepts](/docs/dedicated-endpoints/concepts).
 
 ## Project scope
 
@@ -4054,11 +4041,11 @@ Because targets never return their responses to your caller, evaluate them the s
 ## Pause, retune, or stop an experiment
 
 * **Pause without deleting:** [Update](/reference/dmi/shadow-experiments-update) the experiment's `source` to set the sampling `rate` to `0`. The experiment stays `ACTIVE` but samples nothing.
-* **Retune sampling:** Update the experiment's `source`, for example to raise `uniform.rate` or switch strategy. Fetch the experiment first to get its current `etag` and pass it back on the update; a stale value returns `409 ABORTED`.
+* **Retune sampling:** Update the experiment's `source`, for example to raise `uniform.rate` or switch strategy. Fetch the experiment first to get its current `etag` and pass it back on the update. A stale value returns `409 ABORTED`.
 * **Fan out to more targets:** [Add a target](/reference/dmi/shadow-experiment-targets-create) to the experiment. One sampling decision fans out to every target, so adding a target roughly multiplies mirrored volume.
 * **Stop mirroring:** [Delete the experiment](#delete-an-experiment) (which cascade-deletes its targets), or remove all its targets so the experiment goes `INACTIVE`.
 
-Mirrored requests are never sampled and mirrored again; the system prevents shadow loops automatically.
+Mirrored requests are never sampled and mirrored again. The system prevents shadow loops automatically.
 
 <Tip>
   Before deleting a deployment that an experiment targets, remove it from the experiment first (or delete the experiment). That keeps the experiment's configuration consistent and avoids leaving a target that points at a deployment that no longer exists.
@@ -6899,7 +6886,7 @@ tg beta endpoints rm "<ENDPOINT_ID>" --force
 ```
 
 <Note>
-  Pass the endpoint string (`your-project-slug/qwen-finetune`, printed by the deploy output) as the `model` parameter, not the Model Object ID. If `deploy` reports that the model has more than one deployment profile, re-run it with `--config <cr_...>`; list a model's profiles with `tg beta models configs "<MODEL_OBJECT_ID>"`.
+  Pass the endpoint string (`your-project-slug/qwen-finetune`, printed by the deploy output) as the `model` parameter, not the Model Object ID. If `deploy` reports that the model has more than one deployment profile, re-run it with `--config <cr_...>`. List a model's profiles with `tg beta models configs "<MODEL_OBJECT_ID>"`.
 </Note>
 
 <Check>
@@ -7097,58 +7084,55 @@ The tables below list every model available through the fine-tuning API. Context
 
 ## LoRA fine-tuning
 
-| Organization | Model                                              | API ID                                               | Context (SFT) | Context (DPO) | Max batch (SFT) | Max batch (DPO) | Min batch | Grad accum | Max LoRA rank |
-| ------------ | -------------------------------------------------- | ---------------------------------------------------- | ------------- | ------------- | --------------- | --------------- | --------- | ---------- | ------------- |
-| DeepSeek     | DeepSeek V4 Flash 0731                             | `deepseek-ai/DeepSeek-V4-Flash-0731`                 | 131072        | 32768         | 1               | 1               | 1         | 8          | 64            |
-| DeepSeek     | DeepSeek V4 Flash                                  | `deepseek-ai/DeepSeek-V4-Flash`                      | 131072        | 32768         | 1               | 1               | 1         | 8          | 64            |
-| DeepSeek     | DeepSeek V3.1                                      | `deepseek-ai/DeepSeek-V3.1`                          | 65536         | 32768         | 2               | 2               | 2         | 8          | 16            |
-| NVIDIA       | NVIDIA Nemotron 3 Nano Omni 30B A3B Reasoning BF16 | `nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning-BF16` | 65536         | 32768         | 8               | 8               | 8         | 1          | 64            |
-| NVIDIA       | NVIDIA Nemotron 3 Super 120B A12B BF16             | `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16`      | 49152         | 24576         | 2               | 2               | 2         | 4          | 64            |
-| Qwen         | Qwen3.8 27B                                        | `Qwen/Qwen3.8-27B`                                   | 32768         | 16384         | 16              | 16              | 16        | 1          | 64            |
-| Qwen         | Qwen3.5 397B A17B                                  | `Qwen/Qwen3.5-397B-A17B`                             | 32768         | 16384         | 16              | 16              | 16        | 1          | 64            |
-| Qwen         | Qwen3.5 122B A10B                                  | `Qwen/Qwen3.5-122B-A10B`                             | 65536         | 32768         | 16              | 16              | 16        | 1          | 64            |
-| Qwen         | Qwen3.5 35B A3B                                    | `Qwen/Qwen3.5-35B-A3B`                               | 65536         | 32768         | 8               | 8               | 8         | 1          | 64            |
-| Qwen         | Qwen3.5 35B A3B Base                               | `Qwen/Qwen3.5-35B-A3B-Base`                          | 65536         | 32768         | 8               | 8               | 8         | 1          | 64            |
-| Qwen         | Qwen3.5 27B                                        | `Qwen/Qwen3.5-27B`                                   | 32768         | 16384         | 16              | 16              | 16        | 1          | 64            |
-| Qwen         | Qwen3.5 9B                                         | `Qwen/Qwen3.5-9B`                                    | 65536         | 49152         | 8               | 8               | 8         | 1          | 64            |
-| Qwen         | Qwen3.5 4B                                         | `Qwen/Qwen3.5-4B`                                    | 131072        | 65536         | 8               | 8               | 8         | 1          | 64            |
-| Qwen         | Qwen3.5 2B                                         | `Qwen/Qwen3.5-2B`                                    | 131072        | 131072        | 8               | 8               | 8         | 1          | 64            |
-| Qwen         | Qwen3.5 0.8B                                       | `Qwen/Qwen3.5-0.8B`                                  | 131072        | 131072        | 8               | 8               | 8         | 1          | 64            |
-| Qwen         | Qwen3.6 35B A3B                                    | `Qwen/Qwen3.6-35B-A3B`                               | 65536         | 32768         | 8               | 8               | 8         | 1          | 64            |
-| Qwen         | Qwen3.6 27B                                        | `Qwen/Qwen3.6-27B`                                   | 32768         | 16384         | 16              | 16              | 16        | 1          | 64            |
-| Moonshot AI  | Kimi K2.7 Code                                     | `moonshotai/Kimi-K2.7-Code`                          | 32768         | 16384         | 4               | 4               | 4         | 8          | 16            |
-| Moonshot AI  | Kimi K2.6                                          | `moonshotai/Kimi-K2.6`                               | 32768         | 16384         | 4               | 4               | 4         | 8          | 16            |
-| Z.ai         | GLM 5.3                                            | `zai-org/GLM-5.3`                                    | 50688         | 25344         | 1               | 1               | 1         | 1          | 16            |
-| Z.ai         | GLM 5.2                                            | `zai-org/GLM-5.2`                                    | 50688         | 25344         | 1               | 1               | 1         | 1          | 16            |
-| Z.ai         | GLM 5.1                                            | `zai-org/GLM-5.1`                                    | 50688         | 25344         | 1               | 1               | 1         | 1          | 16            |
-| OpenAI       | GPT-OSS 20B                                        | `openai/gpt-oss-20b`                                 | 131072        | 65536         | 1               | 1               | 1         | 8          | 64            |
-| OpenAI       | GPT-OSS 120B                                       | `openai/gpt-oss-120b`                                | 65536         | 32768         | 2               | 2               | 2         | 8          | 64            |
-| Meta         | Llama 4 Scout 17B 16E Instruct                     | `meta-llama/Llama-4-Scout-17B-16E-Instruct`          | 65536         | 12288         | 8               | 8               | 8         | 1          | 64            |
-| Meta         | Llama 4 Scout 17B 16E Instruct VLM                 | `meta-llama/Llama-4-Scout-17B-16E-Instruct-VLM`      | 32768         | 32768         | 8               | 8               | 8         | 1          | 64            |
-| Meta         | Llama 4 Maverick 17B 128E Instruct                 | `meta-llama/Llama-4-Maverick-17B-128E-Instruct`      | 16384         | 24576         | 16              | 16              | 16        | 1          | 64            |
-| Meta         | Llama 4 Maverick 17B 128E Instruct VLM             | `meta-llama/Llama-4-Maverick-17B-128E-Instruct-VLM`  | 16384         | 16384         | 16              | 16              | 16        | 1          | 64            |
-| Meta         | Llama 3.3 70B Instruct Reference                   | `meta-llama/Llama-3.3-70B-Instruct-Reference`        | 24576         | 12288         | 8               | 8               | 8         | 1          | 64            |
-| Meta         | Meta Llama 3.1 8B Instruct Reference               | `meta-llama/Meta-Llama-3.1-8B-Instruct-Reference`    | 131072        | 65536         | 8               | 8               | 8         | 1          | 64            |
-| Google       | Gemma 4 31B IT                                     | `google/gemma-4-31B-it`                              | 49152         | 24576         | 4               | 4               | 4         | 2          | 64            |
-| Google       | Gemma 4 31B IT VLM                                 | `google/gemma-4-31B-it-VLM`                          | 24576         | 12288         | 8               | 8               | 8         | 1          | 64            |
-| Google       | Gemma 4 26B A4B IT                                 | `google/gemma-4-26B-A4B-it`                          | 49152         | 24576         | 4               | 4               | 4         | 2          | 64            |
-| Mistral      | Mixtral 8x7B Instruct v0.1                         | `mistralai/Mixtral-8x7B-Instruct-v0.1`               | 32768         | 16384         | 8               | 8               | 8         | 1          | 64            |
+| Organization | Model                                  | API ID                                              | Context (SFT) | Context (DPO) | Max batch (SFT) | Max batch (DPO) | Min batch | Grad accum | Max LoRA rank |
+| ------------ | -------------------------------------- | --------------------------------------------------- | ------------- | ------------- | --------------- | --------------- | --------- | ---------- | ------------- |
+| DeepSeek     | DeepSeek V4 Flash 0731                 | `deepseek-ai/DeepSeek-V4-Flash-0731`                | 131072        | 32768         | 1               | 1               | 1         | 8          | 64            |
+| DeepSeek     | DeepSeek V3.1                          | `deepseek-ai/DeepSeek-V3.1`                         | 65536         | 32768         | 2               | 2               | 2         | 8          | 16            |
+| DeepSeek     | DeepSeek V4 Flash                      | `deepseek-ai/DeepSeek-V4-Flash`                     | 131072        | 32768         | 1               | 1               | 1         | 8          | 64            |
+| Z.ai         | GLM 5.3                                | `zai-org/GLM-5.3`                                   | 50688         | 25344         | 1               | 1               | 1         | 1          | 16            |
+| Z.ai         | GLM 5.2                                | `zai-org/GLM-5.2`                                   | 50688         | 25344         | 1               | 1               | 1         | 1          | 16            |
+| Z.ai         | GLM 5.1                                | `zai-org/GLM-5.1`                                   | 50688         | 25344         | 1               | 1               | 1         | 1          | 16            |
+| Qwen         | Qwen3.8 27B                            | `Qwen/Qwen3.8-27B`                                  | 32768         | 16384         | 16              | 16              | 16        | 1          | 64            |
+| Qwen         | Qwen3.6 35B A3B                        | `Qwen/Qwen3.6-35B-A3B`                              | 65536         | 32768         | 8               | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen3.5 9B                             | `Qwen/Qwen3.5-9B`                                   | 65536         | 49152         | 8               | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen3.5 4B                             | `Qwen/Qwen3.5-4B`                                   | 131072        | 65536         | 8               | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen3.5 2B                             | `Qwen/Qwen3.5-2B`                                   | 131072        | 131072        | 8               | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen3.5 0.8B                           | `Qwen/Qwen3.5-0.8B`                                 | 131072        | 131072        | 8               | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen3.6 27B                            | `Qwen/Qwen3.6-27B`                                  | 32768         | 16384         | 16              | 16              | 16        | 1          | 64            |
+| Qwen         | Qwen3.5 397B A17B                      | `Qwen/Qwen3.5-397B-A17B`                            | 32768         | 16384         | 16              | 16              | 16        | 1          | 64            |
+| Qwen         | Qwen3.5 122B A10B                      | `Qwen/Qwen3.5-122B-A10B`                            | 65536         | 32768         | 16              | 16              | 16        | 1          | 64            |
+| Qwen         | Qwen3.5 35B A3B                        | `Qwen/Qwen3.5-35B-A3B`                              | 65536         | 32768         | 8               | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen3.5 27B                            | `Qwen/Qwen3.5-27B`                                  | 32768         | 16384         | 16              | 16              | 16        | 1          | 64            |
+| Moonshot AI  | Kimi K2.7 Code                         | `moonshotai/Kimi-K2.7-Code`                         | 32768         | 16384         | 4               | 4               | 4         | 8          | 16            |
+| Moonshot AI  | Kimi K2.6                              | `moonshotai/Kimi-K2.6`                              | 32768         | 16384         | 4               | 4               | 4         | 8          | 16            |
+| Google       | Gemma 4 31B IT                         | `google/gemma-4-31B-it`                             | 49152         | 24576         | 4               | 4               | 4         | 2          | 64            |
+| Google       | Gemma 4 31B IT VLM                     | `google/gemma-4-31B-it-VLM`                         | 24576         | 12288         | 8               | 8               | 8         | 1          | 64            |
+| Google       | Gemma 4 26B A4B IT                     | `google/gemma-4-26B-A4B-it`                         | 49152         | 24576         | 4               | 4               | 4         | 2          | 64            |
+| OpenAI       | GPT-OSS 20B                            | `openai/gpt-oss-20b`                                | 131072        | 65536         | 1               | 1               | 1         | 8          | 64            |
+| OpenAI       | GPT-OSS 120B                           | `openai/gpt-oss-120b`                               | 65536         | 32768         | 2               | 2               | 2         | 8          | 64            |
+| Meta         | Llama 4 Scout 17B 16E Instruct         | `meta-llama/Llama-4-Scout-17B-16E-Instruct`         | 65536         | 12288         | 8               | 8               | 8         | 1          | 64            |
+| Meta         | Llama 4 Scout 17B 16E Instruct VLM     | `meta-llama/Llama-4-Scout-17B-16E-Instruct-VLM`     | 32768         | 32768         | 8               | 8               | 8         | 1          | 64            |
+| Meta         | Llama 4 Maverick 17B 128E Instruct     | `meta-llama/Llama-4-Maverick-17B-128E-Instruct`     | 16384         | 24576         | 16              | 16              | 16        | 1          | 64            |
+| Meta         | Llama 4 Maverick 17B 128E Instruct VLM | `meta-llama/Llama-4-Maverick-17B-128E-Instruct-VLM` | 16384         | 16384         | 16              | 16              | 16        | 1          | 64            |
+| Meta         | Llama 3.3 70B Instruct Reference       | `meta-llama/Llama-3.3-70B-Instruct-Reference`       | 24576         | 12288         | 8               | 8               | 8         | 1          | 64            |
+| Meta         | Meta Llama 3.1 8B Instruct Reference   | `meta-llama/Meta-Llama-3.1-8B-Instruct-Reference`   | 131072        | 65536         | 8               | 8               | 8         | 1          | 64            |
+| Mistral      | Mixtral 8x7B Instruct v0.1             | `mistralai/Mixtral-8x7B-Instruct-v0.1`              | 32768         | 16384         | 8               | 8               | 8         | 1          | 64            |
 
 ## Full fine-tuning
 
 | Organization | Model                                | API ID                                            | Context (SFT) | Context (DPO) | Max batch (SFT) | Max batch (DPO) | Min batch |
 | ------------ | ------------------------------------ | ------------------------------------------------- | ------------- | ------------- | --------------- | --------------- | --------- |
 | Qwen         | Qwen3.8 27B                          | `Qwen/Qwen3.8-27B`                                | 32768         | 16384         | 16              | 16              | 16        |
-| Qwen         | Qwen3.5 27B                          | `Qwen/Qwen3.5-27B`                                | 32768         | 16384         | 16              | 16              | 16        |
 | Qwen         | Qwen3.5 9B                           | `Qwen/Qwen3.5-9B`                                 | 65536         | 49152         | 8               | 8               | 8         |
 | Qwen         | Qwen3.5 4B                           | `Qwen/Qwen3.5-4B`                                 | 131072        | 65536         | 8               | 8               | 8         |
 | Qwen         | Qwen3.5 2B                           | `Qwen/Qwen3.5-2B`                                 | 131072        | 131072        | 8               | 8               | 8         |
 | Qwen         | Qwen3.5 0.8B                         | `Qwen/Qwen3.5-0.8B`                               | 131072        | 131072        | 8               | 8               | 8         |
 | Qwen         | Qwen3.6 27B                          | `Qwen/Qwen3.6-27B`                                | 32768         | 16384         | 16              | 16              | 16        |
-| Meta         | Llama 3.3 70B Instruct Reference     | `meta-llama/Llama-3.3-70B-Instruct-Reference`     | 24576         | 12288         | 32              | 32              | 32        |
-| Meta         | Meta Llama 3.1 8B Instruct Reference | `meta-llama/Meta-Llama-3.1-8B-Instruct-Reference` | 131072        | 65536         | 8               | 8               | 8         |
+| Qwen         | Qwen3.5 27B                          | `Qwen/Qwen3.5-27B`                                | 32768         | 16384         | 16              | 16              | 16        |
 | Google       | Gemma 4 31B IT                       | `google/gemma-4-31B-it`                           | 49152         | 24576         | 8               | 8               | 8         |
 | Google       | Gemma 4 31B IT VLM                   | `google/gemma-4-31B-it-VLM`                       | 24576         | 12288         | 16              | 16              | 16        |
+| Meta         | Llama 3.3 70B Instruct Reference     | `meta-llama/Llama-3.3-70B-Instruct-Reference`     | 24576         | 12288         | 32              | 32              | 32        |
+| Meta         | Meta Llama 3.1 8B Instruct Reference | `meta-llama/Meta-Llama-3.1-8B-Instruct-Reference` | 131072        | 65536         | 8               | 8               | 8         |
 | Mistral      | Mixtral 8x7B Instruct v0.1           | `mistralai/Mixtral-8x7B-Instruct-v0.1`            | 32768         | 16384         | 16              | 16              | 16        |
 
 ## Vision-language models
@@ -7181,15 +7165,15 @@ The following models support vision-language fine-tuning. See [supported models]
   | Organization | Model                                  | API ID                                              |
   | ------------ | -------------------------------------- | --------------------------------------------------- |
   | Qwen         | Qwen3.8 27B                            | `Qwen/Qwen3.8-27B`                                  |
-  | Qwen         | Qwen3.5 27B                            | `Qwen/Qwen3.5-27B`                                  |
   | Qwen         | Qwen3.5 9B                             | `Qwen/Qwen3.5-9B`                                   |
   | Qwen         | Qwen3.5 4B                             | `Qwen/Qwen3.5-4B`                                   |
   | Qwen         | Qwen3.5 2B                             | `Qwen/Qwen3.5-2B`                                   |
   | Qwen         | Qwen3.5 0.8B                           | `Qwen/Qwen3.5-0.8B`                                 |
   | Qwen         | Qwen3.6 27B                            | `Qwen/Qwen3.6-27B`                                  |
+  | Qwen         | Qwen3.5 27B                            | `Qwen/Qwen3.5-27B`                                  |
+  | Google       | Gemma 4 31B IT VLM                     | `google/gemma-4-31B-it-VLM`                         |
   | Meta         | Llama 4 Scout 17B 16E Instruct VLM     | `meta-llama/Llama-4-Scout-17B-16E-Instruct-VLM`     |
   | Meta         | Llama 4 Maverick 17B 128E Instruct VLM | `meta-llama/Llama-4-Maverick-17B-128E-Instruct-VLM` |
-  | Google       | Gemma 4 31B IT VLM                     | `google/gemma-4-31B-it-VLM`                         |
 </Accordion>
 
 ## Prepare your data
@@ -7689,10 +7673,10 @@ sky launch -c gpt-together gpt-oss-20b.yaml
 
 ### Benefits
 
-* **Simplified orchestration** – Abstract away Kubernetes complexity.
-* **Multi-cloud support** – Same workflow across different clouds.
-* **Cost optimization** – Auto-select cheapest available resources.
-* **Job management** – Easy monitoring and cancellation.
+* **Orchestration:** Abstract away Kubernetes complexity.
+* **Multi-cloud support:** Same workflow across different clouds.
+* **Cost optimization:** Auto-select the cheapest available resources.
+* **Job management:** Monitor and cancel jobs.
 
 ## Automation patterns
 
@@ -7828,18 +7812,18 @@ Understand billing, pricing, and lifecycle policies for GPU clusters.
 
 Instant clusters offer two compute billing options: **reserved** and **on-demand**.
 
-* **Reservations** – Credits are charged upfront or deducted for the full
+* **Reservations:** Credits are charged upfront or deducted for the full
   reserved duration once the cluster is provisioned. Any usage beyond the reserved
   capacity is billed at on-demand rates.
-* **On-Demand** – Pay only for the time your cluster is running, with no upfront
+* **On-demand:** Pay only for the time your cluster is running, with no upfront
   commitment.
 
 [View current GPU Cluster pricing](https://www.together.ai/pricing#gpu-clusters).
 
 <Note>
   The regions API and `tg beta clusters list-regions` return region availability,
-  supported instance types, and driver versions; they do not return pricing. See
-  the [GPU Cluster pricing table](https://www.together.ai/pricing#gpu-clusters) for
+  supported instance types, and driver versions. They do not return pricing. See
+  the [GPU cluster pricing table](https://www.together.ai/pricing#gpu-clusters) for
   current on-demand and reserved rates.
 </Note>
 
@@ -7861,23 +7845,23 @@ storage.
 
 Clusters and storage volumes follow different lifecycle policies:
 
-* **Compute Clusters** – Clusters are automatically decommissioned when their
-  reservation period ends. To extend a reservation, go to the cloud console, "Cluster Details" view and then select the "Extend Reservation" button.
-* **Storage Volumes** – Storage volumes are persistent and remain available as
+* **Compute clusters:** Clusters are automatically decommissioned when their
+  reservation period ends. To extend a reservation, go to the cloud console **Cluster Details** view and then select the **Extend Reservation** button.
+* **Storage volumes:** Storage volumes are persistent and remain available as
   long as your billing account is in good standing. They are not automatically
-  deleted. The user data persists as long as you use the static PV we provide.
+  deleted. Your data persists as long as you use the static PV Together provides.
 
 ### Running out of credits
 
 When your credits are exhausted, resources behave differently depending on their
 type:
 
-* **Reserved Compute** – Existing reservations remain active until their
+* **Reserved compute:** Existing reservations remain active until their
   scheduled end date. Any additional on-demand capacity used to scale beyond the
   reservation is decommissioned.
-* **Fully On-Demand Compute** – Clusters are first paused and then
+* **Fully on-demand compute:** Clusters are first paused and then
   decommissioned if credits are not restored.
-* **Storage Volumes** – Access is revoked first, and the data is later
+* **Storage volumes:** Access is revoked first, and the data is later
   decommissioned.
 
 You will receive alerts before these actions take place. For questions or
@@ -7893,10 +7877,10 @@ assistance, contact your billing team.
 
 Each invoice includes detailed line items for:
 
-* **Reserved compute** – Upfront reservation charges
-* **On-demand compute** – Hourly burst capacity usage
-* **Storage** – Shared volume usage per TiB
-* **Usage period** – Exact timeframes for each charge
+* **Reserved compute:** Upfront reservation charges.
+* **On-demand compute:** Hourly burst capacity usage.
+* **Storage:** Shared volume usage per TiB.
+* **Usage period:** Exact timeframes for each charge.
 
 ## Lifecycle policies
 
@@ -7928,18 +7912,18 @@ Each invoice includes detailed line items for:
 
 ### Cost optimization
 
-* **Use reserved capacity** for predictable baseline workloads
-* **Add on-demand** only during burst periods
-* **Right-size storage** – Start small and scale as needed
-* **Monitor usage** regularly in the billing dashboard
-* **Delete unused storage** to avoid ongoing charges
+* **Use reserved capacity** for predictable baseline workloads.
+* **Add on-demand** only during burst periods.
+* **Right-size storage:** Start small and scale as needed.
+* **Monitor usage** regularly in the billing dashboard.
+* **Delete unused storage** to avoid ongoing charges.
 
 ### Budget planning
 
-* **Reserved capacity** – Calculate total cost upfront (GPUs × hours × rate)
-* **On-demand capacity** – Estimate based on expected burst hours
-* **Storage** – Account for data growth over time
-* **Buffer** – Add 10-20% for unexpected scaling needs
+* **Reserved capacity:** Calculate total cost upfront (GPUs × hours × rate).
+* **On-demand capacity:** Estimate based on expected burst hours.
+* **Storage:** Account for data growth over time.
+* **Buffer:** Add 10-20% for unexpected scaling needs.
 
 Reserved capacity offers significant discounts compared to on-demand for all
 tiers.
@@ -7970,9 +7954,9 @@ compute and storage.
 
 ### Can I pause a cluster to save costs?
 
-Reserved clusters cannot be paused – you're charged for the full reservation
+Reserved clusters cannot be paused. You're charged for the full reservation
 period. On-demand clusters can be terminated and recreated later, but there's
-no "pause" function.
+no pause function.
 
 ### When does my reservation start?
 
@@ -8300,7 +8284,7 @@ You can SSH directly into any GPU worker node or Slurm compute node from the clu
 
 **From the UI:**
 
-1. Navigate to your cluster in the Together Cloud UI.
+1. Navigate to your cluster in the GPU clusters console.
 2. On Slurm clusters with OIDC, choose **OIDC** or **Key-based** in **SSH access method**.
 3. Go to the **Worker Nodes** section.
 4. Find the node you want to access.
@@ -8479,36 +8463,36 @@ Clusters can scale flexibly in real time. Add on-demand compute to temporarily s
 
 Scaling operations can be performed via:
 
-* Together Cloud UI
-* Together CLI
-* REST API
+* GPU clusters console.
+* Together CLI.
+* REST API.
 
 ### Cluster autoscaling
 
-Cluster Autoscaling automatically adjusts the number of nodes in your cluster based on workload demand using the Kubernetes Cluster Autoscaler.
+Cluster autoscaling automatically adjusts the number of nodes in your cluster based on workload demand using the Kubernetes Cluster Autoscaler.
 
-**How It Works:**
+**How it works:**
 
 The Kubernetes Cluster Autoscaler monitors your cluster and:
 
-* **Scales up** when pods are pending due to insufficient resources
-* **Scales down** when nodes are underutilized for an extended period
-* **Respects constraints** like minimum/maximum node counts and resource limits
+* **Scales up** when pods are pending due to insufficient resources.
+* **Scales down** when nodes are underutilized for an extended period.
+* **Respects constraints** like minimum/maximum node counts and resource limits.
 
 When pods cannot be scheduled due to lack of resources, the autoscaler provisions additional nodes automatically. When nodes remain idle below a utilization threshold, they are safely drained and removed.
 
-**Enabling Autoscaling:**
+**Enabling autoscaling:**
 
-1. Navigate to **GPU Clusters** in the Together Cloud UI
-2. Select **Create Cluster**
-3. In the cluster configuration, toggle **Enable Autoscaling**
-4. Configure your maximum GPUs
-5. Create the cluster
+1. Navigate to **GPU Clusters** in the cloud console.
+2. Select **Create Cluster**.
+3. In the cluster configuration, toggle **Enable Autoscaling**.
+4. Configure your maximum GPUs.
+5. Create the cluster.
 
 Once enabled, the autoscaler runs continuously in the background, responding to workload changes without manual intervention.
 
 <Note>
-  Autoscaling works with both reserved and on-demand capacity. Scaling beyond reserved capacity will provision on-demand nodes at standard hourly rates.
+  Autoscaling works with both reserved and on-demand capacity. Scaling beyond reserved capacity provisions on-demand nodes at standard hourly rates.
 </Note>
 
 ### Targeted scale-down
@@ -8539,7 +8523,7 @@ To control which specific nodes are removed during scale-down, mark them for del
   </Step>
 
   <Step title="Wait for the node to start draining">
-    In the Together Cloud UI, wait until the node shows **Node is cordon/draining** before you trigger scale-down. This confirms the operator has picked up the annotation or cordon and is safely evicting workloads.
+    In the GPU clusters console, wait until the node shows **Node is cordon/draining** before you trigger scale-down. This confirms the operator has picked up the annotation or cordon and is safely evicting workloads.
   </Step>
 
   <Step title="Trigger scale-down">
@@ -8548,7 +8532,7 @@ To control which specific nodes are removed during scale-down, mark them for del
 </Steps>
 
 <Tip>
-  Scale down one node at a time. Repeat the steps above for each additional node you want to remove — this gives the operator time to drain each node cleanly and makes it easy to stop if something goes wrong.
+  Scale down one node at a time. Repeat the steps above for each additional node you want to remove — this gives the operator time to drain each node cleanly, so you can stop if something goes wrong.
 </Tip>
 
 ## Storage management
@@ -8635,34 +8619,34 @@ scontrol show node          # Detailed node info
 
 ### Resource management
 
-* **Always** use shared volumes (PVC) for training data, checkpoints, model weights, and application state
-* **Never** rely on local NVMe or node-local `/home` (on Kubernetes) for data you cannot afford to lose — it is ephemeral and can be wiped during migrations/recreations or maintenance
-* Use local NVMe only for temporary scratch files that can be regenerated
-* Set resource requests and limits in pod specs
+* **Always** use shared volumes (PVC) for training data, checkpoints, model weights, and application state.
+* **Never** rely on local NVMe or node-local `/home` (on Kubernetes) for data you cannot afford to lose — it is ephemeral and can be wiped during migrations/recreations or maintenance.
+* Use local NVMe only for temporary scratch files that can be regenerated.
+* Set resource requests and limits in pod specs.
 
 ### Job scheduling
 
-* Use Kubernetes Jobs for batch processing
-* Use Slurm job arrays for embarrassingly parallel workloads
-* Set appropriate timeouts and retry policies
+* Use Kubernetes Jobs for batch processing.
+* Use Slurm job arrays for embarrassingly parallel workloads.
+* Set appropriate timeouts and retry policies.
 
 ### Data management
 
-* Download large datasets directly on the cluster (not via local machine)
-* Use shared storage for training data and checkpoints
-* Use local NVMe for temporary files during training
+* Download large datasets directly on the cluster (not via local machine).
+* Use shared storage for training data and checkpoints.
+* Use local NVMe for temporary files during training.
 
 ### Scaling strategy
 
-* Start with reserved capacity for baseline workload
-* Add on-demand capacity for burst periods
-* Use targeted scale-down to control costs
+* Start with reserved capacity for baseline workload.
+* Add on-demand capacity for burst periods.
+* Use targeted scale-down to control costs.
 
 ## GPU capacity not available
 
 If you do not see GPU capacity of the type you require in the api.together.ai cloud console, request GPU capacity by going to the create cluster view, selecting your region and GPU capacity, the type required, and selecting the **Request** button. Also select the date from which you need the GPUs.
 
-We use these requests as input for our demand planning, and our team will reach out to you if and when that becomes available.
+Together uses these requests as input for demand planning and reaches out if and when that capacity becomes available.
 
 <Note>
   Submitting a request for capacity does not guarantee fulfillment due to very high demand. Together fulfills these requests based on available GPU capacity. If you need guaranteed GPU capacity for fixed periods of time, [contact the team](https://www.together.ai/contact-sales).
@@ -8718,7 +8702,7 @@ High-performance GPU clusters for training, fine-tuning, and large-scale AI work
 
 ## What are GPU clusters?
 
-Together GPU Clusters provide on-demand access to high-performance GPU infrastructure for training, fine-tuning, and running large-scale AI workloads. Create clusters in minutes with features like real-time scaling, persistent storage, and support for both Kubernetes and Slurm workload managers.
+Together GPU clusters provide on-demand access to high-performance GPU infrastructure for training, fine-tuning, and running large-scale AI workloads. Create clusters in minutes with features like real-time scaling, persistent storage, and support for both Kubernetes and Slurm workload managers.
 
 You can create a cluster from the [GPU clusters console](https://api.together.ai/clusters) or with the CLI:
 
@@ -8745,116 +8729,116 @@ The [GPU clusters quickstart](/docs/gpu-clusters-quickstart) breaks down this fl
 
 Each GPU cluster is built on Kubernetes, providing a robust container orchestration platform. The architecture includes:
 
-* **Control Plane** – Manages cluster state, scheduling, and API access
-* **Worker Nodes** – GPU-equipped nodes that run your workloads
-* **Networking** – High-speed InfiniBand for multi-node communication
-* **Storage Layer** – Persistent volumes, local NVMe, and shared storage
+* **Control plane:** Manages cluster state, scheduling, and API access.
+* **Worker nodes:** GPU-equipped nodes that run your workloads.
+* **Networking:** High-speed InfiniBand for multi-node communication.
+* **Storage layer:** Persistent volumes, local NVMe, and shared storage.
 
 You interact with the cluster using standard Kubernetes tools like `kubectl`, or through higher-level abstractions like Slurm.
 
 ### Slurm on Kubernetes via Slinky
 
-For users preferring HPC-style workflows, Together runs Slurm on top of Kubernetes using **Slinky**, an integration layer that bridges traditional HPC scheduling with cloud-native infrastructure:
+If you prefer HPC-style workflows, Together runs Slurm on top of Kubernetes using **Slinky**, an integration layer that bridges traditional HPC scheduling with cloud-native infrastructure:
 
-* **Slurm Controller** – Runs as Kubernetes pods, managing job queues and scheduling
-* **Login Nodes** – SSH-accessible entry points for job submission
-* **Compute Nodes** – GPU workers registered with both Kubernetes and Slurm
+* **Slurm controller:** Runs as Kubernetes pods, managing job queues and scheduling.
+* **Login nodes:** SSH-accessible entry points for job submission.
+* **Compute nodes:** GPU workers registered with both Kubernetes and Slurm.
 
 This architecture gives you the simplicity of `sbatch` and `srun` commands while leveraging Kubernetes' reliability, scalability, and ecosystem.
 
 ## Key features
 
-* **Fast provisioning** – Clusters ready in minutes, not hours or days
-* **Flexible scaling** – Scale up or down in real time to match workload demands
-* **Persistent storage** – Long-lived, resizable shared storage with high throughput
-* **Multiple workload managers** – Choose between Kubernetes or Slurm-on-Kubernetes
-* **Full API access** – Manage clusters via REST API or CLI
-* **Enterprise integration** – Works with SkyPilot and other orchestration tools
+* **Fast provisioning:** Clusters ready in minutes, not hours or days.
+* **Flexible scaling:** Scale up or down in real time to match workload demands.
+* **Persistent storage:** Long-lived, resizable shared storage with high throughput.
+* **Multiple workload managers:** Choose between Kubernetes or Slurm-on-Kubernetes.
+* **Full API access:** Manage clusters via REST API or CLI.
+* **Enterprise integration:** Works with SkyPilot and other orchestration tools.
 
 ## Available hardware
 
 Choose from the latest NVIDIA GPU configurations:
 
-* **NVIDIA HGX B200** – Latest generation for maximum performance
-* **NVIDIA HGX H200** – Enhanced memory for large models
-* **NVIDIA HGX H100 SXM** – High-bandwidth training and inference
+* **NVIDIA HGX B200:** Latest generation for maximum performance.
+* **NVIDIA HGX H200:** Enhanced memory for large models.
+* **NVIDIA HGX H100 SXM:** High-bandwidth training and inference.
 
 All nodes feature high-speed InfiniBand networking for multi-node training (except inference-optimized variants).
 
 ## Capacity options
 
-GPU Clusters offer two billing modes to match different workload patterns and budget requirements. You can choose **Reserved** capacity for predictable, sustained workloads with cost savings, or **On-demand** capacity for flexible, pay-as-you-go usage.
+GPU clusters offer two billing modes to match different workload patterns and budget requirements. You can choose **reserved** capacity for predictable, sustained workloads with cost savings, or **on-demand** capacity for flexible, pay-as-you-go usage.
 
 ### Reserved capacity
 
 Reserve GPU capacity upfront for a commitment period of 1-90 days at discounted rates.
 
-**How It Works:**
+**How it works:**
 
-* **Upfront payment** – Credits are charged or deducted when the cluster is provisioned
-* **Fixed duration** – Reserve capacity for 1 to 90 days
-* **Discounted pricing** – Lower rates compared to on-demand
-* **Automatic decommission** – Clusters are decommissioned when the reservation expires
-* **Extend as needed** – Users can extend their reservations from the cloud console cluster details page by clicking the "Extend Duration" button
+* **Upfront payment:** Credits are charged or deducted when the cluster is provisioned.
+* **Fixed duration:** Reserve capacity for 1 to 90 days.
+* **Discounted pricing:** Lower rates compared to on-demand.
+* **Automatic decommission:** Clusters are decommissioned when the reservation expires.
+* **Extend as needed:** You can extend a reservation from the cloud console cluster details page by selecting the **Extend Reservation** button.
 
-**When to Use Reserved:**
+**When to use reserved:**
 
-* Predictable workloads where you know the duration
-* Multi-day training runs or experiments
-* Cost optimization with discounted rates
-* Planned workloads with specific commitments
+* Predictable workloads where you know the duration.
+* Multi-day training runs or experiments.
+* Cost optimization with discounted rates.
+* Planned workloads with specific commitments.
 
-Note: The lifecycle of the shared volumes attached to a reserved cluster is decoupled from the clusters; i.e. storage volumes are not decommissioned when the cluster is decommissioned at the reservation expiration. Shared volumes automatically move to on-demand pricing and continue to persist, and can be attached to other clusters or deleted post data extraction.
+The lifecycle of the shared volumes attached to a reserved cluster is decoupled from the cluster. Storage volumes are not decommissioned when the cluster is decommissioned at reservation expiration. Shared volumes automatically move to on-demand pricing and continue to persist, and can be attached to other clusters or deleted after data extraction.
 
 ### On-demand capacity
 
 Pay only for what you use with hourly billing and no upfront commitment.
 
-**How It Works:**
+**How it works:**
 
-* **Hourly billing** – Pay per hour of cluster runtime
-* **No commitment** – Terminate anytime without penalty
-* **Flexible** – Scale up and down as needed
-* **Standard pricing** – Higher per-hour rates than reserved capacity
+* **Hourly billing:** Pay per hour of cluster runtime.
+* **No commitment:** Terminate anytime without penalty.
+* **Flexible:** Scale up and down as needed.
+* **Standard pricing:** Higher per-hour rates than reserved capacity.
 
-**When to Use On-demand:**
+**When to use on-demand:**
 
-* Variable or unpredictable resource needs
-* Short-term experiments or development work
-* Exploratory testing before committing to longer runs
-* Temporary capacity needs beyond reserved baseline
+* Variable or unpredictable resource needs.
+* Short-term experiments or development work.
+* Exploratory testing before committing to longer runs.
+* Temporary capacity needs beyond reserved baseline.
 
 ### Mixing capacity types
 
 You can combine reserved and on-demand capacity in the same cluster for optimal cost and flexibility:
 
-1. **Start with reserved capacity** for your baseline workload (e.g., reserve 8xH100 for 30 days)
-2. **Add on-demand capacity** during peak periods (e.g., scale to 16xH100 temporarily)
-3. **Scale back down** when burst period ends – on-demand capacity is removed, reserved capacity remains
+1. **Start with reserved capacity** for your baseline workload (for example, reserve 8xH100 for 30 days).
+2. **Add on-demand capacity** during peak periods (for example, scale to 16xH100 temporarily).
+3. **Scale back down** when the burst period ends. On-demand capacity is removed, and reserved capacity remains.
 
 Any usage beyond your reserved capacity is automatically billed at on-demand rates.
 
 ### Choosing the right type
 
-**Choose Reserved if:**
+**Choose reserved if:**
 
-* ✓ You know the duration of your workload
-* ✓ You're running multi-day training or experiments
-* ✓ Cost optimization is important
-* ✓ You can commit to a specific period
+* You know the duration of your workload.
+* You're running multi-day training or experiments.
+* Cost optimization is important.
+* You can commit to a specific period.
 
-**Choose On-demand if:**
+**Choose on-demand if:**
 
-* ✓ Your resource needs are unpredictable
-* ✓ You're running short experiments
-* ✓ You need maximum flexibility
-* ✓ You're in development/testing phase
+* Your resource needs are unpredictable.
+* You're running short experiments.
+* You need maximum flexibility.
+* You're in a development or testing phase.
 
-**Mix Both if:**
+**Mix both if:**
 
-* ✓ You have a predictable baseline with occasional bursts
-* ✓ You want cost savings on steady-state workload
-* ✓ You need flexibility for peak periods
+* You have a predictable baseline with occasional bursts.
+* You want cost savings on a steady-state workload.
+* You need flexibility for peak periods.
 
 ## Preemptible compute (Preview)
 
@@ -8875,9 +8859,9 @@ There is no separate preemptible cluster type—you add preemptible capacity to 
 
 Clusters include multiple storage tiers:
 
-* **Shared volumes** – **Persistent.** High-throughput file-system that survives pod restarts, node reboots, and cluster deletion.
-* **Local NVMe** – **Ephemeral.** Fast local disks on each node. Data can be lost during reboots/migrations/recreations or cluster operations.
-* **`/home` directory** – **Persistent on Slurm** (NFS-backed). **Ephemeral on Kubernetes** (local to each node).
+* **Shared volumes:** Persistent. High-throughput file system that survives pod restarts, node reboots, and cluster deletion.
+* **Local NVMe:** Ephemeral. Fast local disks on each node. Data can be lost during reboots, migrations, recreations, or cluster operations.
+* **`/home` directory:** Persistent on Slurm (NFS-backed). Ephemeral on Kubernetes (local to each node).
 
 <Warning>
   Local NVMe and node-local storage are ephemeral. Always use shared volumes for data you need to keep.
@@ -8893,19 +8877,19 @@ Storage can be dynamically resized as your data grows.
 
 Use standard Kubernetes workflows with `kubectl` to:
 
-* Deploy pods and jobs
-* Manage persistent volumes
-* Access the Kubernetes Dashboard
-* Integrate with existing K8s tooling
+* Deploy pods and jobs.
+* Manage persistent volumes.
+* Access the Kubernetes dashboard.
+* Integrate with existing Kubernetes tooling.
 
 ### Slurm
 
 For HPC-style workflows, use Slurm with:
 
-* Direct SSH access to login nodes
-* Familiar commands (`sbatch`, `srun`, `squeue`)
-* Job arrays for distributed processing
-* Traditional batch scheduling
+* Direct SSH access to login nodes.
+* Familiar commands (`sbatch`, `srun`, `squeue`).
+* Job arrays for distributed processing.
+* Traditional batch scheduling.
 
 [Learn more about Slurm →](/docs/slurm)
 
@@ -8913,20 +8897,20 @@ For HPC-style workflows, use Slurm with:
 
 Ready to create your first cluster?
 
-1. [Follow the Quickstart guide](/docs/gpu-clusters-quickstart) for step-by-step instructions
-2. Review the Capacity Options above to choose the right billing mode
-3. [View current GPU Cluster pricing](https://www.together.ai/pricing#gpu-clusters)
+1. [Follow the GPU clusters quickstart](/docs/gpu-clusters-quickstart) for step-by-step instructions.
+2. Review the capacity options above to choose the right billing mode.
+3. [View current GPU cluster pricing](https://www.together.ai/pricing#gpu-clusters).
 
 ## Support
 
-* **Capacity unavailable?** Use the "Notify Me" option to get alerts when capacity comes online
-* **Questions or custom requirements?** Contact [support@together.ai](mailto:support@together.ai)
+* **Capacity unavailable:** Use the **Notify Me** option to get alerts when capacity comes online.
+* **Questions or custom requirements:** Contact [support@together.ai](mailto:support@together.ai).
 
 
 # Quickstart
 Source: https://docs.together.ai/docs/gpu-clusters-quickstart
 
-Get started with GPU Clusters in minutes.
+Create a reserved or on-demand GPU cluster and connect to it.
 
 ## Create a cluster
 
@@ -8942,26 +8926,26 @@ Follow these steps to create your first GPU cluster:
 
 Select the billing mode that fits your needs:
 
-* **Reserved** – Pay upfront to reserve capacity for 1-90 days with discounted pricing
-* **On-demand** – Pay hourly with no commitment; terminate anytime
+* **Reserved:** Pay upfront to reserve capacity for 1-90 days with discounted pricing.
+* **On-demand:** Pay hourly with no commitment. Terminate anytime.
 
-[Learn more about capacity types →](/docs/gpu-clusters-capacity-types)
+[Learn more about capacity types →](/docs/gpu-clusters-overview#capacity-options)
 
 ### 3. Configure your cluster
 
-**Cluster Size**
+**Cluster size**
 
-* Select the number and type of GPUs (e.g., `8xH100`)
-* Available options: H100, H200, B200
+* Select the number and type of GPUs (for example, `8xH100`).
+* Available options: H100, H200, and B200.
 
-**Cluster Name**
+**Cluster name**
 
-* Enter a descriptive name for easy identification
+* Enter a descriptive name.
 
-**Cluster Type**
+**Cluster type**
 
-* **Kubernetes** – For containerized workloads and K8s-native tools
-* **Slurm** – For HPC-style batch scheduling and traditional workflows
+* **Kubernetes:** For containerized workloads and Kubernetes-native tools.
+* **Slurm:** For HPC-style batch scheduling and traditional workflows.
 
 **Region**
 
@@ -8969,43 +8953,43 @@ Select the billing mode that fits your needs:
 * Select a specific datacenter region instead if you need the cluster in a particular location.
 * Changing the GPU type resets the region to **Any region** and clears any selected shared volume, because volumes are region-specific.
 
-**Duration** (Reserved only)
+**Duration** (reserved only)
 
-* Choose reservation length: 1-90 days
+* Choose reservation length: 1-90 days.
 
-**Shared Volume**
+**Shared volume**
 
-* Create and name your persistent storage volume
-* Minimum size: 1 TiB
-* Can be resized later as needed
+* Create and name your persistent storage volume.
+* Minimum size: 1 TiB.
+* Can be resized later as needed.
 
-**Optional Settings**
+**Optional settings**
 
-* Select NVIDIA driver version
-* Select CUDA version
+* Select NVIDIA driver version.
+* Select CUDA version.
 
 ### 4. Create and verify
 
-1. Select **Proceed** to create your cluster
-2. Monitor the cluster status in the UI as it provisions
-3. Wait for status to transition to **Ready**
+1. Select **Proceed** to create your cluster.
+2. Monitor the cluster status in the UI as it provisions.
+3. Wait for status to transition to **Ready**.
 
 Your cluster is now ready to use!
 
-## Next steps
+## Connect to the cluster
 
 ### For Kubernetes clusters
 
 1. **Install kubectl**
-   * [MacOS installation guide](https://kubernetes.io/docs/tasks/tools/install-kubectl-macos/)
-   * Or use your preferred method for your OS
+   * [macOS installation guide](https://kubernetes.io/docs/tasks/tools/install-kubectl-macos/).
+   * Or use your preferred method for your OS.
 
 2. **Download kubeconfig**
 
    Use the [Together CLI](/reference/cli/clusters) to download the cluster's credentials to your local `~/.kube/config`. Find your cluster ID with `tg beta clusters list`:
 
 ```bash theme={null}
-tg beta clusters get-credentials [CLUSTER_ID] --set-default-context
+tg beta clusters get-credentials <CLUSTER_ID> --set-default-context
 ```
 
 3. **Verify connectivity**
@@ -9017,8 +9001,8 @@ kubectl get nodes
 You should see all worker and control plane nodes listed.
 
 4. **Start using your cluster**
-   * [Deploy workloads](/docs/gpu-clusters-management#kubernetes-usage)
-   * [Access the K8s Dashboard](/docs/gpu-clusters-management#kubernetes-dashboard)
+   * [Deploy workloads](/docs/gpu-clusters-management#kubernetes-usage).
+   * [Access the Kubernetes dashboard](/docs/gpu-clusters-management#kubernetes-dashboard).
 
 ### For Slurm clusters
 
@@ -9039,16 +9023,16 @@ squeue         # View job queue
 ```
 
 4. **Start submitting jobs**
-   * [Learn about Slurm commands](/docs/slurm)
-   * Submit batch jobs with `sbatch`
-   * Run interactive jobs with `srun`
+   * [Learn about Slurm commands](/docs/slurm).
+   * Submit batch jobs with `sbatch`.
+   * Run interactive jobs with `srun`.
 
 5. **Optional: Download kubeconfig**
 
    Slurm clusters run on Kubernetes, so if you need `kubectl` access to the underlying cluster API, any project member can download the kubeconfig from the cluster details page or with the Together CLI:
 
 ```bash theme={null}
-tg beta clusters get-credentials [CLUSTER_ID] --set-default-context
+tg beta clusters get-credentials <CLUSTER_ID> --set-default-context
 ```
 
 SSH to the login node remains the primary workflow for submitting jobs. See [Download cluster kubeconfig](/docs/gpu-clusters-management#download-cluster-kubeconfig) for console steps and OIDC visibility rules.
@@ -9087,20 +9071,20 @@ nvidia-smi
 
 ### Can't see my nodes
 
-* Check cluster status in the UI (should be "Ready")
-* Re-download the latest credentials with `tg beta clusters get-credentials [CLUSTER_ID]`
+* Check cluster status in the UI (should be **Ready**).
+* Re-download the latest credentials with `tg beta clusters get-credentials <CLUSTER_ID>`.
 
 ### SSH connection refused
 
-* Verify your SSH key was added before cluster creation
-* Check the connection command in the cluster UI
-* Ensure you're using the correct hostname
+* Verify your SSH key was added before cluster creation.
+* Check the connection command in the cluster UI.
+* Ensure you're using the correct hostname.
 
 ### Capacity unavailable
 
-* Use the "Notify Me" option to get alerts when capacity is available
-* Try a different region
-* Contact [support@together.ai](mailto:support@together.ai) for custom requirements
+* Use the **Notify Me** option to get alerts when capacity is available.
+* Try a different region.
+* Contact [support@together.ai](mailto:support@together.ai) for custom requirements.
 
 ## Next steps
 
@@ -9201,7 +9185,7 @@ Each health check validates different aspects of your GPU infrastructure:
 
 * Measures InfiniBand write throughput between exactly two GPU nodes across InfiniBand rails.
 * Validates node-to-node interconnect performance and rail-level connectivity.
-* **Requires:** A cluster with at least two GPU nodes. Select exactly two nodes; the first selected node is the server and the second is the client.
+* **Requires:** A cluster with at least two GPU nodes. Select exactly two nodes. The first selected node is the server and the second is the client.
 * **Configurable:** RDMA memory (`cpu` or `gpu`, default `cpu`); direction (`both`, `client-to-server`, or `server-to-client`, default `both`).
 * **Use for:** Investigating slow or degraded links between specific node pairs before distributed training.
 
@@ -9310,7 +9294,7 @@ You'll see the cluster status as:
 
 If acceptance tests fail during provisioning:
 
-1. Navigate to your cluster in the Together Cloud UI.
+1. Navigate to your cluster in the GPU clusters console.
 2. Go to the **Cluster Details** tab.
 3. Select the **Health Checks** sub-tab.
 4. Find the acceptance test runs for the affected nodes.
@@ -9427,7 +9411,7 @@ Passive checks continuously watch node telemetry, GPU metrics, and system logs, 
 See [Recommended repair actions](/docs/node-repair#recommended-repair-actions) for the repair action each signal maps to.
 
 <Note>
-  Detection coverage is expanding, and automated recommendations are enabled per cluster. Not every signal triggers an automated recommendation today; some raise an internal alert that Together's team reviews. Future releases will cover additional hardware and software signals.
+  Detection coverage is expanding, and automated recommendations are enabled per cluster. Not every signal triggers an automated recommendation today. Some raise an internal alert that Together's team reviews. Future releases will cover additional hardware and software signals.
 </Note>
 
 ### Active vs. passive checks
@@ -9675,7 +9659,7 @@ Batch jobs run against a separate rate-limit pool from the standard real-time AP
 * Up to 100 MB per input file.
 * Up to 10 MB per line in the input file. Inline base64 payloads, such as images embedded as `data:image/...;base64,` URLs, count toward this limit.
 * Up to 30B tokens enqueued per model at any time.
-* Completion window defaults to `24h` and cannot be changed; it is a best-effort target.
+* Completion window defaults to `24h` and cannot be changed. It is a best-effort target.
 
 See [rate limits](/docs/serverless/rate-limits) for more info.
 
@@ -10668,7 +10652,7 @@ Typical default: `0` or unset (no cap).
 
 ### `repetition_penalty`
 
-Reduces the probability of tokens that have already appeared anywhere in the prompt or response. Values above `1.0` discourage repetition; values below `1.0` encourage it.
+Reduces the probability of tokens that have already appeared anywhere in the prompt or response. Values above `1.0` discourage repetition. Values below `1.0` encourage it.
 
 Raise it slightly (for example, `1.1`) when the model loops or repeats phrases. Leave it at `1.0` otherwise, since aggressive values degrade fluency.
 
@@ -10676,7 +10660,7 @@ Typical default: `1.0`.
 
 ### `frequency_penalty`
 
-Penalizes tokens proportionally to how often they have already appeared in the response so far. Higher positive values make the model less likely to repeat the same exact tokens; negative values make repetition more likely. Range: `-2.0` to `2.0`.
+Penalizes tokens proportionally to how often they have already appeared in the response so far. Higher positive values make the model less likely to repeat the same exact tokens. Negative values make repetition more likely. Range: `-2.0` to `2.0`.
 
 Use it to reduce verbatim repetition in long generations (lists, summaries, code). It is finer-grained than `repetition_penalty` because the penalty scales with frequency.
 
@@ -22307,6 +22291,7 @@ If you're not sure which vision model to use, start with **Qwen3.5 9B** (`Qwen/Q
 | Black Forest Labs | FLUX 3              | black-forest-labs/FLUX-3    | \$0.17          | -                     |
 | ByteDance         | Seedance 2.5        | ByteDance/Seedance-2.5      | \$0.115         | -                     |
 | ByteDance         | Seedance 1.0 Lite   | ByteDance/Seedance-1.0-lite | \$0.143         | 720p / 5s             |
+| MiniMax           | MiniMax H3          | minimax/h3                  | \$0.1391        | -                     |
 
 ## Audio models
 
@@ -23882,7 +23867,7 @@ Run, train, and serve open-source AI models on Together AI.
 
   <CtaCard href="/docs/building-a-rag-workflow" title="Build RAG apps" description="Combine retrieval and generation to build grounded RAG apps." />
 
-  <CtaCard href="https://www.together.ai/blog/how-to-build-a-real-time-image-generator-with-together-ai" title="Build a real-time image app" description="Stream real-time image generations with FLUX Schnell." />
+  <CtaCard href="/docs/how-to-build-a-real-time-image-generator" title="Build a real-time image app" description="Stream real-time image generations with Juggernaut Lightning Flux." />
 
   <CtaCard href="/docs/how-to-build-a-claude-artifacts-clone-with-llama-31-405b" title="Build a text-to-app workflow" description="Turn natural language into interactive apps with CodeSandbox." />
 
@@ -29794,40 +29779,37 @@ This page covers the function-calling data shape, supported models, and launch p
 The following models support function-calling fine-tuning. See [supported models](/docs/fine-tuning/supported-models) for context lengths and batch limits.
 
 <Accordion title="Supported models">
-  | Organization | Model                                              | API ID                                               |
-  | ------------ | -------------------------------------------------- | ---------------------------------------------------- |
-  | DeepSeek     | DeepSeek V4 Flash 0731                             | `deepseek-ai/DeepSeek-V4-Flash-0731`                 |
-  | DeepSeek     | DeepSeek V4 Flash                                  | `deepseek-ai/DeepSeek-V4-Flash`                      |
-  | NVIDIA       | NVIDIA Nemotron 3 Nano Omni 30B A3B Reasoning BF16 | `nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning-BF16` |
-  | NVIDIA       | NVIDIA Nemotron 3 Super 120B A12B BF16             | `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16`      |
-  | Qwen         | Qwen3.8 27B                                        | `Qwen/Qwen3.8-27B`                                   |
-  | Qwen         | Qwen3.5 397B A17B                                  | `Qwen/Qwen3.5-397B-A17B`                             |
-  | Qwen         | Qwen3.5 122B A10B                                  | `Qwen/Qwen3.5-122B-A10B`                             |
-  | Qwen         | Qwen3.5 35B A3B                                    | `Qwen/Qwen3.5-35B-A3B`                               |
-  | Qwen         | Qwen3.5 35B A3B Base                               | `Qwen/Qwen3.5-35B-A3B-Base`                          |
-  | Qwen         | Qwen3.5 27B                                        | `Qwen/Qwen3.5-27B`                                   |
-  | Qwen         | Qwen3.5 9B                                         | `Qwen/Qwen3.5-9B`                                    |
-  | Qwen         | Qwen3.5 4B                                         | `Qwen/Qwen3.5-4B`                                    |
-  | Qwen         | Qwen3.5 2B                                         | `Qwen/Qwen3.5-2B`                                    |
-  | Qwen         | Qwen3.5 0.8B                                       | `Qwen/Qwen3.5-0.8B`                                  |
-  | Qwen         | Qwen3.6 35B A3B                                    | `Qwen/Qwen3.6-35B-A3B`                               |
-  | Qwen         | Qwen3.6 27B                                        | `Qwen/Qwen3.6-27B`                                   |
-  | Moonshot AI  | Kimi K2.7 Code                                     | `moonshotai/Kimi-K2.7-Code`                          |
-  | Moonshot AI  | Kimi K2.6                                          | `moonshotai/Kimi-K2.6`                               |
-  | Z.ai         | GLM 5.3                                            | `zai-org/GLM-5.3`                                    |
-  | Z.ai         | GLM 5.2                                            | `zai-org/GLM-5.2`                                    |
-  | Z.ai         | GLM 5.1                                            | `zai-org/GLM-5.1`                                    |
-  | OpenAI       | GPT-OSS 20B                                        | `openai/gpt-oss-20b`                                 |
-  | OpenAI       | GPT-OSS 120B                                       | `openai/gpt-oss-120b`                                |
-  | Meta         | Llama 4 Scout 17B 16E Instruct                     | `meta-llama/Llama-4-Scout-17B-16E-Instruct`          |
-  | Meta         | Llama 4 Scout 17B 16E Instruct VLM                 | `meta-llama/Llama-4-Scout-17B-16E-Instruct-VLM`      |
-  | Meta         | Llama 4 Maverick 17B 128E Instruct                 | `meta-llama/Llama-4-Maverick-17B-128E-Instruct`      |
-  | Meta         | Llama 4 Maverick 17B 128E Instruct VLM             | `meta-llama/Llama-4-Maverick-17B-128E-Instruct-VLM`  |
-  | Meta         | Llama 3.3 70B Instruct Reference                   | `meta-llama/Llama-3.3-70B-Instruct-Reference`        |
-  | Meta         | Meta Llama 3.1 8B Instruct Reference               | `meta-llama/Meta-Llama-3.1-8B-Instruct-Reference`    |
-  | Google       | Gemma 4 31B IT                                     | `google/gemma-4-31B-it`                              |
-  | Google       | Gemma 4 31B IT VLM                                 | `google/gemma-4-31B-it-VLM`                          |
-  | Google       | Gemma 4 26B A4B IT                                 | `google/gemma-4-26B-A4B-it`                          |
+  | Organization | Model                                  | API ID                                              |
+  | ------------ | -------------------------------------- | --------------------------------------------------- |
+  | DeepSeek     | DeepSeek V4 Flash 0731                 | `deepseek-ai/DeepSeek-V4-Flash-0731`                |
+  | DeepSeek     | DeepSeek V4 Flash                      | `deepseek-ai/DeepSeek-V4-Flash`                     |
+  | Z.ai         | GLM 5.3                                | `zai-org/GLM-5.3`                                   |
+  | Z.ai         | GLM 5.2                                | `zai-org/GLM-5.2`                                   |
+  | Z.ai         | GLM 5.1                                | `zai-org/GLM-5.1`                                   |
+  | Qwen         | Qwen3.8 27B                            | `Qwen/Qwen3.8-27B`                                  |
+  | Qwen         | Qwen3.6 35B A3B                        | `Qwen/Qwen3.6-35B-A3B`                              |
+  | Qwen         | Qwen3.5 9B                             | `Qwen/Qwen3.5-9B`                                   |
+  | Qwen         | Qwen3.5 4B                             | `Qwen/Qwen3.5-4B`                                   |
+  | Qwen         | Qwen3.5 2B                             | `Qwen/Qwen3.5-2B`                                   |
+  | Qwen         | Qwen3.5 0.8B                           | `Qwen/Qwen3.5-0.8B`                                 |
+  | Qwen         | Qwen3.6 27B                            | `Qwen/Qwen3.6-27B`                                  |
+  | Qwen         | Qwen3.5 397B A17B                      | `Qwen/Qwen3.5-397B-A17B`                            |
+  | Qwen         | Qwen3.5 122B A10B                      | `Qwen/Qwen3.5-122B-A10B`                            |
+  | Qwen         | Qwen3.5 35B A3B                        | `Qwen/Qwen3.5-35B-A3B`                              |
+  | Qwen         | Qwen3.5 27B                            | `Qwen/Qwen3.5-27B`                                  |
+  | Moonshot AI  | Kimi K2.7 Code                         | `moonshotai/Kimi-K2.7-Code`                         |
+  | Moonshot AI  | Kimi K2.6                              | `moonshotai/Kimi-K2.6`                              |
+  | Google       | Gemma 4 31B IT                         | `google/gemma-4-31B-it`                             |
+  | Google       | Gemma 4 31B IT VLM                     | `google/gemma-4-31B-it-VLM`                         |
+  | Google       | Gemma 4 26B A4B IT                     | `google/gemma-4-26B-A4B-it`                         |
+  | OpenAI       | GPT-OSS 20B                            | `openai/gpt-oss-20b`                                |
+  | OpenAI       | GPT-OSS 120B                           | `openai/gpt-oss-120b`                               |
+  | Meta         | Llama 4 Scout 17B 16E Instruct         | `meta-llama/Llama-4-Scout-17B-16E-Instruct`         |
+  | Meta         | Llama 4 Scout 17B 16E Instruct VLM     | `meta-llama/Llama-4-Scout-17B-16E-Instruct-VLM`     |
+  | Meta         | Llama 4 Maverick 17B 128E Instruct     | `meta-llama/Llama-4-Maverick-17B-128E-Instruct`     |
+  | Meta         | Llama 4 Maverick 17B 128E Instruct VLM | `meta-llama/Llama-4-Maverick-17B-128E-Instruct-VLM` |
+  | Meta         | Llama 3.3 70B Instruct Reference       | `meta-llama/Llama-3.3-70B-Instruct-Reference`       |
+  | Meta         | Meta Llama 3.1 8B Instruct Reference   | `meta-llama/Meta-Llama-3.1-8B-Instruct-Reference`   |
 </Accordion>
 
 ## Prepare your data
@@ -30274,31 +30256,29 @@ This page covers the reasoning data shape, supported models, and launch paramete
 The following models support reasoning fine-tuning. See [supported models](/docs/fine-tuning/supported-models) for context lengths and batch limits.
 
 <Accordion title="Supported models">
-  | Organization | Model                                              | API ID                                               |
-  | ------------ | -------------------------------------------------- | ---------------------------------------------------- |
-  | DeepSeek     | DeepSeek V4 Flash 0731                             | `deepseek-ai/DeepSeek-V4-Flash-0731`                 |
-  | DeepSeek     | DeepSeek V4 Flash                                  | `deepseek-ai/DeepSeek-V4-Flash`                      |
-  | NVIDIA       | NVIDIA Nemotron 3 Nano Omni 30B A3B Reasoning BF16 | `nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning-BF16` |
-  | Qwen         | Qwen3.8 27B                                        | `Qwen/Qwen3.8-27B`                                   |
-  | Qwen         | Qwen3.5 397B A17B                                  | `Qwen/Qwen3.5-397B-A17B`                             |
-  | Qwen         | Qwen3.5 122B A10B                                  | `Qwen/Qwen3.5-122B-A10B`                             |
-  | Qwen         | Qwen3.5 35B A3B                                    | `Qwen/Qwen3.5-35B-A3B`                               |
-  | Qwen         | Qwen3.5 35B A3B Base                               | `Qwen/Qwen3.5-35B-A3B-Base`                          |
-  | Qwen         | Qwen3.5 27B                                        | `Qwen/Qwen3.5-27B`                                   |
-  | Qwen         | Qwen3.5 9B                                         | `Qwen/Qwen3.5-9B`                                    |
-  | Qwen         | Qwen3.5 4B                                         | `Qwen/Qwen3.5-4B`                                    |
-  | Qwen         | Qwen3.5 2B                                         | `Qwen/Qwen3.5-2B`                                    |
-  | Qwen         | Qwen3.5 0.8B                                       | `Qwen/Qwen3.5-0.8B`                                  |
-  | Qwen         | Qwen3.6 35B A3B                                    | `Qwen/Qwen3.6-35B-A3B`                               |
-  | Qwen         | Qwen3.6 27B                                        | `Qwen/Qwen3.6-27B`                                   |
-  | Z.ai         | GLM 5.3                                            | `zai-org/GLM-5.3`                                    |
-  | Z.ai         | GLM 5.2                                            | `zai-org/GLM-5.2`                                    |
-  | Z.ai         | GLM 5.1                                            | `zai-org/GLM-5.1`                                    |
-  | OpenAI       | GPT-OSS 20B                                        | `openai/gpt-oss-20b`                                 |
-  | OpenAI       | GPT-OSS 120B                                       | `openai/gpt-oss-120b`                                |
-  | Google       | Gemma 4 31B IT                                     | `google/gemma-4-31B-it`                              |
-  | Google       | Gemma 4 31B IT VLM                                 | `google/gemma-4-31B-it-VLM`                          |
-  | Google       | Gemma 4 26B A4B IT                                 | `google/gemma-4-26B-A4B-it`                          |
+  | Organization | Model                  | API ID                               |
+  | ------------ | ---------------------- | ------------------------------------ |
+  | DeepSeek     | DeepSeek V4 Flash 0731 | `deepseek-ai/DeepSeek-V4-Flash-0731` |
+  | DeepSeek     | DeepSeek V4 Flash      | `deepseek-ai/DeepSeek-V4-Flash`      |
+  | Z.ai         | GLM 5.3                | `zai-org/GLM-5.3`                    |
+  | Z.ai         | GLM 5.2                | `zai-org/GLM-5.2`                    |
+  | Z.ai         | GLM 5.1                | `zai-org/GLM-5.1`                    |
+  | Qwen         | Qwen3.8 27B            | `Qwen/Qwen3.8-27B`                   |
+  | Qwen         | Qwen3.6 35B A3B        | `Qwen/Qwen3.6-35B-A3B`               |
+  | Qwen         | Qwen3.5 9B             | `Qwen/Qwen3.5-9B`                    |
+  | Qwen         | Qwen3.5 4B             | `Qwen/Qwen3.5-4B`                    |
+  | Qwen         | Qwen3.5 2B             | `Qwen/Qwen3.5-2B`                    |
+  | Qwen         | Qwen3.5 0.8B           | `Qwen/Qwen3.5-0.8B`                  |
+  | Qwen         | Qwen3.6 27B            | `Qwen/Qwen3.6-27B`                   |
+  | Qwen         | Qwen3.5 397B A17B      | `Qwen/Qwen3.5-397B-A17B`             |
+  | Qwen         | Qwen3.5 122B A10B      | `Qwen/Qwen3.5-122B-A10B`             |
+  | Qwen         | Qwen3.5 35B A3B        | `Qwen/Qwen3.5-35B-A3B`               |
+  | Qwen         | Qwen3.5 27B            | `Qwen/Qwen3.5-27B`                   |
+  | Google       | Gemma 4 31B IT         | `google/gemma-4-31B-it`              |
+  | Google       | Gemma 4 31B IT VLM     | `google/gemma-4-31B-it-VLM`          |
+  | Google       | Gemma 4 26B A4B IT     | `google/gemma-4-26B-A4B-it`          |
+  | OpenAI       | GPT-OSS 20B            | `openai/gpt-oss-20b`                 |
+  | OpenAI       | GPT-OSS 120B           | `openai/gpt-oss-120b`                |
 </Accordion>
 
 ## Prepare your data
@@ -31727,6 +31707,180 @@ There’s plenty more tricks in the production app including animated loading st
 The application is open-source, so check it out here to learn more: **[https://github.com/Nutlope/llamacoder](https://github.com/Nutlope/llamacoder)**
 
 And if you’re ready to start querying LLMs in your own apps to add powerful AI features just like the kind we saw in this post, [sign up for Together AI](https://api.together.ai/) today and make your first query in minutes!
+
+
+# Build a real-time image generator with Flux
+Source: https://docs.together.ai/docs/how-to-build-a-real-time-image-generator
+
+Build a real-time text-to-image app with Juggernaut Lightning Flux, Next.js, and Together AI.
+
+In this guide, we're going to go over how we built [BlinkShot](https://www.blinkshot.io/), an open source app that generates images from text in real time, as you type. It's built with [Juggernaut Lightning Flux](https://www.together.ai/models/juggernaut-lightning-flux) on Together AI, a Flux-based model that returns an image in under two seconds.
+
+<img alt="BlinkShot generating an image as the user types a prompt" />
+
+In this post, you'll learn how to build the core parts of BlinkShot. The app is [open source](https://github.com/Nutlope/blinkshot) and built with Next.js and React Query, but the concepts apply to any language or framework.
+
+## Building the prompt input
+
+The core interaction of BlinkShot is a single textarea where the user describes an image. There's no submit button. Because the model is fast enough to generate images in real time, the app fires a request as the user types:
+
+```tsx theme={null}
+function Home() {
+  const [prompt, setPrompt] = useState("");
+
+  return (
+    <textarea
+      rows={4}
+      placeholder="Describe your image..."
+      value={prompt}
+      onChange={(e) => setPrompt(e.target.value)}
+    />
+  );
+}
+```
+
+To turn keystrokes into API calls, we use `useQuery` from React Query with the prompt in the `queryKey`. Whenever the prompt changes, React Query runs the query function again:
+
+```tsx theme={null}
+const { data: image, isFetching } = useQuery({
+  placeholderData: (previousData) => previousData,
+  queryKey: [prompt],
+  queryFn: async () => {
+    const res = await fetch("/api/generateImage", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt }),
+    });
+
+    if (!res.ok) {
+      throw new Error(await res.text());
+    }
+
+    return (await res.json()) as { b64_json: string };
+  },
+  enabled: !!prompt.trim(),
+  staleTime: Infinity,
+  retry: false,
+});
+```
+
+The `placeholderData` option keeps the previous image on screen while the next one loads, so the UI never flashes empty between generations.
+
+## Generating images in an API route
+
+The query function above calls a Next.js API route. Generating from a server route keeps your Together API key out of the browser. Install the SDK:
+
+```bash theme={null}
+npm install together-ai
+```
+
+The SDK reads your API key from the `TOGETHER_API_KEY` environment variable, so add it to your `.env.local`:
+
+```bash .env.local theme={null}
+TOGETHER_API_KEY=your_api_key
+```
+
+Then create the route at `app/api/generateImage/route.ts`. It reads the prompt from the request body and generates an image with Juggernaut Lightning Flux:
+
+```typescript app/api/generateImage/route.ts theme={null}
+import Together from "together-ai";
+
+const client = new Together();
+
+export async function POST(request: Request) {
+  const { prompt } = await request.json();
+
+  const response = await client.images.generate({
+    prompt,
+    model: "Rundiffusion/Juggernaut-Lightning-Flux",
+    width: 1024,
+    height: 768,
+    steps: 4,
+    response_format: "base64",
+  });
+
+  return Response.json(response.data[0]);
+}
+```
+
+Setting `response_format` to `"base64"` returns the image data inline as `b64_json`, so the frontend can render it immediately with a data URL instead of waiting on a second request to fetch a hosted file:
+
+```tsx theme={null}
+{image && (
+  <img
+    src={`data:image/png;base64,${image.b64_json}`}
+    alt={prompt}
+    width={1024}
+    height={768}
+  />
+)}
+```
+
+At this point the app works end to end: enter a prompt and an image appears.
+
+## Debouncing requests
+
+Firing a request on every keystroke wastes generations on half-typed prompts. To fix this, we debounce the prompt with the `useDebounce` hook from `@uidotdev/usehooks`:
+
+```bash theme={null}
+npm install @uidotdev/usehooks
+```
+
+```tsx theme={null}
+const debouncedPrompt = useDebounce(prompt, 350);
+```
+
+Using `debouncedPrompt` in the `queryKey` means the app waits for a 350 millisecond pause in typing before generating:
+
+```tsx theme={null}
+const { data: image, isFetching } = useQuery({
+  placeholderData: (previousData) => previousData,
+  queryKey: [debouncedPrompt],
+  // ...
+});
+```
+
+BlinkShot goes one step further and scales the delay with prompt length, waiting 900 milliseconds after one or two words but only 350 milliseconds once the prompt is longer. Short fragments rarely describe the final image, so there's less value in generating them.
+
+## Tuning quality with `steps`
+
+The `steps` parameter controls how many diffusion steps the model runs. More steps produce more detailed images but take longer, which matters when every keystroke can trigger a generation. Juggernaut Lightning Flux is distilled to produce good images in very few steps, and BlinkShot uses 4 as its balance of quality and speed.
+
+Pricing for Flux models is based on the size of the generated image in megapixels, and generations above the model's default step count cost proportionally more. See [image model pricing](/docs/serverless/models#image-models) for the formula.
+
+## Keeping images consistent with `seed`
+
+By default, every generation starts from random noise, so the same prompt produces a different image each time. Passing a fixed `seed` pins that starting point, so the same prompt and seed reproduce the same image. Repeated runs can differ by a few pixels, but the subject, composition, and details stay the same.
+
+```typescript theme={null}
+const response = await client.images.generate({
+  prompt,
+  model: "Rundiffusion/Juggernaut-Lightning-Flux",
+  width: 1024,
+  height: 768,
+  steps: 4,
+  seed: 123,
+  response_format: "base64",
+});
+```
+
+BlinkShot uses this for its consistency mode. With a fixed seed, extending the prompt evolves the previous image instead of replacing it with something unrelated, so "a cat" and then "a cat wearing a hat" look like the same cat.
+
+## Going beyond real-time generation
+
+BlinkShot is open source, so check out the [full code](https://github.com/Nutlope/blinkshot) to see the production details this guide skips, like rate limiting and prompt moderation. When you're ready to generate images in your own apps, [sign up for Together AI](https://togetherai.link) and make your first API call in minutes.
+
+## Next steps
+
+<CardGroup>
+  <Card title="FLUX.2 quickstart" icon="bolt" href="/docs/quickstart-flux">
+    Generate higher-fidelity images with the latest FLUX.2 model family.
+  </Card>
+
+  <Card title="Image generation overview" icon="photo" href="/docs/inference/images/overview">
+    Explore every image model and parameter available on Together AI.
+  </Card>
+</CardGroup>
 
 
 # Build a coding agent
@@ -39040,10 +39194,10 @@ Admins can remove members at any time:
 
 ## Roles
 
-Organizations support two roles: **admin** and **developer**. For a full breakdown of what each role can do across the platform, see [Roles & Permissions](/docs/roles-permissions).
+Organizations support two roles: **admin** and **developer**. For a full breakdown of what each role can do across the platform, see [Roles & permissions](/docs/roles-permissions).
 
 <Note>
-  Roles and permissions are being progressively rolled out across products and services. Today, the primary distinction is that admins can manage infrastructure and team membership, while developers can use resources but not modify them. See [Roles & Permissions](/docs/roles-permissions) for details.
+  Roles and permissions are being progressively rolled out across products and services. Today, the primary distinction is that admins can manage infrastructure and team membership, while developers can use resources but not modify them. See [Roles & permissions](/docs/roles-permissions) for details.
 </Note>
 
 ## Projects
@@ -44189,7 +44343,7 @@ You can also email [support@together.ai](mailto:support@together.ai).
 # Code interpreter
 Source: https://docs.together.ai/docs/together-code-interpreter
 
-Execute LLM-generated code seamlessly with a simple API call.
+Execute LLM-generated code in a sandboxed environment.
 
 <Tip>Using a coding agent? Install the [together-sandboxes](https://github.com/togethercomputer/skills/tree/main/skills/together-sandboxes) skill to let your agent write correct sandbox code automatically. [Learn more](/docs/agent-skills).</Tip>
 
@@ -44805,14 +44959,14 @@ Run generative code tooling in fast, secure sandboxes at scale.
 
 Together Code Sandbox offers a fully configurable development environment with fast start-up times, robust snapshotting, and a suite of mature dev tools.
 
-Together Code Sandbox can spin up a sandbox by cloning a template in under 3 seconds. Inside this VM, you can run any code, install any dependencies and even run servers.
+Together Code Sandbox can spin up a sandbox by cloning a template in under three seconds. Inside this VM, you can run any code, install any dependencies, and run servers.
 
 Under the hood, the SDK uses the microVM infrastructure of CodeSandbox to spin up sandboxes. It supports:
 
-* Memory snapshot/restore (checkpointing) at any point in time
-* Resume/clone VMs from a snapshot in 3 seconds
-* VM FS persistence (with git version control)
-* Environment customization using Docker & Docker Compose (Dev Containers)
+* Memory snapshot/restore (checkpointing) at any point in time.
+* Resume/clone VMs from a snapshot in three seconds.
+* VM FS persistence (with git version control).
+* Environment customization using Docker and Docker Compose (Dev Containers).
 
 ## Accessing Together Code Sandbox
 
@@ -44833,7 +44987,7 @@ To get started, install the SDK:
 npm install @codesandbox/sdk
 ```
 
-Then, create an API token by going to [https://codesandbox.io/t/api](https://codesandbox.io/t/api), and clicking on the "Create API Token" button. You can then use this token to authenticate with the SDK:
+Then, create an API token by going to [https://codesandbox.io/t/api](https://codesandbox.io/t/api) and selecting the **Create API Token** button. You can then use this token to authenticate with the SDK:
 
 ```typescript TypeScript theme={null}
 import { CodeSandbox } from "@codesandbox/sdk";
@@ -46312,13 +46466,6 @@ For data access or deletion requests beyond what's covered above, email [privacy
 Source: https://docs.together.ai/examples
 
 Explore our vast library of open-source cookbooks & example apps
-
-
-
-# Build a real-time image generator with Flux and Together AI
-Source: https://docs.together.ai/external-link-02
-
-
 
 
 
@@ -48759,21 +48906,10 @@ Source: https://docs.together.ai/docs/changelog
 
   The following models are now available on [serverless](/docs/serverless/models):
 
-  * `deepseek-ai/DeepSeek-V4.1-Flash`: 1,000,000 context length, FP8 quantization, function calling and structured outputs. Pricing: \$0.30 input / \$1.20 output / \$0.006 cached input (per 1M tokens).
+  * `deepseek-ai/DeepSeek-V4.1-Flash`: 1,000,000 context length, FP8 quantization, function calling, and structured outputs. Pricing: \$0.30 input / \$1.20 output / \$0.006 cached input (per 1M tokens).
 </Update>
 
 <Update label="September 10, 2026">
-  ## Together CLI v2.33.2
-
-  Version 2.33.2 of the Together CLI improves error reporting and upload feedback:
-
-  * Endpoint, fine-tuning, and model commands now print the API's error message when a request fails, rather than a generic failure notice. The same goes for a missing API key or command argument.
-  * `tg evals create` and `tg batches submit` now show a progress bar while uploading files, matching `tg files upload`.
-  * `tg fine-tuning list-events` no longer fails on jobs with more than 20 events.
-  * The `--scale-to-zero-window` flag has been removed from `tg beta endpoints deploy` and `tg beta endpoints update`.
-
-  See the [CLI reference](/reference/cli/getting-started).
-
   ## Preemptible compute for GPU clusters
 
   Preemptible compute is now in public preview for Kubernetes GPU clusters. Alongside standard nodes, you can set a preemptible GPU target, and Together provisions toward it as spare capacity becomes available, at a flat discounted rate relative to on-demand.
@@ -48785,6 +48921,27 @@ Source: https://docs.together.ai/docs/changelog
   * **Sub-hourly billing:** Usage is metered every one to two minutes, so you pay only for the time a node is live.
 
   See [Preemptible compute](/docs/preemptible-compute) for the preemption contract, scheduling guidance, and checkpoint examples.
+
+  ## Together CLI v2.33.2
+
+  Version 2.33.2 of the Together CLI improves error reporting and upload feedback:
+
+  * Endpoint, fine-tuning, and model commands now print the API's error message when a request fails, rather than a generic failure notice. The same goes for a missing API key or command argument.
+  * `tg evals create` and `tg batches submit` now show a progress bar while uploading files, matching `tg files upload`.
+  * `tg fine-tuning list-events` no longer fails on jobs with more than 20 events.
+  * The `--scale-to-zero-window` flag has been removed from `tg beta endpoints deploy` and `tg beta endpoints update`.
+
+  See the [CLI reference](/reference/cli/getting-started).
+</Update>
+
+<Update label="September 8, 2026">
+  ## New models available for fine-tuning
+
+  You can now fine-tune the following models:
+
+  * `zai-org/GLM-5.3`.
+
+  See [Supported models](/docs/fine-tuning/supported-models) for the full list.
 </Update>
 
 <Update label="September 1, 2026">

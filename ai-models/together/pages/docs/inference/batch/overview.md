@@ -41,7 +41,7 @@ Batch jobs run against a separate rate-limit pool from the standard real-time AP
 * Up to 100 MB per input file.
 * Up to 10 MB per line in the input file. Inline base64 payloads, such as images embedded as `data:image/...;base64,` URLs, count toward this limit.
 * Up to 30B tokens enqueued per model at any time.
-* Completion window defaults to `24h` and cannot be changed; it is a best-effort target.
+* Completion window defaults to `24h` and cannot be changed. It is a best-effort target.
 
 See [rate limits](/docs/serverless/rate-limits) for more info.
 

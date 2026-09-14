@@ -6,7 +6,7 @@ path: api/charges/create
 
 # Create a charge
 
-This method is no longer recommended—use the [Payment Intents API](https://docs.stripe.com/api/payment_intents.md) to initiate a new payment instead. Confirmation of the PaymentIntent creates the `Charge` object used to request payment.
+This method is deprecated and will be removed soon. If your integration uses it, you need to update it to use a different payment flow, such as [the Payment Intents API](https://docs.stripe.com/payments/payment-intents.md).
 
 ## Request
 

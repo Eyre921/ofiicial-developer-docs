@@ -60,10 +60,10 @@ Admins can remove members at any time:
 
 ## Roles
 
-Organizations support two roles: **admin** and **developer**. For a full breakdown of what each role can do across the platform, see [Roles & Permissions](/docs/roles-permissions).
+Organizations support two roles: **admin** and **developer**. For a full breakdown of what each role can do across the platform, see [Roles & permissions](/docs/roles-permissions).
 
 <Note>
-  Roles and permissions are being progressively rolled out across products and services. Today, the primary distinction is that admins can manage infrastructure and team membership, while developers can use resources but not modify them. See [Roles & Permissions](/docs/roles-permissions) for details.
+  Roles and permissions are being progressively rolled out across products and services. Today, the primary distinction is that admins can manage infrastructure and team membership, while developers can use resources but not modify them. See [Roles & permissions](/docs/roles-permissions) for details.
 </Note>
 
 ## Projects

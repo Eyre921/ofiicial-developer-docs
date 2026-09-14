@@ -1,6 +1,6 @@
 # agent-frameworks/mcp 文档索引
 
-> 共 148 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 150 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -80,6 +80,7 @@
 - `extensions/auth/overview` — [Authorization Extensions](pages/extensions/auth/overview.md) · [原文](https://modelcontextprotocol.io/extensions/auth/overview)
 - `extensions/client-matrix` — [Extension Support Matrix](pages/extensions/client-matrix.md) · [原文](https://modelcontextprotocol.io/extensions/client-matrix)
 - `extensions/overview` — [Extensions Overview](pages/extensions/overview.md) · [原文](https://modelcontextprotocol.io/extensions/overview)
+- `extensions/skills/overview` — [Skills](pages/extensions/skills/overview.md) · [原文](https://modelcontextprotocol.io/extensions/skills/overview)
 - `extensions/tasks/overview` — [Tasks](pages/extensions/tasks/overview.md) · [原文](https://modelcontextprotocol.io/extensions/tasks/overview)
 
 ## registry
@@ -130,6 +131,7 @@
 - `seps/2575-stateless-mcp` — [SEP-2575: Make MCP Stateless](pages/seps/2575-stateless-mcp.md) · [原文](https://modelcontextprotocol.io/seps/2575-stateless-mcp)
 - `seps/2577-deprecate-roots-sampling-and-logging` — [SEP-2577: Deprecate Roots, Sampling, and Logging](pages/seps/2577-deprecate-roots-sampling-and-logging.md) · [原文](https://modelcontextprotocol.io/seps/2577-deprecate-roots-sampling-and-logging)
 - `seps/2596-spec-feature-lifecycle-and-deprecation` — [SEP-2596: Specification Feature Lifecycle and Deprecation Policy](pages/seps/2596-spec-feature-lifecycle-and-deprecation.md) · [原文](https://modelcontextprotocol.io/seps/2596-spec-feature-lifecycle-and-deprecation)
+- `seps/2640-skills-extension` — [SEP-2640: Skills Extension](pages/seps/2640-skills-extension.md) · [原文](https://modelcontextprotocol.io/seps/2640-skills-extension)
 - `seps/2663-tasks-extension` — [SEP-2663: Tasks Extension](pages/seps/2663-tasks-extension.md) · [原文](https://modelcontextprotocol.io/seps/2663-tasks-extension)
 - `seps/414-request-meta` — [SEP-414: Document OpenTelemetry Trace Context Propagation Conventions](pages/seps/414-request-meta.md) · [原文](https://modelcontextprotocol.io/seps/414-request-meta)
 - `seps/932-model-context-protocol-governance` — [SEP-932: Model Context Protocol Governance](pages/seps/932-model-context-protocol-governance.md) · [原文](https://modelcontextprotocol.io/seps/932-model-context-protocol-governance)

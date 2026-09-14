@@ -73,7 +73,7 @@ Run, train, and serve open-source AI models on Together AI.
 
   <CtaCard href="/docs/building-a-rag-workflow" title="Build RAG apps" description="Combine retrieval and generation to build grounded RAG apps." />
 
-  <CtaCard href="https://www.together.ai/blog/how-to-build-a-real-time-image-generator-with-together-ai" title="Build a real-time image app" description="Stream real-time image generations with FLUX Schnell." />
+  <CtaCard href="/docs/how-to-build-a-real-time-image-generator" title="Build a real-time image app" description="Stream real-time image generations with Juggernaut Lightning Flux." />
 
   <CtaCard href="/docs/how-to-build-a-claude-artifacts-clone-with-llama-31-405b" title="Build a text-to-app workflow" description="Turn natural language into interactive apps with CodeSandbox." />
 

@@ -71,6 +71,16 @@ Agents can request JSON output when they need to read and act on Directory resul
 stripe directory search "serverless postgres database" --format json
 ```
 
+### Find a payment recipient
+
+When a user wants to pay a business but doesn’t provide an exact Stripe Profile handle or network ID, search Stripe Directory before trying to send the transfer:
+
+```bash
+stripe directory search "<query>" --format json
+```
+
+Return a short list of relevant businesses and ask the user which recipient to pay. Prefer results with a clear Stripe Profile handle or enough evidence to identify the intended business. Don’t guess the recipient.
+
 ### Install skills for your agent
 
 Use one of these options to connect your agent to Stripe Directory.
@@ -224,7 +234,7 @@ This produces results, one of which is PostalForm:
 │                   https://mpp.dev/services#postalform                        │
 │                   https://postalform.com/llms.txt                            │
 │                   https://postalform.com/agents                              │
-│                   Pay using mppx fetch <endpoint>                            │
+│                   Pay using mppx <endpoint>                                  │
 │                                                                              │
 │ MCP               —                                                          │
 │ Link supported    —                                                          │

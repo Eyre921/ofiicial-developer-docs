@@ -313,10 +313,10 @@ sky launch -c gpt-together gpt-oss-20b.yaml
 
 ### Benefits
 
-* **Simplified orchestration** – Abstract away Kubernetes complexity.
-* **Multi-cloud support** – Same workflow across different clouds.
-* **Cost optimization** – Auto-select cheapest available resources.
-* **Job management** – Easy monitoring and cancellation.
+* **Orchestration:** Abstract away Kubernetes complexity.
+* **Multi-cloud support:** Same workflow across different clouds.
+* **Cost optimization:** Auto-select the cheapest available resources.
+* **Job management:** Monitor and cancel jobs.
 
 ## Automation patterns
 

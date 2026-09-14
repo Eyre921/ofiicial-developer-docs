@@ -11,13 +11,13 @@ firectl deployment create [flags]
 ```
 
 <Warning>
-  **Do not create deployments without a shape.** Always pass `--deployment-shape`. Deployments created without a shape skip validation, are the most common cause of failed deployment creations, and the unshaped path may be deprecated in the future. List shapes for your model with [`firectl deployment-shape-version list`](/tools-sdks/firectl/commands/deployment-shape-version-list), and see [Deployment shapes](/guides/ondemand-deployments#deployment-shapes) for details.
+  **Do not create deployments without a shape.** Always pass `--deployment-shape`. Deployments created without a shape skip validation, are the most common cause of failed deployment creations, and the unshaped path may be deprecated in the future. Find shapes for your model with [`firectl deployment-shape-version match`](/tools-sdks/firectl/commands/deployment-shape-version-match), and see [Deployment shapes](/guides/ondemand-deployments#deployment-shapes) for details.
 </Warning>
 
 ### Examples
 
 ```
-firectl deployment-shape-version list --base-model accounts/fireworks/models/falcon-7b
+firectl deployment-shape-version match --model accounts/fireworks/models/falcon-7b
 firectl deployment create accounts/fireworks/models/falcon-7b \
   --deployment-shape <SHAPE_NAME>
 firectl deployment create accounts/fireworks/models/falcon-7b \

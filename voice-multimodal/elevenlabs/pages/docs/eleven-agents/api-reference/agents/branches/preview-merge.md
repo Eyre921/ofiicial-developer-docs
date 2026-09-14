@@ -1235,6 +1235,8 @@ Successful Response
   - `business_account_name` (string, required)
   - `phone_number_name` (string, required)
   - `phone_number` (string, required)
+  - `account_type` (enum, optional, default: cloud_api) — Which Embedded Signup flow produced this account.
+    - Allowed values: `cloud_api`, `coexistence`
   - `assigned_agent_id` (string, optional)
   - `enable_messaging` (boolean, optional, default: true)
   - `enable_audio_message_response` (boolean, optional, default: true)
@@ -2142,6 +2144,7 @@ Validation Error
       "business_account_name": "business_account_name",
       "phone_number_name": "phone_number_name",
       "phone_number": "phone_number",
+      "account_type": "cloud_api",
       "assigned_agent_id": "assigned_agent_id",
       "enable_messaging": true,
       "enable_audio_message_response": true,

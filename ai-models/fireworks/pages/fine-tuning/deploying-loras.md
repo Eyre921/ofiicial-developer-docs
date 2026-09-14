@@ -51,7 +51,7 @@ The result is a deployment that is indistinguishable from a fully trained model 
 
 ### Deploy with live merge
 
-Match shapes for the live-merge model — the server resolves its PEFT base model:
+Match shapes for the live-merge model — the server matches shapes against its base model:
 
 ```bash theme={null}
 firectl deployment-shape-version match \
@@ -389,13 +389,13 @@ This is a subtle failure mode specific to multi-LoRA deployments. If the deploym
 
 **Why it happens.** A deployment shape is validated against a specific base model version, not just a model family. A shape such as `deploymentShapes/<model>-h200-multilora` may have validated versions that bind one model version but **not** another version of the same family. Deploying a model version that no validated shape version binds triggers the silent drop.
 
-**How to detect it.** Before (or after) creating the deployment, confirm a validated shape version exists for the **exact** model version you are deploying, not just the family. List the validated shape versions for your model:
+**How to detect it.** Before (or after) creating the deployment, confirm a validated shape version exists for the **exact** model version you are deploying, not just the family. Use the list command, since Match doesn't show which exact model version each shape version binds:
 
 ```bash theme={null}
 firectl deployment-shape-version list --base-model accounts/<your-account>/models/<your-model-version>
 ```
 
-Or query the API directly with the `latest_validated=true` filter (see [List Deployment Shape Versions](/api-reference/list-deployment-shape-versions)). For general shape discovery — "which shapes work with this model?" — use [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions) instead; the filter query here is for checking which exact model version each validated shape version binds:
+You can also call [List Deployment Shape Versions](/api-reference/list-deployment-shape-versions) with the `latest_validated=true` filter:
 
 ```bash theme={null}
 curl -s "https://api.fireworks.ai/v1/accounts/-/deploymentShapes/-/versions?filter=snapshot.base_model%3D%22accounts%2F<your-account>%2Fmodels%2F<your-model-version>%22%20AND%20latest_validated%3Dtrue&order_by=create_time%20desc" \

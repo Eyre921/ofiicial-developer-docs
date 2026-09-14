@@ -181,11 +181,11 @@ Because targets never return their responses to your caller, evaluate them the s
 ## Pause, retune, or stop an experiment
 
 * **Pause without deleting:** [Update](/reference/dmi/shadow-experiments-update) the experiment's `source` to set the sampling `rate` to `0`. The experiment stays `ACTIVE` but samples nothing.
-* **Retune sampling:** Update the experiment's `source`, for example to raise `uniform.rate` or switch strategy. Fetch the experiment first to get its current `etag` and pass it back on the update; a stale value returns `409 ABORTED`.
+* **Retune sampling:** Update the experiment's `source`, for example to raise `uniform.rate` or switch strategy. Fetch the experiment first to get its current `etag` and pass it back on the update. A stale value returns `409 ABORTED`.
 * **Fan out to more targets:** [Add a target](/reference/dmi/shadow-experiment-targets-create) to the experiment. One sampling decision fans out to every target, so adding a target roughly multiplies mirrored volume.
 * **Stop mirroring:** [Delete the experiment](#delete-an-experiment) (which cascade-deletes its targets), or remove all its targets so the experiment goes `INACTIVE`.
 
-Mirrored requests are never sampled and mirrored again; the system prevents shadow loops automatically.
+Mirrored requests are never sampled and mirrored again. The system prevents shadow loops automatically.
 
 <Tip>
   Before deleting a deployment that an experiment targets, remove it from the experiment first (or delete the experiment). That keeps the experiment's configuration consistent and avoids leaving a target that points at a deployment that no longer exists.

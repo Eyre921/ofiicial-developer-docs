@@ -17877,7 +17877,7 @@ Managed Better Auth does not currently support test events, event logs, or redel
 
 --- [Document source](https://neon.com/docs/auth/migrate/from-legacy-auth.md) ---
 
-> Summary: Migration guide for upgrading from legacy Neon Auth (Stack Auth) to Managed BetterAuth. Replace Stack Auth environment variables with a single `NEON_AUTH_BASE_URL` and swap the `@stackframe/stack` SDK for `@neondatabase/auth`. Use this page when moving an existing Next.js or React SPA project off Stack Auth, or when ejecting to a self-managed Stack Auth project.
+> Summary: Migration guide for upgrading from legacy Neon Auth (Stack Auth) to Managed Better Auth. Replace Stack Auth environment variables with a single `NEON_AUTH_BASE_URL` and swap the `@stackframe/stack` SDK for `@neondatabase/auth`. Use this page when moving an existing Next.js or React SPA project off Stack Auth, or when ejecting to a self-managed Stack Auth project.
 
 # Migrate to Managed Better Auth
 
@@ -34199,8 +34199,6 @@ Choose your transport based on your query pattern: use **HTTP** for single queri
 
 Use the [Neon Data API](https://neon.com/docs/data-api/overview) via [`@neondatabase/neon-js`](https://www.npmjs.com/package/@neondatabase/neon-js). Browsers cannot open TCP connections to Postgres, so the Data API provides a secure HTTP interface with Row-Level Security support.
 
-**Note:** The Data API is currently in beta.
-
 See the [JavaScript SDK reference](https://neon.com/docs/reference/javascript-sdk) for full documentation.
 
 ## Understanding the options
@@ -36067,10 +36065,6 @@ For more examples, see [Neon CLI commands — connection-string](https://neon.co
 
 Understand how the Data API authenticates requests and enforces database permissions.
 
-**Note: Beta**
-
-The **Neon Data API** is in Beta. Share your feedback on [Discord](https://discord.gg/92vNTzKDGp) or via the [Neon Console](https://console.neon.tech/app/projects?modal=feedback).
-
 **Related docs**
 
 - [Getting started with Data API](https://neon.com/docs/data-api/get-started)
@@ -37845,10 +37839,6 @@ Now test deleting a note that has paragraphs; both the note and its paragraphs s
 
 Automatically generate TypeScript types from your database schema for type-safe Data API interactions.
 
-**Note: Beta**
-
-The **Neon Data API** is in Beta. Share your feedback on [Discord](https://discord.gg/92vNTzKDGp) or via the [Neon Console](https://console.neon.tech/app/projects?modal=feedback).
-
 **Related docs**
 
 - [Getting started with Data API](https://neon.com/docs/data-api/get-started)
@@ -38445,10 +38435,6 @@ For the complete list of methods and detailed examples, see the [Neon TypeScript
 
 Configure schemas, manage authentication providers, and control API access.
 
-**Note: Beta**
-
-The **Neon Data API** is in Beta. Share your feedback on [Discord](https://discord.gg/92vNTzKDGp) or via the [Neon Console](https://console.neon.tech/app/projects?modal=feedback).
-
 **Related docs**
 
 - [Getting started with Data API](https://neon.com/docs/data-api/get-started)
@@ -38746,10 +38732,6 @@ For the full command reference including all options and flags, see [Neon CLI co
 # Neon Data API
 
 A fully managed REST interface for your Neon database
-
-**Note: Beta**
-
-The **Neon Data API** is in Beta. Share your feedback on [Discord](https://discord.gg/92vNTzKDGp) or via the [Neon Console](https://console.neon.tech/app/projects?modal=feedback).
 
 The Neon Data API is the HTTP query service in the Neon backend for apps and agents. It provides a secure, stateless interface to your database, letting you access and manage your data directly from web browsers, serverless functions, and edge runtimes using standard HTTP methods. Key benefits include:
 
@@ -70523,6 +70505,8 @@ Manual and scheduled snapshots expire on different rules:
 
 - **Scheduled snapshots** are kept for 35 days unless you set a shorter retention, and 35 days is also the maximum. The Console shows this per frequency as 35 days, 5 weeks, or 1 month.
 - **Manual snapshots** never expire unless you give them an expiration, which has no maximum. Backup schedule retention settings do not apply to them.
+
+While a branch has an active snapshot schedule, its most recent scheduled snapshot is preserved rather than deleted, even if it reaches its retention deadline, so a scheduled branch always keeps at least its latest scheduled snapshot. Older scheduled snapshots and manual snapshots follow the rules above. Turning off the schedule returns the latest snapshot to the standard expiry path.
 
 You can adjust retention at any time by editing the schedule. Shorter retention periods help manage storage. On paid plans, the per-plan snapshot limit applies only to manual snapshots; scheduled backup snapshots do not count. Deleted snapshots cannot be recovered.
 

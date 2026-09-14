@@ -26,6 +26,8 @@ curl https://docs.stripe.com/preview/register \
 
 > If you use a third-party tax provider such as Avalara or Anrok, use their [native Stripe integration](https://docs.stripe.com/tax/third-party-apps.md) to calculate tax automatically for subscriptions and invoices. Use Tax Rates for cases where you have a fixed set of rates or use a provider without a native integration.
 
+If you decide to use Stripe Tax instead, confirm that your Stripe Tax settings are complete.
+
 When applying tax rates, Stripe calculates the [total tax amount](https://docs.stripe.com/tax/tax-rates.md#tax-amounts) per tax rate, and summarizes it in a table that you can export into tax summary reports.
 
 ## Creating tax rates

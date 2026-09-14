@@ -8,14 +8,14 @@ Run generative code tooling in fast, secure sandboxes at scale.
 
 Together Code Sandbox offers a fully configurable development environment with fast start-up times, robust snapshotting, and a suite of mature dev tools.
 
-Together Code Sandbox can spin up a sandbox by cloning a template in under 3 seconds. Inside this VM, you can run any code, install any dependencies and even run servers.
+Together Code Sandbox can spin up a sandbox by cloning a template in under three seconds. Inside this VM, you can run any code, install any dependencies, and run servers.
 
 Under the hood, the SDK uses the microVM infrastructure of CodeSandbox to spin up sandboxes. It supports:
 
-* Memory snapshot/restore (checkpointing) at any point in time
-* Resume/clone VMs from a snapshot in 3 seconds
-* VM FS persistence (with git version control)
-* Environment customization using Docker & Docker Compose (Dev Containers)
+* Memory snapshot/restore (checkpointing) at any point in time.
+* Resume/clone VMs from a snapshot in three seconds.
+* VM FS persistence (with git version control).
+* Environment customization using Docker and Docker Compose (Dev Containers).
 
 ## Accessing Together Code Sandbox
 
@@ -36,7 +36,7 @@ To get started, install the SDK:
 npm install @codesandbox/sdk
 ```
 
-Then, create an API token by going to [https://codesandbox.io/t/api](https://codesandbox.io/t/api), and clicking on the "Create API Token" button. You can then use this token to authenticate with the SDK:
+Then, create an API token by going to [https://codesandbox.io/t/api](https://codesandbox.io/t/api) and selecting the **Create API Token** button. You can then use this token to authenticate with the SDK:
 
 ```typescript TypeScript theme={null}
 import { CodeSandbox } from "@codesandbox/sdk";

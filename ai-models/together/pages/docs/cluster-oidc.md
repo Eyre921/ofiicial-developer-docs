@@ -58,7 +58,7 @@ Kubernetes' API server can validate JSON Web Tokens (JWTs) issued by an external
 
 ## Username claim
 
-The username claim is the field in the OIDC token that Kubernetes uses as the identity for RBAC. Supported values are `email`, `preferred_username`, or `sub`. Choose based on what your IdP reliably provides; `email` gives the simplest RBAC experience because the `--user` value is just the user's email address.
+The username claim is the field in the OIDC token that Kubernetes uses as the identity for RBAC. Supported values are `email`, `preferred_username`, or `sub`. Choose based on what your IdP reliably provides. `email` gives the simplest RBAC experience because the `--user` value is just the user's email address.
 
 <Note>
   **The username claim affects the RBAC `--user` value.** The format Kubernetes uses for the identity depends on which claim you choose:

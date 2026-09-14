@@ -120,7 +120,7 @@ The Stripe Reader S700/S710 software consists of four components: the reader app
 
 ### Reader software changelog
 
-#### 2026-09-08 (version 2.45.6.0)
+#### 2026-09-08 (version 2.45.7.0)
 
 - Bug fix: Fixes tip selection screens on the reader so long translated text displays properly without being cut off.
 - Bug fix: Fixed a bug where the reader app occasionally experienced auto-disconnects when in countertop mode.

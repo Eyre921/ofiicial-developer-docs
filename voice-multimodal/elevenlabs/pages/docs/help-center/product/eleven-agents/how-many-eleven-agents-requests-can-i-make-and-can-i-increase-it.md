@@ -15,3 +15,5 @@ For current concurrency limits for each subscription plan, see [ElevenAgents pri
 If you require a higher number of concurrent requests, please reach out to our Enterprise Department directly via [this webpage](https://elevenlabs.io/enterprise). We will be happy to discuss a tailor-made plan that meets your specific requirements.
 
 You can also enable burst pricing for individual agents, which allows you to temporarily exceed your concurrency limit during high-demand periods. When enabled, your agents can handle up to 3 times your normal concurrency limit, with excess calls charged at double the standard rate. For more information, see our [documentation](/docs/agents-platform/guides/burst-pricing).
+
+You can also enable call queueing for individual agents. When an agent is at its concurrency limit, queued callers hear hold audio and are connected automatically as soon as capacity frees up, instead of being rejected. Time spent in the queue is not billed. For more information, see [Call queueing](/docs/eleven-agents/guides/call-queueing).

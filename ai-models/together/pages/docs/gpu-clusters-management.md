@@ -297,7 +297,7 @@ You can SSH directly into any GPU worker node or Slurm compute node from the clu
 
 **From the UI:**
 
-1. Navigate to your cluster in the Together Cloud UI.
+1. Navigate to your cluster in the GPU clusters console.
 2. On Slurm clusters with OIDC, choose **OIDC** or **Key-based** in **SSH access method**.
 3. Go to the **Worker Nodes** section.
 4. Find the node you want to access.
@@ -476,36 +476,36 @@ Clusters can scale flexibly in real time. Add on-demand compute to temporarily s
 
 Scaling operations can be performed via:
 
-* Together Cloud UI
-* Together CLI
-* REST API
+* GPU clusters console.
+* Together CLI.
+* REST API.
 
 ### Cluster autoscaling
 
-Cluster Autoscaling automatically adjusts the number of nodes in your cluster based on workload demand using the Kubernetes Cluster Autoscaler.
+Cluster autoscaling automatically adjusts the number of nodes in your cluster based on workload demand using the Kubernetes Cluster Autoscaler.
 
-**How It Works:**
+**How it works:**
 
 The Kubernetes Cluster Autoscaler monitors your cluster and:
 
-* **Scales up** when pods are pending due to insufficient resources
-* **Scales down** when nodes are underutilized for an extended period
-* **Respects constraints** like minimum/maximum node counts and resource limits
+* **Scales up** when pods are pending due to insufficient resources.
+* **Scales down** when nodes are underutilized for an extended period.
+* **Respects constraints** like minimum/maximum node counts and resource limits.
 
 When pods cannot be scheduled due to lack of resources, the autoscaler provisions additional nodes automatically. When nodes remain idle below a utilization threshold, they are safely drained and removed.
 
-**Enabling Autoscaling:**
+**Enabling autoscaling:**
 
-1. Navigate to **GPU Clusters** in the Together Cloud UI
-2. Select **Create Cluster**
-3. In the cluster configuration, toggle **Enable Autoscaling**
-4. Configure your maximum GPUs
-5. Create the cluster
+1. Navigate to **GPU Clusters** in the cloud console.
+2. Select **Create Cluster**.
+3. In the cluster configuration, toggle **Enable Autoscaling**.
+4. Configure your maximum GPUs.
+5. Create the cluster.
 
 Once enabled, the autoscaler runs continuously in the background, responding to workload changes without manual intervention.
 
 <Note>
-  Autoscaling works with both reserved and on-demand capacity. Scaling beyond reserved capacity will provision on-demand nodes at standard hourly rates.
+  Autoscaling works with both reserved and on-demand capacity. Scaling beyond reserved capacity provisions on-demand nodes at standard hourly rates.
 </Note>
 
 ### Targeted scale-down
@@ -536,7 +536,7 @@ To control which specific nodes are removed during scale-down, mark them for del
   </Step>
 
   <Step title="Wait for the node to start draining">
-    In the Together Cloud UI, wait until the node shows **Node is cordon/draining** before you trigger scale-down. This confirms the operator has picked up the annotation or cordon and is safely evicting workloads.
+    In the GPU clusters console, wait until the node shows **Node is cordon/draining** before you trigger scale-down. This confirms the operator has picked up the annotation or cordon and is safely evicting workloads.
   </Step>
 
   <Step title="Trigger scale-down">
@@ -545,7 +545,7 @@ To control which specific nodes are removed during scale-down, mark them for del
 </Steps>
 
 <Tip>
-  Scale down one node at a time. Repeat the steps above for each additional node you want to remove — this gives the operator time to drain each node cleanly and makes it easy to stop if something goes wrong.
+  Scale down one node at a time. Repeat the steps above for each additional node you want to remove — this gives the operator time to drain each node cleanly, so you can stop if something goes wrong.
 </Tip>
 
 ## Storage management
@@ -632,34 +632,34 @@ scontrol show node          # Detailed node info
 
 ### Resource management
 
-* **Always** use shared volumes (PVC) for training data, checkpoints, model weights, and application state
-* **Never** rely on local NVMe or node-local `/home` (on Kubernetes) for data you cannot afford to lose — it is ephemeral and can be wiped during migrations/recreations or maintenance
-* Use local NVMe only for temporary scratch files that can be regenerated
-* Set resource requests and limits in pod specs
+* **Always** use shared volumes (PVC) for training data, checkpoints, model weights, and application state.
+* **Never** rely on local NVMe or node-local `/home` (on Kubernetes) for data you cannot afford to lose — it is ephemeral and can be wiped during migrations/recreations or maintenance.
+* Use local NVMe only for temporary scratch files that can be regenerated.
+* Set resource requests and limits in pod specs.
 
 ### Job scheduling
 
-* Use Kubernetes Jobs for batch processing
-* Use Slurm job arrays for embarrassingly parallel workloads
-* Set appropriate timeouts and retry policies
+* Use Kubernetes Jobs for batch processing.
+* Use Slurm job arrays for embarrassingly parallel workloads.
+* Set appropriate timeouts and retry policies.
 
 ### Data management
 
-* Download large datasets directly on the cluster (not via local machine)
-* Use shared storage for training data and checkpoints
-* Use local NVMe for temporary files during training
+* Download large datasets directly on the cluster (not via local machine).
+* Use shared storage for training data and checkpoints.
+* Use local NVMe for temporary files during training.
 
 ### Scaling strategy
 
-* Start with reserved capacity for baseline workload
-* Add on-demand capacity for burst periods
-* Use targeted scale-down to control costs
+* Start with reserved capacity for baseline workload.
+* Add on-demand capacity for burst periods.
+* Use targeted scale-down to control costs.
 
 ## GPU capacity not available
 
 If you do not see GPU capacity of the type you require in the api.together.ai cloud console, request GPU capacity by going to the create cluster view, selecting your region and GPU capacity, the type required, and selecting the **Request** button. Also select the date from which you need the GPUs.
 
-We use these requests as input for our demand planning, and our team will reach out to you if and when that becomes available.
+Together uses these requests as input for demand planning and reaches out if and when that capacity becomes available.
 
 <Note>
   Submitting a request for capacity does not guarantee fulfillment due to very high demand. Together fulfills these requests based on available GPU capacity. If you need guaranteed GPU capacity for fixed periods of time, [contact the team](https://www.together.ai/contact-sales).

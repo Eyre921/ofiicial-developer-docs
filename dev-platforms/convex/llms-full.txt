@@ -460,6 +460,7 @@
 - [List projects](/management-api/list-projects.md): List a page of projects for a team, ordered by descending project ID. Pass
 - [List team access tokens](/management-api/list-team-access-tokens.md): Lists the team access tokens created by the authenticated member for the
 - [List team members](/management-api/list-team-members.md): List the members of the given team.
+- [Mint an AI gateway JWT](/management-api/mint-ai-gateway-jwt.md): Mints a short-lived AI gateway JWT for a local deployment.
 - [Management API](/management-api/overview.md): Creating and managing Convex deployments by API
 - [Get deployment](/management-api/platform-get-deployment.md): Get details about a cloud deployment.
 - [Transfer deployment](/management-api/transfer-deployment.md): Transfer a deployment from its current project to another project within the
@@ -876,6 +877,8 @@ const result = await agent.generateText(
       // How many recent messages to include. These are added after the search
 
       // messages, and do not count against the search limit.
+
+      // If the limit splits an order, more messages are included to complete it.
 
       recentMessages: 100,
 
@@ -1597,7 +1600,7 @@ await thread.generateText({
 
     content: [
 
-      { type: "image", image: imageBytes, mimeType: "image/png" },
+      { type: "image", image: imageBytes, mediaType: "image/png" },
 
       { type: "text", text: "What is this image?" },
 
@@ -1614,7 +1617,7 @@ Saving to the files has 3 components:
 
 1. Saving to file storage (in your app, not in the component's storage). This means you can access it directly with the `storageId` and generate URLs.
 2. Saving a reference (the storageId) to the file in the component. This will automatically keep track of how many messages are referencing the file, so you can vacuum files that are no longer used (see [files/vacuum.ts](https://github.com/get-convex/agent/blob/main/example/convex/files/vacuum.ts)).
-3. Inserting a URL in place of the data in the message sent to the LLM, along with the mimeType and other metadata provided. It will be inferred if not provided in [`guessMimeType`](https://github.com/get-convex/agent/blob/main/src/mapping.ts#L556).
+3. Inserting a URL in place of the data in the message sent to the LLM, along with the media type and other metadata provided. It will be inferred if not provided in [`guessMimeType`](https://github.com/get-convex/agent/blob/main/src/mapping.ts#L556).
 
 ### Can I just store the file myself and pass in a URL?[​](#can-i-just-store-the-file-myself-and-pass-in-a-url "Direct link to Can I just store the file myself and pass in a URL?")
 
@@ -1635,7 +1638,7 @@ await thread.generateText({
 
     content: [
 
-      { type: "image", data: url, mimeType: blob.type },
+      { type: "image", image: url, mediaType: blob.type },
 
       { type: "text", text: "What is this image?" },
 
@@ -1790,7 +1793,7 @@ await saveMessage(ctx, components.agent, {
 
 ## Saving a message from a human as an agent[​](#saving-a-message-from-a-human-as-an-agent "Direct link to Saving a message from a human as an agent")
 
-Similarly, you can save a message from a human as an agent in the same way, using the `message` field to specify the role and agent name:
+Similarly, you can save a message from a human as an agent in the same way, using `message` for the role and content and `agentName` for attribution. To render a standalone operator reply separately from the previous agent turn, pass `order: "next"`:
 
 ```
 import { saveMessage } from "@convex-dev/agent";
@@ -1803,6 +1806,8 @@ await saveMessage(ctx, components.agent, {
 
   threadId,
 
+  order: "next",
+
   agentName: "Alex",
 
   message: { role: "assistant", content: "The human reply" },
@@ -1810,14 +1815,24 @@ await saveMessage(ctx, components.agent, {
 });
 ```
 
+`order: "next"` allocates the next order atomically. Passing a number places the reply at that exact order. An unused numeric order starts at `stepOrder: 0`; an existing order appends at its next `stepOrder`.
+
 ## Storing additional metadata about human agents[​](#storing-additional-metadata-about-human-agents "Direct link to Storing additional metadata about human agents")
 
 You can store additional metadata about human agents by using the `saveMessage` function, and adding the `metadata` field.
 
 ```
+import { saveMessage } from "@convex-dev/agent";
+
+import { components } from "./_generated/api";
+
+
+
 await saveMessage(ctx, components.agent, {
 
   threadId,
+
+  order: "next",
 
   agentName: "Alex",
 
@@ -2302,11 +2317,13 @@ const result = await thread.generateText({ messages }, {
 
 Each message has `order` and `stepOrder` fields, which are incrementing integers specific to a thread.
 
-When `saveMessage` or `generateText` is called, the message is added to the thread's next `order` with a `stepOrder` of 0.
+User messages saved by `saveMessage` or `generateText` are added to the thread's next `order` with a `stepOrder` of 0. Standalone assistant or tool messages append to the latest order by default.
 
 As response message(s) are generated in response to that message, they are added at the same `order` with the next `stepOrder`.
 
 To associate a response message with a previous message, you can pass in the `promptMessageId` to `generateText` and others.
+
+To start a standalone message at the next order, pass `order: "next"` to `saveMessage` or `saveMessages`. The component allocates that order atomically. To place a standalone message at a specific order, pass a number instead. If that order is empty, the first message is saved with `stepOrder: 0`; otherwise it is appended at the next `stepOrder`. `order` cannot be combined with `promptMessageId` or `pendingMessageId`; numeric orders must be non-negative safe integers less than `Number.MAX_SAFE_INTEGER`.
 
 Note: if the `promptMessageId` is not the latest message in the thread, the context for the message generation will not include any messages following the `promptMessageId`.
 
@@ -2739,7 +2756,7 @@ const description = await thread.generateText({
 
     role: "user",
 
-    content: [{ type: "image", data: url, mimeType: blob.type }],
+    content: [{ type: "image", image: url, mediaType: blob.type }],
 
   },
 
@@ -3204,6 +3221,7 @@ This can be done in an async function, where http streaming to a client is not p
 ```
 
 * `chunking` can be "word", "line", a regex, or a custom function.
+* `sendSources` includes source parts emitted by the model. It defaults to `false`.
 * `throttleMs` is how frequently the deltas are saved. This will send multiple chunks per delta, writes sequentially, and will not write faster than the throttleMs ([single-flighted](https://stack.convex.dev/throttling-requests-by-single-flighting) ).
 
 ## Retrieving streamed deltas[​](#retrieving-streamed-deltas "Direct link to Retrieving streamed deltas")
@@ -4208,7 +4226,7 @@ const llmTool = createTool({
 
     const result = await generateText({
 
-      system: "You are a helpful assistant.",
+      instructions: "You are a helpful assistant.",
 
       // Pass through all messages from the current generation
 
@@ -9567,7 +9585,27 @@ The kind of validator, `"any"`.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:285](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L285)
+[values/validators.ts:319](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L319)
+
+## Methods[​](#methods "Direct link to Methods")
+
+### optional[​](#optional "Direct link to optional")
+
+▸ **optional**(): [`VAny`](/api/classes/values.VAny.md)<`undefined` | `Type`, `"optional"`, `FieldPaths`>
+
+Allow this validated field to be absent.
+
+#### Returns[​](#returns "Direct link to Returns")
+
+[`VAny`](/api/classes/values.VAny.md)<`undefined` | `Type`, `"optional"`, `FieldPaths`>
+
+#### Overrides[​](#overrides "Direct link to Overrides")
+
+BaseValidator.optional
+
+#### Defined in[​](#defined-in-6 "Direct link to Defined in")
+
+[values/validators.ts:328](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L328)
 
 
 ---
@@ -9624,7 +9662,7 @@ BaseValidator\&lt;Type, IsOptional\&gt;.constructor
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[values/validators.ts:514](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L514)
+[values/validators.ts:560](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L560)
 
 ## Properties[​](#properties "Direct link to Properties")
 
@@ -9700,7 +9738,7 @@ The validator for the elements of the array.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:504](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L504)
+[values/validators.ts:550](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L550)
 
 ***
 
@@ -9712,7 +9750,27 @@ The kind of validator, `"array"`.
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[values/validators.ts:509](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L509)
+[values/validators.ts:555](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L555)
+
+## Methods[​](#methods "Direct link to Methods")
+
+### optional[​](#optional "Direct link to optional")
+
+▸ **optional**(): [`VArray`](/api/classes/values.VArray.md)<`undefined` | `Type`, `Element`, `"optional"`>
+
+Allow this validated field to be absent.
+
+#### Returns[​](#returns "Direct link to Returns")
+
+[`VArray`](/api/classes/values.VArray.md)<`undefined` | `Type`, `Element`, `"optional"`>
+
+#### Overrides[​](#overrides-1 "Direct link to Overrides")
+
+BaseValidator.optional
+
+#### Defined in[​](#defined-in-7 "Direct link to Defined in")
+
+[values/validators.ts:581](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L581)
 
 
 ---
@@ -9840,7 +9898,27 @@ The kind of validator, `"boolean"`.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:192](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L192)
+[values/validators.ts:210](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L210)
+
+## Methods[​](#methods "Direct link to Methods")
+
+### optional[​](#optional "Direct link to optional")
+
+▸ **optional**(): [`VBoolean`](/api/classes/values.VBoolean.md)<`undefined` | `Type`, `"optional"`>
+
+Allow this validated field to be absent.
+
+#### Returns[​](#returns "Direct link to Returns")
+
+[`VBoolean`](/api/classes/values.VBoolean.md)<`undefined` | `Type`, `"optional"`>
+
+#### Overrides[​](#overrides "Direct link to Overrides")
+
+BaseValidator.optional
+
+#### Defined in[​](#defined-in-6 "Direct link to Defined in")
+
+[values/validators.ts:217](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L217)
 
 
 ---
@@ -9968,7 +10046,27 @@ The kind of validator, `"bytes"`.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:216](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L216)
+[values/validators.ts:238](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L238)
+
+## Methods[​](#methods "Direct link to Methods")
+
+### optional[​](#optional "Direct link to optional")
+
+▸ **optional**(): [`VBytes`](/api/classes/values.VBytes.md)<`undefined` | `Type`, `"optional"`>
+
+Allow this validated field to be absent.
+
+#### Returns[​](#returns "Direct link to Returns")
+
+[`VBytes`](/api/classes/values.VBytes.md)<`undefined` | `Type`, `"optional"`>
+
+#### Overrides[​](#overrides "Direct link to Overrides")
+
+BaseValidator.optional
+
+#### Defined in[​](#defined-in-6 "Direct link to Defined in")
+
+[values/validators.ts:245](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L245)
 
 
 ---
@@ -10096,7 +10194,27 @@ The kind of validator, `"commitTs"`.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:168](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L168)
+[values/validators.ts:182](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L182)
+
+## Methods[​](#methods "Direct link to Methods")
+
+### optional[​](#optional "Direct link to optional")
+
+▸ **optional**(): [`VCommitTs`](/api/classes/values.VCommitTs.md)<`undefined` | `Type`, `"optional"`>
+
+Allow this validated field to be absent.
+
+#### Returns[​](#returns "Direct link to Returns")
+
+[`VCommitTs`](/api/classes/values.VCommitTs.md)<`undefined` | `Type`, `"optional"`>
+
+#### Overrides[​](#overrides "Direct link to Overrides")
+
+BaseValidator.optional
+
+#### Defined in[​](#defined-in-6 "Direct link to Defined in")
+
+[values/validators.ts:189](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L189)
 
 
 ---
@@ -10224,7 +10342,27 @@ The kind of validator, `"float64"`.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:120](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L120)
+[values/validators.ts:126](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L126)
+
+## Methods[​](#methods "Direct link to Methods")
+
+### optional[​](#optional "Direct link to optional")
+
+▸ **optional**(): [`VFloat64`](/api/classes/values.VFloat64.md)<`undefined` | `Type`, `"optional"`>
+
+Allow this field to be validated as absent.
+
+#### Returns[​](#returns "Direct link to Returns")
+
+[`VFloat64`](/api/classes/values.VFloat64.md)<`undefined` | `Type`, `"optional"`>
+
+#### Overrides[​](#overrides "Direct link to Overrides")
+
+BaseValidator.optional
+
+#### Defined in[​](#defined-in-6 "Direct link to Defined in")
+
+[values/validators.ts:134](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L134)
 
 
 ---
@@ -10279,7 +10417,7 @@ BaseValidator\&lt;Type, IsOptional\&gt;.constructor
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[values/validators.ts:84](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L84)
+[values/validators.ts:86](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L86)
 
 ## Properties[​](#properties "Direct link to Properties")
 
@@ -10355,7 +10493,7 @@ The name of the table that the validated IDs must belong to.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:74](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L74)
+[values/validators.ts:76](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L76)
 
 ***
 
@@ -10367,7 +10505,27 @@ The kind of validator, `"id"`.
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[values/validators.ts:79](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L79)
+[values/validators.ts:81](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L81)
+
+## Methods[​](#methods "Direct link to Methods")
+
+### optional[​](#optional "Direct link to optional")
+
+▸ **optional**(): [`VId`](/api/classes/values.VId.md)<`undefined` | `Type`, `"optional"`>
+
+Allow this field to be validated as absent.
+
+#### Returns[​](#returns "Direct link to Returns")
+
+[`VId`](/api/classes/values.VId.md)<`undefined` | `Type`, `"optional"`>
+
+#### Overrides[​](#overrides-1 "Direct link to Overrides")
+
+BaseValidator.optional
+
+#### Defined in[​](#defined-in-7 "Direct link to Defined in")
+
+[values/validators.ts:104](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L104)
 
 
 ---
@@ -10495,7 +10653,27 @@ The kind of validator, `"int64"`.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:145](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L145)
+[values/validators.ts:155](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L155)
+
+## Methods[​](#methods "Direct link to Methods")
+
+### optional[​](#optional "Direct link to optional")
+
+▸ **optional**(): [`VInt64`](/api/classes/values.VInt64.md)<`undefined` | `Type`, `"optional"`>
+
+Allow this validated field to be absent.
+
+#### Returns[​](#returns "Direct link to Returns")
+
+[`VInt64`](/api/classes/values.VInt64.md)<`undefined` | `Type`, `"optional"`>
+
+#### Overrides[​](#overrides "Direct link to Overrides")
+
+BaseValidator.optional
+
+#### Defined in[​](#defined-in-6 "Direct link to Defined in")
+
+[values/validators.ts:163](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L163)
 
 
 ---
@@ -10550,7 +10728,7 @@ BaseValidator\&lt;Type, IsOptional\&gt;.constructor
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[values/validators.ts:465](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L465)
+[values/validators.ts:507](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L507)
 
 ## Properties[​](#properties "Direct link to Properties")
 
@@ -10626,7 +10804,7 @@ The value that the validated values must be equal to.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:455](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L455)
+[values/validators.ts:497](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L497)
 
 ***
 
@@ -10638,7 +10816,27 @@ The kind of validator, `"literal"`.
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[values/validators.ts:460](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L460)
+[values/validators.ts:502](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L502)
+
+## Methods[​](#methods "Direct link to Methods")
+
+### optional[​](#optional "Direct link to optional")
+
+▸ **optional**(): [`VLiteral`](/api/classes/values.VLiteral.md)<`undefined` | `Type`, `"optional"`>
+
+Allow this validated field to be absent.
+
+#### Returns[​](#returns "Direct link to Returns")
+
+[`VLiteral`](/api/classes/values.VLiteral.md)<`undefined` | `Type`, `"optional"`>
+
+#### Overrides[​](#overrides-1 "Direct link to Overrides")
+
+BaseValidator.optional
+
+#### Defined in[​](#defined-in-7 "Direct link to Defined in")
+
+[values/validators.ts:527](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L527)
 
 
 ---
@@ -10766,7 +10964,27 @@ The kind of validator, `"null"`.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:262](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L262)
+[values/validators.ts:292](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L292)
+
+## Methods[​](#methods "Direct link to Methods")
+
+### optional[​](#optional "Direct link to optional")
+
+▸ **optional**(): [`VNull`](/api/classes/values.VNull.md)<`undefined` | `Type`, `"optional"`>
+
+Allow this validated field to be absent.
+
+#### Returns[​](#returns "Direct link to Returns")
+
+[`VNull`](/api/classes/values.VNull.md)<`undefined` | `Type`, `"optional"`>
+
+#### Overrides[​](#overrides "Direct link to Overrides")
+
+BaseValidator.optional
+
+#### Defined in[​](#defined-in-6 "Direct link to Defined in")
+
+[values/validators.ts:299](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L299)
 
 
 ---
@@ -10825,7 +11043,7 @@ BaseValidator\&lt;Type, IsOptional, FieldPaths\&gt;.constructor
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[values/validators.ts:328](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L328)
+[values/validators.ts:366](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L366)
 
 ## Properties[​](#properties "Direct link to Properties")
 
@@ -10901,7 +11119,7 @@ An object with the validator for each property.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:318](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L318)
+[values/validators.ts:356](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L356)
 
 ***
 
@@ -10913,9 +11131,29 @@ The kind of validator, `"object"`.
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[values/validators.ts:323](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L323)
+[values/validators.ts:361](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L361)
 
 ## Methods[​](#methods "Direct link to Methods")
+
+### optional[​](#optional "Direct link to optional")
+
+▸ **optional**(): [`VObject`](/api/classes/values.VObject.md)<`undefined` | `Type`, `Fields`, `"optional"`, `FieldPaths`>
+
+Allow this validated field to be absent.
+
+#### Returns[​](#returns "Direct link to Returns")
+
+[`VObject`](/api/classes/values.VObject.md)<`undefined` | `Type`, `Fields`, `"optional"`, `FieldPaths`>
+
+#### Overrides[​](#overrides-1 "Direct link to Overrides")
+
+BaseValidator.optional
+
+#### Defined in[​](#defined-in-7 "Direct link to Defined in")
+
+[values/validators.ts:400](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L400)
+
+***
 
 ### omit[​](#omit "Direct link to omit")
 
@@ -10935,13 +11173,13 @@ Create a new VObject with the specified fields omitted.
 | ----------- | ------ | ------------------------------------------ |
 | `...fields` | `K`\[] | The field names to omit from this VObject. |
 
-#### Returns[​](#returns "Direct link to Returns")
+#### Returns[​](#returns-1 "Direct link to Returns")
 
 [`VObject`](/api/classes/values.VObject.md)<[`Expand`](/api/modules/server.md#expand)<`Omit`<`Type`, `K`>>, [`Expand`](/api/modules/server.md#expand)<`Omit`<`Fields`, `K`>>, `IsOptional`, { \[Property in string | number | symbol]: Property | \`${Property & string}.${Expand\<Omit\<Fields, K>>\[Property]\["fieldPaths"]}\` }\[keyof [`Expand`](/api/modules/server.md#expand)<`Omit`<`Fields`, `K`>>] & `string`>
 
-#### Defined in[​](#defined-in-7 "Direct link to Defined in")
+#### Defined in[​](#defined-in-8 "Direct link to Defined in")
 
-[values/validators.ts:373](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L373)
+[values/validators.ts:415](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L415)
 
 ***
 
@@ -10963,13 +11201,13 @@ Create a new VObject with only the specified fields.
 | ----------- | ------ | ------------------------------------------ |
 | `...fields` | `K`\[] | The field names to pick from this VObject. |
 
-#### Returns[​](#returns-1 "Direct link to Returns")
+#### Returns[​](#returns-2 "Direct link to Returns")
 
 [`VObject`](/api/classes/values.VObject.md)<[`Expand`](/api/modules/server.md#expand)<`Pick`<`Type`, `Extract`\<keyof `Type`, `K`>>>, [`Expand`](/api/modules/server.md#expand)<`Pick`<`Fields`, `K`>>, `IsOptional`, { \[Property in string | number | symbol]: Property | \`${Property & string}.${Expand\<Pick\<Fields, K>>\[Property]\["fieldPaths"]}\` }\[keyof [`Expand`](/api/modules/server.md#expand)<`Pick`<`Fields`, `K`>>] & `string`>
 
-#### Defined in[​](#defined-in-8 "Direct link to Defined in")
+#### Defined in[​](#defined-in-9 "Direct link to Defined in")
 
-[values/validators.ts:390](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L390)
+[values/validators.ts:432](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L432)
 
 ***
 
@@ -10979,13 +11217,13 @@ Create a new VObject with only the specified fields.
 
 Create a new VObject with all fields marked as optional.
 
-#### Returns[​](#returns-2 "Direct link to Returns")
+#### Returns[​](#returns-3 "Direct link to Returns")
 
 [`VObject`](/api/classes/values.VObject.md)<{ \[K in string | number | symbol]?: Type\[K] }, { \[K in string | number | symbol]: VOptional\<Fields\[K]> }, `IsOptional`, { \[Property in string | number | symbol]: Property | \`${Property & string}.${{ \[K in string | number | symbol]: VOptional\<Fields\[K]> }\[Property]\["fieldPaths"]}\` }\[keyof `Fields`] & `string`>
 
-#### Defined in[​](#defined-in-9 "Direct link to Defined in")
+#### Defined in[​](#defined-in-10 "Direct link to Defined in")
 
-[values/validators.ts:410](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L410)
+[values/validators.ts:452](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L452)
 
 ***
 
@@ -11007,13 +11245,13 @@ Create a new VObject with additional fields merged in.
 | -------- | ----------- | ---------------------------------------------------------------- |
 | `fields` | `NewFields` | An object with additional validators to merge into this VObject. |
 
-#### Returns[​](#returns-3 "Direct link to Returns")
+#### Returns[​](#returns-4 "Direct link to Returns")
 
 [`VObject`](/api/classes/values.VObject.md)<[`Expand`](/api/modules/server.md#expand)<`Type` & [`ObjectType`](/api/modules/values.md#objecttype)<`NewFields`>>, [`Expand`](/api/modules/server.md#expand)<`Fields` & `NewFields`>, `IsOptional`, { \[Property in string | number | symbol]: Property | \`${Property & string}.${Expand\<Fields & NewFields>\[Property]\["fieldPaths"]}\` }\[keyof [`Expand`](/api/modules/server.md#expand)<`Fields` & `NewFields`>] & `string`>
 
-#### Defined in[​](#defined-in-10 "Direct link to Defined in")
+#### Defined in[​](#defined-in-11 "Direct link to Defined in")
 
-[values/validators.ts:431](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L431)
+[values/validators.ts:473](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L473)
 
 
 ---
@@ -11075,7 +11313,7 @@ BaseValidator\&lt;Type, IsOptional, FieldPaths\&gt;.constructor
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[values/validators.ts:571](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L571)
+[values/validators.ts:621](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L621)
 
 ## Properties[​](#properties "Direct link to Properties")
 
@@ -11151,7 +11389,7 @@ The validator for the keys of the record.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:556](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L556)
+[values/validators.ts:606](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L606)
 
 ***
 
@@ -11163,7 +11401,7 @@ The validator for the values of the record.
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[values/validators.ts:561](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L561)
+[values/validators.ts:611](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L611)
 
 ***
 
@@ -11175,7 +11413,27 @@ The kind of validator, `"record"`.
 
 #### Defined in[​](#defined-in-7 "Direct link to Defined in")
 
-[values/validators.ts:566](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L566)
+[values/validators.ts:616](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L616)
+
+## Methods[​](#methods "Direct link to Methods")
+
+### optional[​](#optional "Direct link to optional")
+
+▸ **optional**(): [`VRecord`](/api/classes/values.VRecord.md)<`undefined` | `Type`, `Key`, `Value`, `"optional"`, `FieldPaths`>
+
+Allow this validated field to be absent.
+
+#### Returns[​](#returns "Direct link to Returns")
+
+[`VRecord`](/api/classes/values.VRecord.md)<`undefined` | `Type`, `Key`, `Value`, `"optional"`, `FieldPaths`>
+
+#### Overrides[​](#overrides-1 "Direct link to Overrides")
+
+BaseValidator.optional
+
+#### Defined in[​](#defined-in-8 "Direct link to Defined in")
+
+[values/validators.ts:662](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L662)
 
 
 ---
@@ -11303,7 +11561,27 @@ The kind of validator, `"string"`.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:238](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L238)
+[values/validators.ts:264](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L264)
+
+## Methods[​](#methods "Direct link to Methods")
+
+### optional[​](#optional "Direct link to optional")
+
+▸ **optional**(): [`VString`](/api/classes/values.VString.md)<`undefined` | `Type`, `"optional"`>
+
+Allow this validated field to be absent.
+
+#### Returns[​](#returns "Direct link to Returns")
+
+[`VString`](/api/classes/values.VString.md)<`undefined` | `Type`, `"optional"`>
+
+#### Overrides[​](#overrides "Direct link to Overrides")
+
+BaseValidator.optional
+
+#### Defined in[​](#defined-in-6 "Direct link to Defined in")
+
+[values/validators.ts:271](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L271)
 
 
 ---
@@ -11362,7 +11640,7 @@ BaseValidator\&lt;Type, IsOptional, FieldPaths\&gt;.constructor
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[values/validators.ts:643](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L643)
+[values/validators.ts:697](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L697)
 
 ## Properties[​](#properties "Direct link to Properties")
 
@@ -11438,7 +11716,7 @@ The array of validators, one of which must match the value.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:633](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L633)
+[values/validators.ts:687](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L687)
 
 ***
 
@@ -11450,7 +11728,27 @@ The kind of validator, `"union"`.
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[values/validators.ts:638](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L638)
+[values/validators.ts:692](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L692)
+
+## Methods[​](#methods "Direct link to Methods")
+
+### optional[​](#optional "Direct link to optional")
+
+▸ **optional**(): [`VUnion`](/api/classes/values.VUnion.md)<`undefined` | `Type`, `T`, `"optional"`, `FieldPaths`>
+
+Allow this validated field to be absent.
+
+#### Returns[​](#returns "Direct link to Returns")
+
+[`VUnion`](/api/classes/values.VUnion.md)<`undefined` | `Type`, `T`, `"optional"`, `FieldPaths`>
+
+#### Overrides[​](#overrides-1 "Direct link to Overrides")
+
+BaseValidator.optional
+
+#### Defined in[​](#defined-in-7 "Direct link to Defined in")
+
+[values/validators.ts:717](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L717)
 
 
 ---
@@ -23913,7 +24211,7 @@ The type of a [Validator](/api/modules/values.md#validator) constructed with [v]
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:672](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L672)
+[values/validators.ts:730](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L730)
 
 ***
 
@@ -23925,7 +24223,7 @@ Type representing whether a property in an object is optional or required.
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[values/validators.ts:707](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L707)
+[values/validators.ts:765](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L765)
 
 ***
 
@@ -23958,7 +24256,7 @@ More validators can be added in future releases so an exhaustive switch statemen
 
 #### Defined in[​](#defined-in-7 "Direct link to Defined in")
 
-[values/validators.ts:732](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L732)
+[values/validators.ts:790](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L790)
 
 ***
 
@@ -23975,7 +24273,7 @@ More validators can be added in future releases so an exhaustive switch statemen
 
 #### Defined in[​](#defined-in-8 "Direct link to Defined in")
 
-[values/validators.ts:774](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L774)
+[values/validators.ts:832](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L832)
 
 ***
 
@@ -23985,7 +24283,7 @@ More validators can be added in future releases so an exhaustive switch statemen
 
 #### Defined in[​](#defined-in-9 "Direct link to Defined in")
 
-[values/validators.ts:776](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L776)
+[values/validators.ts:834](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L834)
 
 ***
 
@@ -23995,7 +24293,7 @@ More validators can be added in future releases so an exhaustive switch statemen
 
 #### Defined in[​](#defined-in-10 "Direct link to Defined in")
 
-[values/validators.ts:796](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L796)
+[values/validators.ts:854](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L854)
 
 ***
 
@@ -24005,7 +24303,7 @@ More validators can be added in future releases so an exhaustive switch statemen
 
 #### Defined in[​](#defined-in-11 "Direct link to Defined in")
 
-[values/validators.ts:801](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L801)
+[values/validators.ts:859](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L859)
 
 ***
 
@@ -28773,7 +29071,7 @@ convex/http.ts
 ```
 import { httpRouter } from "convex/server";
 
-import { httpAction } from "./_generated/server";
+import { env, httpAction } from "./_generated/server";
 
 import { internal } from "./_generated/api";
 
@@ -28859,7 +29157,7 @@ async function validateRequest(req: Request): Promise<WebhookEvent | null> {
 
   };
 
-  const wh = new Webhook(process.env.CLERK_WEBHOOK_SECRET!);
+  const wh = new Webhook(env.CLERK_WEBHOOK_SECRET);
 
   try {
 
@@ -33429,17 +33727,44 @@ npm i openapi-generator-cli
 npx openapi-generator-cli generate -i convex-spec.yaml -g go -o convex_client
 ```
 
-These snippets include two different files:
+These snippets include three different files:
 
+* `convex/convex.config.ts` - [declares](/production/environment-variables.md#declaring) the `CONVEX_AUTH_TOKEN` environment variable that `loadOne` checks
 * `convex/load.ts` - contains Convex function definitions
 * `convex.go` - contains `Go` code that uses a generated, type-safe `HTTP` client.
+
+convex/convex.config.ts
+
+```
+import { defineApp } from "convex/server";
+
+import { v } from "convex/values";
+
+
+
+const app = defineApp({
+
+  env: {
+
+    // Shared secret that callers of `loadOne` must pass as the `token` argument.
+
+    CONVEX_AUTH_TOKEN: v.string(),
+
+  },
+
+});
+
+
+
+export default app;
+```
 
 convex/load.ts
 
 ```
 import { v } from "convex/values";
 
-import { query } from "./_generated/server";
+import { env, query } from "./_generated/server";
 
 import { LinkTable } from "./schema";
 
@@ -33467,7 +33792,7 @@ export const loadOne = query({
 
   handler: async (ctx, { normalizedId, token }) => {
 
-    if (token === "" || token !== process.env.CONVEX_AUTH_TOKEN) {
+    if (token === "" || token !== env.CONVEX_AUTH_TOKEN) {
 
       throw new Error("Invalid authorization token");
 
@@ -44608,7 +44933,7 @@ convex/http.ts
 ```
 import { httpRouter } from "convex/server";
 
-import { httpAction } from "./_generated/server";
+import { env, httpAction } from "./_generated/server";
 
 import { api } from "./_generated/api";
 
@@ -44668,7 +44993,7 @@ http.route({
 
         // e.g. https://mywebsite.com, configured on your Convex dashboard
 
-        "Access-Control-Allow-Origin": process.env.CLIENT_ORIGIN!,
+        "Access-Control-Allow-Origin": env.CLIENT_ORIGIN,
 
         Vary: "origin",
 
@@ -44718,7 +45043,7 @@ http.route({
 
           // e.g. https://mywebsite.com, configured on your Convex dashboard
 
-          "Access-Control-Allow-Origin": process.env.CLIENT_ORIGIN!,
+          "Access-Control-Allow-Origin": env.CLIENT_ORIGIN,
 
           "Access-Control-Allow-Methods": "POST",
 
@@ -46091,7 +46416,7 @@ convex/http.ts
 ```
 import { httpRouter } from "convex/server";
 
-import { httpAction } from "./_generated/server";
+import { env, httpAction } from "./_generated/server";
 
 import { api } from "./_generated/api";
 
@@ -46151,7 +46476,7 @@ http.route({
 
         // e.g. https://mywebsite.com, configured on your Convex dashboard
 
-        "Access-Control-Allow-Origin": process.env.CLIENT_ORIGIN!,
+        "Access-Control-Allow-Origin": env.CLIENT_ORIGIN,
 
         Vary: "origin",
 
@@ -46201,7 +46526,7 @@ http.route({
 
           // e.g. https://mywebsite.com, configured on your Convex dashboard
 
-          "Access-Control-Allow-Origin": process.env.CLIENT_ORIGIN!,
+          "Access-Control-Allow-Origin": env.CLIENT_ORIGIN,
 
           "Access-Control-Allow-Methods": "POST",
 
@@ -49131,6 +49456,26 @@ GET
 ```
 
 List the members of the given team.
+
+## Request[​](#request "Direct link to request")
+
+## Responses[​](#responses "Direct link to Responses")
+
+* 200
+
+
+---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
+# Mint an AI gateway JWT
+
+```
+POST 
+/deployments/:deployment_name/mint_ai_gateway_jwt
+```
+
+Mints a short-lived AI gateway JWT for a local deployment.
 
 ## Request[​](#request "Direct link to request")
 
@@ -52616,11 +52961,12 @@ These limits apply to each `query` or `mutation` function. To ensure you're with
 
 Applied per-deployment.
 
-|                     |               |
-| ------------------- | ------------- |
-| Number of variables | 1000          |
-| Maximum name length | 40 characters |
-| Maximum value size  | 8 KiB         |
+|                                    |                |
+| ---------------------------------- | -------------- |
+| Number of variables                | 512            |
+| Total size of all names and values | 512 KiB        |
+| Maximum name length                | 256 characters |
+| Maximum value size                 | 8 KiB          |
 
 ## File Storage[​](#file-storage "Direct link to File Storage")
 
@@ -56535,6 +56881,10 @@ The source of truth for these limits is our [source code](https://github.com/get
 
 For information on other limits, see [here](/production/state/limits.md).
 
+## Costs[​](#costs "Direct link to Costs")
+
+Search queries are billed in [query-GBs](/production/state/limits.md#search-pricing): each query counts the full size of the search index it runs against, regardless of how many results it returns and regardless of which `filterFields` it uses.
+
 
 ---
 
@@ -56944,6 +57294,10 @@ If your action performs a vector search then passes the results to a query or mu
 Only documents that contain a vector of the size and in the field specified by a vector index will be included in the index and returned by the vector search.
 
 For information on limits, see [here](/production/state/limits.md).
+
+## Costs[​](#costs "Direct link to Costs")
+
+Vector searches are billed in [query-GBs](/production/state/limits.md#search-pricing): each search counts the full size of the vector index it runs against, regardless of how many results it returns and regardless of which `filterFields` it uses.
 
 ## Future development[​](#future-development "Direct link to Future development")
 
@@ -59112,7 +59466,7 @@ const modules = import.meta.glob("./**/*.ts");
 
 ### Mocking `fetch` calls[​](#mocking-fetch-calls "Direct link to mocking-fetch-calls")
 
-You can use Vitest's [vi.stubGlobal](https://vitest.dev/guide/mocking.html#globals) method:
+Assign your mock to `globalThis.fetch`, and restore the original when the test is done:
 
 convex/ai.test.ts
 
@@ -59133,23 +59487,31 @@ test("ai", async () => {
 
 
 
-  vi.stubGlobal(
+  const originalFetch = globalThis.fetch;
 
-    "fetch",
+  globalThis.fetch = vi.fn(
 
-    vi.fn(async () => ({ text: async () => "I am the overlord" }) as Response),
+    async () => ({ text: async () => "I am the overlord" }) as Response,
 
   );
 
 
 
-  const reply = await t.action(api.messages.sendAIMessage, { prompt: "hello" });
+  try {
 
-  expect(reply).toEqual("I am the overlord");
+    const reply = await t.action(api.messages.sendAIMessage, {
 
+      prompt: "hello",
 
+    });
 
-  vi.unstubAllGlobals();
+    expect(reply).toEqual("I am the overlord");
+
+  } finally {
+
+    globalThis.fetch = originalFetch;
+
+  }
 
 });
 
@@ -59157,6 +59519,93 @@ test("ai", async () => {
 
 const modules = import.meta.glob("./**/*.ts");
 ```
+
+Don't use Vitest's [vi.stubGlobal](https://vitest.dev/guide/mocking.html#globals) for `fetch` or any of the other globals `convex-test` manages — it defines a new property on `globalThis` instead of assigning through the existing one, which opts the global out of the isolation described in [Overriding globals inside functions](#overriding-globals-inside-functions).
+
+### Overriding globals inside functions[​](#overriding-globals-inside-functions "Direct link to Overriding globals inside functions")
+
+Some libraries override runtime globals such as `fetch`, `Math`, `Date`, `console`, `process`, or `crypto` while a Convex function runs. `convex-test` scopes those overrides to a single function invocation, so they don't leak into other functions or into your test.
+
+Override a global by assigning a replacement object to it:
+
+convex/globals.test.ts
+
+```
+test("overriding Math within a handler", async () => {
+
+  const t = convexTest(schema, modules);
+
+  const originalMath = globalThis.Math;
+
+
+
+  const result = await t.run(async () => {
+
+    const replacement: Math = Object.create(globalThis.Math);
+
+    replacement.random = () => 0.5;
+
+    globalThis.Math = replacement;
+
+
+
+    return Math.random();
+
+  });
+
+
+
+  expect(result).toBe(0.5);
+
+  expect(globalThis.Math).toBe(originalMath);
+
+});
+```
+
+The override is visible to the handler and everything it calls directly, including after `await`. Nested calls through `ctx.runQuery`, `ctx.runMutation`, or `ctx.runAction` start from the test's globals and do not inherit it.
+
+#### Assign to the global; don't mutate or redefine it[​](#assign-to-the-global-dont-mutate-or-redefine-it "Direct link to Assign to the global; don't mutate or redefine it")
+
+Isolation works by intercepting assignments to the global itself, so only assignment is scoped to the invocation:
+
+* ✅ `globalThis.Math = replacement`
+* ❌ `Math.random = () => 0.5` — mutates the object shared with the rest of the test. Build a replacement object instead, as shown above.
+* ❌ `Object.defineProperty(globalThis, "Math", { value: replacement })` — replaces the property rather than assigning through it. `vi.stubGlobal` does this, so avoid it while running queries/mutations/actions.
+* ❌ `delete globalThis.crypto` — removes the property. Assign `undefined` instead:
+
+convex/globals.test.ts
+
+```
+test("making crypto unavailable within a handler", async () => {
+
+  const t = convexTest(schema, modules);
+
+
+
+  const result = await t.run(async () => {
+
+    (globalThis as Record<string, unknown>).crypto = undefined;
+
+
+
+    return typeof crypto;
+
+  });
+
+
+
+  expect(result).toBe("undefined");
+
+  expect(globalThis.crypto).toBeDefined();
+
+});
+```
+
+The property still exists, so `typeof crypto === "undefined"` checks pass, but this doesn't simulate deleting the property.
+
+The ❌ forms change the global for the whole test process, and they also disable the restrictions `convex-test` applies inside queries and mutations, even when used in test setup.
+
+Isolation covers the supported globals that exist and are configurable in your test environment; it doesn't cover custom globals. Overrides made outside a handler are shared test setup — restore them yourself, for example in a `finally` block.
 
 ### Measuring test coverage[​](#measuring-test-coverage "Direct link to Measuring test coverage")
 

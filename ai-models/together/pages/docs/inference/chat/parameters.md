@@ -126,7 +126,7 @@ Typical default: `0` or unset (no cap).
 
 ### `repetition_penalty`
 
-Reduces the probability of tokens that have already appeared anywhere in the prompt or response. Values above `1.0` discourage repetition; values below `1.0` encourage it.
+Reduces the probability of tokens that have already appeared anywhere in the prompt or response. Values above `1.0` discourage repetition. Values below `1.0` encourage it.
 
 Raise it slightly (for example, `1.1`) when the model loops or repeats phrases. Leave it at `1.0` otherwise, since aggressive values degrade fluency.
 
@@ -134,7 +134,7 @@ Typical default: `1.0`.
 
 ### `frequency_penalty`
 
-Penalizes tokens proportionally to how often they have already appeared in the response so far. Higher positive values make the model less likely to repeat the same exact tokens; negative values make repetition more likely. Range: `-2.0` to `2.0`.
+Penalizes tokens proportionally to how often they have already appeared in the response so far. Higher positive values make the model less likely to repeat the same exact tokens. Negative values make repetition more likely. Range: `-2.0` to `2.0`.
 
 Use it to reduce verbatim repetition in long generations (lists, summaries, code). It is finer-grained than `repetition_penalty` because the penalty scales with frequency.
 

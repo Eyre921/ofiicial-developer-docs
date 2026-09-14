@@ -9,21 +9,10 @@ path: docs/changelog
 
   The following models are now available on [serverless](/docs/serverless/models):
 
-  * `deepseek-ai/DeepSeek-V4.1-Flash`: 1,000,000 context length, FP8 quantization, function calling and structured outputs. Pricing: \$0.30 input / \$1.20 output / \$0.006 cached input (per 1M tokens).
+  * `deepseek-ai/DeepSeek-V4.1-Flash`: 1,000,000 context length, FP8 quantization, function calling, and structured outputs. Pricing: \$0.30 input / \$1.20 output / \$0.006 cached input (per 1M tokens).
 </Update>
 
 <Update label="September 10, 2026">
-  ## Together CLI v2.33.2
-
-  Version 2.33.2 of the Together CLI improves error reporting and upload feedback:
-
-  * Endpoint, fine-tuning, and model commands now print the API's error message when a request fails, rather than a generic failure notice. The same goes for a missing API key or command argument.
-  * `tg evals create` and `tg batches submit` now show a progress bar while uploading files, matching `tg files upload`.
-  * `tg fine-tuning list-events` no longer fails on jobs with more than 20 events.
-  * The `--scale-to-zero-window` flag has been removed from `tg beta endpoints deploy` and `tg beta endpoints update`.
-
-  See the [CLI reference](/reference/cli/getting-started).
-
   ## Preemptible compute for GPU clusters
 
   Preemptible compute is now in public preview for Kubernetes GPU clusters. Alongside standard nodes, you can set a preemptible GPU target, and Together provisions toward it as spare capacity becomes available, at a flat discounted rate relative to on-demand.
@@ -35,6 +24,27 @@ path: docs/changelog
   * **Sub-hourly billing:** Usage is metered every one to two minutes, so you pay only for the time a node is live.
 
   See [Preemptible compute](/docs/preemptible-compute) for the preemption contract, scheduling guidance, and checkpoint examples.
+
+  ## Together CLI v2.33.2
+
+  Version 2.33.2 of the Together CLI improves error reporting and upload feedback:
+
+  * Endpoint, fine-tuning, and model commands now print the API's error message when a request fails, rather than a generic failure notice. The same goes for a missing API key or command argument.
+  * `tg evals create` and `tg batches submit` now show a progress bar while uploading files, matching `tg files upload`.
+  * `tg fine-tuning list-events` no longer fails on jobs with more than 20 events.
+  * The `--scale-to-zero-window` flag has been removed from `tg beta endpoints deploy` and `tg beta endpoints update`.
+
+  See the [CLI reference](/reference/cli/getting-started).
+</Update>
+
+<Update label="September 8, 2026">
+  ## New models available for fine-tuning
+
+  You can now fine-tune the following models:
+
+  * `zai-org/GLM-5.3`.
+
+  See [Supported models](/docs/fine-tuning/supported-models) for the full list.
 </Update>
 
 <Update label="September 1, 2026">

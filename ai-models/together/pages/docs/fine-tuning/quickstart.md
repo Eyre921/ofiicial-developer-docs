@@ -467,7 +467,7 @@ tg beta endpoints rm "<ENDPOINT_ID>" --force
 ```
 
 <Note>
-  Pass the endpoint string (`your-project-slug/qwen-finetune`, printed by the deploy output) as the `model` parameter, not the Model Object ID. If `deploy` reports that the model has more than one deployment profile, re-run it with `--config <cr_...>`; list a model's profiles with `tg beta models configs "<MODEL_OBJECT_ID>"`.
+  Pass the endpoint string (`your-project-slug/qwen-finetune`, printed by the deploy output) as the `model` parameter, not the Model Object ID. If `deploy` reports that the model has more than one deployment profile, re-run it with `--config <cr_...>`. List a model's profiles with `tg beta models configs "<MODEL_OBJECT_ID>"`.
 </Note>
 
 <Check>

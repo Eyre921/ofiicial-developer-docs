@@ -79,7 +79,7 @@ Each health check validates different aspects of your GPU infrastructure:
 
 * Measures InfiniBand write throughput between exactly two GPU nodes across InfiniBand rails.
 * Validates node-to-node interconnect performance and rail-level connectivity.
-* **Requires:** A cluster with at least two GPU nodes. Select exactly two nodes; the first selected node is the server and the second is the client.
+* **Requires:** A cluster with at least two GPU nodes. Select exactly two nodes. The first selected node is the server and the second is the client.
 * **Configurable:** RDMA memory (`cpu` or `gpu`, default `cpu`); direction (`both`, `client-to-server`, or `server-to-client`, default `both`).
 * **Use for:** Investigating slow or degraded links between specific node pairs before distributed training.
 
@@ -188,7 +188,7 @@ You'll see the cluster status as:
 
 If acceptance tests fail during provisioning:
 
-1. Navigate to your cluster in the Together Cloud UI.
+1. Navigate to your cluster in the GPU clusters console.
 2. Go to the **Cluster Details** tab.
 3. Select the **Health Checks** sub-tab.
 4. Find the acceptance test runs for the affected nodes.
@@ -305,7 +305,7 @@ Passive checks continuously watch node telemetry, GPU metrics, and system logs, 
 See [Recommended repair actions](/docs/node-repair#recommended-repair-actions) for the repair action each signal maps to.
 
 <Note>
-  Detection coverage is expanding, and automated recommendations are enabled per cluster. Not every signal triggers an automated recommendation today; some raise an internal alert that Together's team reviews. Future releases will cover additional hardware and software signals.
+  Detection coverage is expanding, and automated recommendations are enabled per cluster. Not every signal triggers an automated recommendation today. Some raise an internal alert that Together's team reviews. Future releases will cover additional hardware and software signals.
 </Note>
 
 ### Active vs. passive checks

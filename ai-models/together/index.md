@@ -6,7 +6,6 @@
 ## (根目录)
 
 - `examples` — [Together Cookbooks & Example Apps](pages/examples.md) · [原文](https://docs.together.ai/examples)
-- `external-link-02` — [Build a real-time image generator with Flux and Together AI](pages/external-link-02.md) · [原文](https://docs.together.ai/external-link-02)
 - `intro` — [Overview](pages/intro.md) · [原文](https://docs.together.ai/intro)
 - `python-library` — [Python Library](pages/python-library.md) · [原文](https://docs.together.ai/python-library)
 - `typescript-library` — [TypeScript Library](pages/typescript-library.md) · [原文](https://docs.together.ai/typescript-library)
@@ -92,6 +91,7 @@
 - `docs/guides` — [Overview](pages/docs/guides.md) · [原文](https://docs.together.ai/docs/guides)
 - `docs/health-checks` — [Health checks](pages/docs/health-checks.md) · [原文](https://docs.together.ai/docs/health-checks)
 - `docs/how-to-build-a-lovable-clone-with-kimi-k2` — [Build a Lovable clone with Kimi K3](pages/docs/how-to-build-a-lovable-clone-with-kimi-k2.md) · [原文](https://docs.together.ai/docs/how-to-build-a-lovable-clone-with-kimi-k2)
+- `docs/how-to-build-a-real-time-image-generator` — [Build a real-time image generator with Flux](pages/docs/how-to-build-a-real-time-image-generator.md) · [原文](https://docs.together.ai/docs/how-to-build-a-real-time-image-generator)
 - `docs/how-to-build-coding-agents` — [Build a coding agent](pages/docs/how-to-build-coding-agents.md) · [原文](https://docs.together.ai/docs/how-to-build-coding-agents)
 - `docs/how-to-build-phone-voice-agent` — [Build a phone voice agent with Together AI](pages/docs/how-to-build-phone-voice-agent.md) · [原文](https://docs.together.ai/docs/how-to-build-phone-voice-agent)
 - `docs/how-to-build-real-time-audio-transcription-app` — [Build an audio transcription app with Whisper](pages/docs/how-to-build-real-time-audio-transcription-app.md) · [原文](https://docs.together.ai/docs/how-to-build-real-time-audio-transcription-app)

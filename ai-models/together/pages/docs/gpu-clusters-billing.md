@@ -12,18 +12,18 @@ Understand billing, pricing, and lifecycle policies for GPU clusters.
 
 Instant clusters offer two compute billing options: **reserved** and **on-demand**.
 
-* **Reservations** – Credits are charged upfront or deducted for the full
+* **Reservations:** Credits are charged upfront or deducted for the full
   reserved duration once the cluster is provisioned. Any usage beyond the reserved
   capacity is billed at on-demand rates.
-* **On-Demand** – Pay only for the time your cluster is running, with no upfront
+* **On-demand:** Pay only for the time your cluster is running, with no upfront
   commitment.
 
 [View current GPU Cluster pricing](https://www.together.ai/pricing#gpu-clusters).
 
 <Note>
   The regions API and `tg beta clusters list-regions` return region availability,
-  supported instance types, and driver versions; they do not return pricing. See
-  the [GPU Cluster pricing table](https://www.together.ai/pricing#gpu-clusters) for
+  supported instance types, and driver versions. They do not return pricing. See
+  the [GPU cluster pricing table](https://www.together.ai/pricing#gpu-clusters) for
   current on-demand and reserved rates.
 </Note>
 
@@ -45,23 +45,23 @@ storage.
 
 Clusters and storage volumes follow different lifecycle policies:
 
-* **Compute Clusters** – Clusters are automatically decommissioned when their
-  reservation period ends. To extend a reservation, go to the cloud console, "Cluster Details" view and then select the "Extend Reservation" button.
-* **Storage Volumes** – Storage volumes are persistent and remain available as
+* **Compute clusters:** Clusters are automatically decommissioned when their
+  reservation period ends. To extend a reservation, go to the cloud console **Cluster Details** view and then select the **Extend Reservation** button.
+* **Storage volumes:** Storage volumes are persistent and remain available as
   long as your billing account is in good standing. They are not automatically
-  deleted. The user data persists as long as you use the static PV we provide.
+  deleted. Your data persists as long as you use the static PV Together provides.
 
 ### Running out of credits
 
 When your credits are exhausted, resources behave differently depending on their
 type:
 
-* **Reserved Compute** – Existing reservations remain active until their
+* **Reserved compute:** Existing reservations remain active until their
   scheduled end date. Any additional on-demand capacity used to scale beyond the
   reservation is decommissioned.
-* **Fully On-Demand Compute** – Clusters are first paused and then
+* **Fully on-demand compute:** Clusters are first paused and then
   decommissioned if credits are not restored.
-* **Storage Volumes** – Access is revoked first, and the data is later
+* **Storage volumes:** Access is revoked first, and the data is later
   decommissioned.
 
 You will receive alerts before these actions take place. For questions or
@@ -77,10 +77,10 @@ assistance, contact your billing team.
 
 Each invoice includes detailed line items for:
 
-* **Reserved compute** – Upfront reservation charges
-* **On-demand compute** – Hourly burst capacity usage
-* **Storage** – Shared volume usage per TiB
-* **Usage period** – Exact timeframes for each charge
+* **Reserved compute:** Upfront reservation charges.
+* **On-demand compute:** Hourly burst capacity usage.
+* **Storage:** Shared volume usage per TiB.
+* **Usage period:** Exact timeframes for each charge.
 
 ## Lifecycle policies
 
@@ -112,18 +112,18 @@ Each invoice includes detailed line items for:
 
 ### Cost optimization
 
-* **Use reserved capacity** for predictable baseline workloads
-* **Add on-demand** only during burst periods
-* **Right-size storage** – Start small and scale as needed
-* **Monitor usage** regularly in the billing dashboard
-* **Delete unused storage** to avoid ongoing charges
+* **Use reserved capacity** for predictable baseline workloads.
+* **Add on-demand** only during burst periods.
+* **Right-size storage:** Start small and scale as needed.
+* **Monitor usage** regularly in the billing dashboard.
+* **Delete unused storage** to avoid ongoing charges.
 
 ### Budget planning
 
-* **Reserved capacity** – Calculate total cost upfront (GPUs × hours × rate)
-* **On-demand capacity** – Estimate based on expected burst hours
-* **Storage** – Account for data growth over time
-* **Buffer** – Add 10-20% for unexpected scaling needs
+* **Reserved capacity:** Calculate total cost upfront (GPUs × hours × rate).
+* **On-demand capacity:** Estimate based on expected burst hours.
+* **Storage:** Account for data growth over time.
+* **Buffer:** Add 10-20% for unexpected scaling needs.
 
 Reserved capacity offers significant discounts compared to on-demand for all
 tiers.
@@ -154,9 +154,9 @@ compute and storage.
 
 ### Can I pause a cluster to save costs?
 
-Reserved clusters cannot be paused – you're charged for the full reservation
+Reserved clusters cannot be paused. You're charged for the full reservation
 period. On-demand clusters can be terminated and recreated later, but there's
-no "pause" function.
+no pause function.
 
 ### When does my reservation start?
 

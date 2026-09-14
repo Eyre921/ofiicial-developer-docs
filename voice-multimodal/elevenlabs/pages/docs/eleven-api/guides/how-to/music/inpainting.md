@@ -37,7 +37,7 @@ elevenlabs = ElevenLabs(api_key=os.environ.get("ELEVENLABS_API_KEY"))
 response = elevenlabs.music.compose_detailed(
     prompt="An upbeat pop song with verse and chorus",
     music_length_ms=60000,
-    model_id="music_v2",
+    model_id="music_v2_5",
     store_for_inpainting=True
 )
 song_id = response.song_id
@@ -58,7 +58,7 @@ const elevenlabs = new ElevenLabsClient({
 const response = await elevenlabs.music.composeDetailed({
   prompt: "An upbeat pop song with verse and chorus",
   musicLengthMs: 60000,
-  modelId: "music_v2",
+  modelId: "music_v2_5",
   storeForInpainting: true,
 });
 const songId = response.songId;
@@ -102,7 +102,7 @@ const compositionPlan = response.compositionPlan; // undefined if extractComposi
 
 ### Keep and regenerate chunks
 
-Build a plan that mixes audio reference chunks (kept) with generation chunks (regenerated), then pass it to `compose` with `model_id="music_v2"` (or `model_id="music_v2_5"`):
+Build a plan that mixes audio reference chunks (kept) with generation chunks (regenerated), then pass it to `compose` with `model_id="music_v2_5"`:
 
 ```python
 # Keep the first 30 seconds, regenerate the rest with a new style
@@ -126,7 +126,7 @@ composition_plan = {
 
 audio = elevenlabs.music.compose(
     composition_plan=composition_plan,
-    model_id="music_v2",
+    model_id="music_v2_5",
 )
 
 with open("edited.mp3", "wb") as f:
@@ -156,7 +156,7 @@ const compositionPlan = {
 
 const audio = await elevenlabs.music.compose({
   compositionPlan,
-  modelId: "music_v2",
+  modelId: "music_v2_5",
 });
 ```
 
@@ -236,7 +236,7 @@ composition_plan = {
 
 response = elevenlabs.music.compose_detailed(
     composition_plan=composition_plan,
-    model_id="music_v2",
+    model_id="music_v2_5",
     store_for_inpainting=True
 )
 song_id = response.song_id
@@ -278,7 +278,7 @@ const compositionPlan = {
 
 const response = await elevenlabs.music.composeDetailed({
   compositionPlan,
-  modelId: "music_v2",
+  modelId: "music_v2_5",
   storeForInpainting: true,
 });
 const songId = response.songId;
@@ -309,7 +309,7 @@ edited_plan = {
     ]
 }
 
-audio = elevenlabs.music.compose(composition_plan=edited_plan, model_id="music_v2")
+audio = elevenlabs.music.compose(composition_plan=edited_plan, model_id="music_v2_5")
 ```
 
 ```typescript
@@ -331,7 +331,10 @@ const editedPlan = {
   ],
 };
 
-const audio = await elevenlabs.music.compose({ compositionPlan: editedPlan, modelId: "music_v2" });
+const audio = await elevenlabs.music.compose({
+  compositionPlan: editedPlan,
+  modelId: "music_v2_5",
+});
 ```
 
 <elevenlabs-audio-player audio-title="Edited Outro" audio-src="https://storage.googleapis.com/eleven-public-cdn/documentation_assets/audio/movie_trailer_edited.mp3" />
@@ -346,7 +349,7 @@ Add a new intro and outro to an existing song.
 response = elevenlabs.music.compose_detailed(
     prompt="Berlin night club techno",
     music_length_ms=60000,
-    model_id="music_v2",
+    model_id="music_v2_5",
     store_for_inpainting=True
 )
 song_id = response.song_id
@@ -356,7 +359,7 @@ song_id = response.song_id
 const response = await elevenlabs.music.composeDetailed({
   prompt: "Berlin night club techno",
   musicLengthMs: 60000,
-  modelId: "music_v2",
+  modelId: "music_v2_5",
   storeForInpainting: true,
 });
 const songId = response.songId;
@@ -395,7 +398,7 @@ extend_plan = {
     ]
 }
 
-audio = elevenlabs.music.compose(composition_plan=extend_plan, model_id="music_v2")
+audio = elevenlabs.music.compose(composition_plan=extend_plan, model_id="music_v2_5")
 ```
 
 ```typescript
@@ -425,7 +428,10 @@ const extendPlan = {
   ],
 };
 
-const audio = await elevenlabs.music.compose({ compositionPlan: extendPlan, modelId: "music_v2" });
+const audio = await elevenlabs.music.compose({
+  compositionPlan: extendPlan,
+  modelId: "music_v2_5",
+});
 ```
 
 <elevenlabs-audio-player audio-title="Extended (100s)" audio-src="https://storage.googleapis.com/eleven-public-cdn/documentation_assets/audio/berlin_night_club_techno_extended.mp3" />
@@ -451,7 +457,7 @@ composition_plan = {
 
 response = elevenlabs.music.compose_detailed(
     composition_plan=composition_plan,
-    model_id="music_v2",
+    model_id="music_v2_5",
     store_for_inpainting=True
 )
 song_id = response.song_id
@@ -472,7 +478,7 @@ const compositionPlan = {
 
 const response = await elevenlabs.music.composeDetailed({
   compositionPlan,
-  modelId: "music_v2",
+  modelId: "music_v2_5",
   storeForInpainting: true,
 });
 const songId = response.songId;
@@ -506,7 +512,7 @@ loop_plan = {
     ]
 }
 
-audio = elevenlabs.music.compose(composition_plan=loop_plan, model_id="music_v2")
+audio = elevenlabs.music.compose(composition_plan=loop_plan, model_id="music_v2_5")
 ```
 
 ```typescript
@@ -533,7 +539,7 @@ const loopPlan = {
   ],
 };
 
-const audio = await elevenlabs.music.compose({ compositionPlan: loopPlan, modelId: "music_v2" });
+const audio = await elevenlabs.music.compose({ compositionPlan: loopPlan, modelId: "music_v2_5" });
 ```
 
 <elevenlabs-audio-player audio-title="Seamless Loop" audio-src="https://storage.googleapis.com/eleven-public-cdn/documentation_assets/audio/acoustic_guitar_looped.mp3" />
@@ -548,7 +554,7 @@ Condition a brand-new song on a short slice of an existing one to carry over its
 response = elevenlabs.music.compose_detailed(
     prompt="An upbeat pop song with bright synths and driving drums",
     music_length_ms=60000,
-    model_id="music_v2",
+    model_id="music_v2_5",
     store_for_inpainting=True
 )
 song_id = response.song_id
@@ -558,7 +564,7 @@ song_id = response.song_id
 const response = await elevenlabs.music.composeDetailed({
   prompt: "An upbeat pop song with bright synths and driving drums",
   musicLengthMs: 60000,
-  modelId: "music_v2",
+  modelId: "music_v2_5",
   storeForInpainting: true,
 });
 const songId = response.songId;
@@ -594,7 +600,7 @@ similar_plan = {
     ]
 }
 
-audio = elevenlabs.music.compose(composition_plan=similar_plan, model_id="music_v2")
+audio = elevenlabs.music.compose(composition_plan=similar_plan, model_id="music_v2_5")
 ```
 
 ```typescript
@@ -623,7 +629,10 @@ const similarPlan = {
   ],
 };
 
-const audio = await elevenlabs.music.compose({ compositionPlan: similarPlan, modelId: "music_v2" });
+const audio = await elevenlabs.music.compose({
+  compositionPlan: similarPlan,
+  modelId: "music_v2_5",
+});
 ```
 
 <elevenlabs-audio-player audio-title="Conditioned New Song" audio-src="https://storage.googleapis.com/eleven-public-cdn/documentation_assets/audio/conditioning-new.mp3" />
