@@ -13,7 +13,7 @@ Request-per-second limits are enforced per namespace or per index, as noted in t
 **Most rate limits can be adjusted upon request.** If you need higher limits, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) with details about your use case.
 
 <Note>
-  Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes) are not subject to read unit limits for query, fetch, and list operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes) guide.
+  Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) are not subject to read unit limits for query, fetch, and list operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
 </Note>
 
 ## Monthly usage limits
@@ -65,7 +65,7 @@ Reaching a monthly usage limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade you
 | Delete by metadata requests per second per namespace | 5            | 5            | 5             | 5               |
 | Delete by metadata requests per second per index     | 500          | 500          | 500           | 500             |
 
-Exceeding a per-second throughput limit returns a `429 - TOO_MANY_REQUESTS`. [Implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic), pace your requests, consider [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes) (which aren't subject to per-second read limits) for high-throughput reads, or [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to raise a limit.
+Exceeding a per-second throughput limit returns a `429 - TOO_MANY_REQUESTS`. [Implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic), pace your requests, consider [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) (which aren't subject to per-second read limits) for high-throughput reads, or [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to raise a limit.
 
 <Accordion title="Example error">
   ```

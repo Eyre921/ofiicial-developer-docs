@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 416 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 417 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -411,6 +411,7 @@
 - `docs/guides/routing/model-variants/free` — [Free Variant](pages/docs/guides/routing/model-variants/free.md) · [原文](https://openrouter.ai/docs/guides/routing/model-variants/free.md)
 - `docs/guides/routing/model-variants/nitro` — [Nitro Variant](pages/docs/guides/routing/model-variants/nitro.md) · [原文](https://openrouter.ai/docs/guides/routing/model-variants/nitro.md)
 - `docs/guides/routing/model-variants/online` — [Online Variant](pages/docs/guides/routing/model-variants/online.md) · [原文](https://openrouter.ai/docs/guides/routing/model-variants/online.md)
+- `docs/guides/routing/model-variants/overview` — [Model Variants](pages/docs/guides/routing/model-variants/overview.md) · [原文](https://openrouter.ai/docs/guides/routing/model-variants/overview.md)
 - `docs/guides/routing/model-variants/thinking` — [Thinking Variant](pages/docs/guides/routing/model-variants/thinking.md) · [原文](https://openrouter.ai/docs/guides/routing/model-variants/thinking.md)
 - `docs/guides/routing/private-models` — [Private Models](pages/docs/guides/routing/private-models.md) · [原文](https://openrouter.ai/docs/guides/routing/private-models.md)
 - `docs/guides/routing/provider-selection` — [Provider Routing](pages/docs/guides/routing/provider-selection.md) · [原文](https://openrouter.ai/docs/guides/routing/provider-selection.md)

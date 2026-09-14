@@ -9,7 +9,7 @@ Migrate a Pinecone pod-based index to serverless for automatic scaling, better p
 This page shows you how to migrate a pod-based index to [serverless](/guides/core-concepts/architecture). The migration process is free; the standard costs of upserting records to a new serverless index are not applied.
 
 <Warning>
-  In most cases, migrating to serverless reduces costs significantly. For read-heavy workloads with more than 1 query per second and for indexes with many records in a single namespace, consider building your serverless indexes on [dedicated read nodes](/guides/index-data/dedicated-read-nodes).
+  In most cases, migrating to serverless reduces costs significantly. For read-heavy workloads with more than 1 query per second and for indexes with many records in a single namespace, consider building your serverless indexes on [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview).
 
   Before migrating, [contact Pinecone Support](/troubleshooting/contact-support) for help estimating and managing cost implications.
 </Warning>

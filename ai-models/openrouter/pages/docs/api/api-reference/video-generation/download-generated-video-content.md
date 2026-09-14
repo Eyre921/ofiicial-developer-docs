@@ -181,6 +181,29 @@ paths:
               schema:
                 $ref: '#/components/schemas/NotFoundResponse'
           description: Not Found - Resource does not exist
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: Resource conflict. Please try again later.
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+          description: Conflict - Resource conflict or concurrent modification
+        '410':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 410
+                  message: >-
+                    The Coinbase APIs used by this endpoint have been
+                    deprecated, so the Coinbase Commerce credits API has been
+                    removed. Use the web credits purchase flow instead.
+              schema:
+                $ref: '#/components/schemas/GoneResponse'
+          description: Gone - Endpoint has been permanently removed or deprecated
         '500':
           content:
             application/json:
@@ -275,6 +298,51 @@ components:
       properties:
         error:
           $ref: '#/components/schemas/NotFoundResponseErrorData'
+        openrouter_metadata:
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
+        user_id:
+          type:
+            - string
+            - 'null'
+      required:
+        - error
+      type: object
+    ConflictResponse:
+      description: Conflict - Resource conflict or concurrent modification
+      example:
+        error:
+          code: 409
+          message: Resource conflict. Please try again later.
+      properties:
+        error:
+          $ref: '#/components/schemas/ConflictResponseErrorData'
+        openrouter_metadata:
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
+        user_id:
+          type:
+            - string
+            - 'null'
+      required:
+        - error
+      type: object
+    GoneResponse:
+      description: Gone - Endpoint has been permanently removed or deprecated
+      example:
+        error:
+          code: 410
+          message: >-
+            The Coinbase APIs used by this endpoint have been deprecated, so the
+            Coinbase Commerce credits API has been removed. Use the web credits
+            purchase flow instead.
+      properties:
+        error:
+          $ref: '#/components/schemas/GoneResponseErrorData'
         openrouter_metadata:
           additionalProperties: {}
           type:
@@ -391,6 +459,47 @@ components:
       example:
         code: 404
         message: Resource not found
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        metadata:
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
+      required:
+        - code
+        - message
+      type: object
+    ConflictResponseErrorData:
+      description: Error data for ConflictResponse
+      example:
+        code: 409
+        message: Resource conflict. Please try again later.
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        metadata:
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
+      required:
+        - code
+        - message
+      type: object
+    GoneResponseErrorData:
+      description: Error data for GoneResponse
+      example:
+        code: 410
+        message: >-
+          The Coinbase APIs used by this endpoint have been deprecated, so the
+          Coinbase Commerce credits API has been removed. Use the web credits
+          purchase flow instead.
       properties:
         code:
           type: integer

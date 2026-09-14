@@ -16,7 +16,7 @@ path: docs/api/api-reference/workspaces/list-workspace-budgets
 
 ## OpenAPI
 
-````yaml /openapi/openapi.yaml get /workspaces/{id}/budgets
+````yaml /openapi/openapi.yaml get /workspaces/{workspace_ref}/budgets
 openapi: 3.1.0
 info:
   contact:
@@ -104,7 +104,7 @@ externalDocs:
   description: OpenRouter Documentation
   url: https://openrouter.ai/docs
 paths:
-  /workspaces/{id}/budgets:
+  /workspaces/{workspace_ref}/budgets:
     get:
       tags:
         - Workspaces
@@ -116,7 +116,7 @@ paths:
       parameters:
         - description: The workspace ID (UUID) or slug
           in: path
-          name: id
+          name: workspace_ref
           required: true
           schema:
             description: The workspace ID (UUID) or slug

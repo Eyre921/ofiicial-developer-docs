@@ -20,15 +20,15 @@ Create a codespace to start developing in a secure, configurable, and dedicated 
 
 * [Understanding the codespace lifecycle](/en/codespaces/about-codespaces/understanding-the-codespace-lifecycle)
 
-  <p>Learn how to develop in a GitHub Codespaces environment, and maintain your data throughout the entire codespace lifecycle.</p>
+  Learn how to develop in a GitHub Codespaces environment, and maintain your data throughout the entire codespace lifecycle.
 
 * [Creating a codespace for a repository](/en/codespaces/developing-in-a-codespace/creating-a-codespace-for-a-repository)
 
-  <p>You can create a codespace for a branch in a repository to develop online.</p>
+  You can create a codespace for a branch in a repository to develop online.
 
 * [Creating a codespace from a template](/en/codespaces/developing-in-a-codespace/creating-a-codespace-from-a-template)
 
-  <p>If you're starting a new project, you can create a codespace from a blank template or choose a template specially designed for the type of work you want to do.</p>
+  If you're starting a new project, you can create a codespace from a blank template or choose a template specially designed for the type of work you want to do.
 
 * [Introduction to dev containers](/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers)
 
@@ -36,11 +36,11 @@ Create a codespace to start developing in a secure, configurable, and dedicated 
 
 * [Using source control in your codespace](/en/codespaces/developing-in-a-codespace/using-source-control-in-your-codespace)
 
-  <p>After making changes to a file in your codespace you can quickly commit the changes and push your update to the remote repository.</p>
+  After making changes to a file in your codespace you can quickly commit the changes and push your update to the remote repository.
 
 * [Enabling or disabling GitHub Codespaces for your organization](/en/codespaces/managing-codespaces-for-your-organization/enabling-or-disabling-github-codespaces-for-your-organization)
 
-  <p>You can control which users can use GitHub Codespaces in your organization's private repositories.</p>
+  You can control which users can use GitHub Codespaces in your organization's private repositories.
 
 * [Security in GitHub Codespaces](/en/codespaces/reference/security-in-github-codespaces)
 

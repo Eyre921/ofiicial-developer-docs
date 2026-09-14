@@ -85,7 +85,7 @@ A **read unit (RU)** is the unit Pinecone uses to measure and price the cost of 
 </Tip>
 
 <Note>
-  Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes) are not subject to read unit limits for query, fetch, and list operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes) guide.
+  Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) are not subject to read unit limits for query, fetch, and list operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
 </Note>
 
 #### Query
@@ -320,7 +320,7 @@ Egress is metered on read requests that return per-record data:
 
 Write requests (upsert, update, delete, import), index statistics (such as `describe_index_stats`), and index management requests are not metered for egress.
 
-Egress applies to indexes that use [dedicated read nodes](/guides/index-data/dedicated-read-nodes) as well as on-demand indexes, because it depends on the data returned to you rather than on the hardware serving the read.
+Egress applies to indexes that use [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) as well as on-demand indexes, because it depends on the data returned to you rather than on the hardware serving the read.
 
 <Note>
   Egress accrues on all bytes returned by in-scope reads, including IDs, scores, and metadata. Leaving vector values out of a [query](/guides/search/search-overview) response (`include_values=false`, the default) lowers egress, but it doesn't exempt the request, because IDs and scores are still returned. `fetch` always returns values, so use `query` when you're searching and only need IDs or metadata.

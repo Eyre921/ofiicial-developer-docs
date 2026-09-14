@@ -7,7 +7,7 @@ path: guides/indexes/pods/choose-a-pod-type-and-size
 Choose a Pinecone pod type and size (s1, p1, p2). Legacy guide: pods are unavailable to new customers as of August 2025; serverless needs no planning.
 
 <Warning>
-  Customers who sign up for a Standard or Enterprise plan on or after August 18, 2025 cannot create pod-based indexes. Instead, create [serverless indexes](/guides/index-data/create-an-index), and consider using [dedicated read nodes](/guides/index-data/dedicated-read-nodes) for large workloads (millions of records or more, and moderate or high query rates).
+  Customers who sign up for a Standard or Enterprise plan on or after August 18, 2025 cannot create pod-based indexes. Instead, create [serverless indexes](/guides/index-data/create-an-index), and consider using [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for large workloads (millions of records or more, and moderate or high query rates).
 </Warning>
 
 When planning your Pinecone deployment, it is important to understand the approximate storage requirements of your vectors to choose the appropriate pod type and number. This page will give guidance on sizing to help you plan accordingly.

@@ -36,20 +36,6 @@ You can apply up to 20 discounts to a subscription, subscription item, or invoic
 
 To use discounts for one-time payments, see [Add discounts for one-time payments](https://docs.stripe.com/payments/checkout/discounts.md) instead.
 
-Service period coupons let you apply discounts based on when services were rendered, not when the invoice was issued. For example, a discount for January services applies to January, regardless of whether the invoice is generated in February. Sign up to join the private preview.
-
-### Interested in applying discounts by service period?
-
-Enter your email to request access.
-
-```bash
-curl https://docs.stripe.com/preview/register \
-  -X POST \
-  -H "Content-Type: application/json" \
-  -H "Referer: https://docs.stripe.com/billing/subscriptions/coupons" \
-  -d '{"email": "EMAIL", "preview": "service_period_coupons_preview"}'
-```
-
 ## Coupons 
 
 To reduce a customer’s charges, redeem a coupon to create a [Discount](https://docs.stripe.com/api/discounts/object.md) object on a subscription or customer. Learn how to create and manage coupons in the following sections.

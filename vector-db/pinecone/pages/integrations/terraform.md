@@ -166,7 +166,7 @@ resource "pinecone_index" "example_index_byoc" {
 #### Pod-based indexes
 
 <Warning>
-  Customers who sign up for a Standard or Enterprise plan on or after August 18, 2025 cannot create pod-based indexes. Instead, create [serverless indexes](/guides/index-data/create-an-index), and consider using [dedicated read nodes](/guides/index-data/dedicated-read-nodes) for large workloads (millions of records or more, and moderate or high query rates).
+  Customers who sign up for a Standard or Enterprise plan on or after August 18, 2025 cannot create pod-based indexes. Instead, create [serverless indexes](/guides/index-data/create-an-index), and consider using [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for large workloads (millions of records or more, and moderate or high query rates).
 </Warning>
 
 To create a [pod-based index](/guides/indexes/pods/understanding-pod-based-indexes), set `spec.pod`:
@@ -195,7 +195,7 @@ resource "pinecone_index" "example_index_pod" {
 
 #### Read capacity
 
-Serverless and BYOC indexes support configurable read capacity through `read_capacity` inside the `serverless` or `byoc` spec. There are two modes: `on_demand`, which is the default, and `dedicated`, which provisions [dedicated read nodes](/guides/index-data/dedicated-read-nodes).
+Serverless and BYOC indexes support configurable read capacity through `read_capacity` inside the `serverless` or `byoc` spec. There are two modes: `on_demand`, which is the default, and `dedicated`, which provisions [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview).
 
 ```terraform theme={null}
 # On-demand read capacity, stated explicitly
@@ -313,7 +313,7 @@ Collections also accept a `timeouts` block, with the same 5-minute defaults as i
 The `pinecone_project` resource lets you create, update, and delete [projects](/guides/projects/understanding-projects). Once `force_encryption_with_cmek` is enabled, it can't be disabled. `max_pods` defaults to `0`, which allows serverless indexes only.
 
 <Warning>
-  Customers who sign up for a Standard or Enterprise plan on or after August 18, 2025 cannot create pod-based indexes. Instead, create [serverless indexes](/guides/index-data/create-an-index), and consider using [dedicated read nodes](/guides/index-data/dedicated-read-nodes) for large workloads (millions of records or more, and moderate or high query rates).
+  Customers who sign up for a Standard or Enterprise plan on or after August 18, 2025 cannot create pod-based indexes. Instead, create [serverless indexes](/guides/index-data/create-an-index), and consider using [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for large workloads (millions of records or more, and moderate or high query rates).
 </Warning>
 
 Customers on those plans also can't set `max_pods` for a project.

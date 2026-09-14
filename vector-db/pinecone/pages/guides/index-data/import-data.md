@@ -889,7 +889,7 @@ The [`cancel_import`](/reference/api/latest/data-plane/cancel_import) operation 
 | Max files per import                          | 100,000   |
 | Max size per file                             | 10 GB     |
 
-The total input data size limit does not apply to indexes with [dedicated read nodes](/guides/index-data/dedicated-read-nodes).
+The total input data size limit does not apply to indexes with [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview).
 
 Bulk import supports indexes without a schema definition (Parquet files) and indexes with document schemas ([JSONL files](/guides/index-data/import-data#prepare-document-schema-files-jsonl)). Semantic-text (auto-embedded) fields are not yet supported in document schemas.
 
@@ -1089,7 +1089,7 @@ When an import fails, you'll see an error message with the reason for the failur
     Import ({size} GB) exceeds the maximum input data size of 1000 GB for on-demand. Consider using Dedicated Read Nodes (DRN) for larger index sizes, or contact support for your use-case.
     ```
 
-    To fix this, either reduce the total size of your import to under 1 TB, use an index with [dedicated read nodes](/guides/index-data/dedicated-read-nodes) (which have no total data size limit for imports), or [contact support](https://app.pinecone.io/organizations/-/settings/support/ticket).
+    To fix this, either reduce the total size of your import to under 1 TB, use an index with [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) (which have no total data size limit for imports), or [contact support](https://app.pinecone.io/organizations/-/settings/support/ticket).
 
     For `.jsonl.gz` files, size is measured as an estimated uncompressed size of 10× the compressed file, so gzip-compressed files count roughly 10× their on-disk size against this limit.
   </Accordion>

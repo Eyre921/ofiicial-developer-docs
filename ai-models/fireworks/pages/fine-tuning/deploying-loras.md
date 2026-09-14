@@ -51,17 +51,21 @@ The result is a deployment that is indistinguishable from a fully trained model 
 
 ### Deploy with live merge
 
-List shapes for the LoRA's base model, then deploy your trained model with one:
+Match shapes for the live-merge model — the server resolves its PEFT base model:
 
 ```bash theme={null}
-firectl deployment-shape-version list \
-  --base-model "accounts/<BASE_MODEL_ACCOUNT_ID>/models/<BASE_MODEL_ID>"
+firectl deployment-shape-version match \
+  --model "accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>"
+```
 
+Deploy with one of the matched shapes:
+
+```bash theme={null}
 firectl deployment create "accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>" \
   --deployment-shape <SHAPE_NAME>
 ```
 
-Copy `<SHAPE_NAME>` from the `SHAPE NAME (version-id)` column (the resource name before the parenthesized version ID).
+Over the API, call [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions) with the fine-tuned model as `baseModel` and pass one of the returned shape versions as `deploymentShape` in [Create Deployment](/api-reference/create-deployment).
 
 <Check>
   Your deployment will be ready to use once it completes, with performance that matches the base model.
@@ -139,6 +143,24 @@ Many base models default to FP8 or FP4 shapes. If you need LoRA addon inference 
 
 **Option 1 — Use a BF16 deployment shape**
 
+Over the API, call [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions) with `enableAddons` set — it returns only shapes with the MULTI\_LORA capability, so quantized shapes are filtered out for you:
+
+```bash theme={null}
+curl -X POST "https://api.fireworks.ai/v1/accounts/YOUR_ACCOUNT_ID/deploymentShapeVersions:match" \
+  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "createDeploymentRequest": {
+      "deployment": {
+        "baseModel": "accounts/fireworks/models/<BASE_MODEL_ID>",
+        "enableAddons": true
+      }
+    }
+  }'
+```
+
+With the CLI, list the BF16 shapes for the base model (`deployment-shape-version match` does not take addons into account, so check the `PRECISION` column):
+
 ```bash theme={null}
 # List available shapes for your model
 firectl deployment-shape-version list --base-model accounts/fireworks/models/<MODEL_ID>
@@ -167,7 +189,7 @@ If no BF16 addon-compatible shape is available, use [live merge](#live-merge-dep
 
 <Steps>
   <Step title="Create base model deployment with addon support">
-    Deploy the base model with addons enabled, using a BF16 [deployment shape](/guides/ondemand-deployments#deployment-shapes) (find one with `firectl deployment-shape-version list --base-model accounts/fireworks/models/<BASE_MODEL_ID>`):
+    Deploy the base model with addons enabled, using a BF16 [deployment shape](/guides/ondemand-deployments#deployment-shapes). Find one with [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions) with `enableAddons` set, or `firectl deployment-shape-version list --base-model accounts/fireworks/models/<BASE_MODEL_ID>` (check the `PRECISION` column) — see [LoRA addon shape compatibility](#lora-addon-shape-compatibility):
 
     ```bash theme={null}
     firectl deployment create "accounts/fireworks/models/<BASE_MODEL_ID>" \

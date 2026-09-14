@@ -215,7 +215,19 @@ firectl deployment-shape-version list --base-model <model-id>
 
 # Create with a shape (shorthand)
 firectl deployment create accounts/fireworks/models/deepseek-v3 --deployment-shape throughput
+```
 
+<Note>
+  `--base-model` only accepts base models; it fails on LoRA addon and live-merge models. For those, match shapes for the model directly — the server resolves the PEFT base model:
+
+  ```bash theme={null}
+  firectl deployment-shape-version match --model accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>
+  ```
+
+  Over the API, the equivalent is [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions).
+</Note>
+
+```bash theme={null}
 # Create with full shape ID
 firectl deployment create accounts/fireworks/models/llama-v3p3-70b-instruct \
   --deployment-shape accounts/fireworks/deploymentShapes/llama-v3p3-70b-instruct-fast

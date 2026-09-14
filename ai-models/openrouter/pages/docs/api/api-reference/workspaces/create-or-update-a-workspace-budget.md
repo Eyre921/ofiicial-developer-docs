@@ -16,7 +16,7 @@ path: docs/api/api-reference/workspaces/create-or-update-a-workspace-budget
 
 ## OpenAPI
 
-````yaml /openapi/openapi.yaml put /workspaces/{id}/budgets/{interval}
+````yaml /openapi/openapi.yaml put /workspaces/{workspace_ref}/budgets/{interval}
 openapi: 3.1.0
 info:
   contact:
@@ -104,7 +104,7 @@ externalDocs:
   description: OpenRouter Documentation
   url: https://openrouter.ai/docs
 paths:
-  /workspaces/{id}/budgets/{interval}:
+  /workspaces/{workspace_ref}/budgets/{interval}:
     put:
       tags:
         - Workspaces
@@ -123,7 +123,7 @@ paths:
       parameters:
         - description: The workspace ID (UUID) or slug
           in: path
-          name: id
+          name: workspace_ref
           required: true
           schema:
             description: The workspace ID (UUID) or slug

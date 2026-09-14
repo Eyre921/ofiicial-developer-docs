@@ -7,7 +7,7 @@ path: guides/indexes/pods/scale-pod-based-indexes
 Scale Pinecone pod-based indexes by adding pods or replicas. Legacy guide: pod indexes are unavailable to new customers; serverless scales automatically.
 
 <Warning>
-  Customers who sign up for a Standard or Enterprise plan on or after August 18, 2025 cannot create pod-based indexes. Instead, create [serverless indexes](/guides/index-data/create-an-index), and consider using [dedicated read nodes](/guides/index-data/dedicated-read-nodes) for large workloads (millions of records or more, and moderate or high query rates).
+  Customers who sign up for a Standard or Enterprise plan on or after August 18, 2025 cannot create pod-based indexes. Instead, create [serverless indexes](/guides/index-data/create-an-index), and consider using [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for large workloads (millions of records or more, and moderate or high query rates).
 </Warning>
 
 While your index can still serve queries, new upserts may fail as the capacity becomes exhausted. If you need to scale your environment to accommodate more vectors, you can modify your existing index and scale it vertically or create a new index and scale horizontally.

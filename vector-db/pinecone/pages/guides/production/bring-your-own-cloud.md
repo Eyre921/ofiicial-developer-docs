@@ -278,11 +278,11 @@ Once your BYOC environment is deployed, you can create indexes and read/write da
 Control plane operations like [creating](/reference/api/latest/control-plane/create_index), [listing](/reference/api/latest/control-plane/list_indexes), and [deleting](/reference/api/latest/control-plane/delete_index) indexes work via the standard Pinecone API regardless of your network access mode.
 
 <Note>
-  BYOC supports [dedicated read nodes](/guides/index-data/dedicated-read-nodes) indexes, but not on-demand indexes.
+  BYOC supports [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) indexes, but not on-demand indexes.
 </Note>
 
 <Accordion title="Create an index">
-  Use the environment name from the deployment output to create indexes in your BYOC environment. BYOC supports [dedicated read nodes](/guides/index-data/dedicated-read-nodes) indexes only.
+  Use the environment name from the deployment output to create indexes in your BYOC environment. BYOC supports [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) indexes only.
 
   <CodeGroup>
     ```bash curl theme={null}
@@ -593,7 +593,7 @@ Some features available in the standard Pinecone service are not yet supported o
 * Reading and writing data from the index browser in the Pinecone console.
 * Pinecone CLI data plane operations (queries, upserts, fetches). Control plane operations (create, list, delete indexes) work as expected.
 * Imports from private cloud storage buckets, unless the bucket is in the same cloud account as your BYOC deployment.
-* On-demand indexes. BYOC supports [dedicated read node](/guides/index-data/dedicated-read-nodes) indexes only.
+* On-demand indexes. BYOC supports [dedicated read node](/guides/index-data/dedicated-read-nodes/overview) indexes only.
 
 To [monitor with Prometheus](/guides/production/monitoring#monitor-with-prometheus), you must configure Prometheus within your VPC.
 
@@ -661,15 +661,15 @@ Your Pinecone bill for a BYOC environment has two parts: a flat platform fee and
 Pinecone bill = platform fee + (node rate × number of nodes)
 ```
 
-| Term                | Description                                                                                                                                                                                                                                                        |
-| :------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Platform fee**    | Flat monthly fee for each BYOC environment. Covers the always-on Pinecone components that serve writes and control operations, plus support.                                                                                                                       |
-| **Node rate**       | Monthly rate for each [dedicated read node](/guides/index-data/dedicated-read-nodes#node-types) running in your cluster, metered in node hours. The rate varies by node type (`b1` or `t1`). Unlike the standard service, it's the same in every cloud and region. |
-| **Number of nodes** | Sum of [shards](/guides/index-data/dedicated-read-nodes#shards) × [replicas](/guides/index-data/dedicated-read-nodes#replicas) across every index in the environment, counted separately for each node type.                                                       |
+| Term                | Description                                                                                                                                                                                                                                                                 |
+| :------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Platform fee**    | Flat monthly fee for each BYOC environment. Covers the always-on Pinecone components that serve writes and control operations, plus support.                                                                                                                                |
+| **Node rate**       | Monthly rate for each [dedicated read node](/guides/index-data/dedicated-read-nodes/concepts#node-types) running in your cluster, metered in node hours. The rate varies by node type (`b1` or `t1`). Unlike the standard service, it's the same in every cloud and region. |
+| **Number of nodes** | Sum of [shards](/guides/index-data/dedicated-read-nodes/concepts#shards) × [replicas](/guides/index-data/dedicated-read-nodes/concepts#replicas) across every index in the environment, counted separately for each node type.                                              |
 
 If an environment runs both `b1` and `t1` nodes, calculate the node cost for each type and add the results.
 
-Unlike [dedicated read nodes](/guides/index-data/dedicated-read-nodes#cost) in the standard service, BYOC has no separate Pinecone charges for storage or writes. That data lives in your own cloud account, so you pay your cloud provider for it instead of Pinecone.
+Unlike [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview#cost) in the standard service, BYOC has no separate Pinecone charges for storage or writes. That data lives in your own cloud account, so you pay your cloud provider for it instead of Pinecone.
 
 <Tip>
   For current rates and help sizing your BYOC environment, [contact us](https://www.pinecone.io/contact/).

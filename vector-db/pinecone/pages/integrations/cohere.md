@@ -144,7 +144,7 @@ print(index.describe_index_stats())
 #  'total_vector_count': 1000}
 ```
 
-You can see from `index.describe_index_stats` that you have a *1024-dimensionality* index populated with *1000* embeddings. For serverless on-demand indexes, the `index_fullness` metric is typically `0` because storage and compute scale automatically. If you're using [dedicated read nodes](/guides/index-data/dedicated-read-nodes#index-fullness), `index_fullness` (along with `memory_fullness` and `storage_fullness`) tells you how close the index is to its allocated capacity.
+You can see from `index.describe_index_stats` that you have a *1024-dimensionality* index populated with *1000* embeddings. For serverless on-demand indexes, the `index_fullness` metric is typically `0` because storage and compute scale automatically. If you're using [dedicated read nodes](/guides/index-data/dedicated-read-nodes/concepts#index-fullness), `index_fullness` (along with `memory_fullness` and `storage_fullness`) tells you how close the index is to its allocated capacity.
 
 ### Semantic search
 

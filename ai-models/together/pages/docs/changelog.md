@@ -4,6 +4,14 @@ source: https://docs.together.ai/docs/changelog
 path: docs/changelog
 ---
 
+<Update label="September 11, 2026">
+  ## New serverless models
+
+  The following models are now available on [serverless](/docs/serverless/models):
+
+  * `deepseek-ai/DeepSeek-V4.1-Flash`: 1,000,000 context length, FP8 quantization, function calling and structured outputs. Pricing: \$0.30 input / \$1.20 output / \$0.006 cached input (per 1M tokens).
+</Update>
+
 <Update label="September 10, 2026">
   ## Together CLI v2.33.2
 

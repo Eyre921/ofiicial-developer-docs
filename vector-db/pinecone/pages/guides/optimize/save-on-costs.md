@@ -35,12 +35,12 @@ Partitioning tenants with [namespaces](/guides/index-data/implement-multitenancy
 </Note>
 
 <Note>
-  Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes) are not subject to read unit limits for query, fetch, and list operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes) guide.
+  Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) are not subject to read unit limits for query, fetch, and list operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
 </Note>
 
 ## Choose the right index capacity mode
 
-For sustained, high read throughput, [dedicated read nodes](/guides/index-data/dedicated-read-nodes) can be more cost-effective than on-demand when you fully utilize provisioned read capacity. For spiky or low-QPS workloads, on-demand may be cheaper. See [When to use dedicated read nodes](/guides/index-data/dedicated-read-nodes#when-to-use-dedicated-read-nodes) and [Understanding cost](/guides/manage-cost/understanding-cost).
+For sustained, high read throughput, [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) can be more cost-effective than on-demand when you fully utilize provisioned read capacity. For spiky or low-QPS workloads, on-demand may be cheaper. See [When to use dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview#when-to-use-dedicated-read-nodes) and [Understanding cost](/guides/manage-cost/understanding-cost).
 
 ## See also
 

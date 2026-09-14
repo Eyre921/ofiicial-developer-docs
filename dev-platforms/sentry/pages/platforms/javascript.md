@@ -296,22 +296,22 @@ Errors triggered from within your browser's developer tools (like the browser co
 
 ### [Tracing](https://docs.sentry.io/platforms/javascript.md#tracing)
 
-To test your tracing configuration, update the previous code to simulate a longer operation and start a trace.
+To test your tracing configuration, update the previous code to measure a simulated operation with a span.
 
-Open the page in a browser and click the button to throw an error and create a trace.
+Open the page in a browser and click the button. In Sentry, look for the test error on the Issues page and the span in the associated trace.
 
 ```html
 <script>
-  function triggerError() {
-       await Sentry.startSpan(
-        { name: "Example Frontend Span", op: "test" },
-        async () => {
-          await new Promise(resolve => setTimeout(resolve, 200));
+  async function triggerError() {
+    await Sentry.startSpan(
+      { name: "Example Frontend Span", op: "test" },
+      async () => {
+        await new Promise((resolve) => setTimeout(resolve, 200));
 
-          throw new Error("Sentry Test Error");
-        },
-      );
-     }
+        throw new Error("Sentry Test Error");
+      },
+    );
+  }
 </script>
 
 <button onclick="triggerError()">Break the World</button>
