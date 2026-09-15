@@ -17,7 +17,7 @@ To assign and manage roles programmatically with the Admin API, or to manage rol
 ## Add members to a project
 
 <Note>
-  Project owners can add existing organization members to a project and manage their project roles. Only [organization owners](/guides/organizations/understanding-organizations#organization-roles) can invite people who are not yet members of the organization.
+  Project owners can add existing organization members to a project and manage their project roles. Only [organization owners](/guides/organizations/understanding-organizations#organization-roles) can invite people who aren't yet members of the organization.
 </Note>
 
 You can add members to a project in the [Pinecone console](https://app.pinecone.io/organizations/-/projects):

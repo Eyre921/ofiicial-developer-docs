@@ -1,6 +1,6 @@
 # ai-models/anthropic-claude-code 文档索引
 
-> 共 192 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 195 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -202,4 +202,7 @@
 - `whats-new/2026-w32` — [Week 32 · August 3–7, 2026](pages/whats-new/2026-w32.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w32)
 - `whats-new/2026-w33` — [Week 33 · August 10–14, 2026](pages/whats-new/2026-w33.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w33)
 - `whats-new/2026-w34` — [Week 34 · August 17–21, 2026](pages/whats-new/2026-w34.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w34)
+- `whats-new/2026-w35` — [Week 35 · August 24–28, 2026](pages/whats-new/2026-w35.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w35)
+- `whats-new/2026-w36` — [Week 36 · August 31 – September 4, 2026](pages/whats-new/2026-w36.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w36)
+- `whats-new/2026-w37` — [Week 37 · September 7–11, 2026](pages/whats-new/2026-w37.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w37)
 - `whats-new/index` — [What's new](pages/whats-new/index.md) · [原文](https://code.claude.com/docs/en/whats-new/index)

@@ -146,6 +146,7 @@ This endpoint expects an object.
   - `daily_limit` (integer, optional, default: 100000) — The maximum number of conversations per day
   - `bursting_enabled` (boolean, optional, default: true) — Whether to enable bursting. If true, exceeding workspace concurrency limit will be allowed up to 3 times the limit. Calls will be charged at double rate when exceeding the limit.
 - `language` (string, optional, nullable)
+- `cascade_timeout_seconds` (double, optional, nullable) — Time in seconds to wait for the upstream speech engine endpoint to respond before the attempt is abandoned and retried. Must be between 2 and 15 seconds.
 - `tags` (list of string, optional, nullable)
 - `overrides` (object, optional, nullable)
   - `first_message` (boolean, optional, default: false) — Whether the first message can be overridden by the client
@@ -270,6 +271,7 @@ Successful Response
   - `daily_limit` (integer, optional, default: 100000) — The maximum number of conversations per day
   - `bursting_enabled` (boolean, optional, default: true) — Whether to enable bursting. If true, exceeding workspace concurrency limit will be allowed up to 3 times the limit. Calls will be charged at double rate when exceeding the limit.
 - `language` (string, required) — ISO language code used by the speech engine (e.g. 'en')
+- `cascade_timeout_seconds` (double, required) — Time in seconds to wait for the upstream speech engine endpoint to respond before the attempt is abandoned and retried. Must be between 2 and 15 seconds.
 - `tags` (list of string, required) — Arbitrary tags for categorization and filtering
 - `overrides` (object, required) — Override settings the client may set during conversation initiation
   - `first_message` (boolean, optional, default: false) — Whether the first message can be overridden by the client
@@ -367,6 +369,7 @@ Validation Error
     "bursting_enabled": true
   },
   "language": "en",
+  "cascade_timeout_seconds": 4,
   "tags": [
     "production",
     "v1"

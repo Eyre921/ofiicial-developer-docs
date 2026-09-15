@@ -103,7 +103,7 @@ If you're batching queries, try reducing the number of queries per call to a sin
 
 ## Avoid including vector values when not needed
 
-Including vector values increases response size, especially at higher `top_k` values, and larger responses can elevate round-trip latency. If you don't need vector values in your response, leave `include_values` at its default of `false` on [`query`](/reference/api/latest/data-plane/query). [`fetch`](/reference/api/latest/data-plane/fetch) always returns values, so use `query` when you're searching and only need IDs or metadata.
+Including vector values increases response size, especially at higher `top_k` values, and larger responses can raise round-trip latency. If you don't need vector values in your response, leave `include_values` at its default of `false` on [`query`](/reference/api/latest/data-plane/query). [`fetch`](/reference/api/latest/data-plane/fetch) always returns values, so use `query` when you're searching and only need IDs or metadata.
 
 <Note>
   On-demand indexes retrieve vector values from object storage, so `fetch` operations and queries with `include_values=true` may occasionally experience higher tail latency before values are cached on disk. Dedicated read nodes indexes cache values locally and aren't affected.
@@ -114,7 +114,7 @@ Including vector values increases response size, especially at higher `top_k` va
 Pinecone has [rate limits](/reference/api/database-limits/rate-limits) to protect your applications and maintain infrastructure health. Rate limits vary based on pricing plan and apply to serverless indexes only.
 
 <Note>
-  Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) are not subject to read unit limits for query, fetch, and list operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
+  Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, and list operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
 </Note>
 
 To handle rate limits effectively:

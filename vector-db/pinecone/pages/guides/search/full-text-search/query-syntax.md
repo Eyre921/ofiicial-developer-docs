@@ -32,7 +32,7 @@ The two types differ in the capabilities they support:
 
 With `type: "text"`, the query string is run through the field's analyzer pipeline (see [Tokens and analyzers](/guides/search/full-text-search/text-processing#tokens-and-analyzers)) and each resulting term contributes to the BM25 score. Multiple terms use **OR** semantics: documents can match if they contain **any** of the terms; documents that match more terms or stronger term statistics typically rank higher. Matching is case-insensitive. Exact **phrase** constraints (adjacent words in order) belong in `type: "query_string"` using quotes, or in a `$match_phrase` filter.
 
-| Query              | Matches                                                               | Does not match                         |
+| Query              | Matches                                                               | Doesn't match                          |
 | ------------------ | --------------------------------------------------------------------- | -------------------------------------- |
 | `machine learning` | "**Machine** learning is great" (has "machine")                       | "Vector databases only" (neither term) |
 | `machine learning` | "We use **learning** and **machine**" (both terms present, any order) | "Vector databases only" (neither term) |
@@ -84,7 +84,7 @@ Wrap multiple words in quotes to match them as an exact sequence.
 body:("machine learning")
 ```
 
-Matches only documents containing the exact phrase "machine learning" with the words adjacent. That is different from `type: "text"` with `query: "machine learning"`, which uses **token OR** matching on the field. For phrase matching as a **filter** (e.g., composed with dense-vector ranking), use `{"body": {"$match_phrase": "machine learning"}}` in the `filter` block.
+Matches only documents containing the exact phrase "machine learning" with the words adjacent. That's different from `type: "text"` with `query: "machine learning"`, which uses **token OR** matching on the field. For phrase matching as a **filter** (e.g., composed with dense-vector ranking), use `{"body": {"$match_phrase": "machine learning"}}` in the `filter` block.
 
 *Phrase terms are matched against the field's analyzed tokens. If [stemming](/guides/search/full-text-search/text-processing#stemming) is enabled on the field, the phrase terms stem too, e.g., `"running fast"` matches `running fast` and `runs fast`.*
 
@@ -161,7 +161,7 @@ A single-term prefix wildcard, such as `auto*`, isn't supported. It returns no m
 
 Both the literal terms and the prefix are matched against the field's analyzed tokens. If [stemming](/guides/search/full-text-search/text-processing#stemming) is enabled on the field, stemming applies to the completed terms in the phrase, while the final prefix is expanded against analyzed tokens.
 
-Phrase prefix is optimized for autocomplete-style queries where the final word prefix is reasonably specific. To keep latency low, Pinecone expands the final prefix to the first 50 matching terms in lexicographic order. For example, `"new yor"*` can match `new york`, but `"new yo"*` might not if `york` is not among the first 50 expanded terms for `yo`.
+Phrase prefix is optimized for autocomplete-style queries where the final word prefix is reasonably specific. To keep latency low, Pinecone expands the final prefix to the first 50 matching terms in lexicographic order. For example, `"new yor"*` can match `new york`, but `"new yo"*` might not if `york` isn't among the first 50 expanded terms for `yo`.
 
 ### Regex
 
@@ -179,7 +179,7 @@ body:/machin[ei].*/
 
 Matches tokens like "machine" or "machene". Standard Lucene regex syntax is supported.
 
-Regex is only available with `type: "query_string"`. It is not supported with `type: "text"`.
+Regex is only available with `type: "query_string"`. It's not supported with `type: "text"`.
 
 ### Fuzzy matching (typo tolerance)
 

@@ -105,11 +105,11 @@ Under **Container Definition**, expand **Environment variables**
 
 Add each `DEEPGRAM_API_*` or `DEEPGRAM_ENGINE_*` variable with its TOML expression as the value
 
-![SageMaker console showing environment variable configuration for a Deepgram model package](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/94e40e0e39e9999639df5dddc08cb6675db32f8abd5518bdb94b26b3dda8cf55/images/sagemaker-env-vars-console.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260914%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260914T233200Z&X-Amz-Expires=604800&X-Amz-Signature=bc90027ba81e5c3f81ea5ad5e0c29998266e6388d9a41a1043a5d4e4a23181cf&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![SageMaker console showing environment variable configuration for a Deepgram model package](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/94e40e0e39e9999639df5dddc08cb6675db32f8abd5518bdb94b26b3dda8cf55/images/sagemaker-env-vars-console.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260915%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260915T113130Z&X-Amz-Expires=604800&X-Amz-Signature=7b23e19287ffcc2fbc89eadd27e40c86a2eb118bdef7d4a1ae7a8b0532fc953e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### AWS CLI
 
-Create the SageMaker **Model** resource from a **Model Package Amazon Resource Name (ARN)**. You can obtain the Model Package ARN from the SageMaker AI console, under **Marketplace Model Packages**, on the **AWS Marketplace Subscriptions** tab.
+Create the SageMaker **Model** resource from a **Model Package Amazon Resource Name (ARN)**. See [Find the Model Package ARN](/docs/subscribe-aws-marketplace#find-the-model-package-arn) for how to obtain it.
 
 **`AWS CLI`**
 

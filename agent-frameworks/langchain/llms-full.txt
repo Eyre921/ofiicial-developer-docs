@@ -14162,6 +14162,75 @@ If you use self-hosted LangSmith, see the [self-hosted changelog](/langsmith/sel
 <Tabs>
 <Tab title="LangSmith Cloud">
 
+<Update label="September 7-14, 2026" rss={{ title: "2026-09-07 - LangSmith Cloud update" }}>
+
+## Observability and evaluations
+
+### Feedback
+
+- Feedback in annotation queues are now attributed by whichever identity the request resolves, so a reviewer's own answers count toward required fields.
+- When a score sent through the SDK violates the workspace feedback key configuration, multipart ingest now accepts the request and records error feedback on the run with the rejection reason in the comment, instead of returning a 400 that dropped the run and every other feedback sent with it.
+- The annotations pane notes now work when the session_id is invalid, but a valid trace_session_id is provided.
+
+### Engine
+
+- Engine issue validation now reconstructs prior thread turns before replaying a trace, so follow-up failures are judged in the same conversation context.
+- Engine issue validation now retries when preparing replay traces hits a Runs API rate limit, instead of treating that as a permanent failure and leaving the result inconclusive.
+
+### Tracing
+
+- Starting September 14, 2026, traces ingested into LangSmith SaaS with extended retention are kept for at most 180 days. Existing extended retention settings above 180 days are applied as 180 days for new traces, and new settings above 180 days are rejected. Self-hosted and BYOC deployments are unchanged. [Learn more](/langsmith/usage-and-billing#data-retention).
+- Chat on a tracing project now reads the filters, view, time window and selection you have on screen, names runs and threads by what was asked rather than by the app that served them, and says what it is working through while it reasons.
+- Interacting with LangSmith Chat in the sidebar, including conversation history and model selection, keeps the peeked run or thread pane open. Clicking outside the pane and chat still dismisses the pane.
+- Model configurations that set a Vertex AI multi-region location such as `us` or `eu` now reach the correct Google endpoint instead of failing with a 400. Configurations using a single region or `global` are unaffected.
+- LangSmith MCP now includes a `list_model_price_maps` tool for searching and paginating model pricing rules in a workspace.
+- Trace tree connector lines now join smoothly between rows.
+
+### Prompts and playground
+
+- Switching between files in Context Hub now keeps the selected Preview or Source view.
+- Organizations with the LLM auth proxy enabled can select Google Vertex AI models in the playground and Agent Builder without storing a Vertex service account key in the workspace.
+- Context Hub repositories now support up to 1,500 files, allowing agents with larger skill collections to sync successfully.
+- OpenAI model configuration dropdowns now suggest gpt-6-astra.
+
+### Datasets and experiments
+
+- Trajectory online evaluators now route to the correct applier and receive trajectory input. Malformed configurations surface as visible errors instead of silently producing empty evaluations. When trace retention is enabled, trajectory rules extend retention for the latest trace in each resolved trajectory.
+
+## Deployment
+
+- Find custom apps by name or creator from the custom apps list.
+- Updating install or build commands through the deployment API now creates a new revision. Docker sources reject these commands because they deploy prebuilt images.
+- After a Managed Deep Agent run paused for credentials resumes, the Slack connect card is removed instead of being replaced with a confirmation, so the agent's reply is the next thing in the thread.
+- Managed Deep Agent runs paused on a Slack credential prompt now resume once the last connection completes, instead of stalling after all integrations are connected.
+
+## Sandboxes
+
+- LangSmith Cloud can now assume tagged customer IAM roles for ECR repository discovery and snapshot image pulls.
+- Sandboxes now use the guest kernel's maximum open-file limit, allowing highly concurrent agents and subprocesses to run without exhausting the default descriptor ceiling.
+- Sandboxes now pass raw TCP connections to literal public IP addresses when the destination IP and port are explicitly allow-listed. This supports clients that resolve a service and dial its public IP directly. [Learn more](/langsmith/sandbox-auth-proxy).
+
+## Administration
+
+- Authenticated service startup checks now use endpoint authentication when the deployment info endpoint is protected.
+- LangSmith Cloud now warns organization admins in the days before an enterprise contract or a cancelled plan expires, so they can renew before losing access.
+- Workspace administrators can view workspace-level Agent Auth connections from the Integrations settings page, including authentication type and update details.
+- Workspace administrators can select an Agent Auth connection to inspect its associated credential metadata without exposing secret or token material.
+- Built-in workspace roles stop returning the retired repos:* and run-rules:* permissions, which were renamed to prompts:* and rules:* and are rejected when creating a custom role. Copying a built-in role's permission list into a new custom role now works. [Learn more](/langsmith/organization-workspace-operations).
+- The organization SSO login URL now accepts a `redirect_to` path, so a link like `/sso/login/<slug>?redirect_to=/o/<org>/projects/p/<project>/r/<run>` lands on that page after SAML sign-in instead of the workspace root.
+- Organization Operators can no longer grant the Organization Admin role to a service key, or change the roles of a service key that already holds it. A service key also can no longer change its own roles; another credential must make the change.
+
+### LLM Gateway
+
+- GET /v1/models now returns only the models your model access policies allow, so the gateway no longer advertises models that would be rejected when called.
+- New model access policies now include a generated policy name that you can keep or edit before creation.
+- The LLM Gateway uses each saved model configuration's provider and API preference when selecting a fallback, so Bedrock Claude models use the Messages API instead of an OpenAI-compatible endpoint.
+- Data policy dialogs now show a Personally Identifiable Information (PII) option under Data protection for every organization. Organizations without the PII entitlement see it locked, with a link to request access.
+- The LLM Gateway returns resolved model names and cost-tracking provider identities in the `x-langsmith-gateway-metadata` response header for unified requests, including configured models and fallbacks. Client-side tracing can use these values as `ls_model_name` and `ls_provider` for accurate pricing, while preserving normalized pricing model names across fallbacks.
+- Model Access policies can now allow a workspace's saved model configurations, either all of them or a chosen few, by enabling the new "Model configurations" provider. Requests that reach a configuration, including fallback candidates that resolve to one, are permitted for the calling credential's workspace, where previously any Model Access policy blocked them.
+
+</Update>
+
 <Update label="August 31-September 7, 2026" rss={{ title: "2026-08-31 - LangSmith Cloud update" }}>
 
 ## Observability and evaluations
@@ -16406,6 +16475,21 @@ The experiments table now displays loading progress bars showing the number of r
 </Tab>
 <Tab title="LangSmith Fleet">
 
+
+<Update label="September 7-14, 2026" rss={{ title: "2026-09-07 - Fleet product update" }}>
+
+## Fleet
+
+- New managed Fleet sandboxes inherit the platform retention policy when you omit delete_after_stop_seconds. Explicit zero and positive values remain unchanged.
+- Threads that stop for an approval or a question now receive their title while they wait, so scheduled runs no longer sit in the inbox untitled until someone opens them. The inbox shows the title loading indicator only while a title is actually on its way.
+- Opening a workspace skill just added to an agent in Fleet no longer shows an empty modal before the agent is saved. The skill detail now opens with its full file tree, the Add to agent button waits for the skill's files to load, and a failed load can be retried.
+- Agent owners can trigger a workspace webhook against an agent again from the Configure panel's Advanced settings. The rows were missing since the Configure panel replaced the standalone agent editor, and each run packages the agent's saved files rather than unsaved edits.
+- Fleet provisions sandboxes correctly when you start a new conversation or retry interrupted sandbox creation.
+- Fleet background runs reconnect to the agent's existing sandbox using its saved name. Older UUID-named sandboxes continue to work, and files persist across chats and sandbox restarts.
+- Fleet now creates an empty /workspace when it provisions a sandbox, so the files API and file browsers list it right away instead of returning 404 until the agent's first run.
+- Fleet preserves Amazon Bedrock reasoning metadata when you abandon a pending interrupt, preventing unsupported content block errors on the next turn.
+
+</Update>
 
 <Update label="August 31-September 7, 2026" rss={{ title: "2026-08-31 - Fleet product update" }}>
 
@@ -47892,6 +47976,21 @@ Weekly updates to [LangSmith Fleet](/langsmith/fleet).
 </Callout>
 
 
+<Update label="September 7-14, 2026" rss={{ title: "2026-09-07 - Fleet product update" }}>
+
+## Fleet
+
+- New managed Fleet sandboxes inherit the platform retention policy when you omit delete_after_stop_seconds. Explicit zero and positive values remain unchanged.
+- Threads that stop for an approval or a question now receive their title while they wait, so scheduled runs no longer sit in the inbox untitled until someone opens them. The inbox shows the title loading indicator only while a title is actually on its way.
+- Opening a workspace skill just added to an agent in Fleet no longer shows an empty modal before the agent is saved. The skill detail now opens with its full file tree, the Add to agent button waits for the skill's files to load, and a failed load can be retried.
+- Agent owners can trigger a workspace webhook against an agent again from the Configure panel's Advanced settings. The rows were missing since the Configure panel replaced the standalone agent editor, and each run packages the agent's saved files rather than unsaved edits.
+- Fleet provisions sandboxes correctly when you start a new conversation or retry interrupted sandbox creation.
+- Fleet background runs reconnect to the agent's existing sandbox using its saved name. Older UUID-named sandboxes continue to work, and files persist across chats and sandbox restarts.
+- Fleet now creates an empty /workspace when it provisions a sandbox, so the files API and file browsers list it right away instead of returning 404 until the agent's first run.
+- Fleet preserves Amazon Bedrock reasoning metadata when you abandon a pending interrupt, preventing unsupported content block errors on the next turn.
+
+</Update>
+
 <Update label="August 31-September 7, 2026" rss={{ title: "2026-08-31 - Fleet product update" }}>
 
 ## Fleet
@@ -56926,7 +57025,7 @@ Agent Auth reuses the existing connection for that slug and attaches the caller'
 # Deploy a Managed Deep Agent
 Source: https://docs.langchain.com/langsmith/javascript/managed-deep-agents-deploy
 
-Deploying a Managed Deep Agent compiles a code-first project into a managed LangGraph app, syncs deploy-owned context to [Context Hub](/langsmith/use-the-context-hub), uploads the compiled source, and triggers a LangSmith hosted deployment build.
+Deploying a Managed Deep Agent compiles a code-first project into a managed LangGraph app, syncs deploy-owned context to [Context Hub](/langsmith/use-the-context-hub), uploads the compiled source, and triggers a LangSmith hosted deployment build. The result is an [Agent Server](/langsmith/agent-server-overview) deployment, including the Agent Server API and [MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint).
 
 <Note>
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
@@ -57071,6 +57170,12 @@ If a deployment reaches `BUILD_FAILED` or `DEPLOY_FAILED`, open the printed depl
 ## Next steps
 
 <CardGroup cols={2}>
+  <Card title="Agent Server" icon="server" href="/langsmith/agent-server-overview">
+    Explore the runtime that hosts the deployment.
+  </Card>
+  <Card title="MCP endpoint" icon="plug" href="/langsmith/javascript/managed-deep-agents-mcp-endpoint">
+    Expose the deployed agent as a tool to MCP clients.
+  </Card>
   <Card title="Identity" icon="fingerprint" href="/langsmith/javascript/managed-deep-agents-identity">
     Authenticate callers and provide private threads.
   </Card>
@@ -57699,6 +57804,7 @@ The MCP definition also accepts these options:
 | Concept | Kind | How it reaches the agent |
 | --- | --- | --- |
 | **MCP servers** | Managed configuration | Declared under `tools/`; no import into the agent entry |
+| **[MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint)** | Deployment API | Exposes the agent as a tool to MCP clients |
 | **[Authored tools](/langsmith/javascript/managed-deep-agents-tools)** | Application code | Import and pass in the agent definition |
 | **[Channels](/langsmith/javascript/managed-deep-agents-channels)** | Managed configuration | Receive external messages that start agent runs and deliver responses |
 
@@ -57712,6 +57818,175 @@ For more information, see [Project structure](/langsmith/javascript/managed-deep
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-mcp-connectors.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+</Callout>
+</div>
+
+
+# Connect MCP clients to a Managed Deep Agent
+Source: https://docs.langchain.com/langsmith/javascript/managed-deep-agents-mcp-endpoint
+
+Managed Deep Agents deployments run on [LangSmith Agent Server](/langsmith/agent-server-overview), so every deployment serves the Agent Server [Model Context Protocol](https://modelcontextprotocol.io/introduction) (MCP) endpoint at `/mcp`. Any MCP client that supports the Streamable HTTP transport can call the deployed agent as a tool, so another assistant or agent can delegate work to it without calling the deployment API directly.
+
+This page covers how to find the Managed Deep Agents URL and authenticate. For protocol behavior and generic Agent Server client setup, see [MCP endpoint in Agent Server](/langsmith/server-mcp).
+
+<Note>
+Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+</Note>
+
+The endpoint is the outbound direction. An [MCP connector](/langsmith/javascript/managed-deep-agents-mcp-connectors) points the other way: it adds tools from a remote MCP server to your agent. A deployment can use both.
+
+## Find the endpoint URL
+
+The endpoint is `/mcp` on the deployment's API URL:
+
+```text
+<DEPLOYMENT_API_URL>/mcp
+```
+
+`mda deploy` prints the LangSmith deployment dashboard URL, not the API URL. Open that dashboard, copy the **API URL** from the deployment details view, then append `/mcp`.
+
+The local server started by [`mda dev`](/langsmith/javascript/managed-deep-agents-local-development) serves the same endpoint. Append `/mcp` to the local server URL the CLI prints.
+
+## Authenticate requests
+
+The MCP endpoint uses the deployment's [identity](/langsmith/javascript/managed-deep-agents-identity) configuration, the same as every other route on the deployment. Send the credential that matches the configured mode:
+
+| Identity mode | Header |
+| --- | --- |
+| LangSmith API key (default) | `x-api-key: <LANGSMITH_API_KEY>` |
+| Supabase | `Authorization: Bearer <access_token>` |
+
+For the LangSmith API-key default, the key must belong to the workspace that owns the deployment. A key that is valid for another workspace is rejected.
+
+Authentication failures return one of three responses:
+
+| Status | Body | Cause |
+| --- | --- | --- |
+| 401 | `{"detail":"missing x-api-key"}` | No credential header on the request. |
+| 403 | `{"detail":"API key is forbidden"}` | The key is invalid, revoked, or expired. |
+| 403 | `{"detail":"API key tenant mismatch"}` | The key is valid, but belongs to a different workspace than the deployment. |
+
+The local server started by `mda dev` requires no credential. It grants every caller an unscoped local service principal, so any client on the machine can call `/mcp` and every other route. Only a deployment enforces the header.
+
+<Warning>
+Anyone holding the LangSmith API key can reach the deployment, and an MCP client stores the header in its own configuration. Treat a key added to a client config as a shared secret for the whole workspace.
+</Warning>
+
+<Note>
+Supabase identity expects an access token that a person obtains by signing in to your app. An MCP client that stores only static headers cannot mint one, so use the LangSmith API-key default for deployments that MCP clients call.
+</Note>
+
+## Understand what the agent exposes
+
+The Agent Server exposes the agent as an MCP tool:
+
+- **Tool name**: The agent `name` set in the [agent definition](/langsmith/javascript/managed-deep-agents-agent-definition#parameters).
+- **Tool input schema**: The agent's input schema.
+
+For transport details and other Agent Server MCP behavior, see [MCP endpoint in Agent Server](/langsmith/server-mcp).
+
+## Add the agent to Claude Code
+
+Register the endpoint as an HTTP MCP server:
+
+```bash
+claude mcp add --transport http research-assistant \
+  <DEPLOYMENT_API_URL>/mcp \
+  --header "x-api-key: $LANGSMITH_API_KEY"
+```
+
+Claude Code lists the agent as a tool once the server connects.
+
+In a JSON configuration, Claude Code expands `${VAR}` in header values, so the key stays in the environment instead of the config file:
+
+```json
+"headers": { "x-api-key": "${LANGSMITH_API_KEY}" }
+```
+
+## Add the agent to another MCP client
+
+Clients that read an `mcpServers` configuration accept the endpoint and header directly:
+
+```json
+{
+  "mcpServers": {
+    "research-assistant": {
+      "type": "http",
+      "url": "<DEPLOYMENT_API_URL>/mcp",
+      "headers": {
+        "x-api-key": "<LANGSMITH_API_KEY>"
+      }
+    }
+  }
+}
+```
+
+A client that accepts only a URL and negotiates OAuth cannot authenticate to the endpoint, which requires a header credential. Configure the header explicitly. Without one, a client may fall back to OAuth and report a Dynamic Client Registration failure rather than the missing header, which obscures the real cause.
+
+## Call the endpoint from code
+
+Load the agent's tool through an MCP client library, then pass the tools to a model or another agent:
+
+
+
+```ts
+import { MultiServerMCPClient } from "@langchain/mcp-adapters";
+
+const client = new MultiServerMCPClient({
+  mcpServers: {
+    "research-assistant": {
+      transport: "http",
+      url: "<DEPLOYMENT_API_URL>/mcp",
+      headers: { "x-api-key": process.env.LANGSMITH_API_KEY },
+    },
+  },
+});
+
+const tools = await client.getTools();
+```
+
+
+Read credentials from the environment. Do not hard-code them in client code.
+
+## Understand session behavior
+
+Agent Server MCP requests are [stateless](/langsmith/server-mcp#session-behavior): separate calls do not share thread state.
+
+To retain knowledge across calls, [opt in to durable memory](/langsmith/javascript/managed-deep-agents-memory). Durable memory is optional and shared by every caller of the deployment. Do not enable it when MCP clients should not influence one another.
+
+## When to use the MCP endpoint
+
+| Concept | Kind | How it reaches the agent |
+| --- | --- | --- |
+| **MCP endpoint** | Deployment API | Exposes the agent as a tool to MCP clients |
+| **[MCP connectors](/langsmith/javascript/managed-deep-agents-mcp-connectors)** | Managed configuration | Add tools hosted by remote MCP servers to the agent |
+| **[Channels](/langsmith/javascript/managed-deep-agents-channels)** | Managed configuration | Receive messages from an external messaging service that start agent runs and deliver responses |
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Agent Server" icon="server" href="/langsmith/agent-server-overview">
+    Explore the runtime that hosts every Managed Deep Agents deployment.
+  </Card>
+  <Card title="Agent Server MCP" icon="protocol" href="/langsmith/server-mcp">
+    Read the Agent Server MCP protocol reference.
+  </Card>
+  <Card title="MCP connectors" icon="plug" href="/langsmith/javascript/managed-deep-agents-mcp-connectors">
+    Add tools from remote MCP servers to the agent.
+  </Card>
+  <Card title="Identity" icon="fingerprint" href="/langsmith/javascript/managed-deep-agents-identity">
+    Authenticate callers to the deployment.
+  </Card>
+</CardGroup>
+
+---
+
+<div className="source-links">
+<Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
+</Callout>
+<Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-mcp-endpoint.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
 </Callout>
 </div>
 
@@ -57981,7 +58256,7 @@ Managed Deep Agents (MDA) is the simplest way to build and deploy production age
 You write the agent's intelligence: its instructions, the tools it can call, the skills it follows, and you select the model that drives it. MDA provides everything underneath:
 
 - **The Deep Agents harness**: The agent loop that plans, calls tools, manages a filesystem, and delegates to subagents. See [Deep Agents](/oss/javascript/deepagents/overview).
-- **A managed runtime**: [LangSmith Deployment's Agent Server](/langsmith/agent-server-overview) hosts and operates the agent, and keeps sessions running across restarts.
+- **A managed runtime**: Every deployment runs on [LangSmith Agent Server](/langsmith/agent-server-overview). You get the Agent Server API, threads, runs, streaming, and the [MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint) without operating the server yourself.
 
 ```mermaid actions={false}
 %%{init: {"theme":"base","themeVariables":{"fontFamily":"Inter, system-ui, sans-serif","lineColor":"#40668D","primaryColor":"#E5F4FF","primaryTextColor":"#030710","primaryBorderColor":"#006DDD","clusterBkg":"transparent"}}}%%
@@ -58051,6 +58326,12 @@ For the full layout, see [Project structure](/langsmith/javascript/managed-deep-
   </Card>
   <Card title="Tutorial" icon="book" href="/langsmith/javascript/managed-deep-agents-tutorial">
     Add a custom search tool, durable memory, and a daily schedule.
+  </Card>
+  <Card title="Agent Server" icon="server" href="/langsmith/agent-server-overview">
+    Explore the runtime that hosts Managed Deep Agents deployments.
+  </Card>
+  <Card title="MCP endpoint" icon="plug" href="/langsmith/javascript/managed-deep-agents-mcp-endpoint">
+    Call a deployed agent as a tool from Claude Code or another MCP client.
   </Card>
 </CardGroup>
 
@@ -84383,7 +84664,7 @@ Agent Auth reuses the existing connection for that slug and attaches the caller'
 # Deploy a Managed Deep Agent
 Source: https://docs.langchain.com/langsmith/python/managed-deep-agents-deploy
 
-Deploying a Managed Deep Agent compiles a code-first project into a managed LangGraph app, syncs deploy-owned context to [Context Hub](/langsmith/use-the-context-hub), uploads the compiled source, and triggers a LangSmith hosted deployment build.
+Deploying a Managed Deep Agent compiles a code-first project into a managed LangGraph app, syncs deploy-owned context to [Context Hub](/langsmith/use-the-context-hub), uploads the compiled source, and triggers a LangSmith hosted deployment build. The result is an [Agent Server](/langsmith/agent-server-overview) deployment, including the Agent Server API and [MCP endpoint](/langsmith/python/managed-deep-agents-mcp-endpoint).
 
 <Note>
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
@@ -84488,6 +84769,12 @@ If a deployment reaches `BUILD_FAILED` or `DEPLOY_FAILED`, open the printed depl
 ## Next steps
 
 <CardGroup cols={2}>
+  <Card title="Agent Server" icon="server" href="/langsmith/agent-server-overview">
+    Explore the runtime that hosts the deployment.
+  </Card>
+  <Card title="MCP endpoint" icon="plug" href="/langsmith/python/managed-deep-agents-mcp-endpoint">
+    Expose the deployed agent as a tool to MCP clients.
+  </Card>
   <Card title="Identity" icon="fingerprint" href="/langsmith/python/managed-deep-agents-identity">
     Authenticate callers and provide private threads.
   </Card>
@@ -85097,6 +85384,7 @@ The MCP definition also accepts these options:
 | Concept | Kind | How it reaches the agent |
 | --- | --- | --- |
 | **MCP servers** | Managed configuration | Declared under `tools/`; no import into the agent entry |
+| **[MCP endpoint](/langsmith/python/managed-deep-agents-mcp-endpoint)** | Deployment API | Exposes the agent as a tool to MCP clients |
 | **[Authored tools](/langsmith/python/managed-deep-agents-tools)** | Application code | Import and pass in the agent definition |
 | **[Channels](/langsmith/python/managed-deep-agents-channels)** | Managed configuration | Receive external messages that start agent runs and deliver responses |
 
@@ -85110,6 +85398,177 @@ For more information, see [Project structure](/langsmith/python/managed-deep-age
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-mcp-connectors.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+</Callout>
+</div>
+
+
+# Connect MCP clients to a Managed Deep Agent
+Source: https://docs.langchain.com/langsmith/python/managed-deep-agents-mcp-endpoint
+
+Managed Deep Agents deployments run on [LangSmith Agent Server](/langsmith/agent-server-overview), so every deployment serves the Agent Server [Model Context Protocol](https://modelcontextprotocol.io/introduction) (MCP) endpoint at `/mcp`. Any MCP client that supports the Streamable HTTP transport can call the deployed agent as a tool, so another assistant or agent can delegate work to it without calling the deployment API directly.
+
+This page covers how to find the Managed Deep Agents URL and authenticate. For protocol behavior and generic Agent Server client setup, see [MCP endpoint in Agent Server](/langsmith/server-mcp).
+
+<Note>
+Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+</Note>
+
+The endpoint is the outbound direction. An [MCP connector](/langsmith/python/managed-deep-agents-mcp-connectors) points the other way: it adds tools from a remote MCP server to your agent. A deployment can use both.
+
+## Find the endpoint URL
+
+The endpoint is `/mcp` on the deployment's API URL:
+
+```text
+<DEPLOYMENT_API_URL>/mcp
+```
+
+`mda deploy` prints the LangSmith deployment dashboard URL, not the API URL. Open that dashboard, copy the **API URL** from the deployment details view, then append `/mcp`.
+
+The local server started by [`mda dev`](/langsmith/python/managed-deep-agents-local-development) serves the same endpoint. Append `/mcp` to the local server URL the CLI prints.
+
+## Authenticate requests
+
+The MCP endpoint uses the deployment's [identity](/langsmith/python/managed-deep-agents-identity) configuration, the same as every other route on the deployment. Send the credential that matches the configured mode:
+
+| Identity mode | Header |
+| --- | --- |
+| LangSmith API key (default) | `x-api-key: <LANGSMITH_API_KEY>` |
+| Supabase | `Authorization: Bearer <access_token>` |
+
+For the LangSmith API-key default, the key must belong to the workspace that owns the deployment. A key that is valid for another workspace is rejected.
+
+Authentication failures return one of three responses:
+
+| Status | Body | Cause |
+| --- | --- | --- |
+| 401 | `{"detail":"missing x-api-key"}` | No credential header on the request. |
+| 403 | `{"detail":"API key is forbidden"}` | The key is invalid, revoked, or expired. |
+| 403 | `{"detail":"API key tenant mismatch"}` | The key is valid, but belongs to a different workspace than the deployment. |
+
+The local server started by `mda dev` requires no credential. It grants every caller an unscoped local service principal, so any client on the machine can call `/mcp` and every other route. Only a deployment enforces the header.
+
+<Warning>
+Anyone holding the LangSmith API key can reach the deployment, and an MCP client stores the header in its own configuration. Treat a key added to a client config as a shared secret for the whole workspace.
+</Warning>
+
+<Note>
+Supabase identity expects an access token that a person obtains by signing in to your app. An MCP client that stores only static headers cannot mint one, so use the LangSmith API-key default for deployments that MCP clients call.
+</Note>
+
+## Understand what the agent exposes
+
+The Agent Server exposes the agent as an MCP tool:
+
+- **Tool name**: The agent `name` set in the [agent definition](/langsmith/python/managed-deep-agents-agent-definition#parameters).
+- **Tool input schema**: The agent's input schema.
+
+For transport details and other Agent Server MCP behavior, see [MCP endpoint in Agent Server](/langsmith/server-mcp).
+
+## Add the agent to Claude Code
+
+Register the endpoint as an HTTP MCP server:
+
+```bash
+claude mcp add --transport http research-assistant \
+  <DEPLOYMENT_API_URL>/mcp \
+  --header "x-api-key: $LANGSMITH_API_KEY"
+```
+
+Claude Code lists the agent as a tool once the server connects.
+
+In a JSON configuration, Claude Code expands `${VAR}` in header values, so the key stays in the environment instead of the config file:
+
+```json
+"headers": { "x-api-key": "${LANGSMITH_API_KEY}" }
+```
+
+## Add the agent to another MCP client
+
+Clients that read an `mcpServers` configuration accept the endpoint and header directly:
+
+```json
+{
+  "mcpServers": {
+    "research-assistant": {
+      "type": "http",
+      "url": "<DEPLOYMENT_API_URL>/mcp",
+      "headers": {
+        "x-api-key": "<LANGSMITH_API_KEY>"
+      }
+    }
+  }
+}
+```
+
+A client that accepts only a URL and negotiates OAuth cannot authenticate to the endpoint, which requires a header credential. Configure the header explicitly. Without one, a client may fall back to OAuth and report a Dynamic Client Registration failure rather than the missing header, which obscures the real cause.
+
+## Call the endpoint from code
+
+Load the agent's tool through an MCP client library, then pass the tools to a model or another agent:
+
+```python
+import os
+
+from langchain_mcp_adapters.client import MultiServerMCPClient
+
+client = MultiServerMCPClient(
+    {
+        "research-assistant": {
+            "transport": "streamable_http",
+            "url": "<DEPLOYMENT_API_URL>/mcp",
+            "headers": {"x-api-key": os.environ["LANGSMITH_API_KEY"]},
+        }
+    }
+)
+
+tools = await client.get_tools()
+```
+
+
+
+
+Read credentials from the environment. Do not hard-code them in client code.
+
+## Understand session behavior
+
+Agent Server MCP requests are [stateless](/langsmith/server-mcp#session-behavior): separate calls do not share thread state.
+
+To retain knowledge across calls, [opt in to durable memory](/langsmith/python/managed-deep-agents-memory). Durable memory is optional and shared by every caller of the deployment. Do not enable it when MCP clients should not influence one another.
+
+## When to use the MCP endpoint
+
+| Concept | Kind | How it reaches the agent |
+| --- | --- | --- |
+| **MCP endpoint** | Deployment API | Exposes the agent as a tool to MCP clients |
+| **[MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors)** | Managed configuration | Add tools hosted by remote MCP servers to the agent |
+| **[Channels](/langsmith/python/managed-deep-agents-channels)** | Managed configuration | Receive messages from an external messaging service that start agent runs and deliver responses |
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Agent Server" icon="server" href="/langsmith/agent-server-overview">
+    Explore the runtime that hosts every Managed Deep Agents deployment.
+  </Card>
+  <Card title="Agent Server MCP" icon="protocol" href="/langsmith/server-mcp">
+    Read the Agent Server MCP protocol reference.
+  </Card>
+  <Card title="MCP connectors" icon="plug" href="/langsmith/python/managed-deep-agents-mcp-connectors">
+    Add tools from remote MCP servers to the agent.
+  </Card>
+  <Card title="Identity" icon="fingerprint" href="/langsmith/python/managed-deep-agents-identity">
+    Authenticate callers to the deployment.
+  </Card>
+</CardGroup>
+
+---
+
+<div className="source-links">
+<Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
+</Callout>
+<Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-mcp-endpoint.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
 </Callout>
 </div>
 
@@ -85389,7 +85848,7 @@ Managed Deep Agents (MDA) is the simplest way to build and deploy production age
 You write the agent's intelligence: its instructions, the tools it can call, the skills it follows, and you select the model that drives it. MDA provides everything underneath:
 
 - **The Deep Agents harness**: The agent loop that plans, calls tools, manages a filesystem, and delegates to subagents. See [Deep Agents](/oss/python/deepagents/overview).
-- **A managed runtime**: [LangSmith Deployment's Agent Server](/langsmith/agent-server-overview) hosts and operates the agent, and keeps sessions running across restarts.
+- **A managed runtime**: Every deployment runs on [LangSmith Agent Server](/langsmith/agent-server-overview). You get the Agent Server API, threads, runs, streaming, and the [MCP endpoint](/langsmith/python/managed-deep-agents-mcp-endpoint) without operating the server yourself.
 
 ```mermaid actions={false}
 %%{init: {"theme":"base","themeVariables":{"fontFamily":"Inter, system-ui, sans-serif","lineColor":"#40668D","primaryColor":"#E5F4FF","primaryTextColor":"#030710","primaryBorderColor":"#006DDD","clusterBkg":"transparent"}}}%%
@@ -85550,6 +86009,12 @@ For the full layout, see [Project structure](/langsmith/python/managed-deep-agen
   </Card>
   <Card title="Tutorial" icon="book" href="/langsmith/python/managed-deep-agents-tutorial">
     Add a custom search tool, durable memory, and a daily schedule.
+  </Card>
+  <Card title="Agent Server" icon="server" href="/langsmith/agent-server-overview">
+    Explore the runtime that hosts Managed Deep Agents deployments.
+  </Card>
+  <Card title="MCP endpoint" icon="plug" href="/langsmith/python/managed-deep-agents-mcp-endpoint">
+    Call a deployed agent as a tool from Claude Code or another MCP client.
   </Card>
 </CardGroup>
 
@@ -106469,6 +106934,182 @@ Source: https://docs.langchain.com/langsmith/self-hosted-changelog
 
 [Self-hosted LangSmith](/langsmith/self-hosted) is an add-on to the Enterprise plan designed for our largest, most security-conscious customers. For more details, refer to [Pricing](https://www.langchain.com/pricing). [Contact our sales team](https://www.langchain.com/contact-sales) if you want to get a license key to trial LangSmith in your environment.
 
+<Update label="2026-09-14" tags={["Preview"]} rss={{ title: "2026-09-14 - self-hosted" }}>
+## langsmith-0.17.0-rc.27
+
+**LangSmith version:** `0.17.24rc1`
+
+- This release packages the same LangSmith application version as langsmith-0.17.0-rc.26. Refer to the [langsmith-0.17.0-rc.26](#langsmith-0-17-0-rc-26) release notes below.
+
+**Download the Helm chart:** [`langsmith-0.17.0-rc.27.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.27/langsmith-0.17.0-rc.27.tgz)
+{/* langsmith-release-image: 0.17.0-rc.27 0.17.24-8b343557026d97c8b4cbbac94dbe07e6eae3cd92 */}
+</Update>
+
+<Update label="2026-09-14" tags={["Stable"]} rss={{ title: "2026-09-14 - self-hosted" }}>
+## langsmith-0.16.22
+
+**LangSmith version:** `0.16.55`
+
+- LangSmith services authenticated startup requests to the deployment info endpoint when endpoint authentication was enabled.
+
+**Download the Helm chart:** [`langsmith-0.16.22.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.22/langsmith-0.16.22.tgz)
+{/* langsmith-release-image: 0.16.22 0.16.55 */}
+</Update>
+
+<Update label="2026-09-14" tags={["Preview"]} rss={{ title: "2026-09-14 - self-hosted" }}>
+## langsmith-0.17.0-rc.26
+
+**LangSmith version:** `0.17.24rc1`
+
+- Internal improvements and maintenance updates
+
+**Download the Helm chart:** [`langsmith-0.17.0-rc.26.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.26/langsmith-0.17.0-rc.26.tgz)
+{/* langsmith-release-image: 0.17.0-rc.26 0.17.24-8b343557026d97c8b4cbbac94dbe07e6eae3cd92 */}
+</Update>
+
+<Update label="2026-09-14" tags={["Stable"]} rss={{ title: "2026-09-14 - self-hosted" }}>
+## langsmith-0.16.21
+
+**LangSmith version:** `0.16.54`
+
+- This release packages the same LangSmith application version as langsmith-0.16.20. Refer to the [langsmith-0.16.20](#langsmith-0-16-20) release notes below.
+
+**Download the Helm chart:** [`langsmith-0.16.21.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.21/langsmith-0.16.21.tgz)
+{/* langsmith-release-image: 0.16.21 0.16.54 */}
+</Update>
+
+<Update label="2026-09-14" tags={["Stable"]} rss={{ title: "2026-09-14 - self-hosted" }}>
+## langsmith-0.16.20
+
+**LangSmith version:** `0.16.54`
+
+- Internal improvements and maintenance updates
+
+**Download the Helm chart:** [`langsmith-0.16.20.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.20/langsmith-0.16.20.tgz)
+{/* langsmith-release-image: 0.16.20 0.16.54 */}
+</Update>
+
+<Update label="2026-09-11" tags={["Stable"]} rss={{ title: "2026-09-11 - self-hosted" }}>
+## langsmith-0.16.19
+
+**LangSmith version:** `0.16.52`
+
+- This release packages the same LangSmith application version as langsmith-0.16.18. Refer to the [langsmith-0.16.18](#langsmith-0-16-18) release notes below.
+
+**Download the Helm chart:** [`langsmith-0.16.19.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.19/langsmith-0.16.19.tgz)
+{/* langsmith-release-image: 0.16.19 0.16.52 */}
+</Update>
+
+<Update label="2026-09-10" tags={["Stable"]} rss={{ title: "2026-09-10 - self-hosted" }}>
+## langsmith-0.16.18
+
+**LangSmith version:** `0.16.52`
+
+- Avoided full mise installation in the v16 release.
+
+**Download the Helm chart:** [`langsmith-0.16.18.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.18/langsmith-0.16.18.tgz)
+{/* langsmith-release-image: 0.16.18 0.16.52 */}
+</Update>
+
+<Update label="2026-09-09" tags={["Preview"]} rss={{ title: "2026-09-09 - self-hosted" }}>
+## langsmith-0.17.0-rc.25
+
+**LangSmith version:** `0.17.20rc1`
+
+- This release packages the same LangSmith application version as langsmith-0.17.0-rc.23. Refer to the [langsmith-0.17.0-rc.23](#langsmith-0-17-0-rc-23) release notes below.
+
+**Download the Helm chart:** [`langsmith-0.17.0-rc.25.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.25/langsmith-0.17.0-rc.25.tgz)
+{/* langsmith-release-image: 0.17.0-rc.25 0.17.20-c51af74dff42dec250ba0cab263735c86f226ab7 */}
+</Update>
+
+<Update label="2026-09-09" tags={["Stable"]} rss={{ title: "2026-09-09 - self-hosted" }}>
+## langsmith-0.16.17
+
+**LangSmith version:** `0.16.50`
+
+- This release packages the same LangSmith application version as langsmith-0.16.16. Refer to the [langsmith-0.16.16](#langsmith-0-16-16) release notes below.
+
+**Download the Helm chart:** [`langsmith-0.16.17.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.17/langsmith-0.16.17.tgz)
+{/* langsmith-release-image: 0.16.17 0.16.50 */}
+</Update>
+
+<Update label="2026-09-09" tags={["Preview"]} rss={{ title: "2026-09-09 - self-hosted" }}>
+## langsmith-0.17.0-rc.24
+
+**LangSmith version:** `0.17.20rc1`
+
+- This release packages the same LangSmith application version as langsmith-0.17.0-rc.23. Refer to the [langsmith-0.17.0-rc.23](#langsmith-0-17-0-rc-23) release notes below.
+
+**Download the Helm chart:** [`langsmith-0.17.0-rc.24.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.24/langsmith-0.17.0-rc.24.tgz)
+{/* langsmith-release-image: 0.17.0-rc.24 0.17.20-c51af74dff42dec250ba0cab263735c86f226ab7 */}
+</Update>
+
+<Update label="2026-09-09" tags={["Preview"]} rss={{ title: "2026-09-09 - self-hosted" }}>
+## langsmith-0.17.0-rc.23
+
+**LangSmith version:** `0.17.20rc1`
+
+- Repaired frontend deploy and alert failures.
+- No user-facing release note required; dependency-only maintenance update.
+- Allowed deployments to leave managed mode.
+- Priced Vertex Engine input tokens at the cache-read rate.
+- Remediated open Dependabot alerts.
+- When a Slack channel event failed before reaching your Managed Deep Agent because of a dropped delivery, a missing bot token, an interrupt that could not be shown, or an ambiguous route, it surfaced in `mda logs` and the deployment logs UI instead of failing silently.
+- Routed Bedrock xAI inference profiles.
+- Routed billing alerts to the dedicated billing channel.
+- Configured agent auth OAuth callbacks.
+- Ignored agents without names.
+- Routed EU fix runs through regional OpenAI.
+- Polled credential sessions on the shipped Agent Auth route.
+- Led Slack issue alerts with the title.
+- Sharing a thread created a link that anyone could open without a LangSmith account, showing every turn in the thread along with its run traces and feedback scores. The link always reflected the thread's current contents, including turns added after you shared it, and unsharing revoked it immediately.
+- Set all three prompt-cache breakpoints on the Vertex path.
+- Increased recent filter debounce.
+- Kept Agent Overview edit below sticky header.
+- Monitored Asynq rate-limit retries without logs.
+- Reconciled sandbox provisioning.
+- Removed messages view extra padding.
+- Configuring an evaluator with a trace or tree filter no longer timed out while loading the sample run shown in the preview.
+- Aligned agent hooks with Agent API contract.
+- Isolated evaluator snapshots.
+- Accepted blank API keys when the proxy or OAuth supplied the credential.
+- Allowed exec to close a command's stdin.
+- Exited the fallback chain when the request context was done.
+- Moved BYOC Manager to infra.
+- Documented validation errors as strings.
+- Hid tracing filters without flicker.
+- When an agent paused because a connected integration still needed OAuth, Slack now showed a Connect button that opened the authorization link directly. Previously the run paused with a generic notice and no way to finish connecting from Slack.
+- LangSmith MCP connectors used Client ID Metadata Documents when supported, with dynamic client registration retained as a compatibility fallback.
+- Workspace editors could now assign resources to an Application tag value from Settings > Resource Tags. The page previously failed with a permission error, even though editors were allowed to apply Application tags.
+- Decoded the @openai/agents JS SDK's `function_call_result` items and camelCase `callId` fields on the trajectory endpoint, unblocking Messages view for JS agents that managed tool state client-side.
+- Alembic git-revisions (dropped ALEMBIC_HEAD merge conflicts).
+- Reduced noisy BYOC Kubernetes alerts.
+- Cleaned up failed thread sandboxes.
+- Showed current SHA in commit lookup.
+- Resumed org invite after signup.
+- LLM Gateway fallback chains could now advance to the next model when a candidate did not return response headers within a configured timeout. Active response streams continued after headers arrived.
+- Started local stack with workspace concurrently.
+- Baked Alembic chain for the BYOC data-plane pin.
+- Ran backend start stacks with local concurrently.
+- Normalized APAC load balancer env.
+- OAuth authorization sessions now accepted canonical `owner_type` and `owner_id` fields, allowing a human to authorize a managed credential for either a user or an agent. The deprecated `principal_id` and `agent_id` fields remained supported on legacy request and response shapes.
+- Self-hosted deployments could now forward a REST caller's `X-Fleet-Forward-*` headers to the custom MCP servers an agent called, so a policy gateway in front of those servers could see per-invocation context such as an end-user identity. Off by default; enabled with `FLEET_MCP_FORWARD_CALLER_HEADERS=true`. Values were asserted by the caller and were not verified by LangSmith.
+- Defaulted trace filters to root runs.
+- GitHub Actions quota page.
+- Aligned Studio message actions to the right.
+- A deployment's custom install and build command now appeared in the Details panel, and the New Revision dialog prefilled them from the value currently in effect. Previously these commands persisted and were applied to every build but were not shown anywhere, so an inherited command was invisible to whoever had to debug the build.
+- Updated organization plan badge colors.
+- Commercial private ECR registries could now assume an AWS IAM role on demand, enabling repository and tag search while avoiding expiring saved authorization tokens.
+- OAuth authorization sessions now accepted workspace owners, allowing one managed OAuth credential to be shared across a workspace.
+- Thread query clients could request server-sent events to receive results progressively while preserving cursor pagination.
+- The workspace switcher now accepted workspace IDs in addition to workspace names, making it easier to locate a workspace when only its ID was known.
+- Used the new `/v2/threads/stats` endpoint to retrieve thread and trace counts, latency, token, cost, and feedback statistics for a tracing project.
+- Fleet agents now supported saved Databricks model configurations, using your configured workspace URL, serving endpoint, and workspace credentials. You could connect through Databricks Model Serving or AI Gateway routes.
+
+**Download the Helm chart:** [`langsmith-0.17.0-rc.23.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.23/langsmith-0.17.0-rc.23.tgz)
+{/* langsmith-release-image: 0.17.0-rc.23 0.17.20-c51af74dff42dec250ba0cab263735c86f226ab7 */}
+</Update>
+
 <Update label="2026-09-05" tags={["Stable"]} rss={{ title: "2026-09-05 - self-hosted" }}>
 ## langsmith-0.16.16
 
@@ -110948,6 +111589,8 @@ The Model Context Protocol (MCP) is an open protocol for describing tools and da
 [Agent Server](/langsmith/agent-server) implements MCP using the [Streamable HTTP transport](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http). This allows LangGraph **agents** to be exposed as **MCP tools**, making them usable with any MCP-compliant client supporting Streamable HTTP.
 
 The MCP endpoint is available at `/mcp` on [Agent Server](/langsmith/agent-server).
+
+Managed Deep Agents deployments run on Agent Server, so they expose the same `/mcp` endpoint. For Managed Deep Agents URL discovery and identity headers, see [Connect MCP clients to a managed deep agent](/langsmith/python/managed-deep-agents-mcp-endpoint).
 
 You can set up [custom authentication middleware](/langsmith/custom-auth) to authenticate a user with an MCP server to get access to user-scoped tools within your LangSmith deployment.
 
@@ -140522,6 +141165,20 @@ Have a user with access sign in via the unique login URL from the `SSO Configura
 
 Once service-provider–initiated SSO is configured, users can sign in using a unique login URL. You can find this in the LangSmith UI under **Organization members and roles** then **SSO configuration**.
 
+To send a user to a specific page after sign-in, add a URL-encoded `redirect_to` path to the login URL:
+
+```text
+https://smith.langchain.com/sso/login/<slug>?redirect_to=%2Fo%2F<organization-id>%2Fprojects%2Fp%2F<project-id>%2Fr%2F<run-id>
+```
+
+The value must decode to a path on the same host, starting with `/`. In the example above it decodes to `/o/<organization-id>/projects/p/<project-id>/r/<run-id>`, so the user lands on that run. A value pointing at another host is rejected, and the user lands on the LangSmith home page instead.
+
+Encode the path. An unencoded path that contains its own query string or fragment is truncated at the first `&` or `#`, which sends the user to an incomplete destination.
+
+<Note>
+Most links do not need this parameter. Opening a LangSmith URL directly, then signing in through **SSO** with a work email, already returns the user to that page. Use `redirect_to` when the link must start SAML sign-in itself, such as a link generated by a script or posted for a team that signs in through a single identity provider.
+</Note>
+
 ## Set up SCIM for your organization
 
 <Note>
@@ -151912,6 +152569,14 @@ Source: https://docs.langchain.com/langsmith/smith-api/scim-tokens/delete-a-scim
 
 # Update a SCIM token
 Source: https://docs.langchain.com/langsmith/smith-api/scim-tokens/update-a-scim-token
+
+
+# [alpha] submit product feedback
+Source: https://docs.langchain.com/langsmith/smith-api/productfeedback/alpha-submit-product-feedback
+
+
+# [alpha] get product feedback
+Source: https://docs.langchain.com/langsmith/smith-api/productfeedback/alpha-get-product-feedback
 
 
 # List agent versions for a project

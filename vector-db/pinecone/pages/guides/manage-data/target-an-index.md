@@ -288,7 +288,7 @@ To get an index host from the Pinecone API, use the [`describe_index`](/referenc
 
 ## Target by index name
 
-This method is convenient for testing but is not recommended for production:
+This method is convenient for testing but isn't recommended for production:
 
 <CodeGroup>
   ```Python Python theme={null}

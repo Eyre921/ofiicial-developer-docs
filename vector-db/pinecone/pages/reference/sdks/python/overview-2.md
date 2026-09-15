@@ -79,7 +79,7 @@ pip show pinecone
 
 ### Install the Pinecone Assistant Python plugin
 
-As of Python SDK v7.0.0, the `pinecone-plugin-assistant` package is included by default. It is only necessary to install the package if you are using a version of the Python SDK prior to v7.0.0.
+As of Python SDK v7.0.0, the `pinecone-plugin-assistant` package is included by default. It's only necessary to install the package if you are using a version of the Python SDK prior to v7.0.0.
 
 ```shell HTTP theme={null}
 pip install --upgrade pinecone pinecone-plugin-assistant
@@ -170,7 +170,7 @@ If your network setup requires you to interact with Pinecone through a proxy, yo
 * `proxy_url`: The location of your proxy. This could be an HTTP or HTTPS URL depending on your proxy setup.
 * `proxy_headers`: Accepts a python dictionary which can be used to pass any custom headers required by your proxy. If your proxy is protected by authentication, use this parameter to pass basic authentication headers with a digest of your username and password. The `make_headers` utility from `urllib3` can be used to help construct the dictionary. **Note:** Not supported with Asyncio.
 * `ssl_ca_certs`: By default, the client will perform SSL certificate verification using the CA bundle maintained by Mozilla in the [`certifi`](https://pypi.org/project/certifi/) package. If your proxy is using self-signed certicates, use this parameter to specify the path to the certificate (PEM format).
-* `ssl_verify`: SSL verification is enabled by default, but it is disabled when set to `False`. It is not recommened to go into production with SSL verification disabled.
+* `ssl_verify`: SSL verification is enabled by default, but it's disabled when set to `False`. It's not recommened to go into production with SSL verification disabled.
 
 <CodeGroup>
   ```python HTTP theme={null}
@@ -295,7 +295,7 @@ The `query_namespaces` method accepts most of the same arguments as `query` with
 
 <Tabs>
   <Tab title="Python SDK without gRPC">
-    When using the Python SDK without gRPC extras, to get good performance, it is important to set values for the `pool_threads` and `connection_pool_maxsize` properties on the index client. The `pool_threads` setting is the number of threads available to execute requests, while `connection_pool_maxsize` is the number of cached http connections that will be held. Since these tasks are not computationally heavy and are mainly i/o bound, it should be okay to have a high ratio of threads to cpus.
+    When using the Python SDK without gRPC extras, to get good performance, it's important to set values for the `pool_threads` and `connection_pool_maxsize` properties on the index client. The `pool_threads` setting is the number of threads available to execute requests, while `connection_pool_maxsize` is the number of cached http connections that will be held. Since these tasks aren't computationally heavy and are mainly i/o bound, it should be okay to have a high ratio of threads to cpus.
 
     The combined results include the sum of all read unit usage used to perform the underlying queries for each namespace.
 

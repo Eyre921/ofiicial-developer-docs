@@ -20,10 +20,10 @@ A Pinecone index can hold any combination of the following:
 
 ## Create an index for full-text search
 
-An index with a document schema stores typed JSON documents. The schema declares how each ranking field is indexed: as a `string` field with `full_text_search` enabled for BM25 ranking, a `dense_vector` for ANN similarity, or a `sparse_vector`. A single index can mix all three ranking field types; at query time, pick the ranking signal with `score_by`. Metadata fields (anything else you upsert) are not declared in the schema — they're auto-indexed for filtering at upsert time.
+An index with a document schema stores typed JSON documents. The schema declares how each ranking field is indexed: as a `string` field with `full_text_search` enabled for BM25 ranking, a `dense_vector` for ANN similarity, or a `sparse_vector`. A single index can mix all three ranking field types; at query time, pick the ranking signal with `score_by`. Metadata fields (anything else you upsert) aren't declared in the schema — they're auto-indexed for filtering at upsert time.
 
 <Note>
-  Full-text search is not integrated embedding. A `string` field with `full_text_search` is indexed for BM25 ranking and Lucene queries. It does not call an embedding model. Integrated embedding remains available for vector indexes.
+  Full-text search isn't integrated embedding. A `string` field with `full_text_search` is indexed for BM25 ranking and Lucene queries. It doesn't call an embedding model. Integrated embedding remains available for vector indexes.
 </Note>
 
 Indexes with document schemas use API version `2026-07`, supported through REST and the Python SDK. For other languages, call the REST endpoint directly.
@@ -136,7 +136,7 @@ You can create an index that stores dense vectors with [integrated vector embedd
 ### Integrated embedding
 
 <Note>
-  Indexes with integrated embedding do not support [updating](/guides/manage-data/update-data) or [importing](/guides/index-data/import-data) with text.
+  Indexes with integrated embedding don't support [updating](/guides/manage-data/update-data) or [importing](/guides/index-data/import-data) with text.
 </Note>
 
 If you want to upsert and search with source text and have Pinecone convert it to dense vectors automatically, [create an index with integrated embedding](/reference/api/latest/control-plane/create_for_model) as follows:
@@ -641,7 +641,7 @@ If you use an external embedding model to convert your data to sparse vectors, [
 
 * Provide a `name` for the index.
 * Set the `vector_type` to `sparse`.
-* Set the distance `metric` to `dotproduct`. Indexes that store sparse vectors do not support other [distance metrics](/guides/index-data/indexing-overview#distance-metrics).
+* Set the distance `metric` to `dotproduct`. Indexes that store sparse vectors don't support other [distance metrics](/guides/index-data/indexing-overview#distance-metrics).
 * Set `spec.cloud` and `spec.region` to the cloud and region where the index should be deployed.
 
 Other parameters are optional. See the [API reference](/reference/api/2026-04/control-plane/create_index) for details.
@@ -809,7 +809,7 @@ When creating an index, you must choose the cloud and region where you want the 
 | `gcp`   | `europe-west4` (Netherlands) | Builder, Standard, Enterprise                       | General availability                                      |
 | `azure` | `eastus2` (Virginia)         | Builder, Standard, Enterprise                       | General availability                                      |
 
-The cloud and region cannot be changed after a serverless index is created.
+The cloud and region can't be changed after a serverless index is created.
 
 <Note>
   On the Starter plan, you can create serverless indexes in the `us-east-1` region of AWS only. To create indexes in other regions, [upgrade to the Builder, Standard, or Enterprise plan](/guides/organizations/manage-billing/upgrade-billing-plan).
@@ -825,7 +825,7 @@ When creating an index that stores dense vectors, you can choose from the follow
   <Accordion title="Euclidean">
     Querying indexes with this metric returns a similarity score equal to the squared Euclidean distance between the result and query vectors.
 
-    This metric calculates the square of the distance between two data points in a plane. It is one of the most commonly used distance metrics. For an example, see our [IT threat detection example](https://colab.research.google.com/github/pinecone-io/examples/blob/master/docs/it-threat-detection.ipynb).
+    This metric calculates the square of the distance between two data points in a plane. It's one of the most commonly used distance metrics. For an example, see our [IT threat detection example](https://colab.research.google.com/github/pinecone-io/examples/blob/master/docs/it-threat-detection.ipynb).
 
     When you use `metric='euclidean'`, the most similar results are those with the **lowest similarity score**.
   </Accordion>
@@ -877,7 +877,7 @@ The `multilingual-e5-large` model supports the following parameters:
 
 #### llama-text-embed-v2
 
-[`llama-text-embed-v2`](/models/llama-text-embed-v2) is a high-performance dense embedding model optimized for text retrieval and ranking tasks. It is trained on a diverse range of text corpora and provides strong performance on longer passages and structured documents.
+[`llama-text-embed-v2`](/models/llama-text-embed-v2) is a high-performance dense embedding model optimized for text retrieval and ranking tasks. It's trained on a diverse range of text corpora and provides strong performance on longer passages and structured documents.
 
 **Details**
 
@@ -902,7 +902,7 @@ The `llama-text-embed-v2` model supports the following parameters:
 
 #### pinecone-sparse-english-v0
 
-[`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0) is a sparse embedding model for converting text to [sparse vectors](/guides/core-concepts/key-terms#sparse-vector) for [sparse-vector search](/guides/search/lexical-search) or hybrid search. Built on the innovations of the [DeepImpact architecture](https://arxiv.org/pdf/2104.12016), the model directly estimates the lexical importance of tokens by leveraging their context, unlike traditional retrieval models like BM25, which rely solely on term frequency.
+[`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0) is a sparse embedding model for converting text to [sparse vectors](/guides/core-concepts/key-terms#sparse-vector) for [sparse-vector search](/guides/search/lexical-search) or hybrid search. Built on the innovations of the [DeepImpact architecture](https://arxiv.org/pdf/2104.12016), the model directly estimates the lexical importance of tokens by using their context, unlike traditional retrieval models like BM25, which rely solely on term frequency.
 
 **Details**
 

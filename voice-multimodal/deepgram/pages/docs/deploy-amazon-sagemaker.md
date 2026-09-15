@@ -10,36 +10,9 @@ path: docs/deploy-amazon-sagemaker
 
 # Deploy Deepgram on Amazon SageMaker
 
-For an overview of running Deepgram on SageMaker, including benefits, tradeoffs, and pricing, see [Amazon SageMaker](/docs/amazon-sagemaker).
+This guide deploys a Deepgram AWS Marketplace Model Package as a [SageMaker AI Endpoint](https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html) using the AWS CLI or the AWS SDK for Python (Boto3). The SageMaker Endpoint resource represents the compute instances that run the Deepgram Voice AI services. For an overview of running Deepgram on SageMaker, including benefits, tradeoffs, and pricing, see [Amazon SageMaker](/docs/amazon-sagemaker).
 
-## Supported Products
-
-Follow [this AWS Marketplace](https://aws.amazon.com/marketplace/search/results?searchTerms=deepgram\&CREATOR=6efa21f9-9a33-4cae-ba44-756436fa71dd\&FULFILLMENT_OPTION_TYPE=SAGEMAKER_MODEL\&filters=CREATOR%2CFULFILLMENT_OPTION_TYPE) link to see the Deepgram products that are supported on the SageMaker AI platform. No login to your AWS account is required to view this public AWS Marketplace website.
-
-For Speech-to-Text (STT), Deepgram publishes a separate product listing for each combination of:
-
-* **Model family** — such as Nova-3 or Flux
-* **Language coverage** — monolingual or multilingual
-* **Processing mode** — streaming or batch
-
-For example, *Deepgram Voice AI- Nova-3 Monolingual Speech-to-Text (STT) Streaming* is one listing.
-
-For Text-to-Speech (TTS), Deepgram publishes a single product listing per model family (such as Aura-2), with no separate listings for language coverage or processing mode. Subscribe to and deploy a SageMaker Endpoint for each product you wish to utilize. Your application code will need to route requests to the SageMaker Endpoint for the product you wish to run inference against.
-
-Within a listing, individual languages are delivered as **versions** of the model package. A monolingual listing may offer one version covering English and French, and another covering Vietnamese and Thai. Read the version name and its release notes to understand the set of languages each version provides, and select the version that matches the languages you need when deploying.
-
-*Language Requests*: If there is a transcription language that is not currently available on the AWS Marketplace, please work with your account manager to request additional language models to be added. For a full list of the Deepgram supported transcription languages, [check out this document](https://developers.deepgram.com/docs/models-languages-overview). You can also view the [Changelog](https://developers.deepgram.com/changelog) to see recent product announcements.
-
-## Limitations
-
-When using Deepgram services in Amazon SageMaker, please be aware of the following limitations.
-
-* The SageMaker network isolation model prevents the container from making outbound calls to external LLM providers. As a result, the [Deepgram Voice Agent](/docs/voice-agent) cannot run inside SageMaker.
-* Deepgram cannot invoke user-defined [callback URLs](/docs/callback)
-* Passing a JSON payload for transcription (e.g., referencing a file stored in cloud storage via URL) is unsupported, as the SageMaker isolation model prevents the container from reaching out to external cloud storage
-* Deepgram [custom metrics](/docs/metrics-guide) are not currently available through Amazon SageMaker Endpoints
-* For streaming invocations, the connection remains open until you explicitly close the input stream or the endpoint closes the connection, supporting [up to 30 minutes of connection time](https://docs.aws.amazon.com/sagemaker/latest/dg/realtime-endpoints-test-endpoints.html#realtime-endpoints-test-endpoints-sdk:~:text=The%20connection%20remains%20open%20until%20you%20explicitly%20close%20the%20input%20stream%20or%20the%20endpoint%20closes%20the%20connection%2C%20supporting%20up%20to%2030%20minutes%20of%20connection%20time).
-* For non-streaming invocations, the [maximum size of the input data is 25 MB](https://docs.aws.amazon.com/marketplace/latest/userguide/ml-service-restrictions-and-limits.html#:~:text=For%20an%20endpoint%2C%20limit%20the%20maximum%20size%20of%20the%20input%20data%20per%20invocation%20to%2025%20MB.%20This%20value%20can%27t%20be%20adjusted) for real-time endpoints. For larger files, use [asynchronous endpoints](https://docs.aws.amazon.com/sagemaker/latest/dg/async-inference.html), which support payloads up to 1 GB with near real-time latency and can scale to zero when there are no requests to be processed.
+You need a **Model Package ARN** before you start. Subscribe to a Deepgram product on the AWS Marketplace and copy the ARN for your product version and AWS Region — see [Find the Model Package ARN](/docs/subscribe-aws-marketplace#find-the-model-package-arn).
 
 ## Prerequisites
 
@@ -47,40 +20,295 @@ When using Deepgram services in Amazon SageMaker, please be aware of the followi
 * AWS IAM permissions to SageMaker and Marketplace
   * [**IAM Policy**](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AWSMarketplaceManageSubscriptions.html): AWSMarketplaceManageSubscriptions
   * [**IAM Policy**](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AmazonSageMakerFullAccess.html): AmazonSageMakerFullAccess
+* The [AWS CLI v2](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) or [Boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/quickstart.html), configured with credentials for the target account
+* An active AWS Marketplace subscription to a [Deepgram SageMaker product](/docs/supported-products-sagemaker) and its **Model Package ARN**. See [Subscribe on AWS Marketplace](/docs/subscribe-aws-marketplace).
+* Service quota for the GPU instance type you plan to use. See [Requesting SageMaker Quota](/docs/request-sagemaker-quota).
 
-## Subscribe to Deepgram Products via AWS Marketplace Console
+## Choose an endpoint type
 
-Before you can deploy Deepgram on Amazon SageMaker AI, you'll need to subscribe to the product in the AWS Marketplace.
-Keep in mind that you are not billed for the product until you deploy an [Amazon SageMaker AI Endpoint resource](https://docs.aws.amazon.com/sagemaker/latest/dg/manage-endpoints-console.html).
+Deploy a **real-time** endpoint for live streaming and synchronous (single-file) transcription, or an **asynchronous** endpoint for large pre-recorded files (up to 1 GB) and scale-to-zero. An asynchronous endpoint accepts only `InvokeEndpointAsync` requests and cannot serve streaming or synchronous traffic, so deploy one endpoint per invocation style you need. See [Auto-Scaling SageMaker Endpoints](/docs/auto-scaling-sagemaker) for a full comparison.
 
-Prefer infrastructure as code? You can complete this subscription entirely through the AWS Marketplace API instead of the console. See [Subscribe to a Deepgram product via the Marketplace API](/docs/terraform-deploy-sagemaker#subscribe-to-a-deepgram-product-via-the-marketplace-api).
+## Create an IAM execution role
 
-Login to the [AWS Management Console](https://console.aws.amazon.com/) for the account you'd like to deploy in
+SageMaker assumes an [execution role](https://docs.aws.amazon.com/sagemaker/latest/dg/sagemaker-roles.html) to run the Model Package on your behalf. You only need to create a single SageMaker execution role, and can reuse this IAM Role to deploy multiple SageMaker Endpoints.
 
-Navigate to the [AWS Marketplace console, pre-filtered for Deepgram SageMaker Model products](https://us-east-1.console.aws.amazon.com/marketplace/search#!mpSearch/search?text=deepgram\&filter%3AFULFILLMENT_OPTION_TYPE=SAGEMAKER_MODEL)
+#### AWS CLI
 
-Click on the Deepgram product you're interested in deploying (eg. *Deepgram Voice AI- Nova-3 Monolingual Speech-to-Text (STT) Streaming*)
+```bash
+aws iam create-role \
+  --role-name deepgram-sagemaker-execution \
+  --assume-role-policy-document '{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Principal":{"Service":"sagemaker.amazonaws.com"},"Action":"sts:AssumeRole"}]}'
 
-Click on the **View Purchase Options** button
+aws iam attach-role-policy \
+  --role-name deepgram-sagemaker-execution \
+  --policy-arn arn:aws:iam::aws:policy/AmazonSageMakerFullAccess
+```
 
-Ensure the **Offer Type** of **Public Offer** is selected (*if required*)
+#### Boto3
 
-Scroll down and click the **Subscribe** button
+```python
+import json
+import boto3
 
-## Create AWS IAM Role for SageMaker Execution
+iam = boto3.client("iam")
 
-Follow [the AWS documentation](https://docs.aws.amazon.com/sagemaker/latest/dg/sagemaker-roles.html) to create an AWS Identity & Access Management (IAM) role that will be used to run SageMaker Model Endpoints.
-You only need to create a single SageMaker execution role, and can reuse this IAM Role to deploy multiple SageMaker Endpoints.
+role = iam.create_role(
+    RoleName="deepgram-sagemaker-execution",
+    AssumeRolePolicyDocument=json.dumps({
+        "Version": "2012-10-17",
+        "Statement": [{
+            "Effect": "Allow",
+            "Principal": {"Service": "sagemaker.amazonaws.com"},
+            "Action": "sts:AssumeRole",
+        }],
+    }),
+)
+iam.attach_role_policy(
+    RoleName="deepgram-sagemaker-execution",
+    PolicyArn="arn:aws:iam::aws:policy/AmazonSageMakerFullAccess",
+)
+execution_role_arn = role["Role"]["Arn"]
+```
 
-## Deploy Deepgram Model Package for SageMaker AI using the SageMaker AI Console
+**Asynchronous endpoints** additionally need `s3:GetObject` and `s3:PutObject` on the objects in your output and failure buckets, and `s3:ListBucket` on the buckets themselves. Attach an inline policy such as the following to the execution role, replacing `<bucket>` with your bucket name:
 
-Once you've subscribed to the Deepgram product on AWS Marketplace, you can deploy a [SageMaker AI Endpoint](https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html).
-The SageMaker "Endpoint" resource represents the compute instance that runs the Deepgram Voice AI services.
-It will take several minutes to deploy a SageMaker Endpoint, once you initiate the resource creation.
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": ["s3:GetObject", "s3:PutObject"],
+      "Resource": "arn:aws:s3:::<bucket>/*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": ["s3:ListBucket"],
+      "Resource": "arn:aws:s3:::<bucket>"
+    }
+  ]
+}
+```
 
-**Prefer infrastructure-as-code (IaC)?** To provision the model, endpoint configuration, and endpoint programmatically, see [Deploy with Terraform](/docs/terraform-deploy-sagemaker), which also covers how to [find the Model Package ARN](/docs/terraform-deploy-sagemaker#find-the-model-package-arn).
+## Deploy with the AWS CLI or Boto3
 
-**Which endpoint type should you deploy?** Deploy a **real-time** endpoint for live streaming and synchronous (single-file) transcription, or an **asynchronous** endpoint for large pre-recorded files (up to 1 GB) and scale-to-zero. See [Auto-Scaling SageMaker Endpoints](/docs/auto-scaling-sagemaker) for a full comparison.
+#### Set variables
+
+Choose names for the three SageMaker resources, and set the Model Package ARN, execution role ARN, and instance type.
+
+* **`MODEL_PACKAGE_ARN`** identifies the Deepgram product version and AWS Region you subscribed to. It is region-specific, so copy the ARN for the Region you deploy in. To find it, open the AWS Marketplace **Manage subscriptions** console, click **Configure** on your Deepgram subscription, choose **AWS command line interface (CLI)** under **Service**, select the product version, and copy the ARN for your Region from the **Model ARNs** list. See [Find the Model Package ARN](/docs/subscribe-aws-marketplace#find-the-model-package-arn) for the full steps.
+* **`EXECUTION_ROLE_ARN`** is the role you created in [Create an IAM execution role](#create-an-iam-execution-role).
+* **`INSTANCE_TYPE`**: `ml.g6.2xlarge` is the recommended type for Speech-to-Text; see [Instance types](/docs/supported-products-sagemaker#instance-types) for Text-to-Speech and the other supported families.
+
+#### AWS CLI
+
+```bash
+export AWS_REGION="us-east-1"
+export MODEL_NAME="deepgram-streaming-stt"
+export ENDPOINT_CONFIG_NAME="deepgram-streaming-stt-config"
+export ENDPOINT_NAME="my-deepgram-streaming-stt"
+export MODEL_PACKAGE_ARN="arn:aws:sagemaker:us-east-1:123456789012:model-package/deepgram-stt-nova-3/1"
+export EXECUTION_ROLE_ARN="arn:aws:iam::123456789012:role/deepgram-sagemaker-execution"
+export INSTANCE_TYPE="ml.g6.2xlarge"
+```
+
+#### Boto3
+
+```python
+import boto3
+
+AWS_REGION = "us-east-1"
+MODEL_NAME = "deepgram-streaming-stt"
+ENDPOINT_CONFIG_NAME = "deepgram-streaming-stt-config"
+ENDPOINT_NAME = "my-deepgram-streaming-stt"
+MODEL_PACKAGE_ARN = "arn:aws:sagemaker:us-east-1:123456789012:model-package/deepgram-stt-nova-3/1"
+EXECUTION_ROLE_ARN = "arn:aws:iam::123456789012:role/deepgram-sagemaker-execution"
+INSTANCE_TYPE = "ml.g6.2xlarge"
+
+sagemaker = boto3.client("sagemaker", region_name=AWS_REGION)
+```
+
+#### Create the Model
+
+The SageMaker Model wraps the Marketplace Model Package and the execution role.
+
+#### AWS CLI
+
+```bash
+aws sagemaker create-model \
+  --region "$AWS_REGION" \
+  --model-name "$MODEL_NAME" \
+  --execution-role-arn "$EXECUTION_ROLE_ARN" \
+  --primary-container "ModelPackageName=$MODEL_PACKAGE_ARN" \
+  --enable-network-isolation
+```
+
+#### Boto3
+
+```python
+sagemaker.create_model(
+    ModelName=MODEL_NAME,
+    ExecutionRoleArn=EXECUTION_ROLE_ARN,
+    PrimaryContainer={"ModelPackageName": MODEL_PACKAGE_ARN},
+    EnableNetworkIsolation=True,
+)
+```
+
+`EnableNetworkIsolation=true` is mandatory for AWS Marketplace model packages — SageMaker rejects the Model otherwise. Network isolation is also why the container cannot reach external services; see [Limitations](/docs/amazon-sagemaker#limitations).
+
+To pass `DEEPGRAM_API_*` or `DEEPGRAM_ENGINE_*` configuration overrides, add an `Environment` map to the container definition. See [Configure Amazon SageMaker Deployments](/docs/configure-sagemaker-deployments).
+
+#### Create the Endpoint Configuration
+
+The Endpoint Configuration sets the instance type, instance count, and — critically — the host inference AMI version the instances boot with.
+
+**`InferenceAmiVersion` is required.** Current Deepgram model packages run a CUDA 13 runtime that needs NVIDIA driver 580 or later. Without `InferenceAmiVersion=al2023-ami-sagemaker-inference-gpu-4-1`, SageMaker boots the default AMI for the instance family (an older driver on `g4dn` and `g5`) and the container fails its CUDA preflight check. See [Inference AMI Versions](#inference-ami-versions).
+
+#### AWS CLI
+
+**`Real-time endpoint`**
+
+```bash title="Real-time endpoint"
+aws sagemaker create-endpoint-config \
+  --region "$AWS_REGION" \
+  --endpoint-config-name "$ENDPOINT_CONFIG_NAME" \
+  --production-variants "VariantName=AllTraffic,ModelName=$MODEL_NAME,InitialInstanceCount=1,InstanceType=$INSTANCE_TYPE,InferenceAmiVersion=al2023-ami-sagemaker-inference-gpu-4-1,ModelDataDownloadTimeoutInSeconds=600,ContainerStartupHealthCheckTimeoutInSeconds=300"
+```
+
+For an **asynchronous** endpoint, add `--async-inference-config` with the S3 prefixes for results and failures:
+
+**`Asynchronous endpoint`**
+
+```bash title="Asynchronous endpoint"
+aws sagemaker create-endpoint-config \
+  --region "$AWS_REGION" \
+  --endpoint-config-name "$ENDPOINT_CONFIG_NAME" \
+  --production-variants "VariantName=AllTraffic,ModelName=$MODEL_NAME,InitialInstanceCount=1,InstanceType=$INSTANCE_TYPE,InferenceAmiVersion=al2023-ami-sagemaker-inference-gpu-4-1,ModelDataDownloadTimeoutInSeconds=600,ContainerStartupHealthCheckTimeoutInSeconds=300" \
+  --async-inference-config "OutputConfig={S3OutputPath=s3://<bucket>/output/,S3FailurePath=s3://<bucket>/failures/}"
+```
+
+#### Boto3
+
+**`Real-time endpoint`**
+
+```python title="Real-time endpoint"
+sagemaker.create_endpoint_config(
+    EndpointConfigName=ENDPOINT_CONFIG_NAME,
+    ProductionVariants=[{
+        "VariantName": "AllTraffic",
+        "ModelName": MODEL_NAME,
+        "InitialInstanceCount": 1,
+        "InstanceType": INSTANCE_TYPE,
+        "InferenceAmiVersion": "al2023-ami-sagemaker-inference-gpu-4-1",
+        "ModelDataDownloadTimeoutInSeconds": 600,
+        "ContainerStartupHealthCheckTimeoutInSeconds": 300,
+    }],
+)
+```
+
+For an **asynchronous** endpoint, add `AsyncInferenceConfig` with the S3 prefixes for results and failures:
+
+**`Asynchronous endpoint`**
+
+```python title="Asynchronous endpoint"
+sagemaker.create_endpoint_config(
+    EndpointConfigName=ENDPOINT_CONFIG_NAME,
+    ProductionVariants=[{
+        "VariantName": "AllTraffic",
+        "ModelName": MODEL_NAME,
+        "InitialInstanceCount": 1,
+        "InstanceType": INSTANCE_TYPE,
+        "InferenceAmiVersion": "al2023-ami-sagemaker-inference-gpu-4-1",
+        "ModelDataDownloadTimeoutInSeconds": 600,
+        "ContainerStartupHealthCheckTimeoutInSeconds": 300,
+    }],
+    AsyncInferenceConfig={
+        "OutputConfig": {
+            "S3OutputPath": "s3://<bucket>/output/",
+            "S3FailurePath": "s3://<bucket>/failures/",
+        },
+    },
+)
+```
+
+Keep `VariantName=AllTraffic`: the [Update an Amazon SageMaker Endpoint](/docs/update-amazon-sagemaker-endpoint) procedure and the [Terraform](/docs/terraform-deploy-sagemaker) configuration use the same variant name. `ModelDataDownloadTimeoutInSeconds=600` and `ContainerStartupHealthCheckTimeoutInSeconds=300` give the model package time to download and the container time to load models before SageMaker marks the endpoint failed; large multilingual Nova-3 bundles may need a `ModelDataDownloadTimeoutInSeconds` above `600`.
+
+#### Create the Endpoint
+
+#### AWS CLI
+
+```bash
+aws sagemaker create-endpoint \
+  --region "$AWS_REGION" \
+  --endpoint-name "$ENDPOINT_NAME" \
+  --endpoint-config-name "$ENDPOINT_CONFIG_NAME"
+```
+
+#### Boto3
+
+```python
+sagemaker.create_endpoint(
+    EndpointName=ENDPOINT_NAME,
+    EndpointConfigName=ENDPOINT_CONFIG_NAME,
+)
+```
+
+#### Wait for InService
+
+It takes several minutes for the endpoint to download the model package, start the container, and pass its health check.
+
+#### AWS CLI
+
+```bash
+aws sagemaker wait endpoint-in-service \
+  --region "$AWS_REGION" \
+  --endpoint-name "$ENDPOINT_NAME"
+
+aws sagemaker describe-endpoint \
+  --region "$AWS_REGION" \
+  --endpoint-name "$ENDPOINT_NAME" \
+  --query EndpointStatus
+```
+
+#### Boto3
+
+```python
+sagemaker.get_waiter("endpoint_in_service").wait(EndpointName=ENDPOINT_NAME)
+
+status = sagemaker.describe_endpoint(EndpointName=ENDPOINT_NAME)["EndpointStatus"]
+print(status)  # InService
+```
+
+If the endpoint moves to `Failed` or stays in `Creating`, see [Troubleshooting](/docs/troubleshooting-sagemaker).
+
+#### Verify
+
+Send a first request to confirm the endpoint transcribes audio — see [Validate a Deepgram SageMaker Endpoint](/docs/test-amazon-sagemaker-endpoint). For the streaming, synchronous, and asynchronous invocation APIs and the Deepgram SDK SageMaker transport, see [Invoke a Deepgram SageMaker Endpoint](/docs/invoke-sagemaker-endpoint).
+
+## Inference AMI Versions
+
+A SageMaker Endpoint Configuration can pin an **inference AMI version** — the SageMaker-managed host image supplying the NVIDIA driver and container runtime your instances boot with. It is independent of the Deepgram container: it determines which driver the container runs against. If you do not set it, SageMaker selects a default for your instance type, which on older GPU families is an older driver.
+
+| AMI version                              | NVIDIA driver | CUDA |
+| ---------------------------------------- | ------------- | ---- |
+| `al2-ami-sagemaker-inference-gpu-2`      | 535           | 12.2 |
+| `al2-ami-sagemaker-inference-gpu-2-1`    | 535           | 12.2 |
+| `al2-ami-sagemaker-inference-gpu-3-1`    | 550           | 12.4 |
+| `al2023-ami-sagemaker-inference-gpu-4-1` | 580           | 13.0 |
+
+Deepgram recommends the latest available version, `al2023-ami-sagemaker-inference-gpu-4-1`, which provides the NVIDIA 580 driver. Deepgram containers select the correct CUDA compatibility layer at startup based on the host driver they detect, so a newer host driver requires no change to your deployment.
+
+Support for older driver versions may be removed in the latest Deepgram Model Package. Pin an up-to-date inference AMI version rather than relying on the SageMaker default for your instance type.
+
+For the full list of AMI versions and their driver and CUDA versions, see [`InferenceAmiVersion`](https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_ProductionVariant.html#sagemaker-Type-ProductionVariant-InferenceAmiVersion) in the SageMaker API reference. For the driver each instance family runs by default, see the [SageMaker GPU driver table](https://docs.aws.amazon.com/sagemaker/latest/dg/inference-gpu-drivers.html#inference-gpu-drivers-versions).
+
+The [CLI and Boto3 steps above](#deploy-with-the-aws-cli-or-boto3) already pin `InferenceAmiVersion` to `al2023-ami-sagemaker-inference-gpu-4-1` on the production variant. Terraform users set the same value through the `inference_ami_version` variable — see [Deploy with Terraform](/docs/terraform-deploy-sagemaker#inference-ami-versions). The SageMaker AI console does not expose this setting, which is why the console path below is not recommended.
+
+## Deploy with the SageMaker AI console (not recommended)
+
+The SageMaker AI console cannot set `InferenceAmiVersion`. Endpoints created through the console boot the instance family's default AMI, and current Deepgram model packages fail to start on the older NVIDIA driver it provides. Use the [AWS CLI or Boto3 steps](#deploy-with-the-aws-cli-or-boto3) or [Terraform](/docs/terraform-deploy-sagemaker) instead. If you have already created an endpoint through the console, fix it by creating a new Endpoint Configuration with the CLI and [updating the endpoint](/docs/update-amazon-sagemaker-endpoint).
+
+#### Console steps
 
 In the AWS Management Console, navigate to the [AWS Marketplace **Manage subscriptions** console](https://us-east-1.console.aws.amazon.com/marketplace/subscriptions)
 
@@ -116,7 +344,7 @@ To autoscale an asynchronous endpoint — including scaling to zero when idle �
 
 Under **Variants** ➡️ **Production**, scroll all the way to the right, and click **Edit**
 
-If desired, select **Choose Other Instance Type** and select the instance type you want to deploy to (eg. `g5.2xlarge`), then click **Save**
+If desired, select **Choose Other Instance Type** and select the instance type you want to deploy to (eg. `ml.g6.2xlarge`), then click **Save**
 
 Click the **Create Endpoint Configuration** button
 
@@ -127,208 +355,33 @@ If you don't see the Endpoint, ensure that you have selected the correct AWS reg
 It may take several minutes for the Endpoint to change to status `InService`.
 Once the Endpoint status has changed to `InService`, you can monitor the Amazon CloudWatch Logs for the Endpoint to ensure normal operation of the Deepgram services.
 
-## Inference AMI Versions
+## Tear down
 
-A SageMaker Endpoint Configuration can pin an **inference AMI version** — the SageMaker-managed host image supplying the NVIDIA driver and container runtime your instances boot with. It is independent of the Deepgram container: it determines which driver the container runs against. If you do not set it, SageMaker selects a default for your instance type, which on older GPU families is an older driver.
+Delete the three resources in reverse order. Billing for SageMaker compute and Deepgram usage stops when the endpoint is deleted; your AWS Marketplace subscription remains active and can be reused for the next deployment.
 
-| AMI version                              | NVIDIA driver | CUDA |
-| ---------------------------------------- | ------------- | ---- |
-| `al2-ami-sagemaker-inference-gpu-2`      | 535           | 12.2 |
-| `al2-ami-sagemaker-inference-gpu-2-1`    | 535           | 12.2 |
-| `al2-ami-sagemaker-inference-gpu-3-1`    | 550           | 12.4 |
-| `al2023-ami-sagemaker-inference-gpu-4-1` | 580           | 13.0 |
+#### AWS CLI
 
-Deepgram recommends the latest available version, `al2023-ami-sagemaker-inference-gpu-4-1`, which provides the NVIDIA 580 driver. Deepgram containers select the correct CUDA compatibility layer at startup based on the host driver they detect, so a newer host driver requires no change to your deployment.
-
-Support for older driver versions may be removed in the latest Deepgram Model Package. Pin an up-to-date inference AMI version rather than relying on the SageMaker default for your instance type.
-
-For the full list of AMI versions and their driver and CUDA versions, see [`InferenceAmiVersion`](https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_ProductionVariant.html#sagemaker-Type-ProductionVariant-InferenceAmiVersion) in the SageMaker API reference. For the driver each instance family runs by default, see the [SageMaker GPU driver table](https://docs.aws.amazon.com/sagemaker/latest/dg/inference-gpu-drivers.html#inference-gpu-drivers-versions).
-
-The SageMaker AI console does not expose the inference AMI version when you create an Endpoint Configuration. To pin it, create the Endpoint Configuration with the AWS CLI or API — set `InferenceAmiVersion` on the production variant — or with [Terraform](/docs/terraform-deploy-sagemaker#inference-ami-versions).
-
-## Inference
-
-Once your endpoint is deployed and in service, you invoke it to transcribe audio. The endpoint supports three invocation modes, depending on which endpoint type you deployed and how you need the response returned.
-
-| Mode             | API                                     | Endpoint type | Input limit            | Response                              |
-| ---------------- | --------------------------------------- | ------------- | ---------------------- | ------------------------------------- |
-| **Streaming**    | `InvokeEndpointWithBidirectionalStream` | Real-time     | 30 min per connection  | Results streamed back live            |
-| **Synchronous**  | `InvokeEndpoint`                        | Real-time     | 25 MB per request body | One immediate response                |
-| **Asynchronous** | `InvokeEndpointAsync`                   | Asynchronous  | 1 GB per S3 object     | Written to Amazon S3 (near real-time) |
-
-**Not sure which endpoint type you need?** See [Auto-Scaling SageMaker Endpoints](/docs/auto-scaling-sagemaker) for a full comparison of real-time and asynchronous endpoints and guidance on choosing between them.
-
-**Passing Deepgram parameters.** For synchronous and asynchronous invocations, the Deepgram model and feature parameters are passed in the `CustomAttributes` field (the `X-Amzn-SageMaker-Custom-Attributes` header) as `v1/listen?model=...&language=...`. For streaming, the same values are split across `ModelInvocationPath` (`v1/listen`) and `ModelQueryString`. In all cases an API path such as `v1/listen` is required — without it the container returns a 404. The examples on this page use `v1/listen` (speech-to-text), but other routes are available (for example, `v1/speak` for text-to-speech).
-
-Complete, runnable examples for all three modes — in Python, TypeScript, and Java — are maintained in the [deepgram-devs/dg-sagemaker](https://github.com/deepgram-devs/dg-sagemaker) repository. The sections below explain each mode and link to the corresponding example. See the repository's `README` for setup and prerequisites.
-
-### Use the Deepgram SDKs with the SageMaker transport
-
-You don't have to call the AWS APIs directly. The [Deepgram SDKs](https://developers.deepgram.com/home) can target a SageMaker endpoint through a **SageMaker transport**, so you keep the same client-side request and response patterns whether you call the Deepgram-hosted API or your own SageMaker deployment. You swap the transport; your `listen` request and result-handling code stays the same.
-
-For example, the Deepgram Java SDK pairs with the [Deepgram SageMaker transport](https://github.com/deepgram/deepgram-java-sdk-transport-sagemaker) (`com.deepgram:deepgram-sagemaker`):
-
-```java
-import com.deepgram.DeepgramClient;
-import com.deepgram.sagemaker.SageMakerConfig;
-import com.deepgram.sagemaker.SageMakerTransportFactory;
-import com.deepgram.resources.listen.v1.websocket.V1WebSocketClient;
-
-SageMakerConfig smConfig = SageMakerConfig.builder()
-        .endpointName("<your-endpoint-name>")
-        .region("us-east-2")
-        .build();
-
-DeepgramClient client = DeepgramClient.builder()
-        .apiKey("unused") // auth is AWS SigV4 via the transport, not a Deepgram API key
-        .transportFactory(new SageMakerTransportFactory(smConfig))
-        .build();
-
-// Same SDK surface as the Deepgram-hosted API:
-V1WebSocketClient ws = client.listen().v1().v1WebSocket();
-ws.onResults(r -> { /* handle transcript */ });
-ws.connect(connectOptions).get();
-ws.sendMedia(ByteString.of(audioChunk));
-// ... send a CloseStream message when finished
+```bash
+aws sagemaker delete-endpoint --region "$AWS_REGION" --endpoint-name "$ENDPOINT_NAME"
+aws sagemaker delete-endpoint-config --region "$AWS_REGION" --endpoint-config-name "$ENDPOINT_CONFIG_NAME"
+aws sagemaker delete-model --region "$AWS_REGION" --model-name "$MODEL_NAME"
 ```
 
-The remaining sections show the underlying AWS APIs directly, which apply to any language.
-
-### Streaming (real-time)
-
-Use streaming for live, interactive transcription over a persistent bidirectional connection. You send audio chunks and receive transcription results as the audio is processed, up to 30 minutes per connection.
-
-Streaming uses the HTTP/2 bidirectional streaming client (`@aws-sdk/client-sagemaker-runtime-http2` in TypeScript, `aws_sdk_sagemaker_runtime_http2` in Python) against the SageMaker bidirectional runtime endpoint (`https://runtime.sagemaker.<region>.amazonaws.com:8443`). The request `Body` is an async iterable of payload parts:
-
-* **Binary audio** is sent as a `Bytes` payload with `DataType: "BINARY"`.
-* **Control messages** (for example, `KeepAlive` and `CloseStream`) are sent as UTF-8 encoded JSON with `DataType: "UTF8"`.
-
-```typescript
-import {
-  SageMakerRuntimeHTTP2Client,
-  InvokeEndpointWithBidirectionalStreamCommand,
-} from "@aws-sdk/client-sagemaker-runtime-http2";
-
-const region = "us-east-2";
-const client = new SageMakerRuntimeHTTP2Client({
-  region,
-  endpoint: `https://runtime.sagemaker.${region}.amazonaws.com:8443`,
-});
-
-// Async generator yielding audio chunks (BINARY) and control messages (UTF8)
-async function* requestStream() {
-  // yield { PayloadPart: { Bytes: audioChunk, DataType: "BINARY" } };
-  // yield { PayloadPart: { Bytes: new TextEncoder().encode(
-  //           JSON.stringify({ type: "CloseStream" })), DataType: "UTF8" } };
-}
-
-const command = new InvokeEndpointWithBidirectionalStreamCommand({
-  EndpointName: "<your-endpoint-name>",
-  ModelInvocationPath: "v1/listen",
-  ModelQueryString: "model=nova-3&language=en&smart_format=true",
-  Body: requestStream(),
-});
-
-const response = await client.send(command);
-
-for await (const event of response.Body) {
-  if (event.PayloadPart?.Bytes) {
-    const message = new TextDecoder().decode(event.PayloadPart.Bytes);
-    // message is a Deepgram JSON transcript result
-  }
-}
-```
-
-For the complete examples — file and microphone capture, payload wrapping, keepalive handling, and stream processing — see:
-
-* TypeScript: [`js-stt/stt.file.ts`](https://github.com/deepgram-devs/dg-sagemaker/blob/main/js-stt/stt.file.ts) and [`stt.microphone.ts`](https://github.com/deepgram-devs/dg-sagemaker/blob/main/js-stt/stt.microphone.ts)
-* Python: [`python-stt/stt_wav_stress.py`](https://github.com/deepgram-devs/dg-sagemaker/blob/main/python-stt/stt_wav_stress.py) (`stream` subcommand)
-
-### Synchronous (real-time)
-
-Use synchronous invocation to transcribe a single pre-recorded file and receive the full transcript in one immediate response. This is Deepgram's "batch" transcription on a real-time endpoint — there is no streaming connection and no queue. The request body is capped at 25 MB; use streaming or asynchronous invocation for larger audio.
-
-You send the audio as the request body to `InvokeEndpoint`, pass the Deepgram parameters via `CustomAttributes`, and parse the transcript from the JSON response.
+#### Boto3
 
 ```python
-import json
-import boto3
-
-runtime = boto3.client("sagemaker-runtime", region_name="us-east-2")
-
-with open("audio.wav", "rb") as f:
-    response = runtime.invoke_endpoint(
-        EndpointName="<your-endpoint-name>",
-        ContentType="audio/wav",
-        Accept="application/json",
-        CustomAttributes="v1/listen?model=nova-3&language=en&punctuate=true",
-        Body=f.read(),
-    )
-
-result = json.loads(response["Body"].read())
-transcript = result["results"]["channels"][0]["alternatives"][0]["transcript"]
+sagemaker.delete_endpoint(EndpointName=ENDPOINT_NAME)
+sagemaker.delete_endpoint_config(EndpointConfigName=ENDPOINT_CONFIG_NAME)
+sagemaker.delete_model(ModelName=MODEL_NAME)
 ```
 
-For the complete example, see [`python-stt/stt_wav_stress.py`](https://github.com/deepgram-devs/dg-sagemaker/blob/main/python-stt/stt_wav_stress.py) (`batch` subcommand) in the repository.
+## Related resources
 
-### Asynchronous
-
-Use asynchronous invocation for large or long-form pre-recorded files — up to 1 GB, with up to one hour of processing time. Requests are queued and processed with near real-time latency, and the result is written back to Amazon S3.
-
-The flow is:
-
-1. Upload the audio file to an S3 bucket.
-2. Call `InvokeEndpointAsync` with `InputLocation` pointing to the uploaded file and the Deepgram parameters in `CustomAttributes`.
-3. SageMaker immediately returns an `OutputLocation` and a `FailureLocation` in S3, and processes the request from the queue.
-4. Poll the `OutputLocation` (success) and `FailureLocation` (error) prefixes until one appears, then download and parse the result — or react to an Amazon SNS notification, if configured.
-
-```python
-import boto3
-
-runtime = boto3.client("sagemaker-runtime", region_name="us-east-2")
-
-response = runtime.invoke_endpoint_async(
-    EndpointName="<your-async-endpoint-name>",
-    InputLocation="s3://<your-bucket>/input/audio.wav",
-    ContentType="audio/wav",
-    Accept="application/json",
-    CustomAttributes="v1/listen?model=nova-3&language=en",
-    InvocationTimeoutSeconds=3600,
-)
-
-output_location = response["OutputLocation"]    # S3 URI for the transcript on success
-failure_location = response["FailureLocation"]  # S3 URI for error details on failure
-```
-
-Asynchronous invocation requires an endpoint deployed with **Async invocation config** enabled (with an S3 output path), as described in the deployment steps above. To autoscale an asynchronous endpoint — including scaling to zero when idle — see [Auto-Scaling Asynchronous Endpoints](/docs/auto-scaling-sagemaker-async).
-
-For the complete example — S3 upload, invocation, and polling for results — see [`python-stt/stt_wav_async.py`](https://github.com/deepgram-devs/dg-sagemaker/blob/main/python-stt/stt_wav_async.py) in the repository.
-
-## Troubleshooting
-
-If you're experiencing any issues with your Deepgram deployment on Amazon SageMaker AI, you can obtain the Deepgram container logs from the Amazon CloudWatch service.
-If you open the SageMaker AI Endpoint resource details, there will be a link to open the Amazon CloudWatch Log Group for that endpoint.
-Within the CloudWatch Log Group, there should be a Log Stream that contains the Deepgram logs for all components.
-You can use the Amazon CloudWatch Logs [Live Tail feature](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CloudWatchLogs_LiveTail.html) to watch logs in near-real-time
-while you are sending requests to the Deepgram API, via the SageMaker AI APIs.
-
-To use the CloudWatch Logs Live Tail feature locally, from the [AWS CLI tool](https://aws.amazon.com/cli/), you can use the following command.
-
-```
-aws logs tail --follow /aws/sagemaker/Endpoints/YOUR_SAGEMAKER_ENDPOINT_NAME --region YOUR_AWS_REGION
-```
-
-### Checklist
-
-If you experience any issues using Deepgram services running on the Amazon SageMaker AI platform, please review this checklist before contacting Deepgram support.
-
-* Ensure that your application's AWS IAM User or IAM Role has permission to call the `InvokeEndpointWithBidirectionalStream` SageMaker AI action.
-* Ensure your application is targeting the correct AWS account and region, where your SageMaker Endpoint exists.
-* Ensure the Deepgram product you've deployed (eg. streaming Speech-to-Text), from the AWS Marketplace, corresponds to the Deepgram API you're calling.
-* Deepgram containers may fail to start on the older NVIDIA driver that SageMaker selects by default for older instance families. The console does not expose the inference AMI version, so create the Endpoint Configuration with the AWS CLI or API (`InferenceAmiVersion` on the production variant) or with [Terraform](/docs/terraform-deploy-sagemaker#inference-ami-versions) to pin an up-to-date version. See [Inference AMI Versions](#inference-ami-versions) for the available versions and Deepgram's recommendation.
-* If you have received a SageMaker private offer for a management account of an AWS organization, you may use [AWS License Manager](https://aws.amazon.com/blogs/awsmarketplace/manage-your-aws-marketplace-license-entitlements-in-aws-license-manager/) to grant usage of the SageMaker private offer to member accounts within your AWS organization as a Marketplace license entitlement after accepting the offer in the payer account. If you choose not to centrally manage license entitlements with AWS License Manager, you will need to accept the private offer in each linked account individually after you have accepted the offer in the payer account to be able to launch a SageMaker Endpoint with private pricing in the linked account.
-* Only one offer (public or private) can be subscribed to for each SageMaker product listing at any one time. If you already have a subscription for a listing and try to subscribe to a different offer for it (for example, subscribing to a new private offer when you previously subscribed to the public offer), the **Accept offer** button is greyed out and an *Existing subscription detected* warning ("You already have a subscription for this product.") may appear at the top of the page. To switch offers, cancel the existing subscription first:
-  1. In the warning message, click **View Subscription** to open the **Manage subscriptions** page of the AWS Marketplace console.
-  2. Find the product you're already subscribed to in the table. Click the hyperlinked agreement ID shown next to the product name.
-  3. Click the **Actions** dropdown, then click **Cancel subscription** and confirm the cancellation.
-  4. Once the subscription is cancelled, subscribe to the new offer.
+* [Supported Products](/docs/supported-products-sagemaker)
+* [Subscribe on AWS Marketplace](/docs/subscribe-aws-marketplace)
+* [Deploy with Terraform](/docs/terraform-deploy-sagemaker)
+* [Configure Amazon SageMaker Deployments](/docs/configure-sagemaker-deployments)
+* [Invoke a Deepgram SageMaker Endpoint](/docs/invoke-sagemaker-endpoint)
+* [Validate a Deepgram SageMaker Endpoint](/docs/test-amazon-sagemaker-endpoint)
+* [Update an Amazon SageMaker Endpoint](/docs/update-amazon-sagemaker-endpoint)
+* [Troubleshooting](/docs/troubleshooting-sagemaker)

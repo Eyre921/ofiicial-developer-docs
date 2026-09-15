@@ -82,7 +82,7 @@ endpoint_uri = f"https://runtime-fips.sagemaker.{region}.amazonaws.com:8443"
 
 If you omit the port, the connection is accepted but the response never arrives: the client hangs instead of reporting an error. Set the endpoint explicitly, with the port, on every bidirectional streaming client.
 
-For the full streaming request shape — payload parts, control messages, and result handling — see [Deploy Deepgram on Amazon SageMaker](/docs/deploy-amazon-sagemaker).
+For the full streaming request shape — payload parts, control messages, and result handling — see [Invoke a Deepgram SageMaker Endpoint](/docs/invoke-sagemaker-endpoint).
 
 ## Asynchronous endpoints
 
@@ -122,4 +122,4 @@ This check matters most in the IAM Identity Center case above, where a misconfig
 ## Related resources
 
 * [Security and Compliance](/docs/security-and-compliance-sagemaker) — what FIPS endpoints cover, FedRAMP coverage, network isolation, and VPC options
-* [Deploy Deepgram on Amazon SageMaker](/docs/deploy-amazon-sagemaker) — full request examples for each transport
+* [Invoke a Deepgram SageMaker Endpoint](/docs/invoke-sagemaker-endpoint) — full request examples for each transport

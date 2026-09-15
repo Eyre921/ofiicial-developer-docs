@@ -108,7 +108,7 @@ In the browser tab or window you kept open in [Step 1](#1-start-sso-setup-in-pin
 4. Select a **Default role** for all users who log in with SSO. You can change user roles later.
 
    <Note>
-     The **Default role** does not apply if you enable [SAML role management](/guides/production/configure-single-sign-on/okta-role-management). In that mode, every user's organization and project roles come entirely from your identity provider's SAML attributes.
+     The **Default role** doesn't apply if you enable [SAML role management](/guides/production/configure-single-sign-on/okta-role-management). In that mode, every user's organization and project roles come entirely from your identity provider's SAML attributes.
    </Note>
 
    <Warning>

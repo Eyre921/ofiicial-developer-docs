@@ -117,7 +117,7 @@ curl -G https://api.stripe.com/v1/payment_intents/{{PAYMENT_INTENT}} \
   -d "expand[]=payment_method"
 ```
 
-The Financial Connections account ID is on the expanded payment method’s [`us_bank_account` hash](https://docs.stripe.com/api/payment_methods/object.md#payment_method_object-us_bank_account). If you allow [manual entry fallback](https://docs.stripe.com/financial-connections/ach-direct-debit-payments.md#enable) and the user manually entered their account information, this field is `null`.
+The Financial Connections account ID is on the expanded payment method’s [us_bank_account](https://docs.stripe.com/api/payment_methods/object.md#payment_method_object-us_bank_account) hash. If you allow [manual entry fallback](https://docs.stripe.com/financial-connections/ach-direct-debit-payments.md#enable) and the user manually entered their account information, this field is `null`.
 
 ```json
 {

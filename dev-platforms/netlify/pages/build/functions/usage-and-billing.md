@@ -79,7 +79,7 @@ At the project level:
 1. For an aggregated count of requests in the current billing period, go to 
 ### NavigationPath Component:
 
-Project configuration > Functions > Overview > Usage
+Cloud compute > Functions > Usage
 .
 2. For more detailed data per function, use [Function Metrics](/manage/monitoring/function-metrics).
 

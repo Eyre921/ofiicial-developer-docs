@@ -8,7 +8,7 @@ Chat with Pinecone Assistant using the OpenAI-compatible Chat Completion API for
 
 After [uploading files](/guides/assistant/manage-files) to an assistant, you can chat with the assistant.
 
-This page shows you how to chat with an assistant using the [OpenAI-compatible chat interface](/reference/api/latest/assistant/chat_completion_assistant). This interface is based on the OpenAI Chat Completion API, a commonly used and adopted API. It is useful if you need inline citations or OpenAI-compatible responses, but has limited functionality compared to the [standard chat interface](/guides/assistant/chat-with-assistant).
+This page shows you how to chat with an assistant using the [OpenAI-compatible chat interface](/reference/api/latest/assistant/chat_completion_assistant). This interface is based on the OpenAI Chat Completion API, a commonly used and adopted API. It's useful if you need inline citations or OpenAI-compatible responses, but has limited functionality compared to the [standard chat interface](/guides/assistant/chat-with-assistant).
 
 <Tip>
   The [standard chat interface](/guides/assistant/chat-with-assistant) is the recommended way to chat with an assistant, as it offers more functionality and control over the assistant's responses and references.
@@ -26,7 +26,7 @@ The [OpenAI-compatible chat interface](/reference/api/latest/assistant/chat_comp
 The following example sends a message and requests a response in the default format:
 
 <Note>
-  The `content` parameter in the request cannot be empty.
+  The `content` parameter in the request can't be empty.
 </Note>
 
 <CodeGroup>
@@ -111,7 +111,7 @@ Streaming responses can improve perceived latency by allowing users to see conte
 The following example sends a message and requests a streaming response:
 
 <Note>
-  The `content` parameter in the request cannot be empty.
+  The `content` parameter in the request can't be empty.
 </Note>
 
 <CodeGroup>
@@ -457,7 +457,7 @@ You can [filter which documents to use for chat completions](/guides/assistant/f
 
 Temperature is a parameter that controls the randomness of a model's predictions during text generation. Lower temperatures (\~0.0) yield more consistent, predictable answers, while higher temperatures increase the model's explanatory power and is generally better for creative tasks.
 
-To control the sampling temperature for a model, set the `temperarture` parameter in the request. If a model does not support a temperature parameter, the parameter is ignored.
+To control the sampling temperature for a model, set the `temperarture` parameter in the request. If a model doesn't support a temperature parameter, the parameter is ignored.
 
 <CodeGroup>
   ```python Python theme={null}

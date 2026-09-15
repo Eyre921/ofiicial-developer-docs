@@ -23,10 +23,10 @@ To resolve this issue, host your web server on an external server with a public 
 
 ### About Localhost (running a web server locally)
 
-Localhost is not inherently a problem. However, when running a web server on a local machine (e.g., laptop or desktop computer), using "localhost" as the hostname can cause issues with cross-origin resource sharing (CORS).
+Localhost isn't inherently a problem. However, when running a web server on a local machine (e.g., laptop or desktop computer), using "localhost" as the hostname can cause issues with cross-origin resource sharing (CORS).
 
 The reason for this is that the Same-Origin Policy (SOP) enforced by web browsers treats "localhost" as a different origin than the actual IP address of the machine. For example, if a web application running on "localhost" makes a cross-origin request to a server running on the actual IP address of the machine, the browser will treat it as a cross-origin request and enforce the SOP.
 
 To allow cross-origin requests between "localhost" and the actual IP address of the machine, the server needs to explicitly allow them by including the appropriate CORS headers in its response. However, as mentioned earlier, running a web server on a local machine can present security risks and is generally not recommended for production use.
 
-Therefore, while "localhost" itself is not a problem, using it as the hostname for a web server can cause CORS issues that need to be properly addressed. Additionally, running a web server on a local machine should be done with caution and only for development or testing purposes, rather than for production use.
+Therefore, while "localhost" itself isn't a problem, using it as the hostname for a web server can cause CORS issues that need to be properly addressed. Additionally, running a web server on a local machine should be done with caution and only for development or testing purposes, rather than for production use.

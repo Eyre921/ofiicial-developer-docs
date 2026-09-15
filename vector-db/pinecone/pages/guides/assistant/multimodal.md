@@ -379,7 +379,7 @@ To fetch image-related context snippets (as well as text snippets), set the `mul
 </CodeGroup>
 
 <Note>
-  If you set `multimodal` to true and `include_binary_content` to false, image objects are not returned in the snippets. If you set `multimodal` to false, only text snippets are returned.
+  If you set `multimodal` to true and `include_binary_content` to false, image objects aren't returned in the snippets. If you set `multimodal` to false, only text snippets are returned.
 </Note>
 
 Response:
@@ -485,7 +485,7 @@ Response:
 
 Multimodal context for assistants is only available for PDF files. Additionally, the following limits apply:
 
-Multimodal PDF processing uses the same [ingestion unit](/guides/assistant/pricing-and-limits#ingestion) as standard uploads; it is billed at about **twice** the standard per-unit rate (see [Pricing and limits](/guides/assistant/pricing-and-limits)). Object and rate limits for assistants also apply—see [#limits](/guides/assistant/pricing-and-limits#limits) and [#rate-limits](/guides/assistant/pricing-and-limits#rate-limits).
+Multimodal PDF processing uses the same [ingestion unit](/guides/assistant/pricing-and-limits#ingestion) as standard uploads; it's billed at about **twice** the standard per-unit rate (see [Pricing and limits](/guides/assistant/pricing-and-limits)). Object and rate limits for assistants also apply—see [#limits](/guides/assistant/pricing-and-limits#limits) and [#rate-limits](/guides/assistant/pricing-and-limits#rate-limits).
 
 | Metric        | Starter plan | Builder plan | Standard plan | Enterprise plan |
 | :------------ | :----------- | :----------- | :------------ | :-------------- |

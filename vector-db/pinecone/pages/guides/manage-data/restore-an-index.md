@@ -186,10 +186,10 @@ The [create index from backup](/reference/api/latest/control-plane/create_index_
 
 The following rules apply:
 
-* The target region must be on the same cloud provider as the backup. Restoring to a different cloud provider is not supported.
+* The target region must be on the same cloud provider as the backup. Restoring to a different cloud provider isn't supported.
 * The backup must be in the current Pinecone project, and the new index is created in the same project.
 * The `dimension`, `metric`, and `vector_type` must match the source index.
-* Restoring to a different region is not supported for BYOC indexes.
+* Restoring to a different region isn't supported for BYOC indexes.
 
 <Warning>
   Restoring to a different region is in [public preview](/release-notes/feature-availability). It is available through the `unstable` API version and the REST API only.
@@ -219,14 +219,14 @@ curl "https://api.pinecone.io/indexes" \
   }'
 ```
 
-Because the backup data is copied between regions, restoring to a different region can take longer than restoring within the same region. If restoring to a different region is not yet available for the backup's region, the request fails with a `412 Precondition Failed` error.
+Because the backup data is copied between regions, restoring to a different region can take longer than restoring within the same region. If restoring to a different region isn't yet available for the backup's region, the request fails with a `412 Precondition Failed` error.
 
 ## List restore jobs
 
 You can [list all restore jobs](/reference/api/latest/control-plane/list_restore_jobs) as follows.
 
 <Note>
-  Up to 100 restore jobs are returned at a time by default, in sorted order (bitwise “C” collation). If the `limit` parameter is set, up to that number of restore jobs are returned instead. Whenever there are additional restore jobs to return, the response also includes a `pagination_token` that you can use to get the next batch of jobs. When the response does not include a `pagination_token`, there are no more restore jobs to return.
+  Up to 100 restore jobs are returned at a time by default, in sorted order (bitwise “C” collation). If the `limit` parameter is set, up to that number of restore jobs are returned instead. Whenever there are additional restore jobs to return, the response also includes a `pagination_token` that you can use to get the next batch of jobs. When the response doesn't include a `pagination_token`, there are no more restore jobs to return.
 </Note>
 
 <CodeGroup>

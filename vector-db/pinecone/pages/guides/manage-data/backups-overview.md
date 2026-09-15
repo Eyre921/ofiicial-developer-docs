@@ -6,7 +6,7 @@ path: guides/manage-data/backups-overview
 
 Learn how serverless index backups work in Pinecone, including scheduled backups, retention policies, and use cases for restoring or copying data.
 
-A backup is a static copy of a serverless [index](/guides/index-data/indexing-overview) that only consumes storage. It is a non-queryable representation of a set of records. You can [create a backup](/guides/manage-data/back-up-an-index) of a serverless index, and you can [create a new serverless index from a backup](/guides/manage-data/restore-an-index). This allows you to restore the index with the same or different configurations.
+A backup is a static copy of a serverless [index](/guides/index-data/indexing-overview) that only consumes storage. It's a non-queryable representation of a set of records. You can [create a backup](/guides/manage-data/back-up-an-index) of a serverless index, and you can [create a new serverless index from a backup](/guides/manage-data/restore-an-index). This allows you to restore the index with the same or different configurations.
 
 ## Use cases
 
@@ -52,7 +52,7 @@ curl -sS -X POST "https://api.pinecone.io/indexes/${INDEX_NAME}/backup-schedules
   }'
 ```
 
-Deleting a schedule does not delete any backups that were previously created by it. If you delete an index, all associated schedules are automatically deleted.
+Deleting a schedule doesn't delete any backups that were previously created by it. If you delete an index, all associated schedules are automatically deleted.
 
 For more details, see the API reference:
 
@@ -77,7 +77,7 @@ Backup and restore times depend upon the size of the index and number of namespa
 | Backups per project | N/A          | N/A          | 500           | 1000            |
 
 <Note>
-  Backups are not available on the Starter or Builder plans. To create backups, [upgrade to the Standard or Enterprise plan](/guides/organizations/manage-billing/upgrade-billing-plan).
+  Backups aren't available on the Starter or Builder plans. To create backups, [upgrade to the Standard or Enterprise plan](/guides/organizations/manage-billing/upgrade-billing-plan).
 </Note>
 
 ## Limitations
@@ -88,7 +88,7 @@ Backup limitations are as follows:
 * You can only restore an index to the same project and cloud provider as the source index. Restoring to a different region on the same cloud provider is supported using the `unstable` API version. For details, see [Restore to a different region](/guides/manage-data/restore-an-index#restore-to-a-different-region).
 * Backups only include vectors that were in the index at least 15 minutes prior to the backup time. This means that if a vector was inserted into an index and a backup was immediately taken after, the recently inserted vector may not be backed up. More specifically, if a backup is created only a few minutes after the source index was created, the backup may have 0 vectors.
 * You can only perform operations on backups in the current Pinecone project.
-* Backups are supported for indexes without a schema definition and for integrated embedding indexes that use the Records API. They are not supported for full-text search indexes with document schemas that include `full_text_search` string fields, `dense_vector` fields, or `sparse_vector` fields. Indexes with document schemas also do not support `semantic_text` fields.
+* Backups are supported for indexes without a schema definition and for integrated embedding indexes that use the Records API. They're not supported for full-text search indexes with document schemas that include `full_text_search` string fields, `dense_vector` fields, or `sparse_vector` fields. Indexes with document schemas also don't support `semantic_text` fields.
 
 ## Backup and restore cost
 

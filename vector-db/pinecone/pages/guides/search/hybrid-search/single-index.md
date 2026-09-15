@@ -485,7 +485,7 @@ To perform hybrid search with a single index that stores both dense and sparse v
   <Step title="Search the index with explicit weighting">
     For a conceptual overview of why this normalization is needed, see [Normalize sparse and dense values](#normalize-sparse-and-dense-values).
 
-    Because Pinecone views your sparse-dense vector as a single vector, it does not offer a built-in parameter to adjust the weight of a query's dense part against its sparse part; the index is agnostic to density or sparsity of coordinates in your vectors. You may, however, incorporate a linear weighting scheme by customizing your query vector, as demonstrated in the function below.
+    Because Pinecone views your sparse-dense vector as a single vector, it doesn't offer a built-in parameter to adjust the weight of a query's dense part against its sparse part; the index is agnostic to density or sparsity of coordinates in your vectors. You may, however, incorporate a linear weighting scheme by customizing your query vector, as demonstrated in the function below.
 
     The following example transforms vector values using an alpha parameter.
 

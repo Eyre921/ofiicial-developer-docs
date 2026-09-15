@@ -6,7 +6,7 @@ path: integrations/llamaindex
 
 Build LlamaIndex RAG pipelines on Pinecone: ingest documents, structure private data, and run semantic search and question-answering over LLMs.
 
-LlamaIndex is a framework for connecting data sources to LLMs, with its chief use case being the end-to-end development of retrieval augmented generation (RAG) applications. LlamaIndex provides the essential abstractions to more easily ingest, structure, and access private or domain-specific data in order to inject these safely and reliably into LLMs for more accurate text generation. It’s available in Python and Typescript.
+LlamaIndex is a framework for connecting data sources to LLMs, with its chief use case being the end-to-end development of retrieval augmented generation (RAG) applications. LlamaIndex provides the essential abstractions to more easily ingest, structure, and access private or domain-specific data so you can inject these safely and reliably into LLMs for more accurate text generation. It’s available in Python and Typescript.
 
 Seamlessly integrate Pinecone vector database with LlamaIndex to build semantic search and RAG applications.
 
@@ -133,7 +133,7 @@ The value-add of using a file loader from LlamaHub is that your PDF is already b
 
 #### Metadata
 
-Now, if you look at one of your cleaned Document objects, you'll see that the default values in your metadata dictionary are not particularly useful.
+Now, if you look at one of your cleaned Document objects, you'll see that the default values in your metadata dictionary aren't particularly useful.
 
 ```Python Python theme={null}
 cleaned_docs[0].metadata
@@ -367,7 +367,7 @@ print(f'\nGiven the {len(llm_response_source_nodes)} chunks of content (below), 
 # ['AUTHOR ET AL.: TITL E 7 be auto-configured by using sample data. The construction process can be easily and efficiently parallelized with only few synchronization points (as demonstrated in Fig...']"
 ```
 
-You can see that there are various attributes you can inspect on your evaluator's result in order to ascertain what's going on behind the scenes. To get a quick binary True/False signal as to whether your LLM is producing relevant results given your context, inspect the `.passing` attribute.
+You can see that there are various attributes you can inspect on your evaluator's result to ascertain what's going on behind the scenes. To get a quick binary True/False signal as to whether your LLM is producing relevant results given your context, inspect the `.passing` attribute.
 
 Let's see what happens when we send a totally out of scope query through your RAG app. Issue a random query you know your RAG app won't be able to answer, given what's in your index:
 
@@ -387,8 +387,8 @@ print(str(eval_result.passing))
 # False  # Our LLM is not taking our context into account, as expected :)
 ```
 
-As expected, when you send an out-of-scope question through your RAG pipeline, your evaluator says the LLM's answer is not relevant to the retrieved context.
+As expected, when you send an out-of-scope question through your RAG pipeline, your evaluator says the LLM's answer isn't relevant to the retrieved context.
 
 ### Summary
 
-As you have seen, LlamaIndex is a powerful framework to use when building semantic search and RAG applications – and we have only gotten to the tip of the iceberg! [Explore more](https://docs.llamaindex.ai/en/index.html) on your own and [let us know how it goes](https://community.pinecone.io/).
+As you have seen, LlamaIndex is a powerful framework to use when building semantic search and RAG applications – and we've only gotten to the tip of the iceberg! [Explore more](https://docs.llamaindex.ai/en/index.html) on your own and [let us know how it goes](https://community.pinecone.io/).

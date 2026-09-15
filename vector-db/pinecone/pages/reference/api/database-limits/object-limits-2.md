@@ -14,7 +14,7 @@ Object limits are restrictions on the number or size of objects in Pinecone. The
 | Users per organization                      | 2            | 5            | Unlimited     | Unlimited       |
 | Serverless indexes per project <sup>1</sup> | 5            | 10           | 20            | 200             |
 | Serverless index storage per org            | 2 GB         | 10 GB        | N/A           | N/A             |
-| Namespaces per serverless index             | 100          | 1,000        | 100,000       | 100,000         |
+| Namespaces per serverless index             | 100          | 1,000        | 100,000       | 1,000,000       |
 | Serverless backups per project              | N/A          | N/A          | 500           | 1,000           |
 | Collections per project                     | 100          | N/A          | N/A           | N/A             |
 
@@ -36,5 +36,5 @@ For the serverless storage limit, you can also [delete records](/guides/manage-d
 </Tip>
 
 <Note>
-  [Namespaces per serverless index](/reference/api/database-limits/object-limits) vary by plan. On the Standard and Enterprise plans, Pinecone can accommodate million-scale namespaces and beyond for specific use cases. If your application requires more than 100,000 namespaces, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
+  [Namespaces per serverless index](/reference/api/database-limits/object-limits) vary by plan (100 on Starter to 1,000,000 on Enterprise). Pinecone can accommodate more for specific use cases. If your application needs a higher limit, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
 </Note>

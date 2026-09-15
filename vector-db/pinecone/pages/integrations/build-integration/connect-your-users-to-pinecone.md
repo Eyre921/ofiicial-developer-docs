@@ -22,12 +22,12 @@ Create a unique `integrationId` to enable usage of the **Connect to Pinecone** [
 
 1. On the the [**Integrations**](https://app.pinecone.io/organizations/-/settings/integrations) tab in the Pinecone console, click the **Create Integration** button.
 
-   <Note>The **Integrations** tab does not display unless your organization already has integrations. [Follow this link to create your first integration](https://app.pinecone.io/organizations/-/settings/integrations?create=true).</Note>
+   <Note>The **Integrations** tab doesn't display unless your organization already has integrations. [Follow this link to create your first integration](https://app.pinecone.io/organizations/-/settings/integrations?create=true).</Note>
 
 2. Fill out the **Create integration** form:
    * **Integration name**: Give your integration a name.
 
-   * **URL Slug**: This is your `integrationID`. Enter a human-readable string that uniquely identifies your integration and that may appear in URLs. Your integration URL slug is public and cannot be changed.
+   * **URL Slug**: This is your `integrationID`. Enter a human-readable string that uniquely identifies your integration and that may appear in URLs. Your integration URL slug is public and can't be changed.
 
    * **Logo**: Upload a logo for your integration.
 
@@ -49,11 +49,11 @@ Create a unique `integrationId` to enable usage of the **Connect to Pinecone** [
 
 <img alt="Connect popup" />
 
-The `ConnectPopup` function can be called with either the JavaScript library or script. The JavaScript library is the most commonly used method, but the script can be used in instances where you cannot build and use a custom library, like within the constraints of a content management system (CMS).
+The `ConnectPopup` function can be called with either the JavaScript library or script. The JavaScript library is the most commonly used method, but the script can be used in instances where you can't build and use a custom library, like within the constraints of a content management system (CMS).
 
 The function includes the following **required** configuration option:
 
-* `integrationId`: The slug assigned to the integration. If `integrationId` is not passed, the widget will not render.
+* `integrationId`: The slug assigned to the integration. If `integrationId` isn't passed, the widget won't render.
 
   <Note>To create a unique `integrationId`, fill out the [Create Integration form](#create-an-integration-id).</Note>
 
@@ -141,7 +141,7 @@ You can use the JavaScript library to render the **Connect to Pinecone** widget 
 
 The function includes the following **required** configuration options:
 
-* `integrationId`: The slug assigned to the integration. If `integrationId` is not passed, the widget will not render.
+* `integrationId`: The slug assigned to the integration. If `integrationId` isn't passed, the widget won't render.
 
   <Note>To create a unique `integrationId`, [fill out the Create Integration form](#create-an-integration-id) with Pinecone.</Note>
 
@@ -163,7 +163,7 @@ connectToPinecone(
 )
 ```
 
-If you cannot use the JavaScript library, you can directly call the script. For example:
+If you can't use the JavaScript library, you can directly call the script. For example:
 
 ```html HTML theme={null}
 <head>

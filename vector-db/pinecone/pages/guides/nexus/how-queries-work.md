@@ -1,5 +1,5 @@
 ---
-title: "Queries"
+title: "Nexus queries"
 source: https://docs.pinecone.io/guides/nexus/how-queries-work
 path: guides/nexus/how-queries-work
 ---

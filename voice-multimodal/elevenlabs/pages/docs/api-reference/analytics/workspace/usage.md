@@ -52,7 +52,7 @@ Successful Response
   - Allowed values: `String`, `Float`, `DateTime`, `Int`, `Bool`, `JSON`, `Map`, `Array`
 - `rows` (list of list of string or integer or double or boolean or string, required)
 - `column_units` (list of enum, required)
-  - Allowed values: `ms`, `s`, `min`, `duration`, `credits`, `usd`, `eur`, `inr`, `pln`, `ratio`, `rating`
+  - Allowed values: `ms`, `s`, `min`, `duration`, `credits`, `usd`, `eur`, `inr`, `pln`, `gbp`, `ratio`, `rating`
 
 ## Errors
 
@@ -71,8 +71,8 @@ Validation Error
 
 ```json
 {
-  "start_time": 1680307200000,
-  "end_time": 1680393600000
+  "start_time": 1,
+  "end_time": 1
 }
 ```
 
@@ -81,31 +81,18 @@ Validation Error
 ```json
 {
   "columns": [
-    "timestamp",
-    "product_type",
-    "credits_used"
+    "string"
   ],
   "column_types": [
-    "DateTime",
-    "String",
-    "Float"
+    "String"
   ],
   "rows": [
     [
-      "2024-04-01T00:00:00Z",
-      "text-to-speech",
-      "125.5"
-    ],
-    [
-      "2024-04-01T01:00:00Z",
-      "voice-cloning",
-      "78.3"
+      "string"
     ]
   ],
   "column_units": [
-    "s",
-    "",
-    "credits"
+    "ms"
   ]
 }
 ```
@@ -118,8 +105,8 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 async function main() {
     const client = new ElevenLabsClient();
     await client.workspace.usage.getUsageByProductOverTime({
-        startTime: 1680307200000,
-        endTime: 1680393600000,
+        startTime: 1,
+        endTime: 1,
     });
 }
 main();
@@ -132,8 +119,8 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.workspace.usage.get_usage_by_product_over_time(
-    start_time=1680307200000,
-    end_time=1680393600000,
+    start_time=1,
+    end_time=1,
 )
 
 ```
@@ -152,7 +139,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/workspace/analytics/query/usage-by-product-over-time"
 
-	payload := strings.NewReader("{\n  \"start_time\": 1680307200000,\n  \"end_time\": 1680393600000\n}")
+	payload := strings.NewReader("{\n  \"start_time\": 1,\n  \"end_time\": 1\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -180,7 +167,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"start_time\": 1680307200000,\n  \"end_time\": 1680393600000\n}"
+request.body = "{\n  \"start_time\": 1,\n  \"end_time\": 1\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -192,7 +179,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/workspace/analytics/query/usage-by-product-over-time")
   .header("Content-Type", "application/json")
-  .body("{\n  \"start_time\": 1680307200000,\n  \"end_time\": 1680393600000\n}")
+  .body("{\n  \"start_time\": 1,\n  \"end_time\": 1\n}")
   .asString();
 ```
 
@@ -204,8 +191,8 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/workspace/analytics/query/usage-by-product-over-time', [
   'body' => '{
-  "start_time": 1680307200000,
-  "end_time": 1680393600000
+  "start_time": 1,
+  "end_time": 1
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -221,7 +208,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/workspace/analytics/query/usage-by-product-over-time");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"start_time\": 1680307200000,\n  \"end_time\": 1680393600000\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"start_time\": 1,\n  \"end_time\": 1\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -230,8 +217,8 @@ import Foundation
 
 let headers = ["Content-Type": "application/json"]
 let parameters = [
-  "start_time": 1680307200000,
-  "end_time": 1680393600000
+  "start_time": 1,
+  "end_time": 1
 ] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])

@@ -573,7 +573,7 @@ To fetch the next page of results, pass the pagination token from the previous r
   ```
 </CodeGroup>
 
-When there are more results available, the response includes a `pagination` object with a `next` token. When there are no more results, the response does not include a `pagination` object.
+When there are more results available, the response includes a `pagination` object with a `next` token. When there are no more results, the response doesn't include a `pagination` object.
 
 ## Vector fetch limits
 

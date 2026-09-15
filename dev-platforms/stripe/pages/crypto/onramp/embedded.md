@@ -572,7 +572,7 @@ The [Onramp Quotes](https://docs.stripe.com/api/crypto/onramp_quotes.md) API let
 
 ### Get a conversion quote 
 
-Use the [`GET /v1/crypto/onramp/quotes`](https://docs.stripe.com/api/crypto/onramp_quotes/retrieve.md) endpoint to get a conversion quote. The following table captures all of the available parameters for this endpoint:
+Use the [GET /v1/crypto/onramp/quotes](https://docs.stripe.com/api/crypto/onramp_quotes/retrieve.md) endpoint to get a conversion quote. The following table captures all of the available parameters for this endpoint:
 
 | Parameter | Type | Default | Details |
 | --- | --- | --- | --- |

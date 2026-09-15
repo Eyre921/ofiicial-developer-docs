@@ -33,7 +33,7 @@ Full-text search is **BM25 token matching with Lucene query syntax** over text f
 How it works:
 
 1. You upsert data as JSON [documents](#document).
-2. You declare each ranking field's type in the index schema: `dense_vector`, `sparse_vector`, or `string` with `full_text_search` (indexed for BM25 ranking and Lucene queries). Metadata fields are not declared in the schema.
+2. You declare each ranking field's type in the index schema: `dense_vector`, `sparse_vector`, or `string` with `full_text_search` (indexed for BM25 ranking and Lucene queries). Metadata fields aren't declared in the schema.
 3. Pinecone indexes each ranking field according to its declared type and auto-indexes any other fields on the document for metadata filtering.
 
 When you search, you choose a scoring method via `score_by`. The literal value of `type` selects the method: `text` (BM25 token matching over one or more text fields), `query_string` ([Lucene query syntax](/guides/search/full-text-search/query-syntax) across one or more text fields, including cross-field boolean queries), `dense_vector` (vector similarity), or `sparse_vector` (sparse-vector similarity). Any scoring method can be combined with metadata filters, including logical operators (`$and`, `$or`, `$not`), existence checks (`$exists`), and the text-match operators (`$match_phrase`, `$match_all`, `$match_any`) for phrase and token matching against text fields.
@@ -117,7 +117,7 @@ Document fields can hold structured values: a metadata `string_list` field holds
 
 A schema can declare up to 100 `string` fields with `full_text_search` enabled, but at most one `dense_vector` field and at most one `sparse_vector` field per index.
 
-Metadata fields are not declared in the schema. Any field on an upserted document that is not declared in the schema is stored, returned via `include_fields`, and automatically indexed for filtering. Pinecone infers metadata field types (string, number, boolean, array of strings) from the values you upsert.
+Metadata fields aren't declared in the schema. Any field on an upserted document that's not declared in the schema is stored, returned via `include_fields`, and automatically indexed for filtering. Pinecone infers metadata field types (string, number, boolean, array of strings) from the values you upsert.
 
 Field names must be unique, non-empty strings, must not start with `_` (reserved for system-managed fields like `_id` and `_score`) or `$` (reserved for filter operators), and are limited to 64 bytes.
 
@@ -148,7 +148,7 @@ For more information, see [Manage organization members](/guides/organizations/ma
 
 A backup is a static copy of a serverless index.
 
-Backups only consume storage. They are non-queryable representations of a set of records. You can create a backup from an index, and you can create a new index from that backup. The new index configuration can differ from the original source index: for example, it can have a different name. However, it must have the same number of dimensions and similarity metric as the source index.
+Backups only consume storage. They're non-queryable representations of a set of records. You can create a backup from an index, and you can create a new index from that backup. The new index configuration can differ from the original source index: for example, it can have a different name. However, it must have the same number of dimensions and similarity metric as the source index.
 
 For more information, see [Understanding backups](/guides/manage-data/backups-overview).
 

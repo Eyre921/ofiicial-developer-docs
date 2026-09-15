@@ -13,7 +13,7 @@ You can pay for the [Standard and Enterprise plans](https://www.pinecone.io/pric
 </Note>
 
 <Note>
-  The [Builder plan](https://www.pinecone.io/pricing/) is available with credit/debit card billing only and is not supported through cloud marketplaces.
+  The [Builder plan](https://www.pinecone.io/pricing/) is available with credit/debit card billing only and isn't supported through cloud marketplaces.
 </Note>
 
 To switch a Builder-plan organization to marketplace billing, first [upgrade to the Standard or Enterprise plan](/guides/organizations/manage-billing/upgrade-billing-plan) using the marketplace subscription flow.
@@ -37,7 +37,7 @@ To change from credit card to marketplace billing, you'll need to:
        2. Click **Subscribe**.
        3. On the **Order Summary** page, select a billing account, accept the terms and conditions, and click **Subscribe**.
 
-          <Note>The billing unit listed does not reflect the actual cost or metering of costs for Pinecone. See the [Pinecone Pricing page](https://www.pinecone.io/pricing/) for accurate details.</Note>
+          <Note>The billing unit listed doesn't reflect the actual cost or metering of costs for Pinecone. See the [Pinecone Pricing page](https://www.pinecone.io/pricing/) for accurate details.</Note>
        4. On the **Your order request has been sent to Pinecone** modal, click **Sign up with Pinecone**. This takes you to a Google-specific Pinecone sign-up page.
        5. Sign up using the same authentication method as your existing Pinecone organization.
 
@@ -73,7 +73,7 @@ To change from credit card to marketplace billing, you'll need to:
     5. Downgrade your original Pinecone organization:
 
        <Note>
-         Do not downgrade your original organization until you receive a confirmation that Pinecone has finished the migration to your new organization.
+         Don't downgrade your original organization until you receive a confirmation that Pinecone has finished the migration to your new organization.
        </Note>
 
        1. In the Pinecone console, go to your original organization.
@@ -97,7 +97,7 @@ To change from credit card to marketplace billing, you'll need to:
        2. Click **View purchase options**.
        3. On the **Subscribe to Pinecone Vector Database** page, review the offer and then click **Subscribe**.
 
-          <Note>The billing unit listed does not reflect the actual cost or metering of costs for Pinecone. See the [Pinecone Pricing page](https://www.pinecone.io/pricing/) for accurate details.</Note>
+          <Note>The billing unit listed doesn't reflect the actual cost or metering of costs for Pinecone. See the [Pinecone Pricing page](https://www.pinecone.io/pricing/) for accurate details.</Note>
        4. You'll see a message stating that your subscription is in process. Click **Set up your account**. This takes you to an AWS-specific Pinecone sign-up page.
        5. Sign up using the same authentication method as your existing Pinecone organization.
 
@@ -134,7 +134,7 @@ To change from credit card to marketplace billing, you'll need to:
     5. Downgrade your original Pinecone organization:
 
        <Note>
-         Do not downgrade your original organization until you receive a confirmation that Pinecone has finished the migration to your new organization.
+         Don't downgrade your original organization until you receive a confirmation that Pinecone has finished the migration to your new organization.
        </Note>
 
        1. In the Pinecone console, go to your original organization.
@@ -160,7 +160,7 @@ To change from credit card to marketplace billing, you'll need to:
        4. Click **Subscribe**.
        5. On the **Subscribe to Pinecone** page, select the required details and click **Review + subscribe**.
 
-          <Note>The billing unit listed does not reflect the actual cost or metering of costs for Pinecone. See the [Pinecone Pricing page](https://www.pinecone.io/pricing/) for accurate details.</Note>
+          <Note>The billing unit listed doesn't reflect the actual cost or metering of costs for Pinecone. See the [Pinecone Pricing page](https://www.pinecone.io/pricing/) for accurate details.</Note>
        6. Click **Subscribe**.
        7. After the subscription is approved, click **Configure account now**. This redirects you to an Microsoft-specific Pinecone login page.
        8. Sign up using the same authentication method as your existing Pinecone organization.
@@ -198,7 +198,7 @@ To change from credit card to marketplace billing, you'll need to:
     5. Downgrade your original Pinecone organization:
 
        <Note>
-         Do not downgrade your original organization until you receive a confirmation that Pinecone has finished the migration to your new organization.
+         Don't downgrade your original organization until you receive a confirmation that Pinecone has finished the migration to your new organization.
        </Note>
 
        1. In the Pinecone console, go to your original organization.
@@ -266,7 +266,7 @@ To change from marketplace billing to credit card, you'll need to:
     5. Downgrade your original Pinecone organization:
 
        <Note>
-         Do not downgrade your original organization until you receive a confirmation that Pinecone has finished the migration to your new organization.
+         Don't downgrade your original organization until you receive a confirmation that Pinecone has finished the migration to your new organization.
        </Note>
 
        1. In the Pinecone console, go to your original organization.
@@ -328,7 +328,7 @@ To change from marketplace billing to credit card, you'll need to:
     5. Downgrade your original Pinecone organization:
 
        <Note>
-         Do not downgrade your original organization until you receive a confirmation that Pinecone has finished the migration to your new organization.
+         Don't downgrade your original organization until you receive a confirmation that Pinecone has finished the migration to your new organization.
        </Note>
 
        1. In the Pinecone console, go to your original organization.
@@ -386,7 +386,7 @@ To change from marketplace billing to credit card, you'll need to:
     5. Downgrade your original Pinecone organization:
 
        <Note>
-         Do not downgrade your original organization until you receive a confirmation that Pinecone has finished the migration to your new organization.
+         Don't downgrade your original organization until you receive a confirmation that Pinecone has finished the migration to your new organization.
        </Note>
 
        1. In the Pinecone console, go to your original organization.
@@ -424,7 +424,7 @@ To change from one marketplace to another, you'll need to:
        2. Click **Subscribe**.
        3. On the **Order Summary** page, select a billing account, accept the terms and conditions, and click **Subscribe**.
 
-          <Note>The billing unit listed does not reflect the actual cost or metering of costs for Pinecone. See the [Pinecone Pricing page](https://www.pinecone.io/pricing/) for accurate details.</Note>
+          <Note>The billing unit listed doesn't reflect the actual cost or metering of costs for Pinecone. See the [Pinecone Pricing page](https://www.pinecone.io/pricing/) for accurate details.</Note>
        4. On the **Your order request has been sent to Pinecone** modal, click **Sign up with Pinecone**. This takes you to a Google-specific Pinecone login page.
        5. Log in to your Pinecone account. Use the same authentication method as your existing Pinecone organization.
 
@@ -459,7 +459,7 @@ To change from one marketplace to another, you'll need to:
        2. Click **View purchase options**.
        3. On the **Subscribe to Pinecone Vector Database** page, review the offer and then click **Subscribe**.
 
-          <Note>The billing unit listed does not reflect the actual cost or metering of costs for Pinecone. See the [Pinecone Pricing page](https://www.pinecone.io/pricing/) for accurate details.</Note>
+          <Note>The billing unit listed doesn't reflect the actual cost or metering of costs for Pinecone. See the [Pinecone Pricing page](https://www.pinecone.io/pricing/) for accurate details.</Note>
        4. You'll see a message stating that your subscription is in process. Click **Set up your account**. This takes you to an AWS-specific Pinecone login page.
        5. Log in to your Pinecone account. Use the same authentication method as your existing Pinecone organization.
 
@@ -496,7 +496,7 @@ To change from one marketplace to another, you'll need to:
        4. Click **Subscribe**.
        5. On the **Subscribe to Pinecone** page, select the required details and click **Review + subscribe**.
 
-          <Note>The billing unit listed does not reflect the actual cost or metering of costs for Pinecone. See the [Pinecone Pricing page](https://www.pinecone.io/pricing/) for accurate details.</Note>
+          <Note>The billing unit listed doesn't reflect the actual cost or metering of costs for Pinecone. See the [Pinecone Pricing page](https://www.pinecone.io/pricing/) for accurate details.</Note>
        6. Click **Subscribe**.
        7. After the subscription is approved, click **Configure account now**. This redirects you to an Microsoft-specific Pinecone login page.
        8. Log in to your Pinecone account. Use the same authentication method as your existing Pinecone organization.

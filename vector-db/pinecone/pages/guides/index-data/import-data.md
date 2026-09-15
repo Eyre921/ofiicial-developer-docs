@@ -74,7 +74,7 @@ To import records from a public data source, a storage integration isn't require
         | Any other field   | `string`, number, boolean, or array of strings | Optional. Stored and auto-indexed as filterable [metadata](/guides/core-concepts/key-terms#metadata). Field names can't start with `_` or `$`.                                                                                                                                                                                                                   |
 
         <Note>
-          Unlike Parquet imports, fields not declared in the schema aren't ignored: they are stored and auto-indexed as filterable metadata.
+          Unlike Parquet imports, fields not declared in the schema aren't ignored: they're stored and auto-indexed as filterable metadata.
         </Note>
 
         For example, for a schema with a full-text `body` field and a `dense_vector` `embedding` field:
@@ -889,9 +889,9 @@ The [`cancel_import`](/reference/api/latest/data-plane/cancel_import) operation 
 | Max files per import                          | 100,000   |
 | Max size per file                             | 10 GB     |
 
-The total input data size limit does not apply to indexes with [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview).
+The total input data size limit doesn't apply to indexes with [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview).
 
-Bulk import supports indexes without a schema definition (Parquet files) and indexes with document schemas ([JSONL files](/guides/index-data/import-data#prepare-document-schema-files-jsonl)). Semantic-text (auto-embedded) fields are not yet supported in document schemas.
+Bulk import supports indexes without a schema definition (Parquet files) and indexes with document schemas ([JSONL files](/guides/index-data/import-data#prepare-document-schema-files-jsonl)). Semantic-text (auto-embedded) fields aren't yet supported in document schemas.
 
 Also:
 

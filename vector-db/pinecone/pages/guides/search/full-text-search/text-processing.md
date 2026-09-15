@@ -19,10 +19,10 @@ When you declare a field with `full_text_search: { ... }`, Pinecone runs the fie
 The pipeline (in order):
 
 1. **Split** the text on whitespace and punctuation. Hyphenated words become multiple tokens (`state-of-the-art` → `state`, `of`, `the`, `art`).
-2. **Lowercase** every token. Lowercasing is server-applied and cannot be overridden.
+2. **Lowercase** every token. Lowercasing is server-applied and can't be overridden.
 3. **Stem** each token to its root form, if [`stemming`](#stemming) is enabled on the field. The stemmer is selected by the field's [`language`](#language) setting (`models` → `model`, `running` → `run`).
 4. **Drop stop words** (common words like `the`, `and`), if `stop_words: true` is set on the field. Not all languages have built-in stop word lists; see the [Language](#language) table for details.
-5. **Cap** each token at 40 characters. A raw token value can be up to 256 bytes at ingest; the analyzer then truncates it to this 40-character cap. This cap is server-applied and cannot be overridden.
+5. **Cap** each token at 40 characters. A raw token value can be up to 256 bytes at ingest; the analyzer then truncates it to this 40-character cap. This cap is server-applied and can't be overridden.
 
 For example, with the `english` analyzer, `stemming: true`, and `stop_words: false`, the input `"State-of-the-Art Models"` becomes the tokens `state`, `of`, `the`, `art`, `model`. Those are the tokens BM25 scores against, and the tokens a `$match_phrase: "art models"` filter will look for.
 
@@ -30,11 +30,11 @@ Fields configured for [substring search](#substring-search-with-n-grams) replace
 
 ### Dense-vector tokens (`type: "dense_vector"`)
 
-Dense embedding models have their own internal tokenizer, usually a subword scheme like BPE, WordPiece, or SentencePiece, that breaks text into pieces the model was trained on. Those tokens are **private to the model**. You never query them directly: a dense search compares the full embedding of a query against the full embedding of a document. The same string can therefore behave very differently in `type: "text"` (which sees the FTS analyzer tokens above) and `type: "dense_vector"` (which sees a single high-dimensional vector). The `$match_*` filter operators do not apply to dense-vector fields.
+Dense embedding models have their own internal tokenizer, usually a subword scheme like BPE, WordPiece, or SentencePiece, that breaks text into pieces the model was trained on. Those tokens are **private to the model**. You never query them directly: a dense search compares the full embedding of a query against the full embedding of a document. The same string can therefore behave very differently in `type: "text"` (which sees the FTS analyzer tokens above) and `type: "dense_vector"` (which sees a single high-dimensional vector). The `$match_*` filter operators don't apply to dense-vector fields.
 
 ### Sparse-vector tokens (`type: "sparse_vector"`)
 
-Sparse encoders also tokenize internally, and the tokenization depends on the encoder. Pinecone's hosted [`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0) produces learned per-token weights and **expands to related terms** that don't appear in the source text. Encoder tokens are not interchangeable with FTS analyzer tokens, and `$match_*` filters do not apply to sparse-vector fields.
+Sparse encoders also tokenize internally, and the tokenization depends on the encoder. Pinecone's hosted [`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0) produces learned per-token weights and **expands to related terms** that don't appear in the source text. Encoder tokens aren't interchangeable with FTS analyzer tokens, and `$match_*` filters don't apply to sparse-vector fields.
 
 ### Practical implication
 
@@ -47,7 +47,7 @@ Stemming reduces words to their root form so that morphological variants match e
 Stemming is **opt-in** and disabled by default. To enable it, set `stemming: true` on a text-searchable field when creating the index. The stemming algorithm is determined by the field's [`language`](#language) setting. Stemming applies to both `type: "text"` and `type: "query_string"` queries on the field.
 
 <Note>
-  Stemming is set at index creation and cannot be changed afterward.
+  Stemming is set at index creation and can't be changed afterward.
 </Note>
 
 ### Enable stemming with French
@@ -75,7 +75,7 @@ The `language` parameter controls tokenization and stemming behavior for a text-
 The default language is `"en"` (English). You can specify a language using either its short code or full name (e.g., `"fr"` or `"french"`).
 
 <Note>
-  Language is set at index creation and cannot be changed afterward.
+  Language is set at index creation and can't be changed afterward.
 </Note>
 
 ### Supported languages
@@ -103,7 +103,7 @@ The default language is `"en"` (English). You can specify a language using eithe
 
 ## Substring search with n-grams
 
-By default, full-text search matches whole tokens: a query for `comp` does not match a document containing `computer`. To match substrings (for example, to find `computer` from `comp`, `mput`, or `uter`), configure a text field for **character n-gram** tokenization.
+By default, full-text search matches whole tokens: a query for `comp` doesn't match a document containing `computer`. To match substrings (for example, to find `computer` from `comp`, `mput`, or `uter`), configure a text field for **character n-gram** tokenization.
 
 With n-gram tokenization, each token is broken into overlapping character sequences (n-grams) at index time, and query text is broken the same way at search time, so a substring of an indexed word matches. This is useful for partial-word matching, autocomplete, and searching identifiers or codes where users type only a fragment.
 
@@ -156,9 +156,9 @@ response = index.documents.search(
 ```
 
 <Note>
-  N-gram tokenization cannot be combined with [`stemming`](#stemming) or `stop_words` on the same field — an index-creation request that sets `ngram` alongside either is rejected with a `400` error. Tokens are always lowercased. Because every position emits a token for each gram length, an n-gram field is larger on disk than a plain text field; keep `min_gram`/`max_gram` as narrow as your matching needs allow.
+  N-gram tokenization can't be combined with [`stemming`](#stemming) or `stop_words` on the same field — an index-creation request that sets `ngram` alongside either is rejected with a `400` error. Tokens are always lowercased. Because every position emits a token for each gram length, an n-gram field is larger on disk than a plain text field; keep `min_gram`/`max_gram` as narrow as your matching needs allow.
 </Note>
 
 <Note>
-  N-gram configuration is set at index creation and cannot be changed afterward.
+  N-gram configuration is set at index creation and can't be changed afterward.
 </Note>

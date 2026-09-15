@@ -6,7 +6,7 @@ path: guides/assistant/admin/manage-api-keys
 
 Create, view, update, and delete Pinecone API keys for a project, plus assign custom permission roles to control data plane and control plane access.
 
-Each Pinecone [project](/guides/assistant/admin/projects-overview) has one or more API keys. In order to [make calls to the Pinecone API](/guides/assistant/quickstart/sdk-quickstart), you must provide a valid API key for the relevant Pinecone project.
+Each Pinecone [project](/guides/assistant/admin/projects-overview) has one or more API keys. To [make calls to the Pinecone API](/guides/assistant/quickstart/sdk-quickstart), you must provide a valid API key for the relevant Pinecone project.
 
 This page shows you how to [create](#create-an-api-key), [view](#view-project-api-keys), [update](#update-an-api-key), and [delete](#delete-an-api-key) API keys.
 
@@ -247,7 +247,7 @@ You can [view the details of an API key](/reference/api/latest/admin-assistant/f
 ## Update an API key
 
 <Note>
-  Users on the Starter and Builder plans cannot change API key permissions once they are set. Instead, [create a new API key](#create-an-api-key) or [upgrade to the Standard or Enterprise plan](/guides/organizations/manage-billing/upgrade-billing-plan).
+  Users on the Starter and Builder plans can't change API key permissions once they're set. Instead, [create a new API key](#create-an-api-key) or [upgrade to the Standard or Enterprise plan](/guides/organizations/manage-billing/upgrade-billing-plan).
 </Note>
 
 If you are a [project owner](/guides/assistant/admin/projects-overview#project-roles), you can update the name and roles of an API key:

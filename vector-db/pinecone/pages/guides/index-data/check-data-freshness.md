@@ -20,7 +20,7 @@ Pinecone is eventually consistent, so there can be a slight delay before new or 
 
 ### Log sequence numbers
 
-When you make a write request to a serverless index namespace, Pinecone assigns a monotonically increasing log sequence number (LSN) to the write operation. The LSN reflects upserts as well as updates and deletes to that namespace. Writes to one namespace do not increase the LSN for other namespaces.
+When you make a write request to a serverless index namespace, Pinecone assigns a monotonically increasing log sequence number (LSN) to the write operation. The LSN reflects upserts as well as updates and deletes to that namespace. Writes to one namespace don't increase the LSN for other namespaces.
 
 You can use LSNs to verify that specific write operations are reflected in your query responses. If the LSN contained in the query response header is greater than or equal to the LSN of the relevant write operation, then that operation is reflected in the query response. If the LSN contained in the query response header is *greater than* the LSN of the relevant write operation, then subsequent operations are also reflected in the query response.
 
@@ -132,11 +132,11 @@ In [step 1](#1-get-the-lsn-for-a-write-operation), the LSN contained in the resp
 
 In [step 2](#2-get-the-lsn-for-a-query), the LSN contained in the response headers is 5.
 
-5 is greater than or equal to 4; therefore, the results of the query reflect the results of the upsert. However, this does not guarantee that the records upserted are still present or unmodified: the write operation with LSN of 5 may have updated or deleted these records, or upserted additional records.
+5 is greater than or equal to 4; therefore, the results of the query reflect the results of the upsert. However, this doesn't guarantee that the records upserted are still present or unmodified: the write operation with LSN of 5 may have updated or deleted these records, or upserted additional records.
 
 ## Verify record counts
 
-If you insert new records or delete records, the number of records in the index may change. This means that the record count for an index can indicate whether Pinecone has indexed your latest inserts and deletes: if the record count for the index matches the count you expect after inserting or deleting records, the index is probably up-to-date. However, this is not always true. For example, if you delete the same number of records that you insert, the expected record count may remain the same. Also, some write operations, such as updates to an index configuration or vector data values, do not change the number of records in the index.
+If you insert new records or delete records, the number of records in the index may change. This means that the record count for an index can indicate whether Pinecone has indexed your latest inserts and deletes: if the record count for the index matches the count you expect after inserting or deleting records, the index is probably up-to-date. However, this isn't always true. For example, if you delete the same number of records that you insert, the expected record count may remain the same. Also, some write operations, such as updates to an index configuration or vector data values, don't change the number of records in the index.
 
 To verify that your index contains the number of records you expect, [view index stats](/reference/api/latest/data-plane/describeindexstats):
 

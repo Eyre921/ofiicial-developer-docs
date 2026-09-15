@@ -33,7 +33,7 @@ The Pinecone MCP server provides the following tools:
 * `rerank-documents`: Reranks a collection of records or text documents using a specialized reranking model.
 
 <Note>
-  The Pinecone MCP supports only [indexes with integrated embedding](/guides/index-data/indexing-overview#vector-embedding). Indexes for vectors you create with external embedding models are not supported.
+  The Pinecone MCP supports only [indexes with integrated embedding](/guides/index-data/indexing-overview#vector-embedding). Indexes for vectors you create with external embedding models aren't supported.
 </Note>
 
 ## Before you begin

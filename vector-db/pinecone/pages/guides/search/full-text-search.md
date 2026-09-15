@@ -37,10 +37,10 @@ What full-text search does and doesn't match:
 Pinecone's Documents API stores typed fields you declare in a schema. End to end, the flow is short: create an index with a [schema](#schema-definition) that declares your ranking fields, upsert your data as JSON documents, then search by choosing one ranking signal per search request with `score_by`. The [end-to-end example](#end-to-end-example) below stitches all three steps into one runnable script.
 
 1. You upsert data as JSON **documents**.
-2. You declare how each field should be indexed via a **schema**, as a `string` field with `full_text_search` enabled (BM25 scoring), a `dense_vector` field, or a `sparse_vector` field. The schema is for ranking fields only; metadata fields are not declared.
+2. You declare how each field should be indexed via a **schema**, as a `string` field with `full_text_search` enabled (BM25 scoring), a `dense_vector` field, or a `sparse_vector` field. The schema is for ranking fields only; metadata fields aren't declared.
 3. Pinecone indexes each field's content according to the type of the field declared in the schema. Any other fields on the upserted documents are automatically stored and indexed for filtering, no schema declaration required.
 
-For the field types you can declare, see [Schema field types](#schema-field-types). Filterable metadata is not part of the schema. Any field you upsert that is not declared in the schema is stored on the document, returned via `include_fields`, and automatically indexed for filtering, see [Metadata fields](#metadata-fields).
+For the field types you can declare, see [Schema field types](#schema-field-types). Filterable metadata isn't part of the schema. Any field you upsert that's not declared in the schema is stored on the document, returned via `include_fields`, and automatically indexed for filtering, see [Metadata fields](#metadata-fields).
 
 Newly upserted documents are indexed asynchronously, so they may not be searchable immediately. To confirm that an index holds the documents you expect, see [Check data freshness](/guides/index-data/check-data-freshness).
 
@@ -174,7 +174,7 @@ When you're combining text matching with vector ranking, start with the hard yes
 
 ## Schema definition
 
-The schema is required at [index creation](/guides/index-data/create-an-index) and declares the fields that drive ranking or vector search. Filterable metadata is not declared in the schema: any field you upsert that isn't in the schema is automatically stored and indexed for filtering.
+The schema is required at [index creation](/guides/index-data/create-an-index) and declares the fields that drive ranking or vector search. Filterable metadata isn't declared in the schema: any field you upsert that isn't in the schema is automatically stored and indexed for filtering.
 
 A schema can declare up to 100 `string` fields with `full_text_search` enabled, but at most one `dense_vector` field and at most one `sparse_vector` field per index.
 
@@ -193,11 +193,11 @@ A schema can declare up to 100 `string` fields with `full_text_search` enabled, 
 Field names must be unique, non-empty strings, and must not start with `_` or `$`. The `_` prefix is reserved for system-managed fields (for example, `_id`, `_score`); `$` is reserved for filter operators. Field names are also limited to 64 bytes. Every document has a required `_id` field, which carries its unique identifier. A user metadata field named `score` is allowed, and match scores are returned as `_score` to avoid collisions.
 
 <Note>
-  Indexes with document schemas do not support integrated inference fields such as `semantic_text`. To use dense or sparse vector ranking in an index with a document schema, declare a `dense_vector` or `sparse_vector` field and provide vector values at upsert time.
+  Indexes with document schemas don't support integrated inference fields such as `semantic_text`. To use dense or sparse vector ranking in an index with a document schema, declare a `dense_vector` or `sparse_vector` field and provide vector values at upsert time.
 </Note>
 
 <Note>
-  A `string` field with `full_text_search` isn't metadata and doesn't count toward the 40 KB metadata limit for documents. Use these FTS-enabled `string` fields for searchable chunk text. Indexes with document schemas do not support combining integrated inference fields, such as `semantic_text` fields, with full-text-search fields. To combine semantic ranking with full-text search, declare a `dense_vector` field alongside one or more FTS-enabled `string` fields and provide dense vector values when you upsert documents.
+  A `string` field with `full_text_search` isn't metadata and doesn't count toward the 40 KB metadata limit for documents. Use these FTS-enabled `string` fields for searchable chunk text. Indexes with document schemas don't support combining integrated inference fields, such as `semantic_text` fields, with full-text-search fields. To combine semantic ranking with full-text search, declare a `dense_vector` field alongside one or more FTS-enabled `string` fields and provide dense vector values when you upsert documents.
 </Note>
 
 ### Example schemas
@@ -269,11 +269,11 @@ A multi-field schema with text, dense, and sparse vectors:
 }
 ```
 
-Documents upserted into either schema can carry additional fields, for example, `category` (string), `tags` (array of strings), `year` (number), or `in_stock` (boolean). These fields are stored on the document, returned via `include_fields`, and automatically indexed for filtering. They do not need to be declared in the schema.
+Documents upserted into either schema can carry additional fields, for example, `category` (string), `tags` (array of strings), `year` (number), or `in_stock` (boolean). These fields are stored on the document, returned via `include_fields`, and automatically indexed for filtering. They don't need to be declared in the schema.
 
 ### Metadata fields
 
-Metadata fields are **not declared in the schema**. Any field you include on an upserted document that is not declared in the schema is treated as metadata: it is stored on the document, returned via `include_fields`, and automatically indexed for filtering with the standard operators (`$eq`, `$ne`, `$gt`, `$gte`, `$lt`, `$lte`, `$in`, `$nin`, `$exists`, `$and`, `$or`, `$not`).
+Metadata fields are **not declared in the schema**. Any field you include on an upserted document that's not declared in the schema is treated as metadata: it's stored on the document, returned via `include_fields`, and automatically indexed for filtering with the standard operators (`$eq`, `$ne`, `$gt`, `$gte`, `$lt`, `$lte`, `$in`, `$nin`, `$exists`, `$and`, `$or`, `$not`).
 
 Metadata field types are inferred from the values you upsert: strings, numbers (stored as floating point), booleans, and arrays of strings are all supported. You can mix metadata field types across documents in the same index.
 
@@ -421,7 +421,7 @@ For the full request and response schema, see [Search documents](/reference/api/
   <Accordion title="Unexpected search results">
     * **`type: "text"` uses OR across terms.** `machine learning` matches documents that contain "machine", "learning", or both (BM25 ranking). For an **exact phrase**, use `type: "query_string"` with `body:("machine learning")` or a `$match_phrase` filter.
     * **`type: "query_string"` defaults to OR for unquoted terms.** `body:(machine learning)` matches documents containing either term. Use `AND` or `+` for required terms.
-    * Operators like `AND`, `OR`, `NOT`, `*`, `~`, and `^` only work with `type: "query_string"`. With `type: "text"`, they are treated as literal words.
+    * Operators like `AND`, `OR`, `NOT`, `*`, `~`, and `^` only work with `type: "query_string"`. With `type: "text"`, they're treated as literal words.
   </Accordion>
 
   <Accordion title="Query syntax errors">
@@ -444,7 +444,7 @@ For the full request and response schema, see [Search documents](/reference/api/
   <Accordion title="Upsert errors">
     * Type mismatch: Ensure values match declared schema types.
     * Invalid `_id`: Every document must have a non-empty `_id` string.
-    * Reserved names: Field names cannot start with `_` (reserved for system-managed fields like `_id` and `_score`) or `$` (reserved for filter operators), and must be at most 64 bytes.
+    * Reserved names: Field names can't start with `_` (reserved for system-managed fields like `_id` and `_score`) or `$` (reserved for filter operators), and must be at most 64 bytes.
   </Accordion>
 
   <Accordion title="Slow search performance">
@@ -498,7 +498,7 @@ Everything in this section applies to indexes with document schemas. For dense, 
 ### Not supported
 
 * Schema changes after index creation aren't yet supported, including backfilling a schema onto an index created before `2026-07`. Create a new index with the schema you want and reindex your documents.
-* Backup and restore are not yet supported.
+* Backup and restore aren't yet supported.
 * Indexes can't be created in projects with [customer-managed encryption keys (CMEK)](/guides/production/configure-cmek) enabled.
 * An index can't be changed from dedicated read capacity back to on-demand. Create a new on-demand index and reingest your data.
 

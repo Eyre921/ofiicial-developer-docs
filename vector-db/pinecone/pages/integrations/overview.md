@@ -132,7 +132,7 @@ Browse Pinecone integrations across vector embedding providers, data ingestion t
 
     <span>Models</span>
     <h2>Cohere</h2>
-    <p>Leverage cutting-edge natural language processing tools for enhanced text understanding and generation in your applications.</p>
+    <p>Use cutting-edge natural language processing tools for enhanced text understanding and generation in your applications.</p>
   </Card>
 
   <Card href="/integrations/confluent">
@@ -288,7 +288,7 @@ Browse Pinecone integrations across vector embedding providers, data ingestion t
 
     <span>Frameworks</span>
     <h2>Hugging Face</h2>
-    <p>Deploy state-of-the-art machine learning models on scalable infrastructure, streamlining the path from prototype to production.</p>
+    <p>Deploy state-of-the-art machine learning models on scalable infrastructure, simplifying the path from prototype to production.</p>
   </Card>
 
   <Card href="/integrations/instill">
@@ -298,7 +298,7 @@ Browse Pinecone integrations across vector embedding providers, data ingestion t
 
     <span>Frameworks</span>
     <h2>Instill AI</h2>
-    <p>Streamline AI development with a low-code full-stack infrastructure tool for data, model, and pipeline orchestration.</p>
+    <p>Simplify AI development with a low-code full-stack infrastructure tool for data, model, and pipeline orchestration.</p>
   </Card>
 
   <Card href="/integrations/jina">
@@ -338,7 +338,7 @@ Browse Pinecone integrations across vector embedding providers, data ingestion t
 
     <span>Frameworks</span>
     <h2>Llama Index</h2>
-    <p>Leverage Llama for indexing and retrieving information at scale, improving data access and analysis.</p>
+    <p>Use Llama for indexing and retrieving information at scale, improving data access and analysis.</p>
   </Card>
 
   <Card href="/integrations/matillion">

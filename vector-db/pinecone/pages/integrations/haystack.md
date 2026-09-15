@@ -156,7 +156,7 @@ reader = FARMReader(
 )
 ```
 
-We are now ready to initialize the `ExtractiveQAPipeline`.
+We're now ready to initialize the `ExtractiveQAPipeline`.
 
 ```Python Python theme={null}
 from haystack.pipelines import ExtractiveQAPipeline

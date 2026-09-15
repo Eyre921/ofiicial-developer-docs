@@ -160,7 +160,7 @@ Watch these CloudWatch metrics (namespace `AWS/SageMaker`, dimensioned by `Endpo
 
 **Q: What's the maximum input size and processing time?**
 
-**A:** Asynchronous endpoints accept payloads up to 1 GB and processing times up to one hour per request. For the 25 MB real-time limit and streaming details, see [Deploy Deepgram on Amazon SageMaker](/docs/deploy-amazon-sagemaker).
+**A:** Asynchronous endpoints accept payloads up to 1 GB and processing times up to one hour per request. For the 25 MB real-time limit and streaming details, see [Invoke a Deepgram SageMaker Endpoint](/docs/invoke-sagemaker-endpoint).
 
 ## Related resources
 

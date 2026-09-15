@@ -47,7 +47,7 @@ For precise read unit reporting, see [index-level metrics](/guides/production/mo
 
 ## Community SDKs
 
-Find community-contributed SDKs for Pinecone. These libraries are not supported by Pinecone.
+Find community-contributed SDKs for Pinecone. These libraries aren't supported by Pinecone.
 
 * [Ruby SDK](https://github.com/ScotterC/pinecone) (contributed by [ScotterC](https://github.com/ScotterC))
 

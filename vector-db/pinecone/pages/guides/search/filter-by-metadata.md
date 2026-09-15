@@ -343,20 +343,20 @@ The following code searches for the 3 records that are most semantically similar
 
 Pinecone's filtering language supports the following operators:
 
-| Operator  | Function                                                                                                                   | Supported types         |
-| :-------- | :------------------------------------------------------------------------------------------------------------------------- | :---------------------- |
-| `$eq`     | Matches  with metadata values that are equal to a specified value. Example: `{"genre": {"$eq": "documentary"}}`            | Number, string, boolean |
-| `$ne`     | Matches  with metadata values that are not equal to a specified value. Example: `{"genre": {"$ne": "drama"}}`              | Number, string, boolean |
-| `$gt`     | Matches  with metadata values that are greater than a specified value. Example: `{"year": {"$gt": 2019}}`                  | Number                  |
-| `$gte`    | Matches  with metadata values that are greater than or equal to a specified value. Example:`{"year": {"$gte": 2020}}`      | Number                  |
-| `$lt`     | Matches  with metadata values that are less than a specified value. Example: `{"year": {"$lt": 2020}}`                     | Number                  |
-| `$lte`    | Matches  with metadata values that are less than or equal to a specified value. Example: `{"year": {"$lte": 2020}}`        | Number                  |
-| `$in`     | Matches  with metadata values that are in a specified array. Example: `{"genre": {"$in": ["comedy", "documentary"]}}`      | String, number          |
-| `$nin`    | Matches  with metadata values that are not in a specified array. Example: `{"genre": {"$nin": ["comedy", "documentary"]}}` | String, number          |
-| `$exists` | Matches  with the specified metadata field. Example: `{"genre": {"$exists": true}}`                                        | Number, string, boolean |
-| `$and`    | Joins query clauses with a logical `AND`. Example: `{"$and": [{"genre": {"$eq": "drama"}}, {"year": {"$gte": 2020}}]}`     | -                       |
-| `$or`     | Joins query clauses with a logical `OR`. Example: `{"$or": [{"genre": {"$eq": "drama"}}, {"year": {"$gte": 2020}}]}`       | -                       |
-| `$not`    | Matches  that do not match the wrapped clause. Example: `{"genre": {"$not": {"$eq": "drama"}}}`                            | -                       |
+| Operator  | Function                                                                                                                  | Supported types         |
+| :-------- | :------------------------------------------------------------------------------------------------------------------------ | :---------------------- |
+| `$eq`     | Matches  with metadata values that are equal to a specified value. Example: `{"genre": {"$eq": "documentary"}}`           | Number, string, boolean |
+| `$ne`     | Matches  with metadata values that aren't equal to a specified value. Example: `{"genre": {"$ne": "drama"}}`              | Number, string, boolean |
+| `$gt`     | Matches  with metadata values that are greater than a specified value. Example: `{"year": {"$gt": 2019}}`                 | Number                  |
+| `$gte`    | Matches  with metadata values that are greater than or equal to a specified value. Example:`{"year": {"$gte": 2020}}`     | Number                  |
+| `$lt`     | Matches  with metadata values that are less than a specified value. Example: `{"year": {"$lt": 2020}}`                    | Number                  |
+| `$lte`    | Matches  with metadata values that are less than or equal to a specified value. Example: `{"year": {"$lte": 2020}}`       | Number                  |
+| `$in`     | Matches  with metadata values that are in a specified array. Example: `{"genre": {"$in": ["comedy", "documentary"]}}`     | String, number          |
+| `$nin`    | Matches  with metadata values that aren't in a specified array. Example: `{"genre": {"$nin": ["comedy", "documentary"]}}` | String, number          |
+| `$exists` | Matches  with the specified metadata field. Example: `{"genre": {"$exists": true}}`                                       | Number, string, boolean |
+| `$and`    | Joins query clauses with a logical `AND`. Example: `{"$and": [{"genre": {"$eq": "drama"}}, {"year": {"$gte": 2020}}]}`    | -                       |
+| `$or`     | Joins query clauses with a logical `OR`. Example: `{"$or": [{"genre": {"$eq": "drama"}}, {"year": {"$gte": 2020}}]}`      | -                       |
+| `$not`    | Matches  that don't match the wrapped clause. Example: `{"genre": {"$not": {"$eq": "drama"}}}`                            | -                       |
 
 <Note>
   At the top level, list one or more fields (combined with implicit AND) or combine clauses with the logical operators `$and` and `$or`. Use `$not` to negate a clause, as shown in the table. A bare comparison operator (like `$gt`) can't appear at the top level; nest it under a field.
@@ -388,7 +388,7 @@ However, requests with the following filter will **not** match:
 { "$and": [{ "genre": "comedy" }, { "genre": "drama" }] }
 ```
 
-Additionally, requests with the following filters will **not** match because they are invalid. They will result in a compilation error:
+Additionally, requests with the following filters will **not** match because they're invalid. They will result in a compilation error:
 
 ```json JSON theme={null}
 # INVALID QUERY:
@@ -414,7 +414,7 @@ These operators share a few rules:
 
 * **Where they apply.** Fields declared with a `full_text_search` config object.
 * **Tokenization.** They reuse the field's configured tokenizer and stemmer, so a token that matches in BM25 scoring will match in a text-match filter.
-* **Lucene-style operators.** Phrase slop (`"phrase"~N`), term boosting (`^N`), and phrase prefix (`"phrase pre"*`) are not parsed. Values are literal text and match semantics come from the operator name. To use those operators, score with `query_string` instead.
+* **Lucene-style operators.** Phrase slop (`"phrase"~N`), term boosting (`^N`), and phrase prefix (`"phrase pre"*`) aren't parsed. Values are literal text and match semantics come from the operator name. To use those operators, score with `query_string` instead.
 * **Composition.** They compose freely with metadata operators under `$and`, `$or`, and `$not` at any nesting level:
 
 ```json theme={null}

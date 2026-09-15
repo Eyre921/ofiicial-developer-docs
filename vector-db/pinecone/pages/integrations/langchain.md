@@ -322,7 +322,7 @@ Now that you've built your Pinecone index, you need to initialize a LangChain ve
 
    The `text_field` parameter sets the name of the metadata field that stores the raw text when you upsert records using a LangChain operation such as `vectorstore.from_documents` or `vectorstore.add_texts`.
    This metadata field is used as the `page_content` in the `Document` objects retrieved from query-like LangChain operations such as `vectorstore.similarity_search`.
-   If you do not specify a value for `text_field`, it will default to `"text"`.
+   If you don't specify a value for `text_field`, it will default to `"text"`.
 
    ```Python Python theme={null}
    from langchain_pinecone import PineconeVectorStore  
@@ -351,7 +351,7 @@ All of these sample results are good and relevant. But what else can you do with
 
 ### 5. Use Pinecone and LangChain for RAG
 
-In RAG, you take the query as a question that is to be answered by a LLM, but the LLM must answer the question based on the information it is seeing from the vectorstore.
+In RAG, you take the query as a question that is to be answered by an LLM, but the LLM must answer the question based on the information it's seeing from the vectorstore.
 
 1. To do this, initialize a `RetrievalQA` object like so:
 

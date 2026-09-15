@@ -12,7 +12,7 @@ Increase Pinecone throughput with bulk import from object storage, batch upserts
 
 ## Upsert in batches
 
-[Upserting in batches](/guides/index-data/upsert-data#upsert-in-batches) is another efficient way to ingest large numbers of records (up to 1000 per batch). Batch upserting is also a good option if you cannot work around bulk import's current [limitations](/guides/index-data/import-data#import-limits).
+[Upserting in batches](/guides/index-data/upsert-data#upsert-in-batches) is another efficient way to ingest large numbers of records (up to 1000 per batch). Batch upserting is also a good option if you can't work around bulk import's current [limitations](/guides/index-data/import-data#import-limits).
 
 ## Upsert/search in parallel
 

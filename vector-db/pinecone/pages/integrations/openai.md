@@ -6,7 +6,7 @@ path: integrations/openai
 
 Pair OpenAI embeddings and completion models with Pinecone for semantic search, long-term memory, RAG, and context-aware LLM question-answering.
 
-OpenAI's large language models (LLMs) enhance semantic search or “long-term memory” for LLMs. This combo utilizes LLMs' embedding and completion (or generation) endpoints alongside Pinecone's vector search capabilities for nuanced information retrieval.
+OpenAI's large language models (LLMs) enhance semantic search or “long-term memory” for LLMs. This combo uses LLMs' embedding and completion (or generation) endpoints alongside Pinecone's vector search capabilities for nuanced information retrieval.
 
 By integrating OpenAI's LLMs with Pinecone, you can combine deep learning capabilities for embedding generation with efficient vector storage and retrieval. This approach surpasses traditional keyword-based search, offering contextually-aware, precise results.
 
@@ -18,7 +18,7 @@ By integrating OpenAI's LLMs with Pinecone, you can combine deep learning capabi
 
 [Open in Colab](https://colab.research.google.com/github/pinecone-io/examples/blob/master/integrations/openai/semantic_search_openai.ipynb)
 
-This guide covers the integration of OpenAI's Large Language Models (LLMs) with Pinecone (referred to as the **OP stack**), enhancing semantic search or 'long-term memory' for LLMs. This combo utilizes LLMs' embedding and completion (or generation) endpoints alongside Pinecone's vector search capabilities for nuanced information retrieval.
+This guide covers the integration of OpenAI's Large Language Models (LLMs) with Pinecone (referred to as the **OP stack**), enhancing semantic search or 'long-term memory' for LLMs. This combo uses LLMs' embedding and completion (or generation) endpoints alongside Pinecone's vector search capabilities for nuanced information retrieval.
 
 LLMs like OpenAI's `text-embedding-ada-002` generate vector embeddings, i.e., numerical representations of text semantics. These embeddings facilitate semantic-based rather than literal textual matches. Additionally, LLMs like `gpt-4` or `gpt-3.5-turbo` can predict text completions based on information provided from these contexts.
 
@@ -37,7 +37,7 @@ There are many ways of integrating these two tools and we have several guides fo
 
 At the core of the OP stack we have embeddings which are supported via the [OpenAI Embedding API](https://beta.openai.com/docs/guides/embeddings). We index those embeddings in the [Pinecone vector database](https://www.pinecone.io) for fast and scalable retrieval augmentation of our LLMs or other information retrieval use-cases.
 
-*This example demonstrates the core OP stack. It is the simplest workflow and is present in each of the other workflows, but is not the only way to use the stack. Please see the links above for more advanced usage.*
+*This example demonstrates the core OP stack. It's the simplest workflow and is present in each of the other workflows, but isn't the only way to use the stack. Please see the links above for more advanced usage.*
 
 The OP stack is built for semantic search, question-answering, threat-detection, and other applications that rely on language models and a large corpus of text data.
 

@@ -15,7 +15,7 @@ This page shows you how to implement multitenancy in Pinecone using a **serverle
 </Note>
 
 <Note>
-  [Namespaces per serverless index](/reference/api/database-limits/object-limits) vary by plan. On the Standard and Enterprise plans, Pinecone can accommodate million-scale namespaces and beyond for specific use cases. If your application requires more than 100,000 namespaces, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
+  [Namespaces per serverless index](/reference/api/database-limits/object-limits) vary by plan (100 on Starter to 1,000,000 on Enterprise). Pinecone can accommodate more for specific use cases. If your application needs a higher limit, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
 </Note>
 
 ## How it works
@@ -39,7 +39,7 @@ In cases where you have different workload patterns (e.g., RAG and semantic sear
 <Accordion title="Understand the benefits">
   * **Tenant isolation:** In the [serverless architecture](/guides/core-concepts/architecture), each namespace is stored separately, so using namespaces provides physical isolation of data between tenants/customers. This reduces the risk of application bugs that could query the wrong tenant's data.
 
-  * **No noisy neighbors:** Reads and writes always target a single namespace, so the behavior of one tenant/customer does not affect other tenants/customers.
+  * **No noisy neighbors:** Reads and writes always target a single namespace, so the behavior of one tenant/customer doesn't affect other tenants/customers.
 
   * **No maintenance effort:** Serverless indexes scale automatically based on usage; you don't configure or manage any compute or storage resources.
 
@@ -490,7 +490,7 @@ When upserting additional records for a tenant, or when [updating](/guides/manag
 
 ## 3. Query tenant data
 
-In a multitenant solution, you need to ensure that the queries of one tenant do not affect the experience of other tenants/customers. To achieve this in Pinecone, target each tenant's [queries](/guides/search/search-overview) at the namespace for the tenant.
+In a multitenant solution, you need to ensure that the queries of one tenant don't affect the experience of other tenants/customers. To achieve this in Pinecone, target each tenant's [queries](/guides/search/search-overview) at the namespace for the tenant.
 
 For example, the following code queries only `tenant2` for the 3 vectors that are most similar to an example query vector:
 
@@ -803,7 +803,7 @@ For example, the following code deletes the namespace and all records for `tenan
 
 ## Alternative: Metadata filtering
 
-When tenant isolation is not a strict requirement, or when you need to query across multiple tenants simultaneously, you can store all records in a single namespace and use metadata fields to assign records to tenants/customers. At query time, you can then [filter by metadata](/guides/index-data/indexing-overview#metadata).
+When tenant isolation isn't a strict requirement, or when you need to query across multiple tenants simultaneously, you can store all records in a single namespace and use metadata fields to assign records to tenants/customers. At query time, you can then [filter by metadata](/guides/index-data/indexing-overview#metadata).
 
 <Warning>
   This approach has significant performance and cost tradeoffs compared to using namespaces:

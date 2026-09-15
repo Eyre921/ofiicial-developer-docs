@@ -220,7 +220,7 @@ The response will look like the following:
 
 Use the [`list_namespaces`](/reference/api/latest/data-plane/listnamespaces) operation to list all namespaces in a serverless index.
 
-Up to 100 namespaces are returned at a time by default, in sorted order (bitwise “C” collation). If the `limit` parameter is set, up to that number of namespaces are returned instead. Whenever there are additional namespaces to return, the response also includes a `pagination_token` that you can use to get the next batch of namespaces. When the response does not include a `pagination_token`, there are no more namespaces to return.
+Up to 100 namespaces are returned at a time by default, in sorted order (bitwise “C” collation). If the `limit` parameter is set, up to that number of namespaces are returned instead. Whenever there are additional namespaces to return, the response also includes a `pagination_token` that you can use to get the next batch of namespaces. When the response doesn't include a `pagination_token`, there are no more namespaces to return.
 
 <CodeGroup>
   ```python Python theme={null}
@@ -686,8 +686,8 @@ Use the [`delete_namespace`](/reference/api/latest/data-plane/deletenamespace) o
 
 ## Rename a namespace
 
-Pinecone does not support renaming namespaces directly. Instead, you must [delete the records](/guides/manage-data/delete-data) in the namespace and [upsert the records](/guides/index-data/upsert-data) to a new namespace.
+Pinecone doesn't support renaming namespaces directly. Instead, you must [delete the records](/guides/manage-data/delete-data) in the namespace and [upsert the records](/guides/index-data/upsert-data) to a new namespace.
 
 ## Move records to a new namespace
 
-Pinecone does not support moving records between namespaces directly. Instead, you must [delete the records](/guides/manage-data/delete-data) in the old namespace and [upsert the records](/guides/index-data/upsert-data) to the new namespace.
+Pinecone doesn't support moving records between namespaces directly. Instead, you must [delete the records](/guides/manage-data/delete-data) in the old namespace and [upsert the records](/guides/index-data/upsert-data) to the new namespace.

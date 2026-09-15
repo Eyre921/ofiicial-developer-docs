@@ -1,5 +1,5 @@
 ---
-title: "Curation"
+title: "Nexus curation"
 source: https://docs.pinecone.io/guides/nexus/how-curation-works
 path: guides/nexus/how-curation-works
 ---

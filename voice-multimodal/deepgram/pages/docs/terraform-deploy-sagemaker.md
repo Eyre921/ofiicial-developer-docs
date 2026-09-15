@@ -14,150 +14,23 @@ path: docs/terraform-deploy-sagemaker
 
 This guide provides a complete Terraform configuration for deploying Deepgram on Amazon SageMaker. The configuration creates an IAM execution role, a SageMaker Model from your AWS Marketplace subscription, an Endpoint Configuration, and a live Endpoint. An optional module adds auto-scaling. The same configuration can deploy either a real-time endpoint (the default) or an asynchronous endpoint that processes large pre-recorded files from S3 and can scale to zero — set `enable_async_inference = true`.
 
-Before running Terraform, you must subscribe to a Deepgram product on the AWS Marketplace and note the **Model Package ARN**. Subscribe via [the AWS Management Console](/docs/deploy-amazon-sagemaker#subscribe-to-deepgram-products-via-aws-marketplace-console) or [the AWS Marketplace API](#subscribe-to-a-deepgram-product-via-the-marketplace-api), then see [Find the Model Package ARN](#find-the-model-package-arn).
+Before running Terraform, you must subscribe to a Deepgram product on the AWS Marketplace and note the **Model Package ARN**. See [Subscribe on AWS Marketplace](/docs/subscribe-aws-marketplace) for the console and Marketplace API subscription flows and how to [find the Model Package ARN](/docs/subscribe-aws-marketplace#find-the-model-package-arn).
 
 ## Prerequisites
 
 * [Terraform](https://developer.hashicorp.com/terraform/install) 1.5 or later
 * The [Terraform AWS provider](https://registry.terraform.io/providers/hashicorp/aws/latest) 5.56 or later, which is the first release supporting `inference_ami_version`
 * AWS credentials configured for the target account (via environment variables, shared credentials file, or an IAM role)
-* An active AWS Marketplace subscription to a [Deepgram SageMaker product](https://aws.amazon.com/marketplace/search/results?searchTerms=deepgram\&CREATOR=6efa21f9-9a33-4cae-ba44-756436fa71dd\&FULFILLMENT_OPTION_TYPE=SAGEMAKER_MODEL\&filters=CREATOR%2CFULFILLMENT_OPTION_TYPE). You can subscribe through the console or, if you provision infrastructure as code, [via the Marketplace API](#subscribe-to-a-deepgram-product-via-the-marketplace-api).
-* The **Model Package ARN** for the subscribed product. See [Find the Model Package ARN](#find-the-model-package-arn) for how to locate it in the AWS Marketplace **Manage subscriptions** console.
+* An active AWS Marketplace subscription to a [Deepgram SageMaker product](https://aws.amazon.com/marketplace/search/results?searchTerms=deepgram\&CREATOR=6efa21f9-9a33-4cae-ba44-756436fa71dd\&FULFILLMENT_OPTION_TYPE=SAGEMAKER_MODEL\&filters=CREATOR%2CFULFILLMENT_OPTION_TYPE). You can subscribe through the console or, if you provision infrastructure as code, [via the Marketplace API](/docs/subscribe-aws-marketplace#subscribe-through-the-marketplace-api).
+* The **Model Package ARN** for the subscribed product. See [Find the Model Package ARN](/docs/subscribe-aws-marketplace#find-the-model-package-arn) for how to locate it in the AWS Marketplace **Manage subscriptions** console.
 
 ## Subscribe to a Deepgram product via the Marketplace API
 
-If you provision infrastructure as code, you can subscribe to a Deepgram SageMaker product entirely through the AWS Marketplace API instead of the console. This section is an alternative to [Subscribe to Deepgram Products via AWS Marketplace Console](/docs/deploy-amazon-sagemaker#subscribe-to-deepgram-products-via-aws-marketplace-console) — use whichever method fits your workflow, then continue to [Find the Model Package ARN](#find-the-model-package-arn).
-
-The steps below use the AWS CLI, but AWS also publishes [SDKs for many languages](https://aws.amazon.com/developer/tools/) — including Python (Boto3), Node.js, Java, Go, and .NET — that expose the same Marketplace Discovery and Agreement Service APIs. Use whichever SDK fits your stack to build your own subscription automations and scripts.
-
-Subscribing creates a billing agreement on your AWS account. You are not charged until you deploy a SageMaker Endpoint and send it traffic — the usage-based pricing term has no upfront cost — but `AcceptAgreementRequest` (the last step below) is not a dry run. It creates a real, active agreement.
-
-### Permissions
-
-The [AWSMarketplaceManageSubscriptions](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AWSMarketplaceManageSubscriptions.html) policy referenced in [Prerequisites](/docs/deploy-amazon-sagemaker#prerequisites) covers product discovery (`SearchListings`, `GetOffer`, `GetOfferTerms`, `ListPurchaseOptions`, and similar) but does **not** include the AWS Marketplace Agreement Service actions this flow also needs: `CreateAgreementRequest`, `AcceptAgreementRequest`, `DescribeAgreement`, `SearchAgreements`, and `GetAgreementTerms`. Either attach [AWSMarketplaceFullAccess](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AWSMarketplaceFullAccess.html) or add those five actions to a custom policy alongside `AWSMarketplaceManageSubscriptions`.
-
-#### Find the product ID
-
-List Deepgram's SageMaker-deployable products, filtered by fulfillment type and seller:
-
-```bash
-aws marketplace-discovery search-listings \
-  --region us-east-1 \
-  --filters '[
-    {"filterType": "FULFILLMENT_OPTION_TYPE", "filterValues": ["SAGEMAKER_MODEL"]},
-    {"filterType": "PUBLISHER", "filterValues": ["6efa21f9-9a33-4cae-ba44-756436fa71dd"]}
-  ]' \
-  --query 'listingSummaries[].{name:listingName,productId:associatedEntities[0].product.productId}'
-```
-
-```json
-[
-  {
-    "name": "Deepgram Voice AI Nova-3 Monolingual Speech-to-Text (STT) Streaming",
-    "productId": "prod-tnv5pm6nlcm44"
-  },
-  {
-    "name": "Deepgram Voice AI- Aura-2 Text-to-Speech- English",
-    "productId": "prod-..."
-  }
-]
-```
-
-`6efa21f9-9a33-4cae-ba44-756436fa71dd` is Deepgram's AWS Marketplace seller profile ID. Note the `productId` for the listing you want to deploy (eg. `prod-tnv5pm6nlcm44` for Nova-3 Monolingual Streaming).
-
-Calls the [`SearchListings`](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-discovery_SearchListings.html) action of the [AWS Marketplace Discovery API](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_Operations_AWS_Marketplace_Discovery.html).
-
-#### Find the standard offer for that product
-
-```bash
-aws marketplace-discovery list-purchase-options \
-  --region us-east-1 \
-  --filters '[{"filterType": "PRODUCT_ID", "filterValues": ["prod-tnv5pm6nlcm44"]}]' \
-  --query 'purchaseOptions[].{offerId:purchaseOptionId,name:purchaseOptionName,badges:badges}'
-```
-
-This can return more than one purchase option — for example, a private offer your account manager extended to you, alongside the standard public offer. **The standard public offer has no `PRIVATE_PRICING` badge and no custom `purchaseOptionName`** (AWS labels it `"Offer created on <timestamp>"`). Use a private offer's ID instead if your account has negotiated pricing.
-
-Calls the [`ListPurchaseOptions`](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-discovery_ListPurchaseOptions.html) action of the [AWS Marketplace Discovery API](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_Operations_AWS_Marketplace_Discovery.html).
-
-#### Get the offer's proposal ID and pricing model
-
-```bash
-aws marketplace-discovery get-offer --region us-east-1 --offer-id <offer-id-from-previous-step>
-```
-
-Note the `agreementProposalId` and `pricingModel.pricingModelType` from the response — you need both for the next steps.
-
-Calls the [`GetOffer`](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-discovery_GetOffer.html) action of the [AWS Marketplace Discovery API](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_Operations_AWS_Marketplace_Discovery.html).
-
-#### Get the offer's terms
-
-```bash
-aws marketplace-discovery get-offer-terms --region us-east-1 --offer-id <offer-id>
-```
-
-The response lists one or more terms, each with an `id`. For a `USAGE`-priced Deepgram SageMaker product, expect `LegalTerm`, `SupportTerm`, and `UsageBasedPricingTerm` — collect all three `id` values. Deepgram's public SageMaker listings also include a `FreeTrialPricingTerm` (14 days); collect its `id` too if you want to claim the trial. See [Required terms by pricing model](https://docs.aws.amazon.com/marketplace/latest/developerguide/work-with-agreement-api-buyer.html#car-required-terms-by-pricing-model) if the offer uses a different pricing model.
-
-Calls the [`GetOfferTerms`](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-discovery_GetOfferTerms.html) action of the [AWS Marketplace Discovery API](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_Operations_AWS_Marketplace_Discovery.html).
-
-#### Generate a quote
-
-```bash
-aws marketplace-agreement create-agreement-request \
-  --region us-east-1 \
-  --agreement-proposal-identifier <agreementProposalId-from-step-3> \
-  --intent NEW \
-  --requested-terms '[
-    {"id": "<LegalTerm id>"},
-    {"id": "<SupportTerm id>"},
-    {"id": "<UsageBasedPricingTerm id>"},
-    {"id": "<FreeTrialPricingTerm id>"}
-  ]'
-```
-
-Returns an `agreementRequestId` and a `chargeSummary`. For usage-based pricing, `newAgreementValue` is `"0.00"` — you're only quoted for the mandatory terms, not future usage.
-
-Calls the [`CreateAgreementRequest`](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-agreements_CreateAgreementRequest.html) action of the [AWS Marketplace Agreement Service API](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_Operations_AWS_Marketplace_Agreement_Service.html).
-
-`FreeTrialPricingTerm` can be accepted only once per product. If your account has already used the trial for this product, omit that term's `id` from `requestedTerms` — including it again returns a `ValidationException`. If your account already has an active agreement for this product at all, the whole call fails with `ValidationException` / `UNSUPPORTED_ACTION` ("This action is not supported when an active agreement exists on the same resourceId"). Check first with the [`SearchAgreements`](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-agreements_SearchAgreements.html) action: `aws marketplace-agreement search-agreements --region us-east-1 --catalog AWSMarketplace --filters '[{"name":"PartyType","values":["Acceptor"]},{"name":"AgreementType","values":["PurchaseAgreement"]},{"name":"ResourceIdentifier","values":["<productId>"]}]'` — if an agreement with `"status": "ACTIVE"` already exists, you're already subscribed; skip to [Find the Model Package ARN](#find-the-model-package-arn).
-
-#### Accept the quote to subscribe
-
-```bash
-aws marketplace-agreement accept-agreement-request \
-  --region us-east-1 \
-  --agreement-request-id <agreementRequestId-from-previous-step>
-```
-
-Returns the new `agreementId`. This is the subscribe action — it's equivalent to clicking **Subscribe** in the console.
-
-Calls the [`AcceptAgreementRequest`](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-agreements_AcceptAgreementRequest.html) action of the [AWS Marketplace Agreement Service API](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_Operations_AWS_Marketplace_Agreement_Service.html).
-
-#### Confirm the subscription is active
-
-```bash
-aws marketplace-agreement describe-agreement --region us-east-1 --agreement-id <agreementId>
-```
-
-`status` moves from `ACTIVE` immediately, but the underlying entitlement can take a few minutes to provision — the same delay you'd see waiting on the console's subscription page. Poll `aws marketplace-agreement get-agreement-entitlements --region us-east-1 --agreement-id <agreementId>` until it clears `PENDING`/`PROVISIONING_IN_PROGRESS` before continuing to [Find the Model Package ARN](#find-the-model-package-arn).
-
-Calls the [`DescribeAgreement`](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-agreements_DescribeAgreement.html) and [`GetAgreementEntitlements`](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-agreements_GetAgreementEntitlements.html) actions of the [AWS Marketplace Agreement Service API](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_Operations_AWS_Marketplace_Agreement_Service.html).
+This content moved to [Subscribe on AWS Marketplace](/docs/subscribe-aws-marketplace#subscribe-through-the-marketplace-api).
 
 ## Find the Model Package ARN
 
-The Terraform configuration references the **Model Package ARN** for the product version and AWS Region you plan to deploy. The AWS Marketplace surfaces the ARN through the CLI configuration view.
-
-In the AWS Management Console, navigate to the [AWS Marketplace **Manage subscriptions** console](https://us-east-1.console.aws.amazon.com/marketplace/subscriptions)
-
-On the **Active subscriptions** tab, find the subscription for the Deepgram product you want to deploy (eg. *Deepgram Voice AI- Nova-3 Monolingual Speech-to-Text (STT) Streaming*)
-
-Click the **Configure** button in the **Actions** column on the right-hand side
-
-In the **Setup** box, under **Service**, choose **AWS command line interface (CLI)**
-
-Under the **Version** header, select the product version from the dropdown. If the listing has more than one version, read the version name and the release notes to understand the set of languages (or features) each version provides, and choose the version that matches your needs
-
-Scroll down. On the right-hand side of the page, a list of **Model ARNs** is shown. Note the correct Model Package ARN for the AWS Region you plan to deploy to
+This content moved to [Subscribe on AWS Marketplace](/docs/subscribe-aws-marketplace#find-the-model-package-arn).
 
 ## Project layout
 
@@ -202,7 +75,7 @@ variable "endpoint_name" {
 variable "instance_type" {
   description = "SageMaker instance type for the endpoint."
   type        = string
-  default     = "ml.g5.2xlarge"
+  default     = "ml.g6.2xlarge"
 }
 
 variable "inference_ami_version" {
@@ -593,7 +466,7 @@ aws_region            = "us-east-1"
 model_package_arn     = "arn:aws:sagemaker:us-east-1:123456789012:model-package/deepgram-stt-nova-3/1"
 model_name            = "deepgram-streaming-stt"
 endpoint_name         = "my-deepgram-stt"
-instance_type         = "ml.g5.2xlarge"
+instance_type         = "ml.g6.2xlarge"
 inference_ami_version = "al2023-ami-sagemaker-inference-gpu-4-1"
 
 # Optional: Deepgram configuration overrides
@@ -668,12 +541,12 @@ After the endpoint reaches `InService`, run a test inference to confirm it retur
 
 Choose an instance type based on the Deepgram product you are deploying. GPU-accelerated instances are required.
 
-| Product                       | Recommended instance type | Notes                                     |
-| ----------------------------- | ------------------------- | ----------------------------------------- |
-| Speech-to-Text (Nova-3, Flux) | `ml.g5.2xlarge`           | Single NVIDIA A10G GPU, 32 GB GPU RAM     |
-| Text-to-Speech (Aura)         | `ml.g5.12xlarge`          | 4 NVIDIA A10G GPUs (TTS requires 2+ GPUs) |
+| Product                       | Recommended instance type | Notes                                      |
+| ----------------------------- | ------------------------- | ------------------------------------------ |
+| Speech-to-Text (Nova-3, Flux) | `ml.g6.2xlarge`           | Single NVIDIA L4 GPU, 24 GB GPU RAM        |
+| Text-to-Speech (Aura-2)       | `ml.g6.12xlarge`          | 4 NVIDIA L4 GPUs (Aura-2 requires 2+ GPUs) |
 
-For a full list of compatible instances, see the [Deployment Environments](/docs/self-hosted-deployment-environments) hardware specifications.
+For the full list of supported and unsupported instance types per product, including the `g7` and `g7e` families, see [Supported Products](/docs/supported-products-sagemaker#instance-types).
 
 The host driver your instances boot with is set separately — see [Inference AMI versions](#inference-ami-versions).
 
@@ -745,7 +618,7 @@ When async is enabled, the configuration also:
 * switches the autoscaling target metric to `ApproximateBacklogSizePerInstance` and allows `autoscaling_min_capacity = 0` for scale-to-zero;
 * adds a scale-from-zero policy so the endpoint wakes on the first queued request instead of waiting for the backlog to exceed the target value.
 
-For invocation details, see [Deploy Deepgram on Amazon SageMaker](/docs/deploy-amazon-sagemaker#inference). For autoscaling details, see [Auto-Scaling Asynchronous Endpoints](/docs/auto-scaling-sagemaker-async).
+For invocation details, see [Invoke a Deepgram SageMaker Endpoint](/docs/invoke-sagemaker-endpoint). For autoscaling details, see [Auto-Scaling Asynchronous Endpoints](/docs/auto-scaling-sagemaker-async).
 
 ## Tear down
 
@@ -761,6 +634,7 @@ This removes the SageMaker Endpoint, Endpoint Configuration, Model, auto-scaling
 
 ## Related resources
 
+* [Subscribe on AWS Marketplace](/docs/subscribe-aws-marketplace)
 * [Deploy Deepgram on Amazon SageMaker](/docs/deploy-amazon-sagemaker)
 * [Configure Amazon SageMaker Deployments](/docs/configure-sagemaker-deployments)
 * [Auto-Scaling SageMaker Endpoints](/docs/auto-scaling-sagemaker-streaming)

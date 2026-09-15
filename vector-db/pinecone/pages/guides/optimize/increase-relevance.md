@@ -34,7 +34,7 @@ For more details, see [Full-text search](/guides/search/full-text-search).
 
 When you use [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding) with a model like [`llama-text-embed-v2`](/models/llama-text-embed-v2) or [`multilingual-e5-large`](/models/multilingual-e5-large), Pinecone embeds upserted data with the `passage` input type and embeds query text with the `query` input type. The encoder is the same, but the input type changes the resulting vector, so the *same* string embedded as a query and as a passage produces two different vectors. This is intentional in E5- and Llama-style models: the asymmetry is what makes a short query match a longer, semantically related passage.
 
-A common consequence is that searching by text for the exact string you upserted does not return a similarity score near `1.0`. For example, querying for the exact text `"JetBlue Flights and Extras"` against a record containing that same text can score around `0.58`, while searching by the raw passage vector for the same record scores near `1.0`. The text query takes the `query` path and the stored record was embedded via the `passage` path, so the two vectors are not identical.
+A common consequence is that searching by text for the exact string you upserted doesn't return a similarity score near `1.0`. For example, querying for the exact text `"JetBlue Flights and Extras"` against a record containing that same text can score around `0.58`, while searching by the raw passage vector for the same record scores near `1.0`. The text query takes the `query` path and the stored record was embedded via the `passage` path, so the two vectors aren't identical.
 
 **Is a low score expected for identical short strings?** Yes. The query/passage split has the largest effect on short, low-semantic text such as exact names, error codes, SKUs, and IDs, where there is little meaning for the model to align across the two paths. Scores in roughly the `0.5`–`0.8` range for identical short strings are normal. The asymmetry helps on true semantic search (a short question matched to a longer answer passage) and only looks like a problem on exact-token-match workloads.
 
@@ -58,7 +58,7 @@ pc.configure_index(
 Note the trade-offs:
 
 * This setting degrades true semantic search, since queries no longer use the input type the model was trained to expect.
-* It applies to the whole index. With integrated inference you cannot choose `query` or `passage` per request. If you need that control, embed text yourself with the [Inference API](/reference/api/latest/inference/generate-vectors) and search with the [`query`](/reference/api/latest/data-plane/query) operation using your own vectors.
+* It applies to the whole index. With integrated inference you can't choose `query` or `passage` per request. If you need that control, embed text yourself with the [Inference API](/reference/api/latest/inference/generate-vectors) and search with the [`query`](/reference/api/latest/data-plane/query) operation using your own vectors.
 
 For pure exact-match retrieval, a [sparse index](/guides/index-data/indexing-overview#indexes-with-sparse-vectors) or [full-text search](/guides/search/full-text-search) is usually a better fit than forcing dense embeddings through the passage path. See [Use full-text search for keyword matching](#use-full-text-search-for-keyword-matching) above for when keyword and phrase matching is the right tool.
 

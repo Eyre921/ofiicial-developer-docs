@@ -24,7 +24,7 @@ We start by heading over to the [Hugging Face Inference Endpoints homepage](http
 
 <img alt="endpoints 0" />
 
-We click on **Create new endpoint**, choose a model repository (eg name of the model), endpoint name (this can be anything), and select a cloud environment. Before moving on it is *very important* that we set the **Task** to **Sentence Embeddings** (found within the *Advanced configuration* settings).
+We click on **Create new endpoint**, choose a model repository (eg name of the model), endpoint name (this can be anything), and select a cloud environment. Before moving on it's *very important* that we set the **Task** to **Sentence Embeddings** (found within the *Advanced configuration* settings).
 
 <img alt="endpoints 1" />
 
@@ -296,7 +296,7 @@ Group of bike riders stopped in the street.
 There are bicycles outside.
 ```
 
-All of these results look excellent. If you are not planning on running your endpoint and vector DB beyond this tutorial, you can shut down both.
+All of these results look excellent. If you aren't planning on running your endpoint and vector DB beyond this tutorial, you can shut down both.
 
 ## Clean up
 
@@ -306,4 +306,4 @@ Shut down the endpoint by navigating to the Inference Endpoints **Overview** pag
 pinecone.delete_index(index_name)
 ```
 
-<Note>Once the index is deleted, you cannot use it again.</Note>
+<Note>Once the index is deleted, you can't use it again.</Note>

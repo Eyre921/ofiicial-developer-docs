@@ -304,6 +304,8 @@ To associate a Checkout Session with a customer that already exists, provide the
 // You can also find your test secret key at https://dashboard.stripe.com/test/apikeys
 // Don't put any keys in code. See https://docs.stripe.com/keys-best-practices.
 const stripe = require('stripe')('<<YOUR_SECRET_KEY>>');
+const YOUR_DOMAIN = 'http://localhost:4242';
+const YOUR_DOMAIN = 'http://localhost:3000';
   const session = await stripe.checkout.sessions.create({
     customer_email: 'customer@example.com',
     submit_type: 'donate',
@@ -320,7 +322,7 @@ const stripe = require('stripe')('<<YOUR_SECRET_KEY>>');
     ],
     mode: {{CHECKOUT_MODE}},
     success_url: `${YOUR_DOMAIN}/success.html`,
-    success_url: `${YOUR_DOMAIN}?success=true`,
+    success_url: `${YOUR_DOMAIN}/checkout?success=true`,
     automatic_tax: {enabled: true},
     customer_creation: 'always',
     // Provide the Customer ID (for example, cus_1234) for an existing customer to associate it with this session
@@ -391,6 +393,8 @@ const stripe = require('stripe')('<<YOUR_SECRET_KEY>>');
 # You can also find your test secret API key at https://dashboard.stripe.com/test/apikeys.
 \# Don't put any keys in code. See https://docs.stripe.com/keys-best-practices.
 client = Stripe::StripeClient.new('<<YOUR_SECRET_KEY>>')
+YOUR_DOMAIN = 'http://localhost:4242'
+YOUR_DOMAIN = 'http://localhost:3000'
   session = client.v1.checkout.sessions.create({
     customer_email: 'customer@example.com',
     submit_type: 'donate',
@@ -405,7 +409,7 @@ client = Stripe::StripeClient.new('<<YOUR_SECRET_KEY>>')
     }],
     mode: {{CHECKOUT_MODE}},
     success_url: YOUR_DOMAIN + '/success.html',
-    success_url: YOUR_DOMAIN + '?success=true',
+    success_url: YOUR_DOMAIN + '/checkout?success=true',
     automatic_tax: {enabled: true},
     customer_creation: 'always',
     \# Provide the Customer ID (for example, cus_1234) for an existing customer to associate it with this session
@@ -420,6 +424,8 @@ import stripe
 # You can also find your test secret API key at https://dashboard.stripe.com/test/apikeys.
 \# Don't put any keys in code. See https://docs.stripe.com/keys-best-practices.
 client = stripe.StripeClient('<<YOUR_SECRET_KEY>>')
+YOUR_DOMAIN = 'http://localhost:4242'
+YOUR_DOMAIN = 'http://localhost:3000'
         checkout_session = client.v1.checkout.sessions.create(params={
             'customer_email': 'customer@example.com',
             'submit_type': 'donate',
@@ -436,7 +442,7 @@ client = stripe.StripeClient('<<YOUR_SECRET_KEY>>')
             ],
             'mode': {{CHECKOUT_MODE}},
             'success_url': YOUR_DOMAIN + '/success.html',
-            'success_url': YOUR_DOMAIN + '?success=true',
+            'success_url': YOUR_DOMAIN + '/checkout?success=true',
             'automatic_tax': {'enabled': True},
             'customer_creation': 'always',
             \# Provide the Customer ID (for example, cus_1234) for an existing customer to associate it with this session
@@ -458,6 +464,8 @@ stripe==15.6.0
 toml==0.10.2
 Werkzeug==3.1.5
 $stripe = new \Stripe\StripeClient($stripeSecretKey);
+$YOUR_DOMAIN = 'http://localhost:4242';
+$YOUR_DOMAIN = 'http://localhost:3000';
 $checkout_session = $stripe->checkout->sessions->create([
   'customer_email' => 'customer@example.com',
   'submit_type' => 'donate',
@@ -472,7 +480,7 @@ $checkout_session = $stripe->checkout->sessions->create([
   ]],
   'mode' => {{CHECKOUT_MODE}},
   'success_url' => $YOUR_DOMAIN . '/success.html',
-  'success_url' => $YOUR_DOMAIN . '?success=true',
+  'success_url' => $YOUR_DOMAIN . '/checkout?success=true',
   'automatic_tax' => [
     'enabled' => true,
   ],
@@ -492,6 +500,8 @@ $stripeSecretKey = '<<YOUR_SECRET_KEY>>';
         // You can also find your test secret API key at https://dashboard.stripe.com/test/apikeys.
         // Don't put any keys in code. See https://docs.stripe.com/keys-best-practices.
         services.AddSingleton(new StripeClient("<<YOUR_SECRET_KEY>>"));
+            var domain = "http://localhost:4242";
+            var domain = "http://localhost:3000";
                 CustomerEmail = "customer@example.com",
                 SubmitType = "donate",
                 BillingAddressCollection = "auto",
@@ -514,7 +524,7 @@ $stripeSecretKey = '<<YOUR_SECRET_KEY>>';
                 },
                 Mode = {{CHECKOUT_MODE}},
                 SuccessUrl = domain + "/success.html",
-                SuccessUrl = domain + "?success=true",
+                SuccessUrl = domain + "/checkout?success=true",
                 AutomaticTax = new SessionAutomaticTaxOptions { Enabled = true },
                 CustomerCreation = "always",
                 // Provide the Customer ID (for example, cus_1234) for an existing customer to associate it with this session
@@ -526,6 +536,8 @@ $stripeSecretKey = '<<YOUR_SECRET_KEY>>';
     "github.com/stripe/stripe-go/v86"
   // Don't put any keys in code. See https://docs.stripe.com/keys-best-practices.
   sc := stripe.NewClient("<<YOUR_SECRET_KEY>>")
+  domain := "http://localhost:4242"
+  domain := "http://localhost:3000"
   params := &stripe.CheckoutSessionCreateParams{
     CustomerEmail: stripe.String("customer@example.com"),
     SubmitType: stripe.String("donate"),
@@ -545,7 +557,7 @@ $stripeSecretKey = '<<YOUR_SECRET_KEY>>';
     },
     Mode: {{CHECKOUT_MODE}},
     SuccessURL: stripe.String(domain + "/success.html"),
-    SuccessURL: stripe.String(domain + "?success=true"),
+    SuccessURL: stripe.String(domain + "/checkout?success=true"),
     AutomaticTax: &stripe.CheckoutSessionCreateAutomaticTaxParams{Enabled: stripe.Bool(true)},
     CustomerCreation: stripe.String(stripe.CheckoutSessionCustomerCreationAlways),
     // Provide the Customer ID (for example, cus_1234) for an existing customer to associate it with this session
@@ -567,6 +579,8 @@ require github.com/stripe/stripe-go/v86 v86.4.0
     // You can also find your test secret API key at https://dashboard.stripe.com/test/apikeys.
     // Don't put any keys in code. See https://docs.stripe.com/keys-best-practices.
     StripeClient client = new StripeClient("<<YOUR_SECRET_KEY>>");
+        String YOUR_DOMAIN = "http://localhost:4242";
+        String YOUR_DOMAIN = "http://localhost:3000";
         SessionCreateParams params =
           SessionCreateParams.builder()
             .setCustomerEmail("customer@example.com")
@@ -579,7 +593,7 @@ require github.com/stripe/stripe-go/v86 v86.4.0
                 .build())
             .setMode({{CHECKOUT_MODE}})
             .setSuccessUrl(YOUR_DOMAIN + "/success.html")
-            .setSuccessUrl(YOUR_DOMAIN + "?success=true")
+            .setSuccessUrl(YOUR_DOMAIN + "/checkout?success=true")
             .setAutomaticTax(
               SessionCreateParams.AutomaticTax.builder()
                 .setEnabled(true)

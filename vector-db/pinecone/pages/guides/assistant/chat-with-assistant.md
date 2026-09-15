@@ -29,7 +29,7 @@ The [standard chat interface](/reference/api/latest/assistant/chat_assistant) ca
 The following example sends a message and requests a default response:
 
 <Note>
-  The `content` parameter in the request cannot be empty.
+  The `content` parameter in the request can't be empty.
 </Note>
 
 <CodeGroup>
@@ -148,7 +148,7 @@ Streaming responses can improve perceived latency by allowing users to see conte
 The following example sends a message and requests a streaming response:
 
 <Note>
-  The `content` parameter in the request cannot be empty.
+  The `content` parameter in the request can't be empty.
 </Note>
 
 <CodeGroup>
@@ -237,7 +237,7 @@ There are four types of messages in a streaming chat response:
 The following example uses the `json_response` parameter to instruct the assistant to return the response as JSON key-value pairs. This is useful if you need to parse the response programmatically.
 
 <Note>
-  JSON response cannot be used with the `stream` parameter.
+  JSON response can't be used with the `stream` parameter.
 </Note>
 
 <CodeGroup>
@@ -752,7 +752,7 @@ The example will return up to 10 snippets and each snippet will be up to 2500 to
 
 Temperature is a parameter that controls the randomness of a model's predictions during text generation. Lower temperatures (\~0.0) yield more consistent, predictable answers, while higher temperatures increase the model's explanatory power and is generally better for creative tasks.
 
-To control the sampling temperature for a model, set the `temperarture` parameter in the request. If a model does not support a temperature parameter, the parameter is ignored.
+To control the sampling temperature for a model, set the `temperarture` parameter in the request. If a model doesn't support a temperature parameter, the parameter is ignored.
 
 <CodeGroup>
   ```python Python theme={null}

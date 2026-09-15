@@ -12,15 +12,23 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
 ### Getting started
 
-* [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot)
+* [About GitHub Copilot](/en/copilot/get-started/about-github-copilot)
 
-  Learn what Copilot is and what you can do with it.
+  Understand how GitHub Copilot helps you ship software faster, how it works, and how to get access.
 
 * [Quickstart for using GitHub Copilot on GitHub.com](/en/copilot/get-started/quickstart-for-using-github-copilot-on-github-com)
 
   Understand code and work faster by asking questions and assigning coding tasks to Copilot cloud agent without leaving GitHub.
 
 ## Articles
+
+* [About GitHub Copilot](/en/copilot/get-started/about-github-copilot)
+
+  Understand how GitHub Copilot helps you ship software faster, how it works, and how to get access.
+
+* [Where to use GitHub Copilot](/en/copilot/get-started/where-to-use-github-copilot)
+
+  Choose where to work with GitHub Copilot, from understanding an issue to writing, reviewing, testing, and shipping code.
 
 * [Quickstart for using GitHub Copilot on GitHub.com](/en/copilot/get-started/quickstart-for-using-github-copilot-on-github-com)
 
@@ -42,17 +50,9 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   In this tutorial, you'll use the Copilot SDK to build a command-line assistant. You'll start with the basics, add streaming responses, then add custom tools - giving Copilot the ability to call your code.
 
-* [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot)
-
-  Learn what Copilot is and what you can do with it.
-
 * [Plans for GitHub Copilot](/en/copilot/get-started/plans)
 
   Discover the plans available for Copilot.
-
-* [GitHub Copilot features](/en/copilot/get-started/features)
-
-  GitHub Copilot offers a suite of features for users and administrators.
 
 * [Best practices for using GitHub Copilot](/en/copilot/get-started/best-practices)
 

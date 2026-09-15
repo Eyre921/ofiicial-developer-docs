@@ -6,7 +6,7 @@ path: guides/indexes/pods/migrate-a-pod-based-index-to-serverless
 
 Migrate a Pinecone pod-based index to serverless for automatic scaling, better performance, and usage-based pricing with no minimum spend commitment.
 
-This page shows you how to migrate a pod-based index to [serverless](/guides/core-concepts/architecture). The migration process is free; the standard costs of upserting records to a new serverless index are not applied.
+This page shows you how to migrate a pod-based index to [serverless](/guides/core-concepts/architecture). The migration process is free; the standard costs of upserting records to a new serverless index aren't applied.
 
 <Warning>
   In most cases, migrating to serverless reduces costs significantly. For read-heavy workloads with more than 1 query per second and for indexes with many records in a single namespace, consider building your serverless indexes on [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview).
@@ -47,7 +47,7 @@ Before migrating, consider [contacting Pinecone Support](/troubleshooting/contac
 
 ## 2. Prepare for migration
 
-Migrating a pod-based index to serverless can take anywhere from a few minutes to several hours, depending on the size of the index. During that time, you can continue reading from the pod-based index. However, all [upserts](/guides/index-data/upsert-data), [updates](/guides/manage-data/update-data), and [deletes](/guides/manage-data/delete-data) to the pod-based index will not automatically be reflected in the new serverless index, so be sure to prepare in one of the following ways:
+Migrating a pod-based index to serverless can take anywhere from a few minutes to several hours, depending on the size of the index. During that time, you can continue reading from the pod-based index. However, all [upserts](/guides/index-data/upsert-data), [updates](/guides/manage-data/update-data), and [deletes](/guides/manage-data/delete-data) to the pod-based index won't automatically be reflected in the new serverless index, so be sure to prepare in one of the following ways:
 
 * **Pause write traffic:** If downtime is acceptable, pause traffic to the pod-based index before starting migration. After migration, you will start sending traffic to the serverless index.
 
@@ -62,7 +62,7 @@ Migrating a pod-based index to serverless can take anywhere from a few minutes t
        <img />
 
        <Note>
-         The dropdown will not display **Migrate to serverless** if the index has any of the listed [limitations](#limitations).
+         The dropdown won't display **Migrate to serverless** if the index has any of the listed [limitations](#limitations).
        </Note>
 
     2. To save the legacy index and create a new serverless index now, follow the prompts.
@@ -145,9 +145,9 @@ Migrating a pod-based index to serverless can take anywhere from a few minutes t
 
     2. Use the [`create_index`](/reference/api/2026-04/control-plane/create_index) operation to create a new serverless index from the collection:
 
-       * Use API verison `2025-04` or later. Creating a serverless index from a collection is not supported in earlier versions.
-       * Set `dimension` to the same dimension as the pod-based index. Changing the dimension is not supported.
-       * Set `cloud` to the cloud where the pod-based index is hosted. Migrating to a different cloud is not supported.
+       * Use API verison `2025-04` or later. Creating a serverless index from a collection isn't supported in earlier versions.
+       * Set `dimension` to the same dimension as the pod-based index. Changing the dimension isn't supported.
+       * Set `cloud` to the cloud where the pod-based index is hosted. Migrating to a different cloud isn't supported.
        * Set `source_collection` to the name of the collection you created in step 1.
 
        <CodeGroup>

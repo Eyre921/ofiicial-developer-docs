@@ -12,7 +12,7 @@ path: docs/getting-started-with-the-streaming-test-suite
 
 If you're looking to get started with Deepgram's audio streaming capabilities, this is the perfect place to begin. The starter kit provides sample code that allows you to easily stream basic audio to Deepgram, ensuring that you have the necessary foundation to build for your unique use case.
 
-![image of terminal showing the streaming test suite transcribing the Preamble](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/ff9abc7ceaa26f49326985b3adb516f608970707ca410601a91e2c17e9869b86/images/d2a21fd-intro.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260914%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260914T233129Z&X-Amz-Expires=604800&X-Amz-Signature=ff19eae30aadd8a2d1f3666af0d7aa4c06dc0b259f236c14181d5c4a122b9bb2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![image of terminal showing the streaming test suite transcribing the Preamble](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/ff9abc7ceaa26f49326985b3adb516f608970707ca410601a91e2c17e9869b86/images/d2a21fd-intro.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260915%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260915T113105Z&X-Amz-Expires=604800&X-Amz-Signature=f16839620f6d63c2ee086f1bbc231d7a6f329de55372288d1e2d36aa7e3a8056&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Once you've tested out the basics of streaming audio to Deepgram, you'll move on to using an included mock server for testing. This allows you to focus on getting your audio and client code right. Once you're confident that your audio stream is configured correctly and you're streaming the audio you expect, you can easily swap to sending that audio to Deepgram's service.
 
@@ -163,7 +163,7 @@ The starter kit comes with a raw audio file, `preamble.raw` , that you can use t
 
 When you run the mock client, you should see output confirming that the mock server has begun to receive your audio.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/b319f770dcd51de6137edf5b0d4ff0752c1bd75240833a836d130bb4d06d4d40/images/a2abd56-server_messages_1.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260914%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260914T233129Z&X-Amz-Expires=604800&X-Amz-Signature=65c2f5d49450242464c486561f69edf3a1ea1fb35168d7986477164baf497456&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/b319f770dcd51de6137edf5b0d4ff0752c1bd75240833a836d130bb4d06d4d40/images/a2abd56-server_messages_1.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260915%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260915T113105Z&X-Amz-Expires=604800&X-Amz-Signature=c36dfb0ab4302a210a0983856709e7c15bd61accaf457a15f5c0256ac3225358&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 For a list of valid encodings, see [our endcoding documentation](/docs/encoding/).
 
@@ -171,7 +171,7 @@ For a list of valid encodings, see [our endcoding documentation](/docs/encoding/
 
 At the end of an audio stream, the mock server saves all audio data that was sent in a RAW file. It will return the filename to you at the end of the stream.
 
-![image of terminal showing message that websocket is receiving data](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/0757e64945d34fa704a1848fa6a4e8ebd68820214f73c34c0a3fa5ba1b2f16e3/images/6599238-server_messages_2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260914%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260914T233129Z&X-Amz-Expires=604800&X-Amz-Signature=7f66fedc1000ee15f6cc4a4210141e3df40a604861acef944ed172159aad7997&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![image of terminal showing message that websocket is receiving data](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/0757e64945d34fa704a1848fa6a4e8ebd68820214f73c34c0a3fa5ba1b2f16e3/images/6599238-server_messages_2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260915%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260915T113105Z&X-Amz-Expires=604800&X-Amz-Signature=66e39b30238bc77f84b8c8b7c7eaa7be848a2d3380b2fec999bf93e4d4c3b3f8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 You need to ensure the audio the server received is the audio you intended to send. To validate this, open this file in a program like Audacity (specifying necessary parameters like the encoding and sample rate) and try to play it back. You should be able to listen to your audio and verify it's correct.
 
@@ -179,11 +179,11 @@ You need to ensure the audio the server received is the audio you intended to se
 
 Once you verify your audio is correct, you can try streaming that audio to Deepgram. To do so, simply swap the websocket URL in `client.py` to point to Deepgram—the correct URL is left in a comment for you.
 
-![image of terminal showing lines to edit to connect to Deepgram](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/e3ecfa1d161af8afb7bd88f38b4bff6d6fa0f13e1f8c219b296c7061d75b090c/images/f1e0887-test_dg_1.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260914%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260914T233129Z&X-Amz-Expires=604800&X-Amz-Signature=3b117a7b7206b3be2186b4d1b4b9858619575afb798730f45327453d321b23d3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![image of terminal showing lines to edit to connect to Deepgram](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/e3ecfa1d161af8afb7bd88f38b4bff6d6fa0f13e1f8c219b296c7061d75b090c/images/f1e0887-test_dg_1.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260915%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260915T113105Z&X-Amz-Expires=604800&X-Amz-Signature=09db4c182b8226223ca01b4b0c05917d7b0b7efded70c0df7c42d5fae4250dc3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Don't forget add your DG API key to the websocket headers where it says `YOUR_DG_API_KEY`.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/7f8c6fd38e092a296870b5cfa639da2085c864cb8e08d340c52f00ec50783d86/images/11df93a-test_dg_2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260914%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260914T233129Z&X-Amz-Expires=604800&X-Amz-Signature=443a0fb39be8d91276e300e0737d6460e996ff2ed5ecfe76543b07419e27df8e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/7f8c6fd38e092a296870b5cfa639da2085c864cb8e08d340c52f00ec50783d86/images/11df93a-test_dg_2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260915%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260915T113105Z&X-Amz-Expires=604800&X-Amz-Signature=e7a67654b926614b7d52745a9ed8f72fb56cbb604b23cd930c59bc4c077206e3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 If you were able to stream to the mock server, and have validated your audio sounds correct, you should be able to seamlessly start receiving transcriptions from Deepgram.
 

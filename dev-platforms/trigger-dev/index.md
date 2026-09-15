@@ -1,6 +1,6 @@
 # dev-platforms/trigger-dev 文档索引
 
-> 共 320 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 324 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -21,6 +21,7 @@
 - `docs/ai-chat/lifecycle-hooks` — [Lifecycle hooks](pages/docs/ai-chat/lifecycle-hooks.md) · [原文](https://trigger.dev/docs/ai-chat/lifecycle-hooks)
 - `docs/ai-chat/mcp` — [MCP Server](pages/docs/ai-chat/mcp.md) · [原文](https://trigger.dev/docs/ai-chat/mcp)
 - `docs/ai-chat/migrating-from-a-route-handler` — [Migrate from an AI SDK route handler](pages/docs/ai-chat/migrating-from-a-route-handler.md) · [原文](https://trigger.dev/docs/ai-chat/migrating-from-a-route-handler)
+- `docs/ai-chat/migrating-from-hydrate-messages` — [Migrate from hydrateMessages to transcript storage](pages/docs/ai-chat/migrating-from-hydrate-messages.md) · [原文](https://trigger.dev/docs/ai-chat/migrating-from-hydrate-messages)
 - `docs/ai-chat/overview` — [AI Agents](pages/docs/ai-chat/overview.md) · [原文](https://trigger.dev/docs/ai-chat/overview)
 - `docs/ai-chat/patterns/branching-conversations` — [Branching conversations](pages/docs/ai-chat/patterns/branching-conversations.md) · [原文](https://trigger.dev/docs/ai-chat/patterns/branching-conversations)
 - `docs/ai-chat/patterns/code-sandbox` — [Code execution sandbox](pages/docs/ai-chat/patterns/code-sandbox.md) · [原文](https://trigger.dev/docs/ai-chat/patterns/code-sandbox)
@@ -45,6 +46,7 @@
 - `docs/ai-chat/side-channels` — [Side channels](pages/docs/ai-chat/side-channels.md) · [原文](https://trigger.dev/docs/ai-chat/side-channels)
 - `docs/ai-chat/testing` — [Testing](pages/docs/ai-chat/testing.md) · [原文](https://trigger.dev/docs/ai-chat/testing)
 - `docs/ai-chat/tools` — [Tools](pages/docs/ai-chat/tools.md) · [原文](https://trigger.dev/docs/ai-chat/tools)
+- `docs/ai-chat/transcript-storage` — [Transcript storage](pages/docs/ai-chat/transcript-storage.md) · [原文](https://trigger.dev/docs/ai-chat/transcript-storage)
 - `docs/ai-chat/types` — [Types](pages/docs/ai-chat/types.md) · [原文](https://trigger.dev/docs/ai-chat/types)
 - `docs/ai-chat/upgrade-guide` — [Upgrade Guide: prerelease → Sessions-as-run-manager](pages/docs/ai-chat/upgrade-guide.md) · [原文](https://trigger.dev/docs/ai-chat/upgrade-guide)
 - `docs/ai/observability` — [LLM observability](pages/docs/ai/observability.md) · [原文](https://trigger.dev/docs/ai/observability)
@@ -108,12 +110,14 @@
 - `docs/guides/community/rate-limiter` — [Rate limiter](pages/docs/guides/community/rate-limiter.md) · [原文](https://trigger.dev/docs/guides/community/rate-limiter)
 - `docs/guides/community/sveltekit` — [SvelteKit setup guide](pages/docs/guides/community/sveltekit.md) · [原文](https://trigger.dev/docs/guides/community/sveltekit)
 - `docs/guides/example-projects/anchor-browser-web-scraper` — [Automated website monitoring with Anchor Browser](pages/docs/guides/example-projects/anchor-browser-web-scraper.md) · [原文](https://trigger.dev/docs/guides/example-projects/anchor-browser-web-scraper)
+- `docs/guides/example-projects/ask-trigger-chat-agent` — [Ask Trigger chat agent](pages/docs/guides/example-projects/ask-trigger-chat-agent.md) · [原文](https://trigger.dev/docs/guides/example-projects/ask-trigger-chat-agent)
 - `docs/guides/example-projects/batch-llm-evaluator` — [Next.js Batch LLM Evaluator](pages/docs/guides/example-projects/batch-llm-evaluator.md) · [原文](https://trigger.dev/docs/guides/example-projects/batch-llm-evaluator)
 - `docs/guides/example-projects/claude-changelog-generator` — [Changelog generator using Claude Agent SDK](pages/docs/guides/example-projects/claude-changelog-generator.md) · [原文](https://trigger.dev/docs/guides/example-projects/claude-changelog-generator)
 - `docs/guides/example-projects/claude-github-wiki` — [Claude GitHub wiki](pages/docs/guides/example-projects/claude-github-wiki.md) · [原文](https://trigger.dev/docs/guides/example-projects/claude-github-wiki)
 - `docs/guides/example-projects/claude-thinking-chatbot` — [Claude 3.7 thinking chatbot](pages/docs/guides/example-projects/claude-thinking-chatbot.md) · [原文](https://trigger.dev/docs/guides/example-projects/claude-thinking-chatbot)
 - `docs/guides/example-projects/clickhouse-chat-agent` — [ClickHouse chat agent](pages/docs/guides/example-projects/clickhouse-chat-agent.md) · [原文](https://trigger.dev/docs/guides/example-projects/clickhouse-chat-agent)
 - `docs/guides/example-projects/cursor-background-agent` — [Background Cursor agent using the Cursor CLI](pages/docs/guides/example-projects/cursor-background-agent.md) · [原文](https://trigger.dev/docs/guides/example-projects/cursor-background-agent)
+- `docs/guides/example-projects/elevenlabs-voice-agent` — [ElevenLabs Voice agent](pages/docs/guides/example-projects/elevenlabs-voice-agent.md) · [原文](https://trigger.dev/docs/guides/example-projects/elevenlabs-voice-agent)
 - `docs/guides/example-projects/human-in-the-loop-workflow` — [Human-in-the-loop workflow with ReactFlow and Trigger.dev waitpoint tokens](pages/docs/guides/example-projects/human-in-the-loop-workflow.md) · [原文](https://trigger.dev/docs/guides/example-projects/human-in-the-loop-workflow)
 - `docs/guides/example-projects/mastra-agents-with-memory` — [Mastra agents with memory sharing + Trigger.dev task orchestration](pages/docs/guides/example-projects/mastra-agents-with-memory.md) · [原文](https://trigger.dev/docs/guides/example-projects/mastra-agents-with-memory)
 - `docs/guides/example-projects/meme-generator-human-in-the-loop` — [Meme generator with human-in-the-loop approval](pages/docs/guides/example-projects/meme-generator-human-in-the-loop.md) · [原文](https://trigger.dev/docs/guides/example-projects/meme-generator-human-in-the-loop)
@@ -183,7 +187,7 @@
 - `docs/how-it-works` — [How Trigger.dev works](pages/docs/how-it-works.md) · [原文](https://trigger.dev/docs/how-it-works)
 - `docs/how-to-reduce-your-spend` — [How to reduce your spend](pages/docs/how-to-reduce-your-spend.md) · [原文](https://trigger.dev/docs/how-to-reduce-your-spend)
 - `docs/idempotency` — [Idempotency](pages/docs/idempotency.md) · [原文](https://trigger.dev/docs/idempotency)
-- `docs/introduction` — [Welcome to the Trigger.dev docs](pages/docs/introduction.md) · [原文](https://trigger.dev/docs/introduction)
+- `docs/introduction` — [Trigger.dev docs](pages/docs/introduction.md) · [原文](https://trigger.dev/docs/introduction)
 - `docs/limits` — [Limits](pages/docs/limits.md) · [原文](https://trigger.dev/docs/limits)
 - `docs/logging` — [Logging, tracing & metrics](pages/docs/logging.md) · [原文](https://trigger.dev/docs/logging)
 - `docs/machines` — [Machines](pages/docs/machines.md) · [原文](https://trigger.dev/docs/machines)

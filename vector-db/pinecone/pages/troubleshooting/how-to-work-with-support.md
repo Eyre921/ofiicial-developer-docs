@@ -22,7 +22,7 @@ Instead of creating tickets via email, use the [Help center](https://app.pinecon
 
 ## Select an appropriate severity
 
-Pinecone Support reserves the right to change the ticket severity after our initial response and assessment of the case. Note that a Sev-1 ticket indicates that your production environment is completely unavailable, and a Sev-2 ticket indicates that your production environment has degraded performance. If your issue does not involve a production-level usage or application, please refrain from opening Sev-1 or Sev-2 tickets.
+Pinecone Support reserves the right to change the ticket severity after our initial response and assessment of the case. Note that a Sev-1 ticket indicates that your production environment is completely unavailable, and a Sev-2 ticket indicates that your production environment has degraded performance. If your issue doesn't involve a production-level usage or application, please refrain from opening Sev-1 or Sev-2 tickets.
 
 ## Provide the exact names of impacted indexes and projects
 

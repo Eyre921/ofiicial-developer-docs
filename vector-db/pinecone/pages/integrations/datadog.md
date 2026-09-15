@@ -26,7 +26,7 @@ Follow these steps to monitor a Pinecone project with Datadog:
 2. Go to the **Configure** tab.
 3. Click **+ Add New**.
 4. Enter a project name to identify your project in Datadog.
-5. Do not select an environment. This is a legacy setting.
+5. Don't select an environment. This is a legacy setting.
 6. Enter an [API key](/guides/projects/understanding-projects#api-keys) for the Pinecone project you want to monitor.
 7. Enter the [project ID](/guides/projects/understanding-projects#project-ids) of the Pinecone project you want to monitor.
 8. Save the configuration.

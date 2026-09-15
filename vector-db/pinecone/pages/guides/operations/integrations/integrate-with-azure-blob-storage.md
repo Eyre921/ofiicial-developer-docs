@@ -27,7 +27,7 @@ Pinecone uses a service principal to access your Azure Blob Storage container.
 
    When creating your app registration:
 
-   * Do not specify a **Redirect URI**.
+   * Don't specify a **Redirect URI**.
    * Copy the **Application (client) ID** and the **Directory (tenant) ID**. You'll use these values when adding a storage integration in Pinecone.
 
 2. [Create a client secret](https://learn.microsoft.com/entra/identity-platform/how-to-add-credentials?tabs=client-secret) for the service principal.

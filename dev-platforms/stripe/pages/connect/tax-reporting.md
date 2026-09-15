@@ -16,7 +16,7 @@ Stripe [Connect](https://stripe.com/connect) allows platforms to provide a seaml
 
 Stripe issues 1099-K forms for connected accounts where Stripe controls the pricing or for transactions where the connected account pays fees directly to Stripe. For all other transactions where the platform controls the pricing, the platform is responsible for filing any relevant 1099 forms.
 
-In other words, Stripe issues 1099-K forms for your connected accounts that have transactions where [`controller.fees.payer`](https://docs.stripe.com/api/accounts/object.md#account_object-controller-fees-payer) equals `account` or where [`controller.fees.payer`](https://docs.stripe.com/api/accounts/object.md#account_object-controller-fees-payer) equals `application_unified_accounts_beta` and the connected account pays the processing fees.
+In other words, Stripe issues 1099-K forms for your connected accounts that have transactions where [controller.fees.payer](https://docs.stripe.com/api/accounts/object.md#account_object-controller-fees-payer) equals `account` or where [controller.fees.payer](https://docs.stripe.com/api/accounts/object.md#account_object-controller-fees-payer) equals `application_unified_accounts_beta` and the connected account pays the processing fees.
 
 Stripe doesn’t issue a 1099-K to your connected account in the following scenarios:
 

@@ -49,13 +49,13 @@ Successful Response
   - `current_overage` (object, required) — The current usage-based overage cost.
     - `amount` (string, required)
     - `currency` (enum, required)
-      - Allowed values: `usd`, `eur`, `inr`, `pln`
+      - Allowed values: `usd`, `eur`, `inr`, `pln`, `gbp`
   - `status` (enum, required) — The status of the user's subscription.
     - Allowed values: `trialing`, `active`, `incomplete`, `past_due`, `free`, `free_disabled`
   - `next_character_count_reset_unix` (integer, optional, nullable) — The Unix timestamp of the next character count reset.
   - `max_voice_add_edits` (integer, optional, nullable) — The maximum number of voice add/edits allowed for the user.
   - `currency` (enum, optional, nullable) — The currency of the user's subscription.
-    - Allowed values: `usd`, `eur`, `inr`, `pln`
+    - Allowed values: `usd`, `eur`, `inr`, `pln`, `gbp`
   - `billing_period` (enum, optional, nullable) — The billing period of the user's subscription.
     - Allowed values: `monthly_period`, `3_month_period`, `6_month_period`, `annual_period`
   - `character_refresh_period` (enum, optional, nullable) — The character refresh period of the user's subscription.

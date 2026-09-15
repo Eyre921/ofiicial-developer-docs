@@ -16,7 +16,7 @@ One of the first steps towards building a production-ready Pinecone index is con
 * Ensure that you have properly [configured user access](/guides/projects/understanding-projects#project-roles) to the Pinecone console, so that only those users who need to access the production index can do so.
 * Ensure that you have properly configured access through the API by [managing API keys](/guides/projects/manage-api-keys) and using API key permissions.
 
-Consider how best to [manage the API keys](/guides/projects/manage-api-keys) associated with your production project. In order to [make calls to the Pinecone API](/guides/get-started/quickstart), you must provide a valid API key for the relevant Pinecone project.
+Consider how best to [manage the API keys](/guides/projects/manage-api-keys) associated with your production project. To [make calls to the Pinecone API](/guides/get-started/quickstart), you must provide a valid API key for the relevant Pinecone project.
 
 ## Enforce security
 
@@ -39,7 +39,7 @@ Follow these best practices when designing and populating your indexes:
 * **Data ingestion**: For large datasets (10M+ records), [import from object storage](/guides/index-data/import-data) for the most efficient and cost-effective ingestion. For ongoing ingestion, [upsert in batches](/guides/index-data/upsert-data#upsert-in-batches) to optimize speed and efficiency. See the [data ingestion overview](/guides/index-data/data-ingestion-overview) for details.
 * **Dimensionality**: Consider the dimensionality of your vectors. Higher dimensions can offer more accuracy but require more resources.
 * **Data modeling**: Use [structured IDs](/guides/index-data/data-modeling#use-structured-ids) (e.g., `document_id#chunk_number`) for efficient operations. Design [metadata](/guides/index-data/data-modeling#include-metadata) to support filtering, linking related chunks, and traceability. See the [data modeling guide](/guides/index-data/data-modeling) for details.
-* **Namespaces**: When indexing, try to [use namespaces to keep your data among tenants separate](/guides/index-data/implement-multitenancy), and do not use multiple indexes for this purpose. Namespaces are more efficient and more affordable in the long run.
+* **Namespaces**: When indexing, try to [use namespaces to keep your data among tenants separate](/guides/index-data/implement-multitenancy), and don't use multiple indexes for this purpose. Namespaces are more efficient and more affordable in the long run.
 
 ## Understand database limits
 
@@ -51,7 +51,7 @@ Architect your application to work within Pinecone's [database limits](/referenc
 * **Plan limits**: The Starter and Builder plans have monthly read/write unit limits. Upgrade to Standard or Enterprise for unlimited read/write units and higher throughput needs.
 
 <Note>
-  Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) are not subject to read unit limits for query, fetch, and list operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
+  Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, and list operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
 </Note>
 
 ## Test your query results
@@ -63,13 +63,13 @@ Before you move your index to production, make sure that your index is returning
 Before serving production workloads, optimize your Pinecone implementation:
 
 * **Increase search relevance**: Use techniques like reranking, metadata filtering, hybrid search, and chunking strategies to improve result quality. See [increase search relevance](/guides/optimize/increase-relevance) for details.
-* **Increase throughput**: Import from object storage, upsert in batches, use parallel operations, and leverage Python SDK optimizations like gRPC. See [increase throughput](/guides/optimize/increase-throughput) for details.
+* **Increase throughput**: Import from object storage, upsert in batches, use parallel operations, and use Python SDK optimizations like gRPC. See [increase throughput](/guides/optimize/increase-throughput) for details.
 * **Decrease latency**: Use namespaces, filter by metadata, target indexes by host, reuse connections, and deploy in the same cloud region as your index. See [decrease latency](/guides/optimize/decrease-latency) for details.
 * **Save on costs**: Prefer bulk import for large initial loads, use namespaces for multitenancy, and avoid unnecessary data in query responses. See [save on costs](/guides/optimize/save-on-costs) for details.
 
 ## Backup up your indexes
 
-In order to enable long-term retention, compliance archiving, and deployment of new indexes, consider backing up your production indexes by [creating a backup or collection](/guides/manage-data/back-up-an-index).
+To enable long-term retention, compliance archiving, and deployment of new indexes, consider backing up your production indexes by [creating a backup or collection](/guides/manage-data/back-up-an-index).
 
 ## Implement error handling
 

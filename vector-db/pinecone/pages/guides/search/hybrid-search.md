@@ -9,12 +9,12 @@ Combine keyword and semantic retrieval in Pinecone with a text-match filter on a
 Hybrid search combines a keyword signal with a semantic signal so a single query benefits from both. Keyword retrieval (full-text BM25 or sparse vectors) matches specific tokens like product codes, error strings, and names. Semantic retrieval (dense vectors) matches on meaning, so a query still finds an answer phrased with different words. Each method misses what the other catches, and hybrid search closes that gap.
 
 <Note>
-  "Hybrid" is not one fixed method. Qualify what you are combining: full-text (BM25) plus dense, sparse plus dense, or a keyword filter plus dense. This page uses those qualifiers throughout.
+  "Hybrid" isn't one fixed method. Qualify what you are combining: full-text (BM25) plus dense, sparse plus dense, or a keyword filter plus dense. This page uses those qualifiers throughout.
 </Note>
 
 ## Combine signals
 
-Pinecone gives you three ways to combine a keyword signal with a dense signal. [Metadata filtering](/guides/search/filter-by-metadata) is a separate lever that composes with all of them: it narrows the candidate pool before ranking, so an out-of-scope document cannot compete for a result slot.
+Pinecone gives you three ways to combine a keyword signal with a dense signal. [Metadata filtering](/guides/search/filter-by-metadata) is a separate lever that composes with all of them: it narrows the candidate pool before ranking, so an out-of-scope document can't compete for a result slot.
 
 | Pattern                               | How it works                                                                                                                                                                                                                                      | When to use it                                                                                     |
 | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
@@ -22,7 +22,7 @@ Pinecone gives you three ways to combine a keyword signal with a dense signal. [
 | Client-side fusion                    | Run a keyword search and a dense search separately, then merge the two ranked lists with [reciprocal rank fusion (RRF)](/guides/search/reciprocal-rank-fusion).                                                                                   | When you want both signals to contribute to the ranking, not just to filter. Works on either API.  |
 | Server-side combination (Vectors API) | Store a dense vector and a sparse vector on each record in a single vector index. Pinecone combines both in one query, and you set the dense/sparse balance client-side by scaling the query vectors before you send them (an `alpha` weighting). | Existing vector and records workloads on the Vectors API.                                          |
 
-RRF is a fusion method, not a synonym for hybrid search. It is one way to merge ranked lists, while "hybrid search" is the broader approach of combining signals. See [Reciprocal rank fusion](/guides/search/reciprocal-rank-fusion).
+RRF is a fusion method, not a synonym for hybrid search. It's one way to merge ranked lists, while "hybrid search" is the broader approach of combining signals. See [Reciprocal rank fusion](/guides/search/reciprocal-rank-fusion).
 
 ## Choose an approach
 

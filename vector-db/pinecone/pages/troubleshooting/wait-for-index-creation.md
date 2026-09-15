@@ -10,7 +10,7 @@ Pinecone index creation involves several different subsystems, including one whi
 
 This means that when a request call to [`create_index()`](/reference/api/latest/control-plane/create_index) is made, what's actually happening is that the job is being submitted to the queue to be completed. We do it this way for several reasons, including enforcing separation between the control and data planes.
 
-If you need your application to wait for the index to be created before continuing to its next step, there is a way to ensure this happens, though. [`describe_index()`](/reference/api/latest/control-plane/describe_index) returns data about the state of the index, including whether it is ready to accept data. You simply call that method until it returns a 200 status code and the status object reports that the index is ready. Because the return is a tuple, we just have to access the slice containing the status object and check the boolean state of the ready variable. This is one possible method of doing so using the Python SDK:
+If you need your application to wait for the index to be created before continuing to its next step, there is a way to ensure this happens, though. [`describe_index()`](/reference/api/latest/control-plane/describe_index) returns data about the state of the index, including whether it's ready to accept data. You simply call that method until it returns a 200 status code and the status object reports that the index is ready. Because the return is a tuple, we just have to access the slice containing the status object and check the boolean state of the ready variable. This is one possible method of doing so using the Python SDK:
 
 ```python theme={null}
 import pinecone

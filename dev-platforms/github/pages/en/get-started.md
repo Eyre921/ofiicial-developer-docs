@@ -20,15 +20,15 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [Set up Git](/en/get-started/git-basics/set-up-git)
 
-  At the heart of GitHub is an open-source version control system (VCS) called Git. Git is responsible for everything GitHub-related that happens locally on your computer.
+  <p>At the heart of GitHub is an open-source version control system (VCS) called Git. Git is responsible for everything GitHub-related that happens locally on your computer.</p>
 
 * [Hello World](/en/get-started/using-github/hello-world)
 
-  Follow this Hello World exercise to learn GitHub's pull request workflow.
+  <p>Follow this Hello World exercise to learn GitHub's pull request workflow.</p>
 
 * [Getting started with your GitHub account](/en/get-started/onboarding/getting-started-with-your-github-account)
 
-  <p>With a personal account on GitHub, you can import or create repositories, collaborate with others, and connect with the GitHub community.</p>
+  With a personal account on GitHub, you can import or create repositories, collaborate with others, and connect with the GitHub community.
 
 * [GitHub's plans](/en/get-started/learning-about-github/githubs-plans)
 
@@ -36,11 +36,11 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [Quickstart for writing on GitHub](/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/quickstart-for-writing-on-github)
 
-  Learn advanced formatting features by creating a README for your GitHub profile.
+  <p>Learn advanced formatting features by creating a README for your GitHub profile.</p>
 
 * [Finding ways to contribute to open source on GitHub](/en/get-started/exploring-projects-on-github/finding-ways-to-contribute-to-open-source-on-github)
 
-  You can find ways to contribute to open source projects on GitHub that are relevant to you.
+  <p>You can find ways to contribute to open source projects on GitHub that are relevant to you.</p>
 
 ## Links
 

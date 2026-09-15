@@ -10,7 +10,7 @@ Limit metadata indexing in Pinecone to the fields you filter on, to keep index b
   Setting metadata indexing requires the `2026-07` version of the API or later.
 </Note>
 
-Pinecone indexes all metadata fields by default. However, large amounts of metadata can cause slower [index building](/guides/core-concepts/architecture#index-builder) as well as slower [query execution](/guides/core-concepts/architecture#query-executors), particularly when data is not cached in a query executor's memory and local SSD and must be fetched from object storage.
+Pinecone indexes all metadata fields by default. However, large amounts of metadata can cause slower [index building](/guides/core-concepts/architecture#index-builder) as well as slower [query execution](/guides/core-concepts/architecture#query-executors), particularly when data isn't cached in a query executor's memory and local SSD and must be fetched from object storage.
 
 To prevent performance issues due to excessive metadata, you can limit metadata indexing to the fields that you plan to use for [query filtering](/guides/search/filter-by-metadata).
 
@@ -135,7 +135,7 @@ To check which metadata fields are indexed, you can describe the index or namesp
 The response includes the `schema` object with the names of the metadata fields explicitly indexed during index or namespace creation, alongside any search fields declared on the index.
 
 <Note>
-  The response does not include unindexed metadata fields or metadata fields indexed by default.
+  The response doesn't include unindexed metadata fields or metadata fields indexed by default.
 </Note>
 
 <CodeGroup>

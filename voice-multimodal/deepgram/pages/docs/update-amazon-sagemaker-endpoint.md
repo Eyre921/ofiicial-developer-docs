@@ -37,7 +37,7 @@ Because the update is all-at-once, there is no incremental traffic shift, no bak
 
 ## Update an endpoint
 
-If the underlying Model needs to change — for example, a new Marketplace Model Package version, a different ECR image, or new environment variables — create a new SageMaker **Model**. See the AWS CLI and Boto3 examples in [Configure Amazon SageMaker Deployments](/docs/configure-sagemaker-deployments) for how to create a Model. If the Model can be reused, skip this step.
+If the underlying Model needs to change — for example, a new Marketplace Model Package version, a different ECR image, or new environment variables — create a new SageMaker **Model**. See [Deploy with the AWS CLI or Boto3](/docs/deploy-amazon-sagemaker#deploy-with-the-aws-cli-or-boto3) for how to create a Model, and [Configure Amazon SageMaker Deployments](/docs/configure-sagemaker-deployments) for environment variable overrides. If the Model can be reused, skip this step.
 
 Create a new **Endpoint Configuration** that references the Model and uses the same variant name as the existing Endpoint Configuration. The variant name (typically `AllTraffic`) must match for SageMaker to update the Endpoint in place.
 

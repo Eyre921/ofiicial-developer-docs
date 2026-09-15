@@ -63,7 +63,7 @@ You can use the Claude CLI to configure Claude Code to use your assistant's remo
 
 ### Use with Claude Desktop
 
-You can configure Claude Desktop to use your assistant's remote MCP server. However, at this early stage of **remote** MCP server adoption, the Claude Desktop application does not support remote server URLs. In the example below, we work around this by using a local proxy server, [supergateway](https://github.com/supercorp-ai/supergateway), to forward requests to the remote MCP server with your API key.
+You can configure Claude Desktop to use your assistant's remote MCP server. However, at this early stage of **remote** MCP server adoption, the Claude Desktop application doesn't support remote server URLs. In the example below, we work around this by using a local proxy server, [supergateway](https://github.com/supercorp-ai/supergateway), to forward requests to the remote MCP server with your API key.
 
 <Warning>
   [supergateway](https://github.com/supercorp-ai/supergateway) is an open-source third-party tool. Use at your own risk.

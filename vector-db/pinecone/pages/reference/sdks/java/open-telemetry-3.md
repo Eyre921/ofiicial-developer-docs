@@ -339,15 +339,15 @@ Use these values to diagnose performance issues:
 
 ## Limitations
 
-* **Data plane operations only.** Control plane operations (e.g., creating or deleting indexes) are not currently instrumented.
-* **Bulk import operations** are not yet instrumented.
-* **Server duration may be unavailable.** The `getServerDurationMs()` method returns `null` if the `x-pinecone-response-duration-ms` header is not present in the response.
+* **Data plane operations only.** Control plane operations (e.g., creating or deleting indexes) aren't currently instrumented.
+* **Bulk import operations** aren't yet instrumented.
+* **Server duration may be unavailable.** The `getServerDurationMs()` method returns `null` if the `x-pinecone-response-duration-ms` header isn't present in the response.
 * **Synchronous callback.** The listener is called synchronously after the gRPC response is received. Keep implementations lightweight and non-blocking to avoid adding latency to your operations. For heavy processing, queue the metadata for async handling.
-* **Exceptions are swallowed.** Exceptions thrown by the listener are logged but do not affect the operation result.
+* **Exceptions are swallowed.** Exceptions thrown by the listener are logged but don't affect the operation result.
 
 ## Best practices
 
 * **Keep listeners lightweight.** Record metrics or enqueue work -- don't do I/O or heavy computation in the callback.
 * **Follow OTel semantic conventions.** Use the attribute names shown in the [recommended metrics](#recommended-metrics) table for interoperability with standard dashboards and tooling.
 * **Monitor both client and server duration.** Tracking both lets you separate Pinecone backend performance from network conditions.
-* **Set alerts on error rates.** Use the `status` and `error.type` attributes to build alerts for elevated error rates across operations.
+* **Set alerts on error rates.** Use the `status` and `error.type` attributes to build alerts for raised error rates across operations.

@@ -137,7 +137,7 @@ print(index.describe_index_stats())
  'total_vector_count': 154}
 ```
 
-You can see from `index.describe_index_stats` that you have a *1024-dimensionality* index populated with *154* embeddings. The `indexFullness` metric tells you how full your index is. At the moment, it is empty. Using the default value of one *p1* pod, you can fit around 750K embeddings before the `indexFullness` reaches capacity. The [Usage Estimator](https://www.pinecone.io/pricing/) can be used to identify the number of pods required for a given number of *n*-dimensional embeddings.
+You can see from `index.describe_index_stats` that you have a *1024-dimensionality* index populated with *154* embeddings. The `indexFullness` metric tells you how full your index is. At the moment, it's empty. Using the default value of one *p1* pod, you can fit around 750K embeddings before the `indexFullness` reaches capacity. The [Usage Estimator](https://www.pinecone.io/pricing/) can be used to identify the number of pods required for a given number of *n*-dimensional embeddings.
 
 ### 4. Semantic search
 
@@ -203,4 +203,4 @@ Of course, youre always free to stop using our services at any time. If you do s
 
 ```
 
-The semantic search pipeline with Voyage AI and Pinecone is able to identify the relevant consumer contract documents to answer the user query.
+The semantic search pipeline with Voyage AI and Pinecone can identify the relevant consumer contract documents to answer the user query.

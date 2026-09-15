@@ -109,7 +109,7 @@ If you are on the **Standard plan** with credit/debit card billing and would lik
 After switching, overages are no longer billed—requests that exceed Builder quotas are blocked instead. If you need more capacity, [upgrade back to Standard or Enterprise](/guides/organizations/manage-billing/upgrade-billing-plan) at any time.
 
 <Note>
-  The [Builder plan](https://www.pinecone.io/pricing/) is available with credit/debit card billing only and is not supported through cloud marketplaces.
+  The [Builder plan](https://www.pinecone.io/pricing/) is available with credit/debit card billing only and isn't supported through cloud marketplaces.
 </Note>
 
-If you pay through a cloud marketplace, you cannot switch to the Builder plan at this time. [Contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to be notified when this migration becomes available.
+If you pay through a cloud marketplace, you can't switch to the Builder plan at this time. [Contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to be notified when this migration becomes available.

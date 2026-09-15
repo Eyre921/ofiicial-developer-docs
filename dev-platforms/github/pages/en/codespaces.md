@@ -12,7 +12,7 @@ Create a codespace to start developing in a secure, configurable, and dedicated 
 
 * [Quickstart for GitHub Codespaces](/en/codespaces/quickstart)
 
-  Get started with GitHub Codespaces quickly.
+  <p>Get started with GitHub Codespaces quickly.</p>
 
 * [What are GitHub Codespaces?](/en/codespaces/about-codespaces/what-are-codespaces)
 
@@ -24,7 +24,7 @@ Create a codespace to start developing in a secure, configurable, and dedicated 
 
 * [Creating a codespace for a repository](/en/codespaces/developing-in-a-codespace/creating-a-codespace-for-a-repository)
 
-  You can create a codespace for a branch in a repository to develop online.
+  <p>You can create a codespace for a branch in a repository to develop online.</p>
 
 * [Creating a codespace from a template](/en/codespaces/developing-in-a-codespace/creating-a-codespace-from-a-template)
 

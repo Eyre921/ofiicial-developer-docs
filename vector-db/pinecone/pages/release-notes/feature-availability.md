@@ -16,7 +16,7 @@ The availability phases are used to communicate the maturity and stability of a 
 
 * **Limited availability**: Available to select customers in a subset of regions and providers for production usage.
 
-* **General availability**: Will not change on short notice. Recommended for production usage. Officially [supported by Pinecone](/troubleshooting/pinecone-support-slas) for non-production and production usage.
+* **General availability**: Won't change on short notice. Recommended for production usage. Officially [supported by Pinecone](/troubleshooting/pinecone-support-slas) for non-production and production usage.
 
 * **Deprecated**: Still supported, but no longer under active development, except for critical security fixes. Existing usage will continue to function, but migration following the upgrade guide is strongly recommended. Will be removed in the future at an announced date.
 

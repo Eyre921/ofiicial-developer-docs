@@ -8,7 +8,7 @@ Diagnose why Pinecone embedding values appear changed after upsert, including fl
 
 There are two distinct cases in which you might notice that the values of your embeddings appear different in Pinecone than the floats you upserted.
 
-If you use a pod-based index with `p2` pods, we use quantization to enable the [Pinecone Graph Algorithm.](https://www.pinecone.io/blog/hnsw-not-enough/#:~:text=built%20vector%20databases.-,The%20Pinecone%20Graph%20Algorithm,-In%20order%20to) This is utilized only in `p2` indexes and powers faster query paths and greater QPS capacities.
+If you use a pod-based index with `p2` pods, we use quantization to enable the [Pinecone Graph Algorithm.](https://www.pinecone.io/blog/hnsw-not-enough/#:~:text=built%20vector%20databases.-,The%20Pinecone%20Graph%20Algorithm,-In%20order%20to) This is used only in `p2` indexes and powers faster query paths and greater QPS capacities.
 
 For all serverless and other pod-based indexes, you may see slightly different values in Pinecone for high-precision floats. What’s happening here is a result of the fact that fractions can’t be accurately represented in fixed amounts of memory. Different numbers might be mapped to the same bit representation, according to a standard known as [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754). More specifically, at Pinecone, we use Rust’s `f32` type, which is more commonly known as a `float` in Java, C, C++, and Python.
 

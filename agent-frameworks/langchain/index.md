@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1174 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1178 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -301,6 +301,7 @@
 - `langsmith/javascript/managed-deep-agents-instructions` — [Add instructions to Managed Deep Agents](pages/langsmith/javascript/managed-deep-agents-instructions.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-instructions)
 - `langsmith/javascript/managed-deep-agents-local-development` — [Develop locally with LangSmith Studio](pages/langsmith/javascript/managed-deep-agents-local-development.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-local-development)
 - `langsmith/javascript/managed-deep-agents-mcp-connectors` — [Connect to MCP servers](pages/langsmith/javascript/managed-deep-agents-mcp-connectors.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-mcp-connectors)
+- `langsmith/javascript/managed-deep-agents-mcp-endpoint` — [Connect MCP clients to a Managed Deep Agent](pages/langsmith/javascript/managed-deep-agents-mcp-endpoint.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-mcp-endpoint)
 - `langsmith/javascript/managed-deep-agents-memory` — [Add memory to Managed Deep Agents](pages/langsmith/javascript/managed-deep-agents-memory.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-memory)
 - `langsmith/javascript/managed-deep-agents-middleware` — [Add custom middleware to Managed Deep Agents](pages/langsmith/javascript/managed-deep-agents-middleware.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-middleware)
 - `langsmith/javascript/managed-deep-agents-overview` — [Managed Deep Agents](pages/langsmith/javascript/managed-deep-agents-overview.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-overview)
@@ -412,6 +413,7 @@
 - `langsmith/python/managed-deep-agents-instructions` — [Add instructions to Managed Deep Agents](pages/langsmith/python/managed-deep-agents-instructions.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-instructions)
 - `langsmith/python/managed-deep-agents-local-development` — [Develop locally with LangSmith Studio](pages/langsmith/python/managed-deep-agents-local-development.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-local-development)
 - `langsmith/python/managed-deep-agents-mcp-connectors` — [Connect to MCP servers](pages/langsmith/python/managed-deep-agents-mcp-connectors.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-mcp-connectors)
+- `langsmith/python/managed-deep-agents-mcp-endpoint` — [Connect MCP clients to a Managed Deep Agent](pages/langsmith/python/managed-deep-agents-mcp-endpoint.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-mcp-endpoint)
 - `langsmith/python/managed-deep-agents-memory` — [Add memory to Managed Deep Agents](pages/langsmith/python/managed-deep-agents-memory.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-memory)
 - `langsmith/python/managed-deep-agents-middleware` — [Add custom middleware to Managed Deep Agents](pages/langsmith/python/managed-deep-agents-middleware.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-middleware)
 - `langsmith/python/managed-deep-agents-overview` — [Managed Deep Agents](pages/langsmith/python/managed-deep-agents-overview.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-overview)
@@ -853,6 +855,8 @@
 - `langsmith/smith-api/playground-settings/get-playground-settings` — [Get playground settings](pages/langsmith/smith-api/playground-settings/get-playground-settings.md) · [原文](https://docs.langchain.com/langsmith/smith-api/playground-settings/get-playground-settings)
 - `langsmith/smith-api/playground-settings/list-playground-settings` — [List playground settings](pages/langsmith/smith-api/playground-settings/list-playground-settings.md) · [原文](https://docs.langchain.com/langsmith/smith-api/playground-settings/list-playground-settings)
 - `langsmith/smith-api/playground-settings/update-playground-settings` — [Update playground settings](pages/langsmith/smith-api/playground-settings/update-playground-settings.md) · [原文](https://docs.langchain.com/langsmith/smith-api/playground-settings/update-playground-settings)
+- `langsmith/smith-api/productfeedback/alpha-get-product-feedback` — [[alpha] get product feedback](pages/langsmith/smith-api/productfeedback/alpha-get-product-feedback.md) · [原文](https://docs.langchain.com/langsmith/smith-api/productfeedback/alpha-get-product-feedback)
+- `langsmith/smith-api/productfeedback/alpha-submit-product-feedback` — [[alpha] submit product feedback](pages/langsmith/smith-api/productfeedback/alpha-submit-product-feedback.md) · [原文](https://docs.langchain.com/langsmith/smith-api/productfeedback/alpha-submit-product-feedback)
 - `langsmith/smith-api/prompt-webhooks/create-prompt-webhook` — [Create prompt webhook](pages/langsmith/smith-api/prompt-webhooks/create-prompt-webhook.md) · [原文](https://docs.langchain.com/langsmith/smith-api/prompt-webhooks/create-prompt-webhook)
 - `langsmith/smith-api/prompt-webhooks/delete-prompt-webhook` — [Delete prompt webhook](pages/langsmith/smith-api/prompt-webhooks/delete-prompt-webhook.md) · [原文](https://docs.langchain.com/langsmith/smith-api/prompt-webhooks/delete-prompt-webhook)
 - `langsmith/smith-api/prompt-webhooks/get-prompt-webhook` — [Get prompt webhook](pages/langsmith/smith-api/prompt-webhooks/get-prompt-webhook.md) · [原文](https://docs.langchain.com/langsmith/smith-api/prompt-webhooks/get-prompt-webhook)

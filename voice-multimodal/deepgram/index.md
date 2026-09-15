@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 384 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 388 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -142,6 +142,7 @@
 - `docs/integrate-deepgram-with-zoom` — [Zoom and Deepgram](pages/docs/integrate-deepgram-with-zoom.md) · [原文](https://developers.deepgram.com/docs/integrate-deepgram-with-zoom.md)
 - `docs/intent-recognition` — [Intent Recognition](pages/docs/intent-recognition.md) · [原文](https://developers.deepgram.com/docs/intent-recognition.md)
 - `docs/interim-results` — [Interim Results](pages/docs/interim-results.md) · [原文](https://developers.deepgram.com/docs/interim-results.md)
+- `docs/invoke-sagemaker-endpoint` — [Invoke a Deepgram SageMaker Endpoint](pages/docs/invoke-sagemaker-endpoint.md) · [原文](https://developers.deepgram.com/docs/invoke-sagemaker-endpoint.md)
 - `docs/k8s-troubleshooting` — [Troubleshooting](pages/docs/k8s-troubleshooting.md) · [原文](https://developers.deepgram.com/docs/k8s-troubleshooting.md)
 - `docs/keyterm` — [Keyterm Prompting](pages/docs/keyterm.md) · [原文](https://developers.deepgram.com/docs/keyterm.md)
 - `docs/keywords` — [Keywords](pages/docs/keywords.md) · [原文](https://developers.deepgram.com/docs/keywords.md)
@@ -218,9 +219,11 @@
 - `docs/stt-tagging` — [Tagging STT Requests](pages/docs/stt-tagging.md) · [原文](https://developers.deepgram.com/docs/stt-tagging.md)
 - `docs/stt-troubleshooting-websocket-data-and-net-errors` — [STT Troubleshooting WebSocket, NET, and DATA Errors](pages/docs/stt-troubleshooting-websocket-data-and-net-errors.md) · [原文](https://developers.deepgram.com/docs/stt-troubleshooting-websocket-data-and-net-errors.md)
 - `docs/stt/getting-started` — [Getting Started with Speech to Text](pages/docs/stt/getting-started.md) · [原文](https://developers.deepgram.com/docs/stt/getting-started.md)
+- `docs/subscribe-aws-marketplace` — [Subscribe on AWS Marketplace](pages/docs/subscribe-aws-marketplace.md) · [原文](https://developers.deepgram.com/docs/subscribe-aws-marketplace.md)
 - `docs/summarization` — [Summarization](pages/docs/summarization.md) · [原文](https://developers.deepgram.com/docs/summarization.md)
 - `docs/supported-audio-formats` — [Supported Audio Formats](pages/docs/supported-audio-formats.md) · [原文](https://developers.deepgram.com/docs/supported-audio-formats.md)
 - `docs/supported-entity-types` — [Supported Entity Types](pages/docs/supported-entity-types.md) · [原文](https://developers.deepgram.com/docs/supported-entity-types.md)
+- `docs/supported-products-sagemaker` — [Supported Products](pages/docs/supported-products-sagemaker.md) · [原文](https://developers.deepgram.com/docs/supported-products-sagemaker.md)
 - `docs/terraform-deploy-sagemaker` — [Deploy with Terraform](pages/docs/terraform-deploy-sagemaker.md) · [原文](https://developers.deepgram.com/docs/terraform-deploy-sagemaker.md)
 - `docs/test-amazon-sagemaker-endpoint` — [Validate a Deepgram SageMaker Endpoint](pages/docs/test-amazon-sagemaker-endpoint.md) · [原文](https://developers.deepgram.com/docs/test-amazon-sagemaker-endpoint.md)
 - `docs/text-chunking-for-tts-optimization` — [Text Chunking for TTS REST Optimization](pages/docs/text-chunking-for-tts-optimization.md) · [原文](https://developers.deepgram.com/docs/text-chunking-for-tts-optimization.md)
@@ -238,6 +241,7 @@
 - `docs/text-topic-detection` — [Topic Detection](pages/docs/text-topic-detection.md) · [原文](https://developers.deepgram.com/docs/text-topic-detection.md)
 - `docs/the-deepgram-model-improvement-partnership-program` — [Model Improvement Partnership Program](pages/docs/the-deepgram-model-improvement-partnership-program.md) · [原文](https://developers.deepgram.com/docs/the-deepgram-model-improvement-partnership-program.md)
 - `docs/topic-detection` — [Topic Detection](pages/docs/topic-detection.md) · [原文](https://developers.deepgram.com/docs/topic-detection.md)
+- `docs/troubleshooting-sagemaker` — [Troubleshooting](pages/docs/troubleshooting-sagemaker.md) · [原文](https://developers.deepgram.com/docs/troubleshooting-sagemaker.md)
 - `docs/tts-bit-rate` — [Bit Rate](pages/docs/tts-bit-rate.md) · [原文](https://developers.deepgram.com/docs/tts-bit-rate.md)
 - `docs/tts-callback` — [TTS Callback](pages/docs/tts-callback.md) · [原文](https://developers.deepgram.com/docs/tts-callback.md)
 - `docs/tts-container` — [Container](pages/docs/tts-container.md) · [原文](https://developers.deepgram.com/docs/tts-container.md)

@@ -8,7 +8,7 @@ Distinguish an embedding model problem from a Pinecone recall problem using a si
 
 ## **Step 1: Establish the evaluation framework**
 
-Before starting, establish an evaluation framework for your model and Pinecone recall issues. You will need to query a dataset of at least 10 samples and a source dataset of 100k samples, and choose an evaluation metric that is appropriate for your use case. Pinecone recommends [Evaluation Measures in Information Retrieval](https://www.pinecone.io/learn/offline-evaluation/) as a guide for choosing an evaluation metric. Label the "right answers" in the source dataset for each query.
+Before starting, establish an evaluation framework for your model and Pinecone recall issues. You will need to query a dataset of at least 10 samples and a source dataset of 100k samples, and choose an evaluation metric that's appropriate for your use case. Pinecone recommends [Evaluation Measures in Information Retrieval](https://www.pinecone.io/learn/offline-evaluation/) as a guide for choosing an evaluation metric. Label the "right answers" in the source dataset for each query.
 
 ## **Step 2: Generate embeddings for queries + source dataset with the model**
 

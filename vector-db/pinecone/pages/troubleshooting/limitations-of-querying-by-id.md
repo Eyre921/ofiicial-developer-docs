@@ -6,7 +6,7 @@ path: troubleshooting/limitations-of-querying-by-id
 
 Understand why querying by record ID can omit that ID under ANN search, and when to use fetch or metadata filters to retrieve a specific vector reliably.
 
-When [querying by record ID](/guides/search/semantic-search#search-with-a-record-id), even with a high `topK`, the response is not guaranteed to include the record with the specified ID.
+When [querying by record ID](/guides/search/semantic-search#search-with-a-record-id), even with a high `topK`, the response isn't guaranteed to include the record with the specified ID.
 
 ## Approximate nearest neighbor (ANN)
 

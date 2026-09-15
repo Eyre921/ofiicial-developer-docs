@@ -10,7 +10,7 @@ Choose a Pinecone pod type and size (s1, p1, p2). Legacy guide: pods are unavail
   Customers who sign up for a Standard or Enterprise plan on or after August 18, 2025 cannot create pod-based indexes. Instead, create [serverless indexes](/guides/index-data/create-an-index), and consider using [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for large workloads (millions of records or more, and moderate or high query rates).
 </Warning>
 
-When planning your Pinecone deployment, it is important to understand the approximate storage requirements of your vectors to choose the appropriate pod type and number. This page will give guidance on sizing to help you plan accordingly.
+When planning your Pinecone deployment, it's important to understand the approximate storage requirements of your vectors to choose the appropriate pod type and number. This page will give guidance on sizing to help you plan accordingly.
 
 As with all guidelines, these considerations are general and may not apply to your specific use case. We caution you to always test your deployment and ensure that the index configuration you are using is appropriate to your requirements.
 
@@ -59,13 +59,13 @@ Each dimension on a single vector consumes 4 bytes of memory and storage per dim
 |          |       1024 |                     4,000,000 |
 |          |       1536 |                     2,500,000 |
 
-Pinecone does not support fractional pod deployments, so always round up to the next nearest whole number when choosing your pods.
+Pinecone doesn't support fractional pod deployments, so always round up to the next nearest whole number when choosing your pods.
 
 ## Queries per second (QPS)
 
 QPS speeds are governed by a combination of the [pod type](/guides/indexes/pods/understanding-pod-based-indexes#pod-types) of the index, the number of [replicas](/guides/indexes/pods/scale-pod-based-indexes#add-replicas), and the `top_k` value of queries. The pod type is the primary factor driving QPS, as the different pod types are optimized for different approaches.
 
-The [p1 pods](/guides/index-data/indexing-overview/#p1-pods) are performance-optimized pods which provide very low query latencies, but hold fewer vectors per pod than [s1 pods](/guides/index-data/indexing-overview/#s1-pods). They are ideal for applications with low latency requirements (\<100ms). The s1 pods are optimized for storage and provide large storage capacity and lower overall costs with slightly higher query latencies than p1 pods. They are ideal for very large indexes with moderate or relaxed latency requirements.
+The [p1 pods](/guides/index-data/indexing-overview/#p1-pods) are performance-optimized pods which provide very low query latencies, but hold fewer vectors per pod than [s1 pods](/guides/index-data/indexing-overview/#s1-pods). They're ideal for applications with low latency requirements (\<100ms). The s1 pods are optimized for storage and provide large storage capacity and lower overall costs with slightly higher query latencies than p1 pods. They're ideal for very large indexes with moderate or relaxed latency requirements.
 
 The [p2 pod type](/guides/index-data/indexing-overview/#p2-pods) provides greater query throughput with lower latency. They support 200 QPS per replica and return queries in less than 10ms. This means that query throughput and latency are better than s1 and p1, especially for low dimension vectors (\<512D).
 
@@ -103,7 +103,7 @@ In our first example, we’ll use the demo app for semantic search from our docu
 
 #### Example 2: Facial recognition
 
-For this example, suppose you’re building an application to identify customers using facial recognition for a secure banking app. Facial recognition can work with as few as 128 dimensions, but in this case, because the app will be used for access to finances, we want to make sure we’re certain that the person using it is the right one. We plan for 100M customers and use 2048 dimensions per vector.
+For this example, suppose you’re building an application to identify customers using facial recognition for a secure banking app. Facial recognition can work with as few as 128 dimensions, but in this case, because the app will be used for access to finances, we want to make sure we’re certain that the person using it's the right one. We plan for 100M customers and use 2048 dimensions per vector.
 
 We know from our rules of thumb above that 1M vectors with 768 dimensions fit nicely in a p1.x1 pod. We can just divide those numbers into the new targets to get the ratios we’ll need for our pod estimate:
 

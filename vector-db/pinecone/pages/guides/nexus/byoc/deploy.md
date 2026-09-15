@@ -31,9 +31,9 @@ You also need:
   * **GCP**: [gcloud CLI](https://cloud.google.com/sdk/docs/install), plus the `gke-gcloud-auth-plugin` component (`gcloud components install gke-gcloud-auth-plugin`)
   * **Azure**: [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
 * A **dedicated cloud account** with admin-level permissions, used only for this deployment:
-  * **AWS**: a dedicated account with `AdministratorAccess`. The installer creates IAM roles and policies, so `PowerUserAccess` is not sufficient.
-  * **GCP**: a dedicated project with `roles/owner` and billing enabled. The installer creates IAM service accounts and bindings, so `roles/editor` is not sufficient.
-  * **Azure**: a dedicated subscription with `Owner`. The installer creates managed identities and role assignments, so `Contributor` is not sufficient.
+  * **AWS**: a dedicated account with `AdministratorAccess`. The installer creates IAM roles and policies, so `PowerUserAccess` isn't sufficient.
+  * **GCP**: a dedicated project with `roles/owner` and billing enabled. The installer creates IAM service accounts and bindings, so `roles/editor` isn't sufficient.
+  * **Azure**: a dedicated subscription with `Owner`. The installer creates managed identities and role assignments, so `Contributor` isn't sufficient.
 * A **Pinecone API key** from the Pinecone console.
 * A Pinecone **Enterprise plan** (required for BYOC access).
 * A **generation-LLM key** (BYOM). The shipped default is Google Gemini, so get a key from [Google AI Studio](https://aistudio.google.com/apikey). Embedding and rerank run on Pinecone-hosted models by default (no extra key). See [Model guidance](/guides/nexus/models) for the model catalog and how to repoint generation, embedding, or rerank, and [Data flows and residency](/guides/nexus/byoc/reference#data-flows-and-residency) for where each call's content goes.
@@ -43,7 +43,7 @@ You also need:
 Confirm these environment inputs before you start:
 
 * **Region and three availability zones (AZs).** Deploy across three AZs, the supported high-availability shape. The generation-model provider you choose must be available in the region.
-* **A spare private IP range** (RFC 1918, `/16` to `/20`) that does not overlap your existing networks. This becomes the Nexus virtual network.
+* **A spare private IP range** (RFC 1918, `/16` to `/20`) that doesn't overlap your existing networks. This becomes the Nexus virtual network.
 * **Where your source data lives.** Know where your corpus resides so you can stage it into a context after install.
 * **Egress paths.** Nexus makes outbound connections for the control-plane callback, metrics and traces, container image pulls, and calls to the inference models you configure. What content those model calls carry depends on how you configure your models. See [Data flows and residency](/guides/nexus/byoc/reference#data-flows-and-residency).
 
@@ -57,7 +57,7 @@ To deploy Nexus BYOC, follow these steps.
 
 <Steps>
   <Step title="Authenticate">
-    The setup script checks your credentials but does not log you in, so authenticate to your cloud and to Pulumi first.
+    The setup script checks your credentials but doesn't log you in, so authenticate to your cloud and to Pulumi first.
 
     <Tabs>
       <Tab title="AWS">
@@ -222,7 +222,7 @@ Two things are specific to BYOC:
 ## 3. Manage
 
 <Note>
-  Deploying a BYOC environment creates an internal project named `__SLI__` in your organization. Pinecone uses it to enforce SLAs for your BYOC environment. Do not modify or delete it.
+  Deploying a BYOC environment creates an internal project named `__SLI__` in your organization. Pinecone uses it to enforce SLAs for your BYOC environment. Don't modify or delete it.
 </Note>
 
 ### Operations and upgrades
@@ -236,7 +236,7 @@ Pinecone uses a pull-based model for cluster operations:
 
 This model ensures Pinecone never needs direct access to your infrastructure. All communication is outbound from your cluster.
 
-A deployment is pinned to two independent image tags that roll separately: `pinecone-version` (the Pinecone Database images) and `nexus-version` (the Nexus images). The two pins are unrelated. Bumping one does not touch the other. Pinecone manages upgrades in the background. To trigger one manually, set either pin (or both) to your target version (for example, `main-abc1234`) and re-run `pulumi up`:
+A deployment is pinned to two independent image tags that roll separately: `pinecone-version` (the Pinecone Database images) and `nexus-version` (the Nexus images). The two pins are unrelated. Bumping one doesn't touch the other. Pinecone manages upgrades in the background. To trigger one manually, set either pin (or both) to your target version (for example, `main-abc1234`) and re-run `pulumi up`:
 
 ```bash theme={null}
 # Bump the Pinecone Database version

@@ -10,7 +10,7 @@ Learn what Nexus BYOC is, how it relates to Database BYOC, and its architecture.
   Nexus BYOC is available only on [Enterprise plans](https://www.pinecone.io/pricing/).
 </Note>
 
-Pinecone Nexus compiles your enterprise data into queryable knowledge that AI agents retrieve with a single [KnowQL](/guides/nexus/concepts#knowql) query. Nexus BYOC (Bring Your Own Cloud) is a single installer that deploys both Nexus and the Pinecone Database data plane it runs on, entirely inside your own cloud account (AWS, GCP, or Azure). You do not install Database BYOC separately. Nexus BYOC includes it (see [how the two relate](#how-nexus-byoc-relates-to-database-byoc)).
+Pinecone Nexus compiles your enterprise data into queryable knowledge that AI agents retrieve with a single [KnowQL](/guides/nexus/concepts#knowql) query. Nexus BYOC (Bring Your Own Cloud) is a single installer that deploys both Nexus and the Pinecone Database data plane it runs on, entirely inside your own cloud account (AWS, GCP, or Azure). You don't install Database BYOC separately. Nexus BYOC includes it (see [how the two relate](#how-nexus-byoc-relates-to-database-byoc)).
 
 Nexus BYOC is designed for organizations with strict requirements around data sovereignty, network isolation, and data residency. You get the benefits of a managed service (upgrades, scaling, and maintenance) without giving up control of your data or infrastructure.
 
@@ -27,8 +27,8 @@ For maintenance, an agent in your cluster authenticates with Pinecone's control 
 
 Nexus BYOC is installed from a single repository, [`pulumi-pinecone-nexus-byoc`](https://github.com/pinecone-io/pulumi-pinecone-nexus-byoc). One `pulumi up` deploys both the Nexus services and the Pinecone Database data plane they run on. There is no separate Database install to run first or alongside it.
 
-The Pinecone Database data plane is deployed automatically because Nexus runs on it: it is the storage and retrieval engine beneath your contexts, not a separate product you operate. You work with a Nexus BYOC deployment through contexts and [KnowQL](/guides/nexus/concepts#knowql). Nexus BYOC brings one additional dependency: a generation-LLM key you supply (default: Google Gemini).
+The Pinecone Database data plane is deployed automatically because Nexus runs on it: it's the storage and retrieval engine beneath your contexts, not a separate product you operate. You work with a Nexus BYOC deployment through contexts and [KnowQL](/guides/nexus/concepts#knowql). Nexus BYOC brings one additional dependency: a generation-LLM key you supply (default: Google Gemini).
 
-If you want a standalone Pinecone vector database in your own cloud instead, see [Database BYOC](/guides/production/bring-your-own-cloud), which has its own installer. The Database BYOC installer is not part of the Nexus install.
+If you want a standalone Pinecone vector database in your own cloud instead, see [Database BYOC](/guides/production/bring-your-own-cloud), which has its own installer. The Database BYOC installer isn't part of the Nexus install.
 
 Nexus BYOC uses the core Nexus product terms (context, manifest, KnowQL, and workspace). See [Nexus concepts](/guides/nexus/concepts) for definitions, [Data residency and limits](/guides/nexus/byoc/reference) for the security and operational details, and [Deploy Nexus BYOC](/guides/nexus/byoc/deploy) to install.

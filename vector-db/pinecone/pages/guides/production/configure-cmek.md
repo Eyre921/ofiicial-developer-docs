@@ -274,5 +274,5 @@ Before a key can be deleted from a project, all indexes in the project must be d
 
 * CMEK can be enabled for serverless indexes in AWS regions only.
 * [Backups](/guides/manage-data/back-up-an-index) are unavailable for indexes created in a CMEK-enabled project.
-* You cannot change a key once it is set.
+* You can't change a key once it's set.
 * You can add only one key per project.

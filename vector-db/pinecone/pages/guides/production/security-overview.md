@@ -10,7 +10,7 @@ Overview of Pinecone security features for production: API keys, SSO, service ac
 
 ### API keys
 
-Each Pinecone [project](/guides/projects/understanding-projects) has one or more [API keys](/guides/projects/manage-api-keys). In order to make calls to the Pinecone API, a user must provide a valid API key for the relevant Pinecone project.
+Each Pinecone [project](/guides/projects/understanding-projects) has one or more [API keys](/guides/projects/manage-api-keys). To make calls to the Pinecone API, a user must provide a valid API key for the relevant Pinecone project.
 
 You can [manage API key permissions](/guides/projects/manage-api-keys) in the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/keys). For the roles you can assign to an API key and the operations each role covers, see [Project roles](/guides/projects/understanding-projects#project-roles).
 
@@ -157,7 +157,7 @@ For [Bring Your Own Cloud (BYOC)](/guides/production/bring-your-own-cloud), you 
   This feature is available on [Standard and Enterprise plans](https://www.pinecone.io/pricing/).
 </Note>
 
-A backup is a static copy of your index that only consumes storage. It is a non-queryable representation of a set of records. You can [create a backup](/guides/manage-data/back-up-an-index) of an index, and you can [create a new index from a backup](/guides/manage-data/restore-an-index). This allows you to restore the index with the same or different configurations.
+A backup is a static copy of your index that only consumes storage. It's a non-queryable representation of a set of records. You can [create a backup](/guides/manage-data/back-up-an-index) of an index, and you can [create a new index from a backup](/guides/manage-data/restore-an-index). This allows you to restore the index with the same or different configurations.
 
 For more information, see [Understanding backups](/guides/manage-data/backups-overview).
 

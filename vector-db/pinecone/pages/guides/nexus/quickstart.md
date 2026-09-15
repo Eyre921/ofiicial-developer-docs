@@ -116,7 +116,7 @@ The answer is grounded in your sources, and every claim cites the document it ca
 
 ### A multi-document answer
 
-Questions that span multiple documents work the same way. Asking "Which purchases need approval, and what is the threshold for each?" returns something like:
+Questions that span multiple documents work the same way. Asking "Which purchases need approval, and what's the threshold for each?" returns something like:
 
 > * Standard expenses over \$1,000 need manager approval. **\[1]**
 > * Vendor invoices over \$10,000 need finance approval. **\[2]**

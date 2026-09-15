@@ -47,6 +47,16 @@ Real world AI agent example tasks using Trigger.dev
   <Card title="Smart Spreadsheet" icon="table" href="/docs/guides/example-projects/smart-spreadsheet">
     Enrich company data using Exa search and Claude with real-time streaming results.
   </Card>
+
+  <Card title="Batch LLM Evaluator" icon="scale-balanced" href="/docs/guides/example-projects/batch-llm-evaluator">
+    Evaluate multiple LLM models in parallel with the Vercel AI SDK and stream the results to a
+    Next.js frontend using Trigger.dev Realtime.
+  </Card>
+
+  <Card title="Claude thinking chatbot" icon="brain" href="/docs/guides/example-projects/claude-thinking-chatbot">
+    Build a Next.js chatbot that streams Claude's extended thinking to the frontend with the Vercel
+    AI SDK and Trigger.dev Realtime.
+  </Card>
 </CardGroup>
 
 ## Chat agents
@@ -56,6 +66,16 @@ Build a durable, multi-turn chat agent with [`chat.agent()`](/docs/ai-chat/overv
 <CardGroup>
   <Card title="Chat agent" icon="message-bot" href="/docs/guides/ai-agents/chat-agent">
     Create a durable, multi-turn chat agent with `chat.agent()`, then add tools to it.
+  </Card>
+
+  <Card title="ElevenLabs Voice agent" icon="microphone" href="/docs/guides/example-projects/elevenlabs-voice-agent">
+    Build a spoken-conversation voice assistant on `chat.agent()`, with streaming speech-to-text and
+    text-to-speech from ElevenLabs and server-side voice activity detection.
+  </Card>
+
+  <Card title="Ask Trigger chat agent" icon="graduation-cap" href="/docs/guides/example-projects/ask-trigger-chat-agent">
+    Build a chat agent that teaches Trigger.dev with interactive node-graphs, quizzes and cards,
+    using `chat.agent()`, generative UI and live docs grounding through an MCP server.
   </Card>
 </CardGroup>
 

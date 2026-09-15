@@ -26,9 +26,9 @@ If you need to scale your environment to accommodate more vectors, you can modif
 
 The default [pod size](/guides/index-data/indexing-overview#pod-size-and-performance) is `x1`. You can increase the size to `x2`, `x4`, or `x8`. Moving up to the next size effectively doubles the capacity of the index. If you need to scale by smaller increments, then consider horizontal scaling.
 
-Increasing the pod size of your index does not result in downtime. Reads and writes continue uninterrupted during the scaling process, which completes in about 10 minutes. You cannot reduce the pod size of your indexes.
+Increasing the pod size of your index doesn't result in downtime. Reads and writes continue uninterrupted during the scaling process, which completes in about 10 minutes. You can't reduce the pod size of your indexes.
 
-The number of base pods you specify when you initially create the index is static and cannot be changed. For example, if you start with 10 pods of `p1.x1` and vertically scale to `p1.x2`, this equates to 20 pods worth of usage. Pod types (performance versus storage pods) also cannot be changed with vertical scaling. If you want to change your pod type while scaling, then horizontal scaling is the better option.
+The number of base pods you specify when you initially create the index is static and can't be changed. For example, if you start with 10 pods of `p1.x1` and vertically scale to `p1.x2`, this equates to 20 pods worth of usage. Pod types (performance versus storage pods) also can't be changed with vertical scaling. If you want to change your pod type while scaling, then horizontal scaling is the better option.
 
 #### When to increase pod size
 
@@ -144,7 +144,7 @@ You can increase the pod size in the Pinecone console or using the API.
 
 ### Decrease pod size
 
-After creating an index, you cannot vertically downscale the index/pod size. Instead, you must [create a collection](/guides/indexes/pods/back-up-a-pod-based-index) and then [create a new index from your collection](/guides/indexes/pods/restore-a-pod-based-index) and specify your desired pod size.
+After creating an index, you can't vertically downscale the index/pod size. Instead, you must [create a collection](/guides/indexes/pods/back-up-a-pod-based-index) and then [create a new index from your collection](/guides/indexes/pods/restore-a-pod-based-index) and specify your desired pod size.
 
 ### Check the status of a pod size change
 
@@ -234,7 +234,7 @@ There are two approaches to horizontal scaling in Pinecone: adding pods and addi
 
 ### Add pods
 
-Adding additional pods to a running index is not supported directly. However, you can increase the number of pods by using our [collections](/guides/indexes/pods/understanding-collections) feature to create a new index with more pods.
+Adding additional pods to a running index isn't supported directly. However, you can increase the number of pods by using our [collections](/guides/indexes/pods/understanding-collections) feature to create a new index with more pods.
 
 A collection is an immutable snapshot of your index in time: a collection stores the data but not the original index configuration. When you [create an index from a collection](/guides/indexes/pods/create-a-pod-based-index#create-a-pod-index-from-a-collection), you define the new index configuration. This allows you to scale the base pod count horizontally without scaling vertically.
 
@@ -252,7 +252,7 @@ For detailed steps on creating the collection, see [backup indexes](/guides/mana
 
 ### Add replicas
 
-Each replica duplicates the resources and data in an index. This means that adding additional replicas increases the throughput of the index but not its capacity. However, adding replicas does not require downtime.
+Each replica duplicates the resources and data in an index. This means that adding additional replicas increases the throughput of the index but not its capacity. However, adding replicas doesn't require downtime.
 
 Throughput in terms of queries per second (QPS) scales linearly with the number of replicas per index.
 
@@ -264,7 +264,7 @@ There are two primary scenarios where adding replicas is beneficial:
 
 If you don't see an increase in QPS after adding replicas, add multiprocessing to your application to ensure you are running parallel operations. You can use the [Pinecone gRPC SDK](/guides/index-data/upsert-data#grpc-python-sdk), or your multiprocessing library of choice.
 
-**Provide data redundancy**: When you add a replica to your index, the Pinecone controller will choose a zone in the same region that does not currently have a replica, up to a maximum of three zones (your fourth and subsequent replicas will be hosted in zones with existing replicas). If your application requires multizone redundancy, this is our recommended approach to achieve that.
+**Provide data redundancy**: When you add a replica to your index, the Pinecone controller will choose a zone in the same region that doesn't currently have a replica, up to a maximum of three zones (your fourth and subsequent replicas will be hosted in zones with existing replicas). If your application requires multizone redundancy, this is our recommended approach to achieve that.
 
 #### How to add replicas
 

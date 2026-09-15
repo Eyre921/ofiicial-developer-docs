@@ -6,7 +6,7 @@ path: guides/assistant/files-overview
 
 Overview of Pinecone Assistant files: supported file types (PDF, DOCX, JSON, MD, TXT), metadata filters, storage, and signed URL access.
 
-Before you can chat with the assistant, you need to [upload files](/guides/assistant/manage-files#upload-a-local-file). The files provide your assistant with context and information to reference when generating responses. Files are not shared across assistants.
+Before you can chat with the assistant, you need to [upload files](/guides/assistant/manage-files#upload-a-local-file). The files provide your assistant with context and information to reference when generating responses. Files aren't shared across assistants.
 
 ### Supported file types
 
@@ -26,7 +26,7 @@ For information about file size and storage limits, see [Pricing and limits](/gu
 
 ### File storage
 
-Files are uploaded to Google Cloud Storage (`us-central1` region) and to your organization's Pinecone vector database. The assistant processes the files, so data is not sent outside of blob storage or Pinecone.
+Files are uploaded to Google Cloud Storage (`us-central1` region) and to your organization's Pinecone vector database. The assistant processes the files, so data isn't sent outside of blob storage or Pinecone.
 
 Some API responses include a `signed_url` field, which provides temporary, read-only access to one of the assistant's files. The URL is [signed](https://cloud.google.com/storage/docs/access-control/signed-urls) and hard to guess, but publicly accessible, so treat it as sensitive. `signed_url` links expire in one hour.
 
@@ -47,14 +47,14 @@ You can [upload a file with metadata](/guides/assistant/upload-files#upload-a-fi
 
 File metadata can be used for the following purposes:
 
-* [Filtering chat responses](/guides/assistant/chat-with-assistant#filter-chat-with-metadata): Specify filters on assistant responses so only files that match the metadata filter are referenced in the response. Chat requests without metadata filters do not consider metadata.
+* [Filtering chat responses](/guides/assistant/chat-with-assistant#filter-chat-with-metadata): Specify filters on assistant responses so only files that match the metadata filter are referenced in the response. Chat requests without metadata filters don't consider metadata.
 * [Viewing a filtered list of files](/guides/assistant/manage-files#view-a-filtered-list-of-files): Use metadata filters to list files in an assistant that match specific criteria.
 
 #### Supported metadata size and format
 
 Pinecone Assistant supports 16 KB of metadata per file.
 
-* Metadata fields must be key-value pairs in a flat JSON object. Nested JSON objects are not supported.
+* Metadata fields must be key-value pairs in a flat JSON object. Nested JSON objects aren't supported.
 * Keys must be strings and must not start with a `$`.
 * Values must be one of the following data types:
   * String
@@ -98,20 +98,20 @@ Pinecone Assistant supports 16 KB of metadata per file.
 
 Pinecone's filtering language supports the following operators:
 
-| Operator  | Function                                                                                                                   | Supported types         |
-| :-------- | :------------------------------------------------------------------------------------------------------------------------- | :---------------------- |
-| `$eq`     | Matches  with metadata values that are equal to a specified value. Example: `{"genre": {"$eq": "documentary"}}`            | Number, string, boolean |
-| `$ne`     | Matches  with metadata values that are not equal to a specified value. Example: `{"genre": {"$ne": "drama"}}`              | Number, string, boolean |
-| `$gt`     | Matches  with metadata values that are greater than a specified value. Example: `{"year": {"$gt": 2019}}`                  | Number                  |
-| `$gte`    | Matches  with metadata values that are greater than or equal to a specified value. Example:`{"year": {"$gte": 2020}}`      | Number                  |
-| `$lt`     | Matches  with metadata values that are less than a specified value. Example: `{"year": {"$lt": 2020}}`                     | Number                  |
-| `$lte`    | Matches  with metadata values that are less than or equal to a specified value. Example: `{"year": {"$lte": 2020}}`        | Number                  |
-| `$in`     | Matches  with metadata values that are in a specified array. Example: `{"genre": {"$in": ["comedy", "documentary"]}}`      | String, number          |
-| `$nin`    | Matches  with metadata values that are not in a specified array. Example: `{"genre": {"$nin": ["comedy", "documentary"]}}` | String, number          |
-| `$exists` | Matches  with the specified metadata field. Example: `{"genre": {"$exists": true}}`                                        | Number, string, boolean |
-| `$and`    | Joins query clauses with a logical `AND`. Example: `{"$and": [{"genre": {"$eq": "drama"}}, {"year": {"$gte": 2020}}]}`     | -                       |
-| `$or`     | Joins query clauses with a logical `OR`. Example: `{"$or": [{"genre": {"$eq": "drama"}}, {"year": {"$gte": 2020}}]}`       | -                       |
-| `$not`    | Matches  that do not match the wrapped clause. Example: `{"genre": {"$not": {"$eq": "drama"}}}`                            | -                       |
+| Operator  | Function                                                                                                                  | Supported types         |
+| :-------- | :------------------------------------------------------------------------------------------------------------------------ | :---------------------- |
+| `$eq`     | Matches  with metadata values that are equal to a specified value. Example: `{"genre": {"$eq": "documentary"}}`           | Number, string, boolean |
+| `$ne`     | Matches  with metadata values that aren't equal to a specified value. Example: `{"genre": {"$ne": "drama"}}`              | Number, string, boolean |
+| `$gt`     | Matches  with metadata values that are greater than a specified value. Example: `{"year": {"$gt": 2019}}`                 | Number                  |
+| `$gte`    | Matches  with metadata values that are greater than or equal to a specified value. Example:`{"year": {"$gte": 2020}}`     | Number                  |
+| `$lt`     | Matches  with metadata values that are less than a specified value. Example: `{"year": {"$lt": 2020}}`                    | Number                  |
+| `$lte`    | Matches  with metadata values that are less than or equal to a specified value. Example: `{"year": {"$lte": 2020}}`       | Number                  |
+| `$in`     | Matches  with metadata values that are in a specified array. Example: `{"genre": {"$in": ["comedy", "documentary"]}}`     | String, number          |
+| `$nin`    | Matches  with metadata values that aren't in a specified array. Example: `{"genre": {"$nin": ["comedy", "documentary"]}}` | String, number          |
+| `$exists` | Matches  with the specified metadata field. Example: `{"genre": {"$exists": true}}`                                       | Number, string, boolean |
+| `$and`    | Joins query clauses with a logical `AND`. Example: `{"$and": [{"genre": {"$eq": "drama"}}, {"year": {"$gte": 2020}}]}`    | -                       |
+| `$or`     | Joins query clauses with a logical `OR`. Example: `{"$or": [{"genre": {"$eq": "drama"}}, {"year": {"$gte": 2020}}]}`      | -                       |
+| `$not`    | Matches  that don't match the wrapped clause. Example: `{"genre": {"$not": {"$eq": "drama"}}}`                            | -                       |
 
 <Note>
   At the top level, list one or more fields (combined with implicit AND) or combine clauses with the logical operators `$and` and `$or`. Use `$not` to negate a clause, as shown in the table. A bare comparison operator (like `$gt`) can't appear at the top level; nest it under a field.
@@ -143,7 +143,7 @@ However, requests with the following filter will **not** match:
 { "$and": [{ "genre": "comedy" }, { "genre": "drama" }] }
 ```
 
-Additionally, requests with the following filters will **not** match because they are invalid. They will result in a compilation error:
+Additionally, requests with the following filters will **not** match because they're invalid. They will result in a compilation error:
 
 ```json JSON theme={null}
 # INVALID QUERY:

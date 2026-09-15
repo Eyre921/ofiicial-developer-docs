@@ -437,7 +437,7 @@ The example returns a response like the following:
 
 You can [list backups for a specific index](/reference/api/latest/control-plane/list_index_backups) as follows.
 
-Up to 100 backups are returned at a time by default, in sorted order (bitwise “C” collation). If the `limit` parameter is set, up to that number of backups are returned instead. Whenever there are additional backups to return, the response also includes a `pagination_token` that you can use to get the next batch of backups. When the response does not include a `pagination_token`, there are no more backups to return.
+Up to 100 backups are returned at a time by default, in sorted order (bitwise “C” collation). If the `limit` parameter is set, up to that number of backups are returned instead. Whenever there are additional backups to return, the response also includes a `pagination_token` that you can use to get the next batch of backups. When the response doesn't include a `pagination_token`, there are no more backups to return.
 
 <CodeGroup>
   ```python Python theme={null}
@@ -683,7 +683,7 @@ The example returns a response like the following:
 
 You can [list backups for all indexes in a project](/reference/api/latest/control-plane/list_project_backups) as follows.
 
-Up to 100 backups are returned at a time by default, in sorted order (bitwise “C” collation). If the `limit` parameter is set, up to that number of backups are returned instead. Whenever there are additional backups to return, the response also includes a `pagination_token` that you can use to get the next batch of backups. When the response does not include a `pagination_token`, there are no more backups to return.
+Up to 100 backups are returned at a time by default, in sorted order (bitwise “C” collation). If the `limit` parameter is set, up to that number of backups are returned instead. Whenever there are additional backups to return, the response also includes a `pagination_token` that you can use to get the next batch of backups. When the response doesn't include a `pagination_token`, there are no more backups to return.
 
 <CodeGroup>
   ```python Python theme={null}
@@ -1238,4 +1238,4 @@ Instead of creating backups manually, you can define a recurring schedule that a
   </Tab>
 </Tabs>
 
-Deleting a schedule does not delete any backups that were previously created by it. For more details, see [Scheduled backups](/guides/manage-data/backups-overview#scheduled-backups).
+Deleting a schedule doesn't delete any backups that were previously created by it. For more details, see [Scheduled backups](/guides/manage-data/backups-overview#scheduled-backups).

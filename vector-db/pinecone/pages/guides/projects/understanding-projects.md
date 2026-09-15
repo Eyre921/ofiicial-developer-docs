@@ -19,7 +19,7 @@ If you are an [organization owner](/guides/organizations/understanding-organizat
 The roles you assign depend on the principal type:
 
 * **Users and service accounts** are typically assigned a membership role—`ProjectOwner`, `ProjectManager`, or `ProjectMember`—optionally combined with one or more access roles.
-* **API keys** are typically assigned `ProjectEditor` or `ProjectViewer`, or one or more access roles. API keys cannot be assigned `ProjectOwner`, `ProjectManager`, or `ProjectMember`, which include access to project settings, members, and API keys. To access these items programmatically, use a [service account](/guides/projects/manage-service-accounts).
+* **API keys** are typically assigned `ProjectEditor` or `ProjectViewer`, or one or more access roles. API keys can't be assigned `ProjectOwner`, `ProjectManager`, or `ProjectMember`, which include access to project settings, members, and API keys. To access these items programmatically, use a [service account](/guides/projects/manage-service-accounts).
 
 The following project roles are available:
 
@@ -62,7 +62,7 @@ Specific to pod-based indexes:
 | Update index size         |   ✓   |    ✓    |        |
 
 <Note>
-  Pod-based indexes do not support role-based access control and will always grant data plane read and write access to project members.
+  Pod-based indexes don't support role-based access control and will always grant data plane read and write access to project members.
 </Note>
 
 ### Role permissions
@@ -94,7 +94,7 @@ The following tables detail the operations covered by the general, control plane
 
 ## API keys
 
-Each Pinecone [project](/guides/projects/understanding-projects) has one or more API keys. In order to [make calls to the Pinecone API](/guides/get-started/quickstart), you must provide a valid API key for the relevant Pinecone project.
+Each Pinecone [project](/guides/projects/understanding-projects) has one or more API keys. To [make calls to the Pinecone API](/guides/get-started/quickstart), you must provide a valid API key for the relevant Pinecone project.
 
 For more information, see [Manage API keys](/guides/projects/manage-api-keys).
 

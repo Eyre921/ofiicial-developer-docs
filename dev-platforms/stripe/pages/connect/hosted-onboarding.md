@@ -21,7 +21,7 @@ Go to the [Connect settings page](https://dashboard.stripe.com/account/applicati
 
 ## Create an account and prefill information [Server-side]
 
-Create a [connected account](https://docs.stripe.com/api/accounts.md) with the default [controller](https://docs.stripe.com/api/accounts/create.md#create_account-controller) properties. See [design an integration](https://docs.stripe.com/connect/interactive-platform-guide.md) to learn more about controller properties. Alternatively, you can create a connected account by specifying an account [type](https://docs.stripe.com/api/accounts/create.md#create_account-type).
+Create a [connected account](https://docs.stripe.com/api/accounts.md) with the default [controller](https://docs.stripe.com/api/accounts/create.md#create_account-controller) properties. See [design an integration](https://docs.stripe.com/connect/interactive-platform-guide.md) to learn more about controller properties.
 
 If you specify the account’s country or request any capabilities for it, then the account owner can’t change its country. Otherwise, it depends on the account’s Dashboard access:
 
@@ -29,22 +29,12 @@ If you specify the account’s country or request any capabilities for it, then 
 - **Express Dashboard:** During onboarding, the account owner can select from a list of countries that you configure in your platform Dashboard [Onboarding options](https://dashboard.stripe.com/settings/connect/onboarding-options/countries). You can also configure those options to specify the default capabilities to request for accounts in each country.
 - **No Stripe Dashboard**: If Stripe is responsible for collecting requirements, then the onboarding flow lets the account owner select any acquiring country. Otherwise, your custom onboarding flow must set the country and request capabilities.
 
-#### With controller properties
-
 ```curl
 curl https://api.stripe.com/v1/accounts \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d "controller[fees][payer]=application" \
   -d "controller[losses][payments]=application" \
   -d "controller[stripe_dashboard][type]=express"
-```
-
-#### With account type
-
-```curl
-curl https://api.stripe.com/v1/accounts \
-  -u "<<YOUR_SECRET_KEY>>:" \
-  -d type=standard
 ```
 
 > #### Dashboard type is immutable

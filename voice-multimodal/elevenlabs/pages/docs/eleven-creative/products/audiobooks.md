@@ -39,7 +39,7 @@ Drag and drop your manuscript into the upload area, or browse your device to sel
 
 ### Choose a narration style
 
-![Audiobooks narration style selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7a260dd3129eed27bde661e753a049b11ff845e7f4f8949f59bdb65048dae5f2/assets/images/product-guides/studio/audiobooks-narration-style.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260914%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260914T203134Z&X-Amz-Expires=604800&X-Amz-Signature=bc7060096af4c77a2af485c119a995d575de7772fdd610d59366522cb643f84e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Audiobooks narration style selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7a260dd3129eed27bde661e753a049b11ff845e7f4f8949f59bdb65048dae5f2/assets/images/product-guides/studio/audiobooks-narration-style.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260915%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260915T113129Z&X-Amz-Expires=604800&X-Amz-Signature=9961624eb91ad14e90cbe410f6f26070c10d3f9071146e01b4d594e7da89bc5a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Select how you want your audiobook to be narrated:
 
@@ -87,7 +87,110 @@ Review the detected structure carefully before continuing. Manuscript formatting
 
 In the **Characters** step, you select the voices for your audiobook.
 
-![Audiobooks character casting](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8ada24df5144f84856f1440d93ab85265bf002ece92e297fb0db37ac939588ad/assets/images/product-guides/studio/audiobooks-characters.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260914%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260914T203134Z&X-Amz-Expires=604800&X-Amz-Signature=63ce185a04382a7709fdede54a6b399b35c15ad887cd4f7aeb195723499370bc&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Audiobooks character casting](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8ada24df5144f84856f1440d93ab85265bf002ece92e297fb0db37ac939588ad/assets/images/product-guides/studio/audiobooks-characters.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260915%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260915T113129Z&X-Amz-Expires=604800&X-Amz-Signature=166df353f6939c7739dc45dfa637c54a23622d49eacb7a3d47e7b08b8a40e23a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+
+### Cast a multi-cast audiobook
+
+If you selected **Multi cast**, ElevenLabs analyzes your manuscript and detects characters it believes speak in the story. You can then assign a unique voice to:
+
+* The main narrator
+* Each detected character
+* Other speakers identified in the manuscript
+
+Character detection is AI-generated and should be treated as a starting point. The system may not identify every character, especially minor characters, unnamed characters, or speakers who are difficult to distinguish from the surrounding narration.
+
+The current limit is up to 150 detected voices per book.
+
+Review the detected character list and adjust the cast as needed. Add, change, or remove voice assignments so the final cast matches your manuscript.
+
+Previewing a voice with custom audio uses credits.
+
+### Explore the Voice Library
+
+Browse the available studio-quality voices, or use sear> This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt. For the full documentation in a single file, fetch https://elevenlabs.io/docs/llms-full.txt.
+
+# Audiobooks
+
+![Audiobooks](file:assets/images/product-guides/studio/audiobooks-new-project.png "audiobooks-new-project")
+
+## Overview
+
+Audiobooks provides an end-to-end workflow for turning written content into studio-quality audio.
+
+You can paste or upload your manuscript, generate lifelike narration using ElevenLabs voices, and structure your project with chapters. Enhance your audiobook with music and sound effects, and edit and refine narration directly in the editor.
+
+Character Casting detects characters in your manuscript, proposes a voice for each one, and lets you preview them on real dialogue from your book. When you change a character's voice, every line they speak updates across the entire book.
+
+Once complete, you can export your audiobook or publish it directly to listening platforms such as ElevenReader and partner marketplaces.
+
+Audiobooks also supports dynamic narration, a mode that allows listeners to choose their preferred voice during playback.
+
+## Guide
+
+![Audiobooks - create new book](file:assets/images/product-guides/studio/audiobooks-create-new-book.webp "audiobooks-create-new-book")
+
+#### Upload your file and select base settings
+
+Select **Create an Audiobook** from the Audiobooks page to start a new project.
+
+### Upload your manuscript
+
+Drag and drop your manuscript into the upload area, or browse your device to select a file. Audiobooks currently supports:
+
+* EPUB
+* PDF
+
+### Choose a narration style
+
+![Audiobooks narration style selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7a260dd3129eed27bde661e753a049b11ff845e7f4f8949f59bdb65048dae5f2/assets/images/product-guides/studio/audiobooks-narration-style.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260915%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260915T113129Z&X-Amz-Expires=604800&X-Amz-Signature=9961624eb91ad14e90cbe410f6f26070c10d3f9071146e01b4d594e7da89bc5a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+
+Select how you want your audiobook to be narrated:
+
+* **Single cast** — One narrator voice reads the entire book
+* **Multi cast** — A narrator and distinct voices are assigned to characters detected in the manuscript
+
+Choose **Single cast** when one voice should narrate the entire book. Choose **Multi cast** when you want a more theatrical production with separate voices for the narrator and characters.
+
+### Select a model
+
+Choose the AI model you want to use for your audiobook. For lifelike, emotionally rich results, **Eleven Multilingual v2 (Studio Quality)** is recommended for long-form voiceovers and audiobooks. It supports 29 languages.
+
+Select **Continue** to begin processing your manuscript.
+
+#### Parse and format your manuscript
+
+After you select **Continue**, ElevenLabs automatically parses your file. The system analyzes the document to extract metadata, chapters, and formatting.
+
+When parsing is complete, you will arrive at the **Formatting** screen.
+
+### Review the cover image
+
+If your EPUB or PDF includes a cover, the system automatically extracts it and displays it as the audiobook artwork. You can:
+
+* Replace the cover
+* Remove the cover
+* Keep the extracted cover
+
+### Review the detected sections
+
+ElevenLabs identifies structural sections in your manuscript, such as:
+
+* Copyright notices
+* Dedications
+* Prologues
+* Chapters
+* Epilogues
+* Other formatted sections
+
+Use the checkboxes to select or deselect the sections you want included in the audiobook.
+
+Review the detected structure carefully before continuing. Manuscript formatting can vary, and the system may not always identify sections exactly as intended.
+
+#### Select voices and cast characters
+
+In the **Characters** step, you select the voices for your audiobook.
+
+![Audiobooks character casting](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8ada24df5144f84856f1440d93ab85265bf002ece92e297fb0db37ac939588ad/assets/images/product-guides/studio/audiobooks-characters.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260915%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260915T113129Z&X-Amz-Expires=604800&X-Amz-Signature=166df353f6939c7739dc45dfa637c54a23622d49eacb7a3d47e7b08b8a40e23a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Cast a multi-cast audiobook
 
@@ -123,7 +226,7 @@ Previewing a voice with custom audio uses credits.
 
 The **Pronunciations** step helps you control how names, places, invented words, and other unusual terms are spoken.
 
-![Audiobooks pronunciations editor](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/123ec06328152f7464f0cfad028cf1049489a8beb1283338ba30100c2c4308cf/assets/images/product-guides/studio/audiobooks-pronunciations.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260914%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260914T203134Z&X-Amz-Expires=604800&X-Amz-Signature=fadf5a1f56de6185ab195529b0aecd83bea3615e84e66ab0dcd16a5040a0526b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Audiobooks pronunciations editor](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/123ec06328152f7464f0cfad028cf1049489a8beb1283338ba30100c2c4308cf/assets/images/product-guides/studio/audiobooks-pronunciations.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260915%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260915T113129Z&X-Amz-Expires=604800&X-Amz-Signature=4fa761be7b877792346e5e90575ca127765b191dba315a2ff83ae4b46c67d5e9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Review automatically detected terms
 

@@ -19,7 +19,7 @@ Your source tag must follow these conventions:
 * Clearly identify your integration.
 * Use only lowercase letters, numbers, underscores, and colons.
 
-For example, for an integration called "New Framework", `"new_framework"` is valid, but `"new framework"` and `"New_framework"` are not valid.
+For example, for an integration called "New Framework", `"new_framework"` is valid, but `"new framework"` and `"New_framework"` aren't valid.
 
 ### Specify a source tag
 

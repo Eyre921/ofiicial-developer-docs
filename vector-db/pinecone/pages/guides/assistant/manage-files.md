@@ -282,9 +282,9 @@ You can [delete a file](/reference/api/latest/assistant/delete_file) from an ass
   ```
 </CodeGroup>
 
-* Once a file is deleted, you cannot recover it.
+* Once a file is deleted, you can't recover it.
 * With [API version](/reference/api/versioning) `2026-04` or later, delete is asynchronous and returns an operation ID. You can [track file operations](#track-file-operations) to monitor progress.
-* You cannot delete a file while it is still processing.
+* You can't delete a file while it's still processing.
 * You can also delete a file from an assistant using the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant). In the Assistant playground, find the file and click the **ellipsis (...) menu > Delete**.
 
 ## Track file operations

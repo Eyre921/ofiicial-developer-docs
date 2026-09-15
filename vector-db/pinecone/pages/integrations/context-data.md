@@ -10,6 +10,6 @@ Using [Context Data](https://contextdata.ai/), you can easily create end-to-end 
 
 Additionally, Context Data provides the ability to create transformations like aggregations, joins, and feature engineering using SQL common table expressions before writing to Pinecone.
 
-You also have the ability to "chat" with your Pinecone indexes directly from Context Data's privacy-focused Query Studio.
+You can also chat with your Pinecone indexes directly from Context Data's privacy-focused Query Studio.
 
 <PrimarySecondaryCTA />

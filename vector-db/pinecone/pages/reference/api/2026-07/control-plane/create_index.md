@@ -36,7 +36,7 @@ For managed (serverless) indexes, the `cloud` and `region` fields in `deployment
 | `gcp`   | `europe-west4` (Netherlands) | Builder, Standard, Enterprise                       | General availability                                      |
 | `azure` | `eastus2` (Virginia)         | Builder, Standard, Enterprise                       | General availability                                      |
 
-The cloud and region cannot be changed after a serverless index is created.
+The cloud and region can't be changed after a serverless index is created.
 
 <Note>
   On the Starter plan, you can create serverless indexes in the `us-east-1` region of AWS only. To create indexes in other regions, [upgrade to the Builder, Standard, or Enterprise plan](/guides/organizations/manage-billing/upgrade-billing-plan).

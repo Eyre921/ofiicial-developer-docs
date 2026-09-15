@@ -6,7 +6,7 @@ path: integrations/databricks
 
 Use Databricks and the Pinecone Spark connector to distribute embedding jobs across a cluster and upsert vectors at scale for semantic search and RAG.
 
-Databricks is a Unified Analytics Platform on top of Apache Spark. The primary advantage of using Spark is its ability to distribute workloads across a cluster of machines. By adding more machines or increasing the number of cores on each machine, it is easy to horizontally scale a cluster to handle computationally intensive tasks like vector embedding, where parallelization can save many hours of precious computation time and resources. Leveraging GPUs with Spark can produce even better results — enjoying the benefits of the fast computation of a GPU combined with parallelization will ensure optimal performance.
+Databricks is a Unified Analytics Platform on top of Apache Spark. The primary advantage of using Spark is its ability to distribute workloads across a cluster of machines. By adding more machines or increasing the number of cores on each machine, it's easy to horizontally scale a cluster to handle computationally intensive tasks like vector embedding, where parallelization can save many hours of precious computation time and resources. Using GPUs with Spark can produce even better results — enjoying the benefits of the fast computation of a GPU combined with parallelization will ensure optimal performance.
 
 Efficiently create, ingest, and update vector embeddings at scale with Databricks and Pinecone.
 
@@ -97,7 +97,7 @@ As your example dataset, use a collection of news articles from Hugging Face's d
    dataset_df = spark.read.parquet("/tmp/dataset_parquet.pq").repartition(num_workers)  
    ```
 
-   Once the repartition is complete, you get back a DataFrame, which is a distributed collection of the data organized into named columns. It is conceptually equivalent to a table in a relational database or a dataframe in R/Python, but with richer optimizations under the hood. As mentioned above, each partition in the dataframe has an equal amount of the original data.
+   Once the repartition is complete, you get back a DataFrame, which is a distributed collection of the data organized into named columns. It's conceptually equivalent to a table in a relational database or a dataframe in R/Python, but with richer optimizations under the hood. As mentioned above, each partition in the dataframe has an equal amount of the original data.
 
 5. The dataset doesn't have identifiers associated with each document, so add them:
 

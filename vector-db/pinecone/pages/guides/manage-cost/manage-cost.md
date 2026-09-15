@@ -17,7 +17,7 @@ To lower your bill, see [Ways to reduce cost](/guides/manage-cost/understanding-
 You can set up email alerts to monitor your organization's monthly spending. These alerts notify designated recipients when spending reaches specified thresholds. The alerts automatically reset at the start of each monthly billing cycle.
 
 <Note>
-  Spend alerts are available on the [Standard and Enterprise plans](https://www.pinecone.io/pricing/). They are not needed on the Starter or Builder plans, where usage is capped by plan quotas rather than billed per unit.
+  Spend alerts are available on the [Standard and Enterprise plans](https://www.pinecone.io/pricing/). They're not needed on the Starter or Builder plans, where usage is capped by plan quotas rather than billed per unit.
 </Note>
 
 To set a spend alert:
@@ -35,7 +35,7 @@ To edit a spend alert:
 3. Click **Update**.
 
 <Note>
-  **Auto-spend spike alert**: To protect from unexpected cost increases, Pinecone sends an alert when spending exceeds double your previous month's invoice amount. While the alert threshold is fixed and the alert cannot be deleted, you can modify which email addresses receive the alert and enable or disable the alert notifications.
+  **Auto-spend spike alert**: To protect from unexpected cost increases, Pinecone sends an alert when spending exceeds double your previous month's invoice amount. While the alert threshold is fixed and the alert can't be deleted, you can modify which email addresses receive the alert and enable or disable the alert notifications.
 </Note>
 
 ## List by ID prefix
@@ -57,7 +57,7 @@ Prepaid credits apply to Pinecone services at List Price. Any usage that exceeds
 Customers on Standard and Enterprise pay-as-you-go plans can purchase prepaid credits directly by navigating in the Pinecone console to [Settings > Billing > Plans](https://app.pinecone.io/organizations/-/settings/billing/plans).
 
 <Note>
-  Purchasing prepaid credits is not available through cloud marketplace billing. To purchase prepaid credits through a cloud marketplace, contact [ar@pinecone.io](mailto:ar@pinecone.io).
+  Purchasing prepaid credits isn't available through cloud marketplace billing. To purchase prepaid credits through a cloud marketplace, contact [ar@pinecone.io](mailto:ar@pinecone.io).
 </Note>
 
 ## Talk to support

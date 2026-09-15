@@ -665,7 +665,7 @@ Then, to get the next batch of IDs, use the returned `pagination_token`:
   ```
 </CodeGroup>
 
-When there are no more IDs to return, the response does not includes a `pagination_token`:
+When there are no more IDs to return, the response doesn't includes a `pagination_token`:
 
 <CodeGroup>
   ```python Python theme={null}

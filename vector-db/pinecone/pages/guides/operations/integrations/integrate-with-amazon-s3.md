@@ -148,7 +148,7 @@ In the [AWS IAM console](https://console.aws.amazon.com/iam/home):
 ## 3. Add a storage integration
 
 <Note>
-  This step is required for [importing data](/guides/index-data/import-data). It is not required for [storing audit logs](/guides/production/configure-audit-logs).
+  This step is required for [importing data](/guides/index-data/import-data). It's not required for [storing audit logs](/guides/production/configure-audit-logs).
 </Note>
 
 You can add a storage integration in the Pinecone console or with the API.

@@ -8,7 +8,7 @@ Evaluate and track Pinecone RAG apps with TruLens: measure grounding, relevance,
 
 TruLens is a powerful open source library for evaluating and tracking large language model-based applications. TruLens provides a set of tools for developing and monitoring neural nets, including large language models (LLMs). This includes both tools for evaluation of LLMs and LLM-based applications with TruLens-Eval and deep learning explainability with TruLens-Explain.
 
-To build an effective RAG-style LLM application, it is important to experiment with various configuration choices while setting up your Pinecone vector database, and study their impact on performance metrics. Tracking and evaluation with TruLens enables fast iteration of your application.
+To build an effective RAG-style LLM application, it's important to experiment with various configuration choices while setting up your Pinecone vector database, and study their impact on performance metrics. Tracking and evaluation with TruLens enables fast iteration of your application.
 
 <PrimarySecondaryCTA />
 
@@ -39,11 +39,11 @@ In this process, a numerical vector (an embedding) is calculated for all documen
 <img alt="diagram-2" />
 
 Pinecone makes it easy to build high-performance vector search applications, including retrieval-augmented question answering. Pinecone can easily handle very large scales of hundreds of millions and even billions of vector embeddings. Pinecone's large scale allows it to handle long term memory or a large corpus of rich external and domain-appropriate data so that the LLM component of RAG application can focus on tasks like summarization, inference and planning. This setup is optimal for developing a non-hallucinatory application.\
-In addition, Pinecone is fully managed, so it is easy to change configurations and components. Combined with the tracking and evaluation with TruLens, this is a powerful combination that enables fast iteration of your application.
+In addition, Pinecone is fully managed, so it's easy to change configurations and components. Combined with the tracking and evaluation with TruLens, this is a powerful combination that enables fast iteration of your application.
 
 ### Using Pinecone and TruLens to improve LLM performance and reduce hallucination
 
-To build an effective RAG-style LLM application, it is important to experiment with various configuration choices while setting up the vector database, and study their impact on performance metrics.
+To build an effective RAG-style LLM application, it's important to experiment with various configuration choices while setting up the vector database, and study their impact on performance metrics.
 
 In this example, we explore the downstream impact of some of these configuration choices on response quality, cost and latency with a sample LLM application built with Pinecone as the vector DB. The evaluation and experiment tracking is done with the [TruLens](https://www.trulens.org/) open source library. TruLens offers an extensible set of [feedback functions](https://truera.com/ai-quality-education/generative-ai-and-llms/whats-missing-to-evaluate-foundation-models-at-scale/) to evaluate LLM apps and enables developers to easily track their LLM app experiments.
 
@@ -174,7 +174,7 @@ qs_relevance = (
 
 Our use of selectors here also requires an explanation.
 
-QA Relevance is the simpler of the two. Here, we are using `.on_input_output()` to specify that the feedback function should be applied on both the input and output of the application.
+QA Relevance is the simpler of the two. Here, we're using `.on_input_output()` to specify that the feedback function should be applied on both the input and output of the application.
 
 For QS Relevance, we use TruLens selectors to locate the context chunks retrieved by our application. Let's break it down into simple parts:
 
@@ -213,7 +213,7 @@ Here is a view of our first experiment:
 
 Now that we've walked through the process of building our tracked RAG application using cosine as the distance metric, all we have to do for the next two experiments is to rebuild the index with `euclidean` or `dotproduct` as the metric and follow the rest of the steps above as is.
 
-Because we are using OpenAI embeddings, which are normalized to length 1, dot product and cosine distance are equivalent - and Euclidean will also yield the same ranking. See the OpenAI docs for more information. With the same document ranking, we should not expect a difference in response quality, but computation latency may vary across the metrics. Indeed, OpenAI advises that dot product computation may be a bit faster than cosine. We will be able to confirm this expected latency difference with TruLens.
+Because we're using OpenAI embeddings, which are normalized to length 1, dot product and cosine distance are equivalent - and Euclidean will also yield the same ranking. See the OpenAI docs for more information. With the same document ranking, we shouldn't expect a difference in response quality, but computation latency may vary across the metrics. Indeed, OpenAI advises that dot product computation may be a bit faster than cosine. We will be able to confirm this expected latency difference with TruLens.
 
 ```Python Python theme={null}
 index_name_v2 = 'langchain-rag-euclidean'
@@ -232,7 +232,7 @@ After doing so, we can view our evaluations for all three LLM apps sitting on to
 
 ### Problem: hallucination
 
-Digging deeper into the Query Statement Relevance, we notice one problem in particular with a question about famous dental floss brands. The app responds correctly, but is not backed up by the context retrieved, which does not mention any specific brands.
+Digging deeper into the Query Statement Relevance, we notice one problem in particular with a question about famous dental floss brands. The app responds correctly, but isn't backed up by the context retrieved, which doesn't mention any specific brands.
 
 <img alt="trulens-dashboard-feedback-1" />
 
@@ -274,7 +274,7 @@ For example, when asked “Which year was Hawaii's state song written?”, the a
 
 <img alt="trulens-dashboard-feedback-2" />
 
-While our relevance function is not doing a great job here in differentiating which context chunks are relevant, we can manually see that only the one (the 4th chunk) mentions the year the song was written. Narrowing our `top_k`, or the number of context chunks retrieved by the semantic search, may help.
+While our relevance function isn't doing a great job here in differentiating which context chunks are relevant, we can manually see that only the one (the 4th chunk) mentions the year the song was written. Narrowing our `top_k`, or the number of context chunks retrieved by the semantic search, may help.
 
 We can do so as follows:
 
@@ -286,7 +286,7 @@ qa = RetrievalQA.from_chain_type(
 )
 ```
 
-The way the `top_k` is implemented in LangChain's RetrievalQA is that the documents are still retrieved by semantic search and only the `top_k` are passed to the LLM. Therefore, TruLens also captures all of the context chunks that are being retrieved. In order to calculate an accurate QS Relevance metric that matches what's being passed to the LLM, we only calculate the relevance of the top context chunk retrieved by slicing the `input_documents` passed into the TruLens Select function:
+The way the `top_k` is implemented in LangChain's RetrievalQA is that the documents are still retrieved by semantic search and only the `top_k` are passed to the LLM. Therefore, TruLens also captures all of the context chunks that are being retrieved. To calculate an accurate QS Relevance metric that matches what's being passed to the LLM, we only calculate the relevance of the top context chunk retrieved by slicing the `input_documents` passed into the TruLens Select function:
 
 ```Python Python theme={null}
 qs_relevance = Feedback(openai.qs_relevance).on_input().on(

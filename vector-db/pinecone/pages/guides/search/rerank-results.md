@@ -1216,7 +1216,7 @@ The following reranking models are hosted by Pinecone.
     * Max tokens per document: 8,192
     * Max documents: 250
 
-    The relevance scores produced by `cohere-rerank-4-fast` are not directly comparable to those from `cohere-rerank-3.5`. This does not affect sorting, but any application logic that uses a fixed score threshold to make decisions must be re-calibrated for the new model.
+    The relevance scores produced by `cohere-rerank-4-fast` aren't directly comparable to those from `cohere-rerank-3.5`. This doesn't affect sorting, but any application logic that uses a fixed score threshold to make decisions must be re-calibrated for the new model.
 
     For rate limits, see [Rerank requests per minute](/reference/api/database-limits/rate-limits#model-throughput-limits) and [Rerank requests per month](/reference/api/database-limits/rate-limits#monthly-usage-limits).
 

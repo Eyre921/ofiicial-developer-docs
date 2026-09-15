@@ -26,7 +26,7 @@ When SCIM provisioning is enabled, your IdP manages organization membership and 
 </Note>
 
 <Note>
-  SCIM provisioning assigns roles from user attributes only. SCIM group push is not supported. This is similar to [SAML role management](/guides/production/configure-single-sign-on/okta-role-management), except roles are provisioned continuously rather than at each login, and member deprovisioning is handled automatically.
+  SCIM provisioning assigns roles from user attributes only. SCIM group push isn't supported. This is similar to [SAML role management](/guides/production/configure-single-sign-on/okta-role-management), except roles are provisioned continuously rather than at each login, and member deprovisioning is handled automatically.
 </Note>
 
 <Warning>
@@ -85,7 +85,7 @@ pinecone:project:a2f7dddb-1597-4eff-9f71-535fde243f58:ProjectOwner
 <Note>You must be an [organization owner](/guides/organizations/understanding-organizations#organization-roles) on the Enterprise plan, and SSO must be enforced for your organization.</Note>
 
 1. In the Pinecone console, go to [**Settings > Access > Identity provider**](https://app.pinecone.io/organizations/-/settings/access/identity-provider).
-2. Confirm that single sign-on shows the **Enforced** status. If it does not, edit your SSO configuration to enforce SSO before continuing.
+2. Confirm that single sign-on shows the **Enforced** status. If it doesn't, edit your SSO configuration to enforce SSO before continuing.
 3. In the **User management** section, select **Manage roles with SCIM provisioning**.
 4. In the **Set up SCIM provisioning** dialog, review the instructions and click **Get started**.
 
@@ -125,14 +125,14 @@ pinecone:project:a2f7dddb-1597-4eff-9f71-535fde243f58:ProjectOwner
 </Warning>
 
 <Note>
-  If the **Provisioning** tab or **Configure API Integration** button does not appear, SCIM provisioning is not enabled on the app.
+  If the **Provisioning** tab or **Configure API Integration** button doesn't appear, SCIM provisioning isn't enabled on the app.
 
-  If **Test API Credentials** fails, re-copy the SCIM endpoint and bearer token from Pinecone, and confirm the token has not expired or been revoked.
+  If **Test API Credentials** fails, re-copy the SCIM endpoint and bearer token from Pinecone, and confirm the token hasn't expired or been revoked.
 </Note>
 
 ## 4. Send role values to Pinecone
 
-Okta does not send a member's Pinecone roles by default. You define one app attribute per role you want to assign, then map a value to it for the right members. Pinecone reads only each value, so the same approach scales to as many roles as you need.
+Okta doesn't send a member's Pinecone roles by default. You define one app attribute per role you want to assign, then map a value to it for the right members. Pinecone reads only each value, so the same approach scales to as many roles as you need.
 
 1. In Okta, go to **Directory > Profile Editor** and open the **Pinecone** app profile.
 
@@ -152,7 +152,7 @@ Okta does not send a member's Pinecone roles by default. You define one app attr
 For example, an organization manager who is also a project owner on one project needs two attributes: one mapped to `pinecone:OrgManager` and one mapped to `pinecone:project:<projectID>:ProjectOwner`. Project values include the project's [unique ID](/guides/projects/understanding-projects#project-ids), not its name.
 
 <Note>
-  Send roles in the user's `roles` attribute. SCIM group push is not supported.
+  Send roles in the user's `roles` attribute. SCIM group push isn't supported.
 
   Limit synced attributes to those that are used by Pinecone, including `userName`, `roles`, and optionally, `name`. Mapping irrelevant profile attributes (like `addresses`) risks producing a payload that doesn't conform to the SCIM spec and will be rejected with an invalid payload error.
 </Note>

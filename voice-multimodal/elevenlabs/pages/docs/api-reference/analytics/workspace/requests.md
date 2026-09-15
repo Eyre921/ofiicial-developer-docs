@@ -52,7 +52,7 @@ Successful Response
   - Allowed values: `String`, `Float`, `DateTime`, `Int`, `Bool`, `JSON`, `Map`, `Array`
 - `rows` (list of list of string or integer or double or boolean or string, required)
 - `column_units` (list of enum, required)
-  - Allowed values: `ms`, `s`, `min`, `duration`, `credits`, `usd`, `eur`, `inr`, `pln`, `ratio`, `rating`
+  - Allowed values: `ms`, `s`, `min`, `duration`, `credits`, `usd`, `eur`, `inr`, `pln`, `gbp`, `ratio`, `rating`
 
 ## Errors
 
@@ -78,41 +78,18 @@ Validation Error
 ```json
 {
   "columns": [
-    "request_id",
-    "timestamp",
-    "endpoint",
-    "response_time_ms",
-    "success"
+    "string"
   ],
   "column_types": [
-    "String",
-    "DateTime",
-    "String",
-    "Int",
-    "Bool"
+    "String"
   ],
   "rows": [
     [
-      "req_1234567890abcdef",
-      "2024-06-01T12:34:56Z",
-      "/v1/text-to-speech",
-      "120",
-      "true"
-    ],
-    [
-      "req_abcdef1234567890",
-      "2024-06-01T12:35:10Z",
-      "/v1/voice/list",
-      "85",
-      "true"
+      "string"
     ]
   ],
   "column_units": [
-    "null",
-    "null",
-    "null",
-    "ms",
-    "null"
+    "ms"
   ]
 }
 ```

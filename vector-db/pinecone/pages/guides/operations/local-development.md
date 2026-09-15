@@ -18,13 +18,13 @@ This page shows you how to use Pinecone Local to develop your applications local
 
 Pinecone Local has the following limitations:
 
-* Pinecone Local uses the `2025-01` API version, which is not the latest stable version.
+* Pinecone Local uses the `2025-01` API version, which isn't the latest stable version.
 * Pinecone Local is available in Docker only.
-* Pinecone Local is an in-memory emulator and is not suitable for production. Records loaded into Pinecone Local do not persist after it is stopped.
-* Pinecone Local does not authenticate client requests. API keys are ignored.
+* Pinecone Local is an in-memory emulator and isn't suitable for production. Records loaded into Pinecone Local don't persist after it's stopped.
+* Pinecone Local doesn't authenticate client requests. API keys are ignored.
 * Max number of records per index: 100,000.
 
-Pinecone Local does not currently support the following features:
+Pinecone Local doesn't currently support the following features:
 
 * [Import from object storage](/guides/index-data/import-data)
 * [Backup/restore of serverless indexes](/guides/manage-data/backups-overview)
@@ -40,7 +40,7 @@ You can configure Pinecone Local as an index emulator or database emulator:
 * **Index emulator** - This approach uses the `pinecone-index` Docker image to create and configure indexes on startup. This is recommended when you want to quickly experiment with reading and writing data without needing to manage the index lifecycle.
 
   <Note>
-    With index emulation, you can only read and write data to the indexes created at startup. You cannot create new indexes, list indexes, or run other operations that do not involve reading and writing data.
+    With index emulation, you can only read and write data to the indexes created at startup. You can't create new indexes, list indexes, or run other operations that don't involve reading and writing data.
   </Note>
 
 * **Database emulator** - This approach uses the `pinecone-local` Docker image to emulate Pinecone Database more broadly. This is recommended when you want to test your production app or manually create and manage indexes.
@@ -211,7 +211,7 @@ You can configure Pinecone Local as an index emulator or database emulator:
 
 Running code against Pinecone Local is just like running code against your Pinecone account, with the following differences:
 
-* Pinecone Local does not authenticate client requests. API keys are ignored.
+* Pinecone Local doesn't authenticate client requests. API keys are ignored.
 
 * The latest version of Pinecone Local uses [Pinecone API version](/reference/api/versioning) `2025-01` and requires [Python SDK](/reference/sdks/python/overview) `v6.x` or later, [Node.js SDK](/reference/sdks/node/overview) `v5.x` or later, [Java SDK](/reference/sdks/java/overview) `v4.x` or later, and [Go SDK](/reference/sdks/go/overview) `v3.x` or later.
 

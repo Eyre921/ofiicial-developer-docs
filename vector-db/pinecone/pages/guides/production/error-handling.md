@@ -33,7 +33,7 @@ Server errors indicate temporary issues with Pinecone's infrastructure:
 * **500 - Unknown**: An internal server error occurred.
 * **502 - Bad Gateway**: The API gateway received an invalid response from a backend service.
 * **503 - Unavailable**: The service is currently unavailable.
-* **504 - Gateway Timeout**: The API gateway did not receive a timely response from the backend server. This can occur due to slow requests or backend processing delays.
+* **504 - Gateway Timeout**: The API gateway didn't receive a timely response from the backend server. This can occur due to slow requests or backend processing delays.
 
 **Best practice for 5xx errors**: [Implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic). These errors are typically transient.
 
@@ -227,7 +227,7 @@ When you receive a 429 error, you're being rate-limited. See [Rate limits](/refe
 Rate limits help protect your applications and maintain the health of the serverless infrastructure. **Most limits can be adjusted upon request**—if you need higher limits to scale, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) with details about your use case.
 
 <Note>
-  Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) are not subject to read unit limits for query, fetch, and list operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
+  Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, and list operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
 </Note>
 
 **Best practices**:

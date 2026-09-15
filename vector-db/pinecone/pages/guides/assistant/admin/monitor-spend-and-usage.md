@@ -11,7 +11,7 @@ Monitor Pinecone Assistant usage and cost, set monthly spend alerts, and track t
 You can set up email alerts to monitor your organization's monthly spending. These alerts notify designated recipients when spending reaches specified thresholds. The alerts automatically reset at the start of each monthly billing cycle.
 
 <Note>
-  Spend alerts are available on the [Standard and Enterprise plans](https://www.pinecone.io/pricing/). They are not needed on the Starter or Builder plans, where usage is capped by plan quotas rather than billed per unit.
+  Spend alerts are available on the [Standard and Enterprise plans](https://www.pinecone.io/pricing/). They're not needed on the Starter or Builder plans, where usage is capped by plan quotas rather than billed per unit.
 </Note>
 
 To set a spend alert:
@@ -29,7 +29,7 @@ To edit a spend alert:
 3. Click **Update**.
 
 <Note>
-  **Auto-spend spike alert**: To protect from unexpected cost increases, Pinecone sends an alert when spending exceeds double your previous month's invoice amount. While the alert threshold is fixed and the alert cannot be deleted, you can modify which email addresses receive the alert and enable or disable the alert notifications.
+  **Auto-spend spike alert**: To protect from unexpected cost increases, Pinecone sends an alert when spending exceeds double your previous month's invoice amount. While the alert threshold is fixed and the alert can't be deleted, you can modify which email addresses receive the alert and enable or disable the alert notifications.
 </Note>
 
 ## Monitor organization-level usage
@@ -125,7 +125,7 @@ Requests to the [chat](/reference/api/latest/assistant/chat_assistant), [context
 
       `prompt_tokens` appear as **Assistants Context Tokens Processed** on invoices.
 
-    * `completion_tokens` do not apply for context retrieval because, unlike for chat, there is no answer from a model. `completion_tokens` will always be 0.
+    * `completion_tokens` don't apply for context retrieval because, unlike for chat, there is no answer from a model. `completion_tokens` will always be 0.
 
     * `total_tokens` is the sum of `prompt_tokens` and `completion_tokens`.
 

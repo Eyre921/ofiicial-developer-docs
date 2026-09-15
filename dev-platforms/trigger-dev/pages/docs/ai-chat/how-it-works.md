@@ -102,7 +102,7 @@ Here is a typical cold turn — user opens the page, types "What's the weather?"
   </Step>
 
   <Step title="Task: fires onTurnComplete, writes snapshot to S3">
-    `onTurnComplete` runs (your hook for persistence). Then the agent writes `ChatSnapshotV1` — `{ version: 1, messages, lastOutEventId, lastOutTimestamp }` — to S3 at `sessions/:chatId/snapshot.json`. This write is awaited, not fire-and-forget, so the next run is guaranteed to find it.
+    `onTurnComplete` runs (your hook for persistence). Then the agent writes the transcript to S3 at `sessions/:chatId/snapshot.json`: a header line carrying the stream cursors and the runtime's own state, one line per message, and an index of the messages at the end so a page of history can be read without downloading the whole conversation. Once [compaction](/docs/ai-chat/compaction) has run, only the most recent messages are kept, so the file stops growing with the conversation. If you need the full history, keep your own [transcript storage](/docs/ai-chat/transcript-storage). This write is awaited, not fire-and-forget, so the next run is guaranteed to find it.
   </Step>
 
   <Step title="Task: goes idle, then suspends">

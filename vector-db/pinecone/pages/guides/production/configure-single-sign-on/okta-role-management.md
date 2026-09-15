@@ -16,7 +16,7 @@ When SAML role management is enabled, Pinecone reconciles each user's roles on e
 
 * Pinecone reads the roles your IdP sends in the SAML `roles` attribute.
 * It replaces the user's organization and project roles with *exactly* the roles in that attribute. Roles for projects not included in the attribute are removed, and values that don't match a known role are ignored.
-* Because roles come entirely from your IdP, while this mode is enabled you can no longer invite members or edit roles in the Pinecone console or through the Admin API, and the SSO **Default role** is not applied.
+* Because roles come entirely from your IdP, while this mode is enabled you can no longer invite members or edit roles in the Pinecone console or through the Admin API, and the SSO **Default role** isn't applied.
 * To revoke a member's access, remove their roles in your IdP. At their next sign-in, Pinecone clears all of their organization and project roles and blocks the login. Active members are re-authenticated at least every 24 hours, so the change applies within a day.
 
 <Note>
@@ -126,7 +126,7 @@ Before you hand role management to Okta, confirm the `roles` attribute contains 
 <Note>You must be an [organization owner](/guides/organizations/understanding-organizations#organization-roles) on the Enterprise plan, and SSO must be enforced for your organization.</Note>
 
 1. In the Pinecone console, go to [**Settings > Access > Identity provider**](https://app.pinecone.io/organizations/-/settings/access/identity-provider).
-2. Confirm that single sign-on shows the **Enforced** status. If it does not, edit your SSO configuration to enforce SSO before continuing.
+2. Confirm that single sign-on shows the **Enforced** status. If it doesn't, edit your SSO configuration to enforce SSO before continuing.
 3. In the **User management** section, select **Manage roles with SAML attributes**.
 4. In the **Enable SAML role management** dialog, review the **Before you enable** prerequisites, then click **Enable SAML role management**.
 

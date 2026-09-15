@@ -8,7 +8,7 @@ Troubleshoot Pinecone Node.js SDK issues that work locally but fail in deploymen
 
 There could be several reasons why a [Node.js application](/reference/sdks/node/overview) works in development mode but not in deployment.
 
-In order to troubleshoot the issue, it's important to identify where the application is failing and compare the development and deployment environments to see what differences exist. It's also important to review any error messages or logs that are generated to help identify the issue.
+To troubleshoot the issue, it's important to identify where the application is failing and compare the development and deployment environments to see what differences exist. It's also important to review any error messages or logs that are generated to help identify the issue.
 
 You may also reach out to our [community of Pinecone users](https://community.pinecone.io) for help.
 
@@ -16,11 +16,11 @@ Here are a few aspects to troubleshoot:
 
 ## Dependency version mismatch
 
-Sometimes, different environments have different versions of dependencies installed. If the application was developed using a specific version of a dependency, and that version is not installed on the deployment environment, the application may not work as expected.
+Sometimes, different environments have different versions of dependencies installed. If the application was developed using a specific version of a dependency, and that version isn't installed on the deployment environment, the application may not work as expected.
 
 ## Environment configuration
 
-The development environment may have different configurations from the deployment environment. For example, the development environment may have different environment variables set or different network settings. If the application relies on specific configuration settings that are not present in the deployment environment, it may not work.
+The development environment may have different configurations from the deployment environment. For example, the development environment may have different environment variables set or different network settings. If the application relies on specific configuration settings that aren't present in the deployment environment, it may not work.
 
 ## Permissions
 
@@ -32,7 +32,7 @@ If the application relies on a database connection, it's possible that the conne
 
 ## Code optimization
 
-During development, the application may have been running on a development server that did not optimize the code. However, when deployed, the application may be running on a production server that is optimized for performance. If there are code issues or performance bottlenecks, they may only appear when the application is deployed.
+During development, the application may have been running on a development server that didn't optimize the code. However, when deployed, the application may be running on a production server that's optimized for performance. If there are code issues or performance bottlenecks, they may only appear when the application is deployed.
 
 ## Install fetch
 

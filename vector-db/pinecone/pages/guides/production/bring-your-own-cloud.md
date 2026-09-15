@@ -51,9 +51,9 @@ You also need:
   * **GCP**: [gcloud CLI](https://cloud.google.com/sdk/docs/install)
   * **Azure**: [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
 * A cloud account with admin-level permissions:
-  * **AWS**: `AdministratorAccess`. `PowerUserAccess` is not sufficient because BYOC creates IAM roles and policies.
-  * **GCP**: `roles/owner`. `roles/editor` is not sufficient because BYOC creates IAM service accounts and bindings.
-  * **Azure**: `Owner` on the subscription. `Contributor` is not sufficient because BYOC creates managed identities and role assignments.
+  * **AWS**: `AdministratorAccess`. `PowerUserAccess` isn't sufficient because BYOC creates IAM roles and policies.
+  * **GCP**: `roles/owner`. `roles/editor` isn't sufficient because BYOC creates IAM service accounts and bindings.
+  * **Azure**: `Owner` on the subscription. `Contributor` isn't sufficient because BYOC creates managed identities and role assignments.
 * Sufficient cloud quota for the resources (the setup wizard validates this)
 * A Pinecone API key from the Pinecone console.
 * A Pinecone Enterprise plan (required for BYOC access)
@@ -354,7 +354,7 @@ Control plane operations like [creating](/reference/api/latest/control-plane/cre
 Data plane operations like [querying](/reference/api/latest/data-plane/query), [upserting](/reference/api/latest/data-plane/upsert), and [fetching](/reference/api/latest/data-plane/fetch) vectors depend on your network access mode.
 
 <Note>
-  BYOC does not support reading and writing data from the index browser in the Pinecone console.
+  BYOC doesn't support reading and writing data from the index browser in the Pinecone console.
 </Note>
 
 <AccordionGroup>
@@ -586,7 +586,7 @@ For additional help, see the [GitHub Issues](https://github.com/pinecone-io/pulu
 
 ### Limitations
 
-Some features available in the standard Pinecone service are not yet supported or have constraints in BYOC:
+Some features available in the standard Pinecone service aren't yet supported or have constraints in BYOC:
 
 * Each organization can have up to 2 BYOC environments. To request an increase, contact [Pinecone support](https://app.pinecone.io/organizations/-/settings/support/ticket).
 * [Integrated embedding and inference](/guides/index-data/indexing-overview#integrated-embedding), which relies on models hosted by Pinecone outside your cloud account.

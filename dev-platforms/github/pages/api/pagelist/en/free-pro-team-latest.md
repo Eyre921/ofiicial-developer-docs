@@ -1651,13 +1651,14 @@ path: api/pagelist/en/free-pro-team-latest
 /en/actions/tutorials/develop-agentic-workflows-in-github-actions
 /en/copilot
 /en/copilot/get-started
-/en/copilot/get-started/quickstart
+/en/copilot/get-started/about-github-copilot
+/en/copilot/get-started/where-to-use-github-copilot
+/en/copilot/get-started/quickstart-for-using-github-copilot-on-github-com
+/en/copilot/get-started/quickstart-for-using-github-copilot-in-your-ide
 /en/copilot/get-started/cli-quickstart
 /en/copilot/get-started/quickstart-copilot-app
 /en/copilot/get-started/sdk-quickstart
-/en/copilot/get-started/what-is-github-copilot
 /en/copilot/get-started/plans
-/en/copilot/get-started/features
 /en/copilot/get-started/best-practices
 /en/copilot/get-started/enterprise-ai-governance
 /en/copilot/concepts

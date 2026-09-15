@@ -107,7 +107,7 @@ Within an index, records or documents are partitioned into namespaces, and all [
 Namespaces are created automatically during [upsert](/guides/index-data/upsert-data). If a namespace doesn't exist, it's created implicitly.
 
 <Note>
-  [Namespaces per serverless index](/reference/api/database-limits/object-limits) vary by plan. On the Standard and Enterprise plans, Pinecone can accommodate million-scale namespaces and beyond for specific use cases. If your application requires more than 100,000 namespaces, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
+  [Namespaces per serverless index](/reference/api/database-limits/object-limits) vary by plan (100 on Starter to 1,000,000 on Enterprise). Pinecone can accommodate more for specific use cases. If your application needs a higher limit, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
 </Note>
 
 <img />
@@ -124,12 +124,12 @@ To turn your source data into vectors, you use an embedding model. You can eithe
 
 Integrated-embedding indexes are created with `pc.create_index_for_model` and read and written through the Records API. Pinecone generates the vectors from your text automatically, both when you upsert and when you search.
 
-1. [Create an index](/guides/index-data/create-an-index) that is integrated with one of Pinecone's [hosted embedding models](/guides/index-data/create-an-index#embedding-models).
+1. [Create an index](/guides/index-data/create-an-index) that's integrated with one of Pinecone's [hosted embedding models](/guides/index-data/create-an-index#embedding-models).
 2. [Upsert](/guides/index-data/upsert-data) your source text. Pinecone uses the integrated model to convert the text to vectors automatically.
 3. [Search](/guides/search/search-overview) with a query text. Again, Pinecone uses the integrated model to convert the text to a vector automatically.
 
 <Note>
-  Indexes with integrated embedding do not support [updating](/guides/manage-data/update-data) or [importing](/guides/index-data/import-data) with text.
+  Indexes with integrated embedding don't support [updating](/guides/manage-data/update-data) or [importing](/guides/index-data/import-data) with text.
 </Note>
 
 ### Bring your own vectors
@@ -146,7 +146,7 @@ Every record has an ID and a vector, and every document has an `_id` and the fie
 
 ### Metadata format
 
-* Metadata fields must be key-value pairs in a flat JSON object. Nested JSON objects are not supported.
+* Metadata fields must be key-value pairs in a flat JSON object. Nested JSON objects aren't supported.
 * Keys must be strings and must not start with a `$`.
 * Values must be one of the following data types:
   * String
@@ -194,20 +194,20 @@ Pinecone supports 40 KB of metadata per record or document. `full_text_search` s
 
 Pinecone's filtering language supports the following operators:
 
-| Operator  | Function                                                                                                                   | Supported types         |
-| :-------- | :------------------------------------------------------------------------------------------------------------------------- | :---------------------- |
-| `$eq`     | Matches  with metadata values that are equal to a specified value. Example: `{"genre": {"$eq": "documentary"}}`            | Number, string, boolean |
-| `$ne`     | Matches  with metadata values that are not equal to a specified value. Example: `{"genre": {"$ne": "drama"}}`              | Number, string, boolean |
-| `$gt`     | Matches  with metadata values that are greater than a specified value. Example: `{"year": {"$gt": 2019}}`                  | Number                  |
-| `$gte`    | Matches  with metadata values that are greater than or equal to a specified value. Example:`{"year": {"$gte": 2020}}`      | Number                  |
-| `$lt`     | Matches  with metadata values that are less than a specified value. Example: `{"year": {"$lt": 2020}}`                     | Number                  |
-| `$lte`    | Matches  with metadata values that are less than or equal to a specified value. Example: `{"year": {"$lte": 2020}}`        | Number                  |
-| `$in`     | Matches  with metadata values that are in a specified array. Example: `{"genre": {"$in": ["comedy", "documentary"]}}`      | String, number          |
-| `$nin`    | Matches  with metadata values that are not in a specified array. Example: `{"genre": {"$nin": ["comedy", "documentary"]}}` | String, number          |
-| `$exists` | Matches  with the specified metadata field. Example: `{"genre": {"$exists": true}}`                                        | Number, string, boolean |
-| `$and`    | Joins query clauses with a logical `AND`. Example: `{"$and": [{"genre": {"$eq": "drama"}}, {"year": {"$gte": 2020}}]}`     | -                       |
-| `$or`     | Joins query clauses with a logical `OR`. Example: `{"$or": [{"genre": {"$eq": "drama"}}, {"year": {"$gte": 2020}}]}`       | -                       |
-| `$not`    | Matches  that do not match the wrapped clause. Example: `{"genre": {"$not": {"$eq": "drama"}}}`                            | -                       |
+| Operator  | Function                                                                                                                  | Supported types         |
+| :-------- | :------------------------------------------------------------------------------------------------------------------------ | :---------------------- |
+| `$eq`     | Matches  with metadata values that are equal to a specified value. Example: `{"genre": {"$eq": "documentary"}}`           | Number, string, boolean |
+| `$ne`     | Matches  with metadata values that aren't equal to a specified value. Example: `{"genre": {"$ne": "drama"}}`              | Number, string, boolean |
+| `$gt`     | Matches  with metadata values that are greater than a specified value. Example: `{"year": {"$gt": 2019}}`                 | Number                  |
+| `$gte`    | Matches  with metadata values that are greater than or equal to a specified value. Example:`{"year": {"$gte": 2020}}`     | Number                  |
+| `$lt`     | Matches  with metadata values that are less than a specified value. Example: `{"year": {"$lt": 2020}}`                    | Number                  |
+| `$lte`    | Matches  with metadata values that are less than or equal to a specified value. Example: `{"year": {"$lte": 2020}}`       | Number                  |
+| `$in`     | Matches  with metadata values that are in a specified array. Example: `{"genre": {"$in": ["comedy", "documentary"]}}`     | String, number          |
+| `$nin`    | Matches  with metadata values that aren't in a specified array. Example: `{"genre": {"$nin": ["comedy", "documentary"]}}` | String, number          |
+| `$exists` | Matches  with the specified metadata field. Example: `{"genre": {"$exists": true}}`                                       | Number, string, boolean |
+| `$and`    | Joins query clauses with a logical `AND`. Example: `{"$and": [{"genre": {"$eq": "drama"}}, {"year": {"$gte": 2020}}]}`    | -                       |
+| `$or`     | Joins query clauses with a logical `OR`. Example: `{"$or": [{"genre": {"$eq": "drama"}}, {"year": {"$gte": 2020}}]}`      | -                       |
+| `$not`    | Matches  that don't match the wrapped clause. Example: `{"genre": {"$not": {"$eq": "drama"}}}`                            | -                       |
 
 <Note>
   At the top level, list one or more fields (combined with implicit AND) or combine clauses with the logical operators `$and` and `$or`. Use `$not` to negate a clause, as shown in the table. A bare comparison operator (like `$gt`) can't appear at the top level; nest it under a field.
@@ -239,7 +239,7 @@ However, requests with the following filter will **not** match:
 { "$and": [{ "genre": "comedy" }, { "genre": "drama" }] }
 ```
 
-Additionally, requests with the following filters will **not** match because they are invalid. They will result in a compilation error:
+Additionally, requests with the following filters will **not** match because they're invalid. They will result in a compilation error:
 
 ```json JSON theme={null}
 # INVALID QUERY:

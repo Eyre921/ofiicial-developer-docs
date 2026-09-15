@@ -205,7 +205,7 @@ Use the [`describe_index`](/reference/api/latest/control-plane/describe_index) e
 Use the [`delete_index`](/reference/api/latest/control-plane/delete_index) operation to delete a pod-based index and all of its associated resources.
 
 <Note>
-  You are billed for a pod-based index even when it is not in use.
+  You are billed for a pod-based index even when it's not in use.
 </Note>
 
 <CodeGroup>
@@ -297,10 +297,10 @@ Before you can delete such an index, you must first [disable deletion protection
 
 For pod-based indexes, Pinecone indexes all metadata fields by default. When metadata fields contains many unique values, pod-based indexes will consume significantly more memory, which can lead to performance issues, pod fullness, and a reduction in the number of possible vectors that fit per pod.
 
-To avoid indexing high-cardinality metadata that is not needed for [filtering your queries](/guides/index-data/indexing-overview#metadata) and keep memory utilization low, specify which metadata fields to index using the `metadata_config` parameter.
+To avoid indexing high-cardinality metadata that's not needed for [filtering your queries](/guides/index-data/indexing-overview#metadata) and keep memory utilization low, specify which metadata fields to index using the `metadata_config` parameter.
 
 <Note>
-  Since high-cardinality metadata does not cause high memory utilization in serverless indexes, selective metadata indexing is not supported.
+  Since high-cardinality metadata doesn't cause high memory utilization in serverless indexes, selective metadata indexing isn't supported.
 </Note>
 
 The value for the `metadata_config` parameter is a JSON object containing the names of the metadata fields to index.
@@ -317,7 +317,7 @@ The value for the `metadata_config` parameter is a JSON object containing the na
 
 **Example**
 
-The following example creates a pod-based index that only indexes the `genre` metadata field. Queries against this index that filter for the `genre` metadata field may return results; queries that filter for other metadata fields behave as though those fields do not exist.
+The following example creates a pod-based index that only indexes the `genre` metadata field. Queries against this index that filter for the `genre` metadata field may return results; queries that filter for other metadata fields behave as though those fields don't exist.
 
 <CodeGroup>
   ```Python Python theme={null}
@@ -1005,7 +1005,7 @@ To control costs, [project owners](/guides/projects/understanding-projects#proje
 
 ### Back up inactive pod-based indexes
 
-For each pod-based index, billing is determined by the per-minute price per pod and the number of pods the index uses, regardless of index activity. When a pod-based index is not in use, [back it up using collections](/guides/indexes/pods/back-up-a-pod-based-index) and delete the inactive index. When you're ready to use the vectors again, you can [create a new index from the collection](/guides/indexes/pods/create-a-pod-based-index#create-a-pod-index-from-a-collection). This new index can also use a different index type or size. Because it's relatively cheap to store collections, you can reduce costs by only running an index when it's in use.
+For each pod-based index, billing is determined by the per-minute price per pod and the number of pods the index uses, regardless of index activity. When a pod-based index isn't in use, [back it up using collections](/guides/indexes/pods/back-up-a-pod-based-index) and delete the inactive index. When you're ready to use the vectors again, you can [create a new index from the collection](/guides/indexes/pods/create-a-pod-based-index#create-a-pod-index-from-a-collection). This new index can also use a different index type or size. Because it's relatively cheap to store collections, you can reduce costs by only running an index when it's in use.
 
 ### Choose the right index type and size
 

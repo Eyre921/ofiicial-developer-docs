@@ -228,7 +228,7 @@ For more information, see [Create a role binding](/reference/api/latest/admin/ro
 
 ### List role bindings
 
-Role bindings are not included in the responses for users, invites, or service accounts. To list the roles assigned to a principal, filter by `principal_type` and `principal_id`:
+Role bindings aren't included in the responses for users, invites, or service accounts. To list the roles assigned to a principal, filter by `principal_type` and `principal_id`:
 
 ```bash curl theme={null}
 PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"

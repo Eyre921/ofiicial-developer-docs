@@ -10,13 +10,13 @@ Combine results from separate Pinecone searches into a single ranking with recip
   The examples below use the [Documents API](/guides/search/full-text-search). Reciprocal rank fusion itself is a client-side method and works with the results of any Pinecone search.
 </Note>
 
-When you rank the same set of documents two different ways, for example, a [full-text (BM25) search](/guides/search/full-text-search) and a [semantic (dense-vector) search](/guides/search/semantic-search), the scores live on different, incomparable scales. Adding or averaging the raw scores is not meaningful, and one signal usually dominates. **Reciprocal rank fusion (RRF)** combines them by fusing the *rankings* instead of the scores, so no normalization or per-signal weighting is required.
+When you rank the same set of documents two different ways, for example, a [full-text (BM25) search](/guides/search/full-text-search) and a [semantic (dense-vector) search](/guides/search/semantic-search), the scores live on different, incomparable scales. Adding or averaging the raw scores isn't meaningful, and one signal usually dominates. **Reciprocal rank fusion (RRF)** combines them by fusing the *rankings* instead of the scores, so no normalization or per-signal weighting is required.
 
 You run each search separately, then apply RRF to their results in your client.
 
 ## When to use it
 
-Reach for RRF whenever you combine results from separate searches and want each to contribute to the final ranking, most commonly full-text (BM25) with semantic (dense-vector). It's a robust default that works without normalizing scores or tuning per-signal weights. Combining a keyword search with a dense search this way is the client-side fusion approach to [hybrid search](/guides/search/hybrid-search): RRF is the fusion method, applied in your client after the searches run.
+Reach for RRF whenever you combine results from separate searches and want each to contribute to the final ranking, most commonly full-text (BM25) with semantic (dense-vector). It's a strong default that works without normalizing scores or tuning per-signal weights. Combining a keyword search with a dense search this way is the client-side fusion approach to [hybrid search](/guides/search/hybrid-search): RRF is the fusion method, applied in your client after the searches run.
 
 ## How it works
 

@@ -1,5 +1,5 @@
 ---
-title: "Pricing and limits"
+title: "Pinecone Assistant pricing and limits"
 source: https://docs.pinecone.io/guides/assistant/pricing-and-limits
 path: guides/assistant/pricing-and-limits
 ---
@@ -60,7 +60,7 @@ When you upload or replace files for an assistant, usage is measured in **ingest
 | ----------------------- | ------------------------- |
 | Standard file ingestion | \$0.0005                  |
 
-*Multimodal PDF processing uses the same ingestion unit; it is billed at about **twice** the standard per-unit rate. For current rates, see [Pricing](https://www.pinecone.io/pricing/).*
+*Multimodal PDF processing uses the same ingestion unit; it's billed at about **twice** the standard per-unit rate. For current rates, see [Pricing](https://www.pinecone.io/pricing/).*
 
 | Plan       | File uploads (ingestion units) |
 | ---------- | ------------------------------ |
@@ -162,7 +162,7 @@ Object limits are restrictions on the number or size of assistant-related object
 
 Additionally, the following limits apply to [multimodal PDFs](/guides/assistant/multimodal) (currently in [public preview](/release-notes/feature-availability)):
 
-Multimodal PDF processing uses the same [ingestion unit](/guides/assistant/pricing-and-limits#ingestion) as standard uploads; it is billed at about **twice** the standard per-unit rate (see [Pricing and limits](/guides/assistant/pricing-and-limits)). Object and rate limits for assistants also apply—see [#limits](/guides/assistant/pricing-and-limits#limits) and [#rate-limits](/guides/assistant/pricing-and-limits#rate-limits).
+Multimodal PDF processing uses the same [ingestion unit](/guides/assistant/pricing-and-limits#ingestion) as standard uploads; it's billed at about **twice** the standard per-unit rate (see [Pricing and limits](/guides/assistant/pricing-and-limits)). Object and rate limits for assistants also apply—see [#limits](/guides/assistant/pricing-and-limits#limits) and [#rate-limits](/guides/assistant/pricing-and-limits#rate-limits).
 
 | Metric        | Starter plan | Builder plan | Standard plan | Enterprise plan |
 | :------------ | :----------- | :----------- | :------------ | :-------------- |

@@ -150,6 +150,8 @@ with sentry_sdk.start_transaction(op="task", name="Transaction Name"):
     span.finish()
 ```
 
+*Other available variations of the above snippet: Stream Mode*
+
 ### [Logs](https://docs.sentry.io/platforms/python.md#logs)
 
 To verify that Sentry catches your logs (which are enabled by default), add some log statements to your application:

@@ -12,7 +12,7 @@ The Pinecone vector database is a key component of the AI tech stack, helping co
 
 With the release of Knowledge Bases for Amazon Bedrock, developers can integrate their enterprise data into Amazon Bedrock using Pinecone as the fully-managed vector database to build GenAI applications that are:
 
-* **Highly performant:** Speed through data in milliseconds. Leverage metadata filters and support for sparse-dense vectors in a single index for top-notch relevance, ensuring quick, accurate, and grounded results across diverse search tasks.
+* **Highly performant:** Speed through data in milliseconds. Use metadata filters and support for sparse-dense vectors in a single index for top-notch relevance, ensuring quick, accurate, and grounded results across diverse search tasks.
 * **Cost effective at scale:** Start for free on the starter plan and seamlessly scale usage with transparent usage-based pricing. Add or remove resources to meet your desired capacity and performance, upwards of billions of embeddings.
 * **Enterprise ready:** Launch, use, and scale your AI solution without needing to maintain infrastructure, monitor services, or troubleshoot algorithms. Pinecone meets the security and operational requirements of enterprises.
 
@@ -110,7 +110,7 @@ To [create a Bedrock knowledge base](https://console.aws.amazon.com/bedrock/home
 2. In the **Choose data source** section, select **Amazon S3**.
 3. Click **Next**.
 4. On the **Configure data source** page, enter the **S3 URI** for the bucket you created.
-5. If you do not want to use the default chunking strategy, select a chunking strategy.
+5. If you don't want to use the default chunking strategy, select a chunking strategy.
 6. Click **Next**.
 
 ### 4. Connect Pinecone to the knowledge base
@@ -122,7 +122,7 @@ Now you will need to select an embedding model to configure with Bedrock and con
 3. Mark the check box for authorizing AWS to access your Pinecone index.
 
    <Note>
-     Ensure your Pinecone index is empty before proceeding. Bedrock cannot work with indexes that contain existing data. All data must be ingested through Bedrock's sync process.
+     Ensure your Pinecone index is empty before proceeding. Bedrock can't work with indexes that contain existing data. All data must be ingested through Bedrock's sync process.
    </Note>
 4. For the **Endpoint URL**, enter the Pinecone index host retrieved from the Pinecone console.
 5. For the **Credentials secret ARN**, enter the secret ARN you created earlier.
@@ -146,14 +146,14 @@ Lastly, [create an agent](https://console.aws.amazon.com/bedrock/home?#/agents) 
 5. Provide instructions for the agent. These will define what the agent is trying to accomplish.
 6. In the **Knowledge Bases** section, select the knowledge base you created.
 7. Prepare the agent by clicking **Prepare** near the top of the builder page.
-8. Test the agent after preparing it to verify it is using the knowledge base.
+8. Test the agent after preparing it to verify it's using the knowledge base.
 9. Click **Save and exit**.
 
 Your agent is now set up and ready to go! In the next section, we'll show how to interact with the newly created agent.
 
 #### Create an alias for your agent
 
-In order to deploy the agent, create an alias for it that points to a specific version of the agent. Once the alias is created, it will display in the agent view.
+To deploy the agent, create an alias for it that points to a specific version of the agent. Once the alias is created, it will display in the agent view.
 
 1. On the [Agents](https://console.aws.amazon.com/bedrock/home?#/agents) page, select the agent you created.
 2. Click **Create Alias**.

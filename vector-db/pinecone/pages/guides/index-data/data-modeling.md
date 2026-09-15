@@ -25,7 +25,7 @@ The schema, declared at index creation, tells Pinecone how to rank each ranking 
 * `sparse_vector`, indexed for sparse-vector search.
 * `string` with a nested `full_text_search` config object (`{}` enables with all defaults; optional sub-fields: `language`, `stemming`, `stop_words`), indexed for **BM25** ranking and Lucene queries. Lowercasing and the token length cap are server-applied and can't be overridden.
 
-Metadata fields are not declared in the schema. Any field you upsert that is not declared in the schema is stored on the document, returned via `include_fields`, and automatically indexed for filtering. Pinecone infers the metadata field type from the values you upsert: strings, numbers (floating point), booleans, and arrays of strings are all supported.
+Metadata fields aren't declared in the schema. Any field you upsert that's not declared in the schema is stored on the document, returned via `include_fields`, and automatically indexed for filtering. Pinecone infers the metadata field type from the values you upsert: strings, numbers (floating point), booleans, and arrays of strings are all supported.
 
 Document fields can hold structured values: a metadata `string_list` field holds an array of strings; a `dense_vector` field holds an array of floats; a `sparse_vector` field is an object with two parallel arrays, `indices` (token positions) and `values` (token weights).
 
@@ -52,7 +52,7 @@ Field-name rules:
 For the full schema reference (language and analyzer options, multi-field schemas, scoring methods), see [Full-text search](/guides/search/full-text-search).
 
 <Note>
-  A document is the unit of retrieval: `top_k` and `_score` are computed per document, not per sub-section. Pinecone does not split a single document into multiple in-document chunks at index time. If your source content is longer than what you want to retrieve as one hit (a long article, a PDF, a transcript), do the chunking in your application before upsert and store each chunk as its own document, with an ID like `document1#chunk1`, `document1#chunk2`, and a metadata field that ties chunks back to the parent document for grouping at query time.
+  A document is the unit of retrieval: `top_k` and `_score` are computed per document, not per sub-section. Pinecone doesn't split a single document into multiple in-document chunks at index time. If your source content is longer than what you want to retrieve as one hit (a long article, a PDF, a transcript), do the chunking in your application before upsert and store each chunk as its own document, with an ID like `document1#chunk1`, `document1#chunk2`, and a metadata field that ties chunks back to the parent document for grouping at query time.
 </Note>
 
 ### Schema validation
@@ -71,7 +71,7 @@ Each document in an [upsert](/reference/api/latest/data-plane/upsert_documents) 
 
 ### Schema patterns
 
-The same document model supports several common schema shapes. Pick the one that matches the signal you want to rank by, and plan your fields up front: schema migration is not supported after index creation. Filters are deterministic per document and apply before scoring; choose your hard yes/no constraints (including text-match operators on FTS-enabled `string` fields) first, then pick a `score_by` method to rank whatever remains. See [Filters vs. scoring](/guides/search/full-text-search#filters-vs-scoring).
+The same document model supports several common schema shapes. Pick the one that matches the signal you want to rank by, and plan your fields up front: schema migration isn't supported after index creation. Filters are deterministic per document and apply before scoring; choose your hard yes/no constraints (including text-match operators on FTS-enabled `string` fields) first, then pick a `score_by` method to rank whatever remains. See [Filters vs. scoring](/guides/search/full-text-search#filters-vs-scoring).
 
 <Note>
   The Python snippets in each accordion below assume an initialized client and the schema-builder import:
@@ -149,7 +149,7 @@ The same document model supports several common schema shapes. Pick the one that
     }
     ```
 
-    `category` and `rating` are not declared in the schema. They're upserted as metadata, automatically indexed for filtering, and usable in `filter` expressions.
+    `category` and `rating` aren't declared in the schema. They're upserted as metadata, automatically indexed for filtering, and usable in `filter` expressions.
 
     Pass two `text` clauses in `score_by`; the server combines them into one ranking, with each contributing field weighted equally in `2026-07`.
 
@@ -344,7 +344,7 @@ Records are how you model data for [indexes with dense vectors](/guides/core-con
 
     * **ID**: A unique string identifier for the record.
     * **Vector**: A dense vector for [semantic search](/guides/search/semantic-search), a sparse vector for [sparse-vector search](/guides/search/lexical-search), or both for single-index [hybrid search](/guides/search/hybrid-search) (Vectors API).
-    * **Metadata** (optional): A flat JSON document containing key-value pairs with additional information (nested objects are not supported). You can filter by metadata when searching or deleting records.
+    * **Metadata** (optional): A flat JSON document containing key-value pairs with additional information (nested objects aren't supported). You can filter by metadata when searching or deleting records.
 
     <Note>
       When importing data from object storage, records must be in Parquet format. For more details, see [Import data](/guides/index-data/import-data#3-prepare-your-data).

@@ -60,7 +60,7 @@ You can [upload a file to your assistant](/reference/api/latest/assistant/upload
 
 File uploads are billed in [ingestion units](/guides/assistant/pricing-and-limits#ingestion). With [API version](/reference/api/versioning) `2026-04` or later, upload, upsert, and delete responses return an operation object. Poll [Describe an operation](/reference/api/2026-04/assistant/describe_operation) or [List operations](/reference/api/2026-04/assistant/list_operations) to track progress; when a file-ingestion operation completes, `ingestion_units` may be present on the operation. See [Track file operations](/guides/assistant/manage-files#track-file-operations).
 
-Upload is asynchronous and returns an operation ID. It may take several minutes for your assistant to process your file. You can [track file operations](/guides/assistant/manage-files#track-file-operations) to monitor progress, or [check the status of your file](/guides/assistant/manage-files#get-the-status-of-a-file) to determine if it is ready to use.
+Upload is asynchronous and returns an operation ID. It may take several minutes for your assistant to process your file. You can [track file operations](/guides/assistant/manage-files#track-file-operations) to monitor progress, or [check the status of your file](/guides/assistant/manage-files#get-the-status-of-a-file) to determine if it's ready to use.
 
 <Tip>
   You can upload a file to an assistant using the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant). Select the assistant you want to upload to and add the file in the Assistant playground.
@@ -125,7 +125,7 @@ When a file is uploaded with metadata, you can use the metadata to [filter a lis
   This feature requires [API version](/reference/api/versioning) `2026-04` or later.
 </Note>
 
-You can create or replace a file by providing a custom file ID using the [upsert file](/reference/api/2026-04/assistant/upsert_file) endpoint. If a file with the given ID already exists, it is replaced. If not, a new file is created.
+You can create or replace a file by providing a custom file ID using the [upsert file](/reference/api/2026-04/assistant/upsert_file) endpoint. If a file with the given ID already exists, it's replaced. If not, a new file is created.
 
 File IDs must be 1-128 characters long and can contain alphanumeric characters, hyphens, and underscores.
 

@@ -54,9 +54,9 @@ The 40 KB filterable metadata limit doesn't apply to `full_text_search` text fie
 | Max files per import                          | 100,000   |
 | Max size per file                             | 10 GB     |
 
-The total input data size limit does not apply to indexes with [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview).
+The total input data size limit doesn't apply to indexes with [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview).
 
-Bulk import supports indexes without a schema definition (Parquet files) and indexes with document schemas ([JSONL files](/guides/index-data/import-data#prepare-document-schema-files-jsonl)). Semantic-text (auto-embedded) fields are not yet supported in document schemas.
+Bulk import supports indexes without a schema definition (Parquet files) and indexes with document schemas ([JSONL files](/guides/index-data/import-data#prepare-document-schema-files-jsonl)). Semantic-text (auto-embedded) fields aren't yet supported in document schemas.
 
 ## Query limits
 

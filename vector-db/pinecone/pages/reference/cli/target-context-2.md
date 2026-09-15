@@ -69,7 +69,7 @@ pc target
   When using an API key, control plane and data plane operations use the **key's org/project scope**, not the CLI's stored target context. The `pc target --show` output does not reflect what these operations actually use.
 </Warning>
 
-API keys are scoped to a specific org and project and cannot access resources outside that scope.
+API keys are scoped to a specific org and project and can't access resources outside that scope.
 
 Admin API operations still use your user login or service account credentials (API keys can't authenticate Admin API calls).
 
@@ -88,7 +88,7 @@ Running `pc target --json` with no targeting flags returns the current target co
 pc target --json
 ```
 
-In non-TTY environments (CI/CD pipelines, shell pipes, scripts), JSON output is automatic — the same as passing `--json` explicitly. You do not need to add the flag in automation contexts.
+In non-TTY environments (CI/CD pipelines, shell pipes, scripts), JSON output is automatic — the same as passing `--json` explicitly. You don't need to add the flag in automation contexts.
 
 Use `--organization-id` and `--project-id` (instead of name flags) to set context reliably in scripts, since IDs are stable and unaffected by renames:
 

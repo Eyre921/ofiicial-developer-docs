@@ -95,7 +95,7 @@ In-app webview support differs from browser support. The table lists which Expre
 | Klarna | Not supported |
 | Amazon Pay | Not supported |
 
-Webview support is in addition to each payment method’s standard browser and eligibility requirements. Use the Express Checkout Element [`availablepaymentmethodschange`](https://docs.stripe.com/js/elements_object/express_checkout_element_availablepaymentmethodschange_event) event to detect which payment methods are available in your customer’s current environment. For mobile app integrations, consider using the [iOS SDK](https://docs.stripe.com/payments/accept-a-payment.md?payment-ui=mobile&platform=ios) or [Android SDK](https://docs.stripe.com/payments/accept-a-payment.md?payment-ui=mobile&platform=android).
+Webview support is in addition to each payment method’s standard browser and eligibility requirements. Use the Express Checkout Element [availablepaymentmethodschange](https://docs.stripe.com/js/elements_object/express_checkout_element_availablepaymentmethodschange_event) event to detect which payment methods are available in your customer’s current environment. For mobile app integrations, consider using the [iOS SDK](https://docs.stripe.com/payments/accept-a-payment.md?payment-ui=mobile&platform=ios) or [Android SDK](https://docs.stripe.com/payments/accept-a-payment.md?payment-ui=mobile&platform=android).
 
 ## Layout
 

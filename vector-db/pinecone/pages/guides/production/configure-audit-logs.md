@@ -27,9 +27,9 @@ Once you enable audit logs, Pinecone will start writing logs to the S3 bucket. I
 
 ## Make your audit-log bucket immutable (recommended)
 
-Because audit logs are written to an Amazon S3 bucket you control, you can enforce write-once-read-many (WORM) immutability so that log files cannot be modified or deleted — including by your own administrators — for a retention period you define. This is recommended for compliance use cases.
+Because audit logs are written to an Amazon S3 bucket you control, you can enforce write-once-read-many (WORM) immutability so that log files can't be modified or deleted — including by your own administrators — for a retention period you define. This is recommended for compliance use cases.
 
-Enable [S3 Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html) in **compliance mode** with a retention period. Object Lock requires bucket versioning and, in general, must be enabled when the bucket is created — plan for it when you set up the [IAM policy and S3 bucket](/guides/operations/integrations/integrate-with-amazon-s3) above. Set the retention period to at least your required audit-log retention. Pinecone writes each log batch as a new, uniquely named file and does not modify or delete previously written logs.
+Enable [S3 Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html) in **compliance mode** with a retention period. Object Lock requires bucket versioning and, in general, must be enabled when the bucket is created — plan for it when you set up the [IAM policy and S3 bucket](/guides/operations/integrations/integrate-with-amazon-s3) above. Set the retention period to at least your required audit-log retention. Pinecone writes each log batch as a new, uniquely named file and doesn't modify or delete previously written logs.
 
 <Warning>
   Compliance mode is intentionally irreversible: until a retention period expires, objects cannot be deleted and the period cannot be shortened — not even by the root account. Logs already written to the bucket are therefore retained for the full period even if you later disable or remove the audit log integration.

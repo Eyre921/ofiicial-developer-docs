@@ -63,7 +63,7 @@ Prepaid credits apply to Pinecone services at List Price. Any usage that exceeds
 Customers on Standard and Enterprise pay-as-you-go plans can purchase prepaid credits directly by navigating in the Pinecone console to [Settings > Billing > Plans](https://app.pinecone.io/organizations/-/settings/billing/plans).
 
 <Note>
-  Purchasing prepaid credits is not available through cloud marketplace billing. To purchase prepaid credits through a cloud marketplace, contact [ar@pinecone.io](mailto:ar@pinecone.io).
+  Purchasing prepaid credits isn't available through cloud marketplace billing. To purchase prepaid credits through a cloud marketplace, contact [ar@pinecone.io](mailto:ar@pinecone.io).
 </Note>
 
 ## Serverless indexes
@@ -85,7 +85,7 @@ A **read unit (RU)** is the unit Pinecone uses to measure and price the cost of 
 </Tip>
 
 <Note>
-  Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) are not subject to read unit limits for query, fetch, and list operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
+  Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, and list operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
 </Note>
 
 #### Query
@@ -103,7 +103,7 @@ The cost of a query scales linearly with the size of the targeted namespace. Spe
 To learn how to calculate your namespace size, see [Storage](#storage).
 
 <Note>
-  Parameters that affect the size of the query response, such as `top_k`, `include_metadata`, and `include_values`, are not relevant for query cost; only the size of the namespace determines the number of RUs used.
+  Parameters that affect the size of the query response, such as `top_k`, `include_metadata`, and `include_values`, aren't relevant for query cost; only the size of the namespace determines the number of RUs used.
 </Note>
 
 #### Fetch
@@ -116,7 +116,7 @@ A fetch request uses 1 RU for every 10 records fetched, for example:
 | 50              | 5   |
 | 107             | 11  |
 
-Specifying a non-existent ID or adding the same ID more than once does not increase the number of RUs used. However, a fetch request will always use at least 1 RU.
+Specifying a non-existent ID or adding the same ID more than once doesn't increase the number of RUs used. However, a fetch request will always use at least 1 RU.
 
 <Note>
   [Fetching records by metadata](/guides/manage-data/fetch-data#fetch-records-by-metadata) uses the same cost model as fetching by ID: 1 RU for every 10 records fetched.
@@ -180,7 +180,7 @@ For example, the following table shows the WUs used by delete requests at differ
 | 100               | 768       | 500 bytes          | 3.57 KB          | 357  |
 | 1000              | 1536      | 1000 bytes         | 7.14 KB          | 7140 |
 
-Specifying a non-existent ID or adding the same ID more than once does not increase WU use.
+Specifying a non-existent ID or adding the same ID more than once doesn't increase WU use.
 
 [Deleting a namespace](/guides/manage-data/manage-namespaces#delete-a-namespace) or [deleting all records in a namespace using `deleteAll`](/guides/manage-data/delete-data#delete-all-records-in-a-namespace) uses 5 WUs.
 
@@ -318,7 +318,7 @@ Egress is metered on read requests that return per-record data:
 * [Text search](/reference/api/latest/data-plane/search_records) on integrated indexes
 * [Full-text search](/guides/search/full-text-search)
 
-Write requests (upsert, update, delete, import), index statistics (such as `describe_index_stats`), and index management requests are not metered for egress.
+Write requests (upsert, update, delete, import), index statistics (such as `describe_index_stats`), and index management requests aren't metered for egress.
 
 Egress applies to indexes that use [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) as well as on-demand indexes, because it depends on the data returned to you rather than on the hardware serving the read.
 
@@ -346,7 +346,7 @@ What happens past the allowance depends on your plan:
 
 [Importing from object storage](/guides/index-data/import-data) is the most efficient and cost-effective method to load large numbers of records into an index. The cost of an import is based on the size of the records read, whether the records were imported successfully or not.
 
-If the import operation fails (e.g., after encountering a vector of the wrong dimension in an import with `on_error="abort"`), you will still be charged for the records read. However, if the import fails because of an internal system error, you will not incur charges. In this case, the import will return the error message `"We were unable to process your request. If the problem persists, please contact us at https://support.pinecone.io"`.
+If the import operation fails (e.g., after encountering a vector of the wrong dimension in an import with `on_error="abort"`), you will still be charged for the records read. However, if the import fails because of an internal system error, you won't incur charges. In this case, the import will return the error message `"We were unable to process your request. If the problem persists, please contact us at https://support.pinecone.io"`.
 
 For the latest import pricing rates, see [Pricing](https://www.pinecone.io/pricing/).
 

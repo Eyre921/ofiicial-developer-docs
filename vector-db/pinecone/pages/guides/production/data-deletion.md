@@ -18,14 +18,14 @@ Deletion of your customer data also occurs automatically when you end your relat
 
 ## Soft deletion
 
-After you initiate a deletion request, Pinecone marks the data for deletion. The data is not immediately removed from the system. Instead, Pinecone retains the data for a maximum of 90 days. During this period, the data is not accessible to you or any other user.
+After you initiate a deletion request, Pinecone marks the data for deletion. The data isn't immediately removed from the system. Instead, Pinecone retains the data for a maximum of 90 days. During this period, the data isn't accessible to you or any other user.
 
 ## Permanent deletion
 
-Before the end of the 90-day retention window, Pinecone permanently deletes the data from its system. Once the data is permanently deleted, it is no longer recoverable.
+Before the end of the 90-day retention window, Pinecone permanently deletes the data from its system. Once the data is permanently deleted, it's no longer recoverable.
 
 <Note>
-  Pinecone creates an [audit log](/guides/production/security-overview#audit-logs) of user, service account, and API events. Events are captured within two hours of occurrence and are retained for 90 days, after which they are permanently deleted.
+  Pinecone creates an [audit log](/guides/production/security-overview#audit-logs) of user, service account, and API events. Events are captured within two hours of occurrence and are retained for 90 days, after which they're permanently deleted.
 </Note>
 
 ## See also

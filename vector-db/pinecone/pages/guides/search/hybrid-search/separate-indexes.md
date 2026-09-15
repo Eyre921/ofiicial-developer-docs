@@ -6,7 +6,7 @@ path: guides/search/hybrid-search/separate-indexes
 
 Store dense and sparse vectors in two Pinecone indexes linked by ID, query each, and merge the results client-side with reciprocal rank fusion.
 
-Store dense and sparse vectors in two separate Pinecone indexes linked by a shared record ID, query each index, and merge the results client-side (for example, with [reciprocal rank fusion](/guides/search/reciprocal-rank-fusion)). This is the Vectors API separate-index hybrid pattern. It is more flexible than a single index (it supports sparse-only queries, integrated embedding, and per-index reranking) but requires managing two indexes.
+Store dense and sparse vectors in two separate Pinecone indexes linked by a shared record ID, query each index, and merge the results client-side (for example, with [reciprocal rank fusion](/guides/search/reciprocal-rank-fusion)). This is the Vectors API separate-index hybrid pattern. It's more flexible than a single index (it supports sparse-only queries, integrated embedding, and per-index reranking) but requires managing two indexes.
 
 ## Set up and search
 

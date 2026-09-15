@@ -12,7 +12,7 @@ This page describes Pinecone's security protocols, practices, and features.
 
 ### API keys
 
-Each Pinecone [project](/guides/assistant/admin/projects-overview) has one or more [API keys](/guides/assistant/admin/manage-api-keys). In order to make calls to the Pinecone API, a user must provide a valid API key for the relevant Pinecone project.
+Each Pinecone [project](/guides/assistant/admin/projects-overview) has one or more [API keys](/guides/assistant/admin/manage-api-keys). To make calls to the Pinecone API, a user must provide a valid API key for the relevant Pinecone project.
 
 You can [manage API key permissions](/guides/assistant/admin/manage-api-keys) in the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/keys). For the roles you can assign to an API key and the operations each role covers, see [Project roles](/guides/assistant/admin/projects-overview#project-roles).
 

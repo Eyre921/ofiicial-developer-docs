@@ -17,18 +17,18 @@ With pod-based indexes, you choose one or more pre-configured units of hardware 
 Different pod types are priced differently. See [Understanding cost](/guides/manage-cost/understanding-cost) for more details.
 
 <Note>
-  Once a pod-based index is created, you cannot change its pod type. However, you can create a collection from an index and then [create a new index with a different pod type](/guides/indexes/pods/create-a-pod-based-index#create-a-pod-index-from-a-collection) from the collection.
+  Once a pod-based index is created, you can't change its pod type. However, you can create a collection from an index and then [create a new index with a different pod type](/guides/indexes/pods/create-a-pod-based-index#create-a-pod-index-from-a-collection) from the collection.
 </Note>
 
 ### s1 pods
 
-These storage-optimized pods provide large storage capacity and lower overall costs with slightly higher query latencies than p1 pods. They are ideal for very large indexes with moderate or relaxed latency requirements.
+These storage-optimized pods provide large storage capacity and lower overall costs with slightly higher query latencies than p1 pods. They're ideal for very large indexes with moderate or relaxed latency requirements.
 
 Each s1 pod has enough capacity for around 5M vectors of 768 dimensions.
 
 ### p1 pods
 
-These performance-optimized pods provide very low query latencies, but hold fewer vectors per pod than s1 pods. They are ideal for applications with low latency requirements (\<100ms).
+These performance-optimized pods provide very low query latencies, but hold fewer vectors per pod than s1 pods. They're ideal for applications with low latency requirements (\<100ms).
 
 Each p1 pod has enough capacity for around 1M vectors of 768 dimensions.
 
@@ -40,7 +40,7 @@ Each p2 pod has enough capacity for around 1M vectors of 768 dimensions. However
 
 The data ingestion rate for p2 pods is significantly slower than for p1 pods; this rate decreases as the number of dimensions increases. For example, a p2 pod containing vectors with 128 dimensions can upsert up to 300 updates per second; a p2 pod containing vectors with 768 dimensions or more supports upsert of 50 updates per second. Because query latency and throughput for p2 pods vary from p1 pods, test p2 pod performance with your dataset.
 
-The p2 pod type does not support sparse vector values.
+The p2 pod type doesn't support sparse vector values.
 
 ## Pod size and performance
 
@@ -69,7 +69,7 @@ When creating a pod-based index, you must choose the cloud environment where you
 
 [Contact us](http://www.pinecone.io/contact/) if you need a dedicated deployment in other regions.
 
-The environment cannot be changed after the index is created.
+The environment can't be changed after the index is created.
 
 ## Pod costs
 
@@ -144,7 +144,7 @@ To see a calculation of your current usage and costs, go to [**Settings > Usage*
 * [Metadata](/guides/index-data/indexing-overview#metadata)
   * Metadata with high cardinality, such as a unique value for every vector in a large index, uses more memory than expected and can cause the pods to become full.
 * [Collections](/guides/manage-data/back-up-an-index#pod-based-index-backups-using-collections)
-  * You cannot query or write to a collection after its creation. For this reason, a collection only incurs storage costs.
+  * You can't query or write to a collection after its creation. For this reason, a collection only incurs storage costs.
   * You can only perform operations on collections in the current Pinecone project.
 * [Sparse-dense vectors](/guides/search/hybrid-search/single-index)
   * Only `s1` and `p1` [pod-based indexes](/guides/indexes/pods/understanding-pod-based-indexes#pod-types) using the dotproduct distance metric support sparse-dense vectors.

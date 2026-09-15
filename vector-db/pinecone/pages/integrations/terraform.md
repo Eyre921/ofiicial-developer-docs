@@ -443,7 +443,7 @@ The `pinecone_role_binding` resource doesn't accept `principal_type = "invite"`.
 
 ### Invites
 
-The `pinecone_invite` resource manages an [organization invitation](/guides/organizations/manage-organization-members), not the resulting membership. Creating it sends an invite to the given email with a set of initial roles. Deleting it revokes an invite that is still pending. The `role_bindings` list must include at least one organization-scoped role that grants membership.
+The `pinecone_invite` resource manages an [organization invitation](/guides/organizations/manage-organization-members), not the resulting membership. Creating it sends an invite to the given email with a set of initial roles. Deleting it revokes an invite that's still pending. The `role_bindings` list must include at least one organization-scoped role that grants membership.
 
 ```terraform theme={null}
 # Invite a user as an organization member

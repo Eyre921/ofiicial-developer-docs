@@ -31,7 +31,7 @@ Stripe applies pricing schemes to a payment when the payment meets all of the fo
 - The pricing scheme is enabled.
 - Stripe charges fees on the payment to your platform rather than the connected account.
 - Your platform is permitted to charge app fees in the connected account’s country.
-- The payment doesn’t explicitly apply `application_fee or transfer_data[amount]` parameters that override  managed application fees.
+- The payment doesn’t specify an application fee or transfer amount.
 - The payment doesn’t use multi-capture.
 
 In addition to the requirements, pricing schemes observe the following limitations:

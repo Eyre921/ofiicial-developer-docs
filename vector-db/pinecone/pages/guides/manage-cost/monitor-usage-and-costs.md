@@ -37,7 +37,7 @@ You can monitor index-level usage directly in the Pinecone console, or you can p
 
 ### Read units
 
-[Query](/guides/search/search-overview), [fetch](/guides/manage-data/fetch-data), and [list by ID](/guides/manage-data/list-record-ids) requests return a `usage` parameter with the [read unit](/guides/manage-cost/understanding-cost#read-units) consumption of each request that is made.
+[Query](/guides/search/search-overview), [fetch](/guides/manage-data/fetch-data), and [list by ID](/guides/manage-data/list-record-ids) requests return a `usage` parameter with the [read unit](/guides/manage-cost/understanding-cost#read-units) consumption of each request that's made.
 
 <Warning>
   While Pinecone tracks read unit usage with decimal precision, the Pinecone API and SDKs round these values up to the nearest whole number in query, fetch, and list responses. For example, if a query uses 0.45 read units, the API and SDKs will report it as 1 read unit.
@@ -46,7 +46,7 @@ You can monitor index-level usage directly in the Pinecone console, or you can p
 </Warning>
 
 <Note>
-  Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) are not subject to read unit limits for query, fetch, and list operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
+  Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, and list operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
 </Note>
 
 Example query request:

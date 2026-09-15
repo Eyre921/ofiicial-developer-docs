@@ -115,7 +115,7 @@ To update the vector and/or metadata of a single record, use the [`update`](/ref
   * Updated values for the vector. Specify one of the following:
     * `values`: For dense vectors. Must have the same length as the existing vector.
     * `sparse_values`: For sparse vectors.
-  * `setMetadata`: The metadata to add or change. When updating metadata, only the specified metadata fields are modified, and if a specified metadata field doesn't exist, it is added.
+  * `setMetadata`: The metadata to add or change. When updating metadata, only the specified metadata fields are modified, and if a specified metadata field doesn't exist, it's added.
 
 <Warning>
   If a non-existent record ID is specified, no records are affected and a `200 OK` status is returned.

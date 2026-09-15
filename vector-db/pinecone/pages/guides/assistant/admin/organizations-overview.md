@@ -9,7 +9,7 @@ Learn how Pinecone organizations group projects under shared billing, and how or
 A Pinecone organization is a set of [projects](/guides/assistant/admin/projects-overview) that use the same billing. Organizations allow one or more users to control billing and project permissions for all of the projects belonging to the organization. Each project belongs to an organization.
 
 <Note>
-  While an email address can be associated with multiple organizations, it cannot be used to create more than one organization. For information about managing organization members, see [Manage organization members](/guides/assistant/admin/manage-organization-members).
+  While an email address can be associated with multiple organizations, it can't be used to create more than one organization. For information about managing organization members, see [Manage organization members](/guides/assistant/admin/manage-organization-members).
 </Note>
 
 ## Projects in an organization
@@ -28,11 +28,11 @@ Organization owners can manage access to their organizations and projects by ass
 
 * **Organization owner** (`OrgOwner`): Full control over the organization, including billing, members, service accounts, security, and every project. Inherits [owner access](/guides/assistant/admin/projects-overview#project-roles) to all projects in the organization.
 
-* **Organization manager** (`OrgManager`): Can view organization details and create projects. Organization managers cannot manage billing, members, service accounts, or organization settings.
+* **Organization manager** (`OrgManager`): Can view organization details and create projects. Organization managers can't manage billing, members, service accounts, or organization settings.
 
-* **Organization member** (`OrgMember`): Can view organization details and access the projects they are added to. Organization members cannot create projects or manage organization settings. To grant project access, add the member to one or more projects and assign a [project role](/guides/assistant/admin/projects-overview#project-roles); see [Manage project members](/guides/assistant/admin/manage-project-members).
+* **Organization member** (`OrgMember`): Can view organization details and access the projects they're added to. Organization members can't create projects or manage organization settings. To grant project access, add the member to one or more projects and assign a [project role](/guides/assistant/admin/projects-overview#project-roles); see [Manage project members](/guides/assistant/admin/manage-project-members).
 
-* **Billing admin** (`OrgBillingAdmin`): Can view organization details and manage billing, subscriptions, and usage. Billing admins cannot manage members or organization settings, and they cannot manage projects unless they are also [project owners](/guides/assistant/admin/projects-overview#project-roles).
+* **Billing admin** (`OrgBillingAdmin`): Can view organization details and manage billing, subscriptions, and usage. Billing admins can't manage members or organization settings, and they can't manage projects unless they're also [project owners](/guides/assistant/admin/projects-overview#project-roles).
 
 The following table summarizes the permissions for each organization role:
 
