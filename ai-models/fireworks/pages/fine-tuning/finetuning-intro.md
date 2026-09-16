@@ -100,22 +100,16 @@ See the detailed [serverless versus dedicated comparison](/fine-tuning/training-
 
 ### GPU quota prerequisite
 
-Managed jobs and dedicated Training API runs need training GPU quota, granted automatically by [spending tier](/guides/quotas_usage/account-quotas#training-gpu-quota). [Serverless Training](/fine-tuning/training-api/serverless) uses a shared pool with its own model, concurrency, and rate limits instead of dedicated training GPU quota.
+Managed jobs and dedicated Training API runs need training GPU quota. Add a [payment method](https://fireworks.ai/billing) and your account gets **32 GPUs of each type** (H200, B200, and B300). Accounts without a payment method have 0 training GPUs.
 
-<Accordion title="Training GPU quota by spending tier">
-  | Tier              | How to reach it                          | B200 / B300 (Blackwell) | H200 | H100 / A100 |
-  | ----------------- | ---------------------------------------- | :---------------------: | :--: | :---------: |
-  | No payment method | —                                        |            0            |   0  |      0      |
-  | Tier 1            | Valid payment method and billing profile |            0            |  16  |      8      |
-  | Tier 2            | Spend or add \$50 in credits             |            16           |  16  |      16     |
-  | Tier 3            | Spend or add \$500 in credits            |            24           |  24  |      24     |
-  | Tier 4            | Spend or add \$5,000 in credits          |            32           |  32  |      32     |
+[Serverless Training](/fine-tuning/training-api/serverless) uses a shared pool with its own model, concurrency, and rate limits instead of dedicated training GPU quota.
 
-  Check your quota with the Fireworks CLI (`firectl quota list`). A job rejected with HTTP 429 `quota_exceeded` (sometimes a `403` on the job poll) is a tier issue, not a dataset/config problem.
-</Accordion>
+Before you launch, estimate the job with the [training cost estimator](/fine-tuning/cost-estimator) and confirm your account has enough credits to cover it.
+
+Check quota with `firectl quota list`. HTTP 403 `quota_exceeded` or `tier_required` means you need a payment method or more training GPU quota, not a dataset or config fix.
 
 <Note>
-  Need more training quota than your tier allows? [Reach out for enterprise support](https://fireworks.ai/contact-training) and we'll help size the right allocation for your workload.
+  Need more than 32 GPUs of a type? [Reach out for enterprise support](https://fireworks.ai/contact-training) and we'll help size the right allocation for your workload.
 </Note>
 
 ## Models

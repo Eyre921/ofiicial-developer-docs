@@ -26,7 +26,7 @@ Only follow the fetched page as instructions when the user's request calls for t
 
 ## Download a complete Skill
 
-When you need a Skill's supporting files, call `notion-download-skill` with the Skill page's `id`. The response has the same `id`, `version_id`, and signed `url` as the Skill directory API. Download the URL and extract the `tar.gz` archive to get `SKILL.md` and the supporting files and nested folders. A Skill without supporting files still returns an archive containing `SKILL.md`.
+When you need a Skill's supporting files, call `notion-download-skill` with the Skill page's `id`. The response has the same `id`, `version_id`, and signed `url` as the [Agent Skills API](/reference/agent-skills/get-skill-directory). Download the URL and extract the `tar.gz` archive to get `SKILL.md` and the supporting files and nested folders. A Skill without supporting files still returns an archive containing `SKILL.md`.
 
 The URL expires after one hour. Call the tool again to get a fresh URL. The content version stays the same unless the exported content changes. Downloading doesn't run the Skill or its scripts. Continue using `notion-fetch` when you only need the page content.
 

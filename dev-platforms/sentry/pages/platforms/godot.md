@@ -19,8 +19,8 @@ Our SDK for Godot Engine builds on top of existing Sentry SDKs, extending them w
 * Native support for automatic crash and error reporting for:
 
   * Windows and Linux using the [Native SDK](https://docs.sentry.io/platforms/native.md) to support C and C++ with minidumps
-  * macOS using the [macOS SDK](https://docs.sentry.io/platforms/apple/guides/macos.md) to support Objective-C, Swift, C and C++
-  * iOS using the [iOS SDK](https://docs.sentry.io/platforms/apple/guides/ios.md) to support Objective-C, Swift, C and C++
+  * macOS 12 Monterey or later using the [macOS SDK](https://docs.sentry.io/platforms/apple/guides/macos.md) to support Objective-C, Swift, C and C++
+  * iOS 15 or later using the [iOS SDK](https://docs.sentry.io/platforms/apple/guides/ios.md) to support Objective-C, Swift, C and C++
   * Android using the [Android SDK](https://docs.sentry.io/platforms/android.md) to support Java, Kotlin, C and C++
   * Web using the [JavaScript SDK](https://docs.sentry.io/platforms/javascript.md) to support WebAssembly and JavaScript
 
@@ -58,7 +58,7 @@ Don't already have an account and Sentry project established? Head over to [sent
 
 Sentry captures data through our addon for Godot Engine which you can install in your project.
 
-Download the latest stable version `2.1.1` from [GitHub Releases](https://github.com/getsentry/sentry-godot/releases/). Extract the `addons/sentry` folder from the archive into your project.
+Download the latest stable version `2.2.0` from [GitHub Releases](https://github.com/getsentry/sentry-godot/releases/). Extract the `addons/sentry` folder from the archive into your project.
 
 Ensure that the addon is placed in the `addons/sentry` folder, preserving the exact casing.
 
@@ -118,6 +118,7 @@ To view and resolve the recorded error, log into [sentry.io](https://sentry.io) 
 - [C#/.NET](https://docs.sentry.io/platforms/godot/dotnet.md)
 - [Enriching Events](https://docs.sentry.io/platforms/godot/enriching-events.md)
 - [Data Management](https://docs.sentry.io/platforms/godot/data-management.md)
+- [Tracing](https://docs.sentry.io/platforms/godot/tracing.md)
 - [Logs](https://docs.sentry.io/platforms/godot/logs.md)
 - [Application Metrics](https://docs.sentry.io/platforms/godot/metrics.md)
 - [User Feedback](https://docs.sentry.io/platforms/godot/user-feedback.md)

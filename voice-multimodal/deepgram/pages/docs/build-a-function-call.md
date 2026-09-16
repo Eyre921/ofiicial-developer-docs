@@ -981,6 +981,7 @@ AGENT_AUDIO_BYTES_PER_SEC = 2 * AGENT_AUDIO_SAMPLE_RATE
 VOICE_AGENT_URL = "wss://agent.deepgram.com/v1/agent/converse"
 # For EU data processing, use: "wss://api.eu.deepgram.com/v1/agent/converse"
 # For AU data processing, use: "wss://api.au.deepgram.com/v1/agent/converse"
+# For India data processing, use: "wss://api.in.deepgram.com/v1/agent/converse"
 
 AUDIO_SETTINGS = {
     "input": {

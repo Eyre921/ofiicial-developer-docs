@@ -1,6 +1,6 @@
 # dev-platforms/resend 文档索引
 
-> 共 362 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 363 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -25,6 +25,7 @@
 - `docs/api-reference/broadcasts/cancel-broadcast` — [Cancel Broadcast](pages/docs/api-reference/broadcasts/cancel-broadcast.md) · [原文](https://resend.com/docs/api-reference/broadcasts/cancel-broadcast)
 - `docs/api-reference/broadcasts/create-broadcast` — [Create Broadcast](pages/docs/api-reference/broadcasts/create-broadcast.md) · [原文](https://resend.com/docs/api-reference/broadcasts/create-broadcast)
 - `docs/api-reference/broadcasts/delete-broadcast` — [Delete Broadcast](pages/docs/api-reference/broadcasts/delete-broadcast.md) · [原文](https://resend.com/docs/api-reference/broadcasts/delete-broadcast)
+- `docs/api-reference/broadcasts/duplicate-broadcast` — [Duplicate Broadcast](pages/docs/api-reference/broadcasts/duplicate-broadcast.md) · [原文](https://resend.com/docs/api-reference/broadcasts/duplicate-broadcast)
 - `docs/api-reference/broadcasts/get-broadcast` — [Retrieve Broadcast](pages/docs/api-reference/broadcasts/get-broadcast.md) · [原文](https://resend.com/docs/api-reference/broadcasts/get-broadcast)
 - `docs/api-reference/broadcasts/list-broadcast-clicked-links` — [List Clicked Links](pages/docs/api-reference/broadcasts/list-broadcast-clicked-links.md) · [原文](https://resend.com/docs/api-reference/broadcasts/list-broadcast-clicked-links)
 - `docs/api-reference/broadcasts/list-broadcast-recipients` — [List Recipients](pages/docs/api-reference/broadcasts/list-broadcast-recipients.md) · [原文](https://resend.com/docs/api-reference/broadcasts/list-broadcast-recipients)

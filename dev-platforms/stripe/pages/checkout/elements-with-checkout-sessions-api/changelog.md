@@ -235,7 +235,7 @@ If you’re using any Stripe NPM packages, you must first upgrade `@stripe/strip
 - (Breaking) [returnUrl](https://docs.stripe.com/js/custom_checkout/confirm#custom_checkout_session_confirm-options-returnUrl) must be an absolute URL (for example, starts with `https://` rather than a relative URL, like `/success`).
 - (Breaking) Updated pricing fields to a nested object for ease of rendering.
   - Replaced numeric values with an object containing `amount` (a formatted currency string, such as `$10.00`) and `minorUnitsAmount`, an integer representing the value in the currency’s smallest unit. If you’re already reading the amount, read instead from `minorUnitsAmount`.
-    - For example, replace `total.total` with [`total.total.minorUnitsAmount`](https://docs.stripe.com/js/custom_checkout/session_object#custom_checkout_session_object-total-total-minorUnitsAmount).
+    - For example, replace `total.total` with [total.total.minorUnitsAmount](https://docs.stripe.com/js/custom_checkout/session_object#custom_checkout_session_object-total-total-minorUnitsAmount).
   - You must either read `total.total.amount` or each of `total.total.minorUnitsAmount` and `currency` and `minorUnitsAmountDivisor` from the `checkout` object and display in your UI, otherwise an error will be thrown. This helps keep your checkout page in sync as the CheckoutSession updates, including adding future Stripe features, with minimal UI code changes.
 - Customer tax IDs can now be collected. Learn how to [collect tax IDs](https://docs.stripe.com/tax/checkout/tax-ids.md).
 - A test mode-only assistant is now available at the bottom of your checkout page, offering guidance for your integration and shortcuts for common test scenarios.

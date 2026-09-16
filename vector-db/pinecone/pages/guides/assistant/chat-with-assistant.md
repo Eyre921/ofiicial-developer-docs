@@ -457,16 +457,22 @@ Pinecone Assistant supports the following models:
 * `gpt-4o` (default)
 * `gpt-4.1`
 * `gpt-5`
-* `o4-mini`
 * `claude-sonnet-4-5`
-* `gemini-2.5-pro`
+* `gemini-3.5-flash`
 
 <Note>
-  Anthropic has [deprecated](https://platform.claude.com/docs/en/about-claude/model-deprecations) the Claude 3.5 Sonnet and Claude 3.7 Sonnet models. Assistant automatically routes chat requests that specify `claude-3-5-sonnet` or `claude-3-7-sonnet` to `claude-sonnet-4-5` at the same price.
+  Assistant automatically routes chat requests that specify a model deprecated by [Anthropic](https://platform.claude.com/docs/en/about-claude/model-deprecations), [Google](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/model-versions#retired-models), or [OpenAI](https://platform.openai.com/docs/deprecations) to its replacement at the same price. No code changes are required.
+
+  | Deprecated model    | Replacement         |
+  | :------------------ | :------------------ |
+  | `claude-3-5-sonnet` | `claude-sonnet-4-5` |
+  | `claude-3-7-sonnet` | `claude-sonnet-4-5` |
+  | `gemini-2.5-pro`    | `gemini-3.5-flash`  |
+  | `o4-mini`           | `gpt-5`             |
 </Note>
 
 <Tip>
-  For chat applications, we recommend using GPT models (`gpt-4o`, `gpt-4.1`, `gpt-5`, or `o4-mini`) as they typically provide faster response times compared to other models.
+  For chat applications, we recommend using GPT models (`gpt-4o`, `gpt-4.1`, or `gpt-5`) as they typically provide faster response times compared to other models.
 </Tip>
 
 To choose a non-default model for your assistant, set the `model` parameter in the request:

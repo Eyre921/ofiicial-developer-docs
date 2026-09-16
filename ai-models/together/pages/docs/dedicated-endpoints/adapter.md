@@ -140,7 +140,9 @@ The response is the upload job object, with `id`, `modelId`, and `status` at the
 
 ### Upload from the console
 
-The console combines creating the adapter record and uploading its weights into a single form. Go to [Models > Upload a model](https://api.together.ai/models/upload).
+The console combines creating the adapter record and uploading its weights into a single form.
+
+<ConsoleButton href="https://api.together.ai/models/upload">Upload a model</ConsoleButton>
 
 <Steps>
   <Step title="Set the upload type">
@@ -219,7 +221,9 @@ Once the job reaches `REMOTE_UPLOAD_STATUS_SUCCEEDED`, confirm the files landed:
 tg beta models ls-files ml_abc123
 ```
 
-You can also track uploads on the [My models](https://api.together.ai/models?category=my-models) page in the dashboard. While a remote upload is pending or running, the adapter floats to the top of **My models** with an **Uploading** badge. Open the adapter to watch the live **Upload progress** event log on the model detail page. The revisions table appears after the upload finishes. That list also includes Internal-visibility adapters from other projects in your organization. Use the **Visibility** filter to show only **Internal** or only **Private** adapters.
+<ConsoleButton href="https://api.together.ai/models?category=my-models">My models</ConsoleButton>
+
+You can also track uploads on the **My models** page in the console. While a remote upload is pending or running, the adapter floats to the top of **My models** with an **Uploading** badge. Open the adapter to watch the live **Upload progress** event log on the model detail page. The revisions table appears after the upload finishes. That list also includes Internal-visibility adapters from other projects in your organization. Use the **Visibility** filter to show only **Internal** or only **Private** adapters.
 
 ## Check revision validation
 

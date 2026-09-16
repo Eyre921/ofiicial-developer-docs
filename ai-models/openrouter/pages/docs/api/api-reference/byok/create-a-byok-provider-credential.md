@@ -428,6 +428,7 @@ components:
         - anthropic
         - anthropic/2
         - arcee-ai
+        - assemblyai
         - atlas-cloud
         - avian
         - azure

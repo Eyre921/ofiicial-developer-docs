@@ -12,6 +12,8 @@ path: trust-security/data-privacy-compliance
 
 Deepgram maintains and meets the requirements for multiple data privacy compliance frameworks and certifications. To request Deepgram compliance documentation, talk to your Account Executive.
 
+For what Deepgram stores, how long we retain it, and where it is processed, see [Your Data at Deepgram](/trust-security/your-data).
+
 ## SOC 2
 
 Deepgram has achieved SOC 2 Type 1 and Type 2 certification. An independent auditor has evaluated the security controls and procedures we use to protect the data we process in the cloud and has assessed the operational effectiveness of our systems.
@@ -30,7 +32,7 @@ For customers requiring data processing within the European Union, Deepgram prov
 
 Deepgram is built for Australia's privacy requirements. We support customers operating under the Australian Privacy Principles, including [APP 8](https://www.oaic.gov.au/privacy/australian-privacy-principles/australian-privacy-principles-guidelines/chapter-8-app-8-cross-border-disclosure-of-personal-information)'s cross-border disclosure accountability standard for any personal information in customer content.
 
-For customers who require data residency in Australia, Deepgram also provides an AU-specific endpoint at `api.au.deepgram.com`. It runs exclusively on Australian infrastructure (AWS `ap-southeast-2`, Sydney). Storage and inference both happen in-country — not storage alone.
+For customers who require data residency in Australia, Deepgram also provides an AU-specific endpoint at `api.au.deepgram.com`. It runs exclusively on Australian infrastructure. Storage and inference both happen in-country — not storage alone.
 
 Additionally, Deepgram supports customers operating under Australia's strictest frameworks — including the My Health Records Act — whose compliance obligations require that all processing activities, including access, occur in Australia. Opting out of MIP (`mip_opt_out=true`) satisfies that requirement: no customer content is accessed or otherwise processed across Australian borders for any purpose.
 

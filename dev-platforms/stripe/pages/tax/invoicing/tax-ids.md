@@ -172,7 +172,7 @@ Stripe provides multiple ways to collect tax IDs:
 
 ## Supported tax ID types 
 
-> Need another tax ID type? Request additional tax ID types by emailing us at [stripe-tax@stripe.com](mailto:stripe-tax@stripe.com?subject=%5BTax%20ID%20request%5D).
+> Need another tax ID type? Request additional tax ID types by contacting [Stripe support](https://support.stripe.com/contact).
 
 Stripe supports displaying the tax ID types below on invoices. You can’t use Stripe Checkout to collect all of these tax IDs. See which [tax IDs you can collect with Checkout](https://docs.stripe.com/tax/checkout.md).
 

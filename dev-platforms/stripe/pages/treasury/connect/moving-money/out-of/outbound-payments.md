@@ -151,7 +151,7 @@ Stripe supports sending money in local currency to recipients in many different 
 
 > To get access to cross-border Outbound Payments to external bank accounts, contact [treasury-support@stripe.com](mailto:treasury-support@stripe.com). Cross-border transfers between financial accounts are enabled by default.
 
-Create an [`OutboundPaymentQuote`](https://docs.stripe.com/api/v2/money-management/outbound-payment-quotes/object.md?api-version=preview) to understand applicable FX and fees before making a cross-border outbound payment.
+Create an [OutboundPaymentQuote](https://docs.stripe.com/api/v2/money-management/outbound-payment-quotes/object.md?api-version=preview) to understand applicable FX and fees before making a cross-border outbound payment.
 
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/outbound_payment_quotes \

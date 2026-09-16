@@ -16,7 +16,7 @@ This page shows you how to migrate a pod-based index to [serverless](/guides/cor
 
 ## Limitations
 
-Migration is supported for pod-based indexes with up to 50 million records and 20,000 namespaces across all supported clouds (AWS, GCP, and Azure). If your index has more than 50 million records, [contact Pinecone Support](/troubleshooting/contact-support) before you migrate. The record limit can often be raised for your project.
+Migration is supported for pod-based indexes with up to 500 million records and 20,000 namespaces across all supported clouds (AWS, GCP, and Azure). If your index has more than 500 million records, [contact Pinecone Support](/troubleshooting/contact-support) before you migrate.
 
 After you migrate, note that serverless indexes don't support the following features:
 

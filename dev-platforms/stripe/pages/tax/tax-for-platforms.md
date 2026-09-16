@@ -100,7 +100,7 @@ The tax settings component allows connected accounts to set their head office ad
 
 Note: The following is a preview/demo component that behaves differently than live mode usage with real connected accounts. The actual component has more functionality than what might appear in this demo component. For example, for connected accounts without Stripe dashboard access (custom accounts), no user authentication is required in production.
 
-The tax registrations component allows a connected account to manage its tax registrations. If a connected account doesn’t add a tax registration, but calculates tax for that jurisdiction, Stripe Tax returns a tax amount of `0.00` and sets the [taxability reason to `not_collecting`](https://docs.stripe.com/tax/zero-tax.md#not-registered).
+The tax registrations component allows a connected account to manage its tax registrations. If a connected account doesn’t add a tax registration, but calculates tax for that jurisdiction, Stripe Tax returns a tax amount of `0.00` and sets the taxability reason to [not_collecting](https://docs.stripe.com/tax/zero-tax.md#not-registered).
 
 Your platform must then check whether connected accounts have configured Stripe Tax to enable tax calculations.
 
@@ -879,8 +879,8 @@ This pattern allows you to gradually expand tax collection to new countries as y
 
 If you use Connect embedded components, you can limit which countries are shown to connected accounts:
 
-- Use the [`displayCountries` parameter](https://docs.stripe.com/connect/supported-embedded-components/tax-registrations.md?client=react#integration) on the tax registrations component to restrict the list of available countries for registration.
-- Use the [`displayHeadOfficeCountries` parameter](https://docs.stripe.com/connect/supported-embedded-components/tax-settings.md) on the tax settings component to restrict which countries are available for the head office location.
+- Use the [displayCountries](https://docs.stripe.com/connect/supported-embedded-components/tax-registrations.md?client=react#integration) parameter on the tax registrations component to restrict the list of available countries for registration.
+- Use the [displayHeadOfficeCountries](https://docs.stripe.com/connect/supported-embedded-components/tax-settings.md) parameter on the tax settings component to restrict which countries are available for the head office location.
 
 ## See also
 

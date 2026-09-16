@@ -2013,6 +2013,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-availability-of-default-models
 /en/copilot/how-tos/administer-copilot/manage-for-enterprise/enable-custom-models
 /en/copilot/how-tos/administer-copilot/manage-for-enterprise/review-audit-logs
+/en/copilot/how-tos/administer-copilot/manage-budget-requests
 /en/copilot/how-tos/administer-copilot/manage-mcp-usage
 /en/copilot/how-tos/administer-copilot/manage-mcp-usage/configure-enterprise-allowlist
 /en/copilot/how-tos/administer-copilot/manage-mcp-usage/configure-mcp-registry

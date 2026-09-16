@@ -88,6 +88,7 @@ After you create a deployment, you must [route traffic to it](/docs/dedicated-en
 
 For more complex traffic routing patterns, you can:
 
+* [Run a rollout](/docs/dedicated-endpoints/rollouts): Move live traffic from one deployment to another in steps, without changing your endpoint URL. This is the safest way to migrate an endpoint to a new deployment.
 * [Run an A/B test](/docs/dedicated-endpoints/ab-tests): Set up a managed control/variant split with multiple candidates to compare deployments on live traffic.
 * [Run a shadow experiment](/docs/dedicated-endpoints/shadow-experiments): Copy a fraction of live traffic to a new deployment, comparing how responses differ while leaving the original deployment unaffected.
 
@@ -126,6 +127,7 @@ Each resource has an ID and, in some cases, a human-readable name. You pass IDs 
 | Config     | `cr_...`   | A config revision for a model. Configs are immutable; each revision has a new ID.                                                                                                 |
 | Endpoint   | `ep_...`   | The endpoint string used for inference requests is `<project_slug>/<endpoint_name>`.                                                                                              |
 | Deployment | `dep_...`  | The deployment name used for management API requests is `<project_slug>/<endpoint_name>/<deployment_name>`.                                                                       |
+| Rollout    | `rol_...`  | Tracks a [rollout](/docs/dedicated-endpoints/rollouts) that migrates traffic between two deployments on an endpoint.                                                              |
 
 The server prepends your project slug to names you choose. If you create an endpoint named `my-endpoint` in a project with slug `acme`, its endpoint string is `acme/my-endpoint`. That endpoint string is the value you send as `model` on inference requests.
 

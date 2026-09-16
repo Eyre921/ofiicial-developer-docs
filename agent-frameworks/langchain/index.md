@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1178 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1179 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -295,6 +295,7 @@
 - `langsmith/javascript/managed-deep-agents-channels-slack` — [Connect a Managed Deep Agent to Slack](pages/langsmith/javascript/managed-deep-agents-channels-slack.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-channels-slack)
 - `langsmith/javascript/managed-deep-agents-cli` — [Managed Deep Agents CLI reference](pages/langsmith/javascript/managed-deep-agents-cli.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-cli)
 - `langsmith/javascript/managed-deep-agents-connections` — [Manage connections](pages/langsmith/javascript/managed-deep-agents-connections.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-connections)
+- `langsmith/javascript/managed-deep-agents-context-hub` — [Manage Context Hub for Managed Deep Agents](pages/langsmith/javascript/managed-deep-agents-context-hub.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-context-hub)
 - `langsmith/javascript/managed-deep-agents-deploy` — [Deploy a Managed Deep Agent](pages/langsmith/javascript/managed-deep-agents-deploy.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-deploy)
 - `langsmith/javascript/managed-deep-agents-evals` — [Evaluate Managed Deep Agents](pages/langsmith/javascript/managed-deep-agents-evals.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-evals)
 - `langsmith/javascript/managed-deep-agents-identity` — [Add identity to Managed Deep Agents](pages/langsmith/javascript/managed-deep-agents-identity.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-identity)
@@ -332,7 +333,6 @@
 - `langsmith/llm-gateway-api-formats` — [API formats](pages/langsmith/llm-gateway-api-formats.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-api-formats)
 - `langsmith/llm-gateway-coding-agents` — [Set up coding agents](pages/langsmith/llm-gateway-coding-agents.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-coding-agents)
 - `langsmith/llm-gateway-credits` — [Gateway Credits](pages/langsmith/llm-gateway-credits.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-credits)
-- `langsmith/llm-gateway-custom-providers` — [Custom model providers](pages/langsmith/llm-gateway-custom-providers.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-custom-providers)
 - `langsmith/llm-gateway-data-policy` — [Data policy](pages/langsmith/llm-gateway-data-policy.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-data-policy)
 - `langsmith/llm-gateway-direct-model-access` — [Direct model access](pages/langsmith/llm-gateway-direct-model-access.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-direct-model-access)
 - `langsmith/llm-gateway-fallbacks` — [Model fallbacks](pages/langsmith/llm-gateway-fallbacks.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-fallbacks)
@@ -407,6 +407,7 @@
 - `langsmith/python/managed-deep-agents-channels-slack` — [Connect a Managed Deep Agent to Slack](pages/langsmith/python/managed-deep-agents-channels-slack.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-channels-slack)
 - `langsmith/python/managed-deep-agents-cli` — [Managed Deep Agents CLI reference](pages/langsmith/python/managed-deep-agents-cli.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-cli)
 - `langsmith/python/managed-deep-agents-connections` — [Manage connections](pages/langsmith/python/managed-deep-agents-connections.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-connections)
+- `langsmith/python/managed-deep-agents-context-hub` — [Manage Context Hub for Managed Deep Agents](pages/langsmith/python/managed-deep-agents-context-hub.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-context-hub)
 - `langsmith/python/managed-deep-agents-deploy` — [Deploy a Managed Deep Agent](pages/langsmith/python/managed-deep-agents-deploy.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-deploy)
 - `langsmith/python/managed-deep-agents-evals` — [Evaluate Managed Deep Agents](pages/langsmith/python/managed-deep-agents-evals.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-evals)
 - `langsmith/python/managed-deep-agents-identity` — [Add identity to Managed Deep Agents](pages/langsmith/python/managed-deep-agents-identity.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-identity)

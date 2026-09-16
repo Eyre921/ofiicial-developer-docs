@@ -268,13 +268,13 @@ Possible enum values:
   Controls how Stripe handles the first invoice when payment is required and `collection_method=charge_automatically`. Subscriptions with `collection_method=send_invoice` are automatically activated regardless of the first Invoice status.
 Possible enum values:
   - `allow_incomplete`
-    This is the default behavior since [2019-03-14](changelog/2019-03-14/subscriptions-successfully-created-first-payment-fails). If payment fails, the Subscription is created with `status=incomplete`, otherwise `status=active`. This behavior allows you to manage scenarios where additional customer actions are needed to pay the Invoice. For example, SCA regulations might require 3DS authentication to complete payment. See the [SCA Migration Guide](https://docs.stripe.com/billing/migration/strong-customer-authentication.md) for Billing to learn more.
+    This is the default behavior since [2019-03-14](https://docs.stripe.com/changelog/2019-03-14/subscriptions-successfully-created-first-payment-fails.md). If payment fails, the Subscription is created with `status=incomplete`, otherwise `status=active`. This behavior allows you to manage scenarios where additional customer actions are needed to pay the Invoice. For example, SCA regulations might require 3DS authentication to complete payment. See the [SCA Migration Guide](https://docs.stripe.com/billing/migration/strong-customer-authentication.md) for Billing to learn more.
 
   - `default_incomplete`
     When the first invoice requires payment, creates a Subscription with `status=incomplete` without attempting payment, otherwise `status=active`. You must request explicit confirmation of the Invoice’s PaymentIntent to activate the subscription. The resulting Invoice has [auto_advance=false](https://docs.stripe.com/api/invoices/object.md#invoice_object-auto_advance), so Stripe doesn’t automatically attempt payment, retry payment, or finalize the subscription.
 
   - `error_if_incomplete`
-    If payment fails, return an HTTP `402` status code and don’t create the subscription. This behavior doesn’t support payments that require user action, such as 3DS authentication, because it returns an error instead of creating a PaymentIntent with `status=requires_action`. To handle payments that require action, use `allow_incomplete` or `default_incomplete` instead. This behavior was the default for API versions before [2019-03-14](changelog/2019-03-14/subscriptions-successfully-created-first-payment-fails).
+    If payment fails, return an HTTP `402` status code and don’t create the subscription. This behavior doesn’t support payments that require user action, such as 3DS authentication, because it returns an error instead of creating a PaymentIntent with `status=requires_action`. To handle payments that require action, use `allow_incomplete` or `default_incomplete` instead. This behavior was the default for API versions before [2019-03-14](https://docs.stripe.com/changelog/2019-03-14/subscriptions-successfully-created-first-payment-fails.md).
 
   - `pending_if_incomplete`
     This behavior is exclusive to Subscription updates and cannot be used for creation.

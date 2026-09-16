@@ -1,6 +1,6 @@
 # ai-models/anthropic-claude-code 文档索引
 
-> 共 195 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 196 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -29,7 +29,7 @@
 - `claude-apps-gateway-on-aws` — [Deploy Claude apps gateway on AWS](pages/claude-apps-gateway-on-aws.md) · [原文](https://code.claude.com/docs/en/claude-apps-gateway-on-aws)
 - `claude-apps-gateway-on-gcp` — [Deploy Claude apps gateway on Google Cloud](pages/claude-apps-gateway-on-gcp.md) · [原文](https://code.claude.com/docs/en/claude-apps-gateway-on-gcp)
 - `claude-apps-gateway-spend-limits` — [Claude apps gateway spend limits](pages/claude-apps-gateway-spend-limits.md) · [原文](https://code.claude.com/docs/en/claude-apps-gateway-spend-limits)
-- `claude-code-on-the-web` — [Use Claude Code on the web](pages/claude-code-on-the-web.md) · [原文](https://code.claude.com/docs/en/claude-code-on-the-web)
+- `claude-code-on-the-web` — [Use Claude Code in the cloud](pages/claude-code-on-the-web.md) · [原文](https://code.claude.com/docs/en/claude-code-on-the-web)
 - `claude-directory` — [Explore the .claude directory](pages/claude-directory.md) · [原文](https://code.claude.com/docs/en/claude-directory)
 - `claude-platform-on-aws` — [Claude Code on Claude Platform on AWS](pages/claude-platform-on-aws.md) · [原文](https://code.claude.com/docs/en/claude-platform-on-aws)
 - `claude-security` — [Scan your codebase for vulnerabilities](pages/claude-security.md) · [原文](https://code.claude.com/docs/en/claude-security)
@@ -140,7 +140,7 @@
 - `ultrareview` — [Find bugs with ultrareview](pages/ultrareview.md) · [原文](https://code.claude.com/docs/en/ultrareview)
 - `voice-dictation` — [Voice dictation](pages/voice-dictation.md) · [原文](https://code.claude.com/docs/en/voice-dictation)
 - `vs-code` — [Use Claude Code in VS Code](pages/vs-code.md) · [原文](https://code.claude.com/docs/en/vs-code)
-- `web-quickstart` — [Get started with Claude Code on the web](pages/web-quickstart.md) · [原文](https://code.claude.com/docs/en/web-quickstart)
+- `web-quickstart` — [Get started with Claude Code in the cloud](pages/web-quickstart.md) · [原文](https://code.claude.com/docs/en/web-quickstart)
 - `workflows` — [Orchestrate subagents at scale with dynamic workflows](pages/workflows.md) · [原文](https://code.claude.com/docs/en/workflows)
 - `worktrees` — [Run parallel sessions with worktrees](pages/worktrees.md) · [原文](https://code.claude.com/docs/en/worktrees)
 - `zero-data-retention` — [Zero data retention](pages/zero-data-retention.md) · [原文](https://code.claude.com/docs/en/zero-data-retention)
@@ -149,6 +149,7 @@
 
 - `agent-sdk/agent-loop` — [How the agent loop works](pages/agent-sdk/agent-loop.md) · [原文](https://code.claude.com/docs/en/agent-sdk/agent-loop)
 - `agent-sdk/claude-code-features` — [Use Claude Code features in the SDK](pages/agent-sdk/claude-code-features.md) · [原文](https://code.claude.com/docs/en/agent-sdk/claude-code-features)
+- `agent-sdk/configuration` — [Configure your agent](pages/agent-sdk/configuration.md) · [原文](https://code.claude.com/docs/en/agent-sdk/configuration)
 - `agent-sdk/cost-tracking` — [Track cost and usage](pages/agent-sdk/cost-tracking.md) · [原文](https://code.claude.com/docs/en/agent-sdk/cost-tracking)
 - `agent-sdk/custom-tools` — [Give Claude custom tools](pages/agent-sdk/custom-tools.md) · [原文](https://code.claude.com/docs/en/agent-sdk/custom-tools)
 - `agent-sdk/examples` — [Examples](pages/agent-sdk/examples.md) · [原文](https://code.claude.com/docs/en/agent-sdk/examples)

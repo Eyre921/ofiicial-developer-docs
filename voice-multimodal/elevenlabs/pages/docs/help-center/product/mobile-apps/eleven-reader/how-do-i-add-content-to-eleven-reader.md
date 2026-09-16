@@ -10,7 +10,7 @@ path: docs/help-center/product/mobile-apps/eleven-reader/how-do-i-add-content-to
 
 ElevenReader allows you to add content in four ways:
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3e323d0ed73edbd8e87e8bf4b611f067057e4d35de83a6fa20c4295f7d342bd0/assets/images/help-center/product/mobile-apps/elevenreader/how-do-i-add-content-to-elevenreader.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260915%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260915T100016Z&X-Amz-Expires=604800&X-Amz-Signature=d82a9844b693b8972a621c28a485ca8fe27c6e59670a08a9886890d7466df08d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3e323d0ed73edbd8e87e8bf4b611f067057e4d35de83a6fa20c4295f7d342bd0/assets/images/help-center/product/mobile-apps/elevenreader/how-do-i-add-content-to-elevenreader.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260916%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260916T113413Z&X-Amz-Expires=604800&X-Amz-Signature=236bebdbb4fa4ecf0836dc1a8d59d944ba261410c9bdad57dbe8869533ddaaeb&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 1. You can select **Write text** to enter text directly, either by typing or pasting text.
 

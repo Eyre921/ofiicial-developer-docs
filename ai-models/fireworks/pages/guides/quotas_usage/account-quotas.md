@@ -44,21 +44,19 @@ Your spend tier controls available quotas and capacity. For legacy self-serve po
 
 ### Training GPU quota
 
-Training jobs use training GPU quota (separate from on-demand deployment quota), granted automatically by spending tier:
+Training jobs use training GPU quota (separate from on-demand deployment quota):
 
-| Tier              | How to reach it                                       | B200 / B300 (Blackwell) |  H200  | H100 / A100 |
-| ----------------- | ----------------------------------------------------- | :---------------------: | :----: | :---------: |
-| No payment method | —                                                     |            0            |    0   |      0      |
-| Tier 1            | Valid payment method and billing profile              |            0            |   16   |      8      |
-| Tier 2            | Spend or add \$50 in credits                          |            16           |   16   |      16     |
-| Tier 3            | Spend or add \$500 in credits                         |            24           |   24   |      24     |
-| Tier 4            | Spend or add \$5,000 in credits                       |            32           |   32   |      32     |
-| Enterprise        | [Contact us](https://fireworks.ai/company/contact-us) |          Custom         | Custom |    Custom   |
+* **No payment method:** 0 GPUs
+* **Payment method on file:** 32 GPUs of each type — H200, B200, and B300
 
-Counts are GPUs of that type available to training jobs. Blackwell (B200/B300) is `0` until Tier 2, and current managed training shapes run on Blackwell, so most training needs Tier 2. If a job is rejected with HTTP 429 `quota_exceeded`, raise your tier and resubmit.
+Each accelerator type is granted independently (32 H200 plus 32 B200 plus 32 B300). Higher spending tiers do not increase this default.
+
+Before you start a job, use the [training cost estimator](/fine-tuning/cost-estimator) to size the run and confirm you have enough credits.
+
+If a job is rejected with HTTP 403 `quota_exceeded` or `tier_required`, add a payment method or free unused GPUs of that type, then resubmit.
 
 <Note>
-  Need more training quota than your tier allows? [Reach out for enterprise support](https://fireworks.ai/contact-training) and we'll help size the right allocation for your workload.
+  Need more than 32 GPUs of a type? [Reach out for enterprise support](https://fireworks.ai/contact-training) and we'll help size the right allocation for your workload.
 </Note>
 
 ### Enterprise accounts

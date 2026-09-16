@@ -214,7 +214,7 @@ Create an asynchronous `fetchClientSecret` function that makes a request to your
 
 ### Fetch a Checkout Session client secret
 
-Import the Server Action to [create a Checkout Session](https://docs.stripe.com/api/checkout/sessions/create.md) and retrieve the client secret, passing it to the [`fetchClientSecret`](https://docs.stripe.com/js/embedded_checkout/create#embedded_checkout_create-options-fetchClientSecret) parameter.
+Import the Server Action to [create a Checkout Session](https://docs.stripe.com/api/checkout/sessions/create.md) and retrieve the client secret, passing it to the [fetchClientSecret](https://docs.stripe.com/js/embedded_checkout/create#embedded_checkout_create-options-fetchClientSecret) parameter.
 
 ### Initialize Checkout
 

@@ -19,7 +19,7 @@ Use a shadow experiment to warm up a new deployment under real load, stress-test
 A shadow experiment has two parts:
 
 * **Source:** The endpoint where mirrored traffic comes from and how much of it gets sampled. The source samples traffic at the API gateway using one of four [sampling strategies](#sampling-strategies).
-* **Targets:** The deployments that receive the mirrored traffic. Each target names a deployment under the same endpoint that's excluded from the endpoint's traffic split (weight `0` or unset), so it serves only mirrored traffic. Size it for the mirrored volume you expect.
+* **Targets:** The deployments that receive the mirrored traffic. Each target names a deployment under the same endpoint that isn't serving live traffic (traffic-split weight `0` or unset) and isn't the source or target of an active rollout. A deployment holds one traffic role at a time, so both directions are rejected with `400` `failed_precondition` (you also can't create a rollout onto a current shadow target). A weight-`0` staging deployment is allowed as a warm-up state. Size each target for the mirrored volume you expect.
 
 When a request is sampled, a copy is sent to every target in the experiment. In an experiment with two targets that sample at 10% each, each target receives 10% of endpoint traffic. Adding a target multiplies the mirrored volume rather than dividing it.
 
@@ -59,7 +59,7 @@ For the adaptive strategies, `target_qps` is an approximate throttle, not a prec
 
 ## Requirements
 
-Before you start a shadow experiment, you need a running endpoint under load and a candidate deployment to shadow to. The candidate must be excluded from the endpoint's traffic split (weight `0` or unset) so it receives only mirrored traffic, never live requests.
+Before you start a shadow experiment, you need a running endpoint under load and a candidate deployment to shadow to. The candidate must not serve live traffic on the endpoint (traffic-split weight `0` or unset), must not be the source or target of an active rollout, and must not be a member of an [A/B test](/docs/dedicated-endpoints/ab-tests). It receives only mirrored traffic.
 
 The CLI's `shadow` command provisions a new shadow deployment from a model ID and wires up the experiment in one command, so you only need the endpoint and a model. The SDK mirrors to a deployment you've already created.
 
@@ -78,9 +78,8 @@ Create an experiment that samples 10% of gateway traffic uniformly and mirrors i
     The CLI's `shadow` command creates a new shadow deployment from a model, then starts mirroring sampled traffic to it (the SDK mirrors to an existing target deployment instead, with the sampling strategy in the `source.endpoint` block):
 
     ```bash theme={null}
-    tg beta endpoints shadow \
+    tg beta endpoints shadow ml_CbJNwQC2ZqCU2iFT3mrCh \
       --endpoint ep_abc123 \
-      --model ml_CbJNwQC2ZqCU2iFT3mrCh \
       --rate 0.1 \
       --name candidate-v2
     ```
@@ -93,7 +92,9 @@ Create an experiment that samples 10% of gateway traffic uniformly and mirrors i
   </Tab>
 
   <Tab title="Console">
-    The console mirrors to a target deployment you've already created, so first add the candidate to the endpoint at traffic weight `0` (see [Create a deployment](/docs/dedicated-endpoints/manage#create-a-deployment)).
+    <ConsoleButton href="https://api.together.ai/endpoints">Endpoints</ConsoleButton>
+
+    The console mirrors to a shadow deployment you've already created, so first add the candidate to the endpoint at traffic weight `0` (see [Create a deployment](/docs/dedicated-endpoints/manage#create-a-deployment)). The console blocks the form until the endpoint has at least two deployments, with at least one that is not currently receiving live traffic.
 
     <Steps>
       <Step title="Open the shadow test form">
@@ -101,11 +102,11 @@ Create an experiment that samples 10% of gateway traffic uniformly and mirrors i
       </Step>
 
       <Step title="Name the test">
-        Enter a **Name** and an optional **Description**. The **Source deployment** is the endpoint's live deployment and is fixed.
+        Enter a **Name** and an optional **Description**. Sampling mirrors the endpoint's live traffic; there is no separate source deployment picker.
       </Step>
 
-      <Step title="Choose the target">
-        Select the weight-`0` candidate as the **Target deployment**.
+      <Step title="Choose the shadow deployment">
+        Select the weight-`0` candidate as the **Shadow deployment**. The picker lists only deployments that are not currently receiving live traffic.
       </Step>
 
       <Step title="Set the sampling strategy">
@@ -118,7 +119,7 @@ Create an experiment that samples 10% of gateway traffic uniformly and mirrors i
     </Steps>
 
     <Frame>
-      <img alt="The New shadow test dialog in the Together AI console, with name and description fields, source and target deployment pickers, a sampling-strategy selector offering Uniform, Key-based, Adaptive, and Adaptive plus key, and a sample-rate input." />
+      <img alt="The New shadow test dialog in the Together AI console, with name and description fields, a Shadow deployment picker, a sampling-strategy selector offering Uniform, Key-based, Adaptive, and Adaptive plus key, and a sample-rate input." />
     </Frame>
   </Tab>
 </Tabs>
@@ -130,9 +131,8 @@ After creating the experiment, [send requests](/docs/dedicated-endpoints/request
 Use `key_based` sampling to make mirroring decisions sticky on a request field (for example `body.user`), so all requests from the same user are either always mirrored or never:
 
 ```bash theme={null}
-tg beta endpoints shadow \
+tg beta endpoints shadow ml_CbJNwQC2ZqCU2iFT3mrCh \
   --endpoint ep_abc123 \
-  --model ml_CbJNwQC2ZqCU2iFT3mrCh \
   --rate 0.05 \
   --key body.user \
   --name candidate-v2
@@ -141,9 +141,8 @@ tg beta endpoints shadow \
 Use `adaptive_uniform` to throttle mirroring toward a target request rate (QPS) rather than a fixed fraction. The sampler adjusts the rate automatically:
 
 ```bash theme={null}
-tg beta endpoints shadow \
+tg beta endpoints shadow ml_CbJNwQC2ZqCU2iFT3mrCh \
   --endpoint ep_abc123 \
-  --model ml_CbJNwQC2ZqCU2iFT3mrCh \
   --target-qps 5.0 \
   --name candidate-v2
 ```
@@ -184,6 +183,7 @@ Because targets never return their responses to your caller, evaluate them the s
 * **Retune sampling:** Update the experiment's `source`, for example to raise `uniform.rate` or switch strategy. Fetch the experiment first to get its current `etag` and pass it back on the update. A stale value returns `409 ABORTED`.
 * **Fan out to more targets:** [Add a target](/reference/dmi/shadow-experiment-targets-create) to the experiment. One sampling decision fans out to every target, so adding a target roughly multiplies mirrored volume.
 * **Stop mirroring:** [Delete the experiment](#delete-an-experiment) (which cascade-deletes its targets), or remove all its targets so the experiment goes `INACTIVE`.
+* **Promote a validated candidate:** Start a [rollout](/docs/dedicated-endpoints/rollouts) to shift live traffic to the shadow deployment. Pass `--detach` and the CLI's `rollout` command removes the deployment from the experiment (deleting the experiment if it has no targets left) before shifting traffic.
 
 Mirrored requests are never sampled and mirrored again. The system prevents shadow loops automatically.
 
@@ -209,6 +209,8 @@ In the console, stop a shadow test from its actions menu on the endpoint's **Tra
 * **An update or delete returns `409 ABORTED`:** The `etag` you passed is stale. Re-read the experiment (or target) to get the current `etag`, then retry.
 * **Create returns `400`:** The request shape is invalid. Check for a missing required field, a `rate` outside `[0.0, 1.0]`, more than 100 inline targets, or a `name` longer than 256 characters.
 * **Create or add target returns `400` with `the deployment is serving live traffic on this endpoint and cannot also be a shadow target; remove it from the traffic split first`:** The target deployment has a non-zero weight in the endpoint's [traffic split](/docs/dedicated-endpoints/route-traffic). Remove it from the split (set its weight to `0` or omit it) before adding it as a shadow target.
+* **Create or add target returns `400` with `the deployment is the source or target of an active rollout; wait for the rollout to finish (or cancel it) first`:** The candidate is already in an active rollout. Wait for the rollout to finish, or cancel it, before using the deployment as a shadow target.
+* **Create or add target returns `400` with `the deployment is an A/B experiment member; remove it from the experiment first`:** The candidate is a control or variant in an [A/B test](/docs/dedicated-endpoints/ab-tests). Remove it from the test (or delete the test) before adding it as a shadow target.
 * **Create or a lookup returns `404`:** The experiment, target, or parent endpoint doesn't exist in the project named in the path. The API returns the same `404` for a missing ID, a wrong-endpoint ID, and an ID that belongs to a different project, so you can't use it to probe for cross-tenant resources.
 
 ## Limits
@@ -224,8 +226,8 @@ In the console, stop a shadow test from its actions menu on the endpoint's **Tra
     Split live traffic and compare user-visible responses across deployments.
   </Card>
 
-  <Card title="Split traffic" icon="arrows-split" href="/docs/dedicated-endpoints/split-traffic">
-    Route live traffic to a deployment by weight once you've validated it.
+  <Card title="Rollouts" icon="rocket" href="/docs/dedicated-endpoints/rollouts">
+    Promote a validated candidate by shifting live traffic to it in controlled steps.
   </Card>
 
   <Card title="Observability" icon="chart-line" href="/docs/dedicated-endpoints/monitoring">

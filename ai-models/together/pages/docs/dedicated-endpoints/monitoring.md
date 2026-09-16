@@ -10,7 +10,9 @@ Dedicated model inference records latency, throughput, and utilization metrics f
 
 ## Analytics dashboard
 
-The [Together AI console](https://api.together.ai/endpoints) shows per-endpoint charts for requests, tokens per second, input and output tokens, latency, and time to first token, built on the metric series below.
+The Together AI console shows per-endpoint charts for requests, tokens per second, input and output tokens, latency, and time to first token, built on the metric series below.
+
+<ConsoleButton href="https://api.together.ai/endpoints">Endpoints</ConsoleButton>
 
 Open an endpoint and select the **Analytics** tab. Switch between **Usage** and **Errors**, view the endpoint **Total** or break it down **By deployment**, and adjust the time range. Use the dashboard to monitor an endpoint at a glance and to compare deployments during an [A/B test](/docs/dedicated-endpoints/ab-tests).
 
@@ -167,5 +169,9 @@ Series carry labels that identify the resource and slice the data. Not every lab
 
   <Card title="Route traffic" icon="route" href="/docs/dedicated-endpoints/route-traffic">
     See how the endpoint routes requests across deployments.
+  </Card>
+
+  <Card title="Gate rollouts with metrics" icon="traffic-lights" href="/docs/dedicated-endpoints/rollout-metric-gates">
+    Pause a rollout automatically when a new deployment regresses on live metrics.
   </Card>
 </CardGroup>

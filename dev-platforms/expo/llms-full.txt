@@ -248,6 +248,7 @@ Fetch any page as markdown by adding the `Accept: text/markdown` header or appen
 - [Migrate from React Navigation](https://docs.expo.dev/router/migrate/from-react-navigation.md)
 - [Migrate from Expo Webpack](https://docs.expo.dev/router/migrate/from-expo-webpack.md)
 - [Migrate Expo Router from SDK 55 to SDK 56](https://docs.expo.dev/router/migrate/sdk-55-to-56.md)
+- [Migrate Expo Router from SDK 57 to SDK 58](https://docs.expo.dev/router/migrate/sdk-57-to-58.md)
 
 ## Expo Modules API
 

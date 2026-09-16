@@ -1,6 +1,6 @@
 # dev-platforms/notion 文档索引
 
-> 共 244 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 248 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## cli
@@ -21,6 +21,7 @@
 
 ## guides
 
+- `guides/agent-skills/overview` — [Agent Skills API](pages/guides/agent-skills/overview.md) · [原文](https://developers.notion.com/guides/agent-skills/overview)
 - `guides/data-apis/creating-pages-from-templates` — [Creating pages from templates](pages/guides/data-apis/creating-pages-from-templates.md) · [原文](https://developers.notion.com/guides/data-apis/creating-pages-from-templates)
 - `guides/data-apis/enhanced-markdown` — [Enhanced markdown format](pages/guides/data-apis/enhanced-markdown.md) · [原文](https://developers.notion.com/guides/data-apis/enhanced-markdown)
 - `guides/data-apis/importing-external-files` — [Importing external files](pages/guides/data-apis/importing-external-files.md) · [原文](https://developers.notion.com/guides/data-apis/importing-external-files)
@@ -115,6 +116,9 @@
 - `reference/admin/update-permission-group-member` — [Update a group member](pages/reference/admin/update-permission-group-member.md) · [原文](https://developers.notion.com/reference/admin/update-permission-group-member)
 - `reference/admin/update-workspace-credit-limit` — [Update the default agent credit limit for a workspace](pages/reference/admin/update-workspace-credit-limit.md) · [原文](https://developers.notion.com/reference/admin/update-workspace-credit-limit)
 - `reference/admin/versioning` — [Versioning](pages/reference/admin/versioning.md) · [原文](https://developers.notion.com/reference/admin/versioning)
+- `reference/agent-skills/get-plugin-directory` — [Get plugin](pages/reference/agent-skills/get-plugin-directory.md) · [原文](https://developers.notion.com/reference/agent-skills/get-plugin-directory)
+- `reference/agent-skills/get-skill-directory` — [Get skill](pages/reference/agent-skills/get-skill-directory.md) · [原文](https://developers.notion.com/reference/agent-skills/get-skill-directory)
+- `reference/agent-skills/list-skills-plugins` — [List plugins](pages/reference/agent-skills/list-skills-plugins.md) · [原文](https://developers.notion.com/reference/agent-skills/list-skills-plugins)
 - `reference/authentication` — [Authentication](pages/reference/authentication.md) · [原文](https://developers.notion.com/reference/authentication)
 - `reference/block` — [Block](pages/reference/block.md) · [原文](https://developers.notion.com/reference/block)
 - `reference/capabilities` — [Connection capabilities](pages/reference/capabilities.md) · [原文](https://developers.notion.com/reference/capabilities)

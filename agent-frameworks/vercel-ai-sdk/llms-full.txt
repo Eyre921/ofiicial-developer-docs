@@ -33985,8 +33985,8 @@ The error preserves the following information to help you log the issue:
 
 ```ts
 import {
+  AISDKError,
   experimental_transcribe as transcribe,
-  NoTranscriptGeneratedError,
 } from 'ai';
 import { openai } from '@ai-sdk/openai';
 import { readFile } from 'fs/promises';
@@ -33997,10 +33997,12 @@ try {
     audio: await readFile('audio.mp3'),
   });
 } catch (error) {
-  if (NoTranscriptGeneratedError.isInstance(error)) {
+  if (
+    AISDKError.isInstance(error) &&
+    error.name === 'AI_NoTranscriptGeneratedError'
+  ) {
     console.log('NoTranscriptGeneratedError');
     console.log('Cause:', error.cause);
-    console.log('Responses:', error.responses);
   }
 }
 ```
@@ -34162,7 +34164,7 @@ try {
     text: 'Hello, world!',
   });
 } catch (error) {
-  if (NoSpeechGeneratedError.isInstance(error)) {
+  if (error instanceof NoSpeechGeneratedError) {
     console.log('AI_NoSpeechGeneratedError');
     console.log('Cause:', error.cause);
     console.log('Responses:', error.responses);
@@ -40648,7 +40650,7 @@ You can check if an error is an instance of `AI_NoSpeechGeneratedError` using:
 ```typescript
 import { NoSpeechGeneratedError } from 'ai';
 
-if (NoSpeechGeneratedError.isInstance(error)) {
+if (error instanceof NoSpeechGeneratedError) {
   // Handle the error
 }
 ```
@@ -40752,12 +40754,16 @@ This error occurs when no transcript could be generated from the input.
 
 ## Checking for this Error
 
-You can check if an error is an instance of `AI_NoTranscriptGeneratedError` using:
+AI SDK 5 does not export the `NoTranscriptGeneratedError` class. Use the base
+`AISDKError` guard and check the error name:
 
 ```typescript
-import { NoTranscriptGeneratedError } from 'ai';
+import { AISDKError } from 'ai';
 
-if (NoTranscriptGeneratedError.isInstance(error)) {
+if (
+  AISDKError.isInstance(error) &&
+  error.name === 'AI_NoTranscriptGeneratedError'
+) {
   // Handle the error
 }
 ```
@@ -118897,7 +118903,7 @@ Workflow functions can time out or be interrupted by network failures. `Workflow
 'use client';
 
 import { useChat } from '@ai-sdk/react';
-import { WorkflowChatTransport } from '@ai-sdk/workflow';
+import { WorkflowChatTransport } from '@ai-sdk/workflow/client';
 import { useMemo } from 'react';
 
 export default function Chat() {
@@ -125548,10 +125554,14 @@ description: Learn how to build realtime voice conversations with the AI SDK.
 
 <Note type="warning">Realtime is an experimental feature.</Note>
 
-The AI SDK provides realtime models for bidirectional audio and text
-conversations over WebSockets. Realtime sessions run in the browser and connect
+This guide covers legacy token-based, turn-based realtime conversations over
+WebSockets. These sessions run in the browser and connect
 directly to the provider using a short-lived token that you create on your
 server. You can also route the connection through [AI Gateway](/providers/ai-sdk-providers/ai-gateway#realtime).
+
+For OpenAI Live's continuous JSON/PCM16 WSS relay runtime and application-handled
+client delegation, see
+[`experimental_useRealtime`](/docs/reference/ai-sdk-ui/use-realtime#continuous-conversations).
 
 The typical flow is:
 
@@ -125560,6 +125570,13 @@ The typical flow is:
 1. The browser opens a WebSocket connection to the provider or AI Gateway.
 1. The model streams audio, text, and tool calls back to the browser.
 1. Tool calls are handled by your application with `onToolCall`.
+
+For continuous **OpenAI Live** conversations, use an application-owned WebSocket
+relay or optional WebRTC via `api.session`. Live uses client delegation: your
+application handles delegated work and submits context rather than using the
+turn-based tool loop below. See the
+[`experimental_useRealtime` reference](/docs/reference/ai-sdk-ui/use-realtime)
+for SDP setup, server-owned permissions, capture ownership, and graceful close.
 
 ## Setup Endpoint
 
@@ -125635,18 +125652,21 @@ Then use the matching Gateway realtime model in the browser:
 import { experimental_useRealtime } from '@ai-sdk/react';
 import { gateway } from 'ai';
 
+const model = gateway.experimental_realtime('openai/gpt-realtime-2');
+const sessionConfig = {
+  instructions: 'You are a helpful assistant. Be concise.',
+  inputAudioTranscription: {},
+  voice: 'alloy',
+  turnDetection: { type: 'server-vad' as const },
+};
+
 export default function RealtimePage() {
   const realtime = experimental_useRealtime({
-    model: gateway.experimental_realtime('openai/gpt-realtime-2'),
+    model,
     api: {
       token: '/api/realtime/setup',
     },
-    sessionConfig: {
-      instructions: 'You are a helpful assistant. Be concise.',
-      inputAudioTranscription: {},
-      voice: 'alloy',
-      turnDetection: { type: 'server-vad' },
-    },
+    sessionConfig,
   });
 
   // ...
@@ -125675,18 +125695,21 @@ microphone audio, play model audio, send text messages, and render messages.
 import { openai } from '@ai-sdk/openai';
 import { experimental_useRealtime } from '@ai-sdk/react';
 
+const model = openai.experimental_realtime('gpt-realtime');
+const sessionConfig = {
+  instructions: 'You are a helpful assistant. Be concise.',
+  inputAudioTranscription: {},
+  voice: 'alloy',
+  turnDetection: { type: 'server-vad' as const },
+};
+
 export default function RealtimePage() {
   const realtime = experimental_useRealtime({
-    model: openai.experimental_realtime('gpt-realtime'),
+    model,
     api: {
       token: '/api/realtime/setup',
     },
-    sessionConfig: {
-      instructions: 'You are a helpful assistant. Be concise.',
-      inputAudioTranscription: {},
-      voice: 'alloy',
-      turnDetection: { type: 'server-vad' },
-    },
+    sessionConfig,
   });
 
   return (
@@ -125706,6 +125729,10 @@ export default function RealtimePage() {
   );
 }
 ```
+
+Keep model and session configuration objects stable across renders. Use module
+scope as above, or `useMemo` when configuration depends on props. Replacing either
+object replaces the hook's session.
 
 ## Tool Calling
 
@@ -125745,13 +125772,15 @@ export async function POST(request: Request) {
 
 ### Client Tool Handler
 
-```tsx filename='app/realtime/page.tsx' highlight="10-24"
+```tsx filename='app/realtime/page.tsx' highlight="12-26"
 import { openai } from '@ai-sdk/openai';
 import { experimental_useRealtime } from '@ai-sdk/react';
 
+const model = openai.experimental_realtime('gpt-realtime');
+
 export default function RealtimePage() {
   const realtime = experimental_useRealtime({
-    model: openai.experimental_realtime('gpt-realtime'),
+    model,
     api: {
       token: '/api/realtime/setup',
     },
@@ -138533,7 +138562,7 @@ For chat apps built on the [Workflow SDK](/docs/agents/workflow-agent), `Workflo
 
 ```tsx
 import { useChat } from '@ai-sdk/react';
-import { WorkflowChatTransport } from '@ai-sdk/workflow';
+import { WorkflowChatTransport } from '@ai-sdk/workflow/client';
 import { useMemo } from 'react';
 
 export default function Chat() {
@@ -139903,7 +139932,7 @@ Unlike [`DefaultChatTransport`](/docs/ai-sdk-ui/transport) which assumes the ful
 'use client';
 
 import { useChat } from '@ai-sdk/react';
-import { WorkflowChatTransport } from '@ai-sdk/workflow';
+import { WorkflowChatTransport } from '@ai-sdk/workflow/client';
 
 export default function Chat() {
   const { messages, sendMessage } = useChat({
@@ -139920,7 +139949,7 @@ export default function Chat() {
 ## Import
 
 <Snippet
-  text={`import { WorkflowChatTransport } from "@ai-sdk/workflow"`}
+  text={`import { WorkflowChatTransport } from "@ai-sdk/workflow/client"`}
   prompt={false}
 />
 
@@ -140128,7 +140157,7 @@ See the [WorkflowAgent guide](/docs/agents/workflow-agent) for complete endpoint
 'use client';
 
 import { useChat } from '@ai-sdk/react';
-import { WorkflowChatTransport } from '@ai-sdk/workflow';
+import { WorkflowChatTransport } from '@ai-sdk/workflow/client';
 import { useMemo } from 'react';
 
 export default function Chat() {
@@ -140161,7 +140190,7 @@ export default function Chat() {
 'use client';
 
 import { useChat } from '@ai-sdk/react';
-import { WorkflowChatTransport } from '@ai-sdk/workflow';
+import { WorkflowChatTransport } from '@ai-sdk/workflow/client';
 import { useMemo } from 'react';
 
 export default function Chat() {
@@ -147780,17 +147809,38 @@ The following optional provider options are available for OpenAI completion mode
 
 <Note type="warning">Realtime is an experimental feature.</Note>
 
-You can create models that call the [OpenAI Realtime API](https://platform.openai.com/docs/guides/realtime)
-using the `.experimental_realtime()` factory method.
+Use `.experimental_realtime()` for both [OpenAI Realtime](https://platform.openai.com/docs/guides/realtime)
+and [OpenAI Live](https://developers.openai.com/api/docs/guides/live) models.
 
 ```ts
 import { openai } from '@ai-sdk/openai';
 
 const model = openai.experimental_realtime('gpt-realtime');
+const liveModel = openai.experimental_realtime('gpt-live-1');
+
+// Select the API explicitly for an early-access or otherwise unknown model ID.
+const earlyAccessModel = openai.experimental_realtime('not-yet-released', {
+  api: 'live',
+});
 ```
 
-Realtime sessions run in the browser and require a short-lived token created on
-your server with `openai.experimental_realtime.getToken()`:
+The OpenAI-only `api` option accepts `'live'` or `'realtime'` and takes precedence
+over model-ID selection. Without it, the known `gpt-live-1` ID uses Live and other
+IDs retain the Realtime default. The provider does not switch APIs after a failed
+request. Both model implementations use the existing experimental realtime interface.
+
+Live supports **browser WSS sessions through an application-owned relay with client
+delegation**, using `experimental_useRealtime` for the browser runtime, and optional
+browser-direct WebRTC. Your application owns the agent and tool execution; Live
+delegations do not invoke `onToolCall`. For a low-level server adapter, obtain server-only connection
+settings with `liveModel.getServerWebSocketConfig()` and serialize commands with
+`liveModel.serializeClientEvent()`. Create one parser per connection with
+`liveModel.createServerEventParser()` and pass incoming JSON to the returned
+function. It returns arrays of normalized events and retains each original event
+in `raw`.
+
+For a token-based **Realtime API** session, create a short-lived token on your
+server with `openai.experimental_realtime.getToken()`:
 
 ```ts
 const token = await openai.experimental_realtime.getToken({
@@ -147798,8 +147848,81 @@ const token = await openai.experimental_realtime.getToken({
 });
 ```
 
-See [Realtime](/docs/ai-sdk-core/realtime) for the complete setup and tool
-calling pattern.
+Live does not use Realtime client-secret minting. Calling `getToken` for a known
+Live model or with `api: 'live'` rejects before a mint request. Live's WebSocket
+connection authenticates on a trusted server; keep the provider API key out of
+browser code. The API selector chooses a protocol, not a different authentication
+capability for the same model.
+
+Browser authentication to an application-owned relay is separate from OpenAI
+authentication. Protect that relay with your application's session or short-lived
+credential; an origin check alone is not user authentication. The relay uses its
+server-held OpenAI key upstream. Selecting a Live model does not make the Realtime
+client-secret endpoint compatible with the Live API.
+
+For browser-direct Live WebRTC, an authenticated application endpoint performs the
+SDP exchange through `liveModel.doCreateWebRTCSession({ sdp, sessionConfig, abortSignal })`
+using the server's project key. The browser receives the
+session connection answer, not the project key or a Realtime client secret. This
+setup endpoint still needs application authentication. See the
+[`experimental_useRealtime` reference](/docs/reference/ai-sdk-ui/use-realtime)
+for the `api.session` setup contract and the runnable example.
+
+### Live session options
+
+Configure Live-specific settings through `sessionConfig.providerOptions.openai`,
+typed with `Experimental_OpenAIRealtimeModelLiveOptions`. For example:
+
+```ts
+import type { Experimental_OpenAIRealtimeModelLiveOptions as OpenAIRealtimeModelLiveOptions } from '@ai-sdk/openai';
+
+const sessionConfig = {
+  instructions: 'Be concise. Delegate questions that need research or tools.',
+  providerOptions: {
+    openai: {
+      delegation: { type: 'client' },
+    } satisfies OpenAIRealtimeModelLiveOptions,
+  },
+};
+```
+
+- `delegation`: use `{ type: 'client' }` for application-owned work. Omission or
+  `null` also selects client mode. Other delegation modes are unsupported.
+- `input`: prior text messages with developer, user or assistant roles.
+- `voice`: an authorized custom voice reference `{ id }`, mutually exclusive with
+  the ordinary `sessionConfig.voice` string.
+- `store`: requests provider-side session storage; availability depends on the
+  OpenAI project configuration.
+- `client.dataChannel`: WebRTC startup permission policy with
+  `allowedClientEvents` and `allowedServerEvents`. Set it on the application server,
+  not from trusted-looking browser input. Omission retains the provider default;
+  `[]` allows none and `'all'` allows all. Response event selectors use
+  `{ type: 'response.event', responseEvent: 'response.completed' }` to select
+  native nested events, which remain raw `custom` events rather than managed SDK
+  responses. Keep readiness, errors, and terminal usage observable for
+  the session features your application enables.
+
+Send the initial WebSocket configuration with `session-start`; WebRTC starts the
+session during SDP setup and negotiates audio formats through SDP. Live startup settings are
+immutable: `session-update` is rejected. Use `input-audio-mute` and
+`input-audio-unmute` for remote input processing; these commands do not release the
+local microphone. Return application context through
+`context-append`, using the opaque `delegationId` from `delegation-created`, or
+`null` for context without a delegation. Its `providerOptions.openai.channel`
+accepts `instructions`, `thinking` (the default), or `commentary`.
+
+For graceful shutdown, install a `session-closed` listener before sending `session-close`;
+that event confirms final voice usage. `session-usage` contains cumulative seconds,
+so replace earlier snapshots rather than adding them.
+
+For the browser integration, see the
+[`experimental_useRealtime` reference](/docs/reference/ai-sdk-ui/use-realtime#continuous-conversations).
+It covers the JSON/PCM16 WebSocket relay runtime, optional WebRTC setup and permission
+policy, microphone and playback ownership, `session.delegations`, `sendEvent` for
+application context, and `close()` for bounded finalization. Use `wss:` for production
+relays. Continuous conversation semantics do not imply browser support for every
+provider codec or transport. The [Realtime guide](/docs/ai-sdk-core/realtime) covers
+legacy token-based, turn-based sessions.
 
 ## Embedding Models
 

@@ -24,6 +24,10 @@ The EU endpoint supports Speech-to-Text, Text-to-Speech, Voice Agent, and Text I
 
 The AU endpoint supports Speech-to-Text, Text-to-Speech, Voice Agent, and Text Intelligence APIs. Replace `api.deepgram.com` with `api.au.deepgram.com` in any SDK or API request to route traffic through Australia.
 
+**India Endpoint URL**: `api.in.deepgram.com`
+
+The India endpoint supports Speech-to-Text, Text-to-Speech, Voice Agent, and Text Intelligence APIs. Replace `api.deepgram.com` with `api.in.deepgram.com` in any SDK or API request to route traffic through India.
+
 For full configuration details, SDK examples, WebSocket URLs, known limitations, and information about managed LLM/TTS provider regional routing, see [Regional Endpoints](/reference/regional-endpoints).
 
 ## Deepgram Dedicated Endpoints

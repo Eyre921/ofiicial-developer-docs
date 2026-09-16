@@ -10,43 +10,28 @@ Running more than one deployment on an endpoint lets you serve traffic across th
 
 A weight sets a deployment's share of traffic relative to its capacity: the actual share a deployment receives is proportional to its weight times its number of ready replicas.
 
-You set each deployment's weight individually, and the split preserves the other deployments' weights. When each deployment has the same number of ready replicas, the weights behave like a direct ratio. For example, with equal replica counts, these weights send roughly 70% of traffic to one deployment and 30% to the other.
-
 <Tabs>
   <Tab title="CLI">
-    Set each weight with `endpoints update --traffic-weight`. Pass the deployment ID (`dep_...`); the CLI resolves its parent endpoint and preserves the other deployments' weights, so run it once per deployment:
+    Set each weight with `endpoints update --traffic-weight`, passing the deployment ID (`dep_...`). The CLI resolves its parent endpoint and preserves the other deployments' weights, so run it once per deployment:
 
     ```bash Shell theme={null}
     tg beta endpoints update dep_abc123 --traffic-weight 70
     tg beta endpoints update dep_def456 --traffic-weight 30
     ```
-  </Tab>
 
-  <Tab title="Python">
-    The Python SDK replaces the entire traffic split, so include every deployment that should continue receiving traffic:
-
-    ```python Python theme={null}
-    from together import Together
-
-    client = Together()
-    project_id = client.whoami().project_id
-
-    client.beta.endpoints.update(
-        "ep_abc123",
-        project_id=project_id,
-        traffic_split=[
-            {"deployment_id": "dep_abc123", "weight": 70},
-            {"deployment_id": "dep_def456", "weight": 30},
-        ],
-        update_mask="trafficSplit",
-    )
-    ```
-
-    The SDK uses snake case for Python arguments, such as `traffic_split` and `update_mask`, but field-mask values use the API field path. Pass `trafficSplit`, not `traffic_split`, as the update mask.
+    <Note>
+      When each deployment has the same number of ready replicas, the weights behave like a direct ratio. For example, with equal replica counts, the weights in the example above send roughly 70% of traffic to one deployment and 30% to the other.
+    </Note>
   </Tab>
 
   <Tab title="Console">
-    Set each deployment's **Traffic weight** in its **Deployment configuration** (open the deployment, select **Edit**, then **Save changes**). When you create an endpoint with more than one deployment, you can set all the weights together in the create form's **Traffic weights** card.
+    <ConsoleButton href="https://api.together.ai/endpoints">Endpoints</ConsoleButton>
+
+    On a live endpoint's **Overview** tab, the status card shows the current traffic split. Select **Edit traffic weights** to set a weight for every deployment at once, then **Save changes**. At least one deployment must have a weight above 0.
+
+    You can also set each deployment's **Traffic weight** in its **Deployment configuration** (open the deployment, select **Edit**, then **Save changes**), or set all weights together in the create form's **Traffic weights** card when you create an endpoint with more than one deployment.
+
+    While a [rollout](/docs/dedicated-endpoints/rollouts) is active (including pending or paused), the **Overview** status card shows rollout progress instead of **Edit traffic weights**, and the **Traffic weight** field is disabled in each deployment's **Edit** dialog and in **New deployment**. Complete or cancel the rollout before editing weights manually.
   </Tab>
 </Tabs>
 
@@ -60,10 +45,13 @@ A deployment receives no traffic if it has a weight of `0`, is absent from the s
 
 Treat weights as a stable definition of each deployment's relative capacity, and shift traffic between deployments by changing their [replica counts](/docs/dedicated-endpoints/scaling#replica-bounds) rather than editing weights. Because a deployment's share tracks its ready replicas, scaling one deployment up (or another down) moves traffic without you having to recompute a set of weights.
 
+To migrate traffic from one deployment to another on live traffic, use a [rollout](/docs/dedicated-endpoints/rollouts) instead of shifting the split by hand: it moves traffic in controlled steps, can gate each step on live metrics, and drains the source when it completes.
+
 A deployment's weight is remembered when it scales to zero and reapplies automatically when it scales back up, so you don't need to re-add it to the split after a scale-down.
 
 ## Troubleshooting
 
+* **Update traffic split returns `409` with `cannot update traffic_split while rollout ... is active`:** A [rollout](/docs/dedicated-endpoints/rollouts) in any non-terminal state (including pending or paused) owns the endpoint's traffic split. Complete, cancel, or delete the rollout before editing weights.
 * **Update traffic split returns `400` with `the deployment is a shadow experiment target and cannot serve live traffic; remove the shadow target first`:** The deployment is registered as a target in an active [shadow experiment](/docs/dedicated-endpoints/shadow-experiments). Remove it from the experiment (or delete the experiment) before giving it a non-zero weight in the traffic split.
 
 ## Next steps

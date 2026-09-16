@@ -10970,7 +10970,7 @@ This page shows you how to migrate a pod-based index to [serverless](/guides/cor
 
 ## Limitations
 
-Migration is supported for pod-based indexes with up to 50 million records and 20,000 namespaces across all supported clouds (AWS, GCP, and Azure). If your index has more than 50 million records, [contact Pinecone Support](/troubleshooting/contact-support) before you migrate. The record limit can often be raised for your project.
+Migration is supported for pod-based indexes with up to 500 million records and 20,000 namespaces across all supported clouds (AWS, GCP, and Azure). If your index has more than 500 million records, [contact Pinecone Support](/troubleshooting/contact-support) before you migrate.
 
 After you migrate, note that serverless indexes don't support the following features:
 
@@ -76046,16 +76046,22 @@ Pinecone Assistant supports the following models:
 * `gpt-4o` (default)
 * `gpt-4.1`
 * `gpt-5`
-* `o4-mini`
 * `claude-sonnet-4-5`
-* `gemini-2.5-pro`
+* `gemini-3.5-flash`
 
 <Note>
-  Anthropic has [deprecated](https://platform.claude.com/docs/en/about-claude/model-deprecations) the Claude 3.5 Sonnet and Claude 3.7 Sonnet models. Assistant automatically routes chat requests that specify `claude-3-5-sonnet` or `claude-3-7-sonnet` to `claude-sonnet-4-5` at the same price.
+  Assistant automatically routes chat requests that specify a model deprecated by [Anthropic](https://platform.claude.com/docs/en/about-claude/model-deprecations), [Google](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/model-versions#retired-models), or [OpenAI](https://platform.openai.com/docs/deprecations) to its replacement at the same price. No code changes are required.
+
+  | Deprecated model    | Replacement         |
+  | :------------------ | :------------------ |
+  | `claude-3-5-sonnet` | `claude-sonnet-4-5` |
+  | `claude-3-7-sonnet` | `claude-sonnet-4-5` |
+  | `gemini-2.5-pro`    | `gemini-3.5-flash`  |
+  | `o4-mini`           | `gpt-5`             |
 </Note>
 
 <Tip>
-  For chat applications, we recommend using GPT models (`gpt-4o`, `gpt-4.1`, `gpt-5`, or `o4-mini`) as they typically provide faster response times compared to other models.
+  For chat applications, we recommend using GPT models (`gpt-4o`, `gpt-4.1`, or `gpt-5`) as they typically provide faster response times compared to other models.
 </Tip>
 
 To choose a non-default model for your assistant, set the `model` parameter in the request:
@@ -76702,16 +76708,22 @@ Pinecone Assistant supports the following models:
 * `gpt-4o` (default)
 * `gpt-4.1`
 * `gpt-5`
-* `o4-mini`
 * `claude-sonnet-4-5`
-* `gemini-2.5-pro`
+* `gemini-3.5-flash`
 
 <Note>
-  Anthropic has [deprecated](https://platform.claude.com/docs/en/about-claude/model-deprecations) the Claude 3.5 Sonnet and Claude 3.7 Sonnet models. Assistant automatically routes chat requests that specify `claude-3-5-sonnet` or `claude-3-7-sonnet` to `claude-sonnet-4-5` at the same price.
+  Assistant automatically routes chat requests that specify a model deprecated by [Anthropic](https://platform.claude.com/docs/en/about-claude/model-deprecations), [Google](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/model-versions#retired-models), or [OpenAI](https://platform.openai.com/docs/deprecations) to its replacement at the same price. No code changes are required.
+
+  | Deprecated model    | Replacement         |
+  | :------------------ | :------------------ |
+  | `claude-3-5-sonnet` | `claude-sonnet-4-5` |
+  | `claude-3-7-sonnet` | `claude-sonnet-4-5` |
+  | `gemini-2.5-pro`    | `gemini-3.5-flash`  |
+  | `o4-mini`           | `gpt-5`             |
 </Note>
 
 <Tip>
-  For chat applications, we recommend using GPT models (`gpt-4o`, `gpt-4.1`, `gpt-5`, or `o4-mini`) as they typically provide faster response times compared to other models.
+  For chat applications, we recommend using GPT models (`gpt-4o`, `gpt-4.1`, or `gpt-5`) as they typically provide faster response times compared to other models.
 </Tip>
 
 To choose a non-default model for your assistant, set the `model` parameter in the request:
@@ -79644,7 +79656,7 @@ Next, [upload the file](/reference/api/latest/assistant/upload_file) to your ass
 With the sample file uploaded, you can now [chat with the assistant](/reference/api/latest/assistant/chat_assistant). Ask the assistant questions about your document. It returns either a JSON object or a text stream.
 
 <Tip>
-  For faster chat responses, use GPT models (`gpt-4o`, `gpt-4.1`, `gpt-5`, or `o4-mini`). You can also enable streaming to improve perceived latency by showing content as it's generated.
+  For faster chat responses, use GPT models (`gpt-4o`, `gpt-4.1`, or `gpt-5`). You can also enable streaming to improve perceived latency by showing content as it's generated.
 </Tip>
 
 The following example requests a default response to the message, "Who is the CFO of Netflix?":
@@ -86866,6 +86878,30 @@ Source: https://docs.pinecone.io/release-notes/2026
 Every change to Pinecone in 2026, including new features, API updates, deprecations, and pricing and plan changes.
 
 All Pinecone products share this changelog. Use the filters to narrow the list.
+
+<Update label="2026-09-15">
+  ### Pod-to-serverless migration supports up to 500 million records
+
+  [Migrating a pod-based index to serverless](/guides/indexes/pods/migrate-a-pod-based-index-to-serverless#limitations) now supports indexes with up to 500 million records, up from 50 million.
+
+  If you need to migrate a larger index, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) before you start.
+</Update>
+
+<Update label="2026-09-15">
+  ### Gemini 3.5 Flash now available for Assistant chat
+
+  Pinecone Assistant now supports Google's Gemini 3.5 Flash model. To use this model, set `model: "gemini-3.5-flash"` in your [chat](/reference/api/latest/assistant/chat_assistant) requests.
+
+  For more information, see [Choose a model](/guides/assistant/chat-with-assistant#choose-a-model).
+</Update>
+
+<Update label="2026-09-15">
+  ### Gemini 2.5 Pro and o4-mini deprecations for Assistant
+
+  Google has [deprecated](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/model-versions#retired-models) the Gemini 2.5 Pro model, and OpenAI has [deprecated](https://platform.openai.com/docs/deprecations) o4-mini. Pinecone Assistant automatically routes all chat requests that specify `gemini-2.5-pro` to Gemini 3.5 Flash, and all chat requests that specify `o4-mini` to GPT-5, at the same price. No code changes are required.
+
+  To update your code to explicitly use the newer models, set `model: "gemini-3.5-flash"` or `model: "gpt-5"` in your chat requests. For more information, see [Choose a model](/guides/assistant/chat-with-assistant#choose-a-model).
+</Update>
 
 <Update label="2026-09-13">
   ### Higher namespace limit on the Enterprise plan

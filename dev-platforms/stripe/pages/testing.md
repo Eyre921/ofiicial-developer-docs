@@ -27,6 +27,8 @@ Don’t use testing environments to load test your integration because you might
 
 When you work with a test card, use [test API keys](https://docs.stripe.com/keys.md#obtain-api-keys) in all API calls. This is true whether you’re serving a payment form to test interactively or writing test code.
 
+Card-level state from one test can affect later tests that use the same card. When a test depends on card-level state, use a different test card for each independent end-to-end scenario.
+
 > #### Don't use real card details
 > 
 > Don’t use real card details. The [Stripe Services Agreement](https://stripe.com/legal/ssa#1-your-stripe-account) prohibits testing in live mode using real payment method details. Use your test API keys and the card numbers below.

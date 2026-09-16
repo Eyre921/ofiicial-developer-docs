@@ -340,7 +340,7 @@ When you specify the `return_url`, you can also append your own query parameters
 | Parameter | Description |
 | --- | --- |
 | `payment_intent` | The unique identifier for the `PaymentIntent`. |
-| `payment_intent_client_secret` | The [client secret](https://docs.stripe.com/api/payment_intents/object.md#payment_intent_object-client_secret) of the `PaymentIntent` object. For subscription integrations, this client_secret is also exposed on the `Invoice` object through [`confirmation_secret`](https://docs.stripe.com/api/invoices/object.md#invoice_object-confirmation_secret) |
+| `payment_intent_client_secret` | The [client secret](https://docs.stripe.com/api/payment_intents/object.md#payment_intent_object-client_secret) of the `PaymentIntent` object. For subscription integrations, this client_secret is also exposed on the `Invoice` object through [confirmation_secret](https://docs.stripe.com/api/invoices/object.md#invoice_object-confirmation_secret) |
 
 When the customer is redirected back to your site, you can use the `payment_intent_client_secret` to query for the PaymentIntent and display the transaction status to your customer.
 

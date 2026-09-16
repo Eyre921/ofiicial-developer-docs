@@ -134,6 +134,12 @@ The following table contains quality assurance (QA) testing use cases:
 > 
 > To verify a recently created or updated object, retrieve it using a deterministic ID from the creating request, callback, or return URL, such as a Checkout Session ID. If you don’t have one, use the appropriate list endpoint for immediate availability.
 
+> #### Avoid shared card state between tests
+> 
+> Card-level state from one test can affect later tests that use the same card.
+> 
+> When a test depends on card-level state, use a different test card for each independent end-to-end scenario.
+
 | **Use case** | **Action** |
 | --- | --- |
 | Charge success (capturing immediately) | - No error.

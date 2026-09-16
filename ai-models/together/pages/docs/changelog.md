@@ -4,6 +4,23 @@ source: https://docs.together.ai/docs/changelog
 path: docs/changelog
 ---
 
+<Update label="September 15, 2026">
+  ## Rollouts for dedicated model inference
+
+  [Rollouts](/docs/dedicated-endpoints/rollouts) shift live traffic from one deployment to another under the same endpoint, without changing the endpoint URL. Pick a canary, blue-green, or rolling strategy to determine how traffic moves, and optionally gate a canary rollout on [live metrics](/docs/dedicated-endpoints/rollout-metric-gates) so it pauses automatically if the new deployment regresses.
+
+  Start a rollout with the `tg beta endpoints rollout` CLI command or from the endpoint's **Rollouts** tab in the console, then pause, resume, promote, or cancel it at any point while it runs.
+
+  ## Together CLI v2.34.0
+
+  Version 2.34.0 of the Together CLI and Python SDK carries the rollouts release above (the SDK surface is `client.beta.endpoints.rollouts`) and also adds:
+
+  * **[HIPAA placement](/docs/dedicated-endpoints/manage#compliance-policy):** `tg beta endpoints deploy` accepts `--placement.hipaa` to restrict a deployment to HIPAA-attested clusters. The Python SDK takes the same policy as `compliance_policy` on inline placement.
+  * `tg files check` now rejects Parquet files larger than the maximum supported file size instead of passing them through format validation.
+
+  See the [CLI reference](/reference/cli/getting-started).
+</Update>
+
 <Update label="September 11, 2026">
   ## New serverless models
 
@@ -72,6 +89,14 @@ path: docs/changelog
   The following models are now available on [serverless](/docs/serverless/models):
 
   * `Qwen/Qwen3.8-Flash`: 1,000,000 context length. Pricing: \$0.15 input / \$0.47 output (per 1M tokens).
+</Update>
+
+<Update label="August 29, 2026">
+  ## `active_sessions` autoscaling metric for TTS
+
+  Dedicated endpoint autoscaling now accepts `active_sessions`, which targets concurrent open client WebSocket sessions per replica on a TTS deployment (`AVERAGE_VALUE` only). The default `inflight_requests` metric also covers TTS handlers, so HTTP TTS traffic can keep scaling without a policy change.
+
+  See [Configure autoscaling](/docs/dedicated-endpoints/scaling#scaling-metrics).
 </Update>
 
 <Update label="August 28, 2026">
@@ -207,6 +232,12 @@ path: docs/changelog
   * **Audit trail:** Automatically approved repairs record **Auto-Approved** in the repair's **Reviewed by** field, alongside the alert evidence that triggered them.
 
   See [Confirmation policy](/docs/node-repair#confirmation-policy) for details.
+
+  ## Dedicated endpoint create form uses deployment profiles
+
+  The console create-endpoint and new-deployment forms always show **Deployment profiles** choice cards. Separate **Quantization**, **Hardware**, LoRA, and speculative-decoding controls are removed. Each card pins hardware, quantization, and decoding options from the profile's certified config. Project and organization models list every certified config with known hardware. Supported catalog models still require a profile-certified or org-runtime-certified config.
+
+  See [Manage endpoints and deployments](/docs/dedicated-endpoints/manage#create-an-endpoint) and the [quickstart](/docs/dedicated-endpoints/quickstart).
 </Update>
 
 <Update label="August 19, 2026">
@@ -225,6 +256,14 @@ path: docs/changelog
   * `moonshotai/Kimi-K2.6`.
 
   See [Deprecations](/docs/deprecations) for migration options.
+</Update>
+
+<Update label="August 18, 2026">
+  ## Unknown fields rejected on dedicated endpoints API
+
+  The [dedicated model inference](/docs/dedicated-endpoints/overview) management API now rejects unknown JSON request-body fields and unknown query parameters with HTTP `400`. The response names the field (for example `unknown field "inactive_timeout"`) instead of silently ignoring it. Remove retired or misspelled keys from clients that still send them.
+
+  See [Troubleshooting](/docs/dedicated-endpoints/manage#troubleshooting) and [Error codes](/docs/error-codes).
 </Update>
 
 <Update label="August 17, 2026">

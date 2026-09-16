@@ -546,8 +546,8 @@ Occitan (oci), Punjabi (pan), Tajik (tgk), Thai (tha), Uzbek (uzb) and Welsh (cy
 #### Moderate (>25% to ≤50% WER)
 
 Amharic (amh), Ganda (lug), Igbo (ibo), Irish (gle), Khmer (khm), Kurdish (kur), Lao (lao),
-Mongolian (mon), Northern Sotho (nso), Pashto (pus), Shona (sna), Sindhi (snd), Somali (som),
-Urdu (urd), Wolof (wol), Xhosa (xho), Yoruba (yor) and Zulu (zul).
+Mongolian (mon), Northern Sotho (nso), Pashto (pus), Shona (sna), Sindhi (snd), Sinhala (sin),
+Somali (som), Urdu (urd), Wolof (wol), Xhosa (xho), Yoruba (yor) and Zulu (zul).
 
 ## FAQ
 

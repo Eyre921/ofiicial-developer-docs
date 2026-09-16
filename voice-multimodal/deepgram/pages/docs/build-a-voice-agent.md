@@ -21,7 +21,7 @@ Building a voice agent involves four main steps over a WebSocket:
 3. **Stream audio**: Send raw audio data to the agent.
 4. **Handle events**: Listen for transcripts, agent responses, and audio output.
 
-The Voice Agent API is available on the EU endpoint at `wss://api.eu.deepgram.com/v1/agent/converse` and the AU endpoint at `wss://api.au.deepgram.com/v1/agent/converse`. See [Regional Endpoints](/reference/regional-endpoints) for details.
+The Voice Agent API is available on the EU endpoint at `wss://api.eu.deepgram.com/v1/agent/converse`, the AU endpoint at `wss://api.au.deepgram.com/v1/agent/converse`, and the India endpoint at `wss://api.in.deepgram.com/v1/agent/converse`. See [Regional Endpoints](/reference/regional-endpoints) for details.
 
 ## Choose your language
 

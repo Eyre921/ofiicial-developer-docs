@@ -22,7 +22,7 @@ Each weight must be non-negative and finite.
 
 ## Remove a deployment from the traffic split
 
-To stop routing traffic to a deployment without rebalancing the rest of the split, set its weight to `0`. A zero weight unsets the deployment and removes it from the split entirely, while preserving the weights of the other deployments. The deployment keeps running, so you can scale it or bring it back into rotation later by setting a non-zero weight again.
+To stop routing traffic to a deployment without rebalancing the rest of the split, set its weight to `0`. Setting a deployment's weight to `0` will remove it from the split entirely, while preserving the weights of the other deployments. The deployment keeps running, so you can scale it up or bring it back into rotation later by setting a non-zero weight again.
 
 <Tabs>
   <Tab title="CLI">
@@ -34,7 +34,9 @@ To stop routing traffic to a deployment without rebalancing the rest of the spli
   </Tab>
 
   <Tab title="Console">
-    Open the deployment, select **Edit** on the **Deployment configuration** card, set **Traffic weight** to `0`, and select **Save changes**.
+    <ConsoleButton href="https://api.together.ai/endpoints">Endpoints</ConsoleButton>
+
+    On the endpoint's **Overview** tab, select **Edit traffic weights**, set the deployment's weight to `0`, and select **Save changes**. You can also open the deployment, select **Edit** on the **Deployment configuration** card, set **Traffic weight** to `0`, and select **Save changes**. While a [rollout](/docs/dedicated-endpoints/rollouts) is active, those controls are unavailable until you complete or cancel the rollout.
   </Tab>
 </Tabs>
 
@@ -45,6 +47,10 @@ To run several deployments behind one endpoint, or to change how traffic moves b
 <CardGroup>
   <Card title="Split traffic" icon="arrows-split" href="/docs/dedicated-endpoints/split-traffic">
     Run multiple deployments on one endpoint and divide requests between them by weight.
+  </Card>
+
+  <Card title="Rollouts" icon="rocket" href="/docs/dedicated-endpoints/rollouts">
+    Shift traffic from one deployment to another in controlled, gated steps.
   </Card>
 
   <Card title="A/B tests" icon="test-pipe" href="/docs/dedicated-endpoints/ab-tests">

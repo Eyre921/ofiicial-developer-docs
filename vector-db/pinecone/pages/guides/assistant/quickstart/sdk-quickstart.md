@@ -116,7 +116,7 @@ Next, [upload the file](/reference/api/latest/assistant/upload_file) to your ass
 With the sample file uploaded, you can now [chat with the assistant](/reference/api/latest/assistant/chat_assistant). Ask the assistant questions about your document. It returns either a JSON object or a text stream.
 
 <Tip>
-  For faster chat responses, use GPT models (`gpt-4o`, `gpt-4.1`, `gpt-5`, or `o4-mini`). You can also enable streaming to improve perceived latency by showing content as it's generated.
+  For faster chat responses, use GPT models (`gpt-4o`, `gpt-4.1`, or `gpt-5`). You can also enable streaming to improve perceived latency by showing content as it's generated.
 </Tip>
 
 The following example requests a default response to the message, "Who is the CFO of Netflix?":

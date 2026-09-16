@@ -22887,7 +22887,7 @@ You can also name the expected languages in natural language as part of a contex
 
 ## Supported languages
 
-Universal-3.5 Pro Streaming code-switches across 18 languages.
+Universal-3.5 Pro Streaming code-switches across 19 languages.
 
 | Language   | Code | Language   | Code |
 | ---------- | ---- | ---------- | ---- |
@@ -22900,6 +22900,7 @@ Universal-3.5 Pro Streaming code-switches across 18 languages.
 | Turkish    | `tr` | Japanese   | `ja` |
 | Dutch      | `nl` | Mandarin   | `zh` |
 | Swedish    | `sv` | Norwegian  | `no` |
+| Catalan    | `ca` |            |      |
 
 ## Detecting the spoken language
 
@@ -28100,15 +28101,15 @@ async def run_bot(transport: BaseTransport, runner_args: RunnerArguments):
         api_key=os.environ["ASSEMBLYAI_API_KEY"],
         settings=AssemblyAISTTService.Settings(
             model="universal-3-5-pro",
-            min_turn_silence=100,
-            # max_turn_silence is auto-synced to min_turn_silence in Pipecat mode.
+            min_turn_silence=128,
+            max_turn_silence=640,
             # vad_threshold=0.3,            # Align with your local VAD's threshold
             # continuous_partials=True,     # Default — steady ~3s partials during long turns
             # interruption_delay=0,         # Optional: faster first partial (~300ms effective)
         ),
-        vad_force_turn_endpoint=True,  # Pipecat mode (default).
-        # Set False to use AssemblyAI's built-in turn detection (universal-3-5-pro / universal-3-5-pro only):
-        # vad_force_turn_endpoint=False,
+        # AssemblyAI's built-in turn detection. The plugin defaults to True
+        # (Pipecat mode), so set this explicitly.
+        vad_force_turn_endpoint=False,
     )
 
     llm = OpenAILLMService(api_key=os.environ["OPENAI_API_KEY"])
@@ -28173,11 +28174,11 @@ Speak into your microphone after hearing the greeting. For WebRTC or Daily testi
 
 ### **Universal 3.5 Pro Realtime** parameters
 
-These are the key parameters to tune. Set them inside `AssemblyAISTTService.Settings(...)`. They apply to the whole U3 Pro family (`universal-3-5-pro` and `universal-3-5-pro`).
+These are the key parameters to tune. Set them inside `AssemblyAISTTService.Settings(...)`. They apply to `universal-3-5-pro`.
 
   The streaming model. `"universal-3-5-pro"` is the recommended flagship model;
-  the plugin currently defaults to `"universal-3-5-pro"`, so set `model` explicitly. Both
-  belong to the U3 Pro family and share every parameter below.
+  the plugin currently defaults to `"universal-3-5-pro"` but you can set it
+  explicitly with the `model` param.
 
   Accuracy/latency preset: `"min_latency"`, `"balanced"`, or `"max_accuracy"`.
   Sets sensible defaults for mode-dependent fields; any value you set explicitly
@@ -28272,7 +28273,7 @@ These apply across models and Pipecat setups. `api_key`, `vad_force_turn_endpoin
   Your AssemblyAI API key.
 
   `True` for Pipecat mode (VAD + Smart Turn controls turns); `False` for
-  AssemblyAI's built-in turn detection (`universal-3-5-pro` / `universal-3-5-pro` only).
+  AssemblyAI's built-in turn detection (`universal-3-5-pro` only).
   See [Turn detection](#turn-detection).
 
   Whether the user starting to speak interrupts the bot. Only applies in
@@ -28297,17 +28298,15 @@ These apply to the `universal-streaming-english` and `universal-streaming-multil
 
 ## Turn detection
 
-In Pipecat, you choose **which component decides when the user is done speaking** with the `vad_force_turn_endpoint` flag on `AssemblyAISTTService`. The U3 Pro family uses a **punctuation-based** end-of-turn system: after a period of silence, the model checks for terminal punctuation (`.` `?` `!`) rather than a confidence score. For more on how this works, see [Configuring turn detection](/streaming/getting-started/transcribe-streaming-audio).
-
   The `vad_force_turn_endpoint` parameter controls which turn detection mode is
   used. It defaults to `True` (Pipecat mode), which sends a `ForceEndpoint`
   message to AssemblyAI when the local VAD detects silence. Set it to `False` to
   use AssemblyAI's built-in turn detection instead. Choosing the right mode is
   critical for balancing responsiveness and turn accuracy in your voice agent.
 
-### Pipecat mode (default, recommended)
+### Pipecat mode (Pipecat's default)
 
-**When to use:** Most voice agent applications requiring responsive interruptions.
+**When to use:** When Pipecat's VAD and Smart Turn analyzer should own turn-taking — for example, when you already tune Smart Turn across several STT providers and want one turn-detection path for all of them.
 
 ```python
 stt = AssemblyAISTTService(
@@ -28325,33 +28324,39 @@ stt = AssemblyAISTTService(
 - VAD + the Smart Turn analyzer control when the user is done speaking.
 - A `ForceEndpoint` message is sent to AssemblyAI on VAD silence detection.
 - `max_turn_silence` is **automatically synchronized** with `min_turn_silence`.
-- Best for low-latency, responsive voice agents.
+- Useful when you want the framework, rather than the STT service, to own turn-taking.
 
-### AssemblyAI's built-in turn detection
+### AssemblyAI's built-in turn detection (recommended)
 
-**When to use:** When you want AssemblyAI's punctuation-based turn detection to control turn endings, configured through the settings below.
+**When to use:** Most voice agents. AssemblyAI's model controls turn endings, configured through the settings below.
 
 ```python
 stt = AssemblyAISTTService(
     api_key=os.getenv("ASSEMBLYAI_API_KEY"),
     settings=AssemblyAISTTService.Settings(
         model="universal-3-5-pro",
-        min_turn_silence=100,
-        max_turn_silence=1000,  # Now respected independently
+        # Both are respected independently when using AssemblyAI's built-in turn detection.
+        min_turn_silence=128,
+        max_turn_silence=640,
     ),
     vad_force_turn_endpoint=False,  # AssemblyAI's built-in turn detection
 )
 ```
 
+Rather than setting the two thresholds by hand, you can set `mode` (`"min_latency"`,
+`"balanced"`, or `"max_accuracy"`) and let the server pick both for you — see
+[Turn detection](/streaming/turn-detection) for the values each preset applies.
+
 **How it works:**
 
 1. User speaks → audio streams to AssemblyAI.
-2. User pauses for `min_turn_silence` (e.g., `100ms`) → the model checks for terminal punctuation.
-3. If terminal punctuation (`.` `?` `!`) is found → the turn ends immediately.
-4. If not → a partial is emitted and the turn continues waiting.
-5. If silence reaches `max_turn_silence` (e.g., `1000ms`) → the turn is forced to end regardless.
+2. User pauses for `min_turn_silence` (e.g., `128ms`) → the service runs an end-of-turn decode and checks the result for terminal punctuation.
+3. No terminal punctuation (`.` `?` `!`) → a partial is emitted and the turn keeps waiting.
+4. Terminal punctuation, but the tail looks like an entity mid-dictation → the turn is held anyway, and partials keep coming.
+5. Terminal punctuation on an ordinary sentence → the turn ends here.
+6. Silence reaches `max_turn_silence` (e.g., `640ms`) → the turn is forced closed regardless.
 
-In this mode all timing parameters are respected as configured, the service emits `UserStartedSpeakingFrame` / `UserStoppedSpeakingFrame`, and `SpeechStarted` events drive fast barge-in. Only available with `universal-3-5-pro` / `universal-3-5-pro` (other models require Pipecat mode).
+In this mode all timing parameters are respected as configured, the service emits `UserStartedSpeakingFrame` / `UserStoppedSpeakingFrame`, and `SpeechStarted` events drive fast barge-in. Only available with `universal-3-5-pro`; the `universal-streaming-english` and `universal-streaming-multilingual` models require Pipecat mode.
 
 ### Entity splitting tradeoff
 
@@ -28471,15 +28476,6 @@ stt = AssemblyAISTTService(
 )
 ```
 
-  You can't pass `prompt` and `keyterms_prompt` in the same request — doing so
-  raises a validation error. You don't have to give up term boosting to use a
-  contextual prompt, though. Either:
-
-  - Pass **`keyterms_prompt` on its own** — your terms are appended to the
-    default prompt automatically, or
-  - Fold the terms into a custom **`prompt`**, e.g. end it with
-    `"Make sure to boost the words Xiomara, Saoirse, Pipecat in the audio."`
-
 ### Conversation context
 
 Give the model both sides of the dialog so it transcribes the next user turn more accurately. **Universal 3.5 Pro Realtime** keeps a short, per-session memory of the conversation from two sources:
@@ -28564,7 +28560,7 @@ Barge-in — the user interrupting while the agent is speaking — is handled by
 {"type": "SpeechStarted", "timestamp": 14400, "confidence": 0.79}
 ```
 
-On detection, Pipecat stops TTS playback and switches to listening. To reduce false interruptions from short backchannels (`"mhm"`, `"yeah"`, `"okay"`), keep your VAD threshold aligned with `vad_threshold` and lean on Pipecat's Smart Turn analyzer, which evaluates whether speech is a genuine turn rather than a filler.
+On detection, Pipecat stops TTS playback and switches to listening. To reduce false interruptions from short backchannels (`"mhm"`, `"yeah"`, `"okay"`), keep your VAD threshold aligned with `vad_threshold`.
 
 ## Dynamic configuration
 
@@ -28698,15 +28694,15 @@ To balance accuracy, latency, turn-taking, and interruption handling, map your c
 
 | Today                                               | Recommended on AssemblyAI                                                                                                                |
 | --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| Your STT provider's own end-of-turn model           | AssemblyAI's built-in turn detection: `vad_force_turn_endpoint=False` with `min_turn_silence=100`, `max_turn_silence=1000`.               |
-| Silence / VAD only, with your own turn logic        | Pipecat mode (`vad_force_turn_endpoint=True`, default). VAD + Smart Turn decide turns; AssemblyAI returns finals ASAP.                    |
-| You want the framework to own turn-taking           | Pipecat mode (default) — Pipecat's Smart Turn analyzer makes the turn decision.                                                          |
+| Your STT provider's own end-of-turn model           | AssemblyAI's built-in turn detection: `vad_force_turn_endpoint=False` with `min_turn_silence=128`, `max_turn_silence=640` — or set `mode` and let the server pick.               |
+| Silence / VAD only, with your own turn logic        | Pipecat mode (`vad_force_turn_endpoint=True`, the plugin default). VAD + Smart Turn decide turns; AssemblyAI returns finals ASAP.                    |
+| You want the framework to own turn-taking           | Pipecat mode (`vad_force_turn_endpoint=True`) — Pipecat's Smart Turn analyzer makes the turn decision.                                                          |
 
 ### Which model and settings are you migrating from?
 
 | What you pass today                        | AssemblyAI equivalent                                                                                  |
 | ------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
-| Current model (Deepgram, ElevenLabs, etc.) | `model="universal-3-5-pro"` (recommended flagship) or `"universal-3-5-pro"`                                     |
+| Current model (Deepgram, ElevenLabs, etc.) | `model="universal-3-5-pro"` (recommended flagship)                                     |
 | Overall accuracy/latency tuning            | `mode="min_latency"` / `"balanced"` / `"max_accuracy"` — a one-line starting point before fine-tuning  |
 | Endpointing / silence thresholds           | `min_turn_silence` (speculative end-of-turn) and `max_turn_silence` (forced end)                       |
 | Custom vocabulary / keywords               | `keyterms_prompt=[...]`; broader domain context → `prompt`                                             |

@@ -1,6 +1,6 @@
 # dev-platforms/trigger-dev 文档索引
 
-> 共 324 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 327 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -58,13 +58,16 @@
 - `docs/changelog` — [Changelog](pages/docs/changelog.md) · [原文](https://trigger.dev/docs/changelog)
 - `docs/cli-deploy-commands` — [CLI deploy command](pages/docs/cli-deploy-commands.md) · [原文](https://trigger.dev/docs/cli-deploy-commands)
 - `docs/cli-dev-commands` — [CLI dev command](pages/docs/cli-dev-commands.md) · [原文](https://trigger.dev/docs/cli-dev-commands)
+- `docs/cli-env-commands` — [CLI env commands](pages/docs/cli-env-commands.md) · [原文](https://trigger.dev/docs/cli-env-commands)
 - `docs/cli-init-commands` — [CLI init command](pages/docs/cli-init-commands.md) · [原文](https://trigger.dev/docs/cli-init-commands)
 - `docs/cli-introduction` — [Introduction](pages/docs/cli-introduction.md) · [原文](https://trigger.dev/docs/cli-introduction)
 - `docs/cli-list-profiles-commands` — [CLI list-profiles command](pages/docs/cli-list-profiles-commands.md) · [原文](https://trigger.dev/docs/cli-list-profiles-commands)
 - `docs/cli-login-commands` — [CLI login command](pages/docs/cli-login-commands.md) · [原文](https://trigger.dev/docs/cli-login-commands)
 - `docs/cli-logout-commands` — [CLI logout command](pages/docs/cli-logout-commands.md) · [原文](https://trigger.dev/docs/cli-logout-commands)
 - `docs/cli-preview-archive` — [CLI preview archive command](pages/docs/cli-preview-archive.md) · [原文](https://trigger.dev/docs/cli-preview-archive)
+- `docs/cli-projects-commands` — [CLI projects commands](pages/docs/cli-projects-commands.md) · [原文](https://trigger.dev/docs/cli-projects-commands)
 - `docs/cli-promote-commands` — [CLI promote command](pages/docs/cli-promote-commands.md) · [原文](https://trigger.dev/docs/cli-promote-commands)
+- `docs/cli-runs-commands` — [CLI runs commands](pages/docs/cli-runs-commands.md) · [原文](https://trigger.dev/docs/cli-runs-commands)
 - `docs/cli-switch` — [CLI switch command](pages/docs/cli-switch.md) · [原文](https://trigger.dev/docs/cli-switch)
 - `docs/cli-update-commands` — [CLI update command](pages/docs/cli-update-commands.md) · [原文](https://trigger.dev/docs/cli-update-commands)
 - `docs/cli-whoami-commands` — [CLI whoami command](pages/docs/cli-whoami-commands.md) · [原文](https://trigger.dev/docs/cli-whoami-commands)

@@ -8,7 +8,7 @@ path: billing/customer/tax-ids
 
 Learn how to store, validate, and render customer tax ID numbers with Stripe Billing.
 
-Need another tax ID type? Request additional Tax ID types by emailing [stripe-tax@stripe.com](mailto:stripe-tax@stripe.com?subject=Request).
+Need another tax ID type? Request additional Tax ID types by contacting [Stripe support](https://support.stripe.com/contact).
 
 Displaying a customer’s tax ID on *invoice* (Invoices are statements of amounts owed by a customer. They track the status of payments from draft through paid or otherwise finalized. Subscriptions automatically generate invoices, or you can manually create a one-off invoice) documents is a common requirement that you can satisfy by adding tax IDs to customers. A customer’s tax IDs display in the header of invoice and credit note PDFs.
 

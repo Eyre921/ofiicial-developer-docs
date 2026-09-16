@@ -27,4 +27,6 @@ Extension commands are reachable from any client through its generic command int
 SDK command references may cover a smaller set of typed helpers.
 For example, see the [TypeScript SDK command reference](/docs/redis/sdks/ts/commands/overview) for the commands documented in `@upstash/redis`.
 
+Lua scripting over the REST API is documented in the [EVAL](/docs/redis/commands/scripting/eval#rest-api) command reference.
+
 Most unsupported items are on our roadmap. If you need a feature that we do not support, email [support@upstash.com](mailto:support@upstash.com) so we can let you know when we plan to support it.

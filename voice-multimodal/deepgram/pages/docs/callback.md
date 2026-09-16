@@ -56,7 +56,9 @@ Only ports 80, 443, 8080, and 8443 are permitted for callbacks.
 
 ### Using the `dg-token` Request Header
 
-Alternatively, the callback request itself contains a header named dg-token. This header is automatically set to the API Key Identifier associated with the API Key used to submit the original request. This method provides a secure and straightforward means of authentication.
+Alternatively, the callback request may include a header named `dg-token`. When present, this header is set to the API Key Identifier associated with the API Key used to submit the original request, which lets you verify that the callback came from Deepgram.
+
+The `dg-token` header is not guaranteed on every callback request, so this method is less reliable than Basic Auth or [Extra Metadata](/docs/extra-metadata). Use `dg-token` as a supplementary check rather than your only means of authentication.
 
 ## Results
 

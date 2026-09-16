@@ -1,6 +1,6 @@
 # ai-models/together 文档索引
 
-> 共 342 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 353 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -49,6 +49,8 @@
 - `docs/dedicated-endpoints/pricing` — [Pricing](pages/docs/dedicated-endpoints/pricing.md) · [原文](https://docs.together.ai/docs/dedicated-endpoints/pricing)
 - `docs/dedicated-endpoints/quickstart` — [Quickstart](pages/docs/dedicated-endpoints/quickstart.md) · [原文](https://docs.together.ai/docs/dedicated-endpoints/quickstart)
 - `docs/dedicated-endpoints/requests` — [Send requests](pages/docs/dedicated-endpoints/requests.md) · [原文](https://docs.together.ai/docs/dedicated-endpoints/requests)
+- `docs/dedicated-endpoints/rollout-metric-gates` — [Gate rollouts with metrics](pages/docs/dedicated-endpoints/rollout-metric-gates.md) · [原文](https://docs.together.ai/docs/dedicated-endpoints/rollout-metric-gates)
+- `docs/dedicated-endpoints/rollouts` — [Start a rollout](pages/docs/dedicated-endpoints/rollouts.md) · [原文](https://docs.together.ai/docs/dedicated-endpoints/rollouts)
 - `docs/dedicated-endpoints/route-traffic` — [Overview](pages/docs/dedicated-endpoints/route-traffic.md) · [原文](https://docs.together.ai/docs/dedicated-endpoints/route-traffic)
 - `docs/dedicated-endpoints/scaling` — [Configure autoscaling](pages/docs/dedicated-endpoints/scaling.md) · [原文](https://docs.together.ai/docs/dedicated-endpoints/scaling)
 - `docs/dedicated-endpoints/shadow-experiments` — [Run a shadow experiment](pages/docs/dedicated-endpoints/shadow-experiments.md) · [原文](https://docs.together.ai/docs/dedicated-endpoints/shadow-experiments)
@@ -307,6 +309,15 @@
 - `reference/dmi/models-update` — [Update a model](pages/reference/dmi/models-update.md) · [原文](https://docs.together.ai/reference/dmi/models-update)
 - `reference/dmi/placement-profiles-get` — [Get a placement profile](pages/reference/dmi/placement-profiles-get.md) · [原文](https://docs.together.ai/reference/dmi/placement-profiles-get)
 - `reference/dmi/placement-profiles-list` — [List placement profiles](pages/reference/dmi/placement-profiles-list.md) · [原文](https://docs.together.ai/reference/dmi/placement-profiles-list)
+- `reference/dmi/rollouts-cancel` — [Cancel a rollout](pages/reference/dmi/rollouts-cancel.md) · [原文](https://docs.together.ai/reference/dmi/rollouts-cancel)
+- `reference/dmi/rollouts-create` — [Create a rollout](pages/reference/dmi/rollouts-create.md) · [原文](https://docs.together.ai/reference/dmi/rollouts-create)
+- `reference/dmi/rollouts-delete` — [Delete a rollout](pages/reference/dmi/rollouts-delete.md) · [原文](https://docs.together.ai/reference/dmi/rollouts-delete)
+- `reference/dmi/rollouts-get` — [Get a rollout](pages/reference/dmi/rollouts-get.md) · [原文](https://docs.together.ai/reference/dmi/rollouts-get)
+- `reference/dmi/rollouts-list` — [List endpoint rollouts](pages/reference/dmi/rollouts-list.md) · [原文](https://docs.together.ai/reference/dmi/rollouts-list)
+- `reference/dmi/rollouts-pause` — [Pause a rollout](pages/reference/dmi/rollouts-pause.md) · [原文](https://docs.together.ai/reference/dmi/rollouts-pause)
+- `reference/dmi/rollouts-promote` — [Promote a rollout](pages/reference/dmi/rollouts-promote.md) · [原文](https://docs.together.ai/reference/dmi/rollouts-promote)
+- `reference/dmi/rollouts-resume` — [Resume a rollout](pages/reference/dmi/rollouts-resume.md) · [原文](https://docs.together.ai/reference/dmi/rollouts-resume)
+- `reference/dmi/rollouts-start` — [Start a rollout](pages/reference/dmi/rollouts-start.md) · [原文](https://docs.together.ai/reference/dmi/rollouts-start)
 - `reference/dmi/shadow-experiment-targets-create` — [Create a shadow experiment target](pages/reference/dmi/shadow-experiment-targets-create.md) · [原文](https://docs.together.ai/reference/dmi/shadow-experiment-targets-create)
 - `reference/dmi/shadow-experiment-targets-delete` — [Delete a shadow experiment target](pages/reference/dmi/shadow-experiment-targets-delete.md) · [原文](https://docs.together.ai/reference/dmi/shadow-experiment-targets-delete)
 - `reference/dmi/shadow-experiment-targets-get` — [Get a shadow experiment target](pages/reference/dmi/shadow-experiment-targets-get.md) · [原文](https://docs.together.ai/reference/dmi/shadow-experiment-targets-get)

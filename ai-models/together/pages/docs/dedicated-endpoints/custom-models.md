@@ -137,7 +137,9 @@ Save the job `id`. You use it to poll for upload status.
 
 ### Upload from the console
 
-The console combines creating the model record and uploading its weights into a single form. Go to [Models > Upload a model](https://api.together.ai/models/upload).
+The console combines creating the model record and uploading its weights into a single form.
+
+<ConsoleButton href="https://api.together.ai/models/upload">Upload a model</ConsoleButton>
 
 <Steps>
   <Step title="Set the upload type">
@@ -179,7 +181,9 @@ Once the job reaches `REMOTE_UPLOAD_STATUS_SUCCEEDED`, confirm the files landed:
 tg beta models ls-files ml_abc123
 ```
 
-You can also track uploads on the [My models](https://api.together.ai/models?category=my-models) page in the dashboard. While a remote upload is pending or running, the model floats to the top of **My models** with an **Uploading** badge. Open the model to watch the live **Upload progress** event log on the model detail page. The revisions table appears after the upload finishes. That list also includes Internal-visibility models from other projects in your organization. Use the **Visibility** filter to show only **Internal** or only **Private** models.
+<ConsoleButton href="https://api.together.ai/models?category=my-models">My models</ConsoleButton>
+
+You can also track uploads on the **My models** page in the console. While a remote upload is pending or running, the model floats to the top of **My models** with an **Uploading** badge. Open the model to watch the live **Upload progress** event log on the model detail page. The revisions table appears after the upload finishes. That list also includes Internal-visibility models from other projects in your organization. Use the **Visibility** filter to show only **Internal** or only **Private** models.
 
 ## Check revision validation
 
@@ -261,6 +265,8 @@ tg beta endpoints deploy ml_abc123 \
 ```
 
 Once the deployment is ready, send a request to the endpoint string, as shown in the [quickstart](/docs/dedicated-endpoints/quickstart#step-2-send-a-request). See [Manage deployments](/docs/dedicated-endpoints/manage) for the individual lifecycle operations.
+
+If the model is a new version of one you're already serving, you can instead [create a deployment](/docs/dedicated-endpoints/manage#create-a-deployment) for it under the existing endpoint and [run a rollout](/docs/dedicated-endpoints/rollouts) to move live traffic to it, without changing the endpoint URL your application calls.
 
 ## Troubleshooting
 

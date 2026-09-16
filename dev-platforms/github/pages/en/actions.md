@@ -20,7 +20,7 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Using GitHub-hosted runners](/en/actions/how-tos/manage-runners/github-hosted-runners/use-github-hosted-runners)
 
-  You can assign a job to run on a virtual machine hosted by GitHub.
+  <p>You can assign a job to run on a virtual machine hosted by GitHub.</p>
 
 * [Workflow syntax for GitHub Actions](/en/actions/reference/workflows-and-actions/workflow-syntax)
 
@@ -32,11 +32,11 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Using artifact attestations to establish provenance for builds](/en/actions/how-tos/secure-your-work/use-artifact-attestations/use-artifact-attestations)
 
-  Artifact attestations enable you to increase the supply chain security of your builds by establishing where and how your software was built.
+  <p>Artifact attestations enable you to increase the supply chain security of your builds by establishing where and how your software was built.</p>
 
 * [Migrating to GitHub Actions](/en/actions/tutorials/migrate-to-github-actions)
 
-  Learn how to migrate your existing CI/CD workflows to GitHub Actions.
+  <p>Learn how to migrate your existing CI/CD workflows to GitHub Actions.</p>
 
 * [Reuse workflows](/en/actions/how-tos/reuse-automations/reuse-workflows)
 

@@ -90,6 +90,10 @@ curl -G https://api.stripe.com/v1/disputes \
 
 When a payment has multiple disputes, use the `id` provided for each returned dispute in the list to make sure you’re responding to the correct dispute by specifying its `id` when you [retrieve](https://docs.stripe.com/disputes/api.md#retrieve-a-dispute) or [update the dispute](https://docs.stripe.com/disputes/api.md#update-a-dispute).
 
+## Handle dispute events 
+
+When a dispute is created, Stripe sends a `charge.dispute.created` event. The [Dispute](https://docs.stripe.com/api/disputes/object.md) object exposes [charge](https://docs.stripe.com/api/disputes/object.md#dispute_object-charge) and a nullable [payment_intent](https://docs.stripe.com/api/disputes/object.md#dispute_object-payment_intent), but doesn’t include a direct reference to an invoice or subscription. If you need to resolve the associated subscription—for example, to notify the affected customer or adjust access—see [Handle refund, dispute, and early fraud warning events](https://docs.stripe.com/billing/subscriptions/webhooks.md#refund-events).
+
 ## See also
 
 - [Dispute categories](https://docs.stripe.com/disputes/categories.md)

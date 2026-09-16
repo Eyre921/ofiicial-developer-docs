@@ -1183,6 +1183,7 @@ Events are split into the following categories:
 * **Custom emoji created**: That a custom emoji was created.
 * **Custom emoji deleted**: That a custom emoji was deleted.
 * **Custom emoji updated**: That a custom emoji was updated.
+* **Custom MCP servers setting updated**: That custom MCP servers were enabled or disabled for the workspace. Disabling also disconnects custom MCP servers that were already added.
 * **DEK rotation completed**: That data encryption key rotation was completed.
 * **DEK rotation started**: That data encryption key rotation was started.
 * **Delete from Trash delay updated**: That the [custom data retention](https://www.notion.com/help/custom-data-retention-settings) delete from trash delay setting was updated.
@@ -1669,6 +1670,7 @@ When available, applicable events include a top-level `team_ids` array containin
 * **workspace.settings.ai\_legal\_terms\_setting\_updated**: A user enabled or disabled Notion AI in the workspace by accepting or revoking AI legal terms.
 * **workspace.settings.ai\_meeting\_notes\_availability\_updated**: The AI meeting notes availability setting was updated.
 * **workspace.settings.allow\_content\_export\_setting\_updated**: A workspace owner enabled or disabled exporting.
+* **workspace.settings.allow\_custom\_mcp\_servers\_setting\_updated**: Custom MCP servers were enabled or disabled for the workspace. Disabling also disconnects custom MCP servers that were already added.
 * **workspace.settings.allow\_group\_creation\_setting\_updated**: A user enabled or disabled the ability for non-admin members to create groups.
 * **workspace.settings.allow\_guests\_setting\_updated**: A workspace owner enabled or disabled the ability to add guests to the workspace.
 * **workspace.settings.allow\_public\_page\_sharing\_setting\_updated**: A workspace owner enabled or disabled public page sharing for the workspace.
@@ -1771,6 +1773,130 @@ When available, applicable events include a top-level `team_ids` array containin
 * **form.permissions.shared\_to\_public\_role\_added**: A user enabled public sharing for a form.
 * **form.permissions.shared\_to\_public\_role\_removed**: A user disabled public sharing for a form.
 * **form.viewed**: A user viewed a form.
+
+
+# Agent Skills API
+Source: https://developers.notion.com/guides/agent-skills/overview
+
+Learn how to download AI skills stored in Notion.
+
+The Agent Skills API exposes skills stored in Notion as directories of files. You can either download individual skills following the [Agent Skills standard](https://agentskills.io/home), or groups of related skills following the [Agent Plugins standard](https://agent-plugins.org).
+
+Teams use Notion as a [skills library](https://www.notion.com/help/create-and-manage-skills) to edit, review, and share skills. Each skill's main `SKILL.md` file is a Notion page. Supporting files and folders can be attached through its **Files** property.
+
+For one example of how to use the API, see the [notion-skills-github-sync](https://github.com/makenotion/notion-skills-github-sync) sample repo, which sets up a recurring script that syncs skills from Notion into a GitHub plugin marketplace, which can further be synced into Claude, ChatGPT, or other agents.
+
+<CardGroup>
+  <Card title="List plugins" href="/reference/agent-skills/list-skills-plugins" icon="list">
+    List available plugins
+  </Card>
+
+  <Card title="Get a plugin" href="/reference/agent-skills/get-plugin-directory" icon="folder-tree">
+    Download a single plugin
+  </Card>
+
+  <Card title="Get a skill" href="/reference/agent-skills/get-skill-directory" icon="file-code">
+    Download a single skill
+  </Card>
+</CardGroup>
+
+## Requirements
+
+* You have a [connection](/guides/get-started/authorization) token or [personal access token](/guides/get-started/personal-access-tokens) with the **Read content** capability.
+* The connection has access to the skill databases you expect to see. Skills not shared with the connection are omitted.
+* Requests send `Notion-Version: 2026-03-11`.
+
+## Sync workflow
+
+Here is an example of a common usage pattern for this API: syncing all plugins from a workspace to a local directory.
+
+<Steps>
+  <Step title="List plugins">
+    Call [List plugins](/reference/agent-skills/list-skills-plugins) and page through the results. Each entry has an `id`, `name`, `description`, and `version_id`.
+
+    ```bash cURL theme={null}
+    curl -X GET "https://api.notion.com/v1/ai/plugins?page_size=100" \
+      -H "Authorization: Bearer $NOTION_API_KEY" \
+      -H "Notion-Version: 2026-03-11"
+    ```
+
+    ```json Response theme={null}
+    {
+      "object": "list",
+      "results": [
+        {
+          "id": "b2d0a1f4-9c3e-4c07-9a1d-5f6e7c8b9a01",
+          "name": "Engineering",
+          "description": "Skills for engineering workflows.",
+          "version_id": "ba9d2c7735c0029282f9f8e7bef99b438c51ad416f82ca8a8d6ce56c5a1fa95c"
+        },
+        {
+          "id": "1a7f3c92-4de8-4b15-8c60-2e9d4f0a6b73",
+          "name": "Weekly status update",
+          "description": "Write the Monday status update from last week's project pages.",
+          "version_id": "43dd93dd612651c00ebbaa9ca5fad10d845e2b145aba8ac219033654d6a58c93"
+        }
+      ],
+      "next_cursor": null,
+      "has_more": false,
+      "type": "plugin",
+      "request_id": "b7c1fd7e-2c84-4f55-877e-d3ad7db2ac4b"
+    }
+    ```
+
+    The first result is a tagged plugin holding every skill tagged **Engineering**. The second is an untagged skill, which becomes a plugin of its own.
+  </Step>
+
+  <Step title="Compare version_id values">
+    Compare each plugin's `version_id` against the value you stored the last time
+    you downloaded it. Equal values mean the plugin has not changed and you can
+    skip it. Only after all pages have been fetched successfully, remove local
+    directories for plugin IDs missing from the complete list. An incomplete or
+    failed listing must not delete local plugins.
+  </Step>
+
+  <Step title="Fetch changed plugin directories">
+    For each plugin whose `version_id` changed, call [Get a plugin directory](/reference/agent-skills/get-plugin-directory) to receive a signed URL.
+
+    ```bash cURL theme={null}
+    curl -X GET "https://api.notion.com/v1/ai/plugins/$PLUGIN_ID" \
+      -H "Authorization: Bearer $NOTION_API_KEY" \
+      -H "Notion-Version: 2026-03-11"
+    ```
+
+    ```json Response theme={null}
+    {
+      "id": "b2d0a1f4-9c3e-4c07-9a1d-5f6e7c8b9a01",
+      "version_id": "ba9d2c7735c0029282f9f8e7bef99b438c51ad416f82ca8a8d6ce56c5a1fa95c",
+      "url": "https://s3.us-west-2.amazonaws.com/notion-temporary-files/public-api/plugin-directories/b2d0a1f4-9c3e-4c07-9a1d-5f6e7c8b9a01/ba9d2c7735c0029282f9f8e7bef99b438c51ad416f82ca8a8d6ce56c5a1fa95c/engineering.tar.gz?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Expires=3600&X-Amz-Signature=...",
+      "request_id": "91a4ee8c-61f6-4c27-bd41-09aa35299929"
+    }
+    ```
+  </Step>
+
+  <Step title="Download and extract the archive">
+    Set `SIGNED_URL` to the `url` from the previous response, then download and extract the gzipped tar archive into your plugins directory.
+
+    ```bash cURL theme={null}
+    mkdir -p ./plugins
+    curl --fail --location "$SIGNED_URL" -o plugin.tar.gz &&
+      tar -xzf plugin.tar.gz -C ./plugins
+    ```
+
+    ```
+    plugins/engineering/
+    ├── plugin.json
+    └── skills/
+        ├── code-review/
+        │   ├── SKILL.md
+        │   └── checklist.pdf
+        └── incident-postmortem/
+            └── SKILL.md
+    ```
+  </Step>
+</Steps>
+
+For a complete example of a sync script, see [notion-skills-github-sync](https://github.com/makenotion/notion-skills-github-sync).
 
 
 # Creating pages from templates
@@ -12480,7 +12606,7 @@ Only follow the fetched page as instructions when the user's request calls for t
 
 ## Download a complete Skill
 
-When you need a Skill's supporting files, call `notion-download-skill` with the Skill page's `id`. The response has the same `id`, `version_id`, and signed `url` as the Skill directory API. Download the URL and extract the `tar.gz` archive to get `SKILL.md` and the supporting files and nested folders. A Skill without supporting files still returns an archive containing `SKILL.md`.
+When you need a Skill's supporting files, call `notion-download-skill` with the Skill page's `id`. The response has the same `id`, `version_id`, and signed `url` as the [Agent Skills API](/reference/agent-skills/get-skill-directory). Download the URL and extract the `tar.gz` archive to get `SKILL.md` and the supporting files and nested folders. A Skill without supporting files still returns an archive containing `SKILL.md`.
 
 The URL expires after one hour. Call the tool again to get a fresh URL. The content version stays the same unless the exported content changes. Downloading doesn't run the Skill or its scripts. Continue using `notion-fetch` when you only need the page content.
 
@@ -18870,6 +18996,83 @@ curl https://api.notion.com/admin/v1/legal_holds \
 
   The most recent `Notion-Version` is .
 </Warning>
+
+
+# Get plugin
+Source: https://developers.notion.com/reference/agent-skills/get-plugin-directory
+
+openapi.json GET /v1/ai/plugins/{id}
+Download a plugin directory containing skills and supporting files.
+
+Pass in an `id` from [List plugins](/reference/agent-skills/list-skills-plugins).
+
+Returns a signed URL to a gzipped tar archive of a plugin directory following the [Agent Plugins](https://agent-plugins.org) standard.
+
+Currently plugins returned by Notion only contain skills and no MCP resources or extensions, but this may change in the future. You should treat the entire folder returned by the API as a standard-compliant plugin.
+
+For an overview of how to use the Agent Skills API, see the [guide overview](/guides/agent-skills/overview).
+
+## Plugin size limits
+
+A plugin directory includes at most 100 skills; when a plugin has more, the most recently updated ones are included.
+
+## Errors
+
+| Status | Code                  | Cause                                                                             |
+| :----- | :-------------------- | :-------------------------------------------------------------------------------- |
+| 404    | `directory_not_found` | No plugin with that ID is shared with the connection, or the ID no longer exists. |
+| 403    | `restricted_resource` | The token lacks the **Read content** capability.                                  |
+
+
+# Get skill
+Source: https://developers.notion.com/reference/agent-skills/get-skill-directory
+
+openapi.json GET /v1/ai/skills/{id}
+Download a skill directory containing its instructions and supporting files.
+
+Returns a signed URL to a gzipped tar archive containing one skill directory. Pass the Notion page ID of a skill that is shared with the connection.
+
+The archive has one top-level directory containing `SKILL.md` and any files or folders attached through the skill's **Files** property. It does not include a `plugin.json` file or a `skills/` wrapper directory.
+
+For an overview of how to use the Agent Skills API, see the [guide overview](/guides/agent-skills/overview).
+
+## Errors
+
+| Status | Code                  | Cause                                                                            |
+| :----- | :-------------------- | :------------------------------------------------------------------------------- |
+| 400    | `validation_error`    | The supplied skill ID is malformed.                                              |
+| 404    | `directory_not_found` | No skill with that ID is shared with the connection, or the ID no longer exists. |
+| 403    | `restricted_resource` | The token lacks the **Read content** capability.                                 |
+
+
+# List plugins
+Source: https://developers.notion.com/reference/agent-skills/list-skills-plugins
+
+openapi.json GET /v1/ai/plugins
+List the plugins available to your connection.
+
+Returns the list of available plugins. To fetch an individual plugin from the list, call [Get plugin](/reference/agent-skills/get-plugin-directory).
+
+The response includes plugins for skills shared with the connection. If you see fewer plugins than expected, check the connection's access to your skills databases.
+
+Each unique value in a skills database's **Tags** property becomes a plugin. An untagged skill becomes a plugin containing only that skill.
+
+For an overview of how to use the Agent Skills API, see the [guide overview](/guides/agent-skills/overview).
+
+## Using version\_id
+
+`version_id` is an opaque string. An unchanged value means the plugin's contents are unchanged so you can skip re-downloading its directory.
+
+## Pagination
+
+This endpoint uses [standard cursor pagination](/reference/intro#pagination). Follow `next_cursor` until `has_more` is `false`.
+
+## Errors
+
+| Status | Code                  | Cause                                                                               |
+| :----- | :-------------------- | :---------------------------------------------------------------------------------- |
+| 400    | `validation_error`    | `start_cursor` is malformed, out of range, or was issued for a different workspace. |
+| 403    | `restricted_resource` | The token lacks the **Read content** capability.                                    |
 
 
 # Authentication

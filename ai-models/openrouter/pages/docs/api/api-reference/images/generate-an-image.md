@@ -403,6 +403,8 @@ components:
             (currently OpenAI). Non-streaming providers ignore this flag and
             return a buffered response.
           type: boolean
+        trace:
+          $ref: '#/components/schemas/TraceConfig'
         user:
           description: >-
             A stable identifier for your end-users. Used to help detect and
@@ -410,6 +412,7 @@ components:
             data policy requires user IDs, it is folded into a hashed,
             per-account upstream user identifier.
           example: end-user-abc123
+          maxLength: 256
           type: string
       required:
         - model
@@ -805,6 +808,28 @@ components:
             The sorting strategy to use for this request, if "order" is not
             specified. When set, no load balancing is performed.
           example: price
+      type: object
+    TraceConfig:
+      additionalProperties: {}
+      description: >-
+        Metadata for observability and tracing. Known keys (trace_id,
+        trace_name, span_name, generation_name, parent_span_id) have special
+        handling. Additional keys are passed through as custom metadata to
+        configured broadcast destinations.
+      example:
+        trace_id: trace-abc123
+        trace_name: my-app-trace
+      properties:
+        generation_name:
+          type: string
+        parent_span_id:
+          type: string
+        span_name:
+          type: string
+        trace_id:
+          type: string
+        trace_name:
+          type: string
       type: object
     ImageGenerationUsage:
       description: Token and cost usage for the image generation request, when available
@@ -1298,6 +1323,7 @@ components:
         - Amazon Nova
         - Anthropic
         - Arcee AI
+        - AssemblyAI
         - AtlasCloud
         - Avian
         - Azure
@@ -1443,6 +1469,9 @@ components:
           additionalProperties: {}
           type: object
         arcee-ai:
+          additionalProperties: {}
+          type: object
+        assemblyai:
           additionalProperties: {}
           type: object
         atlas-cloud:

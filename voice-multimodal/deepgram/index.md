@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 388 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 389 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -417,3 +417,4 @@
 - `trust-security/data-privacy-compliance` — [Data Privacy Compliance](pages/trust-security/data-privacy-compliance.md) · [原文](https://developers.deepgram.com/trust-security/data-privacy-compliance.md)
 - `trust-security/information-security-privacy` — [Information Security & Privacy Statement](pages/trust-security/information-security-privacy.md) · [原文](https://developers.deepgram.com/trust-security/information-security-privacy.md)
 - `trust-security/security-policy` — [Security Policy](pages/trust-security/security-policy.md) · [原文](https://developers.deepgram.com/trust-security/security-policy.md)
+- `trust-security/your-data` — [Your Data at Deepgram](pages/trust-security/your-data.md) · [原文](https://developers.deepgram.com/trust-security/your-data.md)

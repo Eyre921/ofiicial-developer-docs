@@ -121,6 +121,7 @@ Migrating your endpoint to v2 gives you access to several new capabilities:
 * [Split traffic across deployments](/docs/dedicated-endpoints/split-traffic): Host several deployments behind one endpoint URL and route requests between them by weight.
 * [Run A/B tests](/docs/dedicated-endpoints/ab-tests): Compare a candidate deployment against a baseline on live traffic before you promote it.
 * [Run a shadow experiment](/docs/dedicated-endpoints/shadow-experiments): Test a new deployment in production without affecting live traffic.
+* [Run a rollout](/docs/dedicated-endpoints/rollouts): Migrate live traffic from one deployment to another in steps, with automatic pauses when [live metrics](/docs/dedicated-endpoints/rollout-metric-gates) regress.
 * [Autoscale on a metric](/docs/dedicated-endpoints/scaling): Scale each deployment on the metric that fits your workload, and stop it when you don't need it to release the hardware.
 * [Monitor endpoints](/docs/dedicated-endpoints/monitoring): Track latency, throughput, and utilization in built-in dashboards, and trace lifecycle changes through the events feed.
 

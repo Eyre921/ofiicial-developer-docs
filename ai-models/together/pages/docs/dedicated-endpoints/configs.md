@@ -8,7 +8,7 @@ Pick the hardware deployment profile that your model runs on.
 
 After [choosing](/docs/dedicated-endpoints/models) or [uploading](/docs/dedicated-endpoints/custom-models) a model, you choose a [deployment profile](/docs/dedicated-endpoints/concepts#deployment-profile): the certified pairing of a model weight (at a given quantization) with a [config](/docs/dedicated-endpoints/concepts#config) that fixes the quantization, parallelism, and hardware your deployment runs on.
 
-Together publishes one or more profiles per model. You select one by its config revision ID, passing it to `--config <cr_...>` when you create a deployment. When a model has a single profile, the CLI selects it automatically.
+Together publishes one or more profiles per model. In the CLI and API, you select one by its config revision ID, passing it to `--config <cr_...>` when you create a deployment. When a model has a single profile, the CLI selects it automatically. In the console, choose a **Deployment profiles** card on the [create form](/docs/dedicated-endpoints/manage#create-an-endpoint). Each card shows the profile's hardware and quantization.
 
 ## List a model's profiles
 

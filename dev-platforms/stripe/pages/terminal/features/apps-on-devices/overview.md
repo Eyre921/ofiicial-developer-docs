@@ -134,7 +134,7 @@ During installation, the Stripe SmartPOS OS automatically grants [Android permis
 
 ## Apps on Devices and Stripe Connect compatibility
 
-Platforms using Apps on Devices can deploy apps only to [connected accounts](https://docs.stripe.com/connect.md) that are controlled by a single platform. A connected account is supported if its [`controller.is_controller`](https://docs.stripe.com/api/accounts/object.md#account_object-controller-is_controller) property is `true`. That prevents multiple platforms from deploying apps to the same connected account.
+Platforms using Apps on Devices can deploy apps only to [connected accounts](https://docs.stripe.com/connect.md) that are controlled by a single platform. A connected account is supported if its [controller.is_controller](https://docs.stripe.com/api/accounts/object.md#account_object-controller-is_controller) property is `true`. That prevents multiple platforms from deploying apps to the same connected account.
 
 ## Next steps
 

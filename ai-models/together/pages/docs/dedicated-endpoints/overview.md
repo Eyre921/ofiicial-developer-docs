@@ -146,6 +146,7 @@ For a step-by-step walkthrough, [follow the quickstart](/docs/dedicated-endpoint
 * **Autoscale on demand:** [Scale your deployments with replicas](/docs/dedicated-endpoints/scaling) to meet demand, and stop them when you don't need them to reduce costs.
 * **Split traffic across deployments:** Host multiple deployments behind one endpoint URL and [route requests](/docs/dedicated-endpoints/split-traffic) between them by weight.
 * **Compare deployments on live traffic:** Run an [A/B test](/docs/dedicated-endpoints/ab-tests) with control and variant splits to measure a candidate against a baseline before you promote it.
+* **Migrate deployments with rollouts:** Shift live traffic from one deployment to another in [controlled, metric-gated steps](/docs/dedicated-endpoints/rollouts) without changing the endpoint URL.
 * **Monitor endpoints:** Track latency, throughput, and utilization in [built-in dashboards](/docs/dedicated-endpoints/monitoring), and trace lifecycle changes through the events feed.
 
 ## Pricing

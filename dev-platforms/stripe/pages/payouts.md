@@ -1192,7 +1192,7 @@ Use the following collapsed table to determine your country’s settlement timin
 
 ### Settlement timing by payment method 
 
-Bank debit payment methods typically have longer settlement times than card payments because of the underlying banking systems. These payments have a higher risk of returns or reversals, which factors into their longer settlement periods.
+Bank payment methods typically have longer settlement times than card payments because of the underlying banking systems. These payments have a higher risk of returns or reversals, which factors into their longer settlement periods.
 
 | Payment method | Settlement timing |
 | --- | --- |
@@ -1202,6 +1202,7 @@ Bank debit payment methods typically have longer settlement times than card paym
 | AU BECS Direct Debit | 2 business days |
 | NZ BECS Direct Debit | 2 business days |
 | PAD Canada | 5 business days |
+| [USD Bank Transfers](https://docs.stripe.com/payments/bank-transfers.md) | 5 business days |
 
 To manage your cash flow and cover potential refunds, disputes, and fees that might lead to negative balances, you can set a [minimum balance](https://docs.stripe.com/payouts/minimum-balances-for-automatic-payouts.md) in your Stripe account.
 

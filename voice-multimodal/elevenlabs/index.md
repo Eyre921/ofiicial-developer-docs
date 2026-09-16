@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1294 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1304 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -26,6 +26,7 @@
 - `docs/api-reference/agents/hold-audio/create` — [Post agent hold audio](pages/docs/api-reference/agents/hold-audio/create.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/hold-audio/create.md)
 - `docs/api-reference/agents/hold-audio/delete` — [Delete agent hold audio](pages/docs/api-reference/agents/hold-audio/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/hold-audio/delete.md)
 - `docs/api-reference/agents/list` — [List agents](pages/docs/api-reference/agents/list.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/list.md)
+- `docs/api-reference/agents/procedures/compile` — [Compile Procedures](pages/docs/api-reference/agents/procedures/compile.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/procedures/compile.md)
 - `docs/api-reference/agents/procedures/create` — [Create Procedure](pages/docs/api-reference/agents/procedures/create.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/procedures/create.md)
 - `docs/api-reference/agents/procedures/delete` — [Delete Procedure Draft](pages/docs/api-reference/agents/procedures/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/procedures/delete.md)
 - `docs/api-reference/agents/procedures/get` — [Get Procedure](pages/docs/api-reference/agents/procedures/get.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/procedures/get.md)
@@ -35,6 +36,7 @@
 - `docs/api-reference/agents/procedures/update` — [Update Procedure Draft](pages/docs/api-reference/agents/procedures/update.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/procedures/update.md)
 - `docs/api-reference/agents/simulate-conversation` — [Simulate conversation](pages/docs/api-reference/agents/simulate-conversation.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/simulate-conversation.md)
 - `docs/api-reference/agents/simulate-conversation-stream` — [Stream simulate conversation](pages/docs/api-reference/agents/simulate-conversation-stream.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/simulate-conversation-stream.md)
+- `docs/api-reference/agents/update` — [Update agent](pages/docs/api-reference/agents/update.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/update.md)
 - `docs/api-reference/agents/versions/get` — [Get agent version metadata](pages/docs/api-reference/agents/versions/get.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/versions/get.md)
 - `docs/api-reference/analytics/get` — [Get live count](pages/docs/api-reference/analytics/get.md) · [原文](https://elevenlabs.io/docs/api-reference/analytics/get.md)
 - `docs/api-reference/analytics/workspace/requests` — [List API requests](pages/docs/api-reference/analytics/workspace/requests.md) · [原文](https://elevenlabs.io/docs/api-reference/analytics/workspace/requests.md)
@@ -79,6 +81,7 @@
 - `docs/api-reference/conversations/tags/assign` — [Add tag to conversation](pages/docs/api-reference/conversations/tags/assign.md) · [原文](https://elevenlabs.io/docs/api-reference/conversations/tags/assign.md)
 - `docs/api-reference/conversations/tags/create` — [Create tag](pages/docs/api-reference/conversations/tags/create.md) · [原文](https://elevenlabs.io/docs/api-reference/conversations/tags/create.md)
 - `docs/api-reference/conversations/tags/delete` — [Delete tag](pages/docs/api-reference/conversations/tags/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/conversations/tags/delete.md)
+- `docs/api-reference/conversations/tags/get` — [Get tag](pages/docs/api-reference/conversations/tags/get.md) · [原文](https://elevenlabs.io/docs/api-reference/conversations/tags/get.md)
 - `docs/api-reference/conversations/tags/list` — [List tags](pages/docs/api-reference/conversations/tags/list.md) · [原文](https://elevenlabs.io/docs/api-reference/conversations/tags/list.md)
 - `docs/api-reference/conversations/tags/unassign` — [Remove tag from conversation](pages/docs/api-reference/conversations/tags/unassign.md) · [原文](https://elevenlabs.io/docs/api-reference/conversations/tags/unassign.md)
 - `docs/api-reference/conversations/tags/update` — [Update tag](pages/docs/api-reference/conversations/tags/update.md) · [原文](https://elevenlabs.io/docs/api-reference/conversations/tags/update.md)
@@ -298,6 +301,7 @@
 - `docs/api-reference/tools/get` — [Get tool](pages/docs/api-reference/tools/get.md) · [原文](https://elevenlabs.io/docs/api-reference/tools/get.md)
 - `docs/api-reference/tools/get-dependent-agents` — [Get dependent agents](pages/docs/api-reference/tools/get-dependent-agents.md) · [原文](https://elevenlabs.io/docs/api-reference/tools/get-dependent-agents.md)
 - `docs/api-reference/tools/get-executions` — [Get tool executions](pages/docs/api-reference/tools/get-executions.md) · [原文](https://elevenlabs.io/docs/api-reference/tools/get-executions.md)
+- `docs/api-reference/tools/list` — [List tools](pages/docs/api-reference/tools/list.md) · [原文](https://elevenlabs.io/docs/api-reference/tools/list.md)
 - `docs/api-reference/tools/update` — [Update tool](pages/docs/api-reference/tools/update.md) · [原文](https://elevenlabs.io/docs/api-reference/tools/update.md)
 - `docs/api-reference/triage-tickets/add-comment` — [Add comment](pages/docs/api-reference/triage-tickets/add-comment.md) · [原文](https://elevenlabs.io/docs/api-reference/triage-tickets/add-comment.md)
 - `docs/api-reference/triage-tickets/add-turn-comment` — [Add turn comment](pages/docs/api-reference/triage-tickets/add-turn-comment.md) · [原文](https://elevenlabs.io/docs/api-reference/triage-tickets/add-turn-comment.md)
@@ -790,7 +794,9 @@
 - `docs/eleven-creative/playground/text-to-speech` — [Text to Speech](pages/docs/eleven-creative/playground/text-to-speech.md) · [原文](https://elevenlabs.io/docs/eleven-creative/playground/text-to-speech.md)
 - `docs/eleven-creative/playground/voice-changer` — [Voice changer](pages/docs/eleven-creative/playground/voice-changer.md) · [原文](https://elevenlabs.io/docs/eleven-creative/playground/voice-changer.md)
 - `docs/eleven-creative/products/audiobooks` — [Audiobooks](pages/docs/eleven-creative/products/audiobooks.md) · [原文](https://elevenlabs.io/docs/eleven-creative/products/audiobooks.md)
+- `docs/eleven-creative/products/dubbing` — [Dubbing](pages/docs/eleven-creative/products/dubbing.md) · [原文](https://elevenlabs.io/docs/eleven-creative/products/dubbing.md)
 - `docs/eleven-creative/products/dubbing/dubbing-studio` — [Dubbing Studio](pages/docs/eleven-creative/products/dubbing/dubbing-studio.md) · [原文](https://elevenlabs.io/docs/eleven-creative/products/dubbing/dubbing-studio.md)
+- `docs/eleven-creative/products/flows` — [ElevenCreative Flows](pages/docs/eleven-creative/products/flows.md) · [原文](https://elevenlabs.io/docs/eleven-creative/products/flows.md)
 - `docs/eleven-creative/products/music` — [Music](pages/docs/eleven-creative/products/music.md) · [原文](https://elevenlabs.io/docs/eleven-creative/products/music.md)
 - `docs/eleven-creative/products/music/finetunes` — [Music Finetunes](pages/docs/eleven-creative/products/music/finetunes.md) · [原文](https://elevenlabs.io/docs/eleven-creative/products/music/finetunes.md)
 - `docs/eleven-creative/products/studio` — [ElevenCreative Studio](pages/docs/eleven-creative/products/studio.md) · [原文](https://elevenlabs.io/docs/eleven-creative/products/studio.md)
@@ -1236,8 +1242,11 @@
 - `docs/help-center/website/when-using-the-website-why-am-i-getting-a-client-side-error` — [When using the website, why am I getting a client-side error?](pages/docs/help-center/website/when-using-the-website-why-am-i-getting-a-client-side-error.md) · [原文](https://elevenlabs.io/docs/help-center/website/when-using-the-website-why-am-i-getting-a-client-side-error.md)
 - `docs/help-center/website/why-is-the-website-refreshing-and-logging-me-out` — [Why is the website refreshing and logging me out?](pages/docs/help-center/website/why-is-the-website-refreshing-and-logging-me-out.md) · [原文](https://elevenlabs.io/docs/help-center/website/why-is-the-website-refreshing-and-logging-me-out.md)
 - `docs/overview/administration/account` — [Account](pages/docs/overview/administration/account.md) · [原文](https://elevenlabs.io/docs/overview/administration/account.md)
+- `docs/overview/administration/assets` — [Assets](pages/docs/overview/administration/assets.md) · [原文](https://elevenlabs.io/docs/overview/administration/assets.md)
 - `docs/overview/administration/billing` — [Billing](pages/docs/overview/administration/billing.md) · [原文](https://elevenlabs.io/docs/overview/administration/billing.md)
+- `docs/overview/administration/consolidated-billing` — [Consolidated billing](pages/docs/overview/administration/consolidated-billing.md) · [原文](https://elevenlabs.io/docs/overview/administration/consolidated-billing.md)
 - `docs/overview/administration/data-residency` — [Data residency](pages/docs/overview/administration/data-residency.md) · [原文](https://elevenlabs.io/docs/overview/administration/data-residency.md)
+- `docs/overview/administration/pay-as-you-go` — [Pay As You Go](pages/docs/overview/administration/pay-as-you-go.md) · [原文](https://elevenlabs.io/docs/overview/administration/pay-as-you-go.md)
 - `docs/overview/administration/usage-analytics` — [Usage analytics](pages/docs/overview/administration/usage-analytics.md) · [原文](https://elevenlabs.io/docs/overview/administration/usage-analytics.md)
 - `docs/overview/administration/workspaces/api-keys` — [API Keys](pages/docs/overview/administration/workspaces/api-keys.md) · [原文](https://elevenlabs.io/docs/overview/administration/workspaces/api-keys.md)
 - `docs/overview/administration/workspaces/audit-logs` — [Audit logs](pages/docs/overview/administration/workspaces/audit-logs.md) · [原文](https://elevenlabs.io/docs/overview/administration/workspaces/audit-logs.md)
@@ -1247,6 +1256,7 @@
 - `docs/overview/administration/workspaces/model-approvals` — [Model approvals](pages/docs/overview/administration/workspaces/model-approvals.md) · [原文](https://elevenlabs.io/docs/overview/administration/workspaces/model-approvals.md)
 - `docs/overview/administration/workspaces/overview` — [Workspaces](pages/docs/overview/administration/workspaces/overview.md) · [原文](https://elevenlabs.io/docs/overview/administration/workspaces/overview.md)
 - `docs/overview/administration/workspaces/service-accounts` — [Service Accounts](pages/docs/overview/administration/workspaces/service-accounts.md) · [原文](https://elevenlabs.io/docs/overview/administration/workspaces/service-accounts.md)
+- `docs/overview/administration/workspaces/sharing-resources` — [Sharing resources](pages/docs/overview/administration/workspaces/sharing-resources.md) · [原文](https://elevenlabs.io/docs/overview/administration/workspaces/sharing-resources.md)
 - `docs/overview/administration/workspaces/sso` — [Single Sign-On (SSO)](pages/docs/overview/administration/workspaces/sso.md) · [原文](https://elevenlabs.io/docs/overview/administration/workspaces/sso.md)
 - `docs/overview/administration/workspaces/sso/microsoft-entra-saml` — [Microsoft Entra SAML SSO](pages/docs/overview/administration/workspaces/sso/microsoft-entra-saml.md) · [原文](https://elevenlabs.io/docs/overview/administration/workspaces/sso/microsoft-entra-saml.md)
 - `docs/overview/administration/workspaces/sso/okta-saml` — [Okta SAML SSO](pages/docs/overview/administration/workspaces/sso/okta-saml.md) · [原文](https://elevenlabs.io/docs/overview/administration/workspaces/sso/okta-saml.md)

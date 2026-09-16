@@ -33,17 +33,19 @@ Before you deploy, choose a [supported model](/docs/dedicated-endpoints/models) 
   </Tab>
 
   <Tab title="Console">
+    <ConsoleButton href="https://api.together.ai/endpoints">Endpoints</ConsoleButton>
+
     <Steps>
       <Step title="Open the create form">
-        On the [Endpoints page](https://api.together.ai/endpoints), select **New endpoint**.
+        On the **Endpoints** page, select **New endpoint**.
       </Step>
 
       <Step title="Name the endpoint and deployment">
         Enter an **Endpoint name** and a **Deployment name**.
       </Step>
 
-      <Step title="Choose the model and hardware">
-        Select the **Model** and its **Quantization**, then pick a **Hardware** configuration and a **Region**. The console lists one hardware card per [deployment profile](/docs/dedicated-endpoints/concepts#deployment-profile), so the model and quantization you choose determine the config.
+      <Step title="Choose the model and deployment profile">
+        Select the **Model**. For a project or organization model, choose a **Revision**, then pick a **Deployment profiles** card and a **Region**. Each [deployment profile](/docs/dedicated-endpoints/concepts#deployment-profile) bundles the model's hardware, quantization, and speculative decoding when the config enables it. For project and organization models, the console offers every certified config with known hardware. Supported catalog models still require a profile-certified or org-runtime-certified config.
       </Step>
 
       <Step title="Set autoscaling">
@@ -91,10 +93,12 @@ Add more deployments to an endpoint to run several models or hardware configs be
   </Tab>
 
   <Tab title="Console">
-    Open the endpoint from the [Endpoints page](https://api.together.ai/endpoints) and select **New deployment**. The dialog has the same fields as the create form ([Create an endpoint](#create-an-endpoint)), plus a **Traffic weight**: leave it at `0` to add the deployment without serving live traffic (for example, as an [A/B](/docs/dedicated-endpoints/ab-tests) variant). Fill in the fields and select **Create deployment**.
+    <ConsoleButton href="https://api.together.ai/endpoints">Endpoints</ConsoleButton>
+
+    Open the endpoint and select **New deployment**. The dialog has the same fields as the create form ([Create an endpoint](#create-an-endpoint)), plus a **Traffic weight**: leave it at `0` to add the deployment without serving live traffic (for example, as an [A/B](/docs/dedicated-endpoints/ab-tests) variant). Fill in the fields and select **Create deployment**. While a [rollout](/docs/dedicated-endpoints/rollouts) is active (including pending or paused), **Traffic weight** is disabled so the rollout keeps ownership of the split.
 
     <Frame>
-      <img alt="The New deployment dialog in the Together AI console, with fields for deployment name, model, quantization, hardware, region, autoscaling replica bounds, and traffic weight." />
+      <img alt="The New deployment dialog in the Together AI console, with fields for deployment name, model, deployment profiles, region, autoscaling replica bounds, and traffic weight." />
     </Frame>
   </Tab>
 </Tabs>
@@ -112,33 +116,22 @@ Together creates and manages the list of placement profiles, so they are read-on
 
 #### Compliance policy
 
-When you set inline placement, you can also pass an optional `compliancePolicy` object. The only supported policy today is `hipaa`. When set to `true`, replicas only run on HIPAA-attested clusters. Unlike the regions list, the policy is always enforced strictly, regardless of `constraint`. If no qualifying cluster is available, the deployment stays unscheduled.
+To run replicas only on HIPAA-attested clusters, pass `--placement.hipaa` when you deploy. The policy is always enforced strictly, regardless of `--placement.constraint`. If no qualifying cluster is available, the deployment stays unscheduled.
 
-The CLI and SDKs don't expose `compliancePolicy` yet, but you can set it with the [create deployment API](/reference/dmi/deployments-create) when you create the deployment:
-
-```bash cURL theme={null}
-curl -X POST "https://api.together.ai/v2/projects/$PROJECT_ID/endpoints/ep_abc123/deployments" \
-  -H "Authorization: Bearer $TOGETHER_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "hipaa-ready",
-    "model": "projects/proj_abc123/models/ml_abc123",
-    "config": "projects/proj_abc123/configs/cr_abc123",
-    "autoscaling": {"minReplicas": 1, "maxReplicas": 1},
-    "placement": {
-      "inline": {
-        "regions": ["us-east-1"],
-        "constraint": "ENFORCEMENT_PREFERRED",
-        "compliancePolicy": {"hipaa": true}
-      }
-    }
-  }'
+```bash CLI theme={null}
+tg beta endpoints deploy zai-org/GLM-5.2 \
+  --endpoint hipaa-ready \
+  --placement.regions us-east-1 \
+  --placement.constraint preferred \
+  --placement.hipaa
 ```
+
+In the API and SDKs, the same policy is the `compliancePolicy` object on inline placement, for example `"compliancePolicy": {"hipaa": true}`. See the [create deployment API](/reference/dmi/deployments-create).
 
 ## Poll deployment status
 
 <Tabs>
-  <Tab title="CLI / SDK">
+  <Tab title="CLI">
     To check a deployment's status, run `tg beta endpoints get` on its endpoint name or ID. The output lists up to the 10 newest deployments' `state` and ready/desired replica counts, so re-run it to watch a specific deployment come up:
 
     ```bash CLI theme={null}
@@ -147,25 +140,17 @@ curl -X POST "https://api.together.ai/v2/projects/$PROJECT_ID/endpoints/ep_abc12
     tg beta endpoints get ep_abc123
     ```
 
-    For the full set of status fields (scheduled replicas, status message), retrieve the deployment from the SDK or API and read `status`:
+    For the full set of status fields (scheduled replicas, status message), run `get` on the deployment itself with `--json` and read `status`:
 
-    ```python Python theme={null}
-    from together import Together
-
-    client = Together()
-    project_id = client.whoami().project_id
-
-    deployment = client.beta.endpoints.deployments.retrieve(
-        "dep_abc123",
-        project_id=project_id,
-        endpoint_id="ep_abc123",
-    )
-    print(deployment.status.state)
+    ```bash CLI theme={null}
+    tg beta endpoints get dep_abc123 --json
     ```
   </Tab>
 
   <Tab title="Console">
-    Open the deployment from the endpoint's **Overview** tab to watch its status live. The **Status** card shows the current state (for example, Ready), the ready and scheduled replica counts, and a status message, and the **Replicas** chart plots desired versus ready replicas over time.
+    <ConsoleButton href="https://api.together.ai/endpoints">Endpoints</ConsoleButton>
+
+    Open your endpoint, then open the deployment from the endpoint's **Overview** tab to watch its status live. The **Status** card shows the current state (for example, Ready), the ready and scheduled replica counts, and a status message, and the **Replicas** chart plots desired versus ready replicas over time.
 
     <Frame>
       <img alt="A deployment detail page in the Together AI console, showing the Model, Hardware and placement, Status, and Deployment configuration cards, a replica-count chart, and the deployment's logs." />
@@ -211,7 +196,9 @@ Deployment scale is controlled by the deployment's [replica bounds](/docs/dedica
   </Tab>
 
   <Tab title="Console">
-    On the deployment's detail page, select **Edit** on the **Deployment configuration** card. Change **Min replicas** and **Max replicas** (and, optionally, the **Scaling metric**), then select **Save changes**. The console applies the change in place, without restarting the deployment or creating a new one.
+    <ConsoleButton href="https://api.together.ai/endpoints">Endpoints</ConsoleButton>
+
+    On the deployment's detail page, select **Edit** on the **Deployment configuration** card. Change **Min replicas** and **Max replicas** (and, optionally, the **Scaling metric** or **Traffic weight**), then select **Save changes**. The console applies the change in place, without restarting the deployment or creating a new one. While a [rollout](/docs/dedicated-endpoints/rollouts) is active (including pending or paused), **Traffic weight** is disabled; complete or cancel the rollout before editing weights manually.
 
     <Frame>
       <img alt="The Edit configuration dialog in the Together AI console, with inputs for min and max replicas, scale-up and scale-down windows, traffic weight, and a scaling-metric target." />
@@ -233,7 +220,9 @@ A deployment runs until you stop it. Stopping scales it to zero replicas and rel
   </Tab>
 
   <Tab title="Console">
-    On the deployment's detail page, select **Stop**. Stopping scales the deployment to zero without deleting it, so you can start it again later.
+    <ConsoleButton href="https://api.together.ai/endpoints">Endpoints</ConsoleButton>
+
+    On the deployment's detail page, select **Stop**. Stopping scales the deployment to zero without deleting it, so you can start it again later. If the deployment is the source or target of an active [rollout](/docs/dedicated-endpoints/rollouts), **Stop** is disabled until you complete or cancel the rollout. On the endpoint, **Stop all deployments** is also disabled while any rollout is active.
   </Tab>
 </Tabs>
 
@@ -251,6 +240,8 @@ A stopped deployment doesn't restart on its own. Only deployments in `DEPLOYMENT
   </Tab>
 
   <Tab title="Console">
+    <ConsoleButton href="https://api.together.ai/endpoints">Endpoints</ConsoleButton>
+
     On the deployment's detail page, select **Start**, then confirm the **Min replicas** and **Max replicas** to bring it back with.
   </Tab>
 </Tabs>
@@ -272,13 +263,15 @@ A stopped deployment doesn't restart on its own. Only deployments in `DEPLOYMENT
   </Tab>
 
   <Tab title="Console">
-    The [Endpoints page](https://api.together.ai/endpoints) lists every endpoint in the current project with its status, model, GPU, and ready/desired replica counts. Single-deployment endpoints collapse into one row; endpoints with more than one deployment expand to show each deployment.
+    <ConsoleButton href="https://api.together.ai/endpoints">Endpoints</ConsoleButton>
+
+    The **Endpoints** page lists every endpoint in the current project with its status, model, GPU, and ready/desired replica counts. Single-deployment endpoints collapse into one row; endpoints with more than one deployment expand to show each deployment.
 
     <Frame>
       <img alt="The Endpoints list in the Together AI console, with columns for name, status, model, GPU, replicas, and created date, and a New endpoint button." />
     </Frame>
 
-    Select an endpoint to open its detail page. The **Overview** tab lists its deployments alongside the endpoint's details and a ready-to-run code sample.
+    Select an endpoint to open its detail page. The **Overview** tab opens with a status card for the endpoint's serving state (live, starting, or offline), lists its deployments, and shows the endpoint's details and a ready-to-run code sample. When the endpoint is live and serving traffic, the status card shows the traffic split and an **Edit traffic weights** action.
 
     <Frame>
       <img alt="An endpoint detail page in the Together AI console, showing the Overview, Traffic Tests, Analytics, and Logs tabs, a deployments table, a code sample, and the endpoint's details." />
@@ -287,6 +280,8 @@ A stopped deployment doesn't restart on its own. Only deployments in `DEPLOYMENT
 </Tabs>
 
 Endpoint get and list responses embed lightweight deployment summaries in each endpoint's `deployments` array. The array includes at most the 10 newest deployments per endpoint (ordered by `createdAt`, descending). To list every deployment on an endpoint, use the [SDK or API](/reference/dmi/deployments-list).
+
+Same-project get, update, and list responses also include `activeRolloutId` when a [rollout](/docs/dedicated-endpoints/rollouts) is in flight (including paused). The field is omitted when there is no active rollout, on cross-project reads, and in organization or public catalog lists.
 
 ### List flags
 
@@ -311,7 +306,7 @@ Deletion is permanent. A deployment must be stopped before it can be deleted. Fo
 
 <Tabs>
   <Tab title="CLI">
-    The CLI's `rm` command is a smart-delete: it resolves the resource by its ID prefix, so the same command deletes an endpoint (`ep_`), a deployment (`dep_`), an A/B experiment (`abx_`), or a shadow experiment (`exp_`). When you run `tg beta endpoints rm dep_...`, the CLI automatically detaches the deployment from the traffic split and from any experiments it belongs to:
+    The CLI's `rm` command is a smart-delete: it resolves the resource by its ID prefix, so the same command deletes an endpoint (`ep_`), a deployment (`dep_`), an A/B experiment (`abx_`), a shadow experiment (`exp_`), or a rollout (`rol_`). When you run `tg beta endpoints rm dep_...`, the CLI automatically detaches the deployment from the traffic split and from any experiments it belongs to:
 
     ```bash CLI theme={null}
     # Delete the deployment (must be stopped first; auto-detaches from the traffic split)
@@ -325,6 +320,8 @@ Deletion is permanent. A deployment must be stopped before it can be deleted. Fo
   </Tab>
 
   <Tab title="Console">
+    <ConsoleButton href="https://api.together.ai/endpoints">Endpoints</ConsoleButton>
+
     First [stop](#stop-a-deployment) every deployment under the endpoint. Then open the endpoint, select **Endpoint actions**, and select **Delete endpoint**. The console keeps **Delete endpoint** disabled until every deployment is stopped or deleted, so there's no console equivalent of the CLI's `rm --force` on a running endpoint.
 
     <Frame>
@@ -335,6 +332,7 @@ Deletion is permanent. A deployment must be stopped before it can be deleted. Fo
 
 ## Troubleshooting
 
+* **`unknown field "..."` (HTTP 400) on a management API request:** The JSON body or query string includes a key the API does not define. Remove the named field (including retired keys such as `inactive_timeout`) and retry. Known fields accept both camelCase and snake\_case spellings.
 * **`endpoint_not_configured` (HTTP 400) though the deployment is `READY`:** Confirm the deployment is in the endpoint's [traffic split](/docs/dedicated-endpoints/route-traffic) with a non-zero weight.
 * **Deployment `DEGRADED` with `Cannot place replicas: insufficient GPU capacity`:** Hardware for the config is constrained, so the scheduler couldn't place all replicas yet. Compare `status.scheduledReplicas` to `desiredReplicas`. The scheduler keeps retrying and the deployment starts once capacity frees up. To improve the chance of placement, request fewer replicas or choose a config with a smaller hardware footprint.
 * **Deployment `DEGRADED` with `Startup stalled` or `Not ready`:** A placed replica is still booting or hit a startup failure. Read the detail after the colon in `status.message`. The deployment stays `DEGRADED` rather than `FAILED` once any replica has been successfully started.
@@ -346,7 +344,9 @@ Deletion is permanent. A deployment must be stopped before it can be deleted. Fo
 * **Deploy fails with `the model has no revisions to deploy`:** The model record exists but has no uploaded weights yet. Finish [uploading the model](/docs/dedicated-endpoints/custom-models#upload-the-model) and wait for the upload to succeed before you deploy it.
 * **Deploy fails with a revision validation error:** When you pin a specific model or speculator revision, that revision must have passed validation first. Check `validationStatus` on the revision ([custom models](/docs/dedicated-endpoints/custom-models#check-revision-validation), [adapters](/docs/dedicated-endpoints/adapter#check-revision-validation)). Deploy the latest validated revision, or wait for the pinned revision to finish validating.
 * **Deploy or update fails with `GPU quota exceeded` (HTTP 429):** The request would put your project or organization over its per-GPU-type quota. The error message names the GPU type and the would-be total against the limit (for example, `this deployment would put your project at 116 of 100 H100 GPUs`). Lower the requested replica count, stop unused deployments on that GPU type, or [contact support](https://www.together.ai/contact) to raise the limit. When the platform itself is out of capacity for a GPU type (`GPU quota exceeded for H100`), retry later or contact support to request capacity.
-* **Deployment delete fails with `the deployment is referenced by an endpoint's traffic split and cannot be deleted; please drop traffic split weight to 0 before deleting the deployment` (HTTP 400):** The deployment still has weight in the endpoint's [traffic split](/docs/dedicated-endpoints/route-traffic). Set its weight to 0 (or remove it from the split) before deleting. The CLI's `tg beta endpoints rm dep_...` detaches it automatically.
+* **Deployment delete fails with `the deployment stands in an endpoint's traffic split and cannot be deleted; remove it from the traffic split (it may be standing at weight 0), then delete` (HTTP 400):** The deployment is still a member of the endpoint's [traffic split](/docs/dedicated-endpoints/route-traffic), including after a completed [rollout](/docs/dedicated-endpoints/rollouts) that left the drained source at weight `0`. Remove it from the split before deleting. The CLI's `tg beta endpoints rm dep_...` detaches it automatically.
+* **Deployment delete fails with `the deployment is an A/B experiment member; remove it from the experiment first` (HTTP 400):** The deployment is still a control or variant in an [A/B test](/docs/dedicated-endpoints/ab-tests). Remove it from the test (or delete the test) before deleting the deployment. The CLI's `tg beta endpoints rm dep_...` detaches it automatically.
+* **Stop or delete is disabled on a deployment in the console:** The deployment is the source or target of an active [rollout](/docs/dedicated-endpoints/rollouts). Complete or cancel the rollout first.
 
 ## Next steps
 

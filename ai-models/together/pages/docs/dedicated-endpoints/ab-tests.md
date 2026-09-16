@@ -76,11 +76,13 @@ The examples below use these example IDs, which you should replace with your own
   </Tab>
 
   <Tab title="Console">
-    The console doesn't create the variant deployment for you, so first add it to the endpoint at traffic weight `0` (see [Create a deployment](/docs/dedicated-endpoints/manage#create-a-deployment)). The endpoint then has a control in the traffic split and at least one variant at weight `0`.
+    <ConsoleButton href="https://api.together.ai/endpoints">Endpoints</ConsoleButton>
+
+    The console doesn't create the variant deployment for you, so first add it to the endpoint at traffic weight `0` (see [Create a deployment](/docs/dedicated-endpoints/manage#create-a-deployment)). The endpoint then has a running control in the traffic split and at least one variant at weight `0`.
 
     <Steps>
       <Step title="Open the A/B test form">
-        On the endpoint, select the **Traffic Tests** tab, then **New A/B test**. The console blocks the form until the endpoint has at least two deployments with one at traffic weight `0`.
+        On the endpoint, select the **Traffic Tests** tab, then **New A/B test**. The console blocks the form until the endpoint has at least two deployments, including a running deployment that is already serving live traffic (traffic weight greater than `0`).
       </Step>
 
       <Step title="Name the test">
@@ -88,7 +90,7 @@ The examples below use these example IDs, which you should replace with your own
       </Step>
 
       <Step title="Set the control and variants">
-        Confirm the **Control** deployment and select each **Variant** deployment, then set each member's traffic percentage. The percentages divide the control's share of traffic and must sum to 100.
+        Confirm the **Control** deployment (a running deployment that is serving live traffic) and select each **Variant** deployment, then set each member's traffic percentage. The percentages divide the control's share of traffic and must sum to 100. Keep each variant at traffic weight `0` in the endpoint's traffic split so the test can start.
       </Step>
 
       <Step title="Start the test">
@@ -122,38 +124,6 @@ You can also update members from the SDK or API. Set the update mask to `members
   <img alt="Ramping the variant. In week 1 the split is 95 percent control and 5 percent variant. A single update to the member set is atomic and, when an ETag is supplied, guarded against concurrent changes. In week 2 the split is 80 percent control and 20 percent variant." />
 </Frame>
 
-To move to a 90% control / 10% variant split with the SDK:
-
-```python Python theme={null}
-from together import Together
-
-client = Together()
-project_id = client.whoami().project_id
-current = client.beta.endpoints.ab_experiments.retrieve(
-    "abx_abc123", project_id=project_id, endpoint_id="ep_abc123"
-)
-
-client.beta.endpoints.ab_experiments.update(
-    "abx_abc123",
-    endpoint_id="ep_abc123",
-    project_id=project_id,
-    update_mask="members",
-    etag=current.etag,
-    members=[
-        {
-            "deployment_id": "dep_control123",
-            "role": "AB_EXPERIMENT_MEMBER_ROLE_CONTROL",
-            "percent": 90,
-        },
-        {
-            "deployment_id": "dep_variant456",
-            "role": "AB_EXPERIMENT_MEMBER_ROLE_VARIANT",
-            "percent": 10,
-        },
-    ],
-)
-```
-
 ## Add more variants
 
 You can compare more than one candidate at once. Run `ab` again with the same control and a different variant model. The CLI creates the new variant deployment, finds the existing experiment for that control, and adds the deployment to it as another variant.
@@ -174,7 +144,13 @@ An experiment allows up to 20 members with exactly one control, and the control'
 
 ## Promote a variant
 
-When you've picked a winner, promote it by [updating the endpoint's traffic split](/docs/dedicated-endpoints/route-traffic) so the winning deployment serves all traffic. Set the winner's weight to a non-zero value and set the other deployments to `0` (or delete them):
+When you've picked a winner, the safest way to promote it is a [rollout](/docs/dedicated-endpoints/rollouts): pass `--detach` and the CLI removes the variant from the test (deleting the test if it can't continue without the variant), then shifts traffic to it while draining the control.
+
+```bash CLI theme={null}
+tg beta endpoints rollout dep_variant456 --blue-green --detach
+```
+
+Alternatively, promote it by hand: [update the endpoint's traffic split](/docs/dedicated-endpoints/route-traffic) so the winning deployment serves all traffic, setting the winner's weight to a non-zero value and the other deployments to `0` (or delete them):
 
 ```bash CLI theme={null}
 tg beta endpoints update dep_control123 --traffic-weight 0

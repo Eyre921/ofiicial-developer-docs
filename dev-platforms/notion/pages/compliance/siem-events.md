@@ -216,6 +216,7 @@ When available, applicable events include a top-level `team_ids` array containin
 * **workspace.settings.ai\_legal\_terms\_setting\_updated**: A user enabled or disabled Notion AI in the workspace by accepting or revoking AI legal terms.
 * **workspace.settings.ai\_meeting\_notes\_availability\_updated**: The AI meeting notes availability setting was updated.
 * **workspace.settings.allow\_content\_export\_setting\_updated**: A workspace owner enabled or disabled exporting.
+* **workspace.settings.allow\_custom\_mcp\_servers\_setting\_updated**: Custom MCP servers were enabled or disabled for the workspace. Disabling also disconnects custom MCP servers that were already added.
 * **workspace.settings.allow\_group\_creation\_setting\_updated**: A user enabled or disabled the ability for non-admin members to create groups.
 * **workspace.settings.allow\_guests\_setting\_updated**: A workspace owner enabled or disabled the ability to add guests to the workspace.
 * **workspace.settings.allow\_public\_page\_sharing\_setting\_updated**: A workspace owner enabled or disabled public page sharing for the workspace.

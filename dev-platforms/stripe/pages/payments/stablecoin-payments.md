@@ -170,7 +170,7 @@ Connected accounts with access to the full Stripe Dashboard (including Standard 
 
 ### Connected accounts without access to the full Stripe Dashboard
 
-You can [request the `crypto_payments` capability](https://docs.stripe.com/connect/account-capabilities.md#more-about-capabilities) for connected accounts from the account details page [in your platform Dashboard](https://dashboard.stripe.com/connect/accounts), or through the API.
+You can request the [crypto_payments](https://docs.stripe.com/connect/account-capabilities.md#more-about-capabilities) capability for connected accounts from the account details page [in your platform Dashboard](https://dashboard.stripe.com/connect/accounts), or through the API.
 
 To see which connected accounts have enabled Crypto, check whether their `crypto_payments` capability is set to `active` in the `Account` object’s [capabilities hash](https://docs.stripe.com/api/accounts/object.md#account_object-capabilities-crypto_payments).
 

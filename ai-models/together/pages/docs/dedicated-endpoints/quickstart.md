@@ -82,9 +82,11 @@ Deploy `google/gemma-4-E4B-it`, one of the [supported models](/docs/dedicated-en
   </Tab>
 
   <Tab title="Console">
+    <ConsoleButton href="https://api.together.ai/endpoints">Endpoints</ConsoleButton>
+
     <Steps>
       <Step title="Open the create form">
-        Go to the [Endpoints page](https://api.together.ai/endpoints) and select **New endpoint**.
+        On the **Endpoints** page, select **New endpoint**.
       </Step>
 
       <Step title="Name the endpoint and deployment">
@@ -92,11 +94,11 @@ Deploy `google/gemma-4-E4B-it`, one of the [supported models](/docs/dedicated-en
       </Step>
 
       <Step title="Choose the model">
-        Under **Model**, select `google/gemma-4-E4B-it`, and leave the default **Quantization**.
+        Under **Model**, select `google/gemma-4-E4B-it`.
       </Step>
 
       <Step title="Keep the defaults">
-        Leave the default **Hardware** and **Region**, and keep **Min replicas** and **Max replicas** at `1`.
+        Leave the default **Deployment profiles** card and **Region**, and keep **Min replicas** and **Max replicas** at `1`.
       </Step>
 
       <Step title="Create the endpoint">
@@ -107,7 +109,7 @@ Deploy `google/gemma-4-E4B-it`, one of the [supported models](/docs/dedicated-en
     Copy the **endpoint string** shown on the endpoint's page (in the form `your-project-slug/quickstart-endpoint`): this is what you pass as the `model` parameter when you send requests.
 
     <Frame>
-      <img alt="The Create endpoint form in the Together AI console, configured with the model Gemma 4 E4B IT, BF16 quantization, 1x NVIDIA-H100-80GB hardware, Any region, and min and max replicas both set to 1. The Summary panel shows an estimated $5.49 per hour and a Create endpoint button." />
+      <img alt="The Create endpoint form in the Together AI console, configured with the model Gemma 4 E4B IT, a selected Deployment profiles card (hardware and quantization), Any region, and min and max replicas both set to 1. The Summary panel shows an estimated hourly cost and a Create endpoint button." />
     </Frame>
   </Tab>
 </Tabs>
@@ -205,6 +207,8 @@ Dedicated model inference bills per minute per running replica, so tear down wha
   </Tab>
 
   <Tab title="Console">
+    <ConsoleButton href="https://api.together.ai/endpoints">Endpoints</ConsoleButton>
+
     On the endpoint's page, open the deployment and select **Stop** to scale it to zero, which stops the per-minute charges. To bring it back later, select **Start**.
 
     To remove the endpoint entirely, delete it once the deployment is stopped: open **Endpoint actions** and select **Delete endpoint**, then confirm. The console keeps **Delete endpoint** disabled until every deployment under the endpoint is stopped or deleted.

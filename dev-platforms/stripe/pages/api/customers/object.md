@@ -48,7 +48,7 @@ path: api/customers/object
   String representing the object’s type. Objects of the same type share the same value.
 
 - [`address`](https://docs.stripe.com/api/customers/object.md?query=address) (object, nullable)
-  The customer’s address.
+  The customer’s billing address.
 
 - `balance` (integer)
   The current balance, if any, that’s stored on the customer in their default currency. If negative, the customer has credit to apply to their next invoice. If positive, the customer has an amount owed that’s added to their next invoice. The balance only considers amounts that Stripe hasn’t successfully applied to any invoice. It doesn’t reflect unpaid invoices. This balance is only taken into account after invoices finalize. For multi-currency balances, see [invoice_credit_balance](https://docs.stripe.com/api/customers/object.md#customer_object-invoice_credit_balance).

@@ -1146,6 +1146,10 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   Check for changes to settings or licenses in your Copilot plan.
 
+* [Managing requests for additional Copilot budget](/en/copilot/how-tos/administer-copilot/manage-budget-requests)
+
+  Approve, adjust, or deny requests from members who have used all the AI credits in their budget.
+
 * [Configuring an MCP server allowlist for your enterprise](/en/copilot/how-tos/administer-copilot/manage-mcp-usage/configure-enterprise-allowlist)
 
   Define which MCP servers your users can and cannot use without the need for a private registry.
