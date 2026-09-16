@@ -46,7 +46,7 @@ Forms
  to turn on the setting. If you previously enabled form detection, go to 
 ### NavigationPath Component:
 
-Forms > Usage and configuration > Form detection
+Forms > Form detection
  to review the setting.
 
 Once you [enable](/manage/forms/setup#enable-form-detection) or [re-enable form detection](/manage/forms/setup#re-enable-form-detection), make sure you redeploy your site. Once you redeploy, Netlify will automatically scan your deploys for forms and will accept form submissions.

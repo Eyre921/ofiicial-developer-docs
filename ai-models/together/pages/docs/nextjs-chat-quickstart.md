@@ -1,5 +1,5 @@
 ---
-title: "Quickstart: Next.js"
+title: "Next.js quickstart"
 source: https://docs.together.ai/docs/nextjs-chat-quickstart
 path: docs/nextjs-chat-quickstart
 ---

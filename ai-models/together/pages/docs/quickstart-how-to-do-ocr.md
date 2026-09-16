@@ -33,7 +33,7 @@ Here's a basic TypeScript/Python implementation for standard OCR:
       "https://napkinsdev.s3.us-east-1.amazonaws.com/next-s3-uploads/1627e746-7eda-46d3-8d08-8c8eec0d6c9c/nobu.jpg?x-id=PutObject";
 
     const response = await together.chat.completions.create({
-      model: "google/gemma-4-31B-it",
+      model: "zai-org/GLM-5.3-Flash",
       messages: [
         {
           role: "system",
@@ -73,7 +73,7 @@ Here's a basic TypeScript/Python implementation for standard OCR:
 
 
   stream = client.chat.completions.create(
-      model="google/gemma-4-31B-it",
+      model="zai-org/GLM-5.3-Flash",
       messages=[
           {
               "role": "user",
@@ -183,7 +183,7 @@ For more complex applications like receipt processing (as seen on [usebillsplit.
     const jsonSchema = z.toJSONSchema(receiptSchema);
 
     const response = await together.chat.completions.create({
-      model: "google/gemma-4-31B-it",
+      model: "zai-org/GLM-5.3-Flash",
       messages: [
         {
           role: "system",
@@ -256,7 +256,7 @@ For more complex applications like receipt processing (as seen on [usebillsplit.
       """
       # Call the Together AI API with the image URL and schema
       response = client.chat.completions.create(
-          model="google/gemma-4-31B-it",
+          model="zai-org/GLM-5.3-Flash",
           messages=[
               {
                   "role": "system",

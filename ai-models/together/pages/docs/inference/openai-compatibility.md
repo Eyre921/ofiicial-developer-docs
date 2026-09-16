@@ -80,7 +80,7 @@ The following OpenAI SDK methods route to Together-native endpoints when the bas
 | `chat.completions.create` (tools)             | `POST /v1/chat/completions`     | Supported     | [Function calling](/docs/inference/function-calling/overview)                                                                                              |
 | `chat.completions.create` (`response_format`) | `POST /v1/chat/completions`     | Supported     | [Structured outputs](/docs/inference/chat/structured-outputs)                                                                                              |
 | `completions.create`                          | `POST /v1/completions`          | Supported     | Legacy text completions, see [Parameters](/docs/inference/chat/parameters)                                                                                 |
-| `embeddings.create`                           | `POST /v1/embeddings`           | Supported     | [Embeddings](/docs/inference/embeddings/embeddings)                                                                                                        |
+| `embeddings.create`                           | `POST /v1/embeddings`           | Supported     | [Embeddings](/reference/embeddings-2)                                                                                                                      |
 | `images.generate`                             | `POST /v1/images/generations`   | Supported     | [Image generation](/docs/inference/images/overview)                                                                                                        |
 | `audio.speech.create`                         | `POST /v1/audio/speech`         | Supported     | [Text-to-speech](/docs/inference/text-to-speech/overview)                                                                                                  |
 | `audio.transcriptions.create`                 | `POST /v1/audio/transcriptions` | Supported     | [Speech-to-text](/docs/inference/transcription/overview)                                                                                                   |
@@ -109,7 +109,7 @@ These capabilities work without code changes beyond the API key and base URL. Ea
 | Vision (image inputs)             | `chat.completions.create` with image content parts         | [Vision](/docs/inference/vision/overview)                     |
 | Function calling                  | `chat.completions.create` with `tools` and `tool_choice`   | [Function calling](/docs/inference/function-calling/overview) |
 | Structured outputs                | `chat.completions.create` with `response_format`           | [Structured outputs](/docs/inference/chat/structured-outputs) |
-| Embeddings                        | `embeddings.create`                                        | [Embeddings](/docs/inference/embeddings/embeddings)           |
+| Embeddings                        | `embeddings.create`                                        | [Embeddings](/reference/embeddings-2)                         |
 | Image generation                  | `images.generate`                                          | [Image generation](/docs/inference/images/overview)           |
 | Text-to-speech                    | `audio.speech.create`                                      | [Text-to-speech](/docs/inference/text-to-speech/overview)     |
 | Speech-to-text and translation    | `audio.transcriptions.create`, `audio.translations.create` | [Speech-to-text](/docs/inference/transcription/overview)      |
@@ -120,7 +120,7 @@ These capabilities work without code changes beyond the API key and base URL. Ea
 
 ### Model identifiers
 
-Together model IDs are namespaced (`openai/gpt-oss-20b`, `meta-llama/Llama-3.3-70B-Instruct-Turbo`, `black-forest-labs/FLUX.2-dev`). OpenAI model strings like `gpt-4o` or `text-embedding-3-large` return a 404. Browse the full list at [Available models](/docs/serverless/models).
+Together model IDs are namespaced (`openai/gpt-oss-120b`, `meta-llama/Llama-3.3-70B-Instruct-Turbo`, `black-forest-labs/FLUX.2-dev`). OpenAI model strings like `gpt-4o` or `text-embedding-3-large` return a 404. Browse the full list at [Available models](/docs/serverless/models).
 
 ### Endpoints not implemented
 

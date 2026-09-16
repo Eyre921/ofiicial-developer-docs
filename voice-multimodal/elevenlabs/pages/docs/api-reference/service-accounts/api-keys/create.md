@@ -65,9 +65,11 @@ Validation Error
 
 ```json
 {
-  "name": "string",
+  "name": "ServiceAccountKey2024",
   "permissions": [
-    "text_to_speech"
+    "text_to_speech",
+    "models_read",
+    "voices_read"
   ]
 }
 ```
@@ -76,8 +78,8 @@ Validation Error
 
 ```json
 {
-  "xi-api-key": "string",
-  "key_id": "string"
+  "xi-api-key": "sk_live_4f8b9c7d2e1a4b6f9c3d7e8a1b2c3d4e",
+  "key_id": "key_123e4567-e89b-12d3-a456-426614174000"
 }
 ```
 
@@ -89,9 +91,11 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 async function main() {
     const client = new ElevenLabsClient();
     await client.serviceAccounts.apiKeys.create("service_account_user_id", {
-        name: "string",
+        name: "ServiceAccountKey2024",
         permissions: [
             "text_to_speech",
+            "models_read",
+            "voices_read",
         ],
     });
 }
@@ -106,9 +110,11 @@ client = ElevenLabs()
 
 client.service_accounts.api_keys.create(
     service_account_user_id="service_account_user_id",
-    name="string",
+    name="ServiceAccountKey2024",
     permissions=[
-        "text_to_speech"
+        "text_to_speech",
+        "models_read",
+        "voices_read"
     ],
 )
 
@@ -128,7 +134,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/service-accounts/service_account_user_id/api-keys"
 
-	payload := strings.NewReader("{\n  \"name\": \"string\",\n  \"permissions\": [\n    \"text_to_speech\"\n  ]\n}")
+	payload := strings.NewReader("{\n  \"name\": \"ServiceAccountKey2024\",\n  \"permissions\": [\n    \"text_to_speech\",\n    \"models_read\",\n    \"voices_read\"\n  ]\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -156,7 +162,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"name\": \"string\",\n  \"permissions\": [\n    \"text_to_speech\"\n  ]\n}"
+request.body = "{\n  \"name\": \"ServiceAccountKey2024\",\n  \"permissions\": [\n    \"text_to_speech\",\n    \"models_read\",\n    \"voices_read\"\n  ]\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -168,7 +174,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/service-accounts/service_account_user_id/api-keys")
   .header("Content-Type", "application/json")
-  .body("{\n  \"name\": \"string\",\n  \"permissions\": [\n    \"text_to_speech\"\n  ]\n}")
+  .body("{\n  \"name\": \"ServiceAccountKey2024\",\n  \"permissions\": [\n    \"text_to_speech\",\n    \"models_read\",\n    \"voices_read\"\n  ]\n}")
   .asString();
 ```
 
@@ -180,9 +186,11 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/service-accounts/service_account_user_id/api-keys', [
   'body' => '{
-  "name": "string",
+  "name": "ServiceAccountKey2024",
   "permissions": [
-    "text_to_speech"
+    "text_to_speech",
+    "models_read",
+    "voices_read"
   ]
 }',
   'headers' => [
@@ -199,7 +207,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/service-accounts/service_account_user_id/api-keys");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"name\": \"string\",\n  \"permissions\": [\n    \"text_to_speech\"\n  ]\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"name\": \"ServiceAccountKey2024\",\n  \"permissions\": [\n    \"text_to_speech\",\n    \"models_read\",\n    \"voices_read\"\n  ]\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -208,8 +216,8 @@ import Foundation
 
 let headers = ["Content-Type": "application/json"]
 let parameters = [
-  "name": "string",
-  "permissions": ["text_to_speech"]
+  "name": "ServiceAccountKey2024",
+  "permissions": ["text_to_speech", "models_read", "voices_read"]
 ] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])

@@ -22,10 +22,14 @@ Building a personal website normally requires a lot of manual data entry, plus s
 
 Self.so uses two models, each chosen to perform a specific job:
 
-* [**Llama Guard 4 12B**](https://api.together.ai/models/meta-llama/Llama-Guard-4-12B): Content safety classification.
+* [**Qwen3.5 9B**](https://api.together.ai/models/Qwen/Qwen3.5-9B): Content safety classification.
 * [**Kimi K3**](https://api.together.ai/models/moonshotai/Kimi-K3): Structured data extraction.
 
-Llama Guard is purpose-built for safety classification, and Kimi K3 follows schema instructions reliably for structured output generation. See [recommended models](/docs/inference/recommended-models) for our current picks.
+Qwen3.5 9B is small and fast, which suits a lightweight classification call, and Kimi K3 follows schema instructions reliably for structured output generation.
+
+<Note>
+  The Self.so source uses Llama Guard 4 for the safety check, but that model is no longer available on serverless, so the examples here use Qwen3.5 9B instead. See [recommended models](/docs/inference/recommended-models) for our current picks.
+</Note>
 
 ## Data flow
 
@@ -84,7 +88,7 @@ export async function scrapePdfContent(pdfUrl: string) {
 
 ### Check content safety
 
-Before generating anything from user-supplied content, the app classifies it with Llama Guard in [`lib/server/ai/isFileContentBad.ts`](https://github.com/nutlope/self.so/blob/main/lib/server/ai/isFileContentBad.ts). The model returns a response that starts with `safe` or `unsafe`, which the app uses to determine whether to proceed:
+Before generating anything from user-supplied content, the app classifies it in [`lib/server/ai/isFileContentBad.ts`](https://github.com/nutlope/self.so/blob/main/lib/server/ai/isFileContentBad.ts). The prompt asks the model for a one-word `safe` or `unsafe` verdict, which the app uses to determine whether to proceed:
 
 ```typescript theme={null}
 import { generateText } from "ai";
@@ -96,8 +100,13 @@ const togetherai = createTogetherAI({
 
 export const isFileContentBad = async (fileContent: string) => {
   const generationResult = await generateText({
-    model: togetherai("meta-llama/Llama-Guard-4-12B"),
-    prompt: `You are given the following file content, evaluate if content is harmful or spammy.
+    model: togetherai("Qwen/Qwen3.5-9B"),
+    providerOptions: {
+      togetherai: {
+        reasoning: { enabled: false },
+      },
+    },
+    prompt: `You are given the following file content. Evaluate whether the content is harmful or spammy. Respond with exactly one word: safe or unsafe.
     ${fileContent}
     `,
   });
@@ -211,7 +220,7 @@ The full server-side pipeline runs when a user uploads a resume:
 
 1. **Upload:** The PDF is uploaded to S3.
 2. **Extraction:** `pdfjs-dist` converts the PDF to plain text.
-3. **Safety check:** Llama Guard validates the content.
+3. **Safety check:** Qwen3.5 9B validates the content.
 4. **Generation:** Kimi K3 extracts the text into the `ResumeDataSchema` shape.
 5. **Storage:** The structured data is stored in Upstash Redis.
 6. **Rendering:** The site renders from the structured data.
@@ -224,7 +233,7 @@ The full server-side pipeline runs when a user uploads a resume:
 
 Building Self.so surfaced a few principles that apply to most extraction pipelines:
 
-* **Match the model to the task:** A safety classifier and an instruction-following extractor are different jobs, and picking a specialized model for each beats using one model for both.
+* **Match the model to the task:** A safety classifier and an instruction-following extractor are different jobs, and picking the right model for each beats using one model for both.
 * **Schemas make outputs reliable:** Validating against a Zod schema turns free-form model output into data the rest of the app can trust.
 * **Keep the data flow clean:** Passing extracted text between steps, instead of raw files, keeps each model call small and auditable.
 * **Instrument from the start:** Recording token usage and durations per call makes model comparisons and regressions visible.

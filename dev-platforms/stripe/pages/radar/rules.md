@@ -39,9 +39,9 @@ Radar provides a set of default rules based on our AI models.
 
 The following default rules incorporate additional account-level AI models:
 
-`if :account_risk_level: = 'highest'`
+`if :account_fraud_risk_level: = 'highest'`
 
-`if :account_risk_level: = 'elevated'`
+`if :account_fraud_risk_level: = 'elevated'`
 
 We calculate account-level risk using KYC information, transactions, geographic risk factors, and behavior patterns.
 

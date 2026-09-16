@@ -50,7 +50,7 @@ To require this for every request on your account, see [Data residency](/account
 
 ## Pricing
 
-Beginning September 1, 2026, launched US-only models are priced at a 50% premium to the base model serverless prices. Kimi K3 US already includes this premium, while GLM 5.2 Fast US is an exception and matches global GLM 5.2 Fast pricing. See [Serverless pricing](/serverless/pricing).
+Beginning September 1, 2026, launched US-only models are priced at 1.5x the base model serverless prices. Kimi K3 (US) already includes this premium, while GLM 5.2 Fast US is an exception and matches global GLM 5.2 Fast pricing. See [Serverless pricing](/serverless/pricing).
 
 ## Other regions
 

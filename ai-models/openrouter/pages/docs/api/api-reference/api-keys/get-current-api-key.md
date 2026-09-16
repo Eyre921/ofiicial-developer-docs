@@ -102,6 +102,11 @@ tags:
   - description: Text-to-speech endpoints
     name: TTS
     x-displayName: Speech
+  - description: >-
+      Store host-bound secrets for a workspace or for one intern. Scope is
+      selected by the API key. Responses return metadata only, never secret
+      values. See https://openrouter.ai/docs/guides/ori/vault.
+    name: Vault
   - description: Video Generation endpoints
     name: Video Generation
   - description: Workspaces endpoints
@@ -125,6 +130,10 @@ paths:
             application/json:
               example:
                 data:
+                  allowed_data_regions:
+                    - global
+                    - europe
+                    - us
                   byok_usage: 17.38
                   byok_usage_daily: 17.38
                   byok_usage_monthly: 17.38
@@ -154,6 +163,10 @@ paths:
               schema:
                 example:
                   data:
+                    allowed_data_regions:
+                      - global
+                      - europe
+                      - us
                     byok_usage: 17.38
                     byok_usage_daily: 17.38
                     byok_usage_monthly: 17.38
@@ -184,6 +197,10 @@ paths:
                   data:
                     description: Current API key information
                     example:
+                      allowed_data_regions:
+                        - global
+                        - europe
+                        - us
                       byok_usage: 17.38
                       byok_usage_daily: 17.38
                       byok_usage_monthly: 17.38
@@ -211,6 +228,25 @@ paths:
                       usage_monthly: 25.5
                       usage_weekly: 25.5
                     properties:
+                      allowed_data_regions:
+                        description: >-
+                          Data regions permitted for this API key by the
+                          guardrail policies on the key and the account
+                          regional-routing entitlement. Empty when no region is
+                          permitted. Reflects region policy only: other key
+                          restrictions, such as management keys being blocked
+                          from inference, still apply.
+                        example:
+                          - global
+                          - europe
+                          - us
+                        items:
+                          enum:
+                            - global
+                            - europe
+                            - us
+                          type: string
+                        type: array
                       byok_usage:
                         description: Total external BYOK usage (in USD) for the API key
                         example: 17.38
@@ -367,6 +403,7 @@ paths:
                       - limit_reset
                       - include_byok_in_limit
                       - creator_user_id
+                      - allowed_data_regions
                       - free_model_daily_requests
                       - rate_limit
                     type: object

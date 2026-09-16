@@ -195,11 +195,18 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Browser integration](#browser-integration-docs-voice-agents-voice-agent-api-browser-integration-mdx)
 - [Set up an inbound phone agent via SIP](#set-up-an-inbound-phone-agent-via-sip-docs-voice-agents-voice-agent-api-connect-to-twilio-mdx)
 - [Audio format](#audio-format-docs-voice-agents-voice-agent-api-audio-format-mdx)
+- [Pre-connect requests](#pre-connect-requests-docs-voice-agents-voice-agent-api-pre-connect-requests-mdx)
 - [Test your agent with Bluejay simulations](#test-your-agent-with-bluejay-simulations-docs-voice-agents-voice-agent-api-test-with-bluejay-mdx)
 - [Recordings & transcripts](#recordings-transcripts-docs-voice-agents-voice-agent-api-session-history-mdx)
 - [List sessions](#list-sessions-docs-voice-agents-voice-agent-api-api-spec-list-sessions-mdx)
 - [Retrieve a session](#retrieve-a-session-docs-voice-agents-voice-agent-api-api-spec-get-session-mdx)
 - [Delete a session](#delete-a-session-docs-voice-agents-voice-agent-api-api-spec-delete-session-mdx)
+- [Webhooks](#webhooks-docs-voice-agents-voice-agent-api-webhooks-mdx)
+- [Create a webhook subscription](#create-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-create-webhook-subscription-mdx)
+- [List webhook subscriptions](#list-webhook-subscriptions-docs-voice-agents-voice-agent-api-api-spec-list-webhook-subscriptions-mdx)
+- [Retrieve a webhook subscription](#retrieve-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-get-webhook-subscription-mdx)
+- [Update a webhook subscription](#update-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-update-webhook-subscription-mdx)
+- [Delete a webhook subscription](#delete-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-delete-webhook-subscription-mdx)
 - [Inline session configuration](#inline-session-configuration-docs-voice-agents-voice-agent-api-session-configuration-mdx)
 - [Events reference](#events-reference-docs-voice-agents-voice-agent-api-events-reference-mdx)
 - [Troubleshooting](#troubleshooting-docs-voice-agents-voice-agent-api-troubleshooting-mdx)
@@ -366,12 +373,6 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Tracking customer transcription usage](#tracking-customer-transcription-usage-docs-tracking-your-customers-usage-mdx)
 - [Use case guides](#use-case-guides-docs-use-cases-mdx)
 - [Universal-3.5 Pro Streaming API](#universal-3-5-pro-streaming-api-docs-voice-agents-universal-3-5-pro-streaming-api-mdx)
-- [Create a webhook subscription](#create-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-create-webhook-subscription-mdx)
-- [Delete a webhook subscription](#delete-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-delete-webhook-subscription-mdx)
-- [Retrieve a webhook subscription](#retrieve-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-get-webhook-subscription-mdx)
-- [List webhook subscriptions](#list-webhook-subscriptions-docs-voice-agents-voice-agent-api-api-spec-list-webhook-subscriptions-mdx)
-- [Update a webhook subscription](#update-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-update-webhook-subscription-mdx)
-- [Webhooks](#webhooks-docs-voice-agents-voice-agent-api-webhooks-mdx)
 - [API specs](#api-specs)
 
 ---
@@ -46935,6 +46936,9 @@ For exact types, defaults, and validation, see the [create-agent API reference](
   
   
     Every endpoint, field, and validation rule.
+  
+  
+    Look the caller up in your CRM before the phone is answered.
 
 ---
 
@@ -50189,6 +50193,7 @@ npm run phone
 
 ## Next steps
 
+- [Pre-connect requests](/voice-agents/voice-agent-api/pre-connect-requests): Look the caller up in your CRM before the call is answered, and greet them by name.
 - [Configure your agent](/voice-agents/voice-agent-api/session-configuration): Customize the system prompt, greeting, and turn detection.
 - [Choose a voice](/voice-agents/voice-agent-api/voices): Pick a voice for your agent.
 - [Add tools to your agent](/voice-agents/voice-agent-api/tools/overview): Give your agent the ability to call functions.
@@ -50359,6 +50364,317 @@ if event["type"] == "reply.done" and event.get("status") == "interrupted":
 | **Android** (AudioTrack) | `audioTrack.pause()`, `audioTrack.flush()`, then `audioTrack.play()`         |
 
 Barge-in is semantic: "uh-huh" won't interrupt, "wait, stop" will. See [Turn detection and interruptions](/voice-agents/voice-agent-api/turn-detection-and-interruptions).
+
+---
+
+<a id="pre-connect-requests-docs-voice-agents-voice-agent-api-pre-connect-requests-mdx"></a>
+
+# Pre-connect requests
+
+URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/pre-connect-requests
+Source: docs/voice-agents/voice-agent-api/pre-connect-requests.mdx
+Navigation: Voice Agent API > Telephony
+Description: Look the caller up in your systems before the phone call is answered.
+
+When a call arrives on your agent's number, the platform can call your HTTPS endpoint with the caller's number before answering, and use what you return to greet the caller by name, give the agent their record, or decline the call. It is configured on the agent record; the only code you write is the endpoint.
+
+Telephony only. WebSocket and browser sessions never trigger pre-connect requests.
+
+## How it works
+
+1. A call arrives on the agent's number. Before answering, the platform runs the agent's `pre_connect_requests` in order, at most two.
+2. For each entry it makes one HTTPS request to your URL, carrying the values named in `sends`, such as `caller_number`.
+3. Your endpoint replies with JSON within the timeout, 800 ms at most. The platform reads the values named in `returns` off the response by dotted path.
+4. The platform answers the call. If your response included a `greeting` and the entry allows it, that greeting is spoken. Otherwise the agent's greeting is spoken, with any `{{name}}` placeholders filled from the captured values.
+5. The captured values are placed at the top of the conversation, so the model knows them from the first turn.
+
+Every step fails open. A timeout, a non-2xx status, an unparseable body or a missing value means the call is answered as if the lookup had never run. The one exception is a response of `{"reject": true}`, which ends the call unanswered.
+
+## Add it to your agent
+
+`pre_connect_requests` is a field on the agent record. Add it with `PUT /v1/agents/{id}` on an agent you already have, or include it in the body of `POST /v1/agents` when you [create one](/voice-agents/voice-agent-api/create-agent). This update asks a CRM for the patient behind the caller's number, greets them by name, and keeps their record id for the conversation:
+
+```bash cURL
+curl -X PUT https://agents.assemblyai.com/v1/agents/$AGENT_ID \
+  -H "Authorization: $ASSEMBLYAI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "greeting": "Thanks for calling Northside Dental, {{patient_name}}. How can I help?",
+    "system_prompt": "You are the front desk for Northside Dental. The pre-connect context contains the caller'"'"'s patient_id; use it when you look up appointments and do not ask for it.",
+    "pre_connect_requests": [
+      {
+        "http": {
+          "url": "https://example.com/voice/lookup",
+          "http_method": "POST",
+          "headers": [{ "name": "Authorization", "value": "Bearer crm-service-token" }]
+        },
+        "sends": ["caller_number"],
+        "returns": [
+          { "name": "patient_name", "path": "patient.first_name", "default": "there" },
+          { "name": "patient_id", "path": "patient.id" }
+        ],
+        "timeout_ms": 600,
+        "allow_overrides": ["greeting"]
+      }
+    ]
+  }'
+```
+
+```python Python
+# pip install requests
+import os
+import requests
+
+resp = requests.put(
+    f"https://agents.assemblyai.com/v1/agents/{os.environ['AGENT_ID']}",
+    headers={"Authorization": os.environ["ASSEMBLYAI_API_KEY"]},
+    json={
+        "greeting": "Thanks for calling Northside Dental, {{patient_name}}. How can I help?",
+        "system_prompt": (
+            "You are the front desk for Northside Dental. The pre-connect context "
+            "contains the caller's patient_id; use it when you look up appointments "
+            "and do not ask for it."
+        ),
+        "pre_connect_requests": [
+            {
+                "http": {
+                    "url": "https://example.com/voice/lookup",
+                    "http_method": "POST",
+                    "headers": [{"name": "Authorization", "value": "Bearer crm-service-token"}],
+                },
+                "sends": ["caller_number"],
+                "returns": [
+                    {"name": "patient_name", "path": "patient.first_name", "default": "there"},
+                    {"name": "patient_id", "path": "patient.id"},
+                ],
+                "timeout_ms": 600,
+                "allow_overrides": ["greeting"],
+            }
+        ],
+    },
+)
+resp.raise_for_status()
+print(resp.json()["pre_connect_requests"])
+```
+
+```javascript Node.js
+// Node 18+ has fetch built in
+const res = await fetch(`https://agents.assemblyai.com/v1/agents/${process.env.AGENT_ID}`, {
+  method: "PUT",
+  headers: {
+    Authorization: process.env.ASSEMBLYAI_API_KEY,
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    greeting: "Thanks for calling Northside Dental, {{patient_name}}. How can I help?",
+    system_prompt:
+      "You are the front desk for Northside Dental. The pre-connect context contains the caller's patient_id; use it when you look up appointments and do not ask for it.",
+    pre_connect_requests: [
+      {
+        http: {
+          url: "https://example.com/voice/lookup",
+          http_method: "POST",
+          headers: [{ name: "Authorization", value: "Bearer crm-service-token" }],
+        },
+        sends: ["caller_number"],
+        returns: [
+          { name: "patient_name", path: "patient.first_name", default: "there" },
+          { name: "patient_id", path: "patient.id" },
+        ],
+        timeout_ms: 600,
+        allow_overrides: ["greeting"],
+      },
+    ],
+  }),
+});
+const agent = await res.json();
+console.log(agent.pre_connect_requests);
+```
+
+The response echoes the configuration. Header values are write-only and come back as the header name and when it was last set. Attach a phone number as in [Connect to Twilio](/voice-agents/voice-agent-api/connect-to-twilio), and the lookup runs on every inbound call to that number.
+
+| Field | Type | Description |
+|---|---|---|
+| `http.url` | string, required | Your endpoint. Must be `https://`, and its hostname must resolve in public DNS when the agent is saved. |
+| `http.http_method` | string | `POST` (default), `PUT`, `PATCH`, `GET` or `DELETE`. Sent values travel in the JSON body for `POST`, `PUT` and `PATCH`, and as query parameters for `GET` and `DELETE`. |
+| `http.headers` | array | Headers to send, each `{ "name", "value" }`. Use one to authenticate your endpoint. Values are stored encrypted and never returned. |
+| `sends` | array of strings | What to send: any of the [call facts](#what-your-endpoint-receives) below, and any name an earlier entry captured. Nothing is sent unless you name it. |
+| `returns` | array | Values to capture from the response. Each has a `name` you choose, a dotted `path` into the JSON, and an optional `default` used when the path does not resolve. |
+| `timeout_ms` | integer | Shortens this entry's timeout, from 1 to 800. Every entry has a ceiling of 800 ms; omit this for the full ceiling. |
+| `allow_overrides` | array of strings | Agent fields the response may replace. The only value today is `"greeting"`. Without it, a `greeting` in the response is ignored. |
+
+## What your endpoint receives
+
+The request carries only what `sends` names. The platform supplies five call facts that any entry may send:
+
+| Name | Value |
+|---|---|
+| `caller_number` | The caller's number in E.164 form, for example `+14155550100`. |
+| `dialed_number` | The agent's number the caller dialled, in E.164 form. |
+| `direction` | `"inbound"` or `"outbound"`. |
+| `agent_id` | The id of the agent handling the call. |
+| `session_id` | The id of the session being created, the same id you will see in [session history](/voice-agents/voice-agent-api/session-history) and webhooks. |
+
+With `"sends": ["caller_number", "dialed_number", "direction"]` a `POST` endpoint receives:
+
+```json
+{
+  "caller_number": "+14155550100",
+  "dialed_number": "+14155550199",
+  "direction": "inbound"
+}
+```
+
+A `GET` endpoint receives the same values as query parameters: `?caller_number=%2B14155550100&dialed_number=%2B14155550199&direction=inbound`.
+
+A fact the platform does not have is left out, not sent blank. When the caller withholds their number, `caller_number` is missing from the request; treat that as an unknown caller, and the `default` on each capture applies.
+
+The request is a plain HTTPS call with the headers you configured. There is no signature; authenticate it with a header value only you and the platform know.
+
+## What your endpoint returns
+
+Respond with `200` and a JSON object within the timeout.
+
+| In the response | Effect |
+|---|---|
+| A value at each `returns[].path` | Captured under `returns[].name`. Strings are taken as is; numbers and booleans become text; objects and arrays are ignored. Values over 512 characters are dropped. Paths are dotted: `patient.first_name`, or `results.0.id` to index an array. |
+| Top-level `"greeting": "..."` | Spoken instead of the agent's greeting on this call, if the entry lists `"greeting"` in `allow_overrides`. |
+| Top-level `"reject": true` | The call is not answered. |
+| Anything else | Ignored. |
+
+A response that is not JSON, not a 2xx, larger than 8 KB, or later than the timeout counts as no response. The platform does not retry.
+
+For the clinic agent above, the CRM might answer:
+
+```json
+{
+  "patient": { "id": "pt_48213", "first_name": "Maria", "last_visit": "2026-07-02" }
+}
+```
+
+The platform captures `patient_name` as `Maria` and `patient_id` as `pt_48213`, and the caller hears "Thanks for calling Northside Dental, Maria. How can I help?"
+
+## Use the captured values
+
+### In the greeting
+
+Write `{{name}}` in the agent's `greeting` for any name in `returns`. The platform fills it from the captured value, or from that capture's `default` when the lookup returned nothing. An unknown caller to the clinic agent hears "Thanks for calling Northside Dental, there. How can I help?", so pick a default that reads well in the sentence.
+
+Every placeholder has to end up with a non-empty value. If any `{{name}}` has neither a value nor a default, or resolves to an empty string, the platform speaks the agent's `greeting` exactly as written, braces included. An empty `default` is not a way to make a placeholder disappear.
+
+Only names in `returns` are substituted. To speak the caller's number back, have your endpoint return it and capture it.
+
+### As a greeting your endpoint writes
+
+When your endpoint should decide the wording, return a top-level `greeting` and list `"greeting"` in the entry's `allow_overrides`:
+
+```json
+{
+  "patient": { "id": "pt_48213", "first_name": "Maria" },
+  "greeting": "Thanks for calling Northside Dental, Maria. Are you calling about your appointment on Thursday?"
+}
+```
+
+A returned greeting takes precedence over the agent's templated greeting.
+
+### In the conversation
+
+The platform puts the captured values at the top of the transcript as the result of a platform tool named `aai_pre_connect_context`:
+
+```json
+{ "variables": { "patient_name": "Maria", "patient_id": "pt_48213" } }
+```
+
+You do not add this tool; the platform inserts the result whenever a pre-connect entry captured anything. The model treats the values as established facts, so it can pass `patient_id` to a tool without asking the caller for it. Tell the model in the `system_prompt` what the names mean, as the clinic agent does. If you [connect your own LLM](/voice-agents/voice-agent-api/connect-your-own-llm), the same tool result appears in the `messages` your endpoint receives.
+
+## Chain two lookups
+
+A second entry can send what the first captured. Here the first request resolves the caller to a patient id and the second fetches that patient's next appointment:
+
+```json
+{
+  "pre_connect_requests": [
+    {
+      "http": {
+        "url": "https://example.com/voice/lookup",
+        "http_method": "POST",
+        "headers": [{ "name": "Authorization", "value": "Bearer crm-service-token" }]
+      },
+      "sends": ["caller_number"],
+      "returns": [
+        { "name": "patient_id", "path": "patient.id" },
+        { "name": "patient_name", "path": "patient.first_name", "default": "there" }
+      ]
+    },
+    {
+      "http": { "url": "https://example.com/voice/next-appointment", "http_method": "GET" },
+      "sends": ["patient_id"],
+      "returns": [
+        { "name": "next_appointment", "path": "appointment.spoken_date", "default": "no upcoming appointment" }
+      ]
+    }
+  ]
+}
+```
+
+Entries run in order, each with its own 800 ms ceiling, so two entries can hold the call for up to about 1.6 s before the greeting. If the first entry fails, the second still runs, but `patient_id` is not sent because nothing captured it. If an earlier entry captures a value under the same name as a call fact, a later entry that sends that name sends your value, not the platform's.
+
+## Limits and validation
+
+The API checks the configuration when you save the agent and returns `422` naming the failing field:
+
+| Rule | Error |
+|---|---|
+| At most two entries | `pre_connect_requests: at most 2 pre-connect requests are supported; got 3` |
+| `timeout_ms` from 1 to 800 | `pre_connect_requests[0].timeout_ms: ... must be an integer between 1 and 800 ms` |
+| `sends` names a call fact or an earlier capture | `pre_connect_requests[0].sends[0]: 'customer_tier' is neither a call fact nor captured by an earlier pre-connect request` |
+| `allow_overrides` contains only `greeting` | `pre_connect_requests[0].allow_overrides[0]: 'voice' is not an overridable field; allowed: greeting` |
+| `http.url` is HTTPS | `pre_connect_requests[0].http.url: webhook URL must use https://` |
+| `http.url` host resolves in public DNS | `pre_connect_requests[0].http.url: webhook URL host 'crm.example.com' does not resolve` |
+| `returns[].path` is a dotted path of `[A-Za-z0-9_-]+` segments, at most 10 deep and 256 characters | `pre_connect_requests[0].returns[0].path: 'patient..id' is not a valid dotted path` |
+| Capture names are unique across all entries | `pre_connect_requests[1].returns[0].name: 'patient_id' is already captured by an earlier pre-connect request` |
+
+At call time: each entry has 800 ms, responses are read up to 8 KB, and each captured value is kept up to 512 characters.
+
+## Test it
+
+You can watch what the platform sends without writing any code. Point an entry at a request-capture service, name every call fact in `sends`, attach a number, and call it:
+
+```json
+{
+  "pre_connect_requests": [
+    {
+      "http": { "url": "https://webhook.site/your-unique-id", "http_method": "POST" },
+      "sends": ["caller_number", "dialed_number", "direction", "agent_id", "session_id"]
+    }
+  ]
+}
+```
+
+The request appears the moment the call arrives, before the greeting.
+
+## Troubleshooting
+
+**The request body is empty.** The entry's `sends` is empty or missing. The platform sends nothing you did not name; add `"sends": ["caller_number"]` and save the agent again.
+
+**The request never arrives.** Check that the number is attached to this agent on the same regional host you created it on; agent ids are not shared between `agents.assemblyai.com` and `agents.us.assemblyai.com`. Then check your endpoint answers `200` within the timeout to a `POST` carrying your headers. A `401` from your own auth layer looks the same as a lookup that never ran, because the platform fails open either way.
+
+**The greeting did not change.** A `greeting` in the response needs `"allow_overrides": ["greeting"]` on that entry. A templated greeting needs every `{{name}}` to resolve to a non-empty value, from the response or from its `default`.
+
+**The number is missing on some calls.** The caller withheld their number. The platform omits `caller_number` rather than sending a placeholder.
+
+**The model does not use the values.** Name them in the `system_prompt` and say what to do with them.
+
+## Next steps
+
+  
+    Attach a phone number so calls reach this agent.
+  
+  
+    Let the agent act on the caller's record during the call.
+  
+  
+    Get the call's `from_number` and outcome after it ends.
 
 ---
 
@@ -51022,6 +51338,535 @@ Description: Soft-delete a voice agent session.
 
 Metadata:
 - openapi: /api-reference/specs/agents.yaml DELETE /v1/sessions/{session_id}
+
+---
+
+<a id="webhooks-docs-voice-agents-voice-agent-api-webhooks-mdx"></a>
+
+# Webhooks
+
+URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/webhooks
+Source: docs/voice-agents/voice-agent-api/webhooks.mdx
+Navigation: Voice Agent API > After a session
+Description: Get a signed HTTPS callback when a session or phone call starts, connects, or ends, with the recording and transcript URLs for calls.
+
+Webhooks let your backend react to what your agents do without polling. Register a URL and the events you care about, and AssemblyAI sends a signed `POST` to that URL whenever one fires. For phone calls, the payload includes ready-to-download recording and transcript URLs.
+
+```
+Session or call ends ──► AssemblyAI ──POST──► https://your-app.com/webhooks/assemblyai
+                                                  │
+                                          verify X-AAI-Signature,
+                                          then act on the event
+```
+
+**Base URL:** `https://agents.assemblyai.com`. Send your API key in the `Authorization` header (a `Bearer ` prefix is accepted), same as the rest of the API.
+
+## Set up a webhook handler
+
+The [reference](#reference) section below covers every field and rule.
+
+Every delivery is signed with a secret you choose. Generate one, store it somewhere your handler can read it, and keep it. The API never returns it.
+
+```bash
+export AAI_WEBHOOK_SECRET=$(python3 -c "import secrets; print(secrets.token_urlsafe(32))")
+echo $AAI_WEBHOOK_SECRET
+```
+
+It must be 32 to 256 printable ASCII characters with no whitespace.
+
+Your handler does two things: verify the signature, then acknowledge with a `2xx` as fast as possible. Do any slow work after responding.
+
+```python Python
+import hashlib
+import hmac
+import os
+import time
+
+from fastapi import FastAPI, Header, HTTPException, Request
+
+SECRET = os.environ["AAI_WEBHOOK_SECRET"]
+TOLERANCE_SECONDS = 300
+
+app = FastAPI()
+
+def verify(raw_body: bytes, signature_header: str | None, secret: str) -> bool:
+    if not signature_header:
+        return False
+    fields = {}
+    for pair in signature_header.split(","):
+        key, sep, value = pair.partition("=")
+        if sep:
+            fields[key.strip()] = value.strip()
+    raw_t, v1 = fields.get("t"), fields.get("v1")
+    if not raw_t or not v1:
+        return False
+    try:
+        timestamp = int(raw_t)
+    except ValueError:
+        return False
+
+    expected = hmac.new(
+        secret.encode("utf-8"),
+        f"{timestamp}.".encode("utf-8") + raw_body,
+        hashlib.sha256,
+    ).hexdigest()
+
+    if not hmac.compare_digest(expected, v1):
+        return False
+    return abs(int(time.time()) - timestamp) <= TOLERANCE_SECONDS
+
+@app.post("/webhooks/assemblyai")
+async def handle(request: Request, x_aai_signature: str | None = Header(default=None)):
+    raw_body = await request.body()
+    if not verify(raw_body, x_aai_signature, SECRET):
+        raise HTTPException(status_code=401, detail="invalid signature")
+
+    event = await request.json()
+    process(event)
+    return {"ok": True}
+
+def process(event: dict) -> None:
+    if event["event"].startswith("call."):
+        call = event["call"]
+        print(event["event"], call["call_id"], call.get("recording_url"))
+    else:
+        print(event["event"], event["session"]["session_id"])
+```
+
+```javascript Node.js
+import crypto from "node:crypto";
+import express from "express";
+
+const SECRET = process.env.AAI_WEBHOOK_SECRET;
+const TOLERANCE_SECONDS = 300;
+
+function verify(rawBody, signatureHeader, secret) {
+  if (!signatureHeader) return false;
+  const fields = Object.fromEntries(
+    signatureHeader.split(",").map((pair) => {
+      const i = pair.indexOf("=");
+      return [pair.slice(0, i).trim(), pair.slice(i + 1).trim()];
+    })
+  );
+  const t = Number.parseInt(fields.t, 10);
+  if (!Number.isFinite(t) || !fields.v1) return false;
+
+  const expected = crypto
+    .createHmac("sha256", secret)
+    .update(`${t}.`)
+    .update(rawBody)
+    .digest("hex");
+
+  const a = Buffer.from(expected);
+  const b = Buffer.from(fields.v1);
+  if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) return false;
+  return Math.abs(Math.floor(Date.now() / 1000) - t) <= TOLERANCE_SECONDS;
+}
+
+const app = express();
+
+// express.raw keeps the body as the exact bytes that were signed.
+app.post("/webhooks/assemblyai", express.raw({ type: "application/json" }), (req, res) => {
+  if (!verify(req.body, req.get("X-AAI-Signature"), SECRET)) {
+    return res.sendStatus(401);
+  }
+  const event = JSON.parse(req.body.toString("utf8"));
+  console.log(event.event, event.call?.call_id ?? event.session?.session_id);
+  res.sendStatus(200);
+});
+
+app.listen(8000);
+```
+
+Run it: `uvicorn receiver:app --port 8000` or `node receiver.mjs`.
+
+Verify the **raw request body bytes**, exactly as shown above. If you parse the JSON and re-serialise it before hashing, the bytes differ and every signature fails with `401`. A `401` is not retried, so those events are lost.
+
+The subscription URL must be `https://` and publicly reachable; it's checked when you create the subscription. For local development, put [ngrok](https://ngrok.com/docs/getting-started/) in front of your handler:
+
+```bash
+ngrok http 8000
+```
+
+Copy the `https://….ngrok-free.app` URL it prints. In production, use your own HTTPS host.
+
+Register your URL, the events you want, and the secret from step 1. Pass `agent_id` to receive events for one agent, or leave it out for every agent on your account.
+
+```bash cURL
+curl -X POST https://agents.assemblyai.com/v1/webhook-subscriptions \
+  -H "Authorization: $ASSEMBLYAI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://your-app.com/webhooks/assemblyai",
+    "events": ["call.connected", "call.ended", "call.failed"],
+    "secret": "'"$AAI_WEBHOOK_SECRET"'",
+    "agent_id": "7ad24396-b822-4dca-871a-be9cc4781cf9"
+  }'
+```
+
+```python Python
+# pip install requests
+import os
+import requests
+
+resp = requests.post(
+    "https://agents.assemblyai.com/v1/webhook-subscriptions",
+    headers={"Authorization": os.environ["ASSEMBLYAI_API_KEY"]},
+    json={
+        "url": "https://your-app.com/webhooks/assemblyai",
+        "events": ["call.connected", "call.ended", "call.failed"],
+        "secret": os.environ["AAI_WEBHOOK_SECRET"],
+        "agent_id": "7ad24396-b822-4dca-871a-be9cc4781cf9",
+    },
+)
+resp.raise_for_status()
+print(resp.json()["id"])
+```
+
+```javascript Node.js
+// Node 18+ has fetch built in
+const res = await fetch("https://agents.assemblyai.com/v1/webhook-subscriptions", {
+  method: "POST",
+  headers: {
+    Authorization: process.env.ASSEMBLYAI_API_KEY,
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    url: "https://your-app.com/webhooks/assemblyai",
+    events: ["call.connected", "call.ended", "call.failed"],
+    secret: process.env.AAI_WEBHOOK_SECRET,
+    agent_id: "7ad24396-b822-4dca-871a-be9cc4781cf9",
+  }),
+});
+const data = await res.json();
+console.log(data.id);
+```
+
+Save the `id` from the response. You need it to update or delete the subscription later.
+
+**Phone calls emit `call.*` events only, never `session.*`.** If your agent answers phone calls, subscribe to `call.connected`, `call.ended`, and `call.failed`. A subscription to session events alone receives nothing for telephony. Use `session.started` and `session.completed` for WebSocket sessions.
+
+Call your agent's phone number, or start a WebSocket session against it, then end it. Within a few seconds your handler logs the delivery.
+
+If nothing arrives, check the delivery history. Every attempt is recorded against the session (for a call, the session id is the `call_id`):
+
+```bash
+curl https://agents.assemblyai.com/v1/sessions/$SESSION_ID/webhook-deliveries \
+  -H "Authorization: $ASSEMBLYAI_API_KEY"
+```
+
+```json
+{
+  "deliveries": [
+    {
+      "id": "9a641d63-3ecf-497d-8ffa-07bf10c5f009",
+      "subscription_id": "cb1f65e4-056e-4075-b3db-311677ce04d8",
+      "session_id": "sess_2139906f39a34c598627e8fbb6fb5fe5",
+      "status": "delivered",
+      "attempt_count": 1,
+      "http_status_code": 200,
+      "error": null,
+      "delivered_at": "2026-09-16T10:27:28.104000Z",
+      "next_retry_at": null,
+      "created_at": "2026-09-16T10:27:27.887017Z"
+    }
+  ],
+  "has_more": false
+}
+```
+
+A `status` of `failed` with `"error": "HTTP 401: invalid signature"` means your handler rejected it, usually because of the raw-bytes problem from step 2 or a secret mismatch. See [Troubleshooting](#troubleshooting) for the rest.
+
+What you do next depends on the channel:
+
+- **Phone calls:** `call.ended` includes `recording_url` and `transcript_url`. They're presigned, work immediately, and **expire one hour after the event**, so download the files rather than storing the URLs. `call.connected` has both set to `null`.
+- **WebSocket sessions:** `session.completed` fires when the session ends, *before* the recording and transcript are written (`s3_prefix` is `null` in the payload). They typically appear within about 90 seconds. Fetch them with `GET /v1/sessions/{session_id}` from the [Sessions API](/voice-agents/voice-agent-api/session-history), polling every few seconds until `artifacts` is non-empty.
+
+If you only need metadata (duration, close reason, agent, phone numbers), it is already in the webhook body. No follow-up request is needed.
+
+## Before you go to production
+
+- **Deduplicate on `event_id`.** Delivery is at-least-once, and the same event can arrive more than once. `event_id` is stable across retries; `X-AAI-Delivery-Id` changes per attempt, so don't dedupe on it.
+- **Respond within 15 seconds.** Return `2xx` first, do slow work after. A slow handler gets retried, which means duplicates.
+- **Know what isn't retried.** Any `4xx` other than `408`, `425`, and `429` is treated as your endpoint rejecting the event and is not retried. `5xx`, timeouts, and connection errors are.
+- **Don't rely on ordering.** `call.connected` is not guaranteed to arrive before `call.ended`.
+- **Register the final URL.** Redirects are not followed; a `301` counts as a failure.
+- **Rotate secrets with `PATCH`.** Sending a new `secret` bumps `secret_version`. Deliveries already in flight were signed with the old one, so accept both during the changeover.
+
+## Reference
+
+### Events
+
+| Event               | Fires when                                    | Payload object | Channel   |
+| ------------------- | --------------------------------------------- | -------------- | --------- |
+| `session.started`   | A WebSocket session begins.                   | `session`      | WebSocket |
+| `session.completed` | A WebSocket session ends.                     | `session`      | WebSocket |
+| `call.connected`    | A phone call is answered by an agent.         | `call`         | Telephony |
+| `call.ended`        | A phone call finishes.                        | `call`         | Telephony |
+| `call.failed`       | A phone call could not be placed or answered. | `call`         | Telephony |
+
+### Delivery headers
+
+| Header              | Example                                | Purpose |
+| ------------------- | -------------------------------------- | ------- |
+| `X-AAI-Signature`   | `t=1789554447,v1=b209cd2c…`            | Timestamped HMAC. See [Signature](#signature). |
+| `X-AAI-Event`       | `call.ended`                           | The event type, for routing without parsing the body. |
+| `X-AAI-Delivery-Id` | `2f45e3eb-c70e-4dff-8ae1-a6e7560acdf9` | Identifies this delivery **attempt**. Changes on every retry. |
+| `User-Agent`        | `AssemblyAI-Webhook-Delivery/1.0`      | |
+
+### Signature
+
+```
+X-AAI-Signature: t=1789554447,v1=b209cd2cb55dc9afa6bb182fa165cfc299c71669b867fe2f1507f3ff11082a16
+```
+
+- `t`: Unix timestamp in seconds when the delivery was signed.
+- `v1`: hex `HMAC-SHA256`, keyed with your subscription secret, over the string `"{t}."` followed by the raw request body bytes.
+
+Recompute `v1`, compare in constant time, and reject any delivery whose `t` is more than 300 seconds from your clock. The timestamp is what stops a captured request being replayed.
+
+### Payloads
+
+**Session events** carry a `session` object:
+
+```json
+{
+  "event_id": "bf36882c-71ac-41b8-839d-48a24bd3169e",
+  "event": "session.completed",
+  "timestamp": "2026-09-16T10:27:27.887017+00:00",
+  "session": {
+    "session_id": "sess_2139906f39a34c598627e8fbb6fb5fe5",
+    "account_id": 123456,
+    "agent_id": "3ee4f5fa-0a5a-41f8-abb1-3fa50fe253fd",
+    "status": "completed",
+    "duration_seconds": 10.150365,
+    "public_close_reason": "client_end",
+    "s3_prefix": null,
+    "created_at": "2026-09-16T10:27:17.391140Z",
+    "ended_at": "2026-09-16T10:27:27.541000Z"
+  }
+}
+```
+
+`session.started` has the same shape with `"status": "created"` and `duration_seconds`, `ended_at`, and `public_close_reason` set to `null`.
+
+**Call events** carry a `call` object:
+
+```json
+{
+  "event_id": "df5cb35c-b02d-49f2-8420-f77fee999c8f",
+  "event": "call.ended",
+  "timestamp": "2026-09-16T10:46:41.770690+00:00",
+  "call": {
+    "call_id": "call_c03900346e334c7c8420fd7aac3ce29c",
+    "session_id": "call_c03900346e334c7c8420fd7aac3ce29c",
+    "account_id": 123456,
+    "agent_id": "7ad24396-b822-4dca-871a-be9cc4781cf9",
+    "status": "ended",
+    "direction": "inbound",
+    "from_number": "+15555550123",
+    "to_number": "+15555550199",
+    "created_at": "2026-09-16T10:45:45.169858",
+    "ended_at": "2026-09-16T10:46:41.397419",
+    "recording_url": "https://…/recording/audio.ogg?…&Expires=1789559201",
+    "transcript_url": "https://…/timeline/timeline.json?…&Expires=1789559201"
+  }
+}
+```
+
+For a phone call, `call_id` and `session_id` are the same value. `from_number` is the caller's real number, so treat the payload as personal data.
+
+### Subscription fields
+
+| Field      | Required | Notes |
+| ---------- | -------- | ----- |
+| `url`      | Yes      | Where deliveries are POSTed. Must be `https://` and resolve in public DNS. Private and loopback addresses are rejected. |
+| `events`   | Yes      | One or more of the [events](#events) above. No duplicates. |
+| `secret`   | Yes      | 32 to 256 printable ASCII characters, no whitespace. Never returned; the response carries a `secret_version` integer that increments on rotation. |
+| `agent_id` | No       | Scope to one agent. Omit for account-wide events. |
+| `enabled`  | No       | Defaults to `true`. Set `false` to pause deliveries without deleting the subscription. |
+
+### Manage subscriptions
+
+```bash cURL expandable
+# List (paginated, newest first). Paused subscriptions are hidden unless you add ?include_disabled=true.
+curl "https://agents.assemblyai.com/v1/webhook-subscriptions?include_disabled=true" -H "Authorization: $ASSEMBLYAI_API_KEY"
+
+# Retrieve one
+curl https://agents.assemblyai.com/v1/webhook-subscriptions/$SUBSCRIPTION_ID -H "Authorization: $ASSEMBLYAI_API_KEY"
+
+# Update: change the URL or events, pause, or rotate the secret (bumps secret_version)
+curl -X PATCH https://agents.assemblyai.com/v1/webhook-subscriptions/$SUBSCRIPTION_ID \
+  -H "Authorization: $ASSEMBLYAI_API_KEY" -H "Content-Type: application/json" \
+  -d '{ "enabled": false }'
+
+# Delete (also removes its delivery history)
+curl -X DELETE https://agents.assemblyai.com/v1/webhook-subscriptions/$SUBSCRIPTION_ID -H "Authorization: $ASSEMBLYAI_API_KEY"
+```
+
+```python Python expandable
+# pip install requests
+import os
+import requests
+
+base = "https://agents.assemblyai.com/v1/webhook-subscriptions"
+headers = {"Authorization": os.environ["ASSEMBLYAI_API_KEY"]}
+subscription_id = os.environ["SUBSCRIPTION_ID"]
+
+# List (paginated, newest first). Paused subscriptions are hidden unless include_disabled=true.
+resp = requests.get(base, headers=headers, params={"include_disabled": "true"})
+resp.raise_for_status()
+print(resp.json()["subscriptions"])
+
+# Retrieve one
+resp = requests.get(f"{base}/{subscription_id}", headers=headers)
+resp.raise_for_status()
+print(resp.json())
+
+# Update: change the URL or events, pause, or rotate the secret (bumps secret_version)
+resp = requests.patch(f"{base}/{subscription_id}", headers=headers, json={"enabled": False})
+resp.raise_for_status()
+print(resp.json())
+
+# Delete (also removes its delivery history)
+resp = requests.delete(f"{base}/{subscription_id}", headers=headers)
+resp.raise_for_status()
+```
+
+```javascript Node.js expandable
+// Node 18+ has fetch built in
+const base = "https://agents.assemblyai.com/v1/webhook-subscriptions";
+const auth = { Authorization: process.env.ASSEMBLYAI_API_KEY };
+const subscriptionId = process.env.SUBSCRIPTION_ID;
+
+// List (paginated, newest first). Paused subscriptions are hidden unless include_disabled=true.
+let res = await fetch(`${base}?include_disabled=true`, { headers: auth });
+console.log((await res.json()).subscriptions);
+
+// Retrieve one
+res = await fetch(`${base}/${subscriptionId}`, { headers: auth });
+console.log(await res.json());
+
+// Update: change the URL or events, pause, or rotate the secret (bumps secret_version)
+res = await fetch(`${base}/${subscriptionId}`, {
+  method: "PATCH",
+  headers: { ...auth, "Content-Type": "application/json" },
+  body: JSON.stringify({ enabled: false }),
+});
+console.log(await res.json());
+
+// Delete (also removes its delivery history)
+res = await fetch(`${base}/${subscriptionId}`, { method: "DELETE", headers: auth });
+```
+
+`PATCH` accepts any of `url`, `events`, `secret`, and `enabled`.
+
+### Delivery history
+
+```bash
+# Every attempt for a session (for a call, use the call_id)
+curl https://agents.assemblyai.com/v1/sessions/$SESSION_ID/webhook-deliveries \
+  -H "Authorization: $ASSEMBLYAI_API_KEY"
+
+# Only the most recent attempt per subscription
+curl https://agents.assemblyai.com/v1/sessions/$SESSION_ID/webhook-deliveries/latest \
+  -H "Authorization: $ASSEMBLYAI_API_KEY"
+```
+
+Each entry has `status` (`pending`, `delivered`, or `failed`), `attempt_count`, `http_status_code`, `error`, `delivered_at`, and `next_retry_at`. Deleting a subscription removes its entries.
+
+### Troubleshooting
+
+| Symptom | Likely cause |
+| ------- | ------------ |
+| Every delivery `failed` with `HTTP 401: invalid signature` | Hashing a re-serialised body instead of the raw bytes, verifying without the `t.` prefix, or a secret mismatch between the subscription and your handler |
+| Intermittent `401` | Handler clock skew beyond the 300-second tolerance. Check NTP. |
+| Nothing arrives for phone calls | Subscribed to `session.*` only. Telephony emits `call.*`. |
+| Nothing arrives at all | Subscription paused, scoped to a different `agent_id`, or the URL redirects |
+| Duplicate events in your system | Not deduplicating on `event_id` |
+| Occasional failures under load | Handler exceeding the 15-second read timeout |
+
+### Endpoints
+
+| Method   | Path                                                  | Description |
+| -------- | ----------------------------------------------------- | ----------- |
+| `POST`   | `/v1/webhook-subscriptions`                           | [Create a subscription](/api-reference/voice-agent-api/create-webhook-subscription). |
+| `GET`    | `/v1/webhook-subscriptions`                           | [List your subscriptions](/api-reference/voice-agent-api/list-webhook-subscriptions). |
+| `GET`    | `/v1/webhook-subscriptions/{id}`                      | [Retrieve one](/api-reference/voice-agent-api/get-webhook-subscription). |
+| `PATCH`  | `/v1/webhook-subscriptions/{id}`                      | [Update](/api-reference/voice-agent-api/update-webhook-subscription) `url`, `events`, `secret`, or `enabled`. |
+| `DELETE` | `/v1/webhook-subscriptions/{id}`                      | [Delete](/api-reference/voice-agent-api/delete-webhook-subscription). |
+| `GET`    | `/v1/sessions/{session_id}/webhook-deliveries`        | Every delivery attempt for a session. |
+| `GET`    | `/v1/sessions/{session_id}/webhook-deliveries/latest` | The most recent attempt per subscription. |
+
+---
+
+<a id="create-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-create-webhook-subscription-mdx"></a>
+
+# Create a webhook subscription
+
+URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/create-webhook-subscription
+Source: docs/voice-agents/voice-agent-api/api-spec/create-webhook-subscription.mdx
+Navigation: Voice Agent API > After a session > Webhook endpoints
+Description: Create a webhook subscription for Voice Agent API events.
+
+Metadata:
+- openapi: /api-reference/specs/webhooks.yaml POST /v1/webhook-subscriptions
+
+---
+
+<a id="list-webhook-subscriptions-docs-voice-agents-voice-agent-api-api-spec-list-webhook-subscriptions-mdx"></a>
+
+# List webhook subscriptions
+
+URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/list-webhook-subscriptions
+Source: docs/voice-agents/voice-agent-api/api-spec/list-webhook-subscriptions.mdx
+Navigation: Voice Agent API > After a session > Webhook endpoints
+Description: List all webhook subscriptions in your account.
+
+Metadata:
+- openapi: /api-reference/specs/webhooks.yaml GET /v1/webhook-subscriptions
+
+---
+
+<a id="retrieve-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-get-webhook-subscription-mdx"></a>
+
+# Retrieve a webhook subscription
+
+URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/get-webhook-subscription
+Source: docs/voice-agents/voice-agent-api/api-spec/get-webhook-subscription.mdx
+Navigation: Voice Agent API > After a session > Webhook endpoints
+Description: Retrieve a webhook subscription by ID.
+
+Metadata:
+- openapi: /api-reference/specs/webhooks.yaml GET /v1/webhook-subscriptions/{subscription_id}
+
+---
+
+<a id="update-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-update-webhook-subscription-mdx"></a>
+
+# Update a webhook subscription
+
+URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/update-webhook-subscription
+Source: docs/voice-agents/voice-agent-api/api-spec/update-webhook-subscription.mdx
+Navigation: Voice Agent API > After a session > Webhook endpoints
+Description: Update a webhook subscription.
+
+Metadata:
+- openapi: /api-reference/specs/webhooks.yaml PATCH /v1/webhook-subscriptions/{subscription_id}
+
+---
+
+<a id="delete-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-delete-webhook-subscription-mdx"></a>
+
+# Delete a webhook subscription
+
+URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/delete-webhook-subscription
+Source: docs/voice-agents/voice-agent-api/api-spec/delete-webhook-subscription.mdx
+Navigation: Voice Agent API > After a session > Webhook endpoints
+Description: Delete a webhook subscription.
+
+Metadata:
+- openapi: /api-reference/specs/webhooks.yaml DELETE /v1/webhook-subscriptions/{subscription_id}
 
 ---
 
@@ -76923,370 +77768,6 @@ For cross-cutting topics like dynamic configuration updates, scaling, latency bu
 
 ---
 
-<a id="create-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-create-webhook-subscription-mdx"></a>
-
-# Create a webhook subscription
-
-URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/create-webhook-subscription
-Source: docs/voice-agents/voice-agent-api/api-spec/create-webhook-subscription.mdx
-Navigation: Additional pages
-Description: Create a webhook subscription for Voice Agent API events.
-
-Metadata:
-- openapi: /api-reference/specs/webhooks.yaml POST /v1/webhook-subscriptions
-
----
-
-<a id="delete-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-delete-webhook-subscription-mdx"></a>
-
-# Delete a webhook subscription
-
-URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/delete-webhook-subscription
-Source: docs/voice-agents/voice-agent-api/api-spec/delete-webhook-subscription.mdx
-Navigation: Additional pages
-Description: Delete a webhook subscription.
-
-Metadata:
-- openapi: /api-reference/specs/webhooks.yaml DELETE /v1/webhook-subscriptions/{subscription_id}
-
----
-
-<a id="retrieve-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-get-webhook-subscription-mdx"></a>
-
-# Retrieve a webhook subscription
-
-URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/get-webhook-subscription
-Source: docs/voice-agents/voice-agent-api/api-spec/get-webhook-subscription.mdx
-Navigation: Additional pages
-Description: Retrieve a webhook subscription by ID.
-
-Metadata:
-- openapi: /api-reference/specs/webhooks.yaml GET /v1/webhook-subscriptions/{subscription_id}
-
----
-
-<a id="list-webhook-subscriptions-docs-voice-agents-voice-agent-api-api-spec-list-webhook-subscriptions-mdx"></a>
-
-# List webhook subscriptions
-
-URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/list-webhook-subscriptions
-Source: docs/voice-agents/voice-agent-api/api-spec/list-webhook-subscriptions.mdx
-Navigation: Additional pages
-Description: List all webhook subscriptions in your account.
-
-Metadata:
-- openapi: /api-reference/specs/webhooks.yaml GET /v1/webhook-subscriptions
-
----
-
-<a id="update-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-update-webhook-subscription-mdx"></a>
-
-# Update a webhook subscription
-
-URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/update-webhook-subscription
-Source: docs/voice-agents/voice-agent-api/api-spec/update-webhook-subscription.mdx
-Navigation: Additional pages
-Description: Update a webhook subscription.
-
-Metadata:
-- openapi: /api-reference/specs/webhooks.yaml PATCH /v1/webhook-subscriptions/{subscription_id}
-
----
-
-<a id="webhooks-docs-voice-agents-voice-agent-api-webhooks-mdx"></a>
-
-# Webhooks
-
-URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/webhooks
-Source: docs/voice-agents/voice-agent-api/webhooks.mdx
-Navigation: Additional pages
-Description: Subscribe to session and call lifecycle events for your agents. AssemblyAI POSTs a signed JSON payload to your URL when each event fires.
-
-Webhooks let your backend react to what your agents do without polling. Register a URL and the events you care about, and AssemblyAI sends a signed `POST` to that URL whenever one fires (when a call connects, a session ends, and so on). This is how you log calls, kick off post-call processing, or update your own systems for agents you created over [REST](/voice-agents/voice-agent-api/manage-agents).
-
-**Base URL:** `https://agents.assemblyai.com`. Manage subscriptions with your API key in the `Authorization` header, same as the rest of the API.
-
-## Events
-
-| Event              | Fires when |
-| ------------------ | ---------- |
-| `session.started`  | A voice agent session begins. |
-| `session.completed`| A session ends (delivered with final duration and close reason). |
-| `call.connected`   | An inbound phone call connects to an agent. |
-| `call.ended`       | A call ends. |
-| `call.failed`      | A call fails to connect or errors out. |
-
-## Create a subscription
-
-`POST /v1/webhook-subscriptions`. Subscribe to one or more events; scope to a single agent with `agent_id`, or omit it to receive events for **all** your agents.
-
-```bash cURL
-curl -X POST https://agents.assemblyai.com/v1/webhook-subscriptions \
-  -H "Authorization: $ASSEMBLYAI_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "url": "https://your-app.com/webhooks/assemblyai",
-    "events": ["session.completed", "call.ended"],
-    "secret": "a-long-random-signing-secret-at-least-32-chars",
-    "agent_id": "7ad24396-b822-4dca-871a-be9cc4781cf9"
-  }'
-```
-
-```python Python
-# pip install requests
-import os
-import requests
-
-resp = requests.post(
-    "https://agents.assemblyai.com/v1/webhook-subscriptions",
-    headers={"Authorization": os.environ["ASSEMBLYAI_API_KEY"]},
-    json={
-        "url": "https://your-app.com/webhooks/assemblyai",
-        "events": ["session.completed", "call.ended"],
-        "secret": "a-long-random-signing-secret-at-least-32-chars",
-        "agent_id": "7ad24396-b822-4dca-871a-be9cc4781cf9",
-    },
-)
-resp.raise_for_status()
-print(resp.json()["id"])
-```
-
-```javascript Node.js
-// Node 18+ has fetch built in
-const res = await fetch("https://agents.assemblyai.com/v1/webhook-subscriptions", {
-  method: "POST",
-  headers: {
-    Authorization: process.env.ASSEMBLYAI_API_KEY,
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    url: "https://your-app.com/webhooks/assemblyai",
-    events: ["session.completed", "call.ended"],
-    secret: "a-long-random-signing-secret-at-least-32-chars",
-    agent_id: "7ad24396-b822-4dca-871a-be9cc4781cf9",
-  }),
-});
-const data = await res.json();
-console.log(data);
-```
-
-```json
-{
-  "id": "0d75ebd7-937c-495c-b638-ba582ec05b39",
-  "agent_id": "7ad24396-b822-4dca-871a-be9cc4781cf9",
-  "url": "https://your-app.com/webhooks/assemblyai",
-  "events": ["session.completed", "call.ended"],
-  "enabled": true,
-  "secret_version": 1,
-  "created_at": "2026-06-10T14:16:59Z",
-  "updated_at": "2026-06-10T14:16:59Z"
-}
-```
-
-| Field      | Required | Notes |
-| ---------- | -------- | ----- |
-| `url`      | Yes      | Where deliveries are POSTed. Must be `https` and a public host. |
-| `events`   | Yes      | One or more of the [events](#events) above. No duplicates. |
-| `secret`   | Yes      | Your signing secret, 32-256 printable ASCII chars (no whitespace). Used to sign every delivery; store it, since it's **never returned**. |
-| `agent_id` | No       | Scope to one agent. Omit for account-wide events. |
-| `enabled`  | No       | Defaults to `true`. Set `false` to pause deliveries. |
-
-The response returns a `secret_version` (an integer that increments when you rotate the secret), never the secret itself. Keep your own copy of the secret to verify signatures.
-
-## Receiving a delivery
-
-When an event fires, AssemblyAI sends a `POST` to your `url` with these headers:
-
-| Header             | Value |
-| ------------------ | ----- |
-| `X-AAI-Event`      | The event type, e.g. `session.completed`. |
-| `X-AAI-Signature`  | `sha256=<hex HMAC-SHA256 of the raw body, keyed by your secret>`. |
-| `X-AAI-Delivery-Id`| Unique per delivery attempt; use it to dedupe. |
-
-**Session events** carry a `session` object:
-
-```json
-{
-  "event_id": "f1d2...",
-  "event": "session.completed",
-  "timestamp": "2026-06-10T14:20:31Z",
-  "session": {
-    "session_id": "sess_abc123",
-    "account_id": 325374,
-    "agent_id": "7ad24396-b822-4dca-871a-be9cc4781cf9",
-    "status": "completed",
-    "duration_seconds": 142.6,
-    "public_close_reason": "client_ended",
-    "s3_prefix": "…",
-    "created_at": "2026-06-10T14:18:08Z",
-    "ended_at": "2026-06-10T14:20:31Z"
-  }
-}
-```
-
-**Call events** carry a `call` object (with recording/transcript links where available):
-
-```json
-{
-  "event_id": "a93c...",
-  "event": "call.ended",
-  "timestamp": "2026-06-10T14:20:32Z",
-  "call": {
-    "call_id": "call_8b2b1e8c...",
-    "account_id": 325374,
-    "agent_id": "7ad24396-b822-4dca-871a-be9cc4781cf9",
-    "status": "completed",
-    "direction": "inbound",
-    "from_number": "+14155550123",
-    "to_number": "+19016659697",
-    "session_id": "sess_abc123",
-    "recording_url": "https://…",
-    "transcript_url": "https://…",
-    "created_at": "2026-06-10T14:18:05Z",
-    "ended_at": "2026-06-10T14:20:32Z"
-  }
-}
-```
-
-Respond with a `2xx` status promptly. Failed deliveries are retried with backoff, so make your handler **idempotent**: dedupe on `event_id` (or `X-AAI-Delivery-Id`).
-
-## Verify the signature
-
-Always verify `X-AAI-Signature` before trusting a delivery. Compute `HMAC-SHA256` over the **exact raw request body** (don't re-serialize the JSON) using your subscription secret, and compare in constant time:
-
-```python Python
-import hashlib, hmac
-
-def verify(raw_body: bytes, signature_header: str, secret: str) -> bool:
-    expected = "sha256=" + hmac.new(secret.encode(), raw_body, hashlib.sha256).hexdigest()
-    return hmac.compare_digest(expected, signature_header or "")
-
-# Flask example
-@app.post("/webhooks/assemblyai")
-def handle():
-    if not verify(request.get_data(), request.headers.get("X-AAI-Signature"), SECRET):
-        return "", 401
-    event = request.get_json()
-    # ... handle event["event"], event["session"] / event["call"]
-    return "", 200
-```
-
-```javascript Node
-import crypto from "node:crypto";
-
-function verify(rawBody, signatureHeader, secret) {
-  const expected = "sha256=" + crypto.createHmac("sha256", secret).update(rawBody).digest("hex");
-  const a = Buffer.from(expected), b = Buffer.from(signatureHeader || "");
-  return a.length === b.length && crypto.timingSafeEqual(a, b);
-}
-
-// Express: capture the raw body for verification
-app.post("/webhooks/assemblyai",
-  express.raw({ type: "application/json" }),
-  (req, res) => {
-    if (!verify(req.body, req.get("X-AAI-Signature"), SECRET)) return res.sendStatus(401);
-    const event = JSON.parse(req.body.toString());
-    // ... handle event
-    res.sendStatus(200);
-  });
-```
-
-## Manage subscriptions
-
-```bash cURL expandable
-# List (paginated, newest first)
-curl https://agents.assemblyai.com/v1/webhook-subscriptions -H "Authorization: $ASSEMBLYAI_API_KEY"
-
-# Retrieve one
-curl https://agents.assemblyai.com/v1/webhook-subscriptions/{id} -H "Authorization: $ASSEMBLYAI_API_KEY"
-
-# Update: change the URL/events, pause, or rotate the secret (bumps secret_version)
-curl -X PATCH https://agents.assemblyai.com/v1/webhook-subscriptions/{id} \
-  -H "Authorization: $ASSEMBLYAI_API_KEY" -H "Content-Type: application/json" \
-  -d '{ "enabled": false }'
-
-# Delete
-curl -X DELETE https://agents.assemblyai.com/v1/webhook-subscriptions/{id} -H "Authorization: $ASSEMBLYAI_API_KEY"
-```
-
-```python Python expandable
-# pip install requests
-import os
-import requests
-
-headers = {"Authorization": os.environ["ASSEMBLYAI_API_KEY"]}
-
-# List (paginated, newest first)
-resp = requests.get("https://agents.assemblyai.com/v1/webhook-subscriptions", headers=headers)
-resp.raise_for_status()
-print(resp.json())
-
-# Retrieve one
-resp = requests.get("https://agents.assemblyai.com/v1/webhook-subscriptions/{id}", headers=headers)
-resp.raise_for_status()
-print(resp.json())
-
-# Update: change the URL/events, pause, or rotate the secret (bumps secret_version)
-resp = requests.patch(
-    "https://agents.assemblyai.com/v1/webhook-subscriptions/{id}",
-    headers=headers,
-    json={"enabled": False},
-)
-resp.raise_for_status()
-print(resp.json())
-
-# Delete
-resp = requests.delete("https://agents.assemblyai.com/v1/webhook-subscriptions/{id}", headers=headers)
-resp.raise_for_status()
-```
-
-```javascript Node.js expandable
-// Node 18+ has fetch built in
-const auth = { Authorization: process.env.ASSEMBLYAI_API_KEY };
-
-// List (paginated, newest first)
-let res = await fetch("https://agents.assemblyai.com/v1/webhook-subscriptions", {
-  method: "GET",
-  headers: auth,
-});
-console.log(await res.json());
-
-// Retrieve one
-res = await fetch("https://agents.assemblyai.com/v1/webhook-subscriptions/{id}", {
-  method: "GET",
-  headers: auth,
-});
-console.log(await res.json());
-
-// Update: change the URL/events, pause, or rotate the secret (bumps secret_version)
-res = await fetch("https://agents.assemblyai.com/v1/webhook-subscriptions/{id}", {
-  method: "PATCH",
-  headers: { ...auth, "Content-Type": "application/json" },
-  body: JSON.stringify({ enabled: false }),
-});
-console.log(await res.json());
-
-// Delete
-res = await fetch("https://agents.assemblyai.com/v1/webhook-subscriptions/{id}", {
-  method: "DELETE",
-  headers: auth,
-});
-```
-
-`PATCH` accepts any of `url`, `events`, `secret`, `enabled`. Sending a new `secret` rotates it and increments `secret_version`.
-
-## Endpoint summary
-
-| Method   | Path                                  | Description |
-| -------- | ------------------------------------- | ----------- |
-| `POST`   | `/v1/webhook-subscriptions`           | Create a subscription. |
-| `GET`    | `/v1/webhook-subscriptions`           | List your subscriptions. |
-| `GET`    | `/v1/webhook-subscriptions/{id}`      | Retrieve one. |
-| `PATCH`  | `/v1/webhook-subscriptions/{id}`      | Update (url, events, secret, enabled). |
-| `DELETE` | `/v1/webhook-subscriptions/{id}`      | Delete. |
-
----
-
 <a id="api-specs"></a>
 
 # API specs
@@ -85510,6 +85991,18 @@ components:
             LLM. Multiple configs (fallbacks) are not yet supported.
           items:
             $ref: "#/components/schemas/LlmConfig"
+        pre_connect_requests:
+          type: array
+          maxItems: 2
+          description: |
+            HTTPS lookups the platform runs, in order, before answering an inbound
+            phone call. Each can send the call's facts (such as the caller's
+            number) and values an earlier entry captured, and captures values from
+            its JSON response for the greeting and the conversation. Telephony
+            only; ignored on WebSocket sessions. See
+            [Pre-connect requests](/voice-agents/voice-agent-api/pre-connect-requests).
+          items:
+            $ref: "#/components/schemas/PreConnectRequest"
 
     AgentUpdateRequest:
       type: object
@@ -85537,6 +86030,12 @@ components:
           maxItems: 1
           items:
             $ref: "#/components/schemas/LlmConfig"
+        pre_connect_requests:
+          type: array
+          maxItems: 2
+          description: Replaces the whole list. See the create request.
+          items:
+            $ref: "#/components/schemas/PreConnectRequest"
 
     Agent:
       type: object
@@ -85574,6 +86073,11 @@ components:
         updated_at:
           type: string
           format: date-time
+        pre_connect_requests:
+          type: array
+          description: The declared pre-connect requests. Header values are never returned.
+          items:
+            $ref: "#/components/schemas/PreConnectRequestResponse"
 
     AgentListItem:
       type: object
@@ -85801,6 +86305,102 @@ components:
           additionalProperties:
             type: string
           example: { "Authorization": "***" }
+
+    PreConnectRequest:
+      type: object
+      required:
+        - http
+      properties:
+        http:
+          $ref: "#/components/schemas/HttpToolConfig"
+          description: The HTTPS endpoint to call. The hostname must resolve in public DNS at create or update time.
+        sends:
+          type: array
+          description: |
+            Names to send to this endpoint, in the JSON body for POST, PUT and
+            PATCH or as query parameters for GET and DELETE. Any entry may name
+            the platform's call facts `caller_number`, `dialed_number`,
+            `direction`, `agent_id` and `session_id`; later entries may also name
+            values an earlier entry captured. Opt-in per entry: nothing is sent
+            unless named. A fact the platform does not have (for example a
+            withheld caller number) is omitted rather than sent blank.
+          items:
+            type: string
+          example: ["caller_number"]
+        returns:
+          type: array
+          description: Values to capture from the JSON response.
+          items:
+            $ref: "#/components/schemas/PreConnectReturn"
+        timeout_ms:
+          type: integer
+          minimum: 1
+          maximum: 800
+          nullable: true
+          description: |
+            Lowers this entry's timeout. Every entry has its own 800 ms ceiling;
+            this can only shorten it. Omit for the full ceiling.
+          example: 600
+        allow_overrides:
+          type: array
+          description: Agent fields the response may replace. Closed vocabulary; today only `greeting`.
+          items:
+            type: string
+            enum: [greeting]
+          example: ["greeting"]
+
+    PreConnectReturn:
+      type: object
+      required:
+        - name
+        - path
+      properties:
+        name:
+          type: string
+          description: |
+            Name the value is captured under. Available to later entries'
+            `sends`, to `{{name}}` placeholders in the agent's greeting, and to
+            the model as `aai_pre_connect_context`. Unique across all entries.
+          example: "patient_name"
+        path:
+          type: string
+          description: |
+            Dotted path into the JSON response, e.g. `patient.first_name` or
+            `results.0.id`. Segments match `[A-Za-z0-9_-]+`, at most 10 deep and
+            256 characters. Shape is validated at write time; whether the path
+            exists is only knowable at call time.
+          example: "patient.first_name"
+        default:
+          type: string
+          nullable: true
+          description: |
+            Used when the path does not resolve. Without one, an unresolved
+            path leaves the value unset. For greeting placeholders use a
+            non-empty default: a placeholder that resolves to nothing makes the
+            platform speak the agent's greeting as declared.
+          example: "there"
+
+    PreConnectRequestResponse:
+      type: object
+      properties:
+        http:
+          $ref: "#/components/schemas/HttpToolConfigResponse"
+        sends:
+          type: array
+          items:
+            type: string
+        returns:
+          type: array
+          items:
+            $ref: "#/components/schemas/PreConnectReturn"
+        timeout_ms:
+          type: integer
+          nullable: true
+          description: Null means the full 800 ms ceiling applies.
+        allow_overrides:
+          type: array
+          items:
+            type: string
 
     Error:
       type: object

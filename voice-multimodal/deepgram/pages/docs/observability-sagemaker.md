@@ -313,7 +313,7 @@ cloudwatch.put_metric_alarm(
 )
 ```
 
-Adjust `Threshold` based on your benchmarking results. For example, if a `g5.2xlarge` instance handles 100 concurrent streams at acceptable latency, set the alarm threshold to `80`.
+Adjust `Threshold` based on your benchmarking results. For example, if one instance handles *N* concurrent streams at acceptable latency with your request parameters, set the alarm threshold to roughly 0.8 × *N*. Capacity varies several-fold with features such as interim results, smart formatting, diarization, keyterms, and multilingual settings, so measure with the parameters your application actually sends.
 
 #### Error rate alarm
 

@@ -60,9 +60,9 @@ Validation Error
 
 ```json
 {
-  "type": "string",
-  "name": "string",
-  "value": "string"
+  "type": "new",
+  "name": "database_password",
+  "value": "S3cureP@ssw0rd!2024"
 }
 ```
 
@@ -70,9 +70,9 @@ Validation Error
 
 ```json
 {
-  "type": "string",
-  "secret_id": "string",
-  "name": "string"
+  "type": "stored",
+  "secret_id": "a1b2c3d4-e5f6-7890-ab12-cd34ef567890",
+  "name": "database_password"
 }
 ```
 
@@ -84,9 +84,9 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 async function main() {
     const client = new ElevenLabsClient();
     await client.conversationalAi.secrets.create({
-        type: "string",
-        name: "string",
-        value: "string",
+        type: "new",
+        name: "database_password",
+        value: "S3cureP@ssw0rd!2024",
     });
 }
 main();
@@ -99,8 +99,8 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.conversational_ai.secrets.create(
-    name="string",
-    value="string",
+    name="database_password",
+    value="S3cureP@ssw0rd!2024",
 )
 
 ```
@@ -119,7 +119,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/secrets"
 
-	payload := strings.NewReader("{\n  \"type\": \"string\",\n  \"name\": \"string\",\n  \"value\": \"string\"\n}")
+	payload := strings.NewReader("{\n  \"type\": \"new\",\n  \"name\": \"database_password\",\n  \"value\": \"S3cureP@ssw0rd!2024\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -147,7 +147,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"type\": \"string\",\n  \"name\": \"string\",\n  \"value\": \"string\"\n}"
+request.body = "{\n  \"type\": \"new\",\n  \"name\": \"database_password\",\n  \"value\": \"S3cureP@ssw0rd!2024\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -159,7 +159,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/secrets")
   .header("Content-Type", "application/json")
-  .body("{\n  \"type\": \"string\",\n  \"name\": \"string\",\n  \"value\": \"string\"\n}")
+  .body("{\n  \"type\": \"new\",\n  \"name\": \"database_password\",\n  \"value\": \"S3cureP@ssw0rd!2024\"\n}")
   .asString();
 ```
 
@@ -171,9 +171,9 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/secrets', [
   'body' => '{
-  "type": "string",
-  "name": "string",
-  "value": "string"
+  "type": "new",
+  "name": "database_password",
+  "value": "S3cureP@ssw0rd!2024"
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -189,7 +189,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/secrets");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"type\": \"string\",\n  \"name\": \"string\",\n  \"value\": \"string\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"type\": \"new\",\n  \"name\": \"database_password\",\n  \"value\": \"S3cureP@ssw0rd!2024\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -198,9 +198,9 @@ import Foundation
 
 let headers = ["Content-Type": "application/json"]
 let parameters = [
-  "type": "string",
-  "name": "string",
-  "value": "string"
+  "type": "new",
+  "name": "database_password",
+  "value": "S3cureP@ssw0rd!2024"
 ] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])

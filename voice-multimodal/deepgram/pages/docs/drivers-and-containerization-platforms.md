@@ -129,6 +129,35 @@ If you are using Azure and your Ubuntu VM instance has [Trusted Launch](https://
 
 If you are using Oracle Cloud Infrastructure and you are using a [Shielded instance](https://docs.oracle.com/en-us/iaas/Content/Compute/References/shielded-instances.htm), see the [Oracle documentation](https://docs.oracle.com/en/operating-systems/oracle-linux/9/secure-boot/sboot-SigningKernelModulesforUseWithSecureBoot.html) for details on how to sign the NVIDIA kernel modules.
 
+#### Deepgram requires the open kernel modules from the >=580 driver branch
+
+Deepgram's Engine image is built against CUDA 13, whose official NVIDIA support begins with the `580` driver branch (see NVIDIA's [CUDA Compatibility](https://docs.nvidia.com/deploy/cuda-compatibility/minor-version-compatibility.html) documentation), so **driver `>=580` is the minimum for every supported GPU** — this increased from `570.172.08` in the September 2026 release. You must install the **open** kernel modules rather than the proprietary build.
+
+On Blackwell-generation GPUs this is especially consequential: the proprietary `580` build does not include Blackwell support, and the GPU will not be visible to the system at all. NVIDIA states that "NVIDIA Grace Hopper and NVIDIA Blackwell require the open-source GPU kernel modules, while proprietary drivers are unsupported on these platforms" — see the [NVIDIA Driver Installation Guide](https://docs.nvidia.com/datacenter/tesla/driver-installation-guide/kernel-modules.html) and [NVIDIA Transitions Fully Towards Open-Source GPU Kernel Modules](https://developer.nvidia.com/blog/nvidia-transitions-fully-towards-open-source-gpu-kernel-modules/).
+
+The `.run` installer selects the kernel module type with `--kernel-module-type` (short form `-M`). Pass `-M=open` explicitly rather than relying on the installer's default:
+
+```bash
+sudo ./{DOWNLOADED_FILE_NAME} --no-drm --silent -M=open
+```
+
+Verify that the open kernel module is the one loaded — the version string reports `NVIDIA UNIX Open Kernel Module`, and the module license is `Dual MIT/GPL`:
+
+```bash
+cat /proc/driver/nvidia/version
+modinfo nvidia | grep -E '^version|^license'
+```
+
+If a Blackwell GPU is missing after installation, check whether the proprietary module was installed. `nvidia-smi` reports `No devices were found` — which has other causes too, so confirm against the kernel log:
+
+```bash
+dmesg | grep -i nvidia | tail -30
+```
+
+Look for a message similar to `NVRM: The NVIDIA GPU <address> (PCI ID: <id>) installed in this system requires use of the NVIDIA open kernel modules.` Reinstall with `-M=open` to recover.
+
+GPUs from the Turing, Ampere, Ada Lovelace, Hopper, and Blackwell generations all support the open kernel modules. Maxwell, Pascal, and Volta GPUs are incompatible with the open modules — and because they also cannot meet the CUDA 13 driver requirement, they are not supported for Deepgram self-hosted deployments.
+
 1. We are going to identify the latest compatible driver for the GPU you are using and retrieve its download URL by going to the [NVIDIA Official Drivers](https://www.nvidia.com/download/index.aspx).
 
 2. Select the product category. For cloud instances, this will often be `Data Center/Tesla`.
@@ -141,7 +170,7 @@ If you are using Oracle Cloud Infrastructure and you are using a [Shielded insta
 
    For Ubuntu, make sure to select `Linux 64-bit`, which will eventually deliver a `.run` file. Do not select an `Ubuntu` option for the operating system, as this will deliver a `.deb` file that frequently fails to properly install the drivers.
 
-5. Finally, choose the Download Type (`Production Branch`), and choose a CUDA toolkit with a version `>=12.8`.
+5. Finally, choose the Download Type (`Production Branch`), and choose a CUDA toolkit with a version `13.x`. Deepgram's Engine image is built against CUDA 13, and a CUDA 12.x toolkit resolves to the `570` driver branch or older, which is below the minimum.
 
 6. Select **Search** and check that the correct driver is displayed, then select **View**.
 
@@ -164,18 +193,20 @@ If you are using Oracle Cloud Infrastructure and you are using a [Shielded insta
    ```shell Shell
    # Ubuntu
    chmod +x ./{DOWNLOADED_FILE_NAME}
-   sudo ./{DOWNLOADED_FILE_NAME} --no-drm --silent
+   sudo ./{DOWNLOADED_FILE_NAME} --no-drm --silent -M=open
    # RHEL
    sudo rpm -i DOWNLOADED_FILE_NAME
    sudo dnf clean all
-   sudo dnf -y module install nvidia-driver:latest-dkms
+   sudo dnf -y module enable nvidia-driver:580-open
+   sudo dnf -y install nvidia-open
    # Oracle Linux
    sudo rpm -i DOWNLOADED_FILE_NAME
    sudo dnf install \
        https://dl.fedoraproject.org/pub/epel/epel-release-latest-`grep -oP '(?<=release )\d+' /etc/redhat-release`.noarch.rpm \
        https://dl.fedoraproject.org/pub/epel/epel-next-release-latest-`grep -oP '(?<=release )\d+' /etc/redhat-release`.noarch.rpm
    sudo dnf clean all
-   sudo dnf -y module install nvidia-driver:latest-dkms
+   sudo dnf -y module enable nvidia-driver:580-open
+   sudo dnf -y install nvidia-open
    ```
 
    With the `--silent` install on Ubuntu and other non-RHEL distros, you will see warnings that are similar to the following (they can be ignored):

@@ -14,6 +14,8 @@ Once your SageMaker endpoint reaches `InService`, run a client script against it
 
 The repository is organized by product and by language. Pick the script that matches the model you deployed (Flux, Nova-3, or Aura) and the language you want to work in (Python, Node.js, or Java). The scripts are load-testing clients first and functional smoke tests second — running any of them with a single connection is the fastest way to prove that your endpoint accepts traffic and returns results.
 
+Prefer to have an AI coding assistant run the smoke test for you? Install the Deepgram SageMaker skill — see [Agent-assisted setup](/docs/amazon-sagemaker#agent-assisted-setup).
+
 The scripts evolve independently. Flags, defaults, and input formats differ between products and between languages. Always read the `README.md` inside the subdirectory you intend to run before invoking a script.
 
 ## High-level process
@@ -55,13 +57,14 @@ Invoke the script with your endpoint name, AWS region, and any product-specific 
 
 Each Deepgram product has a dedicated script because the SageMaker payload shape and the protocol on top of it differ per model. Run the script that matches the model you deployed.
 
-| Product                   | Language | Path in dg-sagemaker                          | Script                                                          |
-| ------------------------- | -------- | --------------------------------------------- | --------------------------------------------------------------- |
-| Flux (conversational STT) | Python   | `python-flux/`                                | `flux_stress.py file \| microphone \| list-endpoints`           |
-| Nova-3 (streaming STT)    | Python   | `python-stt/`                                 | `stt_microphone_stress.py`, `stt_wav_stress.py stream \| batch` |
-| Nova-3 (streaming STT)    | Node.js  | `js-stt/`                                     | `stress-stt.ts` (configured via `stt.file.ts`)                  |
-| Nova-3 (streaming STT)    | Java     | `java/stt/aws-sdk/`, `java/stt/deepgram-sdk/` | Gradle projects; see each project's README                      |
-| Aura (text-to-speech)     | Python   | `python-tts/`                                 | `tts_stress.py`                                                 |
+| Product                   | Language | Path in dg-sagemaker                          | Script                                                                                                                                                                                                                 |
+| ------------------------- | -------- | --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Any (one-shot smoke test) | Python   | `skills/deepgram-sagemaker/scripts/`          | `invoke_test.py <endpoint> --region <region> --product <product>` — sends one real request, choosing the streaming or synchronous path and the required parameters for the product, and prints the exact request shape |
+| Flux (conversational STT) | Python   | `python-flux/`                                | `flux_stress.py file \| microphone \| list-endpoints`                                                                                                                                                                  |
+| Nova-3 (streaming STT)    | Python   | `python-stt/`                                 | `stt_microphone_stress.py`, `stt_wav_stress.py stream \| batch`                                                                                                                                                        |
+| Nova-3 (streaming STT)    | Node.js  | `js-stt/`                                     | `stress-stt.ts` (configured via `stt.file.ts`)                                                                                                                                                                         |
+| Nova-3 (streaming STT)    | Java     | `java/stt/aws-sdk/`, `java/stt/deepgram-sdk/` | Gradle projects; see each project's README                                                                                                                                                                             |
+| Aura (text-to-speech)     | Python   | `python-tts/`                                 | `tts_stress.py`                                                                                                                                                                                                        |
 
 Invocation flags, defaults, and required inputs vary per script. Consult the `README.md` in each subdirectory for the full command reference. For example, the Flux client uses the `/v2/listen` endpoint and a turn-based protocol, while the Nova-3 client uses `/v1/listen` with channel-based alternatives.
 
@@ -120,7 +123,7 @@ Verify the identity the scripts will use:
 aws sts get-caller-identity
 ```
 
-Most scripts accept a `--region` flag and default to `us-east-1` (or `us-east-2` for `python-tts`). **Make sure the region you pass matches the region where your SageMaker endpoint was deployed** — an endpoint name is only resolvable within the region it was created in.
+Every script accepts a `--region` flag. Defaults differ by script: `flux_stress.py` and `stt_microphone_stress.py` default to `us-east-1`; `stt_wav_stress.py` and `tts_stress.py` default to `us-east-2`; `invoke_test.py` has no default and requires `--region` (or `AWS_REGION`). **Make sure the region you pass matches the region where your SageMaker endpoint was deployed** — an endpoint name is only resolvable within the region it was created in.
 
 If you are not sure which endpoints exist in a region, use the Flux client's helper subcommand to list them:
 

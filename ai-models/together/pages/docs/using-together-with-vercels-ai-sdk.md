@@ -219,33 +219,3 @@ Available models:
 * `black-forest-labs/FLUX.1-kontext-max`.
 
 See the [Together AI models page](/docs/serverless/models#image-models) for a full list of available image models and their capabilities.
-
-## Embedding models
-
-To embed text with Together AI models using the Vercel AI SDK, use the `.embeddingModel()` factory method.
-For more on embedding models with the AI SDK see [embed()](https://ai-sdk.dev/docs/reference/ai-sdk-core/embed).
-
-```typescript TypeScript theme={null}
-import { createTogetherAI } from '@ai-sdk/togetherai';
-import { embed } from 'ai';
-
-const togetherai = createTogetherAI({
-  apiKey: process.env.TOGETHER_API_KEY ?? '',
-});
-
-const { embedding } = await embed({
-  model: togetherai.embeddingModel('intfloat/multilingual-e5-large-instruct'),
-  value: 'sunny day at the beach',
-});
-```
-
-<Note>
-  For a complete list of available embedding models and their model IDs, see the [Together AI models
-  page](/docs/serverless/models#embedding-models).
-</Note>
-
-Some available model IDs include:
-
-* `intfloat/multilingual-e5-large-instruct`.
-
-***

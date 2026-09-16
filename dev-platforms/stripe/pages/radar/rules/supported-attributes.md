@@ -751,7 +751,7 @@ These attributes allow you to take actions (such as submitting accounts for revi
 
 | Attribute | Type | Example value | **Description** |
 | --- | --- | --- | --- |
-| `account_risk_level` | Case-insensitive string | normal | The risk level of a given account, as determined by Stripe. The supported values are: `normal`, `elevated`, and `highest`. An elevated account risk score means the account causes financial loss 50% of the time. A highest account risk score means the account causes financial loss 90% of the time. |
+| `account_fraud_risk_level` | Case-insensitive string | normal | The fraud risk level of a given account, as determined by Stripe. The supported values are: `normal`, `elevated`, and `highest`. An elevated account fraud risk score means the account causes financial loss 50% of the time. A highest account fraud risk score means the account causes financial loss 90% of the time. |
 | `account_fraud_risk_score` | Numeric | 75 | The fraud risk score (0–100) for a connected account, as determined by Stripe. This score represents the probability that an account is fraudulent, with higher values indicating greater fraud risk. |
 
 #### Account attributes

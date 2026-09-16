@@ -48,7 +48,7 @@ To disable form detection for your site:
 1. In the Netlify UI, go to 
 ### NavigationPath Component:
 
-Forms > Usage and configuration > Form detection
+Forms > Form detection
 .
 
 2. Select **Disable form detection**.
@@ -68,7 +68,7 @@ If you previously used Netlify Forms and disabled automatic form detection, foll
 1. In the Netlify UI, go to 
 ### NavigationPath Component:
 
-Forms > Usage and configuration > Form detection
+Forms > Form detection
 .
 
 2. Select **Enable form detection**.
@@ -368,7 +368,7 @@ To set up notifications for your site's form submissions:
 1. For your site go to 
 ### NavigationPath Component:
 
-Configuration > Notifications > Form submission notifications
+Forms > Submission notifications
 , and select **Add notification**.
 
 ## Review forms usage
@@ -378,7 +378,7 @@ For the last month (or billing period), you can review how many verified form su
 1. For your site, go to 
 ### NavigationPath Component:
 
-Forms > Usage and configuration > Usage
+Forms > Usage
 .
 
 Learn more about [reviewing and managing forms usage](/manage/forms/usage-and-billing).

@@ -17,15 +17,15 @@ Most of the models below are for instant [serverless inference](/docs/serverless
 | **Chat**                     | Kimi K3           | `moonshotai/Kimi-K3`                 | `zai-org/GLM-5.3`, `Qwen3.8-2.4T-A95B`                     | [Chat completions](/docs/inference/chat/overview)             |
 | **Reasoning**                | Kimi K3           | `moonshotai/Kimi-K3`                 | `deepseek-ai/DeepSeek-V4-Pro-0813`, `zai-org/GLM-5.3`      | [Reasoning](/docs/inference/chat/reasoning)                   |
 | **Coding agents**            | GLM-5.3           | `zai-org/GLM-5.3`                    | `moonshotai/Kimi-K3`, `deepseek-ai/DeepSeek-V4-Flash-0731` | [Build coding agents](/docs/how-to-build-coding-agents)       |
-| **Small and fast**           | Qwen3.8 27B       | `Qwen/Qwen3.8-27B`                   | `google/gemma-4-31B-it`, `Qwen/Qwen3.5-9B`                 | -                                                             |
+| **Small and fast**           | Qwen3.5 9B        | `Qwen/Qwen3.5-9B`                    | `Qwen/Qwen3.8-Flash`                                       | -                                                             |
 | **Mid-size general purpose** | DeepSeek V4 Flash | `deepseek-ai/DeepSeek-V4-Flash-0731` | `zai-org/GLM-5.3-Flash`                                    | -                                                             |
-| **Function calling**         | GLM-5.3 Flash     | `zai-org/GLM-5.3-Flash`              | \`deepseek-ai/DeepSeek-V4-Flash-0731                       | [Function calling](/docs/inference/function-calling/overview) |
+| **Function calling**         | GLM-5.3 Flash     | `zai-org/GLM-5.3-Flash`              | `deepseek-ai/DeepSeek-V4-Flash-0731`                       | [Function calling](/docs/inference/function-calling/overview) |
 
 ## Vision
 
-| Use case   | Recommended model | Model string        | Alternatives                                 | Learn more                                                                                  |
-| :--------- | :---------------- | :------------------ | :------------------------------------------- | :------------------------------------------------------------------------------------------ |
-| **Vision** | Qwen3.8 2.4T A95B | `Qwen3.8-2.4T-A95B` | `moonshotai/Kimi-K3`, `MiniMaxAI/MiniMax-M3` | [Vision](/docs/inference/vision/overview), [OCR quickstart](/docs/quickstart-how-to-do-ocr) |
+| Use case   | Recommended model | Model string             | Alternatives                                 | Learn more                                                                                  |
+| :--------- | :---------------- | :----------------------- | :------------------------------------------- | :------------------------------------------------------------------------------------------ |
+| **Vision** | Qwen3.8 2.4T A95B | `Qwen/Qwen3.8-2.4T-A95B` | `moonshotai/Kimi-K3`, `MiniMaxAI/MiniMax-M3` | [Vision](/docs/inference/vision/overview), [OCR quickstart](/docs/quickstart-how-to-do-ocr) |
 
 ## Image generation
 
@@ -48,12 +48,11 @@ Most of the models below are for instant [serverless inference](/docs/serverless
 | **Text-to-speech** | Cartesia Sonic 3                       | `cartesia/sonic-3`                       | `canopylabs/orpheus-3b-0.1-ft`, `hexgrad/Kokoro-82M` | [Text-to-speech](/docs/inference/text-to-speech/overview) |
 | **Speech-to-text** | NVIDIA Nemotron 3.5 ASR Streaming 0.6B | `nvidia/nemotron-3.5-asr-streaming-0.6b` | `openai/whisper-large-v3`                            | [Speech-to-text](/docs/inference/transcription/overview)  |
 
-## Embeddings and rerank
+## Rerank
 
-| Use case       | Recommended model       | Model string                              | Notes                                                                   | Learn more                                                                                                               |
-| :------------- | :---------------------- | :---------------------------------------- | :---------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------- |
-| **Embeddings** | Multilingual E5 Large   | `intfloat/multilingual-e5-large-instruct` | -                                                                       | [Embeddings](/reference/embeddings-2)                                                                                    |
-| **Rerank**     | MixedBread Rerank Large | `mixedbread-ai/Mxbai-Rerank-Large-V2`     | Only on [dedicated model inference](/docs/dedicated-endpoints/overview) | [Rerank](/docs/inference/embeddings/rerank), [Improve search with rerankers](/docs/how-to-improve-search-with-rerankers) |
+| Use case   | Recommended model       | Model string                          | Notes                                                                                                             | Learn more                                  |
+| :--------- | :---------------------- | :------------------------------------ | :---------------------------------------------------------------------------------------------------------------- | :------------------------------------------ |
+| **Rerank** | MixedBread Rerank Large | `mixedbread-ai/Mxbai-Rerank-Large-V2` | Create a [dedicated endpoint](/docs/dedicated-endpoints/overview) to use rerank models. Not available serverless. | [Rerank](/docs/inference/embeddings/rerank) |
 
 ## Related resources
 

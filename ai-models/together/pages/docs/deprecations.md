@@ -105,12 +105,7 @@ When a model is deprecated on the serverless platform, you have three options:
 
 The following models are deprecated and will be removed from serverless inference on the date listed. Migrate to the recommended replacement or a [dedicated endpoint](/docs/dedicated-endpoints) before that date.
 
-| Removal date | Model                                     | Recommended replacement | Supported by on-demand dedicated endpoints |
-| :----------- | :---------------------------------------- | :---------------------- | :----------------------------------------- |
-| 2026-09-14   | `openai/gpt-oss-20b`                      | `Qwen/Qwen3.5-9B`       | Yes                                        |
-| 2026-09-14   | `google/gemma-4-31B-it`                   | `zai-org/GLM-5.3-Flash` | Yes                                        |
-| 2026-09-14   | `thinkingmachines/Inkling-Small`          | `zai-org/GLM-5.3-Flash` | Yes                                        |
-| 2026-09-14   | `intfloat/multilingual-e5-large-instruct` |                         | No                                         |
+No models are currently scheduled for deprecation.
 
 ## Deprecation history
 
@@ -120,6 +115,10 @@ The table below lists all models removed from serverless inference, most recent 
 
 | Removal date                | Model                                               | Supported by on-demand dedicated endpoints |
 | :-------------------------- | :-------------------------------------------------- | :----------------------------------------- |
+| 2026-09-15                  | `openai/gpt-oss-20b`                                | Yes                                        |
+| 2026-09-15                  | `google/gemma-4-31B-it`                             | Yes                                        |
+| 2026-09-15                  | `thinkingmachines/Inkling-Small`                    | Yes                                        |
+| 2026-09-15                  | `intfloat/multilingual-e5-large-instruct`           | No                                         |
 | 2026-08-27                  | `nvidia/Nemotron-3-ultra-550b-a55b`                 | No                                         |
 | 2026-08-27                  | `pearl-ai/gemma-4-31b-it`                           | No                                         |
 | 2026-08-27                  | `deepseek-ai/DeepSeek-V4-Pro`                       | Yes                                        |

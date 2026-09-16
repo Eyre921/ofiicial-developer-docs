@@ -12,7 +12,9 @@ path: docs/terraform-deploy-sagemaker
 
 > Deploy a Deepgram SageMaker Endpoint with Terraform using an AWS Marketplace Model Package ARN. Includes IAM role, endpoint configuration, auto-scaling, and optional environment variable overrides.
 
-This guide provides a complete Terraform configuration for deploying Deepgram on Amazon SageMaker. The configuration creates an IAM execution role, a SageMaker Model from your AWS Marketplace subscription, an Endpoint Configuration, and a live Endpoint. An optional module adds auto-scaling. The same configuration can deploy either a real-time endpoint (the default) or an asynchronous endpoint that processes large pre-recorded files from S3 and can scale to zero — set `enable_async_inference = true`.
+This guide provides a complete Terraform configuration for deploying Deepgram on Amazon SageMaker. The configuration creates an IAM execution role, a SageMaker Model from your AWS Marketplace subscription, an Endpoint Configuration, and a live Endpoint. An optional module adds auto-scaling. The configuration deploys a real-time endpoint by default; it also contains an `enable_async_inference` option for asynchronous endpoints, which is currently unsupported (see the warning below).
+
+**Asynchronous endpoints are temporarily not supported.** Asynchronous inference (`enable_async_inference = true`, `async_inference_config`, `InvokeEndpointAsync`, scale-to-zero) is temporarily unavailable for Marketplace-hosted Deepgram. Leave `enable_async_inference` at its default of `false`; the async variables and resources below are documented for reference only. Need asynchronous processing? Contact a [Deepgram representative](https://deepgram.com/contact-us).
 
 Before running Terraform, you must subscribe to a Deepgram product on the AWS Marketplace and note the **Model Package ARN**. See [Subscribe on AWS Marketplace](/docs/subscribe-aws-marketplace) for the console and Marketplace API subscription flows and how to [find the Model Package ARN](/docs/subscribe-aws-marketplace#find-the-model-package-arn).
 
@@ -144,7 +146,7 @@ variable "autoscaling_target_value" {
 }
 
 variable "enable_async_inference" {
-  description = "Deploy an asynchronous endpoint (queued, S3 in/out) instead of a real-time endpoint. Async endpoints accept only asynchronous invocations."
+  description = "Deploy an asynchronous endpoint (queued, S3 in/out) instead of a real-time endpoint. TEMPORARILY UNSUPPORTED for Marketplace-hosted Deepgram - leave false."
   type        = bool
   default     = false
 }

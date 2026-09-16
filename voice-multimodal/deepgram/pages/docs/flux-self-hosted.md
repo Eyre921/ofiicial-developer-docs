@@ -21,7 +21,7 @@ Please familiarize yourself with these general requirements before attempting to
 * You must use Deepgram container images from October 2025 or later (`release-251015`)
 * The Flux model file must be added to your `engine` models directory
 
-Flux is not supported on the NVIDIA T4 or similar older GPUs due to their compute capabilities. Run Flux on a newer NVIDIA GPU (Ampere generation or later) such as the NVIDIA A10, L4, L40S, A100, or H100.
+Flux is not supported on the NVIDIA T4 or similar older GPUs due to their compute capabilities. Run Flux on a newer NVIDIA GPU (Ampere generation or later) such as the NVIDIA A10, L4, L40S, A100, H100, or a Blackwell-generation GPU.
 
 Unlike the Nova family of models, Flux **cannot co-exist with other STT models on the same Engine node**. This means you must provision a dedicated server specifically for handling Flux requests. For optimal streaming performance, we also recommend provisioning a **separate API node** to route Flux requests to your Flux-configured Engine node.
 
@@ -120,7 +120,10 @@ Earlier Deepgram Speech-to-Text (STT) models (including Nova-3 and Nova-2) are s
 ```toml Deepgram API Configuration
 [features]
 listen_v2 = true
+listen_v2_force_end_turn = true
 ```
+
+`listen_v2_force_end_turn` is optional and enables the [`ForceEndTurn`](/docs/flux/force-end-turn) control message, which lets your client end the current turn immediately rather than waiting for Flux to detect the end of speech. Omit it if you only need model-detected turn ends.
 
 ## Deepgram Self-Hosted Logs
 

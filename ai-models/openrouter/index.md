@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 417 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 427 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -115,6 +115,13 @@
 - `docs/api/api-reference/scim/update-a-scim-group-mapping` — [Update a SCIM group mapping](pages/docs/api/api-reference/scim/update-a-scim-group-mapping.md) · [原文](https://openrouter.ai/docs/api/api-reference/scim/update-a-scim-group-mapping.md)
 - `docs/api/api-reference/stt/create-transcription` — [Create transcription](pages/docs/api/api-reference/stt/create-transcription.md) · [原文](https://openrouter.ai/docs/api/api-reference/stt/create-transcription.md)
 - `docs/api/api-reference/tts/create-speech` — [Create speech](pages/docs/api/api-reference/tts/create-speech.md) · [原文](https://openrouter.ai/docs/api/api-reference/tts/create-speech.md)
+- `docs/api/api-reference/vault/copy-workspace-secrets-to-an-intern` — [Copy workspace secrets to an intern](pages/docs/api/api-reference/vault/copy-workspace-secrets-to-an-intern.md) · [原文](https://openrouter.ai/docs/api/api-reference/vault/copy-workspace-secrets-to-an-intern.md)
+- `docs/api/api-reference/vault/delete-a-workspace-secret` — [Delete a workspace secret](pages/docs/api/api-reference/vault/delete-a-workspace-secret.md) · [原文](https://openrouter.ai/docs/api/api-reference/vault/delete-a-workspace-secret.md)
+- `docs/api/api-reference/vault/delete-an-intern-secret` — [Delete an intern secret](pages/docs/api/api-reference/vault/delete-an-intern-secret.md) · [原文](https://openrouter.ai/docs/api/api-reference/vault/delete-an-intern-secret.md)
+- `docs/api/api-reference/vault/list-intern-secrets` — [List intern secrets](pages/docs/api/api-reference/vault/list-intern-secrets.md) · [原文](https://openrouter.ai/docs/api/api-reference/vault/list-intern-secrets.md)
+- `docs/api/api-reference/vault/list-workspace-secrets` — [List workspace secrets](pages/docs/api/api-reference/vault/list-workspace-secrets.md) · [原文](https://openrouter.ai/docs/api/api-reference/vault/list-workspace-secrets.md)
+- `docs/api/api-reference/vault/store-a-workspace-secret` — [Store a workspace secret](pages/docs/api/api-reference/vault/store-a-workspace-secret.md) · [原文](https://openrouter.ai/docs/api/api-reference/vault/store-a-workspace-secret.md)
+- `docs/api/api-reference/vault/store-an-intern-secret` — [Store an intern secret](pages/docs/api/api-reference/vault/store-an-intern-secret.md) · [原文](https://openrouter.ai/docs/api/api-reference/vault/store-an-intern-secret.md)
 - `docs/api/api-reference/video-generation/download-generated-video-content` — [Download generated video content](pages/docs/api/api-reference/video-generation/download-generated-video-content.md) · [原文](https://openrouter.ai/docs/api/api-reference/video-generation/download-generated-video-content.md)
 - `docs/api/api-reference/video-generation/list-all-video-generation-models` — [List all video generation models](pages/docs/api/api-reference/video-generation/list-all-video-generation-models.md) · [原文](https://openrouter.ai/docs/api/api-reference/video-generation/list-all-video-generation-models.md)
 - `docs/api/api-reference/video-generation/poll-video-generation-status` — [Poll video generation status](pages/docs/api/api-reference/video-generation/poll-video-generation-status.md) · [原文](https://openrouter.ai/docs/api/api-reference/video-generation/poll-video-generation-status.md)
@@ -178,6 +185,7 @@
 - `docs/client-sdks/go/sdks/scim/readme` — [Scim](pages/docs/client-sdks/go/sdks/scim/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/scim/README.md)
 - `docs/client-sdks/go/sdks/stt/readme` — [STT](pages/docs/client-sdks/go/sdks/stt/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/stt/README.md)
 - `docs/client-sdks/go/sdks/tts/readme` — [TTS](pages/docs/client-sdks/go/sdks/tts/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/tts/README.md)
+- `docs/client-sdks/go/sdks/vault/readme` — [Vault](pages/docs/client-sdks/go/sdks/vault/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/vault/README.md)
 - `docs/client-sdks/go/sdks/videogeneration/readme` — [VideoGeneration](pages/docs/client-sdks/go/sdks/videogeneration/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/videogeneration/README.md)
 - `docs/client-sdks/go/sdks/workspaces/readme` — [Workspaces](pages/docs/client-sdks/go/sdks/workspaces/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/workspaces/README.md)
 - `docs/client-sdks/overview` — [Client SDKs](pages/docs/client-sdks/overview.md) · [原文](https://openrouter.ai/docs/client-sdks/overview.md)
@@ -209,6 +217,7 @@
 - `docs/client-sdks/python/sdks/scim/readme` — [Scim](pages/docs/client-sdks/python/sdks/scim/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/scim/README.md)
 - `docs/client-sdks/python/sdks/stt/readme` — [STT](pages/docs/client-sdks/python/sdks/stt/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/stt/README.md)
 - `docs/client-sdks/python/sdks/tts/readme` — [TTS](pages/docs/client-sdks/python/sdks/tts/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/tts/README.md)
+- `docs/client-sdks/python/sdks/vault/readme` — [Vault](pages/docs/client-sdks/python/sdks/vault/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/vault/README.md)
 - `docs/client-sdks/python/sdks/videogeneration/readme` — [VideoGeneration](pages/docs/client-sdks/python/sdks/videogeneration/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/videogeneration/README.md)
 - `docs/client-sdks/python/sdks/workspaces/readme` — [Workspaces](pages/docs/client-sdks/python/sdks/workspaces/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/workspaces/README.md)
 - `docs/client-sdks/typescript/overview` — [OpenRouter TypeScript SDK](pages/docs/client-sdks/typescript/overview.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/overview.md)
@@ -381,6 +390,7 @@
 - `docs/guides/ori/eval` — [Ori Eval](pages/docs/guides/ori/eval.md) · [原文](https://openrouter.ai/docs/guides/ori/eval.md)
 - `docs/guides/ori/files` — [Where Ori writes files](pages/docs/guides/ori/files.md) · [原文](https://openrouter.ai/docs/guides/ori/files.md)
 - `docs/guides/ori/harness` — [Ori Harness](pages/docs/guides/ori/harness.md) · [原文](https://openrouter.ai/docs/guides/ori/harness.md)
+- `docs/guides/ori/vault` — [Vault secrets for interns](pages/docs/guides/ori/vault.md) · [原文](https://openrouter.ai/docs/guides/ori/vault.md)
 - `docs/guides/overview/auth/byok` — [BYOK](pages/docs/guides/overview/auth/byok.md) · [原文](https://openrouter.ai/docs/guides/overview/auth/byok.md)
 - `docs/guides/overview/auth/management-api-keys` — [Management API Keys](pages/docs/guides/overview/auth/management-api-keys.md) · [原文](https://openrouter.ai/docs/guides/overview/auth/management-api-keys.md)
 - `docs/guides/overview/auth/oauth` — [OAuth PKCE](pages/docs/guides/overview/auth/oauth.md) · [原文](https://openrouter.ai/docs/guides/overview/auth/oauth.md)

@@ -24,7 +24,7 @@ Learn more in [Billing FAQ for credit-based plans](/manage/accounts-and-billing/
 You can check your Forms service usage under 
 ### NavigationPath Component:
 
-Forms > Usage and configuration > Usage
+Forms > Usage
 . This shows your current usage level and tracks your usage of the following services:
 
 * **Submissions**: This counts the total number of verified [form submissions](/manage/forms/submissions) across all forms on your site during this billing period.
@@ -40,7 +40,7 @@ Any team member with the ability to change the configuration for your site can a
 To do this, go to 
 ### NavigationPath Component:
 
-Forms > Usage and configuration > Usage
+Forms > Usage
 , and select **Change level**. Level fees will be prorated and charged at the end of the billing cycle, to the team's payment method.
 
 ### More usage and billing resources

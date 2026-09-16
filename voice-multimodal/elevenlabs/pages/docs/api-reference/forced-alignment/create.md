@@ -66,8 +66,8 @@ Validation Error
 
 ```json
 {
-  "file": "<file: string>",
-  "text": "string"
+  "file": "<file: speech_sample.wav>",
+  "text": "Hello world, this is a test of the forced alignment API."
 }
 ```
 
@@ -77,20 +77,135 @@ Validation Error
 {
   "characters": [
     {
-      "text": "string",
-      "start": 1.1,
-      "end": 1.1
+      "text": "H",
+      "start": 0,
+      "end": 0.05
+    },
+    {
+      "text": "e",
+      "start": 0.05,
+      "end": 0.1
+    },
+    {
+      "text": "l",
+      "start": 0.1,
+      "end": 0.15
+    },
+    {
+      "text": "l",
+      "start": 0.15,
+      "end": 0.2
+    },
+    {
+      "text": "o",
+      "start": 0.2,
+      "end": 0.25
+    },
+    {
+      "text": " ",
+      "start": 0.25,
+      "end": 0.3
+    },
+    {
+      "text": "w",
+      "start": 0.3,
+      "end": 0.4
+    },
+    {
+      "text": "o",
+      "start": 0.4,
+      "end": 0.45
+    },
+    {
+      "text": "r",
+      "start": 0.45,
+      "end": 0.5
+    },
+    {
+      "text": "l",
+      "start": 0.5,
+      "end": 0.55
+    },
+    {
+      "text": "d",
+      "start": 0.55,
+      "end": 0.6
+    },
+    {
+      "text": ",",
+      "start": 0.6,
+      "end": 0.65
     }
   ],
   "words": [
     {
-      "text": "string",
-      "start": 1.1,
+      "text": "Hello",
+      "start": 0,
+      "end": 0.25,
+      "loss": 0.05
+    },
+    {
+      "text": "world,",
+      "start": 0.3,
+      "end": 0.65,
+      "loss": 0.07
+    },
+    {
+      "text": "this",
+      "start": 0.7,
+      "end": 0.95,
+      "loss": 0.04
+    },
+    {
+      "text": "is",
+      "start": 1,
       "end": 1.1,
-      "loss": 1.1
+      "loss": 0.03
+    },
+    {
+      "text": "a",
+      "start": 1.15,
+      "end": 1.2,
+      "loss": 0.02
+    },
+    {
+      "text": "test",
+      "start": 1.25,
+      "end": 1.5,
+      "loss": 0.06
+    },
+    {
+      "text": "of",
+      "start": 1.55,
+      "end": 1.65,
+      "loss": 0.03
+    },
+    {
+      "text": "the",
+      "start": 1.7,
+      "end": 1.85,
+      "loss": 0.04
+    },
+    {
+      "text": "forced",
+      "start": 1.9,
+      "end": 2.2,
+      "loss": 0.05
+    },
+    {
+      "text": "alignment",
+      "start": 2.25,
+      "end": 2.7,
+      "loss": 0.06
+    },
+    {
+      "text": "API.",
+      "start": 2.75,
+      "end": 3,
+      "loss": 0.04
     }
   ],
-  "loss": 1.1
+  "loss": 0.045
 }
 ```
 
@@ -132,7 +247,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/forced-alignment"
 
-	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"text\"\r\n\r\nstring\r\n-----011000010111000001101001--\r\n")
+	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"speech_sample.wav\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"text\"\r\n\r\nHello world, this is a test of the forced alignment API.\r\n-----011000010111000001101001--\r\n")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -160,7 +275,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'multipart/form-data; boundary=---011000010111000001101001'
-request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"text\"\r\n\r\nstring\r\n-----011000010111000001101001--\r\n"
+request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"speech_sample.wav\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"text\"\r\n\r\nHello world, this is a test of the forced alignment API.\r\n-----011000010111000001101001--\r\n"
 
 response = http.request(request)
 puts response.read_body
@@ -172,7 +287,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/forced-alignment")
   .header("Content-Type", "multipart/form-data; boundary=---011000010111000001101001")
-  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"text\"\r\n\r\nstring\r\n-----011000010111000001101001--\r\n")
+  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"speech_sample.wav\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"text\"\r\n\r\nHello world, this is a test of the forced alignment API.\r\n-----011000010111000001101001--\r\n")
   .asString();
 ```
 
@@ -186,12 +301,12 @@ $response = $client->request('POST', 'https://api.elevenlabs.io/v1/forced-alignm
   'multipart' => [
     [
         'name' => 'file',
-        'filename' => 'string',
+        'filename' => 'speech_sample.wav',
         'contents' => null
     ],
     [
         'name' => 'text',
-        'contents' => 'string'
+        'contents' => 'Hello world, this is a test of the forced alignment API.'
     ]
   ]
 ]);
@@ -204,7 +319,7 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/forced-alignment");
 var request = new RestRequest(Method.POST);
-request.AddParameter("multipart/form-data; boundary=---011000010111000001101001", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"text\"\r\n\r\nstring\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
+request.AddParameter("multipart/form-data; boundary=---011000010111000001101001", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"speech_sample.wav\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"text\"\r\n\r\nHello world, this is a test of the forced alignment API.\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -215,11 +330,11 @@ let headers = ["Content-Type": "multipart/form-data; boundary=---011000010111000
 let parameters = [
   [
     "name": "file",
-    "fileName": "string"
+    "fileName": "speech_sample.wav"
   ],
   [
     "name": "text",
-    "value": "string"
+    "value": "Hello world, this is a test of the forced alignment API."
   ]
 ]
 

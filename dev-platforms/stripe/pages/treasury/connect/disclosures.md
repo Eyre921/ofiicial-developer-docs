@@ -6,115 +6,17 @@ path: treasury/connect/disclosures
 
 # Compliance disclosures
 
-Embed Treasury and Issuing disclosure components directly on your website.
+Use required Treasury disclosure copy and embed the Issuing disclosure component on your website.
 
-Use Stripe’s disclosure components to display current compliance information for your Treasury and Issuing programs.
+Use these disclosures to display current compliance information for your Treasury and Issuing programs.
 
-## Treasury disclosure component
+## Treasury disclosure copy
 
-You can embed the Treasury disclosure component directly on your website to automatically display currently [compliant](https://docs.stripe.com/treasury/connect/compliance.md) disclosure information without requiring future code changes. Stripe updates the content rendered by the component to reflect legislation and banking partner updates.
-![The footer of the furever.dev website with the disclosure component included](https://b.stripecdn.com/docs-statics-srv/assets/disclosure-component.39ddf9371de52e1639f9e72de894f60c.png)
+Add the following disclosure to your website, replacing the placeholder with the name of your business.
 
-An example of what the disclosure component would look like added to the footer of our furever.dev demo website.
+ partners with [Stripe Payments Company](https://stripe.com/) for money transmission services and account services with funds held at Fifth Third Bank N.A., Member FDIC.
 
-### Create and mount the Treasury disclosure component
-
-#### HTML + JS
-
-To embed the disclosure component, you need to include [Stripe.js](https://docs.stripe.com/js/including) on your website.
-
-1. Add the Stripe.js script onto your page by adding it to the `head` of your HTML file:
-
-   ```html
-   <script src="https://js.stripe.com/dahlia/stripe.js"></script>
-   ```
-
-2. Create a placeholder element on your page where you want to mount the Treasury disclosure element:
-
-   ```html
-   <div id="financial-account-disclosure"></div>
-   ```
-
-3. On pages that mention Treasury on your site, include the following code to create an instance of Stripe.js and mount the Treasury disclosure element:
-
-   ```javascript
-   const stripe = Stripe('<<YOUR_PUBLISHABLE_KEY>>');
-   
-   const options = {
-     businessName: 'Your Business Name',
-     learnMoreLink: 'https://docs.stripe.com/financial-accounts/connect',
-   };
-   const {htmlElement: financialAccountDisclosure, error} =
-     await stripe.createFinancialAccountDisclosure(options);
-   
-   if (error) {
-     // Handle the error in any way you see fit.
-     console.error(error);
-   } else {
-     document
-       .getElementById('financial-account-disclosure')
-       .appendChild(financialAccountDisclosure);
-   }
-   ```
-
-| Parameter       | Description                                                                                                                                                                  | Default value                                     |
-| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
-| `businessName`  | (optional) `string`
-
-     The name of your business as you want it to appear in the disclosure text.                                                                         | The name of your business as it appears on Stripe |
-| `learnMoreLink` | (optional) `string`
-
-     A supplemental link for your users to learn more about the Financial Account product or any other relevant information included in the disclosure. | None                                              |
-
-   **Component styling**
-
-   The HTML element we render contains `<div>`, `<p>`, and `<a>` tags. You can target the `financial-account-disclosure` ID attribute to style the inner elements to match the other content on your webpage.
-
-#### React
-
-To embed the disclosure component, you need to include [Stripe.js](https://docs.stripe.com/js/including) on your website.
-
-1. Install [React Stripe.js](https://www.npmjs.com/package/@stripe/react-stripe-js) and the [Stripe.js loader](https://www.npmjs.com/package/@stripe/stripe-js) from the npm public registry.
-
-   ```bash
-   npm install --save @stripe/react-stripe-js @stripe/stripe-js
-   ```
-
-2. On pages that mention Treasury on your site, include the `FinancialAccountDisclosure` component:
-
-   ```jsx
-   import {FinancialAccountDisclosure} from '@stripe/react-stripe-js';
-   import {loadStripe} from '@stripe/stripe-js';
-   
-   const stripe = loadStripe('<<YOUR_PUBLISHABLE_KEY>>');
-   {/* ... */}
-   <FinancialAccountDisclosure
-     stripe={stripe}
-     options={{
-       businessName: 'Your Business Name',
-       learnMoreLink: 'https://docs.stripe.com/treasury/connect',
-     }}
-   />
-   ```
-
-| Prop            | Description                                                                                                                                                                  | Default value                                     |
-| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
-| `businessName`  | (optional) `string`
-
-     The name of your business as you want it to appear in the disclosure text.                                                                         | The name of your business as it appears on Stripe |
-| `learnMoreLink` | (optional) `string`
-
-     A supplemental link for your users to learn more about the Financial Account product or any other relevant information included in the disclosure. | None                                              |
-| `onLoad`        | (optional) `() => void`
-
-     Triggered after the component loads.                                                                                                           | None                                              |
-| `onError`       | (optional) `(error: Object) => void`
-
-     Triggered when the component fails to load.                                                                                       | None                                              |
-
-   **Component styling**
-
-   The React component we render contains `<div>`, `<p>`, and `<a>` tags. You can wrap the resulting component in a new ID or class attribute and style the inner elements to match the other content on your webpage.
+USD balances in financial accounts (unless otherwise indicated) are eligible for FDIC pass-through deposit insurance if the accounts meet certain requirements. The accounts are eligible only to the extent pass-through insurance is permitted by the rules and regulations of the FDIC, and if the requirements for pass-through insurance are satisfied. The FDIC insurance applies up to 250,000 USD per depositor, per financial institution, for deposits held in the same ownership category. Neither Stripe nor  is an FDIC-insured institution. The FDIC’s deposit insurance coverage only protects against the failure of an FDIC-insured depository institution.
 
 ## Issuing disclosure component
 

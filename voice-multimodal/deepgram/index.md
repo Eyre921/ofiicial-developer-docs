@@ -39,7 +39,7 @@
 - `docs/audio-intelligence` — [Getting Started](pages/docs/audio-intelligence.md) · [原文](https://developers.deepgram.com/docs/audio-intelligence.md)
 - `docs/audio-keep-alive` — [Audio Keep Alive](pages/docs/audio-keep-alive.md) · [原文](https://developers.deepgram.com/docs/audio-keep-alive.md)
 - `docs/auto-scaling-sagemaker` — [Auto-Scaling SageMaker Endpoints](pages/docs/auto-scaling-sagemaker.md) · [原文](https://developers.deepgram.com/docs/auto-scaling-sagemaker.md)
-- `docs/auto-scaling-sagemaker-async` — [Auto-Scaling Asynchronous SageMaker Endpoints (Currently Disabled)](pages/docs/auto-scaling-sagemaker-async.md) · [原文](https://developers.deepgram.com/docs/auto-scaling-sagemaker-async.md)
+- `docs/auto-scaling-sagemaker-async` — [Auto-Scaling Asynchronous SageMaker Endpoints (Temporarily Unavailable)](pages/docs/auto-scaling-sagemaker-async.md) · [原文](https://developers.deepgram.com/docs/auto-scaling-sagemaker-async.md)
 - `docs/auto-scaling-sagemaker-streaming` — [Auto-Scaling Real-Time Endpoints](pages/docs/auto-scaling-sagemaker-streaming.md) · [原文](https://developers.deepgram.com/docs/auto-scaling-sagemaker-streaming.md)
 - `docs/automatically-generating-webvtt-and-srt-captions` — [Automatically Generating WebVTT & SRT Captions](pages/docs/automatically-generating-webvtt-and-srt-captions.md) · [原文](https://developers.deepgram.com/docs/automatically-generating-webvtt-and-srt-captions.md)
 - `docs/automatically-transcribing-and-summarizing-phone-calls` — [Automatically Transcribe and Summarize Phone Calls](pages/docs/automatically-transcribing-and-summarizing-phone-calls.md) · [原文](https://developers.deepgram.com/docs/automatically-transcribing-and-summarizing-phone-calls.md)

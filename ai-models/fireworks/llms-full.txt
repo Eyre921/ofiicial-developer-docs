@@ -5003,7 +5003,7 @@ fireconnect opencode on --model glm-5p2-fast-us
 fireconnect claude on --model glm-5p3-flash-us
 ```
 
-Beginning September 1, 2026, US-only endpoints launched from that date are priced at a **50% premium** over the matching global row (`glm-5p3-flash-us`). Earlier routers keep their launch rates: `kimi-k3-us` at a 10% premium, `glm-5p2-fast-us` at parity with global GLM 5.2 Fast. Details: [US-only Serverless](/serverless/us-only-serverless).
+Beginning September 1, 2026, US-only endpoints launched from that date are priced at **1.5x** the matching global row. Kimi K3 (US) uses the same 1.5x multiplier, while `glm-5p2-fast-us` remains an exception at parity with global GLM 5.2 Fast. Details: [US-only Serverless](/serverless/us-only-serverless).
 
 ## Limits
 
@@ -25687,7 +25687,7 @@ Reserved Throughput comes with SLAs and is only available on certain models. Pri
 | ----------------------------------------------------------------------------------------------------------------- | ------------------------- | ----------------------------- | ------------------- |
 | [Kimi K3](https://app.fireworks.ai/models/fireworks/kimi-k3)                                                      | \$3.00 / \$0.30 / \$15.00 | \$3.75 / \$0.375 / \$18.75    | ✓                   |
 | [Kimi K3 Fast](https://app.fireworks.ai/models/fireworks/kimi-k3)                                                 | \$4.50 / \$0.45 / \$22.50 | —                             | ✓                   |
-| [Kimi K3 US](https://app.fireworks.ai/models/fireworks/kimi-k3)                                                   | \$3.30 / \$0.33 / \$16.50 | \$4.125 / \$0.4125 / \$20.625 |                     |
+| [Kimi K3 (US)](https://app.fireworks.ai/models/fireworks/kimi-k3)                                                 | \$4.50 / \$0.45 / \$22.50 | \$5.625 / \$0.5625 / \$28.125 |                     |
 | [Kimi K2.7 Code](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)                                        | \$0.95 / \$0.19 / \$4.00  | \$1.425 / \$0.285 / \$6.00    |                     |
 | [Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)                                                  | \$0.95 / \$0.16 / \$4.00  | \$1.50 / \$0.22 / \$6.00      |                     |
 | [DeepSeek V4.1 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash)                              | \$0.22 / \$0.007 / \$0.66 | \$0.275 / \$0.00875 / \$0.825 |                     |
@@ -25733,7 +25733,7 @@ Embeddings are billed per 1M input tokens.
 
 ## Notes
 
-* Beginning September 1, 2026, launched [US-only Serverless](/serverless/us-only-serverless) models are priced at a 50% premium to the base model serverless prices. Kimi K3 US already includes this premium, while GLM 5.2 Fast US is an exception and matches global GLM 5.2 Fast pricing.
+* Beginning September 1, 2026, launched [US-only Serverless](/serverless/us-only-serverless) models are priced at 1.5x the base model serverless prices. Kimi K3 (US) already includes this premium, while GLM 5.2 Fast US is an exception and matches global GLM 5.2 Fast pricing.
 * For account-level controls (spend tiers, monthly spend limits, on-demand GPU quotas), see [Account quotas](/guides/quotas_usage/account-quotas).
 
 
@@ -26032,7 +26032,7 @@ To require this for every request on your account, see [Data residency](/account
 
 ## Pricing
 
-Beginning September 1, 2026, launched US-only models are priced at a 50% premium to the base model serverless prices. Kimi K3 US already includes this premium, while GLM 5.2 Fast US is an exception and matches global GLM 5.2 Fast pricing. See [Serverless pricing](/serverless/pricing).
+Beginning September 1, 2026, launched US-only models are priced at 1.5x the base model serverless prices. Kimi K3 (US) already includes this premium, while GLM 5.2 Fast US is an exception and matches global GLM 5.2 Fast pricing. See [Serverless pricing](/serverless/pricing).
 
 ## Other regions
 

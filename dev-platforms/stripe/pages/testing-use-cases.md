@@ -51,6 +51,8 @@ All Stripe API requests occur in either a sandbox or *live mode* (Use this mode 
 
 Being in a sandbox in the Dashboard doesn’t affect your integration code. Your test and live mode API keys affect the behavior of your code.
 
+Sandboxes don’t move funds through real banks or card networks. Stripe provides test primitives to simulate [payout success and failure](https://docs.stripe.com/payouts.md#test-payouts), [disputes, inquiries, and early fraud warnings](https://docs.stripe.com/testing.md#disputes). Supported simulations vary by product and integration.
+
 ## Create an additional sandbox
 
 To create and set up an additional sandbox in the Dashboard:

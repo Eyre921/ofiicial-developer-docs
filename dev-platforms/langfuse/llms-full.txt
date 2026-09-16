@@ -1,3 +1,289 @@
+# Evaluate grounding
+
+**URL:** https://langfuse.com/resources/engineering/rag-faithfulness-evaluation.md
+
+---
+title: "How to evaluate RAG faithfulness with LLM-as-a-judge"
+description: "RAG faithfulness evaluation explained: what the faithfulness metric measures, how to design an LLM-as-a-judge for it, and runnable Langfuse Python SDK code."
+tags: [guide, evaluation]
+---
+
+# How to evaluate RAG faithfulness with LLM-as-a-judge
+
+**TL;DR:** Faithfulness measures whether a RAG answer is grounded in the retrieved context: extract the factual claims the answer makes, check each claim against the retrieved documents, and score the share of supported claims. It is reference-free, so it needs no ground-truth answers, which makes it the RAG metric you can run on any dataset and on live traffic. This page defines the metric, shows how to design a faithfulness judge prompt, and implements it end to end with the Langfuse Python SDK: as an offline experiment with `run_experiment`, and as a managed LLM-as-a-judge evaluator on production traces.
+
+## What RAG faithfulness measures
+
+Faithfulness (also called groundedness) is the degree to which an answer is supported by the context that was retrieved for it. A faithful answer only states things the retrieved documents say or directly imply. An unfaithful answer mixes in claims from the model's parametric knowledge, or invents details outright, even when the prose reads well and the answer happens to be correct.
+
+The standard formulation, popularized by Ragas, is claim-based:
+
+```
+faithfulness = number of claims supported by the retrieved context / total claims in the answer
+```
+
+A score of 1.0 means every claim traces back to the context. A score of 0.5 means half the answer is unsupported. Because the comparison target is the retrieved context, not a ground-truth answer, faithfulness is a reference-free metric: you can compute it for any question, including ones nobody has written an expected answer for.
+
+Faithfulness is one of three metrics that get conflated in RAG evaluation, and they answer different questions:
+
+| Metric                  | Question it answers                                              | Compared against  |
+| ----------------------- | ---------------------------------------------------------------- | ----------------- |
+| Faithfulness            | Is every claim in the answer supported by the retrieved context? | Retrieved context |
+| Answer relevance        | Does the answer address the question that was asked?             | User question     |
+| Hallucination detection | Is the model fabricating content, inside or outside a RAG flow?  | Any source        |
+
+An answer can be perfectly faithful and useless: "our refund policy covers orders" is grounded in a refund document but does not answer "how long do I have to return this?". That failure belongs to [answer relevance evaluation](/resources/engineering/answer-relevance-evaluation). Faithfulness is also narrower than hallucination detection: it is the RAG-specific, context-bounded version of the problem, checked against documents you control rather than against world knowledge.
+
+## How faithfulness is measured
+
+Faithfulness requires reading comprehension, so it is measured with an LLM judge rather than string matching. Deterministic checks like citation presence or lexical overlap are useful pre-filters, but they cannot tell a paraphrase from a fabrication. The measurement pipeline, independent of tooling, has three steps:
+
+1. **Decompose the answer into claims.** Each atomic factual statement in the answer becomes one unit of evaluation. "Refunds take 5 business days and go to the original payment method" is two claims.
+2. **Verify each claim against the retrieved context.** The judge model receives the context and one or more claims, and decides per claim whether the context states or directly implies it. World knowledge does not count as support.
+3. **Aggregate.** The share of supported claims is the faithfulness score. The list of unsupported claims is the debugging payload: it tells you which sentence to fix and whether the failure is in generation (context contained the fact, model ignored it) or retrieval (context never contained it).
+
+To run this you need the three inputs on hand at evaluation time: the question, the generated answer, and the exact context that was retrieved for that answer. This is why faithfulness evaluation and tracing are naturally coupled. If your [LLM-as-a-judge](/docs/evaluation/evaluation-methods/llm-as-a-judge) setup can see the retrieved documents next to the generation, faithfulness is a prompt away; if the context was thrown away after generation, there is nothing to verify against.
+
+## Designing a faithfulness judge prompt
+
+The judge prompt determines whether your faithfulness scores are trustworthy. Two design decisions matter most.
+
+**Claim extraction beats holistic judgment.** A holistic judge ("rate the faithfulness of this answer from 1 to 5") produces scores that drift between runs and hide what failed. A claim-extraction judge makes many small binary decisions instead: list the claims, label each one supported or unsupported. Each decision is easier for the judge model than a global rating, the aggregate score has a defined meaning (share of supported claims), and the unsupported-claim list localizes the failure for whoever reads the score comment.
+
+**Binary decisions beat graded scales.** Langfuse Academy's [evaluation module](/academy/evaluate) recommends binary pass/fail scores over 1-to-5 scales for evaluator design in general, because binary forces a definition of acceptable versus unacceptable while graded scales leave "what separates a 3 from a 4" undefined. Claim-level faithfulness gets you both properties: every judge decision is binary, and the numeric score comes from aggregation rather than from a rating the judge produces directly.
+
+Beyond those two decisions, the prompt rules that prevent the common failure modes:
+
+- **Define what counts as a claim.** Restrict extraction to factual statements. Hedges, questions back to the user, and statements of inability ("I could not find this in the documentation") are not claims and must not be penalized, otherwise the judge punishes exactly the honest behavior you want from a RAG system.
+- **Forbid outside knowledge explicitly.** Judges default to marking true statements as supported. State that a claim counts as supported only if the context says or directly implies it, even if the claim is true.
+- **Allow paraphrase.** Support does not require verbatim overlap. Without this rule the judge under-scores answers that correctly summarize the context.
+- **Demand structured output.** Have the judge return JSON with one entry per claim, and compute the score in code. Never ask the judge to do the arithmetic.
+- **Pin the judge's temperature to 0** so repeated evaluations of the same answer agree.
+
+## Run a faithfulness experiment with the Langfuse Python SDK
+
+The script below is self-contained: it creates a dataset of questions, runs a small RAG task against it, and scores every answer with a claim-extraction faithfulness judge using the Python SDK v4 experiment runner. The task returns both the answer and the contexts it used, so the evaluator receives everything it needs through the standard [experiments via SDK](/docs/evaluation/experiments/experiments-via-sdk) contract. Replace the toy corpus and retrieval function with your vector store.
+
+```python
+# pip install langfuse openai
+import json
+
+from langfuse import Evaluation, get_client
+from langfuse.openai import OpenAI  # drop-in OpenAI client, traced automatically
+
+# Reads LANGFUSE_PUBLIC_KEY, LANGFUSE_SECRET_KEY, LANGFUSE_HOST from the environment
+langfuse = get_client()
+client = OpenAI()
+
+# --- A minimal corpus and retriever standing in for your vector store ---
+
+DOCUMENTS = [
+    "Orders can be refunded within 30 days of delivery. Refunds are issued to "
+    "the original payment method within 5 business days.",
+    "Standard shipping takes 3 to 5 business days within the EU. Express "
+    "shipping delivers within 24 hours for orders placed before 2pm.",
+    "All devices include a 2-year manufacturer warranty covering hardware "
+    "defects. Water damage is not covered by the warranty.",
+]
+
+def retrieve(question: str) -> list[str]:
+    words = question.lower().split()
+    ranked = sorted(DOCUMENTS, key=lambda d: -sum(w in d.lower() for w in words))
+    return ranked[:2]
+
+# --- One-time setup: create the dataset in Langfuse ---
+
+langfuse.create_dataset(name="rag-faithfulness-demo")
+for question in [
+    "How long do I have to return an order?",
+    "When does express shipping arrive?",
+    "Does the warranty cover water damage?",
+]:
+    langfuse.create_dataset_item(
+        dataset_name="rag-faithfulness-demo",
+        input={"question": question},
+        # No expected_output: faithfulness is reference-free
+    )
+
+# --- The RAG task under evaluation ---
+
+def rag_task(*, item, **kwargs):
+    question = item.input["question"]
+    contexts = retrieve(question)
+    context_block = "\n\n".join(contexts)
+    response = client.chat.completions.create(
+        model="gpt-4.1-mini",
+        messages=[
+            {
+                "role": "system",
+                "content": "Answer using only the provided context. If the "
+                "context is insufficient, say you do not know.",
+            },
+            {
+                "role": "user",
+                "content": f"Context:\n{context_block}\n\nQuestion: {question}",
+            },
+        ],
+    )
+    # Return the contexts alongside the answer so evaluators can verify against them
+    return {
+        "answer": response.choices[0].message.content,
+        "contexts": contexts,
+    }
+
+# --- The faithfulness judge ---
+
+JUDGE_PROMPT = """You are verifying whether an answer is faithful to its source context.
+
+Context:
+{context}
+
+Answer:
+{answer}
+
+Extract every factual claim the answer makes. Hedges, questions, and statements
+of inability ("I don't know") are not claims. For each claim, decide whether the
+context supports it. A claim is supported only if the context states or directly
+implies it; paraphrase counts, outside knowledge does not, even if the claim is true.
+
+Respond with JSON only, marking each claim as supported true or false:
+{{"claims": [{{"claim": "<claim text>", "supported": true}}]}}"""
+
+
+def faithfulness(*, input, output, **kwargs):
+    context = "\n\n".join(output["contexts"])
+    response = client.chat.completions.create(
+        model="gpt-4.1",
+        messages=[
+            {
+                "role": "user",
+                "content": JUDGE_PROMPT.format(
+                    context=context, answer=output["answer"]
+                ),
+            }
+        ],
+        response_format={"type": "json_object"},
+        temperature=0,
+    )
+    claims = json.loads(response.choices[0].message.content)["claims"]
+    if not claims:
+        return Evaluation(
+            name="faithfulness", value=1.0, comment="No factual claims made"
+        )
+    unsupported = [c["claim"] for c in claims if not c["supported"]]
+    return Evaluation(
+        name="faithfulness",
+        value=1 - len(unsupported) / len(claims),
+        comment=(
+            f"Unsupported claims: {unsupported}"
+            if unsupported
+            else f"All {len(claims)} claims supported"
+        ),
+    )
+
+
+def avg_faithfulness(*, item_results, **kwargs):
+    values = [
+        e.value
+        for result in item_results
+        for e in result.evaluations
+        if e.name == "faithfulness" and isinstance(e.value, (int, float))
+    ]
+    return Evaluation(
+        name="avg_faithfulness",
+        value=sum(values) / len(values) if values else None,
+    )
+
+# --- Run the experiment ---
+
+dataset = langfuse.get_dataset("rag-faithfulness-demo")
+
+result = dataset.run_experiment(
+    name="Faithfulness baseline",
+    description="Claim-level faithfulness judge on the RAG demo dataset",
+    task=rag_task,
+    evaluators=[faithfulness],
+    run_evaluators=[avg_faithfulness],
+)
+
+print(result.format())
+```
+
+Every task execution is traced, item scores attach to the item's trace, and `avg_faithfulness` attaches to the dataset run, so consecutive runs are comparable in the Langfuse UI. From here the useful moves are comparing runs before and after a retrieval or prompt change, and turning the run-level average into a CI gate that fails a pull request when faithfulness regresses.
+
+## Score production traces with a managed LLM-as-a-judge evaluator
+
+Offline experiments cover the inputs you thought to test. The same faithfulness judgment can run on live traffic through Langfuse's managed LLM-as-a-judge evaluators, which execute server-side against production observations, without an evaluation job in your own infrastructure:
+
+1. **Instrument the context onto the target observation.** Observation-level evaluators read only the data on the observation they match; they do not load sibling observations from the trace. Record the retrieved documents on the generation (or root) observation, in its input or metadata, so the judge has something to verify against.
+2. **Create the evaluator.** On the Evaluators page, pick a managed evaluator from the catalog (maintained by Langfuse and partners including Ragas) or define a custom one with your own faithfulness prompt using `{{context}}`, `{{answer}}` style variables. The judge model is set through an LLM connection and must support structured output.
+3. **Target live observations and sample.** Filter to the observations that carry your RAG generations, then set a sampling percentage. Judging 5 to 10 percent of traffic is typically enough to see a faithfulness trend without paying to judge everything.
+4. **Map variables.** Map observation fields onto the prompt variables, with JSONPath expressions for nested data. Langfuse previews the populated judge prompt against your recent production data before you save.
+
+Scores land on the matched observations asynchronously, after the response has shipped. That makes online faithfulness scoring a monitoring and triage tool: alert when the average drops, route low-scoring traces to review, and add them to the experiment dataset above so the next release is tested against last week's failures. A check that must block an unfaithful answer before the user sees it belongs in your application as a guardrail, not in an evaluator.
+
+## Faithfulness evaluation without new infrastructure
+
+If Langfuse already traces your RAG pipeline, everything on this page runs against the deployment you have. The experiment runner is part of the same Python SDK that does the tracing, authenticates with the same API keys, and writes scores next to the traces and datasets you already accumulate. Managed evaluators run inside the same Langfuse instance. There is no separate evaluation service to deploy, no second vendor account, and no additional data pipeline to operate. Langfuse is open source and can be [self-hosted](/self-hosting), so judge inputs and scores can stay entirely within your infrastructure when data residency requires it.
+
+## Ragas faithfulness and when to use it
+
+[Ragas](https://docs.ragas.io/) is an established open-source library for RAG evaluation, and its faithfulness metric is a well-known reference implementation of the claim-decomposition approach described above. If your team already evaluates with Ragas, there is no need to rewrite those metrics: the [Ragas integration](/integrations/frameworks/ragas) shows how to run Ragas evaluations and attach the resulting scores to Langfuse traces, so Ragas faithfulness numbers land in the same score timeline as everything else.
+
+The native route on this page is the better fit when you want the judge prompt to be visible and editable in the same platform as your traces, when you want managed evaluators sampling production traffic without operating a separate evaluation job, or when faithfulness is one of several metrics (relevance, correctness, custom policy checks) that should share one dataset, one experiment run, and one score table. The two approaches also combine: Ragas offline during development, a managed judge online in production.
+
+## FAQ
+
+### What is the difference between RAG faithfulness and hallucination detection? [#faithfulness-vs-hallucination]
+
+Faithfulness is scoped to RAG: it checks the answer against the specific context retrieved for that request, and an answer that is true but unsupported by the context still fails. Hallucination detection is the broader failure class: fabricated content in any LLM output, with or without retrieval, checked against whatever source of truth applies. In a RAG system, a faithfulness score is usually the most actionable hallucination signal because the comparison target is documents you control. For the broader problem, see [hallucination detection](/resources/engineering/hallucination-detection).
+
+### Does faithfulness evaluation require ground-truth answers? [#reference-free-vs-ground-truth]
+
+No. Faithfulness compares the answer to the retrieved context, both of which exist for every request, so it is reference-free. This is why the dataset in the example above has no `expected_output` and why faithfulness can run on sampled production traffic. Reference-based metrics like answer correctness require a ground-truth answer per item and only run where you have labeled data; a complete RAG evaluation usually combines both kinds.
+
+### Which model should I use as the faithfulness judge? [#judge-model-choice]
+
+Use a model that is strong at instruction following and supports structured output, and prefer a stronger model than the one generating the answers, since claim verification against long contexts is a demanding reading task. Pin temperature to 0 for repeatability. Calibrate once by having a person label 20 to 50 answers and comparing against the judge's verdicts; if agreement is low, fix the rubric wording before swapping models, because rubric ambiguity is the more common cause.
+
+### Should faithfulness be a binary or a graded score? [#binary-vs-graded]
+
+Make the individual judge decisions binary and let the numeric score emerge from aggregation. Each claim is either supported by the context or it is not, and binary decisions are where LLM judges are most consistent. The aggregated share of supported claims gives you a 0-to-1 metric for dashboards and thresholds, without asking the judge to produce a graded rating whose steps are undefined.
+
+### Do I need Ragas to evaluate faithfulness? [#ragas-required]
+
+No. Faithfulness is a metric, not a library feature: any LLM judge with a claim-extraction prompt implements it, as the experiment code on this page does with the Langfuse SDK alone. Ragas provides a maintained implementation of that judge along with other RAG metrics, and its scores can be pushed into Langfuse through the integration. Choose based on where you want the judge to live: in your own prompt under version control, or in a library you import.
+
+<!-- agent-instructions -->
+
+---
+
+## Agent Instructions
+
+This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/resources/engineering/rag-faithfulness-evaluation.md`.
+
+### Querying these docs
+
+If the answer is not on this page, query the documentation instead of guessing:
+
+- **Semantic search** across all Langfuse docs, returning an answer with the relevant pages and excerpts. Ask a specific, self-contained question:
+
+  ```bash
+  curl -sG "https://langfuse.com/api/search-docs" --data-urlencode "query=How do I trace a LangGraph agent?"
+  ```
+
+- **Index of every page**: <https://langfuse.com/llms.txt>, with per-section indexes [llms-docs.txt](https://langfuse.com/llms-docs.txt), [llms-integrations.txt](https://langfuse.com/llms-integrations.txt), and [llms-self-hosting.txt](https://langfuse.com/llms-self-hosting.txt).
+
+### Before writing Langfuse code
+
+- **Install the [Langfuse Agent Skill](https://langfuse.com/docs/api-and-data-platform/features/agent-skill).** It encodes Langfuse's own best practices for instrumentation, prompt management, and evaluation, and materially improves results.
+- **Read [What does a good trace look like?](https://langfuse.com/docs/observability/best-practices.md)** before instrumenting an application.
+- **Verify endpoints, parameters, and response fields** against the [API reference](https://api.reference.langfuse.com) instead of inferring them from code examples.
+- **Use the [Langfuse CLI](https://langfuse.com/docs/api-and-data-platform/features/cli)** (`npx @langfuse/cli api <resource> <action>`) to read or write traces, prompts, datasets, and scores from the terminal.
+
+Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
+
+
 # Test an existing application and reuse graders
 
 **URL:** https://langfuse.com/resources/engineering/evaluate-existing-application.md
@@ -273,181 +559,6 @@ Hosted datasets are useful for sharing and versioning cases. You can also run [e
 ## Agent Instructions
 
 This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/resources/engineering/evaluate-existing-application.md`.
-
-### Querying these docs
-
-If the answer is not on this page, query the documentation instead of guessing:
-
-- **Semantic search** across all Langfuse docs, returning an answer with the relevant pages and excerpts. Ask a specific, self-contained question:
-
-  ```bash
-  curl -sG "https://langfuse.com/api/search-docs" --data-urlencode "query=How do I trace a LangGraph agent?"
-  ```
-
-- **Index of every page**: <https://langfuse.com/llms.txt>, with per-section indexes [llms-docs.txt](https://langfuse.com/llms-docs.txt), [llms-integrations.txt](https://langfuse.com/llms-integrations.txt), and [llms-self-hosting.txt](https://langfuse.com/llms-self-hosting.txt).
-
-### Before writing Langfuse code
-
-- **Install the [Langfuse Agent Skill](https://langfuse.com/docs/api-and-data-platform/features/agent-skill).** It encodes Langfuse's own best practices for instrumentation, prompt management, and evaluation, and materially improves results.
-- **Read [What does a good trace look like?](https://langfuse.com/docs/observability/best-practices.md)** before instrumenting an application.
-- **Verify endpoints, parameters, and response fields** against the [API reference](https://api.reference.langfuse.com) instead of inferring them from code examples.
-- **Use the [Langfuse CLI](https://langfuse.com/docs/api-and-data-platform/features/cli)** (`npx @langfuse/cli api <resource> <action>`) to read or write traces, prompts, datasets, and scores from the terminal.
-
-Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
-
-
-# Compare versions and inspect failures
-
-**URL:** https://langfuse.com/docs/evaluation/experiments/compare-experiments.md
-
----
-title: Compare experiments
-sidebarTitle: Compare Experiments
-description: Compare application versions against a baseline, inspect individual regressions, and review failures in Langfuse.
----
-
-# Compare experiments
-
-Compare experiment runs to decide whether a prompt, model, retrieval, or code change is ready to ship. Start with aggregate scores, then inspect cases that got worse and open their traces to understand the cause.
-
-Experiment runs can use Langfuse datasets or local data. See [Evaluate an existing application](/resources/engineering/evaluate-existing-application) to create two comparable runs in Python or TypeScript, or explore the [example project](/docs/demo).
-
-## Choose comparable runs [#choose-runs]
-
-Open [Experiments](https://cloud.langfuse.com/project/~/experiments), select the runs to compare, and open the comparison view. Choose the reviewed release run as the baseline.
-
-  ![Three experiment runs selected in the Experiments table with the Compare button available](/images/docs/experiment-comparison-selection.png)
-
-For a release decision, use the same dataset version and evaluator definitions for baseline and candidate. Record the application commit, prompt or model version, and evaluator version in experiment metadata. A dataset version fixes the test data; it does not make model outputs deterministic.
-
-You can compare runs from different data sources, but first check that the cases represent the same inputs and expected outputs. A missing case is not a passing case. For local data, preserve case identifiers in your test artifacts so your CI policy can match cases explicitly.
-
-## Inspect scores and outputs [#inspect-results]
-
-Review score, cost, and latency differences to identify tradeoffs. An improvement in average quality can hide a regression on a critical case.
-
-| Case                    | Baseline | Candidate | Decision                   |
-| ----------------------- | -------- | --------- | -------------------------- |
-| Standard refund policy  | Pass     | Fail      | Investigate the regression |
-| Sale-item refund policy | Fail     | Pass      | Review the improvement     |
-
-Both runs above have 50% accuracy. The average alone does not tell you whether the candidate is safe to release.
-
-Use score thresholds in the comparison view to narrow the results, then inspect the baseline and candidate outputs side by side. Check the score explanation against the output. If an evaluator failed or returned no result, resolve that error before treating the comparison as complete.
-
-  ![Experiment comparison showing inputs, outputs, evaluation scores, cost, and latency differences across three runs](/images/docs/experiment-comparison.png)
-
-## Investigate and review failures [#review-failures]
-
-Open the trace for a failing item. Inspect the application output and the intermediate retrievals, model calls, or tools that produced it. For example, an incorrect refund window might come from outdated retrieved policy text or from the model ignoring the correct policy.
-
-  ![Experiment item trace open beside the comparison table, showing inputs, output, scores, and annotation controls](/images/docs/experiment-comparison-peek-view.png)
-
-Separate application failures from evaluator mistakes. A good paraphrase can fail a string check; a fluent answer can still contain an unsupported claim. Use [human scores](/docs/evaluation/evaluation-methods/scores-via-ui) to record the review outcome and failure reason. Use [annotation queues](/docs/evaluation/evaluation-methods/annotation-queues) when review needs to be shared across a team.
-
-If you change the evaluator after review, re-score both versions with the same updated definition. Keep the original experiment metadata so the decision can be reproduced.
-
-## Turn the decision into a CI policy [#ci-policy]
-
-Approve a baseline explicitly and record its identity with the dataset and evaluator versions. Do not automatically replace it with every successful candidate. A useful policy combines minimum aggregate scores with checks for newly failing critical cases and incomplete results.
-
-See [Experiments in CI/CD](/docs/evaluation/experiments/experiments-ci-cd#approved-baseline) for an example. The baseline approval and gate policy live in your repository; choosing a baseline in the comparison UI does not configure a CI gate.
-
-<!-- agent-instructions -->
-
----
-
-## Agent Instructions
-
-This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/docs/evaluation/experiments/compare-experiments.md`.
-
-### Querying these docs
-
-If the answer is not on this page, query the documentation instead of guessing:
-
-- **Semantic search** across all Langfuse docs, returning an answer with the relevant pages and excerpts. Ask a specific, self-contained question:
-
-  ```bash
-  curl -sG "https://langfuse.com/api/search-docs" --data-urlencode "query=How do I trace a LangGraph agent?"
-  ```
-
-- **Index of every page**: <https://langfuse.com/llms.txt>, with per-section indexes [llms-docs.txt](https://langfuse.com/llms-docs.txt), [llms-integrations.txt](https://langfuse.com/llms-integrations.txt), and [llms-self-hosting.txt](https://langfuse.com/llms-self-hosting.txt).
-
-### Before writing Langfuse code
-
-- **Install the [Langfuse Agent Skill](https://langfuse.com/docs/api-and-data-platform/features/agent-skill).** It encodes Langfuse's own best practices for instrumentation, prompt management, and evaluation, and materially improves results.
-- **Read [What does a good trace look like?](https://langfuse.com/docs/observability/best-practices.md)** before instrumenting an application.
-- **Verify endpoints, parameters, and response fields** against the [API reference](https://api.reference.langfuse.com) instead of inferring them from code examples.
-- **Use the [Langfuse CLI](https://langfuse.com/docs/api-and-data-platform/features/cli)** (`npx @langfuse/cli api <resource> <action>`) to read or write traces, prompts, datasets, and scores from the terminal.
-
-Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
-
-
-# Choose where evaluations run
-
-**URL:** https://langfuse.com/docs/evaluation/overview.md
-
----
-title: Overview
-seoTitle: "Evaluation of LLM Applications"
-description: With Langfuse you can capture all your LLM evaluations in one place. You can combine a variety of different evaluation metrics like model-based evaluations (LLM-as-a-Judge), human annotations or fully custom evaluation workflows via API/SDKs. This allows you to measure quality, tonality, factual accuracy, completeness, and other dimensions of your LLM application.
----
-
-# Evaluation Overview
-
-Evals give you a repeatable check of your LLM application's behavior. You replace guesswork with data, and catch regressions before you ship a change.
-
-  ![Score Analytics dashboard in Langfuse showing evaluation scores trended over time across multiple evaluators.](/images/docs/score-analytics-full-dashboard.png)
-
-Evaluation runs across most of the [AI engineering loop](/academy/ai-engineering-loop): you score live traces in production, turn interesting examples into datasets, run experiments to compare changes, and judge the results with manual or automated evaluators. It happens both **online**, on live production traces, and **offline**, before you ship a change.
-
-The AI Engineering Loop:
-
-- [Trace](/academy/tracing): traces, sessions, agents, prompts
-- [Monitor](/academy/monitoring): dashboards, LLM-as-judge, feedback
-- [Build datasets](/academy/datasets): datasets, features-as-tests
-- [Experiment](/academy/experiments): prompts, models, code variants
-- [Evaluate](/academy/evaluate): judges, custom evals, annotation
-
-Want to see it in action? [**Create a free account**](/cloud) and explore Langfuse Evaluation in the [interactive example project](/docs/demo).
-
-## Getting Started
-
-You can evaluate both:
-
-- [live incoming traces](/docs/evaluation/get-started/online) to measure quality on production data and track trends over time.
-- [your existing application on a pre-defined dataset](/docs/evaluation/get-started/offline), to make sure your changes are ready for production.
-
-For more information on how evaluators, scores, datasets, and experiments fit together, read [Core Concepts](/docs/evaluation/core-concepts).
-
-To catch regressions before they ship, run experiments in CI: add the [`langfuse/experiment-action`](/docs/evaluation/experiments/experiments-ci-cd) GitHub Action to a `pull_request` workflow and raise `RegressionError` from your experiment script when a score violates your threshold; the action then fails the job. It works with Langfuse Cloud and self-hosted Langfuse.
-
-If you're looking for another specific workflow, use the table below to find the right feature page:
-
-| If you want to...                                   | Use this Langfuse feature                                                                                                                                                                                                                   |
-| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Review and rate traces manually                     | [Annotation Queues](/docs/evaluation/evaluation-methods/annotation-queues), [Scores via UI](/docs/evaluation/evaluation-methods/scores-via-ui)                                                                                              |
-| Collect feedback from your end users                | [User Feedback](/docs/observability/features/user-feedback)                                                                                                                                                                                 |
-| Leave open-ended notes on traces                    | [Text scores](/docs/evaluation/scores/overview#score-types), [Annotation Queues](/docs/evaluation/evaluation-methods/annotation-queues)                                                                                                     |
-| Build a reusable set of test cases                  | [Datasets](/docs/evaluation/experiments/datasets)                                                                                                                                                                                           |
-| Compare prompt, model, or code changes side by side | [Experiments via UI](/docs/evaluation/experiments/experiments-via-ui), [Experiments via SDK](/docs/evaluation/experiments/experiments-via-sdk), [Experiments via OpenTelemetry](/docs/evaluation/experiments/experiments-via-opentelemetry) |
-| Block deploys on regressions                        | [CI/CD experiments](/docs/evaluation/experiments/experiments-ci-cd)                                                                                                                                                                         |
-| Reuse checks in your application or CI process      | [Evaluate an existing application](/resources/engineering/evaluate-existing-application)                                                                                                                                                    |
-| Run deterministic checks                            | [Code Evaluators](/docs/evaluation/evaluation-methods/code-evaluators)                                                                                                                                                                      |
-| Automatically score live production traces          | [LLM-as-a-Judge](/docs/evaluation/evaluation-methods/llm-as-a-judge), [Scores via API/SDK](/docs/evaluation/evaluation-methods/scores-via-sdk)                                                                                              |
-| See how scores trend over time                      | [Score Analytics](/docs/evaluation/scores/score-analytics), [custom dashboards](/docs/metrics/features/custom-dashboards)                                                                                                                   |
-
-Already know what you're looking for? Browse _Evaluation Methods_ and _Experiments_ in the sidebar.
-
-## GitHub Discussions
-
-<!-- agent-instructions -->
-
----
-
-## Agent Instructions
-
-This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/docs/evaluation/overview.md`.
 
 ### Querying these docs
 
@@ -1261,261 +1372,62 @@ If the answer is not on this page, query the documentation instead of guessing:
 Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
 
 
-# Evaluate grounding
+# Compare versions and inspect failures
 
-**URL:** https://langfuse.com/resources/engineering/rag-faithfulness-evaluation.md
+**URL:** https://langfuse.com/docs/evaluation/experiments/compare-experiments.md
 
 ---
-title: "How to evaluate RAG faithfulness with LLM-as-a-judge"
-description: "RAG faithfulness evaluation explained: what the faithfulness metric measures, how to design an LLM-as-a-judge for it, and runnable Langfuse Python SDK code."
-tags: [guide, evaluation]
+title: Compare experiments
+sidebarTitle: Compare Experiments
+description: Compare application versions against a baseline, inspect individual regressions, and review failures in Langfuse.
 ---
 
-# How to evaluate RAG faithfulness with LLM-as-a-judge
+# Compare experiments
 
-**TL;DR:** Faithfulness measures whether a RAG answer is grounded in the retrieved context: extract the factual claims the answer makes, check each claim against the retrieved documents, and score the share of supported claims. It is reference-free, so it needs no ground-truth answers, which makes it the RAG metric you can run on any dataset and on live traffic. This page defines the metric, shows how to design a faithfulness judge prompt, and implements it end to end with the Langfuse Python SDK: as an offline experiment with `run_experiment`, and as a managed LLM-as-a-judge evaluator on production traces.
+Compare experiment runs to decide whether a prompt, model, retrieval, or code change is ready to ship. Start with aggregate scores, then inspect cases that got worse and open their traces to understand the cause.
 
-## What RAG faithfulness measures
+Experiment runs can use Langfuse datasets or local data. See [Evaluate an existing application](/resources/engineering/evaluate-existing-application) to create two comparable runs in Python or TypeScript, or explore the [example project](/docs/demo).
 
-Faithfulness (also called groundedness) is the degree to which an answer is supported by the context that was retrieved for it. A faithful answer only states things the retrieved documents say or directly imply. An unfaithful answer mixes in claims from the model's parametric knowledge, or invents details outright, even when the prose reads well and the answer happens to be correct.
+## Choose comparable runs [#choose-runs]
 
-The standard formulation, popularized by Ragas, is claim-based:
+Open [Experiments](https://cloud.langfuse.com/project/~/experiments), select the runs to compare, and open the comparison view. Choose the reviewed release run as the baseline.
 
-```
-faithfulness = number of claims supported by the retrieved context / total claims in the answer
-```
+  ![Three experiment runs selected in the Experiments table with the Compare button available](/images/docs/experiment-comparison-selection.png)
 
-A score of 1.0 means every claim traces back to the context. A score of 0.5 means half the answer is unsupported. Because the comparison target is the retrieved context, not a ground-truth answer, faithfulness is a reference-free metric: you can compute it for any question, including ones nobody has written an expected answer for.
+For a release decision, use the same dataset version and evaluator definitions for baseline and candidate. Record the application commit, prompt or model version, and evaluator version in experiment metadata. A dataset version fixes the test data; it does not make model outputs deterministic.
 
-Faithfulness is one of three metrics that get conflated in RAG evaluation, and they answer different questions:
+You can compare runs from different data sources, but first check that the cases represent the same inputs and expected outputs. A missing case is not a passing case. For local data, preserve case identifiers in your test artifacts so your CI policy can match cases explicitly.
 
-| Metric                  | Question it answers                                              | Compared against  |
-| ----------------------- | ---------------------------------------------------------------- | ----------------- |
-| Faithfulness            | Is every claim in the answer supported by the retrieved context? | Retrieved context |
-| Answer relevance        | Does the answer address the question that was asked?             | User question     |
-| Hallucination detection | Is the model fabricating content, inside or outside a RAG flow?  | Any source        |
+## Inspect scores and outputs [#inspect-results]
 
-An answer can be perfectly faithful and useless: "our refund policy covers orders" is grounded in a refund document but does not answer "how long do I have to return this?". That failure belongs to [answer relevance evaluation](/resources/engineering/answer-relevance-evaluation). Faithfulness is also narrower than hallucination detection: it is the RAG-specific, context-bounded version of the problem, checked against documents you control rather than against world knowledge.
+Review score, cost, and latency differences to identify tradeoffs. An improvement in average quality can hide a regression on a critical case.
 
-## How faithfulness is measured
+| Case                    | Baseline | Candidate | Decision                   |
+| ----------------------- | -------- | --------- | -------------------------- |
+| Standard refund policy  | Pass     | Fail      | Investigate the regression |
+| Sale-item refund policy | Fail     | Pass      | Review the improvement     |
 
-Faithfulness requires reading comprehension, so it is measured with an LLM judge rather than string matching. Deterministic checks like citation presence or lexical overlap are useful pre-filters, but they cannot tell a paraphrase from a fabrication. The measurement pipeline, independent of tooling, has three steps:
+Both runs above have 50% accuracy. The average alone does not tell you whether the candidate is safe to release.
 
-1. **Decompose the answer into claims.** Each atomic factual statement in the answer becomes one unit of evaluation. "Refunds take 5 business days and go to the original payment method" is two claims.
-2. **Verify each claim against the retrieved context.** The judge model receives the context and one or more claims, and decides per claim whether the context states or directly implies it. World knowledge does not count as support.
-3. **Aggregate.** The share of supported claims is the faithfulness score. The list of unsupported claims is the debugging payload: it tells you which sentence to fix and whether the failure is in generation (context contained the fact, model ignored it) or retrieval (context never contained it).
+Use score thresholds in the comparison view to narrow the results, then inspect the baseline and candidate outputs side by side. Check the score explanation against the output. If an evaluator failed or returned no result, resolve that error before treating the comparison as complete.
 
-To run this you need the three inputs on hand at evaluation time: the question, the generated answer, and the exact context that was retrieved for that answer. This is why faithfulness evaluation and tracing are naturally coupled. If your [LLM-as-a-judge](/docs/evaluation/evaluation-methods/llm-as-a-judge) setup can see the retrieved documents next to the generation, faithfulness is a prompt away; if the context was thrown away after generation, there is nothing to verify against.
+  ![Experiment comparison showing inputs, outputs, evaluation scores, cost, and latency differences across three runs](/images/docs/experiment-comparison.png)
 
-## Designing a faithfulness judge prompt
+## Investigate and review failures [#review-failures]
 
-The judge prompt determines whether your faithfulness scores are trustworthy. Two design decisions matter most.
+Open the trace for a failing item. Inspect the application output and the intermediate retrievals, model calls, or tools that produced it. For example, an incorrect refund window might come from outdated retrieved policy text or from the model ignoring the correct policy.
 
-**Claim extraction beats holistic judgment.** A holistic judge ("rate the faithfulness of this answer from 1 to 5") produces scores that drift between runs and hide what failed. A claim-extraction judge makes many small binary decisions instead: list the claims, label each one supported or unsupported. Each decision is easier for the judge model than a global rating, the aggregate score has a defined meaning (share of supported claims), and the unsupported-claim list localizes the failure for whoever reads the score comment.
+  ![Experiment item trace open beside the comparison table, showing inputs, output, scores, and annotation controls](/images/docs/experiment-comparison-peek-view.png)
 
-**Binary decisions beat graded scales.** Langfuse Academy's [evaluation module](/academy/evaluate) recommends binary pass/fail scores over 1-to-5 scales for evaluator design in general, because binary forces a definition of acceptable versus unacceptable while graded scales leave "what separates a 3 from a 4" undefined. Claim-level faithfulness gets you both properties: every judge decision is binary, and the numeric score comes from aggregation rather than from a rating the judge produces directly.
+Separate application failures from evaluator mistakes. A good paraphrase can fail a string check; a fluent answer can still contain an unsupported claim. Use [human scores](/docs/evaluation/evaluation-methods/scores-via-ui) to record the review outcome and failure reason. Use [annotation queues](/docs/evaluation/evaluation-methods/annotation-queues) when review needs to be shared across a team.
 
-Beyond those two decisions, the prompt rules that prevent the common failure modes:
+If you change the evaluator after review, re-score both versions with the same updated definition. Keep the original experiment metadata so the decision can be reproduced.
 
-- **Define what counts as a claim.** Restrict extraction to factual statements. Hedges, questions back to the user, and statements of inability ("I could not find this in the documentation") are not claims and must not be penalized, otherwise the judge punishes exactly the honest behavior you want from a RAG system.
-- **Forbid outside knowledge explicitly.** Judges default to marking true statements as supported. State that a claim counts as supported only if the context says or directly implies it, even if the claim is true.
-- **Allow paraphrase.** Support does not require verbatim overlap. Without this rule the judge under-scores answers that correctly summarize the context.
-- **Demand structured output.** Have the judge return JSON with one entry per claim, and compute the score in code. Never ask the judge to do the arithmetic.
-- **Pin the judge's temperature to 0** so repeated evaluations of the same answer agree.
+## Turn the decision into a CI policy [#ci-policy]
 
-## Run a faithfulness experiment with the Langfuse Python SDK
+Approve a baseline explicitly and record its identity with the dataset and evaluator versions. Do not automatically replace it with every successful candidate. A useful policy combines minimum aggregate scores with checks for newly failing critical cases and incomplete results.
 
-The script below is self-contained: it creates a dataset of questions, runs a small RAG task against it, and scores every answer with a claim-extraction faithfulness judge using the Python SDK v4 experiment runner. The task returns both the answer and the contexts it used, so the evaluator receives everything it needs through the standard [experiments via SDK](/docs/evaluation/experiments/experiments-via-sdk) contract. Replace the toy corpus and retrieval function with your vector store.
-
-```python
-# pip install langfuse openai
-import json
-
-from langfuse import Evaluation, get_client
-from langfuse.openai import OpenAI  # drop-in OpenAI client, traced automatically
-
-# Reads LANGFUSE_PUBLIC_KEY, LANGFUSE_SECRET_KEY, LANGFUSE_HOST from the environment
-langfuse = get_client()
-client = OpenAI()
-
-# --- A minimal corpus and retriever standing in for your vector store ---
-
-DOCUMENTS = [
-    "Orders can be refunded within 30 days of delivery. Refunds are issued to "
-    "the original payment method within 5 business days.",
-    "Standard shipping takes 3 to 5 business days within the EU. Express "
-    "shipping delivers within 24 hours for orders placed before 2pm.",
-    "All devices include a 2-year manufacturer warranty covering hardware "
-    "defects. Water damage is not covered by the warranty.",
-]
-
-def retrieve(question: str) -> list[str]:
-    words = question.lower().split()
-    ranked = sorted(DOCUMENTS, key=lambda d: -sum(w in d.lower() for w in words))
-    return ranked[:2]
-
-# --- One-time setup: create the dataset in Langfuse ---
-
-langfuse.create_dataset(name="rag-faithfulness-demo")
-for question in [
-    "How long do I have to return an order?",
-    "When does express shipping arrive?",
-    "Does the warranty cover water damage?",
-]:
-    langfuse.create_dataset_item(
-        dataset_name="rag-faithfulness-demo",
-        input={"question": question},
-        # No expected_output: faithfulness is reference-free
-    )
-
-# --- The RAG task under evaluation ---
-
-def rag_task(*, item, **kwargs):
-    question = item.input["question"]
-    contexts = retrieve(question)
-    context_block = "\n\n".join(contexts)
-    response = client.chat.completions.create(
-        model="gpt-4.1-mini",
-        messages=[
-            {
-                "role": "system",
-                "content": "Answer using only the provided context. If the "
-                "context is insufficient, say you do not know.",
-            },
-            {
-                "role": "user",
-                "content": f"Context:\n{context_block}\n\nQuestion: {question}",
-            },
-        ],
-    )
-    # Return the contexts alongside the answer so evaluators can verify against them
-    return {
-        "answer": response.choices[0].message.content,
-        "contexts": contexts,
-    }
-
-# --- The faithfulness judge ---
-
-JUDGE_PROMPT = """You are verifying whether an answer is faithful to its source context.
-
-Context:
-{context}
-
-Answer:
-{answer}
-
-Extract every factual claim the answer makes. Hedges, questions, and statements
-of inability ("I don't know") are not claims. For each claim, decide whether the
-context supports it. A claim is supported only if the context states or directly
-implies it; paraphrase counts, outside knowledge does not, even if the claim is true.
-
-Respond with JSON only, marking each claim as supported true or false:
-{{"claims": [{{"claim": "<claim text>", "supported": true}}]}}"""
-
-
-def faithfulness(*, input, output, **kwargs):
-    context = "\n\n".join(output["contexts"])
-    response = client.chat.completions.create(
-        model="gpt-4.1",
-        messages=[
-            {
-                "role": "user",
-                "content": JUDGE_PROMPT.format(
-                    context=context, answer=output["answer"]
-                ),
-            }
-        ],
-        response_format={"type": "json_object"},
-        temperature=0,
-    )
-    claims = json.loads(response.choices[0].message.content)["claims"]
-    if not claims:
-        return Evaluation(
-            name="faithfulness", value=1.0, comment="No factual claims made"
-        )
-    unsupported = [c["claim"] for c in claims if not c["supported"]]
-    return Evaluation(
-        name="faithfulness",
-        value=1 - len(unsupported) / len(claims),
-        comment=(
-            f"Unsupported claims: {unsupported}"
-            if unsupported
-            else f"All {len(claims)} claims supported"
-        ),
-    )
-
-
-def avg_faithfulness(*, item_results, **kwargs):
-    values = [
-        e.value
-        for result in item_results
-        for e in result.evaluations
-        if e.name == "faithfulness" and isinstance(e.value, (int, float))
-    ]
-    return Evaluation(
-        name="avg_faithfulness",
-        value=sum(values) / len(values) if values else None,
-    )
-
-# --- Run the experiment ---
-
-dataset = langfuse.get_dataset("rag-faithfulness-demo")
-
-result = dataset.run_experiment(
-    name="Faithfulness baseline",
-    description="Claim-level faithfulness judge on the RAG demo dataset",
-    task=rag_task,
-    evaluators=[faithfulness],
-    run_evaluators=[avg_faithfulness],
-)
-
-print(result.format())
-```
-
-Every task execution is traced, item scores attach to the item's trace, and `avg_faithfulness` attaches to the dataset run, so consecutive runs are comparable in the Langfuse UI. From here the useful moves are comparing runs before and after a retrieval or prompt change, and turning the run-level average into a CI gate that fails a pull request when faithfulness regresses.
-
-## Score production traces with a managed LLM-as-a-judge evaluator
-
-Offline experiments cover the inputs you thought to test. The same faithfulness judgment can run on live traffic through Langfuse's managed LLM-as-a-judge evaluators, which execute server-side against production observations, without an evaluation job in your own infrastructure:
-
-1. **Instrument the context onto the target observation.** Observation-level evaluators read only the data on the observation they match; they do not load sibling observations from the trace. Record the retrieved documents on the generation (or root) observation, in its input or metadata, so the judge has something to verify against.
-2. **Create the evaluator.** On the Evaluators page, pick a managed evaluator from the catalog (maintained by Langfuse and partners including Ragas) or define a custom one with your own faithfulness prompt using `{{context}}`, `{{answer}}` style variables. The judge model is set through an LLM connection and must support structured output.
-3. **Target live observations and sample.** Filter to the observations that carry your RAG generations, then set a sampling percentage. Judging 5 to 10 percent of traffic is typically enough to see a faithfulness trend without paying to judge everything.
-4. **Map variables.** Map observation fields onto the prompt variables, with JSONPath expressions for nested data. Langfuse previews the populated judge prompt against your recent production data before you save.
-
-Scores land on the matched observations asynchronously, after the response has shipped. That makes online faithfulness scoring a monitoring and triage tool: alert when the average drops, route low-scoring traces to review, and add them to the experiment dataset above so the next release is tested against last week's failures. A check that must block an unfaithful answer before the user sees it belongs in your application as a guardrail, not in an evaluator.
-
-## Faithfulness evaluation without new infrastructure
-
-If Langfuse already traces your RAG pipeline, everything on this page runs against the deployment you have. The experiment runner is part of the same Python SDK that does the tracing, authenticates with the same API keys, and writes scores next to the traces and datasets you already accumulate. Managed evaluators run inside the same Langfuse instance. There is no separate evaluation service to deploy, no second vendor account, and no additional data pipeline to operate. Langfuse is open source and can be [self-hosted](/self-hosting), so judge inputs and scores can stay entirely within your infrastructure when data residency requires it.
-
-## Ragas faithfulness and when to use it
-
-[Ragas](https://docs.ragas.io/) is an established open-source library for RAG evaluation, and its faithfulness metric is a well-known reference implementation of the claim-decomposition approach described above. If your team already evaluates with Ragas, there is no need to rewrite those metrics: the [Ragas integration](/integrations/frameworks/ragas) shows how to run Ragas evaluations and attach the resulting scores to Langfuse traces, so Ragas faithfulness numbers land in the same score timeline as everything else.
-
-The native route on this page is the better fit when you want the judge prompt to be visible and editable in the same platform as your traces, when you want managed evaluators sampling production traffic without operating a separate evaluation job, or when faithfulness is one of several metrics (relevance, correctness, custom policy checks) that should share one dataset, one experiment run, and one score table. The two approaches also combine: Ragas offline during development, a managed judge online in production.
-
-## FAQ
-
-### What is the difference between RAG faithfulness and hallucination detection? [#faithfulness-vs-hallucination]
-
-Faithfulness is scoped to RAG: it checks the answer against the specific context retrieved for that request, and an answer that is true but unsupported by the context still fails. Hallucination detection is the broader failure class: fabricated content in any LLM output, with or without retrieval, checked against whatever source of truth applies. In a RAG system, a faithfulness score is usually the most actionable hallucination signal because the comparison target is documents you control. For the broader problem, see [hallucination detection](/resources/engineering/hallucination-detection).
-
-### Does faithfulness evaluation require ground-truth answers? [#reference-free-vs-ground-truth]
-
-No. Faithfulness compares the answer to the retrieved context, both of which exist for every request, so it is reference-free. This is why the dataset in the example above has no `expected_output` and why faithfulness can run on sampled production traffic. Reference-based metrics like answer correctness require a ground-truth answer per item and only run where you have labeled data; a complete RAG evaluation usually combines both kinds.
-
-### Which model should I use as the faithfulness judge? [#judge-model-choice]
-
-Use a model that is strong at instruction following and supports structured output, and prefer a stronger model than the one generating the answers, since claim verification against long contexts is a demanding reading task. Pin temperature to 0 for repeatability. Calibrate once by having a person label 20 to 50 answers and comparing against the judge's verdicts; if agreement is low, fix the rubric wording before swapping models, because rubric ambiguity is the more common cause.
-
-### Should faithfulness be a binary or a graded score? [#binary-vs-graded]
-
-Make the individual judge decisions binary and let the numeric score emerge from aggregation. Each claim is either supported by the context or it is not, and binary decisions are where LLM judges are most consistent. The aggregated share of supported claims gives you a 0-to-1 metric for dashboards and thresholds, without asking the judge to produce a graded rating whose steps are undefined.
-
-### Do I need Ragas to evaluate faithfulness? [#ragas-required]
-
-No. Faithfulness is a metric, not a library feature: any LLM judge with a claim-extraction prompt implements it, as the experiment code on this page does with the Langfuse SDK alone. Ragas provides a maintained implementation of that judge along with other RAG metrics, and its scores can be pushed into Langfuse through the integration. Choose based on where you want the judge to live: in your own prompt under version control, or in a library you import.
+See [Experiments in CI/CD](/docs/evaluation/experiments/experiments-ci-cd#approved-baseline) for an example. The baseline approval and gate policy live in your repository; choosing a baseline in the comparison UI does not configure a CI gate.
 
 <!-- agent-instructions -->
 
@@ -1523,7 +1435,7 @@ No. Faithfulness is a metric, not a library feature: any LLM judge with a claim-
 
 ## Agent Instructions
 
-This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/resources/engineering/rag-faithfulness-evaluation.md`.
+This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/docs/evaluation/experiments/compare-experiments.md`.
 
 ### Querying these docs
 
@@ -1771,167 +1683,63 @@ If the answer is not on this page, query the documentation instead of guessing:
 Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
 
 
-# Self-hosted pricing and license
+# Choose where evaluations run
 
-**URL:** https://langfuse.com/pricing-self-host.md
+**URL:** https://langfuse.com/docs/evaluation/overview.md
 
 ---
-title: Self-Hosted Pricing
-description: Deploy Langfuse OSS today. Upgrade to Enterprise at any time.
+title: Overview
+seoTitle: "Evaluation of LLM Applications"
+description: With Langfuse you can capture all your LLM evaluations in one place. You can combine a variety of different evaluation metrics like model-based evaluations (LLM-as-a-Judge), human annotations or fully custom evaluation workflows via API/SDKs. This allows you to measure quality, tonality, factual accuracy, completeness, and other dimensions of your LLM application.
 ---
 
-# Self-Hosted Pricing
+# Evaluation Overview
 
-Deploy Langfuse OSS today. Upgrade to Enterprise at any time. See also: [Cloud pricing](/pricing).
+Evals give you a repeatable check of your LLM application's behavior. You replace guesswork with data, and catch regressions before you ship a change.
 
-## Plans
+  ![Score Analytics dashboard in Langfuse showing evaluation scores trended over time across multiple evaluators.](/images/docs/score-analytics-full-dashboard.png)
 
-### Open Source (Free)
+Evaluation runs across most of the [AI engineering loop](/academy/ai-engineering-loop): you score live traces in production, turn interesting examples into datasets, run experiments to compare changes, and judge the results with manual or automated evaluators. It happens both **online**, on live production traces, and **offline**, before you ship a change.
 
-Self-host all core Langfuse features for free without any limitations.
+The AI Engineering Loop:
 
-- MIT License
-- All core platform features and APIs (observability, evaluation, prompt management, datasets, etc.)
-- Scalability of Langfuse Cloud
-- Deployment docs & Helm chart
-- Enterprise SSO and RBAC
-- Community support
-- Unlimited units / usage
+- [Trace](/academy/tracing): traces, sessions, agents, prompts
+- [Monitor](/academy/monitoring): dashboards, LLM-as-judge, feedback
+- [Build datasets](/academy/datasets): datasets, features-as-tests
+- [Experiment](/academy/experiments): prompts, models, code variants
+- [Evaluate](/academy/evaluate): judges, custom evals, annotation
 
-[Deployment guide](/self-hosting)
+Want to see it in action? [**Create a free account**](/cloud) and explore Langfuse Evaluation in the [interactive example project](/docs/demo).
 
-### Self-Hosted Enterprise (Custom Pricing)
+## Getting Started
 
-Dedicated Langfuse deployment with enterprise capabilities and support. Bundled with ClickHouse Cloud, ClickHouse BYOC, or ClickHouse Private.
+You can evaluate both:
 
-- All Open Source features plus management APIs, project-level RBAC, data retention policies, and audit logs
-- Bundled with ClickHouse Cloud, ClickHouse BYOC, or ClickHouse Private
-- Langfuse pricing is additive to your ClickHouse commercial plan
-- Named lead support engineer for deployment and hosting guidance
-- Solutions architect support during evaluation and rollout
-- Direct access to the product team for feedback
-- SOC 2 Type II and ISO 27001 reports
-- Hardening for Government (in development)
-- Support SLA
-- Billing via AWS Marketplace or invoice
+- [live incoming traces](/docs/evaluation/get-started/online) to measure quality on production data and track trends over time.
+- [your existing application on a pre-defined dataset](/docs/evaluation/get-started/offline), to make sure your changes are ready for production.
 
-[Talk to sales](/talk-to-us?deployment=self-hosted) | [Enterprise FAQ](/enterprise)
+For more information on how evaluators, scores, datasets, and experiments fit together, read [Core Concepts](/docs/evaluation/core-concepts).
 
-## Feature Comparison (Self-Hosted)
+To catch regressions before they ship, run experiments in CI: add the [`langfuse/experiment-action`](/docs/evaluation/experiments/experiments-ci-cd) GitHub Action to a `pull_request` workflow and raise `RegressionError` from your experiment script when a score violates your threshold; the action then fails the job. It works with Langfuse Cloud and self-hosted Langfuse.
 
-| Feature                                                                                                     | Open Source                 | Enterprise                                 |
-| ----------------------------------------------------------------------------------------------------------- | --------------------------- | ------------------------------------------ |
-| **LLM Application & Agent Tracing**                                                                         |                             |                                            |
-| [Traces and graphs (agents)](/docs/observability/overview)                                                  | Yes                         | Yes                                        |
-| [Session tracking (chats/threads)](/docs/observability/features/sessions)                                   | Yes                         | Yes                                        |
-| [User tracking](/docs/observability/features/users)                                                         | Yes                         | Yes                                        |
-| [Token and cost tracking](/docs/observability/features/token-and-cost-tracking)                             | Yes                         | Yes                                        |
-| [Native framework integrations](/integrations)                                                              | Yes                         | Yes                                        |
-| [SDKs (Python, JavaScript)](/docs/observability/sdk/overview)                                               | Yes                         | Yes                                        |
-| [OpenTelemetry (Java, Go, custom)](/integrations/native/opentelemetry)                                      | Yes                         | Yes                                        |
-| [Proxy-based logging (via LiteLLM)](/integrations/gateways/litellm)                                         | Yes                         | Yes                                        |
-| [Custom via API](/docs/api-and-data-platform/features/public-api)                                           | Yes                         | Yes                                        |
-| Included usage                                                                                              | Unlimited                   | Unlimited                                  |
-| [Multi-modal](/docs/observability/features/multi-modality)                                                  | Yes                         | Yes                                        |
-| **Langfuse AI**                                                                                             |                             |                                            |
-| [Langfuse Assistant (in-app agent)](/docs/langfuse-assistant)                                               | --                          | --                                         |
-| **Prompt Management**                                                                                       |                             |                                            |
-| [Prompt versioning](/docs/prompt-management/get-started)                                                    | Yes                         | Yes                                        |
-| Prompt fetching                                                                                             | Unlimited                   | Unlimited                                  |
-| [Prompt release management](/docs/prompt-management/features/prompt-version-control)                        | Yes                         | Yes                                        |
-| [Prompt composability](/docs/prompt-management/features/composability)                                      | Yes                         | Yes                                        |
-| [Prompt caching (server and client)](/docs/prompt-management/features/caching)                              | Yes                         | Yes                                        |
-| [Playground](/docs/prompt-management/features/playground)                                                   | Yes                         | Yes                                        |
-| [Prompt experiments](/docs/evaluation/experiments/experiments-via-ui)                                       | Yes                         | Yes                                        |
-| [Webhooks & Slack](/docs/prompt-management/features/webhooks-slack-integrations)                            | Yes                         | Yes                                        |
-| [Protected deployment labels](/docs/prompt-management/get-started#protected-prompt-labels)                  | --                          | Yes                                        |
-| **Evaluation (online and offline)**                                                                         |                             |                                            |
-| [Datasets](/docs/evaluation/experiments/datasets)                                                           | Yes                         | Yes                                        |
-| [Experiments via SDK](/docs/evaluation/experiments/experiments-via-sdk)                                     | Yes                         | Yes                                        |
-| [Experiments via UI](/docs/evaluation/experiments/experiments-via-ui)                                       | Yes                         | Yes                                        |
-| [Evaluation scores (custom)](/docs/evaluation/evaluation-methods/scores-via-sdk)                            | Yes                         | Yes                                        |
-| [User feedback tracking](/docs/observability/features/user-feedback)                                        | Yes                         | Yes                                        |
-| [External evaluation pipelines](/guides/cookbook/example_external_evaluation_pipelines)                     | Yes                         | Yes                                        |
-| [LLM-as-judge evaluators](/docs/evaluation/evaluation-methods/llm-as-a-judge)                               | Yes                         | Yes                                        |
-| [Human annotation](/docs/evaluation/evaluation-methods/scores-via-ui)                                       | Yes                         | Yes                                        |
-| [Human annotation queues](/docs/evaluation/evaluation-methods/annotation-queues)                            | Yes                         | Yes                                        |
-| **Metrics**                                                                                                 |                             |                                            |
-| [Custom dashboards](/docs/metrics/features/custom-dashboards)                                               | Yes                         | Yes                                        |
-| [Alerts](/docs/observability/features/alerts)                                                               | Langfuse v4+                | Langfuse v4+                               |
-| **Collaboration**                                                                                           |                             |                                            |
-| Projects                                                                                                    | Unlimited                   | Unlimited                                  |
-| Users                                                                                                       | Unlimited                   | Unlimited                                  |
-| **API**                                                                                                     |                             |                                            |
-| [Extensive public API](/docs/api-and-data-platform/features/public-api)                                     | Yes                         | Yes                                        |
-| [Metrics & Observations APIs (v2)](/docs/metrics/features/metrics-api#v2)                                   | Langfuse v4+                | Langfuse v4+                               |
-| **Exports**                                                                                                 |                             |                                            |
-| [Batch export via UI](/docs/api-and-data-platform/features/query-via-sdk#ui)                                | Yes                         | Yes                                        |
-| [PostHog integration](/integrations/analytics/posthog)                                                      | Yes                         | Yes                                        |
-| [Mixpanel integration](/integrations/analytics/mixpanel)                                                    | Yes                         | Yes                                        |
-| [Scheduled export to blob storage](/docs/api-and-data-platform/features/query-via-sdk#blob-storage)         | Yes                         | Yes                                        |
-| **Deployment**                                                                                              |                             |                                            |
-| ClickHouse deployment model                                                                                 | Self-managed ClickHouse OSS | Bundled: ClickHouse Cloud / BYOC / Private |
-| [Deployment templates](/self-hosting)                                                                       | Yes                         | Yes                                        |
-| [Local (Docker Compose)](/self-hosting/deployment/docker-compose)                                           | Yes                         | Yes                                        |
-| [Kubernetes (Helm)](/self-hosting/deployment/kubernetes-helm)                                               | Yes                         | Yes                                        |
-| [AWS (Terraform)](/self-hosting/deployment/aws)                                                             | Yes                         | Yes                                        |
-| [Azure (Terraform)](/self-hosting/deployment/azure)                                                         | Yes                         | Yes                                        |
-| [GCP (Terraform)](/self-hosting/deployment/gcp)                                                             | Yes                         | Yes                                        |
-| **Support**                                                                                                 |                             |                                            |
-| [Ask AI](/docs/ask-ai)                                                                                      | Yes                         | Yes                                        |
-| [Community (GitHub)](/support#community)                                                                    | Yes                         | Yes                                        |
-| [In-app support](/support#in-app)                                                                           | --                          | Yes                                        |
-| [Private Slack channel](/support#slack)                                                                     | --                          | Yes                                        |
-| [Named lead support engineer](/support#onboarding)                                                          | --                          | Yes                                        |
-| [Onboarding & architectural guidance](/support#onboarding)                                                  | --                          | Yes                                        |
-| Solutions architect support                                                                                 | --                          | Yes                                        |
-| Product team feedback channel                                                                               | --                          | Yes                                        |
-| [Support SLA](/enterprise#faq)                                                                              | --                          | Yes                                        |
-| **Security**                                                                                                |                             |                                            |
-| Sign in with Google, AzureAD, GitHub                                                                        | Yes                         | Yes                                        |
-| [Hardening for Government (in development)](/self-hosting/configuration/hardening#hardening-for-government) | --                          | Yes                                        |
-| [Organization-level RBAC](/docs/administration/rbac)                                                        | Yes                         | Yes                                        |
-| Enterprise SSO (e.g. Okta, EntraID)                                                                         | Yes                         | Yes                                        |
-| SSO enforcement                                                                                             | Yes                         | Yes                                        |
-| [Client-side data masking](/docs/observability/features/masking)                                            | Yes                         | Yes                                        |
-| [Server-side data masking](/self-hosting/security/data-masking)                                             | --                          | Yes                                        |
-| [Project-level RBAC](/docs/administration/rbac#project-level-roles)                                         | --                          | Yes                                        |
-| [Data retention management](/docs/administration/data-retention)                                            | --                          | Yes                                        |
-| [SCIM API (automated user provisioning)](/docs/administration/scim-and-org-api)                             | --                          | Yes                                        |
-| [Organization creators](/self-hosting/administration/organization-creators)                                 | --                          | Yes                                        |
-| [UI customization](/self-hosting/administration/ui-customization)                                           | --                          | Yes                                        |
-| [Audit logs](/docs/administration/audit-logs)                                                               | --                          | Yes                                        |
-| [Admin API (project management, SCIM)](/docs/administration/scim-and-org-api)                               | --                          | Yes                                        |
-| [Instance management API](/self-hosting/administration/instance-management-api)                             | --                          | Yes                                        |
-| **Compliance**                                                                                              |                             |                                            |
-| SOC2 Type II & ISO27001 reports                                                                             | --                          | Yes                                        |
-| InfoSec/legal reviews                                                                                       | --                          | Yes                                        |
+If you're looking for another specific workflow, use the table below to find the right feature page:
 
-## Discounts
+| If you want to...                                   | Use this Langfuse feature                                                                                                                                                                                                                   |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Review and rate traces manually                     | [Annotation Queues](/docs/evaluation/evaluation-methods/annotation-queues), [Scores via UI](/docs/evaluation/evaluation-methods/scores-via-ui)                                                                                              |
+| Collect feedback from your end users                | [User Feedback](/docs/observability/features/user-feedback)                                                                                                                                                                                 |
+| Leave open-ended notes on traces                    | [Text scores](/docs/evaluation/scores/overview#score-types), [Annotation Queues](/docs/evaluation/evaluation-methods/annotation-queues)                                                                                                     |
+| Build a reusable set of test cases                  | [Datasets](/docs/evaluation/experiments/datasets)                                                                                                                                                                                           |
+| Compare prompt, model, or code changes side by side | [Experiments via UI](/docs/evaluation/experiments/experiments-via-ui), [Experiments via SDK](/docs/evaluation/experiments/experiments-via-sdk), [Experiments via OpenTelemetry](/docs/evaluation/experiments/experiments-via-opentelemetry) |
+| Block deploys on regressions                        | [CI/CD experiments](/docs/evaluation/experiments/experiments-ci-cd)                                                                                                                                                                         |
+| Reuse checks in your application or CI process      | [Evaluate an existing application](/resources/engineering/evaluate-existing-application)                                                                                                                                                    |
+| Run deterministic checks                            | [Code Evaluators](/docs/evaluation/evaluation-methods/code-evaluators)                                                                                                                                                                      |
+| Automatically score live production traces          | [LLM-as-a-Judge](/docs/evaluation/evaluation-methods/llm-as-a-judge), [Scores via API/SDK](/docs/evaluation/evaluation-methods/scores-via-sdk)                                                                                              |
+| See how scores trend over time                      | [Score Analytics](/docs/evaluation/scores/score-analytics), [custom dashboards](/docs/metrics/features/custom-dashboards)                                                                                                                   |
 
-| Program              | Discount                            | Details                             |
-| -------------------- | ----------------------------------- | ----------------------------------- |
-| Early-stage startups | 50% off, first year                 | [Learn more and apply](/startups)   |
-| Research / Students  | Up to 100% off (limits apply)       | [Learn more and apply](/research)   |
-| Non-profits          | $199 in credits / month             | [Learn more and apply](/non-profit) |
-| Open-source projects | $300 in credits / month, first year | Contact support@langfuse.com        |
+Already know what you're looking for? Browse _Evaluation Methods_ and _Experiments_ in the sidebar.
 
-## Frequently Asked Questions
-
-**How does Langfuse pricing compare to LangSmith, Braintrust, Arize, and Datadog?**
-On a representative workload, Langfuse Cloud is cheaper than [LangSmith](/compare/langsmith), [Braintrust](/compare/braintrust), [Arize](/compare/arize-phoenix), and [Datadog Agent Observability](/compare/datadog). Open the [editable pricing comparison sheet](/pricing-comparison-sheet) to fill in your own assumptions and check the numbers for your workload. For product-by-product differences, see the [comparison pages](/compare). Langfuse is also [open source](/why), based on [OpenTelemetry](/integrations/native/opentelemetry) for interoperability, [self-hostable](/self-hosting) at the same scale as Langfuse Cloud, and model- and framework-agnostic.
-
-**Can I purchase Langfuse through AWS Marketplace?**
-Yes. Self-hosted Enterprise can be billed via AWS Marketplace or invoice. [Talk to us](/talk-to-us?deployment=self-hosted) to request a private offer.
-
-**Can I self-host Langfuse for free?**
-Yes, Langfuse is open source and you can self-host it for free. Use Docker Compose to run Langfuse locally, or use one of the templates to self-host in production on Kubernetes. See the [self-hosting documentation](/self-hosting) to learn more.
-
-**What is the difference between Open Source and Enterprise?**
-Open Source includes all core platform features under the MIT license with community support. Enterprise adds management APIs, project-level RBAC, data retention policies, audit logs, dedicated support, and is bundled with a ClickHouse commercial plan.
-
-**Where is the data stored?**
-Self-hosted Langfuse stores data in your own infrastructure. You control data residency and can deploy in any region. See [security documentation](/security) for details.
+## GitHub Discussions
 
 <!-- agent-instructions -->
 
@@ -1939,179 +1747,7 @@ Self-hosted Langfuse stores data in your own infrastructure. You control data re
 
 ## Agent Instructions
 
-This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/pricing-self-host.md`.
-
-### Querying these docs
-
-If the answer is not on this page, query the documentation instead of guessing:
-
-- **Semantic search** across all Langfuse docs, returning an answer with the relevant pages and excerpts. Ask a specific, self-contained question:
-
-  ```bash
-  curl -sG "https://langfuse.com/api/search-docs" --data-urlencode "query=How do I trace a LangGraph agent?"
-  ```
-
-- **Index of every page**: <https://langfuse.com/llms.txt>, with per-section indexes [llms-docs.txt](https://langfuse.com/llms-docs.txt), [llms-integrations.txt](https://langfuse.com/llms-integrations.txt), and [llms-self-hosting.txt](https://langfuse.com/llms-self-hosting.txt).
-
-### Before writing Langfuse code
-
-- **Install the [Langfuse Agent Skill](https://langfuse.com/docs/api-and-data-platform/features/agent-skill).** It encodes Langfuse's own best practices for instrumentation, prompt management, and evaluation, and materially improves results.
-- **Read [What does a good trace look like?](https://langfuse.com/docs/observability/best-practices.md)** before instrumenting an application.
-- **Verify endpoints, parameters, and response fields** against the [API reference](https://api.reference.langfuse.com) instead of inferring them from code examples.
-- **Use the [Langfuse CLI](https://langfuse.com/docs/api-and-data-platform/features/cli)** (`npx @langfuse/cli api <resource> <action>`) to read or write traces, prompts, datasets, and scores from the terminal.
-
-Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
-
-
-# Self-hosting
-
-**URL:** https://langfuse.com/self-hosting.md
-
----
-title: Self-host Langfuse (Open Source LLM Observability)
-sidebarTitle: Overview
-description: Self-host Langfuse - This guide shows you how to deploy open-source LLM observability with Docker, Kubernetes, or VMs on your own infrastructure.
-label: "Version: v4"
----
-
-# Self-host Langfuse
-
-Langfuse is open source and can be self-hosted using Docker on your own infrastructure. Some add-on features require a [license key](/self-hosting/license-key).
-
-When self-hosting Langfuse, you run the same infrastructure that powers Langfuse Cloud. Read ["Why Langfuse?"](/why) to learn more about why this is important to us.
-
-## Deployment options [#deployment-options]
-
-| Best for                | Deployment                                                                                                                                                                                                                                                                                          | Responsibility                                           |
-| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
-| Fastest start           | [Langfuse Cloud](https://cloud.langfuse.com)                                                                                                                                                                                                                                                        | Fully managed by the Langfuse team                       |
-| Local use and testing   | [Docker Compose](/self-hosting/deployment/docker-compose)                                                                                                                                                                                                                                           | Single VM without high availability, scaling, or backups |
-| Production self-hosting | [Kubernetes (Helm)](/self-hosting/deployment/kubernetes-helm), [AWS](/self-hosting/deployment/aws), [Azure](/self-hosting/deployment/azure), [GCP](/self-hosting/deployment/gcp), [Render](/self-hosting/deployment/render) (community), or [Railway](/self-hosting/deployment/railway) (community) | Your infrastructure                                      |
-
-Unless marked as community-supported, these deployment options are maintained and tested by the Langfuse team. Community-supported options are maintained in third-party repositories and supported on a best-effort basis. Report problems via [GitHub issues](/issues).
-
-## Architecture [#architecture]
-
-Langfuse only depends on open source components and can be deployed locally, on cloud infrastructure, or on-premises.
-
-```mermaid
-flowchart TB
-    User["UI, API, SDKs"]
-    subgraph vpc["VPC"]
-        Web["Web Server<br/>(langfuse/langfuse)"]
-        Worker["Async Worker<br/>(langfuse/worker)"]
-        Postgres@{ img: "/images/logos/postgres_icon.svg", label: "Postgres - OLTP\n(Transactional Data)", pos: "b", w: 60, h: 60, constraint: "on" }
-        Cache@{ img: "/images/logos/redis_icon.png", label: "Redis\n(Cache, Queue)", pos: "b", w: 60, h: 60, constraint: "on" }
-        Clickhouse@{ img: "/images/logos/clickhouse_icon.svg", label: "Clickhouse - OLAP\n(Observability Data)", pos: "b", w: 60, h: 60, constraint: "on" }
-        S3@{ img: "/images/logos/s3_icon.svg", label: "S3 / Blob Storage\n(Raw events, multi-modal attachments)", pos: "b", w: 60, h: 60, constraint: "on" }
-    end
-    LLM["LLM API/Gateway<br/>(optional; BYO; can be same VPC or VPC-peered)"]
-
-    User --> Web
-    Web --> S3
-    Web --> Postgres
-    Web --> Cache
-    Web --> Clickhouse
-    Web -..->|"optional for playground"| LLM
-
-    Cache --> Worker
-    Worker --> Clickhouse
-    Worker --> Postgres
-    Worker --> S3
-    Worker -..->|"optional for evals"| LLM
-```
-
-<details>
-<summary>View architecture components</summary>
-
-Langfuse consists of two application containers, storage components, and an optional LLM API/Gateway.
-
-- [**Application Containers**](/self-hosting/deployment/infrastructure/containers)
-  - Langfuse Web: The main web application serving the Langfuse UI and APIs.
-  - Langfuse Worker: A worker that asynchronously processes events.
-- **Storage Components**:
-  - [Postgres](/self-hosting/deployment/infrastructure/postgres): The main database for transactional workloads.
-  - [Clickhouse](/self-hosting/deployment/infrastructure/clickhouse): High-performance OLAP database which stores traces, observations, and scores.
-  - [Redis/Valkey cache](/self-hosting/deployment/infrastructure/cache): A fast in-memory data structure store. Used for queue and cache operations.
-  - [S3/Blob Store](/self-hosting/deployment/infrastructure/blobstorage): Object storage to persist all incoming events, multi-modal inputs, and large exports.
-- [**LLM API / Gateway**](/self-hosting/deployment/infrastructure/llm-api): Some features depend on an external LLM API or gateway.
-
-Langfuse can be deployed within a VPC or on-premises in high-security environments.
-Internet access is optional.
-See [networking](/self-hosting/security/networking) documentation for more details.
-
-</details>
-
-## Optimized for performance, reliability, and uptime
-
-Langfuse OSS and Enterprise use the same codebase as Langfuse Cloud. Langfuse processes **90B+ observations per month** and is trusted by **21 of the Fortune 50**. Its Docker images have been pulled **38M+ times**.
-
-<details>
-<summary>How Langfuse is optimized for scale and reliability</summary>
-
-Some of the optimizations include:
-
-- **Queued trace ingestion**: All traces are received in batches by the Langfuse Web container and immediately written to S3. Only a reference is persisted in Redis for queueing. Afterwards, the Langfuse Worker will pick up the traces from S3 and ingest them into Clickhouse. This ensures that high spikes in request load do not lead to timeouts or errors constrained by the database.
-- **Caching of API keys**: API keys are cached in-memory in Redis. Thereby, the database is not hit on every API call and unauthorized requests can be rejected with very low resource usage.
-- **Caching of prompts (SDKs and API)**: Even though prompts are cached client-side by the Langfuse SDKs and only revalidated in the background ([docs](/docs/prompts)), they need to be fetched from the Langfuse on first use. Thus, API response times are very important. Prompts are cached in a read-through cache in Redis. Thereby, hot prompts can be fetched from Langfuse without hitting a database.
-- **Hyper-optimized ClickHouse schema**: Read-heavy analytical operations use a wide, mostly immutable observations table that avoids read-time joins and deduplication while taking advantage of ClickHouse's most performant access patterns. Read how we [simplified Langfuse for scale](/blog/2026-03-10-simplify-langfuse-for-scale).
-- **Multi-modal traces in S3**: Multi-modal traces can include large videos or arbitrary files. To enable support for these, they are directly uploaded to S3/Blob Storage from the client SDKs. Learn more about [multi-modal traces](/docs/tracing-features/multi-modality).
-- **Recoverability of events**: All incoming tracing and evaluation events are persisted in S3/Blob Storage first. Only after successful processing, the events are written to the database. This ensures that even if the database is temporarily unavailable, the events are not lost and can be processed later.
-- **Background migrations**: Long-running migrations that are required by an upgrade but not blocking for regular operations are offloaded to a background job. This massively reduces the downtime during an upgrade. Learn more about [background migrations](/self-hosting/upgrade/background-migrations).
-
-</details>
-
-## Features
-
-Langfuse supports many configuration options and self-hosted features.
-For more details, please refer to the [configuration guide](/self-hosting/configuration).
-
-- [Authentication & SSO](/self-hosting/security/authentication-and-sso)
-- [Automated Access Provisioning](/self-hosting/administration/automated-access-provisioning)
-- [Caching](/self-hosting/configuration/caching)
-- [Code evaluators](/self-hosting/configuration/code-evaluators)
-- [Langfuse Assistant](/self-hosting/configuration/langfuse-assistant)
-- [Custom Base Path](/self-hosting/configuration/custom-base-path)
-- [Encryption](/self-hosting/configuration/encryption)
-- [Headless Initialization](/self-hosting/administration/headless-initialization)
-- [Data Masking](/self-hosting/security/data-masking)
-- [Networking](/self-hosting/security/networking)
-- [Organization Creators (EE)](/self-hosting/administration/organization-creators)
-- [Instance Management API (EE)](/self-hosting/administration/instance-management-api)
-- [Health and Readiness Check](/self-hosting/configuration/health-readiness-endpoints)
-- [Observability via OpenTelemetry](/self-hosting/configuration/observability)
-- [Transactional Emails](/self-hosting/configuration/transactional-emails)
-- [UI Customization (EE)](/self-hosting/administration/ui-customization)
-
-## Subscribe to updates [#subscribe]
-
-Release notes are published on [GitHub](https://github.com/langfuse/langfuse/releases). Langfuse uses tagged semver releases ([versioning policy](/self-hosting/upgrade/versioning)).
-
-**[Langfuse OSS updates](/self-hosting/oss-newsletter)** — get an email when we ship important features and new releases for self-hosted (open source) Langfuse. Self-hosting updates only, no spam.
-
-Subscribe to the Langfuse OSS newsletter at https://langfuse.com/self-hosting/oss-newsletter.
-
-You can also watch the GitHub releases to get notified about new releases:
-
----
-
-If you experience any issues when self-hosting Langfuse, please:
-
-1. Check out [Troubleshooting & FAQ](/self-hosting/troubleshooting-and-faq) page.
-2. Use [Ask AI](/docs/ask-ai) to get instant answers to your questions.
-3. Ask the maintainers on [GitHub Discussions](/gh-support).
-4. Create a bug report or feature request on [GitHub](/issues).
-
-  Enterprise-grade support is available when self-hosting Langfuse. Learn more on
-  our [pricing page](/pricing-self-host).
-
-<!-- agent-instructions -->
-
----
-
-## Agent Instructions
-
-This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/self-hosting.md`.
+This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/docs/evaluation/overview.md`.
 
 ### Querying these docs
 
@@ -2469,6 +2105,370 @@ If the answer is not on this page, query the documentation instead of guessing:
 Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
 
 
+# Self-hosting
+
+**URL:** https://langfuse.com/self-hosting.md
+
+---
+title: Self-host Langfuse (Open Source LLM Observability)
+sidebarTitle: Overview
+description: Self-host Langfuse - This guide shows you how to deploy open-source LLM observability with Docker, Kubernetes, or VMs on your own infrastructure.
+label: "Version: v4"
+---
+
+# Self-host Langfuse
+
+Langfuse is open source and can be self-hosted using Docker on your own infrastructure. Some add-on features require a [license key](/self-hosting/license-key).
+
+When self-hosting Langfuse, you run the same infrastructure that powers Langfuse Cloud. Read ["Why Langfuse?"](/why) to learn more about why this is important to us.
+
+## Deployment options [#deployment-options]
+
+| Best for                | Deployment                                                                                                                                                                                                                                                                                          | Responsibility                                           |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| Fastest start           | [Langfuse Cloud](https://cloud.langfuse.com)                                                                                                                                                                                                                                                        | Fully managed by the Langfuse team                       |
+| Local use and testing   | [Docker Compose](/self-hosting/deployment/docker-compose)                                                                                                                                                                                                                                           | Single VM without high availability, scaling, or backups |
+| Production self-hosting | [Kubernetes (Helm)](/self-hosting/deployment/kubernetes-helm), [AWS](/self-hosting/deployment/aws), [Azure](/self-hosting/deployment/azure), [GCP](/self-hosting/deployment/gcp), [Render](/self-hosting/deployment/render) (community), or [Railway](/self-hosting/deployment/railway) (community) | Your infrastructure                                      |
+
+Unless marked as community-supported, these deployment options are maintained and tested by the Langfuse team. Community-supported options are maintained in third-party repositories and supported on a best-effort basis. Report problems via [GitHub issues](/issues).
+
+## Architecture [#architecture]
+
+Langfuse only depends on open source components and can be deployed locally, on cloud infrastructure, or on-premises.
+
+```mermaid
+flowchart TB
+    User["UI, API, SDKs"]
+    subgraph vpc["VPC"]
+        Web["Web Server<br/>(langfuse/langfuse)"]
+        Worker["Async Worker<br/>(langfuse/worker)"]
+        Postgres@{ img: "/images/logos/postgres_icon.svg", label: "Postgres - OLTP\n(Transactional Data)", pos: "b", w: 60, h: 60, constraint: "on" }
+        Cache@{ img: "/images/logos/redis_icon.png", label: "Redis\n(Cache, Queue)", pos: "b", w: 60, h: 60, constraint: "on" }
+        Clickhouse@{ img: "/images/logos/clickhouse_icon.svg", label: "Clickhouse - OLAP\n(Observability Data)", pos: "b", w: 60, h: 60, constraint: "on" }
+        S3@{ img: "/images/logos/s3_icon.svg", label: "S3 / Blob Storage\n(Raw events, multi-modal attachments)", pos: "b", w: 60, h: 60, constraint: "on" }
+    end
+    LLM["LLM API/Gateway<br/>(optional; BYO; can be same VPC or VPC-peered)"]
+
+    User --> Web
+    Web --> S3
+    Web --> Postgres
+    Web --> Cache
+    Web --> Clickhouse
+    Web -..->|"optional for playground"| LLM
+
+    Cache --> Worker
+    Worker --> Clickhouse
+    Worker --> Postgres
+    Worker --> S3
+    Worker -..->|"optional for evals"| LLM
+```
+
+<details>
+<summary>View architecture components</summary>
+
+Langfuse consists of two application containers, storage components, and an optional LLM API/Gateway.
+
+- [**Application Containers**](/self-hosting/deployment/infrastructure/containers)
+  - Langfuse Web: The main web application serving the Langfuse UI and APIs.
+  - Langfuse Worker: A worker that asynchronously processes events.
+- **Storage Components**:
+  - [Postgres](/self-hosting/deployment/infrastructure/postgres): The main database for transactional workloads.
+  - [Clickhouse](/self-hosting/deployment/infrastructure/clickhouse): High-performance OLAP database which stores traces, observations, and scores.
+  - [Redis/Valkey cache](/self-hosting/deployment/infrastructure/cache): A fast in-memory data structure store. Used for queue and cache operations.
+  - [S3/Blob Store](/self-hosting/deployment/infrastructure/blobstorage): Object storage to persist all incoming events, multi-modal inputs, and large exports.
+- [**LLM API / Gateway**](/self-hosting/deployment/infrastructure/llm-api): Some features depend on an external LLM API or gateway.
+
+Langfuse can be deployed within a VPC or on-premises in high-security environments.
+Internet access is optional.
+See [networking](/self-hosting/security/networking) documentation for more details.
+
+</details>
+
+## Optimized for performance, reliability, and uptime
+
+Langfuse OSS and Enterprise use the same codebase as Langfuse Cloud. Langfuse processes **90B+ observations per month** and is trusted by **21 of the Fortune 50**. Its Docker images have been pulled **38M+ times**.
+
+<details>
+<summary>How Langfuse is optimized for scale and reliability</summary>
+
+Some of the optimizations include:
+
+- **Queued trace ingestion**: All traces are received in batches by the Langfuse Web container and immediately written to S3. Only a reference is persisted in Redis for queueing. Afterwards, the Langfuse Worker will pick up the traces from S3 and ingest them into Clickhouse. This ensures that high spikes in request load do not lead to timeouts or errors constrained by the database.
+- **Caching of API keys**: API keys are cached in-memory in Redis. Thereby, the database is not hit on every API call and unauthorized requests can be rejected with very low resource usage.
+- **Caching of prompts (SDKs and API)**: Even though prompts are cached client-side by the Langfuse SDKs and only revalidated in the background ([docs](/docs/prompts)), they need to be fetched from the Langfuse on first use. Thus, API response times are very important. Prompts are cached in a read-through cache in Redis. Thereby, hot prompts can be fetched from Langfuse without hitting a database.
+- **Hyper-optimized ClickHouse schema**: Read-heavy analytical operations use a wide, mostly immutable observations table that avoids read-time joins and deduplication while taking advantage of ClickHouse's most performant access patterns. Read how we [simplified Langfuse for scale](/blog/2026-03-10-simplify-langfuse-for-scale).
+- **Multi-modal traces in S3**: Multi-modal traces can include large videos or arbitrary files. To enable support for these, they are directly uploaded to S3/Blob Storage from the client SDKs. Learn more about [multi-modal traces](/docs/tracing-features/multi-modality).
+- **Recoverability of events**: All incoming tracing and evaluation events are persisted in S3/Blob Storage first. Only after successful processing, the events are written to the database. This ensures that even if the database is temporarily unavailable, the events are not lost and can be processed later.
+- **Background migrations**: Long-running migrations that are required by an upgrade but not blocking for regular operations are offloaded to a background job. This massively reduces the downtime during an upgrade. Learn more about [background migrations](/self-hosting/upgrade/background-migrations).
+
+</details>
+
+## Features
+
+Langfuse supports many configuration options and self-hosted features.
+For more details, please refer to the [configuration guide](/self-hosting/configuration).
+
+- [Authentication & SSO](/self-hosting/security/authentication-and-sso)
+- [Automated Access Provisioning](/self-hosting/administration/automated-access-provisioning)
+- [Caching](/self-hosting/configuration/caching)
+- [Code evaluators](/self-hosting/configuration/code-evaluators)
+- [Langfuse Assistant](/self-hosting/configuration/langfuse-assistant)
+- [Custom Base Path](/self-hosting/configuration/custom-base-path)
+- [Encryption](/self-hosting/configuration/encryption)
+- [Headless Initialization](/self-hosting/administration/headless-initialization)
+- [Data Masking](/self-hosting/security/data-masking)
+- [Networking](/self-hosting/security/networking)
+- [Organization Creators (EE)](/self-hosting/administration/organization-creators)
+- [Instance Management API (EE)](/self-hosting/administration/instance-management-api)
+- [Health and Readiness Check](/self-hosting/configuration/health-readiness-endpoints)
+- [Observability via OpenTelemetry](/self-hosting/configuration/observability)
+- [Transactional Emails](/self-hosting/configuration/transactional-emails)
+- [UI Customization (EE)](/self-hosting/administration/ui-customization)
+
+## Subscribe to updates [#subscribe]
+
+Release notes are published on [GitHub](https://github.com/langfuse/langfuse/releases). Langfuse uses tagged semver releases ([versioning policy](/self-hosting/upgrade/versioning)).
+
+**[Langfuse OSS updates](/self-hosting/oss-newsletter)** — get an email when we ship important features and new releases for self-hosted (open source) Langfuse. Self-hosting updates only, no spam.
+
+Subscribe to the Langfuse OSS newsletter at https://langfuse.com/self-hosting/oss-newsletter.
+
+You can also watch the GitHub releases to get notified about new releases:
+
+---
+
+If you experience any issues when self-hosting Langfuse, please:
+
+1. Check out [Troubleshooting & FAQ](/self-hosting/troubleshooting-and-faq) page.
+2. Use [Ask AI](/docs/ask-ai) to get instant answers to your questions.
+3. Ask the maintainers on [GitHub Discussions](/gh-support).
+4. Create a bug report or feature request on [GitHub](/issues).
+
+  Enterprise-grade support is available when self-hosting Langfuse. Learn more on
+  our [pricing page](/pricing-self-host).
+
+<!-- agent-instructions -->
+
+---
+
+## Agent Instructions
+
+This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/self-hosting.md`.
+
+### Querying these docs
+
+If the answer is not on this page, query the documentation instead of guessing:
+
+- **Semantic search** across all Langfuse docs, returning an answer with the relevant pages and excerpts. Ask a specific, self-contained question:
+
+  ```bash
+  curl -sG "https://langfuse.com/api/search-docs" --data-urlencode "query=How do I trace a LangGraph agent?"
+  ```
+
+- **Index of every page**: <https://langfuse.com/llms.txt>, with per-section indexes [llms-docs.txt](https://langfuse.com/llms-docs.txt), [llms-integrations.txt](https://langfuse.com/llms-integrations.txt), and [llms-self-hosting.txt](https://langfuse.com/llms-self-hosting.txt).
+
+### Before writing Langfuse code
+
+- **Install the [Langfuse Agent Skill](https://langfuse.com/docs/api-and-data-platform/features/agent-skill).** It encodes Langfuse's own best practices for instrumentation, prompt management, and evaluation, and materially improves results.
+- **Read [What does a good trace look like?](https://langfuse.com/docs/observability/best-practices.md)** before instrumenting an application.
+- **Verify endpoints, parameters, and response fields** against the [API reference](https://api.reference.langfuse.com) instead of inferring them from code examples.
+- **Use the [Langfuse CLI](https://langfuse.com/docs/api-and-data-platform/features/cli)** (`npx @langfuse/cli api <resource> <action>`) to read or write traces, prompts, datasets, and scores from the terminal.
+
+Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
+
+
+# Self-hosted pricing and license
+
+**URL:** https://langfuse.com/pricing-self-host.md
+
+---
+title: Self-Hosted Pricing
+description: Deploy Langfuse OSS today. Upgrade to Enterprise at any time.
+---
+
+# Self-Hosted Pricing
+
+Deploy Langfuse OSS today. Upgrade to Enterprise at any time. See also: [Cloud pricing](/pricing).
+
+## Plans
+
+### Open Source (Free)
+
+Self-host all core Langfuse features for free without any limitations.
+
+- MIT License
+- All core platform features and APIs (observability, evaluation, prompt management, datasets, etc.)
+- Scalability of Langfuse Cloud
+- Deployment docs & Helm chart
+- Enterprise SSO and RBAC
+- Community support
+- Unlimited units / usage
+
+[Deployment guide](/self-hosting)
+
+### Self-Hosted Enterprise (Custom Pricing)
+
+Dedicated Langfuse deployment with enterprise capabilities and support. Bundled with ClickHouse Cloud, ClickHouse BYOC, or ClickHouse Private.
+
+- All Open Source features plus management APIs, project-level RBAC, data retention policies, and audit logs
+- Bundled with ClickHouse Cloud, ClickHouse BYOC, or ClickHouse Private
+- Langfuse pricing is additive to your ClickHouse commercial plan
+- Named lead support engineer for deployment and hosting guidance
+- Solutions architect support during evaluation and rollout
+- Direct access to the product team for feedback
+- SOC 2 Type II and ISO 27001 reports
+- Hardening for Government (in development)
+- Support SLA
+- Billing via AWS Marketplace or invoice
+
+[Talk to sales](/talk-to-us?deployment=self-hosted) | [Enterprise FAQ](/enterprise)
+
+## Feature Comparison (Self-Hosted)
+
+| Feature                                                                                                     | Open Source                 | Enterprise                                 |
+| ----------------------------------------------------------------------------------------------------------- | --------------------------- | ------------------------------------------ |
+| **LLM Application & Agent Tracing**                                                                         |                             |                                            |
+| [Traces and graphs (agents)](/docs/observability/overview)                                                  | Yes                         | Yes                                        |
+| [Session tracking (chats/threads)](/docs/observability/features/sessions)                                   | Yes                         | Yes                                        |
+| [User tracking](/docs/observability/features/users)                                                         | Yes                         | Yes                                        |
+| [Token and cost tracking](/docs/observability/features/token-and-cost-tracking)                             | Yes                         | Yes                                        |
+| [Native framework integrations](/integrations)                                                              | Yes                         | Yes                                        |
+| [SDKs (Python, JavaScript)](/docs/observability/sdk/overview)                                               | Yes                         | Yes                                        |
+| [OpenTelemetry (Java, Go, custom)](/integrations/native/opentelemetry)                                      | Yes                         | Yes                                        |
+| [Proxy-based logging (via LiteLLM)](/integrations/gateways/litellm)                                         | Yes                         | Yes                                        |
+| [Custom via API](/docs/api-and-data-platform/features/public-api)                                           | Yes                         | Yes                                        |
+| Included usage                                                                                              | Unlimited                   | Unlimited                                  |
+| [Multi-modal](/docs/observability/features/multi-modality)                                                  | Yes                         | Yes                                        |
+| **Langfuse AI**                                                                                             |                             |                                            |
+| [Langfuse Assistant (in-app agent)](/docs/langfuse-assistant)                                               | --                          | --                                         |
+| **Prompt Management**                                                                                       |                             |                                            |
+| [Prompt versioning](/docs/prompt-management/get-started)                                                    | Yes                         | Yes                                        |
+| Prompt fetching                                                                                             | Unlimited                   | Unlimited                                  |
+| [Prompt release management](/docs/prompt-management/features/prompt-version-control)                        | Yes                         | Yes                                        |
+| [Prompt composability](/docs/prompt-management/features/composability)                                      | Yes                         | Yes                                        |
+| [Prompt caching (server and client)](/docs/prompt-management/features/caching)                              | Yes                         | Yes                                        |
+| [Playground](/docs/prompt-management/features/playground)                                                   | Yes                         | Yes                                        |
+| [Prompt experiments](/docs/evaluation/experiments/experiments-via-ui)                                       | Yes                         | Yes                                        |
+| [Webhooks & Slack](/docs/prompt-management/features/webhooks-slack-integrations)                            | Yes                         | Yes                                        |
+| [Protected deployment labels](/docs/prompt-management/get-started#protected-prompt-labels)                  | --                          | Yes                                        |
+| **Evaluation (online and offline)**                                                                         |                             |                                            |
+| [Datasets](/docs/evaluation/experiments/datasets)                                                           | Yes                         | Yes                                        |
+| [Experiments via SDK](/docs/evaluation/experiments/experiments-via-sdk)                                     | Yes                         | Yes                                        |
+| [Experiments via UI](/docs/evaluation/experiments/experiments-via-ui)                                       | Yes                         | Yes                                        |
+| [Evaluation scores (custom)](/docs/evaluation/evaluation-methods/scores-via-sdk)                            | Yes                         | Yes                                        |
+| [User feedback tracking](/docs/observability/features/user-feedback)                                        | Yes                         | Yes                                        |
+| [External evaluation pipelines](/guides/cookbook/example_external_evaluation_pipelines)                     | Yes                         | Yes                                        |
+| [LLM-as-judge evaluators](/docs/evaluation/evaluation-methods/llm-as-a-judge)                               | Yes                         | Yes                                        |
+| [Human annotation](/docs/evaluation/evaluation-methods/scores-via-ui)                                       | Yes                         | Yes                                        |
+| [Human annotation queues](/docs/evaluation/evaluation-methods/annotation-queues)                            | Yes                         | Yes                                        |
+| **Metrics**                                                                                                 |                             |                                            |
+| [Custom dashboards](/docs/metrics/features/custom-dashboards)                                               | Yes                         | Yes                                        |
+| [Alerts](/docs/observability/features/alerts)                                                               | Langfuse v4+                | Langfuse v4+                               |
+| **Collaboration**                                                                                           |                             |                                            |
+| Projects                                                                                                    | Unlimited                   | Unlimited                                  |
+| Users                                                                                                       | Unlimited                   | Unlimited                                  |
+| **API**                                                                                                     |                             |                                            |
+| [Extensive public API](/docs/api-and-data-platform/features/public-api)                                     | Yes                         | Yes                                        |
+| [Metrics & Observations APIs (v2)](/docs/metrics/features/metrics-api#v2)                                   | Langfuse v4+                | Langfuse v4+                               |
+| **Exports**                                                                                                 |                             |                                            |
+| [Batch export via UI](/docs/api-and-data-platform/features/query-via-sdk#ui)                                | Yes                         | Yes                                        |
+| [PostHog integration](/integrations/analytics/posthog)                                                      | Yes                         | Yes                                        |
+| [Mixpanel integration](/integrations/analytics/mixpanel)                                                    | Yes                         | Yes                                        |
+| [Scheduled export to blob storage](/docs/api-and-data-platform/features/query-via-sdk#blob-storage)         | Yes                         | Yes                                        |
+| **Deployment**                                                                                              |                             |                                            |
+| ClickHouse deployment model                                                                                 | Self-managed ClickHouse OSS | Bundled: ClickHouse Cloud / BYOC / Private |
+| [Deployment templates](/self-hosting)                                                                       | Yes                         | Yes                                        |
+| [Local (Docker Compose)](/self-hosting/deployment/docker-compose)                                           | Yes                         | Yes                                        |
+| [Kubernetes (Helm)](/self-hosting/deployment/kubernetes-helm)                                               | Yes                         | Yes                                        |
+| [AWS (Terraform)](/self-hosting/deployment/aws)                                                             | Yes                         | Yes                                        |
+| [Azure (Terraform)](/self-hosting/deployment/azure)                                                         | Yes                         | Yes                                        |
+| [GCP (Terraform)](/self-hosting/deployment/gcp)                                                             | Yes                         | Yes                                        |
+| **Support**                                                                                                 |                             |                                            |
+| [Ask AI](/docs/ask-ai)                                                                                      | Yes                         | Yes                                        |
+| [Community (GitHub)](/support#community)                                                                    | Yes                         | Yes                                        |
+| [In-app support](/support#in-app)                                                                           | --                          | Yes                                        |
+| [Private Slack channel](/support#slack)                                                                     | --                          | Yes                                        |
+| [Named lead support engineer](/support#onboarding)                                                          | --                          | Yes                                        |
+| [Onboarding & architectural guidance](/support#onboarding)                                                  | --                          | Yes                                        |
+| Solutions architect support                                                                                 | --                          | Yes                                        |
+| Product team feedback channel                                                                               | --                          | Yes                                        |
+| [Support SLA](/enterprise#faq)                                                                              | --                          | Yes                                        |
+| **Security**                                                                                                |                             |                                            |
+| Sign in with Google, AzureAD, GitHub                                                                        | Yes                         | Yes                                        |
+| [Hardening for Government (in development)](/self-hosting/configuration/hardening#hardening-for-government) | --                          | Yes                                        |
+| [Organization-level RBAC](/docs/administration/rbac)                                                        | Yes                         | Yes                                        |
+| Enterprise SSO (e.g. Okta, EntraID)                                                                         | Yes                         | Yes                                        |
+| SSO enforcement                                                                                             | Yes                         | Yes                                        |
+| [Client-side data masking](/docs/observability/features/masking)                                            | Yes                         | Yes                                        |
+| [Server-side data masking](/self-hosting/security/data-masking)                                             | --                          | Yes                                        |
+| [Project-level RBAC](/docs/administration/rbac#project-level-roles)                                         | --                          | Yes                                        |
+| [Data retention management](/docs/administration/data-retention)                                            | --                          | Yes                                        |
+| [SCIM API (automated user provisioning)](/docs/administration/scim-and-org-api)                             | --                          | Yes                                        |
+| [Organization creators](/self-hosting/administration/organization-creators)                                 | --                          | Yes                                        |
+| [UI customization](/self-hosting/administration/ui-customization)                                           | --                          | Yes                                        |
+| [Audit logs](/docs/administration/audit-logs)                                                               | --                          | Yes                                        |
+| [Admin API (project management, SCIM)](/docs/administration/scim-and-org-api)                               | --                          | Yes                                        |
+| [Instance management API](/self-hosting/administration/instance-management-api)                             | --                          | Yes                                        |
+| **Compliance**                                                                                              |                             |                                            |
+| SOC2 Type II & ISO27001 reports                                                                             | --                          | Yes                                        |
+| InfoSec/legal reviews                                                                                       | --                          | Yes                                        |
+
+## Discounts
+
+| Program              | Discount                            | Details                             |
+| -------------------- | ----------------------------------- | ----------------------------------- |
+| Early-stage startups | 50% off, first year                 | [Learn more and apply](/startups)   |
+| Research / Students  | Up to 100% off (limits apply)       | [Learn more and apply](/research)   |
+| Non-profits          | $199 in credits / month             | [Learn more and apply](/non-profit) |
+| Open-source projects | $300 in credits / month, first year | Contact support@langfuse.com        |
+
+## Frequently Asked Questions
+
+**How does Langfuse pricing compare to LangSmith, Braintrust, Arize, and Datadog?**
+On a representative workload, Langfuse Cloud is cheaper than [LangSmith](/compare/langsmith), [Braintrust](/compare/braintrust), [Arize](/compare/arize-phoenix), and [Datadog Agent Observability](/compare/datadog). Open the [editable pricing comparison sheet](/pricing-comparison-sheet) to fill in your own assumptions and check the numbers for your workload. For product-by-product differences, see the [comparison pages](/compare). Langfuse is also [open source](/why), based on [OpenTelemetry](/integrations/native/opentelemetry) for interoperability, [self-hostable](/self-hosting) at the same scale as Langfuse Cloud, and model- and framework-agnostic.
+
+**Can I purchase Langfuse through AWS Marketplace?**
+Yes. Self-hosted Enterprise can be billed via AWS Marketplace or invoice. [Talk to us](/talk-to-us?deployment=self-hosted) to request a private offer.
+
+**Can I self-host Langfuse for free?**
+Yes, Langfuse is open source and you can self-host it for free. Use Docker Compose to run Langfuse locally, or use one of the templates to self-host in production on Kubernetes. See the [self-hosting documentation](/self-hosting) to learn more.
+
+**What is the difference between Open Source and Enterprise?**
+Open Source includes all core platform features under the MIT license with community support. Enterprise adds management APIs, project-level RBAC, data retention policies, audit logs, dedicated support, and is bundled with a ClickHouse commercial plan.
+
+**Where is the data stored?**
+Self-hosted Langfuse stores data in your own infrastructure. You control data residency and can deploy in any region. See [security documentation](/security) for details.
+
+<!-- agent-instructions -->
+
+---
+
+## Agent Instructions
+
+This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/pricing-self-host.md`.
+
+### Querying these docs
+
+If the answer is not on this page, query the documentation instead of guessing:
+
+- **Semantic search** across all Langfuse docs, returning an answer with the relevant pages and excerpts. Ask a specific, self-contained question:
+
+  ```bash
+  curl -sG "https://langfuse.com/api/search-docs" --data-urlencode "query=How do I trace a LangGraph agent?"
+  ```
+
+- **Index of every page**: <https://langfuse.com/llms.txt>, with per-section indexes [llms-docs.txt](https://langfuse.com/llms-docs.txt), [llms-integrations.txt](https://langfuse.com/llms-integrations.txt), and [llms-self-hosting.txt](https://langfuse.com/llms-self-hosting.txt).
+
+### Before writing Langfuse code
+
+- **Install the [Langfuse Agent Skill](https://langfuse.com/docs/api-and-data-platform/features/agent-skill).** It encodes Langfuse's own best practices for instrumentation, prompt management, and evaluation, and materially improves results.
+- **Read [What does a good trace look like?](https://langfuse.com/docs/observability/best-practices.md)** before instrumenting an application.
+- **Verify endpoints, parameters, and response fields** against the [API reference](https://api.reference.langfuse.com) instead of inferring them from code examples.
+- **Use the [Langfuse CLI](https://langfuse.com/docs/api-and-data-platform/features/cli)** (`npx @langfuse/cli api <resource> <action>`) to read or write traces, prompts, datasets, and scores from the terminal.
+
+Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
+
+
 # Enterprise license keys
 
 **URL:** https://langfuse.com/self-hosting/license-key.md
@@ -2581,7 +2581,7 @@ Langfuse is built with enterprise needs in mind, focusing on:
 - **Transparency:** Open-source core and clear information on [software dependencies](/security/dependencies).
 - **Reporting:** Clear channels for [responsible disclosure through Bugcrowd](/security/responsible-disclosure) and [Whistleblowing](/security/whistleblowing).
 
-Langfuse is the most widely adopted LLM Engineering platform, used by **50,000+ companies**, with **34,671 GitHub stars**, **65M+ SDK installs per month**, and **38M+ Docker pulls**. Trusted by **21 of the Fortune 50** and **129 of the Fortune 500** companies.
+Langfuse is the most widely adopted LLM Engineering platform, used by **50,000+ companies**, with **34,693 GitHub stars**, **65M+ SDK installs per month**, and **38M+ Docker pulls**. Trusted by **21 of the Fortune 50** and **129 of the Fortune 500** companies.
 
 ## Langfuse Cloud security model
 
@@ -3639,221 +3639,6 @@ If the answer is not on this page, query the documentation instead of guessing:
 Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
 
 
-# What does a good trace look like?
-
-**URL:** https://langfuse.com/docs/observability/best-practices.md
-
----
-title: What does a good trace look like?
-sidebarTitle: Best Practices
-description: Best practices for structuring Langfuse traces — scope, nesting, naming, input/output, and attributes — so that debugging, evaluation, and cost tracking work well.
----
-
-# What does a good trace look like?
-
-You see traces appearing in Langfuse, but how do you know if you've done it well? Here are a couple of things you can look at and optimize.
-
-Trace structure is not just cosmetic — many Langfuse features build on top of it:
-
-- [LLM-as-a-judge evaluators](/docs/evaluation/evaluation-methods/llm-as-a-judge) target observations by name and type, and read their input and output.
-- [Dashboards](/docs/metrics/features/custom-dashboards) filter and aggregate metrics by trace and observation names.
-- [Dataset experiments](/docs/evaluation/experiments) compare trace input and output across runs.
-- Saved views on the tracing table reference names and attributes.
-
-A well-structured trace makes debugging faster today, and stable names with meaningful input/output keep your evaluators, dashboards, and experiments working as your application evolves.
-
-## What's the scope of one trace?
-
-Langfuse's [data model](/docs/observability/data-model) has three levels of grouping: observations (individual steps) are grouped into traces via a `trace_id`, and traces can be grouped into sessions via a `session_id`.
-
-A trace represents one self-contained unit of work in your application. Good examples of a typical trace:
-
-- One chatbot turn (user sends a message, your app retrieves context, calls the LLM, returns a response)
-- One agent run (the agent receives a task, reasons, calls tools, and produces a result)
-- One pipeline execution (a document comes in, gets chunked, embedded, and stored)
-
-If multiple of these happen in sequence, e.g. a multi-turn conversation, or several agent runs that feed into a final report, that's where [sessions](/docs/observability/features/sessions) come in. Each step is its own trace, and the session ties them together. For a chatbot this means one trace per turn and one session per conversation — you don't know upfront when a conversation ends, and the per-turn model keeps traces small and easy to navigate in the session view.
-
-A trace shows up in the Langfuse UI as a trace tree and an [agent graph](/docs/observability/features/agent-graphs):
-
-![Trace tree](/images/docs/faq/good-trace-tree.png)
-
-![Agent graph](/images/docs/faq/good-trace-agent-graph.png)
-
-## Look at the trace tree
-
-When you click on a trace, you see the trace tree. There are a few things you can check:
-
-### Are the right steps showing up?
-
-You should see your LLM calls, tool calls, and other important steps represented in the tree. They should have the correct [observation type](/docs/observability/features/observation-types).
-
-For example
-
-- an LLM call should show up as a  `generation`. This is important because a `generation` can carry [cost, token usage, and model information](#track-model-tokens-and-cost-on-generations).
-- a tool call should show up as a  `tool`. You can then filter on tool call observations when you create [LLM-as-a-judge](/docs/evaluation/evaluation-methods/llm-as-a-judge) evaluators.
-
-Framework integrations typically set these types automatically. If you're instrumenting manually, you can set them via the `as_type` parameter (Python) or `asType` (JS/TS). See the [observation types docs](/docs/observability/features/observation-types) for a full list.
-
-### Is it nested correctly?
-
-A tool call should nest under the `agent` or `span` [observation](/docs/observability/data-model#observations-traces-and-sessions) that orchestrates the step, as a sibling of the `generation` that requested it, so the tree shows which step each action belongs to instead of leaving tool calls dangling at the trace root.
-
-Framework integrations usually get this right automatically. If you're instrumenting manually, see [nesting observations](/docs/observability/sdk/instrumentation#nesting-observations).
-
-**Beware of aggregating LLM calls.** You should see a  `generation` for each model invocation in an agent loop, interleaved with the  `tool` calls it requested. Avoid wrapping the whole loop in one parent generation that only records the final output. This would make it impossible to:
-
-- see what the agent decided after each tool result
-- see which tool call has blown up your agent's context window (useful when optimizing cost)
-
-**One generation wrapping the whole loop.** You only see aggregated cost and the final output.
-
-![Agent loop collapsed into one generation](/images/docs/faq/good-trace-agent-collapsed-generation.png)
-
-**Each model invocation as its own generation.** You can see reasoning, tokens, cost after every step.
-
-![Agent loop with interleaved generations](/images/docs/faq/good-trace-agent-interleaved-generations.png)
-
-### Is there noise you don't need?
-
-Not every observation in the tree is useful for understanding what your application did. HTTP [observations](/docs/observability/data-model#observations-traces-and-sessions), database queries, and framework internals often add clutter without giving you meaningful insight. If you see observations like these polluting your trace tree, you can [filter them out](/faq/all/unwanted-http-database-spans).
-
-![Noisy observations in a trace tree](/images/docs/faq/good-trace-noisy-spans.png)
-
-## Choose good names
-
-Observation- and trace names are used in many places:
-
-- When setting up [LLM-as-a-judge evaluators](/docs/evaluation/evaluation-methods/llm-as-a-judge), you target specific observations by name.
-- In [dashboards](/docs/metrics/features/custom-dashboards), you can filter and aggregate metrics by observation name.
-- In the tracing table, names help you quickly identify what each step does.
-
-Because names are referenced in all these places, treat them like an API: when a name changes, evaluators, dashboard queries, and saved filters that target the old name silently stop matching. Pick names deliberately, and expect to keep them stable.
-
-**Use active language.** Name observations after the action they perform, verb first: `classify-intent`, `retrieve-context`, `generate-response`, `summarize-results`. This makes the trace tree read like a description of what your application did, and makes filtering on a specific step easier.
-
-**Keep dynamic values out of names.** Use `process-order`, not `process-order-8945` or `generate-response-retry-2`. A name should identify the operation, not a single execution of it — otherwise every trace produces new names and you can no longer group, filter, or target them. Put run-specific values in [metadata](/docs/observability/features/metadata) instead. (This is the same low-cardinality rule that OpenTelemetry recommends for span names.)
-
-Try not to name observations after the AI model used (`gpt-4o`, `claude-sonnet`). All filters, evaluators, and dashboards that reference the name break as soon as you swap models. The model is already a separate attribute on `generation` observations, use that instead.
-
-## Choose meaningful input and output
-
-In general, it's recommended that operations have an input and/or output. If an observation has neither, ask yourself if an observation is actually useful or if you can drop it.
-
-The **root observation** deserves the most care: the trace-level input and output are derived from it. They are shown in the tracing table, read by evaluators, and compared across runs in [dataset experiments](/docs/evaluation/experiments). Set them to what a reviewer needs at a glance — for a chatbot, the user message as input and the assistant response as output — not a raw JSON blob of function arguments. If you need the raw payload for debugging, put it in [metadata](/docs/observability/features/metadata).
-
-For your **most viewed observations**, take some extra care to set them up. You will likely create pre-filtered views on your tracing and session screens. The observations you filter for here are the ones that will get looked at the most. For these, ask yourself: **what do I need to see to quickly evaluate a trace/session at a glance?**
-
-![Tracing table with input and output](/images/docs/faq/good-trace-tracing-table-io.png)
-
-Typical input/output for `GENERATION` observations:
-
-- For a chatbot: the user message (input) and the assistant response (output).
-- For a RAG pipeline: the user query and the generated answer.
-- For a classification task: the text being classified and the predicted label.
-
-Most inputs/outputs can be rendered as a readable, role-labeled conversation rather than a raw JSON blob. If yours show up as raw JSON, you can take a look at the formatting: it should be a list of messages in the standard OpenAI format (each with a `role` and `content`), and it renders tool calls as cards only when they sit in an assistant message's `tool_calls` array with each call's `arguments` given as a JSON-encoded string (for example `"{\"location\": \"Paris\"}"`).
-
-If your input and output fields are showing up empty unintentionally, see [why are the input and output of my trace empty?](/faq/all/empty-trace-input-and-output)
-
-## Useful attributes
-
-Observations have a number of attributes that can be useful for your use cases. These will allow you to go even further with filtering, scoring, and making dashboards.
-
-### Add metadata for context
-
-[Metadata](/docs/observability/features/metadata) is a flexible key-value store on each observation. It's the right place for anything that is useful context but doesn't belong in the name or the input/output. Examples of metadata that is useful in practice:
-
-- **Evaluation context**: Ground truth, expected behavior, or other context an [LLM-as-a-judge evaluator](/docs/evaluation/evaluation-methods/llm-as-a-judge) needs but that isn't part of the actual input/output. Evaluators can reference metadata fields in their variable mapping.
-- **Request context**: Internal request IDs, the API route or app version that handled the request, or the experiment variant / feature flags that were active. This lets you correlate a trace with your other systems and filter by rollout.
-- **Retrieval context**: For RAG steps, things like the data source, number of chunks retrieved, or the index queried — useful when debugging why a retrieval step returned poor results.
-- **Raw payloads**: Full request/response objects that would clutter the input/output fields but are occasionally needed for debugging.
-- **Annotation context**: When doing manual review, metadata gives annotators extra information to make better judgments.
-
-You can filter by metadata keys in the Langfuse UI, which is helpful when you need to find traces with specific characteristics.
-
-### Track model, tokens, and cost on generations [#track-model-tokens-and-cost-on-generations]
-
-If you want to understand what your LLM usage costs, broken down by model, by user, by feature, you need three things on your `generation` observations:
-
-- **Model name**: Langfuse uses this to look up pricing in the [model pricing table](/docs/model-usage-and-cost). If the model name doesn't match, Langfuse can't calculate cost automatically.
-- **Usage details**: Input tokens, output tokens, and optionally cached tokens. This is what powers the token usage views in dashboards.
-- **Cost details** (optional): If you want to override Langfuse's automatic pricing — for example, if you have a custom pricing agreement — you can pass cost explicitly.
-
-Most [integrations](/integrations) capture all of this automatically. If you're instrumenting manually, see the [token and cost tracking docs](/docs/observability/features/token-and-cost-tracking).
-
-You can see these attributes on the `GENERATION` observation in the Langfuse UI.
-
-![Generation attributes in Langfuse](/images/docs/faq/good-trace-generation-attributes.png)
-
-### Use tags for business-level dimensions
-
-[Tags](/docs/observability/features/tags) enable filtering and metric breakdowns across dimensions that matter to your business. Good tags answer questions like "how does latency differ between our `web` and `api` users?".
-
-One property of tags is that they are **immutable and must be set at observation creation time**. This makes them great for things you know upfront (where the request came from, which feature it's part of), but not for things you learn later.
-
-If you need to label traces based on something determined after the fact, like an [LLM-as-a-judge](/docs/evaluation/evaluation-methods/llm-as-a-judge) evaluation result, use [scores](/docs/evaluation/overview) instead.
-
-### Link prompts to traces
-
-If you [manage your prompts in Langfuse](/docs/prompt-management), you can [link them to your generations](/docs/prompt-management/features/link-to-traces). This lets you see which prompt version was used for a given trace, and track how metrics change across prompt versions. Useful when you're iterating on prompts and want to compare performance.
-
-### Set the environment
-
-Set the [environment](/docs/observability/features/environments) attribute (`production`, `staging`, `development`) so that your test traces don't pollute production dashboards and evaluations.
-
-### Track users with user IDs
-
-Setting the [user ID](/docs/observability/features/users) connects traces to specific users, which unlocks per-user views in Langfuse. Useful if you want to answer questions like:
-
-- Which users are costing us the most?
-- How does output quality vary across users?
-- What does a specific user's usage pattern look like?
-
-### Group related traces with session IDs
-
-If your application involves multiple traces that logically belong together, group them into a [session](/docs/observability/features/sessions). This gives you a session replay view where you can see the full interaction in sequence.
-
-This makes sense when:
-
-- You're building a chatbot (each user message creates a new trace, but the whole conversation is one session)
-- You have multiple agents that each contribute to a final output (e.g., five agents that collaborate to produce a report)
-- Your workflow spans multiple requests with human-in-the-loop steps in between
-
-If your application is single-request/single-response with no continuity between calls, you probably don't need sessions.
-
-![Sessions view in Langfuse](/images/docs/faq/good-trace-sessions-view.png)
-
-<!-- agent-instructions -->
-
----
-
-## Agent Instructions
-
-This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/docs/observability/best-practices.md`.
-
-### Querying these docs
-
-If the answer is not on this page, query the documentation instead of guessing:
-
-- **Semantic search** across all Langfuse docs, returning an answer with the relevant pages and excerpts. Ask a specific, self-contained question:
-
-  ```bash
-  curl -sG "https://langfuse.com/api/search-docs" --data-urlencode "query=How do I trace a LangGraph agent?"
-  ```
-
-- **Index of every page**: <https://langfuse.com/llms.txt>, with per-section indexes [llms-docs.txt](https://langfuse.com/llms-docs.txt), [llms-integrations.txt](https://langfuse.com/llms-integrations.txt), and [llms-self-hosting.txt](https://langfuse.com/llms-self-hosting.txt).
-
-### Before writing Langfuse code
-
-- **Install the [Langfuse Agent Skill](https://langfuse.com/docs/api-and-data-platform/features/agent-skill).** It encodes Langfuse's own best practices for instrumentation, prompt management, and evaluation, and materially improves results.
-- **Read [What does a good trace look like?](https://langfuse.com/docs/observability/best-practices.md)** before instrumenting an application.
-- **Verify endpoints, parameters, and response fields** against the [API reference](https://api.reference.langfuse.com) instead of inferring them from code examples.
-- **Use the [Langfuse CLI](https://langfuse.com/docs/api-and-data-platform/features/cli)** (`npx @langfuse/cli api <resource> <action>`) to read or write traces, prompts, datasets, and scores from the terminal.
-
-Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
-
-
 # Galileo
 
 **URL:** https://langfuse.com/compare/galileo.md
@@ -4282,6 +4067,221 @@ SmithDB is LangSmith's proprietary trace database ([launched May 13, 2026](https
 ## Agent Instructions
 
 This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/compare/langsmith.md`.
+
+### Querying these docs
+
+If the answer is not on this page, query the documentation instead of guessing:
+
+- **Semantic search** across all Langfuse docs, returning an answer with the relevant pages and excerpts. Ask a specific, self-contained question:
+
+  ```bash
+  curl -sG "https://langfuse.com/api/search-docs" --data-urlencode "query=How do I trace a LangGraph agent?"
+  ```
+
+- **Index of every page**: <https://langfuse.com/llms.txt>, with per-section indexes [llms-docs.txt](https://langfuse.com/llms-docs.txt), [llms-integrations.txt](https://langfuse.com/llms-integrations.txt), and [llms-self-hosting.txt](https://langfuse.com/llms-self-hosting.txt).
+
+### Before writing Langfuse code
+
+- **Install the [Langfuse Agent Skill](https://langfuse.com/docs/api-and-data-platform/features/agent-skill).** It encodes Langfuse's own best practices for instrumentation, prompt management, and evaluation, and materially improves results.
+- **Read [What does a good trace look like?](https://langfuse.com/docs/observability/best-practices.md)** before instrumenting an application.
+- **Verify endpoints, parameters, and response fields** against the [API reference](https://api.reference.langfuse.com) instead of inferring them from code examples.
+- **Use the [Langfuse CLI](https://langfuse.com/docs/api-and-data-platform/features/cli)** (`npx @langfuse/cli api <resource> <action>`) to read or write traces, prompts, datasets, and scores from the terminal.
+
+Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
+
+
+# What does a good trace look like?
+
+**URL:** https://langfuse.com/docs/observability/best-practices.md
+
+---
+title: What does a good trace look like?
+sidebarTitle: Best Practices
+description: Best practices for structuring Langfuse traces — scope, nesting, naming, input/output, and attributes — so that debugging, evaluation, and cost tracking work well.
+---
+
+# What does a good trace look like?
+
+You see traces appearing in Langfuse, but how do you know if you've done it well? Here are a couple of things you can look at and optimize.
+
+Trace structure is not just cosmetic — many Langfuse features build on top of it:
+
+- [LLM-as-a-judge evaluators](/docs/evaluation/evaluation-methods/llm-as-a-judge) target observations by name and type, and read their input and output.
+- [Dashboards](/docs/metrics/features/custom-dashboards) filter and aggregate metrics by trace and observation names.
+- [Dataset experiments](/docs/evaluation/experiments) compare trace input and output across runs.
+- Saved views on the tracing table reference names and attributes.
+
+A well-structured trace makes debugging faster today, and stable names with meaningful input/output keep your evaluators, dashboards, and experiments working as your application evolves.
+
+## What's the scope of one trace?
+
+Langfuse's [data model](/docs/observability/data-model) has three levels of grouping: observations (individual steps) are grouped into traces via a `trace_id`, and traces can be grouped into sessions via a `session_id`.
+
+A trace represents one self-contained unit of work in your application. Good examples of a typical trace:
+
+- One chatbot turn (user sends a message, your app retrieves context, calls the LLM, returns a response)
+- One agent run (the agent receives a task, reasons, calls tools, and produces a result)
+- One pipeline execution (a document comes in, gets chunked, embedded, and stored)
+
+If multiple of these happen in sequence, e.g. a multi-turn conversation, or several agent runs that feed into a final report, that's where [sessions](/docs/observability/features/sessions) come in. Each step is its own trace, and the session ties them together. For a chatbot this means one trace per turn and one session per conversation — you don't know upfront when a conversation ends, and the per-turn model keeps traces small and easy to navigate in the session view.
+
+A trace shows up in the Langfuse UI as a trace tree and an [agent graph](/docs/observability/features/agent-graphs):
+
+![Trace tree](/images/docs/faq/good-trace-tree.png)
+
+![Agent graph](/images/docs/faq/good-trace-agent-graph.png)
+
+## Look at the trace tree
+
+When you click on a trace, you see the trace tree. There are a few things you can check:
+
+### Are the right steps showing up?
+
+You should see your LLM calls, tool calls, and other important steps represented in the tree. They should have the correct [observation type](/docs/observability/features/observation-types).
+
+For example
+
+- an LLM call should show up as a  `generation`. This is important because a `generation` can carry [cost, token usage, and model information](#track-model-tokens-and-cost-on-generations).
+- a tool call should show up as a  `tool`. You can then filter on tool call observations when you create [LLM-as-a-judge](/docs/evaluation/evaluation-methods/llm-as-a-judge) evaluators.
+
+Framework integrations typically set these types automatically. If you're instrumenting manually, you can set them via the `as_type` parameter (Python) or `asType` (JS/TS). See the [observation types docs](/docs/observability/features/observation-types) for a full list.
+
+### Is it nested correctly?
+
+A tool call should nest under the `agent` or `span` [observation](/docs/observability/data-model#observations-traces-and-sessions) that orchestrates the step, as a sibling of the `generation` that requested it, so the tree shows which step each action belongs to instead of leaving tool calls dangling at the trace root.
+
+Framework integrations usually get this right automatically. If you're instrumenting manually, see [nesting observations](/docs/observability/sdk/instrumentation#nesting-observations).
+
+**Beware of aggregating LLM calls.** You should see a  `generation` for each model invocation in an agent loop, interleaved with the  `tool` calls it requested. Avoid wrapping the whole loop in one parent generation that only records the final output. This would make it impossible to:
+
+- see what the agent decided after each tool result
+- see which tool call has blown up your agent's context window (useful when optimizing cost)
+
+**One generation wrapping the whole loop.** You only see aggregated cost and the final output.
+
+![Agent loop collapsed into one generation](/images/docs/faq/good-trace-agent-collapsed-generation.png)
+
+**Each model invocation as its own generation.** You can see reasoning, tokens, cost after every step.
+
+![Agent loop with interleaved generations](/images/docs/faq/good-trace-agent-interleaved-generations.png)
+
+### Is there noise you don't need?
+
+Not every observation in the tree is useful for understanding what your application did. HTTP [observations](/docs/observability/data-model#observations-traces-and-sessions), database queries, and framework internals often add clutter without giving you meaningful insight. If you see observations like these polluting your trace tree, you can [filter them out](/faq/all/unwanted-http-database-spans).
+
+![Noisy observations in a trace tree](/images/docs/faq/good-trace-noisy-spans.png)
+
+## Choose good names
+
+Observation- and trace names are used in many places:
+
+- When setting up [LLM-as-a-judge evaluators](/docs/evaluation/evaluation-methods/llm-as-a-judge), you target specific observations by name.
+- In [dashboards](/docs/metrics/features/custom-dashboards), you can filter and aggregate metrics by observation name.
+- In the tracing table, names help you quickly identify what each step does.
+
+Because names are referenced in all these places, treat them like an API: when a name changes, evaluators, dashboard queries, and saved filters that target the old name silently stop matching. Pick names deliberately, and expect to keep them stable.
+
+**Use active language.** Name observations after the action they perform, verb first: `classify-intent`, `retrieve-context`, `generate-response`, `summarize-results`. This makes the trace tree read like a description of what your application did, and makes filtering on a specific step easier.
+
+**Keep dynamic values out of names.** Use `process-order`, not `process-order-8945` or `generate-response-retry-2`. A name should identify the operation, not a single execution of it — otherwise every trace produces new names and you can no longer group, filter, or target them. Put run-specific values in [metadata](/docs/observability/features/metadata) instead. (This is the same low-cardinality rule that OpenTelemetry recommends for span names.)
+
+Try not to name observations after the AI model used (`gpt-4o`, `claude-sonnet`). All filters, evaluators, and dashboards that reference the name break as soon as you swap models. The model is already a separate attribute on `generation` observations, use that instead.
+
+## Choose meaningful input and output
+
+In general, it's recommended that operations have an input and/or output. If an observation has neither, ask yourself if an observation is actually useful or if you can drop it.
+
+The **root observation** deserves the most care: the trace-level input and output are derived from it. They are shown in the tracing table, read by evaluators, and compared across runs in [dataset experiments](/docs/evaluation/experiments). Set them to what a reviewer needs at a glance — for a chatbot, the user message as input and the assistant response as output — not a raw JSON blob of function arguments. If you need the raw payload for debugging, put it in [metadata](/docs/observability/features/metadata).
+
+For your **most viewed observations**, take some extra care to set them up. You will likely create pre-filtered views on your tracing and session screens. The observations you filter for here are the ones that will get looked at the most. For these, ask yourself: **what do I need to see to quickly evaluate a trace/session at a glance?**
+
+![Tracing table with input and output](/images/docs/faq/good-trace-tracing-table-io.png)
+
+Typical input/output for `GENERATION` observations:
+
+- For a chatbot: the user message (input) and the assistant response (output).
+- For a RAG pipeline: the user query and the generated answer.
+- For a classification task: the text being classified and the predicted label.
+
+Most inputs/outputs can be rendered as a readable, role-labeled conversation rather than a raw JSON blob. If yours show up as raw JSON, you can take a look at the formatting: it should be a list of messages in the standard OpenAI format (each with a `role` and `content`), and it renders tool calls as cards only when they sit in an assistant message's `tool_calls` array with each call's `arguments` given as a JSON-encoded string (for example `"{\"location\": \"Paris\"}"`).
+
+If your input and output fields are showing up empty unintentionally, see [why are the input and output of my trace empty?](/faq/all/empty-trace-input-and-output)
+
+## Useful attributes
+
+Observations have a number of attributes that can be useful for your use cases. These will allow you to go even further with filtering, scoring, and making dashboards.
+
+### Add metadata for context
+
+[Metadata](/docs/observability/features/metadata) is a flexible key-value store on each observation. It's the right place for anything that is useful context but doesn't belong in the name or the input/output. Examples of metadata that is useful in practice:
+
+- **Evaluation context**: Ground truth, expected behavior, or other context an [LLM-as-a-judge evaluator](/docs/evaluation/evaluation-methods/llm-as-a-judge) needs but that isn't part of the actual input/output. Evaluators can reference metadata fields in their variable mapping.
+- **Request context**: Internal request IDs, the API route or app version that handled the request, or the experiment variant / feature flags that were active. This lets you correlate a trace with your other systems and filter by rollout.
+- **Retrieval context**: For RAG steps, things like the data source, number of chunks retrieved, or the index queried — useful when debugging why a retrieval step returned poor results.
+- **Raw payloads**: Full request/response objects that would clutter the input/output fields but are occasionally needed for debugging.
+- **Annotation context**: When doing manual review, metadata gives annotators extra information to make better judgments.
+
+You can filter by metadata keys in the Langfuse UI, which is helpful when you need to find traces with specific characteristics.
+
+### Track model, tokens, and cost on generations [#track-model-tokens-and-cost-on-generations]
+
+If you want to understand what your LLM usage costs, broken down by model, by user, by feature, you need three things on your `generation` observations:
+
+- **Model name**: Langfuse uses this to look up pricing in the [model pricing table](/docs/model-usage-and-cost). If the model name doesn't match, Langfuse can't calculate cost automatically.
+- **Usage details**: Input tokens, output tokens, and optionally cached tokens. This is what powers the token usage views in dashboards.
+- **Cost details** (optional): If you want to override Langfuse's automatic pricing — for example, if you have a custom pricing agreement — you can pass cost explicitly.
+
+Most [integrations](/integrations) capture all of this automatically. If you're instrumenting manually, see the [token and cost tracking docs](/docs/observability/features/token-and-cost-tracking).
+
+You can see these attributes on the `GENERATION` observation in the Langfuse UI.
+
+![Generation attributes in Langfuse](/images/docs/faq/good-trace-generation-attributes.png)
+
+### Use tags for business-level dimensions
+
+[Tags](/docs/observability/features/tags) enable filtering and metric breakdowns across dimensions that matter to your business. Good tags answer questions like "how does latency differ between our `web` and `api` users?".
+
+One property of tags is that they are **immutable and must be set at observation creation time**. This makes them great for things you know upfront (where the request came from, which feature it's part of), but not for things you learn later.
+
+If you need to label traces based on something determined after the fact, like an [LLM-as-a-judge](/docs/evaluation/evaluation-methods/llm-as-a-judge) evaluation result, use [scores](/docs/evaluation/overview) instead.
+
+### Link prompts to traces
+
+If you [manage your prompts in Langfuse](/docs/prompt-management), you can [link them to your generations](/docs/prompt-management/features/link-to-traces). This lets you see which prompt version was used for a given trace, and track how metrics change across prompt versions. Useful when you're iterating on prompts and want to compare performance.
+
+### Set the environment
+
+Set the [environment](/docs/observability/features/environments) attribute (`production`, `staging`, `development`) so that your test traces don't pollute production dashboards and evaluations.
+
+### Track users with user IDs
+
+Setting the [user ID](/docs/observability/features/users) connects traces to specific users, which unlocks per-user views in Langfuse. Useful if you want to answer questions like:
+
+- Which users are costing us the most?
+- How does output quality vary across users?
+- What does a specific user's usage pattern look like?
+
+### Group related traces with session IDs
+
+If your application involves multiple traces that logically belong together, group them into a [session](/docs/observability/features/sessions). This gives you a session replay view where you can see the full interaction in sequence.
+
+This makes sense when:
+
+- You're building a chatbot (each user message creates a new trace, but the whole conversation is one session)
+- You have multiple agents that each contribute to a final output (e.g., five agents that collaborate to produce a report)
+- Your workflow spans multiple requests with human-in-the-loop steps in between
+
+If your application is single-request/single-response with no continuity between calls, you probably don't need sessions.
+
+![Sessions view in Langfuse](/images/docs/faq/good-trace-sessions-view.png)
+
+<!-- agent-instructions -->
+
+---
+
+## Agent Instructions
+
+This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/docs/observability/best-practices.md`.
 
 ### Querying these docs
 

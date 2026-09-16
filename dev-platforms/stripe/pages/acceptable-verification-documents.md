@@ -38,6 +38,7 @@ If you received a verification request from Stripe, follow these steps:
    - **Bank account documents**: Bank statements or account verification
    - **Registration status**: Nonprofit or charity registration documents
    - **Relationship documents**: Documents proving ownership or directorship
+   - **Governing documents**: Your entity’s constitution, partnership agreement, or governing instrument
 
 ## Select a country to view its requirements
 
@@ -138,6 +139,20 @@ Required information:
 - **UBO verification**: All beneficial owner names and positions, and where applicable, ownership amount
 - **Representative authority verification**: Representative name and position; and if using a Letter of Authorization, Authorizer name, position, and identity documents are additionally required.
 
+#### Item 7
+
+A constitution document is the legal document that sets out how your entity is governed, including its rules, structure, and the responsibilities of the people who manage it.
+
+#### Item 1
+
+#### Singapore
+
+Upload the document that applies to your organization:
+
+- **Companies**: upload the same current constitution that your company submitted to ACRA, including any amendments. If your company has a customized constitution, upload that document. If your company was incorporated before 3 January 2016, upload its Memorandum and Articles of Association (M&AA), unless it has since adopted a replacement constitution.
+- **Partnerships**: upload your Partnership Agreement.
+- **Charities and non-profit organizations**: upload your Governing Instrument. This is either a constitution (for a company limited by guarantee registered with ACRA) or a constitution or rules (for a society registered with the Registry of Societies under the Ministry of Home Affairs).
+
 ### Support articles
 
 #### Item 1
@@ -165,6 +180,8 @@ Required information:
 
 - [Company beneficial ownership and director requirement](https://support.stripe.com/questions/company-beneficial-ownership-and-director-requirement)
 
+#### Item 7
+
 #### Default
 
 #### Item 1
@@ -178,6 +195,8 @@ Required information:
 #### Item 5
 
 #### Item 6
+
+#### Item 7
 
 #### Australia
 
@@ -201,6 +220,8 @@ Required information:
 
 #### Item 6
 
+#### Item 7
+
 #### Austria
 
 #### Item 1
@@ -219,6 +240,8 @@ Required information:
 
 #### Item 6
 
+#### Item 7
+
 #### Belgium
 
 #### Item 1
@@ -236,6 +259,8 @@ Required information:
 #### Item 5
 
 #### Item 6
+
+#### Item 7
 
 #### Brazil
 
@@ -260,6 +285,8 @@ Required information:
 #### Item 5
 
 #### Item 6
+
+#### Item 7
 
 #### Canada
 
@@ -302,6 +329,8 @@ Required information:
 - [Beneficial Ownership Requirements: Canada](https://support.stripe.com/questions/beneficial-ownership-requirements-canada)
 - [Onboarding Requirements Updates](https://support.stripe.com/user/questions/onboarding-requirements-updates)
 
+#### Item 7
+
 #### Czech Republic
 
 #### Item 1
@@ -319,6 +348,8 @@ Required information:
 **Country-specific:**
 
 - [Beneficial Ownership Requirements: Czech Republic, Estonia, and Latvia](https://support.stripe.com/questions/beneficial-ownership-requirements-czech-republic-estonia-and-latvia)
+
+#### Item 7
 
 #### Estonia
 
@@ -342,6 +373,8 @@ Required information:
 
 - [Beneficial Ownership Requirements: Czech Republic, Estonia, and Latvia](https://support.stripe.com/questions/beneficial-ownership-requirements-czech-republic-estonia-and-latvia)
 
+#### Item 7
+
 #### France
 
 #### Item 1
@@ -361,6 +394,8 @@ Required information:
 
 #### Item 6
 
+#### Item 7
+
 #### Germany
 
 #### Item 1
@@ -379,6 +414,8 @@ Required information:
 
 #### Item 6
 
+#### Item 7
+
 #### Hong Kong
 
 #### Item 1
@@ -396,6 +433,8 @@ Required information:
 #### Item 5
 
 #### Item 6
+
+#### Item 7
 
 #### India
 
@@ -515,6 +554,8 @@ Required information:
 - UBO verification: All beneficial owner names, ownership amount
 - Representative authority verification: Representative name and position. If using a Board Resolution, it should be signed by a Director of the company; and if using a Letter of Authorization, Authorizer name and position are additionally required.
 
+#### Item 7
+
 #### Indonesia
 
 #### Item 1
@@ -532,6 +573,8 @@ Required information:
 #### Item 5
 
 #### Item 6
+
+#### Item 7
 
 #### Ireland
 
@@ -552,6 +595,8 @@ Required information:
 - [Beneficial Ownership Requirements: Ireland](https://support.stripe.com/questions/beneficial-ownership-requirements-ireland)
 - [Irish-registered businesses: how to collect Beneficial Ownership Information from the Register of Beneficial Ownership (RBO)](https://support.stripe.com/questions/irish-registered-businesses-how-to-collect-beneficial-ownership-information-from-the-register-of-beneficial-ownership-%28rbo%29)
 
+#### Item 7
+
 #### Italy
 
 #### Item 1
@@ -569,6 +614,8 @@ Required information:
 #### Item 5
 
 #### Item 6
+
+#### Item 7
 
 #### Latvia
 
@@ -588,6 +635,8 @@ Required information:
 
 - [Beneficial Ownership Requirements: Czech Republic, Estonia, and Latvia](https://support.stripe.com/questions/beneficial-ownership-requirements-czech-republic-estonia-and-latvia)
 
+#### Item 7
+
 #### Mexico
 
 #### Item 1
@@ -605,6 +654,8 @@ Required information:
 #### Item 5
 
 #### Item 6
+
+#### Item 7
 
 #### Netherlands
 
@@ -624,6 +675,8 @@ Required information:
 
 #### Item 6
 
+#### Item 7
+
 #### Portugal
 
 #### Item 1
@@ -641,6 +694,8 @@ Required information:
 #### Item 5
 
 #### Item 6
+
+#### Item 7
 
 #### Singapore
 
@@ -674,6 +729,8 @@ Required information:
 - [Ultimate Beneficial Ownership Requirements: Singapore](https://support.stripe.com/questions/singapore-ultimate-beneficial-ownership-and-director-requirements)
 - [Representative Authority Verification](https://support.stripe.com/questions/representative-authority-verification)
 
+#### Item 7
+
 #### Thailand
 
 #### Item 1
@@ -696,6 +753,8 @@ Required information:
 #### Item 5
 
 #### Item 6
+
+#### Item 7
 
 #### United Arab Emirates
 
@@ -733,6 +792,8 @@ Required information:
 
 - [Beneficial Ownership Verification for Holding Companies](https://support.stripe.com/questions/beneficial-ownership-verification-for-holding-companies)
 
+#### Item 7
+
 #### United Kingdom
 
 #### Item 1
@@ -758,6 +819,8 @@ Register of Persons with Significant Control (PSC) (Ultimate Beneficial Owner Re
 **Country-specific:**
 
 - [Beneficial ownership requirements](https://support.stripe.com/questions/beneficial-ownership-requirements-united-kingdom)
+
+#### Item 7
 
 #### United States
 
@@ -801,6 +864,8 @@ Register of Persons with Significant Control (PSC) (Ultimate Beneficial Owner Re
 **Country-specific:**
 
 - [Beneficial Ownership Requirements: United States](https://support.stripe.com/questions/beneficial-ownership-requirements-united-states)
+
+#### Item 7
 
 ## Why was my document rejected?
 

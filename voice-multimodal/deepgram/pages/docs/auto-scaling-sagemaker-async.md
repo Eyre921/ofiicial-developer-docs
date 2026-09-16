@@ -1,5 +1,5 @@
 ---
-title: "Auto-Scaling Asynchronous SageMaker Endpoints (Currently Disabled)"
+title: "Auto-Scaling Asynchronous SageMaker Endpoints (Temporarily Unavailable)"
 source: https://developers.deepgram.com/docs/auto-scaling-sagemaker-async.md
 path: docs/auto-scaling-sagemaker-async
 ---
@@ -8,11 +8,11 @@ path: docs/auto-scaling-sagemaker-async
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 > For AI client integration (Claude Code, Cursor, etc.), connect to the MCP server at https://developers.deepgram.com/_mcp/server.
 
-# Auto-Scaling Asynchronous SageMaker Endpoints (Currently Disabled)
+# Auto-Scaling Asynchronous SageMaker Endpoints (Temporarily Unavailable)
 
-#### This feature is currently disabled
+#### Asynchronous endpoints are temporarily unavailable
 
-Asynchronous SageMaker endpoints are disabled because of an Amazon SageMaker platform limitation. If you need access to this feature, let your [Deepgram representative](https://deepgram.com/contact-us) or your [AWS sales representative](https://aws.amazon.com/contact-us/sales-support/) know.
+Asynchronous SageMaker endpoints (`InvokeEndpointAsync`, files up to 1 GB, scale-to-zero) are temporarily not supported for Marketplace-hosted Deepgram because of an Amazon SageMaker platform limitation. Do not deploy one. The content below is kept for reference until the endpoint type is available again. If your use case needs asynchronous processing, contact your [Deepgram representative](https://deepgram.com/contact-us) or your [AWS sales representative](https://aws.amazon.com/contact-us/sales-support/).
 
 Deepgram's speech-to-text models can be deployed on Amazon SageMaker as **asynchronous inference endpoints**, which queue incoming requests and process them from Amazon S3. Async endpoints handle **pre-recorded files only** (no streaming) — payloads up to **1 GB**, processing times up to **one hour**, and near real-time latency — and, unlike real-time endpoints, they can **autoscale to zero** when there are no requests to process, so you only pay while the endpoint is actively working.
 

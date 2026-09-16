@@ -41,7 +41,8 @@ A `400` on every request usually means the request does not match the product yo
 
 * **Multilingual Nova-3 listings require `language=multi`.** Sending `language=en` (or any single language code) to a multilingual Nova-3 endpoint returns `400`, which looks like a dead endpoint. Pass `language=multi` in the query string.
 * **Flux multilingual is selected by model name, not a language parameter.** Use `model=flux-general-multi`; there is no `language` parameter for Flux multilingual.
-* **Streaming-mode bundles reject synchronous invocation.** A product listing published for streaming returns `400 No such model/language/tier` when called through the synchronous `/invocations` path (`InvokeEndpoint`). Use `InvokeEndpointWithBidirectionalStream` for streaming listings, or deploy the batch listing for synchronous and asynchronous invocation. See [Invoke a Deepgram SageMaker Endpoint](/docs/invoke-sagemaker-endpoint).
+* **Streaming-mode bundles reject synchronous invocation.** A product listing published for streaming returns `400 No such model/language/tier` when called through the synchronous `/invocations` path (`InvokeEndpoint`). Use `InvokeEndpointWithBidirectionalStream` for streaming listings, or deploy the batch listing for synchronous invocation. See [Invoke a Deepgram SageMaker Endpoint](/docs/invoke-sagemaker-endpoint).
+* **Streaming clients see a 424, not the 400.** When the container rejects a bidirectional streaming request, the streaming client receives HTTP `424` with `Failed to establish WebSocket connection` (for example, `ModelStreamError`). The underlying `400` and its reason are only visible in the endpoint's CloudWatch logs (see [View container logs](#view-container-logs)). The causes are the same as above: a multilingual listing called without `language=multi`, Flux multilingual called with a `language` parameter instead of `model=flux-general-multi`, or a model, language, or tier the deployed listing does not include.
 
 ## Endpoint stuck in Creating
 
@@ -53,8 +54,9 @@ aws sagemaker describe-endpoint --endpoint-name YOUR_SAGEMAKER_ENDPOINT_NAME --q
 
 Common causes:
 
-* **`ModelDataDownloadTimeoutInSeconds` is too low.** Large multilingual bundles can take longer than the default download window. Recreate the Endpoint Configuration with a higher value on the production variant (Deepgram's CLI steps use `600`; large multilingual Nova-3 bundles may need more).
-* **Capacity or quota.** The instance type is unavailable in the Availability Zone, or your account quota for it is `0`. A `ResourceLimitExceeded` failure reason points to quota — see [Requesting SageMaker Quota](/docs/request-sagemaker-quota).
+* **`ModelDataDownloadTimeoutInSeconds` is too low.** Large multilingual bundles can take longer than the default download window. Recreate the Endpoint Configuration with a higher value on the production variant (Deepgram's CLI steps use `600`; large multilingual Nova-3 bundles may need `1800`).
+* **Capacity or quota.** The instance type is unavailable in the Availability Zone, or your account quota for it is `0`. A `ResourceLimitExceeded` failure reason points to quota — see [Requesting SageMaker Quota](/docs/request-sagemaker-quota). With an [instance pool](/docs/deploy-amazon-sagemaker#choose-instance-types), every type in the pool needs quota; quota does not fall back between types.
+* **Provisioning failure with no container logs.** The endpoint goes `Failed` after roughly 3 minutes with `FailureReason` `Request to service failed. If failure persists after retry, contact customer support.`, and no `/aws/sagemaker/Endpoints/<endpoint-name>` log group is ever created. The container never started, so this is a provisioning-level problem (typically GPU capacity for that instance type in that zone), not a problem with the model image. Retry with an ordered instance pool so SageMaker can fall back to another type, or deploy in another region.
 
 ## Checklist
 

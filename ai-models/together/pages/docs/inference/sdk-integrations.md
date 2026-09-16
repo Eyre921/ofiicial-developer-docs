@@ -99,7 +99,7 @@ for chunk in chat.stream("Tell me fun things to do in NYC"):
     print(chunk.content, end="", flush=True)
 ```
 
-For RAG patterns with LangChain plus Together embeddings, see [RAG integrations](/docs/inference/embeddings/rag) and the [LangChain provider docs](https://python.langchain.com/docs/integrations/providers/together/).
+For more LangChain integration details, see the [LangChain provider docs](https://python.langchain.com/docs/integrations/providers/together/).
 
 ## LlamaIndex
 
@@ -126,7 +126,35 @@ response = llm.complete("Explain large language models in 500 words.")
 print(response)
 ```
 
-For RAG patterns, see [RAG integrations](/docs/inference/embeddings/rag), the [LlamaIndex Together LLM docs](https://docs.llamaindex.ai/en/stable/examples/llm/together/), and the [LlamaIndex Together embeddings docs](https://docs.llamaindex.ai/en/stable/api_reference/embeddings/together/).
+For more LlamaIndex integration details, see the [LlamaIndex Together LLM docs](https://docs.llamaindex.ai/en/stable/examples/llm/together/).
+
+## LiteLLM
+
+[LiteLLM](https://docs.litellm.ai/) is an open-source gateway with a single OpenAI-format interface for over 100 LLM providers, available as a Python SDK and a proxy server. LiteLLM 1.100.0 and later ships official Together AI support, with a model registry that syncs against the serverless catalog daily.
+
+```bash Shell theme={null}
+pip install "litellm>=1.100.0"
+export TOGETHERAI_API_KEY=<your_key>
+```
+
+```python Python theme={null}
+import litellm
+
+response = litellm.completion(
+    model="together_ai/zai-org/GLM-5.3",
+    messages=[
+        {
+            "role": "user",
+            "content": "What are some fun things to do in New York?",
+        }
+    ],
+)
+print(response.choices[0].message.content)
+```
+
+Streaming (`stream=True`), function calling (`tools`), JSON mode (`response_format`), and `reasoning_effort` all pass through in the OpenAI format. Reasoning models return their reasoning in a separate `reasoning_content` field, so `content` holds only the final answer.
+
+To run Claude Code on Together models through the LiteLLM proxy, see the [LiteLLM + Claude Code guide](/docs/using-together-with-litellm).
 
 ## Helicone
 
@@ -211,7 +239,3 @@ Each framework below has a dedicated guide with installation, model selection, a
 * [AutoGen (AG2)](/docs/autogen): Conversational multi-agent systems.
 * [Agno](/docs/agno): Open-source library for multimodal agents.
 * [Composio](/docs/composio): Tool-use platform for connecting agents to external services.
-
-## Vector stores and RAG
-
-For Pinecone, MongoDB, Pixeltable, and other vector-store integrations, see [RAG integrations](/docs/inference/embeddings/rag).

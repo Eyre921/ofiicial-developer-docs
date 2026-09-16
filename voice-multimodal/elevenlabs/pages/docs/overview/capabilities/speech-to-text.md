@@ -52,24 +52,6 @@ Dynamic audio tagging
 
 Smart language detection
 
-#### [Scribe v2 Medical](/docs/overview/models#scribe-v2-medical)
-
-Speech recognition model for medical and clinical audio
-
-Same API and pricing as Scribe v2
-
-15% fewer errors than Scribe v2 when scoring on isolated medical terms
-
-Same accuracy on everyday speech as Scribe v2
-
-Keyterm prompting, up to 1000 terms
-
-Entity detection, including PHI categories
-
-Precise word-level timestamps
-
-Speaker diarization, up to 32 speakers
-
 #### [Scribe v2 Realtime](/docs/overview/models#scribe-v2-realtime)
 
 Real-time speech recognition model
@@ -83,6 +65,16 @@ Low latency (\~150ms†)
 Precise word-level timestamps
 
 Entity detection, 65 entity types
+
+#### [Scribe v2 Medical](/docs/overview/models#scribe-v2-medical)
+
+Speech recognition fine-tuned for clinical audio
+
+18% fewer transcription errors on clinical audio than Scribe v2
+
+Same accuracy on everyday speech as Scribe v2
+
+Same features, languages, pricing, and API as Scribe v2
 
 [Explore all](/docs/overview/models)
 

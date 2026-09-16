@@ -42,18 +42,6 @@ Quickstarts and step-by-step guides for building with Together AI.
   <GuideCard title="AI tutor" description="Build an intelligent tutoring system." href="/docs/ai-tutor" />
 
   <GuideCard title="Chat API on Render" description="Deploy an authenticated chat API to a Render web service." href="/docs/render-chat-api" />
-</GridGuides>
-
-<SubHeading description={"Build search and retrieval systems grounded in your data."} />
-
-<GridGuides>
-  <GuideCard title="RAG quickstart" description="Get started with retrieval-augmented generation." href="/docs/quickstart-retrieval-augmented-generation-rag" />
-
-  <GuideCard title="RAG workflow" description="Combine retrieval and generation for grounded answers." href="/docs/building-a-rag-workflow" />
-
-  <GuideCard title="Contextual RAG" description="Implement Anthropic's contextual retrieval technique." href="/docs/how-to-implement-contextual-rag-from-anthropic" />
-
-  <GuideCard title="Improve search with rerankers" description="Improve semantic search quality with reranker models." href="/docs/how-to-improve-search-with-rerankers" />
 
   <GuideCard title="AI search engine" description="Build a simplified Perplexity-style search engine." href="/docs/ai-search-engine" />
 </GridGuides>

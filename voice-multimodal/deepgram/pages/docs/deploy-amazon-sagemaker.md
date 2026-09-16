@@ -12,6 +12,8 @@ path: docs/deploy-amazon-sagemaker
 
 This guide deploys a Deepgram AWS Marketplace Model Package as a [SageMaker AI Endpoint](https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html) using the AWS CLI or the AWS SDK for Python (Boto3). The SageMaker Endpoint resource represents the compute instances that run the Deepgram Voice AI services. For an overview of running Deepgram on SageMaker, including benefits, tradeoffs, and pricing, see [Amazon SageMaker](/docs/amazon-sagemaker).
 
+Prefer to have an AI coding assistant run these steps for you? Install the Deepgram SageMaker skill — see [Agent-assisted setup](/docs/amazon-sagemaker#agent-assisted-setup).
+
 You need a **Model Package ARN** before you start. Subscribe to a Deepgram product on the AWS Marketplace and copy the ARN for your product version and AWS Region — see [Find the Model Package ARN](/docs/subscribe-aws-marketplace#find-the-model-package-arn).
 
 ## Prerequisites
@@ -26,7 +28,27 @@ You need a **Model Package ARN** before you start. Subscribe to a Deepgram produ
 
 ## Choose an endpoint type
 
-Deploy a **real-time** endpoint for live streaming and synchronous (single-file) transcription, or an **asynchronous** endpoint for large pre-recorded files (up to 1 GB) and scale-to-zero. An asynchronous endpoint accepts only `InvokeEndpointAsync` requests and cannot serve streaming or synchronous traffic, so deploy one endpoint per invocation style you need. See [Auto-Scaling SageMaker Endpoints](/docs/auto-scaling-sagemaker) for a full comparison.
+Deploy a **real-time** endpoint. It serves both live streaming (`InvokeEndpointWithBidirectionalStream`) and synchronous single-file transcription (`InvokeEndpoint`, up to 25 MB per request).
+
+**Asynchronous endpoints are temporarily not supported.** Asynchronous inference (`AsyncInferenceConfig` / `InvokeEndpointAsync`) is temporarily unavailable for Marketplace-hosted Deepgram, so this page covers real-time endpoints only. Need asynchronous processing? Contact a [Deepgram representative](https://deepgram.com/contact-us).
+
+## Choose instance types
+
+Deploy on an ordered **instance pool** rather than a single instance type. A single type has no fallback: when AWS is short of that GPU in the Availability Zone, the endpoint goes `Failed` with `Request to service failed` a few minutes in, or `InsufficientInstanceCapacity`, and this happens routinely for popular GPU types. With [instance pools](https://docs.aws.amazon.com/sagemaker/latest/dg/realtime-endpoints-heterogeneous.html), SageMaker tries each type in priority order and falls back to the next when one is capacity-constrained.
+
+Order the pool as follows:
+
+1. **The listing's recommended type first** (for example `ml.g6.2xlarge` for Speech-to-Text). It is the type Deepgram validated the model on and the best price/performance.
+2. **Same-or-newer generation with similar per-instance capacity next** (`g6` → `g6e` → `g7`). Keeping capacity similar matters if you auto-scale, because the predefined scaling metrics are per instance and do not account for a mixed fleet.
+3. **Older generations last, as insurance** (`g5`, and `g4dn` where supported).
+4. **Never include a type the product does not support**: `g4dn` for Flux, `g5`/`g4dn` for Flux TTS, or any single-GPU type for Aura-2. See [Instance types](/docs/supported-products-sagemaker#instance-types).
+5. **Up to 5 types.** Three is the sweet spot.
+
+`VariantInstanceProvisionTimeoutInSeconds` is the per-type wait: SageMaker tries each type for that long before moving to the next. `300` is recommended (AWS allows `60`–`3600`), so a three-type pool can stay in `Creating` for up to about 15 minutes before it fails.
+
+**Quota does not fall back — capacity does.** SageMaker validates the quota of every type in the pool when the endpoint is created. Every type in the pool needs a quota of at least `1` in the region, otherwise `CreateEndpoint` fails with `ResourceLimitExceeded` regardless of which type would have been used. Check and request quota for each type first; see [Requesting SageMaker Quota](/docs/request-sagemaker-quota).
+
+Prefer a single instance type only for a stated reason: a [Machine Learning Savings Plan](https://aws.amazon.com/savingsplans/ml-pricing/) or reservation on that type, or an auto-scaling concurrency target you measured on a specific GPU.
 
 ## Create an IAM execution role
 
@@ -70,35 +92,17 @@ iam.attach_role_policy(
 execution_role_arn = role["Role"]["Arn"]
 ```
 
-**Asynchronous endpoints** additionally need `s3:GetObject` and `s3:PutObject` on the objects in your output and failure buckets, and `s3:ListBucket` on the buckets themselves. Attach an inline policy such as the following to the execution role, replacing `<bucket>` with your bucket name:
-
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": ["s3:GetObject", "s3:PutObject"],
-      "Resource": "arn:aws:s3:::<bucket>/*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": ["s3:ListBucket"],
-      "Resource": "arn:aws:s3:::<bucket>"
-    }
-  ]
-}
-```
+A newly created IAM role can take around 10 seconds to become assumable. If `CreateModel` fails with `Could not assume role` immediately after `create-role`, the error is transient — wait a few seconds and retry.
 
 ## Deploy with the AWS CLI or Boto3
 
 #### Set variables
 
-Choose names for the three SageMaker resources, and set the Model Package ARN, execution role ARN, and instance type.
+Choose names for the three SageMaker resources, and set the Model Package ARN and execution role ARN.
 
 * **`MODEL_PACKAGE_ARN`** identifies the Deepgram product version and AWS Region you subscribed to. It is region-specific, so copy the ARN for the Region you deploy in. To find it, open the AWS Marketplace **Manage subscriptions** console, click **Configure** on your Deepgram subscription, choose **AWS command line interface (CLI)** under **Service**, select the product version, and copy the ARN for your Region from the **Model ARNs** list. See [Find the Model Package ARN](/docs/subscribe-aws-marketplace#find-the-model-package-arn) for the full steps.
 * **`EXECUTION_ROLE_ARN`** is the role you created in [Create an IAM execution role](#create-an-iam-execution-role).
-* **`INSTANCE_TYPE`**: `ml.g6.2xlarge` is the recommended type for Speech-to-Text; see [Instance types](/docs/supported-products-sagemaker#instance-types) for Text-to-Speech and the other supported families.
+* The instance pool is set in the Endpoint Configuration step. `ml.g6.2xlarge` is the recommended first type for Speech-to-Text; see [Choose instance types](#choose-instance-types) and [Instance types](/docs/supported-products-sagemaker#instance-types) for Text-to-Speech and the other supported families.
 
 #### AWS CLI
 
@@ -109,7 +113,6 @@ export ENDPOINT_CONFIG_NAME="deepgram-streaming-stt-config"
 export ENDPOINT_NAME="my-deepgram-streaming-stt"
 export MODEL_PACKAGE_ARN="arn:aws:sagemaker:us-east-1:123456789012:model-package/deepgram-stt-nova-3/1"
 export EXECUTION_ROLE_ARN="arn:aws:iam::123456789012:role/deepgram-sagemaker-execution"
-export INSTANCE_TYPE="ml.g6.2xlarge"
 ```
 
 #### Boto3
@@ -123,7 +126,6 @@ ENDPOINT_CONFIG_NAME = "deepgram-streaming-stt-config"
 ENDPOINT_NAME = "my-deepgram-streaming-stt"
 MODEL_PACKAGE_ARN = "arn:aws:sagemaker:us-east-1:123456789012:model-package/deepgram-stt-nova-3/1"
 EXECUTION_ROLE_ARN = "arn:aws:iam::123456789012:role/deepgram-sagemaker-execution"
-INSTANCE_TYPE = "ml.g6.2xlarge"
 
 sagemaker = boto3.client("sagemaker", region_name=AWS_REGION)
 ```
@@ -160,45 +162,55 @@ To pass `DEEPGRAM_API_*` or `DEEPGRAM_ENGINE_*` configuration overrides, add an 
 
 #### Create the Endpoint Configuration
 
-The Endpoint Configuration sets the instance type, instance count, and — critically — the host inference AMI version the instances boot with.
+The Endpoint Configuration sets the instance pool, instance count, and — critically — the host inference AMI version the instances boot with.
 
 **`InferenceAmiVersion` is required.** Current Deepgram model packages run a CUDA 13 runtime that needs NVIDIA driver 580 or later. Without `InferenceAmiVersion=al2023-ami-sagemaker-inference-gpu-4-1`, SageMaker boots the default AMI for the instance family (an older driver on `g4dn` and `g5`) and the container fails its CUDA preflight check. See [Inference AMI Versions](#inference-ami-versions).
 
+The examples use an ordered instance pool, as recommended in [Choose instance types](#choose-instance-types). Adjust the types and order for your product.
+
 #### AWS CLI
 
-**`Real-time endpoint`**
+**`Instance pool (recommended)`**
 
-```bash title="Real-time endpoint"
+```bash title="Instance pool (recommended)"
 aws sagemaker create-endpoint-config \
   --region "$AWS_REGION" \
   --endpoint-config-name "$ENDPOINT_CONFIG_NAME" \
-  --production-variants "VariantName=AllTraffic,ModelName=$MODEL_NAME,InitialInstanceCount=1,InstanceType=$INSTANCE_TYPE,InferenceAmiVersion=al2023-ami-sagemaker-inference-gpu-4-1,ModelDataDownloadTimeoutInSeconds=600,ContainerStartupHealthCheckTimeoutInSeconds=300"
+  --production-variants '[{"VariantName":"AllTraffic","ModelName":"'"$MODEL_NAME"'","InitialInstanceCount":1,
+    "InstancePools":[{"InstanceType":"ml.g6.2xlarge","Priority":1},{"InstanceType":"ml.g6e.2xlarge","Priority":2},{"InstanceType":"ml.g5.2xlarge","Priority":3}],
+    "VariantInstanceProvisionTimeoutInSeconds":300,
+    "InferenceAmiVersion":"al2023-ami-sagemaker-inference-gpu-4-1",
+    "ModelDataDownloadTimeoutInSeconds":600,"ContainerStartupHealthCheckTimeoutInSeconds":300}]'
 ```
 
-For an **asynchronous** endpoint, add `--async-inference-config` with the S3 prefixes for results and failures:
+To deploy on a **single instance type** instead (see [when to prefer a single type](#choose-instance-types)), replace `InstancePools` and `VariantInstanceProvisionTimeoutInSeconds` with `InstanceType`:
 
-**`Asynchronous endpoint`**
+**`Single instance type`**
 
-```bash title="Asynchronous endpoint"
+```bash title="Single instance type"
 aws sagemaker create-endpoint-config \
   --region "$AWS_REGION" \
   --endpoint-config-name "$ENDPOINT_CONFIG_NAME" \
-  --production-variants "VariantName=AllTraffic,ModelName=$MODEL_NAME,InitialInstanceCount=1,InstanceType=$INSTANCE_TYPE,InferenceAmiVersion=al2023-ami-sagemaker-inference-gpu-4-1,ModelDataDownloadTimeoutInSeconds=600,ContainerStartupHealthCheckTimeoutInSeconds=300" \
-  --async-inference-config "OutputConfig={S3OutputPath=s3://<bucket>/output/,S3FailurePath=s3://<bucket>/failures/}"
+  --production-variants "VariantName=AllTraffic,ModelName=$MODEL_NAME,InitialInstanceCount=1,InstanceType=ml.g6.2xlarge,InferenceAmiVersion=al2023-ami-sagemaker-inference-gpu-4-1,ModelDataDownloadTimeoutInSeconds=600,ContainerStartupHealthCheckTimeoutInSeconds=300"
 ```
 
 #### Boto3
 
-**`Real-time endpoint`**
+**`Instance pool (recommended)`**
 
-```python title="Real-time endpoint"
+```python title="Instance pool (recommended)"
 sagemaker.create_endpoint_config(
     EndpointConfigName=ENDPOINT_CONFIG_NAME,
     ProductionVariants=[{
         "VariantName": "AllTraffic",
         "ModelName": MODEL_NAME,
         "InitialInstanceCount": 1,
-        "InstanceType": INSTANCE_TYPE,
+        "InstancePools": [
+            {"InstanceType": "ml.g6.2xlarge", "Priority": 1},
+            {"InstanceType": "ml.g6e.2xlarge", "Priority": 2},
+            {"InstanceType": "ml.g5.2xlarge", "Priority": 3},
+        ],
+        "VariantInstanceProvisionTimeoutInSeconds": 300,
         "InferenceAmiVersion": "al2023-ami-sagemaker-inference-gpu-4-1",
         "ModelDataDownloadTimeoutInSeconds": 600,
         "ContainerStartupHealthCheckTimeoutInSeconds": 300,
@@ -206,32 +218,28 @@ sagemaker.create_endpoint_config(
 )
 ```
 
-For an **asynchronous** endpoint, add `AsyncInferenceConfig` with the S3 prefixes for results and failures:
+To deploy on a **single instance type** instead (see [when to prefer a single type](#choose-instance-types)), replace `InstancePools` and `VariantInstanceProvisionTimeoutInSeconds` with `InstanceType`:
 
-**`Asynchronous endpoint`**
+**`Single instance type`**
 
-```python title="Asynchronous endpoint"
+```python title="Single instance type"
 sagemaker.create_endpoint_config(
     EndpointConfigName=ENDPOINT_CONFIG_NAME,
     ProductionVariants=[{
         "VariantName": "AllTraffic",
         "ModelName": MODEL_NAME,
         "InitialInstanceCount": 1,
-        "InstanceType": INSTANCE_TYPE,
+        "InstanceType": "ml.g6.2xlarge",
         "InferenceAmiVersion": "al2023-ami-sagemaker-inference-gpu-4-1",
         "ModelDataDownloadTimeoutInSeconds": 600,
         "ContainerStartupHealthCheckTimeoutInSeconds": 300,
     }],
-    AsyncInferenceConfig={
-        "OutputConfig": {
-            "S3OutputPath": "s3://<bucket>/output/",
-            "S3FailurePath": "s3://<bucket>/failures/",
-        },
-    },
 )
 ```
 
-Keep `VariantName=AllTraffic`: the [Update an Amazon SageMaker Endpoint](/docs/update-amazon-sagemaker-endpoint) procedure and the [Terraform](/docs/terraform-deploy-sagemaker) configuration use the same variant name. `ModelDataDownloadTimeoutInSeconds=600` and `ContainerStartupHealthCheckTimeoutInSeconds=300` give the model package time to download and the container time to load models before SageMaker marks the endpoint failed; large multilingual Nova-3 bundles may need a `ModelDataDownloadTimeoutInSeconds` above `600`.
+Keep `VariantName=AllTraffic`: the [Update an Amazon SageMaker Endpoint](/docs/update-amazon-sagemaker-endpoint) procedure and the [Terraform](/docs/terraform-deploy-sagemaker) configuration use the same variant name.
+
+`ModelDataDownloadTimeoutInSeconds` and `ContainerStartupHealthCheckTimeoutInSeconds` are ceilings, not fixed waits: they set how long SageMaker allows the model package to download and the container to load models before it marks the endpoint failed. `600` and `300` suit most products. Large multilingual Nova-3 bundles may need `ModelDataDownloadTimeoutInSeconds` of `1800`.
 
 #### Create the Endpoint
 
@@ -283,7 +291,7 @@ If the endpoint moves to `Failed` or stays in `Creating`, see [Troubleshooting](
 
 #### Verify
 
-Send a first request to confirm the endpoint transcribes audio — see [Validate a Deepgram SageMaker Endpoint](/docs/test-amazon-sagemaker-endpoint). For the streaming, synchronous, and asynchronous invocation APIs and the Deepgram SDK SageMaker transport, see [Invoke a Deepgram SageMaker Endpoint](/docs/invoke-sagemaker-endpoint).
+Send a first request to confirm the endpoint transcribes audio — see [Validate a Deepgram SageMaker Endpoint](/docs/test-amazon-sagemaker-endpoint). For the streaming and synchronous invocation APIs and the Deepgram SDK SageMaker transport, see [Invoke a Deepgram SageMaker Endpoint](/docs/invoke-sagemaker-endpoint).
 
 ## Inference AMI Versions
 
@@ -334,13 +342,7 @@ Click the **Next** button
 
 Provide an **Endpoint Name**, such as `my-deepgram-streaming-stt`
 
-**(Asynchronous endpoints only) Configure async invocation.**
-
-If you are deploying an **asynchronous** endpoint, expand the **Async invocation config** section and toggle it on, then set the **S3 output path** — the S3 location (for example, `s3://your-bucket/output/`) where transcription results are written. The remaining fields are optional.
-
-For a **real-time** endpoint (streaming and synchronous invocation), leave **Async invocation config** turned **off** and continue to the next step unchanged.
-
-To autoscale an asynchronous endpoint — including scaling to zero when idle — see [Auto-Scaling Asynchronous Endpoints](/docs/auto-scaling-sagemaker-async).
+Leave **Async invocation config** turned **off**. Asynchronous endpoints are temporarily not supported for Marketplace-hosted Deepgram.
 
 Under **Variants** ➡️ **Production**, scroll all the way to the right, and click **Edit**
 

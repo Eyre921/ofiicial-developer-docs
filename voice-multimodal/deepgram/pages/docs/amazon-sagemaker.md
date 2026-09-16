@@ -34,7 +34,7 @@ Deepgram on SageMaker is the fastest path to running Deepgram inside your own AW
 * You require features that the SageMaker isolation model does not currently support, such as user-defined [callback URLs](/docs/callback) or JSON payloads that reference audio in cloud storage.
 * You want to run the [Deepgram Voice Agent](/docs/voice-agent). SageMaker Endpoints cannot invoke Large Language Model (LLM) services, which the Voice Agent requires, so the Voice Agent cannot run inside SageMaker.
 * You need streaming connections that stay open for longer than 30 minutes. SageMaker Real-Time Inference supports [up to 30 minutes of connection time](https://docs.aws.amazon.com/sagemaker/latest/dg/realtime-endpoints-test-endpoints.html#realtime-endpoints-test-endpoints-sdk:~:text=The%20connection%20remains%20open%20until%20you%20explicitly%20close%20the%20input%20stream%20or%20the%20endpoint%20closes%20the%20connection%2C%20supporting%20up%20to%2030%20minutes%20of%20connection%20time) per bidirectional streaming connection.
-* You need to send more than 25 MB of input data per non-streaming invocation on a real-time endpoint, or more than 1 GB on an asynchronous endpoint. SageMaker enforces a [25 MB maximum payload size](https://docs.aws.amazon.com/marketplace/latest/userguide/ml-service-restrictions-and-limits.html#:~:text=For%20an%20endpoint%2C%20limit%20the%20maximum%20size%20of%20the%20input%20data%20per%20invocation%20to%2025%20MB.%20This%20value%20can%27t%20be%20adjusted) for real-time endpoints. For larger files, [asynchronous endpoints](https://docs.aws.amazon.com/sagemaker/latest/dg/async-inference.html) support payloads up to 1 GB with near real-time latency and can scale to zero when there are no requests to be processed.
+* You need to send more than 25 MB of input data per non-streaming invocation. SageMaker enforces a [25 MB maximum payload size](https://docs.aws.amazon.com/marketplace/latest/userguide/ml-service-restrictions-and-limits.html#:~:text=For%20an%20endpoint%2C%20limit%20the%20maximum%20size%20of%20the%20input%20data%20per%20invocation%20to%2025%20MB.%20This%20value%20can%27t%20be%20adjusted) for real-time endpoints. Asynchronous endpoints (up to 1 GB per request) are temporarily not available for Marketplace-hosted Deepgram. If your use case needs them, contact your [Deepgram representative](https://deepgram.com/contact-us).
 * You need fine-grained control over the container runtime, networking, or process supervision beyond what SageMaker exposes.
 
 ## Limitations
@@ -46,18 +46,37 @@ When using Deepgram services in Amazon SageMaker, please be aware of the followi
 * Passing a JSON payload for transcription (e.g., referencing a file stored in cloud storage via URL) is unsupported, as the SageMaker isolation model prevents the container from reaching out to external cloud storage
 * Deepgram [custom metrics](/docs/metrics-guide) are not currently available through Amazon SageMaker Endpoints
 * For streaming invocations, the connection remains open until you explicitly close the input stream or the endpoint closes the connection, supporting [up to 30 minutes of connection time](https://docs.aws.amazon.com/sagemaker/latest/dg/realtime-endpoints-test-endpoints.html#realtime-endpoints-test-endpoints-sdk:~:text=The%20connection%20remains%20open%20until%20you%20explicitly%20close%20the%20input%20stream%20or%20the%20endpoint%20closes%20the%20connection%2C%20supporting%20up%20to%2030%20minutes%20of%20connection%20time).
-* For non-streaming invocations, the [maximum size of the input data is 25 MB](https://docs.aws.amazon.com/marketplace/latest/userguide/ml-service-restrictions-and-limits.html#:~:text=For%20an%20endpoint%2C%20limit%20the%20maximum%20size%20of%20the%20input%20data%20per%20invocation%20to%2025%20MB.%20This%20value%20can%27t%20be%20adjusted) for real-time endpoints. For larger files, use [asynchronous endpoints](https://docs.aws.amazon.com/sagemaker/latest/dg/async-inference.html), which support payloads up to 1 GB with near real-time latency and can scale to zero when there are no requests to be processed.
+* For non-streaming invocations, the [maximum size of the input data is 25 MB](https://docs.aws.amazon.com/marketplace/latest/userguide/ml-service-restrictions-and-limits.html#:~:text=For%20an%20endpoint%2C%20limit%20the%20maximum%20size%20of%20the%20input%20data%20per%20invocation%20to%2025%20MB.%20This%20value%20can%27t%20be%20adjusted) for real-time endpoints. Asynchronous endpoints (up to 1 GB per request) are temporarily not available for Marketplace-hosted Deepgram. If your use case needs them, contact your [Deepgram representative](https://deepgram.com/contact-us).
 
 ## Deployment options
 
 Most customers can stand up a ready-to-use endpoint in minutes:
 
 1. **Subscribe.** Subscribe to a Deepgram product on the AWS Marketplace and note its Model Package ARN. See [Subscribe on AWS Marketplace](/docs/subscribe-aws-marketplace).
-2. **Deploy** with one of two paths:
+2. **Deploy** with one of three paths:
    * **AWS CLI or SDK.** Create the SageMaker Model, Endpoint Configuration, and Endpoint with the AWS CLI or Boto3. This is the recommended path because it lets you pin the inference AMI version that current Deepgram model packages require. See [Deploy Deepgram on Amazon SageMaker](/docs/deploy-amazon-sagemaker).
    * **Infrastructure-as-Code.** Deploy the same model package using Terraform for repeatable, version-controlled rollouts. See [Deploy with Terraform](/docs/terraform-deploy-sagemaker).
+   * **Agent-assisted (AI coding assistant).** Install the Deepgram SageMaker skill and let your assistant run each step with confirmation. See [Agent-assisted setup](#agent-assisted-setup).
 
 The SageMaker AI console cannot set the inference AMI version, so endpoints created through the console fail to start with current Deepgram model packages. Use the CLI, SDK, or Terraform paths above.
+
+## Agent-assisted setup
+
+The [deepgram-devs/dg-sagemaker](https://github.com/deepgram-devs/dg-sagemaker/tree/main/skills/deepgram-sagemaker) repository publishes an installable agent skill (open `SKILL.md` format, plus a Claude Code plugin manifest) that walks an AI coding assistant through the whole flow: preflight, listing products and subscription state, subscribing, resolving the Model Package ARN, checking and requesting quota, creating the execution role, deploying on an instance pool, diagnosing endpoint status, running an invoke test, configuring auto-scaling, in-place updates, and teardown. Each step runs through a script in the kit.
+
+```bash
+npx skills add deepgram-devs/dg-sagemaker
+# Claude Code
+/plugin marketplace add deepgram-devs/dg-sagemaker
+/plugin install deepgram-sagemaker@deepgram
+```
+
+The skill needs AWS credentials for the target account and [`uv`](https://docs.astral.sh/uv/). The assistant:
+
+* Confirms with you before subscribing, creating, or deleting anything.
+* Recommends an ordered [instance pool](/docs/deploy-amazon-sagemaker#choose-instance-types) rather than a single instance type.
+* Refuses to deploy asynchronous endpoints, which are temporarily unsupported.
+* Does not quote per-instance capacity numbers; measure on your own endpoint or ask a Deepgram representative for a planning estimate.
 
 ## Pricing
 

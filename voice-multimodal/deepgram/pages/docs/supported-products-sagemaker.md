@@ -45,6 +45,7 @@ The host driver your instances boot with is set separately from the instance typ
 
 ## Related resources
 
+* [`references/products.json`](https://github.com/deepgram-devs/dg-sagemaker/blob/main/skills/deepgram-sagemaker/references/products.json) in the dg-sagemaker repository — a machine-readable equivalent of this page (product IDs, invocation modes, supported instance types, and required parameters)
 * [Subscribe on AWS Marketplace](/docs/subscribe-aws-marketplace)
 * [Deploy Deepgram on Amazon SageMaker](/docs/deploy-amazon-sagemaker)
 * [Requesting SageMaker Quota](/docs/request-sagemaker-quota)

@@ -18545,7 +18545,7 @@ The Supabase Auth SDK contains three different functions for authenticating user
 
 ### Summary of the methods
 
-- Use [`getClaims`](https://supabase.com/docs/reference/javascript/auth-getclaims) to protect pages and user data. It reads the access token from storage and verifies it. Locally via the [WebCrypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API) and a cached JWKS endpoint when the project uses asymmetric signing keys (the default for new projects), or by calling `getUser` solely to validate when symmetric keys are in use. The returned claims always come from decoding the JWT, not from a user lookup.
+- Use [`getClaims`](https://supabase.com/docs/reference/javascript/auth-getclaims) to protect pages and user data. It reads the access token from storage and verifies it. Locally via the [WebCrypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API) and a cached JWKS endpoint when the project uses asymmetric signing keys (the default for new projects), or by calling `getUser` solely to validate when symmetric keys are in use. The returned claims always come from decoding the JWT, not from a user lookup. When the access token is close to expiring, `getClaims` refreshes the session before it verifies, which is how a server-rendered session stays alive.
 - [`getUser`](https://supabase.com/docs/reference/javascript/auth-getuser) makes a network call to the project's Auth instance to get the user record, which includes the most up-to-date information about the user at the cost of a network call.
 - [`getSession`](https://supabase.com/docs/reference/javascript/auth-getsession) when you need the raw session (the access token, refresh token, and expiry). For example to forward the access token to another service. The session is loaded directly from local storage and isn't re-validated against the Auth server, so the embedded user object shouldn't be trusted on its own when storage is shared with the client (cookies, request headers). To verify identity, validate the access token with `getClaims`, or call `getUser` for a fresh, server-confirmed user record.
 
@@ -24056,7 +24056,7 @@ A common cause is calling `supabase.auth.signOut()` without a `scope`. It defaul
 
 The `Max-Age` or `Expires` cookie parameters only control whether the browser sends the value to the server. Since a refresh token represents the long-lived authentication session of the user on that browser, setting a short `Max-Age` or `Expires` parameter on the cookies only results in a degraded user experience.
 
-The only way to ensure that a user has logged out or their session has ended is to get the user's details with `getUser()`. The `getClaims()` method only checks local JWT validation (signature and expiration), but it doesn't verify with the auth server whether the session is still valid or if the user has logged out server-side.
+The only way to detect that a session ended server-side, for example because the user signed out on another device, is to fetch the user with `getUser()`. `getClaims()` verifies the token's signature and expiry, which is what authorizes a request, but an unexpired token stays valid even when the session behind it was revoked. Call `getUser()` where that gap matters.
 
 ### What should I use for the `SameSite` property?
 
@@ -24082,11 +24082,11 @@ As of `@supabase/ssr` v0.10.0, the library automatically passes the necessary ca
 
 If you are on an older version or need to set headers manually, add `Cache-Control: private, no-store` to responses from any route that handles authentication:
 
-#### Next.js middleware
+#### Next.js proxy
 
 ```ts
 const response = NextResponse.next()
-// ... supabase client setup and getUser() call
+// ... supabase client setup and getClaims() call
 response.headers.set('Cache-Control', 'private, no-store')
 return response
 ```
@@ -24094,7 +24094,7 @@ return response
 #### Nuxt server middleware
 
 ```ts
-// ... supabase client setup and getUser() call
+// ... supabase client setup and getClaims() call
 setHeader(event, 'Cache-Control', 'private, no-store')
 ```
 
@@ -24106,7 +24106,7 @@ To protect against session leakage on CloudFront, use one or more of the followi
 
 - **Set Minimum TTL to 0** in your CloudFront cache policy. This allows `Cache-Control: no-store` to take effect as intended.
 - **Use `Cache-Control: no-cache="Set-Cookie"`** to instruct CloudFront not to cache the `Set-Cookie` header specifically, while still allowing other parts of the response to be cached.
-- **Disable caching entirely** for authenticated routes (e.g. your middleware path) by associating a cache policy with TTL set to 0, or by using the managed `CachingDisabled` policy for those behaviors.
+- **Disable caching entirely** for authenticated routes such as your proxy path, by associating a cache policy with TTL set to 0, or by using the managed `CachingDisabled` policy for those behaviors.
 
 Note: On other managed CDN platforms (for example AWS Amplify), cache policies are configured at the platform level and may similarly not fully respect `Cache-Control` headers set in your application. Always verify your CDN's caching behavior for routes that set cookies.
 
@@ -24129,7 +24129,20 @@ At present, PKCE is supported on the Magic Link, OAuth, Sign Up, and Password Re
 
 Configure your Supabase client to use cookies
 
-To use Server-Side Rendering (SSR) with Supabase, you need to configure your Supabase client to use cookies. The `@supabase/ssr` package helps you do this for JavaScript/TypeScript applications.
+Learn how to configure your Supabase client to use cookies. Your app can then render on the server with the user already signed in.
+
+Server-Side Rendering (SSR) with Supabase requires cookie-based session storage. The `@supabase/ssr` package handles this for JavaScript and TypeScript applications.
+
+Use this guide to:
+
+1. [Install the packages](#install).
+2. [Set environment variables](#set-environment-variables).
+3. [Create a client](#create-a-client) for your framework.
+
+Refer to these reference sections to make better decisions about verifying users and caching responses:
+
+- [Choosing an auth method](#choosing-an-auth-method), before you write code that checks who the user is.
+- [Caching considerations](#caching-considerations), if you deploy behind a CDN or use ISR.
 
 ## Install
 
@@ -24233,12 +24246,6 @@ SUPABASE_PUBLISHABLE_KEY=supabase_publishable_key
 
 Install [dotenv](https://www.npmjs.com/package/dotenv):
 
-```bash
-npm i dotenv
-```
-
-And initialize it:
-
 **npm**
 
 ```bash
@@ -24255,6 +24262,12 @@ yarn add dotenv
 
 ```bash
 pnpm add dotenv
+```
+
+Then load the file before you read any variable from it. Put this on the first line of your entry point, above every other import:
+
+```js app.js
+require('dotenv').config()
 ```
 
 **Hono**
@@ -24277,19 +24290,11 @@ You need setup code to configure a Supabase client to use cookies. Once you have
 
 Use the browser client in code that runs on the browser, and the server client in code that runs on the server.
 
-The Supabase Auth SDK contains three different functions for authenticating user access to applications:
-
-### Summary of the methods
-
-- Use [`getClaims`](https://supabase.com/docs/reference/javascript/auth-getclaims) to protect pages and user data. It reads the access token from storage and verifies it. Locally via the [WebCrypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API) and a cached JWKS endpoint when the project uses asymmetric signing keys (the default for new projects), or by calling `getUser` solely to validate when symmetric keys are in use. The returned claims always come from decoding the JWT, not from a user lookup.
-- [`getUser`](https://supabase.com/docs/reference/javascript/auth-getuser) makes a network call to the project's Auth instance to get the user record, which includes the most up-to-date information about the user at the cost of a network call.
-- [`getSession`](https://supabase.com/docs/reference/javascript/auth-getsession) when you need the raw session (the access token, refresh token, and expiry). For example to forward the access token to another service. The session is loaded directly from local storage and isn't re-validated against the Auth server, so the embedded user object shouldn't be trusted on its own when storage is shared with the client (cookies, request headers). To verify identity, validate the access token with `getClaims`, or call `getUser` for a fresh, server-confirmed user record.
-
-**In summary**: use `getClaims` to verify identity (typically for protecting pages and data), `getUser` when you need an up-to-date user record from the Auth server, and `getSession` when you need the access or refresh token directly, but don't rely on the user object it returns for authorization decisions.
+Before you write code that checks who the user is, see [Choosing an auth method](#choosing-an-auth-method).
 
 **Next.js**
 
-### Write utility functions to create Supabase clients
+### Write utility functions to create Supabase clients \[#nextjs-utility-functions]
 
 To access Supabase from a Next.js app, you need 2 types of Supabase clients:
 
@@ -24298,27 +24303,19 @@ To access Supabase from a Next.js app, you need 2 types of Supabase clients:
 
 Since Next.js Server Components can't write cookies, you need a [Proxy](https://nextjs.org/docs/app/getting-started/proxy) to refresh expired Auth tokens and store them.
 
+Note: On Next.js 15 and earlier, a `proxy.ts` file is never called, so sessions never refresh and users get signed out. Next.js renamed this file in version 16. Before that, it's `middleware.ts` and the function is `export async function middleware`. The Supabase code inside it is the same either way.
+
 The Proxy is responsible for:
 
 1. Refreshing the Auth token by calling `supabase.auth.getClaims()`.
-2. Passing the refreshed Auth token to Server Components, so they don't attempt to refresh the same token themselves. This is accomplished with `request.cookies.set`.
+2. Passing the refreshed Auth token to Server Components, so they don't attempt to refresh the same token themselves. It is what keeps users signed in. This is accomplished with `request.cookies.set`.
 3. Passing the refreshed Auth token to the browser, so it replaces the old token. This is accomplished with `response.cookies.set`.
-
-The Supabase Auth SDK contains three different functions for authenticating user access to applications:
-
-### Summary of the methods
-
-- Use [`getClaims`](https://supabase.com/docs/reference/javascript/auth-getclaims) to protect pages and user data. It reads the access token from storage and verifies it. Locally via the [WebCrypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API) and a cached JWKS endpoint when the project uses asymmetric signing keys (the default for new projects), or by calling `getUser` solely to validate when symmetric keys are in use. The returned claims always come from decoding the JWT, not from a user lookup.
-- [`getUser`](https://supabase.com/docs/reference/javascript/auth-getuser) makes a network call to the project's Auth instance to get the user record, which includes the most up-to-date information about the user at the cost of a network call.
-- [`getSession`](https://supabase.com/docs/reference/javascript/auth-getsession) when you need the raw session (the access token, refresh token, and expiry). For example to forward the access token to another service. The session is loaded directly from local storage and isn't re-validated against the Auth server, so the embedded user object shouldn't be trusted on its own when storage is shared with the client (cookies, request headers). To verify identity, validate the access token with `getClaims`, or call `getUser` for a fresh, server-confirmed user record.
-
-**In summary**: use `getClaims` to verify identity (typically for protecting pages and data), `getUser` when you need an up-to-date user record from the Auth server, and `getSession` when you need the access or refresh token directly, but don't rely on the user object it returns for authorization decisions.
 
 **What does the `cookies` object do?**
 
 The cookies object lets the Supabase client know how to access the cookies, so it can read and write the user session data. To make `@supabase/ssr` framework-agnostic, the cookies methods aren't hard-coded. These utility functions adapt `@supabase/ssr`'s cookie handling for Next.js.
 
-`setAll` is called whenever the library needs to write cookies, for example after a token refresh. It receives two arguments: the array of cookies to set, and a `headers` object containing cache headers (`Cache-Control`, `Expires`, `Pragma`) that must be applied to the HTTP response to prevent CDNs from caching the response and leaking the session to other users. In the Proxy, apply these headers to the response. In Server Components, the headers cannot be set, which is why the `setAll` call is wrapped in a try/catch and the error is ignored. The Proxy handles writing cookies and headers on every request.
+`setAll` is called whenever the library needs to write cookies, for example after a token refresh. It receives two arguments: the array of cookies to set, and a `headers` object containing the cache headers `Cache-Control`, `Expires`, and `Pragma`, which must be applied to the HTTP response to prevent CDNs from caching the response and leaking the session to other users. In the Proxy, apply these headers to the response. In Server Components, the headers cannot be set, which is why the `setAll` call is wrapped in a try/catch and the error is ignored. The Proxy handles writing cookies and headers on every request.
 
 The cookie is named `sb-<project_ref>-auth-token` by default.
 
@@ -24329,6 +24326,14 @@ Yes! Creating a Supabase client is lightweight.
 - On the server, it basically configures a `fetch` call. You need to reconfigure the fetch call anew for every request to your server, because you need the cookies from the request.
 - On the client, `createBrowserClient` already uses a singleton pattern, so you only ever create one instance, no matter how many times you call your `createClient` function.
 
+**Why does refreshing in two places sign users out?**
+
+A refresh token can generally be used only once, with two exceptions. Supabase allows a short window in which the same token can be presented again, which covers the normal SSR round trip. It also returns the active token when the parent of the active token is presented, which covers a client that never received the previous response. A reuse attempt that matches neither exception revokes the whole session.
+
+This is hard to trace, because it looks like users being signed out at random rather than an error in your code.
+
+See [refresh token reuse detection](https://supabase.com/docs/guides/auth/sessions#what-is-refresh-token-reuse-detection-and-what-does-it-protect-from).
+
 Create a `lib/supabase` folder at the root of your project, or inside the `./src` folder if you are using one, with a file for each type of client. Then copy the lib utility functions for each client type.
 
 
@@ -24337,36 +24342,38 @@ Create a `lib/supabase` folder at the root of your project, or inside the `./src
 
 The code adds a [matcher](https://nextjs.org/docs/app/api-reference/file-conventions/proxy#matcher) so the Proxy doesn't run on routes that don't access Supabase.
 
-Danger: Be careful when protecting pages. The server gets the user session from the cookies, which can be spoofed by anyone.
+Return the `supabaseResponse` object that `setAll` last built. An earlier response doesn't carry the refreshed cookies, so the user is signed out on the next request.
 
-Always use `supabase.auth.getClaims()` to protect pages and user data.
+When you need to return a different response, copy the cookies and the cache headers onto it first:
 
-*Never* trust `supabase.auth.getSession()` inside server code such as Proxy. It isn't guaranteed to revalidate the Auth token.
+```ts
+const myNewResponse = NextResponse.next({ request })
+myNewResponse.cookies.setAll(supabaseResponse.cookies.getAll())
+for (const header of ['cache-control', 'expires', 'pragma']) {
+  const value = supabaseResponse.headers.get(header)
+  if (value) myNewResponse.headers.set(header, value)
+}
+return myNewResponse
+```
 
-It's safe to trust `getClaims()` because it validates the JWT signature against the project's published public keys every time.
+Danger: Anyone can forge the session cookie, so trusting it without verification lets an attacker render another user's page. Always use `supabase.auth.getClaims()` to protect pages and user data.
 
-The Supabase Auth SDK contains three different functions for authenticating user access to applications:
+*Never* trust `supabase.auth.getSession()` inside server code such as Proxy. It reads the session out of the cookie without revalidating it.
 
-### Summary of the methods
-
-- Use [`getClaims`](https://supabase.com/docs/reference/javascript/auth-getclaims) to protect pages and user data. It reads the access token from storage and verifies it. Locally via the [WebCrypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API) and a cached JWKS endpoint when the project uses asymmetric signing keys (the default for new projects), or by calling `getUser` solely to validate when symmetric keys are in use. The returned claims always come from decoding the JWT, not from a user lookup.
-- [`getUser`](https://supabase.com/docs/reference/javascript/auth-getuser) makes a network call to the project's Auth instance to get the user record, which includes the most up-to-date information about the user at the cost of a network call.
-- [`getSession`](https://supabase.com/docs/reference/javascript/auth-getsession) when you need the raw session (the access token, refresh token, and expiry). For example to forward the access token to another service. The session is loaded directly from local storage and isn't re-validated against the Auth server, so the embedded user object shouldn't be trusted on its own when storage is shared with the client (cookies, request headers). To verify identity, validate the access token with `getClaims`, or call `getUser` for a fresh, server-confirmed user record.
-
-**In summary**: use `getClaims` to verify identity (typically for protecting pages and data), `getUser` when you need an up-to-date user record from the Auth server, and `getSession` when you need the access or refresh token directly, but don't rely on the user object it returns for authorization decisions.
+`getClaims()` verifies the token's signature on every call. On projects with asymmetric signing keys, the default for new projects, it verifies locally against a cached copy of the project's public keys. On projects still using a symmetric secret, it calls the Auth server instead. Either way the claims come from a token the server has verified rather than from whatever the cookie says.
 
 
 
-## Congratulations
+### Congratulations \[#nextjs-congratulations]
 
-You're done! To recap, you've successfully:
+To recap, you've:
 
 - Called Supabase from a Server Action.
 - Called Supabase from a Server Component.
 - Set up a Supabase client utility to call Supabase from a Client Component. You can use this if you need to call Supabase from a Client Component, for example to set up a realtime subscription.
 - Set up Proxy to automatically refresh the Supabase Auth session.
 
-You can now use any Supabase features from your client or server code!
+You can now use any Supabase feature from your client or server code.
 
 **SvelteKit**
 
@@ -24377,16 +24384,6 @@ Set up server-side hooks in `src/hooks.server.ts`. The hooks:
 - Create a request-specific Supabase client, using the user credentials from the request cookie. This client is used for server-only code.
 - Check user authentication.
 - Guard protected pages.
-
-The Supabase Auth SDK contains three different functions for authenticating user access to applications:
-
-### Summary of the methods
-
-- Use [`getClaims`](https://supabase.com/docs/reference/javascript/auth-getclaims) to protect pages and user data. It reads the access token from storage and verifies it. Locally via the [WebCrypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API) and a cached JWKS endpoint when the project uses asymmetric signing keys (the default for new projects), or by calling `getUser` solely to validate when symmetric keys are in use. The returned claims always come from decoding the JWT, not from a user lookup.
-- [`getUser`](https://supabase.com/docs/reference/javascript/auth-getuser) makes a network call to the project's Auth instance to get the user record, which includes the most up-to-date information about the user at the cost of a network call.
-- [`getSession`](https://supabase.com/docs/reference/javascript/auth-getsession) when you need the raw session (the access token, refresh token, and expiry). For example to forward the access token to another service. The session is loaded directly from local storage and isn't re-validated against the Auth server, so the embedded user object shouldn't be trusted on its own when storage is shared with the client (cookies, request headers). To verify identity, validate the access token with `getClaims`, or call `getUser` for a fresh, server-confirmed user record.
-
-**In summary**: use `getClaims` to verify identity (typically for protecting pages and data), `getUser` when you need an up-to-date user record from the Auth server, and `getSession` when you need the access or refresh token directly, but don't rely on the user object it returns for authorization decisions.
 
 
 
@@ -24402,18 +24399,20 @@ Page components can access the Supabase client from the `data` object using the 
 
 
 
-## Congratulations
+### Congratulations \[#sveltekit-congratulations]
 
-You're done! To recap, you've successfully:
+To recap, you've:
 
 - Set up server-side hooks to create a request-specific Supabase client and guard protected pages.
 - Created a Supabase client in your root layout to use on both the client and server.
 
-You can now use any Supabase features from your client or server code!
+You can now use any Supabase feature from your client or server code.
 
 **Astro**
 
-By default, Astro apps are static. This means the requests for data happen at build time, rather than when the user requests a page. At build time, there is no user, session or cookies. Therefore, we need to configure Astro for Server-side Rendering (SSR) if you want data to be fetched dynamically per request.
+### Configure Astro for SSR
+
+Astro apps are static by default, so requests for data happen at build time rather than when a user requests a page. At build time there is no user, session, or cookie. Configure Astro for SSR if you want data fetched per request.
 
 ```js astro.config.mjs
 import { defineConfig } from 'astro/config'
@@ -24422,6 +24421,8 @@ export default defineConfig({
   output: 'server',
 })
 ```
+
+### Create the Supabase clients \[#astro-create-clients]
 
 **Server**
 
@@ -24466,10 +24467,12 @@ const supabase = createServerClient(
 **Server Endpoint**
 
 ```ts route.ts
-import { createServerClient, parseCookieHeader } from "@supabase/ssr";
-import type { APIContext } from "astro";
+import { createServerClient, parseCookieHeader } from '@supabase/ssr'
+import type { APIContext } from 'astro'
 
 export async function GET(context: APIContext) {
+  const responseHeaders = new Headers()
+
   const supabase = createServerClient(
     import.meta.env.PUBLIC_SUPABASE_URL,
     import.meta.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY,
@@ -24478,15 +24481,17 @@ export async function GET(context: APIContext) {
         getAll() {
           return parseCookieHeader(context.request.headers.get('Cookie') ?? '')
         },
-        setAll(cookiesToSet, _headers) {
-          cookiesToSet.forEach(({ name, value }) =>
-            context.cookies.set(name, value))
+        setAll(cookiesToSet, headers) {
+          cookiesToSet.forEach(({ name, value }) => context.cookies.set(name, value))
+          Object.entries(headers).forEach(([key, value]) => responseHeaders.set(key, value))
         },
       },
     }
-  );
+  )
 
-  return ...
+  // Build your response here, and pass `responseHeaders` to it. Without them a
+  // shared cache can store this response along with its Set-Cookie header.
+  return new Response(null, { headers: responseHeaders })
 }
 ```
 
@@ -24497,6 +24502,8 @@ import { createServerClient, parseCookieHeader } from '@supabase/ssr'
 import { defineMiddleware } from 'astro:middleware'
 
 export const onRequest = defineMiddleware(async (context, next) => {
+  const responseHeaders = new Headers()
+
   const supabase = createServerClient(
     import.meta.env.PUBLIC_SUPABASE_URL,
     import.meta.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY,
@@ -24505,22 +24512,32 @@ export const onRequest = defineMiddleware(async (context, next) => {
         getAll() {
           return parseCookieHeader(context.request.headers.get('Cookie') ?? '')
         },
-        setAll(cookiesToSet, _headers) {
+        setAll(cookiesToSet, headers) {
           cookiesToSet.forEach(({ name, value }) => context.cookies.set(name, value))
+          Object.entries(headers).forEach(([key, value]) => responseHeaders.set(key, value))
         },
       },
     }
   )
 
-  return next()
+  const response = await next()
+  responseHeaders.forEach((value, key) => response.headers.set(key, value))
+  return response
 })
 ```
 
-## Congratulations
+### Congratulations \[#astro-congratulations]
 
-You can now use any Supabase features from your client or server code!
+To recap, you've:
+
+- Created a server client for code that runs on the server, and a browser client for code that runs in the browser.
+- Read and wrote the session cookie from a server endpoint and from middleware.
+
+You can now use any Supabase feature from your client or server code.
 
 **Remix**
+
+### Create the Supabase clients \[#remix-create-clients]
 
 With Remix, in a route module such as `_index.tsx`, you can export a `loader`, an `action`, and a default component.
 
@@ -24613,17 +24630,25 @@ export default function Index() {
 }
 ```
 
-## Congratulations
+### Congratulations \[#remix-congratulations]
 
-You can now use any Supabase features from your client or server code!
+To recap, you've:
+
+- Created a server client in the `loader` to load data and manage the session.
+- Created a server client in the `action` to handle form submissions and mutations.
+- Created a browser client in the default component, using the values the `loader` returned.
+
+You can now use any Supabase feature from your client or server code.
 
 **Nuxt**
+
+### Create the Supabase clients \[#nuxt-create-clients]
 
 **Server route**
 
 ```ts server/api/hello.ts
 import { createServerClient, parseCookieHeader, serializeCookieHeader } from '@supabase/ssr'
-import { appendHeader, defineEventHandler, getHeader } from 'h3'
+import { appendHeader, defineEventHandler, getHeader, setHeader } from 'h3'
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
@@ -24636,10 +24661,11 @@ export default defineEventHandler(async (event) => {
         getAll() {
           return parseCookieHeader(getHeader(event, 'Cookie') ?? '')
         },
-        setAll(cookiesToSet) {
+        setAll(cookiesToSet, cacheHeaders) {
           cookiesToSet.forEach(({ name, value, options }) => {
             appendHeader(event, 'Set-Cookie', serializeCookieHeader(name, value, options))
           })
+          Object.entries(cacheHeaders).forEach(([key, value]) => setHeader(event, key, value))
         },
       },
     }
@@ -24672,13 +24698,20 @@ export default defineNuxtPlugin(() => {
 })
 ```
 
-## Congratulations
+### Congratulations \[#nuxt-congratulations]
 
-You can now use any Supabase features from your client or server code!
+To recap, you've:
+
+- Created a server client in a server route for code that runs on the server.
+- Created a browser client in a plugin for code that runs in the browser.
+
+You can now use any Supabase feature from your client or server code.
 
 **React Router**
 
-In React Router, a route module (`_index.tsx`) can export a `loader`, an `action`, and a default component. Create a server client inside the `loader` and `action`, and a browser client inside the component, passing the env vars through the `loader`.
+### Create the Supabase clients \[#react-router-create-clients]
+
+In React Router, a route module such as `_index.tsx` can export a `loader`, an `action`, and a default component. Create a server client inside the `loader` and `action`, and a browser client inside the component, passing the env vars through the `loader`.
 
 ```ts _index.tsx
 import { data, type ActionFunctionArgs, type LoaderFunctionArgs } from 'react-router'
@@ -24761,15 +24794,22 @@ export default function Index() {
 }
 ```
 
-## Congratulations
+### Congratulations \[#react-router-congratulations]
 
-You can now use any Supabase features from your client or server code!
+To recap, you've:
+
+- Created a server client in the `loader` and the `action`.
+- Created a browser client in the default component, using the values the `loader` returned.
+
+You can now use any Supabase feature from your client or server code.
 
 **Express**
 
+### Create the Supabase clients \[#express-create-clients]
+
 **Server Client**
 
-```ts lib/supabase.js
+```js lib/supabase.js
 const { createServerClient, parseCookieHeader, serializeCookieHeader } = require('@supabase/ssr')
 
 exports.createClient = (context) => {
@@ -24791,9 +24831,10 @@ exports.createClient = (context) => {
 
 **Route**
 
-```ts app.js
+```js app.js
+require("dotenv").config()
+
 const express = require("express")
-const dotenv = require("dotenv")
 
 const { createClient } = require("./lib/supabase")
 
@@ -24807,11 +24848,18 @@ app.post("/hello-world", async function (req, res, next) {
 })
 ```
 
-## Congratulations
+### Congratulations \[#express-congratulations]
 
-You can now use any Supabase features from your client or server code!
+To recap, you've:
+
+- Created a request-specific server client.
+- Used that client in a route to make authenticated requests.
+
+You can now use any Supabase feature from your client or server code.
 
 **Hono**
+
+### Create the Supabase clients \[#hono-create-clients]
 
 **Server Client**
 
@@ -24821,36 +24869,25 @@ Create a Hono middleware that creates a Supabase client.
 
 You can now use this middleware in your Hono application to create a server Supabase client that can be used to make authenticated requests.
 
-The Supabase Auth SDK contains three different functions for authenticating user access to applications:
+### Congratulations \[#hono-congratulations]
 
-### Summary of the methods
+To recap, you've:
 
-- Use [`getClaims`](https://supabase.com/docs/reference/javascript/auth-getclaims) to protect pages and user data. It reads the access token from storage and verifies it. Locally via the [WebCrypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API) and a cached JWKS endpoint when the project uses asymmetric signing keys (the default for new projects), or by calling `getUser` solely to validate when symmetric keys are in use. The returned claims always come from decoding the JWT, not from a user lookup.
-- [`getUser`](https://supabase.com/docs/reference/javascript/auth-getuser) makes a network call to the project's Auth instance to get the user record, which includes the most up-to-date information about the user at the cost of a network call.
-- [`getSession`](https://supabase.com/docs/reference/javascript/auth-getsession) when you need the raw session (the access token, refresh token, and expiry). For example to forward the access token to another service. The session is loaded directly from local storage and isn't re-validated against the Auth server, so the embedded user object shouldn't be trusted on its own when storage is shared with the client (cookies, request headers). To verify identity, validate the access token with `getClaims`, or call `getUser` for a fresh, server-confirmed user record.
+- Created a Hono middleware that builds a request-specific server client.
+- Used that client in a route to make authenticated requests.
 
-**In summary**: use `getClaims` to verify identity (typically for protecting pages and data), `getUser` when you need an up-to-date user record from the Auth server, and `getSession` when you need the access or refresh token directly, but don't rely on the user object it returns for authorization decisions.
+You can now use any Supabase feature from your client or server code.
 
 **TanStack Start**
 
-### Write utility functions to create Supabase clients
+### Write utility functions to create Supabase clients \[#tanstack-utility-functions]
 
-TanStack Start renders matched routes on the server by default, so `beforeLoad` and `loader` run server-side on the initial request. Unlike Next.js, this means you don't need a proxy or middleware layer to keep sessions fresh — the server client reads and writes the session cookie directly on each request.
+TanStack Start renders matched routes on the server by default, so `beforeLoad` and `loader` run server-side on the initial request. Unlike Next.js, this means you don't need a proxy or middleware layer to keep sessions fresh. The server client reads and writes the session cookie directly on each request.
 
 Create a `lib/supabase` folder at the root of your project, or inside the `./src` folder if you are using one, then add a file for each type of client:
 
 1. **Create a browser client in `lib/supabase/client.ts`.** Use it to access Supabase from components that run in the browser.
 2. **Create a server client in `lib/supabase/server.ts`.** Use it to access Supabase from loaders, server functions, and other code that runs only on the server.
-
-The Supabase Auth SDK contains three different functions for authenticating user access to applications:
-
-### Summary of the methods
-
-- Use [`getClaims`](https://supabase.com/docs/reference/javascript/auth-getclaims) to protect pages and user data. It reads the access token from storage and verifies it. Locally via the [WebCrypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API) and a cached JWKS endpoint when the project uses asymmetric signing keys (the default for new projects), or by calling `getUser` solely to validate when symmetric keys are in use. The returned claims always come from decoding the JWT, not from a user lookup.
-- [`getUser`](https://supabase.com/docs/reference/javascript/auth-getuser) makes a network call to the project's Auth instance to get the user record, which includes the most up-to-date information about the user at the cost of a network call.
-- [`getSession`](https://supabase.com/docs/reference/javascript/auth-getsession) when you need the raw session (the access token, refresh token, and expiry). For example to forward the access token to another service. The session is loaded directly from local storage and isn't re-validated against the Auth server, so the embedded user object shouldn't be trusted on its own when storage is shared with the client (cookies, request headers). To verify identity, validate the access token with `getClaims`, or call `getUser` for a fresh, server-confirmed user record.
-
-**In summary**: use `getClaims` to verify identity (typically for protecting pages and data), `getUser` when you need an up-to-date user record from the Auth server, and `getSession` when you need the access or refresh token directly, but don't rely on the user object it returns for authorization decisions.
 
 Copy the lib utility functions below into each file:
 
@@ -24863,9 +24900,9 @@ TanStack Start has no global middleware layer, so protect each route explicitly.
 To protect your routes:
 
 1. Write a server function, `fetchClaims`, that calls `supabase.auth.getClaims()` and returns the claims, or `null` if the session isn't valid.
-2. Call `fetchClaims` from a layout route's `beforeLoad` hook — for example, `_protected.tsx` — before any nested route renders, and redirect to `/login` when it returns `null`.
+2. Call `fetchClaims` from a layout route's `beforeLoad` hook, such as `_protected.tsx`, before any nested route renders. Redirect to `/login` when it returns `null`.
 
-Danger: Skipping the check inside the server function exposes private data to unauthenticated users. `beforeLoad` runs on the server for the initial request and on the client for later navigation, but either way it only gates the route's render — it doesn't stop the server function from being called directly. Because there's no proxy re-checking every request, the server function is the only checkpoint that always runs, so it must call `supabase.auth.getClaims()` to authorize the request itself.
+Danger: Skipping the check inside the server function exposes private data to unauthenticated users. `beforeLoad` runs on the server for the initial request and on the client for later navigation, but either way it only gates the route's render. It doesn't stop the server function from being called directly. Because there's no proxy re-checking every request, the server function is the only checkpoint that always runs, so it must call `supabase.auth.getClaims()` to authorize the request itself.
 
 `getClaims()` validates the JWT signature on every call, the same check the Next.js Proxy relies on. Calling it inside the server function gives TanStack Start's per-route check that same guarantee, because the function runs on every request to a protected route.
 
@@ -24873,15 +24910,27 @@ Danger: Skipping the check inside the server function exposes private data to un
 
 Any other server function that returns or mutates private data needs this same check. Don't rely on a route being nested under `_protected` alone.
 
-## Congratulations
+### Congratulations \[#tanstack-congratulations]
 
-You're done! To recap, you've successfully:
+To recap, you've:
 
 - Set up a Supabase client utility to call Supabase from a browser component. You can use this if you need to call Supabase from the browser, for example to set up a realtime subscription.
 - Set up a server client utility to call Supabase from loaders and server functions.
 - Protected a route with `beforeLoad`, backed by a server function that authorizes the request itself.
 
-You can now use any Supabase features from your client or server code!
+You can now use any Supabase feature from your client or server code.
+
+## Choosing an auth method
+
+The Supabase Auth SDK contains three different functions for authenticating user access to applications:
+
+### Summary of the methods
+
+- Use [`getClaims`](https://supabase.com/docs/reference/javascript/auth-getclaims) to protect pages and user data. It reads the access token from storage and verifies it. Locally via the [WebCrypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API) and a cached JWKS endpoint when the project uses asymmetric signing keys (the default for new projects), or by calling `getUser` solely to validate when symmetric keys are in use. The returned claims always come from decoding the JWT, not from a user lookup. When the access token is close to expiring, `getClaims` refreshes the session before it verifies, which is how a server-rendered session stays alive.
+- [`getUser`](https://supabase.com/docs/reference/javascript/auth-getuser) makes a network call to the project's Auth instance to get the user record, which includes the most up-to-date information about the user at the cost of a network call.
+- [`getSession`](https://supabase.com/docs/reference/javascript/auth-getsession) when you need the raw session (the access token, refresh token, and expiry). For example to forward the access token to another service. The session is loaded directly from local storage and isn't re-validated against the Auth server, so the embedded user object shouldn't be trusted on its own when storage is shared with the client (cookies, request headers). To verify identity, validate the access token with `getClaims`, or call `getUser` for a fresh, server-confirmed user record.
+
+**In summary**: use `getClaims` to verify identity (typically for protecting pages and data), `getUser` when you need an up-to-date user record from the Auth server, and `getSession` when you need the access or refresh token directly, but don't rely on the user object it returns for authorization decisions.
 
 ## Caching considerations
 
@@ -72946,7 +72995,7 @@ export default {
         body: req.body,
       })
 
-      // Creating a 'new Response()' ensures contructor checks
+      // Creating a 'new Response()' ensures constructor checks
       return new Response(await res.body, {
         headers: res.headers,
         status: res.status,
@@ -83998,7 +84047,7 @@ The Supabase Auth SDK contains three different functions for authenticating user
 
 ### Summary of the methods
 
-- Use [`getClaims`](https://supabase.com/docs/reference/javascript/auth-getclaims) to protect pages and user data. It reads the access token from storage and verifies it. Locally via the [WebCrypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API) and a cached JWKS endpoint when the project uses asymmetric signing keys (the default for new projects), or by calling `getUser` solely to validate when symmetric keys are in use. The returned claims always come from decoding the JWT, not from a user lookup.
+- Use [`getClaims`](https://supabase.com/docs/reference/javascript/auth-getclaims) to protect pages and user data. It reads the access token from storage and verifies it. Locally via the [WebCrypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API) and a cached JWKS endpoint when the project uses asymmetric signing keys (the default for new projects), or by calling `getUser` solely to validate when symmetric keys are in use. The returned claims always come from decoding the JWT, not from a user lookup. When the access token is close to expiring, `getClaims` refreshes the session before it verifies, which is how a server-rendered session stays alive.
 - [`getUser`](https://supabase.com/docs/reference/javascript/auth-getuser) makes a network call to the project's Auth instance to get the user record, which includes the most up-to-date information about the user at the cost of a network call.
 - [`getSession`](https://supabase.com/docs/reference/javascript/auth-getsession) when you need the raw session (the access token, refresh token, and expiry). For example to forward the access token to another service. The session is loaded directly from local storage and isn't re-validated against the Auth server, so the embedded user object shouldn't be trusted on its own when storage is shared with the client (cookies, request headers). To verify identity, validate the access token with `getClaims`, or call `getUser` for a fresh, server-confirmed user record.
 
@@ -85902,7 +85951,7 @@ The Supabase Auth SDK contains three different functions for authenticating user
 
 ### Summary of the methods
 
-- Use [`getClaims`](https://supabase.com/docs/reference/javascript/auth-getclaims) to protect pages and user data. It reads the access token from storage and verifies it. Locally via the [WebCrypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API) and a cached JWKS endpoint when the project uses asymmetric signing keys (the default for new projects), or by calling `getUser` solely to validate when symmetric keys are in use. The returned claims always come from decoding the JWT, not from a user lookup.
+- Use [`getClaims`](https://supabase.com/docs/reference/javascript/auth-getclaims) to protect pages and user data. It reads the access token from storage and verifies it. Locally via the [WebCrypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API) and a cached JWKS endpoint when the project uses asymmetric signing keys (the default for new projects), or by calling `getUser` solely to validate when symmetric keys are in use. The returned claims always come from decoding the JWT, not from a user lookup. When the access token is close to expiring, `getClaims` refreshes the session before it verifies, which is how a server-rendered session stays alive.
 - [`getUser`](https://supabase.com/docs/reference/javascript/auth-getuser) makes a network call to the project's Auth instance to get the user record, which includes the most up-to-date information about the user at the cost of a network call.
 - [`getSession`](https://supabase.com/docs/reference/javascript/auth-getsession) when you need the raw session (the access token, refresh token, and expiry). For example to forward the access token to another service. The session is loaded directly from local storage and isn't re-validated against the Auth server, so the embedded user object shouldn't be trusted on its own when storage is shared with the client (cookies, request headers). To verify identity, validate the access token with `getClaims`, or call `getUser` for a fresh, server-confirmed user record.
 
@@ -87609,7 +87658,7 @@ The Supabase Auth SDK contains three different functions for authenticating user
 
 ### Summary of the methods
 
-- Use [`getClaims`](https://supabase.com/docs/reference/javascript/auth-getclaims) to protect pages and user data. It reads the access token from storage and verifies it. Locally via the [WebCrypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API) and a cached JWKS endpoint when the project uses asymmetric signing keys (the default for new projects), or by calling `getUser` solely to validate when symmetric keys are in use. The returned claims always come from decoding the JWT, not from a user lookup.
+- Use [`getClaims`](https://supabase.com/docs/reference/javascript/auth-getclaims) to protect pages and user data. It reads the access token from storage and verifies it. Locally via the [WebCrypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API) and a cached JWKS endpoint when the project uses asymmetric signing keys (the default for new projects), or by calling `getUser` solely to validate when symmetric keys are in use. The returned claims always come from decoding the JWT, not from a user lookup. When the access token is close to expiring, `getClaims` refreshes the session before it verifies, which is how a server-rendered session stays alive.
 - [`getUser`](https://supabase.com/docs/reference/javascript/auth-getuser) makes a network call to the project's Auth instance to get the user record, which includes the most up-to-date information about the user at the cost of a network call.
 - [`getSession`](https://supabase.com/docs/reference/javascript/auth-getsession) when you need the raw session (the access token, refresh token, and expiry). For example to forward the access token to another service. The session is loaded directly from local storage and isn't re-validated against the Auth server, so the embedded user object shouldn't be trusted on its own when storage is shared with the client (cookies, request headers). To verify identity, validate the access token with `getClaims`, or call `getUser` for a fresh, server-confirmed user record.
 
@@ -88408,7 +88457,7 @@ The Supabase Auth SDK contains three different functions for authenticating user
 
 ### Summary of the methods
 
-- Use [`getClaims`](https://supabase.com/docs/reference/javascript/auth-getclaims) to protect pages and user data. It reads the access token from storage and verifies it. Locally via the [WebCrypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API) and a cached JWKS endpoint when the project uses asymmetric signing keys (the default for new projects), or by calling `getUser` solely to validate when symmetric keys are in use. The returned claims always come from decoding the JWT, not from a user lookup.
+- Use [`getClaims`](https://supabase.com/docs/reference/javascript/auth-getclaims) to protect pages and user data. It reads the access token from storage and verifies it. Locally via the [WebCrypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API) and a cached JWKS endpoint when the project uses asymmetric signing keys (the default for new projects), or by calling `getUser` solely to validate when symmetric keys are in use. The returned claims always come from decoding the JWT, not from a user lookup. When the access token is close to expiring, `getClaims` refreshes the session before it verifies, which is how a server-rendered session stays alive.
 - [`getUser`](https://supabase.com/docs/reference/javascript/auth-getuser) makes a network call to the project's Auth instance to get the user record, which includes the most up-to-date information about the user at the cost of a network call.
 - [`getSession`](https://supabase.com/docs/reference/javascript/auth-getsession) when you need the raw session (the access token, refresh token, and expiry). For example to forward the access token to another service. The session is loaded directly from local storage and isn't re-validated against the Auth server, so the embedded user object shouldn't be trusted on its own when storage is shared with the client (cookies, request headers). To verify identity, validate the access token with `getClaims`, or call `getUser` for a fresh, server-confirmed user record.
 
@@ -106769,9 +106818,15 @@ Once the restoration is complete, the new project will be available in your dash
 
 New projects are completely independent of their source, and as such can be modified and used as desired.
 
-Note: As the entire database is copied to the new project, this will include all extensions that were enabled at the source. If the source project included extensions that are configured to carry out external operations—for example pg\_net, pg\_cron, wrappers—these should be disabled once the copy process has completed to avoid any unwanted actions from taking place.
+Caution: Restore to a new project is a binary restore: it copies the entire database, including any enabled extensions that carry out external operations (for example `pg_net`, `pg_cron`, wrappers). These jobs start running as soon as the restore completes. There's no way to exclude or pause them going into the restore.
+
+If you need to inspect or remove cron jobs, webhook triggers, or wrapper definitions before any external extension runs, use a [logical restore with the Supabase CLI](https://supabase.com/docs/guides/platform/migrating-within-supabase/backup-restore) instead. This process is manual, and doesn't carry over the encryption root key, so Vault secrets and encrypted columns aren't readable unless you migrate the key separately.
 
 Restoring to a new project is an excellent way to manage environments more effectively. You can use this feature to create staging environments for testing, experiment with changes without risk to production data, or swiftly recover from unexpected data loss scenarios.
+
+Danger: Recovering deleted rows by manually inspecting dead tuples (for example with `pageinspect` and `pg_surgery`) isn't supported on Supabase. It bypasses your table's constraint checks and can corrupt your data by restoring rows that violate a `CHECK`, `FOREIGN KEY`, or `UNIQUE` constraint.
+
+Restoring to a new project is the safe way to get deleted rows back. Restore from a physical backup that predates the deletion, or, if the deletion happened too recently for your last backup to have captured it, enable PITR and restore to the exact point in time before the deletion. Then copy the rows you need into your live project.
 
 
 ---
@@ -129596,6 +129651,391 @@ On GitHub:
 
 ---
 
+# Configure Custom OAuth/OIDC Providers
+
+Set up any OAuth 2.0 or OIDC-compatible identity provider for self-hosted Supabase.
+
+This guide explains how to add a custom OAuth 2.0 or OpenID Connect (OIDC) identity provider to a self-hosted Supabase instance and how to manage it through the Auth admin API. To learn how custom providers work and which advanced options they support, see [Custom OAuth/OIDC Providers](https://supabase.com/docs/guides/auth/custom-oauth-providers).
+
+There are two provider types:
+
+- **OAuth 2.0**: for generic OAuth 2.0 providers where you supply the authorization, token, and userinfo endpoints manually.
+- **OIDC**: for providers that support [OpenID Connect](https://openid.net/connect/) discovery. You supply only the issuer URL and endpoints are resolved automatically.
+
+## Provider identifiers
+
+Every custom provider identifier must start with the `custom:` prefix. Identifiers are 2-50 characters, lowercase alphanumeric with hyphens and colons allowed. Examples:
+
+- `custom:my-provider`
+- `custom:github-enterprise`
+
+## Before you begin
+
+You need:
+
+- A working self-hosted Supabase instance on release `0.8.1` or later, which ships Supabase Auth `v2.196.0`. See [Self-Hosting with Docker](https://supabase.com/docs/guides/self-hosting/docker) and [Update Your Self-Hosted Deployment](https://supabase.com/docs/guides/self-hosting/updating).
+- Your project's secret key, `SUPABASE_SECRET_KEY`, from your `.env` file.
+- `API_EXTERNAL_URL` set to the publicly reachable URL of your Auth service, ending in `/auth/v1`, for example `https://<your-domain>/auth/v1`. The Auth service derives the OAuth callback URL for custom providers from this value.
+
+Danger: Most OAuth providers reject `http://` callback URLs other than `localhost`, so your instance needs HTTPS. See [Configure Reverse Proxy and HTTPS](https://supabase.com/docs/guides/self-hosting/self-hosted-proxy-https) for setup instructions.
+
+When registering your application with an external identity provider, add the following URL as the redirect URI in the provider's settings:
+
+```
+https://<your-domain>/auth/v1/callback
+```
+
+## Optional Auth configuration
+
+Custom providers are enabled by default in the Auth service, so no changes to `docker-compose.yml` are required. The following environment variables adjust the defaults:
+
+| Variable                            | Description                                                                                                |
+| ----------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `GOTRUE_CUSTOM_OAUTH_ENABLED`       | Set to `"false"` to disable custom OAuth/OIDC providers. Defaults to `true`.                               |
+| `GOTRUE_CUSTOM_OAUTH_MAX_PROVIDERS` | Maximum number of custom OAuth/OIDC providers allowed. Defaults to `0`, which means unlimited.             |
+| `GOTRUE_CUSTOM_OAUTH_EXTERNAL_URL`  | Base URL used to build the callback URL for custom providers. Defaults to the value of `API_EXTERNAL_URL`. |
+
+To change any of these, add the variable to the `auth` service in your `docker-compose.yml`:
+
+```yaml name=docker-compose.yml
+auth:
+  environment:
+    # ... existing variables ...
+    GOTRUE_CUSTOM_OAUTH_MAX_PROVIDERS: 5
+```
+
+Then recreate the Auth service for the change to take effect:
+
+```sh
+sh run.sh recreate auth
+```
+
+## Create a provider
+
+Use the Auth admin API to create providers. You need your project's secret key for authentication.
+
+Danger: The JavaScript examples use a [supabase-js](https://supabase.com/docs/reference/javascript/start) client created with the secret key (`SUPABASE_SECRET_KEY`), which must only run in trusted server-side environments.
+
+```js
+import { createClient } from '@supabase/supabase-js'
+
+const supabase = createClient('http://<your-domain>', 'your-supabase-secret-key')
+```
+
+The Auth service fetches and validates the provider's endpoints when you create the provider, so the request fails if the issuer or endpoint URLs can't be reached.
+
+### OAuth 2.0 provider
+
+Use an OAuth 2.0 provider when your identity provider does not support OpenID Connect discovery. You must supply the authorization, token, and userinfo endpoint URLs explicitly.
+
+**JavaScript**
+
+```js
+const { data, error } = await supabase.auth.admin.customProviders.createProvider({
+  provider_type: 'oauth2',
+  identifier: 'custom:my-oauth-provider',
+  name: 'My OAuth Provider',
+  client_id: 'your-client-id',
+  client_secret: 'your-client-secret',
+  authorization_url: 'https://provider.example.com/oauth/authorize',
+  token_url: 'https://provider.example.com/oauth/token',
+  userinfo_url: 'https://provider.example.com/oauth/userinfo',
+  scopes: ['profile', 'email'],
+})
+```
+
+**cURL**
+
+```sh
+curl -X POST "http://<your-domain>/auth/v1/admin/custom-providers" \
+  -H "apikey: your-supabase-secret-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "provider_type": "oauth2",
+    "identifier": "custom:my-oauth-provider",
+    "name": "My OAuth Provider",
+    "client_id": "your-client-id",
+    "client_secret": "your-client-secret",
+    "authorization_url": "https://provider.example.com/oauth/authorize",
+    "token_url": "https://provider.example.com/oauth/token",
+    "userinfo_url": "https://provider.example.com/oauth/userinfo",
+    "scopes": ["profile", "email"]
+  }'
+```
+
+### OIDC provider
+
+Use an OIDC provider when your identity provider supports OpenID Connect. Supply the `issuer` URL and the discovery document, JWKS, and endpoints are resolved automatically.
+
+**JavaScript**
+
+```js
+const { data, error } = await supabase.auth.admin.customProviders.createProvider({
+  provider_type: 'oidc',
+  identifier: 'custom:my-oidc-provider',
+  name: 'My OIDC Provider',
+  client_id: 'your-client-id',
+  client_secret: 'your-client-secret',
+  issuer: 'https://auth.example.com',
+  scopes: ['openid', 'profile', 'email'],
+})
+```
+
+**cURL**
+
+```sh
+curl -X POST "http://<your-domain>/auth/v1/admin/custom-providers" \
+  -H "apikey: your-supabase-secret-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "provider_type": "oidc",
+    "identifier": "custom:my-oidc-provider",
+    "name": "My OIDC Provider",
+    "client_id": "your-client-id",
+    "client_secret": "your-client-secret",
+    "issuer": "https://auth.example.com",
+    "scopes": ["openid", "profile", "email"]
+  }'
+```
+
+OIDC providers have the following automatic behavior:
+
+- The discovery document is fetched from `{issuer}/.well-known/openid-configuration`, or from `discovery_url` when it is set.
+- The `openid` scope is always included. It is automatically added if missing from the `scopes` array.
+- ID tokens are verified against the provider's JWKS, which is fetched from the discovery document's `jwks_uri`.
+
+### Verify the provider
+
+List the configured providers to confirm the new provider was saved:
+
+```sh
+curl "http://<your-domain>/auth/v1/admin/custom-providers" \
+  -H "apikey: your-supabase-secret-key"
+```
+
+The response includes the provider you created. Users can now sign in with it from your app:
+
+```js
+const { data, error } = await supabase.auth.signInWithOAuth({
+  provider: 'custom:my-oidc-provider',
+})
+```
+
+## Example: Telegram
+
+The following steps walk through setting up Telegram sign-in with Supabase Auth.
+
+Note: Telegram sign-in fails on Supabase Auth versions before `v2.196.0` because of an [unsupported signing algorithm issue](https://github.com/supabase/auth/issues/2534).
+
+### Step 1: Create a Telegram bot
+
+1. Open [@BotFather](https://t.me/BotFather) on Telegram and send the command `/newbot`.
+2. Follow the prompts to choose a name and username for your bot.
+
+### Step 2: Register the redirect URL
+
+1. Open the [@BotFather mini app](https://t.me/botfather?startapp) on Telegram and select the bot you created in the previous step.
+2. Select **Login Widget** to open the page where you configure redirect URIs.
+3. If you don't see OIDC settings, click on "Switch to OpenID Connect Login."
+4. Click **Add a Redirect URI** and enter your self-hosted Supabase callback URL:
+
+   ```
+   https://<your-domain>/auth/v1/callback
+   ```
+
+This screen also shows your Client ID and Client Secret. You use them to create the provider in the next step.
+
+### Step 3: Create the Telegram provider
+
+Copy the Client ID and Client Secret from the **Login Widget** screen, then use them to create a custom Telegram OAuth provider:
+
+**JavaScript**
+
+```js
+const { data, error } = await supabase.auth.admin.customProviders.createProvider({
+  provider_type: 'oidc',
+  identifier: 'custom:telegram',
+  name: 'Telegram',
+  client_id: 'your-client-id',
+  client_secret: 'your-client-secret',
+  issuer: 'https://oauth.telegram.org',
+  scopes: ['openid', 'profile'],
+  email_optional: true,
+})
+```
+
+**cURL**
+
+```sh
+curl -X POST "http://<your-domain>/auth/v1/admin/custom-providers" \
+  -H "apikey: your-supabase-secret-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "provider_type": "oidc",
+    "identifier": "custom:telegram",
+    "name": "Telegram",
+    "client_id": "your-client-id",
+    "client_secret": "your-client-secret",
+    "issuer": "https://oauth.telegram.org",
+    "scopes": ["openid", "profile"],
+    "email_optional": true
+  }'
+```
+
+A few notes on these fields:
+
+- `identifier`: can be any value that starts with `custom:` and follows the [identifier rules](#provider-identifiers).
+- `name`: can be any value you want.
+- `email_optional`: must be `true` because Telegram doesn't return an email address.
+
+The `profile` scope returns the user's name and picture. To also receive the phone number, add the `phone` scope. For the full list of available scopes, see the [Telegram Login docs](https://core.telegram.org/bots/telegram-login#available-scopes).
+
+### Step 4: Sign in with Telegram
+
+With the provider configured, you can now sign in with Telegram from your app:
+
+```js
+const { data, error } = await supabase.auth.signInWithOAuth({
+  provider: 'custom:telegram',
+})
+```
+
+### Step 5: Test the sign-in flow
+
+Only the Supabase callback URL needs to be public and served over HTTPS, because that is where the identity provider redirects. The test page itself is a static HTML file that can run anywhere your browser can reach, including your local machine.
+
+1. Save the code below to `index.html`.
+2. Set `SITE_URL` in your self-hosted Supabase `.env` file to the URL where the page runs, for example `http://localhost:3000`, and recreate the Auth service with `sh run.sh recreate auth`. To allow more than one URL, add the others to `ADDITIONAL_REDIRECT_URLS`.
+3. Start a simple HTTP server via `python -m http.server 3000` to serve `index.html`.
+4. Open your browser and go to `http://localhost:3000`.
+
+```html
+<!doctype html>
+<html>
+  <body>
+    <h1>Supabase custom provider test</h1>
+    <button id="loginBtn">Sign in with Telegram</button>
+    <pre id="result"></pre>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const SUPABASE_URL = 'https://<your-domain>'
+        const SUPABASE_PUBLISHABLE_KEY = 'your-supabase-publishable-key'
+
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
+
+        document.getElementById('loginBtn').addEventListener('click', async () => {
+          const { error } = await supabase.auth.signInWithOAuth({
+            provider: 'custom:telegram',
+          })
+
+          if (error) {
+            document.getElementById('result').textContent = JSON.stringify(error, null, 2)
+          }
+        })
+
+        supabase.auth.onAuthStateChange((_event, session) => {
+          if (session) {
+            document.getElementById('result').textContent = JSON.stringify(session.user, null, 2)
+          }
+        })
+      })
+    </script>
+  </body>
+</html>
+```
+
+Clicking the button sends the browser to your Auth service, which redirects to Telegram. After you confirm the sign-in in the Telegram app, Telegram sends the browser back to `https://<your-domain>/auth/v1/callback`. The Auth service completes the exchange and redirects to `SITE_URL`, where `supabase-js` picks up the session and the page prints the signed-in user.
+
+Telegram doesn't return an email address, so `email` is empty in the user object. The profile claims that Telegram returns, `name`, `given_name`, `family_name`, and `picture`, are in `user_metadata` together with the ID token claims, and `app_metadata.provider` is `custom:telegram`. The `sub` claim is the stable identifier that Auth uses to match the user on later sign-ins.
+
+To test a different custom provider, change the `provider` value to its identifier.
+
+## Manage providers
+
+Use the admin API to list, update, and delete custom providers. Self-hosted Studio doesn't include a UI for them. The examples use `custom:my-provider` as the identifier. Replace it with the identifier of your provider.
+
+### List providers
+
+**JavaScript**
+
+```js
+// List all custom providers
+const { data, error } = await supabase.auth.admin.customProviders.listProviders()
+
+// Filter by provider type
+const { data, error } = await supabase.auth.admin.customProviders.listProviders({
+  type: 'oidc',
+})
+```
+
+**cURL**
+
+```sh
+# List all custom providers
+curl "http://<your-domain>/auth/v1/admin/custom-providers" \
+  -H "apikey: your-supabase-secret-key"
+
+# Filter by provider type
+curl "http://<your-domain>/auth/v1/admin/custom-providers?type=oidc" \
+  -H "apikey: your-supabase-secret-key"
+```
+
+### Update a provider
+
+Send only the fields you want to change. Fields you leave out keep their current values, so you can rotate a client secret by sending `client_secret` alone. The `provider_type` and `identifier` fields are fixed when the provider is created and can't be updated.
+
+**JavaScript**
+
+```js
+const { data, error } = await supabase.auth.admin.customProviders.updateProvider(
+  'custom:my-provider',
+  {
+    name: 'Updated Provider Name',
+    scopes: ['openid', 'profile', 'email'],
+  }
+)
+```
+
+**cURL**
+
+```sh
+curl -X PUT "http://<your-domain>/auth/v1/admin/custom-providers/custom:my-provider" \
+  -H "apikey: your-supabase-secret-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Updated Provider Name",
+    "scopes": ["openid", "profile", "email"]
+  }'
+```
+
+### Delete a provider
+
+**JavaScript**
+
+```js
+const { data, error } =
+  await supabase.auth.admin.customProviders.deleteProvider('custom:my-provider')
+```
+
+**cURL**
+
+```sh
+curl -X DELETE "http://<your-domain>/auth/v1/admin/custom-providers/custom:my-provider" \
+  -H "apikey: your-supabase-secret-key"
+```
+
+For PKCE, authorization parameters, and OIDC-specific options, see [Advanced configuration](https://supabase.com/docs/guides/auth/custom-oauth-providers#advanced-configuration).
+
+## Additional resources
+
+- [Custom OAuth/OIDC Providers](https://supabase.com/docs/guides/auth/custom-oauth-providers)
+- [Configure Social Login (OAuth) Providers](https://supabase.com/docs/guides/self-hosting/self-hosted-oauth)
+
+
+---
+
 # Envoy API Gateway
 
 Architecture and configuration of the Envoy API gateway for self-hosted Supabase.
@@ -130112,7 +130552,7 @@ The default limits are 150 MB memory and 60 seconds timeout per function invocat
 
 ---
 
-# Configure social login (OAuth) providers
+# Configure Social Login (OAuth) Providers
 
 Set up social login (OAuth/OIDC) providers for self-hosted Supabase with Docker.
 
@@ -130626,7 +131066,7 @@ After you enable passkeys in your self-hosted Auth service, configure the client
 
 ---
 
-# Configure Phone sign-in & MFA
+# Configure Phone Sign-in & MFA
 
 Set up phone sign-in SMS providers, OTP settings, and multi-factor authentication for self-hosted Supabase with Docker.
 
@@ -173730,6 +174170,23 @@ deno add jsr:@supabase/server
 
 ```sh Terminal
 bunx jsr add @supabase/server
+```
+
+### Optional peer dependencies on Deno
+
+Some entry points rely on optional peer dependencies. `@supabase/server/middleware/postgres` and `@supabase/server/middleware/postgres-admin` need `pg`. Deno resolves an optional peer only when your own code imports it. A pin in `deno.json` alone is not enough: `deno check` passes and the function fails at startup with `Could not find package 'pg'`.
+
+Add a bare import once, at the top of your entry module — no separate `deno add npm:pg` or `package.json` entry is needed. `deno info` lists `npm:/pg@...` once the package is in the module graph.
+
+Deno 2.9 and later apply a minimum dependency age to npm packages. To use a release published the same day, pass `--minimum-dependency-age 0` to `deno check`.
+
+```ts index.ts
+import 'pg'
+import { withPostgresClient } from '@supabase/server/middleware/postgres'
+```
+
+```sh Terminal
+deno info index.ts | grep "npm:/pg@"
 ```
 
 ## Middleware

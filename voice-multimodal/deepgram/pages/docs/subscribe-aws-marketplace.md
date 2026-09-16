@@ -110,7 +110,20 @@ Calls the [`GetOffer`](https://docs.aws.amazon.com/marketplace/latest/APIReferen
 aws marketplace-discovery get-offer-terms --region us-east-1 --offer-id <offer-id>
 ```
 
-The response lists one or more terms, each with an `id`. For a `USAGE`-priced Deepgram SageMaker product, expect `LegalTerm`, `SupportTerm`, and `UsageBasedPricingTerm` — collect all three `id` values. Deepgram's public SageMaker listings also include a `FreeTrialPricingTerm` (14 days); collect its `id` too if you want to claim the trial. See [Required terms by pricing model](https://docs.aws.amazon.com/marketplace/latest/developerguide/work-with-agreement-api-buyer.html#car-required-terms-by-pricing-model) if the offer uses a different pricing model.
+The response has an `offerTerms` array. Each entry is a one-key object whose key names the term kind — `legalTerm`, `supportTerm`, `usageBasedPricingTerm`, `freeTrialPricingTerm` — and whose inner object carries the term's `id` and `type`:
+
+```json
+{
+  "offerTerms": [
+    {"legalTerm": {"id": "...", "type": "LegalTerm", "documents": [...]}},
+    {"supportTerm": {"id": "...", "type": "SupportTerm", "refundPolicy": "..."}},
+    {"usageBasedPricingTerm": {"id": "...", "type": "UsageBasedPricingTerm", "rateCards": [...]}},
+    {"freeTrialPricingTerm": {"id": "...", "type": "FreeTrialPricingTerm", "duration": "P14D"}}
+  ]
+}
+```
+
+For a `USAGE`-priced Deepgram SageMaker product, expect `LegalTerm`, `SupportTerm`, and `UsageBasedPricingTerm` — collect all three `id` values (for example, `aws marketplace-discovery get-offer-terms ... --query 'offerTerms[].*.id'`). Deepgram's public SageMaker listings also include a `FreeTrialPricingTerm` (14 days); collect its `id` too if you want to claim the trial. See [Required terms by pricing model](https://docs.aws.amazon.com/marketplace/latest/developerguide/work-with-agreement-api-buyer.html#car-required-terms-by-pricing-model) if the offer uses a different pricing model.
 
 Calls the [`GetOfferTerms`](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-discovery_GetOfferTerms.html) action of the [AWS Marketplace Discovery API](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_Operations_AWS_Marketplace_Discovery.html).
 
@@ -133,7 +146,7 @@ Returns an `agreementRequestId` and a `chargeSummary`. For usage-based pricing, 
 
 Calls the [`CreateAgreementRequest`](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-agreements_CreateAgreementRequest.html) action of the [AWS Marketplace Agreement Service API](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_Operations_AWS_Marketplace_Agreement_Service.html).
 
-`FreeTrialPricingTerm` can be accepted only once per product. If your account has already used the trial for this product, omit that term's `id` from `requestedTerms` — including it again returns a `ValidationException`. If your account already has an active agreement for this product at all, the whole call fails with `ValidationException` / `UNSUPPORTED_ACTION` ("This action is not supported when an active agreement exists on the same resourceId"). Check first with the [`SearchAgreements`](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-agreements_SearchAgreements.html) action: `aws marketplace-agreement search-agreements --region us-east-1 --catalog AWSMarketplace --filters '[{"name":"PartyType","values":["Acceptor"]},{"name":"AgreementType","values":["PurchaseAgreement"]},{"name":"ResourceIdentifier","values":["<productId>"]}]'` — if an agreement with `"status": "ACTIVE"` already exists, you're already subscribed; skip to [Find the Model Package ARN](#find-the-model-package-arn).
+`FreeTrialPricingTerm` can be accepted only once per product. If your account has already used the trial for this product, omit that term's `id` from `requestedTerms` — including it again returns a `ValidationException`. If your account already has an active agreement for this product at all, the whole call fails with `ValidationException` / `UNSUPPORTED_ACTION` ("This action is not supported when an active agreement exists on the same resourceId"). Check first with the [`SearchAgreements`](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-agreements_SearchAgreements.html) action: `aws marketplace-agreement search-agreements --region us-east-1 --catalog AWSMarketplace --filters '[{"name":"PartyType","values":["Acceptor"]},{"name":"AgreementType","values":["PurchaseAgreement"]},{"name":"ResourceIdentifier","values":["<productId>"]}]'`. `SearchAgreements` returns `EXPIRED`, `CANCELLED`, and `REPLACED` agreements as well as `ACTIVE` ones, so check the `status` of each result: only an agreement with `"status": "ACTIVE"` means you're subscribed. If one exists, skip to [Find the Model Package ARN](#find-the-model-package-arn).
 
 #### Accept the quote to subscribe
 
@@ -172,6 +185,20 @@ In the **Setup** box, under **Service**, choose **AWS command line interface (CL
 Under the **Version** header, select the product version from the dropdown. If the listing has more than one version, read the version name and the release notes to understand the set of languages (or features) each version provides, and choose the version that matches your needs
 
 Scroll down. On the right-hand side of the page, a list of **Model ARNs** is shown. Note the correct Model Package ARN for the AWS Region you plan to deploy to
+
+### Programmatic alternative
+
+The [deepgram-devs/dg-sagemaker](https://github.com/deepgram-devs/dg-sagemaker) repository includes a script that resolves the Model Package ARN for a product, version, and Region from the command line. It requires [`uv`](https://docs.astral.sh/uv/) and AWS credentials for the subscribed account:
+
+```bash
+git clone https://github.com/deepgram-devs/dg-sagemaker.git
+cd dg-sagemaker/skills/deepgram-sagemaker/scripts
+uv run resolve_model_package_arn.py nova-3-mono-streaming --region us-east-2 --version "de/en/es"
+```
+
+The script prints the ARN together with the version's `SupportedRealtimeInferenceInstanceTypes`, so you can confirm your planned instance types before deploying. Pass `--list-versions` to see the available versions of a product first.
+
+The script calls the same read-only Marketplace operation the **Manage subscriptions** console uses to render the **Model ARNs** list. That operation is not part of the documented AWS API, so if the script fails, fall back to the console steps above. The documented `aws marketplace-discovery list-fulfillment-options --region us-east-1 --product-id <product-id>` command lists a product's versions, release notes, and recommended instance type, but does not return the Model Package ARN.
 
 ## Private offers
 

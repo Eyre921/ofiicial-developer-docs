@@ -12,7 +12,7 @@ path: docs/auto-scaling-sagemaker-streaming
 
 A Deepgram **real-time** endpoint serves two kinds of requests: **streaming** over a bidirectional stream (`InvokeEndpointWithBidirectionalStream`, up to 30 minutes each) and **synchronous pre-recorded** requests (`InvokeEndpoint` — a single file up to 25 MB, returned in one immediate response, Deepgram's "batch" API). Both are in-flight invocations that load the instance, so concurrent requests is the right scaling signal — which is why the high-resolution `ConcurrentRequestsPerModel` metric is ideal here.
 
-**Need scale-to-zero?** Real-time endpoints keep a minimum of one instance and cannot scale to zero. For batch workloads that can scale to zero during idle periods, see [Auto-Scaling Asynchronous Endpoints](/docs/auto-scaling-sagemaker-async).
+**Need scale-to-zero?** Real-time endpoints keep a minimum of one instance and cannot scale to zero. Scale-to-zero (via asynchronous endpoints) is temporarily unavailable for Marketplace-hosted Deepgram; if your use case needs it, contact a [Deepgram representative](https://deepgram.com/contact-us).
 
 Before configuring auto scaling, you must have a Deepgram SageMaker Endpoint deployed and running with status `InService`. See [Deploy Deepgram on Amazon SageMaker](/docs/deploy-amazon-sagemaker) for setup instructions.
 
@@ -141,12 +141,14 @@ The correct `TargetValue` depends on your instance type, Deepgram model, and fea
 
 To determine the right target value:
 
-1. Deploy a single instance and open concurrent streams incrementally.
+1. Deploy a single instance and open concurrent streams incrementally, using the **same request parameters your application sends** (model, language, interim results, smart formatting, diarization, keyterms, and so on).
 2. Monitor response latency. The [Measuring streaming latency](/docs/measuring-streaming-latency) guide describes how to benchmark.
 3. Identify the concurrency level at which average latency remains below 400 ms.
 4. Set `TargetValue` to approximately 70-80% of that limit to give the auto scaler time to add capacity before latency degrades.
 
-For example, if a `g5.2xlarge` instance handles 10 concurrent streams at acceptable latency, set `TargetValue` to `7` or `8`.
+For example, if one instance handles *N* concurrent streams at acceptable latency, set `TargetValue` to roughly 0.7–0.8 × *N*.
+
+Per-instance capacity varies several-fold with the request parameters — interim results, smart formatting, diarization, keyterms, and multilingual settings each change how much work a stream costs — so a number measured with one configuration does not transfer to another. Measure with your real request parameters, or contact a [Deepgram representative](https://deepgram.com/contact-us) for a planning estimate for your workload.
 
 If your endpoint uses [heterogeneous instance pools](#use-multiple-instance-types-for-resilience), the predefined `ConcurrentRequestsPerModel` metric is not sufficient on its own because per-instance capacity varies across pools. Follow the AWS guidance on driving the scaling policy from a weighted custom metric for mixed fleets. See [Use heterogeneous instance type endpoints](https://docs.aws.amazon.com/sagemaker/latest/dg/realtime-endpoints-heterogeneous.html) for details.
 
@@ -186,7 +188,7 @@ Amazon CloudWatch automatically creates alarms when you apply a target tracking 
 
 Key metrics to watch in the `AWS/SageMaker` namespace:
 
-![CloudWatch Metrics console showing the ConcurrentRequestsPerModel metric for a SageMaker Endpoint Variant](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/511832b235f0bf021547acd94375c1bb907c5cf7cdbdb6e6b94756b7436af1b6/images/cloudwatch-concurrent-requests-per-model.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260916%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260916T113145Z&X-Amz-Expires=604800&X-Amz-Signature=52babe167a1f6cfcdc05ede18740a7acfa167efd385e5eeb12a73998f5ea6fe2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![CloudWatch Metrics console showing the ConcurrentRequestsPerModel metric for a SageMaker Endpoint Variant](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/511832b235f0bf021547acd94375c1bb907c5cf7cdbdb6e6b94756b7436af1b6/images/cloudwatch-concurrent-requests-per-model.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260916%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260916T233153Z&X-Amz-Expires=604800&X-Amz-Signature=5b8bc9490bdb29f0d7f2dcca41cd7766167855b9f3da92ac1ee15d3ca04e46e3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 | Metric                       | Description                                                                                     |
 | ---------------------------- | ----------------------------------------------------------------------------------------------- |

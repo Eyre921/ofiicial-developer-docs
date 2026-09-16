@@ -1421,6 +1421,7 @@ components:
         - gpt-5.6-sol
         - gpt-5.6-terra
         - gpt-5.6-luna
+        - gpt-6-astra
         - gpt-5-mini
         - gpt-5-nano
         - gpt-3.5-turbo

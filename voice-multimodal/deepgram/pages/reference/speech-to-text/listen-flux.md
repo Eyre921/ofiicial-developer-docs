@@ -629,6 +629,13 @@ components:
         is not supplied, the configuration continues using the currently
         configured value.
       title: ChannelsListenV2MessagesListenV2ConfigureThresholds
+    ListenV2ConfigureNumerals:
+      type: boolean
+      default: false
+      description: >-
+        Numerals converts numbers from written format to numerical format.
+        Applies to turns transcribed after the update.
+      title: ListenV2ConfigureNumerals
     ListenV2_ListenV2Configure:
       type: object
       properties:
@@ -659,6 +666,9 @@ components:
             not supplied,
 
             the session will continue to use the currently configured value.
+        numerals:
+          $ref: '#/components/schemas/ListenV2ConfigureNumerals'
+          default: false
       required:
         - type
       title: ListenV2_ListenV2Configure

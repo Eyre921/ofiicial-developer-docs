@@ -56,11 +56,11 @@ You will also need to complete the [Self Service Licensing & Credentials](/docs/
 
 TTS self-hosted deployments have specific resource requirements:
 
-* **GPU**: NVIDIA GPUs with CUDA 12.8+ support required
+* **GPU**: NVIDIA GPUs with CUDA 13 support required
 * **Memory**: 32-48 GiB RAM per language deployment
 * **CPU**: 4+ cores per language deployment
 * **Storage**: Sufficient space for model files and logs
-* **NVIDIA Driver**: Compatible with CUDA 12.8 (driver versions change frequently - check NVIDIA compatibility matrix)
+* **NVIDIA Driver**: `>=580` with the **open** kernel modules. See [Drivers and Containerization Platforms](/docs/drivers-and-containerization-platforms) for installation and verification steps.
 * **Container Runtime**: Docker with nvidia-container-runtime or Podman with GPU support
 
 TTS hardware requirements are higher than standard STT deployments due to the computational complexity of high-quality speech synthesis. Consult your Deepgram Account Representative for hardware recommendations optimized for TTS latency vs. throughput based on your specific use case.

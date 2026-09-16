@@ -4,13 +4,13 @@ source: https://docs.together.ai/docs/gpt-oss
 path: docs/gpt-oss
 ---
 
-Get started with OpenAI's GPT-OSS, open-source reasoning model duo.
+Get started with GPT-OSS, OpenAI's open-weight reasoning model.
 
-These flexible open-weight reasoning models are designed for developers, researchers, and enterprises who need transparency and customization while maintaining the advanced reasoning capabilities of chain-of-thought processing.
+GPT-OSS is a flexible open-weight reasoning model designed for developers, researchers, and enterprises who need transparency and customization while maintaining the advanced reasoning capabilities of chain-of-thought processing.
 
-Both GPT-OSS models have been trained to think step-by-step before responding with an answer, excelling at complex reasoning tasks such as coding, mathematics, planning, puzzles, and agent workflows.
+GPT-OSS has been trained to think step-by-step before responding with an answer, excelling at complex reasoning tasks such as coding, mathematics, planning, puzzles, and agent workflows.
 
-They feature adjustable reasoning effort levels, allowing you to balance performance with computational cost.
+It features adjustable reasoning effort levels, allowing you to balance performance with computational cost.
 
 <Frame>
   <img />
@@ -129,7 +129,7 @@ Thus solve puzzle.
 
 ## Available models
 
-Two flexible open-weight models are available to meet different deployment needs:
+GPT-OSS 120B is available on Together AI:
 
 **GPT-OSS 120B:**
 
@@ -139,13 +139,9 @@ Two flexible open-weight models are available to meet different deployment needs
 * **Context length:** 128K tokens with RoPE.
 * **Best for:** Enterprise applications requiring maximum reasoning performance.
 
-**GPT-OSS 20B:**
-
-* **Model string:** `openai/gpt-oss-20b`.
-* **Hardware requirements:** Lower GPU memory requirements.
-* **Architecture:** Optimized MoE for efficiency.
-* **Context length:** 128K tokens with RoPE.
-* **Best for:** Research, development, and cost-efficient deployments.
+<Note>
+  GPT-OSS 20B (`openai/gpt-oss-20b`) was removed from serverless inference on September 15, 2026, with `Qwen/Qwen3.5-9B` as its listed replacement. It remains available for [fine-tuning](/docs/fine-tuning/supported-models) and [dedicated endpoints](/docs/dedicated-endpoints/models). See the [deprecations page](/docs/deprecations) for details.
+</Note>
 
 ## GPT-OSS best practices
 

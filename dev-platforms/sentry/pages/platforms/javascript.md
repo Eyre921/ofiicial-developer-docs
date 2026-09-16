@@ -178,8 +178,8 @@ Sentry.init({
 
 ```html
 <script
-  src="https://browser.sentry-cdn.com/10.74.0/bundle.tracing.min.js"
-  integrity="sha384-CCezsb0qbfbnbzcRDSy3XlHzSU07iIC4skHulLBwZKmpUT1mGzkLRYB1NWry9XPY"
+  src="https://browser.sentry-cdn.com/10.75.0/bundle.tracing.min.js"
+  integrity="sha384-wuUOPnSi8FR8l7mI0XE5ckys5zbwMk7SACqSCR3W86Sqh1l2JSTMXn3P4nG0uAtm"
   crossorigin="anonymous"
 ></script>
 
@@ -396,6 +396,7 @@ Are you having problems setting up the SDK?
 - [Electron](https://docs.sentry.io/platforms/javascript/guides/electron.md)
 - [Elysia](https://docs.sentry.io/platforms/javascript/guides/elysia.md)
 - [Ember](https://docs.sentry.io/platforms/javascript/guides/ember.md)
+- [Eve](https://docs.sentry.io/platforms/javascript/guides/eve.md)
 - [Express](https://docs.sentry.io/platforms/javascript/guides/express.md)
 - [Fastify](https://docs.sentry.io/platforms/javascript/guides/fastify.md)
 - [Gatsby](https://docs.sentry.io/platforms/javascript/guides/gatsby.md)

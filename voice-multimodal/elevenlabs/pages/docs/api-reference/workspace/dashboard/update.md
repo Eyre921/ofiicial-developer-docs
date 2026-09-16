@@ -81,7 +81,7 @@ Validation Error
   "charts": [
     {
       "type": "call_success",
-      "name": "string"
+      "name": "Monthly Call Success Rate"
     }
   ]
 }

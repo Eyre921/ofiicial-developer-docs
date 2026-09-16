@@ -101,6 +101,8 @@ scrape_configs:
       - targets: ["o11y-de2-metrics.cloud.together.ai"]
 ```
 
+To turn the scraped series into a working dashboard, follow the [Grafana guide](/docs/dedicated-endpoints/grafana). It walks through running Prometheus and Grafana with Docker Compose and importing the [example dashboard](https://github.com/togethercomputer/together-cookbook/tree/main/third_party_integrations/Grafana_Dedicated_Endpoints) Together AI publishes for these metrics.
+
 ### Available metrics
 
 Metrics are grouped by the stage of the request path they measure: the edge (front-door proxy), the router, and the worker (model server). Latency metrics are histograms, exposed as `_bucket`, `_sum`, and `_count` series; counters end in `_total`; gauges are point-in-time values.
@@ -163,6 +165,10 @@ Series carry labels that identify the resource and slice the data. Not every lab
 ## Next steps
 
 <CardGroup>
+  <Card title="Visualize metrics in Grafana" icon="chart-line" href="/docs/dedicated-endpoints/grafana">
+    Scrape the metrics endpoint and import the example dashboard.
+  </Card>
+
   <Card title="Configure autoscaling" icon="arrows-maximize" href="/docs/dedicated-endpoints/scaling">
     Pick a metric to autoscale a deployment on.
   </Card>

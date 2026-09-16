@@ -16,11 +16,11 @@ Stay updated on the latest form submissions and trigger your own custom workflow
 Set up notifications for verified submissions to a specific form or for all verified submissions to any form on your site. 
 
 To send form notifications to email or webhooks: 
-- Go to  
+- Go to 
 ### NavigationPath Component:
 
-Project configuration > Notifications > Emails and webhooks > Form submission notifications
-. 
+Forms > Submission notifications
+.
 
 To send form notifications to a Slack workspace: 
 - Check out our docs on setting up the [Netlify App for Slack](/extend/install-and-use/setup-guides/netlify-app-for-slack).
@@ -50,7 +50,7 @@ As an overview of these options, consider the following:
   - To manage your form's email subject line in the Netlify UI, set the email subject line at 
 ### NavigationPath Component:
 
-Project configuration > Notifications > Emails and webhooks > Form submission notifications
+Forms > Submission notifications
 . To change the email subject line, additionally select **Options > Edit notifications**. You many need to remove any email subject line specified in your forms' HTML to keep the email subject line you specify in the Netlify UI.
 
 You can also apply predefined variables to your email subject line, such as `%{formName}` , `%{siteName}`, or `%{submissionId}`. 

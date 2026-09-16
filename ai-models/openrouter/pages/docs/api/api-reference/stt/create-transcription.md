@@ -102,6 +102,11 @@ tags:
   - description: Text-to-speech endpoints
     name: TTS
     x-displayName: Speech
+  - description: >-
+      Store host-bound secrets for a workspace or for one intern. Scope is
+      selected by the API key. Responses return metadata only, never secret
+      values. See https://openrouter.ai/docs/guides/ori/vault.
+    name: Vault
   - description: Video Generation endpoints
     name: Video Generation
   - description: Workspaces endpoints
@@ -161,6 +166,15 @@ paths:
                     - json
                     - verbose_json
                   type: string
+                session_id:
+                  description: >-
+                    A unique identifier for grouping related requests (e.g., a
+                    conversation or agent workflow). Used for observability
+                    grouping in Broadcast and private logging; never sent to the
+                    provider. If provided in both the request body and the
+                    x-session-id header, the body value takes precedence.
+                  maxLength: 256
+                  type: string
                 temperature:
                   description: The sampling temperature.
                   type: number
@@ -175,6 +189,20 @@ paths:
                       - segment
                     type: string
                   type: array
+                trace:
+                  description: >-
+                    JSON-encoded trace metadata object (trace_id, trace_name,
+                    span_name, generation_name, parent_span_id and custom keys)
+                    attached to the Broadcast trace. Must decode to a JSON
+                    object.
+                  type: string
+                user:
+                  description: >-
+                    A unique identifier representing your end-user. Forwarded to
+                    Broadcast and private logging as the end-user id; never sent
+                    to the provider.
+                  maxLength: 256
+                  type: string
               required:
                 - file
                 - model
@@ -370,6 +398,16 @@ components:
             - json
             - verbose_json
           example: json
+          type: string
+        session_id:
+          description: >-
+            A unique identifier for grouping related requests (e.g., a
+            conversation or agent workflow). Used for observability grouping in
+            Broadcast and private logging; never sent to the provider. If
+            provided in both the request body and the x-session-id header, the
+            body value takes precedence. Maximum of 256 characters.
+          example: session-1234
+          maxLength: 256
           type: string
         temperature:
           description: Sampling temperature for transcription

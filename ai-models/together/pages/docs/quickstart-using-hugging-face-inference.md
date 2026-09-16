@@ -1,10 +1,10 @@
 ---
-title: "Hugging Face Inference quickstart"
+title: "Hugging Face inference quickstart"
 source: https://docs.together.ai/docs/quickstart-using-hugging-face-inference
 path: docs/quickstart-using-hugging-face-inference
 ---
 
-Use Together models with Hugging Face Inference.
+Use Together models with Hugging Face inference.
 
 This documentation provides a concise guide for developers to integrate and use Together AI inference capabilities via the Hugging Face ecosystem.
 

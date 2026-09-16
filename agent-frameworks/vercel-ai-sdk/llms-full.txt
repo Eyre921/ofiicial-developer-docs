@@ -57552,6 +57552,99 @@ NIM language models can also be used with other AI SDK functions like `generateO
 </Note>
 
 ---
+title: ModelRush
+description: Use the ModelRush OpenAI compatible API with the AI SDK.
+---
+
+# ModelRush Provider
+
+[ModelRush](https://modelrush.ai/) provides access to AI models through an OpenAI-compatible API. You can use its Chat Completions endpoint with the AI SDK through the `@ai-sdk/openai-compatible` module.
+
+## Setup
+
+Install the OpenAI Compatible provider:
+
+<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
+  <Tab>
+    <Snippet text="pnpm add @ai-sdk/openai-compatible" dark />
+  </Tab>
+  <Tab>
+    <Snippet text="npm install @ai-sdk/openai-compatible" dark />
+  </Tab>
+  <Tab>
+    <Snippet text="yarn add @ai-sdk/openai-compatible" dark />
+  </Tab>
+  <Tab>
+    <Snippet text="bun add @ai-sdk/openai-compatible" dark />
+  </Tab>
+</Tabs>
+
+Create a ModelRush API key and set it as a server-side environment variable:
+
+```bash
+export MODELRUSH_API_KEY=your-api-key
+```
+
+See the [ModelRush quick start](https://modelrush.ai/docs/quickstart) for instructions on creating an API key.
+
+## Provider Instance
+
+Create a ModelRush provider instance with `createOpenAICompatible`:
+
+```ts
+import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
+
+const modelrush = createOpenAICompatible({
+  name: 'modelrush',
+  apiKey: process.env.MODELRUSH_API_KEY,
+  baseURL: 'https://api.modelrush.ai/v1',
+});
+```
+
+## Language Models
+
+Create a chat model with the `.chatModel()` factory method and a ModelRush model ID:
+
+```ts
+const model = modelrush.chatModel('modelrush/deepseek-v4-flash-0731');
+```
+
+### Example
+
+Use `generateText` to generate text with the model:
+
+```ts
+import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
+import { generateText } from 'ai';
+
+const modelrush = createOpenAICompatible({
+  name: 'modelrush',
+  apiKey: process.env.MODELRUSH_API_KEY,
+  baseURL: 'https://api.modelrush.ai/v1',
+});
+
+const { text } = await generateText({
+  model: modelrush.chatModel('modelrush/deepseek-v4-flash-0731'),
+  prompt: 'Explain what an API gateway does in one sentence.',
+});
+
+console.log(text);
+```
+
+## Supported Models and Capabilities
+
+This integration uses ModelRush's OpenAI-compatible Chat Completions endpoint for text generation. The example model, `modelrush/deepseek-v4-flash-0731`, accepts text chat messages and returns text.
+
+Use the [ModelRush models endpoint](https://modelrush.ai/docs/api/models) or [model catalog](https://modelrush.ai/models) to find current model IDs and model-specific capabilities and limits. Other ModelRush modalities are outside the scope of this OpenAI-compatible chat integration.
+
+## Resources
+
+- [ModelRush AI SDK example](https://github.com/Moonveil-AI/modelrush-developer-tools/tree/main/examples/ai-sdk)
+- [ModelRush quick start](https://modelrush.ai/docs/quickstart)
+- [ModelRush Chat Completions documentation](https://modelrush.ai/docs/models/chat)
+- [AI SDK OpenAI Compatible provider](/providers/openai-compatible-providers)
+
+---
 title: Clarifai
 description: Use Clarifai OpenAI compatible API with the AI SDK.
 ---
@@ -57800,6 +57893,7 @@ We provide detailed documentation for the following OpenAI compatible providers:
 
 - [LM Studio](/providers/openai-compatible-providers/lmstudio)
 - [NIM](/providers/openai-compatible-providers/nim)
+- [ModelRush](/providers/openai-compatible-providers/modelrush)
 - [Heroku](/providers/openai-compatible-providers/heroku)
 - [Clarifai](/providers/openai-compatible-providers/clarifai)
 
@@ -90465,6 +90559,42 @@ For parity with the Anthropic provider,
 `providerOptions.anthropic.structuredOutputMode` is also honored for Anthropic
 models on Bedrock. When both are provided, the `bedrock` value takes precedence.
 
+For an Anthropic application inference profile, prefer the Bedrock Anthropic
+provider. It uses Bedrock's native InvokeModel API, which accepts application
+inference profile ARNs, and identifies the model as Anthropic automatically:
+
+```ts
+import { bedrockAnthropic } from '@ai-sdk/amazon-bedrock/anthropic';
+
+const profileArn =
+  'arn:aws:bedrock:us-east-1:123456789012:application-inference-profile/qibm5eutlkcy';
+
+const model = bedrockAnthropic(profileArn);
+```
+
+Use `modelFamily: 'anthropic'` only when you need to use the generic
+`@ai-sdk/amazon-bedrock` provider, which uses Bedrock's Converse API (for
+example, when IAM permits Converse but not InvokeModel). Application inference
+profile ARNs do not identify their underlying model, so declaring the family
+allows Anthropic-specific features, including native structured output:
+
+```ts
+import {
+  bedrock,
+  type AmazonBedrockChatModelSettings,
+} from '@ai-sdk/amazon-bedrock';
+
+const profileArn =
+  'arn:aws:bedrock:us-east-1:123456789012:application-inference-profile/qibm5eutlkcy';
+
+const model = bedrock(profileArn, {
+  modelFamily: 'anthropic',
+} satisfies AmazonBedrockChatModelSettings);
+```
+
+For an underlying model that does not reliably support native structured
+output, set `structuredOutputMode` to `"jsonTool"`.
+
 ### File Inputs
 
 <Note type="warning">
@@ -100020,7 +100150,7 @@ import { generateImage } from 'ai';
 import fs from 'fs';
 
 const { image } = await generateImage({
-  model: quiverai.image('arrow-1.1'),
+  model: quiverai.image('arrow-2'),
   prompt: 'A logo for the next AI Design startup',
 });
 
@@ -100033,10 +100163,12 @@ QuiverAI returns SVG documents. The generated SVG bytes are available through `r
 
 ### Model Capabilities
 
-QuiverAI exposes three Arrow models:
+QuiverAI supports the following Arrow models:
 
 | Model           | Description                                                                      |
 | --------------- | -------------------------------------------------------------------------------- |
+| `arrow-2`       | Arrow 2 balances SVG generation quality and speed. Uses token-based billing.     |
+| `arrow-2-telos` | Higher-fidelity Arrow 2 variant for complex designs. Uses token-based billing.   |
 | `arrow-1`       | Base text-to-SVG model. Accepts up to 4 reference images.                        |
 | `arrow-1.1`     | Improved text-to-SVG model. Accepts up to 4 reference images.                    |
 | `arrow-1.1-max` | Higher quality variant with extended context. Accepts up to 16 reference images. |
@@ -100050,13 +100182,15 @@ import { quiverai, type QuiverAIImageModelOptions } from '@ai-sdk/quiverai';
 import { generateImage } from 'ai';
 
 await generateImage({
-  model: quiverai.image('arrow-1.1'),
+  model: quiverai.image('arrow-2'),
   prompt: 'A geometric unicorn icon',
   providerOptions: {
     quiverai: {
       instructions: 'Use a flat monochrome style with clean geometry.',
-      temperature: 0.4,
-      topP: 0.95,
+      reasoningEffort: 'high',
+      attributes: {
+        viewBox: { minX: 0, minY: 0, width: 100, height: 100 },
+      },
       maxOutputTokens: 4096,
     } satisfies QuiverAIImageModelOptions,
   },
@@ -100073,6 +100207,14 @@ Supported options:
 
   Extra style guidance for prompt-based generation.
 
+- **reasoningEffort** _'low' | 'medium' | 'high' | 'xhigh'_
+
+  Reasoning effort for generation or vectorization. When omitted, QuiverAI uses its default.
+
+- **attributes** _object_
+
+  Requested SVG root attributes. Supports `viewBox` with numeric `minX`, `minY`, and positive `width` and `height`. This is separate from the unsupported `size` and `aspectRatio` options.
+
 - **temperature** _number_ (0-2)
 
   Sampling temperature.
@@ -100085,9 +100227,9 @@ Supported options:
 
   Presence penalty.
 
-- **maxOutputTokens** _number_ (1-131072)
+- **maxOutputTokens** _number_
 
-  Maximum number of output tokens.
+  Maximum number of output tokens. Arrow 2 and Arrow 2 Telos accept 1-65536. The provider retains its legacy validation bound of 131072 for other model IDs; the API may enforce a lower model-specific limit.
 
 - **autoCrop** _boolean_
 
@@ -100103,7 +100245,7 @@ Pass reference images through `prompt.images`:
 
 ```ts
 await generateImage({
-  model: quiverai.image('arrow-1.1'),
+  model: quiverai.image('arrow-2'),
   prompt: {
     text: 'A geometric unicorn icon',
     images: ['https://example.com/reference-1.png'],
@@ -100111,7 +100253,7 @@ await generateImage({
 });
 ```
 
-`arrow-1` and `arrow-1.1` accept up to 4 reference images. `arrow-1.1-max` accepts up to 16.
+`arrow-1` and `arrow-1.1` accept up to 4 reference images. `arrow-1.1-max` accepts up to 16. For Arrow 2 and other model IDs, the provider allows the endpoint maximum of 16 references and lets the API enforce any lower model-specific limit.
 
 ### Vectorizing a Raster Image
 
@@ -100123,7 +100265,7 @@ import { generateImage } from 'ai';
 import fs from 'fs';
 
 const { image } = await generateImage({
-  model: quiverai.image('arrow-1.1'),
+  model: quiverai.image('arrow-2'),
   prompt: {
     images: [fs.readFileSync('./logo.png')],
   },
@@ -100138,6 +100280,14 @@ const { image } = await generateImage({
 
 fs.writeFileSync('logo.svg', image.uint8Array);
 ```
+
+Vectorization returns one SVG per API request. To request multiple vectorizations with `n`, also set `maxImagesPerCall: 1` so `generateImage` splits them into separate calls.
+
+### Billing and Usage
+
+Arrow 2 models return measured token counts in `result.usage`. Fixed-credit models may return compatibility token counts of zero; their credit charge is available in `result.providerMetadata?.quiverai?.credits` when supplied by the API.
+
+Model availability and supported operations depend on your organization and API key permissions. Consult QuiverAI's [model catalog](https://docs.quiver.ai/developers/models) for current capabilities and billing. Editing, animation, and the Responses API are not yet exposed by this provider.
 
 ---
 title: Fish Audio
@@ -107089,6 +107239,99 @@ NIM language models also support structured data generation with [`Output`](/doc
 </Note>
 
 ---
+title: ModelRush
+description: Use the ModelRush OpenAI compatible API with the AI SDK.
+---
+
+# ModelRush Provider
+
+[ModelRush](https://modelrush.ai/) provides access to AI models through an OpenAI-compatible API. You can use its Chat Completions endpoint with the AI SDK through the `@ai-sdk/openai-compatible` module.
+
+## Setup
+
+Install the OpenAI Compatible provider:
+
+<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
+  <Tab>
+    <Snippet text="pnpm add @ai-sdk/openai-compatible" dark />
+  </Tab>
+  <Tab>
+    <Snippet text="npm install @ai-sdk/openai-compatible" dark />
+  </Tab>
+  <Tab>
+    <Snippet text="yarn add @ai-sdk/openai-compatible" dark />
+  </Tab>
+  <Tab>
+    <Snippet text="bun add @ai-sdk/openai-compatible" dark />
+  </Tab>
+</Tabs>
+
+Create a ModelRush API key and set it as a server-side environment variable:
+
+```bash
+export MODELRUSH_API_KEY=your-api-key
+```
+
+See the [ModelRush quick start](https://modelrush.ai/docs/quickstart) for instructions on creating an API key.
+
+## Provider Instance
+
+Create a ModelRush provider instance with `createOpenAICompatible`:
+
+```ts
+import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
+
+const modelrush = createOpenAICompatible({
+  name: 'modelrush',
+  apiKey: process.env.MODELRUSH_API_KEY,
+  baseURL: 'https://api.modelrush.ai/v1',
+});
+```
+
+## Language Models
+
+Create a chat model with the `.chatModel()` factory method and a ModelRush model ID:
+
+```ts
+const model = modelrush.chatModel('modelrush/deepseek-v4-flash-0731');
+```
+
+### Example
+
+Use `generateText` to generate text with the model:
+
+```ts
+import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
+import { generateText } from 'ai';
+
+const modelrush = createOpenAICompatible({
+  name: 'modelrush',
+  apiKey: process.env.MODELRUSH_API_KEY,
+  baseURL: 'https://api.modelrush.ai/v1',
+});
+
+const { text } = await generateText({
+  model: modelrush.chatModel('modelrush/deepseek-v4-flash-0731'),
+  prompt: 'Explain what an API gateway does in one sentence.',
+});
+
+console.log(text);
+```
+
+## Supported Models and Capabilities
+
+This integration uses ModelRush's OpenAI-compatible Chat Completions endpoint for text generation. The example model, `modelrush/deepseek-v4-flash-0731`, accepts text chat messages and returns text.
+
+Use the [ModelRush models endpoint](https://modelrush.ai/docs/api/models) or [model catalog](https://modelrush.ai/models) to find current model IDs and model-specific capabilities and limits. Other ModelRush modalities are outside the scope of this OpenAI-compatible chat integration.
+
+## Resources
+
+- [ModelRush AI SDK example](https://github.com/Moonveil-AI/modelrush-developer-tools/tree/main/examples/ai-sdk)
+- [ModelRush quick start](https://modelrush.ai/docs/quickstart)
+- [ModelRush Chat Completions documentation](https://modelrush.ai/docs/models/chat)
+- [AI SDK OpenAI Compatible provider](/providers/openai-compatible-providers)
+
+---
 title: Clarifai
 description: Use Clarifai OpenAI compatible API with the AI SDK.
 ---
@@ -107450,6 +107693,7 @@ We provide detailed documentation for the following OpenAI compatible providers:
 
 - [LM Studio](/providers/openai-compatible-providers/lmstudio)
 - [NIM](/providers/openai-compatible-providers/nim)
+- [ModelRush](/providers/openai-compatible-providers/modelrush)
 - [Heroku](/providers/openai-compatible-providers/heroku)
 - [Clarifai](/providers/openai-compatible-providers/clarifai)
 - [NEAR AI Cloud](/providers/openai-compatible-providers/nearai)
@@ -123946,6 +124190,45 @@ The code mode tool description includes TypeScript signatures generated from
 the input and output schemas of its allowed tools. Descriptions,
 `inputExamples`, and precise schemas help the model write correct code.
 
+### Discovering Tools Through Conversation
+
+By default, changing the tools routed through code mode also changes the
+provider-visible `code_mode` tool description. Set `toolDiscovery` to
+`'conversation'` to keep that tool definition stable and provide the current
+host-tool catalog in a user message instead:
+
+```ts
+const codeMode = codeModeTool({
+  toolDiscovery: 'conversation',
+});
+
+const tools = {
+  code_mode: codeMode,
+  getInventory,
+  getDemand,
+} as const;
+
+const result = await generateText({
+  model: __MODEL__,
+  tools,
+  experimental_toolCallers: {
+    getInventory: ['code_mode'],
+    getDemand: ['code_mode'],
+  },
+  prompt: 'Compare inventory and demand for product sku_123.',
+});
+```
+
+The AI SDK adds a complete code mode capability catalog to the conversation
+before calling the model. The catalog contains TypeScript signatures and call
+examples for the tools routed through code mode. When the effective tools or
+their definitions change in a later step or generation call, the SDK adds a
+new catalog that replaces earlier catalogs.
+
+This mode can improve prompt-cache reuse because the provider-visible tool
+definition stays unchanged. Actual cache behavior depends on the model
+provider.
+
 For the example above, the model can generate a program like:
 
 ```ts
@@ -123967,6 +124250,17 @@ that are not valid JavaScript identifiers use bracket notation:
 const user = await tools['lookup-user']({ userId: 'user_123' });
 return { id: user.id, plan: user.plan };
 ```
+
+### Searching Deferred Tools
+
+Use `toolSearch()` with `deferLoading: true` to expose tools only when the model
+needs them. With `toolDiscovery: 'conversation'`, discovered definitions arrive
+in user messages, preserving the tool-definition cache by keeping the
+provider-visible code mode tool unchanged. Actual prompt-cache reuse depends on
+the provider.
+
+See [Tool Search](/docs/ai-sdk-core/tool-search) for direct-calling and code mode
+examples.
 
 ## Writing Code Mode Programs
 
@@ -124089,6 +124383,87 @@ to code mode.
 
 Tool input schemas are validated before their `execute` functions run. Abort
 signals and AI SDK tool execution context are forwarded to nested tool calls.
+
+---
+title: Tool Search
+description: Let models discover tools on demand, with direct calling or cache-preserving code mode.
+---
+
+# Tool Search
+
+`toolSearch()` lets a model find the tools it needs without loading every tool's
+definition into its initial context. Register tools with `deferLoading: true`;
+search matches their names and descriptions and makes them available on the
+**next model step**.
+
+Use it with `generateText`, `streamText`, or `ToolLoopAgent`. The factory takes no
+arguments; the model supplies a search query.
+
+## Direct Tool Calling
+
+The model initially sees only `search`. After searching, matching definitions are
+added to the provider's tool list and the model calls those tools directly. This
+changes the tool definitions and can invalidate the cached prompt prefix.
+
+```ts
+import { generateText, isStepCount, tool, toolSearch } from 'ai';
+import { z } from 'zod/v4';
+
+const weather = tool({
+  deferLoading: true,
+  description: 'Get the weather forecast for a city.',
+  inputSchema: z.object({ city: z.string() }),
+  execute: async ({ city }) => ({ city, forecast: 'Rain tomorrow.' }),
+});
+
+const result = await generateText({
+  model: __MODEL__,
+  tools: { search: toolSearch(), weather },
+  stopWhen: isStepCount(5),
+  prompt: 'Will it rain in Bangalore tomorrow?',
+});
+```
+
+## Code Mode
+
+With [code mode](/docs/ai-sdk-core/code-mode), the model searches and calls tools
+through generated code. Set `toolDiscovery: 'conversation'` to announce discovered
+definitions in user messages while keeping the provider-visible code tool
+unchanged. **This preserves the tool-definition cache as tools are discovered.**
+Actual prompt-cache reuse depends on the provider.
+
+Using the `weather` tool defined above:
+
+```ts
+import { experimental_codeModeTool as codeModeTool } from '@ai-sdk/code-mode';
+
+const result = await generateText({
+  model: __MODEL__,
+  tools: {
+    code: codeModeTool({ toolDiscovery: 'conversation' }),
+    search: toolSearch(),
+    weather,
+  },
+  experimental_toolCallers: {
+    search: ['code'],
+    weather: ['code'],
+  },
+  stopWhen: isStepCount(5),
+  prompt: 'Will it rain in Bangalore tomorrow?',
+});
+```
+
+The model first runs `tools.search({ query: 'weather forecast' })`. On the next
+step, it receives the updated capability catalog and can call
+`tools.weather({ city: 'Bangalore' })`.
+
+In both modes, search loads up to five matches, respects `activeTools` and caller
+routing, and keeps discovered tools available for the rest of the generation.
+MCP client tools work too: add `deferLoading: true` to the tools returned by
+`client.tools()`.
+
+See the [`toolSearch()` reference](/docs/reference/ai-sdk-core/tool-search) for
+input, output, and matching details.
 
 ---
 title: Prompt Engineering
@@ -125172,6 +125547,281 @@ Several providers offer reranking models:
 | [Amazon Bedrock](/providers/ai-sdk-providers/amazon-bedrock#reranking-models) | `cohere.rerank-v3-5:0`                |
 | [Together.ai](/providers/ai-sdk-providers/togetherai#reranking-models)        | `Salesforce/Llama-Rank-v1`            |
 | [Together.ai](/providers/ai-sdk-providers/togetherai#reranking-models)        | `mixedbread-ai/Mxbai-Rerank-Large-V2` |
+
+---
+title: Evaluation
+description: Evaluate Choice, Score, and Boolean questions against shared state.
+---
+
+# Evaluation
+
+`experimental_evaluate` evaluates named questions against one shared state using
+an evaluation model. State can be a string, JSON object, or JSON array. An array
+is one state, not a batch of unrelated inputs.
+
+This API and the evaluation model specification are experimental and may change
+in patch releases. Pass an evaluation model instance, resolve a model through a
+provider registry, or use a string ID. Strings resolve through Vercel AI Gateway
+unless you configure an evaluation-capable default provider.
+
+```ts
+import { experimental_evaluate, type Experimental_EvaluationModel } from 'ai';
+
+async function triage(model: Experimental_EvaluationModel, message: string) {
+  return experimental_evaluate({
+    model,
+    state: { message },
+    questions: {
+      department: {
+        type: 'choice',
+        instructions: 'Which team should handle this?',
+        criteria: {
+          billing: 'Payments and refunds',
+          support: 'Other requests',
+        },
+      },
+      severity: {
+        type: 'score',
+        instructions: 'How severe is the issue?',
+        criteria: ['Cosmetic', 'Workaround exists', 'Blocking; no workaround'],
+      },
+      requestsRefund: {
+        type: 'boolean',
+        instructions: 'Is the customer requesting money back?',
+      },
+    },
+  });
+}
+```
+
+## Provider models
+
+Use a provider's `evaluationModel` factory:
+
+| Provider    | Example model                                            |
+| ----------- | -------------------------------------------------------- |
+| TypeSafe AI | `typeSafeAi.evaluationModel('jev-latest')`               |
+| OpenAI      | `openai.evaluationModel('gpt-5.6-luna')`                 |
+| Anthropic   | `anthropic.evaluationModel('claude-haiku-4-5-20251001')` |
+| Google      | `google.evaluationModel('gemini-3.5-flash-lite')`        |
+
+TypeSafe AI supplies native Choice, Score, and Boolean evaluations. OpenAI,
+Anthropic, and Google adapt structured language-model output for all three types.
+Boolean answers contain prompted estimates of P(true), validated to be finite
+and in `[0, 1]`. These estimates are not guaranteed to be calibrated. Choice and
+Score answers do not include probability distributions. Select a model that
+supports the provider's structured-output API; judge quality against your own
+labeled examples before choosing a model for a task.
+
+The language-model adapters evaluate all questions in one prompt. They do not
+provide TypeSafe's native independent-question execution semantics. The example
+model IDs demonstrate API compatibility; they are not benchmark-selected defaults.
+
+Language-model adapters request `reasoning: 'none'` by default. Each provider
+maps this setting to its model's reasoning controls; it does not guarantee that
+every model runs without thinking. To enable reasoning for more demanding
+evaluations, pass the model's supported reasoning settings through
+`providerOptions`, which take precedence over this default. For example, use
+`providerOptions: { openai: { reasoningEffort: 'high' } }` with an OpenAI model
+that supports that effort.
+
+## Model aliases and registries
+
+Use `customProvider` to give models application-specific names, then register
+providers with `createProviderRegistry`:
+
+```ts
+import { typeSafeAi } from '@ai-sdk/typesafe-ai';
+import { openai } from '@ai-sdk/openai';
+import {
+  customProvider,
+  createProviderRegistry,
+  experimental_evaluate,
+} from 'ai';
+
+const registry = createProviderRegistry({
+  triage: customProvider({
+    evaluationModels: {
+      native: typeSafeAi.evaluationModel('jev-latest'),
+      compact: openai.evaluationModel('gpt-5.6-luna'),
+    },
+    fallbackProvider: typeSafeAi,
+  }),
+  openai,
+});
+
+const result = await experimental_evaluate({
+  model: registry.evaluationModel('triage:native'),
+  state: 'I was charged twice.',
+  questions: {
+    department: {
+      type: 'choice',
+      instructions: 'Which team should handle this?',
+      criteria: { billing: 'Charges and refunds', support: 'Other requests' },
+    },
+  },
+});
+
+result.answers.department.choice; // 'billing' | 'support'
+```
+
+Registry IDs use `providerId:modelId`; the `separator` option changes the
+separator. Only the first separator is used, so model IDs can contain it.
+Custom aliases take precedence over a fallback provider. A fallback only resolves
+unknown model IDs; it does not retry failed evaluations or substitute a model
+when a question type is unsupported. Registered providers keep their own
+credentials and settings. Registry language/image middleware does not wrap
+evaluation models.
+
+### Default-provider strings
+
+String IDs use Vercel AI Gateway by default. Configure Gateway authentication
+with `AI_GATEWAY_API_KEY` or Vercel OIDC, then pass a Gateway model ID:
+
+```ts
+import { experimental_evaluate } from 'ai';
+
+const result = await experimental_evaluate({
+  model: 'typesafe-ai/jev-latest',
+  state: 'I was charged twice. Please refund the extra charge.',
+  questions: {
+    refund: {
+      type: 'boolean',
+      instructions: 'Is the customer asking for a refund?',
+    },
+  },
+});
+```
+
+To resolve strings through your own provider or aliases, configure the default
+provider once at application startup:
+
+```ts
+// Using the registry above, expose an alias through a custom provider:
+globalThis.AI_SDK_DEFAULT_PROVIDER = customProvider({
+  evaluationModels: { native: registry.evaluationModel('triage:native') },
+});
+
+const result = await experimental_evaluate({
+  model: 'native',
+  state: 'I was charged twice.',
+  questions: {
+    refund: {
+      type: 'boolean',
+      instructions: 'Is the customer asking for a refund?',
+    },
+  },
+});
+```
+
+A direct provider such as `typeSafeAi` can also be the default; then use its
+unprefixed model ID, such as `'jev-latest'`. String values in `evaluationModels`
+also resolve through this global default. Prefer model instances in aliases to
+avoid resolution cycles. Global configuration affects other AI SDK functions
+too; avoid changing it per request in a shared process.
+
+An explicitly configured default provider must expose an `evaluationModel`
+method; Gateway is used only when no default provider is configured. Missing
+registry providers throw `NoSuchProviderError`; missing models or evaluation
+capabilities throw
+`NoSuchModelError` with `modelType: 'evaluationModel'`. Unsupported model versions
+throw `UnsupportedModelVersionError`, including models returned by registries.
+The stable `ProviderV4` and `ProviderRegistryProvider` interfaces are unchanged;
+keep the inferred registry type, or use `Experimental_EvaluationProviderRegistry`,
+to retain its experimental `evaluationModel` method.
+
+## Question types
+
+| Type      | Criteria                                  | Answer                                                                   |
+| --------- | ----------------------------------------- | ------------------------------------------------------------------------ |
+| `choice`  | A nonempty map of options to descriptions | `choice`, inferred as a union of option keys; optional `probabilities`   |
+| `score`   | At least two ordered level descriptions   | Fractional `score` in `[0, levels.length - 1]`; optional `probabilities` |
+| `boolean` | Optional `true` and `false` descriptions  | Required `probability`, the model-estimated probability of true          |
+
+Instructions and descriptions can be strings, JSON objects, or JSON arrays.
+Descriptions can also be `null`. Core treats structured descriptions as content;
+it does not interpret their keys. Functions, class instances, cycles, undefined
+values, and nonfinite numbers are not JSON-compatible.
+
+Answers retain question IDs and have the same `type` as their question. When a
+Choice distribution is supplied, it includes every option and the selected
+choice has maximal probability. Score distributions use string keys for
+zero-based level indices, and the score equals the probability-weighted mean.
+Without a distribution, a score is the model's estimated position on the rubric.
+
+Distributions must sum to one, and weighted scores must agree with their
+distributions. The default absolute tolerance is `0.000001`. Providers that round
+their output can declare `rounding.probabilityDecimals` and
+`rounding.scoreDecimals` (integers from 0 to 15). Validation then also allows half
+a unit in the last decimal place per rounded probability or score, accumulated
+over the sum or weighted mean. For example, probabilities rounded to two decimal
+places can sum to `0.99` even when their unrounded values sum to one. The result
+includes this `rounding` information. Invalid output is rejected; native values
+are preserved, never silently normalized.
+
+## Probabilities and confidence
+
+Choice and Score distributions are optional. Boolean probability is required:
+`0.98` means a strong yes and `0.02` means a strong no. It is not confidence in
+either outcome. The SDK does not promise calibration across providers. Structured
+language-model adapters prompt the model to estimate P(true); native evaluation providers return
+their API probabilities. Provider-specific confidence statistics belong
+in `providerMetadata`. TypeSafe exposes its separate Choice/Score confidence
+statistic at `result.providerMetadata?.typesafe?.confidence`, keyed by question
+ID. It is not the selected option's probability or a portable confidence measure.
+
+Check for optional distributions before using them. For example, an application
+can route only when a provider supplies a sufficiently high selected-option
+probability:
+
+```ts
+const answer = result.answers.department;
+const selectedProbability = answer.probabilities?.[answer.choice];
+if (selectedProbability != null && selectedProbability >= 0.9) {
+  // Route automatically; otherwise use the application's review path.
+}
+```
+
+Choose Boolean thresholds in application code, using labeled data from the task
+rather than assuming that the same threshold behaves identically across providers:
+
+```ts
+if (result.answers.requestsRefund.probability >= 0.8) {
+  // Route to the refunds queue.
+}
+```
+
+## Errors and cancellation
+
+The model's `supportedQuestionTypes` are checked before calling the provider.
+Any unsupported question fails the entire call with
+`Experimental_EvaluationUnsupportedQuestionTypeError`. Successful calls return
+an answer for every question; there is no partial success or automatic model
+substitution.
+
+Invalid inputs throw `InvalidArgumentError`. Missing answers, mismatched answer
+types, invalid options, scores, or probabilities throw `InvalidResponseDataError`.
+Transient provider failures use the normal retry policy (`maxRetries: 2` by
+default). Use `abortSignal` to cancel evaluation, `headers` for request headers,
+and `providerOptions` for provider-specific settings.
+
+The result includes `usage`, `warnings`, `providerMetadata`, and `response`.
+Unknown token counts stay `undefined`; `totalTokens` is available only when both
+input and output counts are known.
+
+For tests, use `Experimental_EvaluationMockModelV4` from `ai/test`.
+
+## Scope and examples
+
+Evaluation currently returns one complete result for one shared state. It does
+not stream answers, perform multilabel classification, or batch unrelated
+states. Run separate calls for separate states. Provider support and judgment
+quality depend on the chosen model; the SDK does not choose a model automatically.
+
+Runnable examples are in
+[`examples/ai-functions/src/evaluate`](https://github.com/vercel/ai/tree/main/examples/ai-functions/src/evaluate),
+including basic examples for TypeSafe, OpenAI, Anthropic, and Google, model
+registries, custom aliases, default-provider strings, and probability-based routing.
 
 ---
 title: Image Generation
@@ -128010,8 +128660,7 @@ support are:
 
 See the provider documentation for the supported models, limits, and native
 batch behavior. For example, OpenAI batch support is available through the
-Responses API, not `openai.chat()`, and xAI batch support is available through
-the Responses API, not `xai.chat()`.
+Responses API, not `openai.chat()`.
 
 ## Starting a batch
 
@@ -128785,6 +129434,16 @@ const result = await streamText({
 ```
 
 This simplifies provider usage and makes it easier to switch between providers without changing your model references throughout your codebase.
+
+## Experimental evaluation models
+
+Custom providers accept `evaluationModels` aliases, and registries expose
+`evaluationModel('provider:model')`. These methods return model instances for
+`experimental_evaluate`. Direct string IDs use Gateway by default, or an
+explicitly configured default provider with an `evaluationModel` method. Registry
+middleware for language and image models does not apply to evaluation.
+See [Evaluation](/docs/ai-sdk-core/evaluation#model-aliases-and-registries)
+for aliases, default-provider configuration, and capability differences.
 
 ---
 title: Error Handling
@@ -135060,6 +135719,41 @@ export async function loadChat(id: string): Promise<UIMessage[]> {
 
 When processing messages on the server that contain tool calls, custom metadata, or data parts, you should validate them using `validateUIMessages` before sending them to the model.
 
+### Migrating deprecated tool `rawInput`
+
+Older persisted tool parts in the `output-error` state may contain `rawInput`.
+This field is deprecated and will be removed in the next major version. Store
+tool arguments in `input` instead. AI SDK emits a deprecation warning when
+`validateUIMessages`, `safeValidateUIMessages`, or `convertToModelMessages`
+encounters a defined `rawInput` value. UI stream processing also warns when it
+reconstructs a static `output-error` part with `rawInput`.
+
+Migrate each legacy part by copying `rawInput` to `input` when `input` is
+`null` or `undefined`, then remove `rawInput`. This preserves the current
+backward-compatible conversion behavior:
+
+```ts
+import { isToolUIPart } from 'ai';
+
+const migratedParts = message.parts.map(part => {
+  if (
+    !isToolUIPart(part) ||
+    part.state !== 'output-error' ||
+    !('rawInput' in part) ||
+    part.rawInput === undefined
+  ) {
+    return part;
+  }
+
+  const { rawInput, ...partWithoutRawInput } = part;
+
+  return {
+    ...partWithoutRawInput,
+    input: part.input ?? rawInput,
+  };
+});
+```
+
 ### Validation with tools
 
 When your messages include tool calls, validate them against your tool definitions:
@@ -140561,6 +141255,38 @@ if (EmptyResponseBodyError.isInstance(error)) {
 ```
 
 ---
+title: AI_EvaluationUnsupportedQuestionTypeError
+description: Identify an evaluation question type that a model does not support.
+---
+
+# AI_EvaluationUnsupportedQuestionTypeError
+
+This experimental error identifies a question whose type is unsupported by an
+evaluation model. It is exported from `ai` and `@ai-sdk/provider` as
+`Experimental_EvaluationUnsupportedQuestionTypeError`.
+
+## Properties
+
+- `questionId`: The ID of the unsupported question.
+- `questionType`: The requested question type.
+- `provider`: The provider of the evaluation model.
+- `modelId`: The evaluation model ID.
+- `message`: A description of the unsupported question and model. Providers can
+  supply a custom message.
+
+## Checking for this Error
+
+Use the marker-based `isInstance` check, which works across package copies:
+
+```typescript
+import { Experimental_EvaluationUnsupportedQuestionTypeError as EvaluationUnsupportedQuestionTypeError } from 'ai';
+
+if (EvaluationUnsupportedQuestionTypeError.isInstance(error)) {
+  console.log(error.questionId, error.questionType, error.modelId);
+}
+```
+
+---
 title: AI_InvalidArgumentError
 description: Learn how to fix AI_InvalidArgumentError
 ---
@@ -141102,6 +141828,10 @@ if (NoSuchModelError.isInstance(error)) {
 }
 ```
 
+Experimental evaluation resolution uses `modelType: 'evaluationModel'`. This
+includes unavailable evaluation capabilities and unknown evaluation model or
+provider IDs. See [Evaluation](/docs/ai-sdk-core/evaluation#default-provider-strings).
+
 ---
 title: AI_NoSuchProviderError
 description: Learn how to fix AI_NoSuchProviderError
@@ -141130,6 +141860,10 @@ if (NoSuchProviderError.isInstance(error)) {
   // Handle the error
 }
 ```
+
+Experimental evaluation resolution uses `modelType: 'evaluationModel'`. This
+includes unavailable evaluation capabilities and unknown evaluation model or
+provider IDs. See [Evaluation](/docs/ai-sdk-core/evaluation#default-provider-strings).
 
 ---
 title: AI_NoSuchProviderReferenceError
@@ -143531,13 +144265,6 @@ first argument is the model id, e.g. `grok-4.6`.
 const model = xai('grok-4.6');
 ```
 
-<Note>
-  Since AI SDK 7, `xai(modelId)` uses the xAI Responses API by default. To use
-  the [Chat Completions
-  API](https://docs.x.ai/docs/api-reference#chat-completions) (legacy), use
-  `xai.chat(modelId)`.
-</Note>
-
 ### Example
 
 You can use xAI language models to generate text with the `generateText` function:
@@ -143560,8 +144287,7 @@ and support structured data generation with [`Output`](/docs/reference/ai-sdk-co
 
 For models with configurable reasoning, you can control how much effort the
 model spends thinking before responding via
-`providerOptions.xai.reasoningEffort`. This works for both the Responses API
-(default) and the Chat Completions API (`xai.chat()`).
+`providerOptions.xai.reasoningEffort`.
 
 ```ts
 import { xai } from '@ai-sdk/xai';
@@ -143607,9 +144333,7 @@ The AI SDK option accepts these values, but each xAI model supports a subset:
 ### Priority Processing
 
 `providerOptions.xai.serviceTier` requests higher scheduling priority, which
-typically lowers time-to-first-token and speeds up inter-token latency. This
-works for both the Responses API (default) and the Chat Completions API
-(`xai.chat()`).
+typically lowers time-to-first-token and speeds up inter-token latency.
 
 ```ts
 import { xai } from '@ai-sdk/xai';
@@ -148356,6 +149080,51 @@ const result = await generateSpeech({
 | `tts-1-hd`        | <Check />    |
 | `gpt-4o-mini-tts` | <Check />    |
 
+## Evaluation Models
+
+Create an experimental evaluation model with `openai.evaluationModel(modelId)`.
+It uses the Responses API with structured output to answer Choice, Score, and
+Boolean questions. Choose a model that supports structured output, such as `gpt-5.6-luna`.
+
+```ts
+import { openai } from '@ai-sdk/openai';
+import { experimental_evaluate } from 'ai';
+
+const { answers } = await experimental_evaluate({
+  model: openai.evaluationModel('gpt-5.6-luna'),
+  state: 'I was charged twice.',
+  questions: {
+    requestsRefund: {
+      type: 'boolean',
+      instructions: 'Is the customer requesting money back?',
+    },
+    department: {
+      type: 'choice',
+      instructions: 'Which team should handle this?',
+      criteria: { billing: 'Charges and refunds', support: 'Other requests' },
+    },
+  },
+});
+```
+
+Scores are finite fractional positions on the ordered rubric. Choice labels are
+returned exactly as supplied. These are model judgments: no probability
+distributions are returned for Choice or Score. Boolean answers contain a prompted
+estimate of P(true), validated to be finite and in `[0, 1]`. These estimates are
+not guaranteed to be calibrated. Apply thresholds in application code, for example
+`answers.requestsRefund.probability >= 0.5`.
+
+The factory respects `createOpenAI` settings, including custom fetch and base URL.
+Pass Responses options through `providerOptions.openai`. Usage, warnings,
+response information, and provider metadata are preserved. Refusals, truncated
+output, or invalid answers fail the entire call. See [Evaluation](/docs/ai-sdk-core/evaluation).
+
+Evaluation models can also be accessed through `customProvider` aliases or
+`createProviderRegistry().evaluationModel('provider:model')`. Direct string IDs
+use Gateway by default, or an explicitly configured default provider with an
+`evaluationModel` method. See
+[model aliases and registries](/docs/ai-sdk-core/evaluation#model-aliases-and-registries).
+
 ---
 title: Azure OpenAI
 description: Learn how to use the Azure OpenAI provider for the AI SDK.
@@ -150593,12 +151362,13 @@ You can enable web search using the provider-defined web search tool:
 import { anthropic } from '@ai-sdk/anthropic';
 import { generateText } from 'ai';
 
-const webSearchTool = anthropic.tools.webSearch_20250305({
+const webSearchTool = anthropic.tools.webSearch_20260318({
   maxUses: 5,
+  responseInclusion: 'excluded',
 });
 
 const result = await generateText({
-  model: anthropic('claude-opus-4-20250514'),
+  model: anthropic('claude-opus-5'),
   prompt: 'What are the latest developments in AI?',
   tools: {
     web_search: webSearchTool,
@@ -150612,6 +151382,10 @@ const result = await generateText({
 </Note>
 
 #### Configuration Options
+
+Use `webSearch_20260318` for dynamic filtering and response inclusion control.
+The older `webSearch_20260209` and `webSearch_20250305` versions remain
+available for applications that need their earlier behavior.
 
 The web search tool supports several configuration options:
 
@@ -150631,11 +151405,17 @@ The web search tool supports several configuration options:
 
   Optional user location information to provide geographically relevant search results.
 
+- **responseInclusion** _'full' | 'excluded'_
+
+  Available with `webSearch_20260318`. Controls whether search result blocks
+  consumed by a completed code execution call in the same turn are included in
+  the API response. The default is `'full'`. Use `'excluded'` to omit those
+  nested call/result pairs and reduce output token usage.
+
 ```ts
-const webSearchTool = anthropic.tools.webSearch_20250305({
+const webSearchTool = anthropic.tools.webSearch_20260318({
   maxUses: 3,
   allowedDomains: ['techcrunch.com', 'wired.com'],
-  blockedDomains: ['example-spam-site.com'],
   userLocation: {
     type: 'approximate',
     country: 'US',
@@ -150643,16 +151423,24 @@ const webSearchTool = anthropic.tools.webSearch_20250305({
     city: 'San Francisco',
     timezone: 'America/Los_Angeles',
   },
+  responseInclusion: 'excluded',
 });
 
 const result = await generateText({
-  model: anthropic('claude-opus-4-20250514'),
+  model: anthropic('claude-opus-5'),
   prompt: 'Find local news about technology',
   tools: {
     web_search: webSearchTool,
   },
 });
 ```
+
+<Note>
+  `responseInclusion: 'excluded'` only omits results consumed by code execution
+  calls that complete in the same turn. Results from direct calls and from code
+  execution calls that pause before completing are always returned in full so
+  they can be sent back on the next turn.
+</Note>
 
 ### Web Fetch Tool
 
@@ -150665,11 +151453,14 @@ import { anthropic } from '@ai-sdk/anthropic';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: anthropic('claude-sonnet-4-0'),
+  model: anthropic('claude-opus-5'),
   prompt:
     'What is this page about? https://en.wikipedia.org/wiki/Maglemosian_culture',
   tools: {
-    web_fetch: anthropic.tools.webFetch_20250910({ maxUses: 1 }),
+    web_fetch: anthropic.tools.webFetch_20260318({
+      maxUses: 1,
+      responseInclusion: 'excluded',
+    }),
   },
 });
 ```
@@ -151013,6 +151804,19 @@ The web fetch tool supports several configuration options:
 - **maxContentTokens** _number_
 
   The maxContentTokens parameter limits the amount of content that will be included in the context.
+
+- **useCache** _boolean_
+
+  Available with `webFetch_20260318`. Set to `false` to bypass cached content
+  and fetch fresh content. The default is `true`; disabling the cache can
+  increase latency.
+
+- **responseInclusion** _'full' | 'excluded'_
+
+  Available with `webFetch_20260318`. Controls whether fetch result blocks
+  consumed by a completed code execution call in the same turn are included in
+  the API response. The default is `'full'`. Direct results and results from
+  code execution calls that pause before completing are always returned in full.
 
 #### Error Handling
 
@@ -151399,6 +152203,55 @@ and the `mediaType` should be set to `'application/pdf'`.
   of available models. The table above lists popular models. You can also pass
   any available provider model ID as a string if needed.
 </Note>
+
+## Evaluation Models
+
+Create an experimental evaluation model with `anthropic.evaluationModel(modelId)`.
+It uses the Messages API's structured-output support for Choice, Score, and Boolean
+questions. `claude-haiku-4-5-20251001` is one supported model.
+
+```ts
+import { anthropic } from '@ai-sdk/anthropic';
+import { experimental_evaluate } from 'ai';
+
+const { answers } = await experimental_evaluate({
+  model: anthropic.evaluationModel('claude-haiku-4-5-20251001'),
+  state: 'I was charged twice.',
+  questions: {
+    requestsRefund: {
+      type: 'boolean',
+      instructions: 'Is the customer requesting money back?',
+    },
+    department: {
+      type: 'choice',
+      instructions: 'Which team should handle this?',
+      criteria: { billing: 'Charges and refunds', support: 'Other requests' },
+    },
+  },
+});
+```
+
+Choice labels are preserved exactly, and Scores are finite fractional positions
+on the ordered rubric. Anthropic does not support numeric bounds in its native
+output schema, so the adapter describes them in the prompt and validates them
+after parsing. Invalid answers, refusals, and truncation fail the entire call.
+
+The adapter returns no probability distributions for Choice or Score. Boolean
+answers contain prompted estimates of P(true), validated to be finite and in
+`[0, 1]`. These estimates are not guaranteed to be calibrated. Apply thresholds
+in application code, for example `answers.requestsRefund.probability >= 0.5`.
+It respects
+`createAnthropic` configuration and forwards `providerOptions.anthropic`, including
+`structuredOutputMode`. Supported models use native structured output by default;
+`jsonTool` uses the existing Messages JSON-tool fallback. Usage, warnings,
+response information, and provider metadata are preserved.
+See [Evaluation](/docs/ai-sdk-core/evaluation).
+
+Evaluation models can also be accessed through `customProvider` aliases or
+`createProviderRegistry().evaluationModel('provider:model')`. Direct string IDs
+use Gateway by default, or an explicitly configured default provider with an
+`evaluationModel` method. See
+[model aliases and registries](/docs/ai-sdk-core/evaluation#model-aliases-and-registries).
 
 ---
 title: Open Responses
@@ -152188,6 +153041,42 @@ The legacy `providerOptions.bedrock` key remains supported. For parity with the
 Anthropic provider, `providerOptions.anthropic.structuredOutputMode` is also
 honored for Anthropic models on Bedrock. When both are provided, the
 `amazonBedrock` or legacy `bedrock` value takes precedence.
+
+For an Anthropic application inference profile, prefer the Bedrock Anthropic
+provider. It uses Bedrock's native InvokeModel API, which accepts application
+inference profile ARNs, and identifies the model as Anthropic automatically:
+
+```ts
+import { amazonBedrockAnthropic } from '@ai-sdk/amazon-bedrock/anthropic';
+
+const profileArn =
+  'arn:aws:bedrock:us-east-1:123456789012:application-inference-profile/qibm5eutlkcy';
+
+const model = amazonBedrockAnthropic(profileArn);
+```
+
+Use `modelFamily: 'anthropic'` only when you need to use the generic
+`@ai-sdk/amazon-bedrock` provider, which uses Bedrock's Converse API (for
+example, when IAM permits Converse but not InvokeModel). Application inference
+profile ARNs do not identify their underlying model, so declaring the family
+allows Anthropic-specific features, including native structured output:
+
+```ts
+import {
+  amazonBedrock,
+  type AmazonBedrockChatModelSettings,
+} from '@ai-sdk/amazon-bedrock';
+
+const profileArn =
+  'arn:aws:bedrock:us-east-1:123456789012:application-inference-profile/qibm5eutlkcy';
+
+const model = amazonBedrock(profileArn, {
+  modelFamily: 'anthropic',
+} satisfies AmazonBedrockChatModelSettings);
+```
+
+For an underlying model that does not reliably support native structured
+output, set `structuredOutputMode` to `"jsonTool"`.
 
 ### File Inputs
 
@@ -153630,6 +154519,7 @@ const result = await generateText({
 
 Anthropic has reasoning support for Claude 3.7 and Claude 4 models on Bedrock, including:
 
+- `us.anthropic.claude-fable-5-1`
 - `us.anthropic.claude-sonnet-5`
 - `us.anthropic.claude-fable-5`
 - `us.anthropic.claude-opus-4-8`
@@ -153675,6 +154565,7 @@ on how to integrate reasoning into your chatbot.
 
 | Model                                          | Image Input | Object Generation | Tool Usage | Computer Use | Reasoning |
 | ---------------------------------------------- | ----------- | ----------------- | ---------- | ------------ | --------- |
+| `us.anthropic.claude-fable-5-1`                | <Check />   | <Check />         | <Check />  | <Check />    | <Check /> |
 | `us.anthropic.claude-sonnet-5`                 | <Check />   | <Check />         | <Check />  | <Check />    | <Check /> |
 | `us.anthropic.claude-fable-5`                  | <Check />   | <Check />         | <Check />  | <Check />    | <Check /> |
 | `us.anthropic.claude-opus-4-8`                 | <Check />   | <Check />         | <Check />  | <Check />    | <Check /> |
@@ -155109,6 +156000,126 @@ GMI Cloud serves an evolving catalog of open-weight models, so model ids are typ
 ## Error diagnostics
 
 GMI Cloud's edge reports a generic banner in `error.message` on rejections and nests the backend engine's diagnostic in `error.details`. This provider unwraps the nested diagnostic, so `AI_APICallError.message` carries the engine's reason (e.g. `The request is invalid: Invalid max_tokens value, the valid range of max_tokens is [1, 393216].`) instead of `Backend request failed with status 400`.
+
+---
+title: TypeSafe
+description: Use TypeSafe System One models for typed evaluations with the AI SDK.
+---
+
+# TypeSafe Provider
+
+The [TypeSafe](https://typesafe.ai) provider supports the experimental evaluation
+API with native Choice, Score, and Boolean answers. It sends all questions in one
+request against the same state.
+
+## Setup
+
+Install the provider:
+
+```sh
+pnpm add @ai-sdk/typesafe-ai
+```
+
+Set the `TYPESAFE_AI_API_KEY` environment variable. Import the default provider or
+configure an instance:
+
+```ts
+import { createTypeSafeAi, typeSafeAi } from '@ai-sdk/typesafe-ai';
+
+const customTypeSafe = createTypeSafeAi({
+  apiKey: 'your-api-key',
+});
+```
+
+`createTypeSafeAi` accepts:
+
+| Setting   | Description                                 |
+| --------- | ------------------------------------------- |
+| `apiKey`  | API key; defaults to `TYPESAFE_AI_API_KEY`. |
+| `baseURL` | Defaults to `https://api.typesafe.ai/v1`.   |
+| `headers` | Additional request headers.                 |
+| `fetch`   | Custom fetch implementation.                |
+
+## Evaluation
+
+```ts
+import { typeSafeAi } from '@ai-sdk/typesafe-ai';
+import { experimental_evaluate } from 'ai';
+
+const result = await experimental_evaluate({
+  model: typeSafeAi.evaluationModel('jev-latest'),
+  state: {
+    message: 'I was charged twice. Please refund the duplicate.',
+  },
+  questions: {
+    department: {
+      type: 'choice',
+      instructions: 'Which team should handle this?',
+      criteria: {
+        billing: { includes: ['Charges', 'Invoices', 'Refunds'] },
+        technical: ['Bugs', 'Outages'],
+        other: null,
+      },
+    },
+    severity: {
+      type: 'score',
+      instructions: 'How severe is the issue?',
+      criteria: ['Cosmetic', 'Workaround exists', 'Blocking; no workaround'],
+    },
+    requestsRefund: {
+      type: 'boolean',
+      instructions: 'Is the customer requesting money back?',
+    },
+  },
+});
+
+console.log(result.answers.department.choice);
+console.log(result.answers.severity.score);
+console.log(result.answers.requestsRefund.probability);
+console.log(result.usage);
+```
+
+Use `jev-latest` or another TypeSafe model ID. The response includes the actual
+model ID, such as the resolved version behind the alias. Use model instances,
+custom aliases, or registered providers. With `typeSafeAi` explicitly configured
+as `globalThis.AI_SDK_DEFAULT_PROVIDER`, you can pass `model: 'jev-latest'`
+directly. See [model aliases and registries](/docs/ai-sdk-core/evaluation#model-aliases-and-registries).
+
+| Question  | Native TypeSafe primitive | Limits and semantics                                                 |
+| --------- | ------------------------- | -------------------------------------------------------------------- |
+| `choice`  | Choice                    | 1–255 options; selected option and full probabilities.               |
+| `score`   | Score                     | 2–10 ordered rubric levels; fractional score and full probabilities. |
+| `boolean` | Noul                      | Required model-estimated probability of true.                        |
+
+State, instructions, and descriptions accept JSON objects and arrays in addition
+to strings. Descriptions may be `null`. Boolean true/false criteria are optional.
+The SDK uses the neutral name `boolean` and maps it to TypeSafe's `noul` field.
+
+### Rounded values and confidence
+
+TypeSafe returns scores and probabilities rounded to two decimal places.
+`result.rounding` reports this precision so the SDK can account for rounding when
+checking distribution sums and weighted means. The returned values are preserved
+unchanged; rounding means probabilities may not add up to exactly one.
+
+Confidence is a separate TypeSafe statistic, available under
+`result.providerMetadata.typesafe.confidence[questionId]` for Choice and Score
+answers. Boolean probability always means P(true), not confidence in either
+outcome. Choose decision thresholds in application code.
+
+### Errors and retries
+
+Provider failures use `APICallError`, including validation and authentication
+errors. Core retries transient failures such as `429` and `529` according to
+`maxRetries` (default: 2). `abortSignal`, request headers, and custom fetch are
+forwarded. There is no provider-side retry loop.
+
+No provider-specific options are currently defined. Unknown entries under
+`providerOptions.typesafe` produce unsupported-option warnings. Language,
+embedding, and image model factories throw `NoSuchModelError`.
+
+Evaluation models support workflow serialization. A custom fetch function is not
+serialized; restored models use the default fetch implementation.
 
 ---
 title: DeepInfra
@@ -157698,6 +158709,50 @@ Gemini Live Translation accepts audio input and produces translated audio
 output. Text input, tools, and custom instructions are not supported by this
 model.
 
+### Gemini 3.8 Live
+
+`gemini-3.8-live` and `gemini-3.8-live-extended-thinking` are audio-only
+realtime models: request `outputModalities: ['audio']`, and add
+`outputAudioTranscription: {}` if you want the assistant's transcript as
+`audio-transcript-delta` events. Server-side voice activity detection and
+proactive audio are always on.
+
+`gemini-3.8-live-extended-thinking` reasons in the background while streaming
+audio. Google requires exactly one of `thinkingLevel` (`low`, `medium`, `high`)
+or `thinkingBudget` for it; the provider sends `thinkingLevel: 'low'` when you
+set neither. Override it through `providerOptions.google.thinkingConfig`:
+
+```ts
+import {
+  google,
+  type Experimental_GoogleRealtimeModelOptions as GoogleRealtimeModelOptions,
+} from '@ai-sdk/google';
+
+const token = await google.experimental_realtime.getToken({
+  model: 'gemini-3.8-live-extended-thinking',
+  sessionConfig: {
+    outputModalities: ['audio'],
+    outputAudioTranscription: {},
+    providerOptions: {
+      google: {
+        thinkingConfig: { thinkingLevel: 'high' },
+      } satisfies GoogleRealtimeModelOptions,
+    },
+  },
+});
+```
+
+Tools declared in the session config run asynchronously (`NON_BLOCKING`) by
+default on these models, so the model keeps talking while a tool call is in
+flight. Set `providerOptions.google.defaultToolBehavior: 'BLOCKING'` on
+`gemini-3.8-live` to make it wait for the result instead.
+
+On the extended thinking model, `turnComplete` (the `response-done` event) does
+not mean the model is idle. Watch the `interactionStatus` custom event: its
+`raw.interactionStatus` is `IN_PROGRESS`, `IDLE`, or `WAITING_FOR_INPUT`. A
+`waitingForInput` custom event is emitted when the model has stopped and needs
+user input to continue.
+
 ## Translation Models
 
 <Note type="warning">Speech translation is an experimental feature.</Note>
@@ -158772,6 +159827,57 @@ const result = await generateSpeech({
 | `gemini-2.5-flash-preview-tts` | <Check />     | <Check />              |
 | `gemini-2.5-pro-preview-tts`   | <Check />     | <Check />              |
 | `gemini-3.1-flash-tts-preview` | <Check />     | <Check />              |
+
+## Evaluation Models
+
+Create an experimental evaluation model with `google.evaluationModel(modelId)`.
+It uses Gemini structured output for Choice, Score, and Boolean questions. Choose a model
+that supports structured output, such as `gemini-3.5-flash-lite`.
+
+```ts
+import { google } from '@ai-sdk/google';
+import { experimental_evaluate } from 'ai';
+
+const { answers } = await experimental_evaluate({
+  model: google.evaluationModel('gemini-3.5-flash-lite'),
+  state: 'I was charged twice.',
+  questions: {
+    requestsRefund: {
+      type: 'boolean',
+      instructions: 'Is the customer requesting money back?',
+    },
+    department: {
+      type: 'choice',
+      instructions: 'Which team should handle this?',
+      criteria: { billing: 'Charges and refunds', support: 'Other requests' },
+    },
+  },
+  providerOptions: {
+    google: { thinkingConfig: { thinkingLevel: 'minimal' } },
+  },
+});
+```
+
+The factory respects `createGoogle` settings and forwards `providerOptions.google`,
+including thinking configuration. Thinking controls depend on the selected model;
+use options supported by that model. The existing Gemini implementation sends the
+answer schema as `generationConfig.responseJsonSchema`.
+
+Choice labels are returned exactly, and Scores are finite fractional positions
+within the ordered rubric. The adapter validates complete answers after parsing
+and rejects safety-blocked, truncated, or invalid output. It preserves usage
+(including reasoning tokens), warnings, response data, and provider metadata.
+
+Choice and Score answers do not include probability distributions. Boolean
+answers contain prompted estimates of P(true), validated to be finite and in
+`[0, 1]`. These estimates are not guaranteed to be calibrated. Apply thresholds
+in application code, for example `answers.requestsRefund.probability >= 0.5`. See [Evaluation](/docs/ai-sdk-core/evaluation).
+
+Evaluation models can also be accessed through `customProvider` aliases or
+`createProviderRegistry().evaluationModel('provider:model')`. Direct string IDs
+use Gateway by default, or an explicitly configured default provider with an
+`evaluationModel` method. See
+[model aliases and registries](/docs/ai-sdk-core/evaluation#model-aliases-and-registries).
 
 ---
 title: Hume
@@ -160754,6 +161860,7 @@ See also [Anthropic Model Comparison](https://docs.anthropic.com/en/docs/about-c
 
 | Model                           | Image Input | Object Generation | Tool Usage | Tool Streaming | Computer Use |
 | ------------------------------- | ----------- | ----------------- | ---------- | -------------- | ------------ |
+| `claude-fable-5-1`              | <Check />   | <Check />         | <Check />  | <Check />      | <Check />    |
 | `claude-3-7-sonnet@20250219`    | <Check />   | <Check />         | <Check />  | <Check />      | <Check />    |
 | `claude-3-5-sonnet-v2@20241022` | <Check />   | <Check />         | <Check />  | <Check />      | <Check />    |
 | `claude-3-5-sonnet@20240620`    | <Check />   | <Check />         | <Check />  | <Check />      | <Cross />    |
@@ -161878,7 +162985,7 @@ import { generateImage } from 'ai';
 import fs from 'fs';
 
 const { image } = await generateImage({
-  model: quiverai.image('arrow-1.1'),
+  model: quiverai.image('arrow-2'),
   prompt: 'A logo for the next AI Design startup',
 });
 
@@ -161891,10 +162998,12 @@ QuiverAI returns SVG documents. The generated SVG bytes are available through `r
 
 ### Model Capabilities
 
-QuiverAI exposes three Arrow models:
+QuiverAI supports the following Arrow models:
 
 | Model           | Description                                                                      |
 | --------------- | -------------------------------------------------------------------------------- |
+| `arrow-2`       | Arrow 2 balances SVG generation quality and speed. Uses token-based billing.     |
+| `arrow-2-telos` | Higher-fidelity Arrow 2 variant for complex designs. Uses token-based billing.   |
 | `arrow-1`       | Base text-to-SVG model. Accepts up to 4 reference images.                        |
 | `arrow-1.1`     | Improved text-to-SVG model. Accepts up to 4 reference images.                    |
 | `arrow-1.1-max` | Higher quality variant with extended context. Accepts up to 16 reference images. |
@@ -161908,13 +163017,15 @@ import { quiverai, type QuiverAIImageModelOptions } from '@ai-sdk/quiverai';
 import { generateImage } from 'ai';
 
 await generateImage({
-  model: quiverai.image('arrow-1.1'),
+  model: quiverai.image('arrow-2'),
   prompt: 'A geometric unicorn icon',
   providerOptions: {
     quiverai: {
       instructions: 'Use a flat monochrome style with clean geometry.',
-      temperature: 0.4,
-      topP: 0.95,
+      reasoningEffort: 'high',
+      attributes: {
+        viewBox: { minX: 0, minY: 0, width: 100, height: 100 },
+      },
       maxOutputTokens: 4096,
     } satisfies QuiverAIImageModelOptions,
   },
@@ -161931,6 +163042,14 @@ Supported options:
 
   Extra style guidance for prompt-based generation.
 
+- **reasoningEffort** _'low' | 'medium' | 'high' | 'xhigh'_
+
+  Reasoning effort for generation or vectorization. When omitted, QuiverAI uses its default.
+
+- **attributes** _object_
+
+  Requested SVG root attributes. Supports `viewBox` with numeric `minX`, `minY`, and positive `width` and `height`. This is separate from the unsupported `size` and `aspectRatio` options.
+
 - **temperature** _number_ (0-2)
 
   Sampling temperature.
@@ -161943,9 +163062,9 @@ Supported options:
 
   Presence penalty.
 
-- **maxOutputTokens** _number_ (1-131072)
+- **maxOutputTokens** _number_
 
-  Maximum number of output tokens.
+  Maximum number of output tokens. Arrow 2 and Arrow 2 Telos accept 1-65536. The provider retains its legacy validation bound of 131072 for other model IDs; the API may enforce a lower model-specific limit.
 
 - **autoCrop** _boolean_
 
@@ -161961,7 +163080,7 @@ Pass reference images through `prompt.images`:
 
 ```ts
 await generateImage({
-  model: quiverai.image('arrow-1.1'),
+  model: quiverai.image('arrow-2'),
   prompt: {
     text: 'A geometric unicorn icon',
     images: ['https://example.com/reference-1.png'],
@@ -161969,7 +163088,7 @@ await generateImage({
 });
 ```
 
-`arrow-1` and `arrow-1.1` accept up to 4 reference images. `arrow-1.1-max` accepts up to 16.
+`arrow-1` and `arrow-1.1` accept up to 4 reference images. `arrow-1.1-max` accepts up to 16. For Arrow 2 and other model IDs, the provider allows the endpoint maximum of 16 references and lets the API enforce any lower model-specific limit.
 
 ### Vectorizing a Raster Image
 
@@ -161981,7 +163100,7 @@ import { generateImage } from 'ai';
 import fs from 'fs';
 
 const { image } = await generateImage({
-  model: quiverai.image('arrow-1.1'),
+  model: quiverai.image('arrow-2'),
   prompt: {
     images: [fs.readFileSync('./logo.png')],
   },
@@ -161996,6 +163115,14 @@ const { image } = await generateImage({
 
 fs.writeFileSync('logo.svg', image.uint8Array);
 ```
+
+Vectorization returns one SVG per API request. To request multiple vectorizations with `n`, also set `maxImagesPerCall: 1` so `generateImage` splits them into separate calls.
+
+### Billing and Usage
+
+Arrow 2 models return measured token counts in `result.usage`. Fixed-credit models may return compatibility token counts of zero; their credit charge is available in `result.providerMetadata?.quiverai?.credits` when supplied by the API.
+
+Model availability and supported operations depend on your organization and API key permissions. Consult QuiverAI's [model catalog](https://docs.quiver.ai/developers/models) for current capabilities and billing. Editing, animation, and the Responses API are not yet exposed by this provider.
 
 ---
 title: Fish Audio

@@ -5,6 +5,19 @@ path: docs/changelog
 ---
 
 <Update label="September 15, 2026">
+  ## Serverless model deprecations
+
+  The following models are no longer available on [serverless](/docs/serverless/models):
+
+  * `openai/gpt-oss-20b`. Recommended replacement: `Qwen/Qwen3.5-9B`. Supported by on-demand dedicated endpoints.
+  * `google/gemma-4-31B-it`. Recommended replacement: `zai-org/GLM-5.3-Flash`. Supported by on-demand dedicated endpoints.
+  * `thinkingmachines/Inkling-Small`. Recommended replacement: `zai-org/GLM-5.3-Flash`. Supported by on-demand dedicated endpoints.
+  * `intfloat/multilingual-e5-large-instruct`. Not available as an on-demand dedicated endpoint.
+
+  See [Deprecations](/docs/deprecations) for migration guidance.
+</Update>
+
+<Update label="September 15, 2026">
   ## Rollouts for dedicated model inference
 
   [Rollouts](/docs/dedicated-endpoints/rollouts) shift live traffic from one deployment to another under the same endpoint, without changing the endpoint URL. Pick a canary, blue-green, or rolling strategy to determine how traffic moves, and optionally gate a canary rollout on [live metrics](/docs/dedicated-endpoints/rollout-metric-gates) so it pauses automatically if the new deployment regresses.

@@ -1,6 +1,6 @@
 # dev-platforms/upstash 文档索引
 
-> 共 946 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 950 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -167,6 +167,8 @@
 - `docs/devops/terraform/resources/upstash_redis_database` — [upstash_redis_database](pages/docs/devops/terraform/resources/upstash_redis_database.md) · [原文](https://upstash.com/docs/devops/terraform/resources/upstash_redis_database)
 - `docs/devops/terraform/resources/upstash_team` — [upstash_team](pages/docs/devops/terraform/resources/upstash_team.md) · [原文](https://upstash.com/docs/devops/terraform/resources/upstash_team)
 - `docs/introduction` — [Overview](pages/docs/introduction.md) · [原文](https://upstash.com/docs/introduction)
+- `docs/qstash/api-reference/bulk-actions/get-a-bulk-action` — [Get a Bulk Action](pages/docs/qstash/api-reference/bulk-actions/get-a-bulk-action.md) · [原文](https://upstash.com/docs/qstash/api-reference/bulk-actions/get-a-bulk-action)
+- `docs/qstash/api-reference/bulk-actions/list-bulk-actions` — [List Bulk Actions](pages/docs/qstash/api-reference/bulk-actions/list-bulk-actions.md) · [原文](https://upstash.com/docs/qstash/api-reference/bulk-actions/list-bulk-actions)
 - `docs/qstash/api-reference/dlq/bulk-delete-dlq-messages` — [Bulk Delete DLQ messages](pages/docs/qstash/api-reference/dlq/bulk-delete-dlq-messages.md) · [原文](https://upstash.com/docs/qstash/api-reference/dlq/bulk-delete-dlq-messages)
 - `docs/qstash/api-reference/dlq/bulk-retry-dlq-messages` — [Bulk Retry DLQ messages](pages/docs/qstash/api-reference/dlq/bulk-retry-dlq-messages.md) · [原文](https://upstash.com/docs/qstash/api-reference/dlq/bulk-retry-dlq-messages)
 - `docs/qstash/api-reference/dlq/delete-a-dlq-message` — [Delete a DLQ message](pages/docs/qstash/api-reference/dlq/delete-a-dlq-message.md) · [原文](https://upstash.com/docs/qstash/api-reference/dlq/delete-a-dlq-message)
@@ -840,6 +842,8 @@
 - `docs/workflow/agents/patterns/orchestrator-workers` — [Orchestrator-Workers](pages/docs/workflow/agents/patterns/orchestrator-workers.md) · [原文](https://upstash.com/docs/workflow/agents/patterns/orchestrator-workers)
 - `docs/workflow/agents/patterns/parallelization` — [Parallelization](pages/docs/workflow/agents/patterns/parallelization.md) · [原文](https://upstash.com/docs/workflow/agents/patterns/parallelization)
 - `docs/workflow/agents/patterns/prompt-chaining` — [Prompt Chaining](pages/docs/workflow/agents/patterns/prompt-chaining.md) · [原文](https://upstash.com/docs/workflow/agents/patterns/prompt-chaining)
+- `docs/workflow/api-reference/bulk-actions/get-a-bulk-action` — [Get a Bulk Action](pages/docs/workflow/api-reference/bulk-actions/get-a-bulk-action.md) · [原文](https://upstash.com/docs/workflow/api-reference/bulk-actions/get-a-bulk-action)
+- `docs/workflow/api-reference/bulk-actions/list-bulk-actions` — [List Bulk Actions](pages/docs/workflow/api-reference/bulk-actions/list-bulk-actions.md) · [原文](https://upstash.com/docs/workflow/api-reference/bulk-actions/list-bulk-actions)
 - `docs/workflow/api-reference/dlq/bulk-delete-failed-workflow-runs` — [Bulk Delete Failed Workflow Runs](pages/docs/workflow/api-reference/dlq/bulk-delete-failed-workflow-runs.md) · [原文](https://upstash.com/docs/workflow/api-reference/dlq/bulk-delete-failed-workflow-runs)
 - `docs/workflow/api-reference/dlq/bulk-restart-workflows-from-dlq` — [Bulk Restart Workflows from DLQ](pages/docs/workflow/api-reference/dlq/bulk-restart-workflows-from-dlq.md) · [原文](https://upstash.com/docs/workflow/api-reference/dlq/bulk-restart-workflows-from-dlq)
 - `docs/workflow/api-reference/dlq/bulk-resume-workflows-from-dlq` — [Bulk Resume Workflows from DLQ](pages/docs/workflow/api-reference/dlq/bulk-resume-workflows-from-dlq.md) · [原文](https://upstash.com/docs/workflow/api-reference/dlq/bulk-resume-workflows-from-dlq)

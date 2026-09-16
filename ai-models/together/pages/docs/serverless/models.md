@@ -226,7 +226,6 @@ There are currently no embedding models offered via serverless.
 
 ### **Embedding model examples**
 
-* [Contextual RAG](/docs/how-to-implement-contextual-rag-from-anthropic): An open source implementation of contextual RAG by Anthropic.
 * [Code generation agent](https://github.com/togethercomputer/together-cookbook/blob/main/Agents/Looping_Agent_Workflow.ipynb): An agent workflow to generate and iteratively improve code.
 * [Multimodal search and image generation](https://github.com/togethercomputer/together-cookbook/blob/main/Multimodal_Search_and_Conditional_Image_Generation.ipynb): Search for images and generate more similar ones.
 * [Visualizing embeddings](https://github.com/togethercomputer/together-cookbook/blob/main/Embedding_Visualization.ipynb): Visualizing and clustering vector embeddings.

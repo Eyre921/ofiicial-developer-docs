@@ -27,7 +27,6 @@ The following models support reasoning on [serverless inference](/docs/serverles
 | Qwen3.6 Plus         | `Qwen/Qwen3.6-Plus`                | Hybrid (on by default) | 1M             |
 | Qwen3.5 9B           | `Qwen/Qwen3.5-9B`                  | Hybrid (on by default) | 262K           |
 | GPT-OSS 120B         | `openai/gpt-oss-120b`              | Adjustable effort      | 128K           |
-| GPT-OSS 20B          | `openai/gpt-oss-20b`               | Adjustable effort      | 128K           |
 
 Additional reasoning models, including Kimi K2.6, GLM-5, Cogito v2.1 671B, DeepSeek-R1 and its distillations, Qwen QwQ-32B, and DeepSeek V3.1 (hybrid), are available for [dedicated model inference](/docs/dedicated-endpoints/models).
 

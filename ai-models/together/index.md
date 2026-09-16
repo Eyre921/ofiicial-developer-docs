@@ -1,6 +1,6 @@
 # ai-models/together 文档索引
 
-> 共 353 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 349 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -25,7 +25,6 @@
 - `docs/billing-payment-methods` — [Payment methods & invoices](pages/docs/billing-payment-methods.md) · [原文](https://docs.together.ai/docs/billing-payment-methods)
 - `docs/billing-troubleshooting` — [Billing troubleshooting](pages/docs/billing-troubleshooting.md) · [原文](https://docs.together.ai/docs/billing-troubleshooting)
 - `docs/billing-usage-limits` — [Usage limits & analytics](pages/docs/billing-usage-limits.md) · [原文](https://docs.together.ai/docs/billing-usage-limits)
-- `docs/building-a-rag-workflow` — [Build a RAG workflow](pages/docs/building-a-rag-workflow.md) · [原文](https://docs.together.ai/docs/building-a-rag-workflow)
 - `docs/changelog` — [Changelog](pages/docs/changelog.md) · [原文](https://docs.together.ai/docs/changelog)
 - `docs/cluster-oidc` — [Set up OIDC authentication](pages/docs/cluster-oidc.md) · [原文](https://docs.together.ai/docs/cluster-oidc)
 - `docs/cluster-storage` — [Cluster storage](pages/docs/cluster-storage.md) · [原文](https://docs.together.ai/docs/cluster-storage)
@@ -41,6 +40,7 @@
 - `docs/dedicated-endpoints/concepts` — [Concepts](pages/docs/dedicated-endpoints/concepts.md) · [原文](https://docs.together.ai/docs/dedicated-endpoints/concepts)
 - `docs/dedicated-endpoints/configs` — [Choose a deployment profile](pages/docs/dedicated-endpoints/configs.md) · [原文](https://docs.together.ai/docs/dedicated-endpoints/configs)
 - `docs/dedicated-endpoints/custom-models` — [Upload a fine-tuned model](pages/docs/dedicated-endpoints/custom-models.md) · [原文](https://docs.together.ai/docs/dedicated-endpoints/custom-models)
+- `docs/dedicated-endpoints/grafana` — [Visualize endpoint metrics in Grafana](pages/docs/dedicated-endpoints/grafana.md) · [原文](https://docs.together.ai/docs/dedicated-endpoints/grafana)
 - `docs/dedicated-endpoints/manage` — [Manage endpoints and deployments](pages/docs/dedicated-endpoints/manage.md) · [原文](https://docs.together.ai/docs/dedicated-endpoints/manage)
 - `docs/dedicated-endpoints/migrate-from-v1` — [Migrate from v1](pages/docs/dedicated-endpoints/migrate-from-v1.md) · [原文](https://docs.together.ai/docs/dedicated-endpoints/migrate-from-v1)
 - `docs/dedicated-endpoints/models` — [Supported models](pages/docs/dedicated-endpoints/models.md) · [原文](https://docs.together.ai/docs/dedicated-endpoints/models)
@@ -97,8 +97,6 @@
 - `docs/how-to-build-coding-agents` — [Build a coding agent](pages/docs/how-to-build-coding-agents.md) · [原文](https://docs.together.ai/docs/how-to-build-coding-agents)
 - `docs/how-to-build-phone-voice-agent` — [Build a phone voice agent with Together AI](pages/docs/how-to-build-phone-voice-agent.md) · [原文](https://docs.together.ai/docs/how-to-build-phone-voice-agent)
 - `docs/how-to-build-real-time-audio-transcription-app` — [Build an audio transcription app with Whisper](pages/docs/how-to-build-real-time-audio-transcription-app.md) · [原文](https://docs.together.ai/docs/how-to-build-real-time-audio-transcription-app)
-- `docs/how-to-implement-contextual-rag-from-anthropic` — [Implement contextual RAG from Anthropic](pages/docs/how-to-implement-contextual-rag-from-anthropic.md) · [原文](https://docs.together.ai/docs/how-to-implement-contextual-rag-from-anthropic)
-- `docs/how-to-improve-search-with-rerankers` — [Improve search with rerankers](pages/docs/how-to-improve-search-with-rerankers.md) · [原文](https://docs.together.ai/docs/how-to-improve-search-with-rerankers)
 - `docs/how-to-use-cline` — [Configure Cline with Together AI models](pages/docs/how-to-use-cline.md) · [原文](https://docs.together.ai/docs/how-to-use-cline)
 - `docs/how-to-use-kimi-code` — [Configure Kimi Code with Together AI models](pages/docs/how-to-use-kimi-code.md) · [原文](https://docs.together.ai/docs/how-to-use-kimi-code)
 - `docs/how-to-use-openclaw` — [Configure OpenClaw with Together AI models](pages/docs/how-to-use-openclaw.md) · [原文](https://docs.together.ai/docs/how-to-use-openclaw)
@@ -114,8 +112,6 @@
 - `docs/inference/chat/parameters` — [Parameters](pages/docs/inference/chat/parameters.md) · [原文](https://docs.together.ai/docs/inference/chat/parameters)
 - `docs/inference/chat/reasoning` — [Reasoning](pages/docs/inference/chat/reasoning.md) · [原文](https://docs.together.ai/docs/inference/chat/reasoning)
 - `docs/inference/chat/structured-outputs` — [Structured outputs](pages/docs/inference/chat/structured-outputs.md) · [原文](https://docs.together.ai/docs/inference/chat/structured-outputs)
-- `docs/inference/embeddings/embeddings` — [Generate embeddings](pages/docs/inference/embeddings/embeddings.md) · [原文](https://docs.together.ai/docs/inference/embeddings/embeddings)
-- `docs/inference/embeddings/rag` — [Retrieval-augmented generation](pages/docs/inference/embeddings/rag.md) · [原文](https://docs.together.ai/docs/inference/embeddings/rag)
 - `docs/inference/embeddings/rerank` — [Rerank](pages/docs/inference/embeddings/rerank.md) · [原文](https://docs.together.ai/docs/inference/embeddings/rerank)
 - `docs/inference/function-calling/agentic` — [Agentic function calling patterns](pages/docs/inference/function-calling/agentic.md) · [原文](https://docs.together.ai/docs/inference/function-calling/agentic)
 - `docs/inference/function-calling/best-practices` — [Function calling best practices](pages/docs/inference/function-calling/best-practices.md) · [原文](https://docs.together.ai/docs/inference/function-calling/best-practices)
@@ -153,7 +149,7 @@
 - `docs/langgraph` — [LangGraph](pages/docs/langgraph.md) · [原文](https://docs.together.ai/docs/langgraph)
 - `docs/mixture-of-agents` — [Together mixture of agents (MoA)](pages/docs/mixture-of-agents.md) · [原文](https://docs.together.ai/docs/mixture-of-agents)
 - `docs/nanochat-on-instant-clusters` — [Run nanochat on instant clusters](pages/docs/nanochat-on-instant-clusters.md) · [原文](https://docs.together.ai/docs/nanochat-on-instant-clusters)
-- `docs/nextjs-chat-quickstart` — [Quickstart: Next.js](pages/docs/nextjs-chat-quickstart.md) · [原文](https://docs.together.ai/docs/nextjs-chat-quickstart)
+- `docs/nextjs-chat-quickstart` — [Next.js quickstart](pages/docs/nextjs-chat-quickstart.md) · [原文](https://docs.together.ai/docs/nextjs-chat-quickstart)
 - `docs/node-repair` — [Node repair](pages/docs/node-repair.md) · [原文](https://docs.together.ai/docs/node-repair)
 - `docs/open-notebooklm-pdf-to-podcast` — [Build an open source NotebookLM](pages/docs/open-notebooklm-pdf-to-podcast.md) · [原文](https://docs.together.ai/docs/open-notebooklm-pdf-to-podcast)
 - `docs/organizations` — [Organizations](pages/docs/organizations.md) · [原文](https://docs.together.ai/docs/organizations)
@@ -168,8 +164,7 @@
 - `docs/quickstart-flux` — [FLUX.2 quickstart](pages/docs/quickstart-flux.md) · [原文](https://docs.together.ai/docs/quickstart-flux)
 - `docs/quickstart-flux-kontext` — [FLUX Kontext quickstart](pages/docs/quickstart-flux-kontext.md) · [原文](https://docs.together.ai/docs/quickstart-flux-kontext)
 - `docs/quickstart-how-to-do-ocr` — [OCR quickstart](pages/docs/quickstart-how-to-do-ocr.md) · [原文](https://docs.together.ai/docs/quickstart-how-to-do-ocr)
-- `docs/quickstart-retrieval-augmented-generation-rag` — [Retrieval-augmented generation (RAG) quickstart](pages/docs/quickstart-retrieval-augmented-generation-rag.md) · [原文](https://docs.together.ai/docs/quickstart-retrieval-augmented-generation-rag)
-- `docs/quickstart-using-hugging-face-inference` — [Hugging Face Inference quickstart](pages/docs/quickstart-using-hugging-face-inference.md) · [原文](https://docs.together.ai/docs/quickstart-using-hugging-face-inference)
+- `docs/quickstart-using-hugging-face-inference` — [Hugging Face inference quickstart](pages/docs/quickstart-using-hugging-face-inference.md) · [原文](https://docs.together.ai/docs/quickstart-using-hugging-face-inference)
 - `docs/render-chat-api` — [Build a chat API on Render](pages/docs/render-chat-api.md) · [原文](https://docs.together.ai/docs/render-chat-api)
 - `docs/roles-permissions` — [Roles & permissions (RBAC)](pages/docs/roles-permissions.md) · [原文](https://docs.together.ai/docs/roles-permissions)
 - `docs/run-an-evaluation` — [Run an evaluation](pages/docs/run-an-evaluation.md) · [原文](https://docs.together.ai/docs/run-an-evaluation)
@@ -186,6 +181,7 @@
 - `docs/together-code-interpreter` — [Code interpreter](pages/docs/together-code-interpreter.md) · [原文](https://docs.together.ai/docs/together-code-interpreter)
 - `docs/together-code-sandbox` — [Code sandbox](pages/docs/together-code-sandbox.md) · [原文](https://docs.together.ai/docs/together-code-sandbox)
 - `docs/together-deployments` — [Architecture](pages/docs/together-deployments.md) · [原文](https://docs.together.ai/docs/together-deployments)
+- `docs/using-together-with-litellm` — [Power Claude Code with LiteLLM and Together AI](pages/docs/using-together-with-litellm.md) · [原文](https://docs.together.ai/docs/using-together-with-litellm)
 - `docs/using-together-with-mastra` — [Mastra quickstart](pages/docs/using-together-with-mastra.md) · [原文](https://docs.together.ai/docs/using-together-with-mastra)
 - `docs/using-together-with-vercels-ai-sdk` — [Vercel AI SDK quickstart](pages/docs/using-together-with-vercels-ai-sdk.md) · [原文](https://docs.together.ai/docs/using-together-with-vercels-ai-sdk)
 - `docs/volcano-on-gpu-clusters` — [Gang-schedule GPU jobs with Volcano](pages/docs/volcano-on-gpu-clusters.md) · [原文](https://docs.together.ai/docs/volcano-on-gpu-clusters)

@@ -51,7 +51,7 @@ As a Team Owner, to uninstall the Async Workloads extension:
 1. In the Netlify UI, navigate to the 
 ### NavigationPath Component:
 
-Extensions
+Team settings > Extensions
  page for your team.
 2. Search for `Async Workloads` and select it in the search results.
 3. On the details page, navigate to the **Danger zone** section, and then select **Uninstall this extension**.

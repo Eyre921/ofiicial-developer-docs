@@ -170,7 +170,7 @@ Successful Response
         - `prompt` (object, optional) — The prompt for the agent
           - `prompt` (string, optional) — The prompt for the agent
           - `llm` (enum, optional) — The LLM to query with the prompt and the chat history. If using data residency, the LLM must be supported in the data residency environment
-            - Allowed values: `gpt-4o-mini`, `gpt-4o`, `gpt-4`, `gpt-4-turbo`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `gpt-5`, `gpt-5.1`, `gpt-5.2`, `gpt-5.2-chat-latest`, `gpt-5.4`, `gpt-5.4-mini`, `gpt-5.4-nano`, `gpt-5.5`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-5-mini`, `gpt-5-nano`, `gpt-3.5-turbo`, `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`, `gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-3-pro-preview`, `gemini-3-flash-preview`, `gemini-3.1-pro-preview`, `gemini-3.1-flash-lite-preview`, `gemini-3.1-flash-lite`, `gemini-3.5-flash`, `gemini-3.5-flash-lite`, `gemini-3.6-flash`, `gemini-3.7-flash`, `gemini-3.8-flash`, `claude-sonnet-4-5`, `claude-opus-4-7`, `claude-opus-4-8`, `claude-sonnet-4-6`, `claude-sonnet-5`, `claude-sonnet-4`, `claude-haiku-4-5`, `claude-3-7-sonnet`, `claude-3-5-sonnet`, `claude-3-5-sonnet-v1`, `claude-3-haiku`, `grok-beta`, `custom-llm`, `qwen3-4b`, `qwen3-30b-a3b`, `qwen36-35b-a3b`, `qwen35-397b-a17b`, `gpt-oss-20b`, `gpt-oss-120b`, `glm-45-air-fp8`, `gemini-2.5-flash-preview-09-2025`, `gemini-2.5-flash-lite-preview-09-2025`, `gemini-2.5-flash-preview-05-20`, `gemini-2.5-flash-preview-04-17`, `gemini-2.5-flash-lite-preview-06-17`, `gemini-2.0-flash-lite-001`, `gemini-2.0-flash-001`, `gemini-1.5-flash-002`, `gemini-1.5-flash-001`, `gemini-1.5-pro-002`, `gemini-1.5-pro-001`, `claude-sonnet-4@20250514`, `claude-sonnet-4-5@20250929`, `claude-haiku-4-5@20251001`, `claude-3-7-sonnet@20250219`, `claude-3-5-sonnet@20240620`, `claude-3-5-sonnet-v2@20241022`, `claude-3-haiku@20240307`, `gpt-5-2025-08-07`, `gpt-5.1-2025-11-13`, `gpt-5.2-2025-12-11`, `gpt-5.4-2026-03-05`, `gpt-5.4-mini-2026-03-17`, `gpt-5.4-nano-2026-03-17`, `gpt-5.5-2026-04-23`, `gpt-5-mini-2025-08-07`, `gpt-5-nano-2025-08-07`, `gpt-4.1-2025-04-14`, `gpt-4.1-mini-2025-04-14`, `gpt-4.1-nano-2025-04-14`, `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-4o-2024-08-06`, `gpt-4o-2024-05-13`, `gpt-4-0613`, `gpt-4-0314`, `gpt-4-turbo-2024-04-09`, `gpt-3.5-turbo-0125`, `gpt-3.5-turbo-1106`, `watt-tool-8b`, `watt-tool-70b`
+            - Allowed values: `gpt-4o-mini`, `gpt-4o`, `gpt-4`, `gpt-4-turbo`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `gpt-5`, `gpt-5.1`, `gpt-5.2`, `gpt-5.2-chat-latest`, `gpt-5.4`, `gpt-5.4-mini`, `gpt-5.4-nano`, `gpt-5.5`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-6-astra`, `gpt-5-mini`, `gpt-5-nano`, `gpt-3.5-turbo`, `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`, `gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-3-pro-preview`, `gemini-3-flash-preview`, `gemini-3.1-pro-preview`, `gemini-3.1-flash-lite-preview`, `gemini-3.1-flash-lite`, `gemini-3.5-flash`, `gemini-3.5-flash-lite`, `gemini-3.6-flash`, `gemini-3.7-flash`, `gemini-3.8-flash`, `claude-sonnet-4-5`, `claude-opus-4-7`, `claude-opus-4-8`, `claude-sonnet-4-6`, `claude-sonnet-5`, `claude-sonnet-4`, `claude-haiku-4-5`, `claude-3-7-sonnet`, `claude-3-5-sonnet`, `claude-3-5-sonnet-v1`, `claude-3-haiku`, `grok-beta`, `custom-llm`, `qwen3-4b`, `qwen3-30b-a3b`, `qwen36-35b-a3b`, `qwen35-397b-a17b`, `gpt-oss-20b`, `gpt-oss-120b`, `glm-45-air-fp8`, `gemini-2.5-flash-preview-09-2025`, `gemini-2.5-flash-lite-preview-09-2025`, `gemini-2.5-flash-preview-05-20`, `gemini-2.5-flash-preview-04-17`, `gemini-2.5-flash-lite-preview-06-17`, `gemini-2.0-flash-lite-001`, `gemini-2.0-flash-001`, `gemini-1.5-flash-002`, `gemini-1.5-flash-001`, `gemini-1.5-pro-002`, `gemini-1.5-pro-001`, `claude-sonnet-4@20250514`, `claude-sonnet-4-5@20250929`, `claude-haiku-4-5@20251001`, `claude-3-7-sonnet@20250219`, `claude-3-5-sonnet@20240620`, `claude-3-5-sonnet-v2@20241022`, `claude-3-haiku@20240307`, `gpt-5-2025-08-07`, `gpt-5.1-2025-11-13`, `gpt-5.2-2025-12-11`, `gpt-5.4-2026-03-05`, `gpt-5.4-mini-2026-03-17`, `gpt-5.4-nano-2026-03-17`, `gpt-5.5-2026-04-23`, `gpt-5-mini-2025-08-07`, `gpt-5-nano-2025-08-07`, `gpt-4.1-2025-04-14`, `gpt-4.1-mini-2025-04-14`, `gpt-4.1-nano-2025-04-14`, `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-4o-2024-08-06`, `gpt-4o-2024-05-13`, `gpt-4-0613`, `gpt-4-0314`, `gpt-4-turbo-2024-04-09`, `gpt-3.5-turbo-0125`, `gpt-3.5-turbo-1106`, `watt-tool-8b`, `watt-tool-70b`
           - `tool_ids` (list of string, optional) — A list of IDs of tools used by the agent
           - `native_mcp_server_ids` (list of string, optional) — A list of Native MCP server ids to be used by the agent
           - `knowledge_base` (list of object, optional) — A list of knowledge bases to be used by the agent
@@ -202,7 +202,7 @@ Successful Response
     - `prompt` (object, optional) — The prompt for the agent
       - `prompt` (string, optional, default: ) — The prompt for the agent
       - `llm` (enum, optional) — The LLM to query with the prompt and the chat history. If using data residency, the LLM must be supported in the data residency environment
-        - Allowed values: `gpt-4o-mini`, `gpt-4o`, `gpt-4`, `gpt-4-turbo`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `gpt-5`, `gpt-5.1`, `gpt-5.2`, `gpt-5.2-chat-latest`, `gpt-5.4`, `gpt-5.4-mini`, `gpt-5.4-nano`, `gpt-5.5`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-5-mini`, `gpt-5-nano`, `gpt-3.5-turbo`, `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`, `gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-3-pro-preview`, `gemini-3-flash-preview`, `gemini-3.1-pro-preview`, `gemini-3.1-flash-lite-preview`, `gemini-3.1-flash-lite`, `gemini-3.5-flash`, `gemini-3.5-flash-lite`, `gemini-3.6-flash`, `gemini-3.7-flash`, `gemini-3.8-flash`, `claude-sonnet-4-5`, `claude-opus-4-7`, `claude-opus-4-8`, `claude-sonnet-4-6`, `claude-sonnet-5`, `claude-sonnet-4`, `claude-haiku-4-5`, `claude-3-7-sonnet`, `claude-3-5-sonnet`, `claude-3-5-sonnet-v1`, `claude-3-haiku`, `grok-beta`, `custom-llm`, `qwen3-4b`, `qwen3-30b-a3b`, `qwen36-35b-a3b`, `qwen35-397b-a17b`, `gpt-oss-20b`, `gpt-oss-120b`, `glm-45-air-fp8`, `gemini-2.5-flash-preview-09-2025`, `gemini-2.5-flash-lite-preview-09-2025`, `gemini-2.5-flash-preview-05-20`, `gemini-2.5-flash-preview-04-17`, `gemini-2.5-flash-lite-preview-06-17`, `gemini-2.0-flash-lite-001`, `gemini-2.0-flash-001`, `gemini-1.5-flash-002`, `gemini-1.5-flash-001`, `gemini-1.5-pro-002`, `gemini-1.5-pro-001`, `claude-sonnet-4@20250514`, `claude-sonnet-4-5@20250929`, `claude-haiku-4-5@20251001`, `claude-3-7-sonnet@20250219`, `claude-3-5-sonnet@20240620`, `claude-3-5-sonnet-v2@20241022`, `claude-3-haiku@20240307`, `gpt-5-2025-08-07`, `gpt-5.1-2025-11-13`, `gpt-5.2-2025-12-11`, `gpt-5.4-2026-03-05`, `gpt-5.4-mini-2026-03-17`, `gpt-5.4-nano-2026-03-17`, `gpt-5.5-2026-04-23`, `gpt-5-mini-2025-08-07`, `gpt-5-nano-2025-08-07`, `gpt-4.1-2025-04-14`, `gpt-4.1-mini-2025-04-14`, `gpt-4.1-nano-2025-04-14`, `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-4o-2024-08-06`, `gpt-4o-2024-05-13`, `gpt-4-0613`, `gpt-4-0314`, `gpt-4-turbo-2024-04-09`, `gpt-3.5-turbo-0125`, `gpt-3.5-turbo-1106`, `watt-tool-8b`, `watt-tool-70b`
+        - Allowed values: `gpt-4o-mini`, `gpt-4o`, `gpt-4`, `gpt-4-turbo`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `gpt-5`, `gpt-5.1`, `gpt-5.2`, `gpt-5.2-chat-latest`, `gpt-5.4`, `gpt-5.4-mini`, `gpt-5.4-nano`, `gpt-5.5`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-6-astra`, `gpt-5-mini`, `gpt-5-nano`, `gpt-3.5-turbo`, `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`, `gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-3-pro-preview`, `gemini-3-flash-preview`, `gemini-3.1-pro-preview`, `gemini-3.1-flash-lite-preview`, `gemini-3.1-flash-lite`, `gemini-3.5-flash`, `gemini-3.5-flash-lite`, `gemini-3.6-flash`, `gemini-3.7-flash`, `gemini-3.8-flash`, `claude-sonnet-4-5`, `claude-opus-4-7`, `claude-opus-4-8`, `claude-sonnet-4-6`, `claude-sonnet-5`, `claude-sonnet-4`, `claude-haiku-4-5`, `claude-3-7-sonnet`, `claude-3-5-sonnet`, `claude-3-5-sonnet-v1`, `claude-3-haiku`, `grok-beta`, `custom-llm`, `qwen3-4b`, `qwen3-30b-a3b`, `qwen36-35b-a3b`, `qwen35-397b-a17b`, `gpt-oss-20b`, `gpt-oss-120b`, `glm-45-air-fp8`, `gemini-2.5-flash-preview-09-2025`, `gemini-2.5-flash-lite-preview-09-2025`, `gemini-2.5-flash-preview-05-20`, `gemini-2.5-flash-preview-04-17`, `gemini-2.5-flash-lite-preview-06-17`, `gemini-2.0-flash-lite-001`, `gemini-2.0-flash-001`, `gemini-1.5-flash-002`, `gemini-1.5-flash-001`, `gemini-1.5-pro-002`, `gemini-1.5-pro-001`, `claude-sonnet-4@20250514`, `claude-sonnet-4-5@20250929`, `claude-haiku-4-5@20251001`, `claude-3-7-sonnet@20250219`, `claude-3-5-sonnet@20240620`, `claude-3-5-sonnet-v2@20241022`, `claude-3-haiku@20240307`, `gpt-5-2025-08-07`, `gpt-5.1-2025-11-13`, `gpt-5.2-2025-12-11`, `gpt-5.4-2026-03-05`, `gpt-5.4-mini-2026-03-17`, `gpt-5.4-nano-2026-03-17`, `gpt-5.5-2026-04-23`, `gpt-5-mini-2025-08-07`, `gpt-5-nano-2025-08-07`, `gpt-4.1-2025-04-14`, `gpt-4.1-mini-2025-04-14`, `gpt-4.1-nano-2025-04-14`, `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-4o-2024-08-06`, `gpt-4o-2024-05-13`, `gpt-4-0613`, `gpt-4-0314`, `gpt-4-turbo-2024-04-09`, `gpt-3.5-turbo-0125`, `gpt-3.5-turbo-1106`, `watt-tool-8b`, `watt-tool-70b`
       - `reasoning_effort` (enum, optional) — Reasoning effort of the model. Only available for some models.
         - Allowed values: `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, `max`
       - `thinking_budget` (integer, optional) — Max number of tokens used for thinking. Use 0 to turn off if supported by the model.
@@ -577,7 +577,7 @@ Successful Response
         - `preference`: `disabled`
         - `preference`: `override`
           - `order` (list of enum, required)
-            - Allowed values: `gpt-4o-mini`, `gpt-4o`, `gpt-4`, `gpt-4-turbo`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `gpt-5`, `gpt-5.1`, `gpt-5.2`, `gpt-5.2-chat-latest`, `gpt-5.4`, `gpt-5.4-mini`, `gpt-5.4-nano`, `gpt-5.5`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-5-mini`, `gpt-5-nano`, `gpt-3.5-turbo`, `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`, `gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-3-pro-preview`, `gemini-3-flash-preview`, `gemini-3.1-pro-preview`, `gemini-3.1-flash-lite-preview`, `gemini-3.1-flash-lite`, `gemini-3.5-flash`, `gemini-3.5-flash-lite`, `gemini-3.6-flash`, `gemini-3.7-flash`, `gemini-3.8-flash`, `claude-sonnet-4-5`, `claude-opus-4-7`, `claude-opus-4-8`, `claude-sonnet-4-6`, `claude-sonnet-5`, `claude-sonnet-4`, `claude-haiku-4-5`, `claude-3-7-sonnet`, `claude-3-5-sonnet`, `claude-3-5-sonnet-v1`, `claude-3-haiku`, `grok-beta`, `custom-llm`, `qwen3-4b`, `qwen3-30b-a3b`, `qwen36-35b-a3b`, `qwen35-397b-a17b`, `gpt-oss-20b`, `gpt-oss-120b`, `glm-45-air-fp8`, `gemini-2.5-flash-preview-09-2025`, `gemini-2.5-flash-lite-preview-09-2025`, `gemini-2.5-flash-preview-05-20`, `gemini-2.5-flash-preview-04-17`, `gemini-2.5-flash-lite-preview-06-17`, `gemini-2.0-flash-lite-001`, `gemini-2.0-flash-001`, `gemini-1.5-flash-002`, `gemini-1.5-flash-001`, `gemini-1.5-pro-002`, `gemini-1.5-pro-001`, `claude-sonnet-4@20250514`, `claude-sonnet-4-5@20250929`, `claude-haiku-4-5@20251001`, `claude-3-7-sonnet@20250219`, `claude-3-5-sonnet@20240620`, `claude-3-5-sonnet-v2@20241022`, `claude-3-haiku@20240307`, `gpt-5-2025-08-07`, `gpt-5.1-2025-11-13`, `gpt-5.2-2025-12-11`, `gpt-5.4-2026-03-05`, `gpt-5.4-mini-2026-03-17`, `gpt-5.4-nano-2026-03-17`, `gpt-5.5-2026-04-23`, `gpt-5-mini-2025-08-07`, `gpt-5-nano-2025-08-07`, `gpt-4.1-2025-04-14`, `gpt-4.1-mini-2025-04-14`, `gpt-4.1-nano-2025-04-14`, `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-4o-2024-08-06`, `gpt-4o-2024-05-13`, `gpt-4-0613`, `gpt-4-0314`, `gpt-4-turbo-2024-04-09`, `gpt-3.5-turbo-0125`, `gpt-3.5-turbo-1106`, `watt-tool-8b`, `watt-tool-70b`
+            - Allowed values: `gpt-4o-mini`, `gpt-4o`, `gpt-4`, `gpt-4-turbo`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `gpt-5`, `gpt-5.1`, `gpt-5.2`, `gpt-5.2-chat-latest`, `gpt-5.4`, `gpt-5.4-mini`, `gpt-5.4-nano`, `gpt-5.5`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-6-astra`, `gpt-5-mini`, `gpt-5-nano`, `gpt-3.5-turbo`, `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`, `gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-3-pro-preview`, `gemini-3-flash-preview`, `gemini-3.1-pro-preview`, `gemini-3.1-flash-lite-preview`, `gemini-3.1-flash-lite`, `gemini-3.5-flash`, `gemini-3.5-flash-lite`, `gemini-3.6-flash`, `gemini-3.7-flash`, `gemini-3.8-flash`, `claude-sonnet-4-5`, `claude-opus-4-7`, `claude-opus-4-8`, `claude-sonnet-4-6`, `claude-sonnet-5`, `claude-sonnet-4`, `claude-haiku-4-5`, `claude-3-7-sonnet`, `claude-3-5-sonnet`, `claude-3-5-sonnet-v1`, `claude-3-haiku`, `grok-beta`, `custom-llm`, `qwen3-4b`, `qwen3-30b-a3b`, `qwen36-35b-a3b`, `qwen35-397b-a17b`, `gpt-oss-20b`, `gpt-oss-120b`, `glm-45-air-fp8`, `gemini-2.5-flash-preview-09-2025`, `gemini-2.5-flash-lite-preview-09-2025`, `gemini-2.5-flash-preview-05-20`, `gemini-2.5-flash-preview-04-17`, `gemini-2.5-flash-lite-preview-06-17`, `gemini-2.0-flash-lite-001`, `gemini-2.0-flash-001`, `gemini-1.5-flash-002`, `gemini-1.5-flash-001`, `gemini-1.5-pro-002`, `gemini-1.5-pro-001`, `claude-sonnet-4@20250514`, `claude-sonnet-4-5@20250929`, `claude-haiku-4-5@20251001`, `claude-3-7-sonnet@20250219`, `claude-3-5-sonnet@20240620`, `claude-3-5-sonnet-v2@20241022`, `claude-3-haiku@20240307`, `gpt-5-2025-08-07`, `gpt-5.1-2025-11-13`, `gpt-5.2-2025-12-11`, `gpt-5.4-2026-03-05`, `gpt-5.4-mini-2026-03-17`, `gpt-5.4-nano-2026-03-17`, `gpt-5.5-2026-04-23`, `gpt-5-mini-2025-08-07`, `gpt-5-nano-2025-08-07`, `gpt-4.1-2025-04-14`, `gpt-4.1-mini-2025-04-14`, `gpt-4.1-nano-2025-04-14`, `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-4o-2024-08-06`, `gpt-4o-2024-05-13`, `gpt-4-0613`, `gpt-4-0314`, `gpt-4-turbo-2024-04-09`, `gpt-3.5-turbo-0125`, `gpt-3.5-turbo-1106`, `watt-tool-8b`, `watt-tool-70b`
       - `cascade_timeout_seconds` (double, optional, default: 4) — Time in seconds before cascading to backup LLM. Must be between 2 and 15 seconds.
       - `tools` (list of object, optional, deprecated) — A list of tools that the agent can use over the course of the conversation, use tool_ids instead
         - `type`: `api_integration_webhook`
@@ -752,7 +752,7 @@ Successful Response
       - `scope` (enum, optional, default: conversation) — The scope of transcript context used when evaluating this criterion. 'conversation' uses the full transcript; 'agent' uses only the portion where the defining agent was active.
         - Allowed values: `conversation`, `agent`
       - `llm` (enum, optional) — LLM model to use for this evaluation criteria. If not set, uses agent's analysis_llm default.
-        - Allowed values: `gpt-4o-mini`, `gpt-4o`, `gpt-4`, `gpt-4-turbo`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `gpt-5`, `gpt-5.1`, `gpt-5.2`, `gpt-5.2-chat-latest`, `gpt-5.4`, `gpt-5.4-mini`, `gpt-5.4-nano`, `gpt-5.5`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-5-mini`, `gpt-5-nano`, `gpt-3.5-turbo`, `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`, `gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-3-pro-preview`, `gemini-3-flash-preview`, `gemini-3.1-pro-preview`, `gemini-3.1-flash-lite-preview`, `gemini-3.1-flash-lite`, `gemini-3.5-flash`, `gemini-3.5-flash-lite`, `gemini-3.6-flash`, `gemini-3.7-flash`, `gemini-3.8-flash`, `claude-sonnet-4-5`, `claude-opus-4-7`, `claude-opus-4-8`, `claude-sonnet-4-6`, `claude-sonnet-5`, `claude-sonnet-4`, `claude-haiku-4-5`, `claude-3-7-sonnet`, `claude-3-5-sonnet`, `claude-3-5-sonnet-v1`, `claude-3-haiku`, `grok-beta`, `custom-llm`, `qwen3-4b`, `qwen3-30b-a3b`, `qwen36-35b-a3b`, `qwen35-397b-a17b`, `gpt-oss-20b`, `gpt-oss-120b`, `glm-45-air-fp8`, `gemini-2.5-flash-preview-09-2025`, `gemini-2.5-flash-lite-preview-09-2025`, `gemini-2.5-flash-preview-05-20`, `gemini-2.5-flash-preview-04-17`, `gemini-2.5-flash-lite-preview-06-17`, `gemini-2.0-flash-lite-001`, `gemini-2.0-flash-001`, `gemini-1.5-flash-002`, `gemini-1.5-flash-001`, `gemini-1.5-pro-002`, `gemini-1.5-pro-001`, `claude-sonnet-4@20250514`, `claude-sonnet-4-5@20250929`, `claude-haiku-4-5@20251001`, `claude-3-7-sonnet@20250219`, `claude-3-5-sonnet@20240620`, `claude-3-5-sonnet-v2@20241022`, `claude-3-haiku@20240307`, `gpt-5-2025-08-07`, `gpt-5.1-2025-11-13`, `gpt-5.2-2025-12-11`, `gpt-5.4-2026-03-05`, `gpt-5.4-mini-2026-03-17`, `gpt-5.4-nano-2026-03-17`, `gpt-5.5-2026-04-23`, `gpt-5-mini-2025-08-07`, `gpt-5-nano-2025-08-07`, `gpt-4.1-2025-04-14`, `gpt-4.1-mini-2025-04-14`, `gpt-4.1-nano-2025-04-14`, `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-4o-2024-08-06`, `gpt-4o-2024-05-13`, `gpt-4-0613`, `gpt-4-0314`, `gpt-4-turbo-2024-04-09`, `gpt-3.5-turbo-0125`, `gpt-3.5-turbo-1106`, `watt-tool-8b`, `watt-tool-70b`
+        - Allowed values: `gpt-4o-mini`, `gpt-4o`, `gpt-4`, `gpt-4-turbo`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `gpt-5`, `gpt-5.1`, `gpt-5.2`, `gpt-5.2-chat-latest`, `gpt-5.4`, `gpt-5.4-mini`, `gpt-5.4-nano`, `gpt-5.5`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-6-astra`, `gpt-5-mini`, `gpt-5-nano`, `gpt-3.5-turbo`, `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`, `gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-3-pro-preview`, `gemini-3-flash-preview`, `gemini-3.1-pro-preview`, `gemini-3.1-flash-lite-preview`, `gemini-3.1-flash-lite`, `gemini-3.5-flash`, `gemini-3.5-flash-lite`, `gemini-3.6-flash`, `gemini-3.7-flash`, `gemini-3.8-flash`, `claude-sonnet-4-5`, `claude-opus-4-7`, `claude-opus-4-8`, `claude-sonnet-4-6`, `claude-sonnet-5`, `claude-sonnet-4`, `claude-haiku-4-5`, `claude-3-7-sonnet`, `claude-3-5-sonnet`, `claude-3-5-sonnet-v1`, `claude-3-haiku`, `grok-beta`, `custom-llm`, `qwen3-4b`, `qwen3-30b-a3b`, `qwen36-35b-a3b`, `qwen35-397b-a17b`, `gpt-oss-20b`, `gpt-oss-120b`, `glm-45-air-fp8`, `gemini-2.5-flash-preview-09-2025`, `gemini-2.5-flash-lite-preview-09-2025`, `gemini-2.5-flash-preview-05-20`, `gemini-2.5-flash-preview-04-17`, `gemini-2.5-flash-lite-preview-06-17`, `gemini-2.0-flash-lite-001`, `gemini-2.0-flash-001`, `gemini-1.5-flash-002`, `gemini-1.5-flash-001`, `gemini-1.5-pro-002`, `gemini-1.5-pro-001`, `claude-sonnet-4@20250514`, `claude-sonnet-4-5@20250929`, `claude-haiku-4-5@20251001`, `claude-3-7-sonnet@20250219`, `claude-3-5-sonnet@20240620`, `claude-3-5-sonnet-v2@20241022`, `claude-3-haiku@20240307`, `gpt-5-2025-08-07`, `gpt-5.1-2025-11-13`, `gpt-5.2-2025-12-11`, `gpt-5.4-2026-03-05`, `gpt-5.4-mini-2026-03-17`, `gpt-5.4-nano-2026-03-17`, `gpt-5.5-2026-04-23`, `gpt-5-mini-2025-08-07`, `gpt-5-nano-2025-08-07`, `gpt-4.1-2025-04-14`, `gpt-4.1-mini-2025-04-14`, `gpt-4.1-nano-2025-04-14`, `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-4o-2024-08-06`, `gpt-4o-2024-05-13`, `gpt-4-0613`, `gpt-4-0314`, `gpt-4-turbo-2024-04-09`, `gpt-3.5-turbo-0125`, `gpt-3.5-turbo-1106`, `watt-tool-8b`, `watt-tool-70b`
       - `scoring_mode` (enum, optional, default: binary) — How this criterion is scored. 'binary' resolves to success/failure/unknown. 'numeric_uniform' returns a number on the [0, max_score] scale which is normalized into the aggregate conversation success percentage.
         - Allowed values: `binary`, `numeric_uniform`
       - `max_score` (integer, optional, default: 100) — Maximum value of the numeric score scale (minimum is always 0). Only used when scoring_mode is 'numeric_uniform'.
@@ -964,7 +964,7 @@ Successful Response
     - `is_omitted` (boolean, optional, default: false) — If true, this parameter will be completely omitted from the request. Only valid for optional parameters. Mutually exclusive with description, dynamic_variable, is_system_provided, and constant_value.
     - `name` (string, optional) — The name of this data collection item.
     - `llm` (enum, optional) — LLM model to use for this analysis item. If not set, uses agent's analysis_llm default.
-      - Allowed values: `gpt-4o-mini`, `gpt-4o`, `gpt-4`, `gpt-4-turbo`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `gpt-5`, `gpt-5.1`, `gpt-5.2`, `gpt-5.2-chat-latest`, `gpt-5.4`, `gpt-5.4-mini`, `gpt-5.4-nano`, `gpt-5.5`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-5-mini`, `gpt-5-nano`, `gpt-3.5-turbo`, `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`, `gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-3-pro-preview`, `gemini-3-flash-preview`, `gemini-3.1-pro-preview`, `gemini-3.1-flash-lite-preview`, `gemini-3.1-flash-lite`, `gemini-3.5-flash`, `gemini-3.5-flash-lite`, `gemini-3.6-flash`, `gemini-3.7-flash`, `gemini-3.8-flash`, `claude-sonnet-4-5`, `claude-opus-4-7`, `claude-opus-4-8`, `claude-sonnet-4-6`, `claude-sonnet-5`, `claude-sonnet-4`, `claude-haiku-4-5`, `claude-3-7-sonnet`, `claude-3-5-sonnet`, `claude-3-5-sonnet-v1`, `claude-3-haiku`, `grok-beta`, `custom-llm`, `qwen3-4b`, `qwen3-30b-a3b`, `qwen36-35b-a3b`, `qwen35-397b-a17b`, `gpt-oss-20b`, `gpt-oss-120b`, `glm-45-air-fp8`, `gemini-2.5-flash-preview-09-2025`, `gemini-2.5-flash-lite-preview-09-2025`, `gemini-2.5-flash-preview-05-20`, `gemini-2.5-flash-preview-04-17`, `gemini-2.5-flash-lite-preview-06-17`, `gemini-2.0-flash-lite-001`, `gemini-2.0-flash-001`, `gemini-1.5-flash-002`, `gemini-1.5-flash-001`, `gemini-1.5-pro-002`, `gemini-1.5-pro-001`, `claude-sonnet-4@20250514`, `claude-sonnet-4-5@20250929`, `claude-haiku-4-5@20251001`, `claude-3-7-sonnet@20250219`, `claude-3-5-sonnet@20240620`, `claude-3-5-sonnet-v2@20241022`, `claude-3-haiku@20240307`, `gpt-5-2025-08-07`, `gpt-5.1-2025-11-13`, `gpt-5.2-2025-12-11`, `gpt-5.4-2026-03-05`, `gpt-5.4-mini-2026-03-17`, `gpt-5.4-nano-2026-03-17`, `gpt-5.5-2026-04-23`, `gpt-5-mini-2025-08-07`, `gpt-5-nano-2025-08-07`, `gpt-4.1-2025-04-14`, `gpt-4.1-mini-2025-04-14`, `gpt-4.1-nano-2025-04-14`, `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-4o-2024-08-06`, `gpt-4o-2024-05-13`, `gpt-4-0613`, `gpt-4-0314`, `gpt-4-turbo-2024-04-09`, `gpt-3.5-turbo-0125`, `gpt-3.5-turbo-1106`, `watt-tool-8b`, `watt-tool-70b`
+      - Allowed values: `gpt-4o-mini`, `gpt-4o`, `gpt-4`, `gpt-4-turbo`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `gpt-5`, `gpt-5.1`, `gpt-5.2`, `gpt-5.2-chat-latest`, `gpt-5.4`, `gpt-5.4-mini`, `gpt-5.4-nano`, `gpt-5.5`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-6-astra`, `gpt-5-mini`, `gpt-5-nano`, `gpt-3.5-turbo`, `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`, `gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-3-pro-preview`, `gemini-3-flash-preview`, `gemini-3.1-pro-preview`, `gemini-3.1-flash-lite-preview`, `gemini-3.1-flash-lite`, `gemini-3.5-flash`, `gemini-3.5-flash-lite`, `gemini-3.6-flash`, `gemini-3.7-flash`, `gemini-3.8-flash`, `claude-sonnet-4-5`, `claude-opus-4-7`, `claude-opus-4-8`, `claude-sonnet-4-6`, `claude-sonnet-5`, `claude-sonnet-4`, `claude-haiku-4-5`, `claude-3-7-sonnet`, `claude-3-5-sonnet`, `claude-3-5-sonnet-v1`, `claude-3-haiku`, `grok-beta`, `custom-llm`, `qwen3-4b`, `qwen3-30b-a3b`, `qwen36-35b-a3b`, `qwen35-397b-a17b`, `gpt-oss-20b`, `gpt-oss-120b`, `glm-45-air-fp8`, `gemini-2.5-flash-preview-09-2025`, `gemini-2.5-flash-lite-preview-09-2025`, `gemini-2.5-flash-preview-05-20`, `gemini-2.5-flash-preview-04-17`, `gemini-2.5-flash-lite-preview-06-17`, `gemini-2.0-flash-lite-001`, `gemini-2.0-flash-001`, `gemini-1.5-flash-002`, `gemini-1.5-flash-001`, `gemini-1.5-pro-002`, `gemini-1.5-pro-001`, `claude-sonnet-4@20250514`, `claude-sonnet-4-5@20250929`, `claude-haiku-4-5@20251001`, `claude-3-7-sonnet@20250219`, `claude-3-5-sonnet@20240620`, `claude-3-5-sonnet-v2@20241022`, `claude-3-haiku@20240307`, `gpt-5-2025-08-07`, `gpt-5.1-2025-11-13`, `gpt-5.2-2025-12-11`, `gpt-5.4-2026-03-05`, `gpt-5.4-mini-2026-03-17`, `gpt-5.4-nano-2026-03-17`, `gpt-5.5-2026-04-23`, `gpt-5-mini-2025-08-07`, `gpt-5-nano-2025-08-07`, `gpt-4.1-2025-04-14`, `gpt-4.1-mini-2025-04-14`, `gpt-4.1-nano-2025-04-14`, `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-4o-2024-08-06`, `gpt-4o-2024-05-13`, `gpt-4-0613`, `gpt-4-0314`, `gpt-4-turbo-2024-04-09`, `gpt-3.5-turbo-0125`, `gpt-3.5-turbo-1106`, `watt-tool-8b`, `watt-tool-70b`
     - `allowed_values_dynamic_variable` (string, optional, default: , deprecated) — DEPRECATED: use `allowed_values` instead. When set, the LLM provides the value but the runtime rejects any value not present in the list held by this dynamic variable (must be a JSON array such as ["ws_alpha", "ws_beta"]). Use to let the LLM pick from a server-verified set (e.g. the IDs the current user is allowed to access). Requires description; mutually exclusive with dynamic_variable, is_system_provided, constant_value, and is_omitted.
   - `data_collection_scopes` (map from string to enum, optional) — Scope per data collection item ID. Missing keys default to conversation scope.
     - Allowed values: `conversation`, `agent`
@@ -1130,7 +1130,7 @@ Successful Response
   - `trust_context` (enum, optional, default: unknown) — The trust context in which the agent operates.
     - Allowed values: `unknown`, `low`, `high`
   - `analysis_llm` (enum, optional) — Default LLM model for post-call analysis (evaluation and data collection)
-    - Allowed values: `gpt-4o-mini`, `gpt-4o`, `gpt-4`, `gpt-4-turbo`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `gpt-5`, `gpt-5.1`, `gpt-5.2`, `gpt-5.2-chat-latest`, `gpt-5.4`, `gpt-5.4-mini`, `gpt-5.4-nano`, `gpt-5.5`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-5-mini`, `gpt-5-nano`, `gpt-3.5-turbo`, `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`, `gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-3-pro-preview`, `gemini-3-flash-preview`, `gemini-3.1-pro-preview`, `gemini-3.1-flash-lite-preview`, `gemini-3.1-flash-lite`, `gemini-3.5-flash`, `gemini-3.5-flash-lite`, `gemini-3.6-flash`, `gemini-3.7-flash`, `gemini-3.8-flash`, `claude-sonnet-4-5`, `claude-opus-4-7`, `claude-opus-4-8`, `claude-sonnet-4-6`, `claude-sonnet-5`, `claude-sonnet-4`, `claude-haiku-4-5`, `claude-3-7-sonnet`, `claude-3-5-sonnet`, `claude-3-5-sonnet-v1`, `claude-3-haiku`, `grok-beta`, `custom-llm`, `qwen3-4b`, `qwen3-30b-a3b`, `qwen36-35b-a3b`, `qwen35-397b-a17b`, `gpt-oss-20b`, `gpt-oss-120b`, `glm-45-air-fp8`, `gemini-2.5-flash-preview-09-2025`, `gemini-2.5-flash-lite-preview-09-2025`, `gemini-2.5-flash-preview-05-20`, `gemini-2.5-flash-preview-04-17`, `gemini-2.5-flash-lite-preview-06-17`, `gemini-2.0-flash-lite-001`, `gemini-2.0-flash-001`, `gemini-1.5-flash-002`, `gemini-1.5-flash-001`, `gemini-1.5-pro-002`, `gemini-1.5-pro-001`, `claude-sonnet-4@20250514`, `claude-sonnet-4-5@20250929`, `claude-haiku-4-5@20251001`, `claude-3-7-sonnet@20250219`, `claude-3-5-sonnet@20240620`, `claude-3-5-sonnet-v2@20241022`, `claude-3-haiku@20240307`, `gpt-5-2025-08-07`, `gpt-5.1-2025-11-13`, `gpt-5.2-2025-12-11`, `gpt-5.4-2026-03-05`, `gpt-5.4-mini-2026-03-17`, `gpt-5.4-nano-2026-03-17`, `gpt-5.5-2026-04-23`, `gpt-5-mini-2025-08-07`, `gpt-5-nano-2025-08-07`, `gpt-4.1-2025-04-14`, `gpt-4.1-mini-2025-04-14`, `gpt-4.1-nano-2025-04-14`, `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-4o-2024-08-06`, `gpt-4o-2024-05-13`, `gpt-4-0613`, `gpt-4-0314`, `gpt-4-turbo-2024-04-09`, `gpt-3.5-turbo-0125`, `gpt-3.5-turbo-1106`, `watt-tool-8b`, `watt-tool-70b`
+    - Allowed values: `gpt-4o-mini`, `gpt-4o`, `gpt-4`, `gpt-4-turbo`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `gpt-5`, `gpt-5.1`, `gpt-5.2`, `gpt-5.2-chat-latest`, `gpt-5.4`, `gpt-5.4-mini`, `gpt-5.4-nano`, `gpt-5.5`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-6-astra`, `gpt-5-mini`, `gpt-5-nano`, `gpt-3.5-turbo`, `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`, `gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-3-pro-preview`, `gemini-3-flash-preview`, `gemini-3.1-pro-preview`, `gemini-3.1-flash-lite-preview`, `gemini-3.1-flash-lite`, `gemini-3.5-flash`, `gemini-3.5-flash-lite`, `gemini-3.6-flash`, `gemini-3.7-flash`, `gemini-3.8-flash`, `claude-sonnet-4-5`, `claude-opus-4-7`, `claude-opus-4-8`, `claude-sonnet-4-6`, `claude-sonnet-5`, `claude-sonnet-4`, `claude-haiku-4-5`, `claude-3-7-sonnet`, `claude-3-5-sonnet`, `claude-3-5-sonnet-v1`, `claude-3-haiku`, `grok-beta`, `custom-llm`, `qwen3-4b`, `qwen3-30b-a3b`, `qwen36-35b-a3b`, `qwen35-397b-a17b`, `gpt-oss-20b`, `gpt-oss-120b`, `glm-45-air-fp8`, `gemini-2.5-flash-preview-09-2025`, `gemini-2.5-flash-lite-preview-09-2025`, `gemini-2.5-flash-preview-05-20`, `gemini-2.5-flash-preview-04-17`, `gemini-2.5-flash-lite-preview-06-17`, `gemini-2.0-flash-lite-001`, `gemini-2.0-flash-001`, `gemini-1.5-flash-002`, `gemini-1.5-flash-001`, `gemini-1.5-pro-002`, `gemini-1.5-pro-001`, `claude-sonnet-4@20250514`, `claude-sonnet-4-5@20250929`, `claude-haiku-4-5@20251001`, `claude-3-7-sonnet@20250219`, `claude-3-5-sonnet@20240620`, `claude-3-5-sonnet-v2@20241022`, `claude-3-haiku@20240307`, `gpt-5-2025-08-07`, `gpt-5.1-2025-11-13`, `gpt-5.2-2025-12-11`, `gpt-5.4-2026-03-05`, `gpt-5.4-mini-2026-03-17`, `gpt-5.4-nano-2026-03-17`, `gpt-5.5-2026-04-23`, `gpt-5-mini-2025-08-07`, `gpt-5-nano-2025-08-07`, `gpt-4.1-2025-04-14`, `gpt-4.1-mini-2025-04-14`, `gpt-4.1-nano-2025-04-14`, `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-4o-2024-08-06`, `gpt-4o-2024-05-13`, `gpt-4-0613`, `gpt-4-0314`, `gpt-4-turbo-2024-04-09`, `gpt-3.5-turbo-0125`, `gpt-3.5-turbo-1106`, `watt-tool-8b`, `watt-tool-70b`
   - `topic_discovery` (object, optional) — Per-agent topic discovery configuration
   - `sentiment_analysis` (object, optional) — Per-agent post-call sentiment analysis configuration
   - `alerting` (object, optional) — Agent-level alerting configuration overriding workspace settings.
@@ -1145,7 +1145,14 @@ Successful Response
     - `auto_resolve_after_inactive_minutes` (integer, optional)
     - `notifiers` (list of object, optional)
       - `type`: `integration`
-        - `connection_id` (string, required)
+        - `value` (object, required)
+          - `integration_type`: `pagerduty`
+            - `connection_id` (string, required)
+            - `type` ("integration", optional)
+          - `integration_type`: `slack`
+            - `channel_id` (string, required)
+            - `connection_id` (string, required)
+            - `type` ("integration", optional)
       - `type`: `webhook`
         - `webhook_id` (string, required)
   - `safety` (object, optional)
@@ -1647,38 +1654,49 @@ Validation Error
 
 ```json
 {
-  "agent_id": "agent_7101k5zvyjhmfg983brhmhkd98n6",
-  "name": "My Agent",
+  "agent_id": "agent_id",
+  "name": "name",
   "conversation_config": {
     "asr": {
       "quality": "high",
-      "provider": "scribe_realtime",
-      "user_input_audio_format": "pcm_16000",
+      "provider": "elevenlabs",
+      "user_input_audio_format": "pcm_8000",
       "keywords": [
-        "hello",
-        "world"
+        "keywords",
+        "keywords"
       ]
     },
     "turn": {
-      "turn_timeout": 7,
+      "turn_timeout": 1.1,
       "initial_wait_time": 1.1,
-      "silence_end_call_timeout": -1,
-      "turn_eagerness": "normal",
+      "silence_end_call_timeout": 1.1,
+      "turn_eagerness": "patient",
       "spelling_patience": "auto",
-      "speculative_turn": false,
-      "retranscribe_on_turn_timeout": false,
-      "turn_model": "turn_v3",
+      "speculative_turn": true,
+      "retranscribe_on_turn_timeout": true,
+      "turn_model": "turn_v2",
       "interruption_ignore_terms": [
+        "interruption_ignore_terms",
         "interruption_ignore_terms"
       ],
       "interruption_ignore_term_languages": [
+        "interruption_ignore_term_languages",
         "interruption_ignore_term_languages"
       ],
-      "merge_with_default_ignore_terms": false,
-      "transcribe_on_disabled_interruptions": false,
+      "merge_with_default_ignore_terms": true,
+      "transcribe_on_disabled_interruptions": true,
       "soft_timeout_config": {
-        "timeout_seconds": -1,
-        "message": "Hhmmmm...yeah."
+        "timeout_seconds": 1.1,
+        "message": "Hhmmmm...yeah.",
+        "additional_soft_timeout_messages": [
+          "additional_soft_timeout_messages",
+          "additional_soft_timeout_messages"
+        ],
+        "use_llm_generated_message": true,
+        "randomize_fillers": true,
+        "max_soft_timeouts_per_generation": 8,
+        "llm_generated_message_prompt_override": "x",
+        "disable_until_first_user_message": true
       }
     },
     "tts": {
@@ -1686,250 +1704,297 @@ Validation Error
       "voice_id": "cjVigY5qzO86Huf0OWal",
       "supported_voices": [
         {
-          "label": "label",
-          "voice_id": "voice_id"
+          "label": "x",
+          "voice_id": "x",
+          "description": "description",
+          "language": "language",
+          "model_family": "turbo",
+          "optimize_streaming_latency": 1,
+          "stability": 1,
+          "speed": 1.2,
+          "similarity_boost": 1
+        },
+        {
+          "label": "x",
+          "voice_id": "x",
+          "description": "description",
+          "language": "language",
+          "model_family": "turbo",
+          "optimize_streaming_latency": 1,
+          "stability": 1,
+          "speed": 1.2,
+          "similarity_boost": 1
         }
       ],
       "expressive_mode": true,
       "suggested_audio_tags": [
         {
-          "tag": "tag"
+          "tag": "x",
+          "description": "description"
+        },
+        {
+          "tag": "x",
+          "description": "description"
         }
       ],
-      "agent_output_audio_format": "pcm_16000",
-      "optimize_streaming_latency": 3,
-      "stability": 0.5,
-      "speed": 1,
-      "similarity_boost": 0.8,
+      "agent_output_audio_format": "pcm_8000",
+      "optimize_streaming_latency": 1,
+      "stability": 1,
+      "speed": 1.2,
+      "similarity_boost": 1,
       "text_normalisation_type": "system_prompt",
       "pronunciation_dictionary_locators": [
         {
           "pronunciation_dictionary_id": "pronunciation_dictionary_id",
-          "version_id": null
+          "version_id": "version_id"
+        },
+        {
+          "pronunciation_dictionary_id": "pronunciation_dictionary_id",
+          "version_id": "version_id"
         }
       ],
       "enable_phoneme_tags": true,
       "audio_effects": {
-        "distance": 1.1,
-        "send_level": 1.1,
-        "filter_preset_id": null,
-        "environment_id": null,
-        "background_noise_id": null,
-        "seed": null
+        "distance": 1,
+        "send_level": 1,
+        "filter_preset_id": "filter_preset_id",
+        "environment_id": "environment_id",
+        "background_noise_id": "background_noise_id",
+        "seed": 1
       }
     },
     "conversation": {
       "text_only": true,
-      "max_duration_seconds": 600,
+      "max_duration_seconds": 1,
       "client_events": [
-        "audio",
-        "interruption"
-      ],
-      "monitoring_enabled": true,
-      "monitoring_events": [
+        "conversation_initiation_metadata",
         "conversation_initiation_metadata"
       ],
+      "file_input": {
+        "enabled": true,
+        "max_files_in_memory": 30,
+        "max_files_per_conversation": 1
+      },
+      "monitoring_enabled": true,
+      "monitoring_events": [
+        "conversation_initiation_metadata",
+        "conversation_initiation_metadata"
+      ],
+      "dtmf_input_settings": {
+        "dtmf_input_timeout": 10,
+        "hash_terminator": true,
+        "redact_input": true
+      },
+      "background_sound": {
+        "source_type": "preset",
+        "source_id": "office2",
+        "volume": 1,
+        "crossfade_loop": true
+      },
       "source_attribution": true
     },
     "language_presets": {
-      "key": {
+      "language_presets": {
         "overrides": {
           "asr": {
             "keywords": [
-              "hello",
-              "world"
+              "keywords",
+              "keywords"
             ]
           },
           "turn": {
-            "soft_timeout_config": {
-              "message": "Hhmmmm...yeah."
-            }
+            "soft_timeout_config": {}
           },
           "tts": {
             "model_id": "eleven_turbo_v2",
-            "voice_id": "cjVigY5qzO86Huf0OWal",
-            "stability": 0.5,
-            "speed": 1,
-            "similarity_boost": 0.8,
-            "pronunciation_dictionary_locators": [
-              {
-                "pronunciation_dictionary_id": "pronunciation_dictionary_id",
-                "version_id": null
-              }
-            ]
+            "voice_id": "voice_id",
+            "supported_voices": [],
+            "stability": 1.1,
+            "speed": 1.1,
+            "similarity_boost": 1.1,
+            "pronunciation_dictionary_locators": []
           },
           "conversation": {
-            "max_duration_seconds": 600
+            "text_only": true,
+            "max_duration_seconds": 1
           },
           "agent": {
-            "first_message": "Hello, how can I help you today?",
-            "language": "en",
-            "prompt": {
-              "prompt": "You are a helpful assistant that can answer questions about the topic of the conversation.",
-              "llm": "gemini-2.0-flash-001",
-              "tool_ids": [
-                "tool_ids"
-              ],
-              "knowledge_base": [
-                {
-                  "type": "file",
-                  "name": "My Knowledge Base",
-                  "id": "123",
-                  "usage_mode": "auto"
-                }
-              ]
-            }
+            "first_message": "first_message",
+            "language": "language",
+            "max_conversation_duration_message": "max_conversation_duration_message",
+            "prompt": {}
           }
+        },
+        "first_message_translation": {
+          "source_hash": "source_hash",
+          "text": "text"
+        },
+        "soft_timeout_translation": {
+          "source_hash": "source_hash",
+          "text": "text"
         }
       }
     },
+    "vad": {},
     "agent": {
-      "first_message": "Hello, how can I help you today?",
+      "first_message": "",
       "language": "en",
       "hinglish_mode": true,
-      "disable_first_message_interruptions": false,
-      "max_conversation_duration_message": "max_conversation_duration_message",
+      "dynamic_variables": {
+        "key": "value"
+      },
+      "disable_first_message_interruptions": true,
+      "max_conversation_duration_message": "",
+      "text_behavior_overrides": {
+        "text_behavior_overrides": {
+          "verbosity": "auto",
+          "output_format": "mp3_22050_32",
+          "interaction_budget": "realtime"
+        }
+      },
       "prompt": {
-        "prompt": "You are a helpful assistant that can answer questions about the topic of the conversation.",
-        "llm": "gemini-2.0-flash-001",
-        "temperature": 0,
-        "max_tokens": -1,
+        "prompt": "",
+        "llm": "gpt-4o-mini",
+        "reasoning_effort": "none",
+        "thinking_budget": 1,
+        "enable_reasoning_summary": true,
+        "temperature": 1.1,
+        "max_tokens": 1,
         "tool_ids": [
+          "tool_ids",
           "tool_ids"
         ],
         "built_in_tools": {
           "transfer_to_agent": {
-            "name": "end_call",
+            "name": "name",
             "params": {
               "system_tool_type": "end_call"
-            },
-            "type": "system",
-            "description": "",
-            "assignments": [
-              {
-                "dynamic_variable": "user_name",
-                "value_path": "user.name",
-                "source": "response",
-                "sanitize": false,
-                "preserve_native_type": false
-              }
-            ]
+            }
           },
           "end_call": {
-            "name": "end_call",
+            "name": "name",
             "params": {
               "system_tool_type": "end_call"
-            },
-            "type": "system",
-            "description": "",
-            "assignments": [
-              {
-                "dynamic_variable": "user_name",
-                "value_path": "user.name",
-                "source": "response",
-                "sanitize": false,
-                "preserve_native_type": false
-              }
-            ]
+            }
           },
           "language_detection": {
-            "name": "end_call",
+            "name": "name",
             "params": {
               "system_tool_type": "end_call"
-            },
-            "type": "system",
-            "description": "",
-            "assignments": [
-              {
-                "dynamic_variable": "user_name",
-                "value_path": "user.name",
-                "source": "response",
-                "sanitize": false,
-                "preserve_native_type": false
-              }
-            ]
+            }
           },
           "transfer_to_number": {
-            "name": "end_call",
+            "name": "name",
             "params": {
               "system_tool_type": "end_call"
-            },
-            "type": "system",
-            "description": "",
-            "assignments": [
-              {
-                "dynamic_variable": "user_name",
-                "value_path": "user.name",
-                "source": "response",
-                "sanitize": false,
-                "preserve_native_type": false
-              }
-            ]
+            }
           },
           "skip_turn": {
-            "name": "end_call",
+            "name": "name",
             "params": {
               "system_tool_type": "end_call"
-            },
-            "type": "system",
-            "description": "",
-            "assignments": [
-              {
-                "dynamic_variable": "user_name",
-                "value_path": "user.name",
-                "source": "response",
-                "sanitize": false,
-                "preserve_native_type": false
-              }
-            ]
+            }
           },
           "play_keypad_touch_tone": {
-            "name": "end_call",
+            "name": "name",
             "params": {
               "system_tool_type": "end_call"
-            },
-            "type": "system",
-            "description": "",
-            "assignments": [
-              {
-                "dynamic_variable": "user_name",
-                "value_path": "user.name",
-                "source": "response",
-                "sanitize": false,
-                "preserve_native_type": false
-              }
-            ]
+            }
           },
           "voicemail_detection": {
-            "name": "end_call",
+            "name": "name",
             "params": {
               "system_tool_type": "end_call"
-            },
-            "type": "system",
-            "description": "",
-            "assignments": [
-              {
-                "dynamic_variable": "user_name",
-                "value_path": "user.name",
-                "source": "response",
-                "sanitize": false,
-                "preserve_native_type": false
-              }
-            ]
+            }
           }
         },
+        "mcp_server_ids": [
+          "mcp_server_ids",
+          "mcp_server_ids"
+        ],
+        "native_mcp_server_ids": [
+          "native_mcp_server_ids",
+          "native_mcp_server_ids"
+        ],
         "knowledge_base": [
           {
             "type": "file",
-            "name": "My Knowledge Base",
-            "id": "123",
-            "usage_mode": "auto"
+            "name": "name",
+            "id": "id",
+            "usage_mode": "prompt"
+          },
+          {
+            "type": "file",
+            "name": "name",
+            "id": "id",
+            "usage_mode": "prompt"
           }
         ],
+        "custom_llm": {
+          "url": "url",
+          "model_id": "model_id",
+          "request_headers": {},
+          "api_version": "api_version",
+          "api_type": "chat_completions"
+        },
+        "ignore_default_personality": true,
         "rag": {
-          "max_vector_distance": 0.5,
-          "max_retrieved_rag_chunks_count": 5
-        }
+          "enabled": true,
+          "embedding_model": "e5_mistral_7b_instruct",
+          "max_vector_distance": 1.1,
+          "max_documents_length": 1,
+          "max_retrieved_rag_chunks_count": 20,
+          "num_candidates": 10000,
+          "query_rewrite_prompt_override": "x",
+          "knowledge_base_tool_info": {}
+        },
+        "timezone": "timezone",
+        "backup_llm_config": {
+          "preference": "default"
+        },
+        "cascade_timeout_seconds": 15,
+        "tools": [
+          {
+            "type": "api_integration_webhook",
+            "api_integration_connection_id": "api_integration_connection_id",
+            "api_integration_id": "api_integration_id",
+            "assignments": [],
+            "description": "description",
+            "dynamic_variables": {},
+            "execution_mode": "immediate",
+            "interruption_mode": "allow",
+            "name": "name",
+            "pre_tool_speech": "auto",
+            "response_timeout_secs": 300,
+            "tool_call_sound_behavior": "auto",
+            "tool_error_handling_mode": "auto",
+            "tool_version": "1.0.0",
+            "disable_interruptions": true,
+            "force_pre_tool_speech": true,
+            "api_schema_overrides": {},
+            "tool_call_sound": "typing"
+          },
+          {
+            "type": "api_integration_webhook",
+            "api_integration_connection_id": "api_integration_connection_id",
+            "api_integration_id": "api_integration_id",
+            "assignments": [],
+            "description": "description",
+            "dynamic_variables": {},
+            "execution_mode": "immediate",
+            "interruption_mode": "allow",
+            "name": "name",
+            "pre_tool_speech": "auto",
+            "response_timeout_secs": 300,
+            "tool_call_sound_behavior": "auto",
+            "tool_error_handling_mode": "auto",
+            "tool_version": "1.0.0",
+            "disable_interruptions": true,
+            "force_pre_tool_speech": true,
+            "api_schema_overrides": {},
+            "tool_call_sound": "typing"
+          }
+        ]
       }
     }
   },
@@ -1941,13 +2006,28 @@ Validation Error
     "evaluation": {
       "criteria": [
         {
-          "id": "criterion_binary_001",
-          "name": "Issue resolved",
-          "conversation_goal_prompt": "Determine whether the agent fully resolved the user's issue.",
-          "use_knowledge_base": false,
+          "id": "id",
+          "name": "name",
+          "conversation_goal_prompt": "conversation_goal_prompt",
+          "type": "prompt",
+          "use_knowledge_base": true,
           "scope": "conversation",
+          "llm": "gpt-4o-mini",
           "scoring_mode": "binary",
-          "max_score": 100
+          "max_score": 1,
+          "score_instructions": "score_instructions"
+        },
+        {
+          "id": "id",
+          "name": "name",
+          "conversation_goal_prompt": "conversation_goal_prompt",
+          "type": "prompt",
+          "use_knowledge_base": true,
+          "scope": "conversation",
+          "llm": "gpt-4o-mini",
+          "scoring_mode": "binary",
+          "max_score": 1,
+          "score_instructions": "score_instructions"
         }
       ]
     },
@@ -1961,12 +2041,15 @@ Validation Error
         "color_2": "#9ce6e6"
       },
       "feedback_mode": "none",
-      "bg_color": "bg_color",
-      "text_color": "text_color",
-      "btn_color": "btn_color",
-      "btn_text_color": "btn_text_color",
-      "border_color": "border_color",
-      "focus_color": "focus_color",
+      "end_feedback": {
+        "type": "rating"
+      },
+      "bg_color": "#ffffff",
+      "text_color": "#000000",
+      "btn_color": "#000000",
+      "btn_text_color": "#ffffff",
+      "border_color": "#e1e1e1",
+      "focus_color": "#000000",
       "border_radius": 1,
       "btn_radius": 1,
       "action_text": "action_text",
@@ -1986,6 +2069,9 @@ Validation Error
       "markdown_link_allowed_hosts": [
         {
           "hostname": "hostname"
+        },
+        {
+          "hostname": "hostname"
         }
       ],
       "markdown_link_include_www": true,
@@ -2001,41 +2087,177 @@ Validation Error
       "show_conversation_id": true,
       "strip_audio_tags": true,
       "syntax_highlight_theme": "light",
+      "text_contents": {
+        "main_label": "main_label",
+        "start_call": "start_call",
+        "start_chat": "start_chat",
+        "new_call": "new_call",
+        "end_call": "end_call",
+        "mute_microphone": "mute_microphone",
+        "change_language": "change_language",
+        "collapse": "collapse",
+        "expand": "expand",
+        "copied": "copied",
+        "accept_terms": "accept_terms",
+        "dismiss_terms": "dismiss_terms",
+        "listening_status": "listening_status",
+        "speaking_status": "speaking_status",
+        "connecting_status": "connecting_status",
+        "chatting_status": "chatting_status",
+        "input_label": "input_label",
+        "input_placeholder": "input_placeholder",
+        "input_placeholder_text_only": "input_placeholder_text_only",
+        "input_placeholder_new_conversation": "input_placeholder_new_conversation",
+        "user_ended_conversation": "user_ended_conversation",
+        "agent_ended_conversation": "agent_ended_conversation",
+        "conversation_id": "conversation_id",
+        "error_occurred": "error_occurred",
+        "copy_id": "copy_id",
+        "initiate_feedback": "initiate_feedback",
+        "request_follow_up_feedback": "request_follow_up_feedback",
+        "thanks_for_feedback": "thanks_for_feedback",
+        "thanks_for_feedback_details": "thanks_for_feedback_details",
+        "follow_up_feedback_placeholder": "follow_up_feedback_placeholder",
+        "submit": "submit",
+        "go_back": "go_back",
+        "send_message": "send_message",
+        "text_mode": "text_mode",
+        "voice_mode": "voice_mode",
+        "switched_to_text_mode": "switched_to_text_mode",
+        "switched_to_voice_mode": "switched_to_voice_mode",
+        "copy": "copy",
+        "download": "download",
+        "wrap": "wrap",
+        "agent_working": "agent_working",
+        "agent_done": "agent_done",
+        "agent_error": "agent_error",
+        "attach_file": "attach_file",
+        "remove_file": "remove_file",
+        "file_upload_error": "file_upload_error",
+        "file_type_unsupported": "file_type_unsupported",
+        "file_too_large": "file_too_large",
+        "file_limit_reached": "file_limit_reached",
+        "typing_indicator": "typing_indicator"
+      },
+      "styles": {
+        "base": "base",
+        "base_hover": "base_hover",
+        "base_active": "base_active",
+        "base_border": "base_border",
+        "base_subtle": "base_subtle",
+        "base_primary": "base_primary",
+        "base_error": "base_error",
+        "accent": "accent",
+        "accent_hover": "accent_hover",
+        "accent_active": "accent_active",
+        "accent_border": "accent_border",
+        "accent_subtle": "accent_subtle",
+        "accent_primary": "accent_primary",
+        "overlay_padding": 1.1,
+        "button_radius": 1.1,
+        "input_radius": 1.1,
+        "bubble_radius": 1.1,
+        "sheet_radius": 1.1,
+        "compact_sheet_radius": 1.1,
+        "dropdown_sheet_radius": 1.1
+      },
       "show_resize_button": true,
-      "language_selector": false,
+      "language_selector": true,
       "supports_text_only": true,
-      "custom_avatar_path": "https://example.com/avatar.png",
+      "custom_avatar_path": "custom_avatar_path",
       "language_presets": {
-        "key": {}
+        "language_presets": {
+          "text_contents": {},
+          "text_contents_translation": {},
+          "terms_text": "terms_text",
+          "terms_html": "terms_html",
+          "terms_key": "terms_key",
+          "terms_translation": {
+            "source_hash": "source_hash",
+            "text": "text"
+          }
+        }
       }
     },
     "data_collection": {
-      "key": {
-        "type": "string",
-        "description": "My property",
-        "is_system_provided": false,
+      "data_collection": {
+        "type": "boolean",
+        "description": "",
+        "enum": [
+          "enum",
+          "enum"
+        ],
+        "is_system_provided": true,
         "dynamic_variable": "",
-        "constant_value": ""
+        "allowed_values": {
+          "dynamic_variable": "x"
+        },
+        "constant_value": "constant_value",
+        "is_omitted": true,
+        "name": "name",
+        "llm": "gpt-4o-mini",
+        "allowed_values_dynamic_variable": ""
       }
     },
     "data_collection_scopes": {
-      "key": "conversation"
+      "data_collection_scopes": "conversation"
     },
     "analysis_items": {
       "evaluation_criteria": [
         {
           "source": "system",
-          "analysis_item_id": "__system_eval_criteria_sentiment"
+          "analysis_item_id": "__system_eval_criteria_sentiment",
+          "scope": "conversation",
+          "weight": 1.1
+        },
+        {
+          "source": "system",
+          "analysis_item_id": "__system_eval_criteria_sentiment",
+          "scope": "conversation",
+          "weight": 1.1
         }
       ],
       "data_collection": [
         {
           "source": "system",
-          "analysis_item_id": "__system_data_collection_topic"
+          "analysis_item_id": "__system_data_collection_topic",
+          "scope": "conversation"
+        },
+        {
+          "source": "system",
+          "analysis_item_id": "__system_data_collection_topic",
+          "scope": "conversation"
         }
       ]
     },
     "overrides": {
+      "conversation_config_override": {
+        "asr": {
+          "keywords": true
+        },
+        "turn": {
+          "soft_timeout_config": {}
+        },
+        "tts": {
+          "model_id": true,
+          "voice_id": true,
+          "supported_voices": true,
+          "stability": true,
+          "speed": true,
+          "similarity_boost": true,
+          "pronunciation_dictionary_locators": true
+        },
+        "conversation": {
+          "text_only": true,
+          "max_duration_seconds": true
+        },
+        "agent": {
+          "first_message": true,
+          "language": true,
+          "max_conversation_duration_message": true,
+          "prompt": {}
+        }
+      },
       "custom_llm_extra_body": true,
       "enable_conversation_initiation_client_data_from_webhook": true,
       "enable_starting_workflow_node_id_from_client": true,
@@ -2043,26 +2265,62 @@ Validation Error
     },
     "workspace_overrides": {
       "conversation_initiation_client_data_webhook": {
-        "url": "https://example.com/webhook",
+        "url": "url",
         "request_headers": {
-          "Content-Type": "application/json"
+          "request_headers": "request_headers"
         }
+      },
+      "webhooks": {
+        "post_call_webhook_id": "post_call_webhook_id",
+        "events": [
+          "transcript",
+          "transcript"
+        ],
+        "transcript_format": "json",
+        "send_audio": true
       }
     },
     "testing": {
       "attached_tests": [
         {
-          "test_id": "test_123",
-          "workflow_node_id": "node_abc"
+          "test_id": "test_id",
+          "workflow_node_id": "workflow_node_id"
         },
         {
-          "test_id": "test_456"
+          "test_id": "test_id",
+          "workflow_node_id": "workflow_node_id"
         }
       ]
     },
     "archived": true,
     "guardrails": {
-      "version": "1"
+      "version": "1",
+      "focus": {
+        "is_enabled": true
+      },
+      "prompt_injection": {
+        "is_enabled": true
+      },
+      "content": {
+        "execution_mode": "streaming",
+        "config": {
+          "sexual": {},
+          "violence": {},
+          "harassment": {},
+          "self_harm": {},
+          "profanity": {},
+          "religion_or_politics": {},
+          "medical_and_legal_information": {}
+        },
+        "trigger_action": {
+          "type": "end_call"
+        }
+      },
+      "custom": {
+        "config": {
+          "configs": []
+        }
+      }
     },
     "summary_language": "summary_language",
     "auto_translate_transcript_to_app_language": true,
@@ -2070,20 +2328,23 @@ Validation Error
       "enable_auth": true,
       "allowlist": [
         {
-          "hostname": "https://example.com"
+          "hostname": "hostname"
+        },
+        {
+          "hostname": "hostname"
         }
       ],
       "require_origin_header": true,
-      "shareable_token": "1234567890"
+      "shareable_token": "shareable_token"
     },
     "call_limits": {
-      "agent_concurrency_limit": -1,
-      "daily_limit": 100000,
+      "agent_concurrency_limit": 1,
+      "daily_limit": 1,
       "bursting_enabled": true
     },
     "queueing_config": {
       "enabled": true,
-      "wait_timeout_seconds": 1,
+      "wait_timeout_seconds": 1800,
       "hold_audio": {
         "audio_path": "audio_path",
         "audio_url": "audio_url",
@@ -2094,23 +2355,52 @@ Validation Error
     },
     "privacy": {
       "record_voice": true,
-      "retention_days": -1,
-      "delete_transcript_and_pii": false,
-      "delete_audio": false,
-      "apply_to_existing_conversations": false,
-      "zero_retention_mode": false
+      "retention_days": 1,
+      "delete_transcript_and_pii": true,
+      "delete_audio": true,
+      "apply_to_existing_conversations": true,
+      "zero_retention_mode": true,
+      "conversation_history_redaction": {
+        "enabled": true,
+        "entities": [
+          "name",
+          "name"
+        ]
+      }
     },
     "trust_context": "unknown",
     "analysis_llm": "gpt-4o-mini",
+    "topic_discovery": {},
+    "sentiment_analysis": {},
     "alerting": {
       "monitor_configs": {
-        "key": {}
+        "monitor_configs": {
+          "threshold": 1,
+          "relative_increase_threshold": 10,
+          "min_failure_count": 1,
+          "min_history_bucket_count": 1,
+          "min_sample_count": 1,
+          "suspect_trigger_threshold": 10,
+          "auto_resolve_after_inactive_minutes": 1
+        }
       },
       "auto_resolve_after_inactive_minutes": 1,
       "notifiers": [
         {
           "type": "integration",
-          "connection_id": "connection_id"
+          "value": {
+            "integration_type": "pagerduty",
+            "connection_id": "connection_id",
+            "type": "integration"
+          }
+        },
+        {
+          "type": "integration",
+          "value": {
+            "integration_type": "pagerduty",
+            "connection_id": "connection_id",
+            "type": "integration"
+          }
         }
       ]
     },
@@ -2123,16 +2413,48 @@ Validation Error
   "phone_numbers": [
     {
       "provider": "exotel",
-      "label": "Exotel Outbound",
-      "phone_number": "+919999999999",
-      "phone_number_id": "phnum_X3Pbu5gP6NNKBscdCdwB",
+      "label": "label",
+      "phone_number": "phone_number",
+      "phone_number_id": "phone_number_id",
       "assigned_agent": {
-        "agent_id": "F3Pbu5gP6NNKBscdCdwB",
-        "agent_name": "My Agent"
-      }
+        "agent_id": "agent_id",
+        "agent_name": "agent_name",
+        "environment": "environment",
+        "branch_id": "branch_id"
+      },
+      "supports_inbound": true,
+      "supports_outbound": true
+    },
+    {
+      "provider": "exotel",
+      "label": "label",
+      "phone_number": "phone_number",
+      "phone_number_id": "phone_number_id",
+      "assigned_agent": {
+        "agent_id": "agent_id",
+        "agent_name": "agent_name",
+        "environment": "environment",
+        "branch_id": "branch_id"
+      },
+      "supports_inbound": true,
+      "supports_outbound": true
     }
   ],
   "whatsapp_accounts": [
+    {
+      "business_account_id": "business_account_id",
+      "phone_number_id": "phone_number_id",
+      "business_account_name": "business_account_name",
+      "phone_number_name": "phone_number_name",
+      "phone_number": "phone_number",
+      "account_type": "cloud_api",
+      "assigned_agent_id": "assigned_agent_id",
+      "enable_messaging": true,
+      "enable_audio_message_response": true,
+      "enable_typing_indicator": true,
+      "assigned_agent_name": "assigned_agent_name",
+      "is_token_expired": true
+    },
     {
       "business_account_id": "business_account_id",
       "phone_number_id": "phone_number_id",
@@ -2150,1063 +2472,116 @@ Validation Error
   ],
   "workflow": {
     "edges": {
-      "entry_to_tool_a": {
-        "source": "entry_node",
-        "target": "tool_node_a",
+      "edges": {
+        "source": "source",
+        "target": "target",
         "forward_condition": {
-          "type": "llm",
-          "condition": "User's last message contains a question about our pricing.",
-          "label": null
+          "type": "expression",
+          "expression": {
+            "type": "add_operator",
+            "left": {
+              "type": "and_operator",
+              "children": []
+            },
+            "right": {
+              "type": "and_operator",
+              "children": []
+            }
+          },
+          "label": "label"
         },
         "backward_condition": {
           "type": "expression",
           "expression": {
-            "type": "and_operator",
-            "children": []
+            "type": "add_operator",
+            "left": {
+              "type": "and_operator",
+              "children": []
+            },
+            "right": {
+              "type": "and_operator",
+              "children": []
+            }
           },
-          "label": null
-        }
-      },
-      "start_to_entry": {
-        "source": "start_node",
-        "target": "entry_node",
-        "forward_condition": {
-          "type": "unconditional",
-          "label": null
-        },
-        "backward_condition": {
-          "type": "expression",
-          "expression": {
-            "type": "and_operator",
-            "children": []
-          },
-          "label": null
-        }
-      },
-      "tool_a_to_failure": {
-        "source": "tool_node_a",
-        "target": "failure_node",
-        "forward_condition": {
-          "type": "result",
-          "successful": true,
-          "label": null
-        },
-        "backward_condition": {
-          "type": "expression",
-          "expression": {
-            "type": "and_operator",
-            "children": []
-          },
-          "label": null
-        }
-      },
-      "tool_a_to_tool_b": {
-        "source": "tool_node_a",
-        "target": "tool_node_b",
-        "forward_condition": {
-          "type": "result",
-          "successful": true,
-          "label": null
-        },
-        "backward_condition": {
-          "type": "expression",
-          "expression": {
-            "type": "and_operator",
-            "children": []
-          },
-          "label": null
-        }
-      },
-      "tool_b_to_agent_transfer": {
-        "source": "tool_node_b",
-        "target": "success_transfer",
-        "forward_condition": {
-          "type": "unconditional",
-          "label": null
-        },
-        "backward_condition": {
-          "type": "expression",
-          "expression": {
-            "type": "and_operator",
-            "children": []
-          },
-          "label": null
-        }
-      },
-      "tool_b_to_conversation": {
-        "source": "tool_node_b",
-        "target": "success_conversation",
-        "forward_condition": {
-          "type": "llm",
-          "condition": "User's last message contains a question about our pricing.",
-          "label": null
-        },
-        "backward_condition": {
-          "type": "expression",
-          "expression": {
-            "type": "and_operator",
-            "children": []
-          },
-          "label": null
-        }
-      },
-      "tool_b_to_end": {
-        "source": "tool_node_b",
-        "target": "success_end",
-        "forward_condition": {
-          "type": "llm",
-          "condition": "User's last message contains a question about our pricing.",
-          "label": null
-        },
-        "backward_condition": {
-          "type": "expression",
-          "expression": {
-            "type": "and_operator",
-            "children": []
-          },
-          "label": null
-        }
-      },
-      "tool_b_to_phone": {
-        "source": "tool_node_b",
-        "target": "success_phone",
-        "forward_condition": {
-          "type": "expression",
-          "expression": {
-            "type": "and_operator",
-            "children": []
-          },
-          "label": null
-        },
-        "backward_condition": {
-          "type": "expression",
-          "expression": {
-            "type": "and_operator",
-            "children": []
-          },
-          "label": null
+          "label": "label"
         }
       }
     },
     "nodes": {
-      "entry_node": {
-        "type": "override_agent",
-        "additional_knowledge_base": [
-          {
-            "type": "file",
-            "name": "My Knowledge Base",
-            "id": "123",
-            "usage_mode": "auto"
-          }
-        ],
-        "additional_prompt": "additional_prompt",
-        "additional_tool_ids": [
-          "additional_tool_ids"
-        ],
-        "conversation_config": {
-          "asr": {
-            "quality": "high",
-            "provider": "scribe_realtime",
-            "user_input_audio_format": "pcm_16000",
-            "keywords": [
-              "hello",
-              "world"
-            ]
-          },
-          "turn": {
-            "turn_timeout": 7,
-            "silence_end_call_timeout": -1,
-            "turn_eagerness": "normal",
-            "spelling_patience": "auto",
-            "speculative_turn": false,
-            "retranscribe_on_turn_timeout": false,
-            "turn_model": "turn_v3",
-            "interruption_ignore_terms": [
-              "interruption_ignore_terms"
-            ],
-            "interruption_ignore_term_languages": [
-              "interruption_ignore_term_languages"
-            ],
-            "merge_with_default_ignore_terms": false,
-            "transcribe_on_disabled_interruptions": false,
-            "soft_timeout_config": {
-              "timeout_seconds": -1,
-              "message": "Hhmmmm...yeah.",
-              "use_llm_generated_message": false
-            }
-          },
-          "tts": {
-            "model_id": "eleven_turbo_v2",
-            "voice_id": "cjVigY5qzO86Huf0OWal",
-            "agent_output_audio_format": "pcm_16000",
-            "optimize_streaming_latency": 3,
-            "stability": 0.5,
-            "speed": 1,
-            "similarity_boost": 0.8,
-            "pronunciation_dictionary_locators": [
-              {
-                "pronunciation_dictionary_id": "pronunciation_dictionary_id",
-                "version_id": null
-              }
-            ]
-          },
-          "conversation": {
-            "max_duration_seconds": 600,
-            "client_events": [
-              "audio",
-              "interruption"
-            ]
-          },
-          "agent": {
-            "first_message": "Hello, how can I help you today?",
-            "language": "en",
-            "dynamic_variables": {
-              "dynamic_variable_placeholders": {
-                "user_name": "John Doe"
-              }
-            },
-            "disable_first_message_interruptions": false,
-            "prompt": {
-              "prompt": "You are a helpful assistant that can answer questions about the topic of the conversation.",
-              "llm": "gemini-2.0-flash-001",
-              "temperature": 0,
-              "max_tokens": -1,
-              "tool_ids": [
-                "tool_ids"
-              ],
-              "built_in_tools": {
-                "transfer_to_agent": {
-                  "name": "end_call",
-                  "params": {
-                    "system_tool_type": "end_call"
-                  },
-                  "type": "system",
-                  "description": "",
-                  "assignments": [
-                    {
-                      "dynamic_variable": "user_name",
-                      "value_path": "user.name",
-                      "source": "response",
-                      "sanitize": false,
-                      "preserve_native_type": false
-                    }
-                  ]
-                },
-                "end_call": {
-                  "name": "end_call",
-                  "params": {
-                    "system_tool_type": "end_call"
-                  },
-                  "type": "system",
-                  "description": "",
-                  "assignments": [
-                    {
-                      "dynamic_variable": "user_name",
-                      "value_path": "user.name",
-                      "source": "response",
-                      "sanitize": false,
-                      "preserve_native_type": false
-                    }
-                  ]
-                },
-                "language_detection": {
-                  "name": "end_call",
-                  "params": {
-                    "system_tool_type": "end_call"
-                  },
-                  "type": "system",
-                  "description": "",
-                  "assignments": [
-                    {
-                      "dynamic_variable": "user_name",
-                      "value_path": "user.name",
-                      "source": "response",
-                      "sanitize": false,
-                      "preserve_native_type": false
-                    }
-                  ]
-                },
-                "transfer_to_number": {
-                  "name": "end_call",
-                  "params": {
-                    "system_tool_type": "end_call"
-                  },
-                  "type": "system",
-                  "description": "",
-                  "assignments": [
-                    {
-                      "dynamic_variable": "user_name",
-                      "value_path": "user.name",
-                      "source": "response",
-                      "sanitize": false,
-                      "preserve_native_type": false
-                    }
-                  ]
-                },
-                "skip_turn": {
-                  "name": "end_call",
-                  "params": {
-                    "system_tool_type": "end_call"
-                  },
-                  "type": "system",
-                  "description": "",
-                  "assignments": [
-                    {
-                      "dynamic_variable": "user_name",
-                      "value_path": "user.name",
-                      "source": "response",
-                      "sanitize": false,
-                      "preserve_native_type": false
-                    }
-                  ]
-                },
-                "play_keypad_touch_tone": {
-                  "name": "end_call",
-                  "params": {
-                    "system_tool_type": "end_call"
-                  },
-                  "type": "system",
-                  "description": "",
-                  "assignments": [
-                    {
-                      "dynamic_variable": "user_name",
-                      "value_path": "user.name",
-                      "source": "response",
-                      "sanitize": false,
-                      "preserve_native_type": false
-                    }
-                  ]
-                },
-                "voicemail_detection": {
-                  "name": "end_call",
-                  "params": {
-                    "system_tool_type": "end_call"
-                  },
-                  "type": "system",
-                  "description": "",
-                  "assignments": [
-                    {
-                      "dynamic_variable": "user_name",
-                      "value_path": "user.name",
-                      "source": "response",
-                      "sanitize": false,
-                      "preserve_native_type": false
-                    }
-                  ]
-                }
-              },
-              "knowledge_base": [
-                {
-                  "type": "file",
-                  "name": "My Knowledge Base",
-                  "id": "123",
-                  "usage_mode": "auto"
-                }
-              ],
-              "tools": [
-                {
-                  "type": "api_integration_webhook",
-                  "api_integration_connection_id": "api_integration_connection_id",
-                  "api_integration_id": "api_integration_id",
-                  "assignments": [
-                    {
-                      "dynamic_variable": "user_name",
-                      "value_path": "user.name",
-                      "source": "response",
-                      "sanitize": false,
-                      "preserve_native_type": false
-                    }
-                  ],
-                  "description": "description",
-                  "dynamic_variables": {
-                    "dynamic_variable_placeholders": {
-                      "user_name": "John Doe"
-                    }
-                  },
-                  "execution_mode": "immediate",
-                  "interruption_mode": "allow",
-                  "name": "name",
-                  "pre_tool_speech": "auto",
-                  "response_timeout_secs": 1,
-                  "tool_call_sound_behavior": "auto",
-                  "tool_error_handling_mode": "auto",
-                  "tool_version": "tool_version",
-                  "disable_interruptions": true,
-                  "force_pre_tool_speech": true,
-                  "api_schema_overrides": null,
-                  "tool_call_sound": null
-                }
-              ]
-            }
-          }
-        },
-        "edge_order": [
-          "edge_order"
-        ],
-        "entry_behavior": "generate_immediately",
-        "label": "label",
-        "position": {
-          "x": 1.1,
-          "y": 1.1
-        }
-      },
-      "failure_node": {
-        "type": "override_agent",
-        "additional_knowledge_base": [
-          {
-            "type": "file",
-            "name": "My Knowledge Base",
-            "id": "123",
-            "usage_mode": "auto"
-          }
-        ],
-        "additional_prompt": "additional_prompt",
-        "additional_tool_ids": [
-          "additional_tool_ids"
-        ],
-        "conversation_config": {
-          "asr": {
-            "quality": "high",
-            "provider": "scribe_realtime",
-            "user_input_audio_format": "pcm_16000",
-            "keywords": [
-              "hello",
-              "world"
-            ]
-          },
-          "turn": {
-            "turn_timeout": 7,
-            "silence_end_call_timeout": -1,
-            "turn_eagerness": "normal",
-            "spelling_patience": "auto",
-            "speculative_turn": false,
-            "retranscribe_on_turn_timeout": false,
-            "turn_model": "turn_v3",
-            "interruption_ignore_terms": [
-              "interruption_ignore_terms"
-            ],
-            "interruption_ignore_term_languages": [
-              "interruption_ignore_term_languages"
-            ],
-            "merge_with_default_ignore_terms": false,
-            "transcribe_on_disabled_interruptions": false,
-            "soft_timeout_config": {
-              "timeout_seconds": -1,
-              "message": "Hhmmmm...yeah.",
-              "use_llm_generated_message": false
-            }
-          },
-          "tts": {
-            "model_id": "eleven_turbo_v2",
-            "voice_id": "cjVigY5qzO86Huf0OWal",
-            "agent_output_audio_format": "pcm_16000",
-            "optimize_streaming_latency": 3,
-            "stability": 0.5,
-            "speed": 1,
-            "similarity_boost": 0.8,
-            "pronunciation_dictionary_locators": [
-              {
-                "pronunciation_dictionary_id": "pronunciation_dictionary_id",
-                "version_id": null
-              }
-            ]
-          },
-          "conversation": {
-            "max_duration_seconds": 600,
-            "client_events": [
-              "audio",
-              "interruption"
-            ]
-          },
-          "agent": {
-            "first_message": "Hello, how can I help you today?",
-            "language": "en",
-            "dynamic_variables": {
-              "dynamic_variable_placeholders": {
-                "user_name": "John Doe"
-              }
-            },
-            "disable_first_message_interruptions": false,
-            "prompt": {
-              "prompt": "You are a helpful assistant that can answer questions about the topic of the conversation.",
-              "llm": "gemini-2.0-flash-001",
-              "temperature": 0,
-              "max_tokens": -1,
-              "tool_ids": [
-                "tool_ids"
-              ],
-              "built_in_tools": {
-                "transfer_to_agent": {
-                  "name": "end_call",
-                  "params": {
-                    "system_tool_type": "end_call"
-                  },
-                  "type": "system",
-                  "description": "",
-                  "assignments": [
-                    {
-                      "dynamic_variable": "user_name",
-                      "value_path": "user.name",
-                      "source": "response",
-                      "sanitize": false,
-                      "preserve_native_type": false
-                    }
-                  ]
-                },
-                "end_call": {
-                  "name": "end_call",
-                  "params": {
-                    "system_tool_type": "end_call"
-                  },
-                  "type": "system",
-                  "description": "",
-                  "assignments": [
-                    {
-                      "dynamic_variable": "user_name",
-                      "value_path": "user.name",
-                      "source": "response",
-                      "sanitize": false,
-                      "preserve_native_type": false
-                    }
-                  ]
-                },
-                "language_detection": {
-                  "name": "end_call",
-                  "params": {
-                    "system_tool_type": "end_call"
-                  },
-                  "type": "system",
-                  "description": "",
-                  "assignments": [
-                    {
-                      "dynamic_variable": "user_name",
-                      "value_path": "user.name",
-                      "source": "response",
-                      "sanitize": false,
-                      "preserve_native_type": false
-                    }
-                  ]
-                },
-                "transfer_to_number": {
-                  "name": "end_call",
-                  "params": {
-                    "system_tool_type": "end_call"
-                  },
-                  "type": "system",
-                  "description": "",
-                  "assignments": [
-                    {
-                      "dynamic_variable": "user_name",
-                      "value_path": "user.name",
-                      "source": "response",
-                      "sanitize": false,
-                      "preserve_native_type": false
-                    }
-                  ]
-                },
-                "skip_turn": {
-                  "name": "end_call",
-                  "params": {
-                    "system_tool_type": "end_call"
-                  },
-                  "type": "system",
-                  "description": "",
-                  "assignments": [
-                    {
-                      "dynamic_variable": "user_name",
-                      "value_path": "user.name",
-                      "source": "response",
-                      "sanitize": false,
-                      "preserve_native_type": false
-                    }
-                  ]
-                },
-                "play_keypad_touch_tone": {
-                  "name": "end_call",
-                  "params": {
-                    "system_tool_type": "end_call"
-                  },
-                  "type": "system",
-                  "description": "",
-                  "assignments": [
-                    {
-                      "dynamic_variable": "user_name",
-                      "value_path": "user.name",
-                      "source": "response",
-                      "sanitize": false,
-                      "preserve_native_type": false
-                    }
-                  ]
-                },
-                "voicemail_detection": {
-                  "name": "end_call",
-                  "params": {
-                    "system_tool_type": "end_call"
-                  },
-                  "type": "system",
-                  "description": "",
-                  "assignments": [
-                    {
-                      "dynamic_variable": "user_name",
-                      "value_path": "user.name",
-                      "source": "response",
-                      "sanitize": false,
-                      "preserve_native_type": false
-                    }
-                  ]
-                }
-              },
-              "knowledge_base": [
-                {
-                  "type": "file",
-                  "name": "My Knowledge Base",
-                  "id": "123",
-                  "usage_mode": "auto"
-                }
-              ],
-              "tools": [
-                {
-                  "type": "api_integration_webhook",
-                  "api_integration_connection_id": "api_integration_connection_id",
-                  "api_integration_id": "api_integration_id",
-                  "assignments": [
-                    {
-                      "dynamic_variable": "user_name",
-                      "value_path": "user.name",
-                      "source": "response",
-                      "sanitize": false,
-                      "preserve_native_type": false
-                    }
-                  ],
-                  "description": "description",
-                  "dynamic_variables": {
-                    "dynamic_variable_placeholders": {
-                      "user_name": "John Doe"
-                    }
-                  },
-                  "execution_mode": "immediate",
-                  "interruption_mode": "allow",
-                  "name": "name",
-                  "pre_tool_speech": "auto",
-                  "response_timeout_secs": 1,
-                  "tool_call_sound_behavior": "auto",
-                  "tool_error_handling_mode": "auto",
-                  "tool_version": "tool_version",
-                  "disable_interruptions": true,
-                  "force_pre_tool_speech": true,
-                  "api_schema_overrides": null,
-                  "tool_call_sound": null
-                }
-              ]
-            }
-          }
-        },
-        "edge_order": [
-          "edge_order"
-        ],
-        "entry_behavior": "generate_immediately",
-        "label": "label",
-        "position": {
-          "x": 1.1,
-          "y": 1.1
-        }
-      },
-      "start_node": {
-        "type": "start",
-        "edge_order": [
-          "edge_order"
-        ],
-        "position": {
-          "x": 1.1,
-          "y": 1.1
-        }
-      },
-      "success_conversation": {
-        "type": "override_agent",
-        "additional_knowledge_base": [
-          {
-            "type": "file",
-            "name": "My Knowledge Base",
-            "id": "123",
-            "usage_mode": "auto"
-          }
-        ],
-        "additional_prompt": "additional_prompt",
-        "additional_tool_ids": [
-          "additional_tool_ids"
-        ],
-        "conversation_config": {
-          "asr": {
-            "quality": "high",
-            "provider": "scribe_realtime",
-            "user_input_audio_format": "pcm_16000",
-            "keywords": [
-              "hello",
-              "world"
-            ]
-          },
-          "turn": {
-            "turn_timeout": 7,
-            "silence_end_call_timeout": -1,
-            "turn_eagerness": "normal",
-            "spelling_patience": "auto",
-            "speculative_turn": false,
-            "retranscribe_on_turn_timeout": false,
-            "turn_model": "turn_v3",
-            "interruption_ignore_terms": [
-              "interruption_ignore_terms"
-            ],
-            "interruption_ignore_term_languages": [
-              "interruption_ignore_term_languages"
-            ],
-            "merge_with_default_ignore_terms": false,
-            "transcribe_on_disabled_interruptions": false,
-            "soft_timeout_config": {
-              "timeout_seconds": -1,
-              "message": "Hhmmmm...yeah.",
-              "use_llm_generated_message": false
-            }
-          },
-          "tts": {
-            "model_id": "eleven_turbo_v2",
-            "voice_id": "cjVigY5qzO86Huf0OWal",
-            "agent_output_audio_format": "pcm_16000",
-            "optimize_streaming_latency": 3,
-            "stability": 0.5,
-            "speed": 1,
-            "similarity_boost": 0.8,
-            "pronunciation_dictionary_locators": [
-              {
-                "pronunciation_dictionary_id": "pronunciation_dictionary_id",
-                "version_id": null
-              }
-            ]
-          },
-          "conversation": {
-            "max_duration_seconds": 600,
-            "client_events": [
-              "audio",
-              "interruption"
-            ]
-          },
-          "agent": {
-            "first_message": "Hello, how can I help you today?",
-            "language": "en",
-            "dynamic_variables": {
-              "dynamic_variable_placeholders": {
-                "user_name": "John Doe"
-              }
-            },
-            "disable_first_message_interruptions": false,
-            "prompt": {
-              "prompt": "You are a helpful assistant that can answer questions about the topic of the conversation.",
-              "llm": "gemini-2.0-flash-001",
-              "temperature": 0,
-              "max_tokens": -1,
-              "tool_ids": [
-                "tool_ids"
-              ],
-              "built_in_tools": {
-                "transfer_to_agent": {
-                  "name": "end_call",
-                  "params": {
-                    "system_tool_type": "end_call"
-                  },
-                  "type": "system",
-                  "description": "",
-                  "assignments": [
-                    {
-                      "dynamic_variable": "user_name",
-                      "value_path": "user.name",
-                      "source": "response",
-                      "sanitize": false,
-                      "preserve_native_type": false
-                    }
-                  ]
-                },
-                "end_call": {
-                  "name": "end_call",
-                  "params": {
-                    "system_tool_type": "end_call"
-                  },
-                  "type": "system",
-                  "description": "",
-                  "assignments": [
-                    {
-                      "dynamic_variable": "user_name",
-                      "value_path": "user.name",
-                      "source": "response",
-                      "sanitize": false,
-                      "preserve_native_type": false
-                    }
-                  ]
-                },
-                "language_detection": {
-                  "name": "end_call",
-                  "params": {
-                    "system_tool_type": "end_call"
-                  },
-                  "type": "system",
-                  "description": "",
-                  "assignments": [
-                    {
-                      "dynamic_variable": "user_name",
-                      "value_path": "user.name",
-                      "source": "response",
-                      "sanitize": false,
-                      "preserve_native_type": false
-                    }
-                  ]
-                },
-                "transfer_to_number": {
-                  "name": "end_call",
-                  "params": {
-                    "system_tool_type": "end_call"
-                  },
-                  "type": "system",
-                  "description": "",
-                  "assignments": [
-                    {
-                      "dynamic_variable": "user_name",
-                      "value_path": "user.name",
-                      "source": "response",
-                      "sanitize": false,
-                      "preserve_native_type": false
-                    }
-                  ]
-                },
-                "skip_turn": {
-                  "name": "end_call",
-                  "params": {
-                    "system_tool_type": "end_call"
-                  },
-                  "type": "system",
-                  "description": "",
-                  "assignments": [
-                    {
-                      "dynamic_variable": "user_name",
-                      "value_path": "user.name",
-                      "source": "response",
-                      "sanitize": false,
-                      "preserve_native_type": false
-                    }
-                  ]
-                },
-                "play_keypad_touch_tone": {
-                  "name": "end_call",
-                  "params": {
-                    "system_tool_type": "end_call"
-                  },
-                  "type": "system",
-                  "description": "",
-                  "assignments": [
-                    {
-                      "dynamic_variable": "user_name",
-                      "value_path": "user.name",
-                      "source": "response",
-                      "sanitize": false,
-                      "preserve_native_type": false
-                    }
-                  ]
-                },
-                "voicemail_detection": {
-                  "name": "end_call",
-                  "params": {
-                    "system_tool_type": "end_call"
-                  },
-                  "type": "system",
-                  "description": "",
-                  "assignments": [
-                    {
-                      "dynamic_variable": "user_name",
-                      "value_path": "user.name",
-                      "source": "response",
-                      "sanitize": false,
-                      "preserve_native_type": false
-                    }
-                  ]
-                }
-              },
-              "knowledge_base": [
-                {
-                  "type": "file",
-                  "name": "My Knowledge Base",
-                  "id": "123",
-                  "usage_mode": "auto"
-                }
-              ],
-              "tools": [
-                {
-                  "type": "api_integration_webhook",
-                  "api_integration_connection_id": "api_integration_connection_id",
-                  "api_integration_id": "api_integration_id",
-                  "assignments": [
-                    {
-                      "dynamic_variable": "user_name",
-                      "value_path": "user.name",
-                      "source": "response",
-                      "sanitize": false,
-                      "preserve_native_type": false
-                    }
-                  ],
-                  "description": "description",
-                  "dynamic_variables": {
-                    "dynamic_variable_placeholders": {
-                      "user_name": "John Doe"
-                    }
-                  },
-                  "execution_mode": "immediate",
-                  "interruption_mode": "allow",
-                  "name": "name",
-                  "pre_tool_speech": "auto",
-                  "response_timeout_secs": 1,
-                  "tool_call_sound_behavior": "auto",
-                  "tool_error_handling_mode": "auto",
-                  "tool_version": "tool_version",
-                  "disable_interruptions": true,
-                  "force_pre_tool_speech": true,
-                  "api_schema_overrides": null,
-                  "tool_call_sound": null
-                }
-              ]
-            }
-          }
-        },
-        "edge_order": [
-          "edge_order"
-        ],
-        "entry_behavior": "generate_immediately",
-        "label": "label",
-        "position": {
-          "x": 1.1,
-          "y": 1.1
-        }
-      },
-      "success_end": {
+      "nodes": {
         "type": "end",
         "edge_order": [
+          "edge_order",
           "edge_order"
         ],
         "position": {
           "x": 1.1,
           "y": 1.1
         }
-      },
-      "success_phone": {
-        "type": "phone_number",
-        "custom_sip_headers": [
-          {
-            "type": "dynamic",
-            "key": "key",
-            "value": "value"
-          }
-        ],
-        "edge_order": [
-          "edge_order"
-        ],
-        "position": {
-          "x": 1.1,
-          "y": 1.1
-        },
-        "sip_refer_play_dialtone": true,
-        "transfer_destination": {
-          "type": "phone",
-          "phone_number": "phone_number"
-        },
-        "transfer_type": "blind",
-        "post_dial_digits": null,
-        "uui": null
-      },
-      "success_transfer": {
-        "type": "standalone_agent",
-        "delay_ms": 1,
-        "edge_order": [
-          "edge_order"
-        ],
-        "enable_transferred_agent_first_message": true,
-        "position": {
-          "x": 1.1,
-          "y": 1.1
-        },
-        "preserve_client_tts_overrides": true,
-        "agent_id": null,
-        "node_id": null,
-        "transfer_message": null
-      },
-      "tool_node_a": {
-        "type": "tool",
-        "edge_order": [
-          "edge_order"
-        ],
-        "position": {
-          "x": 1.1,
-          "y": 1.1
-        },
-        "tools": [
-          {
-            "tool_id": "tool_id"
-          }
-        ]
-      },
-      "tool_node_b": {
-        "type": "tool",
-        "edge_order": [
-          "edge_order"
-        ],
-        "position": {
-          "x": 1.1,
-          "y": 1.1
-        },
-        "tools": [
-          {
-            "tool_id": "tool_id"
-          }
-        ]
       }
     },
-    "prevent_subagent_loops": false
+    "prevent_subagent_loops": true
   },
   "access_info": {
     "is_creator": true,
-    "creator_name": "John Doe",
-    "creator_email": "john.doe@example.com",
+    "creator_name": "creator_name",
+    "creator_email": "creator_email",
     "role": "admin",
     "anonymous_access_level_override": "admin",
     "access_source": "creator"
   },
   "tags": [
+    "tags",
     "tags"
   ],
   "version_id": "version_id",
   "branch_id": "branch_id",
   "main_branch_id": "main_branch_id",
   "procedures": {
-    "key": {
-      "procedure_id": "agtprc_6qbpwdq8n01bxhk44bgjy6f10ck3",
-      "version_id": "agtprcv_7rbqxer9o12cyxi55ckw6sgz1dl4",
-      "name": "Customer Support Procedure",
+    "procedures": {
+      "procedure_id": "procedure_id",
+      "version_id": "version_id",
+      "name": "",
       "type": "free_form",
-      "trigger": "When the customer asks for support",
+      "trigger": "",
       "referenced_tool_ids": [
-        "tool_123"
+        "referenced_tool_ids",
+        "referenced_tool_ids"
       ],
       "referenced_kb_ids": [
-        "kb_123"
+        "referenced_kb_ids",
+        "referenced_kb_ids"
       ],
       "referenced_procedure_ids": [
-        "agtprc_other"
+        "referenced_procedure_ids",
+        "referenced_procedure_ids"
       ],
       "referenced_dynamic_variables": [
-        "customer_id"
+        "referenced_dynamic_variables",
+        "referenced_dynamic_variables"
       ],
       "folder_parent_id": "folder_parent_id"
     }
   },
-  "default_hold_audio_url": "default_hold_audio_url",
+  "default_hold_audio_url": "https://eleven-public-cdn-common.elevenlabs.io/convai/ambient-audio-assets/elevator1.mp3",
   "overridden_fields": [
+    "overridden_fields",
     "overridden_fields"
   ],
   "conflicts": [
+    {
+      "path": "path",
+      "section": "conversation_config",
+      "base_value": {
+        "key": "value"
+      },
+      "source_value": {
+        "key": "value"
+      },
+      "target_value": {
+        "key": "value"
+      }
+    },
     {
       "path": "path",
       "section": "conversation_config",
@@ -3232,7 +2607,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.conversationalAi.agents.branches.previewRebase("agent_3701k3ttaq12ewp8b7qv5rfyszkz", "agtbrch_8901k4t9z5defmb8vh3e9361y7nj");
+    await client.conversationalAi.agents.branches.previewRebase("agent_id", "branch_id");
 }
 main();
 
@@ -3244,8 +2619,8 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.conversational_ai.agents.branches.preview_rebase(
-    agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-    branch_id="agtbrch_8901k4t9z5defmb8vh3e9361y7nj",
+    agent_id="agent_id",
+    branch_id="branch_id",
 )
 
 ```
@@ -3261,7 +2636,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase-preview"
+	url := "https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id/rebase-preview"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -3280,7 +2655,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase-preview")
+url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id/rebase-preview")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -3295,7 +2670,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase-preview")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id/rebase-preview")
   .asString();
 ```
 
@@ -3305,7 +2680,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase-preview');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id/rebase-preview');
 
 echo $response->getBody();
 ```
@@ -3313,7 +2688,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase-preview");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id/rebase-preview");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -3321,7 +2696,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase-preview")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id/rebase-preview")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

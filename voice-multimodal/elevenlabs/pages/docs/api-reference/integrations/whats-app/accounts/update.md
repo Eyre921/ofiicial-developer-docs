@@ -62,6 +62,17 @@ Validation Error
 **Request**
 
 ```json
+{
+  "assigned_agent_id": "agent_9f8b7c6d5e4a3b2c1d0e",
+  "enable_messaging": true,
+  "enable_audio_message_response": false,
+  "enable_typing_indicator": true
+}
+```
+
+**Response**
+
+```json
 {}
 ```
 
@@ -72,7 +83,12 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.conversationalAi.whatsappAccounts.update("phone_number_id", {});
+    await client.conversationalAi.whatsappAccounts.update("phone_number_id", {
+        assignedAgentId: "agent_9f8b7c6d5e4a3b2c1d0e",
+        enableMessaging: true,
+        enableAudioMessageResponse: false,
+        enableTypingIndicator: true,
+    });
 }
 main();
 
@@ -85,6 +101,10 @@ client = ElevenLabs()
 
 client.conversational_ai.whatsapp_accounts.update(
     phone_number_id="phone_number_id",
+    assigned_agent_id="agent_9f8b7c6d5e4a3b2c1d0e",
+    enable_messaging=True,
+    enable_audio_message_response=False,
+    enable_typing_indicator=True,
 )
 
 ```
@@ -103,7 +123,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/whatsapp-accounts/phone_number_id"
 
-	payload := strings.NewReader("{}")
+	payload := strings.NewReader("{\n  \"assigned_agent_id\": \"agent_9f8b7c6d5e4a3b2c1d0e\",\n  \"enable_messaging\": true,\n  \"enable_audio_message_response\": false,\n  \"enable_typing_indicator\": true\n}")
 
 	req, _ := http.NewRequest("PATCH", url, payload)
 
@@ -131,7 +151,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Patch.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{}"
+request.body = "{\n  \"assigned_agent_id\": \"agent_9f8b7c6d5e4a3b2c1d0e\",\n  \"enable_messaging\": true,\n  \"enable_audio_message_response\": false,\n  \"enable_typing_indicator\": true\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -143,7 +163,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.patch("https://api.elevenlabs.io/v1/convai/whatsapp-accounts/phone_number_id")
   .header("Content-Type", "application/json")
-  .body("{}")
+  .body("{\n  \"assigned_agent_id\": \"agent_9f8b7c6d5e4a3b2c1d0e\",\n  \"enable_messaging\": true,\n  \"enable_audio_message_response\": false,\n  \"enable_typing_indicator\": true\n}")
   .asString();
 ```
 
@@ -154,7 +174,12 @@ require_once('vendor/autoload.php');
 $client = new \GuzzleHttp\Client();
 
 $response = $client->request('PATCH', 'https://api.elevenlabs.io/v1/convai/whatsapp-accounts/phone_number_id', [
-  'body' => '{}',
+  'body' => '{
+  "assigned_agent_id": "agent_9f8b7c6d5e4a3b2c1d0e",
+  "enable_messaging": true,
+  "enable_audio_message_response": false,
+  "enable_typing_indicator": true
+}',
   'headers' => [
     'Content-Type' => 'application/json',
   ],
@@ -169,7 +194,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/whatsapp-accounts/phone_number_id");
 var request = new RestRequest(Method.PATCH);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"assigned_agent_id\": \"agent_9f8b7c6d5e4a3b2c1d0e\",\n  \"enable_messaging\": true,\n  \"enable_audio_message_response\": false,\n  \"enable_typing_indicator\": true\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -177,7 +202,12 @@ IRestResponse response = client.Execute(request);
 import Foundation
 
 let headers = ["Content-Type": "application/json"]
-let parameters = [] as [String : Any]
+let parameters = [
+  "assigned_agent_id": "agent_9f8b7c6d5e4a3b2c1d0e",
+  "enable_messaging": true,
+  "enable_audio_message_response": false,
+  "enable_typing_indicator": true
+] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 

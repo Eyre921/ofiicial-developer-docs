@@ -15,9 +15,11 @@ Deepgram models deployed on Amazon SageMaker can automatically scale the number 
 This page explains the two endpoint types and helps you choose between them. For step-by-step setup, follow the guide that matches your deployment:
 
 * **[Auto-Scaling Real-Time Endpoints](/docs/auto-scaling-sagemaker-streaming)** — for streaming requests and synchronous pre-recorded requests that return an immediate response.
-* **[Auto-Scaling Asynchronous Endpoints](/docs/auto-scaling-sagemaker-async)** — for pre-recorded files processed from a queue, with scale-to-zero support.
+* **[Auto-Scaling Asynchronous Endpoints](/docs/auto-scaling-sagemaker-async)** — for pre-recorded files processed from a queue, with scale-to-zero support (temporarily unavailable, see below).
 
 ## Real-time vs. asynchronous endpoints
+
+**Asynchronous endpoints are temporarily unavailable** for Marketplace-hosted Deepgram, so deploy a real-time endpoint. The comparison below is kept for reference. If your use case needs asynchronous inference or scale-to-zero, contact a [Deepgram representative](https://deepgram.com/contact-us).
 
 Both endpoint types can transcribe pre-recorded audio — the difference is *how* the request is processed and returned, and that determines which signal each scales on.
 
@@ -65,7 +67,7 @@ For the exact metrics, policies, and code, follow the guide for your endpoint ty
 
 A single instance type can become temporarily unavailable in a given region or Availability Zone, which may prevent your endpoint from scaling out when traffic increases. To reduce this risk, configure your endpoint variant with multiple instance types in priority order using SageMaker's [heterogeneous instance pools](https://docs.aws.amazon.com/sagemaker/latest/dg/realtime-endpoints-heterogeneous.html). SageMaker provisions instances from your highest-priority pool first and falls back to lower-priority pools when capacity in the preferred pool is constrained.
 
-This applies to both real-time and asynchronous endpoints.
+This applies to both real-time and asynchronous endpoints. For how to order the pool — the listing's recommended type first, then same-or-newer generations with similar capacity, then older generations as insurance — and why every type in the pool needs quota, see [Choose instance types](/docs/deploy-amazon-sagemaker#choose-instance-types).
 
 The following endpoint configuration lists `ml.g6.2xlarge` as the preferred instance type and falls back to `ml.g6e.2xlarge` if the first pool is unavailable:
 

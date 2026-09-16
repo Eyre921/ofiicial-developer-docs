@@ -97,7 +97,7 @@ fireconnect opencode on --model glm-5p2-fast-us
 fireconnect claude on --model glm-5p3-flash-us
 ```
 
-Beginning September 1, 2026, US-only endpoints launched from that date are priced at a **50% premium** over the matching global row (`glm-5p3-flash-us`). Earlier routers keep their launch rates: `kimi-k3-us` at a 10% premium, `glm-5p2-fast-us` at parity with global GLM 5.2 Fast. Details: [US-only Serverless](/serverless/us-only-serverless).
+Beginning September 1, 2026, US-only endpoints launched from that date are priced at **1.5x** the matching global row. Kimi K3 (US) uses the same 1.5x multiplier, while `glm-5p2-fast-us` remains an exception at parity with global GLM 5.2 Fast. Details: [US-only Serverless](/serverless/us-only-serverless).
 
 ## Limits
 

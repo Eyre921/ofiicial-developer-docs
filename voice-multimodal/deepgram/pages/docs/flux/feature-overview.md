@@ -61,11 +61,11 @@ Flux's end-of-turn detection is configurable to match your use case. Use `eot_th
 
 ## Control Messages
 
-| Feature                                     | Description                                              |
-| ------------------------------------------- | -------------------------------------------------------- |
-| [Configure](/docs/flux/configure)           | Update keyterms and thresholds mid-stream                |
-| [Close Stream](/docs/flux/close-stream)     | Close the WebSocket stream                               |
-| [Force End Turn](/docs/flux/force-end-turn) | End the current turn immediately from an external signal |
+| Feature                                     | Description                                                          |
+| ------------------------------------------- | -------------------------------------------------------------------- |
+| [Configure](/docs/flux/configure)           | Update keyterms, language hints, thresholds, and numerals mid-stream |
+| [Close Stream](/docs/flux/close-stream)     | Close the WebSocket stream                                           |
+| [Force End Turn](/docs/flux/force-end-turn) | End the current turn immediately from an external signal             |
 
 ## Rate Limits
 
