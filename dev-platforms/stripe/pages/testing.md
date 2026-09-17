@@ -21,6 +21,8 @@ Test cards act as “fake” credit cards, and allow you to simulate the followi
 
 You can also test non-card payments in a sandbox. Non-card payments are payment methods that aren’t credit or debit cards. Stripe supports various non-card payment options, such as digital wallets and bank transfers. [Each payment method](https://docs.stripe.com/testing.md#non-card-payments) has its own special values.
 
+If you’re testing a subscription integration, see [Test your Billing integration](https://docs.stripe.com/billing/testing.md).
+
 Don’t use testing environments to load test your integration because you might hit [rate limits](https://docs.stripe.com/testing.md#rate-limits). To load test your integration, see [load testing](https://docs.stripe.com/rate-limits.md#load-testing).
 
 ## How to use test cards 

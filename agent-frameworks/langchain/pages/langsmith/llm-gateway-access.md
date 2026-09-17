@@ -5,7 +5,7 @@ path: langsmith/llm-gateway-access
 ---
 
 <Note>
-**Beta:** The LLM Gateway is in [beta](/langsmith/release-stages).
+The LLM Gateway is in [beta](/langsmith/release-stages).
 </Note>
 
 Every call through the LLM Gateway is traced to LangSmith, and policy violations surface in [LangSmith Engine](/langsmith/engine) for triage.

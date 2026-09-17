@@ -55,7 +55,7 @@ Typically this means that we don't have permission to clone the repository you a
 We only have permission to create a copy of your code when you link the repository. If you are seeing your build fail with `exit status 128` in the deploy log, relinking your repo using our UI is a good first attempt to fix things (go to 
 ### NavigationPath Component:
 
-Project configuration > Build & deploy > Continuous deployment > Repository
+Project configuration > Developer settings > Continuous deployment > Repository
 , select **Manage repository**, then **Link to a different repository**). If you do this, please check your webhook settings at your Git provider to be sure you don't have any duplicate Netlify webhooks.
 
 ### Note - Permission levels
@@ -150,7 +150,7 @@ If your site returns a `Page not found` error after you've deployed, then we rec
 For your site, go to 
 ### NavigationPath Component:
 
-Configuration > Build & deploy > Build settings
+Configuration > Developer settings > Build settings
 .
 
 For more troubleshooting help, check out our [official Support Guide for the `Page not found` error](https://answers.netlify.com/t/support-guide-i-ve-deployed-my-site-but-i-still-see-page-not-found/125/2).

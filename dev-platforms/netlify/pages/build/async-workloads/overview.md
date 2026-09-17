@@ -38,7 +38,7 @@ For site-level configuration:
 1. In the Netlify UI, navigate to 
 ### NavigationPath Component:
 
-Project configuration > Build & Deploy > Async Workloads
+Project configuration > Developer settings > Async Workloads
  for the project you want to edit.
 1. Update your configuration and then select **Save**.
 

@@ -20,7 +20,7 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 
 * [Authenticating to the REST API](/en/rest/authentication/authenticating-to-the-rest-api)
 
-  You can authenticate to the REST API to access more endpoints and have a higher rate limit.
+  <p>You can authenticate to the REST API to access more endpoints and have a higher rate limit.</p>
 
 * [Best practices for using the REST API](/en/rest/using-the-rest-api/best-practices-for-using-the-rest-api)
 
@@ -40,7 +40,7 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 
 * [Troubleshooting the REST API](/en/rest/using-the-rest-api/troubleshooting-the-rest-api)
 
-  <p>Learn how to diagnose and resolve common problems for the REST API.</p>
+  Learn how to diagnose and resolve common problems for the REST API.
 
 * [Using pagination in the REST API](/en/rest/using-the-rest-api/using-pagination-in-the-rest-api)
 
@@ -215,6 +215,10 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 * [REST API endpoints for GitHub Actions permissions](/en/rest/actions/permissions)
 
   Use the REST API to interact with permissions for GitHub Actions.
+
+* [REST API endpoints for GitHub Actions policies](/en/rest/actions/policies)
+
+  Use the REST API to view and manage policies for GitHub Actions.
 
 * [REST API endpoints for GitHub Actions Secrets](/en/rest/actions/secrets)
 

@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1179 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1181 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -337,9 +337,10 @@
 - `langsmith/llm-gateway-direct-model-access` — [Direct model access](pages/langsmith/llm-gateway-direct-model-access.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-direct-model-access)
 - `langsmith/llm-gateway-fallbacks` — [Model fallbacks](pages/langsmith/llm-gateway-fallbacks.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-fallbacks)
 - `langsmith/llm-gateway-header-policies` — [Per-customer policies](pages/langsmith/llm-gateway-header-policies.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-header-policies)
+- `langsmith/llm-gateway-how-it-works` — [How the gateway works](pages/langsmith/llm-gateway-how-it-works.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-how-it-works)
 - `langsmith/llm-gateway-model-access-policies` — [Model access policies](pages/langsmith/llm-gateway-model-access-policies.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-model-access-policies)
 - `langsmith/llm-gateway-monitoring` — [Monitor LLM Gateway spend](pages/langsmith/llm-gateway-monitoring.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-monitoring)
-- `langsmith/llm-gateway-quickstart` — [Quickstart](pages/langsmith/llm-gateway-quickstart.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-quickstart)
+- `langsmith/llm-gateway-quickstart` — [LLM Gateway quickstart](pages/langsmith/llm-gateway-quickstart.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-quickstart)
 - `langsmith/llm-gateway-rate-limit-policies` — [Rate limit policies](pages/langsmith/llm-gateway-rate-limit-policies.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-rate-limit-policies)
 - `langsmith/llm-gateway-spend-policies` — [Spend policies](pages/langsmith/llm-gateway-spend-policies.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-spend-policies)
 - `langsmith/local` — [How to run an evaluation locally (Python only)](pages/langsmith/local.md) · [原文](https://docs.langchain.com/langsmith/local)
@@ -949,6 +950,7 @@
 - `langsmith/smith-api/sandboxes/get-sandbox-status` — [Get sandbox status](pages/langsmith/smith-api/sandboxes/get-sandbox-status.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/get-sandbox-status)
 - `langsmith/smith-api/sandboxes/glob-a-sandbox-filesystem` — [Glob a sandbox filesystem](pages/langsmith/smith-api/sandboxes/glob-a-sandbox-filesystem.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/glob-a-sandbox-filesystem)
 - `langsmith/smith-api/sandboxes/grep-a-sandbox-filesystem` — [Grep a sandbox filesystem](pages/langsmith/smith-api/sandboxes/grep-a-sandbox-filesystem.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/grep-a-sandbox-filesystem)
+- `langsmith/smith-api/sandboxes/list-hourly-sandbox-usage-costs` — [List hourly sandbox usage costs](pages/langsmith/smith-api/sandboxes/list-hourly-sandbox-usage-costs.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/list-hourly-sandbox-usage-costs)
 - `langsmith/smith-api/sandboxes/list-registries` — [List registries](pages/langsmith/smith-api/sandboxes/list-registries.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/list-registries)
 - `langsmith/smith-api/sandboxes/list-sandboxes` — [List sandboxes](pages/langsmith/smith-api/sandboxes/list-sandboxes.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/list-sandboxes)
 - `langsmith/smith-api/sandboxes/list-snapshots` — [List snapshots](pages/langsmith/smith-api/sandboxes/list-snapshots.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/list-snapshots)

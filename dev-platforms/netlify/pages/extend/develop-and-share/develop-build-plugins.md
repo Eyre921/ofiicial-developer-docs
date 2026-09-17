@@ -237,7 +237,7 @@ module.exports = {
 Currently, users cannot set inputs when [installing plugins from the Netlify UI](/extend/install-and-use/build-plugins#ui-installation). If you would like your plugin to be listed under 
 ### NavigationPath Component:
 
-Project configuration > Build & deploy > Build plugins
+Project configuration > Developer settings > Build plugins
 , we recommend setting [zero-config defaults](https://github.com/netlify/plugins/blob/main/docs/guidelines.md) where possible, falling back to accepting values from [build environment variables](/build/configure-builds/environment-variables) if needed.
 
 #### Input validation

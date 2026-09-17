@@ -163,7 +163,7 @@ Stripe can import your customer billing address information and payment details.
 
 Your previous processor might take a few days or several weeks to transfer the final data to Stripe. Allow for this transition time in your migration plan. After your previous processor transfers your data, Stripe reviews the data and identifies any problems with the import. We work with you and your previous processor to correct any issues. We then share a summary of the import for your final review and approval.
 
-After your approval, Stripe imports the data into your account. We create a [Customer](https://docs.stripe.com/api.md#customer_object) for each unique customer in the transferred data file, and create and attach the customer’s cards as [Card](https://docs.stripe.com/api.md#card_object) or [Payment Method](https://docs.stripe.com/api/payment_methods/object.md) objects. If the transferred data specifies the customer’s default card, we set that as the customer’s [default payment method](https://docs.stripe.com/api.md#customer_object-default_source) for charges and [subscription](https://docs.stripe.com/api/subscriptions/create.md) payments.
+After your approval, Stripe imports the data into your account. We create a [Customer](https://docs.stripe.com/api.md#customer_object) for each unique customer in the transferred data file, and create and attach the customer’s cards as [Card](https://docs.stripe.com/api.md#card_object) or [PaymentMethod](https://docs.stripe.com/api/payment_methods/object.md) objects. If the transferred data specifies the customer’s default card, we set that as the customer’s [default payment method](https://docs.stripe.com/api.md#customer_object-default_source) for charges and [subscription](https://docs.stripe.com/api/subscriptions/create.md) payments.
 
 If your Stripe account has accumulated significant customer records by the time you migrate, consider [mapping import data into existing Stripe Customer objects](https://docs.stripe.com/get-started/data-migrations/map-payment-data.md) instead of creating new `Customer` objects.
 
@@ -480,7 +480,7 @@ BJk0jHCnxygA+4LXkoqa/VkgZaYsaXE=
 -----END PGP PUBLIC KEY BLOCK-----
 ```
 
-This creates **FILENAME.gpg** with the following information:
+This creates `FILENAME.gpg` with the following information:
 
 - Key ID: `9C78B7620C1E99AD`
 - Key type: `RSA`
@@ -490,7 +490,9 @@ This creates **FILENAME.gpg** with the following information:
 
 After you import our key, you can encrypt files to send by running this command in your command line prompt:
 
-`gpg --encrypt --recipient 9C78B7620C1E99AD FILENAME`
+```bash
+gpg --encrypt --recipient 9C78B7620C1E99AD FILENAME
+```
 
 For more details on providing encrypted data to Stripe, see [Upload supplementary data](https://docs.stripe.com/get-started/data-migrations/supplementary-data.md).
 

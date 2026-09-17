@@ -106,7 +106,7 @@ export default defineConfig({
 Alternatively, you can configure these build settings in the Netlify Dashboard. For your chosen project, go to 
 ### NavigationPath Component:
 
-project configuration > Build & deploy > Continuous deployment > Build settings
+project configuration > Developer settings > Continuous deployment > Build settings
  and enter the settings above.
 
 Your site should successfully deploy on your next push. 🚀

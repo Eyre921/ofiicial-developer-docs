@@ -1390,6 +1390,7 @@ Events are split into the following categories:
 * **Custom admin role deleted**: That a custom admin role was deleted.
 * **Custom admin role updated**: That a custom admin role was edited.
 * **Default new workspace region updated**: That the workspace region was updated for managed users.
+* **Device-scoped session duration for managed users updated**: That a device-scoped session duration for managed users was updated for an organization.
 * **Disable duplicating pages to other workspaces toggled for the organization**: That the disable duplicating pages to other workspaces setting was toggled for an organization.
 * **Disable guests toggled for the organization**: That the disable guests setting was toggled for an organization.
 * **Disable publishing sites and forms toggled for the organization**: That the disable publishing sites and forms setting was toggled for an organization.

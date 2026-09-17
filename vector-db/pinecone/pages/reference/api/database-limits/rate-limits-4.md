@@ -13,7 +13,7 @@ Request-per-second limits are enforced per namespace or per index, as noted in t
 **Most rate limits can be adjusted upon request.** If you need higher limits, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) with details about your use case.
 
 <Note>
-  Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, and list operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
+  Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, list, and full-text search operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
 </Note>
 
 ## Monthly usage limits

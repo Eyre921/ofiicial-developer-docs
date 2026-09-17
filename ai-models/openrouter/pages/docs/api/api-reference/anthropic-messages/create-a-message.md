@@ -72,6 +72,10 @@ tags:
     name: Guardrails
   - description: Images endpoints
     name: Images
+  - description: >-
+      Create, inspect, update, provision, suspend and delete OpenRouter interns
+      through an API key.
+    name: Interns
   - description: Model information endpoints
     name: Models
   - description: OAuth authentication endpoints
@@ -2904,12 +2908,15 @@ components:
             mapping:
               base64:
                 $ref: '#/components/schemas/AnthropicBase64ImageSource'
+              file:
+                $ref: '#/components/schemas/AnthropicFileDocumentSource'
               url:
                 $ref: '#/components/schemas/AnthropicUrlImageSource'
             propertyName: type
           oneOf:
             - $ref: '#/components/schemas/AnthropicBase64ImageSource'
             - $ref: '#/components/schemas/AnthropicUrlImageSource'
+            - $ref: '#/components/schemas/AnthropicFileDocumentSource'
         type:
           enum:
             - image
@@ -4812,6 +4819,21 @@ components:
         - media_type
         - data
       type: object
+    AnthropicFileDocumentSource:
+      example:
+        file_id: or_file_011CNha8iCJcU1wXNR6q4V8w
+        type: file
+      properties:
+        file_id:
+          type: string
+        type:
+          enum:
+            - file
+          type: string
+      required:
+        - type
+        - file_id
+      type: object
     AnthropicUrlImageSource:
       example:
         type: url
@@ -4883,21 +4905,6 @@ components:
       required:
         - type
         - url
-      type: object
-    AnthropicFileDocumentSource:
-      example:
-        file_id: or_file_011CNha8iCJcU1wXNR6q4V8w
-        type: file
-      properties:
-        file_id:
-          type: string
-        type:
-          enum:
-            - file
-          type: string
-      required:
-        - type
-        - file_id
       type: object
     AnthropicOutputEffort:
       enum:

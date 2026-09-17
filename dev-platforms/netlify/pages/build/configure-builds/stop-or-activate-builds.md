@@ -28,7 +28,7 @@ When you stop builds for a site, you prevent Netlify from building production de
 To stop builds for a site, go to 
 ### NavigationPath Component:
 
-Project configuration > Build & deploy > Continuous deployment > Build settings
+Project configuration > Developer settings > Continuous deployment > Build settings
 , select **Configure**, and then toggle **Build status** to **Stopped builds**.
 
 ![](/images/configure-builds-stop-builds-stop.png)
@@ -52,7 +52,7 @@ Netlify will send a notification email to let any other site members know that b
 - **project configuration** under 
 ### NavigationPath Component:
 
-Project configuration > Build & deploy > Continuous deployment > Build settings
+Project configuration > Developer settings > Continuous deployment > Build settings
 .
 
 ### Note - Relinking the Git repository will activate builds
@@ -66,7 +66,7 @@ By default, builds are active. If builds have been stopped for a site, there are
 - go to 
 ### NavigationPath Component:
 
-Project configuration > Build & deploy > Continuous deployment > Build settings
+Project configuration > Developer settings > Continuous deployment > Build settings
 , select **Configure**, and then toggle **Build status** to **Active builds**.
 
    ![](/images/configure-builds-stop-builds-activate-on-settings.png)

@@ -72,6 +72,10 @@ tags:
     name: Guardrails
   - description: Images endpoints
     name: Images
+  - description: >-
+      Create, inspect, update, provision, suspend and delete OpenRouter interns
+      through an API key.
+    name: Interns
   - description: Model information endpoints
     name: Models
   - description: OAuth authentication endpoints

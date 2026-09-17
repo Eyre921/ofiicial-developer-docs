@@ -41,7 +41,7 @@ When a new stable API version is released, you should upgrade your SDK to the la
 
 ## Limitations
 
-While Pinecone tracks read unit usage with decimal precision, the Pinecone API and SDKs round these values up to the nearest whole number in query, fetch, and list responses. For example, if a query uses 0.45 read units, the API and SDKs will report it as 1 read unit.
+While Pinecone tracks read unit usage with decimal precision, the Pinecone API and SDKs round these values up to the nearest whole number in query, fetch, list, and full-text search responses. For example, if a query uses 0.45 read units, the API and SDKs will report it as 1 read unit.
 
 For precise read unit reporting, see [index-level metrics](/guides/production/monitoring) or the organization-wide [Usage dashboard](/guides/manage-cost/monitor-usage-and-costs#monitor-organization-level-usage-and-costs).
 

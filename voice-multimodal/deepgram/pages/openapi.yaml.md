@@ -46,14 +46,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: Agent configuration created successfully
@@ -73,6 +65,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateAgentConfigurationV1Request'
+      security:
+        - ApiKeyAuth: []
     get:
       operationId: configurations_list
       summary: List Agent Configurations
@@ -85,14 +79,6 @@ paths:
         - name: project_id
           in: path
           description: The unique identifier of the project
-          required: true
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
           required: true
           schema:
             type: string
@@ -109,6 +95,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
   /v1/projects/{project_id}/agents/{agent_id}:
     get:
       operationId: configurations_get
@@ -129,14 +117,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: An agent configuration
@@ -150,6 +130,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
     put:
       operationId: configurations_update
       summary: Update Agent Metadata
@@ -168,14 +150,6 @@ paths:
         - name: agent_id
           in: path
           description: The unique identifier of the agent configuration
-          required: true
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
           required: true
           schema:
             type: string
@@ -198,6 +172,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UpdateAgentMetadataV1Request'
+      security:
+        - ApiKeyAuth: []
     delete:
       operationId: configurations_delete
       summary: Delete an Agent Configuration
@@ -219,14 +195,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: Agent configuration deleted
@@ -240,6 +208,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
   /v1/projects/{project_id}/agent-variables:
     post:
       operationId: variables_create
@@ -253,14 +223,6 @@ paths:
         - name: project_id
           in: path
           description: The unique identifier of the project
-          required: true
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
           required: true
           schema:
             type: string
@@ -283,6 +245,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateAgentVariableV1Request'
+      security:
+        - ApiKeyAuth: []
     get:
       operationId: variables_list
       summary: List Agent Variables
@@ -293,14 +257,6 @@ paths:
         - name: project_id
           in: path
           description: The unique identifier of the project
-          required: true
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
           required: true
           schema:
             type: string
@@ -317,6 +273,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
   /v1/projects/{project_id}/agent-variables/{variable_id}:
     get:
       operationId: variables_get
@@ -337,14 +295,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: An agent variable
@@ -358,6 +308,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
     patch:
       operationId: variables_update
       summary: Update an Agent Variable
@@ -374,14 +326,6 @@ paths:
         - name: variable_id
           in: path
           description: The unique identifier of the agent variable
-          required: true
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
           required: true
           schema:
             type: string
@@ -404,6 +348,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UpdateAgentVariableV1Request'
+      security:
+        - ApiKeyAuth: []
     delete:
       operationId: variables_delete
       summary: Delete an Agent Variable
@@ -423,14 +369,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: Agent variable deleted
@@ -444,6 +382,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
   /v1/listen:
     post:
       operationId: media_transcribe
@@ -736,14 +676,6 @@ paths:
           schema:
             type: boolean
             default: false
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: Returns either transcription results, or a request_id when using a callback.
@@ -763,6 +695,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ListenV1RequestUrl'
+      security:
+        - ApiKeyAuth: []
   /v1/speak:
     post:
       operationId: audio_generate
@@ -852,14 +786,6 @@ paths:
             minimum: 0.7
             maximum: 1.5
             default: 1
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: Successful text-to-speech transformation
@@ -879,6 +805,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/SpeakV1Request'
+      security:
+        - ApiKeyAuth: []
   /v1/read:
     post:
       operationId: text_analyze
@@ -974,14 +902,6 @@ paths:
           schema:
             type: string
             default: en
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: Successful text analysis
@@ -1001,6 +921,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ReadV1Request'
+      security:
+        - ApiKeyAuth: []
   /v1/projects:
     get:
       operationId: projects_list
@@ -1008,15 +930,6 @@ paths:
       description: Retrieves basic information about the projects associated with the API key
       tags:
         - projects
-      parameters:
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: A list of projects
@@ -1030,6 +943,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
   /v1/projects/{project_id}:
     get:
       operationId: projects_get
@@ -1061,14 +976,6 @@ paths:
           schema:
             type: number
             format: double
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: A project
@@ -1082,6 +989,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
     patch:
       operationId: projects_update
       summary: Update a Project
@@ -1092,14 +1001,6 @@ paths:
         - name: project_id
           in: path
           description: The unique identifier of the project
-          required: true
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
           required: true
           schema:
             type: string
@@ -1122,6 +1023,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UpdateProjectV1Request'
+      security:
+        - ApiKeyAuth: []
     delete:
       operationId: projects_delete
       summary: Delete a Project
@@ -1132,14 +1035,6 @@ paths:
         - name: project_id
           in: path
           description: The unique identifier of the project
-          required: true
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
           required: true
           schema:
             type: string
@@ -1156,6 +1051,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
   /v1/projects/{project_id}/leave:
     delete:
       operationId: projects_leave
@@ -1167,14 +1064,6 @@ paths:
         - name: project_id
           in: path
           description: The unique identifier of the project
-          required: true
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
           required: true
           schema:
             type: string
@@ -1191,6 +1080,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
   /v1/projects/{project_id}/models:
     get:
       operationId: models_list_2
@@ -1211,14 +1102,6 @@ paths:
           required: false
           schema:
             type: boolean
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: A list of models
@@ -1232,6 +1115,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
   /v1/projects/{project_id}/models/{model_id}:
     get:
       operationId: models_get
@@ -1252,14 +1137,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: A model object that can be either STT or TTS
@@ -1273,6 +1150,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
   /v1/models:
     get:
       operationId: models_list_3
@@ -1287,14 +1166,6 @@ paths:
           required: false
           schema:
             type: boolean
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: A list of models
@@ -1308,6 +1179,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
   /v1/models/{model_id}:
     get:
       operationId: models_get_2
@@ -1319,14 +1192,6 @@ paths:
         - name: model_id
           in: path
           description: The specific UUID of the model
-          required: true
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
           required: true
           schema:
             type: string
@@ -1343,6 +1208,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
   /v1/projects/{project_id}/keys:
     get:
       operationId: keys_list
@@ -1363,14 +1230,6 @@ paths:
           required: false
           schema:
             $ref: '#/components/schemas/V1ProjectsProjectIdKeysGetParametersStatus'
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: A list of API keys
@@ -1384,6 +1243,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
     post:
       operationId: keys_create
       summary: Create a Project Key
@@ -1394,14 +1255,6 @@ paths:
         - name: project_id
           in: path
           description: The unique identifier of the project
-          required: true
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
           required: true
           schema:
             type: string
@@ -1424,6 +1277,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateKeyV1Request'
+      security:
+        - ApiKeyAuth: []
   /v1/projects/{project_id}/keys/{key_id}:
     get:
       operationId: keys_get
@@ -1444,14 +1299,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: A specific API key
@@ -1465,6 +1312,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
     delete:
       operationId: keys_delete
       summary: Delete a Project Key
@@ -1484,14 +1333,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: API key deleted
@@ -1505,6 +1346,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
   /v1/projects/{project_id}/members:
     get:
       operationId: members_list
@@ -1516,14 +1359,6 @@ paths:
         - name: project_id
           in: path
           description: The unique identifier of the project
-          required: true
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
           required: true
           schema:
             type: string
@@ -1540,6 +1375,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
   /v1/projects/{project_id}/members/{member_id}:
     delete:
       operationId: members_delete
@@ -1560,14 +1397,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: Delete the specific member from the project
@@ -1581,6 +1410,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
   /v1/projects/{project_id}/members/{member_id}/scopes:
     get:
       operationId: scopes_list
@@ -1601,14 +1432,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: A list of scopes for a specific member
@@ -1622,6 +1445,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
     put:
       operationId: scopes_update
       summary: Update Project Member Scopes
@@ -1638,14 +1463,6 @@ paths:
         - name: member_id
           in: path
           description: The unique identifier of the Member
-          required: true
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
           required: true
           schema:
             type: string
@@ -1668,6 +1485,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UpdateProjectMemberScopesV1Request'
+      security:
+        - ApiKeyAuth: []
   /v1/projects/{project_id}/invites:
     get:
       operationId: invites_list
@@ -1679,14 +1498,6 @@ paths:
         - name: project_id
           in: path
           description: The unique identifier of the project
-          required: true
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
           required: true
           schema:
             type: string
@@ -1703,6 +1514,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
     post:
       operationId: invites_create
       summary: Create a Project Invite
@@ -1713,14 +1526,6 @@ paths:
         - name: project_id
           in: path
           description: The unique identifier of the project
-          required: true
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
           required: true
           schema:
             type: string
@@ -1743,6 +1548,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateProjectInviteV1Request'
+      security:
+        - ApiKeyAuth: []
   /v1/projects/{project_id}/invites/{email}:
     delete:
       operationId: invites_delete
@@ -1763,14 +1570,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: The invite was successfully deleted
@@ -1784,6 +1583,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
   /v1/projects/{project_id}/requests:
     get:
       operationId: requests_list
@@ -1869,14 +1670,6 @@ paths:
           required: false
           schema:
             $ref: '#/components/schemas/V1ProjectsProjectIdRequestsGetParametersStatus'
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: A list of requests for a specific project
@@ -1890,6 +1683,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
   /v1/projects/{project_id}/requests/{request_id}:
     get:
       operationId: requests_get
@@ -1910,14 +1705,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: A specific request for a specific project
@@ -1931,6 +1718,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
   /v1/projects/{project_id}/usage:
     get:
       operationId: usage_get
@@ -2213,14 +2002,6 @@ paths:
           required: false
           schema:
             type: boolean
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: A specific request for a specific project
@@ -2235,6 +2016,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       deprecated: true
+      security:
+        - ApiKeyAuth: []
   /v1/projects/{project_id}/usage/fields:
     get:
       operationId: fields_list
@@ -2263,14 +2046,6 @@ paths:
           schema:
             type: string
             format: date
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: A list of fields for a specific project
@@ -2284,6 +2059,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
   /v1/projects/{project_id}/usage/breakdown:
     get:
       operationId: breakdown_get
@@ -2574,14 +2351,6 @@ paths:
           required: false
           schema:
             type: boolean
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: Usage breakdown response
@@ -2595,6 +2364,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
   /v1/projects/{project_id}/balances:
     get:
       operationId: balances_list
@@ -2606,14 +2377,6 @@ paths:
         - name: project_id
           in: path
           description: The unique identifier of the project
-          required: true
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
           required: true
           schema:
             type: string
@@ -2630,6 +2393,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
   /v1/projects/{project_id}/balances/{balance_id}:
     get:
       operationId: balances_get
@@ -2650,14 +2415,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: A specific balance
@@ -2671,6 +2428,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
   /v1/projects/{project_id}/billing/breakdown:
     get:
       operationId: breakdown_list
@@ -2731,14 +2490,6 @@ paths:
             type: array
             items:
               $ref: '#/components/schemas/V1ProjectsProjectIdBillingBreakdownGetParametersGroupingSchemaItems'
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: Billing breakdown response
@@ -2752,6 +2503,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
   /v1/projects/{project_id}/billing/fields:
     get:
       operationId: fields_list_2
@@ -2783,14 +2536,6 @@ paths:
           schema:
             type: string
             format: date
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: A list of billing fields for a specific project
@@ -2804,6 +2549,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
   /v1/projects/{project_id}/purchases:
     get:
       operationId: purchases_list
@@ -2828,14 +2575,6 @@ paths:
             minimum: 1
             maximum: 1000
             default: 10
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: A list of purchases for a specific project
@@ -2849,6 +2588,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
   /v1/projects/{project_id}/self-hosted/distribution/credentials:
     get:
       operationId: distributionCredentials_list
@@ -2860,14 +2601,6 @@ paths:
         - name: project_id
           in: path
           description: The unique identifier of the project
-          required: true
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
           required: true
           schema:
             type: string
@@ -2884,6 +2617,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
     post:
       operationId: distributionCredentials_create
       summary: Create a Project Self-Hosted Distribution Credential
@@ -2914,14 +2649,6 @@ paths:
           schema:
             $ref: '#/components/schemas/V1ProjectsProjectIdSelfHostedDistributionCredentialsPostParametersProvider'
             default: quay
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: Single distribution credential
@@ -2941,6 +2668,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateProjectDistributionCredentialsV1Request'
+      security:
+        - ApiKeyAuth: []
   /v1/projects/{project_id}/self-hosted/distribution/credentials/{distribution_credentials_id}:
     get:
       operationId: distributionCredentials_get
@@ -2961,14 +2690,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: Single distribution credential
@@ -2982,6 +2703,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
     delete:
       operationId: distributionCredentials_delete
       summary: Delete a Project Self-Hosted Distribution Credential
@@ -3001,14 +2724,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: Single distribution credential
@@ -3022,6 +2737,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
   /v1/auth/grant:
     post:
       operationId: tokens_grant
@@ -3032,15 +2749,6 @@ paths:
         will not work with the Manage APIs.
       tags:
         - tokens
-      parameters:
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: Grant response
@@ -3060,6 +2768,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/GrantV1Request'
+      security:
+        - ApiKeyAuth: []
   /v2/speak:
     post:
       operationId: audio_generate_2
@@ -3175,14 +2885,6 @@ paths:
           required: false
           schema:
             $ref: '#/components/schemas/V2SpeakPostParametersPriority'
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: >-
@@ -3210,6 +2912,28 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/SpeakV2Request'
+      security:
+        - ApiKeyAuth: []
+tags:
+  - name: models
+  - name: configurations
+  - name: variables
+  - name: media
+  - name: audio
+  - name: text
+  - name: projects
+  - name: keys
+  - name: members
+  - name: scopes
+  - name: invites
+  - name: requests
+  - name: usage
+  - name: fields
+  - name: breakdown
+  - name: balances
+  - name: purchases
+  - name: distributionCredentials
+  - name: tokens
 servers:
   - url: https://agent.deepgram.com
     description: Production

@@ -195,7 +195,7 @@ If you want to pause publishing your production branch, you can [lock a deploy](
 To change the production branch name, go to 
 ### NavigationPath Component:
 
-Project configuration > Build & deploy > Continuous Deployment > Branches and deploy contexts
+Project configuration > Developer settings > Continuous deployment > Branches and deploy contexts
 , and select **Configure**.
 
 ### Branch deploy controls
@@ -215,7 +215,7 @@ To set up a branch deploy for one or more specific branches, such as `staging` o
 1. Go to 
 ### NavigationPath Component:
 
-Project configuration > Build & deploy > Continuous Deployment > Branches and deploy contexts
+Project configuration > Developer settings > Continuous deployment > Branches and deploy contexts
 , and select **Configure**.
 
 2. Select **Let me add individual branches** and enter the name of each branch you want to deploy. You can also enter branch names you haven't created yet in your repository. To deploy all branches with a specific prefix, add an asterisk to the end of your branch name, e.g. <code>features/*</code>.
@@ -231,7 +231,7 @@ To automatically generate branch deploys for every new branch pushed to your rem
 1. Go to 
 ### NavigationPath Component:
 
-Project configuration > Build & deploy > Continuous Deployment > Branches and deploy contexts
+Project configuration > Developer settings > Continuous deployment > Branches and deploy contexts
 , and select **Configure**.
 
 2. Next to **Branch deploys**, select **All**. This excludes the designated production branch for your repository.
@@ -245,7 +245,7 @@ To turn off all branch deploys for your site:
 1. Go to 
 ### NavigationPath Component:
 
-Project configuration > Build & deploy > Continuous Deployment > Branches and deploy contexts
+Project configuration > Developer settings > Continuous deployment > Branches and deploy contexts
 , and select **Configure**.
 
 2. For **Branch deploys**, select **None**.

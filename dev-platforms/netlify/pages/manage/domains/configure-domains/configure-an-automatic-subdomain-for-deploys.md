@@ -106,7 +106,7 @@ To set up an automatic deploy subdomain for your site's branch deploys, you must
 1. To enable branch deploys for your site, go to 
 ### NavigationPath Component:
 
-Project configuration > Build & deploy > Branches and deploy contexts
+Project configuration > Developer settings > Branches and deploy contexts
 .
 2. Select **Configure**.
 3. Next to **Branch deploys**, set up branch deploys for a specific branch or for all non-production branches. To confirm, select **Save**.

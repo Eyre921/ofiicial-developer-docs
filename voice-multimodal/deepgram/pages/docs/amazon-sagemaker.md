@@ -90,6 +90,10 @@ For larger or longer-term deployments, AWS Marketplace Private Offers are availa
 
 A 14-day free trial is available with unlimited product usage and zero Deepgram license charges during the trial window. Each trial is available once per AWS account per product. Contact a [Deepgram representative](https://deepgram.com/contact-us) if you need additional time for testing.
 
+### AWS field employees
+
+If you are an AWS field employee, you can access Deepgram models through the [AWS Marketplace Field Demonstration Program](https://docs.aws.amazon.com/marketplace/latest/userguide/field-demonstration-program.html). Deepgram is an eligible provider. Refer to your internal AWS documentation for enrollment details, and reach out to a [Deepgram representative](https://deepgram.com/contact-us) if you need assistance activating the program.
+
 ### Infrastructure charges
 
 Infrastructure charges are set by AWS and billed separately from Deepgram license charges. Public pricing for SageMaker Real-Time Inference is available at [aws.amazon.com/sagemaker/ai/pricing](https://aws.amazon.com/sagemaker/ai/pricing/). Self-service savings may be available on 1-year or 3-year committed usage by purchasing a [Machine Learning Savings Plan from AWS](https://aws.amazon.com/savingsplans/ml-pricing/). For more information or to discuss additional discounts, [contact your AWS sales representative](https://aws.amazon.com/contact-us/sales-support/).

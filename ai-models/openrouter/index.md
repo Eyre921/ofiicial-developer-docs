@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 427 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 436 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -81,6 +81,14 @@
 - `docs/api/api-reference/images/generate-an-image` — [Generate an image](pages/docs/api/api-reference/images/generate-an-image.md) · [原文](https://openrouter.ai/docs/api/api-reference/images/generate-an-image.md)
 - `docs/api/api-reference/images/list-endpoints-for-an-image-model` — [List endpoints for an image model](pages/docs/api/api-reference/images/list-endpoints-for-an-image-model.md) · [原文](https://openrouter.ai/docs/api/api-reference/images/list-endpoints-for-an-image-model.md)
 - `docs/api/api-reference/images/list-image-generation-models` — [List image generation models](pages/docs/api/api-reference/images/list-image-generation-models.md) · [原文](https://openrouter.ai/docs/api/api-reference/images/list-image-generation-models.md)
+- `docs/api/api-reference/interns/create-an-intern` — [API key…
+- [Create an intern](pages/docs/api/api-reference/interns/create-an-intern.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/create-an-intern.md)
+- `docs/api/api-reference/interns/delete-an-intern` — [Delete an intern](pages/docs/api/api-reference/interns/delete-an-intern.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/delete-an-intern.md)
+- `docs/api/api-reference/interns/get-an-intern` — [Get an intern](pages/docs/api/api-reference/interns/get-an-intern.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/get-an-intern.md)
+- `docs/api/api-reference/interns/list-interns` — [List interns](pages/docs/api/api-reference/interns/list-interns.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/list-interns.md)
+- `docs/api/api-reference/interns/provision-an-intern` — [Provision an intern](pages/docs/api/api-reference/interns/provision-an-intern.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/provision-an-intern.md)
+- `docs/api/api-reference/interns/suspend-an-intern` — [Suspend an intern](pages/docs/api/api-reference/interns/suspend-an-intern.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/suspend-an-intern.md)
+- `docs/api/api-reference/interns/update-an-intern` — [Update an intern](pages/docs/api/api-reference/interns/update-an-intern.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/update-an-intern.md)
 - `docs/api/api-reference/models/get-a-model-by-its-slug` — [Get a model by its slug](pages/docs/api/api-reference/models/get-a-model-by-its-slug.md) · [原文](https://openrouter.ai/docs/api/api-reference/models/get-a-model-by-its-slug.md)
 - `docs/api/api-reference/models/get-total-count-of-available-models` — [Get total count of available models](pages/docs/api/api-reference/models/get-total-count-of-available-models.md) · [原文](https://openrouter.ai/docs/api/api-reference/models/get-total-count-of-available-models.md)
 - `docs/api/api-reference/models/list-all-models-and-their-properties` — [List all models and their properties](pages/docs/api/api-reference/models/list-all-models-and-their-properties.md) · [原文](https://openrouter.ai/docs/api/api-reference/models/list-all-models-and-their-properties.md)
@@ -174,6 +182,7 @@
 - `docs/client-sdks/go/sdks/generations/readme` — [Generations](pages/docs/client-sdks/go/sdks/generations/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/generations/README.md)
 - `docs/client-sdks/go/sdks/guardrails/readme` — [Guardrails](pages/docs/client-sdks/go/sdks/guardrails/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/guardrails/README.md)
 - `docs/client-sdks/go/sdks/images/readme` — [Images](pages/docs/client-sdks/go/sdks/images/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/images/README.md)
+- `docs/client-sdks/go/sdks/interns/readme` — [Interns](pages/docs/client-sdks/go/sdks/interns/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/interns/README.md)
 - `docs/client-sdks/go/sdks/models/readme` — [Models](pages/docs/client-sdks/go/sdks/models/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/models/README.md)
 - `docs/client-sdks/go/sdks/oauth/readme` — [OAuth](pages/docs/client-sdks/go/sdks/oauth/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/oauth/README.md)
 - `docs/client-sdks/go/sdks/observability/readme` — [Observability](pages/docs/client-sdks/go/sdks/observability/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/observability/README.md)
@@ -206,6 +215,7 @@
 - `docs/client-sdks/python/sdks/generations/readme` — [Generations](pages/docs/client-sdks/python/sdks/generations/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/generations/README.md)
 - `docs/client-sdks/python/sdks/guardrails/readme` — [Guardrails](pages/docs/client-sdks/python/sdks/guardrails/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/guardrails/README.md)
 - `docs/client-sdks/python/sdks/images/readme` — [Images](pages/docs/client-sdks/python/sdks/images/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/images/README.md)
+- `docs/client-sdks/python/sdks/interns/readme` — [Interns](pages/docs/client-sdks/python/sdks/interns/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/interns/README.md)
 - `docs/client-sdks/python/sdks/models/readme` — [Models](pages/docs/client-sdks/python/sdks/models/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/models/README.md)
 - `docs/client-sdks/python/sdks/oauth/readme` — [OAuth](pages/docs/client-sdks/python/sdks/oauth/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/oauth/README.md)
 - `docs/client-sdks/python/sdks/observability/readme` — [Observability](pages/docs/client-sdks/python/sdks/observability/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/observability/README.md)

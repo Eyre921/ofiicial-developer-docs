@@ -28,7 +28,7 @@ To get started, install the **Async Workloads** extension for your team. After y
 For teams on the Starter plan, you need to configure the extension with an Async Workloads API key. In the Netlify UI, navigate to 
 ### NavigationPath Component:
 
-Project configuration > Build & Deploy > Async Workloads
+Project configuration > Developer settings > Async Workloads
  for the site you want to configure. Select **Create a new API key** to input and save the new API key. For customers on all other plans, this step is optional as an API key is automatically generated for you at the team level upon installing the extension.
 
 Add the `@netlify/async-workloads` module to your project. This will provide the functionality and types for those using TypeScript.

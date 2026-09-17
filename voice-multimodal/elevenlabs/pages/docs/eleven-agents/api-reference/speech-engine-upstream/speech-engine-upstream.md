@@ -329,15 +329,14 @@ channels:
       message:
         name: subscribe
         payload:
-          $ref: >-
-            #/components/schemas/type_speechEngineUpstream:receiveUpstreamMessage
+          $ref: '#/components/schemas/speechEngineUpstream_receiveUpstreamMessage'
     subscribe:
       operationId: subpackage_speechEngineUpstream.speechEngineUpstream-subscribe
       summary: Client message
       message:
         name: publish
         payload:
-          $ref: '#/components/schemas/type_speechEngineUpstream:sendUpstreamMessage'
+          $ref: '#/components/schemas/speechEngineUpstream_sendUpstreamMessage'
 servers:
   Production:
     url: wss://api.elevenlabs.io/
@@ -357,7 +356,7 @@ servers:
     protocol: wss
 components:
   schemas:
-    type_:InitPayload:
+    InitPayload:
       type: object
       properties:
         type:
@@ -373,18 +372,18 @@ components:
         - conversation_id
       description: Payload for the session initialisation message sent by ElevenLabs.
       title: InitPayload
-    type_:TranscriptMessageRole:
+    TranscriptMessageRole:
       type: string
       enum:
         - user
         - agent
       description: The speaker for this turn.
       title: TranscriptMessageRole
-    type_:TranscriptMessage:
+    TranscriptMessage:
       type: object
       properties:
         role:
-          $ref: '#/components/schemas/type_:TranscriptMessageRole'
+          $ref: '#/components/schemas/TranscriptMessageRole'
           description: The speaker for this turn.
         content:
           type: string
@@ -394,7 +393,7 @@ components:
         - content
       description: A single turn in the conversation history.
       title: TranscriptMessage
-    type_:UserTranscriptPayload:
+    UserTranscriptPayload:
       type: object
       properties:
         type:
@@ -405,7 +404,7 @@ components:
         user_transcript:
           type: array
           items:
-            $ref: '#/components/schemas/type_:TranscriptMessage'
+            $ref: '#/components/schemas/TranscriptMessage'
           description: >-
             Full conversation history up to and including the latest user turn,
             ordered
@@ -430,7 +429,7 @@ components:
 
         the user finishes speaking.
       title: UserTranscriptPayload
-    type_:PingPayload:
+    PingPayload:
       type: object
       properties:
         type:
@@ -442,7 +441,7 @@ components:
         - type
       description: Keep-alive ping sent periodically by ElevenLabs.
       title: PingPayload
-    type_:ClosePayload:
+    ClosePayload:
       type: object
       properties:
         type:
@@ -454,7 +453,7 @@ components:
         - type
       description: Payload indicating a clean end-of-conversation signal from ElevenLabs.
       title: ClosePayload
-    type_:ErrorPayload:
+    ErrorPayload:
       type: object
       properties:
         type:
@@ -472,16 +471,16 @@ components:
         Payload for protocol-level errors sent by ElevenLabs before closing the
         connection.
       title: ErrorPayload
-    type_speechEngineUpstream:receiveUpstreamMessage:
+    speechEngineUpstream_receiveUpstreamMessage:
       oneOf:
-        - $ref: '#/components/schemas/type_:InitPayload'
-        - $ref: '#/components/schemas/type_:UserTranscriptPayload'
-        - $ref: '#/components/schemas/type_:PingPayload'
-        - $ref: '#/components/schemas/type_:ClosePayload'
-        - $ref: '#/components/schemas/type_:ErrorPayload'
+        - $ref: '#/components/schemas/InitPayload'
+        - $ref: '#/components/schemas/UserTranscriptPayload'
+        - $ref: '#/components/schemas/PingPayload'
+        - $ref: '#/components/schemas/ClosePayload'
+        - $ref: '#/components/schemas/ErrorPayload'
       description: Defines the message types ElevenLabs sends to your speech engine server
       title: receiveUpstreamMessage
-    type_:AgentResponsePayload:
+    AgentResponsePayload:
       type: object
       properties:
         type:
@@ -525,7 +524,7 @@ components:
 
         an empty string.
       title: AgentResponsePayload
-    type_:PongPayload:
+    PongPayload:
       type: object
       properties:
         type:
@@ -537,10 +536,10 @@ components:
         - type
       description: Reply to a `ping` message.
       title: PongPayload
-    type_speechEngineUpstream:sendUpstreamMessage:
+    speechEngineUpstream_sendUpstreamMessage:
       oneOf:
-        - $ref: '#/components/schemas/type_:AgentResponsePayload'
-        - $ref: '#/components/schemas/type_:PongPayload'
+        - $ref: '#/components/schemas/AgentResponsePayload'
+        - $ref: '#/components/schemas/PongPayload'
       description: Defines the message types your speech engine server sends to ElevenLabs
       title: sendUpstreamMessage
 

@@ -24,7 +24,7 @@ For site-level configuration:
 1. In the Netlify UI, navigate to 
 ### NavigationPath Component:
 
-Project configuration > Build & Deploy > Async Workloads
+Project configuration > Developer settings > Async Workloads
  for the project you want to edit.
 1. Update your configuration and then select **Save**.
 
@@ -45,7 +45,7 @@ For team-level API keys, navigate to the [Async Workloads extension details page
 For project scoped API keys, navigate to 
 ### NavigationPath Component:
 
-Project configuration > Build & Deploy > Async Workloads
+Project configuration > Developer settings > Async Workloads
  in the Netlify UI. Select **Create a new API key** to input and save the new API key.
 
 When you create a new API key, you must provide an **API key priority** and an **API key value**.

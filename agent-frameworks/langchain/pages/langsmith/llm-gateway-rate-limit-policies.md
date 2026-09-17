@@ -5,7 +5,7 @@ path: langsmith/llm-gateway-rate-limit-policies
 ---
 
 <Note>
-**Beta:** The LLM Gateway is in [beta](/langsmith/release-stages).
+The LLM Gateway is in [beta](/langsmith/release-stages).
 </Note>
 
 A rate limit policy restricts how many **requests** or **tokens** a subject can consume through the [LLM Gateway](/langsmith/llm-gateway) in a short rolling time window. The gateway enforces the limit in real time and blocks any request that would push the subject past it, returning a `429` response with a `Retry-After` header:

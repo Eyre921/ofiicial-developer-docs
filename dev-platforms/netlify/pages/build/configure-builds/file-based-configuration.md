@@ -74,7 +74,7 @@ Check out our [ignore builds](/build/configure-builds/ignore-builds) doc for mor
 Netlify [Build Plugins](/extend/install-and-use/build-plugins) extend the functionality of the build process. In addition to installing plugins through the 
 ### NavigationPath Component:
 
-Project configuration > Build & deploy > Build plugins
+Project configuration > Developer settings > Build plugins
  section in the Netlify UI, you can also add them to a site using [file-based installation](/extend/install-and-use/build-plugins#file-based-installation). Here's an example `[[plugins]]` section in `netlify.toml`:
 
 ```toml
@@ -125,7 +125,7 @@ During a build, the following ordering determines which context covers a particu
   - production - a deploy generated from the production branch set in the UI under 
 ### NavigationPath Component:
 
-Project configuration > Build & deploy > Continuous deployment > Branches and deploy contexts
+Project configuration > Developer settings > Continuous deployment > Branches and deploy contexts
 
   - deploy-preview - a deploy generated from a pull request or merge request
   - branch-deploy - a deploy generated from a branch that is not your production branch
@@ -155,7 +155,7 @@ You can manage the Pretty URLs post processing setting with the `processing` pro
 This setting overrides the corresponding setting under 
 ### NavigationPath Component:
 
-Project configuration > Build & deploy > Post processing > Pretty URLs
+Project configuration > Developer settings > Post processing > Pretty URLs
 .
 
 ```toml

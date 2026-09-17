@@ -149,7 +149,7 @@ After you change the deploy retention limit for a site and save, all changes tak
 1. As a Developer or Team Owner, go to 
 ### NavigationPath Component:
 
-Project configuration > Build & Deploy > Automatic Deletion
+Project configuration > Developer settings > Automatic Deletion
 .
 
 2. Select **Configure**, and use the drop-down to select a new deploy retention limit.

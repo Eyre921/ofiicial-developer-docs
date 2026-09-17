@@ -51,7 +51,7 @@ Architect your application to work within Pinecone's [database limits](/referenc
 * **Plan limits**: The Starter and Builder plans have monthly read/write unit limits. Upgrade to Standard or Enterprise for unlimited read/write units and higher throughput needs.
 
 <Note>
-  Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, and list operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
+  Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, list, and full-text search operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
 </Note>
 
 ## Test your query results

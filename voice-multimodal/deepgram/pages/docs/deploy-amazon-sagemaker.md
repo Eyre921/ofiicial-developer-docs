@@ -26,6 +26,8 @@ You need a **Model Package ARN** before you start. Subscribe to a Deepgram produ
 * An active AWS Marketplace subscription to a [Deepgram SageMaker product](/docs/supported-products-sagemaker) and its **Model Package ARN**. See [Subscribe on AWS Marketplace](/docs/subscribe-aws-marketplace).
 * Service quota for the GPU instance type you plan to use. See [Requesting SageMaker Quota](/docs/request-sagemaker-quota).
 
+**AWS field employees:** you can access Deepgram models through the [AWS Marketplace Field Demonstration Program](https://docs.aws.amazon.com/marketplace/latest/userguide/field-demonstration-program.html). Deepgram is an eligible provider. Refer to your internal AWS documentation for enrollment details, and reach out to a [Deepgram representative](https://deepgram.com/contact-us) if you need assistance activating the program.
+
 ## Choose an endpoint type
 
 Deploy a **real-time** endpoint. It serves both live streaming (`InvokeEndpointWithBidirectionalStream`) and synchronous single-file transcription (`InvokeEndpoint`, up to 25 MB per request).

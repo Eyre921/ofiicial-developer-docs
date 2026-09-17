@@ -42,7 +42,7 @@ Once you select a site to deploy, Netlify automatically fills in the **Build com
 Netlify also uses this selection to set the **Package directory**, and leaves the **Base directory** unset. You can review both fields under 
 ### NavigationPath Component:
 
-Project configuration > Build & deploy > Continuous deployment > Build settings
+Project configuration > Developer settings > Continuous deployment > Build settings
  after you finish setting up your site. As the **Base directory** is not set, Netlify uses the root of the repository as the default to install dependencies and build your site. 
 
 ![](/images/configure-builds-monorepos-autodetection.png)
@@ -68,7 +68,7 @@ You can set a base directory in the following ways:
  - in the Netlify UI, when you select **Add new project**. For an existing site, you can update the setting at 
 ### NavigationPath Component:
 
-Project configuration > Build & deploy > Continuous deployment > Build settings
+Project configuration > Developer settings > Continuous deployment > Build settings
 .
  - in a [Netlify configuration file](/build/configure-builds/file-based-configuration/#build-settings) stored at the root of your repository. Use the `base` property under `[build]` settings, and Netlify will use that value to set the base directory when you first set up the site.
  - if you're creating a [Deploy to Netlify](/deploy/create-deploys/#deploy-to-netlify-button) button for other people to easily clone and deploy your site, use the [`base` query parameter](/deploy/create-deploys/#set-a-base-directory-for-monorepos) to set the base directory for that button. You can create different buttons for each site in your monorepo by setting a different `base` value for each button.
@@ -88,7 +88,7 @@ To set the package directory for a site:
 1. Navigate to 
 ### NavigationPath Component:
 
-Project configuration > Build & deploy > Continuous deployment > Build settings
+Project configuration > Developer settings > Continuous deployment > Build settings
 . 
 2. Select **Configure**.
 3. Enter the **Package directory**. For example, `/packages/website`.
@@ -101,7 +101,7 @@ You can manually set the [build command](#definitions) in the following ways:
 - in the Netlify UI, when you select **Add new project**. For an existing site, you can update the setting at 
 ### NavigationPath Component:
 
-Project configuration > Build & deploy > Continuous deployment > Build settings
+Project configuration > Developer settings > Continuous deployment > Build settings
 .
  - in a [Netlify configuration file](/build/configure-builds/file-based-configuration/#build-settings). Use the `command` property under `[build]` settings. Learn more about [file-based configuration](/build/configure-builds/file-based-configuration/).
  - using [Netlify CLI](/api-and-cli-guides/cli-guides/get-started-with-cli/) when setting up continuous deployment for a site. 
@@ -115,7 +115,7 @@ You can manually set the [publish directory](#definitions) in the following ways
 - in the Netlify UI, when you select **Add new project**. For an existing project, you can update the setting at 
 ### NavigationPath Component:
 
-Project configuration > Build & deploy > Continuous deployment > Build settings
+Project configuration > Developer settings > Continuous deployment > Build settings
 .
  - in a [Netlify configuration file](/build/configure-builds/file-based-configuration/#build-settings). Use the `publish` property under `[build]` settings. Learn more about [file-based configuration](/build/configure-builds/file-based-configuration/).
  - using [Netlify CLI](/api-and-cli-guides/cli-guides/get-started-with-cli/) when setting up continuous deployment for a site. 

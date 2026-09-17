@@ -2633,6 +2633,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/rest/actions/hosted-runners
 /en/rest/actions/oidc
 /en/rest/actions/permissions
+/en/rest/actions/policies
 /en/rest/actions/secrets
 /en/rest/actions/self-hosted-runner-groups
 /en/rest/actions/self-hosted-runners

@@ -24,7 +24,7 @@ You can choose the Node.js version we use to build your site in the following wa
 - Navigate to 
 ### NavigationPath Component:
 
-Project configuration > Build & deploy > Continuous deployment > Dependency management
+Project configuration > Developer settings > Continuous deployment > Dependency management
  in the Netlify UI and select from the major Node.js versions that Netlify currently supports. Once you change the version, you need to redeploy your site for it to take effect. Note that a `NODE_VERSION` environment variable, `.node-version` file, or `.nvmrc` file will override this UI setting.
 - Set a `NODE_VERSION` [environment variable](/build/configure-builds/environment-variables) with any released version of Node.js or any valid string that [nvm](https://github.com/nvm-sh/nvm#nvmrc) understands. You can either set a specific version or set a major version, such as the number `24` for the latest version of Node.js 24.x.
 - Add a `.node-version` or [`.nvmrc`](https://github.com/nvm-sh/nvm#nvmrc) file to the site's [base directory](/build/configure-builds/overview#definitions) in your repository. The file can include any released version of Node.js or any valid string that [nvm](https://github.com/nvm-sh/nvm#nvmrc) understands. You can either set a specific version or set a major version, such as the number `22` for the latest version of Node.js 22.x.
@@ -259,7 +259,7 @@ Netlify's [build images](/build/configure-builds/overview#build-image-selection)
 Not sure what build image your project uses? You can find out in the Netlify UI, by navigating to 
 ### NavigationPath Component:
 
-Project configuration > Build & deploy > Continuous deployment > Build image selection
+Project configuration > Developer settings > Continuous deployment > Build image selection
 . You can also find all of the software versions your build uses in your site's [deploy logs](/deploy/deploy-overview#deploy-log).
 
 ## Dependency cache

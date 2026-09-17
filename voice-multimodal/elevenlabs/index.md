@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1304 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1303 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -252,7 +252,6 @@
 - `docs/api-reference/studio/edit-project` — [Update Studio Project](pages/docs/api-reference/studio/edit-project.md) · [原文](https://elevenlabs.io/docs/api-reference/studio/edit-project.md)
 - `docs/api-reference/studio/get-chapter` — [Get Chapter](pages/docs/api-reference/studio/get-chapter.md) · [原文](https://elevenlabs.io/docs/api-reference/studio/get-chapter.md)
 - `docs/api-reference/studio/get-chapter-snapshot` — [Get Chapter Snapshot](pages/docs/api-reference/studio/get-chapter-snapshot.md) · [原文](https://elevenlabs.io/docs/api-reference/studio/get-chapter-snapshot.md)
-- `docs/api-reference/studio/get-chapter-snapshots` — [List Chapter Snapshots](pages/docs/api-reference/studio/get-chapter-snapshots.md) · [原文](https://elevenlabs.io/docs/api-reference/studio/get-chapter-snapshots.md)
 - `docs/api-reference/studio/get-chapters` — [List Chapters](pages/docs/api-reference/studio/get-chapters.md) · [原文](https://elevenlabs.io/docs/api-reference/studio/get-chapters.md)
 - `docs/api-reference/studio/get-muted-tracks` — [Get Project Muted Tracks](pages/docs/api-reference/studio/get-muted-tracks.md) · [原文](https://elevenlabs.io/docs/api-reference/studio/get-muted-tracks.md)
 - `docs/api-reference/studio/get-project` — [Get Studio Project](pages/docs/api-reference/studio/get-project.md) · [原文](https://elevenlabs.io/docs/api-reference/studio/get-project.md)

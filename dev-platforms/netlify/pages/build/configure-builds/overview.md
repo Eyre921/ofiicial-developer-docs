@@ -20,7 +20,7 @@ Netlify lets you link a GitHub, GitLab, Bitbucket, Azure DevOps, or Cursor Origi
 With continuous deployment configured, you can specify how Netlify will build your site. You can specify these settings when you first [add your site from an existing repository](/start/quickstarts/deploy-from-repository/) and anytime afterwards by going to 
 ### NavigationPath Component:
 
-Project configuration > Build & deploy > Continuous deployment > Build settings
+Project configuration > Developer settings > Continuous deployment > Build settings
 .
 
 ### Tip - Missing Build settings?
@@ -60,7 +60,7 @@ You can manually set the [build command](#definitions) in the following ways:
 - in the Netlify UI, when you select **Add new project**. For an existing site, you can update the setting at 
 ### NavigationPath Component:
 
-Project configuration > Build & deploy > Continuous deployment > Build settings
+Project configuration > Developer settings > Continuous deployment > Build settings
 .
  - in a [Netlify configuration file](/build/configure-builds/file-based-configuration/#build-settings). Use the `command` property under `[build]` settings. Learn more about [file-based configuration](/build/configure-builds/file-based-configuration/).
  - using [Netlify CLI](/api-and-cli-guides/cli-guides/get-started-with-cli/) when setting up continuous deployment for a site. 
@@ -74,7 +74,7 @@ You can manually set the [publish directory](#definitions) in the following ways
 - in the Netlify UI, when you select **Add new project**. For an existing project, you can update the setting at 
 ### NavigationPath Component:
 
-Project configuration > Build & deploy > Continuous deployment > Build settings
+Project configuration > Developer settings > Continuous deployment > Build settings
 .
  - in a [Netlify configuration file](/build/configure-builds/file-based-configuration/#build-settings). Use the `publish` property under `[build]` settings. Learn more about [file-based configuration](/build/configure-builds/file-based-configuration/).
  - using [Netlify CLI](/api-and-cli-guides/cli-guides/get-started-with-cli/) when setting up continuous deployment for a site. 
@@ -90,7 +90,7 @@ You can set a base directory in the following ways:
  - in the Netlify UI, when you select **Add new project**. For an existing site, you can update the setting at 
 ### NavigationPath Component:
 
-Project configuration > Build & deploy > Continuous deployment > Build settings
+Project configuration > Developer settings > Continuous deployment > Build settings
 .
  - in a [Netlify configuration file](/build/configure-builds/file-based-configuration/#build-settings) stored at the root of your repository. Use the `base` property under `[build]` settings, and Netlify will use that value to set the base directory when you first set up the site.
  - if you're creating a [Deploy to Netlify](/deploy/create-deploys/#deploy-to-netlify-button) button for other people to easily clone and deploy your site, use the [`base` query parameter](/deploy/create-deploys/#set-a-base-directory-for-monorepos) to set the base directory for that button. You can create different buttons for each site in your monorepo by setting a different `base` value for each button.
@@ -110,7 +110,7 @@ To set the package directory for a site:
 1. Navigate to 
 ### NavigationPath Component:
 
-Project configuration > Build & deploy > Continuous deployment > Build settings
+Project configuration > Developer settings > Continuous deployment > Build settings
 . 
 2. Select **Configure**.
 3. Enter the **Package directory**. For example, `/packages/website`.
@@ -137,7 +137,7 @@ We recommend upgrading to the most recent build image regularly to take advantag
 To change the build image for a site, go to 
 ### NavigationPath Component:
 
-Project configuration > Build & deploy > Continuous deployment > Build image selection
+Project configuration > Developer settings > Continuous deployment > Build image selection
 , and select the build image you would like to use. Our build system will use this image for all production deploys, branch deploys, and Deploy Previews.
 
 ### Build image defaults and project dependencies

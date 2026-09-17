@@ -14,7 +14,7 @@ description: "Set up build hooks that trigger new builds and deploys when a URL 
 Build hooks are URLs you can use to trigger new builds and deploys. You can find them in 
 ### NavigationPath Component:
 
-Project configuration > Build & deploy > Continuous deployment > Build hooks
+Project configuration > Developer settings > Continuous deployment > Build hooks
 .
 
 ![](/images/configure-builds-build-hooks.png)

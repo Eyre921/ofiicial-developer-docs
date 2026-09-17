@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/manage-cost/understanding-cost
 path: guides/manage-cost/understanding-cost
 ---
 
-Understand how costs are incurred in Pinecone, including read units (RUs), write units (WUs), storage, egress, and embedding.
+Understand how Pinecone bills read units, write units, storage, egress, and embedding for full-text search, semantic search, and hybrid search.
 
 For the latest pricing details, see [Pricing](https://www.pinecone.io/pricing/).
 
@@ -70,6 +70,8 @@ Customers on Standard and Enterprise pay-as-you-go plans can purchase prepaid cr
 
 With serverless indexes, you pay for the amount of data stored and operations performed, based on four usage metrics: [read units](#read-units), [write units](#write-units), [storage](#storage), and [egress](#egress).
 
+[Full-text search](/guides/search/full-text-search) on a document index, semantic search on a vector index, and [hybrid search](/guides/search/hybrid-search) that combines the two are all metered by the same four metrics.
+
 For the latest serverless pricing rates, see [Pricing](https://www.pinecone.io/pricing/).
 
 ### Read units
@@ -79,13 +81,14 @@ A **read unit (RU)** is the unit Pinecone uses to measure and price the cost of 
 * [Query](#query)
 * [Fetch](#fetch)
 * [List](#list)
+* [Full-text search](#full-text-search)
 
 <Tip>
   Read requests return the number of RUs used. You can use this information to [monitor read costs](/guides/manage-cost/monitor-usage-and-costs#read-units).
 </Tip>
 
 <Note>
-  Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, and list operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
+  Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, list, and full-text search operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
 </Note>
 
 #### Query
@@ -126,6 +129,12 @@ Specifying a non-existent ID or adding the same ID more than once doesn't increa
 
 List has a fixed cost of 1 RU per call, with up to 100 records per call.
 
+#### Full-text search
+
+Searching a [document index](/guides/search/full-text-search) uses 1 RU for every 1 GB of namespace size, with a minimum of 0.25 RUs per search, the same as a [query](#query). This holds whether the request ranks by keyword relevance or by vector similarity.
+
+A document index can declare `string` fields with `full_text_search` enabled and a `dense_vector` field in one schema, and each request ranks by one of them. So a [hybrid search](/guides/search/hybrid-search) that narrows candidates with a [text-match filter](/guides/search/filter-by-metadata#text-match-filters) and then ranks what remains with a `dense_vector` search is billed as one read request. Running a separate keyword search and dense search and merging the results client-side is billed as two.
+
 ### Write units
 
 A **write unit (WU)** is the unit Pinecone uses to measure and price the cost of a write request. Write units (WUs) measure the storage and compute resources used by the following write requests:
@@ -133,6 +142,10 @@ A **write unit (WU)** is the unit Pinecone uses to measure and price the cost of
 * [Upsert](#upsert)
 * [Update](#update)
 * [Delete](#delete)
+
+<Note>
+  Writes to a [document index](/guides/index-data/adopt-the-documents-api) use the same cost models as writes to a vector index. The formulas below apply to both.
+</Note>
 
 #### Upsert
 
@@ -398,10 +411,12 @@ The HIPAA compliance add-on includes:
 
 ### Enable the HIPAA compliance add-on
 
-To enable the HIPAA compliance add-on, [contact sales](mailto:sales@pinecone.io) or [submit a request](https://www.pinecone.io/contact/?contact_form_inquiry_type=Sales). The Pinecone team will review your request and guide you through activation.
+To enable the HIPAA compliance add-on, [submit a HIPAA request](https://www.pinecone.io/contact/hipaa/). The Pinecone team will review your request and guide you through activation.
 
 ## See also
 
 * [Manage cost](/guides/manage-cost/manage-cost)
 * [Monitor usage](/guides/manage-cost/monitor-usage-and-costs)
+* [Full-text search](/guides/search/full-text-search)
+* [Hybrid search](/guides/search/hybrid-search)
 * [Pricing](https://www.pinecone.io/pricing/)
