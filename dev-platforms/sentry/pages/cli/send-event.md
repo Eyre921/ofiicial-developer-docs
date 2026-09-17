@@ -10,7 +10,7 @@ description: "Learn how Sentry's command line interface can be used for sending 
 url: https://docs.sentry.io/cli/send-event/
 ---
 
-# Sending Events
+# Sending Events | Sentry Docs
 
 ##### Looking for the new Sentry CLI?
 

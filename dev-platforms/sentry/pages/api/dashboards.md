@@ -9,7 +9,7 @@ title: "Dashboards"
 url: https://docs.sentry.io/api/dashboards/
 ---
 
-# Dashboards
+# Dashboards | Sentry Docs
 
 * #### [Create a New Dashboard for an Organization](https://docs.sentry.io/api/dashboards/create-a-new-dashboard-for-an-organization.md)
 * #### [Delete an Organization's Custom Dashboard](https://docs.sentry.io/api/dashboards/delete-an-organizations-custom-dashboard.md)

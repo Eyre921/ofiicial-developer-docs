@@ -59,7 +59,7 @@ Dynatrace's [acquisition announcement](https://www.dynatrace.com/news/press-rele
 
 Phoenix starts as one container on SQLite. A production Langfuse self-host runs ClickHouse, Postgres, Redis, and blob storage. [Docker Compose](/self-hosting/deployment/docker-compose) brings that stack up on one VM. Helm and Terraform are the high-availability paths. Agent traces are deep trees with large payloads and high-cardinality group-bys, so Langfuse left Postgres in v3. [How Langfuse runs ClickHouse at agent scale](/resources/engineering/clickhouse-at-agent-scale) is the design write-up. Joining ClickHouse in January 2026 put the team that builds that engine and the team that runs it on Langfuse Cloud in one company. The [public commitment](/blog/joining-clickhouse) keeps the MIT license, self-hosting, Cloud endpoints, and the same roadmap.
 
-High-volume reads use the [Observations](/docs/api-and-data-platform/features/observations-api) and [Metrics](/docs/metrics/features/metrics-api) APIs; self-hosters can query ClickHouse in SQL.
+High-volume reads use the [Observations](/docs/api-and-data-platform/features/public-api#v2) and [Metrics](/docs/metrics/features/metrics-api) APIs; self-hosters can query ClickHouse in SQL.
 
 [ClickHouse](https://clickhouse.com/) has been [open source since June 15, 2016](https://clickhouse.com/blog/open-source-10) (Apache 2.0) and is today the most popular open-source analytical database, with 2,000+ contributors. Langfuse Cloud and self-hosted run the same ClickHouse architecture, so you can move between them without locking into a closed store.
 

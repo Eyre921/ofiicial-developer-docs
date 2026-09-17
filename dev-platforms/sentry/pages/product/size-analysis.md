@@ -10,7 +10,7 @@ description: "Monitor mobile builds for size changes before they reach users."
 url: https://docs.sentry.io/product/size-analysis/
 ---
 
-# Size Analysis
+# Size Analysis | Sentry Docs
 
 Size Analysis monitors your mobile app size to prevent regressions before they reach users. Upload builds from CI to spot regressions early, understand what's inside each bundle, and keep release artifacts lean.
 

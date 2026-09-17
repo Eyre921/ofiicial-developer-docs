@@ -9,7 +9,7 @@ title: "Authentication"
 url: https://docs.sentry.io/api/auth/
 ---
 
-# Authentication
+# Authentication | Sentry Docs
 
 ## [Auth Tokens](https://docs.sentry.io/api/auth.md#auth-tokens)
 

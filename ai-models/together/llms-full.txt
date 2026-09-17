@@ -2266,17 +2266,21 @@ Source: https://docs.together.ai/docs/dedicated-endpoints/grafana
 
 Scrape the metrics endpoint with Prometheus and import the example Grafana dashboard for dedicated endpoints.
 
-Learn how to set up a Grafana dashboard for your dedicated endpoints to visualize endpoint request rates and error ratios, client-observed and server-side latency percentiles, token throughput, and engine cache utilization, filterable by endpoint and deployment.
+<Note>
+  The metrics endpoint is in beta. The host and path are subject to change, and access may need to be enabled for your organization. Confirm availability with your Together AI contact before you build against it.
+</Note>
 
-The dashboard you'll create in this guide runs Prometheus and Grafana locally with Docker Compose, scrapes the [Prometheus-compatible metrics endpoint](/docs/dedicated-endpoints/monitoring#prometheus-compatible-metrics-endpoint), and imports an example dashboard. The same dashboard works with any Prometheus-compatible stack.
+Learn how to create a Grafana dashboard for your dedicated endpoints to visualize endpoint request rates and error ratios, client-observed and server-side latency percentiles, token throughput, and engine cache utilization, filterable by endpoint and deployment.
+
+The dashboard you'll build in this guide runs Prometheus and Grafana locally with Docker Compose, scrapes the [Prometheus-compatible metrics endpoint](/docs/dedicated-endpoints/monitoring#prometheus-compatible-metrics-endpoint), and imports an example dashboard.
+
+<Tip>
+  This tutorial is specifically for Grafana, but any observability tool that ingests Prometheus metrics can scrape the same metrics endpoint (for example, Datadog through its [OpenMetrics integration](https://docs.datadoghq.com/integrations/openmetrics/)).
+</Tip>
 
 <Frame>
   <img alt="The example Grafana dashboard for Together AI dedicated endpoints, showing request rate by status, 5xx error ratio, in-flight requests, and latency percentile panels, with Endpoint and Deployment filter variables at the top." />
 </Frame>
-
-<Note>
-  The metrics endpoint is in beta. The host and path are subject to change, and access may need to be enabled for your organization. Confirm availability with your Together AI contact before you build against it.
-</Note>
 
 ## Requirements
 
@@ -5819,30 +5823,16 @@ Set `model_source = "serverless"` to use Together AI serverless inference.
 
 The evaluations service keeps its own allowlist of serverless models, separate from the full [serverless catalog](/docs/serverless/models). The models below can serve as the judge or as the model being evaluated; this table syncs daily from the allowlist.
 
-| Model                              | Model ID                                  |
-| :--------------------------------- | :---------------------------------------- |
-| LFM2-24B-A2B                       | `LiquidAI/LFM2-24B-A2B`                   |
-| MiniMax-M2.7                       | `MiniMaxAI/MiniMax-M2.7`                  |
-| Qwen3-235B-A22B-Instruct-2507-tput | `Qwen/Qwen3-235B-A22B-Instruct-2507-tput` |
-| Qwen3-Coder-480B-A35B-Instruct-FP8 | `Qwen/Qwen3-Coder-480B-A35B-Instruct-FP8` |
-| Qwen3-Coder-Next-FP8               | `Qwen/Qwen3-Coder-Next-FP8`               |
-| Qwen3.5-397B-A17B                  | `Qwen/Qwen3.5-397B-A17B`                  |
-| Qwen3.5 9B FP8                     | `Qwen/Qwen3.5-9B`                         |
-| Qwen3.6 Plus                       | `Qwen/Qwen3.6-Plus`                       |
-| cogito-v2-1-671b                   | `deepcogito/cogito-v2-1-671b`             |
-| DeepSeek-R1                        | `deepseek-ai/DeepSeek-R1`                 |
-| DeepSeek-V3.1                      | `deepseek-ai/DeepSeek-V3.1`               |
-| DeepSeek-V4-Pro                    | `deepseek-ai/DeepSeek-V4-Pro`             |
-| rnj-1-instruct                     | `essentialai/rnj-1-instruct`              |
-| gemma-3n-E4B-it                    | `google/gemma-3n-E4B-it`                  |
-| Gemma 4 31B-it FP8                 | `google/gemma-4-31B-it`                   |
-| Meta Llama 3.3 70B Instruct Turbo  | `meta-llama/Llama-3.3-70B-Instruct-Turbo` |
-| Kimi-K2.5                          | `moonshotai/Kimi-K2.5`                    |
-| Kimi-K2.6                          | `moonshotai/Kimi-K2.6`                    |
-| OpenAI GPT-OSS 120B                | `openai/gpt-oss-120b`                     |
-| OpenAI GPT-OSS 20B                 | `openai/gpt-oss-20b`                      |
-| GLM-5                              | `zai-org/GLM-5`                           |
-| GLM-5.1                            | `zai-org/GLM-5.1`                         |
+| Model                             | Model ID                                  |
+| :-------------------------------- | :---------------------------------------- |
+| Qwen3.5 9B FP8                    | `Qwen/Qwen3.5-9B`                         |
+| Qwen3.6 Plus                      | `Qwen/Qwen3.6-Plus`                       |
+| DeepSeek V4 Pro 0813              | `deepseek-ai/DeepSeek-V4-Pro-0813`        |
+| Meta Llama 3.3 70B Instruct Turbo | `meta-llama/Llama-3.3-70B-Instruct-Turbo` |
+| OpenAI GPT-OSS 120B               | `openai/gpt-oss-120b`                     |
+| GLM 5.2                           | `zai-org/GLM-5.2`                         |
+| GLM 5.3                           | `zai-org/GLM-5.3`                         |
+| GLM 5.3 Flash                     | `zai-org/GLM-5.3-Flash`                   |
 
 **Example configuration:**
 
@@ -11603,7 +11593,7 @@ response = client.chat.completions.create(
 
 ## Thinking modes
 
-GLM-5.2 supports advanced thinking modes that control how reasoning integrates with tool calling and multi-turn conversations.
+Many of our models support advanced thinking modes that control how reasoning integrates with tool calling and multi-turn conversations.
 
 ### Interleaved thinking
 
@@ -22435,7 +22425,7 @@ If you're not sure which vision model to use, start with **Qwen3.5 9B** (`Qwen/Q
 | Black Forest Labs | FLUX 3              | black-forest-labs/FLUX-3    | \$0.17          | -                     |
 | ByteDance         | Seedance 2.5        | ByteDance/Seedance-2.5      | \$0.115         | -                     |
 | ByteDance         | Seedance 1.0 Lite   | ByteDance/Seedance-1.0-lite | \$0.143         | 720p / 5s             |
-| MiniMax           | MiniMax H3          | minimax/h3                  | \$0.1391        | -                     |
+| MiniMax           | MiniMax H3          | MiniMaxAI/MiniMax-H3        | \$0.1391        | 2k / 1s               |
 
 ## Audio models
 
@@ -49437,7 +49427,14 @@ When a model is deprecated on the serverless platform, you have three options:
 
 The following models are deprecated and will be removed from serverless inference on the date listed. Migrate to the recommended replacement or a [dedicated endpoint](/docs/dedicated-endpoints) before that date.
 
-No models are currently scheduled for deprecation.
+| Removal date | Model                                     | Recommended replacement           | Supported by on-demand dedicated endpoints |
+| :----------- | :---------------------------------------- | :-------------------------------- | :----------------------------------------- |
+| 2026-09-29   | `deepseek-ai/DeepSeek-V4-Pro-0813`        | `deepseek-ai/DeepSeek-V4.1-Flash` | Yes                                        |
+| 2026-09-29   | `deepseek-ai/DeepSeek-V4-Flash-0731`      | `deepseek-ai/DeepSeek-V4.1-Flash` | Yes                                        |
+| 2026-09-14   | `openai/gpt-oss-20b`                      | `Qwen/Qwen3.5-9B`                 | Yes                                        |
+| 2026-09-14   | `google/gemma-4-31B-it`                   | `zai-org/GLM-5.3-Flash`           | Yes                                        |
+| 2026-09-14   | `thinkingmachines/Inkling-Small`          | `zai-org/GLM-5.3-Flash`           | Yes                                        |
+| 2026-09-14   | `intfloat/multilingual-e5-large-instruct` |                                   | No                                         |
 
 ## Deprecation history
 

@@ -10,7 +10,7 @@ description: "Step-by-step recipes for real Sentry workflows: instrument agents,
 url: https://docs.sentry.io/get-started/cookbook/
 ---
 
-# Sentry Cookbook
+# Sentry Cookbook | Sentry Docs
 
 The **Sentry Cookbook** is a collection of recipes: concrete, short walkthroughs for a specific job you want to get done with Sentry. Docs explain how a feature works. Recipes show you how to wire a full workflow end-to-end.
 

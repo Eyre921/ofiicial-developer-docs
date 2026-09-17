@@ -9,7 +9,7 @@ title: "Teams"
 url: https://docs.sentry.io/api/teams/
 ---
 
-# Teams
+# Teams | Sentry Docs
 
 * #### [Add an Organization Member to a Team](https://docs.sentry.io/api/teams/add-an-organization-member-to-a-team.md)
 * #### [Create a New Team](https://docs.sentry.io/api/teams/create-a-new-team.md)

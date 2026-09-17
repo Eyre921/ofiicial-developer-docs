@@ -14,30 +14,16 @@ Set `model_source = "serverless"` to use Together AI serverless inference.
 
 The evaluations service keeps its own allowlist of serverless models, separate from the full [serverless catalog](/docs/serverless/models). The models below can serve as the judge or as the model being evaluated; this table syncs daily from the allowlist.
 
-| Model                              | Model ID                                  |
-| :--------------------------------- | :---------------------------------------- |
-| LFM2-24B-A2B                       | `LiquidAI/LFM2-24B-A2B`                   |
-| MiniMax-M2.7                       | `MiniMaxAI/MiniMax-M2.7`                  |
-| Qwen3-235B-A22B-Instruct-2507-tput | `Qwen/Qwen3-235B-A22B-Instruct-2507-tput` |
-| Qwen3-Coder-480B-A35B-Instruct-FP8 | `Qwen/Qwen3-Coder-480B-A35B-Instruct-FP8` |
-| Qwen3-Coder-Next-FP8               | `Qwen/Qwen3-Coder-Next-FP8`               |
-| Qwen3.5-397B-A17B                  | `Qwen/Qwen3.5-397B-A17B`                  |
-| Qwen3.5 9B FP8                     | `Qwen/Qwen3.5-9B`                         |
-| Qwen3.6 Plus                       | `Qwen/Qwen3.6-Plus`                       |
-| cogito-v2-1-671b                   | `deepcogito/cogito-v2-1-671b`             |
-| DeepSeek-R1                        | `deepseek-ai/DeepSeek-R1`                 |
-| DeepSeek-V3.1                      | `deepseek-ai/DeepSeek-V3.1`               |
-| DeepSeek-V4-Pro                    | `deepseek-ai/DeepSeek-V4-Pro`             |
-| rnj-1-instruct                     | `essentialai/rnj-1-instruct`              |
-| gemma-3n-E4B-it                    | `google/gemma-3n-E4B-it`                  |
-| Gemma 4 31B-it FP8                 | `google/gemma-4-31B-it`                   |
-| Meta Llama 3.3 70B Instruct Turbo  | `meta-llama/Llama-3.3-70B-Instruct-Turbo` |
-| Kimi-K2.5                          | `moonshotai/Kimi-K2.5`                    |
-| Kimi-K2.6                          | `moonshotai/Kimi-K2.6`                    |
-| OpenAI GPT-OSS 120B                | `openai/gpt-oss-120b`                     |
-| OpenAI GPT-OSS 20B                 | `openai/gpt-oss-20b`                      |
-| GLM-5                              | `zai-org/GLM-5`                           |
-| GLM-5.1                            | `zai-org/GLM-5.1`                         |
+| Model                             | Model ID                                  |
+| :-------------------------------- | :---------------------------------------- |
+| Qwen3.5 9B FP8                    | `Qwen/Qwen3.5-9B`                         |
+| Qwen3.6 Plus                      | `Qwen/Qwen3.6-Plus`                       |
+| DeepSeek V4 Pro 0813              | `deepseek-ai/DeepSeek-V4-Pro-0813`        |
+| Meta Llama 3.3 70B Instruct Turbo | `meta-llama/Llama-3.3-70B-Instruct-Turbo` |
+| OpenAI GPT-OSS 120B               | `openai/gpt-oss-120b`                     |
+| GLM 5.2                           | `zai-org/GLM-5.2`                         |
+| GLM 5.3                           | `zai-org/GLM-5.3`                         |
+| GLM 5.3 Flash                     | `zai-org/GLM-5.3-Flash`                   |
 
 **Example configuration:**
 

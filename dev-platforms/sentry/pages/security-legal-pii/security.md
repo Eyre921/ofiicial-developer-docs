@@ -10,7 +10,7 @@ description: "Learn about Sentry's security and compliance processes."
 url: https://docs.sentry.io/security-legal-pii/security/
 ---
 
-# Security & Legal
+# Security & Legal | Sentry Docs
 
 Sentry provides self-serve access to various documentation and tools to help you with your security and compliance processes.
 

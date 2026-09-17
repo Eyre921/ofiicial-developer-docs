@@ -8,7 +8,7 @@ path: billing/subscriptions/usage-based/implementation-guide
 
 Charge customers based on their usage of your product or service.
 
-Pay-as-you-go pricing lets you charge customers in arrears for the usage they accrue. Customers pay only for what they consume, and you invoice them at the end of each billing interval.
+Pay-as-you-go pricing is a flexible, scalable model that lets you charge customers in arrears for the usage they accrue. AI businesses, SaaS platforms, and cloud services often use this pricing model.
 
 > #### Not Recommended
 > 

@@ -50,6 +50,7 @@ Nova-3 has the following model options which can be called by using the followin
 
 * `general`: Optimized for everyday audio processing.
 * `medical`: Optimized for audio with medical oriented vocabulary.
+* `pharma`: Optimized for audio with pharmaceutical vocabulary, such as drug names, dosages, and medication terminology.
 
 ### Nova-2
 

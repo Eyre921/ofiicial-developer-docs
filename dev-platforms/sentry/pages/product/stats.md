@@ -10,7 +10,7 @@ description: "The Sentry Stats page displays important metrics such as Usage, an
 url: https://docs.sentry.io/product/stats/
 ---
 
-# Stats
+# Stats | Sentry Docs
 
 The [**Stats**](https://sentry.io/orgredirect/organizations/:orgslug/stats/) page is an overview of the usage data that Sentry receives across your entire organization. It allows you to spot projects that have experienced recent spikes in activity or are showing more errors than others and may require a closer look. You can also adjust the displayed date range, enabling you to narrow down to a specific time period or zoom out for a broader view.
 

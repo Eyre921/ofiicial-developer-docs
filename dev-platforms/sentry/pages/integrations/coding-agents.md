@@ -10,7 +10,7 @@ description: "Connect AI coding agents to Sentry to automatically debug and fix 
 url: https://docs.sentry.io/integrations/coding-agents/
 ---
 
-# Coding Agents
+# Coding Agents | Sentry Docs
 
 Connect an AI coding agent to Sentry so that Seer's root cause analysis can be sent directly to the agent for automated fix generation and pull request creation.
 

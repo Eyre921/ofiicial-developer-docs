@@ -10,7 +10,7 @@ description: "Learn more about managing data using the Settings for your project
 url: https://docs.sentry.io/concepts/data-management/
 ---
 
-# Data Management
+# Data Management | Sentry Docs
 
 Please refer to [the SDK documentation for a general introduction to managing sensitive data](https://docs.sentry.io/platform-redirect.md?next=%2Fdata-management%2Fsensitive-data%2F). This page documents only the server-side options.
 

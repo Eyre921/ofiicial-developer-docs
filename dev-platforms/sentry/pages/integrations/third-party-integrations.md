@@ -10,7 +10,7 @@ description: "Browse integrations built by third-party developers on the Sentry 
 url: https://docs.sentry.io/integrations/third-party-integrations/
 ---
 
-# Third-Party Integrations
+# Third-Party Integrations | Sentry Docs
 
 These integrations are built and maintained by third-party developers using the [Sentry Integration Platform](https://docs.sentry.io/integrations/integration-platform.md).
 
@@ -21,6 +21,7 @@ To build and publish your own, see the [Integration Platform docs](https://docs.
 * [Aether](https://docs.runaether.dev/introduction)
 * [Application Platform](https://www.application-platform.com/en/docs/)
 * [Applied Edge](https://appliededge.com/)
+* [Arg0](https://www.arg0.app/en/integrations)
 * [Bosun](https://docs.bosun.ai/)
 * [BugZero](https://bugzero.dev/docs)
 * [Choji](https://choji.ai/connections/sentry-errors-to-shipped-fix)

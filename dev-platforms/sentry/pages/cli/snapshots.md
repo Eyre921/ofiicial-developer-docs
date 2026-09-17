@@ -10,7 +10,7 @@ description: "Upload snapshot images to Sentry with sentry-cli for visual diffin
 url: https://docs.sentry.io/cli/snapshots/
 ---
 
-# Snapshots (CLI)
+# Snapshots (CLI) | Sentry Docs
 
 ##### Looking for the new Sentry CLI?
 

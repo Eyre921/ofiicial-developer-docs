@@ -9,7 +9,7 @@ title: "Monitors & Alerts"
 url: https://docs.sentry.io/api/monitors/
 ---
 
-# Monitors & Alerts
+# Monitors & Alerts | Sentry Docs
 
 * #### [Bulk Delete Alerts](https://docs.sentry.io/api/monitors/bulk-delete-alerts.md)
 * #### [Bulk Delete Monitors](https://docs.sentry.io/api/monitors/bulk-delete-monitors.md)

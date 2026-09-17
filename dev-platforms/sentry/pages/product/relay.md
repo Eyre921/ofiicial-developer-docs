@@ -10,7 +10,7 @@ description: "Learn more about Relay, Sentry's data security solution."
 url: https://docs.sentry.io/product/relay/
 ---
 
-# Relay
+# Relay | Sentry Docs
 
 Sentry Relay offers enterprise-grade data security by providing a standalone service that acts as a middle layer between your application and sentry.io.
 

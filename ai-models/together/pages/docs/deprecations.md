@@ -105,7 +105,14 @@ When a model is deprecated on the serverless platform, you have three options:
 
 The following models are deprecated and will be removed from serverless inference on the date listed. Migrate to the recommended replacement or a [dedicated endpoint](/docs/dedicated-endpoints) before that date.
 
-No models are currently scheduled for deprecation.
+| Removal date | Model                                     | Recommended replacement           | Supported by on-demand dedicated endpoints |
+| :----------- | :---------------------------------------- | :-------------------------------- | :----------------------------------------- |
+| 2026-09-29   | `deepseek-ai/DeepSeek-V4-Pro-0813`        | `deepseek-ai/DeepSeek-V4.1-Flash` | Yes                                        |
+| 2026-09-29   | `deepseek-ai/DeepSeek-V4-Flash-0731`      | `deepseek-ai/DeepSeek-V4.1-Flash` | Yes                                        |
+| 2026-09-14   | `openai/gpt-oss-20b`                      | `Qwen/Qwen3.5-9B`                 | Yes                                        |
+| 2026-09-14   | `google/gemma-4-31B-it`                   | `zai-org/GLM-5.3-Flash`           | Yes                                        |
+| 2026-09-14   | `thinkingmachines/Inkling-Small`          | `zai-org/GLM-5.3-Flash`           | Yes                                        |
+| 2026-09-14   | `intfloat/multilingual-e5-large-instruct` |                                   | No                                         |
 
 ## Deprecation history
 

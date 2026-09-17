@@ -9,7 +9,7 @@ title: "Events & Issues"
 url: https://docs.sentry.io/api/events/
 ---
 
-# Events & Issues
+# Events & Issues | Sentry Docs
 
 * #### [Bulk Mutate a List of Issues](https://docs.sentry.io/api/events/bulk-mutate-a-list-of-issues.md)
 * #### [Bulk Mutate an Organization's Issues](https://docs.sentry.io/api/events/bulk-mutate-an-organizations-issues.md)

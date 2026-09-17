@@ -6,17 +6,21 @@ path: docs/dedicated-endpoints/grafana
 
 Scrape the metrics endpoint with Prometheus and import the example Grafana dashboard for dedicated endpoints.
 
-Learn how to set up a Grafana dashboard for your dedicated endpoints to visualize endpoint request rates and error ratios, client-observed and server-side latency percentiles, token throughput, and engine cache utilization, filterable by endpoint and deployment.
+<Note>
+  The metrics endpoint is in beta. The host and path are subject to change, and access may need to be enabled for your organization. Confirm availability with your Together AI contact before you build against it.
+</Note>
 
-The dashboard you'll create in this guide runs Prometheus and Grafana locally with Docker Compose, scrapes the [Prometheus-compatible metrics endpoint](/docs/dedicated-endpoints/monitoring#prometheus-compatible-metrics-endpoint), and imports an example dashboard. The same dashboard works with any Prometheus-compatible stack.
+Learn how to create a Grafana dashboard for your dedicated endpoints to visualize endpoint request rates and error ratios, client-observed and server-side latency percentiles, token throughput, and engine cache utilization, filterable by endpoint and deployment.
+
+The dashboard you'll build in this guide runs Prometheus and Grafana locally with Docker Compose, scrapes the [Prometheus-compatible metrics endpoint](/docs/dedicated-endpoints/monitoring#prometheus-compatible-metrics-endpoint), and imports an example dashboard.
+
+<Tip>
+  This tutorial is specifically for Grafana, but any observability tool that ingests Prometheus metrics can scrape the same metrics endpoint (for example, Datadog through its [OpenMetrics integration](https://docs.datadoghq.com/integrations/openmetrics/)).
+</Tip>
 
 <Frame>
   <img alt="The example Grafana dashboard for Together AI dedicated endpoints, showing request rate by status, 5xx error ratio, in-flight requests, and latency percentile panels, with Endpoint and Deployment filter variables at the top." />
 </Frame>
-
-<Note>
-  The metrics endpoint is in beta. The host and path are subject to change, and access may need to be enabled for your organization. Confirm availability with your Together AI contact before you build against it.
-</Note>
 
 ## Requirements
 

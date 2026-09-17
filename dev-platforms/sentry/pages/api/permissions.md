@@ -9,7 +9,7 @@ title: "Permissions & Scopes"
 url: https://docs.sentry.io/api/permissions/
 ---
 
-# Permissions & Scopes
+# Permissions & Scopes | Sentry Docs
 
 If you're building on top of Sentry's API (i.e using [Auth Tokens](https://docs.sentry.io/api/auth.md)), you'll need certain scopes to access different API endpoints.
 

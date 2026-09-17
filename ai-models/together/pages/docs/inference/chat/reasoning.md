@@ -344,7 +344,7 @@ response = client.chat.completions.create(
 
 ## Thinking modes
 
-GLM-5.2 supports advanced thinking modes that control how reasoning integrates with tool calling and multi-turn conversations.
+Many of our models support advanced thinking modes that control how reasoning integrates with tool calling and multi-turn conversations.
 
 ### Interleaved thinking
 

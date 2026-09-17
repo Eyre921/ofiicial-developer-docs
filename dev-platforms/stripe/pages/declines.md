@@ -8,13 +8,11 @@ path: declines
 
 Learn about payment declines and how to lower your decline rate.
 
-> #### Track decline rates
-> 
-> Track your decline rate over time to identify potential fraud or integration issues. For a clearer overview of your authorization rates, analyze unique declines and exclude failed retries from your analysis.
+Track your decline rate over time to identify potential fraud or integration issues. For a clearer overview of your authorization rates, analyze unique declines and exclude failed retries from your analysis.
 
 You need to handle each type of payment failure differently. For every failure, you can use the [Dashboard](https://dashboard.stripe.com/payments) or API to review a payment’s details. When using the API, look at the `Charge` object’s [outcome](https://docs.stripe.com/api/charges/object.md#charge_object-outcome). This attribute covers the payment failure type and provides information about its cause.
 
-Payments can fail for a variety of reasons, including some that help prevent fraudulent transactions. Stripe works to reduce decline rates across all supported payment methods, working with issuers and networks to improve acceptance rates, often without affecting your integration.
+Payments can fail for a variety of reasons, including some that help prevent fraudulent transactions. Stripe works to reduce decline rates across all supported payment methods. We work with issuers and networks to improve acceptance rates, often without affecting your integration.
 
 There are three reasons why a payment might fail:
 
@@ -26,9 +24,9 @@ There are three reasons why a payment might fail:
 
 When your customer’s card issuer or payment provider receives a charge, their automated systems and models decide whether to authorize it. These tools analyze signals such as spending habits, account balance, and card data (expiration date, address information, and CVC).
 
-Stripe handles non-card payment method declines similarly to card declines. Stripe sends you a response code that includes information about the decline, for example, if it’s due to insufficient funds, a lost or stolen card, or another reason.
+Stripe handles non-card payment method declines similarly to [card declines](https://docs.stripe.com/declines/card.md). Stripe sends you a response code that includes information about the decline, for example, if it’s due to insufficient funds, a lost or stolen card, or another reason.
 
-If the card issuer or payment provider declines a payment, Stripe shares with you the decline information it receives through [Stripe decline codes](https://docs.stripe.com/declines/codes.md). This information is available in the Dashboard and through the API.
+If the card issuer or payment provider declines a payment, Stripe shares with you the decline information we receive through [Stripe decline codes](https://docs.stripe.com/declines/codes.md). This information is available in the Dashboard and through the API.
 
 When issuers provide specific explanations, such as an incorrect card number or low funds, these explanations return to Stripe as [network decline codes](https://docs.stripe.com/declines/network-codes.md).
 
@@ -40,7 +38,7 @@ When Stripe blocks a payment, it doesn’t obtain authorization from the card is
 
 For some card types, customers might see the card issuer’s authorization for the payment amount on their statement. However, Stripe hasn’t charged this amount or withdrawn funds. The card issuer typically removes this authorization from the customer’s statement within a few days.
 
-If a rule you configured blocks a payment you recognize as legitimate, you can lift the block by locating the payment in the Dashboard and clicking **Add to allow list**. This action doesn’t retry the payment. Instead, it overrides all of your other rules from blocking future payment attempts that match the list attribute.
+If a rule you configured blocks a payment you recognize as legitimate, you can lift the block by locating the payment in the [Dashboard](https://dashboard.stripe.com/payments) and clicking **Add to allow list**. This action doesn’t retry the payment. Instead, it overrides all of your other rules from blocking future payment attempts that match the list attribute.
 
 > Don’t see the **Add to allow list** button on the payment details page? [Contact Stripe](https://support.stripe.com/email) to add this feature to your Radar account.
 
@@ -48,15 +46,15 @@ When using the API, the `outcome` of a blocked payment reflects the type of paym
 
 ```json
 ...
-"outcome": {
-  "network_decline_code": null,
-  "network_advice_code": null,
-  "network_status": "not_sent_to_network",
-  "reason": "highest_risk_level",
-  "advice_code": "do_not_try_again",
-  "risk_level": "highest",
-  "seller_message": "Stripe blocked this charge as too risky.",
-  "type": "blocked"
+outcome: {
+  network_decline_code: null,
+  network_advice_code: null,
+  network_status: "not_sent_to_network",
+  reason: "highest_risk_level",
+  advice_code: "do_not_try_again",
+  risk_level: "highest",
+  seller_message: "Stripe blocked this charge as too risky.",
+  type: "blocked"
 },
 ...
 ```
@@ -65,15 +63,15 @@ For users with [IC+ pricing](https://support.stripe.com/questions/understanding-
 
 ```json
 ...
-"outcome": {
-  "network_decline_code": null,
-  "network_advice_code": null,
-  "network_status": "not_sent_to_network",
-  "reason": "low_probability_of_authorization",
-  "advice_code": "do_not_try_again",
-  "risk_level": "normal",
-  "seller_message": "Stripe blocked this payment as it is unlikely to be authorized.",
-  "type": "blocked"
+outcome: {
+  network_decline_code: null,
+  network_advice_code: null,
+  network_status: "not_sent_to_network",
+  reason: "low_probability_of_authorization",
+  advice_code: "do_not_try_again",
+  risk_level: "normal",
+  seller_message: "Stripe blocked this payment as it is unlikely to be authorized.",
+  type: "blocked"
 },
 ...
 ```
@@ -97,7 +95,7 @@ The invalid API call generates an error response that might look like this:
 {
   "error": {
     "code": "incorrect_cvc",
-    "doc_url": "https://docs.stripe.com/error-codes#incorrect-cvc",
+    "doc_url": "https://stripe.com/docs/error-codes/incorrect-cvc",
     "message": "Your card's security code is incorrect.",
     "param": "cvc",
     "type": "card_error"
@@ -105,19 +103,19 @@ The invalid API call generates an error response that might look like this:
 }
 ```
 
-The outcome of a declined payment includes the type of payment failure and the reason, based on the card network’s decline code. The reason might contain information other than the card network’s response code, for example, if a Radar rule evaluation blocked the charge.
+The [outcome](https://docs.stripe.com/api.md#charge_object-outcome) of a declined payment includes the type of payment failure and the [reason](https://docs.stripe.com/api.md#charge_object-outcome-reason), based on the card network’s decline code. The reason might contain information other than the card network’s response code, for example, if a Radar rule evaluation blocked the charge.
 
 ```json
 ...
-"outcome": {
-  "network_decline_code": "54",
-  "network_advice_code": "03",
-  "network_status": "declined_by_network",
-  "reason": "expired_card",
-  "advice_code": "confirm_card_data",
-  "risk_level": "normal",
-  "seller_message": "The bank returned the decline code `expired_card`.",
-  "type": "issuer_declined"
+outcome: {
+  network_decline_code: "54",
+  network_advice_code: "03",
+  network_status: "declined_by_network",
+  reason: "expired_card",
+  advice_code: "confirm_card_data",
+  risk_level: "normal",
+  seller_message: "The bank returned the decline code `expired_card`.",
+  type: "issuer_declined"
 },
 ...
 ```
@@ -140,4 +138,5 @@ As you develop your Stripe integration, continuously [test](https://docs.stripe.
 - [Card declines](https://docs.stripe.com/declines/card.md)
 - [Test declined payments](https://docs.stripe.com/testing.md#declined-payments)
 - [Refund and cancel payments](https://docs.stripe.com/refunds.md)
+- [Automate payment retries](https://docs.stripe.com/billing/revenue-recovery/smart-retries.md)
 

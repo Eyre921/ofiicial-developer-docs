@@ -9,7 +9,7 @@ title: "Profiling"
 url: https://docs.sentry.io/api/profiling/
 ---
 
-# Profiling
+# Profiling | Sentry Docs
 
 * #### [Retrieve a Flamegraph for an Organization](https://docs.sentry.io/api/profiling/retrieve-a-flamegraph-for-an-organization.md)
 * #### [Retrieve a Profile](https://docs.sentry.io/api/profiling/retrieve-a-profile.md)

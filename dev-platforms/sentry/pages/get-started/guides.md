@@ -10,7 +10,7 @@ description: "Practical guidance on what to instrument, what to query, and how t
 url: https://docs.sentry.io/get-started/guides/
 ---
 
-# Guides
+# Guides | Sentry Docs
 
 You've set up Sentry. Now what?
 

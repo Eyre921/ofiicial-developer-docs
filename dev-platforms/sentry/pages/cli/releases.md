@@ -10,7 +10,7 @@ description: "Sentry's command line interface can be used for release management
 url: https://docs.sentry.io/cli/releases/
 ---
 
-# Release Management
+# Release Management | Sentry Docs
 
 ##### Looking for the new Sentry CLI?
 

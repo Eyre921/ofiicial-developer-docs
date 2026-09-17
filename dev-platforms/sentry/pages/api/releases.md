@@ -9,7 +9,7 @@ title: "Releases"
 url: https://docs.sentry.io/api/releases/
 ---
 
-# Releases
+# Releases | Sentry Docs
 
 * #### [Create a Deploy](https://docs.sentry.io/api/releases/create-a-deploy.md)
 * #### [Create a New Release for an Organization](https://docs.sentry.io/api/releases/create-a-new-release-for-an-organization.md)

@@ -10,7 +10,7 @@ description: "Catch visual changes on every pull request with snapshots."
 url: https://docs.sentry.io/product/snapshots/
 ---
 
-# Snapshots
+# Snapshots | Sentry Docs
 
 This feature is currently in Beta. Beta features are still in progress and may have bugs. We recognize the irony.
 

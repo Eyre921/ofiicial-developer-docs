@@ -10,9 +10,9 @@ description: "Use AI observability in Sentry to trace and debug agent workflows 
 url: https://docs.sentry.io/product/agents/
 ---
 
-# Agents
+# Agents | Sentry Docs
 
-Sentry helps you understand what's going on with your agent workflows. Using [agent tracing](https://docs.sentry.io/product/agents/getting-started.md), it automatically collects information about agent runs, tool calls, model interactions, and errors across your entire AI pipeline—from user interaction to final response. You can also replay past conversations. If you are looking for MCP monitoring, see [MCP Servers](https://docs.sentry.io/product/mcp-servers.md).
+Sentry helps you understand what's going on with your agent workflows. Using [agent tracing](https://docs.sentry.io/concepts/key-terms/agent-tracing.md) automatically collects information about agent runs, tool calls, model interactions, and errors across your entire AI pipeline—from user interaction to final response. You can also replay past conversations. If you are looking for MCP monitoring, see [MCP Servers](https://docs.sentry.io/product/mcp-servers.md).
 
 ## [Get Started](https://docs.sentry.io/product/agents.md#get-started)
 

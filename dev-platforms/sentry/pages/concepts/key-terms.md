@@ -10,7 +10,7 @@ description: "Learn about important concepts that are essential to using Sentry.
 url: https://docs.sentry.io/concepts/key-terms/
 ---
 
-# Concepts
+# Concepts | Sentry Docs
 
 * #### [Key Terms & Features](https://docs.sentry.io/concepts/key-terms/key-terms.md)
 
@@ -36,6 +36,10 @@ url: https://docs.sentry.io/concepts/key-terms/
 
   Learn more about the tracing features Sentry offers to help you track your software performance across multiple systems.
 
+* #### [Agent Tracing - What It Is and How To Use It](https://docs.sentry.io/concepts/key-terms/agent-tracing.md)
+
+  Learn about how Sentry's agent tracing features help you track and understand how your agents behave across agent runs, tool calls, and handoffs.
+
 * #### [Extrapolation](https://docs.sentry.io/concepts/key-terms/extrapolation.md)
 
   Learn how extrapolation provides accurate metrics from sampled data so you can trust your dashboards and alerts even when you're not capturing every event.
@@ -48,5 +52,6 @@ url: https://docs.sentry.io/concepts/key-terms/
 - [Creating and Filtering Environments](https://docs.sentry.io/concepts/key-terms/environments.md)
 - [Event Data](https://docs.sentry.io/concepts/key-terms/enrich-data.md)
 - [Tracing](https://docs.sentry.io/concepts/key-terms/tracing.md)
+- [Agent Tracing](https://docs.sentry.io/concepts/key-terms/agent-tracing.md)
 - [Extrapolation](https://docs.sentry.io/concepts/key-terms/extrapolation.md)
 

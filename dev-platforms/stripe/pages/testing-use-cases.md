@@ -51,8 +51,6 @@ All Stripe API requests occur in either a sandbox or *live mode* (Use this mode 
 
 Being in a sandbox in the Dashboard doesn’t affect your integration code. Your test and live mode API keys affect the behavior of your code.
 
-Sandboxes don’t move funds through real banks or card networks. Stripe provides test primitives to simulate [payout success and failure](https://docs.stripe.com/payouts.md#test-payouts), [disputes, inquiries, and early fraud warnings](https://docs.stripe.com/testing.md#disputes). Supported simulations vary by product and integration.
-
 ## Create an additional sandbox
 
 To create and set up an additional sandbox in the Dashboard:
@@ -128,13 +126,19 @@ To verify emails for invoices and receipts, set the email address for your [Team
 
 ## Testing use cases 
 
-The following table contains quality assurance (QA) testing use cases. Card-level state from one test can affect later tests that use the same card. When a test depends on card-level state, use a different test card for each independent end-to-end scenario.
+The following table contains quality assurance (QA) testing use cases:
 
 > #### Don't use search to verify recent changes
 > 
 > Search data is eventually consistent, so objects you create or update might not appear immediately in search results. If an object is missing, don’t retry the request that created it because retrying can create duplicate objects, such as `Customer` or `Subscription` objects. Learn more about [search data freshness](https://docs.stripe.com/search.md#data-freshness).
 > 
 > To verify a recently created or updated object, retrieve it using a deterministic ID from the creating request, callback, or return URL, such as a Checkout Session ID. If you don’t have one, use the appropriate list endpoint for immediate availability.
+
+> #### Avoid shared card state between tests
+> 
+> Card-level state from one test can affect later tests that use the same card.
+> 
+> When a test depends on card-level state, use a different test card for each independent end-to-end scenario.
 
 | **Use case** | **Action** |
 | --- | --- |

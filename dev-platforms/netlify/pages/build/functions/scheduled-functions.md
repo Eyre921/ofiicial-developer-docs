@@ -153,7 +153,7 @@ Select the scheduled function to access the function's schedule and logs.
 ## Supported cron extensions
 
 - `@yearly`: once a year, on January 1st 00:00 (`0 0 1 1 *`)
-- `@monthly`: every month, on the first day of the month, at 00:00 (`0 0 1 * -`)
+- `@monthly`: every month, on the first day of the month, at 00:00 (`0 0 1 * *`)
 - `@weekly`: every Sunday, 00:00 (`0 0 * * 0`)
 - `@daily`: once a day, at 00:00 (`0 0 * * *`)
 - `@hourly`: every hour, at minute 0 (`0 * * * *`)

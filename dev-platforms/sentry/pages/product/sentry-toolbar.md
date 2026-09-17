@@ -10,7 +10,7 @@ description: "Bring critical Sentry insights and tools directly into your web ap
 url: https://docs.sentry.io/product/sentry-toolbar/
 ---
 
-# Sentry Toolbar
+# Sentry Toolbar | Sentry Docs
 
 The Sentry Toolbar is currently in **beta**. Beta features are still in progress and may have bugs. Please reach out on [GitHub](https://github.com/getsentry/sentry-toolbar/issues) if you have any feedback or concerns.
 

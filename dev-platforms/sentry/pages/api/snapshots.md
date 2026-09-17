@@ -9,7 +9,7 @@ title: "Snapshots"
 url: https://docs.sentry.io/api/snapshots/
 ---
 
-# Snapshots
+# Snapshots | Sentry Docs
 
 * #### [Create a skipped Snapshot status check](https://docs.sentry.io/api/snapshots/create-a-skipped-snapshot-status-check.md)
 * #### [Delete a Snapshot](https://docs.sentry.io/api/snapshots/delete-a-snapshot.md)

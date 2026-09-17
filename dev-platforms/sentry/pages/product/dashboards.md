@@ -10,7 +10,7 @@ description: "Learn how Sentry’s Dashboards give you a focused view of your ap
 url: https://docs.sentry.io/product/dashboards/
 ---
 
-# Dashboards
+# Dashboards | Sentry Docs
 
 Sentry's [Dashboards](https://sentry.io/orgredirect/organizations/:orgslug/dashboards/) provide you with a broad overview of your application’s health by allowing you to navigate through error and performance data across multiple projects. Dashboards are made up of one or more widgets, and each widget visualizes one or more [dataset](https://docs.sentry.io/product/dashboards/widget-builder.md#choose-your-dataset). Try it out in [a Dashboards sandbox](https://sandbox.sentry.io/?scenario=dashboards\&projectSlug=react\&source=docs).
 

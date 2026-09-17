@@ -10,7 +10,7 @@ description: "Set up Sentry and configure the key features that help you find an
 url: https://docs.sentry.io/product/sentry-basics/
 ---
 
-# Getting Started With Sentry
+# Getting Started With Sentry | Sentry Docs
 
 Sentry captures errors, logs, traces, replays, profiles, and metrics from your application — and connects them all through distributed tracing. This page walks you through the steps to get the most out of Sentry **after you've [installed the SDK](https://docs.sentry.io/platforms.md)**.
 

@@ -8,7 +8,7 @@ path: declines/codes
 
 Learn about Stripe decline codes and how to resolve them when a charge fails.
 
-Stripe uses its own decline codes that cover many of the same potential reasons as [issuer decline codes](https://docs.stripe.com/declines/network-codes.md). Stripe’s decline codes expand on issuer decline codes by going into more detail about the specific reason for the decline. In addition to a decline code, an error can contain an [advice_code](https://docs.stripe.com/declines/card.md#retrying-issuer-declines) with suggested next steps.
+Stripe uses its own decline codes that cover many of the same potential reasons as [issuer decline codes](https://docs.stripe.com/declines/network-codes.md). Our decline codes expand on issuer decline codes by going into more detail about the specific reason for the decline. In addition to a decline code, an error can contain an [advice_code](https://docs.stripe.com/declines/card.md#retrying-issuer-declines) with suggested next steps.
 
 > #### Other API errors
 > 
@@ -20,18 +20,18 @@ These are the Stripe decline codes that are used for card payments:
 
 | Decline code | Description | Next steps |
 | --- | --- | --- |
-| `authentication_required` | The card was declined because the transaction requires authentication such as *3D Secure* (3D Secure (3DS) provides an additional layer of authentication for credit card transactions that protects businesses from liability for fraudulent card payments). | When using Stripe’s front ends, in most cases a soft decline from an issuer triggers an authentication flow, allowing the customer to try again and authenticate their card. In some cases, such as *off-session payments* (A payment is described as off-session if it occurs without the direct involvement of the customer, using previously-collected payment information), you might need to ask the customer to retry. If the card issuer returns this [decline code](https://support.stripe.com/questions/authenticated-payment-declined-with-an-authentication-required-decline-code) despite a successfully authenticated transaction, the customer needs to contact their card issuer for more information. |
-| `authentication_not_handled` | Related to `authentication_required`. The customer tried to proceed without performing the required authentication, so the issuer declined again. | Run the EMV 3D Secure (3DS) or strong customer authentication (SCA) flow. For off-session payments, collect and prepare authentication on-session first, then fall back to on-session if needed. |
+| `authentication_required` | The card was declined because the transaction requires authentication such as *3D Secure* (3D Secure (3DS) provides an additional layer of authentication for credit card transactions that protects businesses from liability for fraudulent card payments). | When using Stripe’s front ends, in most cases a soft decline from an issuer triggers an authentication flow, allowing the customer to try again and authenticate their card. In some cases, such as *off-session payments* (A payment is described as off-session if it occurs without the direct involvement of the customer, using previously-collected payment information), you might need to request the customer to retry. If the card issuer returns this [decline code](https://support.stripe.com/questions/authenticated-payment-declined-with-an-authentication-required-decline-code) despite a successfully authenticated transaction, the customer needs to contact their card issuer for more information. |
+| `authentication_not_handled` | Related to `authentication_required`. You tried to proceed without performing the required authentication, so the issuer declined again. | Run the EMV 3D Secure (3DS) or strong customer authentication (SCA) flow. For off-session payments, collect and prepare authentication on-session first, then fall back to on-session if needed. |
 | `approve_with_id` | The payment can’t be authorized. | Attempt the payment again. If you still can’t process it, the customer needs to contact their card issuer. |
 | `call_issuer` | The card was declined for an unknown reason. | The customer needs to contact their card issuer for more information. |
 | `card_not_supported` | The card doesn’t support this type of purchase. | The customer needs to contact their card issuer to make sure their card can be used to make this type of purchase. |
 | `card_velocity_exceeded` | The customer has exceeded the balance, credit limit, or transaction amount limit available on their card. | The customer needs to contact their card issuer for more information. |
 | `currency_not_supported` | The card doesn’t support the specified currency. | The customer needs to check with the issuer whether the card can be used for the type of currency specified. |
 | `do_not_honor` | The card was declined for an unknown reason. | The customer needs to contact their card issuer for more information. |
-| (Deprecated)`do_not_try_again` | The card was declined for an unknown reason. | The customer needs to contact their card issuer for more information. |
-| `duplicate_transaction` | A transaction with identical amount and card information was submitted very recently. | Check to see if a recent payment already exists. |
+| (deprecated)`do_not_try_again` | The card was declined for an unknown reason. | The customer needs to contact their card issuer for more information. |
+| `duplicate_transaction` | A transaction with identical amount and credit card information was submitted very recently. | Check to see if a recent payment already exists. |
 | `expired_card` | The card has expired. | The customer needs to use another card. |
-| `fraudulent` | The payment was declined because Stripe suspects that it’s fraudulent. | Don’t report more detailed information to your customer. Instead, present it in the same manner as `generic_decline`. |
+| `fraudulent` | The payment was declined because Stripe suspects that it’s fraudulent. | Don’t report more detailed information to your customer. Instead, present it in the same manner as `generic_decline` below. |
 | `generic_decline` | The card was declined for an unknown reason or Stripe Radar or Adaptive Acceptance [blocked the payment](https://docs.stripe.com/declines.md#blocked-payments). | The customer needs to contact their card issuer for more information. |
 | `incorrect_address` | The address entered by the customer is incorrect. | The customer needs to try again using the correct address. |
 | `incorrect_cvc` | The CVC number is incorrect. | The customer needs to try again using the correct CVC. |
@@ -43,37 +43,37 @@ These are the Stripe decline codes that are used for card payments:
 | `invalid_amount` | The payment amount is invalid, or exceeds the amount that’s allowed. | If the amount appears to be correct, the customer needs to check with their card issuer that they can make purchases of that amount. |
 | `invalid_cvc` | The CVC number is incorrect. | The customer needs to try again using the correct CVC. |
 | `invalid_expiry_month` | The expiration month is invalid. | The customer needs to try again using the correct expiration date. |
-| `invalid_expiry_year` | The expiration year is invalid. | The customer needs to try again using the correct expiration date. |
-| `invalid_number` | The card number is incorrect. | The customer needs to try again using the correct card number. |
+| `invalid_expiry_year` | The expiration year is invalid. | The customer needs try again using the correct expiration date. |
+| `invalid_number` | The card number is incorrect. | The customer needs try again using the correct card number. |
 | `invalid_pin` | The PIN entered is incorrect. | The customer needs to try again using the correct PIN. |
 | `issuer_not_available` | The card issuer couldn’t be reached, so the payment couldn’t be authorized. | Attempt the payment again. If you still can’t process it, the customer needs to contact their card issuer. |
-| `lost_card` | The payment was declined because the card is reported lost. | The specific reason for the decline shouldn’t be reported to the customer. Instead, present it as `generic_decline`. |
-| `merchant_blacklist` | The payment was declined because it matches a value on the Stripe user’s block list. | Don’t report more detailed information to your customer. Instead, present it in the same manner as `generic_decline`. |
+| `lost_card` | The payment was declined because the card is reported lost. | The specific reason for the decline shouldn’t be reported to the customer. Instead, present it as a `generic_decline`. |
+| `merchant_blacklist` | The payment was declined because it matches a value on the Stripe user’s block list. | Don’t report more detailed information to your customer. Instead, present it in the same manner as `generic_decline` below. |
 | `new_account_information_available` | The card, or account the card is connected to, is invalid. | The customer needs to contact their card issuer for more information. |
 | `no_action_taken` | The card was declined for an unknown reason. | The customer needs to contact their card issuer for more information. |
 | `not_permitted` | The payment isn’t permitted. | The customer needs to contact their card issuer for more information. |
 | `offline_pin_required` | The card was declined because it requires a PIN. | The customer needs to try again by inserting their card and entering a PIN. |
 | `online_or_offline_pin_required` | The card was declined as it requires a PIN. | If the card reader supports Online PIN, prompt the customer for a PIN without creating a new transaction. If the card reader doesn’t support Online PIN, the customer needs to try again by inserting their card and entering a PIN. |
-| `pickup_card` | The customer can’t use this card to make this payment (it’s possible it was reported lost or stolen). | The customer needs to contact their card issuer for more information. |
-| `pin_try_exceeded` | The allowable number of PIN tries was exceeded. | The customer must use another card or payment method. |
-| `processing_error` | An error occurred while processing the card. | Ask the customer to attempt the payment again. If it still can’t be processed, the customer needs to contact their card issuer. |
+| `pickup_card` | The customer can’t use this card to make this payment (it’s possible it was reported lost or stolen). | They need to contact their card issuer for more information. |
+| `pin_try_exceeded` | The allowable number of PIN tries was exceeded. | The customer must use another card or method of payment. |
+| `processing_error` | An error occurred while processing the card. | The payment needs to be attempted again. If it still can’t be processed, try again later. |
 | `reenter_transaction` | The payment couldn’t be processed by the issuer for an unknown reason. | The payment needs to be attempted again. If it still can’t be processed, the customer needs to contact their card issuer. |
 | `restricted_card` | The customer can’t use this card to make this payment (it’s possible it was reported lost or stolen). | The customer needs to contact their card issuer for more information. |
 | `revocation_of_all_authorizations` | The card was declined for an unknown reason. | The customer needs to contact their card issuer for more information. |
 | `revocation_of_authorization` | The card was declined for an unknown reason. | The customer needs to contact their card issuer for more information. |
 | `security_violation` | The card was declined for an unknown reason. | The customer needs to contact their card issuer for more information. |
 | `service_not_allowed` | The card was declined for an unknown reason. | The customer needs to contact their card issuer for more information. |
-| `stolen_card` | The payment was declined because the card is reported stolen. | Don’t report more detailed information to your customer. Instead, present it in the same manner as `generic_decline`. |
+| `stolen_card` | The payment was declined because the card is reported stolen. | Don’t report more detailed information to your customer. Instead, present it in the same manner as `generic_decline` below. |
 | `stop_payment_order` | The card was declined for an unknown reason. | The customer needs to contact their card issuer for more information. |
 | `testmode_decline` | A Stripe test card number was used. | A genuine card must be used to make a payment. |
 | `transaction_not_allowed` | The card was declined for an unknown reason. | The customer needs to contact their card issuer for more information. |
-| (Deprecated)`try_again_later` | The card was declined for an unknown reason. | Ask the customer to attempt the payment again. If subsequent payments are declined, the customer needs to contact their card issuer for more information. |
+| (deprecated)`try_again_later` | The card was declined for an unknown reason. | Ask the customer to attempt the payment again. If subsequent payments are declined, the customer needs to contact their card issuer for more information. |
 | `withdrawal_count_limit_exceeded` | The customer has exceeded the balance or credit limit available on their card. | The customer needs to use an alternative payment method. |
-| `mobile_device_authentication_required` | The card was declined because the transaction requires authentication. | Ask the customer to retry the payment by tapping their mobile device again. |
+| `mobile_device_authentication_required` | The card was declined because the transaction requires authentication. | Retry attempts by tapping your mobile device again. |
 
 ## Local payment method decline codes 
 
-The following Stripe decline codes can be used for local payment method (LPM) payments:
+The following Stripe decline codes can be used for Local Payment Method (LPM) payments:
 
 | Decline code | Charge outcome reason | Seller message | API error message |
 | --- | --- | --- | --- |
@@ -93,11 +93,11 @@ The following Stripe decline codes can be used for local payment method (LPM) pa
 | `invalid_authorization` | `invalid_authorization` | The authorization is invalid or has been revoked. | The payment didn’t receive authorization or has revoked its authorization. Retries won’t succeed. |
 | `invalid_payment_information` | `invalid_payment_information` | The payment has invalid information. | The payment has invalid information. Retries won’t succeed. |
 | `partner_payment_not_found` | `partner_payment_not_found` | The payment provider can’t find this payment. | The payment provider can’t find this payment. |
-| `expired_payment_information` | `expired_payment_information` | The underlying payment instrument is expired. | The payment information has expired. Retry attempts might succeed after the customer updates their payment information. |
-| `duplicate_transaction` | `partner_duplicate_transaction` | A transaction with identical details was submitted recently. | A transaction with identical details was submitted recently to the partner. |
+| `expired_payment_information` | `expired_payment_information` | The underlying payment instrument is expired. | The payment has expired information. Retries may succeed after the customer updates their payment information. |
+| `duplicate_transaction` | `partner_duplicate_transaction` | A recent transaction with identical details was submitted recently. | A recent transaction with identical details was submitted recently to the partner. |
 | `recurring_not_supported_by_bank` | `recurring_not_supported_by_bank` | The customer’s bank doesn’t support recurring payments for this payment method. | The customer’s bank doesn’t support recurring payments for this payment method. Prompt the customer to select a bank that supports recurring payments. |
 | `partner_action_not_supported` | `partner_action_not_supported` | The payment provider doesn’t support this action. | The payment provider doesn’t support this action. Retries won’t succeed. |
-| `lost_or_stolen_card` | `lost_or_stolen_card` | The payment was declined because the card is reported lost or stolen. | The specific reason for the decline shouldn’t be reported to the customer. Instead, present it as `partner_generic_decline`. |
+| `lost_or_stolen_card` | `lost_or_stolen_card` | The payment was declined because the card is reported lost or stolen. | The specific reason for the decline shouldn’t be reported to the customer. Instead, present it as a `partner_generic_decline`. |
 | `card_already_activated` | `card_already_activated` | The card has already been activated. | The card has already been activated. Retries won’t succeed. |
 | `invalid_track_data` | `invalid_track_data` | The card data is incorrect. | The card data is incorrect. The customer needs to contact their card issuer to check that the card is working correctly. |
 

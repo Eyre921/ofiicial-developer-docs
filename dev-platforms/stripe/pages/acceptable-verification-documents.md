@@ -85,7 +85,7 @@ Be aware of the following exceptions:
 - For Singapore based Stripe accounts, a CN ID Card is acceptable as proof of Address.
 - A Turkish Resident Certificate is an acceptable form of address verification for Turkey based account representatives.
 
-If you can’t provide any of the listed address documents, [contact Stripe support](https://support.stripe.com/contact).
+If you can’t provide any of the listed address documents, see our [cross border verification requirements](https://docs.stripe.com/acceptable-verification-documents.md#cross-border-verification-requirements), or [contact Stripe support](https://support.stripe.com/contact).
 
 #### Item 3
 
@@ -484,7 +484,7 @@ Acceptable forms of legal entity verification for limited liability partnerships
 
 - Entity PAN card
 
-Acceptable forms of legal entity verification for sole proprietorships and individuals: note, Sole Proprietorships need to submit two of the following documents, individuals only need to submit one.
+Acceptable forms of legal entity verification for sole proprietorships and individuals: note, Sole Proprietorships need to submit 2 of the following documents, individuals only need to submit 1.
 
 - Registration certificate including Udyam Registration Certificate (URC) issued by the Government
 - Certificate/license issued by the municipal authorities under Shop and Establishment Act
@@ -872,13 +872,13 @@ Register of Persons with Significant Control (PSC) (Ultimate Beneficial Owner Re
 If Stripe rejected your document, it’s usually for one of these reasons:
 
 - **Document is expired**: Identity and legal entity documents must be current and not expired.
-- **Screenshot instead of original**: We need the original scan (PDF) or photo (JPEG/PNG), not a screenshot.
+- **Screenshot instead of original**: We need the original scan (PDF) or photo (JPEG/PNG), not a screenshot,
 - **Name mismatch**: The name on the document must exactly match the name in your Stripe account settings.
 - **Document is cropped or incomplete**: All borders must be visible and no pages can be missing.
 - **Poor image quality**: Document must be clear, readable, and in focus.
 - **Wrong file format**: Document copies must be PDF. Photos must be JPEG or PNG.
 - **Missing back side**: If your document is double-sided (like some IDs), you must include both sides.
-- **Black and white photo ID**: Photo IDs must be submitted in color.
+- **Black and white photo ID** - Photo IDs must be submitted in color
 
 If your document was rejected:
 
@@ -901,7 +901,7 @@ Due to the sensitive nature of your verification documents, Stripe can only acce
 To upload your document:
 
 1. Go to your [Stripe Dashboard](https://dashboard.stripe.com).
-2. Go to **Settings** > **Business** > [Account status](https://dashboard.stripe.com/account/status).
+2. Navigate to **Settings** > **Business** > [Account status](https://dashboard.stripe.com/account/status).
 3. Find the verification request banner or the document type you need to provide.
 4. Upload your document in the required format (PDF for scans, JPEG or PNG for photos)
 

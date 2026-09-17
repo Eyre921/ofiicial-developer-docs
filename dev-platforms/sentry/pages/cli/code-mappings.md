@@ -10,7 +10,7 @@ description: "Upload code mappings to Sentry via the CLI. Code mappings link sta
 url: https://docs.sentry.io/cli/code-mappings/
 ---
 
-# Code Mappings
+# Code Mappings | Sentry Docs
 
 ##### Looking for the new Sentry CLI?
 

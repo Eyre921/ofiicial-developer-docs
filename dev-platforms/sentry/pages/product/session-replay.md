@@ -10,7 +10,7 @@ description: "Watch video-like reproductions of real user sessions to debug erro
 url: https://docs.sentry.io/product/session-replay/
 ---
 
-# Session Replay
+# Session Replay | Sentry Docs
 
 Session Replay gives you video-like reproductions of real user sessions so you can see exactly what a user did before, during, and after a bug or performance issue. Instead of guessing from stack traces and logs alone, you can watch the experience unfold — clicks, navigations, network requests, console output, and errors — all in context and synced to a timeline.
 

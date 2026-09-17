@@ -10,7 +10,7 @@ description: "Learn how you can view and triage user feedback submissions."
 url: https://docs.sentry.io/product/user-feedback/
 ---
 
-# User Feedback
+# User Feedback | Sentry Docs
 
 Sentry automatically detects errors thrown by your application, such as performance issues and user experience problems like rage clicks. But there are other frustrations your users may encounter (broken permission flows, broken links, typos, misleading UX, business logic flaws, and so on).
 

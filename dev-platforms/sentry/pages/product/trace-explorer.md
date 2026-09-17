@@ -10,7 +10,7 @@ description: "Learn how to use Sentry's Trace Explorer to search span data, find
 url: https://docs.sentry.io/product/trace-explorer/
 ---
 
-# Traces and Spans
+# Traces and Spans | Sentry Docs
 
 The [**Trace Explorer**](https://sentry.io/orgredirect/organizations/:orgslug/traces/) in Sentry is designed to make performance investigation easier and more intuitive. You can now explore span samples, visualize span attributes, and aggregate your data with flexible queries and filters. This guide will walk you through the key concepts and features of the Trace Explorer.
 

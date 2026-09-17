@@ -9,7 +9,7 @@ title: "SCIM"
 url: https://docs.sentry.io/api/scim/
 ---
 
-# SCIM
+# SCIM | Sentry Docs
 
 System for Cross-Domain Identity Management ([SCIM](http://www.simplecloud.info/)) is a standard implemented by Identity Providers and applications in order to facilitate federated identity management. Through these APIs you can add and delete members as well as teams. Sentry SaaS customers must be on a Business Plan with SAML2 Enabled. SCIM uses a bearer token for authentication that is created when SCIM is enabled. For how to enable SCIM, see our docs [here](https://docs.sentry.io/product/accounts/sso.md#scim-provisioning). Sentry's SCIM API does not currently support syncing passwords, or setting any User attributes other than `active`.
 

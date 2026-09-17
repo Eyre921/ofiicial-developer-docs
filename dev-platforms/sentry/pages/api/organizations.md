@@ -9,7 +9,7 @@ title: "Organizations"
 url: https://docs.sentry.io/api/organizations/
 ---
 
-# Organizations
+# Organizations | Sentry Docs
 
 * #### [Add a Member to an Organization](https://docs.sentry.io/api/organizations/add-a-member-to-an-organization.md)
 * #### [Delete an Organization Member](https://docs.sentry.io/api/organizations/delete-an-organization-member.md)

@@ -36193,7 +36193,7 @@ order by start_time desc
 limit 10;
 ```
 
-Caution: The records in the `cron.job_run_details` table are not cleaned up automatically. They are also not removed when jobs are unscheduled, which will take up disk space in your database.
+Caution: The records in the `cron.job_run_details` table are not cleaned up automatically. They are also not removed when jobs are unscheduled, which will take up disk space in your database. Schedule a cleanup Job to remove old records (see [Clean up job run history](#clean-up-job-run-history) below).
 
 ## Examples
 
@@ -36206,6 +36206,18 @@ select cron.schedule (
   'saturday-cleanup', -- name of the cron job
   '30 3 * * 6', -- Saturday at 3:30AM (GMT)
   $$ delete from events where event_time < now() - interval '1 week' $$
+);
+```
+
+### Clean up job run history
+
+`cron.job_run_details` grows with every Job run and is never cleaned up automatically, even after a Job is unscheduled. Schedule a Job to delete old records, keeping only the last 7 days:
+
+```sql
+select cron.schedule(
+  'job-run-details-cleanup', -- name of the cron job
+  '0 0 * * *', -- daily at midnight (GMT)
+  $$ delete from cron.job_run_details where end_time < now() - interval '7 days' $$
 );
 ```
 
@@ -38734,6 +38746,25 @@ This doesn't expose request data to unauthenticated or client-side users, for tw
   access or modify its objects through the API.
 - `anon` and `authenticated` are `NOLOGIN` roles, so they can't establish a direct database connection.
 
+## Troubleshooting
+
+The Security Advisor might report that `pg_net` is installed in the `public` schema. Postgres defines the extension as non-relocatable, so `alter extension pg_net set schema extensions` can't move it. Instead, drop the extension and create it in the `extensions` schema:
+
+Danger: Dropping `pg_net` removes its extension-owned objects, including `net.http_request_queue` and `net._http_response`. If the request queue is empty, no pending requests are lost. If the queue contains pending HTTP requests, those requests are deleted and aren't sent. Stored responses are also deleted. Preserve any response data you need before continuing.
+
+Run the following commands in the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new):
+
+```sql
+-- Ensure the target schema exists
+create schema if not exists extensions;
+
+-- Drop the existing extension
+drop extension pg_net;
+
+-- Re-create the extension in the extensions schema
+create extension pg_net with schema extensions;
+```
+
 ## Limitations
 
 - To improve speed and performance, the requests and responses are stored in [unlogged tables](https://pgpedia.info/u/unlogged-table.html), which are not preserved during a crash or unclean shutdown.
@@ -40408,6 +40439,8 @@ create extension postgis with schema "extensions";
 drop extension if exists postgis;
 ```
 
+Caution: Always install PostGIS into a dedicated schema (`extensions` in the examples above), never `public`. PostGIS creates the `spatial_ref_sys` reference table in whichever schema you install into, and if that's `public`, the table is exposed through the Data API — see [Troubleshooting](#troubleshooting) if this has already happened to your project.
+
 ## Examples
 
 To get started with PostGIS, create a table and see to use PostGIS for some typical use cases. Imagine creating a basic restaurant-searching app.
@@ -40792,6 +40825,14 @@ await supabase.Rpc("restaurants_in_view", new Dictionary<string, object>
 ```
 
 ## Troubleshooting
+
+### Security advisor flags `public.spatial_ref_sys`
+
+If `PostGIS` was installed in the `public` schema, the [Security Advisor](https://supabase.com/dashboard/project/_/advisors/security) may report that `public.spatial_ref_sys` grants write access to the Data API roles (`anon`, `authenticated`), and that it can't be fixed by enabling RLS because your project's `postgres` role doesn't own the table.
+
+This is expected, not a data exposure risk: `spatial_ref_sys` is `PostGIS`'s built-in lookup table of coordinate system definitions, and it never holds your data. The actual problem is that `PostGIS` is installed in `public`, a schema the Data API exposes by default. Enabling RLS on the table isn't possible for your `postgres` role, and it isn't the fix. Follow the steps below to move `PostGIS` out of `public` yourself. They include a backup, since the default path drops and recreates the extension. To avoid the rebuild, contact Supabase Support instead.
+
+### Moving `PostGIS` to a different schema
 
 As of PostGIS 2.3 or newer, the PostGIS extension is no longer relocatable from one schema to another. If you need to move it from one schema to another for any reason (e.g. from the public schema to the extensions schema for security reasons), you would normally run a ALTER EXTENSION to relocate the schema. However, you will now to do the following steps:
 
@@ -64304,14 +64345,13 @@ It's important to know which version of Postgres you are running as each major v
 Run the following query using the [SQL Editor](https://supabase.com/dashboard/project/_/sql) in the Supabase Dashboard:
 
 ```sql
-select
-  version();
+show server_version;
 ```
 
 Which should return something like:
 
-```sql
-PostgreSQL 15.1 on aarch64-unknown-linux-gnu, compiled by gcc (Ubuntu 10.3.0-1ubuntu1~20.04) 10.3.0, 64-bit
+```
+15.1
 ```
 
 This query can also be executed via `psql` or any other query editor if you prefer to [connect directly to the database](https://supabase.com/docs/guides/database/connecting-to-postgres#direct-connection).
@@ -106816,7 +106856,7 @@ You can find a detailed breakdown of all usage items and how they are billed on 
 
 While your subscription plan applies to your entire organization and is charged only once, you can enhance individual projects by opting into various add-ons.
 
-- [Compute](https://supabase.com/docs/guides/platform/compute-and-disk#compute) to scale your database up to 64 cores and 256 GB RAM
+- [Compute](https://supabase.com/docs/guides/platform/compute-and-disk#compute) to scale your database up to 64 vCPUs and 256 GB RAM
 - [Read Replicas](https://supabase.com/docs/guides/platform/read-replicas) to scale read operations and provide resiliency
 - [Disk](https://supabase.com/docs/guides/platform/compute-and-disk#disk) to provision extra IOPS/throughput or use a high-performance SSD
 - [Log Drains](https://supabase.com/docs/guides/observability/log-drains) to sync Supabase logs to a logging system of your choice
@@ -106900,20 +106940,20 @@ The following table describes the base instances, Nano (free plan) and Micro (pa
 
 Note: In paid organizations, Nano Compute are billed at the same price as Micro Compute. It is recommended to upgrade your Project from Nano Compute to Micro Compute when it's convenient for you. Compute sizes are not auto-upgraded because of the downtime incurred. See [Supabase Pricing](https://supabase.com/pricing) for more information. You cannot launch Nano instances on paid plans, only Micro and above - but you might have Nano instances after upgrading from Free Plan.
 
-| Compute Size | Hourly Price USD | Monthly Price USD                                                                                                            | CPU                 | Memory       | Max DB Size (Recommended)[^2] |
-| ------------ | ---------------- | ---------------------------------------------------------------------------------------------------------------------------- | ------------------- | ------------ | ----------------------------- |
-| Nano[^3]     | $0               | $0                                                                                                                           | Shared              | Up to 0.5 GB | 500 MB                        |
-| Micro        | $0.01344         | \~$10                                                                                                                        | 2-core (shared)     | 1 GB         | 10 GB                         |
-| Small        | $0.0206          | \~$15                                                                                                                        | 2-core (shared)     | 2 GB         | 50 GB                         |
-| Medium       | $0.0822          | \~$60                                                                                                                        | 2-core (shared)     | 4 GB         | 100 GB                        |
-| Large        | $0.1517          | \~$110                                                                                                                       | 2-core (dedicated)  | 8 GB         | 200 GB                        |
-| XL           | $0.2877          | \~$210                                                                                                                       | 4-core (dedicated)  | 16 GB        | 500 GB                        |
-| 2XL          | $0.562           | \~$410                                                                                                                       | 8-core (dedicated)  | 32 GB        | 1 TB                          |
-| 4XL          | $1.32            | \~$960                                                                                                                       | 16-core (dedicated) | 64 GB        | 2 TB                          |
-| 8XL          | $2.562           | \~$1,870                                                                                                                     | 32-core (dedicated) | 128 GB       | 4 TB                          |
-| 12XL         | $3.836           | \~$2,800                                                                                                                     | 48-core (dedicated) | 192 GB       | 6 TB                          |
-| 16XL         | $5.12            | \~$3,730                                                                                                                     | 64-core (dedicated) | 256 GB       | 10 TB                         |
-| >16XL        | -                | [Contact Us](https://supabase.com/dashboard/support/new?category=sales\&subject=Enquiry%20about%20larger%20instance%20sizes) | Custom              | Custom       | Custom                        |
+| Compute Size | Hourly Price USD | Monthly Price USD                                                                                                            | CPU                  | Memory       | Max DB Size (Recommended)[^2] |
+| ------------ | ---------------- | ---------------------------------------------------------------------------------------------------------------------------- | -------------------- | ------------ | ----------------------------- |
+| Nano[^3]     | $0               | $0                                                                                                                           | Shared               | Up to 0.5 GB | 500 MB                        |
+| Micro        | $0.01344         | \~$10                                                                                                                        | Shared               | 1 GB         | 10 GB                         |
+| Small        | $0.0206          | \~$15                                                                                                                        | Shared               | 2 GB         | 50 GB                         |
+| Medium       | $0.0822          | \~$60                                                                                                                        | Shared               | 4 GB         | 100 GB                        |
+| Large        | $0.1517          | \~$110                                                                                                                       | Dedicated · 2 vCPUs  | 8 GB         | 200 GB                        |
+| XL           | $0.2877          | \~$210                                                                                                                       | Dedicated · 4 vCPUs  | 16 GB        | 500 GB                        |
+| 2XL          | $0.562           | \~$410                                                                                                                       | Dedicated · 8 vCPUs  | 32 GB        | 1 TB                          |
+| 4XL          | $1.32            | \~$960                                                                                                                       | Dedicated · 16 vCPUs | 64 GB        | 2 TB                          |
+| 8XL          | $2.562           | \~$1,870                                                                                                                     | Dedicated · 32 vCPUs | 128 GB       | 4 TB                          |
+| 12XL         | $3.836           | \~$2,800                                                                                                                     | Dedicated · 48 vCPUs | 192 GB       | 6 TB                          |
+| 16XL         | $5.12            | \~$3,730                                                                                                                     | Dedicated · 64 vCPUs | 256 GB       | 10 TB                         |
+| >16XL        | -                | [Contact Us](https://supabase.com/dashboard/support/new?category=sales\&subject=Enquiry%20about%20larger%20instance%20sizes) | Custom               | Custom       | Custom                        |
 
 [^1]: Database max connections are recommended values and can be [customized via `max_connections`](https://supabase.com/docs/guides/database/custom-postgres-config) depending on your use case. Be aware of [these considerations](https://supabase.com/docs/guides/troubleshooting/how-to-change-max-database-connections-_BQ8P5) before modifying.
 
@@ -111540,7 +111580,7 @@ tmux a -t migration || tmux new -s migration
 
 **Resource Requirements**:
 
-| Database Size | Recommended Compute | Recommended VM            | Action Required                                                     |
+| Database Size | Recommended Compute | Recommended Migration VM  | Action Required                                                     |
 | ------------- | ------------------- | ------------------------- | ------------------------------------------------------------------- |
 | \< 10 GB      | Default             | 2 vCPUs, 4 GB RAM         | None                                                                |
 | 10-100 GB     | Default-Small       | 4 vCPUs, 8 GB RAM         | Consider compute upgrade                                            |
@@ -111624,13 +111664,14 @@ Run `pg_dump --help` for a full list of options.
 export SUPABASE_DB_URL="Postgres://postgres.[ref]:[password]@aws-0-[region].pooler.supabase.com:5432/postgres"
 
 # Determine restore parallelization based on your Supabase compute size:
-# Free tier: 2 cores → use -j 2
-# Small compute: 2 cores → use -j 2
-# Medium compute: 4 cores → use -j 4
-# Large compute: 8 cores → use -j 8
-# XL compute: 16 cores → use -j 16
+# Micro–Medium (shared compute): use -j 2
+# Large: 2 vCPUs → use -j 2
+# XL: 4 vCPUs → use -j 4
+# 2XL: 8 vCPUs → use -j 8
+# 4XL: 16 vCPUs → use -j 16
+# (larger sizes: match -j to the vCPU count shown on the pricing page)
 
-RESTORE_JOBS=8  # Adjust based on your Supabase compute size
+RESTORE_JOBS=2  # Conservative starting point — adjust for your compute size and monitor CPU and disk IO
 
 # Restore the dump (parallel mode)
 # Note: -j cannot be used with --single-transaction
@@ -143091,8 +143132,8 @@ This situation often arises in large, high-write tables (e.g., `your_table`, whi
 Since the wraparound prevention autovacuum cannot be stopped, the best approach is to provide the database with sufficient resources to complete the operation as efficiently as possible.
 
 1. **Upgrade your Database Compute Instance:**
-   - **Action:** Temporarily scale up your instance's CPU (e.g., from `m6g.4xlarge` to `m6g.8xlarge` or higher).
-   - **Why it helps:** More CPU cores and processing power will help the autovacuum operation run faster, reducing the overall time it impacts your database.
+   - **Action:** Temporarily scale up your instance's CPU.
+   - **Why it helps:** More processing power will help the autovacuum operation run faster, reducing the overall time it impacts your database.
    - **Considerations:** This usually causes a brief downtime (typically 1-2 minutes) as the instance restarts. However, the autovacuum process is designed to pause and resume automatically.
 
 2. **Increase Disk Throughput/IOPS:**

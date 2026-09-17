@@ -10,7 +10,7 @@ description: "Structured logs allow you to send, view and query logs and paramet
 url: https://docs.sentry.io/product/logs/
 ---
 
-# Logs
+# Logs | Sentry Docs
 
 ## [Overview](https://docs.sentry.io/product/logs.md#overview)
 

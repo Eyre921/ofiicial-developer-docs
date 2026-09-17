@@ -331,9 +331,6 @@ path: api/pagelist/en/free-pro-team-latest
 /en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository
 /en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/enabling-or-disabling-github-discussions-for-a-repository
 /en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-security-and-analysis-settings-for-your-repository
-/en/repositories/managing-your-repositorys-settings-and-features/actions-policies
-/en/repositories/managing-your-repositorys-settings-and-features/actions-policies/about-actions-policies
-/en/repositories/managing-your-repositorys-settings-and-features/actions-policies/workflow-execution-protections
 /en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings
 /en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/setting-repository-visibility
 /en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/managing-teams-and-people-with-access-to-your-repository
@@ -661,9 +658,6 @@ path: api/pagelist/en/free-pro-team-latest
 /en/organizations/managing-organization-settings/managing-the-forking-policy-for-your-organization
 /en/organizations/managing-organization-settings/managing-pull-request-reviews-in-your-organization
 /en/organizations/managing-organization-settings/disabling-or-limiting-github-actions-for-your-organization
-/en/organizations/managing-organization-settings/actions-policies
-/en/organizations/managing-organization-settings/actions-policies/about-actions-policies
-/en/organizations/managing-organization-settings/actions-policies/workflow-execution-protections
 /en/organizations/managing-organization-settings/about-networking-for-hosted-compute-products-in-your-organization
 /en/organizations/managing-organization-settings/about-azure-private-networking-for-github-hosted-runners-in-your-organization
 /en/organizations/managing-organization-settings/configuring-private-networking-for-github-hosted-runners-in-your-organization
@@ -1445,6 +1439,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/actions/concepts/security/kubernetes-admissions-controller
 /en/actions/concepts/metrics
 /en/actions/concepts/billing-and-usage
+/en/actions/concepts/about-actions-policies
 /en/actions/how-tos
 /en/actions/how-tos/write-workflows
 /en/actions/how-tos/write-workflows/use-workflow-templates
@@ -1564,6 +1559,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/actions/how-tos/monitor-workflows/enable-debug-logging
 /en/actions/how-tos/troubleshoot-workflows
 /en/actions/how-tos/administer
+/en/actions/how-tos/administer/control-workflow-execution
 /en/actions/how-tos/administer/view-metrics
 /en/actions/how-tos/get-support
 /en/actions/reference
@@ -2175,6 +2171,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/tutorials/roll-out-at-scale/govern-at-scale/maintain-codebase-standards
 /en/copilot/tutorials/roll-out-at-scale/enable-developers
 /en/copilot/tutorials/roll-out-at-scale/enable-developers/drive-adoption
+/en/copilot/tutorials/roll-out-at-scale/enable-developers/copilot-app-for-teams
 /en/copilot/tutorials/roll-out-at-scale/enable-developers/integrate-ai-agents
 /en/copilot/tutorials/roll-out-at-scale/drive-downstream-impact
 /en/copilot/tutorials/roll-out-at-scale/drive-downstream-impact/achieve-company-goals

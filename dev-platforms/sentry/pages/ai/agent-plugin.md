@@ -10,7 +10,7 @@ description: "Install the Sentry plugin for your AI coding assistant so it can s
 url: https://docs.sentry.io/ai/agent-plugin/
 ---
 
-# Agent Plugin
+# Agent Plugin | Sentry Docs
 
 Whether you're adding Sentry to a new project, debugging a spike in errors, or wiring up alerts, just ask. The plugin gives your assistant the context it needs to do it right.
 

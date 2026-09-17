@@ -10,7 +10,7 @@ description: "Learn about the functionality of Sentry’s command line interface
 url: https://docs.sentry.io/cli/configuration/
 ---
 
-# Configuration and Authentication
+# Configuration and Authentication | Sentry Docs
 
 ##### Looking for the new Sentry CLI?
 

@@ -10,7 +10,7 @@ description: "Learn how to use Sentry’s Issues page, where you can see and sta
 url: https://docs.sentry.io/product/issues/
 ---
 
-# Issues
+# Issues | Sentry Docs
 
 The [**Issues**](https://sentry.io/orgredirect/organizations/:orgslug/issues/) page in Sentry displays information about problems in your application. This page allows you to filter by properties such as browser, device, impacted users, or whether an error is unhandled. You can then inspect issue details to better understand the problem and [triage](https://docs.sentry.io/product/issues/states-triage.md) effectively.
 

@@ -9,7 +9,7 @@ title: "Integrations"
 url: https://docs.sentry.io/api/integrations/
 ---
 
-# Integrations
+# Integrations | Sentry Docs
 
 * #### [Create a Data Forwarder for an Organization](https://docs.sentry.io/api/integrations/create-a-data-forwarder-for-an-organization.md)
 * #### [Create an External Team](https://docs.sentry.io/api/integrations/create-an-external-team.md)

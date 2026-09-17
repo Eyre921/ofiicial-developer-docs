@@ -10,7 +10,7 @@ description: "Learn how to create integrations so that external services can int
 url: https://docs.sentry.io/integrations/integration-platform/
 ---
 
-# Integration Platform
+# Integration Platform | Sentry Docs
 
 Sentry’s integration platform provides a way for external services to interact with Sentry using [webhooks](https://docs.sentry.io/integrations/integration-platform/webhooks.md), [UI components](https://docs.sentry.io/integrations/integration-platform/ui-components.md), and the [REST API](https://docs.sentry.io/api.md). Integrations using this platform are first-class actors within Sentry.
 

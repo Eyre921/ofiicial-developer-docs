@@ -10,7 +10,7 @@ description: "Learn more about Sentry's notification and incidents integrations.
 url: https://docs.sentry.io/integrations/notification-incidents/
 ---
 
-# Notification & Incidents
+# Notification & Incidents | Sentry Docs
 
 * [All Quiet](https://docs.allquiet.app/integrations/inbound/sentry)
 * [Blar](https://docs.sentry.io/integrations/notification-incidents/blar.md)

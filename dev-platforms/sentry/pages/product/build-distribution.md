@@ -10,7 +10,7 @@ description: "Distribute app builds to internal teams and beta testers."
 url: https://docs.sentry.io/product/build-distribution/
 ---
 
-# Build Distribution
+# Build Distribution | Sentry Docs
 
 Build Distribution enables you to securely distribute app builds to your internal teams and beta testers. Upload builds from CI to streamline your distribution workflow, manage access control, and track installation analytics.
 

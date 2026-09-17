@@ -10,7 +10,7 @@ description: "Learn more about how to search in Sentry, including the correct qu
 url: https://docs.sentry.io/concepts/search/
 ---
 
-# Search
+# Search | Sentry Docs
 
 Search is available on several features throughout [sentry.io](https://sentry.io), such as **Issues**, **Errors**, **Traces**, and **Dashboards**.
 

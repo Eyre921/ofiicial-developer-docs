@@ -9,7 +9,7 @@ title: "Integration Platform"
 url: https://docs.sentry.io/api/integration/
 ---
 
-# Integration Platform
+# Integration Platform | Sentry Docs
 
 * #### [Create an External Issue and Link It to an Issue](https://docs.sentry.io/api/integration/create-an-external-issue-and-link-it-to-an-issue.md)
 * #### [Create or Link an External Issue Through a Sentry App](https://docs.sentry.io/api/integration/create-or-link-an-external-issue-through-a-sentry-app.md)

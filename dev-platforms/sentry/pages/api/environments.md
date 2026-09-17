@@ -9,7 +9,7 @@ title: "Environments"
 url: https://docs.sentry.io/api/environments/
 ---
 
-# Environments
+# Environments | Sentry Docs
 
 * #### [Bulk Update Project Environments](https://docs.sentry.io/api/environments/bulk-update-project-environments.md)
 * #### [List a Project's Environments](https://docs.sentry.io/api/environments/list-a-projects-environments.md)

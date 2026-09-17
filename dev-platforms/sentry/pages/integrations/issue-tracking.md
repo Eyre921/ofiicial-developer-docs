@@ -10,7 +10,7 @@ description: "Learn more about Sentry's issue tracking integrations."
 url: https://docs.sentry.io/integrations/issue-tracking/
 ---
 
-# Issue Tracking
+# Issue Tracking | Sentry Docs
 
 * [Azure DevOps (Work Items)](https://docs.sentry.io/integrations/source-code-mgmt/azure-devops.md)
 * [Bitbucket (Issues)](https://docs.sentry.io/integrations/source-code-mgmt/bitbucket.md)

@@ -9,7 +9,7 @@ title: "Discover & Performance"
 url: https://docs.sentry.io/api/discover/
 ---
 
-# Discover & Performance
+# Discover & Performance | Sentry Docs
 
 Discover and Performance allow you to slice and dice your Error and Transaction events
 

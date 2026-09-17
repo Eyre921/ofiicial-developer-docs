@@ -60,7 +60,7 @@ Validation Error
 
 ```json
 {
-  "email": "jane.doe@example.com"
+  "email": "string"
 }
 ```
 
@@ -80,7 +80,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 async function main() {
     const client = new ElevenLabsClient();
     await client.workspace.groups.members.add("group_id", {
-        email: "jane.doe@example.com",
+        email: "string",
     });
 }
 main();
@@ -94,7 +94,7 @@ client = ElevenLabs()
 
 client.workspace.groups.members.add(
     group_id="group_id",
-    email="jane.doe@example.com",
+    email="string",
 )
 
 ```
@@ -113,7 +113,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/workspace/groups/group_id/members"
 
-	payload := strings.NewReader("{\n  \"email\": \"jane.doe@example.com\"\n}")
+	payload := strings.NewReader("{\n  \"email\": \"string\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -141,7 +141,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"email\": \"jane.doe@example.com\"\n}"
+request.body = "{\n  \"email\": \"string\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -153,7 +153,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/workspace/groups/group_id/members")
   .header("Content-Type", "application/json")
-  .body("{\n  \"email\": \"jane.doe@example.com\"\n}")
+  .body("{\n  \"email\": \"string\"\n}")
   .asString();
 ```
 
@@ -165,7 +165,7 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/workspace/groups/group_id/members', [
   'body' => '{
-  "email": "jane.doe@example.com"
+  "email": "string"
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -181,7 +181,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/workspace/groups/group_id/members");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"email\": \"jane.doe@example.com\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"email\": \"string\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -189,7 +189,7 @@ IRestResponse response = client.Execute(request);
 import Foundation
 
 let headers = ["Content-Type": "application/json"]
-let parameters = ["email": "jane.doe@example.com"] as [String : Any]
+let parameters = ["email": "string"] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 

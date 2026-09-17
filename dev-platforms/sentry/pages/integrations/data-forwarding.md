@@ -10,7 +10,7 @@ description: "Learn about forwarding processed events to third-party providers."
 url: https://docs.sentry.io/integrations/data-forwarding/
 ---
 
-# Data Forwarding
+# Data Forwarding | Sentry Docs
 
 This feature is available only if your organization is on [a Trial, Business, or Enterprise plan](https://sentry.io/pricing/).
 

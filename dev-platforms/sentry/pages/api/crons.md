@@ -9,7 +9,7 @@ title: "Crons"
 url: https://docs.sentry.io/api/crons/
 ---
 
-# Crons
+# Crons | Sentry Docs
 
 * #### [Create a Monitor](https://docs.sentry.io/api/crons/create-a-monitor.md)
 * #### [Delete a Monitor or Monitor Environments](https://docs.sentry.io/api/crons/delete-a-monitor-or-monitor-environments.md)

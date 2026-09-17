@@ -10,7 +10,7 @@ description: "Learn how to use Sentry's MCP monitoring tools to trace and debug 
 url: https://docs.sentry.io/product/mcp-servers/
 ---
 
-# MCP Servers
+# MCP Servers | Sentry Docs
 
 Sentry's MCP (Model Context Protocol) monitoring tools help you understand what's happening in your MCP implementations. They automatically collect information about MCP server connections, resource access, tool executions, and errors across your entire MCP pipeline—from client requests to server responses.
 

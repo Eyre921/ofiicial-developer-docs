@@ -9,7 +9,7 @@ title: "Spike Protection Notifications"
 url: https://docs.sentry.io/api/spike-protection/
 ---
 
-# Spike Protection Notifications
+# Spike Protection Notifications | Sentry Docs
 
 * #### [Create a Spike Protection Notification Action](https://docs.sentry.io/api/spike-protection/create-a-spike-protection-notification-action.md)
 * #### [Delete a Spike Protection Notification Action](https://docs.sentry.io/api/spike-protection/delete-a-spike-protection-notification-action.md)

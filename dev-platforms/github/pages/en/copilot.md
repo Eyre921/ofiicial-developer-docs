@@ -1662,6 +1662,10 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   Learn how to plan an effective enablement process to drive Copilot adoption.
 
+* [Rolling out the GitHub Copilot app to your team](/en/copilot/tutorials/roll-out-at-scale/enable-developers/copilot-app-for-teams)
+
+  Roll out the GitHub Copilot app so developers can direct agents across parallel tasks while you control access, model availability, and external tools.
+
 * [Integrating agentic AI into your enterprise's software development lifecycle](/en/copilot/tutorials/roll-out-at-scale/enable-developers/integrate-ai-agents)
 
   See how agents can boost productivity across your enterprise.

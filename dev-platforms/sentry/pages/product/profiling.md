@@ -10,7 +10,7 @@ description: "Profiling offers a deeper level of visibility on top of traditiona
 url: https://docs.sentry.io/product/profiling/
 ---
 
-# Profiling
+# Profiling | Sentry Docs
 
 Sentry’s Profiling products provide precise, code-level visibility into application execution in a production environment.
 

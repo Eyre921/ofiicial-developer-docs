@@ -10,7 +10,7 @@ description: "View all the projects associated with teams that you're a member o
 url: https://docs.sentry.io/product/projects/
 ---
 
-# Projects
+# Projects | Sentry Docs
 
 A *Project* represents your service or application in Sentry. For example, you might have separate projects for your API server and frontend client.
 

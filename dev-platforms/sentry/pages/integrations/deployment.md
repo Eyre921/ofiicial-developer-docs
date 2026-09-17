@@ -10,7 +10,7 @@ description: "Learn more about Sentry's deployment integrations."
 url: https://docs.sentry.io/integrations/deployment/
 ---
 
-# Deployment
+# Deployment | Sentry Docs
 
 * [Bitbucket Pipelines](https://docs.sentry.io/product/releases/setup/release-automation/bitbucket-pipelines.md)
 * [Expo](https://docs.sentry.io/integrations/deployment/expo.md)

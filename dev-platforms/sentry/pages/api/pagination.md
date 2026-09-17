@@ -9,7 +9,7 @@ title: "Paginating Results"
 url: https://docs.sentry.io/api/pagination/
 ---
 
-# Paginating Results
+# Paginating Results | Sentry Docs
 
 Pagination in the API is handled via the Link header standard:
 

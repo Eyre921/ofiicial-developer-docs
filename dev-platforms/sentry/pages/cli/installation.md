@@ -10,7 +10,7 @@ description: "Learn about the different methods available to install `sentry-cli
 url: https://docs.sentry.io/cli/installation/
 ---
 
-# Installation
+# Installation | Sentry Docs
 
 ##### Looking for the new Sentry CLI?
 

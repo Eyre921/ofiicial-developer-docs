@@ -10,7 +10,7 @@ description: "Learn how to integrate Sentry into your platform and provide error
 url: https://docs.sentry.io/product/partnership-platform/
 ---
 
-# Partnership Platform
+# Partnership Platform | Sentry Docs
 
 # [Partnership Platform](https://docs.sentry.io/product/partnership-platform.md#partnership-platform)
 

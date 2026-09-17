@@ -10,7 +10,7 @@ description: "Learn about what counts towards your quota and how to manage your 
 url: https://docs.sentry.io/pricing/quotas/
 ---
 
-# Billing Quota Management
+# Billing Quota Management | Sentry Docs
 
 Data and quotas are interconnected in Sentry. When you [subscribe to Sentry](https://sentry.io/pricing/), you pay for the amount of data - events (errors, replays, spans or transactions, and profiles), logs, application metrics, and attachments - to be tracked. Each data category has its own quota that you can adjust. When Sentry tracks an event, log, metric, or attachment, it counts toward your quota for that type of data.
 

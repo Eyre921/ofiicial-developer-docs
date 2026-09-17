@@ -9,7 +9,7 @@ title: "Mobile Builds"
 url: https://docs.sentry.io/api/mobile-builds/
 ---
 
-# Mobile Builds
+# Mobile Builds | Sentry Docs
 
 * #### [Create a skipped Size Analysis status check](https://docs.sentry.io/api/mobile-builds/create-a-skipped-size-analysis-status-check.md)
 * #### [Get the latest installable build for a project](https://docs.sentry.io/api/mobile-builds/get-the-latest-installable-build-for-a-project.md)

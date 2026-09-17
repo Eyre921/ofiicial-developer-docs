@@ -9,7 +9,7 @@ title: "Rate Limits"
 url: https://docs.sentry.io/api/ratelimits/
 ---
 
-# Rate Limits
+# Rate Limits | Sentry Docs
 
 Sentry rate limits every API request made to prevent abuse and resource overuse. The limit is applied to each unique combination of caller and endpoint.
 

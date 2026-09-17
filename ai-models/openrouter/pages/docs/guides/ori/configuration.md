@@ -1,5 +1,5 @@
 ---
-title: "Ori configuration"
+title: "Ori Configuration"
 source: https://openrouter.ai/docs/guides/ori/configuration.md
 path: docs/guides/ori/configuration
 ---
@@ -8,7 +8,7 @@ path: docs/guides/ori/configuration
 > Fetch the complete documentation index at: https://openrouter.ai/docs/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-# Ori configuration
+# Ori Configuration
 
 > How to configure Ori, from a single shell to a managed fleet, plus every setting it reads
 

@@ -10,7 +10,7 @@ description: "Learn about the types of notifications that Sentry sends you, and 
 url: https://docs.sentry.io/product/notifications/
 ---
 
-# Sentry Notifications
+# Sentry Notifications | Sentry Docs
 
 Sentry sends you notifications regarding workflow activities, [release deploys](https://docs.sentry.io/product/releases.md), and [quota usage](https://docs.sentry.io/pricing/quotas.md), as well as weekly reports. These notifications let you know about:
 

@@ -85,8 +85,7 @@ Validation Error
 ```json
 {
   "files": [
-    "<file: voice_sample_01.wav>",
-    "<file: voice_sample_02.wav>"
+    "<file: string>"
   ]
 }
 ```
@@ -96,22 +95,22 @@ Validation Error
 ```json
 [
   {
-    "sample_id": "a1b2c3d4e5f678901234567890abcdef",
-    "file_name": "voice_sample_01.wav",
-    "mime_type": "audio/wav",
-    "size_bytes": 2457600,
-    "hash": "9f86d081884c7d659a2feaa0c55ad015",
-    "duration_secs": 12.5,
+    "sample_id": "string",
+    "file_name": "string",
+    "mime_type": "string",
+    "size_bytes": 1,
+    "hash": "string",
+    "duration_secs": 1.1,
     "remove_background_noise": true,
     "has_isolated_audio": true,
     "has_isolated_audio_preview": true,
     "speaker_separation": {
-      "voice_id": "21m00Tcm4TlvDq8ikWAM",
-      "sample_id": "a1b2c3d4e5f678901234567890abcdef",
+      "voice_id": "DCwhRBWXzGAHq8TQ4Fs18",
+      "sample_id": "DCwhRBWXzGAHq8TQ4Fs18",
       "status": "not_started"
     },
-    "trim_start": 0,
-    "trim_end": 0
+    "trim_start": 1,
+    "trim_end": 1
   }
 ]
 ```
@@ -155,7 +154,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/voices/pvc/voice_id/samples"
 
-	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"files\"; filename=\"voice_sample_01.wav\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"files\"; filename=\"voice_sample_02.wav\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"remove_background_noise\"\r\n\r\n\r\n-----011000010111000001101001--\r\n")
+	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"files\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"remove_background_noise\"\r\n\r\n\r\n-----011000010111000001101001--\r\n")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -183,7 +182,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'multipart/form-data; boundary=---011000010111000001101001'
-request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"files\"; filename=\"voice_sample_01.wav\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"files\"; filename=\"voice_sample_02.wav\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"remove_background_noise\"\r\n\r\n\r\n-----011000010111000001101001--\r\n"
+request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"files\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"remove_background_noise\"\r\n\r\n\r\n-----011000010111000001101001--\r\n"
 
 response = http.request(request)
 puts response.read_body
@@ -195,7 +194,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/voices/pvc/voice_id/samples")
   .header("Content-Type", "multipart/form-data; boundary=---011000010111000001101001")
-  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"files\"; filename=\"voice_sample_01.wav\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"files\"; filename=\"voice_sample_02.wav\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"remove_background_noise\"\r\n\r\n\r\n-----011000010111000001101001--\r\n")
+  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"files\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"remove_background_noise\"\r\n\r\n\r\n-----011000010111000001101001--\r\n")
   .asString();
 ```
 
@@ -209,12 +208,7 @@ $response = $client->request('POST', 'https://api.elevenlabs.io/v1/voices/pvc/vo
   'multipart' => [
     [
         'name' => 'files',
-        'filename' => 'voice_sample_01.wav',
-        'contents' => null
-    ],
-    [
-        'name' => 'files',
-        'filename' => 'voice_sample_02.wav',
+        'filename' => 'string',
         'contents' => null
     ]
   ]
@@ -228,7 +222,7 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/voices/pvc/voice_id/samples");
 var request = new RestRequest(Method.POST);
-request.AddParameter("multipart/form-data; boundary=---011000010111000001101001", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"files\"; filename=\"voice_sample_01.wav\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"files\"; filename=\"voice_sample_02.wav\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"remove_background_noise\"\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
+request.AddParameter("multipart/form-data; boundary=---011000010111000001101001", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"files\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"remove_background_noise\"\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -239,11 +233,7 @@ let headers = ["Content-Type": "multipart/form-data; boundary=---011000010111000
 let parameters = [
   [
     "name": "files",
-    "fileName": "voice_sample_01.wav"
-  ],
-  [
-    "name": "files",
-    "fileName": "voice_sample_02.wav"
+    "fileName": "string"
   ],
   [
     "name": "remove_background_noise",

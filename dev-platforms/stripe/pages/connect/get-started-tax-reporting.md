@@ -12,7 +12,7 @@ Stripe provides [capabilities](https://docs.stripe.com/connect/account-capabilit
 
 Log in to your Stripe account and use the [Tax reporting](https://dashboard.stripe.com/connect/taxes/forms) view in the Dashboard to create, modify, file, and deliver 1099 tax forms for your connected accounts. If you use a [team](https://docs.stripe.com/get-started/account/teams.md), only team members with the Tax Analyst or Administrator [user role](https://docs.stripe.com/get-started/account/teams/roles.md) can access all tax-related features.
 
-## Tax season 2026 checklist 
+## Tax season 2025 checklist 
 
 Follow this guide to help you prepare for tax season.
 
@@ -24,13 +24,13 @@ Follow this guide to help you prepare for tax season.
 - **January 15**: Last day that Stripe *could* send pre-filing outreach to your connected accounts
 - **January 22**: Latest recommended date to e-file tax forms in your Stripe Dashboard to have forms postmarked by the IRS deadline.
 - **February 1**: The IRS deadline to postmark 1099 tax forms to your connected accounts.
-- **February 12**: The last day that identity updates will automatically sync onto 1099 tax form drafts for tax year 2026.
+- **February 12**: The last day that identity updates will automatically sync onto 1099 tax form drafts for tax year 2025.
 
 Action forms in the `Needs attention` state to get missing name, address, and taxpayer ID (SSN or EIN) details from your connected accounts—you need this information for filing.
 
 ## Get ready for tax season
 
-- [Configure](https://docs.stripe.com/connect/get-started-tax-reporting.md#set-tax-form-default-settings) your platform’s tax settings for tax year 2026. You need to do this even if you previously used the Stripe 1099 tax reporting product.
+- [Configure](https://docs.stripe.com/connect/get-started-tax-reporting.md#set-tax-form-default-settings) your platform’s tax settings for tax year 2025. You need to do this even if you previously used the Stripe 1099 tax reporting product.
 - Start reviewing [forms in the Needs attention state](https://docs.stripe.com/connect/identify-forms-missing-information.md) with missing tax information.
 - Starting in September, you can edit tax forms [in your Dashboard](https://docs.stripe.com/connect/modify-tax-forms.md?method=dashboard) or through [CSV](https://docs.stripe.com/connect/modify-tax-forms.md?method=csv).
   - Provide any [missing identity information](https://docs.stripe.com/connect/identify-forms-missing-information.md) required for filing.
@@ -44,7 +44,7 @@ Action forms in the `Needs attention` state to get missing name, address, and ta
 - Required for e-delivery:
   - Identify missing email addresses using the *Missing Email Address* filter in your 1099 dashboard or by [exporting tax forms](https://docs.stripe.com/connect/modify-tax-forms.md?method=csv) as a CSV and looking for blank entries in Column B. Add missing email addresses using the Accounts API.
   - Make sure that your [Connect branding settings](https://dashboard.stripe.com/settings/connect/stripe-dashboard/branding) and your [support email address](https://dashboard.stripe.com/settings/public) are up to date.
-  - Prepare your support teams for tax season 2026. View the [example FAQs](https://docs.stripe.com/connect/platform-express-dashboard-taxes-faqs.md) your support team might receive from your connected accounts.
+  - Prepare your support teams for tax season 2025. View the [example FAQs](https://docs.stripe.com/connect/platform-express-dashboard-taxes-faqs.md) your support team might receive from your connected accounts.
 - Recommended for e-delivery:
   - Notify your connected accounts when Stripe outreach occurs. View the [example email copy](https://docs.stripe.com/connect/platform-express-dashboard-taxes-communication.md#email-template-post-stripe-email).
 
@@ -66,7 +66,7 @@ Action forms in the `Needs attention` state to get missing name, address, and ta
 
 ## Set tax form default settings
 
-To configure the settings for tax forms in your account you must log in as the account owner. If you use a team, any user that has the Administrator user role for your account can configure settings. To get started with generating your tax forms for 2026, open the [Tax reporting](https://dashboard.stripe.com/connect/taxes/forms) page of the Dashboard, and then click **Get started**.
+To configure the settings for tax forms in your account you must log in as the account owner. If you use a team, any user that has the Administrator user role for your account can configure settings. To get started with generating your tax forms for 2025, open the [Tax reporting](https://dashboard.stripe.com/connect/taxes/forms) page of the Dashboard, and then click **Get started**.
 ![Tax dashboard with the get started button highlighted.](https://b.stripecdn.com/docs-statics-srv/assets/tax-net-new-user-landing-experience.6ed30557253b2ce8785af2deff182a8b.png)
 
 Choose the default tax form to generate for your connected accounts, the [calculation method](https://docs.stripe.com/connect/calculation-methods.md) to use for your tax form totals, the type of filer for your business, and the kind of transactions you process. We recommend that you use a tax advisor to determine which options are right for your business. You can change almost all [tax form settings](https://docs.stripe.com/connect/tax-form-settings.md) at any time for the forms that you haven’t filed.
@@ -96,7 +96,7 @@ The next step involves choosing your delivery preferences to meet IRS obligation
 - *Paper delivery through postal mail:* Stripe delivers the 1099 forms to the owners of eligible connected accounts through postal mail based on the address on the tax form. If e-delivery is enabled, but the connected account hasn’t provided e-delivery consent at the time of filing, we fall back on postal delivery to meet IRS obligations.
 ![Delivery method selection screen.](https://b.stripecdn.com/docs-statics-srv/assets/tax-delivery-preferences-step.e03e2f98406615c5283791f913689dc7.png)
 
-As a final step, you can view a summary of your tax form settings to confirm your choices. After you confirm your settings, the tax forms dashboard opens, where you can view all of your tax forms for 2026.
+As a final step, you can view a summary of your tax form settings to confirm your choices. After you confirm your settings, the tax forms dashboard opens, where you can view all of your tax forms for 2025.
 ![Summary screen.](https://b.stripecdn.com/docs-statics-srv/assets/tax-summary-step.5bdede405d7cfef3c01442f44794bd0a.png)
 
 ## View and filter tax forms

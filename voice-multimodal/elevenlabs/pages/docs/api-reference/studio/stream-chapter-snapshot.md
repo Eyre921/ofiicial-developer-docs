@@ -68,7 +68,7 @@ Validation Error
 
 ```json
 [
-  "<audio data stream in MPEG format>"
+  "string"
 ]
 ```
 

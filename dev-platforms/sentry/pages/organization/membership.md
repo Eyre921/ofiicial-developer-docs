@@ -10,7 +10,7 @@ description: "Learn about the different organization-level and team-level roles 
 url: https://docs.sentry.io/organization/membership/
 ---
 
-# Organization and User Management
+# Organization and User Management | Sentry Docs
 
 ## [Membership](https://docs.sentry.io/organization/membership.md#membership)
 

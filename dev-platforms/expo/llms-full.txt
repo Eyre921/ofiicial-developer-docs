@@ -210,12 +210,15 @@ Fetch any page as markdown by adding the `Accept: text/markdown` header or appen
 - [Build custom web modals](https://docs.expo.dev/router/advanced/web-modals.md)
 - [Shared routes](https://docs.expo.dev/router/advanced/shared-routes.md)
 - [Protected routes](https://docs.expo.dev/router/advanced/protected.md)
+- [Prevent screen removal](https://docs.expo.dev/router/advanced/prevent-screen-removal.md)
 
 ### Advanced
 - [Platform-specific extensions and module](https://docs.expo.dev/router/advanced/platform-specific-modules.md)
 - [Customizing links](https://docs.expo.dev/router/advanced/native-intent.md)
 - [Router settings](https://docs.expo.dev/router/advanced/router-settings.md)
 - [Apple Handoff](https://docs.expo.dev/router/advanced/apple-handoff.md)
+- [Configure navigation transitions](https://docs.expo.dev/router/advanced/navigation-transitions.md)
+- [Manage inactive routes with React Activity](https://docs.expo.dev/router/advanced/react-activity.md)
 - [Custom tab layouts](https://docs.expo.dev/router/advanced/custom-tabs.md)
 - [Custom navigators](https://docs.expo.dev/router/advanced/custom-navigators.md)
 - [Stack Toolbar](https://docs.expo.dev/router/advanced/stack-toolbar.md)

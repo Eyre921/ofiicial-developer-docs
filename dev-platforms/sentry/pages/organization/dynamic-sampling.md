@@ -10,7 +10,7 @@ description: "Learn how to prioritize important events and increase visibility i
 url: https://docs.sentry.io/organization/dynamic-sampling/
 ---
 
-# Dynamic Sampling
+# Dynamic Sampling | Sentry Docs
 
 ##### Only Available to Existing Customers
 

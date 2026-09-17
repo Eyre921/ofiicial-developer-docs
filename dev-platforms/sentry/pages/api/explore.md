@@ -9,7 +9,7 @@ title: "Explore"
 url: https://docs.sentry.io/api/explore/
 ---
 
-# Explore
+# Explore | Sentry Docs
 
 Explore allow you to slice and dice your events
 

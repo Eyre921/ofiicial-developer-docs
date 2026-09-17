@@ -10,7 +10,7 @@ description: "Learn more about troubleshooting and repairing your integrations."
 url: https://docs.sentry.io/integrations/troubleshooting/
 ---
 
-# Troubleshooting Integrations
+# Troubleshooting Integrations | Sentry Docs
 
 Sentry integrates with many third party services to make your development experience easier. Unfortunately, we can’t always automatically update some of these services when critical data within Sentry is changed. This document is meant to help you navigate any expected behaviour resulting from these settings being changed. In some cases, we may need your team to manually intervene to get the integration working smoothly again.
 

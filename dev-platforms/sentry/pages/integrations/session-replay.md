@@ -10,7 +10,7 @@ description: "Learn more about third-party session replay integrations."
 url: https://docs.sentry.io/integrations/session-replay/
 ---
 
-# Third-party Session Replay Integrations
+# Third-party Session Replay Integrations | Sentry Docs
 
 Looking for Sentry's built-in Session Replay product? Click [here](https://docs.sentry.io/product/session-replay.md) to learn more.
 

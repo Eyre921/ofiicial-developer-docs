@@ -10,7 +10,7 @@ description: "Learn how to set up a Sentry organization account, so you can star
 url: https://docs.sentry.io/organization/getting-started/
 ---
 
-# Set Up Your Organization
+# Set Up Your Organization | Sentry Docs
 
 In this guide, we'll provide the recommended checklist for setting up your [Sentry organization account](https://sentry.io) so you can get started with Sentry error monitoring.
 

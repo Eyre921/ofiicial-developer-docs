@@ -10,7 +10,7 @@ description: "Debug information files allow Sentry to extract stack traces and p
 url: https://docs.sentry.io/cli/dif/
 ---
 
-# Debug Information Files
+# Debug Information Files | Sentry Docs
 
 ##### Looking for the new Sentry CLI?
 

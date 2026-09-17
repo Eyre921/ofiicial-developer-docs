@@ -10,7 +10,7 @@ description: "Learn how to send OpenTelemetry traces and logs to Sentry."
 url: https://docs.sentry.io/concepts/otlp/
 ---
 
-# OpenTelemetry Protocol (OTLP)
+# OpenTelemetry Protocol (OTLP) | Sentry Docs
 
 This feature is currently in open beta. Please reach out to <feedback-tracing@sentry.io> if you have feedback or questions. Features in beta are still in-progress and may have bugs. We recognize the irony.
 

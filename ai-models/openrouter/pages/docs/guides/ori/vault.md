@@ -1,5 +1,5 @@
 ---
-title: "Vault secrets for interns"
+title: "Vault Secrets for Interns"
 source: https://openrouter.ai/docs/guides/ori/vault.md
 path: docs/guides/ori/vault
 ---
@@ -8,7 +8,7 @@ path: docs/guides/ori/vault
 > Fetch the complete documentation index at: https://openrouter.ai/docs/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-# Vault secrets for interns
+# Vault Secrets for Interns
 
 > Store host-bound secrets for a workspace or an intern with the Vault API
 

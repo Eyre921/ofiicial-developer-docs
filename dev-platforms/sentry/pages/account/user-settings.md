@@ -10,7 +10,7 @@ description: "Learn how to customize your User Settings for a more personalized 
 url: https://docs.sentry.io/account/user-settings/
 ---
 
-# Account Preferences
+# Account Preferences | Sentry Docs
 
 [Account preferences](https://sentry.io/settings/account/details/) help you customize your Sentry experience. Manage your account by selecting "User settings" from the dropdown under your organization’s name. On this page, you can control the frequency of your [email notifications](https://docs.sentry.io/account/user-settings.md#notifications), [change your primary email](https://docs.sentry.io/account/user-settings.md#emails), and update your security settings.
 

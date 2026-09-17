@@ -10,7 +10,7 @@ description: "Choose where to store your data in the US or the EU."
 url: https://docs.sentry.io/organization/data-storage-location/
 ---
 
-# Data Storage Location (US or EU)
+# Data Storage Location (US or EU) | Sentry Docs
 
 Sentry supports data storage in both the US and the EU.
 

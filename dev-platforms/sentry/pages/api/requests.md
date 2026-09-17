@@ -9,7 +9,7 @@ title: "Requests"
 url: https://docs.sentry.io/api/requests/
 ---
 
-# Requests
+# Requests | Sentry Docs
 
 All API requests should be made to the `/api/0/` prefix, and will return JSON as the response:
 

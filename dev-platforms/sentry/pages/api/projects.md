@@ -9,7 +9,7 @@ title: "Projects"
 url: https://docs.sentry.io/api/projects/
 ---
 
-# Projects
+# Projects | Sentry Docs
 
 * #### [Add a Symbol Source to a Project](https://docs.sentry.io/api/projects/add-a-symbol-source-to-a-project.md)
 * #### [Add a Team to a Project](https://docs.sentry.io/api/projects/add-a-team-to-a-project.md)

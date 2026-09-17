@@ -10,7 +10,7 @@ description: "Track recent updates to Sentry docs"
 url: https://docs.sentry.io/changelog/
 ---
 
-# Documentation Changelog
+# Documentation Changelog | Sentry Docs
 
 ## [August 11, 2026](https://docs.sentry.io/changelog.md#august-11-2026)
 

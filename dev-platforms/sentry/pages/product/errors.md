@@ -10,7 +10,7 @@ description: "Errors allows you to search, filter, and query all your error even
 url: https://docs.sentry.io/product/errors/
 ---
 
-# Errors
+# Errors | Sentry Docs
 
 ## [Overview](https://docs.sentry.io/product/errors.md#overview)
 

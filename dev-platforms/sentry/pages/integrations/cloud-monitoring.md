@@ -10,7 +10,7 @@ description: "Learn more about Sentry's cloud monitoring integrations."
 url: https://docs.sentry.io/integrations/cloud-monitoring/
 ---
 
-# Cloud Monitoring
+# Cloud Monitoring | Sentry Docs
 
 * [Google Cloud Run](https://docs.sentry.io/integrations/cloud-monitoring/gcp-cloud-run.md)
 * [Google Cloud Functions - Python](https://docs.sentry.io/platforms/python/integrations/gcp-functions.md)

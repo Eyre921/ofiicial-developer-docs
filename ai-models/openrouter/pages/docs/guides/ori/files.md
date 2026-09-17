@@ -1,5 +1,5 @@
 ---
-title: "Where Ori writes files"
+title: "File Writing"
 source: https://openrouter.ai/docs/guides/ori/files.md
 path: docs/guides/ori/files
 ---
@@ -8,7 +8,7 @@ path: docs/guides/ori/files
 > Fetch the complete documentation index at: https://openrouter.ai/docs/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-# Where Ori writes files
+# File Writing
 
 > Find the files and directories that Ori creates during a run
 

@@ -10,7 +10,7 @@ description: "Learn more about Sentry's feature flag integrations."
 url: https://docs.sentry.io/integrations/feature-flag/
 ---
 
-# Feature Flags
+# Feature Flags | Sentry Docs
 
 * [Flagsmith](https://docs.sentry.io/integrations/feature-flag/flagsmith.md)
 * [Keyflow](https://docs.sentry.io/integrations/feature-flag/keyflow.md)

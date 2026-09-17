@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 436 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 439 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -87,6 +87,7 @@
 - `docs/api/api-reference/interns/get-an-intern` — [Get an intern](pages/docs/api/api-reference/interns/get-an-intern.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/get-an-intern.md)
 - `docs/api/api-reference/interns/list-interns` — [List interns](pages/docs/api/api-reference/interns/list-interns.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/list-interns.md)
 - `docs/api/api-reference/interns/provision-an-intern` — [Provision an intern](pages/docs/api/api-reference/interns/provision-an-intern.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/provision-an-intern.md)
+- `docs/api/api-reference/interns/stream-a-chat-completion-with-an-intern` — [Stream a chat completion with an intern](pages/docs/api/api-reference/interns/stream-a-chat-completion-with-an-intern.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/stream-a-chat-completion-with-an-intern.md)
 - `docs/api/api-reference/interns/suspend-an-intern` — [Suspend an intern](pages/docs/api/api-reference/interns/suspend-an-intern.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/suspend-an-intern.md)
 - `docs/api/api-reference/interns/update-an-intern` — [Update an intern](pages/docs/api/api-reference/interns/update-an-intern.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/update-an-intern.md)
 - `docs/api/api-reference/models/get-a-model-by-its-slug` — [Get a model by its slug](pages/docs/api/api-reference/models/get-a-model-by-its-slug.md) · [原文](https://openrouter.ai/docs/api/api-reference/models/get-a-model-by-its-slug.md)
@@ -176,6 +177,7 @@
 - `docs/client-sdks/go/sdks/containers/readme` — [Containers](pages/docs/client-sdks/go/sdks/containers/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/containers/README.md)
 - `docs/client-sdks/go/sdks/credits/readme` — [Credits](pages/docs/client-sdks/go/sdks/credits/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/credits/README.md)
 - `docs/client-sdks/go/sdks/datasets/readme` — [Datasets](pages/docs/client-sdks/go/sdks/datasets/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/datasets/README.md)
+- `docs/client-sdks/go/sdks/decisions/readme` — [Decisions](pages/docs/client-sdks/go/sdks/decisions/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/decisions/README.md)
 - `docs/client-sdks/go/sdks/embeddings/readme` — [Embeddings](pages/docs/client-sdks/go/sdks/embeddings/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/embeddings/README.md)
 - `docs/client-sdks/go/sdks/endpoints/readme` — [Endpoints](pages/docs/client-sdks/go/sdks/endpoints/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/endpoints/README.md)
 - `docs/client-sdks/go/sdks/files/readme` — [Files](pages/docs/client-sdks/go/sdks/files/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/files/README.md)
@@ -396,11 +398,12 @@
 - `docs/guides/features/zdr` — [Zero Data Retention](pages/docs/guides/features/zdr.md) · [原文](https://openrouter.ai/docs/guides/features/zdr.md)
 - `docs/guides/features/zero-completion-insurance` — [Zero Completion Insurance](pages/docs/guides/features/zero-completion-insurance.md) · [原文](https://openrouter.ai/docs/guides/features/zero-completion-insurance.md)
 - `docs/guides/ori/changelog` — [Changelog](pages/docs/guides/ori/changelog.md) · [原文](https://openrouter.ai/docs/guides/ori/changelog.md)
-- `docs/guides/ori/configuration` — [Ori configuration](pages/docs/guides/ori/configuration.md) · [原文](https://openrouter.ai/docs/guides/ori/configuration.md)
+- `docs/guides/ori/configuration` — [Ori Configuration](pages/docs/guides/ori/configuration.md) · [原文](https://openrouter.ai/docs/guides/ori/configuration.md)
 - `docs/guides/ori/eval` — [Ori Eval](pages/docs/guides/ori/eval.md) · [原文](https://openrouter.ai/docs/guides/ori/eval.md)
-- `docs/guides/ori/files` — [Where Ori writes files](pages/docs/guides/ori/files.md) · [原文](https://openrouter.ai/docs/guides/ori/files.md)
+- `docs/guides/ori/files` — [File Writing](pages/docs/guides/ori/files.md) · [原文](https://openrouter.ai/docs/guides/ori/files.md)
 - `docs/guides/ori/harness` — [Ori Harness](pages/docs/guides/ori/harness.md) · [原文](https://openrouter.ai/docs/guides/ori/harness.md)
-- `docs/guides/ori/vault` — [Vault secrets for interns](pages/docs/guides/ori/vault.md) · [原文](https://openrouter.ai/docs/guides/ori/vault.md)
+- `docs/guides/ori/intern-chat` — [Chatting with Interns](pages/docs/guides/ori/intern-chat.md) · [原文](https://openrouter.ai/docs/guides/ori/intern-chat.md)
+- `docs/guides/ori/vault` — [Vault Secrets for Interns](pages/docs/guides/ori/vault.md) · [原文](https://openrouter.ai/docs/guides/ori/vault.md)
 - `docs/guides/overview/auth/byok` — [BYOK](pages/docs/guides/overview/auth/byok.md) · [原文](https://openrouter.ai/docs/guides/overview/auth/byok.md)
 - `docs/guides/overview/auth/management-api-keys` — [Management API Keys](pages/docs/guides/overview/auth/management-api-keys.md) · [原文](https://openrouter.ai/docs/guides/overview/auth/management-api-keys.md)
 - `docs/guides/overview/auth/oauth` — [OAuth PKCE](pages/docs/guides/overview/auth/oauth.md) · [原文](https://openrouter.ai/docs/guides/overview/auth/oauth.md)

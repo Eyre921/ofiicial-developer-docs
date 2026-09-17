@@ -10,7 +10,7 @@ description: "Use Monitors to decide when problems become issues, and Alerts to 
 url: https://docs.sentry.io/product/monitors-and-alerts/
 ---
 
-# Monitors and Alerts
+# Monitors and Alerts | Sentry Docs
 
 Sentry separates **what you detect** from **what you do about it**:
 

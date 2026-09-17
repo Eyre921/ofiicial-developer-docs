@@ -9,7 +9,7 @@ title: "Replays"
 url: https://docs.sentry.io/api/replays/
 ---
 
-# Replays
+# Replays | Sentry Docs
 
 * #### [Create Replay Batch Deletion Job](https://docs.sentry.io/api/replays/create-replay-batch-deletion-job.md)
 * #### [Delete a Replay Instance](https://docs.sentry.io/api/replays/delete-a-replay-instance.md)

@@ -9,7 +9,7 @@ title: "Contributing to Docs"
 url: https://docs.sentry.io/contributing/
 ---
 
-# Contributing to Docs
+# Contributing to Docs | Sentry Docs
 
 The Sentry documentation is a static site, generated with [Next.js](https://nextjs.org/).
 

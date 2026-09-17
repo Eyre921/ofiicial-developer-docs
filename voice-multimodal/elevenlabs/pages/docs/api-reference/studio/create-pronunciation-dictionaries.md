@@ -65,8 +65,8 @@ Validation Error
 {
   "pronunciation_dictionary_locators": [
     {
-      "pronunciation_dictionary_id": "Vmd4Zor6fplcA7WrINey",
-      "version_id": "hRPaxjlTdR7wFMhV4w0b"
+      "pronunciation_dictionary_id": "string",
+      "version_id": "string"
     }
   ]
 }
@@ -90,8 +90,8 @@ async function main() {
     await client.studio.projects.pronunciationDictionaries.create("project_id", {
         pronunciationDictionaryLocators: [
             {
-                pronunciationDictionaryId: "Vmd4Zor6fplcA7WrINey",
-                versionId: "hRPaxjlTdR7wFMhV4w0b",
+                pronunciationDictionaryId: "string",
+                versionId: "string",
             },
         ],
     });
@@ -109,8 +109,8 @@ client.studio.projects.pronunciation_dictionaries.create(
     project_id="project_id",
     pronunciation_dictionary_locators=[
         PronunciationDictionaryVersionLocator(
-            pronunciation_dictionary_id="Vmd4Zor6fplcA7WrINey",
-            version_id="hRPaxjlTdR7wFMhV4w0b",
+            pronunciation_dictionary_id="string",
+            version_id="string",
         )
     ],
 )
@@ -131,7 +131,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/studio/projects/project_id/pronunciation-dictionaries"
 
-	payload := strings.NewReader("{\n  \"pronunciation_dictionary_locators\": [\n    {\n      \"pronunciation_dictionary_id\": \"Vmd4Zor6fplcA7WrINey\",\n      \"version_id\": \"hRPaxjlTdR7wFMhV4w0b\"\n    }\n  ]\n}")
+	payload := strings.NewReader("{\n  \"pronunciation_dictionary_locators\": [\n    {\n      \"pronunciation_dictionary_id\": \"string\",\n      \"version_id\": \"string\"\n    }\n  ]\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -159,7 +159,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"pronunciation_dictionary_locators\": [\n    {\n      \"pronunciation_dictionary_id\": \"Vmd4Zor6fplcA7WrINey\",\n      \"version_id\": \"hRPaxjlTdR7wFMhV4w0b\"\n    }\n  ]\n}"
+request.body = "{\n  \"pronunciation_dictionary_locators\": [\n    {\n      \"pronunciation_dictionary_id\": \"string\",\n      \"version_id\": \"string\"\n    }\n  ]\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -171,7 +171,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/studio/projects/project_id/pronunciation-dictionaries")
   .header("Content-Type", "application/json")
-  .body("{\n  \"pronunciation_dictionary_locators\": [\n    {\n      \"pronunciation_dictionary_id\": \"Vmd4Zor6fplcA7WrINey\",\n      \"version_id\": \"hRPaxjlTdR7wFMhV4w0b\"\n    }\n  ]\n}")
+  .body("{\n  \"pronunciation_dictionary_locators\": [\n    {\n      \"pronunciation_dictionary_id\": \"string\",\n      \"version_id\": \"string\"\n    }\n  ]\n}")
   .asString();
 ```
 
@@ -185,8 +185,8 @@ $response = $client->request('POST', 'https://api.elevenlabs.io/v1/studio/projec
   'body' => '{
   "pronunciation_dictionary_locators": [
     {
-      "pronunciation_dictionary_id": "Vmd4Zor6fplcA7WrINey",
-      "version_id": "hRPaxjlTdR7wFMhV4w0b"
+      "pronunciation_dictionary_id": "string",
+      "version_id": "string"
     }
   ]
 }',
@@ -204,7 +204,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/studio/projects/project_id/pronunciation-dictionaries");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"pronunciation_dictionary_locators\": [\n    {\n      \"pronunciation_dictionary_id\": \"Vmd4Zor6fplcA7WrINey\",\n      \"version_id\": \"hRPaxjlTdR7wFMhV4w0b\"\n    }\n  ]\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"pronunciation_dictionary_locators\": [\n    {\n      \"pronunciation_dictionary_id\": \"string\",\n      \"version_id\": \"string\"\n    }\n  ]\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -214,8 +214,8 @@ import Foundation
 let headers = ["Content-Type": "application/json"]
 let parameters = ["pronunciation_dictionary_locators": [
     [
-      "pronunciation_dictionary_id": "Vmd4Zor6fplcA7WrINey",
-      "version_id": "hRPaxjlTdR7wFMhV4w0b"
+      "pronunciation_dictionary_id": "string",
+      "version_id": "string"
     ]
   ]] as [String : Any]
 

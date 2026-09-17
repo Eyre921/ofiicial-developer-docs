@@ -10,7 +10,7 @@ description: "Learn more about Sentry's source code management integrations."
 url: https://docs.sentry.io/integrations/source-code-mgmt/
 ---
 
-# Source Code Management
+# Source Code Management | Sentry Docs
 
 * [Azure DevOps](https://docs.sentry.io/integrations/source-code-mgmt/azure-devops.md)
 * [Bitbucket](https://docs.sentry.io/integrations/source-code-mgmt/bitbucket.md)

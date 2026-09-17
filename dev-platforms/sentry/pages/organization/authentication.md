@@ -10,7 +10,7 @@ description: "Learn how to configure authentication for your Sentry organization
 url: https://docs.sentry.io/organization/authentication/
 ---
 
-# Authentication
+# Authentication | Sentry Docs
 
 * #### [Single Sign-On (SSO)](https://docs.sentry.io/organization/authentication/sso.md)
 

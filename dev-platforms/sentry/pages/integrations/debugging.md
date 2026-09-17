@@ -10,7 +10,7 @@ description: "Learn more about Sentry's debugging integrations."
 url: https://docs.sentry.io/integrations/debugging/
 ---
 
-# Debugging
+# Debugging | Sentry Docs
 
 * [Apigene](https://docs.sentry.io/integrations/debugging/apigene.md)
 * [CodeComet](https://docs.sentry.io/integrations/debugging/codecomet.md)

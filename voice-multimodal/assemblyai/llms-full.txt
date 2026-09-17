@@ -160,7 +160,9 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Error handling](#error-handling-docs-sync-stt-error-handling-mdx)
 - [Cloud endpoints & data residency](#cloud-endpoints-data-residency-docs-sync-stt-endpoints-and-data-zones-mdx)
 - [Connection pre-warming](#connection-pre-warming-docs-sync-stt-connection-pre-warming-mdx)
-- [Dictation API](#dictation-api-docs-dictation-mdx)
+- [Quickstart](#quickstart-docs-dictation-mdx)
+- [Uploading while recording](#uploading-while-recording-docs-dictation-uploading-while-recording-mdx)
+- [Examples](#examples-docs-dictation-examples-mdx)
 - [Transcript rewriting](#transcript-rewriting-docs-dictation-transcript-rewriting-mdx)
 - [Prompting and keyterms](#prompting-and-keyterms-docs-dictation-prompting-and-keyterms-mdx)
 - [Language selection](#language-selection-docs-dictation-language-selection-mdx)
@@ -44641,9 +44643,9 @@ The SDKs expose this directly — `SyncTranscriber.warm()` in Python, `client.sy
 
 ---
 
-<a id="dictation-api-docs-dictation-mdx"></a>
+<a id="quickstart-docs-dictation-mdx"></a>
 
-# Dictation API
+# Quickstart
 
 URL: https://www.assemblyai.com/docs/dictation
 Source: docs/dictation.mdx
@@ -44666,7 +44668,7 @@ bulleted task list or a clinical note.
 Dictation runs on Universal-3.5 Pro across 32 languages and accepts up to 120
 seconds of audio per call. You can start the request before the user stops
 talking, so most of the utterance is uploaded by the time they finish; see
-[Uploading while recording](#uploading-while-recording).
+[Uploading while recording](/dictation/uploading-while-recording).
 
 ```python
 import assemblyai as aai
@@ -44677,8 +44679,210 @@ result = aai.DictationTranscriber().transcribe_live("clip.wav")
 
 print(result.text)  # verbatim transcript
 print(result.llm_response)  # cleaned-up text, ready to send
-print(result.final_text)  # the cleaned-up text, falling back to the transcript
 ```
+
+Not using the SDK? The same flow works over plain HTTP — see [Using the HTTP
+API directly](#using-the-http-api-directly).
+
+  Dictation is a separate service from Sync, Pre-recorded, and Streaming STT.
+  It has its own hostname (`dictation.assemblyai.com`) and its own request
+  shape. The [Python SDK](https://github.com/AssemblyAI/assemblyai-python-sdk)
+  wraps it as `DictationTranscriber`; in every other language, call it over
+  HTTP.
+
+## Before you begin
+
+To complete this guide, you need:
+
+- **An API key** — browse to [API Keys](https://www.assemblyai.com/dashboard/home) in your dashboard and copy your key.
+- **An audio clip** in WAV format, or raw 16-bit PCM. Maximum 120 seconds.
+- **Python 3.8+** for the SDK. The HTTP examples lower down need Python 3.8+ with `requests` or `httpx`, Node.js 18+ with `fetch`, or cURL.
+
+## Send your first dictation
+
+### Step 1: Install the SDK
+
+```bash
+pip install -U assemblyai
+```
+
+### Step 2: Run your first dictation
+
+Save this as `dictate.py`, next to a `clip.wav` file of someone speaking:
+
+```python
+import assemblyai as aai
+
+aai.settings.api_key = "<YOUR_API_KEY>"
+
+result = aai.DictationTranscriber().transcribe_live("clip.wav")
+
+print("verbatim:", result.text)
+print("cleaned: ", result.llm_response)
+```
+
+Then run it with `python dictate.py`. You get both versions back from the one
+call:
+
+```text
+verbatim: Um, so, can you send me the Q3 numbers before the meeting tomorrow? Thanks.
+cleaned:  So, can you send me the Q3 numbers before the meeting tomorrow? Thanks.
+```
+
+`text` is always what was said, word for word. `llm_response` is the cleaned-up
+version your user can send. Nothing had to be configured to get it: cleanup runs
+by default.
+
+`transcribe_live()` takes a file path, raw audio bytes, or an iterator of audio
+chunks. That last form is what lets you upload while the user is still speaking,
+covered in [Uploading while recording](/dictation/uploading-while-recording).
+
+## Customize the request
+
+Pass a config to change how the audio is transcribed, or to ask for a different
+shape of output. Every field is optional, and the SDK takes them as
+`DictationConfig`:
+
+```python
+import assemblyai as aai
+
+aai.settings.api_key = "<YOUR_API_KEY>"
+
+config = aai.DictationConfig(
+    stt_prompt="A doctor dictating a patient visit note.",
+    keyterms_prompt=["amoxicillin", "lisinopril"],
+    llm_instruction="Rewrite as a concise clinical chart note.",
+)
+
+result = aai.DictationTranscriber().transcribe_live("clip.wav", config)
+print(result.final_text)  # the rewrite, falling back to the transcript
+```
+
+Over HTTP the same fields go in the `config` part of the request body, described
+in [Using the HTTP API directly](#using-the-http-api-directly).
+
+### Config parameters
+
+Every field except `llm_instruction` controls transcription. `llm_instruction` customizes the transcript rewrite, which is applied by default — see [Rewriting the transcript](#rewriting-the-transcript).
+
+| Field | Type | Meaning |
+|---|---|---|
+| `sample_rate` | integer | Sample rate of the audio. Required for raw PCM (for example `16000`). Ignored for WAV — the sample rate is read from the file header. |
+| `channels` | integer | Channel count. Required for raw PCM. |
+| `language_codes` | array of strings | Language(s) of the audio as ISO codes. See [Language selection](/dictation/language-selection#supported-languages) for the full list. Defaults to `["en"]`. |
+| `stt_prompt` | string | Context for the transcription: a description of what the audio is about, such as `"A doctor dictating a patient visit note."` (max 6000 characters). It describes the situation rather than instructing the model, and is prepended to the base transcription prompt, which always applies. Also accepted as `prompt` — send one or the other, or the request is rejected with `400`. |
+| `keyterms_prompt` | array of strings | Terms to bias transcription toward, such as names or jargon (max 100 terms / 8000 characters total). Same parameter name as the Streaming and Pre-recorded APIs. The legacy names `keyterms` and `word_boost` are also accepted — send only one of the three, or the request is rejected with `400`. |
+| `llm_instruction` | string | Plain-English description of the rewrite you want (max 2048 characters). Replaces the default cleanup task; omit it to keep the default. See [Rewriting the transcript](#rewriting-the-transcript). |
+
+The config accepts exactly the fields above. An unknown field is rejected with a `400` rather than ignored, so a typo surfaces as an error instead of a setting that quietly does nothing.
+
+### Rewriting the transcript
+
+Cleanup is applied by default. Omitting `llm_instruction`, or the whole `config` part, runs the default cleanup task: filler comes out, self-corrections resolve to what the speaker landed on, and punctuation and capitalization are applied. The speaker's own phrasing and tone survive it.
+
+To ask for a different shape instead, set `llm_instruction` to a plain-English description of the task you want (max 2048 characters). It replaces the default cleanup task:
+
+```json
+{ "llm_instruction": "Format as a bulleted task list. Keep names verbatim." }
+```
+
+The rewrite never replaces the transcription. `text` is always the verbatim transcript, and the rewritten version arrives separately in `llm_response`.
+
+See [Transcript rewriting](/dictation/transcript-rewriting) for how to write a good instruction, what the service enforces for you, and why dictated commands are never carried out.
+
+## Uploading while recording
+
+You don't have to wait for the recording to finish. The endpoint reads the body
+as it arrives, so you can open the request while the user is still speaking and
+send audio as it is captured. See
+[Uploading while recording](/dictation/uploading-while-recording).
+
+## What you get back
+
+A successful call returns `200` with JSON:
+
+| Field | Type | Meaning |
+|---|---|---|
+| `text` | string | The verbatim transcript. Never altered by the LLM. |
+| `words` | array | Per-word objects `{ text, confidence }`. |
+| `confidence` | number | Overall transcription confidence, 0–1. |
+| `llm_response` | string or `null` | The rewritten text. `null` when the rewrite failed. |
+| `llm_error` | string or `null` | `"timeout"` or `"error"` when the rewrite failed. |
+| `audio_duration_ms` | number | Duration of the submitted audio. |
+| `session_id` | string | Request identifier. Include it when reporting problems. |
+| `request_time_ms` | number | Total server-side processing time. |
+| `sync_time_ms` | number | Transcription portion of `request_time_ms`. |
+| `auth_time_ms` | number | Authentication portion of `request_time_ms`. |
+
+  Rewrites are best-effort. A rewrite failure still returns `200` with the
+  transcription. If `llm_response` is `null` and `text` is present, use
+  `text`. Never treat a non-`null` `llm_error` as a failed request.
+
+## Errors
+
+Most errors return a `{"status", "title", "detail"}` body, including auth
+failures (`401`), config validation failures (`400`), and unsupported audio
+formats (`415`). The `{"error", "error_code"}` shape is used only for the
+errors Dictation raises while parsing the request itself, such as a malformed
+`config` part. Read both shapes.
+
+Set the HTTP client timeout to 90 seconds. Typical short clips respond in under
+one second. The rewrite has a 5-second internal deadline, after which the
+response returns with `llm_error: "timeout"` and the transcription intact.
+
+See [Error handling](/dictation/error-handling) for the full status code table
+and retry guidance.
+
+## Using the HTTP API directly
+
+The SDK wraps a single HTTP request. Call it directly from any language.
+
+### Endpoint
+
+```
+POST https://dictation.assemblyai.com/v1/transcribe/live
+```
+
+Send the parts in order — `config` first, then `audio`. The endpoint reads the
+body as it arrives, so you can start the request while the user is still
+speaking and upload the audio as it is captured; see [Uploading while
+recording](/dictation/uploading-while-recording).
+
+`/v1/transcribe/stream` is the path this endpoint shipped under and still
+reaches the same handler. There is no unversioned alias.
+
+### Authentication
+
+Pass your AssemblyAI API key in the `Authorization` header as the raw key, with no `Bearer` prefix:
+
+```
+Authorization: <YOUR_API_KEY>
+```
+
+  A missing or invalid API key returns `401 Unauthorized` with a
+  `{"status", "title", "detail"}` body: `{"status": 401, "title":
+  "Unauthorized", "detail": "Invalid API key"}` when the key is wrong, and
+  `"Missing Authorization header"` when there is no key at all.
+
+### Request body
+
+The body is `multipart/form-data` with two parts, in this order:
+
+| Part | Content |
+|---|---|
+| `config` (required) | A JSON object (Content-Type `application/json`). See [Config parameters](#config-parameters). Send `{}` to transcribe with defaults, including the default rewrite. |
+| `audio` (required) | The audio bytes. Set the part's Content-Type to `audio/wav` for WAV or `audio/pcm` for raw 16-bit PCM. Maximum 120 seconds of audio. |
+
+Config comes first, and is required, because the server starts transcribing
+the audio as it arrives and cannot begin without it. An `audio` part that
+arrives before `config`, or a request with no `config` part at all, is
+rejected with `400`.
+
+**WAV and raw PCM only.** This endpoint decodes audio as it arrives, and
+compressed formats (MP3, M4A, FLAC, OGG, WebM) cannot be decoded incrementally,
+so they are rejected with `415`. Decode them to WAV or PCM before sending.
+
+### Making the request
 
 ```python
 import requests
@@ -44735,101 +44939,37 @@ curl -X POST https://dictation.assemblyai.com/v1/transcribe/live \
   -F 'audio=@clip.wav;type=audio/wav'
 ```
 
-  Dictation is a separate service from Sync, Pre-recorded, and Streaming STT.
-  It has its own hostname (`dictation.assemblyai.com`) and its own request
-  shape. The [Python SDK](https://github.com/AssemblyAI/assemblyai-python-sdk)
-  wraps it as `DictationTranscriber`; in every other language, call it over
-  HTTP.
+## Next steps
 
-## Before you begin
+- [Uploading while recording](/dictation/uploading-while-recording) — start the request before the speaker stops
+- [Examples](/dictation/examples) — end-to-end requests for a clinical note and a travel booking
+- [Transcript rewriting](/dictation/transcript-rewriting) — reshape the transcript with `llm_instruction`
+- [Prompting and keyterms](/dictation/prompting-and-keyterms) — steer the transcript with context and exact terms
+- [Language selection](/dictation/language-selection) — transcribe in one or more of 32 languages
+- [Audio requirements](/dictation/audio-requirements) — duration, sample width, and format constraints
+- [Error handling](/dictation/error-handling) — status codes and retry guidance
+- [Cloud endpoints & data residency](/dictation/endpoints-and-data-zones) — global routing and the US/EU data zones
+- [Connection pre-warming](/dictation/connection-pre-warming) — take the TLS handshake off the critical path
+- [API reference](/api-reference/dictation-api/transcribe-live) — the full request and response schema
 
-To call the Dictation API, you need:
+---
 
-- **An API key** — browse to [API Keys](https://www.assemblyai.com/dashboard/home) in your dashboard and copy your key.
-- **An audio clip** in WAV format, or raw 16-bit PCM. Maximum 120 seconds.
-- **A client** — either the AssemblyAI Python SDK (`pip install assemblyai`), or any HTTP client: cURL, Python 3.8+ with `requests` or `httpx`, or Node.js 18+ with `fetch`.
+<a id="uploading-while-recording-docs-dictation-uploading-while-recording-mdx"></a>
 
-## Endpoint
+# Uploading while recording
 
-```
-POST https://dictation.assemblyai.com/v1/transcribe/live
-```
-
-Send the parts in order — `config` first, then `audio`. The endpoint reads the
-body as it arrives, so you can start the request while the user is still
-speaking and upload the audio as it is captured; see [Uploading while
-recording](#uploading-while-recording).
-
-`/v1/transcribe/stream` is the path this endpoint shipped under and still
-reaches the same handler. There is no unversioned alias.
-
-## Authentication
-
-Pass your AssemblyAI API key in the `Authorization` header as the raw key, with no `Bearer` prefix:
-
-```
-Authorization: <YOUR_API_KEY>
-```
-
-  A missing or invalid API key returns `401 Unauthorized` with a
-  `{"status", "title", "detail"}` body: `{"status": 401, "title":
-  "Unauthorized", "detail": "Invalid API key"}` when the key is wrong, and
-  `"Missing Authorization header"` when there is no key at all.
-
-## Request
-
-The body is `multipart/form-data` with two parts, in this order:
-
-| Part | Content |
-|---|---|
-| `config` (required) | A JSON object (Content-Type `application/json`). See [Config parameters](#config-parameters). Send `{}` to transcribe with defaults, including the default rewrite. |
-| `audio` (required) | The audio bytes. Set the part's Content-Type to `audio/wav` for WAV or `audio/pcm` for raw 16-bit PCM. Maximum 120 seconds of audio. |
-
-Config comes first, and is required, because the server starts transcribing
-the audio as it arrives and cannot begin without it. An `audio` part that
-arrives before `config`, or a request with no `config` part at all, is
-rejected with `400`.
-
-**WAV and raw PCM only.** This endpoint decodes audio as it arrives, and
-compressed formats (MP3, M4A, FLAC, OGG, WebM) cannot be decoded incrementally,
-so they are rejected with `415`. Decode them to WAV or PCM before sending.
-
-### Config parameters
-
-Every field except `llm_instruction` controls transcription. `llm_instruction` customizes the transcript rewrite, which is applied by default — see [Rewriting the transcript](#rewriting-the-transcript).
-
-| Field | Type | Meaning |
-|---|---|---|
-| `sample_rate` | integer | Sample rate of the audio. Required for raw PCM (for example `16000`). Ignored for WAV — the sample rate is read from the file header. |
-| `channels` | integer | Channel count. Required for raw PCM. |
-| `language_codes` | array of strings | Language(s) of the audio as ISO codes. See [Language selection](/dictation/language-selection#supported-languages) for the full list. Defaults to `["en"]`. |
-| `stt_prompt` | string | Context for the transcription: a description of what the audio is about, such as `"A doctor dictating a patient visit note."` (max 6000 characters). It describes the situation rather than instructing the model, and is prepended to the base transcription prompt, which always applies. Also accepted as `prompt` — send one or the other, or the request is rejected with `400`. |
-| `keyterms_prompt` | array of strings | Terms to bias transcription toward, such as names or jargon (max 100 terms / 8000 characters total). Same parameter name as the Streaming and Pre-recorded APIs. The legacy names `keyterms` and `word_boost` are also accepted — send only one of the three, or the request is rejected with `400`. |
-| `llm_instruction` | string | Plain-English description of the rewrite you want (max 2048 characters). Replaces the default cleanup task; omit it to keep the default. See [Rewriting the transcript](#rewriting-the-transcript). |
-
-The config accepts exactly the fields above. An unknown field is rejected with a `400` rather than ignored, so a typo surfaces as an error instead of a setting that quietly does nothing.
-
-### Rewriting the transcript
-
-Cleanup is applied by default. Omitting `llm_instruction`, or the whole `config` part, runs the default cleanup task: filler comes out, self-corrections resolve to what the speaker landed on, and punctuation and capitalization are applied. The speaker's own phrasing and tone survive it.
-
-To ask for a different shape instead, set `llm_instruction` to a plain-English description of the task you want (max 2048 characters). It replaces the default cleanup task:
-
-```json
-{ "llm_instruction": "Format as a bulleted task list. Keep names verbatim." }
-```
-
-The rewrite never replaces the transcription. `text` is always the verbatim transcript, and the rewritten version arrives separately in `llm_response`.
-
-See [Transcript rewriting](/dictation/transcript-rewriting) for how to write a good instruction, what the service enforces for you, and why dictated commands are never carried out.
-
-## Uploading while recording
+URL: https://www.assemblyai.com/docs/dictation/uploading-while-recording
+Source: docs/dictation/uploading-while-recording.mdx
+Navigation: Dictation API > Getting started
+Description: Start the request before the speaker stops, so most of the utterance is uploaded by the time they finish.
 
 The endpoint transcribes the audio it has while the rest is still arriving, so
 a client that uploads during the recording gets its transcript sooner. What the
 user waits for after they stop speaking is the last stretch of audio rather
 than the whole clip. The saving grows with clip length; on a clip of a few
 seconds there is little uploaded-but-unprocessed audio to save.
+
+## Rules for a chunked upload
 
 Three rules apply to a chunked upload:
 
@@ -44842,6 +44982,8 @@ Three rules apply to a chunked upload:
 Raw PCM is the easiest format to stream, since it needs no container header —
 declare `sample_rate` and `channels` in `config` and send frames as they come
 off the microphone.
+
+## With the Python SDK
 
 The Python SDK does the framing for you. `transcribe_live()` takes an iterator
 of audio chunks, and `open_live()` takes audio pushed in from a callback — a
@@ -44896,6 +45038,8 @@ methods. Call `transcriber.warm()` when you know audio is coming — as the user
 reaches for the record button — to pay the DNS, TCP and TLS setup before the
 first byte rather than in front of it.
 
+## Without the SDK
+
 Without the SDK, frame the multipart body yourself:
 
 ```python expandable
@@ -44946,47 +45090,26 @@ transfer encoding, which is what lets the upload start before the audio is
 complete. A body with a `Content-Length` is also accepted, and still streams —
 the server does not wait for the full body before it begins.
 
-## Response
+## Related pages
 
-A successful call returns `200` with JSON:
+- [Quickstart](/dictation) — the single-call flow this builds on
+- [Audio requirements](/dictation/audio-requirements) — why raw PCM is the easiest format to stream
+- [Connection pre-warming](/dictation/connection-pre-warming) — take the handshake off the critical path too
 
-| Field | Type | Meaning |
-|---|---|---|
-| `text` | string | The verbatim transcript. Never altered by the LLM. |
-| `words` | array | Per-word objects `{ text, confidence }`. |
-| `confidence` | number | Overall transcription confidence, 0–1. |
-| `llm_response` | string or `null` | The rewritten text. `null` when the rewrite failed. |
-| `llm_error` | string or `null` | `"timeout"` or `"error"` when the rewrite failed. |
-| `audio_duration_ms` | number | Duration of the submitted audio. |
-| `session_id` | string | Request identifier. Include it when reporting problems. |
-| `request_time_ms` | number | Total server-side processing time. |
-| `sync_time_ms` | number | Transcription portion of `request_time_ms`. |
-| `auth_time_ms` | number | Authentication portion of `request_time_ms`. |
+---
 
-  Rewrites are best-effort. A rewrite failure still returns `200` with the
-  transcription. If `llm_response` is `null` and `text` is present, use
-  `text`. Never treat a non-`null` `llm_error` as a failed request.
+<a id="examples-docs-dictation-examples-mdx"></a>
 
-## Errors
+# Examples
 
-Most errors return a `{"status", "title", "detail"}` body, including auth
-failures (`401`), config validation failures (`400`), and unsupported audio
-formats (`415`). The `{"error", "error_code"}` shape is used only for the
-errors Dictation raises while parsing the request itself, such as a malformed
-`config` part. Read both shapes.
-
-Set the HTTP client timeout to 90 seconds. Typical short clips respond in under
-one second. The rewrite has a 5-second internal deadline, after which the
-response returns with `llm_error: "timeout"` and the transcription intact.
-
-See [Error handling](/dictation/error-handling) for the full status code table
-and retry guidance.
-
-## Examples
+URL: https://www.assemblyai.com/docs/dictation/examples
+Source: docs/dictation/examples.mdx
+Navigation: Dictation API > Getting started
+Description: End-to-end Dictation requests for a clinical note and a travel booking, showing how the config fields work together.
 
 The knobs do different jobs. `stt_prompt` and `keyterms_prompt` steer the ASR model while it writes the transcript down — the first describes the situation, the second lists the exact terms to expect. `llm_instruction` tells the LLM what to do with that transcript *after* it is written.
 
-### Clinical dictation
+## Clinical dictation
 
 A doctor dictating a visit note. `stt_prompt` tells the model what kind of audio this is, `keyterms_prompt` pins the exact drug names, and `llm_instruction` turns the spoken rambling into a chart-ready note.
 
@@ -45081,7 +45204,7 @@ curl -X POST https://dictation.assemblyai.com/v1/transcribe/live \
   -F 'audio=@clip.wav;type=audio/wav'
 ```
 
-### Travel booking summary
+## Travel booking summary
 
 A travel agent dictating a client booking summary. `keyterms_prompt` pins the specific destination and airline names, and `llm_instruction` reshapes the transcript into a confirmation the client can read.
 
@@ -45175,16 +45298,11 @@ curl -X POST https://dictation.assemblyai.com/v1/transcribe/live \
   -F 'audio=@clip.wav;type=audio/wav'
 ```
 
-## Next steps
+## Related pages
 
-- [Transcript rewriting](/dictation/transcript-rewriting) — reshape the transcript with `llm_instruction`
-- [Prompting and keyterms](/dictation/prompting-and-keyterms) — steer the transcript with context and exact terms
-- [Language selection](/dictation/language-selection) — transcribe in one or more of 32 languages
-- [Audio requirements](/dictation/audio-requirements) — duration, sample width, and format constraints
-- [Error handling](/dictation/error-handling) — status codes and retry guidance
-- [Cloud endpoints & data residency](/dictation/endpoints-and-data-zones) — global routing and the US/EU data zones
-- [Connection pre-warming](/dictation/connection-pre-warming) — take the TLS handshake off the critical path
-- [API reference](/api-reference/dictation-api/transcribe-live) — the full request and response schema
+- [Prompting and keyterms](/dictation/prompting-and-keyterms) — what `stt_prompt` and `keyterms_prompt` each steer
+- [Transcript rewriting](/dictation/transcript-rewriting) — writing a good `llm_instruction`
+- [Quickstart](/dictation) — the config reference these examples draw on
 
 ---
 
@@ -45687,7 +45805,7 @@ For raw PCM there is no header to read, so both fields are required in the
 
 Raw PCM is the easier format to upload while the user is still speaking, since
 frames can go on the wire as they come off the microphone with no container to
-finalize. See [Uploading while recording](/dictation#uploading-while-recording).
+finalize. See [Uploading while recording](/dictation/uploading-while-recording).
 
 ## When audio is rejected
 

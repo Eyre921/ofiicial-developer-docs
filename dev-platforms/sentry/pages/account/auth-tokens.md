@@ -10,7 +10,7 @@ description: "Learn about the different kinds of Auth Tokens Sentry provides, an
 url: https://docs.sentry.io/account/auth-tokens/
 ---
 
-# Auth Tokens
+# Auth Tokens | Sentry Docs
 
 Auth tokens (short for *authentication tokens*) are a way to authenticate with Sentry. They are similar to passwords but are designed for programmatic interaction with Sentry. Some examples of what you would use auth tokens for include:
 

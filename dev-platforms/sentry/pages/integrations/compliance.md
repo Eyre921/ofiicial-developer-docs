@@ -10,7 +10,7 @@ description: "Learn more about Sentry's compliance integrations."
 url: https://docs.sentry.io/integrations/compliance/
 ---
 
-# Compliance
+# Compliance | Sentry Docs
 
 * [Cloudeagle](https://docs.sentry.io/integrations/compliance/cloudeagle.md)
 * [Elba](https://docs.sentry.io/integrations/compliance/elba.md)

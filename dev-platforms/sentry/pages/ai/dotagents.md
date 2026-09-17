@@ -10,7 +10,7 @@ description: "A package manager for .agents directories. Declare agent skill dep
 url: https://docs.sentry.io/ai/dotagents/
 ---
 
-# dotagents
+# dotagents | Sentry Docs
 
 dotagents is currently in beta. The project is in an early exploration phase and changes should be expected. Please share feedback on [GitHub](https://github.com/getsentry/dotagents/issues).
 

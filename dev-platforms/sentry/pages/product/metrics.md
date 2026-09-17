@@ -10,7 +10,7 @@ description: "Send counters, gauges, and distributions from your code to track a
 url: https://docs.sentry.io/product/metrics/
 ---
 
-# Application Metrics
+# Application Metrics | Sentry Docs
 
 ## [Overview](https://docs.sentry.io/product/metrics.md#overview)
 

@@ -10,7 +10,7 @@ description: "Learn about Sentry's AI-powered features that help you analyze and
 url: https://docs.sentry.io/product/ai-in-sentry/
 ---
 
-# AI in Sentry
+# AI in Sentry | Sentry Docs
 
 Sentry leverages artificial intelligence (AI) and machine learning (ML) to enhance your debugging and monitoring experience. Our AI-powered features help you understand issues faster, get automated fixes, and gain deeper insights into your application's behavior.
 

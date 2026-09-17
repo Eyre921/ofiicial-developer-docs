@@ -10,7 +10,7 @@ description: "Learn more about scrubbing data using the Settings for your projec
 url: https://docs.sentry.io/security-legal-pii/scrubbing/
 ---
 
-# Data Scrubbing
+# Data Scrubbing | Sentry Docs
 
 Please refer to [the SDK documentation for a general introduction to managing sensitive data](https://docs.sentry.io/platform-redirect.md?next=/data-management/sensitive-data/). This page documents only the server-side options.
 

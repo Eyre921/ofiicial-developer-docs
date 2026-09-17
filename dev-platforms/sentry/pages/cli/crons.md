@@ -10,7 +10,7 @@ description: "Follow this guide to set up and manage monitors using the Sentry C
 url: https://docs.sentry.io/cli/crons/
 ---
 
-# Crons (CLI)
+# Crons (CLI) | Sentry Docs
 
 ##### Looking for the new Sentry CLI?
 

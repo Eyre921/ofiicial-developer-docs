@@ -10,7 +10,7 @@ description: "Learn more about the reasons to move to Sentry's SaaS solution, wh
 url: https://docs.sentry.io/concepts/migration/
 ---
 
-# Moving to SaaS
+# Moving to SaaS | Sentry Docs
 
 Sentry offers a cloud-hosted, software-as-a-service (SaaS) solution in addition to a self-hosted solution, which are both functionally the same. However, many customers find that self-hosted Sentry can quickly become expensive to maintain, scale, and support, making our SaaS product the better and less costly option. To facilitate moving from self-hosted to SaaS, we provide a self-serve process known as "relocation".
 

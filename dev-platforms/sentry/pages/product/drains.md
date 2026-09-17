@@ -10,7 +10,7 @@ description: "Learn how to set up log and trace drains to send logs and traces t
 url: https://docs.sentry.io/product/drains/
 ---
 
-# Log and Trace Drains
+# Log and Trace Drains | Sentry Docs
 
 Log and trace drains connect your hosting platform's native telemetry system directly to Sentry, letting you send [logs](https://docs.sentry.io/product/logs.md) and [traces](https://docs.sentry.io/product/trace-explorer.md) without modifying your application code.
 

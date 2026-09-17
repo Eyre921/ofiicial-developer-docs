@@ -9,7 +9,7 @@ title: "Users"
 url: https://docs.sentry.io/api/users/
 ---
 
-# Users
+# Users | Sentry Docs
 
 * #### [List Your Organizations](https://docs.sentry.io/api/users/list-your-organizations.md)
 

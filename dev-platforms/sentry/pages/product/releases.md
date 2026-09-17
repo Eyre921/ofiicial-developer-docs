@@ -10,7 +10,7 @@ description: "Learn how to provide Sentry with important information about your 
 url: https://docs.sentry.io/product/releases/
 ---
 
-# Releases
+# Releases | Sentry Docs
 
 If you're looking for the latest Sentry SDK release details, head on over to [Sentry's GitHub profile](https://github.com/getsentry), find your specific SDK repo, and browse the tags for releases.
 
