@@ -344,8 +344,11 @@ A promoted model deploys like any LoRA model trained on Fireworks: with **live m
 Deploy the promoted model directly:
 
 ```bash theme={null}
-firectl deployment create "accounts/<account-id>/models/my-serverless-lora"
+firectl deployment create "accounts/<account-id>/models/my-serverless-lora" \
+  --deployment-shape default
 ```
+
+To pick a specific shape instead of `default`, see [Deployment shapes](/guides/ondemand-deployments#deployment-shapes).
 
 Then send requests with the model name:
 

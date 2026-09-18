@@ -96,7 +96,7 @@ Because it borrows idle capacity, you do not need to hold dedicated on-demand ca
 firectl deployment create accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID> \
   --deployment-id <YOUR_DEPLOYMENT_ID> \
   --display-name <YOUR_DISPLAY_NAME> \
-  --deployment-shape <DEPLOYMENT_SHAPE> \
+  --deployment-shape default \
   --min-replica-count 1 \
   --max-replica-count 1 \
   --preemptible
@@ -106,7 +106,8 @@ Replace the placeholders:
 
 * `<FINE_TUNED_MODEL_ID>`: the trained model to eval, not a base model.
 * `<YOUR_DEPLOYMENT_ID>` / `<YOUR_DISPLAY_NAME>`: a name of your choice for the eval deployment.
-* `<DEPLOYMENT_SHAPE>`: the deployment shape to use for that model. Find one with `firectl deployment-shape-version match --model accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>` — for fine-tuned models, the server matches shapes against the model's base model. See [Deployment shapes](/guides/ondemand-deployments#deployment-shapes).
+
+`--deployment-shape default` has Fireworks pick a validated shape (for fine-tuned models, matched against the model's base model). To pick a specific shape, see [Deployment shapes](/guides/ondemand-deployments#deployment-shapes).
 
 ### Worked example
 
@@ -115,7 +116,7 @@ firectl deployment create accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID> \
   -a <ACCOUNT_ID> \
   --deployment-id <FINE_TUNED_MODEL_ID>-eval \
   --display-name <FINE_TUNED_MODEL_ID>-eval \
-  --deployment-shape <DEPLOYMENT_SHAPE> \
+  --deployment-shape default \
   --min-replica-count 1 \
   --max-replica-count 1 \
   --preemptible

@@ -16,7 +16,7 @@ To begin using ElevenLabs, you'll need to create an account. Follow these steps:
 
 **Exercise**: Try out an example to get started or type something, select a voice and click generate!
 
-![Account creation exercise](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7098296148ad1263133ad9506a9e7de7e8a2d40c657222080963cb914a8780cb/assets/images/product-guides/administration/account-creation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260917%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260917T190228Z&X-Amz-Expires=604800&X-Amz-Signature=cace6a1948ac8792c1aa635ba80075dd476a63f7daadefd36a1e99a71a13c667&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Account creation exercise](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7098296148ad1263133ad9506a9e7de7e8a2d40c657222080963cb914a8780cb/assets/images/product-guides/administration/account-creation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100015Z&X-Amz-Expires=604800&X-Amz-Signature=1f5c795694831b08b2f6f6c58f979c32934b9d8cecbdd0539d63bf5971b2074c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 You can sign up with traditional email and password or using popular OAuth providers like Google, Facebook, and GitHub.
 
@@ -185,11 +185,11 @@ In the Text to Speech playground, you're eligible for two free generations in th
 
 If this is the case, you will see 'Regenerate speech', and the number of free regenerations remaining will be displayed if you hover over the 'Regenerate speech' button:
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bfcf041fb81235ac78fee6e1bee42750811986f999d0f19ac88935daf347268d/assets/images/help-center/account/general/tts-regenerate.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260917%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260917T190228Z&X-Amz-Expires=604800&X-Amz-Signature=f735207128389ade2577337fbd4ae0e89a6c2173cfe37c940f1cb80f62bd19c3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bfcf041fb81235ac78fee6e1bee42750811986f999d0f19ac88935daf347268d/assets/images/help-center/account/general/tts-regenerate.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100015Z&X-Amz-Expires=604800&X-Amz-Signature=1dc46218ccb2c8483a4c310bac18ef2c98cf5bfebab396ab415f1feac65cf605&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Once your free regenerations have been used, the button will return to 'Generate speech', and the number of credits that will be used for the generation will be displayed:
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/747483da90dc8cfdaf27d92c62082f4fbc55f94615391463b0122b00dfe20845/assets/images/help-center/account/general/tts-generate.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260917%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260917T190228Z&X-Amz-Expires=604800&X-Amz-Signature=af8576d5a783b79cd96e5973b75f98358350c9b7f0e90d4a3896b9251be675ba&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/747483da90dc8cfdaf27d92c62082f4fbc55f94615391463b0122b00dfe20845/assets/images/help-center/account/general/tts-generate.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100015Z&X-Amz-Expires=604800&X-Amz-Signature=3548a06f9a40d1be371e73a498b60c81f05aca5d6cb893135966f8d8002cb9d7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 This works differently with the v3 model. Each time you click Generate, you’ll get two alternative outputs, but you’re only charged for one. If you click Generate again, you’ll get two new alternatives and you’ll be charged again. In short, you’re charged every time you click Generate, and each click gives you two options.
 
@@ -206,7 +206,7 @@ We also offer two free regenerations in Studio, provided:
 
 If the Generate/Regenerate button says **Regenerate**, rather than Generate, then you won't be charged for your next generation. You can hover over the button to see how many free regenerations are remaining.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/725da07a47c79e1d844c0a1994d147b8b57e501d30638a04725b273a3d1a45b8/assets/images/help-center/account/general/studio-regenerate.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260917%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260917T190228Z&X-Amz-Expires=604800&X-Amz-Signature=dec54819f024ebac37d9f29570174a2f343be39a3e0a45e7a19c37cea27b2428&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/725da07a47c79e1d844c0a1994d147b8b57e501d30638a04725b273a3d1a45b8/assets/images/help-center/account/general/studio-regenerate.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100015Z&X-Amz-Expires=604800&X-Amz-Signature=a61d006a5d91a55a351bc52b221c1fefbab0c04a274efbf5da8f171cde614466&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Can I be notified when I'm running low on credits?
 
@@ -415,7 +415,7 @@ To access [usage analytics](https://elevenlabs.io/app/usage) for your account, c
 
 The Analytics tab includes **API Requests**, **Usage**, and **Webhooks**. You can filter and analyze data by time period and at different levels of granularity. Use the **Request Log** tab to search and inspect individual API requests.
 
-![Analytics tab showing API Requests](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/fdbcf3b2a35085656de4c63af220637ae39728f93f9fd88623fc2ccca4fb6193/assets/images/product-guides/administration/analytics.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260917%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260917T190228Z&X-Amz-Expires=604800&X-Amz-Signature=89aa581345e6506039e5127ba44dcc9213706c95a2115c2981360c8db2594564&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Analytics tab showing API Requests](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/fdbcf3b2a35085656de4c63af220637ae39728f93f9fd88623fc2ccca4fb6193/assets/images/product-guides/administration/analytics.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100015Z&X-Amz-Expires=604800&X-Amz-Signature=a2563c87abd136dbb976452bd7cb4bf467b2bd1a1f1cb0d4dd785a695dbf94de&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 If you are part of a multi-seat workspace, you can switch between data for your account and your workspace. Account shows data for your individual account, while Workspace covers all accounts in your workspace. If you are not in a multi-seat workspace, you will not see this option.
 
@@ -434,7 +434,7 @@ The Usage view shows credit consumption and related performance metrics, includi
 
 When viewing workspace usage, you can also break usage down by individual user or workspace group.
 
-![Usage metrics in Analytics](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7f901489e15c1211a1e7e99d75e6033848d5e3f86df55a320046af43b20614f7/assets/images/product-guides/administration/analytics-usage.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260917%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260917T190228Z&X-Amz-Expires=604800&X-Amz-Signature=d99afc5de47651cc36af9137fcab2193d22f79f90c7fa767885dd3507e2f53fa&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Usage metrics in Analytics](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7f901489e15c1211a1e7e99d75e6033848d5e3f86df55a320046af43b20614f7/assets/images/product-guides/administration/analytics-usage.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100015Z&X-Amz-Expires=604800&X-Amz-Signature=aac934fabbedfbbef854335b2cdaf1d51d816e17d1704f2321d660def9719d43&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 If you are part of a multi-seat workspace, you can switch between data for your account and your workspace. Account shows data for your individual account, while Workspace covers all accounts in your workspace. If you are not in a multi-seat workspace, you will not see this option.
 
@@ -454,7 +454,7 @@ The API Requests view shows request volume and performance for your account or w
 * Top called path
 
 ![API Requests metrics in
-Analytics](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/85616095f05819be54ba35639423d2175c51ca34aec2d34273a3e8b1a6bd8401/assets/images/product-guides/administration/analytics-requests.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260917%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260917T190228Z&X-Amz-Expires=604800&X-Amz-Signature=54c1a00f0dc2de17949820bab64c2a7d2c70004dbe096a4f7f87a46c77027d00&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+Analytics](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/85616095f05819be54ba35639423d2175c51ca34aec2d34273a3e8b1a6bd8401/assets/images/product-guides/administration/analytics-requests.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100015Z&X-Amz-Expires=604800&X-Amz-Signature=f5ce78598918ae148ca055ab95ee487c5ff4f675f9974562de05f695ca44a700&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 You can filter by time period (for example, hour, day, month, or year) and at different levels of granularity.
 
@@ -471,7 +471,7 @@ Yes. [Usage analytics](https://elevenlabs.io/app/usage) lets you export the data
 Open **Developers** in the sidebar, go to the **Analytics** tab, set up the view you want, then click **Export**.
 
 ![Export button on an Analytics
-chart](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/52d44c4736ed92ccb037fe8ffb7a3292f20a695350d689785e137fb75fac62a4/assets/images/product-guides/administration/analytics-export.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260917%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260917T190228Z&X-Amz-Expires=604800&X-Amz-Signature=2e06fd22bdf77f7b52468c0d24f86102252a531f038a4bf2023e80e89a49454f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+chart](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/52d44c4736ed92ccb037fe8ffb7a3292f20a695350d689785e137fb75fac62a4/assets/images/product-guides/administration/analytics-export.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100015Z&X-Amz-Expires=604800&X-Amz-Signature=e0f4abbb3d1f647883f2b765ebd577533586f65e572fd6930bc56cd16818d30d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 For more information on Analytics views and filters, see [Usage analytics](/docs/overview/administration/usage-analytics).
 

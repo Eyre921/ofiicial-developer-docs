@@ -312,6 +312,7 @@ This endpoint expects an object.
             - `max_tokens` (integer, optional) — If greater than 0, maximum number of tokens the LLM can predict
             - `tool_ids` (list of string, optional) — A list of IDs of tools used by the agent
             - `built_in_tools` (object, optional) — Built-in system tools to be used by the agent
+            - `enable_parallel_tool_calls` (boolean, optional) — Enable parallel tool calling. When enabled, the agent can execute multiple tools in parallel within a single turn. Not supported by all models.
             - `mcp_server_ids` (list of string, optional) — A list of MCP server ids to be used by the agent
             - `native_mcp_server_ids` (list of string, optional) — A list of Native MCP server ids to be used by the agent
             - `knowledge_base` (list of object, optional) — A list of knowledge bases to be used by the agent

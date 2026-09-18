@@ -22,7 +22,7 @@ ElevenLabs supports three types of post-call webhooks:
 
 Post-call webhooks can be enabled for all agents in your workspace through the ElevenAgents [settings page](https://elevenlabs.io/app/agents/settings).
 
-![Post-call webhook settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/eb5d768612d6461a21bc3127611f60724be3e1a55005af43faf48f2d7bf23807/assets/images/conversational-ai/postcallwebhooksettings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260917%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260917T142945Z&X-Amz-Expires=604800&X-Amz-Signature=b07df7cf55f831018b58104b54173b23346288cd97aa4777ac8f0f0a1eab685c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Post-call webhook settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/eb5d768612d6461a21bc3127611f60724be3e1a55005af43faf48f2d7bf23807/assets/images/conversational-ai/postcallwebhooksettings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T044524Z&X-Amz-Expires=604800&X-Amz-Signature=8f7a4ad958936f199fd365ca4dcd7e329710b5452be4324c8dde5c9d81549409&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Post-call webhooks must return a 200 status code to be considered successful. Webhooks that
 repeatedly fail are auto disabled if there are 10 or more consecutive failures and the last

@@ -22,6 +22,10 @@ The steps below use Claude Code. Using Cursor, Gemini CLI, or another agent? See
   <Step title="Set your API key and install the plugin">
     The plugin needs [Node.js](https://nodejs.org/) installed (and [uv](https://docs.astral.sh/uv/getting-started/installation/) for assistant commands).
 
+    <Note>
+      Installing the plugin requires access to the [official Anthropic marketplace](https://code.claude.com/docs/en/discover-plugins#official-anthropic-marketplace). Claude Code adds this access automatically the first time you start it. If the install fails with a `Marketplace "claude-plugins-official" not found` error, your network or your organization's Claude Code setup is probably blocking it.
+    </Note>
+
     ```bash theme={null}
     export PINECONE_API_KEY="YOUR_API_KEY"
     claude plugin install pinecone

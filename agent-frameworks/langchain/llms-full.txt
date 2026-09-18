@@ -1616,7 +1616,7 @@ LangSmith supports sending arbitrary metadata and tags along with traces.
 
 Tags are strings that can be used to categorize or label a trace. Metadata is a dictionary of key-value pairs that can be used to store additional information about a trace.
 
-Both are useful for associating additional information with a trace, such as the environment in which it was executed, the user who initiated it, or an internal correlation ID. For more information on tags and metadata, see the [Concepts](/langsmith/observability-concepts#tags) page. For information on how to query traces and runs by metadata and tags, see the [Filter traces in the application](/langsmith/filter-traces-in-application) page.
+Both are useful for associating additional information with a trace, such as the environment in which it was executed, the user who initiated it, or an internal correlation ID. For more information on tags and metadata, see the [Concepts](/langsmith/observability-concepts#tags) page. For information on how to query traces and runs by metadata and tags, see the [Filter traces](/langsmith/filter-traces) page.
 
 <CodeGroup>
 
@@ -9820,7 +9820,7 @@ If you need to collect feedback from a browser or other client-side environment 
 
 See [Collect feedback with presigned URLs](/langsmith/presigned-feedback-tokens) for the full guide.
 
-To learn more about how to filter traces based on various attributes, including user feedback, see [Filter traces](/langsmith/filter-traces-in-application).
+To learn more about how to filter traces based on various attributes, including user feedback, see [Filter traces](/langsmith/filter-traces).
 
 ---
 
@@ -20149,7 +20149,7 @@ Composite scores are attached to a run as **feedback**, similarly to feedback fr
 
 **On a tracing project**:
 - Composite scores appear as feedback on runs.
-- [Filter for runs](/langsmith/filter-traces-in-application) with a composite score, or where the composite score meets a certain threshold.
+- [Filter for runs](/langsmith/filter-traces) with a composite score, or where the composite score meets a certain threshold.
 - [Create a chart](/langsmith/dashboards#custom-dashboards) to visualize trends in the composite score over time.
 
 **On a dataset**:
@@ -21690,7 +21690,7 @@ If you see `"No paths available"` in the tree:
 
 ## Next steps
 
-- Learn more about [viewing and filtering traces](/langsmith/filter-traces-in-application).
+- Learn more about [viewing](/langsmith/view-traces) and [filtering](/langsmith/filter-traces) traces.
 - Explore [custom output rendering](/langsmith/custom-output-rendering) for advanced visualization.
 - Set up [metadata and tags](/langsmith/add-metadata-tags) to organize your traces.
 
@@ -25540,7 +25540,7 @@ When you add a filter, it defaults to filtering at the [run](/langsmith/observab
 
 The active scope appears as a suffix on the **Advanced** item (for example, **Advanced Tree Filter**). Click the **X** next to it to reset back to a plain run filter.
 
-Dataset sources do not expose run/trace/tree filters. Data is scoped by the selected dataset. For filter syntax, refer to [filtering traces in application](/langsmith/filter-traces-in-application).
+Dataset sources do not expose run/trace/tree filters. Data is scoped by the selected dataset. For filter syntax, refer to [filtering traces (ClickHouse)](/langsmith/filter-traces-in-application).
 
 **Grouping** creates multiple series on the same chart in one of two ways:
 
@@ -25598,7 +25598,7 @@ Create tailored collections of charts for tracking metrics that matter most for 
 #### Select tracing projects and filter runs
 
 - Select one or more tracing projects to track metrics for.
-- Use the **Chart filters** section to refine the matching runs. This filter applies to all data series in the chart. For more information, view the guide on [filtering traces in application](/langsmith/filter-traces-in-application).
+- Use the **Chart filters** section to refine the matching runs. This filter applies to all data series in the chart. For more information, view the guide on [filtering traces (ClickHouse)](/langsmith/filter-traces-in-application).
 
 #### Pick a metric
 
@@ -30309,7 +30309,7 @@ Setup involves creating a GitHub App, gathering its credentials, storing them as
     Under **Identifying and authorizing users**, add the following **Callback URL**, replacing `<hostname>` with your LangSmith hostname:
 
     ```
-    https://<hostname>/v1/platform/fleet/providers/github-app/auth/callback
+    https://<hostname>/api/v1/platform/fleet/providers/github-app/auth/callback
     ```
 
     Select **Redirect on update**.
@@ -30317,7 +30317,7 @@ Setup involves creating a GitHub App, gathering its credentials, storing them as
     Under **Post installation**, add the following **Setup URL**:
 
     ```
-    https://<hostname>/v1/platform/fleet/providers/github-app/callback
+    https://<hostname>/api/v1/platform/fleet/providers/github-app/callback
     ```
 
     Select **Redirect on update**.
@@ -30335,7 +30335,7 @@ Setup involves creating a GitHub App, gathering its credentials, storing them as
     - Set the **Webhook URL** to:
 
       ```
-      https://<hostname>/v1/platform/fleet/providers/github-app/webhooks
+      https://<hostname>/api/v1/platform/fleet/providers/github-app/webhooks
       ```
 
     - Paste the generated value into **Webhook secret**. Save it, as you'll need the same value when creating the Kubernetes secret in a later step.
@@ -35065,7 +35065,7 @@ Set the scope in either of two places, using the same control:
 - **Engine setup**: In the **Find and fix your agent's issues** panel, under **Focus on specific traces**.
 - **Engine Settings**: In the **Focus on specific traces** section of the [**Engine Settings**](#configure-engine) panel. Edits here save automatically.
 
-Add scope conditions with the same [filter editor](/langsmith/filter-traces-in-application#create-and-apply-filters) used on the tracing project's **Tracing** tab. You can add one condition of each kind, **up to two**:
+Add scope conditions with the filter editor. You can add one condition of each kind, **up to two**:
 
 - **Run Name**: Pick a run or agent name. The value field autocompletes from the run names in your project's recent traces.
 - **Metadata**: Pick a metadata key, then a value. Both autocomplete from the metadata present on your project's recent runs.
@@ -46834,10 +46834,17 @@ Finally, we can clear and reset filters. For example, if we see there is clear t
 </div>
 
 
-# Filter traces
+# Filter traces (ClickHouse)
 Source: https://docs.langchain.com/langsmith/filter-traces-in-application
 
 Tracing projects can accumulate large amounts of data across [threads](/langsmith/observability-concepts#threads), [traces](/langsmith/observability-concepts#traces), and [runs](/langsmith/observability-concepts#runs). LangSmith's filtering tools let you navigate and analyze that data precisely.
+
+<Note>
+Tracing projects have two filtering experiences. Check the top of your project to see which one applies to you:
+
+- **A single search bar with a scope selector to its left**: Refer to [Filter traces](/langsmith/filter-traces).
+- **An Add filter button that builds filter chips**: Refer to [Filter traces (ClickHouse)](/langsmith/filter-traces-in-application).
+</Note>
 
 This page covers:
 
@@ -47161,7 +47168,7 @@ Filtering narrows the [runs](/langsmith/observability-concepts#runs) in a tracin
 Tracing projects have two filtering experiences. Check the top of your project to see which one applies to you:
 
 - **A single search bar with a scope selector to its left**: Refer to [Filter traces](/langsmith/filter-traces).
-- **An Add filter button that builds filter chips**: Refer to [Filter traces in application](/langsmith/filter-traces-in-application).
+- **An Add filter button that builds filter chips**: Refer to [Filter traces (ClickHouse)](/langsmith/filter-traces-in-application).
 </Note>
 
 This page covers:
@@ -47253,7 +47260,7 @@ The scopes offered, and the one selected by default, depend on the table selecti
 | Table selection | Default scope | Available scopes |
 | --------------- | ------------- | ---------------- |
 | **Threads** | Any run | Thread, Root run, Any run |
-| **Traces** | Any run | Root run, Any run |
+| **Traces** | Root run | Root run, Any run |
 | **Runs** | Single run | Single run, Root run, Any run |
 
 ### Combine scopes
@@ -47461,7 +47468,7 @@ feedback:{correctness.score:>0.5}
 
 ## Examples
 
-Queries to copy and adapt. Each assumes the default scope for its table selection.
+Queries to copy and adapt. Each assumes the default scope for its table selection unless stated otherwise.
 
 **Errored LLM calls that were also slow.** Use the **Runs** selection:
 
@@ -47489,13 +47496,13 @@ input:~"refund" AND status:error
 
 <a id="example-filtering-for-tool-calls"></a>
 
-**Traces that called a specific tool.** Use the **Traces** selection:
+**Traces that called a specific tool.** Use the **Traces** selection with the **Any run** scope, so the clause is matched against every run in the trace rather than the entry run:
 
 ```text
 run_type:tool AND name:search_documents
 ```
 
-**Expensive traces.** Use the **Traces** selection with the **Root run** scope:
+**Expensive traces.** Use the **Traces** selection:
 
 ```text
 total_cost:>0.5
@@ -63392,6 +63399,10 @@ The LLM Gateway is in [beta](/langsmith/release-stages).
 
 Every call through the LLM Gateway is traced to LangSmith, and policy violations surface in [LangSmith Engine](/langsmith/engine) for triage.
 
+<Note>
+Gateway traces record metadata (token counts, policy outcomes, caller identity) for every call. Input and output content is **not** logged by default, and traces without content are **not billed** against your LangSmith trace quota. Content logging, and the associated billing, only applies when you explicitly enable it with a [data policy](/langsmith/llm-gateway-data-policy).
+</Note>
+
 ## Where gateway traces appear
 
 By default, tracing of content is turned off for all organizations. When tracing content is on, the gateway-proxied calls are traced to a project named `gateway` in the [workspace](/langsmith/administration-overview#workspaces) associated with the caller's API key, as well as a per-caller project that isolates traffic in the UI. Callers authenticating with a workspace API key get `gateway/short-api-key/<short_key>/api-key-id/<api_key_id>`; callers authenticating with a bearer token and no workspace API key get `gateway/user/<obfuscated_email>/ls_user_id/<ls_user_id>`.
@@ -63409,7 +63420,7 @@ Gateway-proxied calls are distinguishable from direct LLM calls by the project t
 
 ### Trace content
 
-Trace content (request and response bodies) is off by default. Turn it on with a [data policy](/langsmith/llm-gateway-data-policy#data-retention), which applies to any traces emitted through the gateway that match the scope of the policy.
+Trace content (request and response bodies) is off by default. Traces without content are not billed against your LangSmith trace quota. Turn content logging on with a [data policy](/langsmith/llm-gateway-data-policy#data-retention), which applies to any traces emitted through the gateway that match the scope of the policy. Traces that match a content-logging data policy count toward your plan's trace volume.
 
 ## LangSmith Engine integration
 
@@ -66672,7 +66683,7 @@ def chat_model(inputs: dict) -> dict:
 
 ## Identify a custom model in traces
 
-When using a custom model, it is recommended to also provide the following `metadata` fields to identify the model when viewing traces and when [filtering](/langsmith/filter-traces-in-application).
+When using a custom model, it is recommended to also provide the following `metadata` fields to identify the model when viewing traces and when [filtering](/langsmith/filter-traces).
 
 - `ls_provider`: The provider of the model, e.g., `"openai"`, `"anthropic"`.
 - `ls_model_name`: The name of the model, e.g., `"gpt-5.4-mini"`, `"claude-opus-4-8"`.
@@ -68054,7 +68065,7 @@ Source: https://docs.langchain.com/langsmith/ls-metadata-parameters
 
 When you trace LLM calls with LangSmith, you often want to [track costs](/langsmith/cost-tracking), compare model configurations, and analyze performance across different providers. LangSmith's native integrations (like [LangChain](/langsmith/trace-with-langchain) or the [OpenAI](/langsmith/trace-openai)/[Anthropic](/langsmith/trace-anthropic) wrappers) handle this automatically, but custom model wrappers and self-hosted models require a standardized way to provide this information. LangSmith uses `ls_` metadata parameters for this purpose.
 
-These metadata parameters (all prefixed with `ls_`) let you pass model configuration and identification information through the standard `metadata` field. Once set, LangSmith can automatically calculate costs, display model information in the UI, and enable [filtering](/langsmith/filter-traces-in-application) and analytics across your traces.
+These metadata parameters (all prefixed with `ls_`) let you pass model configuration and identification information through the standard `metadata` field. Once set, LangSmith can automatically calculate costs, display model information in the UI, and enable [filtering](/langsmith/filter-traces) and analytics across your traces.
 
 Use `ls_` metadata parameters to:
 
@@ -68774,7 +68785,7 @@ metadata_key = 'ls_run_depth' AND metadata_value = 0
 - [Trace query syntax](/langsmith/trace-query-syntax): Complete reference for filtering and searching traces.
 - [Evaluation quickstart](/langsmith/evaluation-quickstart): Run experiments on datasets to compare model configurations.
 - [Add metadata and tags](/langsmith/add-metadata-tags): General guide to adding metadata to traces.
-- [Filter traces in application](/langsmith/filter-traces-in-application): Programmatically filter traces in your code.
+- [Filter traces (ClickHouse)](/langsmith/filter-traces-in-application): Programmatically filter traces in your code.
 
 ---
 
@@ -69216,7 +69227,7 @@ The following sections explain the different ways you can create a dataset in La
 A common pattern for constructing datasets is to convert notable traces from your application into dataset examples. This approach requires that you have [configured tracing to LangSmith](/langsmith/observability-concepts).
 
 <Check>
-A technique to build datasets is to filter the most interesting traces, such as traces that were tagged with poor user feedback, and add them to a dataset. For tips on how to filter traces, refer to the [Filter traces](/langsmith/filter-traces-in-application) guide.
+A technique to build datasets is to filter the most interesting traces, such as traces that were tagged with poor user feedback, and add them to a dataset. For tips on how to filter traces, refer to the [Filter traces](/langsmith/filter-traces) guide.
 </Check>
 
 There are three ways to add data manually from a tracing project to datasets. Navigate to **Tracing Projects** and select a project.
@@ -76661,7 +76672,7 @@ Because you have been logging the `llm` metadata attribute, you can group monito
 
 ### Drilldown
 
-When a monitoring chart shows something unexpected, click a data point to freeze the tooltip, then click the metric name (for example, **Input**) to jump to the filtered runs table for that time window. For more on searching and filtering runs, refer to [Filter traces](/langsmith/filter-traces-in-application).
+When a monitoring chart shows something unexpected, click a data point to freeze the tooltip, then click the metric name (for example, **Input**) to jump to the filtered runs table for that time window. For more on searching and filtering runs, refer to [Filter traces](/langsmith/filter-traces).
 
 <img
     className="block dark:hidden"
@@ -77038,7 +77049,7 @@ You can also inspect traces from the terminal using the [LangSmith CLI](/langsmi
 
 - [Tracing integrations](/langsmith/integrations): LangChain, LangGraph, Anthropic, and other providers.
 - [Trace an LLM application](/langsmith/observability-llm-tutorial): a full lifecycle tutorial, from prototyping through production.
-- [Filter traces](/langsmith/filter-traces-in-application): search and navigate large tracing projects.
+- [Filter traces](/langsmith/filter-traces): search and navigate large tracing projects.
 - [Log to a specific project](/langsmith/log-traces-to-project): send traces to a named project instead of **default**.
 
 <Callout type="info" icon="feather">
@@ -77516,10 +77527,10 @@ Once your account and API key are ready, set up tracing:
   <Card
     title="View traces"
     icon="route"
-    href="/langsmith/filter-traces-in-application"
+    href="/langsmith/view-traces"
     arrow="true"
   >
-    Filter, export, share, and compare traces via the UI or API.
+    Inspect threads and runs in the Messages, Turns, and Details views.
   </Card>
 
   <Card
@@ -77610,7 +77621,7 @@ For example, you may want to apply specific evaluators based on:
 - Runs that invoke a specific tool call. See [filtering for tool calls](/langsmith/filter-traces-in-application#example-filtering-for-tool-calls) for more information.
 - Runs that match a particular piece of metadata (e.g. if you log traces with a `plan_type` and only want to run evaluations on traces from your enterprise customers). See [adding metadata to your traces](/langsmith/add-metadata-tags) for more information.
 
-Filters on evaluators work the same way as when you're filtering traces in a project. For more information on filters, you can refer to [Filter traces](/langsmith/filter-traces-in-application).
+Evaluators use the filter builder, with the same fields and operators described in [Filter traces (ClickHouse)](/langsmith/filter-traces-in-application).
 
 To process feedback from an earlier evaluator, filter this evaluator for the feedback key, then [include extended stats](/langsmith/evaluators#include-extended-stats). For example, use `has(feedback_key, "answer_usefulness")` to run when the `answer_usefulness` feedback exists. The filter is based on the feedback key, not the evaluator that produced it, so feedback from any source with that key triggers the code evaluator.
 
@@ -77779,7 +77790,7 @@ Composite scores are attached to a run as **feedback**, similarly to feedback fr
 
 **On a tracing project**:
 - Composite scores appear as feedback on runs.
-- [Filter for runs](/langsmith/filter-traces-in-application) with a composite score, or where the composite score meets a certain threshold.
+- [Filter for runs](/langsmith/filter-traces) with a composite score, or where the composite score meets a certain threshold.
 - [Create a chart](/langsmith/dashboards#custom-dashboards) to visualize trends in the composite score over time.
 
 <Note> If any of the constituent evaluators are not configured on the run, the composite score will not be calculated for that run. </Note>
@@ -77828,7 +77839,7 @@ You can apply a filter to the runs that trigger the evaluator. You may want to a
 - Runs that invoke a specific tool call. See [filtering for tool calls](/langsmith/filter-traces-in-application#example-filtering-for-tool-calls) for more information.
 - Runs that match a particular piece of metadata (e.g. if you log traces with a `plan_type` and only want to run evaluations on traces from your enterprise customers). See [adding metadata to your traces](/langsmith/add-metadata-tags) for more information.
 
-[Filters on evaluators](/langsmith/filter-traces-in-application) work the same way as when you're filtering traces in a project.
+Evaluators use the filter builder, with the same fields and operators described in [Filter traces (ClickHouse)](/langsmith/filter-traces-in-application).
 
 <Tip>
 It's often helpful to inspect runs as you're creating a filter for your evaluator. With the evaluator configuration panel open, you can inspect runs and apply filters to them. Any filters you apply to the runs table will automatically be reflected in filters on your evaluator.
@@ -79777,7 +79788,45 @@ When enabled, responses include:
 
 ## Azure OpenAI
 
-Before you use this model, ensure you have [Azure OpenAI credentials](https://learn.microsoft.com/en-us/azure/ai-services/openai/quickstart) (endpoint + API key).
+Before you use this model, create an [Azure OpenAI resource and model deployment](https://learn.microsoft.com/en-us/azure/ai-services/openai/quickstart).
+
+### Authentication
+
+#### API key
+
+In the Azure OpenAI provider configuration, enter your endpoint, deployment name, API version, and API key.
+
+#### Workload identity for self-hosted LangSmith
+
+<Note>
+Azure OpenAI workload identity requires self-hosted LangSmith `0.16.58` or later on Azure Kubernetes Service (AKS).
+</Note>
+
+Use [AKS workload identity](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview) to authenticate without storing an API key:
+
+1. Enable the OIDC issuer and workload identity on your AKS cluster.
+2. Create or select a user-assigned managed identity.
+3. Add a [federated identity credential](https://learn.microsoft.com/en-us/azure/aks/workload-identity-deploy-cluster#create-the-federated-identity-credential) to the managed identity. Use the AKS OIDC issuer and audience `api://AzureADTokenExchange`. Set its subject to `system:serviceaccount:<namespace>:<playground-service-account-name>`.
+4. Assign the managed identity the least-privilege `Cognitive Services OpenAI User` role. Scope the role to the Azure OpenAI resource. See [Azure OpenAI role-based access control](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/role-based-access-control).
+5. Add the following values to your LangSmith Helm configuration:
+
+```yaml Helm
+playground:
+  serviceAccount:
+    annotations:
+      azure.workload.identity/client-id: "<managed-identity-client-id>"
+  deployment:
+    labels:
+      azure.workload.identity/use: "true"
+```
+
+In the Azure OpenAI provider configuration, enter the endpoint, deployment name, and API version. Leave the API key empty.
+
+When no explicit API key or token provider is supplied, LangSmith automatically uses the Playground workload identity. It obtains short-lived tokens for Playground invocations and evaluator batch calls. Explicit credentials take precedence over workload identity.
+
+Workload identity tokens are restricted to HTTPS Azure AI and Azure OpenAI endpoints on port `443`. Each configuration must use one supported Azure cloud: public, US Government, or China. LangSmith rejects invalid endpoints and configurations that mix Azure clouds.
+
+For broader AKS deployment guidance, see [Self-host LangSmith on Azure](/langsmith/azure-self-hosted).
 
 ### Available models
 
@@ -89638,7 +89687,7 @@ In the [UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campa
 1. In the [UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-rules), navigate to **Tracing** in the sidebar and select a tracing project. Click on **+ New** in the top right corner of the tracing project page, then click on **New Automation**.
 1. Name your rule.
 1. Select an **Item Type**, either **Runs** or **Threads**. The item type determines which filter fields and actions are available, so set it before configuring either. For more information, refer to [Set the item type to runs or threads](#set-the-item-type-to-runs-or-threads).
-1. Create a filter. Automation rule filters work the same way as filters applied to traces in the project. For more information on filters, you can refer to [Filter traces](/langsmith/filter-traces-in-application).
+1. Create a filter. Rules use the filter builder, with the same fields and operators described in [Filter traces (ClickHouse)](/langsmith/filter-traces-in-application).
 1. Configure a **Sampling Rate** to control what percentage of the filtered items trigger the automation action. The form accepts a percentage from 0 to 100. For example, a sampling rate of 50% sends half of the items that pass the filter to the action. The equivalent API field, `sampling_rate`, takes a decimal from 0 to 1.
 1. (Optional) Apply rule to past runs by toggling the **Apply to Past Runs** and entering a **Backfill From** date. This is only possible upon rule creation.
 
@@ -91163,9 +91212,27 @@ Entries that do not parse—`example.com:abc`, `example.com:99999`, or a CIDR wi
 
 ### Organization-level restricted egress
 
-An organization can be placed on **restricted egress**. When it is, LangSmith replaces each sandbox's `access_control` with a fixed allow list of package registries, OS package mirrors, source-code and container-image hosts, CDNs, and model-provider APIs, each pinned to specific ports (HTTPS, plus HTTP for the Ubuntu and Debian mirrors). Caller-supplied `allow_list` and `deny_list` values are accepted by the API but have no effect while the policy is active.
+Restricted egress limits sandbox connections to a LangSmith-managed allowlist of hosts and ports. It applies to non-Enterprise organizations by default and to organizations that request it. Organizations with an approved exemption can use unrestricted egress.
+
+The allowlist supports common development tasks, including installing packages, accessing source repositories, and calling model APIs. It includes PyPI, npm, GitHub, OpenAI, Anthropic, and LangSmith, primarily over HTTPS on port 443. Selected package repositories also allow HTTP on port 80.
+
+When restricted egress is enabled for your organization, LangSmith blocks destinations outside this allowlist. The organization policy replaces caller-supplied `access_control` settings and disables `no_proxy` bypasses. Adding a destination to your sandbox's `allow_list` or configuring credentials for it does not grant access beyond the organization policy.
+
+An organization policy change does not automatically update existing sandboxes. Starting or waking an existing sandbox reuses its stored network configuration.
+
+### Request unrestricted access
+
+If your sandbox needs destinations outside the managed allowlist, [file a support ticket](https://support.langchain.com) to request unrestricted egress for your organization. Include the following details:
+
+- **Organization**: Your organization or workspace ID and deployment region.
+- **Network requirements**: The destination hostnames, ports, and a description of your use case.
+- **Affected sandbox**: For an existing sandbox, its ID and the connection error.
+
+An approved exemption removes the organization-managed allowlist requirement. Your sandbox's own access controls and platform protections against access to private or reserved IP addresses still apply. Existing sandbox configurations are not automatically changed by an exemption.
 
 ### Connecting to a database (raw TCP)
+
+If your organization has restricted egress, [request unrestricted access](#request-unrestricted-access) before connecting to a database outside the managed allowlist.
 
 To let sandbox code reach an external PostgreSQL database with `psql`, `dbt`, or any driver, allow-list the host on its port. Because `allow_list` is default-deny, also list any HTTP(S) hosts the sandbox needs. Pin them to `:443` unless you need other ports too:
 
@@ -91390,8 +91457,83 @@ await client.createSandbox({
 After the sandbox is ready, use AWS SDKs or CLIs normally inside the sandbox. The SDK or CLI discovers the placeholder AWS environment variables, and the proxy applies the real SigV4 signature to outbound AWS requests. The proxy does not set a region: set `AWS_REGION` through the sandbox's `env_vars` or the rule's `env_vars`, or most SDK and CLI calls fail before they reach the proxy.
 
 <Note>
-AWS auth proxy rules currently support access key ID and secret access key credentials. They do not include a session token or assume-role configuration.
+Static AWS auth accepts an access key ID and secret access key, but not a caller-supplied session token. Deployments with AWS proxy role authentication enabled also support an IAM role as described below.
 </Note>
+
+### Authenticate with an IAM role
+
+An AWS proxy role lets LangSmith assume a customer IAM role and sign supported AWS HTTPS requests with renewable temporary credentials. It works with or without [S3 mounts](/langsmith/sandbox-mounts#authenticate-with-an-iam-role), without exposing real credentials to sandbox code.
+
+This option requires deployment support for AWS proxy role authentication. ECR registry role authentication is a separate feature. In **Create sandbox > Network**, enable AWS authentication and select **AWS IAM role**. The form shows the exact LangSmith principal and workspace External ID that the customer role must trust. Follow the linked setup instructions to configure the trust and permissions policies, then enter the customer role in **AWS role ARN**.
+
+<Note>
+The SDK examples below require a release that supports `aws_auth(role_arn=...)` in Python or `awsAuth({ roleArn })` in TypeScript. Backend support alone does not add these helpers to an older SDK release.
+</Note>
+
+To configure a role without mounts, pass it in the proxy configuration:
+
+<CodeGroup>
+
+```python Python
+from langsmith.sandbox import SandboxClient, aws_auth, proxy_config
+
+client = SandboxClient()
+
+sandbox = client.create_sandbox(
+    name="aws-role-sandbox",
+    proxy_config=proxy_config(
+        rules=[
+            aws_auth(role_arn="arn:aws:iam::123456789012:role/LangSmithSandbox")
+        ]
+    ),
+)
+```
+
+```ts TypeScript
+import { SandboxClient, awsAuth, proxyConfig } from "langsmith/sandbox";
+
+const client = new SandboxClient();
+
+const sandbox = await client.createSandbox({
+  name: "aws-role-sandbox",
+  proxyConfig: proxyConfig({
+    rules: [
+      awsAuth({ roleArn: "arn:aws:iam::123456789012:role/LangSmithSandbox" }),
+    ],
+  }),
+});
+```
+
+</CodeGroup>
+
+For the HTTP API, supply `aws.role_arn` instead of static credential fields:
+
+```bash
+curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
+  -H "x-api-key: $LANGSMITH_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "aws-role-sandbox",
+    "proxy_config": {
+      "rules": [
+        {
+          "name": "aws",
+          "type": "aws",
+          "enabled": true,
+          "aws": {
+            "role_arn": "arn:aws:iam::123456789012:role/LangSmithSandbox"
+          }
+        }
+      ]
+    }
+  }'
+```
+
+Replace the example ARN with your configured customer role. The single-rule limit still applies. Role authentication is configured at creation: an update can preserve the existing role, but cannot add, remove, change, or disable it. Create a new sandbox to change role authentication.
+
+The role's effective AWS permissions apply to all supported requests. LangSmith does not add a mount-derived session policy to this rule. A read-only S3 mount blocks filesystem writes, not direct S3 API writes that IAM allows. Restrict the customer role to the services, resources, and actions the sandbox needs.
+
+LangSmith renews temporary credentials on demand and reacquires them after stop/start. If renewal is temporarily unavailable, cached credentials remain usable only until expiration. Authorization denial or expiration fails closed, without falling back to static keys.
 
 ## Authenticate GCP requests
 
@@ -92370,7 +92512,7 @@ Sandbox mounts require `langsmith[sandbox]>=0.8.16` for Python or `langsmith>=0.
 </Note>
 
 <Warning>
-Store cloud credentials as LangSmith workspace secrets before creating a sandbox that mounts S3 or GCS. Do not pass real cloud credentials as sandbox environment variables, command arguments, or files.
+When using static AWS keys or a GCP service account, store cloud credentials as LangSmith workspace secrets before creating the sandbox. S3 mounts authenticated with an IAM role do not require stored AWS access keys. Do not pass real cloud credentials as sandbox environment variables, command arguments, or files.
 </Warning>
 
 ## Configure mount paths
@@ -92390,7 +92532,11 @@ Mount IDs can contain ASCII letters, digits, underscores, and hyphens. Do not re
 
 ## Mount an S3 bucket
 
-S3 mounts require AWS auth. The SDK creates an AWS auth proxy rule from `aws_auth` / `awsAuth`, so the sandbox can access the bucket without seeing the real access keys.
+S3 mounts require AWS authentication. Use static access keys or an IAM role when your deployment and SDK support role authentication. The LangSmith UI also supports role setup. Both methods keep real AWS credentials outside the sandbox.
+
+### Authenticate with static access keys
+
+The SDK creates an AWS auth proxy rule from `aws_auth` / `awsAuth`, so the sandbox can access the bucket without seeing the real access keys.
 
 <CodeGroup>
 
@@ -92475,6 +92621,220 @@ try {
 ```
 
 </CodeGroup>
+
+### Authenticate with an IAM role
+
+IAM role authentication lets the [AWS auth proxy](/langsmith/sandbox-auth-proxy#authenticate-with-an-iam-role) assume a role in your AWS account. S3 mounts use the same authentication as other supported AWS requests from the sandbox. LangSmith obtains and renews temporary AWS credentials, so you do not need to store or rotate access keys in workspace secrets.
+
+<Note>
+This option requires your LangSmith deployment to enable AWS proxy role authentication. Enabling IAM roles for ECR registries does not enable them for the auth proxy. If **AWS IAM role** is absent from the AWS authentication options, use static access keys or contact your LangSmith administrator. The role-based SDK examples require a release with `aws_auth(role_arn=...)` and `mount_config(proxy_config=...)` in Python, or `awsAuth({ roleArn })` and `mountConfig({ proxyConfig })` in TypeScript. The mount versions listed at the top of this page do not establish support for these newer options.
+</Note>
+
+You need permission to configure the customer IAM role's trust and access policies. One AWS auth rule applies to the sandbox's AWS requests, including all S3 mounts. Choose either static access keys or an IAM role; do not configure both. Role authentication is configured at creation. Create a new sandbox to add, remove, disable, or change its role.
+
+The LangSmith principal also needs permission to assume the customer role. For self-hosted deployments, your administrator configures that permission and any required role tags. Cross-account S3 buckets may also require a bucket policy that permits the customer role.
+
+To configure the role and create the sandbox:
+
+1. Open **Sandboxes > Create sandbox**, add an **S3 bucket** in the **Mounts** section, and configure its bucket, region, prefix, mount path, and read-only setting.
+2. Go to the **Network** section, enable AWS authentication, and select **AWS IAM role**. To use the role without mounts, skip the mount configuration in step 1.
+3. Use the two values displayed below **AWS role ARN** in your IAM role's trust policy:
+   - **Principal**: The exact AWS role ARN that this LangSmith deployment uses to assume customer roles. Use the displayed principal, not an ARN copied from another environment or from an ECR registry.
+   - **External ID**: Your current LangSmith workspace UUID. LangSmith supplies this value when assuming the role; you do not choose a separate external ID.
+4. Expand **AWS role setup**, select **Copy trust policy**, and apply that policy to the customer role in AWS IAM. It permits `sts:AssumeRole` only for the displayed principal with the matching `sts:ExternalId`.
+5. Attach a least-privilege permissions policy for the AWS services and resources the sandbox needs. For configured S3 mounts, **Copy S3 permissions** supplies a starting policy. Review it before attaching it; LangSmith does not apply it automatically.
+6. Enter the customer role's ARN in **AWS role ARN**. This is the role you configured in your account, not the LangSmith principal shown in the setup instructions.
+7. Select **Create Sandbox**, then verify that sandbox code can read the mounted path and, for writable mounts, write to it.
+
+The generated trust policy has this structure. Replace the placeholders with the principal and external ID displayed in the form, or copy the completed policy from the form:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "<LANGSMITH_AWS_PROXY_PRINCIPAL_ARN>"
+      },
+      "Action": "sts:AssumeRole",
+      "Condition": {
+        "StringEquals": {
+          "sts:ExternalId": "<LANGSMITH_WORKSPACE_ID>"
+        }
+      }
+    }
+  ]
+}
+```
+
+Do not replace the principal with `*` or remove the external ID condition. Entering the customer role ARN in LangSmith does not create the role or update its AWS policies.
+
+#### Limit S3 access
+
+The optional S3 permissions example grants access based on the mount settings:
+
+- **All S3 mounts**: Bucket-location access, prefix-scoped listing, and object reads.
+- **Writable mounts**: Additional object-write, delete, and multipart-upload permissions.
+- **Empty prefix**: Object access throughout the bucket. Use a prefix to restrict access to a subtree.
+
+The role's effective AWS permissions control all supported AWS proxy requests. LangSmith does not restrict a general AWS role session to the configured mounts. Limit the role's IAM policy to the required buckets, prefixes, operations, and other AWS resources.
+
+<Warning>
+A read-only mount rejects filesystem writes, but does not block direct S3 API writes that the role permits. Use the role's IAM policy to enforce read-only AWS access.
+</Warning>
+
+Use a commercial AWS role and supported AWS HTTPS endpoints. The S3 permissions example does not include KMS permissions; review the permissions required by your bucket's encryption settings.
+
+#### Use a shared role in the SDK
+
+A shared AWS proxy role authenticates both S3 mounts and supported application requests, just like the UI setup above. Configure the trust and permissions policies first, then replace the example role ARN and bucket with your own values.
+
+Pass the same proxy configuration to the mount helper and sandbox creation. The mount helper does not copy it into mount-specific authentication:
+
+<CodeGroup>
+
+```python Python
+from langsmith.sandbox import (
+    SandboxClient,
+    aws_auth,
+    mount_config,
+    proxy_config,
+    s3_mount,
+)
+
+proxy_cfg = proxy_config(
+    rules=[aws_auth(role_arn="arn:aws:iam::123456789012:role/LangSmithSandbox")]
+)
+mount_cfg = mount_config(
+    proxy_config=proxy_cfg,
+    mounts=[
+        s3_mount(
+            id="customer_data",
+            mount_path="/mnt/mounts/customer-data",
+            bucket="example-bucket",
+            prefix="datasets/customer-data",
+            region="us-east-1",
+            read_only=True,
+        )
+    ],
+)
+
+client = SandboxClient()
+sandbox = client.create_sandbox(
+    name="shared-role-mount-sandbox",
+    mount_config=mount_cfg,
+    proxy_config=proxy_cfg,
+)
+```
+
+```ts TypeScript
+import {
+  SandboxClient,
+  awsAuth,
+  mountConfig,
+  proxyConfig,
+  s3Mount,
+} from "langsmith/sandbox";
+
+const proxyCfg = proxyConfig({
+  rules: [
+    awsAuth({ roleArn: "arn:aws:iam::123456789012:role/LangSmithSandbox" }),
+  ],
+});
+const mountCfg = mountConfig({
+  proxyConfig: proxyCfg,
+  mounts: [
+    s3Mount({
+      id: "customer_data",
+      mountPath: "/mnt/mounts/customer-data",
+      bucket: "example-bucket",
+      prefix: "datasets/customer-data",
+      region: "us-east-1",
+      readOnly: true,
+    }),
+  ],
+});
+
+const client = new SandboxClient();
+const sandbox = await client.createSandbox({
+  name: "shared-role-mount-sandbox",
+  mountConfig: mountCfg,
+  proxyConfig: proxyCfg,
+});
+```
+
+</CodeGroup>
+
+The shared rule retains its effective IAM permissions. The read-only mount in this example does not prevent direct S3 API writes that the role allows. Shared proxy authentication is supported for S3 mounts, not GCS mounts; GCS still requires explicit mount authentication.
+
+#### Restrict a role to S3 mount scopes
+
+Mount-specific role authentication adds a session policy that restricts AWS access to the configured S3 buckets, prefixes, and read-only settings. Use this API alternative when sandbox AWS access must stay within those mount scopes. The customer role still needs the trust and permissions policies described above.
+
+Pass the role in `auth` to serialize it as `mount_config.auth.aws.role_arn`. Do not also pass an AWS proxy rule:
+
+<CodeGroup>
+
+```python Python
+from langsmith.sandbox import SandboxClient, aws_auth, mount_config, s3_mount
+
+mount_cfg = mount_config(
+    auth=[aws_auth(role_arn="arn:aws:iam::123456789012:role/LangSmithSandbox")],
+    mounts=[
+        s3_mount(
+            id="customer_data",
+            mount_path="/mnt/mounts/customer-data",
+            bucket="example-bucket",
+            prefix="datasets/customer-data",
+            region="us-east-1",
+            read_only=True,
+        )
+    ],
+)
+
+client = SandboxClient()
+sandbox = client.create_sandbox(
+    name="mount-scoped-role-sandbox",
+    mount_config=mount_cfg,
+)
+```
+
+```ts TypeScript
+import { SandboxClient, awsAuth, mountConfig, s3Mount } from "langsmith/sandbox";
+
+const mountCfg = mountConfig({
+  auth: [
+    awsAuth({ roleArn: "arn:aws:iam::123456789012:role/LangSmithSandbox" }),
+  ],
+  mounts: [
+    s3Mount({
+      id: "customer_data",
+      mountPath: "/mnt/mounts/customer-data",
+      bucket: "example-bucket",
+      prefix: "datasets/customer-data",
+      region: "us-east-1",
+      readOnly: true,
+    }),
+  ],
+});
+
+const client = new SandboxClient();
+const sandbox = await client.createSandbox({
+  name: "mount-scoped-role-sandbox",
+  mountConfig: mountCfg,
+});
+```
+
+</CodeGroup>
+
+The mount-specific `mount_config.auth.aws` API accepts either `role_arn` or the static `access_key_id` and `secret_access_key` pair, not both. It cannot be combined with an AWS proxy rule. Static-key examples earlier on this page continue to work unchanged.
+
+#### Renew credentials
+
+LangSmith renews temporary credentials as AWS requests need them, including after a sandbox stops and resumes. You do not supply a saved STS token or renew it manually. Keep the role's trust and access permissions in place for continued access.
+
+If renewal is temporarily unavailable, the mount can use cached credentials only until they expire. An authorization denial or expired credentials causes authenticated S3 requests to fail; the mount does not fall back to static keys.
 
 ## Mount a GCS bucket
 
@@ -94641,6 +95001,12 @@ On BYOC, use an API key that belongs to a BYOC workspace.
 </Warning>
 
 For self-hosted LangSmith deployments, see [Enable Sandboxes on self-hosted deployments](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes).
+
+## Network access
+
+Restricted egress applies to non-Enterprise organizations by default and to organizations that request it. Organizations with an approved exemption can use unrestricted egress. Restricted sandboxes use a managed allowlist for common package registries, source repositories, and model APIs. LangSmith blocks destinations outside the allowlist, even if you add them to a sandbox's proxy configuration.
+
+If you need unrestricted egress, [file a support ticket](https://support.langchain.com) with your organization or workspace ID, region, required destinations and ports, and use case. For more information, see [restricted egress and access requests](/langsmith/sandbox-auth-proxy#organization-level-restricted-egress).
 
 ## Get started
 
@@ -106959,6 +107325,41 @@ Source: https://docs.langchain.com/langsmith/self-hosted-changelog
 </Callout>
 
 [Self-hosted LangSmith](/langsmith/self-hosted) is an add-on to the Enterprise plan designed for our largest, most security-conscious customers. For more details, refer to [Pricing](https://www.langchain.com/pricing). [Contact our sales team](https://www.langchain.com/contact-sales) if you want to get a license key to trial LangSmith in your environment.
+
+<Update label="2026-09-17" tags={["Stable"]} rss={{ title: "2026-09-17 - self-hosted" }}>
+## langsmith-0.16.23
+
+**LangSmith version:** `0.16.57`
+
+- Fixed the issue where listing an organization's roles failed when a role had no permissions; such a role is now returned with an empty permission list instead of making the whole roles list unavailable.
+
+- Fixed security vulnerabilities. See CVE-2026-7210 for details.
+
+**Download the Helm chart:** [`langsmith-0.16.23.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.23/langsmith-0.16.23.tgz)
+{/* langsmith-release-image: 0.16.23 0.16.57 */}
+</Update>
+
+<Update label="2026-09-17" tags={["Preview"]} rss={{ title: "2026-09-17 - self-hosted" }}>
+## langsmith-0.17.0-rc.32
+
+**LangSmith version:** `0.17.24rc1`
+
+- This release packages the same LangSmith application version as langsmith-0.17.0-rc.26. Refer to the [langsmith-0.17.0-rc.26](#langsmith-0-17-0-rc-26) release notes below.
+
+**Download the Helm chart:** [`langsmith-0.17.0-rc.32.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.32/langsmith-0.17.0-rc.32.tgz)
+{/* langsmith-release-image: 0.17.0-rc.32 0.17.24-8b343557026d97c8b4cbbac94dbe07e6eae3cd92 */}
+</Update>
+
+<Update label="2026-09-17" tags={["Preview"]} rss={{ title: "2026-09-17 - self-hosted" }}>
+## langsmith-0.17.0-rc.31
+
+**LangSmith version:** `0.17.24rc1`
+
+- This release packages the same LangSmith application version as langsmith-0.17.0-rc.26. Refer to the [langsmith-0.17.0-rc.26](#langsmith-0-17-0-rc-26) release notes below.
+
+**Download the Helm chart:** [`langsmith-0.17.0-rc.31.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.31/langsmith-0.17.0-rc.31.tgz)
+{/* langsmith-release-image: 0.17.0-rc.31 0.17.24-8b343557026d97c8b4cbbac94dbe07e6eae3cd92 */}
+</Update>
 
 <Update label="2026-09-15" tags={["Preview"]} rss={{ title: "2026-09-15 - self-hosted" }}>
 ## langsmith-0.17.0-rc.30
@@ -126779,13 +127180,13 @@ Within a thread, open the Messages view and click the **LLM call** link in a tur
 Thread filters look through all runs and surface a thread if at least 1 run matches the filter.
 </Note>
 
-On the **Threads** tab of a project, you can save commonly used filters: [Set a filter](/langsmith/filter-traces-in-application#create-and-apply-filters) using the **Add filter** button, then click **Save view**.
+On the **Threads** tab of a project, you can [save commonly used filters](/langsmith/filter-traces#save-a-filter).
 
 ## Related
 
 - [Observability concepts](/langsmith/observability-concepts#threads): background on threads and how they relate to runs and traces.
 - [Add metadata and tags to traces](/langsmith/add-metadata-tags): how to pass `thread_id` and other metadata keys.
-- [Filter traces](/langsmith/filter-traces-in-application): filter by thread metadata in the tracing UI.
+- [Filter traces](/langsmith/filter-traces): filter by thread metadata in the tracing UI.
 - [Set up multi-turn online evaluators](/langsmith/online-evaluations-multi-turn): evaluate threads rather than individual runs.
 - [Log user feedback using the SDK](/langsmith/attach-user-feedback): attach feedback to runs within a thread.
 - [Create and manage datasets in the UI](/langsmith/manage-datasets-in-application#manually-from-a-tracing-project): add threads to a dataset.
@@ -127888,7 +128289,7 @@ Deep Agents automatically writes the subagent's `name` to the `lc_agent_name` me
 
 ![LangSmith Runs view with a metadata filter on lc_agent_name set to coordinator](/langsmith/images/deepagents-lc-agent-name-filter.png)
 
-Save the filter as a named view for quick reuse. For a full reference on filter options, see [Filter traces](/langsmith/filter-traces-in-application).
+Save the filter as a named view for quick reuse. For a full reference on filter options, see [Filter traces](/langsmith/filter-traces).
 
 **Filter programmatically with the SDK:**
 
@@ -128871,7 +129272,7 @@ The LiteLLM proxy runs as a standalone server and exposes an OpenAI-compatible A
 
 ## Next steps
 
-- [View traces in LangSmith](/langsmith/filter-traces-in-application)
+- [View traces in LangSmith](/langsmith/filter-traces)
 - [Add custom metadata](/langsmith/ls-metadata-parameters)
 - [Filter and sample traces](/langsmith/sample-traces)
 
@@ -129488,7 +129889,7 @@ Audio files can be large. For high-volume production workloads, consider downsam
 
 ### Mark the trace as audio
 
-Set the `ls_modality` metadata field to `"audio"` on the root run. This flags the trace as a voice trace so LangSmith can render it appropriately and so you can [filter](/langsmith/filter-traces-in-application) for voice traces in your project.
+Set the `ls_modality` metadata field to `"audio"` on the root run. This flags the trace as a voice trace so LangSmith can render it appropriately and so you can [filter](/langsmith/filter-traces) for voice traces in your project.
 
 ```python Python
 from langsmith import traceable
@@ -141837,7 +142238,7 @@ Group names follow the [SCIM naming convention](#group-naming-convention). The `
 # View traces
 Source: https://docs.langchain.com/langsmith/view-traces
 
-From a tracing project, use the **Threads**, **Traces**, or **Runs** tabs to change what appears in the table. Click into any row to open the side panel.
+From a tracing project, use the **Threads**, **Traces**, or **Runs** tabs to change what appears in the table. To narrow it to specific rows, [apply a filter](/langsmith/filter-traces). Click into any row to open the side panel.
 
 The side panel is organized around [threads](/langsmith/observability-concepts#threads) as the primary unit of navigation. Instead of treating each [run](/langsmith/observability-concepts#runs) as an isolated object, the UI keeps the surrounding conversation visible so you can understand where a run fits in the agent's broader execution.
 
@@ -142960,7 +143361,7 @@ You can also filter on the score value itself, not just its presence. For exampl
 has(feedback_key, "answer_usefulness") and feedback_score < 0.5
 ```
 
-For the full filter syntax, refer to [Filter traces](/langsmith/filter-traces-in-application).
+For the full filter syntax, refer to [Filter traces (ClickHouse)](/langsmith/filter-traces-in-application).
 </Tip>
 
 <Note>
@@ -152078,6 +152479,10 @@ Source: https://docs.langchain.com/langsmith/smith-api/orgs/delete-org-personal-
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/revoke-org-personal-access-token
 
 
+# Reinstate org personal access token
+Source: https://docs.langchain.com/langsmith/smith-api/orgs/reinstate-org-personal-access-token
+
+
 # Set default SSO provision
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/set-default-sso-provision
 
@@ -152708,14 +153113,6 @@ Source: https://docs.langchain.com/langsmith/smith-api/scim-tokens/delete-a-scim
 
 # Update a SCIM token
 Source: https://docs.langchain.com/langsmith/smith-api/scim-tokens/update-a-scim-token
-
-
-# [alpha] submit product feedback
-Source: https://docs.langchain.com/langsmith/smith-api/productfeedback/alpha-submit-product-feedback
-
-
-# [alpha] get product feedback
-Source: https://docs.langchain.com/langsmith/smith-api/productfeedback/alpha-get-product-feedback
 
 
 # List agent versions for a project

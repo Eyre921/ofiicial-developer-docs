@@ -290,10 +290,10 @@ After training completes, [evaluate the model](/fine-tuning/evaluating-fine-tune
 To deploy for inference:
 
 ```bash theme={null}
-firectl deployment create <FINE_TUNED_MODEL_ID>
+firectl deployment create <FINE_TUNED_MODEL_ID> --deployment-shape default
 ```
 
-This creates a dedicated deployment with performance matching the base model.
+This creates a dedicated deployment with performance matching the base model. To pick a specific shape instead of `default`, see [Deployment shapes](/guides/ondemand-deployments#deployment-shapes).
 
 <Tip>
   For more details on deploying trained models, including multi-LoRA

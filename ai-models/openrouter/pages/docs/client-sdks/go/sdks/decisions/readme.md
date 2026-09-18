@@ -1,5 +1,5 @@
 ---
-title: "Decisions"
+title: "Alpha.Decisions"
 source: https://openrouter.ai/docs/client-sdks/go/sdks/decisions/README.md
 path: docs/client-sdks/go/sdks/decisions/readme
 ---
@@ -8,13 +8,13 @@ path: docs/client-sdks/go/sdks/decisions/readme
 > Fetch the complete documentation index at: https://openrouter.ai/docs/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-# Decisions
+# Alpha.Decisions
 
-> Decisions endpoints
+> Alpha feature endpoints for Decisions (questions and answers) requests
 
 ## Overview
 
-Decisions endpoints
+Alpha feature endpoints for Decisions (questions and answers) requests
 
 ### Available Operations
 
@@ -44,7 +44,7 @@ func main() {
         openrouter.WithSecurity(os.Getenv("OPENROUTER_API_KEY")),
     )
 
-    res, err := s.Decisions.Create(ctx, components.DecisionsRequest{
+    res, err := s.Alpha.Decisions.Create(ctx, components.DecisionsRequest{
         Model: "Grand Cherokee",
         Questions: map[string]components.Questions{
 

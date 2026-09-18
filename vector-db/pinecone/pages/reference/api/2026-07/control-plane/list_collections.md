@@ -6,8 +6,8 @@ path: reference/api/2026-07/control-plane/list_collections
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/db_control_2026-07.oas.yaml get /collections
 List all collections in a project.
-Collections are supported only for pod-based indexes. Pod-based indexes cannot be created with API version `2026-07`, so this operation applies to pod-based indexes created with an earlier API version.
 
+Collections are supported only for pod-based indexes. Pod-based indexes cannot be created with API version `2026-07`, so this operation applies to pod-based indexes created with an earlier API version.
 
 <RequestExample>
   ```shell curl theme={null}

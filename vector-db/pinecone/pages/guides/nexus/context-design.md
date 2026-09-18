@@ -6,23 +6,19 @@ path: guides/nexus/context-design
 
 Learn how a Pinecone Nexus context's manifest turns your sources into queryable knowledge.
 
-A context is shaped by its manifest, which turns your sources into knowledge.
+A context turns your sources into queryable knowledge. Its manifest tells curation what to build, and curation produces two layers of knowledge, searchable chunks and distilled artifacts.
 
 ## The manifest
 
 A *manifest* is a single validated JSON document that describes how a context curates its sources into knowledge. One generic runtime reads it, the same for every context. Its main section, `curate`, defines how to build knowledge from the sources, what to chunk and embed, and which artifacts to derive. Change the manifest, change the behavior. A never-tuned context still works, because the schema ships sensible defaults.
 
-You author a context's manifest during setup. Pinecone Nexus scans your sources and suggests templates that match, then you choose how to proceed:
+You author a manifest through the [Nexus API](/reference/api/nexus/authentication), supplying it in the `manifest` field when you create or update a context, then curating. You can start from a prebuilt template or write the types yourself:
 
-* Start from a template, a prebuilt manifest for a common corpus shape. Use the one Nexus matched, or pick any other from the catalog.
-* Define artifact and edge types yourself with [**Design your own**](/guides/nexus/design-your-own-manifest), no template needed.
-* Supply your own manifest JSON with **Import your own manifest**.
+* Start from a template, a prebuilt manifest for a common corpus shape, and adjust it. Nexus suggests templates that match your sources. To see the full catalog, use `GET /manifest/templates`.
+* [Design your own manifest](/guides/nexus/design-your-own-manifest) by defining artifact and edge types directly.
+* Configure [artifact formats](/guides/nexus/configure-artifact-formats) to write a type as prose or as a queryable SQLite table.
 
-Both **Design your own** and **Import your own manifest** appear under **Or start from scratch**.
-
-You then review the artifact types, edge types, model, and estimated cost before curating. Curation executes the manifest against the sources.
-
-You can update a context's manifest later from its **Manifest** tab with **Update design**, importing a new manifest or applying a different template, or author it through the [Nexus API](/reference/api/nexus/introduction) by supplying a `manifest` field when you create or update a context.
+Curation executes the manifest against the sources. To change a context later, send a new manifest with `PUT /contexts/{slug}` and re-curate. The console can seed a context from a template for a quick start, but the full manifest surface is available only through the API.
 
 ## Knowledge layers
 
@@ -52,11 +48,4 @@ Corpus-scoped artifacts plus typed edges form a cross-document knowledge graph. 
 
 ## Artifact formats
 
-Each artifact type is written in one of two formats:
-
-* **`markdown`** (the default) writes a prose file per artifact, best for summaries, notes, and descriptions.
-* **`sqlite`** writes rows into the context's structured database, so the type becomes a queryable table.
-
-A `sqlite` type declares its `columns`, each with a name, a SQLite type (`TEXT`, `INTEGER`, `REAL`, or `NUMERIC`), and a description that steers what curation extracts into it. It can also set a `natural_key`, the columns that identify a row, so re-curating a source upserts its rows instead of duplicating them. Structured types let queries count and list exactly, rather than inferring from prose.
-
-Because a structured type needs a column schema, you author it by [importing a manifest](/guides/nexus/design-your-own-manifest#import-a-manifest-instead), not in the builder.
+Each artifact type is written in one of two formats: `markdown`, a prose file per artifact, or `sqlite`, rows in a queryable table with a column schema. To set a type's format and, for `sqlite`, its columns and keys, see [Configure artifact formats](/guides/nexus/configure-artifact-formats).

@@ -6,8 +6,8 @@ path: reference/api/2026-07/control-plane/create_backup
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/db_control_2026-07.oas.yaml post /indexes/{index_name}/backups
 Create a backup of an index.
-The backup records the schema of the index it is taken from and reports it as `schema`. An index created from the backup with [Create index from backup](https://docs.pinecone.io/reference/api/2026-07/control-plane/create_index_from_backup) inherits that schema.
 
+The backup records the schema of the index it is taken from and reports it as `schema`. An index created from the backup with [Create index from backup](https://docs.pinecone.io/reference/api/2026-07/control-plane/create_index_from_backup) inherits that schema.
 
 <RequestExample>
   ```bash curl theme={null}

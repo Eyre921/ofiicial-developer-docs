@@ -20,6 +20,7 @@ The official Pinecone plugin for [Claude Code](https://claude.ai/code) provides 
 ## Prerequisites
 
 * A [Pinecone API key](https://app.pinecone.io/organizations/-/keys)
+* [Claude Code](https://claude.ai/code) installed with access to the [official Anthropic marketplace](https://code.claude.com/docs/en/discover-plugins#official-anthropic-marketplace)
 * [Node.js](https://nodejs.org/) installed (`npx` must be on your `PATH`)
 * [uv](https://docs.astral.sh/uv/getting-started/installation/) installed (required for assistant commands)
 * [Pinecone CLI](/reference/cli/quickstart) installed (optional, for advanced operations)

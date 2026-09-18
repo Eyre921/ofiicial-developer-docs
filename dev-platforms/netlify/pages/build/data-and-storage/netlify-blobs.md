@@ -51,14 +51,14 @@ To use the Netlify Blobs API, first install the `@netlify/blobs` module using th
 npm install @netlify/blobs
 ```
 
-Then use the below methods in your functions, edge functions, or build plugins. 
+Then use the below methods in your functions, edge functions, or build plugins. In these contexts, `siteID`, `deployID` and `token` are all set for you.  For [deploy-specific stores](/build/data-and-storage/netlify-blobs/#deploy-specific-stores) using [`getDeployStore`](/build/data-and-storage/netlify-blobs/#getdeploystore), `region` is also automatically set for you. Site-wide stores using [`getStore`](/build/data-and-storage/netlify-blobs/#getstore) default to `us-east-2` unless you specify and pass [`region`](#regions).
 
 ### `getStore`
 
 Opens a site-wide store for reading and writing blobs. Data added to that store will be persisted on new deploys, available on all [deploy contexts](/deploy/deploy-overview#branches-and-deploys) and accessible from from [Functions](/build/functions/overview), [Edge Functions](/build/edge-functions/overview) and [Build Plugins](/extend/install-and-use/build-plugins).
 
 ```js
-const store = getStore(name, { siteID, token })
+const store = getStore(name, { region, siteID, token })
 ```
 
 > **Note - Site ID same as Project ID:** Site ID, the API's `site_id`, and the `NETLIFY_SITE_ID` environment variable all hold the same value, which the Netlify UI labels **Project ID**. To find it in the Netlify UI, go to 
@@ -70,6 +70,7 @@ Project configuration > General > Project information
 #### Parameters
 
 - **`name`:** the name of the store; this can be any string that adheres to the [store naming requirements](/build/data-and-storage/netlify-blobs/#requirements-and-limitations)
+- **`region`** (optional)**:** the [region](#regions) where the store's data is held. Unlike `getDeployStore`, this is **not** set automatically from your site's functions region - omit it and the store uses the default region, `us-east-2`
 - **`siteID`** (optional)**:** the ID of the Netlify site associated with the store; this is set automatically when you use Blobs from Functions, Edge Functions or Build Plugins. You can also set the `siteID` to the ID of another site you own to access its blobs via the `getStore` method.
 
 > **Note - Site ID same as Project ID:** Site ID, the API's `site_id`, and the `NETLIFY_SITE_ID` environment variable all hold the same value, which the Netlify UI labels **Project ID**. To find it in the Netlify UI, go to 
@@ -1615,9 +1616,24 @@ However, [downloading a deploy](/deploy/manage-deploys/manage-deploys-overview#d
 
 ### Regions
 
-By default, deploy-specific stores are located in the same region that your functions have been configured to run in. For a list of available regions, check out  these [region docs](/build/functions/configuration#region). 
+Netlify Blobs supports the following regions: `us-east-1`, `us-east-2`, `eu-central-1`, `ap-southeast-1` and `ap-southeast-2`. This is a smaller set than the [regions available to functions](/build/functions/configuration#region).
 
-You can also manually specify which region to connect to, regardless of your function's region, by passing the region as an option when using the `getDeployStore` method. 
+**How different blob stores choose a region:**
+
+- **Deploy-specific stores** default to the same region your functions are configured to run in.
+- **Site-wide stores** default to `us-east-2`, regardless of your functions region. They do not follow your functions configuration. You can specify a specific region from these blob store regions when you pass the `region` parameter.
+
+### Caution - Site-wide stores do not follow your functions region
+
+If your site's functions run in `eu-central-1` but you open a site-wide store with `getStore` and no `region` option, that store's data is held in `us-east-2`. Setting a functions region does not change this, and no error or warning is raised.
+
+If you need a site-wide store in a specific region - for example to meet a data residency requirement - you must pass `region` explicitly on **every** `getStore` call for that store, including reads, writes and deletes. A call that omits it will use `us-east-2` instead and will not see data held elsewhere.
+
+### Caution - Changing a region does not move data
+
+A store's region determines where its data is written and read. Changing the region for an existing store does not migrate anything: the store will appear empty in the new region, while the original data remains in the old one. To move data between regions, copy each entry to a store opened in the new region, then delete it from the old one.
+
+You can specify which region to connect to, regardless of your function's region, by passing the region as an option when using the `getStore` or `getDeployStore` method. 
 
 ### Tabs Component:
 
@@ -1665,6 +1681,18 @@ export const onPostBuild = async () => {
 };
 ```
 </TabItem>
+
+For a site-wide store, pass `region` the same way. Remember that every call that opens this store must pass the same region, or it will read from `us-east-2` and find nothing.
+
+``` ts
+
+export default async (req: Request, context: Context) => {
+  const profiles = getStore({ name: "user-profiles", region: "eu-central-1" });
+  await profiles.set("some-key", await req.text());
+
+  return new Response("Entry added");
+};
+```
 
 ## Requirements and limitations
 

@@ -58,11 +58,11 @@ firectl deployment-shape-version match \
   --model "accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>"
 ```
 
-Deploy with one of the matched shapes:
+Deploy with one of the matched shapes — or pass `default` to have Fireworks pick one:
 
 ```bash theme={null}
 firectl deployment create "accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>" \
-  --deployment-shape <SHAPE_NAME>
+  --deployment-shape default
 ```
 
 Over the API, call [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions) with the fine-tuned model as `baseModel` and pass one of the returned shape versions as `deploymentShape` in [Create Deployment](/api-reference/create-deployment).
@@ -184,7 +184,7 @@ If no BF16 addon-compatible shape is available, use [live merge](#live-merge-dep
 ### Deploy with multi-LoRA
 
 <Warning>
-  Deployments for multi-LoRA serving must use a deployment shape. Do not create this deployment without `--deployment-shape` — deployments without a shape skip validation and are the most common cause of failed deployment creations, and the unshaped path may be deprecated in the future. See [Deployment shapes](/guides/ondemand-deployments#deployment-shapes).
+  Deployments for multi-LoRA serving must use a deployment shape. Do not create this deployment without `--deployment-shape` — deployments without a shape skip validation and are the most common cause of failed deployment creations, and shapeless creation will soon require an explicit opt-in. See [Deployment shapes](/guides/ondemand-deployments#deployment-shapes).
 </Warning>
 
 <Steps>

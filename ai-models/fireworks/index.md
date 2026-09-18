@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 385 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 386 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -294,6 +294,7 @@
 
 ## models
 
+- `models/model-quality` — [Model Quality and Precision](pages/models/model-quality.md) · [原文](https://docs.fireworks.ai/models/model-quality)
 - `models/quantization` — [Quantization](pages/models/quantization.md) · [原文](https://docs.fireworks.ai/models/quantization)
 - `models/uploading-custom-models` — [Custom Models](pages/models/uploading-custom-models.md) · [原文](https://docs.fireworks.ai/models/uploading-custom-models)
 - `models/uploading-custom-models-api` — [Upload via REST API](pages/models/uploading-custom-models-api.md) · [原文](https://docs.fireworks.ai/models/uploading-custom-models-api)

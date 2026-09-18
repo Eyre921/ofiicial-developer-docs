@@ -328,6 +328,10 @@ The steps below use Claude Code. Using Cursor, Gemini CLI, or another agent? See
   <Step title="Set your API key and install the plugin">
     The plugin needs [Node.js](https://nodejs.org/) installed (and [uv](https://docs.astral.sh/uv/getting-started/installation/) for assistant commands).
 
+    <Note>
+      Installing the plugin requires access to the [official Anthropic marketplace](https://code.claude.com/docs/en/discover-plugins#official-anthropic-marketplace). Claude Code adds this access automatically the first time you start it. If the install fails with a `Marketplace "claude-plugins-official" not found` error, your network or your organization's Claude Code setup is probably blocking it.
+    </Note>
+
     ```bash theme={null}
     export PINECONE_API_KEY="YOUR_API_KEY"
     claude plugin install pinecone
@@ -36259,8 +36263,8 @@ Source: https://docs.pinecone.io/reference/api/2026-07/control-plane/create_back
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/db_control_2026-07.oas.yaml post /indexes/{index_name}/backups
 Create a backup of an index.
-The backup records the schema of the index it is taken from and reports it as `schema`. An index created from the backup with [Create index from backup](https://docs.pinecone.io/reference/api/2026-07/control-plane/create_index_from_backup) inherits that schema.
 
+The backup records the schema of the index it is taken from and reports it as `schema`. An index created from the backup with [Create index from backup](https://docs.pinecone.io/reference/api/2026-07/control-plane/create_index_from_backup) inherits that schema.
 
 <RequestExample>
   ```bash curl theme={null}
@@ -36361,8 +36365,8 @@ Source: https://docs.pinecone.io/reference/api/2026-07/control-plane/create_coll
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/db_control_2026-07.oas.yaml post /collections
 Create a Pinecone collection.
-Collections are supported only for pod-based indexes. Pod-based indexes cannot be created with API version `2026-07`, so this operation applies to pod-based indexes created with an earlier API version.
 
+Collections are supported only for pod-based indexes. Pod-based indexes cannot be created with API version `2026-07`, so this operation applies to pod-based indexes created with an earlier API version.
 
 <RequestExample>
   ```shell curl theme={null}
@@ -36386,8 +36390,11 @@ Source: https://docs.pinecone.io/reference/api/2026-07/control-plane/create_for_
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/db_control_2026-07.oas.yaml post /indexes/create-for-model
 Create an index with integrated embedding.
+
 With this type of index, you provide source text, and Pinecone uses a [hosted embedding model](https://docs.pinecone.io/guides/index-data/create-an-index#embedding-models) to convert the text automatically during [upsert](https://docs.pinecone.io/reference/api/2026-07/data-plane/upsert_records) and [search](https://docs.pinecone.io/reference/api/2026-07/data-plane/search_records).
+
 The response is this version's index model, with the embedding configuration surfaced as a `semantic_text` field in the index `schema`, named after the `field_map` text entry. Read and write the index through the records API.
+
 For guidance and examples, see [Create an index](https://docs.pinecone.io/guides/index-data/create-an-index#integrated-embedding).
 
 <RequestExample>
@@ -36431,11 +36438,13 @@ For guidance and examples, see [Create an index](https://docs.pinecone.io/guides
 Source: https://docs.pinecone.io/reference/api/2026-07/control-plane/create_index
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/db_control_2026-07.oas.yaml post /indexes
-Create a Pinecone index. Define the schema for your index — dense vector, sparse vector, and full-text search fields — and, optionally, the deployment infrastructure (managed serverless or BYOC). To create an index with an integrated embedding model, use [Create an index with integrated embedding](https://docs.pinecone.io/reference/api/2026-07/control-plane/create_index_for_model). If `deployment` is omitted, the index is deployed as a managed (serverless) index on `aws` in `us-east-1`.
-**The index schema cannot be modified after creation.** Field types, dimensions, metrics, and text-analysis settings are permanent. Choose your schema carefully before creating an index.
-To create an index from a backup, use [Create index from backup](https://docs.pinecone.io/reference/api/2026-07/control-plane/create_index_from_backup).
-For guidance and examples, see [Create an index](https://docs.pinecone.io/guides/index-data/create-an-index).
+Create a Pinecone index. Define the schema for your index — dense vector, sparse vector, and full-text search fields — and, optionally, the deployment infrastructure (managed serverless or BYOC). To create an index with an integrated embedding model, use [Create an index with integrated embedding](https://docs.pinecone.io/reference/api/2026-07/control-plane/create_index_for_model).
 
+**The index schema cannot be modified after creation.** Field types, dimensions, metrics, and text-analysis settings are permanent. Choose your schema carefully before creating an index.
+
+To create an index from a backup, use [Create index from backup](https://docs.pinecone.io/reference/api/2026-07/control-plane/create_index_from_backup).
+
+For guidance and examples, see [Create an index](https://docs.pinecone.io/guides/index-data/create-an-index).
 
 Creates a new schema-defined index. The schema declares each field and its type — dense vector, sparse vector, or [full-text search](/guides/search/full-text-search). The index initializes asynchronously; poll [`GET /indexes/{index_name}`](/reference/api/2026-07/control-plane/describe_index) until `status.ready: true` (and, for `Dedicated` read capacity, `read_capacity.status.state: "Ready"`) before performing data plane operations.
 
@@ -36631,7 +36640,9 @@ Source: https://docs.pinecone.io/reference/api/2026-07/control-plane/create_inde
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/db_control_2026-07.oas.yaml post /backups/{backup_id}/create-index
 Create an index from a backup.
+
 The restored index inherits the schema of the index the backup was taken from, including its full-text search fields and its integrated embedding configuration, and the request cannot override it. A backup that carries no `schema` restores an index whose fields are derived from the source index's dimension, metric, and vector type, and reported under the reserved `_values` / `_sparse_values` names.
+
 For serverless backups, you can optionally set `read_capacity` so the restored index is created with dedicated read nodes (DRN) instead of defaulting to on-demand capacity.
 
 <RequestExample>
@@ -36706,8 +36717,8 @@ Source: https://docs.pinecone.io/reference/api/2026-07/control-plane/delete_coll
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/db_control_2026-07.oas.yaml delete /collections/{collection_name}
 Delete an existing collection.
-Collections are supported only for pod-based indexes. Pod-based indexes cannot be created with API version `2026-07`, so this operation applies to pod-based indexes created with an earlier API version.
 
+Collections are supported only for pod-based indexes. Pod-based indexes cannot be created with API version `2026-07`, so this operation applies to pod-based indexes created with an earlier API version.
 
 <RequestExample>
   ```shell curl theme={null}
@@ -36788,8 +36799,8 @@ Source: https://docs.pinecone.io/reference/api/2026-07/control-plane/describe_co
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/db_control_2026-07.oas.yaml get /collections/{collection_name}
 Get a description of a collection.
-Collections are supported only for pod-based indexes. Pod-based indexes cannot be created with API version `2026-07`, so this operation applies to pod-based indexes created with an earlier API version.
 
+Collections are supported only for pod-based indexes. Pod-based indexes cannot be created with API version `2026-07`, so this operation applies to pod-based indexes created with an earlier API version.
 
 <RequestExample>
   ```shell curl theme={null}
@@ -36921,8 +36932,8 @@ Source: https://docs.pinecone.io/reference/api/2026-07/control-plane/list_collec
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/db_control_2026-07.oas.yaml get /collections
 List all collections in a project.
-Collections are supported only for pod-based indexes. Pod-based indexes cannot be created with API version `2026-07`, so this operation applies to pod-based indexes created with an earlier API version.
 
+Collections are supported only for pod-based indexes. Pod-based indexes cannot be created with API version `2026-07`, so this operation applies to pod-based indexes created with an earlier API version.
 
 <RequestExample>
   ```shell curl theme={null}
@@ -36940,6 +36951,7 @@ Source: https://docs.pinecone.io/reference/api/2026-07/control-plane/list_index_
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/db_control_2026-07.oas.yaml get /indexes/{index_name}/backups
 When `include_deleted` is false (or omitted), `index_name` must resolve to an active index in the project. If no active index by that name exists—including the case where only deleted indexes have used the name—the API returns **404**, not an empty list.
+
 When `include_deleted` is true, the API returns backups from every index in the project that has ever used this name (active and deleted). The `source_index_deleted_at` field is present only when the backup is from a deleted index. **404** is returned only when no index by that name has ever existed in the project (active or deleted).
 
 <RequestExample>
@@ -62943,6 +62955,7 @@ The official Pinecone plugin for [Claude Code](https://claude.ai/code) provides 
 ## Prerequisites
 
 * A [Pinecone API key](https://app.pinecone.io/organizations/-/keys)
+* [Claude Code](https://claude.ai/code) installed with access to the [official Anthropic marketplace](https://code.claude.com/docs/en/discover-plugins#official-anthropic-marketplace)
 * [Node.js](https://nodejs.org/) installed (`npx` must be on your `PATH`)
 * [uv](https://docs.astral.sh/uv/getting-started/installation/) installed (required for assistant commands)
 * [Pinecone CLI](/reference/cli/quickstart) installed (optional, for advanced operations)
@@ -83247,14 +83260,6 @@ Exchange a Pinecone API key for the session token every other endpoint expects. 
 
 
 
-# Browse a connector's folders/files
-Source: https://docs.pinecone.io/api-reference/connectors/browse-a-connectors-foldersfiles
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /connectors/{id}/items
-Browse the provider's folders and files to find the ids to import. Omit `folder` for the root.
-
-
-
 # Get a connector
 Source: https://docs.pinecone.io/api-reference/connectors/get-a-connector
 
@@ -83855,28 +83860,167 @@ KnowQL is the declarative query language agents use to query Nexus. A KnowQL que
 A session is a multi-turn conversation. A single query is one turn: a question in, an answer out. A session keeps state across turns, so follow-up questions resolve against what came before, and it can draw on more than one context at once. Start a session from **Sessions** in the sidebar, or from a context's **Query** tab.
 
 
+# Configure artifact formats
+Source: https://docs.pinecone.io/guides/nexus/configure-artifact-formats
+
+Configure Pinecone Nexus artifact types as markdown prose or queryable SQLite tables through the manifest API.
+
+In Pinecone Nexus, curation writes each artifact type in one of two formats, set per type in the [manifest](/guides/nexus/context-design): `markdown` for prose, or `sqlite` for rows in a queryable table. You choose the format in the `manifest` you send when you create or update a context.
+
+## Markdown artifacts
+
+`markdown` is the default. Curation writes one prose file per artifact, embedded for semantic retrieval, so it fits knowledge that reads as text: summaries, concepts, and per-document notes. A markdown artifact type needs a `name`, a `kind`, a `scope`, and a `description` that steers what curation extracts:
+
+```json theme={null}
+{
+  "name": "Concept",
+  "kind": "topic",
+  "scope": "corpus",
+  "description": "A recurring concept or theme that appears across the corpus."
+}
+```
+
+Omitting `format` defaults to `markdown`. See [artifact kinds](/guides/nexus/context-design#artifact-kinds) for the kinds a type can take.
+
+## SQLite artifacts
+
+`sqlite` writes rows into the context's structured database instead of prose, so the type becomes a table the query agent reads with SQL for exact counts, filters, and joins. Set `format` to `sqlite` and declare the table's `columns`:
+
+```json theme={null}
+{
+  "name": "Meeting Log",
+  "kind": "entity",
+  "scope": "corpus",
+  "format": "sqlite",
+  "description": "One row per meeting: the body that met, the date, the type, and who chaired.",
+  "columns": [
+    { "name": "body", "type": "TEXT", "description": "The board, committee, or team that met, as a short canonical name." },
+    { "name": "meeting_date", "type": "TEXT", "description": "The meeting date in ISO format, YYYY-MM-DD." },
+    { "name": "year", "type": "INTEGER", "description": "The calendar year of the meeting." },
+    { "name": "chair", "type": "TEXT", "description": "Full name of whoever chaired the meeting." }
+  ],
+  "natural_key": ["body", "meeting_date"]
+}
+```
+
+* Each column has a `name`, a `type` (`TEXT`, `INTEGER`, `REAL`, or `NUMERIC`), and a `description` that steers what curation extracts into it.
+* `natural_key` names the columns that identify a row, so re-curating a source upserts its rows instead of duplicating them.
+
+Because the table is queryable, a `sqlite` type answers questions prose can't, like "how many meetings did each chair run this year?" or "who was present at a given meeting?" To answer across tables, define a second table that shares columns, so queries can join the two:
+
+```json theme={null}
+{
+  "name": "Meeting Attendance",
+  "kind": "entity",
+  "scope": "corpus",
+  "format": "sqlite",
+  "description": "One row per person per meeting, taken from the attendance roster.",
+  "columns": [
+    { "name": "person", "type": "TEXT", "description": "The attendee's full name, spelled the same way wherever it appears, so counts and joins line up." },
+    { "name": "body", "type": "TEXT", "description": "The body that met, matching Meeting Log." },
+    { "name": "meeting_date", "type": "TEXT", "description": "The meeting date in ISO format, matching Meeting Log." },
+    { "name": "status", "type": "TEXT", "description": "Either 'present' or 'absent', from the roster." }
+  ],
+  "natural_key": ["person", "body", "meeting_date"]
+}
+```
+
+## Set the formats through the API
+
+Put your artifact types in a context's manifest under `curate.artifacts.artifact_types`, then curate. The walkthrough below seeds the `Concept` and `Meeting Log` types, and you add more the same way. These steps use the data-plane base URL and session token from [Authentication](/reference/api/nexus/authentication).
+
+<Note>
+  Add at least one source to the context before you curate. See the [quickstart](/guides/nexus/quickstart) for creating a context and adding sources.
+</Note>
+
+<Steps>
+  <Step title="Write the manifest to the context">
+    Send the manifest when you create the context, or update an existing one with `PUT /contexts/{slug}`. This example seeds both a markdown type and a SQLite table at creation:
+
+    ```bash curl theme={null}
+    curl -fsS -X POST "$NEXUS_BASE_URL/contexts" \
+      -H "Authorization: Bearer $NEXUS_TOKEN" \
+      -H 'Content-Type: application/json' \
+      -H 'X-Pinecone-Api-Version: 2026-07' \
+      -d '{
+        "slug": "board-minutes",
+        "name": "Board minutes",
+        "manifest": {
+          "curate": {
+            "artifacts": {
+              "enabled": true,
+              "artifact_types": [
+                { "name": "Concept", "kind": "topic", "scope": "corpus",
+                  "description": "A recurring concept or theme across the minutes." },
+                { "name": "Meeting Log", "kind": "entity", "scope": "corpus", "format": "sqlite",
+                  "description": "One row per meeting: body, date, and chair.",
+                  "columns": [
+                    { "name": "body", "type": "TEXT", "description": "The body that met." },
+                    { "name": "meeting_date", "type": "TEXT", "description": "ISO date, YYYY-MM-DD." },
+                    { "name": "chair", "type": "TEXT", "description": "Who chaired the meeting." }
+                  ],
+                  "natural_key": ["body", "meeting_date"] }
+              ]
+            }
+          }
+        }
+      }'
+    ```
+  </Step>
+
+  <Step title="Curate the context">
+    Curation reads the sources and builds the artifacts your manifest defines. An empty body runs the first curate:
+
+    ```bash curl theme={null}
+    curl -fsS -X POST "$NEXUS_BASE_URL/contexts/board-minutes/curate" \
+      -H "Authorization: Bearer $NEXUS_TOKEN" \
+      -H 'Content-Type: application/json' \
+      -H 'X-Pinecone-Api-Version: 2026-07' \
+      -d '{}'
+    ```
+
+    After a later manifest change, pass `{"force": true}` to rebuild everything under the new manifest. Curation runs as a background task, so query the context once it finishes. See [How curation works](/guides/nexus/how-curation-works).
+  </Step>
+
+  <Step title="Query across both formats">
+    A query reads both formats: the prose `Concept` artifacts semantically, and the `Meeting Log` table with SQL for exact answers.
+
+    ```bash curl theme={null}
+    curl -fsS -X POST "$NEXUS_BASE_URL/query" \
+      -H "Authorization: Bearer $NEXUS_TOKEN" \
+      -H 'Content-Type: application/json' \
+      -H 'X-Pinecone-Api-Version: 2026-07' \
+      -d '{"scope": ["board-minutes"], "ask": "How many meetings did each chair run this year?"}' \
+    | jq -r '.output[].content[].text'
+    ```
+
+    ```console Output theme={null}
+    Jordan Lee chaired 8 meetings, Priya Shah chaired 5, and Marcus Cole chaired 3.
+    ```
+
+    The counts come from the `Meeting Log` table, so they're exact rather than estimated from prose.
+  </Step>
+</Steps>
+
+
 # Context design overview
 Source: https://docs.pinecone.io/guides/nexus/context-design
 
 Learn how a Pinecone Nexus context's manifest turns your sources into queryable knowledge.
 
-A context is shaped by its manifest, which turns your sources into knowledge.
+A context turns your sources into queryable knowledge. Its manifest tells curation what to build, and curation produces two layers of knowledge, searchable chunks and distilled artifacts.
 
 ## The manifest
 
 A *manifest* is a single validated JSON document that describes how a context curates its sources into knowledge. One generic runtime reads it, the same for every context. Its main section, `curate`, defines how to build knowledge from the sources, what to chunk and embed, and which artifacts to derive. Change the manifest, change the behavior. A never-tuned context still works, because the schema ships sensible defaults.
 
-You author a context's manifest during setup. Pinecone Nexus scans your sources and suggests templates that match, then you choose how to proceed:
+You author a manifest through the [Nexus API](/reference/api/nexus/authentication), supplying it in the `manifest` field when you create or update a context, then curating. You can start from a prebuilt template or write the types yourself:
 
-* Start from a template, a prebuilt manifest for a common corpus shape. Use the one Nexus matched, or pick any other from the catalog.
-* Define artifact and edge types yourself with [**Design your own**](/guides/nexus/design-your-own-manifest), no template needed.
-* Supply your own manifest JSON with **Import your own manifest**.
+* Start from a template, a prebuilt manifest for a common corpus shape, and adjust it. Nexus suggests templates that match your sources. To see the full catalog, use `GET /manifest/templates`.
+* [Design your own manifest](/guides/nexus/design-your-own-manifest) by defining artifact and edge types directly.
+* Configure [artifact formats](/guides/nexus/configure-artifact-formats) to write a type as prose or as a queryable SQLite table.
 
-Both **Design your own** and **Import your own manifest** appear under **Or start from scratch**.
-
-You then review the artifact types, edge types, model, and estimated cost before curating. Curation executes the manifest against the sources.
-
-You can update a context's manifest later from its **Manifest** tab with **Update design**, importing a new manifest or applying a different template, or author it through the [Nexus API](/reference/api/nexus/introduction) by supplying a `manifest` field when you create or update a context.
+Curation executes the manifest against the sources. To change a context later, send a new manifest with `PUT /contexts/{slug}` and re-curate. The console can seed a context from a template for a quick start, but the full manifest surface is available only through the API.
 
 ## Knowledge layers
 
@@ -83906,105 +84050,211 @@ Corpus-scoped artifacts plus typed edges form a cross-document knowledge graph. 
 
 ## Artifact formats
 
-Each artifact type is written in one of two formats:
-
-* **`markdown`** (the default) writes a prose file per artifact, best for summaries, notes, and descriptions.
-* **`sqlite`** writes rows into the context's structured database, so the type becomes a queryable table.
-
-A `sqlite` type declares its `columns`, each with a name, a SQLite type (`TEXT`, `INTEGER`, `REAL`, or `NUMERIC`), and a description that steers what curation extracts into it. It can also set a `natural_key`, the columns that identify a row, so re-curating a source upserts its rows instead of duplicating them. Structured types let queries count and list exactly, rather than inferring from prose.
-
-Because a structured type needs a column schema, you author it by [importing a manifest](/guides/nexus/design-your-own-manifest#import-a-manifest-instead), not in the builder.
+Each artifact type is written in one of two formats: `markdown`, a prose file per artifact, or `sqlite`, rows in a queryable table with a column schema. To set a type's format and, for `sqlite`, its columns and keys, see [Configure artifact formats](/guides/nexus/configure-artifact-formats).
 
 
 # Design your own manifest
 Source: https://docs.pinecone.io/guides/nexus/design-your-own-manifest
 
-Design a Pinecone Nexus context's manifest yourself by defining custom artifact and edge types in the console, then curating.
+Author a Pinecone Nexus context's manifest through the API by defining custom artifact and edge types, then curating.
 
-When a template doesn't fit your corpus, you can design a context's [manifest](/guides/nexus/context-design) yourself. You define the artifact types and edge types that curation builds, and Pinecone Nexus handles the rest.
+When a template doesn't fit your corpus, you can author a Pinecone Nexus context's [manifest](/guides/nexus/context-design) yourself. You define the artifact types and edge types curation builds, send them in the `manifest` field when you create or update a context, then curate.
 
-## Build the manifest
+## Artifact and edge types
 
-You design a manifest during a context's guided setup, which has three steps: **Add sources**, **Design your context**, and **Review and curate**. See the [quickstart](/guides/nexus/quickstart) for the full setup. The steps below start on **Design your context**.
+A manifest's `curate.artifacts` section holds your artifact types and edge types:
 
-<Note>
-  Add at least one source to a context before you design its manifest. You can update it later from the context's **Manifest** tab with **Update design**, importing a new manifest or applying a different template.
-</Note>
+* An artifact type has a `name`, a `kind` (its built-in shape, see [artifact kinds](/guides/nexus/context-design#artifact-kinds)), a `scope` (`corpus` for one artifact per subject across the corpus, or `document` for one per source), and a `description` that steers extraction. Optionally, `coverage` lists the points the extraction must address. A type defaults to the `markdown` format. See [artifact formats](/guides/nexus/configure-artifact-formats) for the `sqlite` table format.
+* An edge type has a `name`, the `from` and `to` artifact types it connects, a `description`, and optional `attributes` recorded on each edge. Edges turn the artifacts into a graph the query agent can traverse.
+
+The `kind` sets what an artifact represents and how it's extracted. The `name` is your label for that type. A corpus can mix kinds: a per-document `summary`, corpus-wide `topic` and `entity` types, and dated `event` types, linked by edges.
+
+## Author it through the API
+
+These steps use the data-plane base URL and session token from [Authentication](/reference/api/nexus/authentication). The manifest here is a general concept-and-entity design: a per-document note, corpus-wide concepts and entities, and an edge linking them.
 
 <Steps>
-  <Step title="Start from scratch">
-    On the **Design your context** step, under **Or start from scratch**, choose **Design your own**, then click **Review**. The **Review and curate** step opens with an empty manifest, which you fill in over the next two steps.
+  <Step title="Create the context with your manifest">
+    Send the manifest in the `manifest` field when you create the context. To apply it to an existing context instead, use `PUT /contexts/{slug}` with the same body.
+
+    ```bash curl theme={null}
+    curl -fsS -X POST "$NEXUS_BASE_URL/contexts" \
+      -H "Authorization: Bearer $NEXUS_TOKEN" \
+      -H 'Content-Type: application/json' \
+      -H 'X-Pinecone-Api-Version: 2026-07' \
+      -d '{
+        "slug": "company-knowledge",
+        "name": "Company knowledge",
+        "manifest": {
+          "curate": {
+            "artifacts": {
+              "enabled": true,
+              "artifact_types": [
+                { "name": "Note", "kind": "summary", "scope": "document",
+                  "description": "A per-document note: key points, decisions, and takeaways." },
+                { "name": "Concept", "kind": "topic", "scope": "corpus",
+                  "description": "A recurring concept or theme across the corpus." },
+                { "name": "Entity", "kind": "entity", "scope": "corpus",
+                  "description": "A named person, organization, product, or system across the corpus." }
+              ],
+              "edge_types": [
+                { "name": "relates_to", "from": "Entity", "to": "Concept",
+                  "description": "The entity relates to or exemplifies this concept." }
+              ]
+            }
+          }
+        }
+      }'
+    ```
   </Step>
 
-  <Step title="Add an artifact type">
-    In **Artifact types**, click **+ Add artifact**, then fill in the fields:
-
-    * **Name** is the type's identifier, shown in the console (for example, `department`).
-    * **Kind** is the built-in shape it's based on: `summary`, `topic`, `entity`, `event`, `doc`, or `page`. See [artifact kinds](/guides/nexus/context-design#artifact-kinds).
-    * **Scope** is `corpus` for one set across all sources, or `document` for one per source file.
-    * **Description** tells curation, in plain language, what to extract.
-
-    Click **Add**, then repeat for each type you want.
+  <Step title="Add sources">
+    Curation needs sources. Upload files or import from a connector, then confirm at least one source is staged. See the [quickstart](/guides/nexus/quickstart) for adding sources.
   </Step>
 
-  <Step title="Add an edge type">
-    Edges link your artifact types into a knowledge graph. This step is optional.
+  <Step title="Curate">
+    Curation executes the manifest against the sources, building your artifact and edge types:
 
-    In **Edge types**, click **+ Add edge**, then fill in the fields:
+    ```bash curl theme={null}
+    curl -fsS -X POST "$NEXUS_BASE_URL/contexts/company-knowledge/curate" \
+      -H "Authorization: Bearer $NEXUS_TOKEN" \
+      -H 'Content-Type: application/json' \
+      -H 'X-Pinecone-Api-Version: 2026-07' \
+      -d '{}'
+    ```
 
-    * **Name** is the relationship (for example, `owns`).
-    * **From** and **To** are the artifact types the edge connects.
-    * **Description** explains what the relationship means.
-
-    Click **Add edge**, then repeat for each relationship you want.
+    An empty body runs an incremental curate. After a later manifest change, pass `{"force": true}` to rebuild everything under the new manifest. Curation runs as a background task, so query the context once it finishes. See [How curation works](/guides/nexus/how-curation-works).
   </Step>
 
-  <Step title="Check the cost and curate">
-    Check the **Model** and the **Estimated cost**. To see the manifest you built, expand **Review manifest JSON**. When it looks right, click **Save and curate**. The curation task opens.
+  <Step title="Query the context">
+    Query the context to see the artifacts and edges curation built:
 
-    Curation runs in the background. When it finishes, your artifact types appear on the context's **Knowledge** tab, and queries can traverse the edges you defined.
+    ```bash curl theme={null}
+    curl -fsS -X POST "$NEXUS_BASE_URL/query" \
+      -H "Authorization: Bearer $NEXUS_TOKEN" \
+      -H 'Content-Type: application/json' \
+      -H 'X-Pinecone-Api-Version: 2026-07' \
+      -d '{"scope": ["company-knowledge"], "ask": "How do the entities relate to each concept?"}'
+    ```
   </Step>
 </Steps>
 
-## Example manifest
+## More example manifests
 
-A finished manifest looks like this, with your artifact and edge types under `curate.artifacts`:
+Each of these is a `curate.artifacts` manifest for a different corpus. Send one in the `manifest` field the same way, and adjust the types to your own documents.
 
-```json theme={null}
-{
-  "curate": {
-    "artifacts": {
-      "enabled": true,
-      "artifact_types": [
-        {
-          "name": "department",
-          "kind": "entity",
-          "scope": "corpus",
-          "description": "A team or department that owns policies."
-        },
-        {
-          "name": "policy",
-          "kind": "topic",
-          "scope": "corpus",
-          "description": "A company policy and the rules it sets."
+<AccordionGroup>
+  <Accordion title="Contracts, obligations, and key dates">
+    Shows the `event` kind, a `coverage` list on a type, and edge `attributes`.
+
+    ```json theme={null}
+    {
+      "curate": {
+        "artifacts": {
+          "enabled": true,
+          "artifact_types": [
+            { "name": "Agreement", "kind": "entity", "scope": "corpus",
+              "description": "One contract or agreement in the corpus." },
+            { "name": "Party", "kind": "entity", "scope": "corpus",
+              "description": "A person or organization that is party to an agreement." },
+            { "name": "Obligation", "kind": "topic", "scope": "corpus",
+              "description": "A duty an agreement imposes on a party.",
+              "coverage": ["Who owes the obligation", "What it requires", "Any deadline or condition"] },
+            { "name": "Key Date", "kind": "event", "scope": "corpus",
+              "description": "A dated milestone in an agreement, such as an effective or renewal date." }
+          ],
+          "edge_types": [
+            { "name": "party_to", "from": "Party", "to": "Agreement",
+              "description": "The party is bound by this agreement.", "attributes": ["role"] },
+            { "name": "owed_by", "from": "Party", "to": "Obligation",
+              "description": "The party owes this obligation." },
+            { "name": "effective_on", "from": "Agreement", "to": "Key Date",
+              "description": "The agreement takes effect on this date.", "attributes": ["type"] }
+          ]
         }
-      ],
-      "edge_types": [
-        {
-          "name": "owns",
-          "from": "department",
-          "to": "policy",
-          "description": "The department responsible for a policy."
-        }
-      ]
+      }
     }
-  }
-}
-```
+    ```
+  </Accordion>
 
-## Import a manifest instead
+  <Accordion title="Papers and citations">
+    Shows a per-document summary and a self-referential edge (a paper cites another paper).
 
-If you already have a manifest, skip the builder. On the **Design your context** step, under **Or start from scratch**, choose **Import your own manifest**, paste a complete manifest in the shape shown [above](#example-manifest), then click **Save and curate**. Nexus applies it and starts curation.
+    ```json theme={null}
+    {
+      "curate": {
+        "artifacts": {
+          "enabled": true,
+          "artifact_types": [
+            { "name": "Paper Summary", "kind": "summary", "scope": "document",
+              "description": "A per-paper summary: the problem, method, and headline result." },
+            { "name": "Paper", "kind": "entity", "scope": "corpus",
+              "description": "One research paper in the corpus." },
+            { "name": "Method", "kind": "topic", "scope": "corpus",
+              "description": "A method or technique a paper uses." }
+          ],
+          "edge_types": [
+            { "name": "uses_method", "from": "Paper", "to": "Method",
+              "description": "The paper uses this method." },
+            { "name": "cites", "from": "Paper", "to": "Paper",
+              "description": "The paper cites another paper.", "attributes": ["context"] }
+          ]
+        }
+      }
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="Code and technical docs">
+    Shows a dependency graph: a self-referential `depends_on` edge, plus edge `attributes`.
+
+    ```json theme={null}
+    {
+      "curate": {
+        "artifacts": {
+          "enabled": true,
+          "artifact_types": [
+            { "name": "Component", "kind": "entity", "scope": "corpus",
+              "description": "A service, module, or library in the codebase." },
+            { "name": "API Endpoint", "kind": "entity", "scope": "corpus",
+              "description": "An endpoint a component exposes." },
+            { "name": "Pattern", "kind": "topic", "scope": "corpus",
+              "description": "A design or architectural pattern used across the codebase." }
+          ],
+          "edge_types": [
+            { "name": "depends_on", "from": "Component", "to": "Component",
+              "description": "The component depends on another component.", "attributes": ["type"] },
+            { "name": "exposes_endpoint", "from": "Component", "to": "API Endpoint",
+              "description": "The component exposes this endpoint.", "attributes": ["method"] },
+            { "name": "implements_pattern", "from": "Component", "to": "Pattern",
+              "description": "The component implements this pattern." }
+          ]
+        }
+      }
+    }
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Tune the design
+
+Beyond the basics, a few fields shape how thoroughly curation builds each type:
+
+* `coverage` (per type): The points the extraction must address wherever a source speaks to them. Use it to make a type consistent and thorough.
+* `scope` (per type): Set `document` for one artifact per source, which suits summaries and notes, or `corpus` to fold mentions from across every source into one artifact per subject, which suits entities and themes.
+* `attributes` (per edge): Extra values recorded on each edge, such as a `role` on a `party_to` edge or a `value` on a metric edge.
+* `min_doc_count` (on `curate.artifacts`, or overridden per type): How many sources must mention a corpus subject before it earns its own artifact. Raise it to suppress one-off mentions.
+
+For the `sqlite` table format, its `columns`, and its upsert `natural_key`, see [artifact formats](/guides/nexus/configure-artifact-formats).
+
+## Revise a manifest
+
+To change a context's manifest after it's curated:
+
+1. Send the full updated manifest with `PUT /contexts/{slug}`.
+2. Run a forced curate, `POST /contexts/{slug}/curate` with `{"force": true}`, so the change reaches the index.
+
+This is the API equivalent of updating a context's design in the console. To read the manifest currently pinned on a context, use `GET /contexts/{slug}/manifest`.
 
 
 # Nexus curation
@@ -84388,6 +84638,7 @@ See [key concepts](/guides/nexus/concepts) for the full model.
 
 * A Pinecone **Enterprise** plan (required for BYOC).
 * A dedicated cloud account (AWS, GCP, or Azure) with admin access, plus the install tooling. See the [deploy prerequisites](/guides/nexus/byoc/deploy#prerequisites) for the full list.
+* A [Pinecone API key](/reference/api/nexus/authentication#get-an-api-key) for the target project.
 * Documents to build your context from, such as files to upload or a Hugging Face, GitHub, Box, or Google Drive source.
 
 ## 1. Deploy Nexus
@@ -84399,8 +84650,8 @@ Nexus runs in your own cloud, so deploying it comes first.
     Follow [Deploy Nexus BYOC](/guides/nexus/byoc/deploy) to install Nexus in your own cloud account with the Pulumi installer.
   </Step>
 
-  <Step title="Open your deployment's console">
-    When the install finishes, it prints your workspace console URL. Open it to reach your deployment's console, where the rest of this quickstart happens.
+  <Step title="Get your console URL and API host">
+    When the install finishes, it prints your workspace console URL and API host. Open the console to work in the UI, or use the host as your data-plane base URL for the API. See [Authentication](/reference/api/nexus/authentication) to set `NEXUS_BASE_URL` and get a token.
   </Step>
 </Steps>
 
@@ -84412,61 +84663,152 @@ Build a context from your own documents. A company knowledge base might include 
 * `policies/expenses.pdf`: Standard expenses over \$1,000 require manager approval before reimbursement.
 * `policies/vendors.pdf`: Vendor invoices over \$10,000 require finance approval. Invoices over \$25,000 also require VP sign-off.
 
-The queries later in this quickstart draw on these files.
+The queries later in this quickstart draw on these files. You can build the context through the API or the console.
 
-<Steps>
-  <Step title="Create the context">
-    In the console sidebar, next to **Contexts**, click **+ New**. The **New context** dialog opens on the **New context** tab.
+<Tabs>
+  <Tab title="API">
+    <Steps>
+      <Step title="Set your base URL and token">
+        Point at your workspace host and exchange your Pinecone API key for a session token. See [Authentication](/reference/api/nexus/authentication) for details.
 
-    Enter a **Name** (for example, `Company knowledge base`) and a **Description**, then click **Create context**. The URL slug is generated from the name.
+        ```bash theme={null}
+        export NEXUS_BASE_URL="https://YOUR_WORKSPACE_HOST/api"
+        export NEXUS_TOKEN="$(
+          curl -fsS "$NEXUS_BASE_URL/auth/login" \
+            -H 'Content-Type: application/json' \
+            -H 'X-Pinecone-Api-Version: 2026-07' \
+            -d "{\"api_key\":\"$PINECONE_API_KEY\"}" | jq -r '.token'
+        )"
+        ```
+      </Step>
 
-    Creating the context opens a guided setup with three steps: **Add sources**, **Design your context**, and **Review and curate**.
-  </Step>
+      <Step title="Create the context">
+        Create the context with a slug and a name:
 
-  <Step title="Add sources">
-    On the **Add sources** step, bring in your documents in one of these ways:
+        ```bash curl theme={null}
+        curl -fsS -X POST "$NEXUS_BASE_URL/contexts" \
+          -H "Authorization: Bearer $NEXUS_TOKEN" \
+          -H 'Content-Type: application/json' \
+          -H 'X-Pinecone-Api-Version: 2026-07' \
+          -d '{"slug": "company-knowledge-base", "name": "Company knowledge base"}'
+        ```
 
-    * **Upload** files from your computer, individually or as an archive (`.zip`, `.tar`, `.tar.gz`, or `.tgz`).
-    * Pull from a public **Hugging Face** or **GitHub** repository URL.
-    * Connect a **Box** or **Google Drive** account.
+        A new context curates under the default manifest. To define your own artifact and edge types, see [Design your own manifest](/guides/nexus/design-your-own-manifest).
+      </Step>
 
-    After you add at least one source, click **Design your context**.
-  </Step>
+      <Step title="Add sources">
+        Upload each of your files, one request per file (archives are expanded automatically), or import from a connector with `POST /contexts/{slug}/import`:
 
-  <Step title="Design your context">
-    On the **Design your context** step, Nexus scans your sources and suggests [manifest](/guides/nexus/context-design) templates that match. Each template describes the artifacts and edges it'll build.
+        ```bash curl theme={null}
+        for f in policies/refunds.md policies/expenses.pdf policies/vendors.pdf; do
+          curl -fsS -X POST "$NEXUS_BASE_URL/contexts/company-knowledge-base/import/upload" \
+            -H "Authorization: Bearer $NEXUS_TOKEN" \
+            -H 'X-Pinecone-Api-Version: 2026-07' \
+            -F "file=@$f"
+        done
+        ```
+      </Step>
 
-    Pick a template that fits, such as **General knowledge base**. If none fit, you can [design your own manifest](/guides/nexus/design-your-own-manifest) or import one under **Or start from scratch**.
+      <Step title="Curate">
+        Curate the context to build its knowledge from the sources:
 
-    Click **Review**.
-  </Step>
+        ```bash curl theme={null}
+        curl -fsS -X POST "$NEXUS_BASE_URL/contexts/company-knowledge-base/curate" \
+          -H "Authorization: Bearer $NEXUS_TOKEN" \
+          -H 'Content-Type: application/json' \
+          -H 'X-Pinecone-Api-Version: 2026-07' \
+          -d '{}'
+        ```
 
-  <Step title="Review and curate">
-    On the **Review and curate** step, check the artifact types, edge types, model, and estimated cost, then click **Save and curate**. The curation task opens.
+        Curation chunks your sources, distills them into typed artifacts, and indexes everything. It runs as a background task, so query the context once it finishes. See [How curation works](/guides/nexus/how-curation-works).
+      </Step>
+    </Steps>
+  </Tab>
 
-    Nexus [curates](/guides/nexus/how-curation-works) your sources. It chunks them, distills them into the typed artifacts the manifest defines, then indexes everything.
+  <Tab title="Console">
+    <Steps>
+      <Step title="Create the context">
+        In the console sidebar, next to **Contexts**, click **+ New**. The **New context** dialog opens on the **New context** tab.
 
-    Curation runs in the background, so you can leave the task and return to the context while it works.
-  </Step>
-</Steps>
+        Enter a **Name** (for example, `Company knowledge base`) and a **Description**, then click **Create context**. The URL slug is generated from the name.
 
-<Tip>
-  Have a `.context.zip` pack? In the **New context** dialog, open the **Restore** tab, drop the pack (or click **choose a file**), then click **Restore context**. Packs come from a context's **Packs** tab.
-</Tip>
+        Creating the context opens a guided setup with three steps: **Add sources**, **Design your context**, and **Review and curate**.
+      </Step>
+
+      <Step title="Add sources">
+        On the **Add sources** step, bring in your documents in one of these ways:
+
+        * **Upload** files from your computer, individually or as an archive (`.zip`, `.tar`, `.tar.gz`, or `.tgz`).
+        * Pull from a public **Hugging Face** or **GitHub** repository URL.
+        * Connect a **Box** or **Google Drive** account.
+
+        After you add at least one source, click **Design your context**.
+      </Step>
+
+      <Step title="Design your context">
+        On the **Design your context** step, Nexus scans your sources and suggests [manifest](/guides/nexus/context-design) templates that match. Each template describes the artifacts and edges it'll build.
+
+        Pick a template that fits, such as **General knowledge base**. If none fit, [design your own manifest](/guides/nexus/design-your-own-manifest) through the API.
+
+        Click **Review**.
+      </Step>
+
+      <Step title="Curate">
+        On the **Review and curate** step, check the artifact types, edge types, model, and estimated cost, then click **Save and curate**. The curation task opens.
+
+        Nexus [curates](/guides/nexus/how-curation-works) your sources. It chunks them, distills them into the typed artifacts the manifest defines, then indexes everything.
+
+        Curation runs in the background, so you can leave the task and return to the context while it works.
+      </Step>
+    </Steps>
+
+    <Tip>
+      Have a `.context.zip` pack? In the **New context** dialog, open the **Restore** tab, drop the pack (or click **choose a file**), then click **Restore context**. Packs come from a context's **Packs** tab.
+    </Tip>
+  </Tab>
+</Tabs>
 
 ## 3. Query your context
 
 Once curation finishes, ask your context a question and get back a grounded answer with citations.
 
-<Steps>
-  <Step title="Open the context">
-    Use **Query this context** on the curation task, or open the context anytime from the console sidebar. The context opens on the **Query** tab.
-  </Step>
+<Tabs>
+  <Tab title="API">
+    Send a [KnowQL](/guides/nexus/concepts#knowql) query over HTTP, passing the context slug as `scope`:
 
-  <Step title="Ask a question">
-    In the **Query this context** box on the **Query** tab, type your question and run it. You can also pick the answering **model**.
-  </Step>
-</Steps>
+    ```bash curl theme={null}
+    curl -fsS -X POST "$NEXUS_BASE_URL/query" \
+      -H "Authorization: Bearer $NEXUS_TOKEN" \
+      -H 'X-Pinecone-Api-Version: 2026-07' \
+      -H 'Content-Type: application/json' \
+      -d '{"scope": ["company-knowledge-base"], "ask": "What is the refund policy?"}' \
+    | jq -r '.output[].content[].text'
+    ```
+
+    ```console Output theme={null}
+    Refund requests must be submitted within 30 days of purchase. After that
+    window, customers can still get store credit, but not a direct refund.
+    ```
+
+    The full response also carries `citations` and `usage`. See the [Nexus API](/reference/api/nexus/introduction) for the full surface, or connect an [MCP server](/guides/nexus/mcp-server) for Claude Desktop and other MCP clients.
+  </Tab>
+
+  <Tab title="Console">
+    <Steps>
+      <Step title="Open the context">
+        Use **Query this context** on the curation task, or open the context anytime from the console sidebar. The context opens on the **Query** tab.
+      </Step>
+
+      <Step title="Ask a question">
+        In the **Query this context** box on the **Query** tab, type your question and run it. You can also pick the answering **model**.
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
+
+<Tip>
+  To query several contexts at once, pass multiple slugs in the query's `scope` array. In the console, start a session from **Sessions** with **+ New session** and select each context to query across.
+</Tip>
 
 ### A grounded, cited answer
 
@@ -84476,7 +84818,7 @@ Nexus plans its own retrieval across the context's curated knowledge, gathers th
 >
 > **\[1]** `policies/refunds.md`
 
-The answer is grounded in your sources, and every claim cites the document it came from, so you can check it. To see how Nexus produced it, open the query's [trace](/guides/nexus/query-tracing). Nexus also suggests follow-up topics and saves the query as a session you can reopen from **Sessions**.
+The answer is grounded in your sources, and every claim cites the document it came from, so you can check it. To see how Nexus produced it, open the query's [trace](/guides/nexus/query-tracing). In the console, Nexus also suggests follow-up topics and saves the query as a session you can reopen from **Sessions**.
 
 ### A multi-document answer
 
@@ -84488,31 +84830,7 @@ Questions that span multiple documents work the same way. Asking "Which purchase
 >
 > **\[1]** `policies/expenses.pdf`  **\[2]** `policies/vendors.pdf`
 
-To answer this, Nexus queried the structured tables it compiled from your policies during curation, so it enumerates every matching rule across documents, each with its own citation. A plain RAG search returns only the passages closest to your question, so it can miss rules in other documents. Answering completely across your whole corpus is a core reason to reach for Nexus over RAG. See [how queries work](/guides/nexus/how-queries-work) for what the runtime does on each turn, or the [overview](/guides/nexus/overview#what-nexus-is-not) for how Nexus compares to RAG.
-
-<Tip>
-  To query several contexts at once, start a session from **Sessions** with **+ New session**, click each context in the **Query across** row, and ask.
-</Tip>
-
-## Query from your own code
-
-Agents send a [KnowQL](/guides/nexus/concepts#knowql) query over HTTP, passing the context slug as `scope`, and get back the same answer plus citations to act on:
-
-```bash curl theme={null}
-curl -fsS "$NEXUS_BASE_URL/query" \
-  -H "Authorization: Bearer $NEXUS_TOKEN" \
-  -H 'X-Pinecone-Api-Version: 2026-07' \
-  -H 'Content-Type: application/json' \
-  -d '{"scope": ["company-knowledge-base"], "ask": "What is the refund policy?"}' \
-| jq -r '.output[].content[].text'
-```
-
-```console Output theme={null}
-Refund requests must be submitted within 30 days of purchase. After that
-window, customers can still get store credit, but not a direct refund.
-```
-
-The full response also carries `citations` and `usage`. See [Authentication](/reference/api/nexus/authentication) to set `NEXUS_BASE_URL` and `NEXUS_TOKEN`, or the [Nexus API](/reference/api/nexus/introduction) for the full surface. You can also connect an [MCP server](/guides/nexus/mcp-server) for Claude Desktop and other MCP clients.
+To answer this, Nexus draws on the artifacts it compiled from your policies during curation, gathering the matching rules from across your documents, each with its own citation. A plain RAG search returns only the passages closest to your question, so it can miss rules in other documents. Reaching across your whole corpus is a core reason to use Nexus over RAG. For exact counts and enumerations over structured data, define a SQLite artifact, covered in [artifact formats](/guides/nexus/configure-artifact-formats). See [how queries work](/guides/nexus/how-queries-work) for what the runtime does on each turn, or the [overview](/guides/nexus/overview#what-nexus-is-not) for how Nexus compares to RAG.
 
 
 # Pinecone Assistant limits
@@ -84803,6 +85121,14 @@ During a [chat](/guides/assistant/chat-with-assistant), the assistant processes 
 ## Response generation
 
 After retrieving these chunks, the assistant performs a ranking step to determine which information is most relevant. This [context](/guides/assistant/context-snippets-overview), along with the chat history and [assistant instructions](/guides/assistant/manage-assistants#add-instructions-to-an-assistant), is then used by a large language model (LLM) to generate responses that are informed by your documents.
+
+
+# Browse a connector's folders/files
+Source: https://docs.pinecone.io/api-reference/connectors/browse-a-connectors-foldersfiles
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /connectors/{id}/items
+Browse the provider's folders and files to find the ids to import. Omit `folder` for the root.
+
 
 
 # Enable or disable a connector for a context

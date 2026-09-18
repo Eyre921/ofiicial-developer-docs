@@ -30,7 +30,9 @@ so benchmark with representative traffic before overriding Fireworks defaults.
   Create the deployment normally, then benchmark it before changing the drafter:
 
   ```bash theme={null}
-  firectl deployment create accounts/fireworks/models/<MODEL_ID> --wait
+  firectl deployment create accounts/fireworks/models/<MODEL_ID> \
+    --deployment-shape default \
+    --wait
   ```
 </Tip>
 
@@ -40,6 +42,7 @@ when creating a comparison deployment, use:
 
 ```bash theme={null}
 firectl deployment create accounts/fireworks/models/<MODEL_ID> \
+  --deployment-shape default \
   --disable-speculative-decoding \
   --wait
 ```
@@ -103,6 +106,7 @@ checkpoint or discuss a drafter adapted to your traffic.
 
     ```bash theme={null}
     firectl deployment create accounts/fireworks/models/llama-v3p3-70b-instruct \
+      --deployment-shape default \
       --draft-model="accounts/fireworks/models/llama-v3p2-1b-instruct" \
       --draft-token-count=4
     ```
@@ -113,6 +117,7 @@ checkpoint or discuss a drafter adapted to your traffic.
 
     ```bash theme={null}
     firectl deployment create accounts/fireworks/models/llama-v3p3-70b-instruct \
+      --deployment-shape default \
       --ngram-speculation-length=3 \
       --draft-token-count=4
     ```

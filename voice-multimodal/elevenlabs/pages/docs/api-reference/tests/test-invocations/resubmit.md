@@ -299,6 +299,7 @@ This endpoint expects an object.
             - `tool_error_handling_mode` (enum, optional, default: auto) — Controls how tool errors are processed before being shared with the agent. 'auto' determines handling based on tool type (summarized for native integrations, hide for others), 'summarized' sends an LLM-generated summary, 'passthrough' sends the raw error, 'hide' does not share the error with the agent.
             - `disable_interruptions` (boolean, optional, default: false, deprecated) — DEPRECATED: use `interruption_mode` instead. If true, the user will not be able to interrupt the agent while this tool is running.
             - `force_pre_tool_speech` (boolean, optional, default: false, deprecated) — DEPRECATED: use `pre_tool_speech` instead. If true, the agent will speak before the tool call.
+        - `enable_parallel_tool_calls` (boolean, optional, default: true) — Enable parallel tool calling. When enabled, the agent can execute multiple tools in parallel within a single turn. Not supported by all models.
         - `mcp_server_ids` (list of string, optional) — A list of MCP server ids to be used by the agent
         - `native_mcp_server_ids` (list of string, optional) — A list of Native MCP server ids to be used by the agent
         - `knowledge_base` (list of object, optional) — A list of knowledge bases to be used by the agent

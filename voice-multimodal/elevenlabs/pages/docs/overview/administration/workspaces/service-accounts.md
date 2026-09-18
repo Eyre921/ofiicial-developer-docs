@@ -8,7 +8,7 @@ path: docs/overview/administration/workspaces/service-accounts
 
 # Service Accounts
 
-![Service Accounts](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/85b1646b900085c39df273c7337c7428e92325cb621da63c2f6c6d76d2119efd/assets/images/product-guides/workspaces/workspace-service-accounts.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260917%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260917T233100Z&X-Amz-Expires=604800&X-Amz-Signature=6185fac9631005b5bf581bea0497cb7a21650b66926e39e71ffb6de3523da0e7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Service Accounts](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/85b1646b900085c39df273c7337c7428e92325cb621da63c2f6c6d76d2119efd/assets/images/product-guides/workspaces/workspace-service-accounts.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100014Z&X-Amz-Expires=604800&X-Amz-Signature=08664e53550fb41cf73767b056f97730ce5e6f1b792cb4411b58df774f2dba3d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Overview
 

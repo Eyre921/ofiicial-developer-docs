@@ -65,6 +65,7 @@ When creating a deployment, you can pass the `--region` flag to pin it to a sing
 
 ```
 firectl deployment create accounts/fireworks/models/llama-v3p1-8b-instruct \
+    --deployment-shape default \
     --region GLOBAL
 ```
 

@@ -11,20 +11,24 @@ firectl deployment create [flags]
 ```
 
 <Warning>
-  **Do not create deployments without a shape.** Always pass `--deployment-shape`. Deployments created without a shape skip validation, are the most common cause of failed deployment creations, and the unshaped path may be deprecated in the future. Find shapes for your model with [`firectl deployment-shape-version match`](/tools-sdks/firectl/commands/deployment-shape-version-match), and see [Deployment shapes](/guides/ondemand-deployments#deployment-shapes) for details.
+  **Do not create deployments without a shape.** Always pass `--deployment-shape` — a concrete shape, or `default` to have Fireworks pick one. Deployments created without a shape skip validation, are the most common cause of failed deployment creations, and shapeless creation will soon require an explicit opt-in (`--accept-shapeless-risk`). Find shapes for your model with [`firectl deployment-shape-version match`](/tools-sdks/firectl/commands/deployment-shape-version-match), and see [Deployment shapes](/guides/ondemand-deployments#deployment-shapes) for details.
 </Warning>
 
 ### Examples
 
 ```
+firectl deployment create accounts/fireworks/models/falcon-7b \
+  --deployment-shape default
 firectl deployment-shape-version match --model accounts/fireworks/models/falcon-7b
 firectl deployment create accounts/fireworks/models/falcon-7b \
   --deployment-shape <SHAPE_NAME>
 firectl deployment create accounts/fireworks/models/falcon-7b \
+  --accept-shapeless-risk
+firectl deployment create accounts/fireworks/models/falcon-7b \
   --file=/path/to/deployment-config.json
 ```
 
-Copy `<SHAPE_NAME>` from the `SHAPE NAME (version-id)` column (the resource name before the parenthesized version ID). If you use `--file`, the JSON must include `deploymentShape` set to that same `<SHAPE_NAME>`.
+Copy `<SHAPE_NAME>` from the `SHAPE NAME (version-id)` column (the resource name before the parenthesized version ID). If you use `--file`, the JSON must include `deploymentShape` set to that same `<SHAPE_NAME>` (or `"default"`).
 
 ### Flags
 
@@ -33,7 +37,8 @@ Copy `<SHAPE_NAME>` from the `SHAPE NAME (version-id)` column (the resource name
       --accelerator-type string                  The type of accelerator to use. Only use together with --deployment-shape (see warning above); setting it without a shape skips validation. Must be one of {NVIDIA_A100_80GB, NVIDIA_H100_80GB, NVIDIA_H200_141GB, NVIDIA_B200_180GB, NVIDIA_B300_288GB, AMD_MI325X_256GB, AMD_MI350X_288GB}
   -c, --cluster-id string                        The Fireworks cluster ID.
       --deployment-id string                     The ID of the deployment. If not specified, a random ID will be generated.
-      --deployment-shape string                  The deployment shape to use for this deployment.
+      --accept-shapeless-risk                    Explicit opt-out of deployment shapes: create this deployment without a pre-validated shape, which is much more likely to fail at creation. Only recommended for advanced users. Mutually exclusive with --deployment-shape.
+      --deployment-shape string                  The deployment shape to use for this deployment. May be 'default' to let the server pick a default validated shape for the model.
       --deployment-template string               The deployment template to use.
       --description string                       Description of the deployment.
       --direct-route-api-keys stringArray        The API keys for the direct route. Only available to enterprise accounts.

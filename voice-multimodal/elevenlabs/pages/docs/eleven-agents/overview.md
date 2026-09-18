@@ -10,19 +10,19 @@ path: docs/eleven-agents/overview
 
 Agents accomplish tasks through natural dialogue - from quick requests to complex, open-ended workflows. ElevenLabs provides voice-rich, expressive models, developer tools for building multimodal agents, and tools to monitor and evaluate agent performance at scale.
 
-[![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aa4e5442250b80183bf690e4bcc3bf9517932e1c5a569e5acb539c98604a213e/assets/images/agents/agents-overview-build.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260917%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260917T142843Z&X-Amz-Expires=604800&X-Amz-Signature=9c091413558b3f9d2bf1557bffe64fb216463d74991dfe0e97d6621c988a7b1c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)](/docs/eleven-agents/build/overview)
+[![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aa4e5442250b80183bf690e4bcc3bf9517932e1c5a569e5acb539c98604a213e/assets/images/agents/agents-overview-build.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T081841Z&X-Amz-Expires=604800&X-Amz-Signature=10a9313fc9c9e0d852bd180339e45f249a6c2bd3781aece0d9b7496fd2cacd34&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)](/docs/eleven-agents/build/overview)
 
 ### Configure
 
 Configure multimodal agents with our developer toolkit, dashboard, or visual workflow builder
 
-[![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7375358c43ac5dd1a170937123f0874e01b3d8b6cf178c282805588a11d39593/assets/images/agents/agents-overview-integrate.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260917%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260917T142843Z&X-Amz-Expires=604800&X-Amz-Signature=08f0ef4ece2120c9b39b972d6aad2c6ba2a556419594f6e12d28d5118f33404b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)](/docs/eleven-agents/integrate/overview)
+[![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7375358c43ac5dd1a170937123f0874e01b3d8b6cf178c282805588a11d39593/assets/images/agents/agents-overview-integrate.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T081841Z&X-Amz-Expires=604800&X-Amz-Signature=749aae25907c3c25e5c6fa1805f86c13b0edc8767ae8a1560813f92389209f77&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)](/docs/eleven-agents/integrate/overview)
 
 ### Deploy
 
 Integrate multimodal agents across telephony systems, web, and mobile
 
-[![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2e1cb472973e6328927a6eddfd054e465469bcea3267e27f429ebbe33b8cddf5/assets/images/agents/agents-overview-operate.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260917%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260917T142843Z&X-Amz-Expires=604800&X-Amz-Signature=efdbd3953ab83959eda1a5ad778b92fec261658c2696c51e3be92e1a1159c746&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)](/docs/eleven-agents/operate/overview)
+[![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2e1cb472973e6328927a6eddfd054e465469bcea3267e27f429ebbe33b8cddf5/assets/images/agents/agents-overview-operate.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T081841Z&X-Amz-Expires=604800&X-Amz-Signature=da06447e8c3001d9f8e86d03640ca3039171c98a7e767ab257f94f16055fddb0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)](/docs/eleven-agents/operate/overview)
 
 ### Monitor
 

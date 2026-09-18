@@ -1759,7 +1759,7 @@ Before proceeding, install Docker:
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.39.6 Current `beta`: 2.40.1
+Current `stable`: 2.39.8 Current `beta`: 2.40.3
 {% endhint %}
 
 ### Starting n8n <a href="#starting-n8n" id="starting-n8n"></a>
@@ -2000,7 +2000,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.39.6 Current `beta`: 2.40.1
+Current `stable`: 2.39.8 Current `beta`: 2.40.3
 {% endhint %}
 
 ## Create a Droplet <a href="#create-a-droplet" id="create-a-droplet"></a>
@@ -2360,7 +2360,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.39.6 Current `beta`: 2.40.1
+Current `stable`: 2.39.8 Current `beta`: 2.40.3
 {% endhint %}
 
 ## Use the deployment template to create a Heroku project <a href="#use-the-deployment-template-to-create-a-heroku-project" id="use-the-deployment-template-to-create-a-heroku-project"></a>
@@ -2450,7 +2450,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.39.6 Current `beta`: 2.40.1
+Current `stable`: 2.39.8 Current `beta`: 2.40.3
 {% endhint %}
 
 ## Create a server <a href="#create-a-server" id="create-a-server"></a>
@@ -2802,7 +2802,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.39.6 Current `beta`: 2.40.1
+Current `stable`: 2.39.8 Current `beta`: 2.40.3
 {% endhint %}
 
 ## Create a cluster <a href="#create-a-cluster" id="create-a-cluster"></a>
@@ -3003,7 +3003,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.39.6 Current `beta`: 2.40.1
+Current `stable`: 2.39.8 Current `beta`: 2.40.3
 {% endhint %}
 
 ## Hosting options <a href="#hosting-options" id="hosting-options"></a>
@@ -3205,7 +3205,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.39.6 Current `beta`: 2.40.1
+Current `stable`: 2.39.8 Current `beta`: 2.40.3
 {% endhint %}
 
 ## Before you begin: get a Google Cloud project <a href="#before-you-begin-get-a-google-cloud-project" id="before-you-begin-get-a-google-cloud-project"></a>
@@ -3474,7 +3474,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.39.6 Current `beta`: 2.40.1
+Current `stable`: 2.39.8 Current `beta`: 2.40.3
 {% endhint %}
 
 ## Create project <a href="#create-project" id="create-project"></a>
@@ -4742,7 +4742,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.39.6 Current `beta`: 2.40.1
+Current `stable`: 2.39.8 Current `beta`: 2.40.3
 {% endhint %}
 
 ## 1. Install Docker and Docker Compose <a href="#id-1-install-docker-and-docker-compose" id="id-1-install-docker-and-docker-compose"></a>
@@ -6078,20 +6078,20 @@ Unlike the main n8n image, you CANNOT use file-based configuration for secrets i
 
 ## n8n instance environment variables <a href="#n8n-instance-environment-variables" id="n8n-instance-environment-variables"></a>
 
-| Variable                               | Type                                | Default         | Description                                                                                                                                                                                                   |
-| -------------------------------------- | ----------------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `N8N_RUNNERS_ENABLED` (**deprecated**) | Boolean                             | `false`         | Are task runners enabled. **Deprecated** from n8n 2.0.                                                                                                                                                        |
-| `N8N_RUNNERS_MODE`                     | Enum string: `internal`, `external` | `internal`      | How to launch and run the task runner. `internal` means n8n will launch a task runner as child process. `external` means an external orchestrator will launch the task runner.                                |
-| `N8N_RUNNERS_AUTH_TOKEN`               | String                              | Random string   | Shared secret used by a task runner to authenticate to n8n. Required when using `external` mode.                                                                                                              |
-| `N8N_RUNNERS_BROKER_PORT`              | Number                              | `5679`          | Port the task broker listens on for task runner connections.                                                                                                                                                  |
-| `N8N_RUNNERS_BROKER_LISTEN_ADDRESS`    | String                              | `127.0.0.1`     | Address the task broker listens on.                                                                                                                                                                           |
-| `N8N_RUNNERS_MAX_PAYLOAD`              | Number                              | `1 073 741 824` | Maximum payload size in bytes for communication between a task broker and a task runner.                                                                                                                      |
-| `N8N_RUNNERS_MAX_OLD_SPACE_SIZE`       | String                              |                 | The `--max-old-space-size` option to use for a task runner (in MB). By default, Node.js will set this based on available memory.                                                                              |
-| `N8N_RUNNERS_MAX_CONCURRENCY`          | Number                              | `5`             | The number of concurrent tasks a task runner can execute at a time.                                                                                                                                           |
-| `N8N_RUNNERS_TASK_TIMEOUT`             | Number                              | `300`           | The maximum time, in seconds, a task can run before the runner stops it and restarts. This value must be greater than 0.                                                                                      |
-| `N8N_RUNNERS_HEARTBEAT_INTERVAL`       | Number                              | `30`            | The interval, in seconds, at which the runner must send a heartbeat to the broker. If the runner doesn't send a heartbeat in time, the task stops and the runner restarts. This value must be greater than 0. |
-| `N8N_RUNNERS_INSECURE_MODE`            | Boolean                             | `false`         | Whether to disable all security measures in the task runner, for compatibility with modules that rely on insecure JS features. **Discouraged for production use.**                                            |
-| `N8N_RUNNERS_TASK_REQUEST_TIMEOUT`     | Number                              | `60`            | How long (in seconds) a task request can wait for a runner to become available before timing out. This prevents workflows from hanging indefinitely when no runners are available. Must be greater than 0.    |
+| Variable                               | Type                                                 | Default         | Description                                                                                                                                                                                                                                                                                                                              |
+| -------------------------------------- | ---------------------------------------------------- | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `N8N_RUNNERS_ENABLED` (**deprecated**) | Boolean                                              | `false`         | Are task runners enabled. **Deprecated** from n8n 2.0.                                                                                                                                                                                                                                                                                   |
+| `N8N_RUNNERS_MODE`                     | Enum string: `internal` (**deprecated**), `external` | `internal`      | How to launch and run the task runner. `internal` means n8n will launch a task runner as child process. **Deprecated**: internal mode will be removed in a future version. `external` means an external orchestrator will launch the task runner. See [external mode](/deploy/host-n8n/configure-n8n/set-up-task-runners#external-mode). |
+| `N8N_RUNNERS_AUTH_TOKEN`               | String                                               | Random string   | Shared secret used by a task runner to authenticate to n8n. Required when using `external` mode.                                                                                                                                                                                                                                         |
+| `N8N_RUNNERS_BROKER_PORT`              | Number                                               | `5679`          | Port the task broker listens on for task runner connections.                                                                                                                                                                                                                                                                             |
+| `N8N_RUNNERS_BROKER_LISTEN_ADDRESS`    | String                                               | `127.0.0.1`     | Address the task broker listens on.                                                                                                                                                                                                                                                                                                      |
+| `N8N_RUNNERS_MAX_PAYLOAD`              | Number                                               | `1 073 741 824` | Maximum payload size in bytes for communication between a task broker and a task runner.                                                                                                                                                                                                                                                 |
+| `N8N_RUNNERS_MAX_OLD_SPACE_SIZE`       | String                                               |                 | The `--max-old-space-size` option to use for a task runner (in MB). By default, Node.js will set this based on available memory.                                                                                                                                                                                                         |
+| `N8N_RUNNERS_MAX_CONCURRENCY`          | Number                                               | `5`             | The number of concurrent tasks a task runner can execute at a time.                                                                                                                                                                                                                                                                      |
+| `N8N_RUNNERS_TASK_TIMEOUT`             | Number                                               | `300`           | The maximum time, in seconds, a task can run before the runner stops it and restarts. This value must be greater than 0.                                                                                                                                                                                                                 |
+| `N8N_RUNNERS_HEARTBEAT_INTERVAL`       | Number                                               | `30`            | The interval, in seconds, at which the runner must send a heartbeat to the broker. If the runner doesn't send a heartbeat in time, the task stops and the runner restarts. This value must be greater than 0.                                                                                                                            |
+| `N8N_RUNNERS_INSECURE_MODE`            | Boolean                                              | `false`         | Whether to disable all security measures in the task runner, for compatibility with modules that rely on insecure JS features. **Discouraged for production use.**                                                                                                                                                                       |
+| `N8N_RUNNERS_TASK_REQUEST_TIMEOUT`     | Number                                               | `60`            | How long (in seconds) a task request can wait for a runner to become available before timing out. This prevents workflows from hanging indefinitely when no runners are available. Must be greater than 0.                                                                                                                               |
 
 ## Task runner launcher environment variables <a href="#task-runner-launcher-environment-variables" id="task-runner-launcher-environment-variables"></a>
 
@@ -8871,9 +8871,11 @@ You can use task runners in two different modes: internal and external.
 In internal mode, the n8n instance launches the task runner as a child process, which is insecure by design. The n8n process monitors and manages the life cycle of the task runner. The task runner process shares the same `uid` and `gid` as n8n.
 
 {% hint style="warning" %}
-**Internal mode not recommended for production**
+**Feature availability**
 
-Because the runner runs as the same user on the same host as n8n, code that escapes the runner's sandbox has the same access as n8n, including to stored credentials (see the warning at the top of this page). Use internal mode only on isolated instances that hold no sensitive data.
+Internal mode is deprecated from n8n 3.0 and will be removed in a future version. n8n logs a deprecation warning at startup while it runs in internal mode, including when `N8N_RUNNERS_MODE` isn't set. Move to [external mode](#external-mode) for more secure isolation and scaling.
+
+Internal mode isn't recommended for production. Because the runner runs as the same user on the same host as n8n, code that escapes the runner's sandbox has the same access as n8n, including to stored credentials (see the warning at the top of this page). Use internal mode only on isolated instances that hold no sensitive data.
 {% endhint %}
 
 ### External mode <a href="#external-mode" id="external-mode"></a>

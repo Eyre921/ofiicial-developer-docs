@@ -6,7 +6,9 @@ path: reference/api/2026-07/control-plane/create_index_from_backup
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/db_control_2026-07.oas.yaml post /backups/{backup_id}/create-index
 Create an index from a backup.
+
 The restored index inherits the schema of the index the backup was taken from, including its full-text search fields and its integrated embedding configuration, and the request cannot override it. A backup that carries no `schema` restores an index whose fields are derived from the source index's dimension, metric, and vector type, and reported under the reserved `_values` / `_sparse_values` names.
+
 For serverless backups, you can optionally set `read_capacity` so the restored index is created with dedicated read nodes (DRN) instead of defaulting to on-demand capacity.
 
 <RequestExample>

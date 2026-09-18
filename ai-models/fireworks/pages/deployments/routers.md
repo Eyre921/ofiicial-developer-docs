@@ -146,6 +146,7 @@ Your application sends traffic to `accounts/<ACCOUNT_ID>/routers/my-router`. All
 
 ```bash theme={null}
 firectl deployment create accounts/<ACCOUNT_ID>/models/<MODEL_ID> \
+    --deployment-shape default \
     --deployment-id=new-deployment
 ```
 

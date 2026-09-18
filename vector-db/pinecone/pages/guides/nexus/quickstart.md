@@ -24,6 +24,7 @@ See [key concepts](/guides/nexus/concepts) for the full model.
 
 * A Pinecone **Enterprise** plan (required for BYOC).
 * A dedicated cloud account (AWS, GCP, or Azure) with admin access, plus the install tooling. See the [deploy prerequisites](/guides/nexus/byoc/deploy#prerequisites) for the full list.
+* A [Pinecone API key](/reference/api/nexus/authentication#get-an-api-key) for the target project.
 * Documents to build your context from, such as files to upload or a Hugging Face, GitHub, Box, or Google Drive source.
 
 ## 1. Deploy Nexus
@@ -35,8 +36,8 @@ Nexus runs in your own cloud, so deploying it comes first.
     Follow [Deploy Nexus BYOC](/guides/nexus/byoc/deploy) to install Nexus in your own cloud account with the Pulumi installer.
   </Step>
 
-  <Step title="Open your deployment's console">
-    When the install finishes, it prints your workspace console URL. Open it to reach your deployment's console, where the rest of this quickstart happens.
+  <Step title="Get your console URL and API host">
+    When the install finishes, it prints your workspace console URL and API host. Open the console to work in the UI, or use the host as your data-plane base URL for the API. See [Authentication](/reference/api/nexus/authentication) to set `NEXUS_BASE_URL` and get a token.
   </Step>
 </Steps>
 
@@ -48,61 +49,152 @@ Build a context from your own documents. A company knowledge base might include 
 * `policies/expenses.pdf`: Standard expenses over \$1,000 require manager approval before reimbursement.
 * `policies/vendors.pdf`: Vendor invoices over \$10,000 require finance approval. Invoices over \$25,000 also require VP sign-off.
 
-The queries later in this quickstart draw on these files.
+The queries later in this quickstart draw on these files. You can build the context through the API or the console.
 
-<Steps>
-  <Step title="Create the context">
-    In the console sidebar, next to **Contexts**, click **+ New**. The **New context** dialog opens on the **New context** tab.
+<Tabs>
+  <Tab title="API">
+    <Steps>
+      <Step title="Set your base URL and token">
+        Point at your workspace host and exchange your Pinecone API key for a session token. See [Authentication](/reference/api/nexus/authentication) for details.
 
-    Enter a **Name** (for example, `Company knowledge base`) and a **Description**, then click **Create context**. The URL slug is generated from the name.
+        ```bash theme={null}
+        export NEXUS_BASE_URL="https://YOUR_WORKSPACE_HOST/api"
+        export NEXUS_TOKEN="$(
+          curl -fsS "$NEXUS_BASE_URL/auth/login" \
+            -H 'Content-Type: application/json' \
+            -H 'X-Pinecone-Api-Version: 2026-07' \
+            -d "{\"api_key\":\"$PINECONE_API_KEY\"}" | jq -r '.token'
+        )"
+        ```
+      </Step>
 
-    Creating the context opens a guided setup with three steps: **Add sources**, **Design your context**, and **Review and curate**.
-  </Step>
+      <Step title="Create the context">
+        Create the context with a slug and a name:
 
-  <Step title="Add sources">
-    On the **Add sources** step, bring in your documents in one of these ways:
+        ```bash curl theme={null}
+        curl -fsS -X POST "$NEXUS_BASE_URL/contexts" \
+          -H "Authorization: Bearer $NEXUS_TOKEN" \
+          -H 'Content-Type: application/json' \
+          -H 'X-Pinecone-Api-Version: 2026-07' \
+          -d '{"slug": "company-knowledge-base", "name": "Company knowledge base"}'
+        ```
 
-    * **Upload** files from your computer, individually or as an archive (`.zip`, `.tar`, `.tar.gz`, or `.tgz`).
-    * Pull from a public **Hugging Face** or **GitHub** repository URL.
-    * Connect a **Box** or **Google Drive** account.
+        A new context curates under the default manifest. To define your own artifact and edge types, see [Design your own manifest](/guides/nexus/design-your-own-manifest).
+      </Step>
 
-    After you add at least one source, click **Design your context**.
-  </Step>
+      <Step title="Add sources">
+        Upload each of your files, one request per file (archives are expanded automatically), or import from a connector with `POST /contexts/{slug}/import`:
 
-  <Step title="Design your context">
-    On the **Design your context** step, Nexus scans your sources and suggests [manifest](/guides/nexus/context-design) templates that match. Each template describes the artifacts and edges it'll build.
+        ```bash curl theme={null}
+        for f in policies/refunds.md policies/expenses.pdf policies/vendors.pdf; do
+          curl -fsS -X POST "$NEXUS_BASE_URL/contexts/company-knowledge-base/import/upload" \
+            -H "Authorization: Bearer $NEXUS_TOKEN" \
+            -H 'X-Pinecone-Api-Version: 2026-07' \
+            -F "file=@$f"
+        done
+        ```
+      </Step>
 
-    Pick a template that fits, such as **General knowledge base**. If none fit, you can [design your own manifest](/guides/nexus/design-your-own-manifest) or import one under **Or start from scratch**.
+      <Step title="Curate">
+        Curate the context to build its knowledge from the sources:
 
-    Click **Review**.
-  </Step>
+        ```bash curl theme={null}
+        curl -fsS -X POST "$NEXUS_BASE_URL/contexts/company-knowledge-base/curate" \
+          -H "Authorization: Bearer $NEXUS_TOKEN" \
+          -H 'Content-Type: application/json' \
+          -H 'X-Pinecone-Api-Version: 2026-07' \
+          -d '{}'
+        ```
 
-  <Step title="Review and curate">
-    On the **Review and curate** step, check the artifact types, edge types, model, and estimated cost, then click **Save and curate**. The curation task opens.
+        Curation chunks your sources, distills them into typed artifacts, and indexes everything. It runs as a background task, so query the context once it finishes. See [How curation works](/guides/nexus/how-curation-works).
+      </Step>
+    </Steps>
+  </Tab>
 
-    Nexus [curates](/guides/nexus/how-curation-works) your sources. It chunks them, distills them into the typed artifacts the manifest defines, then indexes everything.
+  <Tab title="Console">
+    <Steps>
+      <Step title="Create the context">
+        In the console sidebar, next to **Contexts**, click **+ New**. The **New context** dialog opens on the **New context** tab.
 
-    Curation runs in the background, so you can leave the task and return to the context while it works.
-  </Step>
-</Steps>
+        Enter a **Name** (for example, `Company knowledge base`) and a **Description**, then click **Create context**. The URL slug is generated from the name.
 
-<Tip>
-  Have a `.context.zip` pack? In the **New context** dialog, open the **Restore** tab, drop the pack (or click **choose a file**), then click **Restore context**. Packs come from a context's **Packs** tab.
-</Tip>
+        Creating the context opens a guided setup with three steps: **Add sources**, **Design your context**, and **Review and curate**.
+      </Step>
+
+      <Step title="Add sources">
+        On the **Add sources** step, bring in your documents in one of these ways:
+
+        * **Upload** files from your computer, individually or as an archive (`.zip`, `.tar`, `.tar.gz`, or `.tgz`).
+        * Pull from a public **Hugging Face** or **GitHub** repository URL.
+        * Connect a **Box** or **Google Drive** account.
+
+        After you add at least one source, click **Design your context**.
+      </Step>
+
+      <Step title="Design your context">
+        On the **Design your context** step, Nexus scans your sources and suggests [manifest](/guides/nexus/context-design) templates that match. Each template describes the artifacts and edges it'll build.
+
+        Pick a template that fits, such as **General knowledge base**. If none fit, [design your own manifest](/guides/nexus/design-your-own-manifest) through the API.
+
+        Click **Review**.
+      </Step>
+
+      <Step title="Curate">
+        On the **Review and curate** step, check the artifact types, edge types, model, and estimated cost, then click **Save and curate**. The curation task opens.
+
+        Nexus [curates](/guides/nexus/how-curation-works) your sources. It chunks them, distills them into the typed artifacts the manifest defines, then indexes everything.
+
+        Curation runs in the background, so you can leave the task and return to the context while it works.
+      </Step>
+    </Steps>
+
+    <Tip>
+      Have a `.context.zip` pack? In the **New context** dialog, open the **Restore** tab, drop the pack (or click **choose a file**), then click **Restore context**. Packs come from a context's **Packs** tab.
+    </Tip>
+  </Tab>
+</Tabs>
 
 ## 3. Query your context
 
 Once curation finishes, ask your context a question and get back a grounded answer with citations.
 
-<Steps>
-  <Step title="Open the context">
-    Use **Query this context** on the curation task, or open the context anytime from the console sidebar. The context opens on the **Query** tab.
-  </Step>
+<Tabs>
+  <Tab title="API">
+    Send a [KnowQL](/guides/nexus/concepts#knowql) query over HTTP, passing the context slug as `scope`:
 
-  <Step title="Ask a question">
-    In the **Query this context** box on the **Query** tab, type your question and run it. You can also pick the answering **model**.
-  </Step>
-</Steps>
+    ```bash curl theme={null}
+    curl -fsS -X POST "$NEXUS_BASE_URL/query" \
+      -H "Authorization: Bearer $NEXUS_TOKEN" \
+      -H 'X-Pinecone-Api-Version: 2026-07' \
+      -H 'Content-Type: application/json' \
+      -d '{"scope": ["company-knowledge-base"], "ask": "What is the refund policy?"}' \
+    | jq -r '.output[].content[].text'
+    ```
+
+    ```console Output theme={null}
+    Refund requests must be submitted within 30 days of purchase. After that
+    window, customers can still get store credit, but not a direct refund.
+    ```
+
+    The full response also carries `citations` and `usage`. See the [Nexus API](/reference/api/nexus/introduction) for the full surface, or connect an [MCP server](/guides/nexus/mcp-server) for Claude Desktop and other MCP clients.
+  </Tab>
+
+  <Tab title="Console">
+    <Steps>
+      <Step title="Open the context">
+        Use **Query this context** on the curation task, or open the context anytime from the console sidebar. The context opens on the **Query** tab.
+      </Step>
+
+      <Step title="Ask a question">
+        In the **Query this context** box on the **Query** tab, type your question and run it. You can also pick the answering **model**.
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
+
+<Tip>
+  To query several contexts at once, pass multiple slugs in the query's `scope` array. In the console, start a session from **Sessions** with **+ New session** and select each context to query across.
+</Tip>
 
 ### A grounded, cited answer
 
@@ -112,7 +204,7 @@ Nexus plans its own retrieval across the context's curated knowledge, gathers th
 >
 > **\[1]** `policies/refunds.md`
 
-The answer is grounded in your sources, and every claim cites the document it came from, so you can check it. To see how Nexus produced it, open the query's [trace](/guides/nexus/query-tracing). Nexus also suggests follow-up topics and saves the query as a session you can reopen from **Sessions**.
+The answer is grounded in your sources, and every claim cites the document it came from, so you can check it. To see how Nexus produced it, open the query's [trace](/guides/nexus/query-tracing). In the console, Nexus also suggests follow-up topics and saves the query as a session you can reopen from **Sessions**.
 
 ### A multi-document answer
 
@@ -124,28 +216,4 @@ Questions that span multiple documents work the same way. Asking "Which purchase
 >
 > **\[1]** `policies/expenses.pdf`  **\[2]** `policies/vendors.pdf`
 
-To answer this, Nexus queried the structured tables it compiled from your policies during curation, so it enumerates every matching rule across documents, each with its own citation. A plain RAG search returns only the passages closest to your question, so it can miss rules in other documents. Answering completely across your whole corpus is a core reason to reach for Nexus over RAG. See [how queries work](/guides/nexus/how-queries-work) for what the runtime does on each turn, or the [overview](/guides/nexus/overview#what-nexus-is-not) for how Nexus compares to RAG.
-
-<Tip>
-  To query several contexts at once, start a session from **Sessions** with **+ New session**, click each context in the **Query across** row, and ask.
-</Tip>
-
-## Query from your own code
-
-Agents send a [KnowQL](/guides/nexus/concepts#knowql) query over HTTP, passing the context slug as `scope`, and get back the same answer plus citations to act on:
-
-```bash curl theme={null}
-curl -fsS "$NEXUS_BASE_URL/query" \
-  -H "Authorization: Bearer $NEXUS_TOKEN" \
-  -H 'X-Pinecone-Api-Version: 2026-07' \
-  -H 'Content-Type: application/json' \
-  -d '{"scope": ["company-knowledge-base"], "ask": "What is the refund policy?"}' \
-| jq -r '.output[].content[].text'
-```
-
-```console Output theme={null}
-Refund requests must be submitted within 30 days of purchase. After that
-window, customers can still get store credit, but not a direct refund.
-```
-
-The full response also carries `citations` and `usage`. See [Authentication](/reference/api/nexus/authentication) to set `NEXUS_BASE_URL` and `NEXUS_TOKEN`, or the [Nexus API](/reference/api/nexus/introduction) for the full surface. You can also connect an [MCP server](/guides/nexus/mcp-server) for Claude Desktop and other MCP clients.
+To answer this, Nexus draws on the artifacts it compiled from your policies during curation, gathering the matching rules from across your documents, each with its own citation. A plain RAG search returns only the passages closest to your question, so it can miss rules in other documents. Reaching across your whole corpus is a core reason to use Nexus over RAG. For exact counts and enumerations over structured data, define a SQLite artifact, covered in [artifact formats](/guides/nexus/configure-artifact-formats). See [how queries work](/guides/nexus/how-queries-work) for what the runtime does on each turn, or the [overview](/guides/nexus/overview#what-nexus-is-not) for how Nexus compares to RAG.

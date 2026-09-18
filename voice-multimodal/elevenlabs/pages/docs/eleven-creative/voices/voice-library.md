@@ -8,7 +8,7 @@ path: docs/eleven-creative/voices/voice-library
 
 # Voice Library
 
-![Voice Library](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6279d167562a3c4d9e6b93263ec8dfe4f969f713a0543a7bdf68ae2140c2f3ae/assets/images/product-guides/voices/voices-voice-library.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260917%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260917T145550Z&X-Amz-Expires=604800&X-Amz-Signature=e15a8717e7b3b752bb92c671a5c1c382927fbd8a54a4b9c92ebdab01317d5735&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Voice Library](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6279d167562a3c4d9e6b93263ec8dfe4f969f713a0543a7bdf68ae2140c2f3ae/assets/images/product-guides/voices/voices-voice-library.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T085443Z&X-Amz-Expires=604800&X-Amz-Signature=a71981148ce95eabf9208c79afe1426df73d12df6ff382e3c82862c74461dc5f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Overview
 
@@ -180,13 +180,13 @@ You can restrict access to specific users by adding emails to the **Allowlist**.
 
 To share publicly, enable **Publish to the Voice Library**. This doesn’t make your voice automatically discoverable.
 
-![Voice sharing overview](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/60fd4b21d2e8bba5e749edb24ec545d5990907ac6da7cbc0967bf08f7c2e0ef9/assets/images/product-guides/voices/voice-sharing.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260917%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260917T145550Z&X-Amz-Expires=604800&X-Amz-Signature=f2e37ccb21fae26600721b580fe967babec7acac653e8dfc74e00f07b2689eaa&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Voice sharing overview](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/60fd4b21d2e8bba5e749edb24ec545d5990907ac6da7cbc0967bf08f7c2e0ef9/assets/images/product-guides/voices/voice-sharing.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T085443Z&X-Amz-Expires=604800&X-Amz-Signature=4532a40a00de5b1064adee3f4106438161564a8a68b6f88641ba48576d0dec3d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Before proceeding with the sharing process, you'll have a number of options including setting a notice period and enabling Live Moderation. Please see the [Voice Library Addendum](https://elevenlabs.io/vla) to our [Terms of Service](https://elevenlabs.io/terms-of-use) for more information about these options.
 
 You also have the option to select a custom voice preview. Any generations you've made of 70-150 characters will be available to select. If you don't see any options in the selection menu, there are no eligible generations available.
 
-![Voice sharing options](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/95a98e53782fae49fb01c403fe998b87944b247495f2ef257512652b7588d52d/assets/images/product-guides/voices/voice-sharing-options.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260917%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260917T145550Z&X-Amz-Expires=604800&X-Amz-Signature=5d57605037e5ba50b144d1b0062961d985d7e5458cda35d34c38846248a807a6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Voice sharing options](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/95a98e53782fae49fb01c403fe998b87944b247495f2ef257512652b7588d52d/assets/images/product-guides/voices/voice-sharing-options.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T085443Z&X-Amz-Expires=604800&X-Amz-Signature=7519009a7a28a04d694b729a5baa6240de9f2727b44fc3736c2f4a256614c5c6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Enter a name and description for your voice.
 Make sure the name you give your voice follows our **naming guidelines**:
@@ -257,7 +257,7 @@ We currently do not have an estimate for the review time, as it depends on the q
 
       To access the Voice Library, click **Voices** in the sidebar and select **Explore**.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bf65cdac70a470cbeea56ff85d3e692fee46b0a02d0072c497bdc0583c094b5c/assets/images/help-center/product/voices/voice-library/what-is-the-voice-library.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260917%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260917T145550Z&X-Amz-Expires=604800&X-Amz-Signature=09e6912a30f9ca156b399a6cc2dda9680deb4b834f0a3e1a2f21817738798b20&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bf65cdac70a470cbeea56ff85d3e692fee46b0a02d0072c497bdc0583c094b5c/assets/images/help-center/product/voices/voice-library/what-is-the-voice-library.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T085443Z&X-Amz-Expires=604800&X-Amz-Signature=4e0b78bbe1a0875a8d743dfceec8108c58ea8c4b4deee03a2029954784cb0244&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       You can browse the Voice Library in several ways:
 
@@ -339,7 +339,7 @@ We currently do not have an estimate for the review time, as it depends on the q
 
       To do this, either drag and drop an audio or video file anywhere on the [Voice Library](https://elevenlabs.io/app/voice-library) page, or click the upload icon to select a file to upload.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1d07416f03990f9d9a6ca920b0967daab49a19573e6a9712bd706de4010facdb/assets/images/help-center/product/voices/voice-library/how-can-i-identify-the-voice-used-to-generate-audio.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260917%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260917T145550Z&X-Amz-Expires=604800&X-Amz-Signature=9fd6d7c5fba35ea9f86cc657c46f51ef220b357506c6daa8f2e525cd136c8067&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1d07416f03990f9d9a6ca920b0967daab49a19573e6a9712bd706de4010facdb/assets/images/help-center/product/voices/voice-library/how-can-i-identify-the-voice-used-to-generate-audio.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T085443Z&X-Amz-Expires=604800&X-Amz-Signature=83713b7d86d0c2e2e1aaaad485c340e8a5e7616b74258f75b4b9829d7078a171&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       For the best results, please upload speech only, without background music or noise.  You can use our [Voice Isolator](https://elevenlabs.io/app/voice-isolator) to clean up the audio if required.
 
@@ -363,7 +363,7 @@ We currently do not have an estimate for the review time, as it depends on the q
 
 
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f70eeb10aa93400ef0d8f390cc3710c96dc20b4bfe10681861e4ded5906ac429/assets/images/help-center/product/voices/voice-library/how-do-i-add-a-custom-preview-for-my-shared-voice.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260917%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260917T145550Z&X-Amz-Expires=604800&X-Amz-Signature=8fe62f92bb154b1a667031693c02f592dfd2ef0a5f07da9f3bf2e223a14721a2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f70eeb10aa93400ef0d8f390cc3710c96dc20b4bfe10681861e4ded5906ac429/assets/images/help-center/product/voices/voice-library/how-do-i-add-a-custom-preview-for-my-shared-voice.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T085443Z&X-Amz-Expires=604800&X-Amz-Signature=72d080519a92291908b11af4a93f765f5fba48d786cf6c838eea49dedcc26801&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
     </td>
   </tr>
 
@@ -377,12 +377,12 @@ We currently do not have an estimate for the review time, as it depends on the q
 
       If a voice has a credit multiplier in place, this will be displayed as a tag in the Voice Library:
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d86ddc91232731c1ef5de097ac38d4201e993e08b40164a7831bacbac7eec32e/assets/images/help-center/product/voices/voice-library/what-are-custom-rates-and-credit-multipliers.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260917%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260917T145550Z&X-Amz-Expires=604800&X-Amz-Signature=6b264ef67c4a9f2f8128265a4502b450752d3295a2495793cc707002fd1115df&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d86ddc91232731c1ef5de097ac38d4201e993e08b40164a7831bacbac7eec32e/assets/images/help-center/product/voices/voice-library/what-are-custom-rates-and-credit-multipliers.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T085443Z&X-Amz-Expires=604800&X-Amz-Signature=7fc5b352ccb478e34feec12ae006e9573a7933746cb1f87229ed918811c969ad&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       In Speech Synthesis, you will see a notification that the voice has a credit multiplier in place:\
 
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e9e67cad1e6482fee0cf9f08bb492f5a26ab29a54cb9e2be8985ec657a6a13b3/assets/images/help-center/product/voices/voice-library/what-are-custom-rates-and-credit-multipliers-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260917%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260917T145550Z&X-Amz-Expires=604800&X-Amz-Signature=d30b7ec38056073922109e8eaad65f65c4f6fb9ae16e0adbf34668e2247c5899&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e9e67cad1e6482fee0cf9f08bb492f5a26ab29a54cb9e2be8985ec657a6a13b3/assets/images/help-center/product/voices/voice-library/what-are-custom-rates-and-credit-multipliers-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T085443Z&X-Amz-Expires=604800&X-Amz-Signature=189c2d2725abce54862d3daafcc716d318e4ccf3879bdf113f33546d509b1d19&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       The credit multiplier that applies for generating audio is based on the custom rate chosen by the voice owner as well as the subscription plan of the user of the voice.
     </td>
@@ -406,7 +406,7 @@ We currently do not have an estimate for the review time, as it depends on the q
 
       For larger operations, you can also set up a webhook notification for voice removal, ensuring you are informed as soon as a voice is removed. This can be very useful if you need to be informed as soon as the voice is removed, for example if you need to notify your customers.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ef4914131e291b23f5894a85b274e6a6a106b77e603e330beff26c4ce2593aa1/assets/images/help-center/product/voices/voice-library/what-is-a-notice-period.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260917%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260917T145550Z&X-Amz-Expires=604800&X-Amz-Signature=eea10a882a385e2432f87fb7908d5611551bac547a75a377aa11c5d48b8cb7f0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ef4914131e291b23f5894a85b274e6a6a106b77e603e330beff26c4ce2593aa1/assets/images/help-center/product/voices/voice-library/what-is-a-notice-period.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T085443Z&X-Amz-Expires=604800&X-Amz-Signature=afd97eca4b7cbb9bf8307bd0142e80917dced62dd9b578c2aa0898ba21a7c652&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       You can set this up on your [webhooks settings page](https://elevenlabs.io/app/settings/webhooks) for your account.
     </td>

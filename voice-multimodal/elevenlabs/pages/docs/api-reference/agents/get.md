@@ -528,6 +528,7 @@ Successful Response
             - Allowed values: `auto`, `summarized`, `passthrough`, `hide`
           - `disable_interruptions` (boolean, optional, default: false, deprecated) — DEPRECATED: use `interruption_mode` instead. If true, the user will not be able to interrupt the agent while this tool is running.
           - `force_pre_tool_speech` (boolean, optional, default: false, deprecated) — DEPRECATED: use `pre_tool_speech` instead. If true, the agent will speak before the tool call.
+      - `enable_parallel_tool_calls` (boolean, optional, default: true) — Enable parallel tool calling. When enabled, the agent can execute multiple tools in parallel within a single turn. Not supported by all models.
       - `mcp_server_ids` (list of string, optional) — A list of MCP server ids to be used by the agent
       - `native_mcp_server_ids` (list of string, optional) — A list of Native MCP server ids to be used by the agent
       - `knowledge_base` (list of object, optional) — A list of knowledge bases to be used by the agent
@@ -1515,6 +1516,7 @@ Successful Response
             - `max_tokens` (integer, optional, nullable) — If greater than 0, maximum number of tokens the LLM can predict
             - `tool_ids` (list of string, optional, nullable) — A list of IDs of tools used by the agent
             - `built_in_tools` (object, optional, nullable) — Built-in system tools to be used by the agent
+            - `enable_parallel_tool_calls` (boolean, optional, nullable) — Enable parallel tool calling. When enabled, the agent can execute multiple tools in parallel within a single turn. Not supported by all models.
             - `mcp_server_ids` (list of string, optional, nullable) — A list of MCP server ids to be used by the agent
             - `native_mcp_server_ids` (list of string, optional, nullable) — A list of Native MCP server ids to be used by the agent
             - `knowledge_base` (list of object, optional, nullable) — A list of knowledge bases to be used by the agent

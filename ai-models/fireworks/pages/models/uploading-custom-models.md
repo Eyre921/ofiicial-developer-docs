@@ -217,8 +217,11 @@ Look for `State: READY` in the output. Once ready, you can create a deployment.
 Once your model shows `State: READY`, create a deployment:
 
 ```bash theme={null}
-firectl deployment create accounts/<ACCOUNT_ID>/models/<MODEL_NAME> --wait
+firectl deployment create accounts/<ACCOUNT_ID>/models/<MODEL_NAME> \
+  --deployment-shape default --wait
 ```
+
+To pick a specific shape instead of `default`, see [Deployment shapes](/guides/ondemand-deployments#deployment-shapes).
 
 See the [On-demand deployments guide](/guides/ondemand-deployments) for configuration options like GPU types, autoscaling, and quantization.
 

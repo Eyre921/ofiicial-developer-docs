@@ -56103,6 +56103,16 @@ The following optional provider options are available for Alibaba models:
 
   Maximum number of reasoning tokens to generate. Limits the length of thinking content.
 
+- **preserveThinking** _boolean_
+
+  Preserve reasoning from previous assistant messages for supported models.
+  When enabled, reasoning is sent separately as Alibaba `reasoning_content` and
+  `preserve_thinking` is enabled. Defaults to `true` for models that support
+  preserved thinking; set to `false` to opt out. Append AI SDK `responseMessages`
+  unchanged when continuing the conversation. See Alibaba's
+  [preserved-thinking documentation](https://docs.qwencloud.com/developer-guides/text-generation/thinking#preserve-thinking-in-multi-turn)
+  for the list of supported models.
+
 - **parallelToolCalls** _boolean_
 
   Whether to enable parallel function calling during tool use.
@@ -56132,6 +56142,64 @@ console.log('Answer:', text);
 ```
 
 For models that are thinking-only (like `qwen3-235b-a22b-thinking-2507`), thinking mode is enabled by default.
+
+### Preserved Thinking in Multi-Turn Conversations
+
+For models that support preserved thinking, the AI SDK replays reasoning from
+previous assistant messages as Alibaba `reasoning_content` by default, so the
+model can build on its earlier thought process:
+
+```ts
+import { alibaba, type AlibabaLanguageModelChatOptions } from '@ai-sdk/alibaba';
+import { generateText, type ModelMessage } from 'ai';
+
+const providerOptions = {
+  alibaba: {
+    enableThinking: true,
+    thinkingBudget: 2048,
+  } satisfies AlibabaLanguageModelChatOptions,
+};
+
+const opening: ModelMessage = {
+  role: 'user',
+  content: 'Is Kafka or RocketMQ a better fit for transactional messages?',
+};
+
+const first = await generateText({
+  model: alibaba('qwen3.7-max'),
+  messages: [opening],
+  providerOptions,
+});
+
+const second = await generateText({
+  model: alibaba('qwen3.7-max'),
+  messages: [
+    opening,
+    ...first.responseMessages, // append unchanged to keep the reasoning parts
+    { role: 'user', content: 'Which tradeoff mattered most?' },
+  ],
+  providerOptions,
+});
+```
+
+When continuing the conversation, append `responseMessages` unchanged. If you
+rebuild assistant history from visible text only, the reasoning parts are
+discarded before the provider can serialize them as `reasoning_content`. Set
+`preserveThinking: false` to opt out of replay, and note the following caveats:
+
+- `preserveThinking` does not enable thinking by itself. Pair it with
+  `enableThinking`/`thinkingBudget` or the top-level `reasoning` option.
+- It is enabled by default only for models that Alibaba documents as supporting
+  preserved thinking; for other models, `preserve_thinking` is not sent unless
+  you set the option explicitly. See Alibaba's
+  [preserved-thinking documentation](https://docs.qwencloud.com/developer-guides/text-generation/thinking#preserve-thinking-in-multi-turn)
+  for the current list of supported models.
+- Reasoning from the current tool-call round (after the last user message) is
+  always sent back with tool results, as Alibaba recommends; the option only
+  controls reasoning from earlier rounds.
+- Preserved reasoning increases input token usage and billing.
+- Historical reasoning remains separate from visible assistant text; it is never
+  merged into `content`.
 
 ### Tool Calling
 
@@ -103830,6 +103898,16 @@ The following optional provider options are available for Alibaba models:
 
   Maximum number of reasoning tokens to generate. Limits the length of thinking content.
 
+- **preserveThinking** _boolean_
+
+  Preserve reasoning from previous assistant messages for supported models.
+  When enabled, reasoning is sent separately as Alibaba `reasoning_content` and
+  `preserve_thinking` is enabled. Defaults to `true` for models that support
+  preserved thinking; set to `false` to opt out. Append AI SDK `responseMessages`
+  unchanged when continuing the conversation. See Alibaba's
+  [preserved-thinking documentation](https://docs.qwencloud.com/developer-guides/text-generation/thinking#preserve-thinking-in-multi-turn)
+  for the list of supported models.
+
 - **parallelToolCalls** _boolean_
 
   Whether to enable parallel function calling during tool use.
@@ -103859,6 +103937,64 @@ console.log('Answer:', text);
 ```
 
 For models that are thinking-only (like `qwen3-235b-a22b-thinking-2507`), thinking mode is enabled by default.
+
+### Preserved Thinking in Multi-Turn Conversations
+
+For models that support preserved thinking, the AI SDK replays reasoning from
+previous assistant messages as Alibaba `reasoning_content` by default, so the
+model can build on its earlier thought process:
+
+```ts
+import { alibaba, type AlibabaLanguageModelChatOptions } from '@ai-sdk/alibaba';
+import { generateText, type ModelMessage } from 'ai';
+
+const providerOptions = {
+  alibaba: {
+    enableThinking: true,
+    thinkingBudget: 2048,
+  } satisfies AlibabaLanguageModelChatOptions,
+};
+
+const opening: ModelMessage = {
+  role: 'user',
+  content: 'Is Kafka or RocketMQ a better fit for transactional messages?',
+};
+
+const first = await generateText({
+  model: alibaba('qwen3.7-max'),
+  messages: [opening],
+  providerOptions,
+});
+
+const second = await generateText({
+  model: alibaba('qwen3.7-max'),
+  messages: [
+    opening,
+    ...first.responseMessages, // append unchanged to keep the reasoning parts
+    { role: 'user', content: 'Which tradeoff mattered most?' },
+  ],
+  providerOptions,
+});
+```
+
+When continuing the conversation, append `responseMessages` unchanged. If you
+rebuild assistant history from visible text only, the reasoning parts are
+discarded before the provider can serialize them as `reasoning_content`. Set
+`preserveThinking: false` to opt out of replay, and note the following caveats:
+
+- `preserveThinking` does not enable thinking by itself. Pair it with
+  `enableThinking`/`thinkingBudget` or the top-level `reasoning` option.
+- It is enabled by default only for models that Alibaba documents as supporting
+  preserved thinking; for other models, `preserve_thinking` is not sent unless
+  you set the option explicitly. See Alibaba's
+  [preserved-thinking documentation](https://docs.qwencloud.com/developer-guides/text-generation/thinking#preserve-thinking-in-multi-turn)
+  for the current list of supported models.
+- Reasoning from the current tool-call round (after the last user message) is
+  always sent back with tool results, as Alibaba recommends; the option only
+  controls reasoning from earlier rounds.
+- Preserved reasoning increases input token usage and billing.
+- Historical reasoning remains separate from visible assistant text; it is never
+  merged into `content`.
 
 ### Tool Calling
 
@@ -162920,7 +163056,7 @@ description: Learn how to use QuiverAI models with the AI SDK.
 
 # QuiverAI Provider
 
-[QuiverAI](https://quiver.ai/) generates SVG documents directly from text prompts and can also vectorize raster images into clean SVGs. The QuiverAI provider for the AI SDK exposes both operations through `generateImage`.
+[QuiverAI](https://quiver.ai/) generates SVG documents directly from text prompts, vectorizes raster images, and animates existing SVGs. The QuiverAI provider for the AI SDK exposes these operations through `generateImage`.
 
 ## Setup
 
@@ -163034,9 +163170,9 @@ await generateImage({
 
 Supported options:
 
-- **operation** _'generate' | 'vectorize'_
+- **operation** _'generate' | 'vectorize' | 'animate'_
 
-  Choose between text-to-SVG generation (`generate`, default) and image-to-SVG vectorization (`vectorize`).
+  Choose between text-to-SVG generation (`generate`, default), image-to-SVG vectorization (`vectorize`), and SVG animation (`animate`).
 
 - **instructions** _string_
 
@@ -163118,11 +163254,49 @@ fs.writeFileSync('logo.svg', image.uint8Array);
 
 Vectorization returns one SVG per API request. To request multiple vectorizations with `n`, also set `maxImagesPerCall: 1` so `generateImage` splits them into separate calls.
 
+### Animating an SVG
+
+Arrow 2 and Arrow 2 Telos can animate an existing SVG. Set `operation` to `animate` and pass exactly one source SVG in `prompt.images`. The text instruction is optional; omit `text` to let QuiverAI choose an animation.
+
+```ts
+import { quiverai, type QuiverAIImageModelOptions } from '@ai-sdk/quiverai';
+import { generateImage } from 'ai';
+import fs from 'fs';
+
+const { image, providerMetadata } = await generateImage({
+  model: quiverai.image('arrow-2'),
+  prompt: {
+    images: [fs.readFileSync('./logo.svg')],
+    text: 'Make the logo pulse gently.',
+  },
+  providerOptions: {
+    quiverai: {
+      operation: 'animate',
+      reasoningEffort: 'medium',
+      maxOutputTokens: 4096,
+    } satisfies QuiverAIImageModelOptions,
+  },
+});
+
+fs.writeFileSync('animated-logo.svg', image.uint8Array);
+
+const timing = providerMetadata.quiverai?.images?.[0];
+console.log(timing?.loopPeriodMs, timing?.openingAnimationMs);
+```
+
+The animation source can be an HTTP or HTTPS URL, SVG bytes, raw base64, or an `image/svg+xml` base64 data URL. Local file inputs are inspected before the request and rejected when they do not contain SVG data. Remote URLs are validated for their scheme and fetched and validated by QuiverAI.
+
+Animation returns an animated SVG as bytes in `image.uint8Array`. When QuiverAI returns timing information, the per-image metadata includes `loopPeriodMs` and `openingAnimationMs`; either timing value can be `null`.
+
+Animation requests must use `arrow-2` or `arrow-2-telos`, contain exactly one source SVG, omit masks, and produce one result per provider request. To request multiple animations with `n`, set `maxImagesPerCall: 1` so `generateImage` splits them into separate calls. Animation supports `temperature`, `reasoningEffort`, and `maxOutputTokens`; generation-only and vectorization-only provider options are rejected.
+
+Source SVGs, text instructions, and remote source URLs are sent to QuiverAI. Animated SVG is active document content. Sanitize it or render it in an isolated context before embedding output from an untrusted source inline in a page.
+
 ### Billing and Usage
 
 Arrow 2 models return measured token counts in `result.usage`. Fixed-credit models may return compatibility token counts of zero; their credit charge is available in `result.providerMetadata?.quiverai?.credits` when supplied by the API.
 
-Model availability and supported operations depend on your organization and API key permissions. Consult QuiverAI's [model catalog](https://docs.quiver.ai/developers/models) for current capabilities and billing. Editing, animation, and the Responses API are not yet exposed by this provider.
+Model availability and supported operations depend on your organization and API key permissions. Consult QuiverAI's [model catalog](https://docs.quiver.ai/developers/models) for current capabilities and billing. Editing and the Responses API are not yet exposed by this provider.
 
 ---
 title: Fish Audio
@@ -166843,6 +167017,16 @@ The following optional provider options are available for Alibaba models:
 
   Maximum number of reasoning tokens to generate. Limits the length of thinking content.
 
+- **preserveThinking** _boolean_
+
+  Preserve reasoning from previous assistant messages for supported models.
+  When enabled, reasoning is sent separately as Alibaba `reasoning_content` and
+  `preserve_thinking` is enabled. Defaults to `true` for models that support
+  preserved thinking; set to `false` to opt out. Append AI SDK `responseMessages`
+  unchanged when continuing the conversation. See Alibaba's
+  [preserved-thinking documentation](https://docs.qwencloud.com/developer-guides/text-generation/thinking#preserve-thinking-in-multi-turn)
+  for the list of supported models.
+
 - **parallelToolCalls** _boolean_
 
   Whether to enable parallel function calling during tool use.
@@ -166872,6 +167056,64 @@ console.log('Answer:', text);
 ```
 
 For models that are thinking-only (like `qwen3-235b-a22b-thinking-2507`), thinking mode is enabled by default.
+
+### Preserved Thinking in Multi-Turn Conversations
+
+For models that support preserved thinking, the AI SDK replays reasoning from
+previous assistant messages as Alibaba `reasoning_content` by default, so the
+model can build on its earlier thought process:
+
+```ts
+import { alibaba, type AlibabaLanguageModelChatOptions } from '@ai-sdk/alibaba';
+import { generateText, type ModelMessage } from 'ai';
+
+const providerOptions = {
+  alibaba: {
+    enableThinking: true,
+    thinkingBudget: 2048,
+  } satisfies AlibabaLanguageModelChatOptions,
+};
+
+const opening: ModelMessage = {
+  role: 'user',
+  content: 'Is Kafka or RocketMQ a better fit for transactional messages?',
+};
+
+const first = await generateText({
+  model: alibaba('qwen3.7-max'),
+  messages: [opening],
+  providerOptions,
+});
+
+const second = await generateText({
+  model: alibaba('qwen3.7-max'),
+  messages: [
+    opening,
+    ...first.responseMessages, // append unchanged to keep the reasoning parts
+    { role: 'user', content: 'Which tradeoff mattered most?' },
+  ],
+  providerOptions,
+});
+```
+
+When continuing the conversation, append `responseMessages` unchanged. If you
+rebuild assistant history from visible text only, the reasoning parts are
+discarded before the provider can serialize them as `reasoning_content`. Set
+`preserveThinking: false` to opt out of replay, and note the following caveats:
+
+- `preserveThinking` does not enable thinking by itself. Pair it with
+  `enableThinking`/`thinkingBudget` or the top-level `reasoning` option.
+- It is enabled by default only for models that Alibaba documents as supporting
+  preserved thinking; for other models, `preserve_thinking` is not sent unless
+  you set the option explicitly. See Alibaba's
+  [preserved-thinking documentation](https://docs.qwencloud.com/developer-guides/text-generation/thinking#preserve-thinking-in-multi-turn)
+  for the current list of supported models.
+- Reasoning from the current tool-call round (after the last user message) is
+  always sent back with tool results, as Alibaba recommends; the option only
+  controls reasoning from earlier rounds.
+- Preserved reasoning increases input token usage and billing.
+- Historical reasoning remains separate from visible assistant text; it is never
+  merged into `content`.
 
 ### Tool Calling
 
@@ -168147,6 +168389,8 @@ const { images } = await generateImage({
 Common provider options for image generation:
 
 - **maxWaitTimeInSeconds** _number_ - Maximum time in seconds to wait for the prediction to complete in sync mode. By default, Replicate uses [sync mode](https://replicate.com/docs/topics/predictions/create-a-prediction#timeout-duration) with a 60-second timeout. Set to a positive number to use a custom duration (e.g., `120` for 2 minutes). When not specified, uses the default 60-second wait.
+- **pollIntervalMillis** _number_ - Interval in milliseconds between polling attempts when a prediction does not complete within the synchronous wait duration. Defaults to 500 milliseconds.
+- **maxPollAttempts** _number_ - Maximum number of polling attempts before giving up. Defaults to 240 attempts.
 - **guidance_scale** _number_ - Guidance scale for classifier-free guidance. Higher values make the output more closely match the prompt.
 - **num_inference_steps** _number_ - Number of denoising steps. More steps = higher quality but slower.
 - **negative_prompt** _string_ - Negative prompt to guide what to avoid in the generation.

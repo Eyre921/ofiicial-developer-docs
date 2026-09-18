@@ -24,7 +24,7 @@ Langfuse is built with enterprise needs in mind, focusing on:
 - **Transparency:** Open-source core and clear information on [software dependencies](/security/dependencies).
 - **Reporting:** Clear channels for [responsible disclosure through Bugcrowd](/security/responsible-disclosure) and [Whistleblowing](/security/whistleblowing).
 
-Langfuse is the most widely adopted LLM Engineering platform, used by **50,000+ companies**, with **34,728 GitHub stars**, **65M+ SDK installs per month**, and **38M+ Docker pulls**. Trusted by **21 of the Fortune 50** and **129 of the Fortune 500** companies.
+Langfuse is the most widely adopted LLM Engineering platform, used by **50,000+ companies**, with **34,738 GitHub stars**, **65M+ SDK installs per month**, and **38M+ Docker pulls**. Trusted by **21 of the Fortune 50** and **129 of the Fortune 500** companies.
 
 ## Langfuse Cloud security model
 

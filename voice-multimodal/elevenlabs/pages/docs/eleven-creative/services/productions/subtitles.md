@@ -42,7 +42,7 @@ optional for subtitles.
 The easiest way to order new subtitles from Productions is from the
 [Productions](https://elevenlabs.io/app/productions) page in your ElevenLabs account.
 
-![Productions Home Page](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/cd072dfc01c9b277960c0583a3900ca963ee0ca766f204f5fac602117f5a8174/assets/images/productions/productions-home.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260917%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260917T233118Z&X-Amz-Expires=604800&X-Amz-Signature=056f0a926a5aec12711a5e249fa149e8ab172c93978edfbc0cb35aaaf8888f99&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Productions Home Page](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/cd072dfc01c9b277960c0583a3900ca963ee0ca766f204f5fac602117f5a8174/assets/images/productions/productions-home.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T113110Z&X-Amz-Expires=604800&X-Amz-Signature=774480985dd7400937c61c922055d5121ef4c415d36aaeeba4925d3dab38dff4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Export subtitles and captions
 

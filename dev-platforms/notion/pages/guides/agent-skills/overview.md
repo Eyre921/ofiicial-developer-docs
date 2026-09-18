@@ -10,7 +10,10 @@ The Agent Skills API exposes skills stored in Notion as directories of files. Yo
 
 Teams use Notion as a [skills library](https://www.notion.com/help/create-and-manage-skills) to edit, review, and share skills. Each skill's main `SKILL.md` file is a Notion page. Supporting files and folders can be attached through its **Files** property.
 
-For one example of how to use the API, see the [notion-skills-github-sync](https://github.com/makenotion/notion-skills-github-sync) sample repo, which sets up a recurring script that syncs skills from Notion into a GitHub plugin marketplace, which can further be synced into Claude, ChatGPT, or other agents.
+For some examples of how to use the API, see:
+
+* the [notion-skills-github-sync](https://github.com/makenotion/notion-skills-github-sync) sample repo, which sets up a recurring script that syncs skills from Notion into a GitHub plugin marketplace, which can further be synced into Claude, ChatGPT, or other agents.
+* the Vercel [skills CLI](https://github.com/vercel-labs/skills), which uses the Skills API to help users install skills for local agents.
 
 <CardGroup>
   <Card title="List plugins" href="/reference/agent-skills/list-skills-plugins" icon="list">

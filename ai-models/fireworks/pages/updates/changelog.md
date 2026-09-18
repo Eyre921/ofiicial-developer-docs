@@ -4,6 +4,19 @@ source: https://docs.fireworks.ai/updates/changelog
 path: updates/changelog
 ---
 
+<Update label="2026-09-16">
+  <Badge>Platform</Badge>
+
+  # New deployment creation flags: `deploymentShape: "default"` and `acceptShapelessRisk`
+
+  Two new options are available on the [Create Deployment](/api-reference/create-deployment) API, in firectl (`--deployment-shape default` / `--accept-shapeless-risk`), and in the Python SDK (`deployment_shape="default"` / `accept_shapeless_risk=True`):
+
+  * **`deploymentShape: "default"`** — Fireworks picks a validated deployment shape for the model and creates the deployment from it. If every compatible shape conflicts with fields in your request, the request fails with an error naming the conflicting fields and compatible shapes; the pick never silently overrides your settings or falls back to creating without a shape.
+  * **`acceptShapelessRisk=true`** — an explicit opt-out that creates the deployment without a shape, preserving current behavior. It cannot be combined with a shape.
+
+  Deployments created without a shape skip shape validation and are the most common cause of failed deployment creations. Enforcement is coming soon: shapeless creation will then require the explicit opt-in, so start passing a shape (or `default`) now. The opt-out is for advanced users only. If you have a workload no existing shape covers, [contact us](https://fireworks.ai/contact) and we'll help you find or add one.
+</Update>
+
 <Update label="2026-09-12">
   <Badge>Inference</Badge>
 

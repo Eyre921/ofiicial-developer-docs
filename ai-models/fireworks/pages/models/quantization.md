@@ -107,7 +107,7 @@ By default, creating a deployment uses the FP16 checkpoint. To use a quantized F
 
 Do not deploy without a [deployment shape](/guides/ondemand-deployments#deployment-shapes) — a shape that includes FP8 precision is the only validated path. Match the model's shapes with `firectl deployment-shape-version match --model <MODEL>` and look for one with the precision you want in the `PRECISION` column.
 
-If no FP8 shape exists for your model, start from the closest shape and override the precision with `--precision`. Do not create the deployment without a shape entirely: it skips validation, is the most common cause of failed deployment creations, and the unshaped path may be deprecated in the future:
+If no FP8 shape exists for your model, start from the closest shape and override the precision with `--precision`. Do not create the deployment without a shape entirely: it skips validation, is the most common cause of failed deployment creations, and shapeless creation will soon require an explicit opt-in:
 
 <Tabs>
   <Tab title="firectl">

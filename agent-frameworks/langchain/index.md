@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1181 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1180 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -246,7 +246,7 @@
 - `langsmith/fetch-perf-metrics-experiment` — [How to fetch performance metrics for an experiment](pages/langsmith/fetch-perf-metrics-experiment.md) · [原文](https://docs.langchain.com/langsmith/fetch-perf-metrics-experiment)
 - `langsmith/filter-experiments-ui` — [How to filter experiments in the UI](pages/langsmith/filter-experiments-ui.md) · [原文](https://docs.langchain.com/langsmith/filter-experiments-ui)
 - `langsmith/filter-traces` — [Filter traces](pages/langsmith/filter-traces.md) · [原文](https://docs.langchain.com/langsmith/filter-traces)
-- `langsmith/filter-traces-in-application` — [Filter traces](pages/langsmith/filter-traces-in-application.md) · [原文](https://docs.langchain.com/langsmith/filter-traces-in-application)
+- `langsmith/filter-traces-in-application` — [Filter traces (ClickHouse)](pages/langsmith/filter-traces-in-application.md) · [原文](https://docs.langchain.com/langsmith/filter-traces-in-application)
 - `langsmith/fleet/access-and-oversight` — [Access & oversight](pages/langsmith/fleet/access-and-oversight.md) · [原文](https://docs.langchain.com/langsmith/fleet/access-and-oversight)
 - `langsmith/fleet/agent-identity` — [Agent identity](pages/langsmith/fleet/agent-identity.md) · [原文](https://docs.langchain.com/langsmith/fleet/agent-identity)
 - `langsmith/fleet/arcade` — [Arcade integration](pages/langsmith/fleet/arcade.md) · [原文](https://docs.langchain.com/langsmith/fleet/arcade)
@@ -836,6 +836,7 @@
 - `langsmith/smith-api/orgs/list-ttl-settings` — [List TTL settings](pages/langsmith/smith-api/orgs/list-ttl-settings.md) · [原文](https://docs.langchain.com/langsmith/smith-api/orgs/list-ttl-settings)
 - `langsmith/smith-api/orgs/on-payment-method-created` — [On payment method created](pages/langsmith/smith-api/orgs/on-payment-method-created.md) · [原文](https://docs.langchain.com/langsmith/smith-api/orgs/on-payment-method-created)
 - `langsmith/smith-api/orgs/patch-current-org-pending-member` — [Patch current org pending member](pages/langsmith/smith-api/orgs/patch-current-org-pending-member.md) · [原文](https://docs.langchain.com/langsmith/smith-api/orgs/patch-current-org-pending-member)
+- `langsmith/smith-api/orgs/reinstate-org-personal-access-token` — [Reinstate org personal access token](pages/langsmith/smith-api/orgs/reinstate-org-personal-access-token.md) · [原文](https://docs.langchain.com/langsmith/smith-api/orgs/reinstate-org-personal-access-token)
 - `langsmith/smith-api/orgs/remove-member-from-current-org` — [Remove member from current org](pages/langsmith/smith-api/orgs/remove-member-from-current-org.md) · [原文](https://docs.langchain.com/langsmith/smith-api/orgs/remove-member-from-current-org)
 - `langsmith/smith-api/orgs/revoke-org-personal-access-token` — [Revoke org personal access token](pages/langsmith/smith-api/orgs/revoke-org-personal-access-token.md) · [原文](https://docs.langchain.com/langsmith/smith-api/orgs/revoke-org-personal-access-token)
 - `langsmith/smith-api/orgs/set-company-info` — [Set company info](pages/langsmith/smith-api/orgs/set-company-info.md) · [原文](https://docs.langchain.com/langsmith/smith-api/orgs/set-company-info)
@@ -857,8 +858,6 @@
 - `langsmith/smith-api/playground-settings/get-playground-settings` — [Get playground settings](pages/langsmith/smith-api/playground-settings/get-playground-settings.md) · [原文](https://docs.langchain.com/langsmith/smith-api/playground-settings/get-playground-settings)
 - `langsmith/smith-api/playground-settings/list-playground-settings` — [List playground settings](pages/langsmith/smith-api/playground-settings/list-playground-settings.md) · [原文](https://docs.langchain.com/langsmith/smith-api/playground-settings/list-playground-settings)
 - `langsmith/smith-api/playground-settings/update-playground-settings` — [Update playground settings](pages/langsmith/smith-api/playground-settings/update-playground-settings.md) · [原文](https://docs.langchain.com/langsmith/smith-api/playground-settings/update-playground-settings)
-- `langsmith/smith-api/productfeedback/alpha-get-product-feedback` — [[alpha] get product feedback](pages/langsmith/smith-api/productfeedback/alpha-get-product-feedback.md) · [原文](https://docs.langchain.com/langsmith/smith-api/productfeedback/alpha-get-product-feedback)
-- `langsmith/smith-api/productfeedback/alpha-submit-product-feedback` — [[alpha] submit product feedback](pages/langsmith/smith-api/productfeedback/alpha-submit-product-feedback.md) · [原文](https://docs.langchain.com/langsmith/smith-api/productfeedback/alpha-submit-product-feedback)
 - `langsmith/smith-api/prompt-webhooks/create-prompt-webhook` — [Create prompt webhook](pages/langsmith/smith-api/prompt-webhooks/create-prompt-webhook.md) · [原文](https://docs.langchain.com/langsmith/smith-api/prompt-webhooks/create-prompt-webhook)
 - `langsmith/smith-api/prompt-webhooks/delete-prompt-webhook` — [Delete prompt webhook](pages/langsmith/smith-api/prompt-webhooks/delete-prompt-webhook.md) · [原文](https://docs.langchain.com/langsmith/smith-api/prompt-webhooks/delete-prompt-webhook)
 - `langsmith/smith-api/prompt-webhooks/get-prompt-webhook` — [Get prompt webhook](pages/langsmith/smith-api/prompt-webhooks/get-prompt-webhook.md) · [原文](https://docs.langchain.com/langsmith/smith-api/prompt-webhooks/get-prompt-webhook)

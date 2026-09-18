@@ -1,6 +1,6 @@
 # vector-db/pinecone 文档索引
 
-> 共 567 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 568 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## api-reference
@@ -164,6 +164,7 @@
 - `guides/nexus/byoc/overview` — [Nexus BYOC overview](pages/guides/nexus/byoc/overview.md) · [原文](https://docs.pinecone.io/guides/nexus/byoc/overview)
 - `guides/nexus/byoc/reference` — [Nexus BYOC data residency and limits](pages/guides/nexus/byoc/reference.md) · [原文](https://docs.pinecone.io/guides/nexus/byoc/reference)
 - `guides/nexus/concepts` — [Nexus key concepts](pages/guides/nexus/concepts.md) · [原文](https://docs.pinecone.io/guides/nexus/concepts)
+- `guides/nexus/configure-artifact-formats` — [Configure artifact formats](pages/guides/nexus/configure-artifact-formats.md) · [原文](https://docs.pinecone.io/guides/nexus/configure-artifact-formats)
 - `guides/nexus/context-design` — [Context design overview](pages/guides/nexus/context-design.md) · [原文](https://docs.pinecone.io/guides/nexus/context-design)
 - `guides/nexus/design-your-own-manifest` — [Design your own manifest](pages/guides/nexus/design-your-own-manifest.md) · [原文](https://docs.pinecone.io/guides/nexus/design-your-own-manifest)
 - `guides/nexus/how-curation-works` — [Nexus curation](pages/guides/nexus/how-curation-works.md) · [原文](https://docs.pinecone.io/guides/nexus/how-curation-works)

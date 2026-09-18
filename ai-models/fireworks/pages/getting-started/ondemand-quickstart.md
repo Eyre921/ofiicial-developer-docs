@@ -33,7 +33,7 @@ Once you have your API key, export it as an environment variable in your termina
 To create and manage on-demand deployments, you'll need the `firectl` CLI tool. Install it using one of the following methods, based on your platform:
 
 <CodeGroup>
-  ```bash homebrew theme={null}
+  ```bash homebrew theme={null} theme={null}
   brew tap fw-ai/firectl
   brew install firectl
 
@@ -41,27 +41,27 @@ To create and manage on-demand deployments, you'll need the `firectl` CLI tool. 
   brew update
   ```
 
-  ```bash macOS (Apple Silicon) theme={null}
+  ```bash macOS (Apple Silicon) theme={null} theme={null}
   curl https://storage.googleapis.com/fireworks-public/firectl/stable/darwin-arm64.gz -o firectl.gz
   gzip -d firectl.gz && chmod a+x firectl
   sudo mv firectl /usr/local/bin/firectl
   sudo chown root: /usr/local/bin/firectl
   ```
 
-  ```bash macOS (x86_64) theme={null}
+  ```bash macOS (x86_64) theme={null} theme={null}
   curl https://storage.googleapis.com/fireworks-public/firectl/stable/darwin-amd64.gz -o firectl.gz
   gzip -d firectl.gz && chmod a+x firectl
   sudo mv firectl /usr/local/bin/firectl
   sudo chown root: /usr/local/bin/firectl
   ```
 
-  ```bash Linux  (x86_64) theme={null}
+  ```bash Linux  (x86_64) theme={null} theme={null}
   wget -O firectl.gz https://storage.googleapis.com/fireworks-public/firectl/stable/linux-amd64.gz
   gunzip firectl.gz
   sudo install -o root -g root -m 0755 firectl /usr/local/bin/firectl
   ```
 
-  ```Text Windows (64 bit) theme={null}
+  ```Text Windows (64 bit) theme={null} theme={null}
   wget -L https://storage.googleapis.com/fireworks-public/firectl/stable/firectl.exe
   ```
 </CodeGroup>
@@ -74,19 +74,13 @@ firectl signin
 
 ## Step 3: Create a deployment
 
-This command will create a deployment of GPT OSS 120B optimized for speed. It will take a few minutes to complete. The resulting deployment will scale up to 1 replica.
+This command will create a deployment of GPT OSS 120B. It will take a few minutes to complete. The resulting deployment will scale up to 1 replica.
 
-First, match the validated shapes for the model and choose a shape with the `FAST` preset type:
-
-```bash theme={null}
-firectl deployment-shape-version match --model accounts/fireworks/models/gpt-oss-120b
-```
-
-Then copy `<SHAPE_NAME>` from the `SHAPE NAME (version-id)` column (the resource name before the parenthesized version ID):
+Requires `firectl` 1.8.8 or newer — on older versions, `default` is treated as a literal shape name and the command fails. Check with `firectl version`.
 
 ```bash theme={null}
 firectl deployment create accounts/fireworks/models/gpt-oss-120b \
-        --deployment-shape <SHAPE_NAME> \
+        --deployment-shape default \
         --scale-down-window 5m \
         --scale-up-window 30s \
         --min-replica-count 0 \
@@ -98,9 +92,9 @@ firectl deployment create accounts/fireworks/models/gpt-oss-120b \
 <Tip>
   A [deployment shape](/guides/ondemand-deployments#deployment-shapes) is a pre-configured deployment template created by the Fireworks team that sets sensible defaults for most deployment options (such as hardware type).
 
-  Choose a shape with preset type `THROUGHPUT` for lower cost-per-token at scale, or `MINIMAL` for the lowest cost-per-token at small scale. Pass the shape's full resource name to `--deployment-shape`; preset types are not shape identifier aliases.
+  `--deployment-shape default` tells Fireworks to pick a validated shape for the model. To optimize for lower cost-per-token at scale or the lowest cost at small scale, run `firectl deployment-shape-version match --model <model-id>` and pass a shape with preset type `THROUGHPUT` or `MINIMAL` instead — pass the shape's full resource name to `--deployment-shape`; preset types are not shape identifier aliases.
 
-  Do not create deployments without a shape — always pass `--deployment-shape`. Deployments created without a shape do not start from a validated configuration and are much more likely to fail at creation, and the unshaped path may be deprecated in the future. See [Deployment shapes](/guides/ondemand-deployments#deployment-shapes) in the deployment guide.
+  Do not omit `--deployment-shape`: deployments created without a shape do not start from a validated configuration and are much more likely to fail at creation. If no shape fits your workload, [contact us](https://fireworks.ai/contact); if you deliberately need a shapeless deployment, pass `--accept-shapeless-risk` (advanced users only). See [Deployment shapes](/guides/ondemand-deployments#deployment-shapes) and [Explicitly creating a deployment without a shape](/guides/ondemand-deployments#explicitly-creating-a-deployment-without-a-shape-advanced-users-only) in the deployment guide.
 </Tip>
 
 The response will look like this:
@@ -143,15 +137,15 @@ Now you can query your on-demand deployment using the same API as serverless mod
     </Note>
 
     <CodeGroup>
-      ```bash pip theme={null}
+      ```bash pip theme={null} theme={null}
       pip install --pre fireworks-ai
       ```
 
-      ```bash poetry theme={null}
+      ```bash poetry theme={null} theme={null}
       poetry add --pre fireworks-ai
       ```
 
-      ```bash uv theme={null}
+      ```bash uv theme={null} theme={null}
       uv add --pre fireworks-ai
       ```
     </CodeGroup>
@@ -248,7 +242,7 @@ The examples from the Serverless quickstart will work with this deployment as we
 
 ```bash theme={null}
 firectl deployment create accounts/fireworks/models/gpt-oss-120b \
-        --deployment-shape <SHAPE_NAME> \
+        --deployment-shape default \
         --scale-down-window 5m \
         --scale-up-window 30s \
         --scale-to-zero-window 5m \
@@ -262,7 +256,7 @@ firectl deployment create accounts/fireworks/models/gpt-oss-120b \
 
 ```bash theme={null}
 firectl deployment create accounts/fireworks/models/gpt-oss-120b \
-        --deployment-shape <SHAPE_NAME> \
+        --deployment-shape default \
         --scale-down-window 5m \
         --scale-up-window 30s \
         --scale-to-zero-window 5m \

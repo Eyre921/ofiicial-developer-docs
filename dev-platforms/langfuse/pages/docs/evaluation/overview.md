@@ -26,7 +26,7 @@ The AI Engineering Loop:
 - [Experiment](/academy/experiments): prompts, models, code variants
 - [Evaluate](/academy/evaluate): judges, custom evals, annotation
 
-Want to see it in action? [**Create a free account**](/cloud) and explore Langfuse Evaluation in the [interactive example project](/docs/demo).
+[**Watch this walkthrough**](/watch-demo) of Langfuse Evaluation and how to use it to improve your LLM application.
 
 ## Getting Started
 

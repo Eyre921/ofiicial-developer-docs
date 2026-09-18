@@ -5,11 +5,13 @@ path: reference/api/2026-07/control-plane/create_index
 ---
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/db_control_2026-07.oas.yaml post /indexes
-Create a Pinecone index. Define the schema for your index — dense vector, sparse vector, and full-text search fields — and, optionally, the deployment infrastructure (managed serverless or BYOC). To create an index with an integrated embedding model, use [Create an index with integrated embedding](https://docs.pinecone.io/reference/api/2026-07/control-plane/create_index_for_model). If `deployment` is omitted, the index is deployed as a managed (serverless) index on `aws` in `us-east-1`.
-**The index schema cannot be modified after creation.** Field types, dimensions, metrics, and text-analysis settings are permanent. Choose your schema carefully before creating an index.
-To create an index from a backup, use [Create index from backup](https://docs.pinecone.io/reference/api/2026-07/control-plane/create_index_from_backup).
-For guidance and examples, see [Create an index](https://docs.pinecone.io/guides/index-data/create-an-index).
+Create a Pinecone index. Define the schema for your index — dense vector, sparse vector, and full-text search fields — and, optionally, the deployment infrastructure (managed serverless or BYOC). To create an index with an integrated embedding model, use [Create an index with integrated embedding](https://docs.pinecone.io/reference/api/2026-07/control-plane/create_index_for_model).
 
+**The index schema cannot be modified after creation.** Field types, dimensions, metrics, and text-analysis settings are permanent. Choose your schema carefully before creating an index.
+
+To create an index from a backup, use [Create index from backup](https://docs.pinecone.io/reference/api/2026-07/control-plane/create_index_from_backup).
+
+For guidance and examples, see [Create an index](https://docs.pinecone.io/guides/index-data/create-an-index).
 
 Creates a new schema-defined index. The schema declares each field and its type — dense vector, sparse vector, or [full-text search](/guides/search/full-text-search). The index initializes asynchronously; poll [`GET /indexes/{index_name}`](/reference/api/2026-07/control-plane/describe_index) until `status.ready: true` (and, for `Dedicated` read capacity, `read_capacity.status.state: "Ready"`) before performing data plane operations.
 

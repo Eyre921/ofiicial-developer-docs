@@ -15,7 +15,7 @@ If you create a deployment without a shape — that is, without passing `--deplo
 * A context length the configuration can't serve
 * A quantization or precision the model doesn't support on that hardware
 
-Deployments created without a shape fail far more often than deployments created from a shape — they are the most common cause of failed deployment creations on Fireworks. Do not create deployments without a shape; the unshaped path may be deprecated in the future.
+Deployments created without a shape fail far more often than deployments created from a shape — they are the most common cause of failed deployment creations on Fireworks. Do not create deployments without a shape: pass `--deployment-shape` (or `deploymentShape` in the API), or `default` to have Fireworks pick one. Enforcement is coming soon — shapeless creation will then require an explicit opt-in ([`acceptShapelessRisk`](/guides/ondemand-deployments#explicitly-creating-a-deployment-without-a-shape-advanced-users-only)).
 
 ## How to find and use a shape
 
@@ -29,11 +29,11 @@ The shape list is also the authoritative way to discover which GPU types, GPU co
     firectl deployment-shape-version match --model accounts/fireworks/models/gpt-oss-120b
     ```
 
-    Then pass the shape's name to `--deployment-shape` when creating the deployment:
+    Then pass the shape's name to `--deployment-shape` when creating the deployment — or `--deployment-shape default` to have Fireworks pick one:
 
     ```bash theme={null}
     firectl deployment create accounts/fireworks/models/gpt-oss-120b \
-      --deployment-shape accounts/fireworks/deploymentShapes/gpt-oss-120b-fast
+      --deployment-shape default
     ```
   </Tab>
 
@@ -56,7 +56,7 @@ The shape list is also the authoritative way to discover which GPU types, GPU co
       }'
     ```
 
-    Then pass one of the returned shape versions as `deploymentShape` in the [Create Deployment](/api-reference/create-deployment) request body:
+    Then pass one of the returned shape versions as `deploymentShape` in the [Create Deployment](/api-reference/create-deployment) request body. To have Fireworks pick a validated shape for you, pass `deploymentShape: "default"` instead — the server picks a compatible shape and applies it, and fails rather than override fields you set explicitly:
 
     ```bash theme={null}
     curl -X POST "https://api.fireworks.ai/v1/accounts/YOUR_ACCOUNT_ID/deployments" \
@@ -64,7 +64,7 @@ The shape list is also the authoritative way to discover which GPU types, GPU co
       -H "Content-Type: application/json" \
       -d '{
         "baseModel": "accounts/fireworks/models/gpt-oss-120b",
-        "deploymentShape": "accounts/fireworks/deploymentShapes/gpt-oss-120b-fast"
+        "deploymentShape": "default"
       }'
     ```
   </Tab>
@@ -77,3 +77,5 @@ The shape list is also the authoritative way to discover which GPU types, GPU co
 ## If no shape fits
 
 If you need a configuration that no existing shape covers, [contact us](https://fireworks.ai/contact) — we'll help you find the right shape or add one for your workload.
+
+If you deliberately need a configuration no shape covers, every surface accepts an [explicit opt-out](/guides/ondemand-deployments#explicitly-creating-a-deployment-without-a-shape-advanced-users-only) that creates the deployment without a shape.

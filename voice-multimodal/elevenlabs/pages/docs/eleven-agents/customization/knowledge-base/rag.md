@@ -49,7 +49,7 @@ This process ensures that relevant information to the user's query is passed to 
 
 In your agent's settings, navigate to the **Knowledge Base** section and toggle on the **Use RAG** option. Configure the embedding model, maximum document chunks, and maximum vector distance under the **Advanced** tab as needed.
 
-![RAG configuration options including embedding model selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6e8a6273d26090d92a2ed237ffbc488f44e5e9a408aca6511afa94461d177c86/assets/images/conversational-ai/rag-config.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260917%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260917T185755Z&X-Amz-Expires=604800&X-Amz-Signature=1ab3c69024d04796ecd99b684ef7fc39596dd2aa65411b97acdfd054a700d0cd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![RAG configuration options including embedding model selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6e8a6273d26090d92a2ed237ffbc488f44e5e9a408aca6511afa94461d177c86/assets/images/conversational-ai/rag-config.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100016Z&X-Amz-Expires=604800&X-Amz-Signature=078448c8c05518e782fbe61956b5f3901f3c63d1c8f452f84abbc71d9063577f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Update via the CLI
 
@@ -106,7 +106,7 @@ For each document in your knowledge base, you can choose how it's used:
 * **Auto (default)**: The document is only retrieved when relevant to the query
 * **Prompt**: The document is always included in the system prompt, regardless of relevance
 
-![Document usage mode options in the knowledge base](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/265aa612b4ad2da915b617552312b47c965892559b2a8615ecb42551763de4a5/assets/images/conversational-ai/rag-prompt.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260917%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260917T185755Z&X-Amz-Expires=604800&X-Amz-Signature=689df936cf30d56b74e3fdc97e591b90b844de7d4ded06b337a228ddb9ea70f0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Document usage mode options in the knowledge base](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/265aa612b4ad2da915b617552312b47c965892559b2a8615ecb42551763de4a5/assets/images/conversational-ai/rag-prompt.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100016Z&X-Amz-Expires=604800&X-Amz-Signature=8804be03e1481a392314093757d47c22efbd3252dff81821593b456ebac74291&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Setting too many documents to "Prompt" mode may exceed context limits. Use this option sparingly
 for critical information.

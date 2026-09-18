@@ -17784,6 +17784,338 @@ import GetStartedLinks from '@mdx/GetStartedLinks/index.astro';
 # Get started with Drizzle
 <GetStartedLinks />
 
+Source: https://orm.drizzle.team/docs/get-started/appwrite-mysql-existing
+
+import Callout from '@mdx/Callout.astro';
+import Breadcrumbs from '@mdx/Breadcrumbs.astro';
+import Prerequisites from "@mdx/Prerequisites.astro";
+import FileStructure from '@mdx/get-started/FileStructure.mdx';
+import InstallPackages from '@mdx/get-started/InstallPackages.mdx';
+import ConnectAppwriteMySQL from '@mdx/get-started/mysql/ConnectAppwriteMySQL.mdx';
+import UpdateSchema from '@mdx/get-started/mysql/UpdateSchema.mdx';
+import IntrospectMySQL from '@mdx/get-started/mysql/IntrospectMySQL.mdx';
+import QueryDatabase from '@mdx/get-started/QueryDatabase.mdx';
+import QueryDatabaseUpdated from '@mdx/get-started/QueryDatabaseUpdated.mdx';
+import ApplyChanges from '@mdx/get-started/mysql/ApplyChanges.mdx';
+import RunFile from '@mdx/get-started/RunFile.mdx';
+import SetupConfig from '@mdx/get-started/mysql/SetupConfig.mdx';
+import TransferCode from '@mdx/get-started/TransferCode.mdx';
+
+<Breadcrumbs/>
+
+# Get Started with Drizzle and Appwrite MySQL in existing project
+
+<Prerequisites>
+  - **dotenv** - package for managing environment variables - [read here](https://www.npmjs.com/package/dotenv)
+  - **tsx** - package for running TypeScript files - [read here](https://tsx.hirok.io/)
+  - **Appwrite MySQL** - native MySQL database by Appwrite - [read here](https://appwrite.io/docs/products/databases/mysql)
+  - **mysql2** - package for querying your MySQL database - [read here](https://github.com/sidorares/node-mysql2)
+</Prerequisites>
+
+<Callout title='Appwrite also offers PostgreSQL' type='info'>
+Looking for PostgreSQL? Check out our [Appwrite Postgres guide](/docs/get-started/appwrite-postgres-existing)
+</Callout>
+
+Appwrite offers dedicated, native MySQL databases that you connect to directly over TLS. There is no Appwrite-specific driver, so this guide uses the standard `mysql2` driver through the `drizzle-orm/mysql2` package.
+
+For detailed instructions on creating an Appwrite MySQL database, see the [Appwrite MySQL documentation](https://appwrite.io/docs/products/databases/mysql).
+
+<FileStructure/>
+
+#### Step 1 - Install **mysql2** package
+
+<InstallPackages lib='mysql2'/>
+
+#### Step 2 - Setup connection variables
+
+Create a `.env` file in the root of your project and add your database connection variable:
+
+```plaintext copy
+DATABASE_URL=mysql://admin.<hash>:<password>@db-<hash>.<region>.appwrite.center:3306/default?ssl=true
+```
+
+<Callout title='tips'>
+You can obtain your connection string from the Appwrite Console by opening your database and clicking **"Credentials"**. The username is `admin.<hash>`, where the hash matches the one in the hostname, and the database name is always `default`. Appwrite routes your connection by this username, so always use the full value from the connection string. See the [Appwrite MySQL connections guide](https://appwrite.io/docs/products/databases/mysql/connections) for detailed steps.
+</Callout>
+
+#### Step 3 - Setup Drizzle config file
+
+<SetupConfig dialect='mysql' env_variable='DATABASE_URL'/>
+
+#### Step 4 - Introspect your database
+
+<IntrospectMySQL/>
+
+#### Step 5 - Transfer code to your actual schema file
+
+<TransferCode/>
+
+#### Step 6 - Connect Drizzle ORM to the database
+
+<ConnectAppwriteMySQL/>
+
+#### Step 7 - Query the database
+
+<QueryDatabase dialect='mysql2' env_variable='DATABASE_URL'/>
+
+#### Step 8 - Run index.ts file
+
+<RunFile/>
+
+#### Step 9 - Update your table schema (optional)
+
+<UpdateSchema/>
+
+#### Step 10 - Applying changes to the database (optional)
+
+<ApplyChanges/>
+
+#### Step 11 - Query the database with a new field (optional)
+
+<QueryDatabaseUpdated dialect='mysql2' env_variable='DATABASE_URL' />
+
+
+Source: https://orm.drizzle.team/docs/get-started/appwrite-mysql-new
+
+import Callout from '@mdx/Callout.astro';
+import Breadcrumbs from '@mdx/Breadcrumbs.astro';
+import Prerequisites from "@mdx/Prerequisites.astro";
+import FileStructure from '@mdx/get-started/FileStructure.mdx';
+import InstallPackages from '@mdx/get-started/InstallPackages.mdx';
+import ConnectAppwriteMySQL from '@mdx/get-started/mysql/ConnectAppwriteMySQL.mdx';
+import CreateTable from '@mdx/get-started/mysql/CreateTable.mdx';
+import QueryDatabase from '@mdx/get-started/QueryDatabase.mdx';
+import ApplyChanges from '@mdx/get-started/mysql/ApplyChanges.mdx';
+import RunFile from '@mdx/get-started/RunFile.mdx';
+import SetupConfig from '@mdx/get-started/mysql/SetupConfig.mdx';
+
+<Breadcrumbs/>
+
+# Get Started with Drizzle and Appwrite MySQL
+
+<Prerequisites>
+  - **dotenv** - package for managing environment variables - [read here](https://www.npmjs.com/package/dotenv)
+  - **tsx** - package for running TypeScript files - [read here](https://tsx.hirok.io/)
+  - **Appwrite MySQL** - native MySQL database by Appwrite - [read here](https://appwrite.io/docs/products/databases/mysql)
+  - **mysql2** - package for querying your MySQL database - [read here](https://github.com/sidorares/node-mysql2)
+</Prerequisites>
+
+<Callout title='Appwrite also offers PostgreSQL' type='info'>
+Looking for PostgreSQL? Check out our [Appwrite Postgres guide](/docs/get-started/appwrite-postgres-new)
+</Callout>
+
+Appwrite offers dedicated, native MySQL databases that you connect to directly over TLS. There is no Appwrite-specific driver, so this guide uses the standard `mysql2` driver through the `drizzle-orm/mysql2` package.
+
+For detailed instructions on creating an Appwrite MySQL database, see the [Appwrite MySQL documentation](https://appwrite.io/docs/products/databases/mysql).
+
+<FileStructure/>
+
+#### Step 1 - Install **mysql2** package
+
+<InstallPackages lib='mysql2'/>
+
+#### Step 2 - Setup connection variables
+
+Create a `.env` file in the root of your project and add your database connection variable:
+
+```plaintext copy
+DATABASE_URL=mysql://admin.<hash>:<password>@db-<hash>.<region>.appwrite.center:3306/default?ssl=true
+```
+
+<Callout title='tips'>
+You can obtain your connection string from the Appwrite Console by opening your database and clicking **"Credentials"**. The username is `admin.<hash>`, where the hash matches the one in the hostname, and the database name is always `default`. Appwrite routes your connection by this username, so always use the full value from the connection string. See the [Appwrite MySQL connections guide](https://appwrite.io/docs/products/databases/mysql/connections) for detailed steps.
+</Callout>
+
+#### Step 3 - Connect Drizzle ORM to the database
+
+<ConnectAppwriteMySQL/>
+
+#### Step 4 - Create a table
+
+<CreateTable/>
+
+#### Step 5 - Setup Drizzle config file
+
+<SetupConfig dialect='mysql' env_variable='DATABASE_URL'/>
+
+#### Step 6 - Applying changes to the database
+
+<ApplyChanges />
+
+#### Step 7 - Seed and Query the database
+
+<QueryDatabase dialect='mysql2' env_variable='DATABASE_URL'/>
+
+#### Step 8 - Run index.ts file
+
+<RunFile/>
+
+
+Source: https://orm.drizzle.team/docs/get-started/appwrite-postgres-existing
+
+import Callout from '@mdx/Callout.astro';
+import Breadcrumbs from '@mdx/Breadcrumbs.astro';
+import Prerequisites from "@mdx/Prerequisites.astro";
+import IntrospectPostgreSQL from '@mdx/get-started/postgresql/IntrospectPostgreSQL.mdx';
+import FileStructure from '@mdx/get-started/FileStructure.mdx';
+import InstallPackages from '@mdx/get-started/InstallPackages.mdx';
+import SetupConfig from '@mdx/get-started/SetupConfig.mdx';
+import TransferCode from '@mdx/get-started/TransferCode.mdx';
+import ApplyChanges from '@mdx/get-started/ApplyChanges.mdx';
+import RunFile from '@mdx/get-started/RunFile.mdx';
+import ConnectAppwritePostgres from '@mdx/get-started/postgresql/ConnectAppwritePostgres.mdx'
+import QueryDatabase from '@mdx/get-started/QueryDatabase.mdx';
+import QueryDatabaseUpdated from '@mdx/get-started/QueryDatabaseUpdated.mdx';
+import UpdateSchema from '@mdx/get-started/postgresql/UpdateSchema.mdx';
+
+<Breadcrumbs/>
+
+# Get Started with Drizzle and Appwrite Postgres in existing project
+
+<Prerequisites>
+  - **dotenv** - package for managing environment variables - [read here](https://www.npmjs.com/package/dotenv)
+  - **tsx** - package for running TypeScript files - [read here](https://tsx.hirok.io/)
+  - **Appwrite Postgres** - native PostgreSQL database by Appwrite - [read here](https://appwrite.io/docs/products/databases/postgresql)
+  - **node-postgres** - package for querying your PostgreSQL database - [read here](https://node-postgres.com/)
+</Prerequisites>
+
+<Callout title='Appwrite also offers MySQL' type='info'>
+Looking for MySQL? Check out our [Appwrite MySQL guide](/docs/get-started/appwrite-mysql-existing)
+</Callout>
+
+Appwrite offers dedicated, native PostgreSQL databases that you connect to directly over TLS. There is no Appwrite-specific driver, so this guide uses the standard `node-postgres` driver.
+
+For detailed instructions on creating an Appwrite Postgres database, see the [Appwrite PostgreSQL documentation](https://appwrite.io/docs/products/databases/postgresql).
+
+<FileStructure/>
+
+#### Step 1 - Install **node-postgres** package
+<InstallPackages lib='pg' devlib=' @types/pg'/>
+
+#### Step 2 - Setup connection variables
+
+Create a `.env` file in the root of your project and add your database connection variable:
+
+```plaintext copy
+DATABASE_URL=postgresql://admin:<password>@db-<hash>.<region>.appwrite.center:5432/<database>?sslmode=require
+```
+
+<Callout title='tips'>
+You can obtain your connection string from the Appwrite Console by opening your database and clicking **"Credentials"**. The **"Drizzle"**, **"DSN"** and **".env"** tabs contain a ready-to-use connection string that already includes `sslmode=require`. See the [Appwrite PostgreSQL connections guide](https://appwrite.io/docs/products/databases/postgresql/connections) for detailed steps.
+</Callout>
+
+#### Step 3 - Setup Drizzle config file
+
+<SetupConfig dialect='postgresql' env_variable='DATABASE_URL'/>
+
+#### Step 4 - Introspect your database
+
+<IntrospectPostgreSQL/>
+
+#### Step 5 - Transfer code to your actual schema file
+
+<TransferCode/>
+
+#### Step 6 - Connect Drizzle ORM to the database
+
+<ConnectAppwritePostgres/>
+
+#### Step 7 - Query the database
+
+<QueryDatabase dialect='node-postgres' env_variable='DATABASE_URL'/>
+
+#### Step 8 - Run index.ts file
+
+<RunFile/>
+
+#### Step 9 - Update your table schema (optional)
+
+<UpdateSchema/>
+
+#### Step 10 - Applying changes to the database (optional)
+
+<ApplyChanges />
+
+#### Step 11 - Query the database with a new field (optional)
+
+<QueryDatabaseUpdated dialect='node-postgres' env_variable='DATABASE_URL' />
+
+
+Source: https://orm.drizzle.team/docs/get-started/appwrite-postgres-new
+
+import Callout from '@mdx/Callout.astro';
+import Breadcrumbs from '@mdx/Breadcrumbs.astro';
+import Prerequisites from "@mdx/Prerequisites.astro";
+import FileStructure from '@mdx/get-started/FileStructure.mdx';
+import InstallPackages from '@mdx/get-started/InstallPackages.mdx';
+import ConnectAppwritePostgres from '@mdx/get-started/postgresql/ConnectAppwritePostgres.mdx'
+import CreateTable from '@mdx/get-started/postgresql/CreateTable.mdx'
+import SetupConfig from '@mdx/get-started/SetupConfig.mdx';
+import ApplyChanges from '@mdx/get-started/ApplyChanges.mdx';
+import RunFile from '@mdx/get-started/RunFile.mdx';
+import QueryDatabase from '@mdx/get-started/QueryDatabase.mdx';
+
+<Breadcrumbs/>
+
+# Get Started with Drizzle and Appwrite Postgres
+
+<Prerequisites>
+  - **dotenv** - package for managing environment variables - [read here](https://www.npmjs.com/package/dotenv)
+  - **tsx** - package for running TypeScript files - [read here](https://tsx.hirok.io/)
+  - **Appwrite Postgres** - native PostgreSQL database by Appwrite - [read here](https://appwrite.io/docs/products/databases/postgresql)
+  - **node-postgres** - package for querying your PostgreSQL database - [read here](https://node-postgres.com/)
+</Prerequisites>
+
+<Callout title='Appwrite also offers MySQL' type='info'>
+Looking for MySQL? Check out our [Appwrite MySQL guide](/docs/get-started/appwrite-mysql-new)
+</Callout>
+
+Appwrite offers dedicated, native PostgreSQL databases that you connect to directly over TLS. There is no Appwrite-specific driver, so this guide uses the standard `node-postgres` driver.
+
+For detailed instructions on creating an Appwrite Postgres database, see the [Appwrite PostgreSQL documentation](https://appwrite.io/docs/products/databases/postgresql).
+
+<FileStructure/>
+
+#### Step 1 - Install **node-postgres** package
+<InstallPackages lib='pg' devlib=' @types/pg'/>
+
+#### Step 2 - Setup connection variables
+
+Create a `.env` file in the root of your project and add your database connection variable:
+
+```plaintext copy
+DATABASE_URL=postgresql://admin:<password>@db-<hash>.<region>.appwrite.center:5432/<database>?sslmode=require
+```
+
+<Callout title='tips'>
+You can obtain your connection string from the Appwrite Console by opening your database and clicking **"Credentials"**. The **"Drizzle"**, **"DSN"** and **".env"** tabs contain a ready-to-use connection string that already includes `sslmode=require`. See the [Appwrite PostgreSQL connections guide](https://appwrite.io/docs/products/databases/postgresql/connections) for detailed steps.
+</Callout>
+
+#### Step 3 - Connect Drizzle ORM to the database
+
+<ConnectAppwritePostgres/>
+
+#### Step 4 - Create a table
+
+<CreateTable />
+
+#### Step 5 - Setup Drizzle config file
+
+<SetupConfig dialect='postgresql' env_variable='DATABASE_URL'/>
+
+#### Step 6 - Applying changes to the database
+
+<ApplyChanges />
+
+#### Step 7 - Seed and Query the database
+
+<QueryDatabase dialect='node-postgres' env_variable='DATABASE_URL'/>
+
+#### Step 8 - Run index.ts file
+
+<RunFile/>
+
+
 Source: https://orm.drizzle.team/docs/get-started/bun-sql-existing
 
 import Npm from '@mdx/Npm.astro';
@@ -44015,6 +44347,120 @@ CREATE TABLE `table` (
 </Section>
 
 
+Source: https://orm.drizzle.team/docs/mysql/connect-appwrite-mysql
+
+import Npm from "@mdx/Npm.astro";
+import Callout from "@mdx/Callout.astro";
+import Tabs from "@mdx/Tabs.astro";
+import Tab from "@mdx/Tab.astro";
+import AnchorCards from "@mdx/AnchorCards.astro";
+import WhatsNextMySQL from "@mdx/WhatsNextMySQL.astro";
+import Prerequisites from "@mdx/Prerequisites.astro";
+import CodeTabs from "@mdx/CodeTabs.astro";
+
+# Drizzle \<\> Appwrite MySQL
+
+<Prerequisites>
+- Database [connection basics](/docs/mysql/connect-overview) with Drizzle
+- Appwrite native MySQL database - [website](https://appwrite.io) & [docs](https://appwrite.io/docs/products/databases/mysql)
+- Appwrite MySQL connections - [docs](https://appwrite.io/docs/products/databases/mysql/connections)
+- Drizzle MySQL drivers - [docs](/docs/mysql/get-started-mysql)
+</Prerequisites>
+
+Appwrite offers dedicated, native MySQL databases that you connect to directly over TLS. There is no Appwrite-specific driver or abstraction layer, so you can use Drizzle with the [`mysql2`](https://github.com/sidorares/node-mysql2) driver through the `drizzle-orm/mysql2` package, the same way you would with any MySQL server.
+
+To get your connection string, open your database in the Appwrite Console and click **Credentials**, or fetch it from the Appwrite API with `mysql.get()`. The username is `admin.<hash>`, where the hash matches the one in the hostname, and the database name is always `default`. Appwrite's proxy routes your connection by this username, so always use the full value from the connection string.
+
+```env
+DATABASE_URL="mysql://admin.<hash>:<password>@db-<hash>.<region>.appwrite.center:3306/default?ssl=true"
+```
+
+#### Step 1 - Install packages
+<Npm>
+ drizzle-orm@rc mysql2
+ -D drizzle-kit@rc
+</Npm>
+
+#### Step 2 - Initialize the driver and make a query
+<CodeTabs items={['mysql2', 'mysql2 with config']}>
+```typescript copy
+import { drizzle } from "drizzle-orm/mysql2";
+
+const db = drizzle(process.env.DATABASE_URL);
+
+const response = await db.select().from(...)
+```
+```typescript copy
+import { drizzle } from "drizzle-orm/mysql2";
+
+// You can specify any property from the mysql2 connection options
+const db = drizzle({ connection: { uri: process.env.DATABASE_URL, ssl: { rejectUnauthorized: true } } });
+
+const response = await db.select().from(...)
+```
+</CodeTabs>
+
+If you need to provide your existing driver:
+
+<CodeTabs items={['Client connection', 'Pool connection']}>
+```typescript copy
+import { drizzle } from "drizzle-orm/mysql2";
+import mysql from "mysql2/promise";
+
+const connection = await mysql.createConnection(process.env.DATABASE_URL);
+
+const db = drizzle({ client: connection });
+```
+```typescript copy
+import { drizzle } from "drizzle-orm/mysql2";
+import mysql from "mysql2/promise";
+
+const poolConnection = mysql.createPool({
+  uri: process.env.DATABASE_URL,
+});
+
+const db = drizzle({ client: poolConnection });
+```
+</CodeTabs>
+
+<Callout type="warning" emoji="⚙️">
+Connections on Appwrite Cloud are encrypted with TLS. If your runtime or `mysql2` configuration does not infer TLS from the connection string, pass `ssl: { rejectUnauthorized: true }` in the connection options.
+
+For the built in `migrate` function with DDL migrations we and drivers strongly encourage you to use a single `client` connection.
+</Callout>
+
+#### Connection pooling for serverless
+
+Appwrite runs a [connection pooler](https://appwrite.io/docs/products/databases/mysql/connection-pooling) on port `6033` of the same hostname. In serverless and edge environments, route your application traffic through the pooler so short-lived instances don't exhaust the engine's connection limit, and keep Drizzle Kit pointed at the direct engine port `3306`, because migrations issue DDL that needs a session-level connection.
+
+```env
+# Runtime: pooled, transaction mode
+DATABASE_URL="mysql://admin.<hash>:<password>@db-<hash>.<region>.appwrite.center:6033/default?ssl=true"
+
+# Migrations & introspection: direct connection to the engine
+DIRECT_URL="mysql://admin.<hash>:<password>@db-<hash>.<region>.appwrite.center:3306/default?ssl=true"
+```
+
+```typescript copy filename="drizzle.config.ts"
+import { defineConfig } from 'drizzle-kit';
+
+export default defineConfig({
+  dialect: 'mysql',
+  schema: './src/schema.ts',
+  out: './drizzle',
+  dbCredentials: {
+    url: process.env.DIRECT_URL!,
+  },
+});
+```
+
+The pooler defaults to transaction mode, which does not keep a backend connection across statements. Drizzle's regular query builder sends text queries and works with transaction pooling, but session-level features such as explicit prepared queries, user variables and temporary tables need the direct port or a session-mode pooler.
+
+#### What's next?
+
+<WhatsNextMySQL/>
+
+
 Source: https://orm.drizzle.team/docs/mysql/connect-aws-data-api-mysql
 
 import Callout from '@mdx/Callout.astro';
@@ -44216,6 +44662,7 @@ Use these MySQL drivers and providers with Drizzle ORM.
 - [MySQL](/docs/mysql/get-started-mysql)
 - [PlanetScale MySQL](/docs/mysql/connect-planetscale)
 - [TiDB](/docs/mysql/connect-tidb)
+- [Appwrite MySQL](/docs/mysql/connect-appwrite-mysql)
 - [AWS Data API MySQL](/docs/mysql/connect-aws-data-api-mysql)
 - [Bun SQL](/docs/mysql/connect-bun-sql)
 - [Drizzle HTTP proxy](/docs/mysql/connect-drizzle-proxy)
@@ -62310,6 +62757,140 @@ CREATE TABLE "table" (
 </Section>
 
 
+Source: https://orm.drizzle.team/docs/pg/connect-appwrite-postgres
+
+import Tab from '@mdx/Tab.astro';
+import Tabs from '@mdx/Tabs.astro';
+import Npm from "@mdx/Npm.astro";
+import Callout from '@mdx/Callout.astro';
+import Steps from '@mdx/Steps.astro';
+import AnchorCards from '@mdx/AnchorCards.astro';
+import Prerequisites from "@mdx/Prerequisites.astro";
+import CodeTabs from "@mdx/CodeTabs.astro";
+import Section from "@mdx/Section.astro";
+import WhatsNextPostgres from "@mdx/WhatsNextPostgres.astro";
+
+# Drizzle \<\> Appwrite Postgres
+<Prerequisites>
+- Database [connection basics](/docs/connect-overview) with Drizzle
+- Appwrite native PostgreSQL database - [website](https://appwrite.io) & [docs](https://appwrite.io/docs/products/databases/postgresql)
+- Appwrite PostgreSQL connections - [docs](https://appwrite.io/docs/products/databases/postgresql/connections)
+- Drizzle PostgreSQL drivers - [docs](/docs/get-started-postgresql)
+</Prerequisites>
+
+Appwrite offers dedicated, native PostgreSQL databases that you connect to directly over TLS. There is no Appwrite-specific driver or abstraction layer, so you can use Drizzle with either the [`node-postgres`](https://node-postgres.com/) or [`postgres.js`](https://github.com/porsager/postgres) driver, the same way you would with any PostgreSQL server.
+
+To get your connection string, open your database in the Appwrite Console and click **Credentials**. The **Drizzle** tab contains a ready-made snippet, and the **DSN** and **.env** tabs contain the raw connection string. You can also fetch it from the Appwrite API with `postgresql.get()`. The connection string already includes `sslmode=require`, so no extra TLS configuration is needed.
+
+```env
+DATABASE_URL="postgresql://admin:<password>@db-<hash>.<region>.appwrite.center:5432/<database>?sslmode=require"
+```
+
+#### Step 1 - Install packages
+<CodeTabs items={["node-postgres (pg)", "postgres.js"]}>
+<Npm>
+ drizzle-orm@rc pg
+ -D drizzle-kit@rc
+</Npm>
+
+<Npm>
+ drizzle-orm@rc postgres
+ -D drizzle-kit@rc
+</Npm>
+
+</CodeTabs>
+
+#### Step 2 - Initialize the driver and make a query
+<CodeTabs items={["node-postgres (pg)", "postgres.js"]}>
+```typescript
+// Make sure to install the 'pg' package
+import { drizzle } from 'drizzle-orm/node-postgres';
+
+const db = drizzle(process.env.DATABASE_URL);
+
+const result = await db.execute('select 1');
+```
+```typescript
+// Make sure to install the 'postgres' package
+import { drizzle } from 'drizzle-orm/postgres-js';
+
+const db = drizzle(process.env.DATABASE_URL);
+
+const result = await db.execute('select 1');
+```
+</CodeTabs>
+
+If you need to provide your existing drivers:
+
+<CodeTabs items={["node-postgres (pg)", "postgres.js"]}>
+```typescript
+// Make sure to install the 'pg' package
+import { drizzle } from "drizzle-orm/node-postgres";
+import { Pool } from "pg";
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
+const db = drizzle({ client: pool });
+
+const result = await db.execute('select 1');
+```
+```typescript
+// Make sure to install the 'postgres' package
+import { drizzle } from 'drizzle-orm/postgres-js';
+import postgres from 'postgres';
+
+const queryClient = postgres(process.env.DATABASE_URL);
+const db = drizzle({ client: queryClient });
+
+const result = await db.execute('select 1');
+```
+</CodeTabs>
+
+#### Connection pooling for serverless
+
+Appwrite runs a [connection pooler](https://appwrite.io/docs/products/databases/postgresql/connection-pooling) on port `6432` of the same hostname. In serverless and edge environments, route your application traffic through the pooler so short-lived instances don't exhaust the engine's connection limit, and keep Drizzle Kit pointed at the direct engine port `5432`, because migrations issue DDL that needs a session-level connection.
+
+```env
+# Runtime: pooled, transaction mode
+DATABASE_URL="postgresql://admin:<password>@db-<hash>.<region>.appwrite.center:6432/<database>?sslmode=require"
+
+# Migrations & introspection: direct connection to the engine
+DIRECT_URL="postgresql://admin:<password>@db-<hash>.<region>.appwrite.center:5432/<database>?sslmode=require"
+```
+
+```typescript copy filename="drizzle.config.ts"
+import { defineConfig } from 'drizzle-kit';
+
+export default defineConfig({
+  dialect: 'postgresql',
+  schema: './src/schema.ts',
+  out: './drizzle',
+  dbCredentials: {
+    url: process.env.DIRECT_URL!,
+  },
+});
+```
+
+<Callout type="warning" emoji="⚙️">
+The pooler defaults to **transaction mode**, which does not keep a backend connection across statements, so server-side prepared statements are unavailable. With `postgres.js`, build the client yourself with `prepare: false` when connecting through the pooler:
+
+```typescript
+import { drizzle } from 'drizzle-orm/postgres-js';
+import postgres from 'postgres';
+
+const queryClient = postgres(process.env.DATABASE_URL, { prepare: false });
+const db = drizzle({ client: queryClient });
+```
+
+If you rely on prepared statements, advisory locks, `LISTEN`/`NOTIFY`, temporary tables or `SET LOCAL`, switch the pooler to session mode or use the direct port.
+</Callout>
+
+#### What's next?
+
+<WhatsNextPostgres/>
+
+
 Source: https://orm.drizzle.team/docs/pg/connect-aws-data-api-pg
 
 import Tab from '@mdx/Tab.astro';
@@ -63175,6 +63756,7 @@ Use these PostgreSQL drivers and providers with Drizzle ORM.
 - [Bun SQL](/docs/connect-bun-sql)
 - [Effect Postgres](/docs/connect-effect-postgres)
 - [Netlify Database](/docs/connect-netlify-db)
+- [Appwrite Postgres](/docs/connect-appwrite-postgres)
 - [AWS Data API Postgres](/docs/connect-aws-data-api-pg)
 - [Drizzle HTTP proxy](/docs/connect-drizzle-proxy)
 
@@ -118128,7 +118710,7 @@ import diagramDark from "@/assets/images/tutorials/railway-postgres-tailscale-di
 <ExternalLinkArrows />
 
 <Callout type="error" title="Outdated guide" highlighted>
-Drizzle now has a Railway template that includes its own Tailscale forwarder, which makes the setup simpler. Follow the latest version of this guide: [Connect Drizzle Kit to a private Railway database with Tailscale](/docs/tutorials/railway-postgres-tailscale).
+Drizzle now has a Railway template that includes its own Tailscale forwarder, which makes the setup simpler. Follow the latest version of this guide: [Run Drizzle Kit against a private Railway database over Tailscale](/docs/tutorials/railway-postgres-tailscale).
 </Callout>
 
 This tutorial runs a PostgreSQL database on [Railway](https://driz.link/railway) with public access turned off, and connects `drizzle-kit` to it from your machine.
@@ -118393,7 +118975,7 @@ This tutorial connects `drizzle-kit` on your device to a PostgreSQL database on 
 You add a [Tailscale](https://tailscale.com/) service to the project that holds the database. Every device on your tailnet can then access the database.
 
 <Callout type="info">
-If you also want a database UI on your tailnet, start with [Drizzle Studio and Gateway on Railway with Tailscale](/docs/tutorials/railway-studio-tailscale). Its templates come with the same Tailscale service.
+If you also want a database UI on your tailnet, start with [Deploy Drizzle Studio or Gateway on Railway with private access over Tailscale](/docs/tutorials/railway-studio-tailscale). Its templates come with the same Tailscale service.
 </Callout>
 
 <Prerequisites title="This guide assumes the following:">
@@ -118702,7 +119284,7 @@ Your tailnet already had a machine with this name, for example from an earlier d
 ## Next steps
 
 - [Drizzle migrations fundamentals](/docs/migrations) to choose between `generate`, `migrate` and `push`.
-- [Drizzle Studio and Gateway on Railway with Tailscale](/docs/tutorials/railway-studio-tailscale) to browse the database from your tailnet.
+- [Deploy Drizzle Studio or Gateway on Railway with private access over Tailscale](/docs/tutorials/railway-studio-tailscale) to browse the database from your tailnet.
 
 
 Source: https://orm.drizzle.team/docs/tutorials/railway-studio-tailscale-legacy
@@ -118741,7 +119323,7 @@ import diagramDark from "@/assets/images/tutorials/railway-studio-tailscale-diag
 <ExternalLinkArrows />
 
 <Callout type="error" title="Outdated guide" highlighted>
-Drizzle now has Railway templates that include their own Tailscale forwarders, which makes the setup simpler. To start from scratch, follow [Drizzle Studio and Gateway on Railway with Tailscale](/docs/tutorials/railway-studio-tailscale). If you already run Drizzle Studio or Gateway on Railway, follow [Add Tailscale to Drizzle Studio or Gateway on Railway](/docs/tutorials/railway-tailscale-existing-project).
+Drizzle now has Railway templates that include their own Tailscale forwarders, which makes the setup simpler. To start from scratch, follow [Deploy Drizzle Studio or Gateway on Railway with private access over Tailscale](/docs/tutorials/railway-studio-tailscale). If you already run Drizzle Studio or Gateway on Railway, follow [Add private access to Drizzle Studio, Gateway or a database on Railway with Tailscale](/docs/tutorials/railway-tailscale-existing-project).
 </Callout>
 
 This tutorial deploys a database UI and a PostgreSQL database on [Railway](https://driz.link/railway), and keeps both off the public internet.
@@ -119205,7 +119787,7 @@ import diagramDark from "@/assets/images/tutorials/railway-tailscale-browser-dia
 Deploy Drizzle Studio or Drizzle Gateway on Railway so that it's reachable only on your tailnet.
 
 <Callout type="info">
-If you already run Drizzle Studio or Drizzle Gateway on Railway, follow [Add Tailscale to Drizzle Studio or Gateway on Railway](/docs/tutorials/railway-tailscale-existing-project) instead.
+If you already run Drizzle Studio or Drizzle Gateway on Railway, follow [Add private access to Drizzle Studio, Gateway or a database on Railway with Tailscale](/docs/tutorials/railway-tailscale-existing-project) instead.
 </Callout>
 
 <Prerequisites title="This guide assumes the following:">
@@ -119539,7 +120121,7 @@ Your tailnet has device approval turned on. Open the [Machines page](https://log
 <Callout>
 <Fragment slot="collapsed-title">Studio opens but shows no tables</Fragment>
 
-A new database has no tables until you apply a schema. Follow [Connect Drizzle Kit to a private Railway database with Tailscale](/docs/tutorials/railway-postgres-tailscale) to create them. If your database already has tables, check `DATABASE_URL` on the Drizzle Studio service's `Variables` tab. It can point at a service outside this project, or hold a connection string that does not match your database. Set it to `${{Postgres.DATABASE_URL}}`, with your database service name in place of `Postgres`, and click `Deploy`.
+A new database has no tables until you apply a schema. Follow [Run Drizzle Kit against a private Railway database over Tailscale](/docs/tutorials/railway-postgres-tailscale) to create them. If your database already has tables, check `DATABASE_URL` on the Drizzle Studio service's `Variables` tab. It can point at a service outside this project, or hold a connection string that does not match your database. Set it to `${{Postgres.DATABASE_URL}}`, with your database service name in place of `Postgres`, and click `Deploy`.
 </Callout>
 
 <Callout>
@@ -119588,7 +120170,7 @@ Fix the value on the Tailscale service's `Variables` tab and click `Deploy` in t
 
 ## Next steps
 
-- [Connect Drizzle Kit to a private Railway database with Tailscale](/docs/tutorials/railway-postgres-tailscale) to run migrations over your tailnet.
+- [Run Drizzle Kit against a private Railway database over Tailscale](/docs/tutorials/railway-postgres-tailscale) to run migrations over your tailnet.
 - [Drizzle migrations fundamentals](/docs/migrations) to choose how to apply schema changes.
 
 
@@ -119605,10 +120187,12 @@ import ExternalLinkArrows from "@mdx/ExternalLinkArrows.astro";
 
 <ExternalLinkArrows />
 
-Add a Tailscale service to a Railway project that runs Drizzle Studio or Drizzle Gateway, so that the database UI is reachable on your tailnet.
+Railway's private network is reachable only from services inside the project. To reach Drizzle Studio or Drizzle Gateway from your machine, the service needs a public domain, and a public domain is open to everyone on the internet.
+
+This guide adds a Tailscale service to a project that already runs Drizzle Studio or Drizzle Gateway. The database UI then has an address that only devices on your tailnet can open, and you can remove its public domain. The database itself can get the same private address, so that `drizzle-kit` or a [desktop database client](https://www.rubberboots.app/) on your machine connects to it while public networking stays off.
 
 <Callout type="info" highlighted>
-If you didn't deploy Drizzle Studio or Gateway yet, follow [Drizzle Studio and Gateway on Railway with Tailscale](/docs/tutorials/railway-studio-tailscale).
+If you didn't deploy Drizzle Studio or Gateway yet, follow [Deploy Drizzle Studio or Gateway on Railway with private access over Tailscale](/docs/tutorials/railway-studio-tailscale).
 </Callout>
 
 <Prerequisites title="This guide assumes the following:">
@@ -119620,10 +120204,6 @@ If you didn't deploy Drizzle Studio or Gateway yet, follow [Drizzle Studio and G
 
   - MagicDNS is on in your tailnet, because the address and the machine name depend on it. Tailnets created on or after 2022-10-20 have it on by default. If your tailnet is older, check the [DNS page](https://login.tailscale.com/admin/dns).
 </Prerequisites>
-
-## How it works
-
-This template adds a Tailscale service to your project. It joins your tailnet as its own machine and forwards a port on that machine to the database UI over Railway's private network. Traffic goes from your device over the tailnet to that machine, and from there to the database UI.
 
 ## Add the Tailscale service
 

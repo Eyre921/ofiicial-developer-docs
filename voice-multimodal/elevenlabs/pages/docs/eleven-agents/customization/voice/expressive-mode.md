@@ -49,7 +49,7 @@ Set your agent's TTS model to **V3 Conversational**. Expressive mode is enabled 
 
 Open your agent in the dashboard, navigate to the **Agent Voice** tab, and select **V3 Conversational** as your Text to Speech model. Save your changes.
 
-![Enabling expressive mode](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4ced5ae6cf05746895f431d8b2685e30655ca98911798a029d5c12d0a9b7f055/assets/images/conversational-ai/expressivemode.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260917%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260917T143037Z&X-Amz-Expires=604800&X-Amz-Signature=cc01496c260ca43a875f0cfad7b0b1ad850e163cc97fb056d61792c956478591&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Enabling expressive mode](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4ced5ae6cf05746895f431d8b2685e30655ca98911798a029d5c12d0a9b7f055/assets/images/conversational-ai/expressivemode.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T093734Z&X-Amz-Expires=604800&X-Amz-Signature=c8a62171e94b8425e6a4ab9e681709a907534b8a1e4aae2b082f50eaac674f87&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Update via the CLI
 

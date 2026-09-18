@@ -37,6 +37,7 @@ When multiple targets are specified, the maximum replica count across all is use
 
     ```bash theme={null}
     firectl deployment create <MODEL_NAME> \
+      --deployment-shape default \
       --min-replica-count 0 \
       --max-replica-count 3 \
       --scale-to-zero-window 1h
@@ -50,6 +51,7 @@ When multiple targets are specified, the maximum replica count across all is use
 
     ```bash theme={null}
     firectl deployment create <MODEL_NAME> \
+      --deployment-shape default \
       --min-replica-count 2 \
       --max-replica-count 10 \
       --scale-up-window 15s \
@@ -64,6 +66,7 @@ When multiple targets are specified, the maximum replica count across all is use
 
     ```bash theme={null}
     firectl deployment create <MODEL_NAME> \
+      --deployment-shape default \
       --min-replica-count 3 \
       --max-replica-count 5 \
       --scale-down-window 30m \
