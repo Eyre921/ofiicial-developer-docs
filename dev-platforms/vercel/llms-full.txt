@@ -11735,6 +11735,88 @@ Open your dashboard's **Support** entry for technical and billing questions. For
 
 
 --------------------------------------------------------------------------------
+title: "AI Gateway Evaluation Quickstart"
+description: "Evaluate application state and return a typed boolean answer using AI Gateway."
+last_updated: "2018-10-20T01:46:40.000Z"
+source: "https://vercel.com/docs/ai-gateway/getting-started/evaluation"
+--------------------------------------------------------------------------------
+
+# AI Gateway Evaluation Quickstart
+
+Evaluate application state through AI Gateway and return a typed boolean answer. This quickstart uses the experimental Evaluation API in AI SDK 7 or later.
+
+## Run your first evaluation
+
+### Use a coding agent
+
+Paste this prompt into a coding agent with terminal access:
+
+**Agent prompt**
+
+```text
+Add an evaluation request through AI Gateway in the current environment. Use the AI Gateway skill for this task. If it is unavailable, run npx skills add vercel/vercel-plugin --skill ai-gateway, then find and read its SKILL.md before continuing. Reuse the environment's Node.js project, framework, and package manager when possible. Otherwise, add the smallest TypeScript entry point and explain why. Use AI SDK 7 or later for this quickstart, and add only required dependencies. Read AI_GATEWAY_API_KEY from the environment. If it is missing, run npx vercel@latest whoami and pause for login if needed. Determine the team, then run npx vercel@latest --scope <team-slug> ai-gateway api-keys create --name <descriptive-name>. Capture stdout directly into AI_GATEWAY_API_KEY for the request or existing ignored secret storage, and never expose the value. Use typesafe-ai/jev to evaluate whether a support agent issued a refund, print the structured boolean answer, run the result, and report the output.
+```
+
+### Run the Node.js example
+
+Use [Node.js 22.18 or later](https://nodejs.org/) and a team with available [AI Gateway Credits](/docs/ai-gateway/pricing). Export `AI_GATEWAY_API_KEY` in your current shell. If you need a key, open the [Create API Key dialog](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway%2Fapi-keys%3FshowCreateKeyModal%3Dtrue\&title=AI+Gateway+API+Keys).
+
+```bash filename="Terminal"
+export AI_GATEWAY_API_KEY="your_ai_gateway_api_key"
+```
+
+Install the latest AI SDK:
+
+```bash filename="Terminal"
+pnpm add ai@latest
+```
+
+Create `index.mts`:
+
+```typescript filename="index.mts"
+import { experimental_evaluate as evaluate } from 'ai';
+
+const result = await evaluate({
+  model: 'typesafe-ai/jev',
+  state: 'The support agent issued a full refund to the customer.',
+  questions: {
+    refunded: {
+      type: 'boolean',
+      instructions: 'Was a refund issued?',
+    },
+  },
+});
+
+console.log(JSON.stringify(result.answers, null, 2));
+```
+
+Run the script:
+
+```bash filename="Terminal"
+node index.mts
+```
+
+This quickstart logs only `result.answers`. The probability can vary, but you should see output with this shape:
+
+```json
+{
+  "refunded": {
+    "type": "boolean",
+    "probability": 0.99
+  }
+}
+```
+
+## Next steps
+
+- Call evaluation through the [HTTP API](/docs/ai-gateway/modalities/evaluation#http-api)
+- Migrate an existing client to the [TypeSafe-compatible API](/docs/ai-gateway/sdks-and-apis/typesafe)
+- Add [choice and score questions](/docs/ai-gateway/modalities/evaluation#question-types)
+- Evaluate [multiple questions](/docs/ai-gateway/modalities/evaluation#multiple-questions-in-one-request) or [structured state](/docs/ai-gateway/modalities/evaluation#structured-state)
+- Browse [evaluation models](/ai-gateway/models?capabilities=evaluation)
+
+
+--------------------------------------------------------------------------------
 title: "AI Gateway Image Generation Quickstart"
 description: "Generate an image from a text prompt using AI Gateway."
 last_updated: "2018-10-20T01:46:40.000Z"
@@ -12274,6 +12356,7 @@ Use a [supported SDK or API](/docs/ai-gateway/sdks-and-apis) to connect an exist
 
 - [Troubleshoot request errors](/docs/ai-gateway/faq#why-did-my-ai-gateway-request-fail) by status code, type, and message
 - Generate [text](/docs/ai-gateway/getting-started/text), [images](/docs/ai-gateway/getting-started/image), [video](/docs/ai-gateway/getting-started/video), [realtime audio](/docs/ai-gateway/getting-started/realtime), or [speech](/docs/ai-gateway/getting-started/speech)
+- Evaluate application state with typed questions in the [Evaluation quickstart](/docs/ai-gateway/getting-started/evaluation)
 - [Browse models](/ai-gateway/models) by capability, provider, price, and free-tier availability, or query [`GET /v1/models`](/docs/ai-gateway/sdks-and-apis/rest-api#list-models)
 - Configure [provider routing](/docs/ai-gateway/models-and-providers/provider-options) and [model fallbacks](/docs/ai-gateway/models-and-providers/model-fallbacks)
 - [Build an agent application](https://ai-sdk.dev/docs/agents/building-agents)
@@ -14867,9 +14950,13 @@ Several questions can be answered in parallel within a single request, against t
 
 To see which models AI Gateway supports for evaluation, use the **Evaluation** filter at the [AI Gateway Models page](/ai-gateway/models?capabilities=evaluation).
 
-> **💡 Note:** Evaluation is available through the AI SDK only. It is not supported through
-> the OpenAI-compatible, Anthropic-compatible, or Cohere-compatible endpoints.
-> It requires AI SDK 7 or later.
+For a step-by-step setup, see the [Evaluation quickstart](/docs/ai-gateway/getting-started/evaluation).
+
+> **💡 Note:** Through the AI SDK, evaluation requires AI SDK 7 or later. Evaluation is also
+> available through the [HTTP API](#http-api) below and the
+> [TypeSafe-compatible API](/docs/ai-gateway/sdks-and-apis/typesafe). It is not
+> supported through the OpenAI-compatible, Anthropic-compatible, or
+> Cohere-compatible endpoints.
 
 ## Basic usage
 
@@ -15039,9 +15126,9 @@ const result = await evaluate({
 });
 ```
 
-## Gateway provider instance
+## AI Gateway provider instance
 
-If you're using the Gateway provider instance, specify evaluation models with `gateway.evaluationModel(...)`.
+When using an AI Gateway provider instance, specify evaluation models with `gateway.evaluationModel(...)`.
 
 ```typescript filename="app/api/evaluate/route.ts" {2,6}
 import { experimental_evaluate as evaluate } from 'ai';
@@ -15062,6 +15149,72 @@ export async function GET() {
   return Response.json(result.answers);
 }
 ```
+
+## HTTP API
+
+If you are not using the AI SDK, post to `/v1/evaluate` with the same `model`, `state`, and `questions` fields.
+
+```bash filename="evaluate.sh"
+curl https://ai-gateway.vercel.sh/v1/evaluate \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "typesafe-ai/jev",
+    "state": "I was charged twice for my subscription.",
+    "questions": {
+      "refund": {
+        "type": "boolean",
+        "instructions": "Is the customer asking for money back?"
+      }
+    }
+  }'
+```
+
+The response reports the model that ran, the answers, token usage, and AI Gateway routing and cost metadata:
+
+```json
+{
+  "model": "typesafe-ai/jev",
+  "answers": { "refund": { "type": "boolean", "probability": 0.98 } },
+  "usage": { "inputTokens": 275, "outputTokens": 20 },
+  "providerMetadata": {
+    "gateway": {
+      "routing": {
+        "originalModelId": "typesafe-ai/jev",
+        "resolvedProvider": "typesafe-ai",
+        "canonicalSlug": "typesafe-ai/jev",
+        "finalProvider": "typesafe-ai"
+      },
+      "cost": "0.00001155",
+      "marketCost": "0.00001155",
+      "surchargeCost": "0",
+      "gatewayCost": "0.00001155",
+      "generationId": "gen_..."
+    }
+  }
+}
+```
+
+Evaluation works with [BYOK](/docs/ai-gateway/authentication-and-byok/byok). If your team has added a key for the provider, it is used automatically.
+
+### Provider options
+
+`/v1/evaluate` accepts the same `providerOptions` as other AI Gateway endpoints, so you can require zero data retention or restrict which providers may serve the request:
+
+```json
+{
+  "model": "typesafe-ai/jev",
+  "state": "...",
+  "questions": { "refund": { "type": "boolean", "instructions": "..." } },
+  "providerOptions": {
+    "gateway": { "zeroDataRetention": true, "only": ["typesafe-ai"] }
+  }
+}
+```
+
+> **💡 Note:** Already using TypeSafe? The [TypeSafe
+> API](/docs/ai-gateway/sdks-and-apis/typesafe) accepts TypeSafe's own request
+> and response shapes, so an existing client only needs its base URL changed.
 
 ## Usage and pricing
 
@@ -24845,6 +24998,12 @@ mistral
 Mistral
 
 mistral.ai
+
+mixedbread
+
+Mixedbread
+
+mixedbread.com
 
 modal
 
@@ -40566,6 +40725,7 @@ Switching surfaces is a client-side change. It does not change your billing, you
 | [OpenAI Responses API](/docs/ai-gateway/sdks-and-apis/responses)                      | OpenAI Responses API users                                           | [Streaming](/docs/ai-gateway/sdks-and-apis/responses/streaming), [Tools](/docs/ai-gateway/sdks-and-apis/responses/tool-calling), [Structured output](/docs/ai-gateway/sdks-and-apis/responses/structured-outputs)                             |
 | [OpenResponses](/docs/ai-gateway/sdks-and-apis/openresponses)                         | New projects, provider-agnostic design                               | [Streaming](/docs/ai-gateway/sdks-and-apis/openresponses/streaming), [Tools](/docs/ai-gateway/sdks-and-apis/openresponses/tool-calling), [Images](/docs/ai-gateway/sdks-and-apis/openresponses/images)                                  |
 | [Cohere Rerank API](/docs/ai-gateway/sdks-and-apis/cohere-rerank)                     | Reranking documents with the Cohere SDK or plain HTTP                | [Rerank](/docs/ai-gateway/sdks-and-apis/cohere-rerank#supported-endpoints), [Provider routing](/docs/ai-gateway/sdks-and-apis/cohere-rerank#provider-routing)                                                                                |
+| [TypeSafe API](/docs/ai-gateway/sdks-and-apis/typesafe)                              | Existing TypeSafe clients, evaluation over HTTP                      | [Migrating](/docs/ai-gateway/sdks-and-apis/typesafe#migrating-an-existing-client), [Endpoints](/docs/ai-gateway/sdks-and-apis/typesafe#supported-endpoints)                                                       |
 | [Python](/docs/ai-gateway/sdks-and-apis/python)                                       | Python developers                                                    | [Async](/docs/ai-gateway/sdks-and-apis/python#async-support), [Streaming](/docs/ai-gateway/sdks-and-apis/python#streaming), [Frameworks](/docs/ai-gateway/sdks-and-apis/python#framework-integrations)                                       |
 
 ## Capability coverage
@@ -43112,6 +43272,194 @@ Errors return a JSON body with an `error` field. Some endpoints additionally inc
 | `404`  | Resource not found (for example, a generation that doesn't exist).                                       |
 | `500`  | Internal server error.                                                                                   |
 | `503`  | A backing service is misconfigured or unavailable.                                                       |
+
+
+--------------------------------------------------------------------------------
+title: "TypeSafe API with AI Gateway"
+description: "Point an existing TypeSafe client at AI Gateway by changing its base URL to route System One evaluation requests through it."
+last_updated: "2018-10-20T01:46:40.000Z"
+source: "https://vercel.com/docs/ai-gateway/sdks-and-apis/typesafe"
+--------------------------------------------------------------------------------
+
+# TypeSafe API with AI Gateway
+
+Keep using the [TypeSafe SDK](https://docs.typesafe.ai/introduction) and route requests through AI Gateway by changing one setting.
+
+Requests are billed through AI Gateway and appear in your usage and observability alongside every other model you call.
+
+If you are writing new code rather than migrating, use the [evaluation API](/docs/ai-gateway/modalities/evaluation) instead. It is the same capability without TypeSafe-specific naming.
+
+## Base URL
+
+The TypeSafe-compatible API is available at the following base URL:
+
+```
+https://ai-gateway.vercel.sh/typesafe
+```
+
+## Authentication
+
+The TypeSafe-compatible API supports the same authentication methods as the main AI Gateway:
+
+- **API key**: Use your AI Gateway API key with the `Authorization: Bearer <token>` header
+- **OIDC token**: Use your Vercel OIDC token with the `Authorization: Bearer <token>` header
+
+You only need one of these. This is the credential AI Gateway authenticates you with, not the credential used to call the model.
+
+To bill the provider directly instead of through AI Gateway, add a TypeSafe key under [BYOK](/docs/ai-gateway/authentication-and-byok/byok).
+
+## Migrating an existing client
+
+Change the base URL and the API key:
+
+```diff filename="client.ts"
+  import { TypeSafeClient } from '@typesafe-ai/sdk';
+
+  const client = new TypeSafeClient({
+-   apiKey: process.env.TYPESAFE_API_KEY,
++   apiKey: process.env.AI_GATEWAY_API_KEY,
++   baseURL: 'https://ai-gateway.vercel.sh/typesafe',
+  });
+```
+
+Everything else stays the same:
+
+```typescript filename="triage.ts"
+const result = await client.systemOne({
+  state: 'I was charged twice for my subscription.',
+  questions: {
+    refund: { type: 'noul', instructions: 'Is the customer asking for money back?' },
+    department: {
+      type: 'choice',
+      instructions: 'Which team should handle this?',
+      criteria: { billing: 'Charges and refunds', technical: 'Bugs and outages' },
+    },
+  },
+});
+
+console.log(result.answers.refund); // { type: 'noul', noul: 0.98 }
+```
+
+## Supported endpoints
+
+- `POST /typesafe/v1/systemone` evaluates state against typed questions
+- `GET /typesafe/v1/models` lists the evaluation models available to you
+
+## Request and response format
+
+This API implements the TypeSafe request and response shapes.
+
+#### cURL
+
+```bash filename="systemone.sh"
+curl https://ai-gateway.vercel.sh/typesafe/v1/systemone \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "typesafe-ai/jev",
+    "state": "I was charged twice for my subscription.",
+    "questions": {
+      "refund": {
+        "type": "noul",
+        "instructions": "Is the customer asking for money back?"
+      }
+    }
+  }'
+```
+
+#### TypeScript
+
+```typescript filename="systemone.ts"
+import { TypeSafeClient } from '@typesafe-ai/sdk';
+
+const client = new TypeSafeClient({
+  apiKey: process.env.AI_GATEWAY_API_KEY,
+  baseURL: 'https://ai-gateway.vercel.sh/typesafe',
+});
+
+const result = await client.systemOne({
+  model: 'typesafe-ai/jev',
+  state: 'I was charged twice for my subscription.',
+  questions: {
+    refund: {
+      type: 'noul',
+      instructions: 'Is the customer asking for money back?',
+    },
+  },
+});
+```
+
+#### Python
+
+```python filename="systemone.py"
+import os
+import requests
+
+response = requests.post(
+    "https://ai-gateway.vercel.sh/typesafe/v1/systemone",
+    headers={
+        "Authorization": f"Bearer {os.environ['AI_GATEWAY_API_KEY']}",
+        "Content-Type": "application/json",
+    },
+    json={
+        "model": "typesafe-ai/jev",
+        "state": "I was charged twice for my subscription.",
+        "questions": {
+            "refund": {
+                "type": "noul",
+                "instructions": "Is the customer asking for money back?",
+            }
+        },
+    },
+)
+
+print(response.json()["answers"])
+```
+
+The response uses TypeSafe's field names:
+
+```json
+{
+  "model": "typesafe-ai/jev",
+  "answers": {
+    "refund": { "type": "noul", "noul": 0.98 }
+  },
+  "usage": { "input_tokens": 275, "output_tokens": 20 },
+  "provider_metadata": {
+    "gateway": {
+      "routing": {
+        "originalModelId": "typesafe-ai/jev",
+        "resolvedProvider": "typesafe-ai",
+        "canonicalSlug": "typesafe-ai/jev",
+        "finalProvider": "typesafe-ai"
+      },
+      "cost": "0.00001155",
+      "marketCost": "0.00001155",
+      "surchargeCost": "0",
+      "gatewayCost": "0.00001155",
+      "generationId": "gen_..."
+    }
+  }
+}
+```
+
+## Errors
+
+Errors use TypeSafe's shape, with a machine-readable code alongside the message:
+
+```json
+{
+  "message": "questions.refund.type: expected one of 'noul', 'choice', 'score'",
+  "error_type": "invalid_request"
+}
+```
+
+Errors returned by the model provider are passed through unchanged, so a client that already handles TypeSafe errors keeps working.
+
+## Related
+
+- [Evaluation](/docs/ai-gateway/modalities/evaluation) for the HTTP API and the AI SDK
+- [Models and providers](/docs/ai-gateway/models-and-providers) for the full catalog
 
 
 --------------------------------------------------------------------------------

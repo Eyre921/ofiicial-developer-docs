@@ -266,17 +266,27 @@ paths:
         '409':
           content:
             application/json:
-              example:
-                error:
-                  code: idempotency_key_reused
-                  message: >-
-                    This Idempotency-Key was already used with a different
-                    request
+              examples:
+                idempotency_key_reused:
+                  value:
+                    error:
+                      code: idempotency_key_reused
+                      message: >-
+                        This Idempotency-Key was already used with a different
+                        request
+                name_taken:
+                  value:
+                    error:
+                      code: name_taken
+                      message: >-
+                        An intern named "research-assistant" already exists in
+                        this workspace
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: >-
-            The idempotency key was reused, the member reached the intern limit,
-            or the requested vault cannot be attached.
+            The idempotency key was reused, the intern name is already taken in
+            the workspace, the member reached the intern limit, or the requested
+            vault cannot be attached.
         '413':
           content:
             application/json:
@@ -317,7 +327,7 @@ components:
   schemas:
     CreateInternRequest:
       additionalProperties: false
-      description: Settings for a new intern in an explicit workspace.
+      description: Settings for a new intern.
       example:
         name: research-assistant
         provision: true
@@ -353,13 +363,13 @@ components:
           type: string
         workspace_id:
           description: >-
-            Workspace that will own the intern. It must match the API key
+            Workspace that will own the intern. Defaults to the workspace the
+            API key resolves to. When given, it must match the API key
             workspace.
           format: uuid
           type: string
       required:
         - name
-        - workspace_id
       type: object
     Intern:
       description: Public lifecycle state and settings for one intern.

@@ -1,227 +1,3 @@
-# hallucinations
-
-**URL:** https://langfuse.com/resources/engineering/hallucination-detection.md
-
----
-title: Hallucination detection for LLM apps
-description: "Hallucination detection for LLM apps: taxonomy, LLM-as-a-judge evaluators on production traces, offline experiments with references, and code pre-screens."
-tags: [guide, evaluation]
----
-
-# Hallucination detection for LLM apps
-
-A hallucination is an output that asserts something false or unsupported: a fabricated citation, a confident wrong number, an API method that does not exist. Hallucination detection is the practice of scoring outputs for unsupported claims automatically, so that the failure shows up as a metric on a dashboard instead of a complaint from a user. This page covers what counts as a hallucination, the detection methods that work in practice, and how to design the judge that does the detecting, with Langfuse as the worked implementation.
-
-**TL;DR:** Production hallucination detection runs an LLM-as-a-judge evaluator on a sample of live traffic; the judge is reference-free, checking the output against the input and context recorded on the same observation, so no ground truth is required. Offline detection runs experiments against a dataset with reference answers before each release, where a judge can verify claims against known-correct outputs. Deterministic code pre-screens (missing citations, numbers absent from context) flag risk signals for free and route only flagged traces to the paid judge. Score verdicts as binary hallucinated/clean, with the failing claims listed in the score comment.
-
-## What counts as a hallucination
-
-A hallucination is a claim in the output that the available evidence does not support. Two distinctions determine how you detect it.
-
-**Intrinsic versus extrinsic.** An intrinsic hallucination contradicts the source material: the context says the limit is 100 requests per minute and the answer says 1,000. An extrinsic hallucination adds material the source does not contain: the answer cites a paper that was never retrieved, or invents a config flag. Extrinsic claims may even be true, but an application that promises grounded answers cannot verify them, so detection treats unsupported and false the same way.
-
-**Grounded-context versus open-domain.** The second axis is what evidence exists to check against:
-
-| Setting                                                  | Evidence available                           | Detection approach                                                                         |
-| -------------------------------------------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| Grounded context (RAG, tool results, provided documents) | The context is recorded alongside the output | Compare output claims against the recorded context                                         |
-| Open-domain (model answers from its own knowledge)       | No context to compare against                | Judge with world knowledge, reference answers in offline tests, or self-consistency checks |
-
-Grounded-context detection is a comparison problem and by far the more tractable case: the evidence travels with the trace. Open-domain detection is harder, because there is nothing on the trace that proves the claim either way; offline reference datasets and judge world knowledge carry more of the load there.
-
-## Hallucination detection vs faithfulness vs relevance
-
-Three metrics get conflated under "the answer is wrong", and they fail independently, so they need separate evaluators.
-
-- **Hallucination detection** asks whether the output makes claims the evidence does not support. It applies to any LLM application, with or without retrieval.
-- **Faithfulness** is the grounded-context subcase applied to RAG: is every claim in the answer supported by the retrieved documents? [RAG faithfulness evaluation](/resources/engineering/rag-faithfulness-evaluation) covers that case in depth, including how to separate retrieval failures from generation failures.
-- **Answer relevance** asks whether the output addresses the question at all. An answer can be fully grounded and still off-topic, or perfectly on-topic and fabricated. [Answer relevance evaluation](/resources/engineering/answer-relevance-evaluation) covers that dimension.
-
-If your application is a RAG pipeline, the faithfulness page is the deeper treatment of your main hallucination risk. This page covers the general detection problem: the taxonomy, the production and offline wiring, and judge design that applies to all three metrics.
-
-## Three detection methods
-
-| Method                              | Needs references                     | Cost per check                | Where it runs                   |
-| ----------------------------------- | ------------------------------------ | ----------------------------- | ------------------------------- |
-| LLM-as-a-judge on production traces | No                                   | One judge-model call          | Live traffic, sampled           |
-| Judge in offline experiments        | Yes (dataset with reference answers) | One judge-model call per item | Before release, in CI or ad hoc |
-| Deterministic code pre-screens      | No                                   | None                          | Every trace                     |
-
-### Method 1: LLM-as-a-judge on production traces
-
-Langfuse ships a catalog of managed [LLM-as-a-judge](/docs/evaluation/evaluation-methods/llm-as-a-judge) evaluators, built and maintained by Langfuse and partners like Ragas. Hallucination is one of the managed dimensions, alongside Context-Relevance, Toxicity, and Helpfulness, so no prompt writing is required to start. The Hallucination evaluator is reference-free: it judges the output against the input and context you map from the observation, which is exactly why it works on production traffic where no expected output exists.
-
-Setup, in order:
-
-1. On the Evaluators page, click `+ Set up Evaluator` and set a default judge model via an LLM Connection. The model must support structured output so verdicts parse reliably.
-2. Pick the managed Hallucination evaluator from the catalog (or define a custom prompt with `{{variables}}` if your domain needs a stricter rubric).
-3. Target live observations, the recommended production target. Filter to the observations worth judging, for example only final answer generations in traces tagged `customer-facing`, and set a sampling percentage. Judging 5 to 10 percent of traffic is usually enough to see the trend without paying to judge everything.
-4. Map your observation fields onto the evaluator's variables. Langfuse previews the populated judge prompt with real data from the last 24 hours, and JSONPath expressions handle nested fields.
-
-One mechanic matters for correctness: observation-level evaluators see only the data on the observation they target, not sibling or child observations. If the judge needs the retrieved context to check groundedness, your instrumentation must put that context on the target observation, or you target a root observation that records the overall input and output. Scores land asynchronously on the observation, and you can backfill historical traffic by enabling the evaluator's Langfuse v4 preview toggle, selecting rows in the traces table, and running Actions → Evaluate.
-
-### Method 2: Offline detection with reference datasets
-
-Before a prompt or model change ships, run the candidate against a dataset whose items carry reference answers, and have a judge verify claims against the reference. This catches hallucination regressions where production monitoring would only catch them after users saw them. With the Python SDK, [experiments via the SDK](/docs/evaluation/experiments/experiments-via-sdk) wrap the loop: `run_experiment` executes your task per item, applies evaluators, and records the run in Langfuse for comparison.
-
-```python
-import json
-
-from langfuse import Evaluation, get_client
-from openai import OpenAI
-
-langfuse = get_client()
-judge_client = OpenAI()
-
-JUDGE_PROMPT = """Check the generated answer against the reference answer.
-
-Question: {question}
-Reference answer: {reference}
-Generated answer: {answer}
-
-List every factual claim in the generated answer that contradicts the reference
-or asserts something the reference does not support. If there are none, return
-an empty list. Reply as JSON: {{"unsupported_claims": [...], "hallucinated": <bool>}}"""
-
-
-def hallucination_judge(*, input, output, expected_output, **kwargs):
-    response = judge_client.chat.completions.create(
-        model="gpt-4.1",
-        response_format={"type": "json_object"},
-        messages=[
-            {
-                "role": "user",
-                "content": JUDGE_PROMPT.format(
-                    question=input, reference=expected_output, answer=output
-                ),
-            }
-        ],
-    )
-    verdict = json.loads(response.choices[0].message.content)
-    return Evaluation(
-        name="hallucinated",
-        value=1.0 if verdict["hallucinated"] else 0.0,
-        comment="; ".join(verdict["unsupported_claims"]) or None,
-    )
-
-
-def hallucination_rate(*, item_results, **kwargs):
-    values = [
-        e.value
-        for r in item_results
-        for e in r.evaluations
-        if e.name == "hallucinated"
-    ]
-    return Evaluation(
-        name="hallucination_rate",
-        value=sum(values) / len(values) if values else None,
-    )
-
-
-def my_task(*, item, **kwargs):
-    return answer_question(item.input)  # call your application here
-
-
-dataset = langfuse.get_dataset("qa-with-references")
-
-result = dataset.run_experiment(
-    name="Hallucination check",
-    description="Judge outputs against reference answers",
-    task=my_task,
-    evaluators=[hallucination_judge],
-    run_evaluators=[hallucination_rate],
-)
-print(result.format())
-```
-
-The judge returns the binary verdict as the score and the offending claims in the comment, so a failed item is debuggable from the run view without rereading the full output. The `hallucination_rate` run evaluator gives each experiment run a single comparable number, which is the value a CI gate would assert on. Build the dataset from production: any trace the production judge flags is a candidate item, with a corrected reference supplied during review.
-
-### Method 3: Deterministic pre-screens
-
-Some hallucination risk signals are decidable without a model. They are not hallucination detection by themselves, since no regex verifies semantics, but they are free, deterministic, and run on every trace, which makes them the right first layer. Two honest examples:
-
-- **Citation presence.** A grounded answer that cites none of the retrieved sources is a hallucination risk even when it reads well. The [code evaluator examples](/resources/engineering/code-evaluator-examples) page has a paste-ready version (example 4) plus nine other deterministic checks.
-- **Unsupported numbers.** A number in the answer that appears nowhere in the provided context is a specific, checkable risk flag. As a Langfuse code evaluator, authored in the UI and run on observations:
-
-```python
-import re
-
-def evaluate(ctx):
-    context = str((ctx.observation.metadata or {}).get("retrieved_context", ""))
-    answer = str(ctx.observation.output)
-    answer_nums = set(re.findall(r"-?\d+(?:\.\d+)?", answer.replace(",", "")))
-    context_nums = set(re.findall(r"-?\d+(?:\.\d+)?", context.replace(",", "")))
-    unsupported = answer_nums - context_nums
-    return EvaluationResult(scores=[
-        Score(name="unsupported_numbers", value=bool(unsupported), data_type="BOOLEAN",
-              comment=f"Not in context: {sorted(unsupported)}" if unsupported else None)
-    ])
-```
-
-Expect false positives (derived values, dates the model formatted differently), which is acceptable for a screen whose job is routing, not verdicts.
-
-## Designing the hallucination judge
-
-**Claim-level checking, answer-level verdicts.** A judge that scores the whole answer in one pass misses the single fabricated detail inside an otherwise correct response. Instruct the judge to enumerate the factual claims and check each one, as the prompt above does, then aggregate: the answer is hallucinated if any claim fails. The per-claim list goes into the score comment, which is what makes a flagged trace reviewable and what lets you calibrate the judge against human labels claim by claim.
-
-**Binary verdicts.** Score hallucination as pass/fail, not on a 1-to-5 scale. Binary scoring forces a precise definition of what separates acceptable from unacceptable, while graded scales leave every reader wondering what a 3 means; this is the standing recommendation in the [Langfuse Academy evaluation module](/academy/evaluate), and hallucination is the clearest case for it, because one fabricated claim is a failure regardless of how good the rest of the answer is.
-
-**Escalation, cheapest layer first.** Run the free code screens on all traffic. Run the judge on everything a screen flags, plus a sample of clean traffic to catch what patterns miss. Route judge-flagged traces in high-stakes flows to an [annotation queue](/docs/evaluation/evaluation-methods/annotation-queues), where human verdicts double as calibration data for the judge and as reference answers for the offline dataset. Each layer reduces the volume the next, more expensive layer has to handle.
-
-## Hallucination detection without new infrastructure
-
-Hallucination detection is often postponed because it sounds like another service to deploy and operate. If your application already sends traces to Langfuse, it is not: LLM-as-a-judge evaluators, code evaluators, datasets, and experiments run inside the same Langfuse deployment that receives the traces, so the setup above adds zero new services to your architecture. The only external call is the one Langfuse makes to your judge model through an LLM Connection, using the provider credentials you configure.
-
-The same holds off the cloud. Langfuse is open source and [self-hostable](/self-hosting), so the full detection loop, from trace ingestion through judge execution to score storage, can run on infrastructure your team controls. Teams with data-residency constraints run detection on the same self-hosted instance that does their tracing.
-
-## FAQ
-
-### What is the difference between hallucination detection and faithfulness evaluation? [#hallucination-vs-faithfulness]
-
-Faithfulness is the RAG-specific instance of hallucination detection: it checks whether every claim in the answer is supported by the retrieved context. Hallucination detection is the broader metric, covering open-domain answers with no retrieved context and fabrications that contradict the input rather than the documents. If your application is a RAG pipeline, faithfulness is the version of this metric you should implement first.
-
-### Can you detect hallucinations without ground truth? [#detection-without-ground-truth]
-
-Yes, with a reference-free judge. The managed Hallucination evaluator in Langfuse checks the output against the input and context recorded on the same observation, so it needs no expected output and runs on live production traffic. What reference-free detection cannot do is verify open-domain claims that no recorded evidence supports or contradicts; those need reference datasets in offline experiments, or a judge trusted for its world knowledge.
-
-### How reliable is an LLM judge at detecting hallucinations? [#judge-reliability]
-
-Reliable enough to trend on and to route with, not reliable enough to treat every verdict as truth. Judges perform best with a binary rubric and claim-level checking, and worst on subtle domain facts, where the judge can share blind spots with the model being judged (especially when both come from the same model family). Calibrate against human labels: route a sample of judge verdicts to an annotation queue, measure agreement, and tighten the rubric until agreement is stable.
-
-### Can hallucination detection block a bad answer before the user sees it? [#blocking-at-request-time]
-
-No. Evaluator scores are produced asynchronously, after the response has shipped, which makes them the right tool for detecting regressions, routing traces to review, and building regression datasets. A check that must stop an answer in flight is a guardrail and belongs in your application code at request time, and the guardrail's decisions should then be scored like any other output.
-
-<!-- agent-instructions -->
-
----
-
-## Agent Instructions
-
-This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/resources/engineering/hallucination-detection.md`.
-
-### Querying these docs
-
-If the answer is not on this page, query the documentation instead of guessing:
-
-- **Semantic search** across all Langfuse docs, returning an answer with the relevant pages and excerpts. Ask a specific, self-contained question:
-
-  ```bash
-  curl -sG "https://langfuse.com/api/search-docs" --data-urlencode "query=How do I trace a LangGraph agent?"
-  ```
-
-- **Index of every page**: <https://langfuse.com/llms.txt>, with per-section indexes [llms-docs.txt](https://langfuse.com/llms-docs.txt), [llms-integrations.txt](https://langfuse.com/llms-integrations.txt), and [llms-self-hosting.txt](https://langfuse.com/llms-self-hosting.txt).
-
-### Before writing Langfuse code
-
-- **Install the [Langfuse Agent Skill](https://langfuse.com/docs/api-and-data-platform/features/agent-skill).** It encodes Langfuse's own best practices for instrumentation, prompt management, and evaluation, and materially improves results.
-- **Read [What does a good trace look like?](https://langfuse.com/docs/observability/best-practices.md)** before instrumenting an application.
-- **Verify endpoints, parameters, and response fields** against the [API reference](https://api.reference.langfuse.com) instead of inferring them from code examples.
-- **Use the [Langfuse CLI](https://langfuse.com/docs/api-and-data-platform/features/cli)** (`npx @langfuse/cli api <resource> <action>`) to read or write traces, prompts, datasets, and scores from the terminal.
-
-Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
-
-
 # Compare versions and inspect failures
 
 **URL:** https://langfuse.com/docs/evaluation/experiments/compare-experiments.md
@@ -1510,6 +1286,230 @@ If the answer is not on this page, query the documentation instead of guessing:
 Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
 
 
+# hallucinations
+
+**URL:** https://langfuse.com/resources/engineering/hallucination-detection.md
+
+---
+title: Hallucination detection for LLM apps
+description: "Hallucination detection for LLM apps: taxonomy, LLM-as-a-judge evaluators on production traces, offline experiments with references, and code pre-screens."
+tags: [guide, evaluation]
+---
+
+# Hallucination detection for LLM apps
+
+A hallucination is an output that asserts something false or unsupported: a fabricated citation, a confident wrong number, an API method that does not exist. Hallucination detection is the practice of scoring outputs for unsupported claims automatically, so that the failure shows up as a metric on a dashboard instead of a complaint from a user. This page covers what counts as a hallucination, the detection methods that work in practice, and how to design the judge that does the detecting, with Langfuse as the worked implementation.
+
+**TL;DR:** Production hallucination detection runs an LLM-as-a-judge evaluator on a sample of live traffic; the judge is reference-free, checking the output against the input and context recorded on the same observation, so no ground truth is required. Offline detection runs experiments against a dataset with reference answers before each release, where a judge can verify claims against known-correct outputs. Deterministic code pre-screens (missing citations, numbers absent from context) flag risk signals for free and route only flagged traces to the paid judge. Score verdicts as binary hallucinated/clean, with the failing claims listed in the score comment.
+
+## What counts as a hallucination
+
+A hallucination is a claim in the output that the available evidence does not support. Two distinctions determine how you detect it.
+
+**Intrinsic versus extrinsic.** An intrinsic hallucination contradicts the source material: the context says the limit is 100 requests per minute and the answer says 1,000. An extrinsic hallucination adds material the source does not contain: the answer cites a paper that was never retrieved, or invents a config flag. Extrinsic claims may even be true, but an application that promises grounded answers cannot verify them, so detection treats unsupported and false the same way.
+
+**Grounded-context versus open-domain.** The second axis is what evidence exists to check against:
+
+| Setting                                                  | Evidence available                           | Detection approach                                                                         |
+| -------------------------------------------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| Grounded context (RAG, tool results, provided documents) | The context is recorded alongside the output | Compare output claims against the recorded context                                         |
+| Open-domain (model answers from its own knowledge)       | No context to compare against                | Judge with world knowledge, reference answers in offline tests, or self-consistency checks |
+
+Grounded-context detection is a comparison problem and by far the more tractable case: the evidence travels with the trace. Open-domain detection is harder, because there is nothing on the trace that proves the claim either way; offline reference datasets and judge world knowledge carry more of the load there.
+
+## Hallucination detection vs faithfulness vs relevance
+
+Three metrics get conflated under "the answer is wrong", and they fail independently, so they need separate evaluators.
+
+- **Hallucination detection** asks whether the output makes claims the evidence does not support. It applies to any LLM application, with or without retrieval.
+- **Faithfulness** is the grounded-context subcase applied to RAG: is every claim in the answer supported by the retrieved documents? [RAG faithfulness evaluation](/resources/engineering/rag-faithfulness-evaluation) covers that case in depth, including how to separate retrieval failures from generation failures.
+- **Answer relevance** asks whether the output addresses the question at all. An answer can be fully grounded and still off-topic, or perfectly on-topic and fabricated. [Answer relevance evaluation](/resources/engineering/answer-relevance-evaluation) covers that dimension.
+
+If your application is a RAG pipeline, the faithfulness page is the deeper treatment of your main hallucination risk. This page covers the general detection problem: the taxonomy, the production and offline wiring, and judge design that applies to all three metrics.
+
+## Three detection methods
+
+| Method                              | Needs references                     | Cost per check                | Where it runs                   |
+| ----------------------------------- | ------------------------------------ | ----------------------------- | ------------------------------- |
+| LLM-as-a-judge on production traces | No                                   | One judge-model call          | Live traffic, sampled           |
+| Judge in offline experiments        | Yes (dataset with reference answers) | One judge-model call per item | Before release, in CI or ad hoc |
+| Deterministic code pre-screens      | No                                   | None                          | Every trace                     |
+
+### Method 1: LLM-as-a-judge on production traces
+
+Langfuse ships a catalog of managed [LLM-as-a-judge](/docs/evaluation/evaluation-methods/llm-as-a-judge) evaluators, built and maintained by Langfuse and partners like Ragas. Hallucination is one of the managed dimensions, alongside Context-Relevance, Toxicity, and Helpfulness, so no prompt writing is required to start. The Hallucination evaluator is reference-free: it judges the output against the input and context you map from the observation, which is exactly why it works on production traffic where no expected output exists.
+
+Setup, in order:
+
+1. On the Evaluators page, click `+ Set up Evaluator` and set a default judge model via an LLM Connection. The model must support structured output so verdicts parse reliably.
+2. Pick the managed Hallucination evaluator from the catalog (or define a custom prompt with `{{variables}}` if your domain needs a stricter rubric).
+3. Target live observations, the recommended production target. Filter to the observations worth judging, for example only final answer generations in traces tagged `customer-facing`, and set a sampling percentage. Judging 5 to 10 percent of traffic is usually enough to see the trend without paying to judge everything.
+4. Map your observation fields onto the evaluator's variables. Langfuse previews the populated judge prompt with real data from the last 24 hours, and JSONPath expressions handle nested fields.
+
+One mechanic matters for correctness: observation-level evaluators see only the data on the observation they target, not sibling or child observations. If the judge needs the retrieved context to check groundedness, your instrumentation must put that context on the target observation, or you target a root observation that records the overall input and output. Scores land asynchronously on the observation, and you can backfill historical traffic by enabling the evaluator's Langfuse v4 preview toggle, selecting rows in the traces table, and running Actions → Evaluate.
+
+### Method 2: Offline detection with reference datasets
+
+Before a prompt or model change ships, run the candidate against a dataset whose items carry reference answers, and have a judge verify claims against the reference. This catches hallucination regressions where production monitoring would only catch them after users saw them. With the Python SDK, [experiments via the SDK](/docs/evaluation/experiments/experiments-via-sdk) wrap the loop: `run_experiment` executes your task per item, applies evaluators, and records the run in Langfuse for comparison.
+
+```python
+import json
+
+from langfuse import Evaluation, get_client
+from openai import OpenAI
+
+langfuse = get_client()
+judge_client = OpenAI()
+
+JUDGE_PROMPT = """Check the generated answer against the reference answer.
+
+Question: {question}
+Reference answer: {reference}
+Generated answer: {answer}
+
+List every factual claim in the generated answer that contradicts the reference
+or asserts something the reference does not support. If there are none, return
+an empty list. Reply as JSON: {{"unsupported_claims": [...], "hallucinated": <bool>}}"""
+
+
+def hallucination_judge(*, input, output, expected_output, **kwargs):
+    response = judge_client.chat.completions.create(
+        model="gpt-4.1",
+        response_format={"type": "json_object"},
+        messages=[
+            {
+                "role": "user",
+                "content": JUDGE_PROMPT.format(
+                    question=input, reference=expected_output, answer=output
+                ),
+            }
+        ],
+    )
+    verdict = json.loads(response.choices[0].message.content)
+    return Evaluation(
+        name="hallucinated",
+        value=1.0 if verdict["hallucinated"] else 0.0,
+        comment="; ".join(verdict["unsupported_claims"]) or None,
+    )
+
+
+def hallucination_rate(*, item_results, **kwargs):
+    values = [
+        e.value
+        for r in item_results
+        for e in r.evaluations
+        if e.name == "hallucinated"
+    ]
+    return Evaluation(
+        name="hallucination_rate",
+        value=sum(values) / len(values) if values else None,
+    )
+
+
+def my_task(*, item, **kwargs):
+    return answer_question(item.input)  # call your application here
+
+
+dataset = langfuse.get_dataset("qa-with-references")
+
+result = dataset.run_experiment(
+    name="Hallucination check",
+    description="Judge outputs against reference answers",
+    task=my_task,
+    evaluators=[hallucination_judge],
+    run_evaluators=[hallucination_rate],
+)
+print(result.format())
+```
+
+The judge returns the binary verdict as the score and the offending claims in the comment, so a failed item is debuggable from the run view without rereading the full output. The `hallucination_rate` run evaluator gives each experiment run a single comparable number, which is the value a CI gate would assert on. Build the dataset from production: any trace the production judge flags is a candidate item, with a corrected reference supplied during review.
+
+### Method 3: Deterministic pre-screens
+
+Some hallucination risk signals are decidable without a model. They are not hallucination detection by themselves, since no regex verifies semantics, but they are free, deterministic, and run on every trace, which makes them the right first layer. Two honest examples:
+
+- **Citation presence.** A grounded answer that cites none of the retrieved sources is a hallucination risk even when it reads well. The [code evaluator examples](/resources/engineering/code-evaluator-examples) page has a paste-ready version (example 4) plus nine other deterministic checks.
+- **Unsupported numbers.** A number in the answer that appears nowhere in the provided context is a specific, checkable risk flag. As a Langfuse code evaluator, authored in the UI and run on observations:
+
+```python
+import re
+
+def evaluate(ctx):
+    context = str((ctx.observation.metadata or {}).get("retrieved_context", ""))
+    answer = str(ctx.observation.output)
+    answer_nums = set(re.findall(r"-?\d+(?:\.\d+)?", answer.replace(",", "")))
+    context_nums = set(re.findall(r"-?\d+(?:\.\d+)?", context.replace(",", "")))
+    unsupported = answer_nums - context_nums
+    return EvaluationResult(scores=[
+        Score(name="unsupported_numbers", value=bool(unsupported), data_type="BOOLEAN",
+              comment=f"Not in context: {sorted(unsupported)}" if unsupported else None)
+    ])
+```
+
+Expect false positives (derived values, dates the model formatted differently), which is acceptable for a screen whose job is routing, not verdicts.
+
+## Designing the hallucination judge
+
+**Claim-level checking, answer-level verdicts.** A judge that scores the whole answer in one pass misses the single fabricated detail inside an otherwise correct response. Instruct the judge to enumerate the factual claims and check each one, as the prompt above does, then aggregate: the answer is hallucinated if any claim fails. The per-claim list goes into the score comment, which is what makes a flagged trace reviewable and what lets you calibrate the judge against human labels claim by claim.
+
+**Binary verdicts.** Score hallucination as pass/fail, not on a 1-to-5 scale. Binary scoring forces a precise definition of what separates acceptable from unacceptable, while graded scales leave every reader wondering what a 3 means; this is the standing recommendation in the [Langfuse Academy evaluation module](/academy/evaluate), and hallucination is the clearest case for it, because one fabricated claim is a failure regardless of how good the rest of the answer is.
+
+**Escalation, cheapest layer first.** Run the free code screens on all traffic. Run the judge on everything a screen flags, plus a sample of clean traffic to catch what patterns miss. Route judge-flagged traces in high-stakes flows to an [annotation queue](/docs/evaluation/evaluation-methods/annotation-queues), where human verdicts double as calibration data for the judge and as reference answers for the offline dataset. Each layer reduces the volume the next, more expensive layer has to handle.
+
+## Hallucination detection without new infrastructure
+
+Hallucination detection is often postponed because it sounds like another service to deploy and operate. If your application already sends traces to Langfuse, it is not: LLM-as-a-judge evaluators, code evaluators, datasets, and experiments run inside the same Langfuse deployment that receives the traces, so the setup above adds zero new services to your architecture. The only external call is the one Langfuse makes to your judge model through an LLM Connection, using the provider credentials you configure.
+
+The same holds off the cloud. Langfuse is open source and [self-hostable](/self-hosting), so the full detection loop, from trace ingestion through judge execution to score storage, can run on infrastructure your team controls. Teams with data-residency constraints run detection on the same self-hosted instance that does their tracing.
+
+## FAQ
+
+### What is the difference between hallucination detection and faithfulness evaluation? [#hallucination-vs-faithfulness]
+
+Faithfulness is the RAG-specific instance of hallucination detection: it checks whether every claim in the answer is supported by the retrieved context. Hallucination detection is the broader metric, covering open-domain answers with no retrieved context and fabrications that contradict the input rather than the documents. If your application is a RAG pipeline, faithfulness is the version of this metric you should implement first.
+
+### Can you detect hallucinations without ground truth? [#detection-without-ground-truth]
+
+Yes, with a reference-free judge. The managed Hallucination evaluator in Langfuse checks the output against the input and context recorded on the same observation, so it needs no expected output and runs on live production traffic. What reference-free detection cannot do is verify open-domain claims that no recorded evidence supports or contradicts; those need reference datasets in offline experiments, or a judge trusted for its world knowledge.
+
+### How reliable is an LLM judge at detecting hallucinations? [#judge-reliability]
+
+Reliable enough to trend on and to route with, not reliable enough to treat every verdict as truth. Judges perform best with a binary rubric and claim-level checking, and worst on subtle domain facts, where the judge can share blind spots with the model being judged (especially when both come from the same model family). Calibrate against human labels: route a sample of judge verdicts to an annotation queue, measure agreement, and tighten the rubric until agreement is stable.
+
+### Can hallucination detection block a bad answer before the user sees it? [#blocking-at-request-time]
+
+No. Evaluator scores are produced asynchronously, after the response has shipped, which makes them the right tool for detecting regressions, routing traces to review, and building regression datasets. A check that must stop an answer in flight is a guardrail and belongs in your application code at request time, and the guardrail's decisions should then be scored like any other output.
+
+<!-- agent-instructions -->
+
+---
+
+## Agent Instructions
+
+This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/resources/engineering/hallucination-detection.md`.
+
+### Querying these docs
+
+If the answer is not on this page, query the documentation instead of guessing:
+
+- **Semantic search** across all Langfuse docs, returning an answer with the relevant pages and excerpts. Ask a specific, self-contained question:
+
+  ```bash
+  curl -sG "https://langfuse.com/api/search-docs" --data-urlencode "query=How do I trace a LangGraph agent?"
+  ```
+
+- **Index of every page**: <https://langfuse.com/llms.txt>, with per-section indexes [llms-docs.txt](https://langfuse.com/llms-docs.txt), [llms-integrations.txt](https://langfuse.com/llms-integrations.txt), and [llms-self-hosting.txt](https://langfuse.com/llms-self-hosting.txt).
+
+### Before writing Langfuse code
+
+- **Install the [Langfuse Agent Skill](https://langfuse.com/docs/api-and-data-platform/features/agent-skill).** It encodes Langfuse's own best practices for instrumentation, prompt management, and evaluation, and materially improves results.
+- **Read [What does a good trace look like?](https://langfuse.com/docs/observability/best-practices.md)** before instrumenting an application.
+- **Verify endpoints, parameters, and response fields** against the [API reference](https://api.reference.langfuse.com) instead of inferring them from code examples.
+- **Use the [Langfuse CLI](https://langfuse.com/docs/api-and-data-platform/features/cli)** (`npx @langfuse/cli api <resource> <action>`) to read or write traces, prompts, datasets, and scores from the terminal.
+
+Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
+
+
 # Evaluate grounding
 
 **URL:** https://langfuse.com/resources/engineering/rag-faithfulness-evaluation.md
@@ -1773,6 +1773,95 @@ No. Faithfulness is a metric, not a library feature: any LLM judge with a claim-
 ## Agent Instructions
 
 This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/resources/engineering/rag-faithfulness-evaluation.md`.
+
+### Querying these docs
+
+If the answer is not on this page, query the documentation instead of guessing:
+
+- **Semantic search** across all Langfuse docs, returning an answer with the relevant pages and excerpts. Ask a specific, self-contained question:
+
+  ```bash
+  curl -sG "https://langfuse.com/api/search-docs" --data-urlencode "query=How do I trace a LangGraph agent?"
+  ```
+
+- **Index of every page**: <https://langfuse.com/llms.txt>, with per-section indexes [llms-docs.txt](https://langfuse.com/llms-docs.txt), [llms-integrations.txt](https://langfuse.com/llms-integrations.txt), and [llms-self-hosting.txt](https://langfuse.com/llms-self-hosting.txt).
+
+### Before writing Langfuse code
+
+- **Install the [Langfuse Agent Skill](https://langfuse.com/docs/api-and-data-platform/features/agent-skill).** It encodes Langfuse's own best practices for instrumentation, prompt management, and evaluation, and materially improves results.
+- **Read [What does a good trace look like?](https://langfuse.com/docs/observability/best-practices.md)** before instrumenting an application.
+- **Verify endpoints, parameters, and response fields** against the [API reference](https://api.reference.langfuse.com) instead of inferring them from code examples.
+- **Use the [Langfuse CLI](https://langfuse.com/docs/api-and-data-platform/features/cli)** (`npx @langfuse/cli api <resource> <action>`) to read or write traces, prompts, datasets, and scores from the terminal.
+
+Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
+
+
+# Choose where evaluations run
+
+**URL:** https://langfuse.com/docs/evaluation/overview.md
+
+---
+title: Overview
+seoTitle: "Evaluation of LLM Applications"
+description: With Langfuse you can capture all your LLM evaluations in one place. You can combine a variety of different evaluation metrics like model-based evaluations (LLM-as-a-Judge), human annotations or fully custom evaluation workflows via API/SDKs. This allows you to measure quality, tonality, factual accuracy, completeness, and other dimensions of your LLM application.
+---
+
+# Evaluation Overview
+
+Evals give you a repeatable check of your LLM application's behavior. You replace guesswork with data, and catch regressions before you ship a change.
+
+  ![Score Analytics dashboard in Langfuse showing evaluation scores trended over time across multiple evaluators.](/images/docs/score-analytics-full-dashboard.png)
+
+Evaluation runs across most of the [AI engineering loop](/academy/ai-engineering-loop): you score live traces in production, turn interesting examples into datasets, run experiments to compare changes, and judge the results with manual or automated evaluators. It happens both **online**, on live production traces, and **offline**, before you ship a change.
+
+The AI Engineering Loop:
+
+- [Trace](/academy/tracing): traces, sessions, agents, prompts
+- [Monitor](/academy/monitoring): dashboards, LLM-as-judge, feedback
+- [Build datasets](/academy/datasets): datasets, features-as-tests
+- [Experiment](/academy/experiments): prompts, models, code variants
+- [Evaluate](/academy/evaluate): judges, custom evals, annotation
+
+[**Watch this walkthrough**](/watch-demo) of Langfuse Evaluation and how to use it to improve your LLM application.
+
+## Getting Started
+
+You can evaluate both:
+
+- [live incoming traces](/docs/evaluation/get-started/online) to measure quality on production data and track trends over time.
+- [your existing application on a pre-defined dataset](/docs/evaluation/get-started/offline), to make sure your changes are ready for production.
+
+For more information on how evaluators, scores, datasets, and experiments fit together, read [Core Concepts](/docs/evaluation/core-concepts).
+
+To catch regressions before they ship, run experiments in CI: add the [`langfuse/experiment-action`](/docs/evaluation/experiments/experiments-ci-cd) GitHub Action to a `pull_request` workflow and raise `RegressionError` from your experiment script when a score violates your threshold; the action then fails the job. It works with Langfuse Cloud and self-hosted Langfuse.
+
+If you're looking for another specific workflow, use the table below to find the right feature page:
+
+| If you want to...                                   | Use this Langfuse feature                                                                                                                                                                                                                   |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Review and rate traces manually                     | [Annotation Queues](/docs/evaluation/evaluation-methods/annotation-queues), [Scores via UI](/docs/evaluation/evaluation-methods/scores-via-ui)                                                                                              |
+| Hand experiment answers to a QA team                | [Review experiment answers](/docs/evaluation/evaluation-methods/annotation-queues#review-experiment-answers), [Share comparison results](/docs/evaluation/experiments/compare-experiments#share-results)                                    |
+| Collect feedback from your end users                | [User Feedback](/docs/observability/features/user-feedback)                                                                                                                                                                                 |
+| Leave open-ended notes on traces                    | [Text scores](/docs/evaluation/scores/overview#score-types), [Annotation Queues](/docs/evaluation/evaluation-methods/annotation-queues)                                                                                                     |
+| Build a reusable set of test cases                  | [Datasets](/docs/evaluation/experiments/datasets)                                                                                                                                                                                           |
+| Compare prompt, model, or code changes side by side | [Experiments via UI](/docs/evaluation/experiments/experiments-via-ui), [Experiments via SDK](/docs/evaluation/experiments/experiments-via-sdk), [Experiments via OpenTelemetry](/docs/evaluation/experiments/experiments-via-opentelemetry) |
+| Block deploys on regressions                        | [CI/CD experiments](/docs/evaluation/experiments/experiments-ci-cd)                                                                                                                                                                         |
+| Reuse checks in your application or CI process      | [Evaluate an existing application](/resources/engineering/evaluate-existing-application)                                                                                                                                                    |
+| Run deterministic checks                            | [Code Evaluators](/docs/evaluation/evaluation-methods/code-evaluators)                                                                                                                                                                      |
+| Automatically score live production traces          | [LLM-as-a-Judge](/docs/evaluation/evaluation-methods/llm-as-a-judge), [Scores via API/SDK](/docs/evaluation/evaluation-methods/scores-via-sdk)                                                                                              |
+| See how scores trend over time                      | [Score Analytics](/docs/evaluation/scores/score-analytics), [custom dashboards](/docs/metrics/features/custom-dashboards)                                                                                                                   |
+
+Already know what you're looking for? Browse _Evaluation Methods_ and _Experiments_ in the sidebar.
+
+## GitHub Discussions
+
+<!-- agent-instructions -->
+
+---
+
+## Agent Instructions
+
+This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/docs/evaluation/overview.md`.
 
 ### Querying these docs
 
@@ -2130,6 +2219,178 @@ If the answer is not on this page, query the documentation instead of guessing:
 Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
 
 
+# Self-hosting
+
+**URL:** https://langfuse.com/self-hosting.md
+
+---
+title: Self-host Langfuse (Open Source LLM Observability)
+sidebarTitle: Overview
+description: Self-host Langfuse - This guide shows you how to deploy open-source LLM observability with Docker, Kubernetes, or VMs on your own infrastructure.
+label: "Version: v4"
+---
+
+# Self-host Langfuse
+
+Langfuse is open source and can be self-hosted using Docker on your own infrastructure. Some add-on features require a [license key](/self-hosting/license-key).
+
+When self-hosting Langfuse, you run the same infrastructure that powers Langfuse Cloud. Read ["Why Langfuse?"](/why) to learn more about why this is important to us.
+
+## Deployment options [#deployment-options]
+
+| Best for                | Deployment                                                                                                                                                                                                                                                                                          | Responsibility                                           |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| Fastest start           | [Langfuse Cloud](https://cloud.langfuse.com)                                                                                                                                                                                                                                                        | Fully managed by the Langfuse team                       |
+| Local use and testing   | [Docker Compose](/self-hosting/deployment/docker-compose)                                                                                                                                                                                                                                           | Single VM without high availability, scaling, or backups |
+| Production self-hosting | [Kubernetes (Helm)](/self-hosting/deployment/kubernetes-helm), [AWS](/self-hosting/deployment/aws), [Azure](/self-hosting/deployment/azure), [GCP](/self-hosting/deployment/gcp), [Render](/self-hosting/deployment/render) (community), or [Railway](/self-hosting/deployment/railway) (community) | Your infrastructure                                      |
+
+Unless marked as community-supported, these deployment options are maintained and tested by the Langfuse team. Community-supported options are maintained in third-party repositories and supported on a best-effort basis. Report problems via [GitHub issues](/issues).
+
+## Architecture [#architecture]
+
+Langfuse only depends on open source components and can be deployed locally, on cloud infrastructure, or on-premises.
+
+```mermaid
+flowchart TB
+    User["UI, API, SDKs"]
+    subgraph vpc["VPC"]
+        Web["Web Server<br/>(langfuse/langfuse)"]
+        Worker["Async Worker<br/>(langfuse/worker)"]
+        Postgres@{ img: "/images/logos/postgres_icon.svg", label: "Postgres - OLTP\n(Transactional Data)", pos: "b", w: 60, h: 60, constraint: "on" }
+        Cache@{ img: "/images/logos/redis_icon.png", label: "Redis\n(Cache, Queue)", pos: "b", w: 60, h: 60, constraint: "on" }
+        Clickhouse@{ img: "/images/logos/clickhouse_icon.svg", label: "Clickhouse - OLAP\n(Observability Data)", pos: "b", w: 60, h: 60, constraint: "on" }
+        S3@{ img: "/images/logos/s3_icon.svg", label: "S3 / Blob Storage\n(Raw events, multi-modal attachments)", pos: "b", w: 60, h: 60, constraint: "on" }
+    end
+    LLM["LLM API/Gateway<br/>(optional; BYO; can be same VPC or VPC-peered)"]
+
+    User --> Web
+    Web --> S3
+    Web --> Postgres
+    Web --> Cache
+    Web --> Clickhouse
+    Web -..->|"optional for playground"| LLM
+
+    Cache --> Worker
+    Worker --> Clickhouse
+    Worker --> Postgres
+    Worker --> S3
+    Worker -..->|"optional for evals"| LLM
+```
+
+<details>
+<summary>View architecture components</summary>
+
+Langfuse consists of two application containers, storage components, and an optional LLM API/Gateway.
+
+- [**Application Containers**](/self-hosting/deployment/infrastructure/containers)
+  - Langfuse Web: The main web application serving the Langfuse UI and APIs.
+  - Langfuse Worker: A worker that asynchronously processes events.
+- **Storage Components**:
+  - [Postgres](/self-hosting/deployment/infrastructure/postgres): The main database for transactional workloads.
+  - [Clickhouse](/self-hosting/deployment/infrastructure/clickhouse): High-performance OLAP database which stores traces, observations, and scores.
+  - [Redis/Valkey cache](/self-hosting/deployment/infrastructure/cache): A fast in-memory data structure store. Used for queue and cache operations.
+  - [S3/Blob Store](/self-hosting/deployment/infrastructure/blobstorage): Object storage to persist all incoming events, multi-modal inputs, and large exports.
+- [**LLM API / Gateway**](/self-hosting/deployment/infrastructure/llm-api): Some features depend on an external LLM API or gateway.
+
+Langfuse can be deployed within a VPC or on-premises in high-security environments.
+Internet access is optional.
+See [networking](/self-hosting/security/networking) documentation for more details.
+
+</details>
+
+## Optimized for performance, reliability, and uptime
+
+Langfuse OSS and Enterprise use the same codebase as Langfuse Cloud. Langfuse processes **90B+ observations per month** and is trusted by **21 of the Fortune 50**. Its Docker images have been pulled **38M+ times**.
+
+<details>
+<summary>How Langfuse is optimized for scale and reliability</summary>
+
+Some of the optimizations include:
+
+- **Queued trace ingestion**: All traces are received in batches by the Langfuse Web container and immediately written to S3. Only a reference is persisted in Redis for queueing. Afterwards, the Langfuse Worker will pick up the traces from S3 and ingest them into Clickhouse. This ensures that high spikes in request load do not lead to timeouts or errors constrained by the database.
+- **Caching of API keys**: API keys are cached in-memory in Redis. Thereby, the database is not hit on every API call and unauthorized requests can be rejected with very low resource usage.
+- **Caching of prompts (SDKs and API)**: Even though prompts are cached client-side by the Langfuse SDKs and only revalidated in the background ([docs](/docs/prompts)), they need to be fetched from the Langfuse on first use. Thus, API response times are very important. Prompts are cached in a read-through cache in Redis. Thereby, hot prompts can be fetched from Langfuse without hitting a database.
+- **Hyper-optimized ClickHouse schema**: Read-heavy analytical operations use a wide, mostly immutable observations table that avoids read-time joins and deduplication while taking advantage of ClickHouse's most performant access patterns. Read how we [simplified Langfuse for scale](/blog/2026-03-10-simplify-langfuse-for-scale).
+- **Multi-modal traces in S3**: Multi-modal traces can include large videos or arbitrary files. To enable support for these, they are directly uploaded to S3/Blob Storage from the client SDKs. Learn more about [multi-modal traces](/docs/tracing-features/multi-modality).
+- **Recoverability of events**: All incoming tracing and evaluation events are persisted in S3/Blob Storage first. Only after successful processing, the events are written to the database. This ensures that even if the database is temporarily unavailable, the events are not lost and can be processed later.
+- **Background migrations**: Long-running migrations that are required by an upgrade but not blocking for regular operations are offloaded to a background job. This massively reduces the downtime during an upgrade. Learn more about [background migrations](/self-hosting/upgrade/background-migrations).
+
+</details>
+
+## Features
+
+Langfuse supports many configuration options and self-hosted features.
+For more details, please refer to the [configuration guide](/self-hosting/configuration).
+
+- [Authentication & SSO](/self-hosting/security/authentication-and-sso)
+- [Automated Access Provisioning](/self-hosting/administration/automated-access-provisioning)
+- [Caching](/self-hosting/configuration/caching)
+- [Code evaluators](/self-hosting/configuration/code-evaluators)
+- [Langfuse Assistant](/self-hosting/configuration/langfuse-assistant)
+- [Custom Base Path](/self-hosting/configuration/custom-base-path)
+- [Encryption](/self-hosting/configuration/encryption)
+- [Headless Initialization](/self-hosting/administration/headless-initialization)
+- [Data Masking](/self-hosting/security/data-masking)
+- [Networking](/self-hosting/security/networking)
+- [Organization Creators (EE)](/self-hosting/administration/organization-creators)
+- [Instance Management API (EE)](/self-hosting/administration/instance-management-api)
+- [Health and Readiness Check](/self-hosting/configuration/health-readiness-endpoints)
+- [Observability via OpenTelemetry](/self-hosting/configuration/observability)
+- [Transactional Emails](/self-hosting/configuration/transactional-emails)
+- [UI Customization (EE)](/self-hosting/administration/ui-customization)
+
+## Subscribe to updates [#subscribe]
+
+Release notes are published on [GitHub](https://github.com/langfuse/langfuse/releases). Langfuse uses tagged semver releases ([versioning policy](/self-hosting/upgrade/versioning)).
+
+**[Langfuse OSS updates](/self-hosting/oss-newsletter)** — get an email when we ship important features and new releases for self-hosted (open source) Langfuse. Self-hosting updates only, no spam.
+
+Subscribe to the Langfuse OSS newsletter at https://langfuse.com/self-hosting/oss-newsletter.
+
+You can also watch the GitHub releases to get notified about new releases:
+
+---
+
+If you experience any issues when self-hosting Langfuse, please:
+
+1. Check out [Troubleshooting & FAQ](/self-hosting/troubleshooting-and-faq) page.
+2. Use [Ask AI](/docs/ask-ai) to get instant answers to your questions.
+3. Ask the maintainers on [GitHub Discussions](/gh-support).
+4. Create a bug report or feature request on [GitHub](/issues).
+
+  Enterprise-grade support is available when self-hosting Langfuse. Learn more on
+  our [pricing page](/pricing-self-host).
+
+<!-- agent-instructions -->
+
+---
+
+## Agent Instructions
+
+This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/self-hosting.md`.
+
+### Querying these docs
+
+If the answer is not on this page, query the documentation instead of guessing:
+
+- **Semantic search** across all Langfuse docs, returning an answer with the relevant pages and excerpts. Ask a specific, self-contained question:
+
+  ```bash
+  curl -sG "https://langfuse.com/api/search-docs" --data-urlencode "query=How do I trace a LangGraph agent?"
+  ```
+
+- **Index of every page**: <https://langfuse.com/llms.txt>, with per-section indexes [llms-docs.txt](https://langfuse.com/llms-docs.txt), [llms-integrations.txt](https://langfuse.com/llms-integrations.txt), and [llms-self-hosting.txt](https://langfuse.com/llms-self-hosting.txt).
+
+### Before writing Langfuse code
+
+- **Install the [Langfuse Agent Skill](https://langfuse.com/docs/api-and-data-platform/features/agent-skill).** It encodes Langfuse's own best practices for instrumentation, prompt management, and evaluation, and materially improves results.
+- **Read [What does a good trace look like?](https://langfuse.com/docs/observability/best-practices.md)** before instrumenting an application.
+- **Verify endpoints, parameters, and response fields** against the [API reference](https://api.reference.langfuse.com) instead of inferring them from code examples.
+- **Use the [Langfuse CLI](https://langfuse.com/docs/api-and-data-platform/features/cli)** (`npx @langfuse/cli api <resource> <action>`) to read or write traces, prompts, datasets, and scores from the terminal.
+
+Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
+
+
 # Self-hosted pricing and license
 
 **URL:** https://langfuse.com/pricing-self-host.md
@@ -2346,7 +2607,7 @@ Langfuse is built with enterprise needs in mind, focusing on:
 - **Transparency:** Open-source core and clear information on [software dependencies](/security/dependencies).
 - **Reporting:** Clear channels for [responsible disclosure through Bugcrowd](/security/responsible-disclosure) and [Whistleblowing](/security/whistleblowing).
 
-Langfuse is the most widely adopted LLM Engineering platform, used by **50,000+ companies**, with **34,787 GitHub stars**, **65M+ SDK installs per month**, and **38M+ Docker pulls**. Trusted by **21 of the Fortune 50** and **129 of the Fortune 500** companies.
+Langfuse is the most widely adopted LLM Engineering platform, used by **50,000+ companies**, with **34,812 GitHub stars**, **65M+ SDK installs per month**, and **38M+ Docker pulls**. Trusted by **21 of the Fortune 50** and **129 of the Fortune 500** companies.
 
 ## Langfuse Cloud security model
 
@@ -2503,267 +2764,6 @@ If you experience any issues when self-hosting Langfuse, please:
 ## Agent Instructions
 
 This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/self-hosting/license-key.md`.
-
-### Querying these docs
-
-If the answer is not on this page, query the documentation instead of guessing:
-
-- **Semantic search** across all Langfuse docs, returning an answer with the relevant pages and excerpts. Ask a specific, self-contained question:
-
-  ```bash
-  curl -sG "https://langfuse.com/api/search-docs" --data-urlencode "query=How do I trace a LangGraph agent?"
-  ```
-
-- **Index of every page**: <https://langfuse.com/llms.txt>, with per-section indexes [llms-docs.txt](https://langfuse.com/llms-docs.txt), [llms-integrations.txt](https://langfuse.com/llms-integrations.txt), and [llms-self-hosting.txt](https://langfuse.com/llms-self-hosting.txt).
-
-### Before writing Langfuse code
-
-- **Install the [Langfuse Agent Skill](https://langfuse.com/docs/api-and-data-platform/features/agent-skill).** It encodes Langfuse's own best practices for instrumentation, prompt management, and evaluation, and materially improves results.
-- **Read [What does a good trace look like?](https://langfuse.com/docs/observability/best-practices.md)** before instrumenting an application.
-- **Verify endpoints, parameters, and response fields** against the [API reference](https://api.reference.langfuse.com) instead of inferring them from code examples.
-- **Use the [Langfuse CLI](https://langfuse.com/docs/api-and-data-platform/features/cli)** (`npx @langfuse/cli api <resource> <action>`) to read or write traces, prompts, datasets, and scores from the terminal.
-
-Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
-
-
-# Self-hosting
-
-**URL:** https://langfuse.com/self-hosting.md
-
----
-title: Self-host Langfuse (Open Source LLM Observability)
-sidebarTitle: Overview
-description: Self-host Langfuse - This guide shows you how to deploy open-source LLM observability with Docker, Kubernetes, or VMs on your own infrastructure.
-label: "Version: v4"
----
-
-# Self-host Langfuse
-
-Langfuse is open source and can be self-hosted using Docker on your own infrastructure. Some add-on features require a [license key](/self-hosting/license-key).
-
-When self-hosting Langfuse, you run the same infrastructure that powers Langfuse Cloud. Read ["Why Langfuse?"](/why) to learn more about why this is important to us.
-
-## Deployment options [#deployment-options]
-
-| Best for                | Deployment                                                                                                                                                                                                                                                                                          | Responsibility                                           |
-| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
-| Fastest start           | [Langfuse Cloud](https://cloud.langfuse.com)                                                                                                                                                                                                                                                        | Fully managed by the Langfuse team                       |
-| Local use and testing   | [Docker Compose](/self-hosting/deployment/docker-compose)                                                                                                                                                                                                                                           | Single VM without high availability, scaling, or backups |
-| Production self-hosting | [Kubernetes (Helm)](/self-hosting/deployment/kubernetes-helm), [AWS](/self-hosting/deployment/aws), [Azure](/self-hosting/deployment/azure), [GCP](/self-hosting/deployment/gcp), [Render](/self-hosting/deployment/render) (community), or [Railway](/self-hosting/deployment/railway) (community) | Your infrastructure                                      |
-
-Unless marked as community-supported, these deployment options are maintained and tested by the Langfuse team. Community-supported options are maintained in third-party repositories and supported on a best-effort basis. Report problems via [GitHub issues](/issues).
-
-## Architecture [#architecture]
-
-Langfuse only depends on open source components and can be deployed locally, on cloud infrastructure, or on-premises.
-
-```mermaid
-flowchart TB
-    User["UI, API, SDKs"]
-    subgraph vpc["VPC"]
-        Web["Web Server<br/>(langfuse/langfuse)"]
-        Worker["Async Worker<br/>(langfuse/worker)"]
-        Postgres@{ img: "/images/logos/postgres_icon.svg", label: "Postgres - OLTP\n(Transactional Data)", pos: "b", w: 60, h: 60, constraint: "on" }
-        Cache@{ img: "/images/logos/redis_icon.png", label: "Redis\n(Cache, Queue)", pos: "b", w: 60, h: 60, constraint: "on" }
-        Clickhouse@{ img: "/images/logos/clickhouse_icon.svg", label: "Clickhouse - OLAP\n(Observability Data)", pos: "b", w: 60, h: 60, constraint: "on" }
-        S3@{ img: "/images/logos/s3_icon.svg", label: "S3 / Blob Storage\n(Raw events, multi-modal attachments)", pos: "b", w: 60, h: 60, constraint: "on" }
-    end
-    LLM["LLM API/Gateway<br/>(optional; BYO; can be same VPC or VPC-peered)"]
-
-    User --> Web
-    Web --> S3
-    Web --> Postgres
-    Web --> Cache
-    Web --> Clickhouse
-    Web -..->|"optional for playground"| LLM
-
-    Cache --> Worker
-    Worker --> Clickhouse
-    Worker --> Postgres
-    Worker --> S3
-    Worker -..->|"optional for evals"| LLM
-```
-
-<details>
-<summary>View architecture components</summary>
-
-Langfuse consists of two application containers, storage components, and an optional LLM API/Gateway.
-
-- [**Application Containers**](/self-hosting/deployment/infrastructure/containers)
-  - Langfuse Web: The main web application serving the Langfuse UI and APIs.
-  - Langfuse Worker: A worker that asynchronously processes events.
-- **Storage Components**:
-  - [Postgres](/self-hosting/deployment/infrastructure/postgres): The main database for transactional workloads.
-  - [Clickhouse](/self-hosting/deployment/infrastructure/clickhouse): High-performance OLAP database which stores traces, observations, and scores.
-  - [Redis/Valkey cache](/self-hosting/deployment/infrastructure/cache): A fast in-memory data structure store. Used for queue and cache operations.
-  - [S3/Blob Store](/self-hosting/deployment/infrastructure/blobstorage): Object storage to persist all incoming events, multi-modal inputs, and large exports.
-- [**LLM API / Gateway**](/self-hosting/deployment/infrastructure/llm-api): Some features depend on an external LLM API or gateway.
-
-Langfuse can be deployed within a VPC or on-premises in high-security environments.
-Internet access is optional.
-See [networking](/self-hosting/security/networking) documentation for more details.
-
-</details>
-
-## Optimized for performance, reliability, and uptime
-
-Langfuse OSS and Enterprise use the same codebase as Langfuse Cloud. Langfuse processes **90B+ observations per month** and is trusted by **21 of the Fortune 50**. Its Docker images have been pulled **38M+ times**.
-
-<details>
-<summary>How Langfuse is optimized for scale and reliability</summary>
-
-Some of the optimizations include:
-
-- **Queued trace ingestion**: All traces are received in batches by the Langfuse Web container and immediately written to S3. Only a reference is persisted in Redis for queueing. Afterwards, the Langfuse Worker will pick up the traces from S3 and ingest them into Clickhouse. This ensures that high spikes in request load do not lead to timeouts or errors constrained by the database.
-- **Caching of API keys**: API keys are cached in-memory in Redis. Thereby, the database is not hit on every API call and unauthorized requests can be rejected with very low resource usage.
-- **Caching of prompts (SDKs and API)**: Even though prompts are cached client-side by the Langfuse SDKs and only revalidated in the background ([docs](/docs/prompts)), they need to be fetched from the Langfuse on first use. Thus, API response times are very important. Prompts are cached in a read-through cache in Redis. Thereby, hot prompts can be fetched from Langfuse without hitting a database.
-- **Hyper-optimized ClickHouse schema**: Read-heavy analytical operations use a wide, mostly immutable observations table that avoids read-time joins and deduplication while taking advantage of ClickHouse's most performant access patterns. Read how we [simplified Langfuse for scale](/blog/2026-03-10-simplify-langfuse-for-scale).
-- **Multi-modal traces in S3**: Multi-modal traces can include large videos or arbitrary files. To enable support for these, they are directly uploaded to S3/Blob Storage from the client SDKs. Learn more about [multi-modal traces](/docs/tracing-features/multi-modality).
-- **Recoverability of events**: All incoming tracing and evaluation events are persisted in S3/Blob Storage first. Only after successful processing, the events are written to the database. This ensures that even if the database is temporarily unavailable, the events are not lost and can be processed later.
-- **Background migrations**: Long-running migrations that are required by an upgrade but not blocking for regular operations are offloaded to a background job. This massively reduces the downtime during an upgrade. Learn more about [background migrations](/self-hosting/upgrade/background-migrations).
-
-</details>
-
-## Features
-
-Langfuse supports many configuration options and self-hosted features.
-For more details, please refer to the [configuration guide](/self-hosting/configuration).
-
-- [Authentication & SSO](/self-hosting/security/authentication-and-sso)
-- [Automated Access Provisioning](/self-hosting/administration/automated-access-provisioning)
-- [Caching](/self-hosting/configuration/caching)
-- [Code evaluators](/self-hosting/configuration/code-evaluators)
-- [Langfuse Assistant](/self-hosting/configuration/langfuse-assistant)
-- [Custom Base Path](/self-hosting/configuration/custom-base-path)
-- [Encryption](/self-hosting/configuration/encryption)
-- [Headless Initialization](/self-hosting/administration/headless-initialization)
-- [Data Masking](/self-hosting/security/data-masking)
-- [Networking](/self-hosting/security/networking)
-- [Organization Creators (EE)](/self-hosting/administration/organization-creators)
-- [Instance Management API (EE)](/self-hosting/administration/instance-management-api)
-- [Health and Readiness Check](/self-hosting/configuration/health-readiness-endpoints)
-- [Observability via OpenTelemetry](/self-hosting/configuration/observability)
-- [Transactional Emails](/self-hosting/configuration/transactional-emails)
-- [UI Customization (EE)](/self-hosting/administration/ui-customization)
-
-## Subscribe to updates [#subscribe]
-
-Release notes are published on [GitHub](https://github.com/langfuse/langfuse/releases). Langfuse uses tagged semver releases ([versioning policy](/self-hosting/upgrade/versioning)).
-
-**[Langfuse OSS updates](/self-hosting/oss-newsletter)** — get an email when we ship important features and new releases for self-hosted (open source) Langfuse. Self-hosting updates only, no spam.
-
-Subscribe to the Langfuse OSS newsletter at https://langfuse.com/self-hosting/oss-newsletter.
-
-You can also watch the GitHub releases to get notified about new releases:
-
----
-
-If you experience any issues when self-hosting Langfuse, please:
-
-1. Check out [Troubleshooting & FAQ](/self-hosting/troubleshooting-and-faq) page.
-2. Use [Ask AI](/docs/ask-ai) to get instant answers to your questions.
-3. Ask the maintainers on [GitHub Discussions](/gh-support).
-4. Create a bug report or feature request on [GitHub](/issues).
-
-  Enterprise-grade support is available when self-hosting Langfuse. Learn more on
-  our [pricing page](/pricing-self-host).
-
-<!-- agent-instructions -->
-
----
-
-## Agent Instructions
-
-This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/self-hosting.md`.
-
-### Querying these docs
-
-If the answer is not on this page, query the documentation instead of guessing:
-
-- **Semantic search** across all Langfuse docs, returning an answer with the relevant pages and excerpts. Ask a specific, self-contained question:
-
-  ```bash
-  curl -sG "https://langfuse.com/api/search-docs" --data-urlencode "query=How do I trace a LangGraph agent?"
-  ```
-
-- **Index of every page**: <https://langfuse.com/llms.txt>, with per-section indexes [llms-docs.txt](https://langfuse.com/llms-docs.txt), [llms-integrations.txt](https://langfuse.com/llms-integrations.txt), and [llms-self-hosting.txt](https://langfuse.com/llms-self-hosting.txt).
-
-### Before writing Langfuse code
-
-- **Install the [Langfuse Agent Skill](https://langfuse.com/docs/api-and-data-platform/features/agent-skill).** It encodes Langfuse's own best practices for instrumentation, prompt management, and evaluation, and materially improves results.
-- **Read [What does a good trace look like?](https://langfuse.com/docs/observability/best-practices.md)** before instrumenting an application.
-- **Verify endpoints, parameters, and response fields** against the [API reference](https://api.reference.langfuse.com) instead of inferring them from code examples.
-- **Use the [Langfuse CLI](https://langfuse.com/docs/api-and-data-platform/features/cli)** (`npx @langfuse/cli api <resource> <action>`) to read or write traces, prompts, datasets, and scores from the terminal.
-
-Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
-
-
-# Choose where evaluations run
-
-**URL:** https://langfuse.com/docs/evaluation/overview.md
-
----
-title: Overview
-seoTitle: "Evaluation of LLM Applications"
-description: With Langfuse you can capture all your LLM evaluations in one place. You can combine a variety of different evaluation metrics like model-based evaluations (LLM-as-a-Judge), human annotations or fully custom evaluation workflows via API/SDKs. This allows you to measure quality, tonality, factual accuracy, completeness, and other dimensions of your LLM application.
----
-
-# Evaluation Overview
-
-Evals give you a repeatable check of your LLM application's behavior. You replace guesswork with data, and catch regressions before you ship a change.
-
-  ![Score Analytics dashboard in Langfuse showing evaluation scores trended over time across multiple evaluators.](/images/docs/score-analytics-full-dashboard.png)
-
-Evaluation runs across most of the [AI engineering loop](/academy/ai-engineering-loop): you score live traces in production, turn interesting examples into datasets, run experiments to compare changes, and judge the results with manual or automated evaluators. It happens both **online**, on live production traces, and **offline**, before you ship a change.
-
-The AI Engineering Loop:
-
-- [Trace](/academy/tracing): traces, sessions, agents, prompts
-- [Monitor](/academy/monitoring): dashboards, LLM-as-judge, feedback
-- [Build datasets](/academy/datasets): datasets, features-as-tests
-- [Experiment](/academy/experiments): prompts, models, code variants
-- [Evaluate](/academy/evaluate): judges, custom evals, annotation
-
-[**Watch this walkthrough**](/watch-demo) of Langfuse Evaluation and how to use it to improve your LLM application.
-
-## Getting Started
-
-You can evaluate both:
-
-- [live incoming traces](/docs/evaluation/get-started/online) to measure quality on production data and track trends over time.
-- [your existing application on a pre-defined dataset](/docs/evaluation/get-started/offline), to make sure your changes are ready for production.
-
-For more information on how evaluators, scores, datasets, and experiments fit together, read [Core Concepts](/docs/evaluation/core-concepts).
-
-To catch regressions before they ship, run experiments in CI: add the [`langfuse/experiment-action`](/docs/evaluation/experiments/experiments-ci-cd) GitHub Action to a `pull_request` workflow and raise `RegressionError` from your experiment script when a score violates your threshold; the action then fails the job. It works with Langfuse Cloud and self-hosted Langfuse.
-
-If you're looking for another specific workflow, use the table below to find the right feature page:
-
-| If you want to...                                   | Use this Langfuse feature                                                                                                                                                                                                                   |
-| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Review and rate traces manually                     | [Annotation Queues](/docs/evaluation/evaluation-methods/annotation-queues), [Scores via UI](/docs/evaluation/evaluation-methods/scores-via-ui)                                                                                              |
-| Hand experiment answers to a QA team                | [Review experiment answers](/docs/evaluation/evaluation-methods/annotation-queues#review-experiment-answers), [Share comparison results](/docs/evaluation/experiments/compare-experiments#share-results)                                    |
-| Collect feedback from your end users                | [User Feedback](/docs/observability/features/user-feedback)                                                                                                                                                                                 |
-| Leave open-ended notes on traces                    | [Text scores](/docs/evaluation/scores/overview#score-types), [Annotation Queues](/docs/evaluation/evaluation-methods/annotation-queues)                                                                                                     |
-| Build a reusable set of test cases                  | [Datasets](/docs/evaluation/experiments/datasets)                                                                                                                                                                                           |
-| Compare prompt, model, or code changes side by side | [Experiments via UI](/docs/evaluation/experiments/experiments-via-ui), [Experiments via SDK](/docs/evaluation/experiments/experiments-via-sdk), [Experiments via OpenTelemetry](/docs/evaluation/experiments/experiments-via-opentelemetry) |
-| Block deploys on regressions                        | [CI/CD experiments](/docs/evaluation/experiments/experiments-ci-cd)                                                                                                                                                                         |
-| Reuse checks in your application or CI process      | [Evaluate an existing application](/resources/engineering/evaluate-existing-application)                                                                                                                                                    |
-| Run deterministic checks                            | [Code Evaluators](/docs/evaluation/evaluation-methods/code-evaluators)                                                                                                                                                                      |
-| Automatically score live production traces          | [LLM-as-a-Judge](/docs/evaluation/evaluation-methods/llm-as-a-judge), [Scores via API/SDK](/docs/evaluation/evaluation-methods/scores-via-sdk)                                                                                              |
-| See how scores trend over time                      | [Score Analytics](/docs/evaluation/scores/score-analytics), [custom dashboards](/docs/metrics/features/custom-dashboards)                                                                                                                   |
-
-Already know what you're looking for? Browse _Evaluation Methods_ and _Experiments_ in the sidebar.
-
-## GitHub Discussions
-
-<!-- agent-instructions -->
-
----
-
-## Agent Instructions
-
-This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/docs/evaluation/overview.md`.
 
 ### Querying these docs
 
@@ -3189,6 +3189,135 @@ Keep your OpenInference instrumentation and point it at Langfuse's OTLP endpoint
 ## Agent Instructions
 
 This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/compare/arize-phoenix.md`.
+
+### Querying these docs
+
+If the answer is not on this page, query the documentation instead of guessing:
+
+- **Semantic search** across all Langfuse docs, returning an answer with the relevant pages and excerpts. Ask a specific, self-contained question:
+
+  ```bash
+  curl -sG "https://langfuse.com/api/search-docs" --data-urlencode "query=How do I trace a LangGraph agent?"
+  ```
+
+- **Index of every page**: <https://langfuse.com/llms.txt>, with per-section indexes [llms-docs.txt](https://langfuse.com/llms-docs.txt), [llms-integrations.txt](https://langfuse.com/llms-integrations.txt), and [llms-self-hosting.txt](https://langfuse.com/llms-self-hosting.txt).
+
+### Before writing Langfuse code
+
+- **Install the [Langfuse Agent Skill](https://langfuse.com/docs/api-and-data-platform/features/agent-skill).** It encodes Langfuse's own best practices for instrumentation, prompt management, and evaluation, and materially improves results.
+- **Read [What does a good trace look like?](https://langfuse.com/docs/observability/best-practices.md)** before instrumenting an application.
+- **Verify endpoints, parameters, and response fields** against the [API reference](https://api.reference.langfuse.com) instead of inferring them from code examples.
+- **Use the [Langfuse CLI](https://langfuse.com/docs/api-and-data-platform/features/cli)** (`npx @langfuse/cli api <resource> <action>`) to read or write traces, prompts, datasets, and scores from the terminal.
+
+Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
+
+
+# Galileo
+
+**URL:** https://langfuse.com/compare/galileo.md
+
+---
+title: Galileo AI Alternatives? The best LLMOps platform?
+shortTitle: Galileo
+description: This article compares Langfuse and Galileo AI for LLM observability, analytics, evaluations, testing, and annotation.
+tags: [comparison]
+---
+
+# Galileo AI Alternative? Langfuse vs. Galileo AI
+
+This article compares Langfuse and Galileo AI, two platforms that help developers evaluate and monitor applications built on LLMs.
+
+While both platforms aim to improve LLM reliability, they differ in philosophy. **Galileo AI** is a proprietary, all-in-one platform focused on real-time intervention and automated metrics. **Langfuse** is an open-source, engineering-centric platform focused on flexibility, data control, and deep observability.
+
+## At a Glance
+
+|                            | 🪢 Langfuse                                                                                                                                                                       | Galileo AI                                                                                         |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| **Open Source**            | **Yes** (MIT licensed, fully open codebase)                                                                                                                                       | **No** (closed-source commercial platform)                                                         |
+| **Deployment Flexibility** | Maximum flexibility: Cloud or Self-Hosting                                                                                                                                        | Cloud Only, VPC or on-prem enterprise only                                                         |
+| **Integrations**           | 100+ [SDKs/integrations](/integrations) for OpenAI, LangChain, etc., via OpenTelemetry. [OpenTelemetry](/integrations/native/opentelemetry) support for maximum interoperability. | approx. 10 listed integrations & auto-instrumentation for popular providers like OpenAI, Anthropic |
+| **Openness**               | Not opinionated; designed to be flexible enough to cover all workflows and evaluation methods via SDKs/APIs                                                                       | Opinionated approach with templated guardrail evaluators using proprietary models                  |
+| **Scalability**            | Built to scale (ClickHouse-based architecture handles >5B events/month)                                                                                                           | No public information available                                                                    |
+
+## Galileo AI
+
+  ![Galileo AI example trace](/images/faq/galileo-ai/galileo-ai-example-trace.png)
+
+Galileo AI positions itself as an enterprise-grade evaluation and governance solution. Its core value proposition revolves around **reliability** and **safety**.
+
+- **Real-Time Protection:** Galileo’s standout feature is its built-in "Protect" system, which uses proprietary Luna-2 models to intercept and block hallucinations or toxic outputs in real-time before they reach the user.
+- **Automated Evaluation:** It provides an opinionated workflow with pre-packaged metrics, allowing data science teams to get scores out of the box without engineering custom judges.
+
+## Langfuse
+
+Langfuse is the open-source standard for LLM observability. It is designed for engineering teams that want to treat LLM traces like any other application log - providing full visibility without vendor black boxes.
+
+- **Observability:** Langfuse captures the full lifecycle of an LLM interaction - prompts, model responses, tool calls, and latency.
+- **Engineering-First Workflow:** It supports complex debugging (tracing chain-of-thought), prompt management, and diverse evaluation methods (human feedback, SDK methods, or any LLM-as-a-Judge).
+- **Scalability:** Built on a high-performance architecture (ClickHouse), Langfuse handles millions of events with minimal latency, ensuring it scales with your production traffic.
+
+A detailed summary why users chose Langfuse can be found [here](/handbook/chapters/why).
+
+## Distribution
+
+|             | pypi downloads                                                                                                                                                        | npm downloads                                                                                                                                                           | docker pulls                                                                                                                                                                              |
+| ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 🪢 Langfuse | [![Langfuse pypi downloads](https://img.shields.io/pypi/dm/langfuse?style=for-the-badge&label=%20&labelColor=black&color=orange)](https://pypi.org/project/langfuse/) | [![Langfuse npm downloads](https://img.shields.io/npm/dm/langfuse?style=for-the-badge&label=%20&labelColor=black&color=orange)](https://www.npmjs.com/package/langfuse) | [![Langfuse Docker Pulls](https://img.shields.io/docker/pulls/langfuse/langfuse?style=for-the-badge&label=%20&labelColor=black&color=orange)](https://hub.docker.com/r/langfuse/langfuse) |
+| Galileo AI  | [![Galileo AI pypi downloads](https://img.shields.io/pypi/dm/galileo?style=for-the-badge&label=%20&labelColor=black&color=grey)](https://pypi.org/project/galileo)    | [![Galileo AI npm downloads](https://img.shields.io/npm/dm/galileo?style=for-the-badge&label=%20&labelColor=black&color=grey)](https://www.npmjs.com/package/galileo)   | N/A                                                                                                                                                                                       |
+
+## Feature Comparison
+
+The following tables break down how Langfuse and Galileo AI approach the three critical pillars of the LLM engineering lifecycle: Observability, Evaluation, and Annotation.
+
+### Observability
+
+|                     | 🪢 Langfuse                                                                                                                                                                                                 | Galileo AI                                                                                                                                              |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Cost Tracking       | ✅ Fine-grained [tracing of all token types](/docs/observability/features/token-and-cost-tracking), including reasoning and cached tokens. Ability to set custom costs for private LLMs or negotiated rates | ⚠️ Limited configurability of tokens and costs.                                                                                                         |
+| Full Text Search    | ✅ Full-text search across inputs, outputs, and metadata.                                                                                                                                                   | ❌ No support for full-text search.                                                                                                                     |
+| Distributed Tracing | ✅ Support and documentation for [distributed tracing](/docs/observability/features/trace-ids-and-distributed-tracing) (via OpenTelemetry and native SDKs).                                                 | ⚠️ [Distributed tracing](https://v2docs.galileo.ai/sdk-api/logging/distributed-tracing) is in beta but lacks full OpenTelemetry support.                |
+| Tool Calls          | ✅ Dedicated UI views and [agent graphs](/docs/observability/features/agent-graphs) for analyzing tool usage and behavior.                                                                                  | ❌ No specific views for tool invocations or agent step visualization.                                                                                  |
+| Replay Traces       | ✅ Ability to open generations in the [Langfuse Playground](/docs/prompt-management/features/playground) to iterate on the prompt and debug issues.                                                         | ⚠️ Manual copying of messages into the [playground](https://v2docs.galileo.ai/concepts/experiments/running-experiments-in-console).                     |
+| Trace Exports       | ✅ Ability to [export the whole trace](/docs/api-and-data-platform/features/export-from-ui), including all observations as JSON to process or debug with coding agents.                                     | ⚠️ No direct export of trace details, but Galileo exposes logs via their [MCP server](https://v2docs.galileo.ai/getting-started/mcp/setup-galileo-mcp). |
+| Custom Dashboards   | ✅ Ability to build [custom dashboard](/docs/metrics/features/custom-dashboards) widgets to drill down on various metrics.                                                                                  | ❌ No dashboarding support in the UI.                                                                                                                   |
+
+### Evaluation
+
+|                       | 🪢 Langfuse                                                                                                                                                                                                                                                                              | Galileo AI                                                                                                                                                                                                                 |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Datasets              | ✅ Both tools support [datasets](/docs/evaluation/experiments/datasets) and dataset versioning. Langfuse offers a notebook to generate synthetic datasets but no UI feature.                                                                                                             | ✅ Both tools support [datasets](https://v2docs.galileo.ai/sdk-api/experiments/datasets) and dataset versioning. Galileo AI allows to use AI to create test datasets.                                                      |
+| Experiments           | ✅ [Experiments](/docs/evaluation/experiments/experiments-via-ui) can be triggered via the dataset view. Both tools support an in-UI flow to experiment on prompts using datasets. Both tools also support [experiments via the SDKs](/docs/evaluation/experiments/experiments-via-sdk). | ✅ Ability to trigger [experiments in the Playground](https://v2docs.galileo.ai/concepts/experiments/running-experiments-in-console). This allows users to see prompts, dataset items, and experiment results at a glance. |
+| Corrected Output      | ✅ Langfuse users can correct the model output right in the [trace detail view](/docs/evaluation/evaluation-methods/scores-via-ui) for future evaluation and fine-tuning.                                                                                                                | ❌ Correcting model outputs is not possible.                                                                                                                                                                               |
+| Comments              | ✅ Langfuse has a native [comments feature](/docs/observability/features/comments) where users can comment on traces, observations, prompts and experiment results. The feature also allows commenting only on specific parts of i/o and @mention other users.                           | ❌ No comment feature. (Only [annotations](https://v2docs.galileo.ai/concepts/annotations/overview) available)                                                                                                             |
+| LLM-as-a-Judge        | ✅ Standard support for [scoring live tracing data](/docs/evaluation/evaluation-methods/llm-as-a-judge) and experiment runs using any model the user configures and an evaluation prompt.                                                                                                | ✅ Support for categorical [LLM-as-a-Judge](https://v2docs.galileo.ai/concepts/metrics/custom-metrics/custom-metrics-ui-llm) scores. Allows having multiple judge models for one evaluation job.                           |
+| Code evaluators in UI | ✅ [Code evaluators](/docs/evaluation/evaluation-methods/code-evaluators) let users write Python or TypeScript evaluators directly in the Langfuse UI for deterministic checks.                                                                                                          | ✅ Supported via [custom metrics](https://v2docs.galileo.ai/concepts/metrics/custom-metrics/custom-metrics-ui-code) in the UI.                                                                                             |
+| Guardrails            | ⚠️ Not built-in (integrate with [external tools](/docs/security-and-guardrails); Langfuse is not in the critical path by design)                                                                                                                                                         | ✅ Built-in [real-time guardrails/protection](https://v2docs.galileo.ai/concepts/protect/overview) for outputs using their proprietary [Luna-2](https://v2docs.galileo.ai/concepts/luna/luna) model.                       |
+
+### Annotation
+
+|                           | 🪢 Langfuse                                                                                                                                                                         | Galileo AI                                                                                                                                                                                                                                                   |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Annotation Queues         | ✅ Integrated [annotation queues](/docs/evaluation/evaluation-methods/annotation-queues) for domain experts to review filtered traces (e.g., "Check all negative feedback traces"). | ❌ No dedicated view where domain experts can annotate a subset of traces.                                                                                                                                                                                   |
+| Annotations in Trace view | ✅ Langfuse supports [annotating traces and observations](/docs/evaluation/evaluation-methods/scores-via-ui) via the Trace detail view                                              | ✅ This is available via the [annotations feature](https://v2docs.galileo.ai/concepts/annotations/overview) and supports, other than Langfuse, also text annotations, thumbs up/down and stars. (Langfuse has a native comment feature for text annotations) |
+| Annotating Experiments    | ✅ Ability to add human annotation scores in [Dataset Experiment compare view](/docs/evaluation/experiments/experiments-via-ui)                                                     | ⚠️ User has to navigate to the Trace of the [experiment](https://v2docs.galileo.ai/sdk-api/experiments/experiments) to add annotation scores.                                                                                                                |
+
+## Summary
+
+**Choose Galileo AI if:** You are a data science team that needs a "turnkey" solution for safety. If you require real-time guardrails to block bad responses and prefer a managed, opinionated set of evaluation metrics out of the box, Galileo’s specific focus on governance is a strong fit.
+
+**Choose Langfuse if:** You are an engineering team building production applications. If you value open-source software, require flexible and unopinionated workflows, and need a platform that scales effortlessly with your traffic while allowing you to define your own evaluation logic, Langfuse is the robust, developer-centric choice.
+
+## This comparison is out of date?
+
+Please [raise a pull request](https://github.com/langfuse/langfuse-docs/blob/main/content/compare/galileo.mdx) with up to date information.
+
+<!-- agent-instructions -->
+
+---
+
+## Agent Instructions
+
+This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/compare/galileo.md`.
 
 ### Querying these docs
 
@@ -3761,350 +3890,6 @@ If the answer is not on this page, query the documentation instead of guessing:
 Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
 
 
-# Galileo
-
-**URL:** https://langfuse.com/compare/galileo.md
-
----
-title: Galileo AI Alternatives? The best LLMOps platform?
-shortTitle: Galileo
-description: This article compares Langfuse and Galileo AI for LLM observability, analytics, evaluations, testing, and annotation.
-tags: [comparison]
----
-
-# Galileo AI Alternative? Langfuse vs. Galileo AI
-
-This article compares Langfuse and Galileo AI, two platforms that help developers evaluate and monitor applications built on LLMs.
-
-While both platforms aim to improve LLM reliability, they differ in philosophy. **Galileo AI** is a proprietary, all-in-one platform focused on real-time intervention and automated metrics. **Langfuse** is an open-source, engineering-centric platform focused on flexibility, data control, and deep observability.
-
-## At a Glance
-
-|                            | 🪢 Langfuse                                                                                                                                                                       | Galileo AI                                                                                         |
-| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| **Open Source**            | **Yes** (MIT licensed, fully open codebase)                                                                                                                                       | **No** (closed-source commercial platform)                                                         |
-| **Deployment Flexibility** | Maximum flexibility: Cloud or Self-Hosting                                                                                                                                        | Cloud Only, VPC or on-prem enterprise only                                                         |
-| **Integrations**           | 100+ [SDKs/integrations](/integrations) for OpenAI, LangChain, etc., via OpenTelemetry. [OpenTelemetry](/integrations/native/opentelemetry) support for maximum interoperability. | approx. 10 listed integrations & auto-instrumentation for popular providers like OpenAI, Anthropic |
-| **Openness**               | Not opinionated; designed to be flexible enough to cover all workflows and evaluation methods via SDKs/APIs                                                                       | Opinionated approach with templated guardrail evaluators using proprietary models                  |
-| **Scalability**            | Built to scale (ClickHouse-based architecture handles >5B events/month)                                                                                                           | No public information available                                                                    |
-
-## Galileo AI
-
-  ![Galileo AI example trace](/images/faq/galileo-ai/galileo-ai-example-trace.png)
-
-Galileo AI positions itself as an enterprise-grade evaluation and governance solution. Its core value proposition revolves around **reliability** and **safety**.
-
-- **Real-Time Protection:** Galileo’s standout feature is its built-in "Protect" system, which uses proprietary Luna-2 models to intercept and block hallucinations or toxic outputs in real-time before they reach the user.
-- **Automated Evaluation:** It provides an opinionated workflow with pre-packaged metrics, allowing data science teams to get scores out of the box without engineering custom judges.
-
-## Langfuse
-
-Langfuse is the open-source standard for LLM observability. It is designed for engineering teams that want to treat LLM traces like any other application log - providing full visibility without vendor black boxes.
-
-- **Observability:** Langfuse captures the full lifecycle of an LLM interaction - prompts, model responses, tool calls, and latency.
-- **Engineering-First Workflow:** It supports complex debugging (tracing chain-of-thought), prompt management, and diverse evaluation methods (human feedback, SDK methods, or any LLM-as-a-Judge).
-- **Scalability:** Built on a high-performance architecture (ClickHouse), Langfuse handles millions of events with minimal latency, ensuring it scales with your production traffic.
-
-A detailed summary why users chose Langfuse can be found [here](/handbook/chapters/why).
-
-## Distribution
-
-|             | pypi downloads                                                                                                                                                        | npm downloads                                                                                                                                                           | docker pulls                                                                                                                                                                              |
-| ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 🪢 Langfuse | [![Langfuse pypi downloads](https://img.shields.io/pypi/dm/langfuse?style=for-the-badge&label=%20&labelColor=black&color=orange)](https://pypi.org/project/langfuse/) | [![Langfuse npm downloads](https://img.shields.io/npm/dm/langfuse?style=for-the-badge&label=%20&labelColor=black&color=orange)](https://www.npmjs.com/package/langfuse) | [![Langfuse Docker Pulls](https://img.shields.io/docker/pulls/langfuse/langfuse?style=for-the-badge&label=%20&labelColor=black&color=orange)](https://hub.docker.com/r/langfuse/langfuse) |
-| Galileo AI  | [![Galileo AI pypi downloads](https://img.shields.io/pypi/dm/galileo?style=for-the-badge&label=%20&labelColor=black&color=grey)](https://pypi.org/project/galileo)    | [![Galileo AI npm downloads](https://img.shields.io/npm/dm/galileo?style=for-the-badge&label=%20&labelColor=black&color=grey)](https://www.npmjs.com/package/galileo)   | N/A                                                                                                                                                                                       |
-
-## Feature Comparison
-
-The following tables break down how Langfuse and Galileo AI approach the three critical pillars of the LLM engineering lifecycle: Observability, Evaluation, and Annotation.
-
-### Observability
-
-|                     | 🪢 Langfuse                                                                                                                                                                                                 | Galileo AI                                                                                                                                              |
-| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Cost Tracking       | ✅ Fine-grained [tracing of all token types](/docs/observability/features/token-and-cost-tracking), including reasoning and cached tokens. Ability to set custom costs for private LLMs or negotiated rates | ⚠️ Limited configurability of tokens and costs.                                                                                                         |
-| Full Text Search    | ✅ Full-text search across inputs, outputs, and metadata.                                                                                                                                                   | ❌ No support for full-text search.                                                                                                                     |
-| Distributed Tracing | ✅ Support and documentation for [distributed tracing](/docs/observability/features/trace-ids-and-distributed-tracing) (via OpenTelemetry and native SDKs).                                                 | ⚠️ [Distributed tracing](https://v2docs.galileo.ai/sdk-api/logging/distributed-tracing) is in beta but lacks full OpenTelemetry support.                |
-| Tool Calls          | ✅ Dedicated UI views and [agent graphs](/docs/observability/features/agent-graphs) for analyzing tool usage and behavior.                                                                                  | ❌ No specific views for tool invocations or agent step visualization.                                                                                  |
-| Replay Traces       | ✅ Ability to open generations in the [Langfuse Playground](/docs/prompt-management/features/playground) to iterate on the prompt and debug issues.                                                         | ⚠️ Manual copying of messages into the [playground](https://v2docs.galileo.ai/concepts/experiments/running-experiments-in-console).                     |
-| Trace Exports       | ✅ Ability to [export the whole trace](/docs/api-and-data-platform/features/export-from-ui), including all observations as JSON to process or debug with coding agents.                                     | ⚠️ No direct export of trace details, but Galileo exposes logs via their [MCP server](https://v2docs.galileo.ai/getting-started/mcp/setup-galileo-mcp). |
-| Custom Dashboards   | ✅ Ability to build [custom dashboard](/docs/metrics/features/custom-dashboards) widgets to drill down on various metrics.                                                                                  | ❌ No dashboarding support in the UI.                                                                                                                   |
-
-### Evaluation
-
-|                       | 🪢 Langfuse                                                                                                                                                                                                                                                                              | Galileo AI                                                                                                                                                                                                                 |
-| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Datasets              | ✅ Both tools support [datasets](/docs/evaluation/experiments/datasets) and dataset versioning. Langfuse offers a notebook to generate synthetic datasets but no UI feature.                                                                                                             | ✅ Both tools support [datasets](https://v2docs.galileo.ai/sdk-api/experiments/datasets) and dataset versioning. Galileo AI allows to use AI to create test datasets.                                                      |
-| Experiments           | ✅ [Experiments](/docs/evaluation/experiments/experiments-via-ui) can be triggered via the dataset view. Both tools support an in-UI flow to experiment on prompts using datasets. Both tools also support [experiments via the SDKs](/docs/evaluation/experiments/experiments-via-sdk). | ✅ Ability to trigger [experiments in the Playground](https://v2docs.galileo.ai/concepts/experiments/running-experiments-in-console). This allows users to see prompts, dataset items, and experiment results at a glance. |
-| Corrected Output      | ✅ Langfuse users can correct the model output right in the [trace detail view](/docs/evaluation/evaluation-methods/scores-via-ui) for future evaluation and fine-tuning.                                                                                                                | ❌ Correcting model outputs is not possible.                                                                                                                                                                               |
-| Comments              | ✅ Langfuse has a native [comments feature](/docs/observability/features/comments) where users can comment on traces, observations, prompts and experiment results. The feature also allows commenting only on specific parts of i/o and @mention other users.                           | ❌ No comment feature. (Only [annotations](https://v2docs.galileo.ai/concepts/annotations/overview) available)                                                                                                             |
-| LLM-as-a-Judge        | ✅ Standard support for [scoring live tracing data](/docs/evaluation/evaluation-methods/llm-as-a-judge) and experiment runs using any model the user configures and an evaluation prompt.                                                                                                | ✅ Support for categorical [LLM-as-a-Judge](https://v2docs.galileo.ai/concepts/metrics/custom-metrics/custom-metrics-ui-llm) scores. Allows having multiple judge models for one evaluation job.                           |
-| Code evaluators in UI | ✅ [Code evaluators](/docs/evaluation/evaluation-methods/code-evaluators) let users write Python or TypeScript evaluators directly in the Langfuse UI for deterministic checks.                                                                                                          | ✅ Supported via [custom metrics](https://v2docs.galileo.ai/concepts/metrics/custom-metrics/custom-metrics-ui-code) in the UI.                                                                                             |
-| Guardrails            | ⚠️ Not built-in (integrate with [external tools](/docs/security-and-guardrails); Langfuse is not in the critical path by design)                                                                                                                                                         | ✅ Built-in [real-time guardrails/protection](https://v2docs.galileo.ai/concepts/protect/overview) for outputs using their proprietary [Luna-2](https://v2docs.galileo.ai/concepts/luna/luna) model.                       |
-
-### Annotation
-
-|                           | 🪢 Langfuse                                                                                                                                                                         | Galileo AI                                                                                                                                                                                                                                                   |
-| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Annotation Queues         | ✅ Integrated [annotation queues](/docs/evaluation/evaluation-methods/annotation-queues) for domain experts to review filtered traces (e.g., "Check all negative feedback traces"). | ❌ No dedicated view where domain experts can annotate a subset of traces.                                                                                                                                                                                   |
-| Annotations in Trace view | ✅ Langfuse supports [annotating traces and observations](/docs/evaluation/evaluation-methods/scores-via-ui) via the Trace detail view                                              | ✅ This is available via the [annotations feature](https://v2docs.galileo.ai/concepts/annotations/overview) and supports, other than Langfuse, also text annotations, thumbs up/down and stars. (Langfuse has a native comment feature for text annotations) |
-| Annotating Experiments    | ✅ Ability to add human annotation scores in [Dataset Experiment compare view](/docs/evaluation/experiments/experiments-via-ui)                                                     | ⚠️ User has to navigate to the Trace of the [experiment](https://v2docs.galileo.ai/sdk-api/experiments/experiments) to add annotation scores.                                                                                                                |
-
-## Summary
-
-**Choose Galileo AI if:** You are a data science team that needs a "turnkey" solution for safety. If you require real-time guardrails to block bad responses and prefer a managed, opinionated set of evaluation metrics out of the box, Galileo’s specific focus on governance is a strong fit.
-
-**Choose Langfuse if:** You are an engineering team building production applications. If you value open-source software, require flexible and unopinionated workflows, and need a platform that scales effortlessly with your traffic while allowing you to define your own evaluation logic, Langfuse is the robust, developer-centric choice.
-
-## This comparison is out of date?
-
-Please [raise a pull request](https://github.com/langfuse/langfuse-docs/blob/main/content/compare/galileo.mdx) with up to date information.
-
-<!-- agent-instructions -->
-
----
-
-## Agent Instructions
-
-This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/compare/galileo.md`.
-
-### Querying these docs
-
-If the answer is not on this page, query the documentation instead of guessing:
-
-- **Semantic search** across all Langfuse docs, returning an answer with the relevant pages and excerpts. Ask a specific, self-contained question:
-
-  ```bash
-  curl -sG "https://langfuse.com/api/search-docs" --data-urlencode "query=How do I trace a LangGraph agent?"
-  ```
-
-- **Index of every page**: <https://langfuse.com/llms.txt>, with per-section indexes [llms-docs.txt](https://langfuse.com/llms-docs.txt), [llms-integrations.txt](https://langfuse.com/llms-integrations.txt), and [llms-self-hosting.txt](https://langfuse.com/llms-self-hosting.txt).
-
-### Before writing Langfuse code
-
-- **Install the [Langfuse Agent Skill](https://langfuse.com/docs/api-and-data-platform/features/agent-skill).** It encodes Langfuse's own best practices for instrumentation, prompt management, and evaluation, and materially improves results.
-- **Read [What does a good trace look like?](https://langfuse.com/docs/observability/best-practices.md)** before instrumenting an application.
-- **Verify endpoints, parameters, and response fields** against the [API reference](https://api.reference.langfuse.com) instead of inferring them from code examples.
-- **Use the [Langfuse CLI](https://langfuse.com/docs/api-and-data-platform/features/cli)** (`npx @langfuse/cli api <resource> <action>`) to read or write traces, prompts, datasets, and scores from the terminal.
-
-Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
-
-
-# What does a good trace look like?
-
-**URL:** https://langfuse.com/docs/observability/best-practices.md
-
----
-title: What does a good trace look like?
-sidebarTitle: Best Practices
-description: Best practices for structuring Langfuse traces — scope, nesting, naming, input/output, and attributes — so that debugging, evaluation, and cost tracking work well.
----
-
-# What does a good trace look like?
-
-You see traces appearing in Langfuse, but how do you know if you've done it well? Here are a couple of things you can look at and optimize.
-
-Trace structure is not just cosmetic — many Langfuse features build on top of it:
-
-- [LLM-as-a-judge evaluators](/docs/evaluation/evaluation-methods/llm-as-a-judge) target observations by name and type, and read their input and output.
-- [Dashboards](/docs/metrics/features/custom-dashboards) filter and aggregate metrics by trace and observation names.
-- [Dataset experiments](/docs/evaluation/experiments) compare trace input and output across runs.
-- Saved views on the tracing table reference names and attributes.
-
-A well-structured trace makes debugging faster today, and stable names with meaningful input/output keep your evaluators, dashboards, and experiments working as your application evolves.
-
-## What's the scope of one trace?
-
-Langfuse's [data model](/docs/observability/data-model) has three levels of grouping: observations (individual steps) are grouped into traces via a `trace_id`, and traces can be grouped into sessions via a `session_id`.
-
-A trace represents one self-contained unit of work in your application. Good examples of a typical trace:
-
-- One chatbot turn (user sends a message, your app retrieves context, calls the LLM, returns a response)
-- One agent run (the agent receives a task, reasons, calls tools, and produces a result)
-- One pipeline execution (a document comes in, gets chunked, embedded, and stored)
-
-If multiple of these happen in sequence, e.g. a multi-turn conversation, or several agent runs that feed into a final report, that's where [sessions](/docs/observability/features/sessions) come in. Each step is its own trace, and the session ties them together. For a chatbot this means one trace per turn and one session per conversation — you don't know upfront when a conversation ends, and the per-turn model keeps traces small and easy to navigate in the session view.
-
-A trace shows up in the Langfuse UI as a trace tree and an [agent graph](/docs/observability/features/agent-graphs):
-
-![Trace tree](/images/docs/faq/good-trace-tree.png)
-
-![Agent graph](/images/docs/faq/good-trace-agent-graph.png)
-
-## Look at the trace tree
-
-When you click on a trace, you see the trace tree. There are a few things you can check:
-
-### Are the right steps showing up?
-
-You should see your LLM calls, tool calls, and other important steps represented in the tree. They should have the correct [observation type](/docs/observability/features/observation-types).
-
-For example
-
-- an LLM call should show up as a  `generation`. This is important because a `generation` can carry [cost, token usage, and model information](#track-model-tokens-and-cost-on-generations).
-- a tool call should show up as a  `tool`. You can then filter on tool call observations when you create [LLM-as-a-judge](/docs/evaluation/evaluation-methods/llm-as-a-judge) evaluators.
-
-Framework integrations typically set these types automatically. If you're instrumenting manually, you can set them via the `as_type` parameter (Python) or `asType` (JS/TS). See the [observation types docs](/docs/observability/features/observation-types) for a full list.
-
-### Is it nested correctly?
-
-A tool call should nest under the `agent` or `span` [observation](/docs/observability/data-model#observations-traces-and-sessions) that orchestrates the step, as a sibling of the `generation` that requested it, so the tree shows which step each action belongs to instead of leaving tool calls dangling at the trace root.
-
-Framework integrations usually get this right automatically. If you're instrumenting manually, see [nesting observations](/docs/observability/sdk/instrumentation#nesting-observations).
-
-**Beware of aggregating LLM calls.** You should see a  `generation` for each model invocation in an agent loop, interleaved with the  `tool` calls it requested. Avoid wrapping the whole loop in one parent generation that only records the final output. This would make it impossible to:
-
-- see what the agent decided after each tool result
-- see which tool call has blown up your agent's context window (useful when optimizing cost)
-
-**One generation wrapping the whole loop.** You only see aggregated cost and the final output.
-
-![Agent loop collapsed into one generation](/images/docs/faq/good-trace-agent-collapsed-generation.png)
-
-**Each model invocation as its own generation.** You can see reasoning, tokens, cost after every step.
-
-![Agent loop with interleaved generations](/images/docs/faq/good-trace-agent-interleaved-generations.png)
-
-### Is there noise you don't need?
-
-Not every observation in the tree is useful for understanding what your application did. HTTP [observations](/docs/observability/data-model#observations-traces-and-sessions), database queries, and framework internals often add clutter without giving you meaningful insight. If you see observations like these polluting your trace tree, you can [filter them out](/faq/all/unwanted-http-database-spans).
-
-![Noisy observations in a trace tree](/images/docs/faq/good-trace-noisy-spans.png)
-
-## Choose good names
-
-Observation- and trace names are used in many places:
-
-- When setting up [LLM-as-a-judge evaluators](/docs/evaluation/evaluation-methods/llm-as-a-judge), you target specific observations by name.
-- In [dashboards](/docs/metrics/features/custom-dashboards), you can filter and aggregate metrics by observation name.
-- In the tracing table, names help you quickly identify what each step does.
-
-Because names are referenced in all these places, treat them like an API: when a name changes, evaluators, dashboard queries, and saved filters that target the old name silently stop matching. Pick names deliberately, and expect to keep them stable.
-
-**Use active language.** Name observations after the action they perform, verb first: `classify-intent`, `retrieve-context`, `generate-response`, `summarize-results`. This makes the trace tree read like a description of what your application did, and makes filtering on a specific step easier.
-
-**Keep dynamic values out of names.** Use `process-order`, not `process-order-8945` or `generate-response-retry-2`. A name should identify the operation, not a single execution of it — otherwise every trace produces new names and you can no longer group, filter, or target them. Put run-specific values in [metadata](/docs/observability/features/metadata) instead. (This is the same low-cardinality rule that OpenTelemetry recommends for span names.)
-
-Try not to name observations after the AI model used (`gpt-4o`, `claude-sonnet`). All filters, evaluators, and dashboards that reference the name break as soon as you swap models. The model is already a separate attribute on `generation` observations, use that instead.
-
-## Choose meaningful input and output
-
-In general, it's recommended that operations have an input and/or output. If an observation has neither, ask yourself if an observation is actually useful or if you can drop it.
-
-The **root observation** deserves the most care: the trace-level input and output are derived from it. They are shown in the tracing table, read by evaluators, and compared across runs in [dataset experiments](/docs/evaluation/experiments). Set them to what a reviewer needs at a glance — for a chatbot, the user message as input and the assistant response as output — not a raw JSON blob of function arguments. If you need the raw payload for debugging, put it in [metadata](/docs/observability/features/metadata).
-
-For your **most viewed observations**, take some extra care to set them up. You will likely create pre-filtered views on your tracing and session screens. The observations you filter for here are the ones that will get looked at the most. For these, ask yourself: **what do I need to see to quickly evaluate a trace/session at a glance?**
-
-![Tracing table with input and output](/images/docs/faq/good-trace-tracing-table-io.png)
-
-Typical input/output for `GENERATION` observations:
-
-- For a chatbot: the user message (input) and the assistant response (output).
-- For a RAG pipeline: the user query and the generated answer.
-- For a classification task: the text being classified and the predicted label.
-
-Most inputs/outputs can be rendered as a readable, role-labeled conversation rather than a raw JSON blob. If yours show up as raw JSON, you can take a look at the formatting: it should be a list of messages in the standard OpenAI format (each with a `role` and `content`), and it renders tool calls as cards only when they sit in an assistant message's `tool_calls` array with each call's `arguments` given as a JSON-encoded string (for example `"{\"location\": \"Paris\"}"`).
-
-If your input and output fields are showing up empty unintentionally, see [why are the input and output of my trace empty?](/faq/all/empty-trace-input-and-output)
-
-## Useful attributes
-
-Observations have a number of attributes that can be useful for your use cases. These will allow you to go even further with filtering, scoring, and making dashboards.
-
-### Add metadata for context
-
-[Metadata](/docs/observability/features/metadata) is a flexible key-value store on each observation. It's the right place for anything that is useful context but doesn't belong in the name or the input/output. Examples of metadata that is useful in practice:
-
-- **Evaluation context**: Ground truth, expected behavior, or other context an [LLM-as-a-judge evaluator](/docs/evaluation/evaluation-methods/llm-as-a-judge) needs but that isn't part of the actual input/output. Evaluators can reference metadata fields in their variable mapping.
-- **Request context**: Internal request IDs, the API route or app version that handled the request, or the experiment variant / feature flags that were active. This lets you correlate a trace with your other systems and filter by rollout.
-- **Retrieval context**: For RAG steps, things like the data source, number of chunks retrieved, or the index queried — useful when debugging why a retrieval step returned poor results.
-- **Raw payloads**: Full request/response objects that would clutter the input/output fields but are occasionally needed for debugging.
-- **Annotation context**: When doing manual review, metadata gives annotators extra information to make better judgments.
-
-You can filter by metadata keys in the Langfuse UI, which is helpful when you need to find traces with specific characteristics.
-
-### Track model, tokens, and cost on generations [#track-model-tokens-and-cost-on-generations]
-
-If you want to understand what your LLM usage costs, broken down by model, by user, by feature, you need three things on your `generation` observations:
-
-- **Model name**: Langfuse uses this to look up pricing in the [model pricing table](/docs/model-usage-and-cost). If the model name doesn't match, Langfuse can't calculate cost automatically.
-- **Usage details**: Input tokens, output tokens, and optionally cached tokens. This is what powers the token usage views in dashboards.
-- **Cost details** (optional): If you want to override Langfuse's automatic pricing — for example, if you have a custom pricing agreement — you can pass cost explicitly.
-
-Most [integrations](/integrations) capture all of this automatically. If you're instrumenting manually, see the [token and cost tracking docs](/docs/observability/features/token-and-cost-tracking).
-
-You can see these attributes on the `GENERATION` observation in the Langfuse UI.
-
-![Generation attributes in Langfuse](/images/docs/faq/good-trace-generation-attributes.png)
-
-### Use tags for business-level dimensions
-
-[Tags](/docs/observability/features/tags) enable filtering and metric breakdowns across dimensions that matter to your business. Good tags answer questions like "how does latency differ between our `web` and `api` users?".
-
-One property of tags is that they are **immutable and must be set at observation creation time**. This makes them great for things you know upfront (where the request came from, which feature it's part of), but not for things you learn later.
-
-If you need to label traces based on something determined after the fact, like an [LLM-as-a-judge](/docs/evaluation/evaluation-methods/llm-as-a-judge) evaluation result, use [scores](/docs/evaluation/overview) instead.
-
-### Link prompts to traces
-
-If you [manage your prompts in Langfuse](/docs/prompt-management), you can [link them to your generations](/docs/prompt-management/features/link-to-traces). This lets you see which prompt version was used for a given trace, and track how metrics change across prompt versions. Useful when you're iterating on prompts and want to compare performance.
-
-### Set the environment
-
-Set the [environment](/docs/observability/features/environments) attribute (`production`, `staging`, `development`) so that your test traces don't pollute production dashboards and evaluations.
-
-### Track users with user IDs
-
-Setting the [user ID](/docs/observability/features/users) connects traces to specific users, which unlocks per-user views in Langfuse. Useful if you want to answer questions like:
-
-- Which users are costing us the most?
-- How does output quality vary across users?
-- What does a specific user's usage pattern look like?
-
-### Group related traces with session IDs
-
-If your application involves multiple traces that logically belong together, group them into a [session](/docs/observability/features/sessions). This gives you a session replay view where you can see the full interaction in sequence.
-
-This makes sense when:
-
-- You're building a chatbot (each user message creates a new trace, but the whole conversation is one session)
-- You have multiple agents that each contribute to a final output (e.g., five agents that collaborate to produce a report)
-- Your workflow spans multiple requests with human-in-the-loop steps in between
-
-If your application is single-request/single-response with no continuity between calls, you probably don't need sessions.
-
-![Sessions view in Langfuse](/images/docs/faq/good-trace-sessions-view.png)
-
-<!-- agent-instructions -->
-
----
-
-## Agent Instructions
-
-This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/docs/observability/best-practices.md`.
-
-### Querying these docs
-
-If the answer is not on this page, query the documentation instead of guessing:
-
-- **Semantic search** across all Langfuse docs, returning an answer with the relevant pages and excerpts. Ask a specific, self-contained question:
-
-  ```bash
-  curl -sG "https://langfuse.com/api/search-docs" --data-urlencode "query=How do I trace a LangGraph agent?"
-  ```
-
-- **Index of every page**: <https://langfuse.com/llms.txt>, with per-section indexes [llms-docs.txt](https://langfuse.com/llms-docs.txt), [llms-integrations.txt](https://langfuse.com/llms-integrations.txt), and [llms-self-hosting.txt](https://langfuse.com/llms-self-hosting.txt).
-
-### Before writing Langfuse code
-
-- **Install the [Langfuse Agent Skill](https://langfuse.com/docs/api-and-data-platform/features/agent-skill).** It encodes Langfuse's own best practices for instrumentation, prompt management, and evaluation, and materially improves results.
-- **Read [What does a good trace look like?](https://langfuse.com/docs/observability/best-practices.md)** before instrumenting an application.
-- **Verify endpoints, parameters, and response fields** against the [API reference](https://api.reference.langfuse.com) instead of inferring them from code examples.
-- **Use the [Langfuse CLI](https://langfuse.com/docs/api-and-data-platform/features/cli)** (`npx @langfuse/cli api <resource> <action>`) to read or write traces, prompts, datasets, and scores from the terminal.
-
-Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
-
-
 # LangSmith
 
 **URL:** https://langfuse.com/compare/langsmith.md
@@ -4404,6 +4189,221 @@ SmithDB is LangSmith's proprietary trace database ([launched May 13, 2026](https
 ## Agent Instructions
 
 This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/compare/langsmith.md`.
+
+### Querying these docs
+
+If the answer is not on this page, query the documentation instead of guessing:
+
+- **Semantic search** across all Langfuse docs, returning an answer with the relevant pages and excerpts. Ask a specific, self-contained question:
+
+  ```bash
+  curl -sG "https://langfuse.com/api/search-docs" --data-urlencode "query=How do I trace a LangGraph agent?"
+  ```
+
+- **Index of every page**: <https://langfuse.com/llms.txt>, with per-section indexes [llms-docs.txt](https://langfuse.com/llms-docs.txt), [llms-integrations.txt](https://langfuse.com/llms-integrations.txt), and [llms-self-hosting.txt](https://langfuse.com/llms-self-hosting.txt).
+
+### Before writing Langfuse code
+
+- **Install the [Langfuse Agent Skill](https://langfuse.com/docs/api-and-data-platform/features/agent-skill).** It encodes Langfuse's own best practices for instrumentation, prompt management, and evaluation, and materially improves results.
+- **Read [What does a good trace look like?](https://langfuse.com/docs/observability/best-practices.md)** before instrumenting an application.
+- **Verify endpoints, parameters, and response fields** against the [API reference](https://api.reference.langfuse.com) instead of inferring them from code examples.
+- **Use the [Langfuse CLI](https://langfuse.com/docs/api-and-data-platform/features/cli)** (`npx @langfuse/cli api <resource> <action>`) to read or write traces, prompts, datasets, and scores from the terminal.
+
+Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
+
+
+# What does a good trace look like?
+
+**URL:** https://langfuse.com/docs/observability/best-practices.md
+
+---
+title: What does a good trace look like?
+sidebarTitle: Best Practices
+description: Best practices for structuring Langfuse traces — scope, nesting, naming, input/output, and attributes — so that debugging, evaluation, and cost tracking work well.
+---
+
+# What does a good trace look like?
+
+You see traces appearing in Langfuse, but how do you know if you've done it well? Here are a couple of things you can look at and optimize.
+
+Trace structure is not just cosmetic — many Langfuse features build on top of it:
+
+- [LLM-as-a-judge evaluators](/docs/evaluation/evaluation-methods/llm-as-a-judge) target observations by name and type, and read their input and output.
+- [Dashboards](/docs/metrics/features/custom-dashboards) filter and aggregate metrics by trace and observation names.
+- [Dataset experiments](/docs/evaluation/experiments) compare trace input and output across runs.
+- Saved views on the tracing table reference names and attributes.
+
+A well-structured trace makes debugging faster today, and stable names with meaningful input/output keep your evaluators, dashboards, and experiments working as your application evolves.
+
+## What's the scope of one trace?
+
+Langfuse's [data model](/docs/observability/data-model) has three levels of grouping: observations (individual steps) are grouped into traces via a `trace_id`, and traces can be grouped into sessions via a `session_id`.
+
+A trace represents one self-contained unit of work in your application. Good examples of a typical trace:
+
+- One chatbot turn (user sends a message, your app retrieves context, calls the LLM, returns a response)
+- One agent run (the agent receives a task, reasons, calls tools, and produces a result)
+- One pipeline execution (a document comes in, gets chunked, embedded, and stored)
+
+If multiple of these happen in sequence, e.g. a multi-turn conversation, or several agent runs that feed into a final report, that's where [sessions](/docs/observability/features/sessions) come in. Each step is its own trace, and the session ties them together. For a chatbot this means one trace per turn and one session per conversation — you don't know upfront when a conversation ends, and the per-turn model keeps traces small and easy to navigate in the session view.
+
+A trace shows up in the Langfuse UI as a trace tree and an [agent graph](/docs/observability/features/agent-graphs):
+
+![Trace tree](/images/docs/faq/good-trace-tree.png)
+
+![Agent graph](/images/docs/faq/good-trace-agent-graph.png)
+
+## Look at the trace tree
+
+When you click on a trace, you see the trace tree. There are a few things you can check:
+
+### Are the right steps showing up?
+
+You should see your LLM calls, tool calls, and other important steps represented in the tree. They should have the correct [observation type](/docs/observability/features/observation-types).
+
+For example
+
+- an LLM call should show up as a  `generation`. This is important because a `generation` can carry [cost, token usage, and model information](#track-model-tokens-and-cost-on-generations).
+- a tool call should show up as a  `tool`. You can then filter on tool call observations when you create [LLM-as-a-judge](/docs/evaluation/evaluation-methods/llm-as-a-judge) evaluators.
+
+Framework integrations typically set these types automatically. If you're instrumenting manually, you can set them via the `as_type` parameter (Python) or `asType` (JS/TS). See the [observation types docs](/docs/observability/features/observation-types) for a full list.
+
+### Is it nested correctly?
+
+A tool call should nest under the `agent` or `span` [observation](/docs/observability/data-model#observations-traces-and-sessions) that orchestrates the step, as a sibling of the `generation` that requested it, so the tree shows which step each action belongs to instead of leaving tool calls dangling at the trace root.
+
+Framework integrations usually get this right automatically. If you're instrumenting manually, see [nesting observations](/docs/observability/sdk/instrumentation#nesting-observations).
+
+**Beware of aggregating LLM calls.** You should see a  `generation` for each model invocation in an agent loop, interleaved with the  `tool` calls it requested. Avoid wrapping the whole loop in one parent generation that only records the final output. This would make it impossible to:
+
+- see what the agent decided after each tool result
+- see which tool call has blown up your agent's context window (useful when optimizing cost)
+
+**One generation wrapping the whole loop.** You only see aggregated cost and the final output.
+
+![Agent loop collapsed into one generation](/images/docs/faq/good-trace-agent-collapsed-generation.png)
+
+**Each model invocation as its own generation.** You can see reasoning, tokens, cost after every step.
+
+![Agent loop with interleaved generations](/images/docs/faq/good-trace-agent-interleaved-generations.png)
+
+### Is there noise you don't need?
+
+Not every observation in the tree is useful for understanding what your application did. HTTP [observations](/docs/observability/data-model#observations-traces-and-sessions), database queries, and framework internals often add clutter without giving you meaningful insight. If you see observations like these polluting your trace tree, you can [filter them out](/faq/all/unwanted-http-database-spans).
+
+![Noisy observations in a trace tree](/images/docs/faq/good-trace-noisy-spans.png)
+
+## Choose good names
+
+Observation- and trace names are used in many places:
+
+- When setting up [LLM-as-a-judge evaluators](/docs/evaluation/evaluation-methods/llm-as-a-judge), you target specific observations by name.
+- In [dashboards](/docs/metrics/features/custom-dashboards), you can filter and aggregate metrics by observation name.
+- In the tracing table, names help you quickly identify what each step does.
+
+Because names are referenced in all these places, treat them like an API: when a name changes, evaluators, dashboard queries, and saved filters that target the old name silently stop matching. Pick names deliberately, and expect to keep them stable.
+
+**Use active language.** Name observations after the action they perform, verb first: `classify-intent`, `retrieve-context`, `generate-response`, `summarize-results`. This makes the trace tree read like a description of what your application did, and makes filtering on a specific step easier.
+
+**Keep dynamic values out of names.** Use `process-order`, not `process-order-8945` or `generate-response-retry-2`. A name should identify the operation, not a single execution of it — otherwise every trace produces new names and you can no longer group, filter, or target them. Put run-specific values in [metadata](/docs/observability/features/metadata) instead. (This is the same low-cardinality rule that OpenTelemetry recommends for span names.)
+
+Try not to name observations after the AI model used (`gpt-4o`, `claude-sonnet`). All filters, evaluators, and dashboards that reference the name break as soon as you swap models. The model is already a separate attribute on `generation` observations, use that instead.
+
+## Choose meaningful input and output
+
+In general, it's recommended that operations have an input and/or output. If an observation has neither, ask yourself if an observation is actually useful or if you can drop it.
+
+The **root observation** deserves the most care: the trace-level input and output are derived from it. They are shown in the tracing table, read by evaluators, and compared across runs in [dataset experiments](/docs/evaluation/experiments). Set them to what a reviewer needs at a glance — for a chatbot, the user message as input and the assistant response as output — not a raw JSON blob of function arguments. If you need the raw payload for debugging, put it in [metadata](/docs/observability/features/metadata).
+
+For your **most viewed observations**, take some extra care to set them up. You will likely create pre-filtered views on your tracing and session screens. The observations you filter for here are the ones that will get looked at the most. For these, ask yourself: **what do I need to see to quickly evaluate a trace/session at a glance?**
+
+![Tracing table with input and output](/images/docs/faq/good-trace-tracing-table-io.png)
+
+Typical input/output for `GENERATION` observations:
+
+- For a chatbot: the user message (input) and the assistant response (output).
+- For a RAG pipeline: the user query and the generated answer.
+- For a classification task: the text being classified and the predicted label.
+
+Most inputs/outputs can be rendered as a readable, role-labeled conversation rather than a raw JSON blob. If yours show up as raw JSON, you can take a look at the formatting: it should be a list of messages in the standard OpenAI format (each with a `role` and `content`), and it renders tool calls as cards only when they sit in an assistant message's `tool_calls` array with each call's `arguments` given as a JSON-encoded string (for example `"{\"location\": \"Paris\"}"`).
+
+If your input and output fields are showing up empty unintentionally, see [why are the input and output of my trace empty?](/faq/all/empty-trace-input-and-output)
+
+## Useful attributes
+
+Observations have a number of attributes that can be useful for your use cases. These will allow you to go even further with filtering, scoring, and making dashboards.
+
+### Add metadata for context
+
+[Metadata](/docs/observability/features/metadata) is a flexible key-value store on each observation. It's the right place for anything that is useful context but doesn't belong in the name or the input/output. Examples of metadata that is useful in practice:
+
+- **Evaluation context**: Ground truth, expected behavior, or other context an [LLM-as-a-judge evaluator](/docs/evaluation/evaluation-methods/llm-as-a-judge) needs but that isn't part of the actual input/output. Evaluators can reference metadata fields in their variable mapping.
+- **Request context**: Internal request IDs, the API route or app version that handled the request, or the experiment variant / feature flags that were active. This lets you correlate a trace with your other systems and filter by rollout.
+- **Retrieval context**: For RAG steps, things like the data source, number of chunks retrieved, or the index queried — useful when debugging why a retrieval step returned poor results.
+- **Raw payloads**: Full request/response objects that would clutter the input/output fields but are occasionally needed for debugging.
+- **Annotation context**: When doing manual review, metadata gives annotators extra information to make better judgments.
+
+You can filter by metadata keys in the Langfuse UI, which is helpful when you need to find traces with specific characteristics.
+
+### Track model, tokens, and cost on generations [#track-model-tokens-and-cost-on-generations]
+
+If you want to understand what your LLM usage costs, broken down by model, by user, by feature, you need three things on your `generation` observations:
+
+- **Model name**: Langfuse uses this to look up pricing in the [model pricing table](/docs/model-usage-and-cost). If the model name doesn't match, Langfuse can't calculate cost automatically.
+- **Usage details**: Input tokens, output tokens, and optionally cached tokens. This is what powers the token usage views in dashboards.
+- **Cost details** (optional): If you want to override Langfuse's automatic pricing — for example, if you have a custom pricing agreement — you can pass cost explicitly.
+
+Most [integrations](/integrations) capture all of this automatically. If you're instrumenting manually, see the [token and cost tracking docs](/docs/observability/features/token-and-cost-tracking).
+
+You can see these attributes on the `GENERATION` observation in the Langfuse UI.
+
+![Generation attributes in Langfuse](/images/docs/faq/good-trace-generation-attributes.png)
+
+### Use tags for business-level dimensions
+
+[Tags](/docs/observability/features/tags) enable filtering and metric breakdowns across dimensions that matter to your business. Good tags answer questions like "how does latency differ between our `web` and `api` users?".
+
+One property of tags is that they are **immutable and must be set at observation creation time**. This makes them great for things you know upfront (where the request came from, which feature it's part of), but not for things you learn later.
+
+If you need to label traces based on something determined after the fact, like an [LLM-as-a-judge](/docs/evaluation/evaluation-methods/llm-as-a-judge) evaluation result, use [scores](/docs/evaluation/overview) instead.
+
+### Link prompts to traces
+
+If you [manage your prompts in Langfuse](/docs/prompt-management), you can [link them to your generations](/docs/prompt-management/features/link-to-traces). This lets you see which prompt version was used for a given trace, and track how metrics change across prompt versions. Useful when you're iterating on prompts and want to compare performance.
+
+### Set the environment
+
+Set the [environment](/docs/observability/features/environments) attribute (`production`, `staging`, `development`) so that your test traces don't pollute production dashboards and evaluations.
+
+### Track users with user IDs
+
+Setting the [user ID](/docs/observability/features/users) connects traces to specific users, which unlocks per-user views in Langfuse. Useful if you want to answer questions like:
+
+- Which users are costing us the most?
+- How does output quality vary across users?
+- What does a specific user's usage pattern look like?
+
+### Group related traces with session IDs
+
+If your application involves multiple traces that logically belong together, group them into a [session](/docs/observability/features/sessions). This gives you a session replay view where you can see the full interaction in sequence.
+
+This makes sense when:
+
+- You're building a chatbot (each user message creates a new trace, but the whole conversation is one session)
+- You have multiple agents that each contribute to a final output (e.g., five agents that collaborate to produce a report)
+- Your workflow spans multiple requests with human-in-the-loop steps in between
+
+If your application is single-request/single-response with no continuity between calls, you probably don't need sessions.
+
+![Sessions view in Langfuse](/images/docs/faq/good-trace-sessions-view.png)
+
+<!-- agent-instructions -->
+
+---
+
+## Agent Instructions
+
+This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/docs/observability/best-practices.md`.
 
 ### Querying these docs
 

@@ -1,6 +1,6 @@
 # dev-platforms/github 文档索引
 
-> 共 102 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 105 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## api
@@ -27,6 +27,7 @@
 - `en/actions/get-started/understand-github-actions` — [Understand GitHub Actions](pages/en/actions/get-started/understand-github-actions.md) · [原文](https://docs.github.com/en/actions/get-started/understand-github-actions.md)
 - `en/actions/how-tos/manage-runners/github-hosted-runners` — [GitHub-hosted runners](pages/en/actions/how-tos/manage-runners/github-hosted-runners.md) · [原文](https://docs.github.com/en/actions/how-tos/manage-runners/github-hosted-runners.md)
 - `en/actions/reference/workflows-and-actions/workflow-commands` — [Workflow commands](pages/en/actions/reference/workflows-and-actions/workflow-commands.md) · [原文](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-commands.md)
+- `en/actions/reference/workflows-and-actions/workflow-syntax` — [Workflow syntax](pages/en/actions/reference/workflows-and-actions/workflow-syntax.md) · [原文](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax.md)
 - `en/actions/tutorials/migrate-to-github-actions/manual-migrations/migrate-from-circleci` — [Migrate from CircleCI](pages/en/actions/tutorials/migrate-to-github-actions/manual-migrations/migrate-from-circleci.md) · [原文](https://docs.github.com/en/actions/tutorials/migrate-to-github-actions/manual-migrations/migrate-from-circleci.md)
 - `en/apps/creating-github-apps/about-creating-github-apps/about-creating-github-apps` — [About creating apps](pages/en/apps/creating-github-apps/about-creating-github-apps/about-creating-github-apps.md) · [原文](https://docs.github.com/en/apps/creating-github-apps/about-creating-github-apps/about-creating-github-apps.md)
 - `en/apps/oauth-apps/using-oauth-apps/authorizing-oauth-apps` — [Authorizing OAuth apps](pages/en/apps/oauth-apps/using-oauth-apps/authorizing-oauth-apps.md) · [原文](https://docs.github.com/en/apps/oauth-apps/using-oauth-apps/authorizing-oauth-apps.md)
@@ -48,6 +49,7 @@
 - `en/billing/how-tos/set-up-payment/manage-payment-info` — [Manage payment info](pages/en/billing/how-tos/set-up-payment/manage-payment-info.md) · [原文](https://docs.github.com/en/billing/how-tos/set-up-payment/manage-payment-info.md)
 - `en/code-security/reference/code-scanning/codeql/codeql-queries/actions-built-in-queries` — [Actions queries](pages/en/code-security/reference/code-scanning/codeql/codeql-queries/actions-built-in-queries.md) · [原文](https://docs.github.com/en/code-security/reference/code-scanning/codeql/codeql-queries/actions-built-in-queries.md)
 - `en/codespaces` — [Codespaces](pages/en/codespaces.md) · [原文](https://docs.github.com/en/codespaces.md)
+- `en/copilot` — [GitHub Copilot](pages/en/copilot.md) · [原文](https://docs.github.com/en/copilot.md)
 - `en/copilot/concepts/agents/cloud-agent/about-cloud-agent` — [About cloud agent](pages/en/copilot/concepts/agents/cloud-agent/about-cloud-agent.md) · [原文](https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-cloud-agent.md)
 - `en/copilot/concepts/models/auto-model-selection` — [Auto model selection](pages/en/copilot/concepts/models/auto-model-selection.md) · [原文](https://docs.github.com/en/copilot/concepts/models/auto-model-selection.md)
 - `en/copilot/get-started/best-practices` — [Best practices](pages/en/copilot/get-started/best-practices.md) · [原文](https://docs.github.com/en/copilot/get-started/best-practices.md)
@@ -58,6 +60,7 @@
 - `en/copilot/how-tos/manage-your-account/manage-policies` — [Manage policies](pages/en/copilot/how-tos/manage-your-account/manage-policies.md) · [原文](https://docs.github.com/en/copilot/how-tos/manage-your-account/manage-policies.md)
 - `en/copilot/how-tos/provide-context/use-mcp-in-your-ide/extend-copilot-chat-with-mcp` — [Extend Copilot Chat with MCP](pages/en/copilot/how-tos/provide-context/use-mcp-in-your-ide/extend-copilot-chat-with-mcp.md) · [原文](https://docs.github.com/en/copilot/how-tos/provide-context/use-mcp-in-your-ide/extend-copilot-chat-with-mcp.md)
 - `en/copilot/how-tos/provide-context/use-mcp-in-your-ide/set-up-the-github-mcp-server` — [Set up the GitHub MCP Server](pages/en/copilot/how-tos/provide-context/use-mcp-in-your-ide/set-up-the-github-mcp-server.md) · [原文](https://docs.github.com/en/copilot/how-tos/provide-context/use-mcp-in-your-ide/set-up-the-github-mcp-server.md)
+- `en/copilot/how-tos/provide-context/use-mcp-in-your-ide/use-the-github-mcp-server` — [Use the GitHub MCP Server](pages/en/copilot/how-tos/provide-context/use-mcp-in-your-ide/use-the-github-mcp-server.md) · [原文](https://docs.github.com/en/copilot/how-tos/provide-context/use-mcp-in-your-ide/use-the-github-mcp-server.md)
 - `en/copilot/how-tos/set-up/install-copilot-extension` — [Install Copilot extension](pages/en/copilot/how-tos/set-up/install-copilot-extension.md) · [原文](https://docs.github.com/en/copilot/how-tos/set-up/install-copilot-extension.md)
 - `en/copilot/how-tos/use-copilot-agents/cloud-agent/create-custom-agents-in-your-ide` — [Create custom agents in your IDE](pages/en/copilot/how-tos/use-copilot-agents/cloud-agent/create-custom-agents-in-your-ide.md) · [原文](https://docs.github.com/en/copilot/how-tos/use-copilot-agents/cloud-agent/create-custom-agents-in-your-ide.md)
 - `en/copilot/how-tos/use-copilot-agents/request-a-code-review/use-code-review` — [Use code review](pages/en/copilot/how-tos/use-copilot-agents/request-a-code-review/use-code-review.md) · [原文](https://docs.github.com/en/copilot/how-tos/use-copilot-agents/request-a-code-review/use-code-review.md)

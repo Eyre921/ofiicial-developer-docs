@@ -1317,16 +1317,22 @@ You don't need to open any extra ports or configure anything for these services.
 | Upgrade to the latest version  | `curl -fsSL https://get.n8n.io \| sh -s -- --upgrade`             |
 | Remove n8n and delete its data | `docker compose -f ./n8n/compose.yml down -v` then `rm -rf ./n8n` |
 
+### What an upgrade changes
+
+The upgrade command moves both n8n and the bundled sandbox services to newer versions. It edits two lines in `.env`: `N8N_VERSION` and `N8N_SANDBOX_VERSION`. Your data, secrets, and other settings stay as they are.
+
+If you installed before the sandbox version moved into `.env`, your `compose.yml` still names fixed sandbox image tags. The first upgrade rewrites those image lines to use `N8N_SANDBOX_VERSION`, switches the sandbox runner address (`SANDBOX_RUNNER_HTTP_BASE_URL`) from `http://` to `https://`, and prints a note that says so. Nothing else in `compose.yml` changes, so any edits you made stay in place.
+
 ## Flags (for more control)
 
 Adding these to the end of the install command changes what it does:
 
-| Flag         | What it does                                                                                                                                                                                       |
-| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--version`  | On its own, shows the script's version and the latest n8n version it would install. Followed by a version number (for example, `--version 2.31.4`), installs or upgrades to that specific version. |
-| `--no-start` | Sets up the configuration files without starting n8n yet.                                                                                                                                          |
-| `--upgrade`  | Upgrades an existing install to a newer n8n version. Only updates the version number. Your data, settings, and any customizations stay untouched.                                                  |
-| `--help`     | Shows all available options.                                                                                                                                                                       |
+| Flag         | What it does                                                                                                                                                                                                                                                                                                                                           |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `--version`  | On its own, shows the script's version and the latest n8n version it would install. Followed by a version number (for example, `--version 2.31.4`), installs or upgrades to that specific version.                                                                                                                                                     |
+| `--no-start` | Sets up the configuration files without starting n8n yet.                                                                                                                                                                                                                                                                                              |
+| `--upgrade`  | Upgrades an existing install to a newer n8n version and the matching sandbox service version. Only updates the version lines in `.env` and, on older installs, the sandbox image lines and runner address in `compose.yml`. See [What an upgrade changes](#what-an-upgrade-changes). Your data, settings, and any other customizations stay untouched. |
+| `--help`     | Shows all available options.                                                                                                                                                                                                                                                                                                                           |
 
 ## Prefer not to run a script from the internet?
 
@@ -1373,11 +1379,15 @@ mkdir n8n && cd n8n
 
 ## Step 2: Create `.env`
 
-This file holds the secrets the sandbox services use to talk to each other. Create a file named `.env` with your own values in place of the placeholders and keep this file out of version control.
+This file holds the versions to run and the secrets the sandbox services use to talk to each other. Create a file named `.env` with your own values in place of the placeholders and keep this file out of version control.
 
 ```
 # n8n version - get the version number of the latest stable release from https://github.com/n8n-io/n8n/releases
 N8N_VERSION=change-me-version-number
+
+# Sandbox service version - the API, runner, and sandbox images share one release.
+# Get the number of the latest stable "service" release (not a staging prerelease) from https://github.com/n8n-io/n8n-sandbox-service/releases
+N8N_SANDBOX_VERSION=change-me-sandbox-version-number
 
 # n8n task runner authentication. Use a random secret you generate.
 N8N_RUNNERS_AUTH_TOKEN=change-me-runner-auth-token
@@ -8120,6 +8130,12 @@ n8n export:entities --outputDir=./outputs --includeExecutionHistoryDataTables=tr
 ## Export workflows and credentials <a href="#export-workflows-and-credentials" id="export-workflows-and-credentials"></a>
 
 You can export your workflows and credentials from n8n using the CLI.
+
+{% hint style="info" %}
+**Planning a full backup**
+
+The `--backup` flag exports workflows and credentials only. For what a complete backup of a self-hosted instance includes, and how to restore it, see [Back up and restore](/deploy/host-n8n/keep-n8n-running/backup-and-restore).
+{% endhint %}
 
 Command flags:
 

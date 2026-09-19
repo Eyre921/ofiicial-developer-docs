@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1303 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1304 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -194,6 +194,7 @@
 - `docs/api-reference/music/compose` — [Compose music](pages/docs/api-reference/music/compose.md) · [原文](https://elevenlabs.io/docs/api-reference/music/compose.md)
 - `docs/api-reference/music/compose-detailed` — [Compose music with details](pages/docs/api-reference/music/compose-detailed.md) · [原文](https://elevenlabs.io/docs/api-reference/music/compose-detailed.md)
 - `docs/api-reference/music/compose-detailed-stream` — [Stream music with details](pages/docs/api-reference/music/compose-detailed-stream.md) · [原文](https://elevenlabs.io/docs/api-reference/music/compose-detailed-stream.md)
+- `docs/api-reference/music/create-composition-plan` — [Create composition plan](pages/docs/api-reference/music/create-composition-plan.md) · [原文](https://elevenlabs.io/docs/api-reference/music/create-composition-plan.md)
 - `docs/api-reference/music/finetunes/create` — [Create Music Finetune](pages/docs/api-reference/music/finetunes/create.md) · [原文](https://elevenlabs.io/docs/api-reference/music/finetunes/create.md)
 - `docs/api-reference/music/finetunes/delete` — [Delete Music Finetune](pages/docs/api-reference/music/finetunes/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/music/finetunes/delete.md)
 - `docs/api-reference/music/finetunes/get` — [Get Music Finetune](pages/docs/api-reference/music/finetunes/get.md) · [原文](https://elevenlabs.io/docs/api-reference/music/finetunes/get.md)
