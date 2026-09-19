@@ -13460,12 +13460,12 @@ The following features are supported:
 - **[LangSmith MCP](/langsmith/langsmith-remote-mcp)**: Connect MCP-compatible clients to LangSmith to query data.
 - **[Fleet](/langsmith/fleet/index)**: Build and run no-code agents from templates, connectors, and channels.
 - **[SmithDB](/langsmith/smithdb-sdk-migration)**: The purpose-built observability backend for trace data, persisting to S3 in your account.
+- **[Engine](/langsmith/engine-overview)**: Automatic detection, diagnosis, and resolution of recurring issues found in production traces. Engine uses the LangSmith Intelligence service for model work. See the [self-hosted Engine architecture](/langsmith/engine-self-hosted#how-it-works) for details.
 
 The following features are planned but not yet supported:
 
 - **[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)**: LangChain-hosted deep agents with connectors, channels, and schedules.
 - **[LLM auth proxy](/langsmith/llm-auth-proxy-self-hosted)**: Enforce your own authentication flows for model invocations so provider credentials are never exposed to end users.
-- **[Engine](/langsmith/engine-overview)**: Automatic detection, diagnosis, and resolution of recurring issues found in production traces.
 
 ## Prerequisites
 
@@ -79645,16 +79645,16 @@ For details on creating and managing model configurations, refer to the [Configu
 
 ## Amazon Bedrock
 
-Before you use this model, ensure you have [AWS credentials or IAM role](https://docs.aws.amazon.com/bedrock/latest/userguide/security-iam.html).
+Before you use this model, ensure you have AWS credentials, an [IAM role](https://docs.aws.amazon.com/bedrock/latest/userguide/security-iam.html), or an [Amazon Bedrock API key](https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys.html).
 
 ### Authentication
 
-Amazon Bedrock supports two authentication methods. **IAM trusted entity is the recommended approach** because it avoids sharing long-lived AWS access keys with LangSmith.
+Amazon Bedrock supports three authentication methods. **IAM trusted entity is the recommended approach** because it avoids sharing long-lived AWS access keys with LangSmith.
 
 #### IAM trusted entity (recommended)
 
 <Note>
-**Not applicable for [self-hosted LangSmith](/langsmith/self-hosted).** Use Access Keys (or the Bedrock API Key) instead.
+**Not available for [self-hosted LangSmith](/langsmith/self-hosted) or [BYOC](/langsmith/byoc).** Use access keys or the Bedrock API key instead.
 </Note>
 
 With IAM trusted entity authentication, you create an IAM role in your AWS account and allow LangSmith to assume it. No access keys are stored in LangSmith. Instead, LangSmith uses [AWS STS](https://docs.aws.amazon.com/STS/latest/APIReference/welcome.html) to assume the role on each request.
@@ -79697,6 +79697,17 @@ For more details on trust policies, see the [AWS documentation](https://aws.amaz
 #### Access keys
 
 Alternatively, you can authenticate with AWS access keys (`AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`). Enter these in the Bedrock provider configuration in the Playground. This method is simpler to set up but less secure because it requires storing long-lived credentials.
+
+#### Bedrock API key
+
+Bedrock API keys authenticate requests with a bearer token instead of AWS credentials. To configure a Bedrock API key:
+
+1. [Generate an API key](https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys.html) in the Amazon Bedrock console.
+2. In LangSmith, go to **Settings** > **Provider Secrets**, add a new secret, and select **Amazon Bedrock** as the provider.
+3. Select **Bearer token** under **Authentication**.
+4. Enter the API key as `AWS_BEARER_TOKEN_BEDROCK`.
+5. (Optional) Set `AWS_BEDROCK_REGION`. The default is `us-east-1`.
+6. Select **Save**.
 
 ### Available models
 
@@ -88209,18 +88220,125 @@ When your application handles API keys, tokens, or other credentials, those valu
 
 <Note>
 This page covers redacting secrets (API keys, tokens, credentials) from trace data via the SDK. For redacting personally identifiable information (PII) such as emails, names, or SSNs, see [Prevent logging of sensitive data in traces](/langsmith/mask-inputs-outputs). To redact secrets at the LLM Gateway layer, see [Data policy](/langsmith/llm-gateway-data-policy).
+
+The coding agent tracing plugins for [Claude Code](/langsmith/trace-claude-code#secret-redaction), [OpenAI Codex](/langsmith/trace-with-codex#secret-redaction), and [Cursor](/langsmith/trace-with-cursor#secret-redaction) apply the preset below by default. No SDK code is required for those.
 </Note>
 
-## Use the SDK anonymizer
+## Use the built-in secret preset
+
+The SDK ships a curated rule set for common credential formats. Pass `create_secret_anonymizer` to the [Client](https://reference.langchain.com/python/langsmith/client/Client) constructor and it redacts detected secrets from run inputs, outputs, errors, and metadata before they are uploaded. Use it when you want coverage of well-known key formats without writing patterns yourself.
+
+<Info>
+The `create_secret_anonymizer` / `createSecretAnonymizer` function requires:
+
+- Python SDK: 0.9.0 or later
+- TypeScript SDK: 0.7.11 or later
+</Info>
+
+<CodeGroup>
+
+```python Python
+from langsmith import Client
+from langsmith.anonymizer import create_secret_anonymizer
+
+client = Client(anonymizer=create_secret_anonymizer())
+```
+
+```typescript TypeScript
+import { Client } from "langsmith";
+import { createSecretAnonymizer } from "langsmith/anonymizer";
+
+const client = new Client({ anonymizer: createSecretAnonymizer() });
+```
+
+</CodeGroup>
+
+Each match is replaced with `[SECRET_DETECTED]`. The preset traverses up to 24 nesting levels, rather than the 10 that `create_anonymizer` uses, because traced payloads nest deeply. Override it with `max_depth`.
+
+The Python and TypeScript presets hold the same rules, so a trace redacted by one matches a trace redacted by the other.
+
+### Rules in the preset
+
+Provider rules are anchored to a known key prefix. Contextual rules fire only when a sensitive name is paired with an assignment, which leaves ordinary code, UUIDs, and content hashes intact.
+
+| Category | Detected formats |
+| --- | --- |
+| Anthropic | `sk-ant-` |
+| OpenAI | `sk-proj-`, `sk-svcacct-`, `sk-admin-`, and legacy `sk-` keys |
+| LangSmith | `lsv2_pt_`, `lsv2_sk_`, `ls__` |
+| GitHub | `ghp_`, `gho_`, `ghu_`, `ghs_`, `ghr_`, and `github_pat_` |
+| GitLab | `glpat-` |
+| AWS | Access key IDs prefixed `AKIA`, `ASIA`, `ABIA`, `ACCA`, or `A3T` |
+| Google | `AIza` API keys and `ya29.` OAuth access tokens |
+| Slack | `xoxb-`, `xoxa-`, `xoxp-`, `xoxr-`, `xoxs-`, `xapp-`, and `hooks.slack.com` webhook URLs |
+| Stripe | `sk_live_`, `sk_test_`, `rk_live_`, `rk_test_` |
+| npm | `npm_` |
+| PyPI | `pypi-AgEIcHlwaS` upload tokens |
+| SendGrid | `SG.` |
+| JSON Web Tokens | A `header.payload.signature` triple beginning `eyJ` |
+| Private keys | PEM blocks for RSA, EC, OpenSSH, DSA, and PGP keys |
+| Named assignments | `API_KEY`, `SECRET`, `TOKEN`, `PASSWORD`, `PASSWD`, `PRIVATE_KEY`, `ACCESS_KEY`, `AUTH_TOKEN`, or `CLIENT_SECRET` followed by `=` or `:` and a value of six characters or more |
+| Credential headers | `Authorization`, `X-Api-Key`, and `X-Auth-Token`, and a bare `Bearer <token>` |
+| URL credentials | The password in `scheme://user:password@host` |
+
+A name rule requires a component boundary, so `TOKEN` matches `api_token` and `mytoken` but not `tokenizer` or `tokens`. Header and `Bearer` rules keep the header name and the scheme word, and redact only the credential that follows.
+
+### Add your own rules to the preset
+
+Pass `extra_rules` to append patterns for credentials the preset does not know about, such as an internal key format. Extra rules run after the built-in ones.
+
+<CodeGroup>
+
+```python Python
+import re
+
+from langsmith import Client
+from langsmith.anonymizer import create_secret_anonymizer
+
+anonymizer = create_secret_anonymizer(
+    extra_rules=[
+        {"pattern": re.compile(r"ACME-[A-Z0-9]{16}"), "replace": "[REDACTED_ACME_KEY]"},
+    ]
+)
+
+client = Client(anonymizer=anonymizer)
+```
+
+```typescript TypeScript
+import { Client } from "langsmith";
+import { createSecretAnonymizer } from "langsmith/anonymizer";
+
+const anonymizer = createSecretAnonymizer({
+  extraRules: [
+    { pattern: /ACME-[A-Z0-9]{16}/g, replace: "[REDACTED_ACME_KEY]" },
+  ],
+});
+
+const client = new Client({ anonymizer });
+```
+
+</CodeGroup>
+
+A rule without a `replace` value falls back to `[redacted]`, not `[SECRET_DETECTED]`. Set `replace` when you want the two to be distinguishable in a trace.
+
+### Limits of the preset
+
+The preset favors precision over exhaustive coverage, which has consequences worth planning around:
+
+- **Unrecognized formats reach LangSmith**: a credential that matches no rule, including a random high-entropy string with no surrounding context, is uploaded as is.
+- **Only four fields are redacted**: the anonymizer covers `inputs`, `outputs`, `error`, and `extra.metadata`. Run names, tags, and attachments are uploaded unmodified.
+- **Redaction is not access control**: a redacted trace still holds the prompts, file contents, and tool results it was built from. Restrict who can read the tracing project. To omit content rather than scrub it, see [Prevent logging of sensitive data in traces](/langsmith/mask-inputs-outputs).
+
+## Write custom patterns
 
 <Info>
 The `create_anonymizer` / `createAnonymizer` function requires:
 
-- Python SDK: 0.1.81 and above
-- TypeScript SDK: 0.1.33 and above
+- Python SDK: 0.1.81 or later
+- TypeScript SDK: 0.1.33 or later
 </Info>
 
-The `create_anonymizer` function accepts a list of regex patterns and replacement strings. Pass the resulting anonymizer to the [Client](https://reference.langchain.com/python/langsmith/client/Client) constructor, and it will automatically apply to all run inputs and outputs before they reach LangSmith.
+When the preset does not fit, `create_anonymizer` takes a list of regex patterns and replacement strings and applies only those. Pass the resulting anonymizer to the [Client](https://reference.langchain.com/python/langsmith/client/Client) constructor, and it will automatically apply to all run inputs and outputs before they reach LangSmith.
 
 The following example redacts common secret formats, including OpenAI API keys, generic bearer tokens, and `sk-` prefixed keys:
 
@@ -107325,6 +107443,154 @@ Source: https://docs.langchain.com/langsmith/self-hosted-changelog
 </Callout>
 
 [Self-hosted LangSmith](/langsmith/self-hosted) is an add-on to the Enterprise plan designed for our largest, most security-conscious customers. For more details, refer to [Pricing](https://www.langchain.com/pricing). [Contact our sales team](https://www.langchain.com/contact-sales) if you want to get a license key to trial LangSmith in your environment.
+
+<Update label="2026-09-18" tags={["Stable"]} rss={{ title: "2026-09-18 - self-hosted" }}>
+## langsmith-0.16.27
+
+**LangSmith version:** `0.16.59`
+
+- This release packages the same LangSmith application version as langsmith-0.16.26. Refer to the [langsmith-0.16.26](#langsmith-0-16-26) release notes below.
+
+**Download the Helm chart:** [`langsmith-0.16.27.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.27/langsmith-0.16.27.tgz)
+{/* langsmith-release-image: 0.16.27 0.16.59 */}
+</Update>
+
+<Update label="2026-09-18" tags={["Preview"]} rss={{ title: "2026-09-18 - self-hosted" }}>
+## langsmith-0.17.0-rc.35
+
+**LangSmith version:** `0.17.25rc1`
+
+- This release packages the same LangSmith application version as langsmith-0.17.0-rc.33. Refer to the [langsmith-0.17.0-rc.33](#langsmith-0-17-0-rc-33) release notes below.
+
+**Download the Helm chart:** [`langsmith-0.17.0-rc.35.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.35/langsmith-0.17.0-rc.35.tgz)
+{/* langsmith-release-image: 0.17.0-rc.35 0.17.25-115a256787faaeabafb177427be3cd16879fa423 */}
+</Update>
+
+<Update label="2026-09-18" tags={["Stable"]} rss={{ title: "2026-09-18 - self-hosted" }}>
+## langsmith-0.16.26
+
+**LangSmith version:** `0.16.59`
+
+- Internal improvements and maintenance updates
+
+**Download the Helm chart:** [`langsmith-0.16.26.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.26/langsmith-0.16.26.tgz)
+{/* langsmith-release-image: 0.16.26 0.16.59 */}
+</Update>
+
+<Update label="2026-09-17" tags={["Stable"]} rss={{ title: "2026-09-17 - self-hosted" }}>
+## langsmith-0.16.25
+
+**LangSmith version:** `0.16.58`
+
+- This release packages the same LangSmith application version as langsmith-0.16.24. Refer to the [langsmith-0.16.24](#langsmith-0-16-24) release notes below.
+
+**Download the Helm chart:** [`langsmith-0.16.25.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.25/langsmith-0.16.25.tgz)
+{/* langsmith-release-image: 0.16.25 0.16.58 */}
+</Update>
+
+<Update label="2026-09-17" tags={["Preview"]} rss={{ title: "2026-09-17 - self-hosted" }}>
+## langsmith-0.17.0-rc.34
+
+**LangSmith version:** `0.17.25rc1`
+
+- This release packages the same LangSmith application version as langsmith-0.17.0-rc.33. Refer to the [langsmith-0.17.0-rc.33](#langsmith-0-17-0-rc-33) release notes below.
+
+**Download the Helm chart:** [`langsmith-0.17.0-rc.34.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.34/langsmith-0.17.0-rc.34.tgz)
+{/* langsmith-release-image: 0.17.0-rc.34 0.17.25-115a256787faaeabafb177427be3cd16879fa423 */}
+</Update>
+
+<Update label="2026-09-17" tags={["Stable"]} rss={{ title: "2026-09-17 - self-hosted" }}>
+## langsmith-0.16.24
+
+**LangSmith version:** `0.16.58`
+
+- Self-hosted Playground and LLM evaluators could authenticate to Azure OpenAI with Azure Kubernetes Service workload identity when no API key was configured.
+- Self-hosted upgrades could rerun the usage metering migration without duplicate-trigger errors or replacing existing model pricing with default rates.
+
+**Download the Helm chart:** [`langsmith-0.16.24.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.24/langsmith-0.16.24.tgz)
+{/* langsmith-release-image: 0.16.24 0.16.58 */}
+</Update>
+
+<Update label="2026-09-17" tags={["Preview"]} rss={{ title: "2026-09-17 - self-hosted" }}>
+## langsmith-0.17.0-rc.33
+
+**LangSmith version:** `0.17.25rc1`
+
+- Smoothed tab indicator transitions/animations.
+- Removed extra filter error tooltip border.
+- The Usage dashboard's "Group by" control now automatically detected the header configured on your default API key spend cap policy, allowing grouping by header directly instead of opening it from a Cost Controls policy row; if no header was configured, the option explained what to add and where.
+- Grouped saved view controls.
+- Recorded hourly storage attribution for sandbox cost breakdowns while preserving existing aggregate billing, with repeated samples atomically replacing entity details and the workspace aggregate.
+- Filtered the annotation queue "View all items" page by when each trace ran, using the same preset ranges as the Traces page.
+- The annotation queue "View all items" page now showed each item's run start time, allowing visibility of when a trace was triggered without opening it.
+- Grouped LLM Gateway usage by Model Provider within an API key or user to compare spend across providers and filter to specific ones.
+- Switching between thread items in an annotation queue now replaced the previous thread's messages instead of overlaying the new thread over them.
+- Context Hub's markdown preview pane now rendered files without editing them, preventing the rich-text editor from unintentionally rewriting stored bytes; editing occurred in the Edit tab, affecting exact bytes in the repo, and your Preview/Edit choice persisted as you moved between files.
+- Pinned every OpenAI client to the deployment's region.
+- Authenticated Gateway requests could optionally send an opaque raw provider token in X-LangSmith-Anthropic-Passthrough. LangSmith OAuth used standard Authorization bearer authentication; only built-in Anthropic requests forwarded the token as a bearer without accessing workspace provider secrets, leaving token validity to Anthropic. Other providers and custom Anthropic-compatible endpoints used typical fetched keys. Saved models/routes, catalogs, and mixed fallback chains retained existing permissions, policies, entitlements, and provider-specific accounting.
+- Restored EU Vertex inference on the combined deployment.
+- Corrected Jira destination branding.
+- Publicly shared thread pages no longer showed a share action that could not succeed.
+- Stopped gating flaky tests on user groups.
+- Aligned red teaming beta badge.
+- Aligned environment picker.
+- Fixed name on the tooltip for environment id.
+- Tracked proactive red-team coverage.
+- A safety refusal from the model now rendered an explanation instead of an empty reply, a failed tool call indicated failure instead of completion, and evaluator search clarified which runs each evaluator scored. Removed the non-functioning voice button from the chat panel.
+- Insights no longer warned about optimization only for OpenAI or Anthropic when both selected models used another provider.
+- When a tracing project lacked traces in the default time range, the range now widened to include the most recent trace, up to 30 days back. If an explicit range was set, an option to expand it appeared next to the empty table.
+- Enabled streamable HTTP MCP for ungated actions.
+- Persisted Trivy action permissions for langgraph-api.
+- Edit and deletion in the experiments table now checked project permission to match BE.
+- Renamed Messages to Trajectory when navigation flag was on.
+- The issue detail header now read its timestamp from the issue's last-modified time, preventing routine updates like Engine linking new evidence and refreshing the description from making a closed issue appear freshly marked done; it now read "Updated &lt;when&gt;," with details on who closed the issue and when shown below in the history.
+- Avoided expensive error hydration.
+- The Columns menu on a tracing project's traces and runs table now allowed deselecting Status and Name and dragging them into any order with the other columns.
+- Disabled APAC shadow builds.
+- Automations grouped by thread could now send webhook payloads with matched conversations and their runs.
+- Labeled export buttons as trajectory when navigation view was on.
+- Introduced a new public endpoint breaking down recorded hourly usage costs by sandbox and snapshot, with resource filters and cursor pagination. Checkpoint storage remained with its sandbox, and the full storage breakdown reconciled with the recorded workspace total.
+- An Engine scan no longer failed outright when its project-stats request was not returned; it continued with the errored and baseline traces it could select, informed the agent about missing selections, and recorded the stats call failure reason.
+- Kept the trace pane open for hovercard interactions.
+- Prioritized realistic red-team probes.
+- Engine now scanned projects whose names included punctuation, Unicode, or special characters, preventing their boards from stalling while analysis started.
+- Returned an error when mitigating SSRF instead of a 500.
+- Updated code evaluator defaults for Python 3.14.
+- Fleet agents on Amazon Bedrock no longer failed on every turn after a truncated tool call or a response containing only thinking was saved to the conversation, resuming with the next message instead.
+- Insights now recommended a capable thinking model and a fast summarization model with a large context window without warning against mixing providers.
+- The LangSmith Go and Java SDKs could now save Insights report configurations, enabling clients to create UI-visible Insights reports programmatically.
+- Turning an automation off now ceased its backfill and live evaluation, not resuming them upon reactivation; a disabled automation continued advancing its position while off, meaning reactivation resumed roughly from its pause point, avoiding redundant evaluation of every trace submitted while it was off.
+- The header count and delete confirmation on the annotation queue "View all items" page now reflected the active time range instead of the whole queue, with the item count endpoint accepting min_start_time and max_start_time.
+- When an evaluator score from a rule, playground experiment, or UI code evaluator violated the workspace feedback key configuration (e.g., a 5 against a 0–1 range), LangSmith now recorded error feedback on the run with the rejection reason in the comment instead of silently dropping it.
+- Added empty state for prompts.
+- Installed pnpm and failed the build job on non-conflict failures.
+- Routed the sandbox service-URL handshake to smith-go.
+- Hid single-turn trajectory navigation.
+- Limited inherited thread filters to ten turns.
+- Changing a feedback score on a completed queue item previously raised a "Failed to update review time" error despite the score saving; the toast was removed, but the score still saved as before.
+- Detail panes now filled narrow screens without wasting space on the left edge, with resize handles supporting keyboard navigation using arrow keys, Home, and End, and showing a visible focus indicator.
+- A backfill that found every run on a page already processed now continued to the next page instead of ending the window early, allowing evaluation of runs behind that page.
+- Switched to page on ingestion queue wait instead of pending count.
+- Publicly exposed OIDC integrations.
+- Fixed stale run details contents when switching between items.
+- Revoking a personal access token preserved its original expiry, and reinstating the token restored access only while that expiry remained valid.
+- Offered reinstatement on a revoked personal access token (PAT).
+- Selecting a Slack channel for alert notifications now functioned in workspaces large enough for the channel list to have stopped loading.
+- Avoided Dorny API rate limit in Terraform changes job.
+- Unified trace filtering and displayed matched run summaries.
+- Enforced waterfall minimum width in shared trace panels.
+- Rolled up RUN_RULES_TWO_POINTER_BACKFILL_TENANTS to status check deprecate_dual_reads.
+- Dashboard chart feedback key suggestions now included keys from both run-level and thread-level feedback.
+- Revoked and reinstated personal access tokens directly from the API Keys table in Settings, with reinstatement preserving the token's expiry date, and expired tokens displaying a disabled Reinstate key action with an explanation.
+- Fleet thread updates now preserved system-managed ownership metadata across typed, bulk, and LangGraph proxy requests.
+- The Studio memory editor kept its close button visible while scrolling through long memory items.
+- Alerts using input, output, or error text filters now matched runs regardless of the blob storage and ClickHouse search settings, with search tokens still written to ClickHouse only when both blob storage and ClickHouse search were enabled.
+- Section dividers in agent overview cards and Gateway connection panels now have stronger contrast in light and dark mode.
+- Selected TURN_NUMBER when listing thread traces to return each trace's chronological position across pages. Turn numbers are also available for public shared threads.
+
+**Download the Helm chart:** [`langsmith-0.17.0-rc.33.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.33/langsmith-0.17.0-rc.33.tgz)
+{/* langsmith-release-image: 0.17.0-rc.33 0.17.25-115a256787faaeabafb177427be3cd16879fa423 */}
+</Update>
 
 <Update label="2026-09-17" tags={["Stable"]} rss={{ title: "2026-09-17 - self-hosted" }}>
 ## langsmith-0.16.23
@@ -127898,6 +128164,53 @@ The plugin also reads a `defaultMuted` boolean from its own configuration files,
 
 Thread preferences are sticky. The plugin saves each explicit mute or unmute to a privacy file, `~/.claude/state/langsmith_state.privacy.json` by default, and a saved thread preference wins over the configured default in both directions. Deleting the privacy file removes every thread override and returns each thread to the configured default.
 
+## Secret redaction
+
+The plugin redacts detected secrets from run inputs, outputs, errors, and metadata before uploading them to LangSmith. Redaction is on by default.
+
+Redaction runs on your machine before upload, so unredacted content never reaches LangSmith. Replica destinations receive the same redacted payload.
+
+Detection covers provider API key prefixes, JSON Web Tokens, and PEM private key blocks. It also covers contextual shapes such as `API_KEY=<value>`, an `Authorization` header, and a password embedded in a URL. Each match is replaced with `[SECRET_DETECTED]`. For the rule list, see [Redact secrets from traces](/langsmith/redact-secrets#rules-in-the-preset).
+
+Redaction matches known credential shapes, so treat it as a safety net rather than a guarantee. A credential in an unrecognized format still reaches LangSmith, and attachments, run names, and tags do not pass through the anonymizer. A redacted trace also still holds the prompts, file contents, and tool results it was built from, so restrict who can read the tracing project.
+
+Redaction targets credential values, not identity. The `anthropic_user_id` and `local_username` metadata that the plugin attaches is unaffected. To omit content and attribution instead of scrubbing credentials out of it, [mute the thread](#mute-a-thread).
+
+### Turn redaction off
+
+Set `CC_LANGSMITH_REDACT` to `false`, `0`, `no`, or `off`. The comparison is case-insensitive, and any other value leaves redaction on.
+
+```bash
+export CC_LANGSMITH_REDACT="false"
+```
+
+### Redact additional patterns
+
+Set `CC_LANGSMITH_REDACT_EXTRA` to a JSON array of `{ "pattern": ..., "replace": ... }` rules. Each `pattern` is a regular expression string, applied globally and case-sensitively. `replace` is optional and falls back to `[redacted]`.
+
+```json
+{
+  "env": {
+    "CC_LANGSMITH_REDACT_EXTRA": "[{\"pattern\":\"ACME-[A-Z0-9]{16}\",\"replace\":\"[REDACTED_ACME_KEY]\"}]"
+  }
+}
+```
+
+Extra rules run after the built-in ones. The plugin skips a rule with an invalid regular expression, logs an error, and uploads the turn with the remaining rules applied.
+
+Both settings also read from the plugin configuration files described in [Set a default mute configuration](#set-a-default-mute-configuration), as the `redact` and `redact_extra_rules` keys:
+
+```json
+{
+  "redact": true,
+  "redact_extra_rules": [{ "pattern": "ACME-[A-Z0-9]{16}", "replace": "[REDACTED_ACME_KEY]" }]
+}
+```
+
+The environment variables take precedence over all four files. A file behaves more strictly than the environment variable. One rule with an invalid regular expression discards every setting in that file, not only that rule.
+
+Because a project-level `.claude/langsmith.json` can set `redact` to `false`, review that file before enabling tracing in a repository you do not control.
+
 ## Usage with GitHub Actions
 
 You can use this plugin with [`anthropics/claude-code-action`](https://github.com/anthropics/claude-code-action) to trace Claude Code runs in CI. Add the following to your workflow:
@@ -130611,6 +130924,8 @@ The plugin reads Codex-specific variables first, then falls back to the generic 
 | `LANGSMITH_CODEX_PROJECT` | No | `codex` | LangSmith project name. Falls back to `LANGSMITH_PROJECT`. |
 | `LANGSMITH_CODEX_METADATA` | No | - | JSON object merged into root trace metadata. Falls back to `LANGSMITH_METADATA`. |
 | `LANGSMITH_CODEX_RUNS_ENDPOINTS` | No | - | JSON array of replica destinations. Falls back to `LANGSMITH_RUNS_ENDPOINTS`. |
+| `LANGSMITH_CODEX_REDACT` | No | `true` | Set to a falsy value to disable secret redaction. Falls back to `LANGSMITH_REDACT`. |
+| `LANGSMITH_CODEX_REDACT_EXTRA` | No | - | JSON array of extra `{ pattern, replace }` redaction rules. Falls back to `LANGSMITH_REDACT_EXTRA`. |
 
 Add the variables to your shell configuration file (`~/.zshrc`, `~/.bashrc`, or `~/.bash_profile`):
 
@@ -130645,6 +130960,8 @@ Use `<project>/.codex/langsmith.json` for project-level settings or `~/.codex/la
 | `project` | `LANGSMITH_CODEX_PROJECT`, `LANGSMITH_PROJECT` | `codex` | LangSmith project name. |
 | `metadata` | `LANGSMITH_CODEX_METADATA`, `LANGSMITH_METADATA` | - | Object merged into root trace metadata. |
 | `replicas` | `LANGSMITH_CODEX_RUNS_ENDPOINTS`, `LANGSMITH_RUNS_ENDPOINTS` | - | Additional LangSmith destinations to replicate traces to. |
+| `redact` | `LANGSMITH_CODEX_REDACT`, `LANGSMITH_REDACT` | `true` | Set to `false` to disable [secret redaction](#secret-redaction). |
+| `redact_extra_rules` | `LANGSMITH_CODEX_REDACT_EXTRA`, `LANGSMITH_REDACT_EXTRA` | - | Extra `{ pattern, replace }` rules applied after the built-in ones. |
 
 Keep config files that include API keys out of version control.
 
@@ -130709,6 +131026,33 @@ Each replica object supports the following fields:
 | `apiKey` | Yes | API key for the destination workspace. |
 | `projectName` | Yes | Project name in the destination workspace. |
 | `updates` | No | Optional run fields to override on replicated runs, such as extra metadata. |
+
+## Secret redaction
+
+The plugin redacts detected secrets from run inputs, outputs, errors, and metadata before uploading them to LangSmith. Redaction is on by default.
+
+Redaction runs on your machine before upload, so unredacted content never reaches LangSmith. Replica destinations receive the same redacted payload.
+
+Detection covers provider API key prefixes, JSON Web Tokens, and PEM private key blocks. It also covers contextual shapes such as `API_KEY=<value>`, an `Authorization` header, and a password embedded in a URL. Each match is replaced with `[SECRET_DETECTED]`. For the rule list, see [Redact secrets from traces](/langsmith/redact-secrets#rules-in-the-preset).
+
+Redaction matches known credential shapes, so treat it as a safety net rather than a guarantee. A credential in an unrecognized format still reaches LangSmith, and attachments, run names, and tags do not pass through the anonymizer. A redacted trace also still holds the prompts, file contents, and tool results it was built from, so restrict who can read the tracing project.
+
+To turn redaction off, set `LANGSMITH_CODEX_REDACT` to `false`, `0`, `no`, or `off`, or set `"redact": false` in a config file. Values are trimmed and compared case-insensitively.
+
+To redact additional patterns, set `LANGSMITH_CODEX_REDACT_EXTRA` to a JSON array of `{ "pattern": ..., "replace": ... }` rules, or set `redact_extra_rules` in a config file. Each `pattern` is a regular expression string, applied globally and case-sensitively. `replace` is optional and falls back to `[redacted]`. Extra rules run after the built-in ones.
+
+```json
+{
+  "enabled": true,
+  "project": "codex",
+  "redact": true,
+  "redact_extra_rules": [{ "pattern": "ACME-[A-Z0-9]{16}", "replace": "[REDACTED_ACME_KEY]" }]
+}
+```
+
+Setting `redact_extra_rules` to `[]` clears rules inherited from a lower-priority source. In a config file, one rule with an invalid regular expression discards every setting in that file, so verify the patterns before committing them.
+
+Because a project-level `.codex/langsmith.json` or `langsmith-plugins.json` can set `redact` to `false`, review those files before enabling tracing in a repository you do not control.
 
 ## What gets traced
 
@@ -130993,6 +131337,8 @@ Every `LANGSMITH_CURSOR_*` variable also accepts the shorter `LANGSMITH_*` form.
 | `LANGSMITH_CURSOR_PROJECT` | `cursor` | LangSmith project name. Falls back to `LANGSMITH_PROJECT`. |
 | `LANGSMITH_CURSOR_METADATA` | - | JSON object merged into root trace metadata. |
 | `LANGSMITH_CURSOR_RUNS_ENDPOINTS` | - | JSON array of replica destinations. |
+| `LANGSMITH_CURSOR_REDACT` | `true` | Set to `"false"` to disable secret redaction. |
+| `LANGSMITH_CURSOR_REDACT_EXTRA` | - | JSON array of extra `{ pattern, replace }` redaction rules. |
 | `LANGSMITH_CURSOR_ATTACHMENTS` | `true` | Set to `"false"` to disable attachment enrichment. |
 | `LANGSMITH_CURSOR_DB_PATH` | platform default | Override the Cursor `state.vscdb` path used for attachments. |
 | `LANGSMITH_CURSOR_STATE_FILE` | `~/.cursor/langsmith-state.json` | Override the on-disk event-buffer state file. |
@@ -131034,10 +131380,41 @@ Use `~/.cursor/langsmith.json` for global defaults or `./.cursor/langsmith.json`
 | `project` | `LANGSMITH_CURSOR_PROJECT`, `LANGSMITH_PROJECT` | `cursor` | LangSmith project name. |
 | `metadata` | `LANGSMITH_CURSOR_METADATA`, `LANGSMITH_METADATA` | - | Object merged into root trace metadata. |
 | `replicas` | `LANGSMITH_CURSOR_RUNS_ENDPOINTS`, `LANGSMITH_RUNS_ENDPOINTS` | - | Additional LangSmith destinations to replicate traces to. |
+| `redact` | `LANGSMITH_CURSOR_REDACT`, `LANGSMITH_REDACT` | `true` | Set to `false` to disable [secret redaction](#secret-redaction). |
+| `redact_extra_rules` | `LANGSMITH_CURSOR_REDACT_EXTRA`, `LANGSMITH_REDACT_EXTRA` | - | Extra `{ pattern, replace }` rules applied after the built-in ones. |
 | `attachments` | `LANGSMITH_CURSOR_ATTACHMENTS` | `true` | Set to `false` to skip enriching turns with image and file attachment bytes from Cursor's local database. |
 | `cursor_db_path` | `LANGSMITH_CURSOR_DB_PATH` | platform default | Override the Cursor `state.vscdb` path used for attachments. |
 
 Keep config files that include API keys out of version control.
+
+## Secret redaction
+
+The plugin redacts detected secrets from run inputs, outputs, errors, and metadata before uploading them to LangSmith. Redaction is on by default.
+
+Redaction runs on your machine before upload, so unredacted content never reaches LangSmith. Replica destinations receive the same redacted payload.
+
+Detection covers provider API key prefixes, JSON Web Tokens, and PEM private key blocks. It also covers contextual shapes such as `API_KEY=<value>`, an `Authorization` header, and a password embedded in a URL. Each match is replaced with `[SECRET_DETECTED]`. For the rule list, see [Redact secrets from traces](/langsmith/redact-secrets#rules-in-the-preset).
+
+Redaction matches known credential shapes, so treat it as a safety net rather than a guarantee. A credential in an unrecognized format still reaches LangSmith, and attachments, run names, and tags do not pass through the anonymizer. A redacted trace also still holds the prompts, file contents, and tool results it was built from, so restrict who can read the tracing project.
+
+Attachments bypass redaction entirely. The plugin recovers image and file attachments from Cursor's local database and sends their bytes, which the anonymizer never inspects. Set `LANGSMITH_CURSOR_ATTACHMENTS` to `"false"` to stop sending them.
+
+To turn redaction off, set `LANGSMITH_CURSOR_REDACT` to `false`, `0`, `no`, or `off`, or set `"redact": false` in a config file.
+
+To redact additional patterns, set `LANGSMITH_CURSOR_REDACT_EXTRA` to a JSON array of `{ "pattern": ..., "replace": ... }` rules, or set `redact_extra_rules` in a config file. Each `pattern` is a regular expression string, applied globally and case-sensitively. `replace` is optional and falls back to `[redacted]`. Extra rules run after the built-in ones.
+
+```json
+{
+  "enabled": true,
+  "project": "cursor",
+  "redact": true,
+  "redact_extra_rules": [{ "pattern": "ACME-[A-Z0-9]{16}", "replace": "[REDACTED_ACME_KEY]" }]
+}
+```
+
+Setting `redact_extra_rules` to `[]` clears rules inherited from a lower-priority source. One rule with an invalid regular expression discards every setting in that file, so keep the patterns simple and verify them before committing.
+
+Because a project-level `.cursor/langsmith.json` can set `redact` to `false`, review that file before enabling tracing in a repository you do not control.
 
 ## What gets traced
 

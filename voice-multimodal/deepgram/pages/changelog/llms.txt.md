@@ -12,6 +12,7 @@ path: changelog/llms.txt
 
 ## Docs
 
+- [September 18, 2026](https://developers.deepgram.com/changelog/2026/9/18.md)
 - [September 17, 2026](https://developers.deepgram.com/changelog/2026/9/17.md)
 - [September 15, 2026](https://developers.deepgram.com/changelog/2026/9/15.md): The Deepgram India endpoint (api.in.deepgram.com) is now generally available for Speech-to-Text, Text-to-Speech, Voice Agent, and Text Intelligence APIs.
 - [September 14, 2026](https://developers.deepgram.com/changelog/2026/9/14.md)

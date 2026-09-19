@@ -305,7 +305,7 @@
 - `serverless/pricing` — [Serverless Pricing](pages/serverless/pricing.md) · [原文](https://docs.fireworks.ai/serverless/pricing)
 - `serverless/rate-limits` — [Serverless Rate Limits](pages/serverless/rate-limits.md) · [原文](https://docs.fireworks.ai/serverless/rate-limits)
 - `serverless/reserved-throughput` — [Reserved Throughput](pages/serverless/reserved-throughput.md) · [原文](https://docs.fireworks.ai/serverless/reserved-throughput)
-- `serverless/serving-paths` — [Serverless Serving Paths](pages/serverless/serving-paths.md) · [原文](https://docs.fireworks.ai/serverless/serving-paths)
+- `serverless/serverless-modes` — [Serverless Modes](pages/serverless/serverless-modes.md) · [原文](https://docs.fireworks.ai/serverless/serverless-modes)
 - `serverless/us-only-serverless` — [US-only Serverless](pages/serverless/us-only-serverless.md) · [原文](https://docs.fireworks.ai/serverless/us-only-serverless)
 
 ## structured-responses

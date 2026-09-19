@@ -99,7 +99,7 @@ Fireworks provides fast, cost-effective access to leading open-source text model
   Most models automatically format your messages with the correct template. To verify the exact prompt used, enable the [`echo`](/guides/querying-text-models) parameter.
 </Tip>
 
-For **Priority tier** (`service_tier: "priority"`) and **Fast**, see [Serverless Serving Paths](/serverless/serving-paths).
+For **Priority tier** (`service_tier: "priority"`) and **Fast**, see [Serverless Modes](/serverless/serverless-modes).
 
 ## Alternative query methods
 

@@ -8612,7 +8612,7 @@ Neon AI Gateway is an LLM gateway built into your Postgres branch. Point your ex
 
 Neon AI Gateway serves open-weight and foundation models. Any paid project with prepaid credits can use the open-weight models right away. Foundation models are rolled out gradually, so the full catalog opens up over time.
 
-To request access to the full foundation model catalog, open the **AI Gateway** page in the [Neon Console](https://console.neon.tech) and select **Apply for access**. We'll reach out as access opens up.
+To request access to the full foundation model catalog, open the **AI Gateway** page in the [Neon Console](https://console.neon.tech) and select **Request access**. We'll reach out as access opens up.
 
 **See every supported model in the [model catalog](https://neon.com/docs/ai-gateway/models#available-models).** See [AI Gateway prepaid credits](https://neon.com/docs/ai-gateway/prepaid-credits) to add credits.
 
@@ -11663,7 +11663,7 @@ CREATE TABLE documents (
   body_tsv  TSVECTOR GENERATED ALWAYS AS (to_tsvector('english', body)) STORED
 );
 
-CREATE INDEX ON documents
+CREATE INDEX documents_embedding_idx ON documents
   USING lakebase_ann (embedding vector_cosine_ops);
 ```
 
@@ -12135,7 +12135,7 @@ Use the generator to build an MCP config for your editor and auth method, includ
 
 The Neon MCP server is an official Claude connector, so you don't need a custom connector URL. To add it in [Claude.ai](https://claude.ai) or Claude Desktop:
 
-1. Open **Settings** from your profile menu (bottom-left of the sidebar).
+1. Open **Settings** from the profile menu in the top-right of the console.
 2. Select **Connectors** (sometimes shown under **Customize > Connectors**).
 3. Click **Browse connectors** (top-right of that page), find **Neon**, and add it.
 4. Authorize access to your Neon account.
@@ -17175,6 +17175,10 @@ Managed authentication that branches with your database
 
 Managed Better Auth is the managed authentication service in the Neon backend for apps and agents. It stores users, sessions, and auth configuration directly in your Neon database. When you branch your database, your entire auth state branches with it, so you can test real authentication workflows in preview environments.
 
+- **Identity lives in your database.** All authentication data is stored in the `neon_auth` schema, queryable with SQL and compatible with Row Level Security (RLS) policies.
+- **Zero server management.** It runs as a managed REST API service. Configure it in the Console and use the [client SDK](https://neon.com/docs/reference/javascript-sdk) or [server SDK](https://neon.com/docs/auth/reference/nextjs-server) in your app.
+- **Auth that branches with your data.** Test sign-up, login, password reset, and OAuth flows in isolated branches without touching production data.
+
 ## Quick start guides
 
 Choose your framework to get started:
@@ -17211,17 +17215,6 @@ and set the application name to "My App".
 ```
 
 You can also enable Managed Better Auth in the [Neon Console](https://console.neon.tech) (Project → Branch → Auth) and configure settings manually.
-
-## Why Managed Better Auth?
-
-- **Identity lives in your database**  
-  All authentication data is stored in the `neon_auth` schema. It's queryable with SQL and compatible with Row Level Security (RLS) policies.
-
-- **Zero server management**  
-  Managed Better Auth runs as a managed REST API service. Configure settings in the Console; use the [client SDK](https://neon.com/docs/reference/javascript-sdk) or [server SDK](https://neon.com/docs/auth/reference/nextjs-server) in your app. No infrastructure to maintain.
-
-- **Auth that branches with your data**  
-  Test sign-up, login, password reset, and OAuth flows in isolated branches without touching production data.
 
 ## Built on Better Auth
 
@@ -30014,6 +30007,10 @@ curl -N -X POST "$(neon functions get agent -o json | jq -r .invocation_url)" \
 
 Call the function directly from the browser, not through your web app's backend. If you proxy the stream through a Vercel, Netlify, or Cloudflare host, it's bound by that host's serverless execution limit (often 10 to 60 seconds), so a long agent run gets cut off even though the function would keep going. A direct call keeps any host out of the stream's path, so the handler authenticates the request itself. See [Authentication](https://neon.com/docs/compute/functions/authentication#call-a-function-directly-from-the-client) for the JWT, CORS, and Vercel AI SDK transport pattern.
 
+## Run on a schedule
+
+An agent doesn't have to wait for a client call. A scheduled [Function Trigger](https://neon.com/docs/compute/functions/triggers/schedule) invokes the function on a cron schedule, so a summarization or cleanup agent runs on its own and fires even when the compute is scaled to zero.
+
 ## Persist what matters
 
 Module memory is wiped when an isolate is evicted, and several isolates can run in parallel, so keep anything that must last in Postgres: conversation history, run metadata, results. For generated assets like images, declare a bucket in `neon.ts` (`buckets: { images: {} }`) and write them to [Object Storage](https://neon.com/docs/storage/objects), which branches with your database. When a bucket is declared, `neon deploy` injects `AWS_*` credentials automatically. For example, using the [Files SDK](https://files-sdk.dev):
@@ -30198,7 +30195,7 @@ You need:
 - A deployed Neon Function.
 - A domain you control, and access to its DNS settings.
 - Optional: The latest [Neon CLI](https://neon.com/docs/cli), if you want to manage the domain from the command line.
-- Optional: `@neon/sdk` 3.1.0 or later, if you want to manage the domain with the SDK.
+- Optional: `@neon/sdk` 5.0.0 or later, if you want to manage the domain with the SDK.
 
 ## Register a custom domain
 
@@ -30246,7 +30243,9 @@ const projectId = process.env.NEON_PROJECT_ID!;
 const branchId = process.env.NEON_BRANCH_ID!;
 
 const { data: domain, error } =
-  await neon.functions.customDomains.register(projectId, branchId, {
+  await neon.functions.customDomains.register({
+    projectId,
+    branchId,
     domain: 'api.example.com',
     entity_type: 'function',
     entity_id: 'api',
@@ -30379,7 +30378,7 @@ const projectId = process.env.NEON_PROJECT_ID!;
 const branchId = process.env.NEON_BRANCH_ID!;
 
 const { data: domains, error } =
-  await neon.functions.customDomains.list(projectId, branchId).all();
+  await neon.functions.customDomains.list({ projectId, branchId }).all();
 
 if (error) throw error;
 console.log(domains);
@@ -30488,11 +30487,11 @@ const neon = createNeonClient({
 const projectId = process.env.NEON_PROJECT_ID!;
 const branchId = process.env.NEON_BRANCH_ID!;
 
-const { error } = await neon.functions.customDomains.delete(
+const { error } = await neon.functions.customDomains.delete({
   projectId,
   branchId,
-  'api.example.com',
-);
+  domain: 'api.example.com',
+});
 
 if (error) throw error;
 ```
@@ -30541,6 +30540,8 @@ neon deploy
 | `--allow-protected` | `false`           | Auto-confirm applying to a branch marked protected on Neon                                           |
 
 `neon deploy` is an alias for `neon config apply`. To preview what a deploy would change without applying it, run `neon config plan`.
+
+You can declare scheduled [Function Triggers](https://neon.com/docs/compute/functions/triggers/schedule) and [custom domains](https://neon.com/docs/compute/functions/custom-domains) in the same `neon.ts` config, so they deploy alongside the function.
 
 Note that `--env` here takes a path to a `.env` file. The `--env` flag on `neon functions deploy` below takes `KEY=VALUE` pairs instead.
 
@@ -30654,7 +30655,10 @@ const projectId = process.env.NEON_PROJECT_ID!;
 const branchId = process.env.NEON_BRANCH_ID!;
 const zipBytes = await readFile('function.zip');
 
-const { data: deployment } = await neon.functions.deploy(projectId, branchId, 'hello', {
+const { data: deployment } = await neon.functions.deploy({
+  projectId,
+  branchId,
+  slug: 'hello',
   zip: new File([zipBytes], 'function.zip', { type: 'application/zip' }),
   runtime: 'nodejs24',
   environment: JSON.stringify({ MY_SECRET: 'value' }),
@@ -31255,7 +31259,7 @@ To pull from a different branch, switch with `neon checkout`; it pulls the new b
 
 Deploy your first Neon Function and call it over HTTP.
 
-A function takes a request and returns a web response, running on long-lived Node.js compute next to your database.
+A function takes a request and returns a web response, running on long-lived Node.js compute next to your database. The request can come over HTTP, or from a [Function Trigger](https://neon.com/docs/compute/functions/triggers/overview) on a schedule or object upload.
 
 ## Hello world
 
@@ -31466,6 +31470,13 @@ The response is a JSON object with your branch's Postgres version:
 { "version": "PostgreSQL 17.x on ..., compiled by gcc ..." }
 ```
 
+## Next steps
+
+- [Function Triggers](https://neon.com/docs/compute/functions/triggers/overview): invoke a function on a cron schedule or an object upload instead of over HTTP
+- [Deploy and manage](https://neon.com/docs/compute/functions/deploy): the CLI and API for managing deployed functions
+- [Authentication](https://neon.com/docs/compute/functions/authentication): verify callers before a function runs
+- [Custom domains](https://neon.com/docs/compute/functions/custom-domains): serve a function from a domain you own
+
 --- [Document source](https://neon.com/docs/compute/functions/logs.md) ---
 
 > Summary: View a deployed function's logs in the Neon Console: standard output and standard error from your handler, plus a platform-emitted invoke begin / invoke end line around each request. Covers the console-method-to-level mapping, common log entries that look like a problem but aren't, and wiring up application instrumentation like Sentry or OpenTelemetry.
@@ -31573,6 +31584,7 @@ What makes Neon Functions different from lambda-style serverless?
 - **Next to your data.** A function runs in the same region as its branch, so queries reach Postgres with no cross-region hops.
 - **Long-running.** Start responding within 15 minutes, then keep streaming while data flows, so agents and WebSocket/SSE servers aren't cut off by a short execution limit. They're still serverless: idle functions can be evicted (see [Runtime limits](https://neon.com/docs/compute/functions/reference/runtime-limits)).
 - **Branch-scoped.** Functions branch with your project. Each branch runs its own deployment of them, at branch-specific URLs, against that branch's data.
+- **Event-driven.** Invoke a function on a cron schedule or an object upload with [Function Triggers](https://neon.com/docs/compute/functions/triggers/overview), no external scheduler.
 
 Functions run on Neon's own compute platform, the same infrastructure that runs your Postgres.
 
@@ -31585,12 +31597,13 @@ Neon Functions currently run JavaScript or TypeScript on the Node.js runtime. De
 ## Get started
 
 - [Quickstart](https://neon.com/docs/compute/functions/get-started): Deploy your first function and call it over HTTP in under 5 minutes.
+- [Function Triggers](https://neon.com/docs/compute/functions/triggers/overview): Invoke a function on a cron schedule or an object upload, with no external scheduler.
+- [Custom domains](https://neon.com/docs/compute/functions/custom-domains): Serve a function from a domain you own with automatic TLS.
 - [AI agents](https://neon.com/docs/compute/functions/agents): Run streaming, tool-calling AI agents next to your data.
 - [WebSockets and SSE](https://neon.com/docs/compute/functions/websockets): Hold long-lived connections open with WebSockets or SSE.
 - [Authentication](https://neon.com/docs/compute/functions/authentication): Verify callers before a function does any work.
 - [Environment variables](https://neon.com/docs/compute/functions/environment-variables): Neon-injected variables and how to add your own secrets.
 - [Deploy and manage](https://neon.com/docs/compute/functions/deploy): CLI and API reference for deploying and managing functions.
-- [Custom domains](https://neon.com/docs/compute/functions/custom-domains): Serve a function from a domain you own with automatic TLS.
 - [Logs](https://neon.com/docs/compute/functions/logs): View, search, and download a function's logs in the Console.
 - [Runtime limits](https://neon.com/docs/compute/functions/reference/runtime-limits): Timeouts, slug constraints, memory, and other hard limits.
 
@@ -31626,6 +31639,7 @@ A [Hono](https://hono.dev) app exports the object shape, so `export default app`
 - **MCP servers**: expose database-backed tools to AI clients over a single `fetch` endpoint. See the [with-mcp example](https://github.com/neondatabase/examples/tree/main/with-mcp).
 - **File upload APIs**: receive a file, write it to [Object Storage](https://neon.com/docs/storage/overview), return a result.
 - **Webhook handlers and bots**: receive events and query Postgres in the same region.
+- **Scheduled and event-driven jobs**: run a function on a cron schedule or when a file lands in Object Storage, with no external scheduler. See [Function Triggers](https://neon.com/docs/compute/functions/triggers/overview).
 
 ## How Functions fit with your app
 
@@ -35101,7 +35115,7 @@ The most common causes, in order, are:
 
 - **The compute is starting up.** If your compute is suspended after [scale to zero](https://neon.com/docs/introduction/scale-to-zero), the Console wakes it before listing tables, and the first request can fail before the compute is ready. Wait a second or two and click **Refresh**. The second request usually succeeds. You can confirm the compute state on the **Branches** page, where a suspended compute shows as **Idle**. See [Couldn't connect to compute node](https://neon.com/docs/connect/connection-errors#couldnt-connect-to-compute-node) for more on cold-start timing.
 - **A browser extension is blocking the request.** Ad-blockers, privacy extensions, and corporate browser security tools sometimes block requests to `*.neon.tech`. Open the Console in an incognito window with extensions disabled, or temporarily disable extensions like uBlock Origin or Privacy Badger on `console.neon.tech` and reload. Check the browser's developer console (**F12 → Network**) for blocked requests to your compute hostname.
-- **IP Allow is rejecting your connection.** If you've configured an [IP Allow](https://neon.com/docs/manage/projects#configure-ip-allow) list (Scale plan), the Tables view connects from the IP address you're browsing from, so the request is rejected when that address isn't on the allowlist. Add your current IP address under **Settings → Network security**, or if you only need IP Allow on protected branches, enable **Restrict IP Access to protected branches only** so queries against development branches still work.
+- **IP Allow is rejecting your connection.** If you've configured an [IP Allow](https://neon.com/docs/manage/projects#configure-ip-allow) list (Scale plan), the Tables view connects from the IP address you're browsing from, so the request is rejected when that address isn't on the allowlist. Add your current IP address under **Settings → Networking**, or if you only need IP Allow on protected branches, enable **Restrict IP Access to protected branches only** so queries against development branches still work.
 - **A DNS resolution issue.** Some networks fail to resolve compute hostnames. See [DNS resolution issues](https://neon.com/docs/connect/connection-errors#dns-resolution-issues) below to test and resolve this.
 - **A transient backend error.** If none of the above explain it, check the [Neon status page](https://neonstatus.com/) for ongoing incidents.
 
@@ -38710,21 +38724,10 @@ A fully managed REST interface for your Neon database
 
 The Neon Data API is the HTTP query service in the Neon backend for apps and agents. It provides a secure, stateless interface to your database, letting you access and manage your data directly from web browsers, serverless functions, and edge runtimes using standard HTTP methods. Key benefits include:
 
-- **Browser & edge compatibility**
-
-  Standard Postgres drivers do not work in web browsers and struggle in edge runtimes. The Data API allows you to query your database from Cloudflare Workers, Vercel Edge, or directly from a browser-based frontend using standard HTTP requests.
-
-- **Connectionless scalability**
-
-  Eliminate connection pool exhaustion. Because the API uses short-lived HTTP requests instead of persistent TCP connections, it handles thousands of concurrent users and serverless auto-scaling.
-
-- **Secure by default**
-
-  The API validates JWTs from any authentication provider and respects PostgreSQL [Row-Level Security (RLS)](https://neon.com/docs/guides/row-level-security) policies, ensuring users only access the data they are explicitly permitted to see. Use [Managed Better Auth](https://neon.com/docs/auth/overview), or bring your own provider like [Auth0, Clerk, Firebase, and others](https://neon.com/docs/data-api/custom-authentication-providers).
-
-- **CI/CD integration**
-
-  Test your Data API integrations in isolated branch environments using the [Neon Create Branch GitHub Action](https://github.com/marketplace/actions/neon-create-branch-github-action), which can retrieve branch-specific Data API URLs for your workflows.
+- **Browser and edge compatibility.** Standard Postgres drivers don't work in web browsers and struggle in edge runtimes, so query from Cloudflare Workers, Vercel Edge, or a browser frontend over standard HTTP.
+- **Connectionless scalability.** Short-lived HTTP requests replace persistent TCP connections, so you avoid connection pool exhaustion and scale to thousands of concurrent users.
+- **Secure by default.** The API validates JWTs from any authentication provider and respects PostgreSQL [Row-Level Security (RLS)](https://neon.com/docs/guides/row-level-security) policies, so users only access data they're permitted to see. Use [Managed Better Auth](https://neon.com/docs/auth/overview), or bring your own provider like [Auth0, Clerk, or Firebase](https://neon.com/docs/data-api/custom-authentication-providers).
+- **CI/CD integration.** Test integrations in isolated branch environments with the [Neon Create Branch GitHub Action](https://github.com/marketplace/actions/neon-create-branch-github-action), which retrieves branch-specific Data API URLs for your workflows.
 
 ## PostgREST compatibility
 
@@ -43416,6 +43419,17 @@ CREATE EXTENSION IF NOT EXISTS lakebase_text;
 
 `lakebase_text` relies on a preloaded library that Neon enables by default. If you've customized your project's [preloaded libraries](https://neon.com/docs/extensions/pg-extensions#extensions-with-preloaded-libraries), make sure `lakebase_text` is in the list.
 
+### Upgrade the extension and indexes
+
+A new Lakebase Search release can add features, fixes, and performance improvements. Although Lakebase Search is released as part of Neon updates, it does not upgrade everything automatically. In `lakebase_text`, two things upgrade separately and carry version numbers that are unrelated to each other:
+
+- **The extension version** is the version of the SQL objects that `CREATE EXTENSION lakebase_text` creates, including its data types, functions, operators, and the `lakebase_bm25` index access method. This version is reported by `SELECT installed_version FROM pg_available_extensions WHERE name = 'lakebase_text'`. `ALTER EXTENSION lakebase_text UPDATE` updates this version.
+- **The index storage format** is the on-disk layout of a `lakebase_bm25` index. The extension may introduce updated index storage formats in an update, unlocking more features and delivering better performance. All newly created indexes automatically use the latest storage format, while existing indexes can be upgraded to the new format using `REINDEX INDEX CONCURRENTLY` after a newer storage format is available.
+
+Upgrading is not urgent. The extension is compatible with SQL objects and index storage formats from older versions, but staying current keeps you on the supported, best-performing path and avoids a larger migration later, so upgrade when convenient rather than deferring indefinitely.
+
+**Note:** The latest available extension version is reported by `SELECT default_version FROM pg_available_extensions WHERE name = 'lakebase_text'`.
+
 ## Quick start
 
 Create a table with a `tsvector` column and insert data:
@@ -43461,6 +43475,28 @@ LIMIT 5;
 The `<@>` operator calculates the negative BM25 score of a document against a query. Ordering by score ascending returns the most relevant documents first (lower negative score = higher relevance).
 
 `to_bm25query` constructs a `bm25query_tsvector` value by combining the query `tsvector` with the object identifier of the BM25 index. The index identifier is required because BM25 scoring depends on corpus-wide statistics stored in the index.
+
+**Note:** A `lakebase_bm25` index scan can omit any number of rows whose `<@>` value is exactly `0.0`. Do not rely on zero-distance rows being returned or on their order. To evaluate every row, set `lakebase_bm25.enable_scan` to `off` to use a sequential scan instead.
+
+## Keep the index accurate
+
+BM25 statistics are computed at index build time and updated by VACUUM. For most workloads, regular VACUUM keeps scores accurate. After bulk-loading a large amount of new data, run VACUUM manually:
+
+```sql title="PostgreSQL"
+VACUUM documents;
+```
+
+To maintain query and update performance, `VACUUM` must clean the index promptly. For a table dedicated to text search, Neon recommends setting `autovacuum_vacuum_insert_scale_factor` to `0` so the insert-triggered autovacuum threshold does not grow with the table:
+
+```sql title="PostgreSQL"
+ALTER TABLE documents SET (
+  autovacuum_vacuum_insert_scale_factor = 0
+);
+```
+
+With the scale factor set to `0`, `autovacuum_vacuum_insert_threshold` determines the fixed number of inserted tuples that triggers autovacuum. Tune that threshold based on your workload.
+
+**Warning:** BM25 global statistics are not MVCC-versioned. If `VACUUM` updates the statistics while a transaction is using an older MVCC snapshot, the transaction can calculate scores using statistics newer than its row snapshot. Row visibility remains MVCC-compliant, but scores, rankings, and top-K results can change within a `REPEATABLE READ` transaction. Do not rely on snapshot-stable BM25 rankings across a concurrent `VACUUM`, including autovacuum.
 
 ## Configure default_limit
 
@@ -43597,6 +43633,27 @@ CREATE EXTENSION IF NOT EXISTS lakebase_vector CASCADE;
 
 `lakebase_vector` relies on a preloaded library that Neon enables by default. If you've customized your project's [preloaded libraries](https://neon.com/docs/extensions/pg-extensions#extensions-with-preloaded-libraries), make sure `lakebase_vector` is in the list.
 
+### Upgrade the extension and indexes
+
+A new Lakebase Search release can add features, fixes, and performance improvements. Although Lakebase Search is released as part of Neon updates, it does not upgrade everything automatically. In `lakebase_vector`, two things upgrade separately and carry version numbers that are unrelated to each other:
+
+- **The extension version** is the version of the SQL objects that `CREATE EXTENSION lakebase_vector` creates, including its data types, functions, operators, and the `lakebase_ann` index access method. This version is reported by `SELECT installed_version FROM pg_available_extensions WHERE name = 'lakebase_vector'`. `ALTER EXTENSION lakebase_vector UPDATE` updates this version.
+- **The index storage format** is the on-disk layout of a `lakebase_ann` index. The extension may introduce updated index storage formats in an update, unlocking more features and delivering better performance. All newly created indexes automatically use the latest storage format, while existing indexes can be upgraded to the new format using `REINDEX INDEX CONCURRENTLY` after a newer storage format is available.
+
+Upgrading is not urgent. The extension is compatible with SQL objects and index storage formats from older versions, but staying current keeps you on the supported, best-performing path and avoids a larger migration later, so upgrade when convenient rather than deferring indefinitely.
+
+**Note:** The latest available extension version is reported by `SELECT default_version FROM pg_available_extensions WHERE name = 'lakebase_vector'`.
+
+The latest storage format version is `_2`. The following query finds all indexes that use an older storage format. You can then rebuild them to the latest storage format with `REINDEX INDEX` or `REINDEX INDEX CONCURRENTLY`:
+
+```sql title="PostgreSQL"
+SELECT oid::regclass AS index, lakebase_ann_index_info(oid::regclass)::json ->> 'version' AS storage_format_version
+FROM pg_class
+WHERE relam = (SELECT oid FROM pg_am WHERE amname = 'lakebase_ann') AND relkind = 'i';
+```
+
+**Note:** `REINDEX INDEX CONCURRENTLY` allows reads and writes to continue, but it takes longer.
+
 ## Quick start
 
 Create a table with a `vector` column and insert some data:
@@ -43612,7 +43669,8 @@ FROM generate_series(1, 1000);
 Create a `lakebase_ann` index on the embedding column:
 
 ```sql
-CREATE INDEX ON items USING lakebase_ann (embedding vector_l2_ops);
+CREATE INDEX items_embedding_idx ON items
+  USING lakebase_ann (embedding vector_l2_ops);
 ```
 
 Query using the standard `pgvector` syntax:
@@ -43658,7 +43716,7 @@ The shape of `probes` must match the shape of `lists`. Call `lakebase_ann_index_
 
 ```sql
 -- Check your index's lists array first
-SELECT lakebase_ann_index_info('items_embedding_ann');
+SELECT lakebase_ann_index_info('items_embedding_idx');
 
 -- Then set probes to match the shape of lists.
 -- One-level index (single-value lists): set one value.
@@ -43716,13 +43774,28 @@ SET max_parallel_maintenance_workers = 15;
 
 ### Concurrent index updates
 
-For large, frequently changing datasets, use `CREATE INDEX CONCURRENTLY` to build or rebuild an index without blocking reads and writes:
+`CREATE INDEX CONCURRENTLY` and `REINDEX INDEX CONCURRENTLY` allow reads and writes to continue while an index is built or rebuilt:
 
-```sql
-CREATE INDEX CONCURRENTLY items_embedding_ann ON items
+```sql title="PostgreSQL"
+CREATE INDEX CONCURRENTLY items_embedding_idx_concurrent ON items
   USING lakebase_ann (embedding vector_l2_ops);
 
-REINDEX INDEX CONCURRENTLY items_embedding_ann;
+REINDEX INDEX CONCURRENTLY items_embedding_idx_concurrent;
+```
+
+## Prewarm an index
+
+Use `lakebase_ann_prewarm` after a compute starts to load the frequently accessed parts of an index into memory. The `scope` argument accepts the following values:
+
+- `search` (default): Prewarms the full hot portion used for search.
+- `routing`: Prewarms only the routing structures. This option is faster and provides a better cost-performance tradeoff for large indexes.
+
+```sql title="PostgreSQL"
+-- Prewarm the full search scope
+SELECT lakebase_ann_prewarm('items_embedding_idx');
+
+-- Prewarm only routing structures
+SELECT lakebase_ann_prewarm('items_embedding_idx', scope => 'routing');
 ```
 
 ## Reference
@@ -43770,6 +43843,13 @@ Pick the operator class that matches how your embeddings were trained, and use t
 - **Inner product** (`vector_ip_ops`, `<#>`) is for vectors pre-normalized to unit length; for unit vectors it matches cosine and is typically faster.
 
 The `halfvec`, `rabitq8`, and `rabitq4` families provide the same three metrics with smaller, quantized storage.
+
+### Functions
+
+| Function                                                      | Returns | Description                                                                                                 |
+| :------------------------------------------------------------ | :------ | :---------------------------------------------------------------------------------------------------------- |
+| `lakebase_ann_prewarm(regclass, scope text DEFAULT 'search')` | void    | Loads frequently accessed index data into memory. Valid `scope` values are `search` and `routing`.          |
+| `lakebase_ann_index_info(regclass)`                           | text    | Returns index metadata as JSON text, including `version`, `lists`, `default_probes`, and `default_epsilon`. |
 
 ### Index options
 
@@ -44645,9 +44725,11 @@ Schedule and manage cron jobs directly within your Lakebase Postgres database
 
 The `pg_cron` extension provides a simple, cron-based job scheduler for Postgres. It operates directly within your database, allowing you to schedule standard SQL commands or calls to stored procedures using familiar cron syntax. This eliminates the need for external cron utilities for many database maintenance and automation tasks.
 
-**Tip: Scheduling without keeping a compute active**
+**Important: Consider Function Triggers first**
 
-If the work you want to schedule isn't SQL, or you don't want to keep a compute active to hold the schedule, see [scheduled Function Triggers](https://neon.com/docs/compute/functions/triggers/schedule). They invoke a [Neon Function](https://neon.com/docs/compute/functions/overview) on a cron schedule and run even when the compute is scaled to zero.
+For scheduled work, [scheduled Function Triggers](https://neon.com/docs/compute/functions/triggers/schedule) are usually the better choice. They run a [Neon Function](https://neon.com/docs/compute/functions/overview) on a cron schedule and fire at scale to zero. The job runs your code with the same [injected environment](https://neon.com/docs/compute/functions/environment-variables) as any function, including [Postgres](https://neon.com/docs/postgres/overview) via `DATABASE_URL`, [AI Gateway](https://neon.com/docs/ai-gateway/overview) and [Object Storage](https://neon.com/docs/storage/overview).
+
+`pg_cron` runs only while the compute is active, so keep it for in-database maintenance on an always-on compute.
 
 > **Try it on Neon!**
 >
@@ -44656,10 +44738,6 @@ If the work you want to schedule isn't SQL, or you don't want to keep a compute 
 > [Sign Up](https://console.neon.tech/signup)
 
 This guide provides an introduction to the `pg_cron` extension. You'll learn how to enable the extension, schedule jobs, understand the cron syntax, manage and monitor your scheduled tasks, and about considerations specific to the Neon environment.
-
-**Warning: Key details about using pg_cron with Neon**
-
-Please note that `pg_cron` jobs will only run when your compute is active. We therefore recommend only using `pg_cron` on computes that run 24/7 or where you have disabled [scale to zero](https://neon.com/docs/introduction/scale-to-zero).
 
 ## Enable the `pg_cron` extension
 
@@ -48149,7 +48227,7 @@ Neon supports the Postgres extensions shown below. Extension versions may differ
 | [neon](https://neon.com/docs/extensions/neon)                                                                  |    1.14 |    1.14 |    1.14 |    1.14 |   1.14 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | [neon\_utils](https://neon.com/docs/extensions/neon-utils)                                                     |     1.1 |     1.1 |     1.1 |     1.1 |    1.1 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | [online\_advisor](https://neon.com/docs/extensions/online_advisor)                                             |       - |       - |       - |     1.0 |      - |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| [pg\_cron](https://neon.com/docs/extensions/pg_cron)                                                           |     1.6 |     1.6 |     1.6 |     1.6 |    1.6 | To install `pg_cron`, it must first be enabled. See [Enable the pg\_cron extension](https://neon.com/docs/extensions/pg_cron#enable-the-pgcron-extension) for instructions. Please note that `pg_cron` jobs will only run when your compute is active. We therefore recommend only using `pg_cron` on computes that run 24/7 or where you have disabled [scale to zero](https://neon.com/docs/introduction/scale-to-zero).                                     |
+| [pg\_cron](https://neon.com/docs/extensions/pg_cron)                                                           |     1.6 |     1.6 |     1.6 |     1.6 |    1.6 | Prefer [scheduled Function Triggers](https://neon.com/docs/compute/functions/triggers/schedule); `pg_cron` runs only while the compute is active, so it needs [scale to zero](https://neon.com/docs/introduction/scale-to-zero) disabled.                                                                                                                                                                                                                      |
 | [pg\_graphql](https://neon.com/docs/extensions/pg_graphql)                                                     |  1.5.11 |  1.5.11 |  1.5.11 |  1.5.11 | 1.5.12 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | [pg\_hashids](https://github.com/iCyberon/pg_hashids)                                                          |   1.2.1 |   1.2.1 |   1.2.1 |   1.2.1 |  1.2.1 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | [pg\_hint\_plan](https://github.com/ossc-db/pg_hint_plan)                                                      |   1.4.1 |   1.5.0 |   1.6.0 |   1.7.0 |  1.8.0 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
@@ -63016,7 +63094,7 @@ import { neon } from "@neon/ai-sdk-provider";
 import { streamText } from "ai";
 
 const result = streamText({
-  model: neon("gpt-5-mini"), // or "glm-5-3-flash", "gemini-3-flash", ...
+  model: neon("gpt-oss-120b"), // any enabled model, e.g. "glm-5-3-flash"; frontier models (OpenAI, Gemini) need access requested first
   system: "Answer using only the user's notes.",
   prompt: `${question}\n\nNotes:\n${notesText}`,
 });
@@ -64001,7 +64079,8 @@ app.post('/generate', async (c) => {
   const { topic, author = 'anonymous' } = await c.req.json();
 
   const { text } = await generateText({
-    model: neon('gpt-5-nano'),
+    // Open-weight models are enabled by default. Frontier models (for example OpenAI GPT) need access requested in the Console first.
+    model: neon('gpt-oss-20b'),
     prompt: `Write a 2 sentence post about the following topic. Just send the post content without any additional text: ${topic}`,
   });
 
@@ -64019,7 +64098,7 @@ app.post('/assistant', async (c) => {
   const { messages } = await c.req.json();
 
   const result = streamText({
-    model: neon('gpt-5-mini'),
+    model: neon('meta-llama-3-3-70b-instruct'),
     system:
       "You are a helpful assistant that answers questions about the user's blog posts. Use the queryPosts tool to look them up.",
     messages: await convertToModelMessages(messages),
@@ -64030,8 +64109,10 @@ app.post('/assistant', async (c) => {
           limit: z.number().default(10).describe('How many posts to fetch.'),
         }),
         execute: async ({ limit }) => {
+          // Cast created_at to text: a raw Date in the tool result fails the AI SDK
+          // message schema when the result is fed back to the model on the next step.
           const { rows } = await pool.query(
-            'select author, content, created_at from posts where is_published = true order by created_at desc limit $1',
+            'select author, content, created_at::text from posts where is_published = true order by created_at desc limit $1',
             [limit],
           );
           return rows;
@@ -64336,8 +64417,6 @@ Keep reading: [Neon plans](https://neon.com/docs/introduction/plans)
 
 Network latency is one of the most common contributors to database response time: even a well-tuned database will feel slow if it's geographically far from your application servers. When creating a Neon project, choose the region that is closest to where your application runs.
 
-![Region selection](https://neon.com/docs/introduction/project_creation_regions.png)
-
 Keep reading: [Neon regions](https://neon.com/docs/introduction/regions)
 
 ## Keep your production branch as the default root branch
@@ -64412,7 +64491,7 @@ Keep reading:
 
 ## Size the history window for instant restore
 
-**[Instant restore](https://neon.com/docs/postgres/backup-restore/branch-restore)** lets you roll a branch's database timeline back in time. How far back you can go depends on the **history window** you configure (under **Settings → Instant restore**). On paid plans, the default history window is 1 day, which you can increase up to 30 days.
+**[Instant restore](https://neon.com/docs/postgres/backup-restore/branch-restore)** lets you roll a branch's database timeline back in time. How far back you can go depends on the **history window** you configure (under **Settings → Postgres**). On paid plans, the default history window is 1 day, which you can increase up to 30 days.
 
 A longer history window gives you more flexibility to recover from bugs discovered later or accidental data loss. However, longer windows retain more change history, which increases **History** usage on your bill. Choose a window that balances recovery needs with predictable storage costs.
 
@@ -68168,8 +68247,8 @@ You can configure autoscaling configuration defaults for your project so that **
 To configure autoscaling defaults:
 
 1. Navigate to your Project Dashboard and select **Settings** from the sidebar.
-2. Select **Compute**.
-3. Select **Change** to open the **Change default compute settings** modal.
+2. Select **Postgres**.
+3. Under **Compute defaults**, select **Modify defaults** to open the compute settings modal.
 4. Use the slider to specify a minimum and maximum compute size and **Save** your changes.
 
 The next time you create a compute, these settings will be applied to it.
@@ -70682,7 +70761,7 @@ To enable logical replication in Neon:
 
 1. Select your project in the Neon Console.
 2. On the Neon **Dashboard**, select **Settings**.
-3. Select **Logical Replication**.
+3. Select **Postgres**, then **Logical replication**.
 4. Click **Enable** to enable logical replication.
 
 You can verify that logical replication is enabled by running the following query from the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor):
@@ -72324,7 +72403,6 @@ The easiest way to get started is with the [Neon GitHub integration](https://neo
 4. Name the secret `NEON_API_KEY` and paste your API key into the value field.
 5. Click **Add secret**.
 6. You will also need your Neon **Project ID**, which you can find in the **Settings** page of the Neon console.
-   ![Neon Project ID in the console](https://neon.com/docs/manage/settings_page.png)
 7. Add the Project ID to your GitHub repository as a **variable**:
    - In your GitHub repository, navigate to **Settings** > **Secrets and variables** > **Actions**.
    - Select **Variables** and click **New repository variable**.
@@ -87314,7 +87392,7 @@ To enable logical replication in Neon:
 
 1. Select your project in the Neon Console.
 2. On the Neon **Dashboard**, select **Settings**.
-3. Select **Logical Replication**.
+3. Select **Postgres**, then **Logical replication**.
 4. Click **Enable** to enable logical replication.
 
 You can verify that logical replication is enabled by running the following query from the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor) or an SQL client such as [psql](https://neon.com/docs/connect/query-with-psql-editor):
@@ -87636,7 +87714,7 @@ To enable logical replication in Neon:
 
 1. Select your project in the Neon Console.
 2. On the Neon **Dashboard**, select **Settings**.
-3. Select **Logical Replication**.
+3. Select **Postgres**, then **Logical replication**.
 4. Click **Enable** to enable logical replication.
 
 You can verify that logical replication is enabled by running the following query from the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor):
@@ -88084,7 +88162,7 @@ To enable logical replication in Neon:
 
 1. Select your project in the Neon Console.
 2. On the Neon **Dashboard**, select **Settings**.
-3. Select **Logical Replication**.
+3. Select **Postgres**, then **Logical replication**.
 4. Click **Enable** to enable logical replication.
 
    ![Neon dashboard settings with option to enable logical replication](https://neon.com/docs/guides/neon-console-settings-logical-replication.png)
@@ -88970,7 +89048,7 @@ Configure Neon as a logical replication publisher that Lakeflow Connect can subs
 **Important:** Enabling logical replication sets `wal_level` from `replica` to `logical` for the entire project and restarts all computes in the project, briefly disconnecting clients. Once set to `logical`, it cannot be reverted.
 
 1. In the Neon Console, open your project.
-2. Go to **Settings** → **Logical Replication**.
+2. Go to **Settings** → **Postgres**, then **Logical replication**.
 3. Click **Enable**.
 
 Verify:
@@ -89233,7 +89311,7 @@ To enable logical replication in Neon:
 
 1. Select your project in the Neon Console.
 2. On the Neon **Dashboard**, select **Settings**.
-3. Select **Logical Replication**.
+3. Select **Postgres**, then **Logical replication**.
 4. Click **Enable** to enable logical replication.
 
 You can verify that logical replication is enabled by running the following query from the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor):
@@ -89417,7 +89495,7 @@ To enable logical replication in Neon:
 
 1. Select your project in the Neon Console.
 2. On the Neon **Dashboard**, select **Settings**.
-3. Select **Logical Replication**.
+3. Select **Postgres**, then **Logical replication**.
 4. Click **Enable** to enable logical replication.
 
 You can verify that logical replication is enabled by running the following query from the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor):
@@ -89574,7 +89652,7 @@ To enable logical replication in Neon:
 
 1. Select your project in the Neon Console.
 2. On the Neon **Dashboard**, select **Settings**.
-3. Select **Logical Replication**.
+3. Select **Postgres**, then **Logical replication**.
 4. Click **Enable** to enable logical replication.
 
 You can verify that logical replication is enabled by running the following query from the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor):
@@ -89817,7 +89895,7 @@ Replication keeps compute active (no [scale to zero](https://neon.com/docs/intro
 
 The Inngest Integration relies on Neon's Logical Replication feature to get notified upon database changes.
 
-Navigate to your Neon Project using the Neon Console and open the **Settings** > **Logical Replication** page. From here, follow the instructions to enable Logical Replication:
+Navigate to your Neon Project using the Neon Console and open the **Settings** > **Postgres** page. From here, follow the instructions to enable Logical Replication:
 
 ![Neon dashboard settings with option to enable logical replication](https://neon.com/docs/guides/neon-console-settings-logical-replication.png)
 
@@ -89935,7 +90013,7 @@ To enable logical replication in Neon:
 
 1. Select your project in the Neon Console.
 2. On the Neon **Dashboard**, select **Settings**.
-3. Select **Logical Replication**.
+3. Select **Postgres**, then **Logical replication**.
 4. Click **Enable** to enable logical replication.
 
 You can verify that logical replication is enabled by running the following query from the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor):
@@ -90432,7 +90510,7 @@ To enable logical replication in Neon:
 
 1. Select your project in the Neon Console.
 2. On the Neon **Dashboard**, select **Settings**.
-3. Select **Logical Replication**.
+3. Select **Postgres**, then **Logical replication**.
 4. Click **Enable** to enable logical replication.
 
 You can verify that logical replication is enabled by running the following query:
@@ -90772,7 +90850,7 @@ To enable logical replication:
 
 1. Select your project in the Neon Console.
 2. On the Neon **Dashboard**, select **Settings**.
-3. Select **Logical Replication**.
+3. Select **Postgres**, then **Logical replication**.
 4. Click **Enable** to enable logical replication.
 
 You can verify that logical replication is enabled by running the following query:
@@ -90898,7 +90976,7 @@ When replicating data from Neon, enable logical replication on your Neon project
 
 1. Select your project in the Neon Console.
 2. On the **Project Dashboard**, select **Settings**.
-3. Select **Logical replication**.
+3. Select **Postgres**, then **Logical replication**.
 4. Click **Enable** to enable logical replication.
 
 **CLI**
@@ -91289,7 +91367,7 @@ To enable logical replication:
 
 1. Select your project in the Neon Console.
 2. On the Neon **Dashboard**, select **Settings**.
-3. Select **Logical Replication**.
+3. Select **Postgres**, then **Logical replication**.
 4. Click **Enable** to enable logical replication.
 
 You can verify that logical replication is enabled by running the following query:
@@ -91905,7 +91983,7 @@ To enable logical replication in Neon:
 
 1. Select your project in the Neon Console.
 2. On the Neon **Dashboard**, select **Settings**.
-3. Select **Logical Replication**.
+3. Select **Postgres**, then **Logical replication**.
 4. Click **Enable** to enable logical replication.
 
 You can verify that logical replication is enabled by running the following query from the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor):
@@ -93809,7 +93887,7 @@ The sample GitHub Actions workflow provided by the Neon GitHub integration depen
 To view the Neon API key created by the integration:
 
 1. In the [Neon Console](https://console.neon.tech), click your profile at the top right corner of the page.
-2. Select **Account settings**.
+2. Select **Settings** (under **Account**).
 3. Select **API keys**.
 
 The API key created by the integration should be listed with a name similar to the following: **API key for GitHub (cool-darkness-12345678)**. You cannot view the key itself, only the name it was given, the time it was created, and when the key was last used.
@@ -93855,7 +93933,7 @@ Any GitHub Actions workflows you've added to GitHub repositories that are depend
 To remove the GitHub integration:
 
 1. In the Neon Console, navigate your account Profile.
-2. Select **Account settings**.
+2. Select **Settings** (under **Account**).
 3. Select **Integrations**.
 4. Click **Remove**.
 
@@ -97986,8 +98064,8 @@ To configure an allowlist:
 
 1. Select a project in the Neon Console.
 2. On the Project Dashboard, select **Settings**.
-3. Select **Network Security**.
-4. Under **IP Allow**, specify the IP addresses you want to permit. Separate multiple entries with commas.
+3. Select **Networking**.
+4. Under **Public internet access**, specify the IP addresses you want to permit. Separate multiple entries with commas.
 5. Click **Save changes**.
 
 **CLI**
@@ -104821,7 +104899,7 @@ To enable logical replication:
 
 1. Select your project in the Neon Console.
 2. On the **Dashboard**, select **Settings**.
-3. Select **Logical Replication**.
+3. Select **Postgres**, then **Logical replication**.
 4. Click **Enable** to enable logical replication.
 
 You can verify that logical replication is enabled by running the following query from the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor):
@@ -106965,7 +107043,7 @@ VALUES
 
 The Inngest Integration relies on Neon's Logical Replication feature to get notified upon database changes.
 
-Navigate to your Neon Project using the Neon Console and open the **Settings** > **Logical Replication** page. From here, follow the instructions to enable Logical Replication:
+Navigate to your Neon Project using the Neon Console and open the **Settings** > **Postgres** page. From here, follow the instructions to enable Logical Replication:
 
 ![Neon dashboard settings with option to enable logical replication](https://neon.com/docs/guides/neon-console-settings-logical-replication.png)
 
@@ -108952,8 +109030,6 @@ We'll verify the following:
 ## Create a new Neon project
 
 Click the **Create new Neon project** button, specify your project settings including the **Postgres version** and **region**, and click **Create**.
-
-![Import Data Assistant create project](https://neon.com/docs/import/import_data_assistant_create_project.png)
 
 ## Start import process
 
@@ -113613,13 +113689,13 @@ Branches with expiration work well for:
 
 ## Restore and recover data
 
-If you lose data due to an unintended deletion or some other event, you can use **[instant restore](https://neon.com/docs/introduction/branch-restore)** to recover: roll the branch back to any point in time that still falls within your project's **history window** (the retention you configure under **Settings → Instant restore**). You can also create a new restore branch for historical analysis or any other reason.
+If you lose data due to an unintended deletion or some other event, you can use **[instant restore](https://neon.com/docs/introduction/branch-restore)** to recover: roll the branch back to any point in time that still falls within your project's **history window** (the retention you configure under **Settings → Postgres**). You can also create a new restore branch for historical analysis or any other reason.
 
 ![Recover from data loss using restore branching](https://neon.com/docs/introduction/branching_data_loss.png)
 
 ### History window
 
-**Instant restore** (and Time Travel, branching from the past, and snapshots) need Neon to keep a log of data changes. The **history window** is the project-wide setting—on **Settings → Instant restore** in the Console—that controls how long that change history is retained, which sets how far back **instant restore** and the other features can reach.
+**Instant restore** (and Time Travel, branching from the past, and snapshots) need Neon to keep a log of data changes. The **history window** is the project-wide setting—on **Settings → Postgres** in the Console—that controls how long that change history is retained, which sets how far back **instant restore** and the other features can reach.
 
 Neon retains a history of changes for your branches, with defaults of 6 hours on Free plan and 1 day on paid plans. Increasing the history window expands recovery options but also increases storage costs, as more history is kept. You can configure it up to 7 days on Launch or 30 days on Scale plans.
 
@@ -113977,8 +114053,6 @@ Neon's IP Allow feature, available with the Neon [Scale](https://neon.com/docs/i
 
 You can configure **IP Allow** in your Neon project's settings. To get started, see [Configure IP Allow](https://neon.com/docs/manage/projects#configure-ip-allow).
 
-![IP Allow configuration](https://neon.com/docs/manage/ip_allow.png)
-
 ## Neon services to allowlist
 
 If IP Allow is enabled on your project, add the following IP addresses to allow connections from Neon hosted services:
@@ -114025,7 +114099,7 @@ You can view and manage billing from the **Billing** page in the Neon Console.
 To access your **Billing** page:
 
 1. Navigate to the Neon Console.
-2. Select your organization from the breadcrumb menu at the top-left of the console.
+2. Select your organization from the profile menu in the top-right of the console.
 3. Select **Billing** from the menu to view the charges to date.
 
 The **Billing** page has a sidebar with **Billing summary** and **Payment info**. **Billing summary** shows **This month's summary**: your billing period, plan details (including **Change plan**), and **Charges to date**. **Payment info** shows how you pay, your billing email, and company or address details (see [Update your payment method](https://neon.com/docs/introduction/manage-billing#update-your-payment-method) and [Update billing details](https://neon.com/docs/introduction/manage-billing#update-billing-details-company-and-address)).
@@ -114039,7 +114113,7 @@ The **Payment info** view explains that **charges are applied to your card on th
 To update your payment method:
 
 1. Navigate to the Neon Console.
-2. Select your organization from the breadcrumb menu at the top-left of the console.
+2. Select your organization from the profile menu in the top-right of the console.
 3. Select **Billing** from the menu.
 4. In the sidebar, select **Payment info**.
 5. In the **Payment method** card, select **Edit**.
@@ -114061,7 +114135,7 @@ Neon's billing system uses **Stripe Checkout**, which does not currently support
 To update your billing email:
 
 1. Navigate to the Neon Console.
-2. Select your organization from the breadcrumb menu at the top-left of the console.
+2. Select your organization from the profile menu in the top-right of the console.
 3. Select **Billing** from the menu.
 4. In the sidebar, select **Payment info**.
 5. In the **Billing email** card, select **Edit**.
@@ -114073,7 +114147,7 @@ If you are unable to update your billing email, please [contact support](https:/
 To update the company name, address, postal or ZIP code, country, or VAT or tax ID shown on your account:
 
 1. Navigate to the Neon Console.
-2. Select your organization from the breadcrumb menu at the top-left of the console.
+2. Select your organization from the profile menu in the top-right of the console.
 3. Select **Billing** from the menu.
 4. In the sidebar, select **Payment info**.
 5. In the **Billing Info** card, select **Edit**.
@@ -114091,7 +114165,7 @@ Invoices are charged automatically to your payment method on the first day of th
 To pay an invoice manually:
 
 1. Navigate to the Neon Console.
-2. Select your organization from the breadcrumb menu at the top-left of the console.
+2. Select your organization from the profile menu in the top-right of the console.
 3. Select **Billing** from the menu.
 4. Select **View/Pay invoices**.
 5. On an unpaid invoice, select **Pay invoice** to open its secure payment page and complete the payment.
@@ -114103,7 +114177,7 @@ To pay an invoice manually:
 To download an invoice:
 
 1. Navigate to the Neon Console.
-2. Select your organization from the breadcrumb menu at the top-left of the console.
+2. Select your organization from the profile menu in the top-right of the console.
 3. Select **Billing** from the menu.
 4. Select **View/Pay invoices**.
 5. Find the invoice you want and open its actions menu, then select **Download**.
@@ -114117,7 +114191,7 @@ If you have a question or problem with billing or an invoice, you can contact th
 #### From the Billing page header
 
 1. Navigate to the Neon Console.
-2. Select your organization from the breadcrumb menu at the top-left of the console.
+2. Select your organization from the profile menu in the top-right of the console.
 3. Select **Billing** from the menu.
 4. Select **Request billing support**.
 5. In the form, choose the **related invoice** (if you have invoices) and describe how we can help, then submit.
@@ -114140,7 +114214,7 @@ If you're upgrading your plan, your compute will only pick up the new plan limit
 To upgrade or downgrade your plan:
 
 1. Navigate to the Neon Console.
-2. Select your organization from the breadcrumb menu at the top-left of the console.
+2. Select your organization from the profile menu in the top-right of the console.
 3. Select **Billing** from the menu.
 4. Select **Change plan**.
 
@@ -114392,7 +114466,7 @@ From the **Billing** page (Organization → **Billing** in the Neon Console) you
 To open the Billing page:
 
 1. Navigate to the Neon Console.
-2. Select your organization from the breadcrumb menu at the top-left.
+2. Select your organization from the profile menu in the top-right of the console.
 3. Select **Billing**.
 
 ### Projects page
@@ -115835,8 +115909,6 @@ You can select the region for your Neon project during project creation. See [Cr
 
 All branches and databases created in a Neon project are created in the region selected for the project.
 
-![Select region image](https://neon.com/docs/introduction/project_creation_regions.png)
-
 **Note:** After you select a region for a Neon project, it cannot be changed for that project. To run your database in a different region, create a **new** project there and migrate your data. See [Region migration](https://neon.com/docs/import/region-migration).
 
 ## Check which region your project uses
@@ -115970,7 +116042,7 @@ We're accelerating work on improving and scaling the core database on Neon as we
 - **Debug Postgres from the CLI with `neon inspect db`**: Run read-only Postgres diagnostics (table sizes, bloat, unused indexes, long-running queries, locks, and more) straight from the Neon CLI, safe to hand to an agent. [Learn more](https://neon.com/docs/cli/inspect).
 - **Snapshots in the Neon CLI**: The new `neon snapshots` command group manages the full snapshot lifecycle (list, create, restore, and schedule) from your terminal. [Learn more](https://neon.com/docs/cli/snapshots).
 - **Query Functions and Storage logs from the Neon MCP server**: New read-only `query_logs`, `list_log_fields`, and `list_log_field_values` tools let your AI assistant investigate Functions and Object Storage failures without leaving your editor. [Learn more](https://neon.com/docs/ai/neon-mcp-server).
-- **Neon backend services**: Object Storage, Functions, and AI Gateway are generally available in AWS US East (Ohio), US East (N. Virginia), Europe (Frankfurt), and Asia Pacific (Singapore). Support is expanding toward all regions. Declare your whole backend in one `neon.ts` file and it branches with your data. [Read the announcement](https://neon.com/blog/neon-backend-is-beta).
+- **Neon backend services**: Object Storage, Functions, and AI Gateway are generally available in AWS US East (Ohio), US East (N. Virginia), Europe (Frankfurt), and Asia Pacific (Singapore). Support is expanding toward all regions. Declare your whole backend in one `neon.ts` file and it branches with your data. [Read the announcement](https://neon.com/blog/neon-backend-is-ga).
 - **New TypeScript SDK for the Neon API**: `@neon/sdk` is a fetch-based, zero-dependency client that covers the full Neon Platform API, including the new backend services, and replaces `@neondatabase/api-client` as the recommended client. [Learn more](https://neon.com/docs/reference/typescript-sdk).
 - **Passkey support**: Sign in to Neon with a passkey using device biometrics or a security key. Passkeys satisfy organization-level 2FA requirements. [Learn more](https://neon.com/docs/manage/accounts#passkeys).
 - **Git-style diffs in the Neon CLI**: The new `neon diff` command shows schema changes between your current branch and any other branch, and the config commands now report their changes as a git diff. [Learn more](https://neon.com/docs/cli).
@@ -116239,7 +116311,7 @@ Neon checks your spending every 15 minutes. Once spending crosses a threshold, a
 ## Enable spending notifications
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
-2. Select your organization from the breadcrumb menu at the top-left.
+2. Select your organization from the profile menu in the top-right of the console.
 3. Select **Billing** from the menu.
 4. On the **Spending Notifications** card, select **Enable**.
 5. In the **Enable Spending Notifications** dialog, enter a whole-dollar amount.
@@ -117295,9 +117367,7 @@ Your **Neon account** is your personal identity for logging in, managing your pr
 
 ## Account settings
 
-You can access your Neon account settings from anywhere in the Console. Just click your profile avatar and select **Account settings** from the menu.
-
-![Open the profile menu and select Account settings.](https://neon.com/docs/manage/profile_dropdown.png)
+You can access your Neon account settings from anywhere in the Console. Just click your profile avatar in the top-right and select **Settings** under **Account**.
 
 Here's what you can do from **Account settings**.
 
@@ -117455,7 +117525,7 @@ While there is no strict limit on the number of API keys you can create, we reco
 
 You create and manage API keys in the [Neon Console](https://console.neon.tech), and where you go depends on the key type:
 
-- **Personal keys:** open the user menu and select **Account settings** > **API keys**.
+- **Personal keys:** open the profile menu in the top-right and go to **Settings** > **API keys**.
 - **Organization and project-scoped keys:** switch to your organization, then go to **Settings** > **API keys**.
 
 Each page lists your existing keys with their name, ID, and creation details, plus a button to create a new key. You'll need to create your first API key from the Console, where you are already authenticated. You can then use that key to generate new keys from the API.
@@ -120560,7 +120630,7 @@ The Neon team will review your request.
 
 --- [Document source](https://neon.com/docs/manage/maintenance-updates-overview.md) ---
 
-> Summary: Neon performs two distinct update types: platform maintenance and compute updates. Platform maintenance covers infrastructure, resource management, and critical security patches; track it via the Neon Status page by region. Compute updates cover Postgres version upgrades, OS patches, and new Neon features; view them in the Console under Settings > Updates. Paid plans can select a preferred update window.
+> Summary: Neon performs two distinct update types: platform maintenance and compute updates. Platform maintenance covers infrastructure, resource management, and critical security patches; track it via the Neon Status page by region. Compute updates cover Postgres version upgrades, OS patches, and new Neon features; view them in the Console under Settings > Postgres. Paid plans can select a preferred update window.
 
 # Maintenance & updates overview
 
@@ -120577,7 +120647,7 @@ For both types of updates, we strive to minimize disruption to database operatio
 | Type                     | Where to check                                         | Details                                                                                                                                                                                                                                                |
 | ------------------------ | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **Platform maintenance** | [Neon Status](https://neonstatus.com/)                 | Check the regional status page where your Neon project resides for upcoming platform maintenance. Optionally, subscribe to a regional status page to receive status updates. See [Neon Status](https://neon.com/docs/introduction/status) for details. |
-| **Updates**              | [Neon Console](https://console.neon.tech/app/projects) | On your Neon project dashboard, go to **Settings** > **Updates** to view your update window and check for update notices. Paid plans allow you to select a preferred update window.                                                                    |
+| **Updates**              | [Neon Console](https://console.neon.tech/app/projects) | On your Neon project dashboard, go to **Settings** > **Postgres** to view your update window and check for update notices. Paid plans allow you to select a preferred update window.                                                                   |
 
 --- [Document source](https://neon.com/docs/manage/operations.md) ---
 
@@ -120971,8 +121041,6 @@ In Neon, all projects live within organizations. When you sign up, you automatic
 ## About Neon Organizations
 
 In the Neon Console, the Organizations page gives you a centralized view of all your projects. From there, you can create new projects, manage existing ones, and oversee your members and billing information.
-
-![organizations projects tab](https://neon.com/docs/manage/org_projects.png)
 
 ## User roles and permissions
 
@@ -121668,9 +121736,7 @@ Learn how to manage your organization's projects, invite members, set their acce
 
 ## Create an organization
 
-To create a new org, use the **Create organization** button in the org switcher in the top navbar.
-
-![create organization button](https://neon.com/docs/manage/orgs_create_button.png)
+To create a new org, use the **Create organization** button in the profile menu in the top-right of the console.
 
 Select a plan for your new organization. Organizations can be free or paid; if you choose a paid plan, you'll enter billing details.
 
@@ -121732,7 +121798,7 @@ For the steps, see [Assign project access](https://neon.com/docs/manage/user-per
 
 ### Project sharing
 
-Project sharing invites an external Neon account by email to a single project, without adding them to your organization. It's still available from a project's **Settings** → **Collaborators** page, and if any project in your organization has collaborators, you'll also see them on the organization's **People** page.
+Project sharing invites an external Neon account by email to a single project, without adding them to your organization. It's still available from a project's **Settings** → **Sharing** page, and if any project in your organization has collaborators, you'll also see them on the organization's **People** page.
 
 Project-sharing collaborators _do not_ have access to the organization itself. They reach their shared projects by selecting **Projects shared with me** in the org switcher. When a project is transferred into an organization, sharing-based access is automatically removed for anyone who is already a member of that organization.
 
@@ -121827,7 +121893,7 @@ To automate this flow, see [Claimable database integration](https://neon.com/doc
 
 **Console (multiple)**
 
-1. Use the organization switcher to select the source organization.
+1. Use the profile menu in the top-right of the console to select the source organization.
 
 2. Open **Settings** > **Transfer projects**.
 
@@ -122221,8 +122287,9 @@ You can create a project from the Console or the Neon CLI. To create one with th
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Click **New Project**.
-3. Specify values for **Project Name**, **Postgres version**, **Cloud service provider**, and **Region**. Project names are limited to 64 characters.
-4. Click **Create Project**.
+3. Enter a **Project name** and choose a **Region** (the cloud provider is part of the region). Project names are limited to 64 characters.
+4. Under **Services**, choose what to enable. **Postgres database** is on by default (expand it to set the **Postgres version**). Where the selected region supports them, you can also enable **Object storage**, **Functions**, **AI gateway**, and **Neon Auth**. Services that aren't available in the selected region aren't shown.
+5. Click **Create project**.
 
 After creating a project, you are directed to the **Project Dashboard**.
 
@@ -122241,7 +122308,7 @@ The output includes the new project ID and the default connection string. For al
 To view your projects:
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
-2. From the breadcrumb navigation menu at the top-left of the console, select your organization.
+2. From the profile menu in the top-right of the console, select your organization.
 3. The **Projects** page lists your projects, including any projects that have been shared with you.
 
 ## Project settings
@@ -123605,7 +123672,7 @@ On the **Free plan**, updates are scheduled and applied automatically. You can c
 To view planned updates:
 
 1. Go to the Neon project dashboard.
-2. Select **Settings** > **Updates**.
+2. Select **Settings** > **Postgres**.
 
    ![Free plan updates UI](https://neon.com/docs/manage/free_plan_updates.png)
 
@@ -123622,7 +123689,7 @@ You can specify an update window in your Neon project's settings or using the Ne
 In the Neon Console:
 
 1. Go to the Neon project dashboard.
-2. Select **Settings** > **Updates**.
+2. Select **Settings** > **Postgres**.
 3. Choose a day of the week and an hour. Updates will occur within this time window and take only a few seconds.
 
    ![Paid plan updates UI](https://neon.com/docs/manage/paid_plan_updates.png)
@@ -124292,7 +124359,7 @@ There are minimal impacts to billing from the instant restore and Time Travel As
 
 Control how long Neon keeps change history for instant restore, Time Travel, and branching from past states
 
-**Instant restore** is Neon's point-in-time recovery feature: you can roll a root branch's database timeline back to an earlier state without copying the whole database. Instant restore (and Time Travel queries, branching from past states, and snapshots) rely on Neon retaining a **history** of changes. The **history window** is the Console control—on **Settings → Instant restore**—that sets how long that change history is kept, which defines how far back instant restore and the other features can reach.
+**Instant restore** is Neon's point-in-time recovery feature: you can roll a root branch's database timeline back to an earlier state without copying the whole database. Instant restore (and Time Travel queries, branching from past states, and snapshots) rely on Neon retaining a **history** of changes. The **history window** is the Console control—on **Settings → Postgres**—that sets how long that change history is kept, which defines how far back instant restore and the other features can reach.
 
 ## Defaults and plan limits
 
@@ -124342,9 +124409,7 @@ Changing the history window affects **all branches** in your project.
 
 1. Select your project.
 
-2. Go to **Settings** > **Instant restore**.
-
-   ![History window configuration](https://neon.com/docs/manage/instant_restore_setting.png)
+2. Go to **Settings** > **Postgres**.
 
 3. Under **History window**, use the slider to choose how long to keep change history (used for instant restore, Time Travel, and branching from past states). You can open **history storage** from the description on that page for details.
 
@@ -124586,11 +124651,11 @@ The serverless database in the Neon backend
 
 Lakebase Postgres is fully managed and compatible with any Postgres driver, ORM, or framework. Key capabilities include:
 
-- **Autoscaling** — compute scales up and down automatically with your workload
-- **Scale to zero** — idle databases suspend so you only pay for what you use
-- **Branching** — create isolated, instant copies of your database for development, testing, and CI
-- **Instant restore** — restore to any point in time within your history window
-- **Read replicas** — scale your app by offloading read traffic to read replicas
+- **Autoscaling.** Compute scales up and down automatically with your workload.
+- **Scale to zero.** Idle databases suspend, so you only pay for what you use.
+- **Branching.** Create isolated, instant copies of your database for development, testing, and CI.
+- **Instant restore.** Restore to any point in time within your history window.
+- **Read replicas.** Scale your app by offloading read traffic to read replicas.
 
 ## Get started
 
@@ -128443,7 +128508,7 @@ Selling the Neon service as part of another service offering.
 
 ## History window
 
-The Neon Console setting (under **Settings → Instant restore**) that controls how long Neon retains change history for your branches. It defines how far back **[instant restore](https://neon.com/docs/reference/glossary#instant-restore)** can reach and how far back you can run [Time Travel](https://neon.com/docs/reference/glossary#time-travel) queries or branch from past states. It is configurable per project and affects **History** usage (instant restore storage) on your bill. See [History window](https://neon.com/docs/introduction/history-window).
+The Neon Console setting (under **Settings → Postgres**) that controls how long Neon retains change history for your branches. It defines how far back **[instant restore](https://neon.com/docs/reference/glossary#instant-restore)** can reach and how far back you can run [Time Travel](https://neon.com/docs/reference/glossary#time-travel) queries or branch from past states. It is configurable per project and affects **History** usage (instant restore storage) on your bill. See [History window](https://neon.com/docs/introduction/history-window).
 
 ## root branch
 
@@ -131375,9 +131440,15 @@ data; // ProjectListItem[]
 
 Every method follows this shape: select a namespace, call a method, and receive a `{ data, error }` result. The reference below documents each namespace and method against that single contract.
 
-In the reference tables, the **Returns** column names the resolved resource, the type of `data` on success (or the value returned directly when `throwOnError` is set). A method resolving to `void` has no resource body; [`Paginated`](https://neon.com/docs/reference/typescript-sdk#lazy-auto-paginated-lists)`<T>` is the lazy, auto-paginated list described below. Every method also accepts an optional trailing options argument (`{ throwOnError?, waitForReadiness?, signal? }`), omitted from the tables for brevity.
+Each method takes a **single named-parameter object**: the path selectors (`projectId`, `branchId`, and any resource id such as `roleName` or `slug`) and any input or query fields are merged into one flat object, followed by an optional trailing options argument (`{ throwOnError?, waitForReadiness?, signal? }`, omitted from the tables for brevity).
 
-Nearly every method needs a `projectId`, and branch-scoped methods also need a `branchId`. Get these from `neon.projects.list()` and `neon.branches.list(projectId)` (or `neon.branches.getDefault(projectId)` for the default branch), reading `.id` off each result.
+**Important: Named parameters in v5 and later**
+
+`@neon/sdk` v5 replaced positional arguments with a single named-parameter object, and v6 is the current major. For example, `neon.branches.get(projectId, branchId)` is now `neon.branches.get({ projectId, branchId })`. If you're upgrading from v4, update your calls to the object form shown throughout this page. See [Upgrading from v4](https://neon.com/docs/reference/typescript-sdk#upgrading-from-v4).
+
+In the reference tables, the **Returns** column names the resolved resource, the type of `data` on success (or the value returned directly when `throwOnError` is set). A method resolving to `void` has no resource body; [`Paginated`](https://neon.com/docs/reference/typescript-sdk#lazy-auto-paginated-lists)`<T>` is the lazy, auto-paginated list described below.
+
+Nearly every method needs a `projectId`, and branch-scoped methods also need a `branchId`. Get these from `neon.projects.list()` and `neon.branches.list({ projectId })` (or `neon.branches.getDefault({ projectId })` for the default branch), reading `.id` off each result.
 
 ## Client configuration
 
@@ -131411,7 +131482,7 @@ Four behaviors are shared by every method: the result envelope, typed errors, pa
 By default, no `try/catch`. Each call resolves to a discriminated `{ data, error }` envelope; check `error`, then `data` is narrowed:
 
 ```ts
-const { data, error } = await neon.projects.get("late-frost-12345");
+const { data, error } = await neon.projects.get({ projectId: "late-frost-12345" });
 if (error) return; // error: typed NeonError union
 data; // narrowed to Project
 ```
@@ -131420,8 +131491,8 @@ To throw instead, set `throwOnError` on the client (or per call). The return typ
 
 ```ts
 const neon = createNeonClient({ apiKey, throwOnError: true });
-const project = await neon.projects.get("my-project"); // Project (throws on error)
-const { data } = await neon.projects.get("my-project", { throwOnError: false }); // opt out per call
+const project = await neon.projects.get({ projectId: "my-project" }); // Project (throws on error)
+const { data } = await neon.projects.get({ projectId: "my-project" }, { throwOnError: false }); // opt out per call
 ```
 
 ### Typed errors
@@ -131440,7 +131511,7 @@ The error channel, and what `throwOnError` throws, is one hierarchy of `Error` s
 | `client`     | `NeonError`          | SDK-side error, such as ambiguous connection-string selection   |
 
 ```ts
-const { error } = await neon.branches.get(projectId, "nope");
+const { error } = await neon.branches.get({ projectId, branchId: "nope" });
 if (error?.kind === "not_found") {
   // handle the 404
 }
@@ -131462,20 +131533,21 @@ for await (const project of neon.projects.list()) {
 
 Neon mutations return operations that complete in the background. The client-wide `waitForReadiness` default is `false`. `projects.create`, `branches.create`, and both `createAndConnect` workflows turn polling on for that call.
 
-`create` returns the resource. `createAndConnect` also waits, then returns `{ branch, endpoint, connectionString }` (or `{ project, connectionString }`). The primitive underneath is `neon.operations.waitFor(operations)`.
+`create` returns the resource. `createAndConnect` also waits, then returns `{ branch, endpoint, connectionString }` (or `{ project, connectionString }`). The primitive underneath is `neon.operations.waitFor({ operations })`.
 
-Pick one. `create` uses REST field names (`parent_id`). `createAndConnect` uses `{ name?, parentId?, compute? }`.
+Pick one. `create` uses REST field names (`parent_id`). `createAndConnect` uses `{ name?, parentId?, compute? }`. Both fold into the same params object alongside `projectId`.
 
 ```ts
-const { data: branch, error } = await neon.branches.create(projectId, {
+const { data: branch, error } = await neon.branches.create({
+  projectId,
   name: "preview",
 });
 if (error) throw error;
 
-const { data, error: connectError } = await neon.branches.createAndConnect(
+const { data, error: connectError } = await neon.branches.createAndConnect({
   projectId,
-  { name: "preview-uri" }
-);
+  name: "preview-uri",
+});
 if (connectError) throw connectError;
 const { connectionString } = data;
 ```
@@ -131494,24 +131566,25 @@ Account-level surfaces round out the client: [`consumption`](https://neon.com/do
 
 Create, manage, and share Neon projects. One API call per method; `list` is paginated. REST: [Projects API](https://neon.com/docs/reference/api/projects)
 
-| Method                            | Returns                                                                                                    | Arguments                                                                                                                                                                                                                 |
-| --------------------------------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `list(query?)`                    | [`Paginated`](https://neon.com/docs/reference/typescript-sdk#lazy-auto-paginated-lists)`<ProjectListItem>` | `query`: `{ search?, org_id?, limit? }`                                                                                                                                                                                   |
-| `get(id)`                         | `Project`                                                                                                  |                                                                                                                                                                                                                           |
-| `create(input?)`                  | `Project`                                                                                                  | Default-branch compute is always attached. No connection string. Readiness polling on by default. `input`: `{ name?, region_id?, pg_version?, org_id?, autoscaling_limit_min_cu?, autoscaling_limit_max_cu?, settings? }` |
-| `createAndConnect(input?, opts?)` | `{ project: Project, connectionString: string }`                                                           | Creates, then polls until ready. `opts`: `{ pooled? }` (default `true`)                                                                                                                                                   |
-| `update(id, input)`               | `Project`                                                                                                  | `input`: `{ name?, settings? }`                                                                                                                                                                                           |
-| `delete(id)`                      | `Project`                                                                                                  |                                                                                                                                                                                                                           |
-| `recover(id)`                     | `Project`                                                                                                  | Recover a soft-deleted project within its retention window                                                                                                                                                                |
-| `transfer(input)`                 | `void`                                                                                                     | `input`: `{ fromOrgId?, toOrgId, projectIds }` (`fromOrgId` defaults to the client `orgId`)                                                                                                                               |
-| `transferFromUser(input)`         | `void`                                                                                                     | `input`: `{ toOrgId, projectIds }`                                                                                                                                                                                        |
+| Method                       | Returns                                                                                                    | Arguments                                                                                                                                                                                                                 |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `list(query?)`               | [`Paginated`](https://neon.com/docs/reference/typescript-sdk#lazy-auto-paginated-lists)`<ProjectListItem>` | `query`: `{ search?, org_id?, limit? }`                                                                                                                                                                                   |
+| `get({ projectId })`         | `Project`                                                                                                  |                                                                                                                                                                                                                           |
+| `create(input?)`             | `Project`                                                                                                  | Default-branch compute is always attached. No connection string. Readiness polling on by default. `input`: `{ name?, region_id?, pg_version?, org_id?, autoscaling_limit_min_cu?, autoscaling_limit_max_cu?, settings? }` |
+| `createAndConnect(input?)`   | `{ project: Project, connectionString: string }`                                                           | Creates, then polls until ready. `input` also accepts `pooled?` (default `true`)                                                                                                                                          |
+| `update({ projectId, ... })` | `Project`                                                                                                  | Additional fields: `{ name?, settings? }`                                                                                                                                                                                 |
+| `delete({ projectId })`      | `Project`                                                                                                  |                                                                                                                                                                                                                           |
+| `recover({ projectId })`     | `Project`                                                                                                  | Recover a soft-deleted project within its retention window                                                                                                                                                                |
+| `transfer(input)`            | `void`                                                                                                     | `input`: `{ fromOrgId?, toOrgId, projectIds }` (`fromOrgId` defaults to the client `orgId`)                                                                                                                               |
+| `transferFromUser(input)`    | `void`                                                                                                     | `input`: `{ toOrgId, projectIds }`                                                                                                                                                                                        |
 
 ```ts
 // Provision a project, poll until ready, return a pooled connection string
-const { data } = await neon.projects.createAndConnect(
-  { name: "tenant-42", region_id: "aws-us-east-1" },
-  { pooled: true }
-);
+const { data } = await neon.projects.createAndConnect({
+  name: "tenant-42",
+  region_id: "aws-us-east-1",
+  pooled: true,
+});
 // data: { project, connectionString }
 ```
 
@@ -131519,45 +131592,48 @@ const { data } = await neon.projects.createAndConnect(
 
 Share a project with additional users by email.
 
-| Method                            | Returns               |
-| --------------------------------- | --------------------- |
-| `list(projectId)`                 | `ProjectPermission[]` |
-| `grant(projectId, email)`         | `ProjectPermission`   |
-| `revoke(projectId, permissionId)` | `ProjectPermission`   |
+| Method                                | Returns               |
+| ------------------------------------- | --------------------- |
+| `list({ projectId })`                 | `ProjectPermission[]` |
+| `grant({ projectId, email })`         | `ProjectPermission`   |
+| `revoke({ projectId, permissionId })` | `ProjectPermission`   |
 
 ## neon.branches
 
 Branch a project's data and schema. `create` attaches a read-write endpoint by default. REST: [Branches API](https://neon.com/docs/reference/api/branches)
 
-| Method                                         | Returns                                                                                           | Arguments                                                                                                                                                                                                                                                           |
-| ---------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `list(projectId, query?)`                      | [`Paginated`](https://neon.com/docs/reference/typescript-sdk#lazy-auto-paginated-lists)`<Branch>` | `query`: `{ search?, sort_by?, sort_order?, include_deleted? }`                                                                                                                                                                                                     |
-| `get(projectId, branchId)`                     | `Branch`                                                                                          |                                                                                                                                                                                                                                                                     |
-| `create(projectId, input?)`                    | `Branch`                                                                                          | Read-write compute on by default; `noCompute: true` skips it. No connection string. Readiness polling on by default. `input`: `{ name?, parent_id?, parent_lsn?, parent_timestamp?, protected?, compute?: { minCu?, maxCu?, suspendTimeoutSeconds? }, noCompute? }` |
-| `createAndConnect(projectId, input?, opts?)`   | `{ branch: Branch, endpoint: Endpoint, connectionString: string }`                                | Creates, then polls until ready. `input`: `{ name?, parentId?, compute?: { minCu?, maxCu?, suspendTimeoutSeconds? } }`. `opts`: `{ pooled? }`                                                                                                                       |
-| `update(projectId, branchId, input)`           | `Branch`                                                                                          | `input`: `{ name?, protected?, expires_at? }`                                                                                                                                                                                                                       |
-| `delete(projectId, branchId)`                  | `void`                                                                                            |                                                                                                                                                                                                                                                                     |
-| `getDefault(projectId)`                        | `Branch`                                                                                          | Resolve the project's default branch by flag, not by name                                                                                                                                                                                                           |
-| `setDefault(projectId, branchId)`              | `Branch`                                                                                          |                                                                                                                                                                                                                                                                     |
-| `finalizeRestore(projectId, branchId, input?)` | `void`                                                                                            | Commit a restore previewed with `snapshots.restore({ finalize: false })`                                                                                                                                                                                            |
+| Method                                            | Returns                                                                                           | Arguments                                                                                                                                                                                                                                                          |
+| ------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `list({ projectId, ...query })`                   | [`Paginated`](https://neon.com/docs/reference/typescript-sdk#lazy-auto-paginated-lists)`<Branch>` | `query`: `{ search?, sort_by?, sort_order?, include_deleted? }`                                                                                                                                                                                                    |
+| `get({ projectId, branchId })`                    | `Branch`                                                                                          |                                                                                                                                                                                                                                                                    |
+| `create({ projectId, ... })`                      | `Branch`                                                                                          | Read-write compute on by default; `noCompute: true` skips it. No connection string. Readiness polling on by default. Fields: `{ name?, parent_id?, parent_lsn?, parent_timestamp?, protected?, compute?: { minCu?, maxCu?, suspendTimeoutSeconds? }, noCompute? }` |
+| `createAndConnect({ projectId, ... })`            | `{ branch: Branch, endpoint: Endpoint, connectionString: string }`                                | Creates, then polls until ready. Fields: `{ name?, parentId?, compute?: { minCu?, maxCu?, suspendTimeoutSeconds? }, pooled? }`                                                                                                                                     |
+| `update({ projectId, branchId, ... })`            | `Branch`                                                                                          | Additional fields: `{ name?, protected?, expires_at? }`                                                                                                                                                                                                            |
+| `delete({ projectId, branchId })`                 | `void`                                                                                            |                                                                                                                                                                                                                                                                    |
+| `getDefault({ projectId })`                       | `Branch`                                                                                          | Resolve the project's default branch by flag, not by name                                                                                                                                                                                                          |
+| `setDefault({ projectId, branchId })`             | `Branch`                                                                                          |                                                                                                                                                                                                                                                                    |
+| `finalizeRestore({ projectId, branchId, name? })` | `void`                                                                                            | Commit a restore previewed with `snapshots.restore({ finalize: false })`                                                                                                                                                                                           |
 
 Three modes: default compute, schema-only (`noCompute: true`), and create-plus-URI.
 
 ```ts
-const { data: prod } = await neon.branches.getDefault(projectId);
+const { data: prod } = await neon.branches.getDefault({ projectId });
 
-await neon.branches.create(projectId, {
+await neon.branches.create({
+  projectId,
   name: "preview/pr-123",
   parent_id: prod?.id,
 });
 
-await neon.branches.create(projectId, {
+await neon.branches.create({
+  projectId,
   name: "schema-only",
   parent_id: prod?.id,
   noCompute: true,
 });
 
-const { data, error } = await neon.branches.createAndConnect(projectId, {
+const { data, error } = await neon.branches.createAndConnect({
+  projectId,
   name: "preview/pr-123-uri",
   parentId: prod?.id,
   compute: { minCu: 0.25, maxCu: 2 },
@@ -131582,35 +131658,35 @@ const { data: uri } = await neon.postgres.connectionString({ projectId });
 
 Compute endpoints, scoped to a project.
 
-| Method                                 | Returns      | Arguments                                                                                                                                                               |
-| -------------------------------------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `list(projectId)`                      | `Endpoint[]` |                                                                                                                                                                         |
-| `listByBranch(projectId, branchId)`    | `Endpoint[]` |                                                                                                                                                                         |
-| `get(projectId, endpointId)`           | `Endpoint`   |                                                                                                                                                                         |
-| `create(projectId, input)`             | `Endpoint`   | `input`: `{ branch_id, type, autoscaling_limit_min_cu?, autoscaling_limit_max_cu?, suspend_timeout_seconds?, provisioner? }`. `type` is `"read_write"` \| `"read_only"` |
-| `update(projectId, endpointId, input)` | `Endpoint`   |                                                                                                                                                                         |
-| `delete(projectId, endpointId)`        | `void`       |                                                                                                                                                                         |
-| `start(projectId, endpointId)`         | `Endpoint`   |                                                                                                                                                                         |
-| `suspend(projectId, endpointId)`       | `Endpoint`   |                                                                                                                                                                         |
-| `restart(projectId, endpointId)`       | `Endpoint`   |                                                                                                                                                                         |
+| Method                                   | Returns      | Arguments                                                                                                                                                              |
+| ---------------------------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `list({ projectId })`                    | `Endpoint[]` |                                                                                                                                                                        |
+| `listByBranch({ projectId, branchId })`  | `Endpoint[]` |                                                                                                                                                                        |
+| `get({ projectId, endpointId })`         | `Endpoint`   |                                                                                                                                                                        |
+| `create({ projectId, ... })`             | `Endpoint`   | Fields: `{ branch_id, type, autoscaling_limit_min_cu?, autoscaling_limit_max_cu?, suspend_timeout_seconds?, provisioner? }`. `type` is `"read_write"` \| `"read_only"` |
+| `update({ projectId, endpointId, ... })` | `Endpoint`   |                                                                                                                                                                        |
+| `delete({ projectId, endpointId })`      | `void`       |                                                                                                                                                                        |
+| `start({ projectId, endpointId })`       | `Endpoint`   |                                                                                                                                                                        |
+| `suspend({ projectId, endpointId })`     | `Endpoint`   |                                                                                                                                                                        |
+| `restart({ projectId, endpointId })`     | `Endpoint`   |                                                                                                                                                                        |
 
 ### neon.postgres.roles
 
 Postgres roles, scoped to a branch.
 
-| Method                                     | Returns  | Arguments                                      |
-| ------------------------------------------ | -------- | ---------------------------------------------- |
-| `list(projectId, branchId)`                | `Role[]` |                                                |
-| `get(projectId, branchId, name)`           | `Role`   |                                                |
-| `create(projectId, branchId, input)`       | `Role`   | `input`: `{ name, no_login? }`                 |
-| `delete(projectId, branchId, name)`        | `void`   |                                                |
-| `password(projectId, branchId, name)`      | `string` | Reveals the current password                   |
-| `resetPassword(projectId, branchId, name)` | `Role`   | The returned `Role` carries the new `password` |
+| Method                                             | Returns  | Arguments                                      |
+| -------------------------------------------------- | -------- | ---------------------------------------------- |
+| `list({ projectId, branchId })`                    | `Role[]` |                                                |
+| `get({ projectId, branchId, roleName })`           | `Role`   |                                                |
+| `create({ projectId, branchId, ... })`             | `Role`   | Fields: `{ name, no_login? }`                  |
+| `delete({ projectId, branchId, roleName })`        | `void`   |                                                |
+| `password({ projectId, branchId, roleName })`      | `string` | Reveals the current password                   |
+| `resetPassword({ projectId, branchId, roleName })` | `Role`   | The returned `Role` carries the new `password` |
 
 ```ts
 // Reveal a role's password, or rotate it
-const { data: password } = await neon.postgres.roles.password(projectId, branchId, "neondb_owner");
-const { data: role } = await neon.postgres.roles.resetPassword(projectId, branchId, "neondb_owner");
+const { data: password } = await neon.postgres.roles.password({ projectId, branchId, roleName: "neondb_owner" });
+const { data: role } = await neon.postgres.roles.resetPassword({ projectId, branchId, roleName: "neondb_owner" });
 // role.password holds the new secret
 ```
 
@@ -131618,57 +131694,61 @@ const { data: role } = await neon.postgres.roles.resetPassword(projectId, branch
 
 Databases, scoped to a branch.
 
-| Method                                     | Returns      | Arguments                         |
-| ------------------------------------------ | ------------ | --------------------------------- |
-| `list(projectId, branchId)`                | `Database[]` |                                   |
-| `get(projectId, branchId, name)`           | `Database`   |                                   |
-| `create(projectId, branchId, input)`       | `Database`   | `input`: `{ name, owner_name }`   |
-| `update(projectId, branchId, name, input)` | `Database`   | `input`: `{ name?, owner_name? }` |
-| `delete(projectId, branchId, name)`        | `void`       |                                   |
+| Method                                               | Returns      | Arguments                        |
+| ---------------------------------------------------- | ------------ | -------------------------------- |
+| `list({ projectId, branchId })`                      | `Database[]` |                                  |
+| `get({ projectId, branchId, databaseName })`         | `Database`   |                                  |
+| `create({ projectId, branchId, ... })`               | `Database`   | Fields: `{ name, owner_name }`   |
+| `update({ projectId, branchId, databaseName, ... })` | `Database`   | Fields: `{ name?, owner_name? }` |
+| `delete({ projectId, branchId, databaseName })`      | `void`       |                                  |
 
 ### neon.postgres.dataApi
 
 The Neon Data API, scoped to a branch and database.
 
-| Method                                              | Returns                 |
-| --------------------------------------------------- | ----------------------- |
-| `get(projectId, branchId, databaseName)`            | `DataApiResponse`       |
-| `create(projectId, branchId, databaseName, input?)` | `DataApiCreateResponse` |
-| `update(projectId, branchId, databaseName, input?)` | `void`                  |
-| `delete(projectId, branchId, databaseName)`         | `void`                  |
+| Method                                               | Returns                 |
+| ---------------------------------------------------- | ----------------------- |
+| `get({ projectId, branchId, databaseName })`         | `DataApiResponse`       |
+| `create({ projectId, branchId, databaseName, ... })` | `DataApiCreateResponse` |
+| `update({ projectId, branchId, databaseName, ... })` | `void`                  |
+| `delete({ projectId, branchId, databaseName })`      | `void`                  |
 
 ## neon.storage
 
 Branch-scoped, S3-compatible object storage. `get` returns whether storage is enabled and the branch's S3 endpoint metadata; buckets and objects are nested underneath. REST: [Storage](https://neon.com/docs/reference/api/storage), [Buckets](https://neon.com/docs/reference/api/buckets)
 
-| Method                     | Returns         |
-| -------------------------- | --------------- |
-| `get(projectId, branchId)` | `BranchStorage` |
+| Method                         | Returns         |
+| ------------------------------ | --------------- |
+| `get({ projectId, branchId })` | `BranchStorage` |
 
 ### neon.storage.buckets
 
-| Method                                    | Returns    | Arguments                                                                                  |
-| ----------------------------------------- | ---------- | ------------------------------------------------------------------------------------------ |
-| `list(projectId, branchId)`               | `Bucket[]` |                                                                                            |
-| `create(projectId, branchId, input)`      | `Bucket`   | `input`: `{ name, access_level? }`, where `access_level` is `"private"` \| `"public_read"` |
-| `delete(projectId, branchId, bucketName)` | `void`     |                                                                                            |
+| Method                                        | Returns    | Arguments                                                                                 |
+| --------------------------------------------- | ---------- | ----------------------------------------------------------------------------------------- |
+| `list({ projectId, branchId })`               | `Bucket[]` |                                                                                           |
+| `create({ projectId, branchId, ... })`        | `Bucket`   | Fields: `{ name, access_level? }`, where `access_level` is `"private"` \| `"public_read"` |
+| `delete({ projectId, branchId, bucketName })` | `void`     |                                                                                           |
 
 ### neon.storage.objects
 
-| Method                                                       | Returns                     | Arguments                                                                                                    |
-| ------------------------------------------------------------ | --------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `list(projectId, branchId, bucketName, query?)`              | `BucketObjectsListResponse` | `query`: `{ prefix?, delimiter?, cursor?, limit? }`. Returns one page of `folders`, `objects`, `next_cursor` |
-| `get(projectId, branchId, bucketName, objectKey)`            | `Blob`                      | Raw object bytes                                                                                             |
-| `delete(projectId, branchId, bucketName, objectKey)`         | `void`                      |                                                                                                              |
-| `deleteByPrefix(projectId, branchId, bucketName, prefix)`    | `{ deleted: number }`       | `prefix` must end with `/`                                                                                   |
-| `presign(projectId, branchId, bucketName, objectKey, input)` | `PresignResponse`           | `input`: `{ operation: "upload" \| "download", content_type?, expires_in_seconds? }`                         |
+| Method                                                         | Returns                     | Arguments                                                                                                    |
+| -------------------------------------------------------------- | --------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `list({ projectId, branchId, bucketName, ...query })`          | `BucketObjectsListResponse` | `query`: `{ prefix?, delimiter?, cursor?, limit? }`. Returns one page of `folders`, `objects`, `next_cursor` |
+| `get({ projectId, branchId, bucketName, objectKey })`          | `Blob`                      | Raw object bytes                                                                                             |
+| `delete({ projectId, branchId, bucketName, objectKey })`       | `void`                      |                                                                                                              |
+| `deleteByPrefix({ projectId, branchId, bucketName, prefix })`  | `{ deleted: number }`       | `prefix` must end with `/`                                                                                   |
+| `presign({ projectId, branchId, bucketName, objectKey, ... })` | `PresignResponse`           | Fields: `{ operation: "upload" \| "download", content_type?, expires_in_seconds? }`                          |
 
 ```ts
 // Upload via a presigned PUT
-const { data: presign } = await neon.storage.objects.presign(
-  projectId, branchId, "avatars", "user-1.png",
-  { operation: "upload", content_type: "image/png" }
-);
+const { data: presign } = await neon.storage.objects.presign({
+  projectId,
+  branchId,
+  bucketName: "avatars",
+  objectKey: "user-1.png",
+  operation: "upload",
+  content_type: "image/png",
+});
 if (!presign) throw new Error("presign failed");
 
 await fetch(presign.url, {
@@ -131682,18 +131762,21 @@ await fetch(presign.url, {
 
 Branch-scoped Neon Functions. REST: [Functions API](https://neon.com/docs/reference/api/functions)
 
-| Method                                      | Returns                                                                                                 | Arguments                                                                                                                                                |
-| ------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `list(projectId, branchId, query?)`         | [`Paginated`](https://neon.com/docs/reference/typescript-sdk#lazy-auto-paginated-lists)`<NeonFunction>` | `query`: `{ limit? }`                                                                                                                                    |
-| `get(projectId, branchId, slug)`            | `NeonFunction`                                                                                          |                                                                                                                                                          |
-| `update(projectId, branchId, slug, input)`  | `NeonFunction`                                                                                          | `input`: `{ name? }`                                                                                                                                     |
-| `delete(projectId, branchId, slug)`         | `void`                                                                                                  |                                                                                                                                                          |
-| `deploy(projectId, branchId, slug, input?)` | `NeonFunctionDeployment`                                                                                | Multipart. `input`: `{ zip?: Blob \| File, runtime?: "nodejs24", environment?: string }`, where `environment` is a JSON-encoded `Record<string, string>` |
+| Method                                       | Returns                                                                                                 | Arguments                                                                                                                                               |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `list({ projectId, branchId, ...query })`    | [`Paginated`](https://neon.com/docs/reference/typescript-sdk#lazy-auto-paginated-lists)`<NeonFunction>` | `query`: `{ limit? }`                                                                                                                                   |
+| `get({ projectId, branchId, slug })`         | `NeonFunction`                                                                                          |                                                                                                                                                         |
+| `update({ projectId, branchId, slug, ... })` | `NeonFunction`                                                                                          | Fields: `{ name? }`                                                                                                                                     |
+| `delete({ projectId, branchId, slug })`      | `void`                                                                                                  |                                                                                                                                                         |
+| `deploy({ projectId, branchId, slug, ... })` | `NeonFunctionDeployment`                                                                                | Multipart. Fields: `{ zip?: Blob \| File, runtime?: "nodejs24", environment?: string }`, where `environment` is a JSON-encoded `Record<string, string>` |
 
 ```ts
 // Deploy a bundled index.mjs inside a zip (first deploy must include the zip)
 const zip = await Bun.file("bundle.zip").arrayBuffer();
-const { data: deployment } = await neon.functions.deploy(projectId, branchId, "api", {
+const { data: deployment } = await neon.functions.deploy({
+  projectId,
+  branchId,
+  slug: "api",
   zip: new File([zip], "bundle.zip", { type: "application/zip" }),
   runtime: "nodejs24",
 });
@@ -131704,33 +131787,33 @@ const { data: deployment } = await neon.functions.deploy(projectId, branchId, "a
 
 Branch-scoped credentials with explicit scopes. Secrets (`api_token`, `s3_secret_access_key`) are returned once, on `create`. REST: [Credentials API](https://neon.com/docs/reference/api/credentials)
 
-| Method                                 | Returns                    | Arguments                                                                                                                              |
-| -------------------------------------- | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| `list(projectId, branchId)`            | `CredentialMeta[]`         |                                                                                                                                        |
-| `create(projectId, branchId, input)`   | `CreateCredentialResponse` | `input`: `{ name?, scopes, principal_type: "user" }`. Scopes: `storage:read`, `storage:write`, `ai_gateway:invoke`, `functions:invoke` |
-| `revoke(projectId, branchId, tokenId)` | `void`                     |                                                                                                                                        |
+| Method                                     | Returns                    | Arguments                                                                                                                             |
+| ------------------------------------------ | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `list({ projectId, branchId })`            | `CredentialMeta[]`         |                                                                                                                                       |
+| `create({ projectId, branchId, ... })`     | `CreateCredentialResponse` | Fields: `{ name?, scopes, principal_type: "user" }`. Scopes: `storage:read`, `storage:write`, `ai_gateway:invoke`, `functions:invoke` |
+| `revoke({ projectId, branchId, tokenId })` | `void`                     |                                                                                                                                       |
 
 ## neon.aiGateway
 
 Branch-scoped AI Gateway endpoint metadata. REST: [AI Gateway API](https://neon.com/docs/reference/api/ai-gateway)
 
-| Method                     | Returns           | Arguments                                                |
-| -------------------------- | ----------------- | -------------------------------------------------------- |
-| `get(projectId, branchId)` | `BranchAiGateway` | Returns 404 when AI Gateway is not enabled on the branch |
+| Method                         | Returns           | Arguments                                                |
+| ------------------------------ | ----------------- | -------------------------------------------------------- |
+| `get({ projectId, branchId })` | `BranchAiGateway` | Returns 404 when AI Gateway is not enabled on the branch |
 
 ## neon.snapshots
 
 Point-in-time snapshots, restore, and backup schedules. REST: [Snapshots API](https://neon.com/docs/reference/api/snapshots)
 
-| Method                                       | Returns          | Arguments                                                                           |
-| -------------------------------------------- | ---------------- | ----------------------------------------------------------------------------------- |
-| `list(projectId)`                            | `Snapshot[]`     |                                                                                     |
-| `create(projectId, branchId, input?)`        | `Snapshot`       | `input`: `{ name?, timestamp?, lsn?, expiresAt? }`                                  |
-| `update(projectId, snapshotId, input)`       | `Snapshot`       | `input`: `{ name? }`                                                                |
-| `delete(projectId, snapshotId)`              | `void`           |                                                                                     |
-| `restore(projectId, snapshotId, input?)`     | `Branch`         | `input`: `{ name?, targetBranchId?, finalize?, preview?, keepOnAbort? }`. See below |
-| `getSchedule(projectId, branchId)`           | `BackupSchedule` |                                                                                     |
-| `setSchedule(projectId, branchId, schedule)` | `void`           |                                                                                     |
+| Method                                      | Returns          | Arguments                                                                          |
+| ------------------------------------------- | ---------------- | ---------------------------------------------------------------------------------- |
+| `list({ projectId })`                       | `Snapshot[]`     |                                                                                    |
+| `create({ projectId, branchId, ... })`      | `Snapshot`       | Fields: `{ name?, timestamp?, lsn?, expiresAt? }`                                  |
+| `update({ projectId, snapshotId, ... })`    | `Snapshot`       | Fields: `{ name? }`                                                                |
+| `delete({ projectId, snapshotId })`         | `void`           |                                                                                    |
+| `restore({ projectId, snapshotId, ... })`   | `Branch`         | Fields: `{ name?, targetBranchId?, finalize?, preview?, keepOnAbort? }`. See below |
+| `getSchedule({ projectId, branchId })`      | `BackupSchedule` |                                                                                    |
+| `setSchedule({ projectId, branchId, ... })` | `void`           |                                                                                    |
 
 `restore` behaves differently depending on the target:
 
@@ -131739,7 +131822,9 @@ Point-in-time snapshots, restore, and backup schedules. REST: [Snapshots API](ht
 - Transaction-style with `preview`: it restores un-finalized, runs your callback against the restored branch, then commits if the callback returns `true` or aborts (deletes the preview branch) if `false`, unless `keepOnAbort` is set:
 
 ```ts
-await neon.snapshots.restore(projectId, snapshotId, {
+await neon.snapshots.restore({
+  projectId,
+  snapshotId,
   targetBranchId,
   preview: async (branch) => (await checks(branch)) === "ok", // true commits, false aborts
 });
@@ -131749,11 +131834,11 @@ await neon.snapshots.restore(projectId, snapshotId, {
 
 Read operations and wait for them to finish. REST: [Operations API](https://neon.com/docs/reference/api/operations)
 
-| Method                          | Returns                                                                                              | Arguments                                             |
-| ------------------------------- | ---------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
-| `list(projectId)`               | [`Paginated`](https://neon.com/docs/reference/typescript-sdk#lazy-auto-paginated-lists)`<Operation>` |                                                       |
-| `get(projectId, operationId)`   | `Operation`                                                                                          |                                                       |
-| `waitFor(operations, options?)` | `void`                                                                                               | `options`: `{ pollIntervalMs?, timeoutMs?, signal? }` |
+| Method                              | Returns                                                                                              | Arguments                                             |
+| ----------------------------------- | ---------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| `list({ projectId })`               | [`Paginated`](https://neon.com/docs/reference/typescript-sdk#lazy-auto-paginated-lists)`<Operation>` |                                                       |
+| `get({ projectId, operationId })`   | `Operation`                                                                                          |                                                       |
+| `waitFor({ operations }, options?)` | `void`                                                                                               | `options`: `{ pollIntervalMs?, timeoutMs?, signal? }` |
 
 ```ts
 // Wait on operations from a raw call (or when readiness polling is off)
@@ -131762,52 +131847,52 @@ const { data } = await raw.createProjectBranch({
   path: { project_id: projectId },
   body: { branch: { name: "wip" } },
 });
-const { error } = await neon.operations.waitFor(data!.operations, { timeoutMs: 120_000 });
+const { error } = await neon.operations.waitFor({ operations: data!.operations }, { timeoutMs: 120_000 });
 ```
 
 ## neon.auth
 
 Branch-scoped Managed Better Auth. The legacy project-scoped endpoints are deprecated and remain raw-only. REST: [Authentication API](https://neon.com/docs/reference/api/auth)
 
-| Method                                     | Returns                             | Arguments                  |
-| ------------------------------------------ | ----------------------------------- | -------------------------- |
-| `get(projectId, branchId)`                 | `NeonAuthIntegration`               |                            |
-| `create(projectId, branchId, input)`       | `NeonAuthCreateIntegrationResponse` | Enable the integration     |
-| `disable(projectId, branchId, input?)`     | `void`                              | `input`: `{ deleteData? }` |
-| `updateConfig(projectId, branchId, input)` | `NeonAuthConfigResponse`            |                            |
+| Method                                       | Returns                             | Arguments                 |
+| -------------------------------------------- | ----------------------------------- | ------------------------- |
+| `get({ projectId, branchId })`               | `NeonAuthIntegration`               |                           |
+| `create({ projectId, branchId, ... })`       | `NeonAuthCreateIntegrationResponse` | Enable the integration    |
+| `disable({ projectId, branchId, ... })`      | `void`                              | Fields: `{ deleteData? }` |
+| `updateConfig({ projectId, branchId, ... })` | `NeonAuthConfigResponse`            |                           |
 
 ### neon.auth.oauthProviders
 
 OAuth providers (Google, GitHub, and others).
 
-| Method                                           | Returns                   |
-| ------------------------------------------------ | ------------------------- |
-| `list(projectId, branchId)`                      | `NeonAuthOauthProvider[]` |
-| `add(projectId, branchId, input)`                | `NeonAuthOauthProvider`   |
-| `update(projectId, branchId, providerId, input)` | `NeonAuthOauthProvider`   |
-| `delete(projectId, branchId, providerId)`        | `void`                    |
+| Method                                             | Returns                   |
+| -------------------------------------------------- | ------------------------- |
+| `list({ projectId, branchId })`                    | `NeonAuthOauthProvider[]` |
+| `add({ projectId, branchId, ... })`                | `NeonAuthOauthProvider`   |
+| `update({ projectId, branchId, providerId, ... })` | `NeonAuthOauthProvider`   |
+| `delete({ projectId, branchId, providerId })`      | `void`                    |
 
 ### neon.auth.trustedDomains
 
 The redirect-URI whitelist.
 
-| Method                               | Returns                                |
-| ------------------------------------ | -------------------------------------- |
-| `list(projectId, branchId)`          | `NeonAuthRedirectUriWhitelistDomain[]` |
-| `add(projectId, branchId, input)`    | `void`                                 |
-| `delete(projectId, branchId, input)` | `void`                                 |
+| Method                                 | Returns                                |
+| -------------------------------------- | -------------------------------------- |
+| `list({ projectId, branchId })`        | `NeonAuthRedirectUriWhitelistDomain[]` |
+| `add({ projectId, branchId, ... })`    | `void`                                 |
+| `delete({ projectId, branchId, ... })` | `void`                                 |
 
 ### neon.auth.users
 
-| Method                                               | Returns                          |
-| ---------------------------------------------------- | -------------------------------- |
-| `create(projectId, branchId, input)`                 | `NeonAuthCreateNewUserResponse`  |
-| `delete(projectId, branchId, authUserId)`            | `void`                           |
-| `updateRole(projectId, branchId, authUserId, roles)` | `UpdateNeonAuthUserRoleResponse` |
+| Method                                                   | Returns                          |
+| -------------------------------------------------------- | -------------------------------- |
+| `create({ projectId, branchId, ... })`                   | `NeonAuthCreateNewUserResponse`  |
+| `delete({ projectId, branchId, authUserId })`            | `void`                           |
+| `updateRole({ projectId, branchId, authUserId, roles })` | `UpdateNeonAuthUserRoleResponse` |
 
 ## neon.consumption
 
-Cursor-paginated billing metrics. Each method takes `{ from, to, granularity, org_id, project_ids? }`, where `from`/`to` are ISO timestamps, `granularity` is `"hourly"` | `"daily"` | `"monthly"`, and `org_id` names the org to report on; `perBranchV2` also requires `project_ids`. Consumption requires a Scale plan or above. REST: [Consumption API](https://neon.com/docs/reference/api/consumption)
+Cursor-paginated billing metrics. Each method takes `{ from, to, granularity, org_id, project_ids? }`, where `from`/`to` are ISO timestamps, `granularity` is `"hourly"` | `"daily"` | `"monthly"`, and `org_id` names the org to report on; `perBranchV2` also requires `project_ids`. `org_id` defaults to the client `orgId` when set. Consumption requires a Scale plan or above. REST: [Consumption API](https://neon.com/docs/reference/api/consumption)
 
 | Method                | Returns                                                                                                                   |
 | --------------------- | ------------------------------------------------------------------------------------------------------------------------- |
@@ -131831,11 +131916,11 @@ for await (const project of neon.consumption.perProject({
 
 Manage account-level API keys. REST: [API Keys API](https://neon.com/docs/reference/api/api-keys)
 
-| Method            | Returns                     | Arguments                     |
-| ----------------- | --------------------------- | ----------------------------- |
-| `list()`          | `ApiKeysListResponseItem[]` |                               |
-| `create(keyName)` | `ApiKeyCreateResponse`      | The `key` token is shown once |
-| `revoke(keyId)`   | `ApiKeyRevokeResponse`      |                               |
+| Method                | Returns                     | Arguments                     |
+| --------------------- | --------------------------- | ----------------------------- |
+| `list()`              | `ApiKeysListResponseItem[]` |                               |
+| `create({ keyName })` | `ApiKeyCreateResponse`      | The `key` token is shown once |
+| `revoke({ keyId })`   | `ApiKeyRevokeResponse`      |                               |
 
 ## neon.regions / neon.user
 
@@ -131846,6 +131931,34 @@ Active regions and the current account. REST: [Regions](https://neon.com/docs/re
 | `regions.list()`       | `RegionResponse[]`        |
 | `user.me()`            | `CurrentUserInfoResponse` |
 | `user.organizations()` | `Organization[]`          |
+
+## Upgrading from v4
+
+`@neon/sdk` v5 introduced one breaking change that runs through every namespace: resource methods take a **single named-parameter object** instead of positional arguments. Path selectors and input fields are merged into one flat object, followed by the same optional call-options argument.
+
+```ts
+// v4 (positional)
+await neon.branches.get(projectId, branchId);
+await neon.postgres.roles.password(projectId, branchId, "neondb_owner");
+await neon.storage.objects.presign(projectId, branchId, "avatars", "user-1.png", {
+  operation: "upload",
+});
+
+// v5 and later (named parameters)
+await neon.branches.get({ projectId, branchId });
+await neon.postgres.roles.password({ projectId, branchId, roleName: "neondb_owner" });
+await neon.storage.objects.presign({
+  projectId,
+  branchId,
+  bucketName: "avatars",
+  objectKey: "user-1.png",
+  operation: "upload",
+});
+```
+
+The `{ pooled }` option on `projects.createAndConnect` and `branches.createAndConnect`, and the `operations` argument to `operations.waitFor`, also move into the params object. `postgres.connectionString` and the `consumption.*` methods were already object-shaped and are unchanged.
+
+v6 is the current major. It extends the triggers surface (`storage_object_created` alongside `schedule`) and does not change the named-parameter shape introduced in v5.
 
 ## Raw layer
 
@@ -134329,6 +134442,7 @@ Objects branch with your database. When you fork a branch, the child can immedia
 
 - [Buckets](https://neon.com/docs/storage/buckets): set access levels, understand bucket branching
 - [Authentication](https://neon.com/docs/storage/authentication): credential scopes and read vs write access
+- [Trigger on an object upload](https://neon.com/docs/compute/functions/triggers/object-storage): run a function when an object is created
 
 --- [Document source](https://neon.com/docs/storage/overview.md) ---
 
@@ -134344,14 +134458,16 @@ Neon Object Storage is S3-compatible file storage built into your Neon project. 
 - **Standard S3 SDKs.** The AWS SDK for JavaScript, boto3, the AWS CLI, the [Files SDK](https://files-sdk.dev), and any other S3-compatible tool works out of the box.
 - **Two access modes.** `private` buckets require authentication for all operations. `public_read` buckets allow anonymous reads with authenticated writes.
 - **One credential system.** The same Neon credential system used by AI Gateway and Functions.
+- **Event-driven.** Run a function when an object is uploaded with [Function Triggers](https://neon.com/docs/compute/functions/triggers/object-storage).
 
-> Object storage is currently available in AWS US East (Ohio) (`aws-us-east-2`) and AWS Europe (Frankfurt) (`aws-eu-central-1`). Support is expanding toward all regions. See [plans and pricing](https://neon.com/docs/introduction/plans#object-storage) for storage and egress rates.
+> Object storage is currently available in AWS US East (Ohio) (`aws-us-east-2`), AWS US East (N. Virginia) (`aws-us-east-1`), AWS Europe (Frankfurt) (`aws-eu-central-1`), and AWS Asia Pacific (Singapore) (`aws-ap-southeast-1`). Support is expanding toward all regions. See [plans and pricing](https://neon.com/docs/introduction/plans#object-storage) for storage and egress rates.
 
 ## Get started
 
 - [Quickstart](https://neon.com/docs/storage/get-started): Create a credential, configure a client, and upload your first file.
 - [Buckets](https://neon.com/docs/storage/buckets): Create and manage buckets, set access levels, and understand how buckets branch.
 - [Objects](https://neon.com/docs/storage/objects): Upload, download, list, delete, and generate presigned URLs for objects.
+- [Triggers](https://neon.com/docs/compute/functions/triggers/object-storage): Run a function when an object is uploaded to a bucket.
 - [Authentication](https://neon.com/docs/storage/authentication): Understand how Neon credentials map to S3 access keys.
 - [Logs](https://neon.com/docs/storage/logs): View, search, and download a bucket's logs in the Console.
 
@@ -134382,7 +134498,7 @@ The following limits apply:
 
 Two limits are behavioral rather than fixed numbers:
 
-- **Region**: object storage is available in AWS US East (Ohio) (`aws-us-east-2`) and AWS Europe (Frankfurt) (`aws-eu-central-1`). Support is expanding toward all regions.
+- **Region**: object storage is available in AWS US East (Ohio) (`aws-us-east-2`), AWS US East (N. Virginia) (`aws-us-east-1`), AWS Europe (Frankfurt) (`aws-eu-central-1`), and AWS Asia Pacific (Singapore) (`aws-ap-southeast-1`). Support is expanding toward all regions.
 - **Rate limiting**: requests may be throttled during heavy use, returning a `503 SlowDown` response. Back off and retry. See [Connection and performance errors](https://neon.com/docs/storage/troubleshooting#connection-and-performance-errors).
 
 Storage-volume limits apply to the Free plan only. Paid plans have no fixed limit on total storage or number of objects; storage is metered per GB (see [plans and pricing](https://neon.com/docs/introduction/plans#object-storage)). For large objects, use [multipart upload](https://neon.com/docs/storage/objects#multipart-upload), which AWS recommends for anything over 100 MB.

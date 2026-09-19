@@ -10,7 +10,7 @@ path: docs/browser-agent-javascript
 
 # JavaScript SDK
 
-> API reference for @deepgram/agents — the core WebSocket session, microphone capture with Silero VAD, and audio playback with volume and frequency analysis for browser-based voice agents.
+> API reference for @deepgram/agents — the core WebSocket session, microphone capture, and audio playback with volume and frequency analysis for browser-based voice agents.
 
 This page covers the core JavaScript SDK, which works with vanilla JS, Vue, Svelte, Angular, and any other framework. If you are using React, see [React Hooks and Provider](/docs/browser-agent-react). For a drop-in embeddable solution, see [Widget](/docs/browser-agent-widget).
 
@@ -256,7 +256,7 @@ Subscribe with `session.on(event, callback)` and unsubscribe with `session.off(e
 
 ## AgentMicrophone
 
-Captures PCM audio from the user's microphone using the Web Audio API. Optionally integrates Silero VAD for voice activity detection so audio is only transmitted during speech.
+Captures PCM audio from the user's microphone using the Web Audio API.
 
 ```javascript
 import { AgentMicrophone } from "@deepgram/agents";
@@ -278,22 +278,14 @@ The first argument is a callback invoked with each captured audio frame as an `A
 
 ### Options
 
-| Option             | Type                    | Default | Description                                                                             |
-| ------------------ | ----------------------- | ------- | --------------------------------------------------------------------------------------- |
-| `sampleRate`       | `number`                | `16000` | Target sample rate in Hz for PCM capture.                                               |
-| `echoCancellation` | `boolean`               | `true`  | Enable browser echo cancellation via `getUserMedia`.                                    |
-| `noiseSuppression` | `boolean`               | `true`  | Enable browser noise suppression via `getUserMedia`.                                    |
-| `autoGainControl`  | `boolean`               | `true`  | Enable browser auto gain control via `getUserMedia`.                                    |
-| `vad`              | `boolean \| VadOptions` | `false` | Enable Silero voice activity detection. Pass `true` for defaults, or an options object. |
+| Option             | Type      | Default | Description                                          |
+| ------------------ | --------- | ------- | ---------------------------------------------------- |
+| `sampleRate`       | `number`  | `16000` | Target sample rate in Hz for PCM capture.            |
+| `echoCancellation` | `boolean` | `true`  | Enable browser echo cancellation via `getUserMedia`. |
+| `noiseSuppression` | `boolean` | `true`  | Enable browser noise suppression via `getUserMedia`. |
+| `autoGainControl`  | `boolean` | `true`  | Enable browser auto gain control via `getUserMedia`. |
 
-**VAD options** (when `vad` is an object):
-
-| Option             | Default | Description                                                              |
-| ------------------ | ------- | ------------------------------------------------------------------------ |
-| `speechThreshold`  | `0.5`   | Probability threshold (0--1) above which audio is classified as speech.  |
-| `silenceThreshold` | `0.35`  | Probability threshold (0--1) below which audio is classified as silence. |
-
-VAD requires the optional peer dependencies `@ricky0123/vad-web` and `onnxruntime-web`. Install them separately: `npm install @ricky0123/vad-web onnxruntime-web`.
+The microphone streams continuously while it is unmuted. There is no client-side voice activity detection option. Turn-taking and barge-in are handled server-side: the Voice Agent API emits `user-started-speaking`, which you pair with `player.interrupt()` to stop playback. `@deepgram/react` wires this up for you.
 
 ### Methods
 
@@ -339,12 +331,10 @@ function animate() {
 
 Subscribe with `mic.on(event, callback)` and unsubscribe with `mic.off(event, callback)`.
 
-| Event          | Callback signature            | Description                                                             |
-| -------------- | ----------------------------- | ----------------------------------------------------------------------- |
-| `speech-start` | `() => void`                  | VAD detected the user started speaking. Only fires when VAD is enabled. |
-| `speech-end`   | `() => void`                  | VAD detected the user stopped speaking. Only fires when VAD is enabled. |
-| `audio-frame`  | `(data: ArrayBuffer) => void` | A raw audio frame was captured.                                         |
-| `error`        | `(err: Error) => void`        | Microphone error (permission denied, device lost, etc.).                |
+| Event         | Callback signature            | Description                                              |
+| ------------- | ----------------------------- | -------------------------------------------------------- |
+| `audio-frame` | `(data: ArrayBuffer) => void` | A raw audio frame was captured.                          |
+| `error`       | `(err: Error) => void`        | Microphone error (permission denied, device lost, etc.). |
 
 ## AgentPlayer
 

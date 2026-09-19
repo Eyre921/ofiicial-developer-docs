@@ -146,7 +146,7 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
 
 Stripe supports sending money in local currency to recipients in many different countries. Before making a cross-border outbound payment, review:
 
-- [Supported countries and currencies](https://docs.stripe.com/global-payouts/send-money.md?dashboard-or-api=api#payout-amounts) for country-specific information about currencies and minimum payment amounts
+- [Payout amounts](https://docs.stripe.com/global-payouts/payout-methods.md#payout-amounts) for country-specific information about currencies and minimum payment amounts
 - [Recipient payout methods](https://docs.stripe.com/treasury/connect/account-management/connected-accounts.md#recipient-payout-methods)
 
 > To get access to cross-border Outbound Payments to external bank accounts, contact [treasury-support@stripe.com](mailto:treasury-support@stripe.com). Cross-border transfers between financial accounts are enabled by default.

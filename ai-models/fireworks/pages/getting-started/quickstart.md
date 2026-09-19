@@ -216,7 +216,7 @@ Once you have your API key, export it as an environment variable in your termina
 You should see a response like: `"¡Hola!"`
 
 <Tip>
-  For **Priority tier** (`service_tier: "priority"`) and **Fast**, see [Serverless Serving Paths](/serverless/serving-paths).
+  For **Priority tier** (`service_tier: "priority"`) and **Fast**, see [Serverless Modes](/serverless/serverless-modes).
 </Tip>
 
 ## Common use cases

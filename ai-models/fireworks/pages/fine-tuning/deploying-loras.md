@@ -341,7 +341,7 @@ Merge in BF16; if you need quantized (FP8) weights, quantize the merged result a
 
 ### FP8 (and other quantized) merged weights
 
-If you want an FP8 merged model to run off-platform, merge in BF16 first, then quantize the merged result yourself. For reference, the on-platform serving path is:
+If you want an FP8 merged model to run off-platform, merge in BF16 first, then quantize the merged result yourself. For reference, the on-platform serving flow is:
 
 1. Keep the BF16 base + BF16 LoRA adapter.
 2. At deploy, merge in BF16: `W' = W_bf16 + (B·A)_bf16`.

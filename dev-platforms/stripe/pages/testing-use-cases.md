@@ -51,6 +51,8 @@ All Stripe API requests occur in either a sandbox or *live mode* (Use this mode 
 
 Being in a sandbox in the Dashboard doesn’t affect your integration code. Your test and live mode API keys affect the behavior of your code.
 
+Sandboxes don’t move funds through real banks or card networks. Stripe provides test primitives to simulate [payout success and failure](https://docs.stripe.com/payouts.md#test-payouts), [disputes, inquiries, and early fraud warnings](https://docs.stripe.com/testing.md#disputes). Supported simulations vary by product and integration.
+
 ## Create an additional sandbox
 
 To create and set up an additional sandbox in the Dashboard:
@@ -126,19 +128,13 @@ To verify emails for invoices and receipts, set the email address for your [Team
 
 ## Testing use cases 
 
-The following table contains quality assurance (QA) testing use cases:
+The following table contains quality assurance (QA) testing use cases. Card-level state from one test can affect later tests that use the same card. When a test depends on card-level state, use a different test card for each independent end-to-end scenario.
 
 > #### Don't use search to verify recent changes
 > 
 > Search data is eventually consistent, so objects you create or update might not appear immediately in search results. If an object is missing, don’t retry the request that created it because retrying can create duplicate objects, such as `Customer` or `Subscription` objects. Learn more about [search data freshness](https://docs.stripe.com/search.md#data-freshness).
 > 
 > To verify a recently created or updated object, retrieve it using a deterministic ID from the creating request, callback, or return URL, such as a Checkout Session ID. If you don’t have one, use the appropriate list endpoint for immediate availability.
-
-> #### Avoid shared card state between tests
-> 
-> Card-level state from one test can affect later tests that use the same card.
-> 
-> When a test depends on card-level state, use a different test card for each independent end-to-end scenario.
 
 | **Use case** | **Action** |
 | --- | --- |
@@ -178,6 +174,8 @@ The following table contains quality assurance (QA) testing use cases:
 | Charge disputed | - The charge appears as **Disputed** in the Dashboard under [Payments](https://dashboard.stripe.com/payments).
 - Stripe debits the charge amount plus the dispute fee from the balance, creates a `Dispute` object along with its associated `charge.dispute.created` event.
 
+This is an asynchronous outcome.
+
 ```json
 {
   "object": {
@@ -190,6 +188,8 @@ The following table contains quality assurance (QA) testing use cases:
 }
 ``` |
 | Charge inquiry opened | Inquiries are similar to disputes, with three key distinctions: no funds are withdrawn unless we elevate an inquiry to a dispute, they remain refundable until disputed, and have a different set of statuses. In this case, Stripe fires a `charge.dispute.created` event.
+
+This is an asynchronous outcome.
 
 ```json
 {
@@ -207,6 +207,8 @@ The following table contains quality assurance (QA) testing use cases:
 | Dispute won | - When a customer wins a dispute, the funds of the original charge are restored to the account, less the dispute fee.
 - Stripe updates the existing `Dispute` object, and fires a `charge.dispute.closed` event.
 
+This is an asynchronous outcome.
+
 ```json
 {
   "object": {
@@ -219,6 +221,8 @@ The following table contains quality assurance (QA) testing use cases:
 }
 ``` |
 | Dispute lost | When a customer loses a dispute, Stripe updates the existing `Dispute` object, and fires a `charge.dispute.closed` event.
+
+This is an asynchronous outcome.
 
 ```json
 {
@@ -233,6 +237,8 @@ The following table contains quality assurance (QA) testing use cases:
 ``` |
 | Inquiry won | When you win an inquiry, your balance remains the same, as no funds were removed when you initially opened the inquiry. Stripe updates the existing `Dispute` object, and sends a `charge.dispute.closed` event.
 
+This is an asynchronous outcome.
+
 ```json
 {
   "object": {
@@ -246,6 +252,8 @@ The following table contains quality assurance (QA) testing use cases:
 ``` |
 | Inquiry lost | - When you lose an inquiry, it escalates to a dispute.
 - When it escalates to a dispute, its status changes with a `charge.dispute.updated` event, and funds are withdrawn in a `charge.dispute.funds_withdrawn` event:
+
+This is an asynchronous outcome.
 
 ```json
 {
@@ -288,8 +296,12 @@ The following table contains quality assurance (QA) testing use cases:
 }
 ``` |
 | Account balance goes negative | Make sure to test for a negative balance on Stripe and verify that your bank accounts can accept debits from us. |
-| Successful payout | If you enable webhooks for a [successful payout](https://docs.stripe.com/api/events/types.md#event_types-payout.paid) (recommended), test your handling of the event. |
-| Failed payout | If you enable webhooks for a [failed payout](https://docs.stripe.com/api/events/types.md#event_types-payout.failed) (recommended), test your handling of the event. |
+| Successful payout | If you enable webhooks for a [successful payout](https://docs.stripe.com/api/events/types.md#event_types-payout.paid) (recommended), test your handling of the event.
+
+This is an asynchronous outcome. |
+| Failed payout | If you enable webhooks for a [failed payout](https://docs.stripe.com/api/events/types.md#event_types-payout.failed) (recommended), test your handling of the event.
+
+This is an asynchronous outcome. |
 
 ## The Stripe Postman collection 
 

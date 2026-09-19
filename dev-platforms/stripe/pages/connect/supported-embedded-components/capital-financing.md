@@ -98,8 +98,12 @@ container.appendChild(capitalFinancing);
 
 | Method | Type | Description | Default |
 | --- | --- | --- | --- |
-| `setDefaultFinancingOffer` | `string` | [Financing Offer](https://docs.stripe.com/api/capital/financing_offers.md) ID to render on initial load of the component. If omitted, the component displays the active or most recent financing. |  |
-| `setShowFinancingSelector` | `boolean` | If true, render the financing dropdown selector to allow the connected account to change the displayed financing. | `true` |
+| `setDefaultFinancingOffer` | `string` | ID of the [FinancingOffer](https://docs.stripe.com/api/capital/financing_offers.md) to display by default. If omitted, or no matching financing is available, the component displays the active or most recent financing. |  |
+| `setShowFinancingSelector` | `boolean` | Controls the display of financing status:
+- When true, the component displays the **Current** and **Past** tabs, and the **Activity** tab includes transactions across all financings.
+- When false, the component hides the **Current** and **Past** tabs, and the **Activity** tab only shows transactions for the selected financing.
+- For rejected or revoked financing, the component displays only the **Past** tab, regardless of this setting.
+- In layouts with neither **Current** nor **Past** tabs, the **Activity** tab only shows transactions for the selected financing, regardless of this setting. | `true` |
 | `setOnFinancingsLoaded` | `({total: number}) => void` | The component loaded the connected account’s financing history. |  |
 | `setSupportUrl` | `string` | URL for the support link shown to connected accounts. Defaults to the Stripe Capital support email. | `mailto:capital-support@stripe.com` |
 | `setHowCapitalWorksUrl` | `string` | Absolute URL of a page with information about the Capital program. | `https://docs.stripe.com/capital/how-stripe-capital-works` |
@@ -108,11 +112,21 @@ container.appendChild(capitalFinancing);
 
 | React property | Type | Description | Default | Required or Optional |
 | --- | --- | --- | --- | --- |
-| `defaultFinancingOffer` | `string` | [Financing Offer](https://docs.stripe.com/api/capital/financing_offers.md) ID to render on initial load of the component. If omitted, the component displays the active or most recent financing. | `null` | optional |
-| `showFinancingSelector` | `boolean` | If true, render the financing dropdown selector to allow the connected account to change the displayed financing. | `true` | optional |
+| `defaultFinancingOffer` | `string` | ID of the [FinancingOffer](https://docs.stripe.com/api/capital/financing_offers.md) to display by default. If omitted, or no matching financing is available, the component displays the active or most recent financing. | `null` | optional |
+| `showFinancingSelector` | `boolean` | Controls the display of financing status:
+- When true, the component displays the **Current** and **Past** tabs, and the **Activity** tab includes transactions across all financings.
+- When false, the component hides the **Current** and **Past** tabs, and the **Activity** tab only shows transactions for the selected financing.
+- For rejected or revoked financing, the component displays only the **Past** tab, regardless of this setting.
+- In layouts with neither **Current** nor **Past** tabs, the **Activity** tab only shows transactions for the selected financing, regardless of this setting. | `true` | optional |
 | `onFinancingsLoaded` | `({total: number}) => void` | The component loaded the connected account’s financing history. |  | optional |
 | `supportUrl` | `string` | URL for the support link shown to connected accounts. Defaults to the Stripe Capital support email. | `mailto:capital-support@stripe.com` | optional |
 | `howCapitalWorksUrl` | `string` | Absolute URL of a page with information about the Capital program. | `https://docs.stripe.com/capital/how-stripe-capital-works` | optional |
+
+To render the single-financing view, call `setDefaultFinancingOffer(...)` and `setShowFinancingSelector(false)` (using HTML + JS), or set `defaultFinancingOffer` and `showFinancingSelector={false}` (using React).
+
+- For most financing states, this configuration displays only the **Activity** tab and scopes its transaction list to the selected financing.
+- For connected accounts with dual-merchant financing, the component displays that financing instead of the financing specified by `defaultFinancingOffer`.
+- For rejected or revoked financing, the component displays only the **Past** tab.
 
 ## Style and customize the component
 

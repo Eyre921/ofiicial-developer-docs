@@ -21,7 +21,7 @@ Some multimodal models can process audio and/or video inputs directly, enabling 
   GLM 5.3 Flash supports image, video, and text inputs. This page does not claim audio input support for GLM 5.3 Flash. Qwen3 Omni supports native video and audio inputs. Molmo2 models are video-only, so use the dedicated request structure below but omit `audio_url`; Molmo2 cannot understand audio from videos.
 </Note>
 
-## Choose a serving path
+## Choose an inference option
 
 ### Serverless
 
@@ -309,7 +309,7 @@ def preprocess_video(video_path: str) -> tuple[str, str]:
 * **Preprocess all videos** – 1 FPS at 360p provides good quality with minimal tokens
 * **Extract audio separately** – Opus/Ogg at 24kbps offers excellent compression
 * **Limit video duration** – Start with 60 seconds or less for consistent performance
-* **Choose the appropriate serving path** – Use GLM 5.3 Flash on Serverless, or scale replicas for models that require dedicated deployments
+* **Choose the appropriate inference option** – Use GLM 5.3 Flash on Serverless, or scale replicas for models that require dedicated deployments
 
 ## Known limitations
 

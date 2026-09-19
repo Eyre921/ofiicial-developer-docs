@@ -1,14 +1,14 @@
 ---
-title: "Serverless Serving Paths"
-source: https://docs.fireworks.ai/serverless/serving-paths
-path: serverless/serving-paths
+title: "Serverless Modes"
+source: https://docs.fireworks.ai/serverless/serverless-modes
+path: serverless/serverless-modes
 ---
 
-Standard, Priority, and Fast serving paths on Fireworks Serverless
+Standard, Priority, and Fast serverless modes on Fireworks Serverless
 
-Fireworks Serverless offers three serving paths:
+Fireworks Serverless offers three modes:
 
-* **Standard** is the default serving path. No `service_tier` parameter is needed.
+* **Standard** is the default mode. No `service_tier` parameter is needed.
 * **Priority tier** is for workloads that require higher reliability during peak traffic.
 * **Fast** is for workloads that require higher speeds.
 
@@ -33,20 +33,25 @@ Priority tier is available on select models. Models and pricing are listed on th
 
 ## Fast
 
-Fast is a high-speed serving path, useful for interactive applications that require fast response speeds, at a higher price point. Fast variants aim for **100+ tokens per second** of generated throughput. It is not a different model and the quality of the model remains the same.
+Fast is a high-speed mode, useful for interactive applications that require fast response speeds, at a higher price point. Fast variants aim for **100+ tokens per second** of generated throughput. It is not a different model and the quality of the model remains the same.
 
 Fast is available for select models. To use Fast, change the `model` ID as listed below.
 
-| Model        | `model` ID                                |
-| ------------ | ----------------------------------------- |
-| GLM 5.2 Fast | `accounts/fireworks/routers/glm-5p2-fast` |
+| Model             | `model` ID                                   |
+| ----------------- | -------------------------------------------- |
+| Kimi K3 Fast      | `accounts/fireworks/routers/kimi-k3-fast`    |
+| GLM 5.3 Fast      | `accounts/fireworks/routers/glm-5p3-fast`    |
+| GLM 5.2 Fast      | `accounts/fireworks/routers/glm-5p2-fast`    |
+| GLM 5.2 Fast (US) | `accounts/fireworks/routers/glm-5p2-fast-us` |
+
+For the US-only Fast variant, call `https://us.api.fireworks.ai`. See [US-only Serverless](/serverless/us-only-serverless).
 
 ```bash theme={null}
 curl https://api.fireworks.ai/inference/v1/chat/completions \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $FIREWORKS_API_KEY" \
   -d '{
-    "model": "accounts/fireworks/routers/glm-5p2-fast",
+    "model": "accounts/fireworks/routers/kimi-k3-fast",
     "messages": [{"role": "user", "content": "Hello"}]
   }'
 ```

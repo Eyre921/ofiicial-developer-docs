@@ -13,7 +13,7 @@ description: "Use this API reference to write edge function files with JavaScrip
 
 This page provides an overview of key concepts as well as a full reference.
 
-## Overview
+## Writing and structuring edge functions
 
 Use TypeScript or JavaScript to create an edge function file that exports a default function responsible for processing a request.
 

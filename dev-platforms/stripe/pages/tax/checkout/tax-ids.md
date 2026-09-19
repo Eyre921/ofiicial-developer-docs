@@ -36,13 +36,20 @@ You can additionally configure Checkout to create a new [customer-configured Acc
 
 ### Existing customers 
 
+Create a Checkout Session with an existing customer to add any tax ID information collected during checkout. If the customer doesn’t have an existing tax ID, Checkout collects one. If the customer has one or more saved tax IDs, Checkout doesn’t display the tax ID collection form even if tax ID collection is enabled.
+
+When creating the Checkout Session, set [customer_update.name](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-customer_update-name) to `auto` to automatically update the customer’s name using details from the session.
+
+If you don’t have saved addresses for existing customers, use the billing or shipping address entered during checkout to assess their location. The following table describes the available options:
+
+| **Parameter** | **Behavior** |
+| --- | --- |
+| [customer_update.address](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-customer_update-address) = `auto` | Uses the billing address entered during checkout. Replaces the customer’s previously saved addresses. |
+| [customer_update.shipping](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-customer_update-shipping) = `auto` | Uses the shipping address entered during checkout. Replaces the customer’s previously saved shipping addresses. Requires [shipping_address_collection](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-shipping_address_collection). |
+
 #### Accounts v2
 
 Create a Checkout Session with an existing [v2 Account](https://docs.stripe.com/api/v2/core/accounts/object.md) to add any tax ID information collected during checkout. The Checkout Session saves the business name to the [identity](https://docs.stripe.com/api/v2/core/accounts/object.md#v2_account_object-identity) object and saves the collected tax ID as a [Tax ID](https://docs.stripe.com/api/tax_ids/object.md) resource associated with the account.
-
-> Checkout only collects tax IDs on Accounts that don’t already have an existing tax ID. If an Account has one or more tax IDs saved, Checkout doesn’t display the tax ID collection form even if tax ID collection is enabled.
-
-When creating the Checkout Session, set [customer_update.name](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-customer_update-name) to `auto` to automatically update the Account’s identity name using details from the session.
 
 ```curl
 curl https://api.stripe.com/v1/checkout/sessions \
@@ -56,20 +63,9 @@ curl https://api.stripe.com/v1/checkout/sessions \
   --data-urlencode "success_url=https://example.com/success"
 ```
 
-If you don’t have saved addresses for existing accounts, use the billing or shipping address entered during checkout to assess their location. The following table describes the available options:
-
-| **Parameter** | **Behavior** |
-| --- | --- |
-| [customer_update.address](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-customer_update-address) = `auto` | Uses the billing address entered during checkout. Replaces the account’s saved addresses. |
-| [customer_update.shipping](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-customer_update-shipping) = `auto` | Uses the shipping address entered during checkout. Replaces the account’s saved shipping addresses. Requires [shipping_address_collection](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-shipping_address_collection). |
-
 #### Customer v1
 
 Create a Checkout Session with an existing [Customer](https://docs.stripe.com/api/customers/object.md) to add any tax ID information collected during checkout. The Checkout Session saves the business name as the customer’s [name](https://docs.stripe.com/api/customers/object.md#customer_object-name) and adds the collected tax ID to [customer.tax_ids](https://docs.stripe.com/api/customers/object.md#customer_object-tax_ids).
-
-> Checkout only collects tax IDs on Customers that don’t already have an existing tax ID. If a Customer has one or more tax IDs saved, Checkout doesn’t display the tax ID collection form even if tax ID collection is enabled.
-
-When creating the Checkout Session, set [customer_update.name](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-customer_update-name) to `auto` to automatically update the customer’s existing `name` using details from the session.
 
 ```curl
 curl https://api.stripe.com/v1/checkout/sessions \
@@ -82,13 +78,6 @@ curl https://api.stripe.com/v1/checkout/sessions \
   -d mode=payment \
   --data-urlencode "success_url=https://example.com/success"
 ```
-
-If you don’t have saved addresses for existing customers, use the billing or shipping address entered during checkout to assess their location. The following table describes the available options:
-
-| **Parameter** | **Behavior** |
-| --- | --- |
-| [customer_update.address](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-customer_update-address) = `auto` | Uses the billing address entered during checkout. Replaces the customer’s previously saved addresses. |
-| [customer_update.shipping](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-customer_update-shipping) = `auto` | Uses the shipping address entered during checkout. Replaces the customer’s previously saved shipping addresses. Requires [shipping_address_collection](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-shipping_address_collection). |
 
 ## Optional: Require tax ID collection
 

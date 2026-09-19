@@ -29,11 +29,60 @@ Before proceeding, you can set a notice period and enable Live Moderation. See t
 * [What is a notice period?](/docs/help-center/product/voices/voice-library/what-is-a-notice-period)
 * [What is Live Moderation?](/docs/help-center/product/voices/voice-library/what-is-live-moderation)
 
-You can also select a custom voice preview. Any generations you’ve made of 70–150 characters
-will be available. If you don’t see options in the selection menu, no eligible generations are
-available. For more details, see [How do I add a custom preview for my shared voice?](/docs/help-center/product/voices/voice-library/how-do-i-add-a-custom-preview-for-my-shared-voice)
+Enter a name and description for your voice. Make sure the name follows our **naming
+guidelines**:
 
-Enter a name and description for your voice. Make sure the name follows our [naming guidelines](/docs/product-guides/voices/voice-library#sharing-a-professional-voice-clone).
+#### Naming guidelines
+
+#### Naming guidelines
+
+* The naming pattern should be a name followed by **key voice traits** or a **voice persona**,
+  separated by a hyphen (-).
+
+* The name must be 40 characters or fewer.
+
+* Your name should NOT include the following:
+
+  * Names of public individuals or entities (company names, band names, influencers or famous
+    people, etc).
+  * Social handles (Twitter, Instagram, you name it, etc).
+  * ALL CAPS WORDS.
+  * Emojis and any other non-letter characters.
+  * Explicit or harmful words.
+  * The word "voice".
+
+* Some examples of names following our guidelines:
+
+  * Serena - Calm, Friendly, Warm
+  * Olivia - Upbeat podcast host
+  * Jasper - Deep, Encouraging, Serious
+  * Maya - Terror narrator
+  * Nelson - Scary villain
+  * Harmony - High-energy, High-pitch
+
+#### Description guidelines
+
+#### Description guidelines
+
+* The description helps users decide if your voice is right for their project. Be specific
+  about the use cases your voice is best suited for.
+
+* Include as much detail as possible about your voice's key attributes — tone, style, emotion,
+  pacing, and any unique qualities that set it apart.
+
+* Do not list unrelated use cases to increase visibility. Voices with misleading or spammy
+  descriptions will not be approved.
+
+* Example of a good description:
+
+  > Serena offers a warm, meditative tone with a naturally slow and steady pace. Her voice
+  > carries a "smile" that feels both friendly and reassuring, making her perfect for content
+  > where the listener needs to feel safe or relaxed.
+  >
+  > **Best use cases:** Meditation apps, sleep stories, wellness tutorials, and empathetic
+  > customer service IVR systems.
+  >
+  > **Key qualities:** Soft-spoken, breathy, and consistently calm.
 
 Set labels (language, accent, gender, age, use case, tone, and style) to help others find your
 voice.
@@ -49,9 +98,15 @@ and sharing voices.
 
 We currently do not have an estimate for the review time, as it depends on the queue.
 
+### Adding a custom voice preview
+
+You can add a custom voice preview during the sharing process, or afterwards.
+
+In [My Voices](https://elevenlabs.io/app/voice-lab), find your voice, click **More actions** (three dots), then select **Edit in Library**. Click **Manage your voice**. In the **Custom voice preview** section, select an eligible generation from the drop-down selector. Any generations you’ve made of 70–150 characters will be available. For more details, see [How do I add a custom preview for my shared voice?](/docs/help-center/product/voices/voice-library/how-do-i-add-a-custom-preview-for-my-shared-voice).
+
 ## Sharing your voice privately
 
-You can share a voice with members of your workspace. Professional Voice Clones can also be shared externally with anyone who has the link. Instant Voice Clones and Voice Design voices can only be shared within your workspace.
+You can share a voice with members of your workspace. Professional Voice Clones can also be shared externally with anyone who has the link. Instant Voice Clones and voices created with [Voice Design](/docs/product-guides/voices/voice-design) can only be shared within your workspace.
 
 In [My Voices](https://elevenlabs.io/app/voice-lab), find your voice and click **More actions**
 (three dots), then select **Share Voice**.

@@ -118,9 +118,9 @@ To determine which payment methods each Stripe product supports, refer to the fo
 
 | Payment method | [Connect](https://docs.stripe.com/connect.md) | [Checkout](https://docs.stripe.com/payments/checkout.md) | [Payment Links](https://docs.stripe.com/payment-links.md) | [Payment Element](https://docs.stripe.com/payments/payment-element.md) | [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md) | [Mobile Payment Element](https://docs.stripe.com/payments/mobile.md) | [Subscriptions](https://docs.stripe.com/subscriptions.md) | [Invoicing](https://docs.stripe.com/invoicing.md) | [Customer Portal](https://docs.stripe.com/customer-management.md) |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Bank transfers | ✓ Supported | ✓ Supported 1,2 | - Unsupported | ✓ Supported | - Unsupported | - Unsupported | ✓ Supported | ✓ Supported | - Unsupported |
+| Bank transfers | ✓ Supported | ✓ Supported 1,2 | - Unsupported | ✓ Supported | - Unsupported | - Unsupported | ✓ Supported 3 | ✓ Supported 3 | - Unsupported |
 
-1 Not supported when using Checkout in subscription mode.2 Not supported when using Checkout in setup mode.
+1 Not supported when using Checkout in subscription mode.2 Not supported when using Checkout in setup mode.3 Invoices and Subscriptions only support the [send_invoice](https://docs.stripe.com/api/invoices/object.md#invoice_object-collection_method) collection method.
 
 ### Buy now, pay later product support 
 

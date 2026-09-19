@@ -10,9 +10,9 @@ path: docs/browser-agent-widget
 
 # Widget Embedding Guide
 
-> How to embed the Deepgram voice agent widget on any web page. Covers CDN and ES module installation, six layout modes, theming with design tokens, VAD, callbacks, and programmatic teardown.
+> How to embed the Deepgram voice agent widget on any web page. Covers CDN and ES module installation, six layout modes, theming with design tokens, callbacks, and programmatic teardown.
 
-Add a voice agent to any website. No framework required, no build step needed. The widget ships as a self-contained bundle with its own Preact runtime (\~160KB gzipped), six layout modes, full design-token theming, and built-in voice activity detection. It works from a CDN or as an ES module, and tears down cleanly for single-page apps.
+Add a voice agent to any website. No framework required, no build step needed. The widget ships as a self-contained bundle with its own Preact runtime (\~160KB gzipped), six layout modes, and full design-token theming. It works from a CDN or as an ES module, and tears down cleanly for single-page apps.
 
 The widget bundles everything internally. No React or build tooling required. For React-native integration, see [React UI Components](/docs/browser-agent-react-ui).
 
@@ -213,26 +213,8 @@ init({
   showMicToggle: true,     // microphone mute button (default: true)
   showSpeakerToggle: true, // speaker mute button (default: true)
   showTextInput: true,     // text input field (default: true)
-  vad: true,               // voice activity detection (default: false)
 });
 ```
-
-## VAD Configuration
-
-Enable Silero VAD to gate audio so only speech frames reach the agent. Pass `true` for defaults, or fine-tune the thresholds:
-
-```javascript
-init({
-  tokenFactory,
-  agent: "YOUR_AGENT_ID",
-  vad: {
-    speechThreshold: 0.5,
-    silenceThreshold: 0.35,
-  },
-});
-```
-
-When VAD is enabled, the microphone captures continuously but transmits only when speech is detected. This reduces bandwidth and improves turn-taking accuracy.
 
 ## Text Customization
 
@@ -416,7 +398,6 @@ init({
   dismissible: true,                          // Allow close/dismiss
 
   // -- Features --
-  vad: false | { speechThreshold, silenceThreshold },
   showTranscript: true,
   showMicToggle: true,
   showSpeakerToggle: true,

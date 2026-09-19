@@ -10,7 +10,7 @@ Learn about revenue recognition using some common examples.
 
 Stripe Revenue Recognition helps you automate your accrual accounting process. The examples linked from this page demonstrate how revenue recognition works within Stripe.
 
-Unless stated otherwise, these examples assume that revenue recognition takes place on a per-day basis. Stripe’s tooling recognizes revenue every second, but simplifies the calculations using a daily increment.
+Unless stated otherwise, these examples recognize revenue in whole-day increments, which matches the default [amortization granularity](https://docs.stripe.com/revenue-recognition/revenue-settings.md#amortization-granularity) in your settings. You can change that setting to recognize revenue by the second or by the month.
 
 See various examples in the following categories:
 

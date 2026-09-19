@@ -14,6 +14,8 @@ Stripe only calculates tax in jurisdictions where you have an active [tax regist
 
 ## Calculate tax on shipping costs 
 
+You can’t use the Handling Charge product tax code (`txcd_92010004`) in `line_items`.
+
 To calculate tax on shipping costs, use the `shipping_cost` parameter:
 
 ```curl

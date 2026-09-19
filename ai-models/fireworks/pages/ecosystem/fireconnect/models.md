@@ -46,11 +46,11 @@ FireConnect fetches coding-tagged serverless models, merges version-tracking ali
 
 ## Latest vs Fast
 
-FireConnect short IDs follow the same [Serverless serving paths](/serverless/serving-paths) as the API:
+FireConnect short IDs follow the same [Serverless modes](/serverless/serverless-modes) as the API:
 
 | Kind                       | Example IDs                                                                 | When to use                                                                                                           |
 | -------------------------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| **Latest** (standard path) | `kimi-latest`, `glm-latest`, `deepseek-pro-latest`, `deepseek-flash-latest` | Best price/quality; tracks current model versions                                                                     |
+| **Latest** (standard mode) | `kimi-latest`, `glm-latest`, `deepseek-pro-latest`, `deepseek-flash-latest` | Best price/quality; tracks current model versions                                                                     |
 | **Fast**                   | `kimi-fast-latest`, `glm-fast-latest`                                       | Interactive coding where token speed matters. Same model quality as latest, higher \$/token, aims for **100+ tok/s**. |
 | **Pinned**                 | `kimi-k3`, `glm-5p2`, `kimi-k3-fast`                                        | Stable ID that does not track new versions.                                                                           |
 
@@ -61,7 +61,7 @@ Prefer `*-latest` / `*-fast-latest` unless you need a pin.
 | ID                      | Use when                                                        | Notes                                                                                                                                                                                        |
 | ----------------------- | --------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `kimi-fast-latest`      | Interactive coding; screenshots / UI                            | Vision.                                                                                                                                                                                      |
-| `kimi-latest`           | Strong agentic coding with vision, lower \$/token than Fast     | Vision. Standard path.                                                                                                                                                                       |
+| `kimi-latest`           | Strong agentic coding with vision, lower \$/token than Fast     | Vision. Standard mode.                                                                                                                                                                       |
 | `deepseek-pro-latest`   | Strong text-only coding and reasoning                           | Text-only.                                                                                                                                                                                   |
 | `deepseek-flash-latest` | Haiku / subagent / high-volume background work                  | Text-only.                                                                                                                                                                                   |
 | `glm-flash-latest`      | Vision-capable GLM for Fable / image tasks                      | Vision.                                                                                                                                                                                      |

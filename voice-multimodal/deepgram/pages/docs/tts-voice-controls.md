@@ -159,29 +159,24 @@ with open("medical_instructions.mp3", "wb") as f:
 ```java Java
 import com.deepgram.DeepgramClient;
 import com.deepgram.resources.speak.v1.audio.requests.SpeakV1Request;
-import com.deepgram.core.RequestOptions;
+import com.deepgram.resources.speak.v1.audio.types.AudioGenerateRequestEncoding;
+import com.deepgram.resources.speak.v1.audio.types.AudioGenerateRequestModel;
 
 import java.io.InputStream;
 import java.io.FileOutputStream;
-import java.util.Map;
 
 DeepgramClient client = DeepgramClient.builder().build();
 
 // Inline IPA replacements with escaped curly braces
 String text = "Take \\{\"word\": \"Azathioprine\", \"pronounce\": \"æzəˈθaɪəpriːn\"\\} twice daily with \\{\"word\": \"dupilumab\", \"pronounce\": \"duːˈpɪljuːmæb\"\\}.";
 
-// Speed control via additional query parameters
-RequestOptions requestOpts = RequestOptions.builder()
-    .additionalQueryParameters(Map.of("speed", "0.8"))
-    .build();
-
 InputStream audioStream = client.speak().v1().audio().generate(
     SpeakV1Request.builder()
         .text(text)
-        .model("aura-2-thalia-en")
-        .encoding("mp3")
-        .build(),
-    requestOpts
+        .model(AudioGenerateRequestModel.AURA2THALIA_EN)
+        .encoding(AudioGenerateRequestEncoding.MP3)
+        .speed(0.8)
+        .build()
 );
 
 try (FileOutputStream fos = new FileOutputStream("medical_instructions.mp3")) {
@@ -229,6 +224,8 @@ with open("brand_pronunciation.mp3", "wb") as f:
 ```java Java
 import com.deepgram.DeepgramClient;
 import com.deepgram.resources.speak.v1.audio.requests.SpeakV1Request;
+import com.deepgram.resources.speak.v1.audio.types.AudioGenerateRequestEncoding;
+import com.deepgram.resources.speak.v1.audio.types.AudioGenerateRequestModel;
 
 import java.io.InputStream;
 import java.io.FileOutputStream;
@@ -241,8 +238,8 @@ String text = "Visit \\{\"word\": \"Hermès\", \"pronounce\": \"ɛərˈmɛz\"\\}
 InputStream audioStream = client.speak().v1().audio().generate(
     SpeakV1Request.builder()
         .text(text)
-        .model("aura-2-thalia-en")
-        .encoding("mp3")
+        .model(AudioGenerateRequestModel.AURA2THALIA_EN)
+        .encoding(AudioGenerateRequestEncoding.MP3)
         .build()
 );
 

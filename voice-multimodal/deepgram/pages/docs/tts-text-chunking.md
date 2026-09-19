@@ -79,9 +79,9 @@ chunks.forEach((chunk, index) => {
 // Chunk 3: How does it sound?
 ```
 
-## Processing Streaming Text with WebSockets
+## Processing Streaming Text with REST TTS
 
-When working with streaming text (like from an LLM), you need to collect tokens until you have complete sentences. Here's a simplified approach to process text chunks that arrive as paragraphs:
+When working with streaming text from an LLM, collect tokens until you have complete sentences. This example sends each sentence to REST TTS and saves its completed MP3 response.
 
 ```python
 # For more Python SDK migration guides, visit:
@@ -91,19 +91,24 @@ import re
 import asyncio
 from deepgram import AsyncDeepgramClient
 
-def chunk_by_sentence(text):
-    # Split text at sentence boundaries (periods, question marks, exclamation points)
-    # while preserving the punctuation
-    sentences = re.split(r'(?<=[.!?])\s+', text)
-
-    # Remove any empty chunks
-    return [sentence for sentence in sentences if sentence]
-
 class SimpleTextChunker:
     def __init__(self, deepgram_client):
         self.queue = []  # Queue to store incoming paragraph chunks
-        self.processed_sentences = set()
         self.deepgram_client = deepgram_client
+        self.chunk_number = 0
+        self.pending_text = ""
+
+    async def synthesize_and_save(self, text):
+        audio_response = self.deepgram_client.speak.v1.audio.generate(
+            text=text,
+            model="aura-2-thalia-en"
+        )
+        audio_data = b"".join([chunk async for chunk in audio_response])
+        self.chunk_number += 1
+        filename = f"chunk_{self.chunk_number}.mp3"
+        with open(filename, "wb") as audio_file:
+            audio_file.write(audio_data)
+        print(f"Audio saved to {filename}")
 
     async def process_text_stream(self, paragraph):
         """Process an array of paragraph chunks, each containing 1-2 sentences"""
@@ -119,27 +124,32 @@ class SimpleTextChunker:
             # Get the next paragraph from the queue
             paragraph = self.queue.pop(0)
 
-            # Split paragraph into sentences using our chunk_by_sentence function
-            sentences = chunk_by_sentence(paragraph)
+            self.pending_text += paragraph
+            matches = list(re.finditer(r'[^.!?]+[.!?]', self.pending_text))
+            if not matches:
+                continue
+
+            self.pending_text = self.pending_text[matches[-1].end():].lstrip()
 
             # Process each sentence
-            for sentence in sentences:
-                if sentence and sentence not in self.processed_sentences:
-                    # Send the sentence to TTS
-                    print(f"Sending sentence to TTS: {sentence}")
-                    audio_response = await self.deepgram_client.speak.v1.audio.generate(
-                        text=sentence,
-                        model="aura-2-thalia-en",
-                        sample_rate=24000
-                    )
-                    # In a real app, you would play this audio immediately
-                    self.processed_sentences.add(sentence)
+            for match in matches:
+                sentence = match.group().strip()
+                # Send the sentence to TTS
+                print(f"Sending sentence to TTS: {sentence}")
+                await self.synthesize_and_save(sentence)
+
+    async def flush(self):
+        if self.pending_text.strip():
+            await self.synthesize_and_save(self.pending_text.strip())
+            self.pending_text = ""
 
 # Example usage with an array of paragraph chunks
 async def main():
     # This simulates text coming in as paragraph chunks from an LLM
     paragraph_chunks = [
-        "Deepgram's TTS API offers low latency. It works great for voice agents.",
+        "Hello",
+        " world. Deepgram's TTS API offers low latency.",
+        "It works great for voice agents.",
         "This approach simulates receiving chunks as paragraphs. Each paragraph may contain one or two sentences.",
         "Try it today! You'll be impressed with the results."
     ]
@@ -147,12 +157,11 @@ async def main():
     # Set up TTS client
     deepgram = AsyncDeepgramClient()
 
-    # Set up listeners for TTS events to handle audio data and connection status
-
     chunker = SimpleTextChunker(deepgram)
     # Process each paragraph sequentially
     for paragraph in paragraph_chunks:
         await chunker.process_text_stream(paragraph)
+    await chunker.flush()
 
 # Run the example
 if __name__ == "__main__":
@@ -162,20 +171,31 @@ if __name__ == "__main__":
 **`Node.Js`**
 
 ```javascript Node.Js
-// Text chunking utility for sentence-based splitting
-function chunkBySentence(text) {
-  // Split text at sentence boundaries while preserving punctuation
-  const sentences = text.split(/(?<=[.!?])\s+/);
-
-  // Remove any empty chunks
-  return sentences.filter(sentence => sentence.trim().length > 0);
-}
+const fs = require("fs");
+const { Readable } = require("stream");
+const { pipeline } = require("stream/promises");
 
 class SimpleTextChunker {
-  constructor(ttsClient) {
-    this.queue = [];  // Queue to store incoming paragraph chunks
-    this.processedSentences = new Set();
-    this.ttsClient = ttsClient;
+  constructor(deepgram) {
+    this.queue = []; // Queue to store incoming paragraph chunks
+    this.deepgram = deepgram;
+    this.chunkNumber = 0;
+    this.pendingText = "";
+  }
+
+  async synthesizeAndSave(text) {
+    const audioResponse = await this.deepgram.speak.v1.audio.generate({
+      text,
+      model: "aura-2-thalia-en",
+    });
+
+    this.chunkNumber += 1;
+    const filename = `chunk-${this.chunkNumber}.mp3`;
+    await pipeline(
+      Readable.fromWeb(audioResponse.stream()),
+      fs.createWriteStream(filename)
+    );
+    console.log(`Audio saved to ${filename}`);
   }
 
   async processTextStream(paragraph) {
@@ -188,33 +208,34 @@ class SimpleTextChunker {
       // Get the next paragraph from the queue
       const paragraph = this.queue.shift();
 
-      // Split paragraph into sentences using our chunkBySentence function
-      const sentences = chunkBySentence(paragraph);
+      this.pendingText += paragraph;
+      const matches = [...this.pendingText.matchAll(/[^.!?]+[.!?]/g)];
+      if (matches.length === 0) continue;
+
+      const lastMatch = matches[matches.length - 1];
+      this.pendingText = this.pendingText
+        .slice(lastMatch.index + lastMatch[0].length)
+        .trimStart();
 
       // Process each sentence sequentially
-      for (const sentence of sentences) {
-        if (sentence && !this.processedSentences.has(sentence)) {
-          // Send the sentence to TTS
-          console.log(`Sending sentence to TTS: ${sentence}`);
+      for (const match of matches) {
+        const sentence = match[0].trim();
+        // Send the sentence to TTS
+        console.log(`Sending sentence to TTS: ${sentence}`);
 
-          try {
-            // Using Deepgram Node SDK
-            const audioResponse = await this.ttsClient.request({
-              text: sentence,
-            }, {
-              model: "aura-2-thalia-en",
-              sample_rate: 24000
-            });
-
-            // In a real app, you would play this audio immediately
-            // For example with Web Audio API or saving to a file
-
-            this.processedSentences.add(sentence);
-          } catch (error) {
-            console.error('Error generating speech:', error);
-          }
+        try {
+          await this.synthesizeAndSave(sentence);
+        } catch (error) {
+          console.error('Error generating speech:', error);
         }
       }
+    }
+  }
+
+  async flush() {
+    if (this.pendingText.trim()) {
+      await this.synthesizeAndSave(this.pendingText.trim());
+      this.pendingText = "";
     }
   }
 }
@@ -225,30 +246,28 @@ async function main() {
 
   // This simulates text coming in as paragraph chunks from an LLM
   const paragraphChunks = [
-    "Deepgram's TTS API offers low latency. It works great for voice agents.",
+    "Hello",
+    " world. Deepgram's TTS API offers low latency.",
+    "It works great for voice agents.",
     "This approach simulates receiving chunks as paragraphs. Each paragraph may contain one or two sentences.",
     "Try it today! You'll be impressed with the results."
   ];
 
-  // Set up TTS client
   const deepgram = new DeepgramClient({ apiKey: process.env.DEEPGRAM_API_KEY });
-  const ttsClient = deepgram.speak;
-
-  // In a real app, set up listeners for TTS events to handle audio data
-
-  const chunker = new SimpleTextChunker(ttsClient);
+  const chunker = new SimpleTextChunker(deepgram);
 
   // Process each paragraph sequentially
   for (const paragraph of paragraphChunks) {
     await chunker.processTextStream(paragraph);
   }
+  await chunker.flush();
 }
 
 // Run the example
 main().catch(console.error);
 ```
 
-For complete details on implementing the TTS WebSocket connection, see our guide on [Real-Time TTS with WebSockets](/docs/tts-websocket-streaming).
+For low-latency playback over a persistent connection, see [Real-Time TTS with WebSockets](/docs/tts-websocket-streaming).
 
 ## Processing Chunked Text
 

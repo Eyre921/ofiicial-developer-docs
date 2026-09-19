@@ -30,7 +30,7 @@ This integration increases Link authorization rates by letting customers select 
 > Link as a payment method has the following limitations. If these affect your integration, use a [Link with card integration](https://docs.stripe.com/payments/link/link-payment-integrations.md?link-integrations=link-card-integrations) instead.
 > 
 > - It doesn’t support [Interchange+ (IC+) pricing](https://support.stripe.com/questions/understanding-blended-interchange-pricing). Stripe bills all such Link transactions at a single blended rate.
-- It doesn’t support advanced acquiring features such as [extended authorization](https://docs.stripe.com/payments/extended-authorization.md), [incremental authorization](https://docs.stripe.com/payments/incremental-authorization.md), and [overcapture](https://docs.stripe.com/payments/overcapture.md).
+> - It doesn’t support advanced acquiring features such as [extended authorization](https://docs.stripe.com/payments/extended-authorization.md), [incremental authorization](https://docs.stripe.com/payments/incremental-authorization.md), and [overcapture](https://docs.stripe.com/payments/overcapture.md).
 
 #### Link with card integrations
 

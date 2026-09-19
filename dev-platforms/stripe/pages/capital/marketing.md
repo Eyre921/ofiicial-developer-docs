@@ -60,6 +60,10 @@ When submitting your materials:
 - Describe where all CTA links direct (for example, a landing page URL or login screen).
 - For email marketing, include a sample of your standard email footer showing an opt-out link and physical address.
 
+## Embedded Components 
+
+Regardless of the other Capital assets you use, if you want to use any [Capital embedded components](https://docs.stripe.com/capital/embedded-component-integration.md) in live mode, you must complete a compliance review. To complete the review, [create a test offer in a sandbox](https://docs.stripe.com/capital/testing.md#create-offer) with its status set to `delivered`, and use it to preview how the embedded components display in your platform’s UI. Submit screenshots or a recorded video of the preview using the [Compliance Intake Form](https://form.asana.com/?k=8K51UWmWhttehNFD5qBLdg&d=974470123217835).
+
 ## Sending offer notifications 
 
 As part of your Capital marketing program, set up offer notifications so connected accounts know when they’re eligible for financing. You must notify all eligible connected accounts about available offers. You can meet this requirement by sending either a Stripe-sent or platform-sent offer email that informs the connected account about the offer, or by using [Capital embedded components](https://docs.stripe.com/capital/embedded-component-integration.md) to present the offer in your Dashboard.

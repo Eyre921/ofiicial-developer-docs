@@ -295,21 +295,17 @@ Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additi
 **`JavaScript`**
 
 ```javascript JavaScript
-// Install the SDK: npm -i @deepgram/sdk
+// Install the SDK: npm i @deepgram/sdk
 
 import { DeepgramClient } from "@deepgram/sdk";
-
-const live = async () => {
-const url = "http://stream.live.vc.bbcmedia.co.uk/bbc_world_service";
 
 const deepgram = new DeepgramClient({ apiKey: process.env.DEEPGRAM_API_KEY });
 
 const connection = await deepgram.listen.v1.connect({
   model: "nova-3",
-  // Custom option to opt out of Model Improvement Program
-  mip_opt_out: "true",
+  // Opt out of the Deepgram Model Improvement Program
+  mip_opt_out: true,
 });
-
 ```
 
 **`Python`**
@@ -649,7 +645,7 @@ Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additi
     --header 'Authorization: Token YOUR_DEEPGRAM_API_KEY' \
     --header 'Content-Type: application/json' \
     --data '{"text": "Hello, how can I help you today?"}' \
-    --output mip_opt_out.wav
+    --output mip_opt_out.mp3
 ```
 
 **`JavaScript`**
@@ -659,6 +655,7 @@ Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additi
 
 import { DeepgramClient } from "@deepgram/sdk";
 import fs from "fs";
+import { Readable } from "stream";
 import { pipeline } from "stream/promises";
 
 const deepgram = new DeepgramClient({ apiKey: process.env.DEEPGRAM_API_KEY });
@@ -672,8 +669,8 @@ const response = await deepgram.speak.v1.audio.generate({
   mip_opt_out: true,
 });
 
-const fileStream = fs.createWriteStream("audio.wav");
-await pipeline(response.stream, fileStream);
+const fileStream = fs.createWriteStream("audio.mp3");
+await pipeline(Readable.fromWeb(response.stream()), fileStream);
 };
 
 getAudio();
@@ -686,12 +683,7 @@ getAudio();
 # For more Python SDK migration guides, visit:
 # https://github.com/deepgram/deepgram-python-sdk/tree/main/docs
 
-import os
-from dotenv import load_dotenv
-
 from deepgram import DeepgramClient
-
-load_dotenv()
 
 SPEAK_TEXT = "Hello, how can I help you today?"
 filename = "test.mp3"
@@ -711,7 +703,8 @@ def main():
 
       # Save the audio file
       with open(filename, "wb") as audio_file:
-          audio_file.write(response.stream.getvalue())
+          for chunk in response:
+              audio_file.write(chunk)
 
       print(f"Audio saved to {filename}")
 
@@ -867,8 +860,8 @@ public class Main {
               .mipOptOut(true)
               .build());
 
-      Files.copy(audioStream, Path.of("mip_opt_out.wav"), StandardCopyOption.REPLACE_EXISTING);
-      System.out.println("Audio saved to mip_opt_out.wav");
+      Files.copy(audioStream, Path.of("mip_opt_out.mp3"), StandardCopyOption.REPLACE_EXISTING);
+      System.out.println("Audio saved to mip_opt_out.mp3");
   }
 }
 ```

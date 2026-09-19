@@ -176,7 +176,7 @@ When your customer clicks on your logo in a Checkout Session without completing 
 > Don’t rely on the redirect to the `success_url` alone for detecting payment initiation, because:
 > 
 > - Malicious users could directly access the `success_url` without paying and gain access to your goods or services.
-- After a successful payment, customers might close their browser tab before they’re redirected to the `success_url`.
+> - After a successful payment, customers might close their browser tab before they’re redirected to the `success_url`.
 
 ## Confirm the payment is successful
 

@@ -158,6 +158,7 @@ func main() {
 ```java Java
 import com.deepgram.DeepgramClient;
 import com.deepgram.resources.speak.v1.audio.requests.SpeakV1Request;
+import com.deepgram.resources.speak.v1.audio.types.AudioGenerateRequestModel;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -168,7 +169,7 @@ DeepgramClient client = DeepgramClient.builder().build();
 InputStream audioStream = client.speak().v1().audio().generate(
     SpeakV1Request.builder()
         .text("Hello, how can I help you today? My name is Emily and I'm very glad to meet you. What do you think of this new text-to-speech API?")
-        .model("aura-2-thalia-en")
+        .model(AudioGenerateRequestModel.AURA2THALIA_EN)
         .build()
 );
 
@@ -302,6 +303,7 @@ main();
 ```java Java
 import com.deepgram.DeepgramClient;
 import com.deepgram.resources.speak.v1.audio.requests.SpeakV1Request;
+import com.deepgram.resources.speak.v1.audio.types.AudioGenerateRequestModel;
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
@@ -321,7 +323,7 @@ try (OutputStream out = Files.newOutputStream(Path.of("output.mp3"))) {
         InputStream audio = client.speak().v1().audio().generate(
             SpeakV1Request.builder()
                 .text(segment)
-                .model("aura-2-thalia-en")
+                .model(AudioGenerateRequestModel.AURA2THALIA_EN)
                 .build()
         );
         audio.transferTo(out);

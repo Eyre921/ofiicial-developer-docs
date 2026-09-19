@@ -80,7 +80,7 @@ The provider creates and manages `AgentSession`, `AgentMicrophone`, and `AgentPl
 <AgentProvider
   config={agentSessionConfig}
   microphone={true}
-  microphoneOptions={{ vad: true }}
+  microphoneOptions={{ sampleRate: 16_000 }}
   tts={true}
   playerSampleRate={24_000}
   autoStart={false}
@@ -92,25 +92,25 @@ The provider creates and manages `AgentSession`, `AgentMicrophone`, and `AgentPl
 
 ### Props
 
-| Prop                 | Type                                                  | Default     | Description                                                                                                                                      |
-| -------------------- | ----------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `config`             | `AgentSessionConfig`                                  | required    | Session configuration. See [JavaScript SDK](/docs/browser-agent-javascript) for all options.                                                     |
-| `microphone`         | `boolean`                                             | `true`      | Enable microphone capture.                                                                                                                       |
-| `microphoneOptions`  | `MicrophoneOptions`                                   | `undefined` | Options passed to `AgentMicrophone` (sample rate, VAD, noise suppression). See [JavaScript SDK](/docs/browser-agent-javascript#agentmicrophone). |
-| `tts`                | `boolean`                                             | `true`      | Enable TTS audio playback.                                                                                                                       |
-| `playerSampleRate`   | `number`                                              | `24000`     | Sample rate for the audio player.                                                                                                                |
-| `autoStart`          | `boolean`                                             | `false`     | Connect to the agent immediately on mount.                                                                                                       |
-| `onFunctionCall`     | `(fn: FunctionCallItem) => Promise<string> \| string` | `undefined` | Default handler for agent function call requests. Dynamic tools registered with `useAgentClientTool` take priority over this prop.               |
-| `onError`            | `(message: AgentErrorMessage) => void`                | `undefined` | Handler for server-reported agent errors.                                                                                                        |
-| `onSdkError`         | `(error: Error) => void`                              | `undefined` | Handler for SDK transport errors and automatic-start failures.                                                                                   |
-| `onWarning`          | `(message: AgentWarningMessage) => void`              | `undefined` | Handler for server-reported agent warnings.                                                                                                      |
-| `onLatencyReport`    | `(message: LatencyReportMessage) => void`             | `undefined` | Handler for agent latency reports.                                                                                                               |
-| `onInjectionRefused` | `(message: InjectionRefusedMessage) => void`          | `undefined` | Handler when the server rejects an injected message.                                                                                             |
-| `onListenUpdated`    | `(message: ListenUpdatedMessage) => void`             | `undefined` | Handler when the server confirms a `updateListen()` request.                                                                                     |
-| `onPromptUpdated`    | `(message: PromptUpdatedMessage) => void`             | `undefined` | Handler when the server confirms a `updatePrompt()` request.                                                                                     |
-| `onSpeakUpdated`     | `(message: SpeakUpdatedMessage) => void`              | `undefined` | Handler when the server confirms a `updateSpeak()` request.                                                                                      |
-| `onThinkUpdated`     | `(message: ThinkUpdatedMessage) => void`              | `undefined` | Handler when the server confirms a `updateThink()` request.                                                                                      |
-| `onHistory`          | `(message: HistoryMessage) => void`                   | `undefined` | Handler for conversation history received from the server.                                                                                       |
+| Prop                 | Type                                                  | Default     | Description                                                                                                                                                                       |
+| -------------------- | ----------------------------------------------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `config`             | `AgentSessionConfig`                                  | required    | Session configuration. See [JavaScript SDK](/docs/browser-agent-javascript) for all options.                                                                                      |
+| `microphone`         | `boolean`                                             | `true`      | Enable microphone capture.                                                                                                                                                        |
+| `microphoneOptions`  | `MicrophoneOptions`                                   | `undefined` | Options passed to `AgentMicrophone` (sample rate, echo cancellation, noise suppression, auto gain control). See [JavaScript SDK](/docs/browser-agent-javascript#agentmicrophone). |
+| `tts`                | `boolean`                                             | `true`      | Enable TTS audio playback.                                                                                                                                                        |
+| `playerSampleRate`   | `number`                                              | `24000`     | Sample rate for the audio player.                                                                                                                                                 |
+| `autoStart`          | `boolean`                                             | `false`     | Connect to the agent immediately on mount.                                                                                                                                        |
+| `onFunctionCall`     | `(fn: FunctionCallItem) => Promise<string> \| string` | `undefined` | Default handler for agent function call requests. Dynamic tools registered with `useAgentClientTool` take priority over this prop.                                                |
+| `onError`            | `(message: AgentErrorMessage) => void`                | `undefined` | Handler for server-reported agent errors.                                                                                                                                         |
+| `onSdkError`         | `(error: Error) => void`                              | `undefined` | Handler for SDK transport errors and automatic-start failures.                                                                                                                    |
+| `onWarning`          | `(message: AgentWarningMessage) => void`              | `undefined` | Handler for server-reported agent warnings.                                                                                                                                       |
+| `onLatencyReport`    | `(message: LatencyReportMessage) => void`             | `undefined` | Handler for agent latency reports.                                                                                                                                                |
+| `onInjectionRefused` | `(message: InjectionRefusedMessage) => void`          | `undefined` | Handler when the server rejects an injected message.                                                                                                                              |
+| `onListenUpdated`    | `(message: ListenUpdatedMessage) => void`             | `undefined` | Handler when the server confirms a `updateListen()` request.                                                                                                                      |
+| `onPromptUpdated`    | `(message: PromptUpdatedMessage) => void`             | `undefined` | Handler when the server confirms a `updatePrompt()` request.                                                                                                                      |
+| `onSpeakUpdated`     | `(message: SpeakUpdatedMessage) => void`              | `undefined` | Handler when the server confirms a `updateSpeak()` request.                                                                                                                       |
+| `onThinkUpdated`     | `(message: ThinkUpdatedMessage) => void`              | `undefined` | Handler when the server confirms a `updateThink()` request.                                                                                                                       |
+| `onHistory`          | `(message: HistoryMessage) => void`                   | `undefined` | Handler for conversation history received from the server.                                                                                                                        |
 
 ## Hooks
 
@@ -327,7 +327,7 @@ function VoiceAgent() {
       auth: { tokenFactory: () => fetch("/api/token").then((r) => r.text()) },
       agent: "YOUR_AGENT_ID",
     },
-    micOptions: { vad: true },
+    micOptions: { sampleRate: 16_000 },
     playerSampleRate: 24_000,
     onFunctionCall: async (fn) => {
       return JSON.stringify({ result: "ok" });
@@ -353,22 +353,22 @@ function VoiceAgent() {
 
 ### Options
 
-| Option               | Type                                         | Default     | Description                                                  |
-| -------------------- | -------------------------------------------- | ----------- | ------------------------------------------------------------ |
-| `config`             | `AgentSessionConfig`                         | required    | Session configuration (auth, agent ID, settings).            |
-| `micOptions`         | `MicrophoneOptions`                          | `{}`        | Microphone options (sample rate, VAD, noise suppression).    |
-| `playerSampleRate`   | `number`                                     | `24000`     | Audio player sample rate.                                    |
-| `onFunctionCall`     | `(fn) => Promise<string> \| string`          | `undefined` | Handler for agent function call requests.                    |
-| `onError`            | `(message: AgentErrorMessage) => void`       | `undefined` | Handler for server-reported agent errors.                    |
-| `onSdkError`         | `(error: Error) => void`                     | `undefined` | Handler for SDK transport errors.                            |
-| `onWarning`          | `(message: AgentWarningMessage) => void`     | `undefined` | Handler for server-reported agent warnings.                  |
-| `onLatencyReport`    | `(message: LatencyReportMessage) => void`    | `undefined` | Handler for agent latency reports.                           |
-| `onInjectionRefused` | `(message: InjectionRefusedMessage) => void` | `undefined` | Handler when the server rejects an injected message.         |
-| `onListenUpdated`    | `(message: ListenUpdatedMessage) => void`    | `undefined` | Handler when the server confirms a `updateListen()` request. |
-| `onPromptUpdated`    | `(message: PromptUpdatedMessage) => void`    | `undefined` | Handler when the server confirms a `updatePrompt()` request. |
-| `onSpeakUpdated`     | `(message: SpeakUpdatedMessage) => void`     | `undefined` | Handler when the server confirms a `updateSpeak()` request.  |
-| `onThinkUpdated`     | `(message: ThinkUpdatedMessage) => void`     | `undefined` | Handler when the server confirms a `updateThink()` request.  |
-| `onHistory`          | `(message: HistoryMessage) => void`          | `undefined` | Handler for conversation history received from the server.   |
+| Option               | Type                                         | Default     | Description                                                                                |
+| -------------------- | -------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------ |
+| `config`             | `AgentSessionConfig`                         | required    | Session configuration (auth, agent ID, settings).                                          |
+| `micOptions`         | `MicrophoneOptions`                          | `{}`        | Microphone options (sample rate, echo cancellation, noise suppression, auto gain control). |
+| `playerSampleRate`   | `number`                                     | `24000`     | Audio player sample rate.                                                                  |
+| `onFunctionCall`     | `(fn) => Promise<string> \| string`          | `undefined` | Handler for agent function call requests.                                                  |
+| `onError`            | `(message: AgentErrorMessage) => void`       | `undefined` | Handler for server-reported agent errors.                                                  |
+| `onSdkError`         | `(error: Error) => void`                     | `undefined` | Handler for SDK transport errors.                                                          |
+| `onWarning`          | `(message: AgentWarningMessage) => void`     | `undefined` | Handler for server-reported agent warnings.                                                |
+| `onLatencyReport`    | `(message: LatencyReportMessage) => void`    | `undefined` | Handler for agent latency reports.                                                         |
+| `onInjectionRefused` | `(message: InjectionRefusedMessage) => void` | `undefined` | Handler when the server rejects an injected message.                                       |
+| `onListenUpdated`    | `(message: ListenUpdatedMessage) => void`    | `undefined` | Handler when the server confirms a `updateListen()` request.                               |
+| `onPromptUpdated`    | `(message: PromptUpdatedMessage) => void`    | `undefined` | Handler when the server confirms a `updatePrompt()` request.                               |
+| `onSpeakUpdated`     | `(message: SpeakUpdatedMessage) => void`     | `undefined` | Handler when the server confirms a `updateSpeak()` request.                                |
+| `onThinkUpdated`     | `(message: ThinkUpdatedMessage) => void`     | `undefined` | Handler when the server confirms a `updateThink()` request.                                |
+| `onHistory`          | `(message: HistoryMessage) => void`          | `undefined` | Handler for conversation history received from the server.                                 |
 
 ### Return values
 

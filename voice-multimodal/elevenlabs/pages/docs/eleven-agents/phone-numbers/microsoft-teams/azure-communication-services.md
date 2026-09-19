@@ -19,7 +19,7 @@ If a number isn't available in your region, use a SIP provider with [SIP trunkin
 
 ## How it works
 
-![A caller dials the ACS number; ACS fires IncomingCall via Event Grid to the bridge, which answers with bidirectional PCM 16k media streaming and relays it to the ElevenLabs agent over a WebSocket](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e77a27148e217fc7dc06c25007c1c141913fc831cbfe8a2f57405137646271af/assets/images/conversational-ai/teams-acs-architecture.svg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T113157Z&X-Amz-Expires=604800&X-Amz-Signature=ba59e558199f08dc2a520c92a1031cf686b2f5884391a9450853fd6213ab13d2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![A caller dials the ACS number; ACS fires IncomingCall via Event Grid to the bridge, which answers with bidirectional PCM 16k media streaming and relays it to the ElevenLabs agent over a WebSocket](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e77a27148e217fc7dc06c25007c1c141913fc831cbfe8a2f57405137646271af/assets/images/conversational-ai/teams-acs-architecture.svg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260919%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260919T113302Z&X-Amz-Expires=604800&X-Amz-Signature=143fc650ff9805784dd3a4e90473a3b578aab8618dd76f057b767ff8fdafa122&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Audio is **PCM 16 kHz mono** on both legs (the agent's input/output format is `pcm_16000`), so it passes through as base64 with no resampling.
 
@@ -66,7 +66,7 @@ az communication create --name my-acs --resource-group $RG \
 Buy a number in the resource (Portal → your ACS resource → **Phone numbers → Get**, or the [phone-numbers SDK](https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/telephony/get-phone-number)). For an agent that **answers** calls, a number with **inbound calling** is enough; add **outbound** capability if you also want `/api/outboundCall`.
 
 ![The ACS resource Phone numbers blade listing active numbers with their calling
-capabilities](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9d14034ee9f81e2ebcf64e30371f914ef6f87a8da30ac250e702662f2e5e1cc1/assets/images/conversational-ai/teams-acs-phone-number.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T113157Z&X-Amz-Expires=604800&X-Amz-Signature=dbc1086b5f7e2b625352c3e29c27f39eba5cf5bc736f42ad194eb92a4c650ba7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+capabilities](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9d14034ee9f81e2ebcf64e30371f914ef6f87a8da30ac250e702662f2e5e1cc1/assets/images/conversational-ai/teams-acs-phone-number.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260919%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260919T113302Z&X-Amz-Expires=604800&X-Amz-Signature=7d65d687cfd6a90be3a3236cd677c6bdc734b42020229e4e150ce39936970030&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 To verify from the CLI (requires `az extension add --name communication`), and to fetch the connection string the bridge uses as `ACS_CONNECTION_STRING`:
 
@@ -219,7 +219,7 @@ The subscription appears under the ACS resource's **Events** blade:
 
 ![The Events blade of the ACS resource listing the acs-incomingcall webhook subscription filtered
 to
-Microsoft.Communication.IncomingCall](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f310aed9637e06b81906ca188350e3e721aaa5f4de69af2b3b6e7d157817a1ea/assets/images/conversational-ai/teams-acs-event-grid.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T113157Z&X-Amz-Expires=604800&X-Amz-Signature=c1ea2347048e20c60a2caadbb6c8d56cdc7f4198fff8a61387b165bbe4b61c5e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+Microsoft.Communication.IncomingCall](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f310aed9637e06b81906ca188350e3e721aaa5f4de69af2b3b6e7d157817a1ea/assets/images/conversational-ai/teams-acs-event-grid.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260919%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260919T113302Z&X-Amz-Expires=604800&X-Amz-Signature=57037cd427410bdcc74428dfe83134360e76bcd8ce0bfdd68d82bdd2939f5880&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Dial the number — the agent answers.
 
@@ -266,7 +266,7 @@ calling and is in the same ACS resource the subscription is on. On the subscript
 **Filters** tab, the event types must include **Incoming Call**:
 
 ![The event subscription Filters tab with the event type filtered to Incoming
-Call](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c7026e86d96551d713e4fd7d5753062f643fcd6a67b455866bb8f1bbb6b57eb1/assets/images/conversational-ai/teams-acs-event-grid-filter.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T113157Z&X-Amz-Expires=604800&X-Amz-Signature=3c686b34d9e79f980ce8b27c1fa6e4f8410d4d3734362fe85907ef406f75bc6f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+Call](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c7026e86d96551d713e4fd7d5753062f643fcd6a67b455866bb8f1bbb6b57eb1/assets/images/conversational-ai/teams-acs-event-grid-filter.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260919%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260919T113302Z&X-Amz-Expires=604800&X-Amz-Signature=f414bc8d668c8ea664333e673d9d5ca87c9fa52f8c4c3c5b428d01e571976a2a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### \`CreateCallFailed\` / \`AddParticipantFailed\` for an international number
 

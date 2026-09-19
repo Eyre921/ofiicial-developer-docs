@@ -8,7 +8,7 @@ path: docs/overview/administration/workspaces/sharing-resources
 
 # Sharing resources
 
-![Sharing a project](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1d1fe7f982282bb04bf6f27a363e384a83f7cf25725bef4a47a536d7e8f5f70e/assets/images/product-guides/workspaces/share-project.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100016Z&X-Amz-Expires=604800&X-Amz-Signature=896f78e525ab6864f19b765b822d9bcb02753f501617ff5dc362c306b2f5e52e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Sharing a project](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1d1fe7f982282bb04bf6f27a363e384a83f7cf25725bef4a47a536d7e8f5f70e/assets/images/product-guides/workspaces/share-project.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260919%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260919T113108Z&X-Amz-Expires=604800&X-Amz-Signature=a7a3646ea5708ceab76b7072eecf125206c0b9cb9a1174cc1e5403e57b1cce24&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Overview
 

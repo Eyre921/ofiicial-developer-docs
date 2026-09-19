@@ -21,6 +21,8 @@ Test cards act as “fake” credit cards, and allow you to simulate the followi
 
 You can also test non-card payments in a sandbox. Non-card payments are payment methods that aren’t credit or debit cards. Stripe supports various non-card payment options, such as digital wallets and bank transfers. [Each payment method](https://docs.stripe.com/testing.md#non-card-payments) has its own special values.
 
+If you’re testing a subscription integration, see [Test your Billing integration](https://docs.stripe.com/billing/testing.md).
+
 Don’t use testing environments to load test your integration because you might hit [rate limits](https://docs.stripe.com/testing.md#rate-limits). To load test your integration, see [load testing](https://docs.stripe.com/rate-limits.md#load-testing).
 
 ## How to use test cards 
@@ -656,7 +658,7 @@ To simulate a [disputed transaction](https://docs.stripe.com/disputes.md), use t
 | Discover fraudulent | 6026507838377928 | With default account settings, charge succeeds, but is disputed as [fraudulent](https://docs.stripe.com/disputes/categories.md). |
 | Not received | 4000000000002685 | With default account settings, charge succeeds, only to be disputed as [product not received](https://docs.stripe.com/disputes/categories.md). This type of dispute [isn’t protected](https://docs.stripe.com/payments/3d-secure/authentication-flow.md#disputed-payments) after 3D Secure authentication. |
 | Inquiry | 4000000000001976 | With default account settings, charge succeeds, only to be disputed as [an inquiry](https://docs.stripe.com/disputes/how-disputes-work.md#inquiries). |
-| Warning | 4000000000005423 | With default account settings, charge succeeds, only to receive [an early fraud warning](https://docs.stripe.com/disputes/how-disputes-work.md#early-fraud-warnings). |
+| Early fraud warning | 4000000000005423 | With default account settings, charge succeeds, only to receive [an early fraud warning](https://docs.stripe.com/disputes/how-disputes-work.md#early-fraud-warnings). |
 | Multiple disputes | 4000000404000079 | With default account settings, charge succeeds, only to be disputed [multiple times](https://docs.stripe.com/disputes/how-disputes-work.md#multiple-disputes). |
 | Visa Compelling Evidence 3.0 | 4000000404000038 | With default account settings, charge succeeds, only to be disputed as a [Visa Compelling Evidence 3.0 eligible dispute](https://docs.stripe.com/disputes/api/visa-ce3.md#testing). |
 | Visa compliance | 4000008400000779 | With default account settings, charge succeeds, only to be disputed as a [Visa compliance dispute](https://docs.stripe.com/disputes/api/visa-compliance.md#testing). |
@@ -670,7 +672,7 @@ To simulate a [disputed transaction](https://docs.stripe.com/disputes.md), use t
 | Fraudulent | `pm_card_createDispute` | With default account settings, charge succeeds, only to be disputed as [fraudulent](https://docs.stripe.com/disputes/categories.md). This type of dispute is [protected](https://docs.stripe.com/payments/3d-secure/authentication-flow.md#disputed-payments) after 3D Secure authentication. |
 | Not received | `pm_card_createDisputeProductNotReceived` | With default account settings, charge succeeds, only to be disputed as [product not received](https://docs.stripe.com/disputes/categories.md). This type of dispute [isn’t protected](https://docs.stripe.com/payments/3d-secure/authentication-flow.md#disputed-payments) after 3D Secure authentication. |
 | Inquiry | `pm_card_createDisputeInquiry` | With default account settings, charge succeeds, only to be disputed as [an inquiry](https://docs.stripe.com/disputes/how-disputes-work.md#inquiries). |
-| Warning | `pm_card_createIssuerFraudRecord` | With default account settings, charge succeeds, only to receive [an early fraud warning](https://docs.stripe.com/disputes/how-disputes-work.md#early-fraud-warnings). |
+| Early fraud warning | `pm_card_createIssuerFraudRecord` | With default account settings, charge succeeds, only to receive [an early fraud warning](https://docs.stripe.com/disputes/how-disputes-work.md#early-fraud-warnings). |
 | Multiple disputes | `pm_card_createMultipleDisputes` | With default account settings, charge succeeds, only to be disputed [multiple times](https://docs.stripe.com/disputes/how-disputes-work.md#multiple-disputes). |
 | Visa Compelling Evidence 3.0 | `pm_card_createCe3EligibleDispute` | With default account settings, charge succeeds, only to be disputed as a [Visa Compelling Evidence 3.0 eligible dispute](https://docs.stripe.com/disputes/api/visa-ce3.md#testing). |
 | Visa compliance | `pm_card_createComplianceDispute` | With default account settings, charge succeeds, only to be disputed as a [Visa compliance dispute](https://docs.stripe.com/disputes/api/visa-compliance.md#testing). |
@@ -686,7 +688,7 @@ Most integrations don’t use tokens anymore, but we make test tokens such as [t
 | Fraudulent | `tok_createDispute` | With default account settings, charge succeeds, only to be disputed as [fraudulent](https://docs.stripe.com/disputes/categories.md). This type of dispute is [protected](https://docs.stripe.com/payments/3d-secure/authentication-flow.md#disputed-payments) after 3D Secure authentication. |
 | Not received | `tok_createDisputeProductNotReceived` | With default account settings, charge succeeds, only to be disputed as [product not received](https://docs.stripe.com/disputes/categories.md). This type of dispute [isn’t protected](https://docs.stripe.com/payments/3d-secure/authentication-flow.md#disputed-payments) after 3D Secure authentication. |
 | Inquiry | `tok_createDisputeInquiry` | With default account settings, charge succeeds, only to be disputed as [an inquiry](https://docs.stripe.com/disputes/how-disputes-work.md#inquiries). |
-| Warning | `tok_createIssuerFraudRecord` | With default account settings, charge succeeds, only to receive [an early fraud warning](https://docs.stripe.com/disputes/how-disputes-work.md#early-fraud-warnings). |
+| Early fraud warning | `tok_createIssuerFraudRecord` | With default account settings, charge succeeds, only to receive [an early fraud warning](https://docs.stripe.com/disputes/how-disputes-work.md#early-fraud-warnings). |
 | Multiple disputes | `tok_createMultipleDisputes` | With default account settings, charge succeeds, only to be disputed [multiple times](https://docs.stripe.com/disputes/how-disputes-work.md#multiple-disputes). |
 | Visa Compelling Evidence 3.0 | `tok_createCe3EligibleDispute` | With default account settings, charge succeeds, only to be disputed as a [Visa Compelling Evidence 3.0 eligible dispute](https://docs.stripe.com/disputes/api/visa-ce3.md#testing). |
 | Visa compliance | `tok_createComplianceDispute` | With default account settings, charge succeeds, only to be disputed as a [Visa compliance dispute](https://docs.stripe.com/disputes/api/visa-compliance.md#testing). |

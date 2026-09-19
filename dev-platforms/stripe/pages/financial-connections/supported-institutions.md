@@ -8,3 +8,5 @@ path: financial-connections/supported-institutions
 
 View the details of supported financial institutions.
 
+Supported features vary by financial institution. The bank account country is where the account is held, not where your business is located.
+

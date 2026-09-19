@@ -17,7 +17,7 @@ The Cache API is a great companion to Netlify's [fine-gained cache controls](/bu
 
 Built entirely on web standards, it works seamless with any web framework - or without one.
 
-## Overview
+## How the Cache API works
 
 The Cache API is a programmatic interface for reading and writing HTTP responses to a cache using the standard [CacheStorage](https://developer.mozilla.org/en-US/docs/Web/API/CacheStorage) and [Cache](https://developer.mozilla.org/en-US/docs/Web/API/Cache) JavaScript APIs.
 

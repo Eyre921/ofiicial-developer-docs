@@ -16,7 +16,7 @@ To get started generating your first audio using Text to Speech, it's very simpl
 
 ## Guide
 
-![Text to Speech demo](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/32b6abef4b76c8652b0e55dbb26c9694fdc82e191a062678b93c9a5ca5d80c94/assets/images/product-guides/text-to-speech/text-to-speech-demo.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100014Z&X-Amz-Expires=604800&X-Amz-Signature=2c8bb5015d3ab25688bad6ba28d6ad0bb676521ac696e198450240dfd7d95141&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Text to Speech demo](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/32b6abef4b76c8652b0e55dbb26c9694fdc82e191a062678b93c9a5ca5d80c94/assets/images/product-guides/text-to-speech/text-to-speech-demo.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260919%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260919T092131Z&X-Amz-Expires=604800&X-Amz-Signature=d5fccd5fffd39559c247dc9db057d05fc77a8916a7151e039e22c6dc668d45a5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Adjust settings (optional)
 
@@ -49,7 +49,7 @@ The order of importance goes as follows: **Voice** selection is most important, 
 ### Voices
 
 ![Text to Speech voice
-selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a1a2f62118fa246f300c666a5a4f3fbd18cc9bfed023a8c6a010782545da1254/assets/images/product-guides/text-to-speech/text-to-speech-voices.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100014Z&X-Amz-Expires=604800&X-Amz-Signature=208062ca2d00e079384ac385ef91c22bf684969960af8adce34594b6d152039f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a1a2f62118fa246f300c666a5a4f3fbd18cc9bfed023a8c6a010782545da1254/assets/images/product-guides/text-to-speech/text-to-speech-voices.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260919%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260919T092131Z&X-Amz-Expires=604800&X-Amz-Signature=3ffc945577956769f944665ca32825412f8246f98adf631bee700ed3ba73d091&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 We offer many types of voices, including the curated **Default Voices**, our vast **Voices Library&#x20;**&#x77;ith almost any voices you can imagine, completely synthetic voices created using our **Voice Design** tool, and you can create your own collection of cloned voices using our two technologies: **Instant Voice Cloning** and **Professional Voice Cloning**.
 
@@ -72,7 +72,7 @@ Keep in mind, voice remixing only works for specific voices. For example, you ca
 ### Models
 
 ![Text to Speech model
-selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aa32e23cc2a196a48ff47650249e612e7e5da023fd2f69244f27c5fea7968b75/assets/images/product-guides/text-to-speech/text-to-speech-models.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100014Z&X-Amz-Expires=604800&X-Amz-Signature=431d1b60b10443aa9e1305c5c7c80052b99e717c58c9f6da11052af747e39eda&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aa32e23cc2a196a48ff47650249e612e7e5da023fd2f69244f27c5fea7968b75/assets/images/product-guides/text-to-speech/text-to-speech-models.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260919%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260919T092131Z&X-Amz-Expires=604800&X-Amz-Signature=dcd648e05ac5ca64baf97437e030a29ca685ddeabff8be17e93de10951564a1a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 We offer two families of models: **Standard (high-quality)** models and **Flash** models, which are optimized for extremely low latency. Most families include both English-only and multilingual versions.
 
@@ -137,7 +137,7 @@ Faster model, 50% lower price per character for API generations
 ### Voice settings
 
 ![Text to Speech voice
-settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9e08b179bfd640650ca5225b7e2e5b8d9d4c192d63a80d2478e4078e408bf869/assets/images/product-guides/text-to-speech/text-to-speech-settings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100014Z&X-Amz-Expires=604800&X-Amz-Signature=2d23b823052c59ff99ba60cf57a3e231d6590b5ed8abae043f624f4842e0336e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9e08b179bfd640650ca5225b7e2e5b8d9d4c192d63a80d2478e4078e408bf869/assets/images/product-guides/text-to-speech/text-to-speech-settings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260919%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260919T092131Z&X-Amz-Expires=604800&X-Amz-Signature=ae76b5131ee0c1b8eaaa77bed5a6a6c80be66f76640b83d2db29c76d30e92386&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 The most common setting is stability around 50, similarity around 75, and keeping style at 0, with minimal changes thereafter. Of course, this all depends on the original voice and the style of performance you're aiming for.
 
@@ -277,7 +277,7 @@ We are working on more advanced workflows to allow you to influence the AI's del
 
       This setting is available for all voices and all models. You can find it in the voice settings.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a1130594e85e35a2a3073530577fd85e902b7886cbf442a18b4422d9084dfcec/assets/images/help-center/product/core-capabilities/text-to-speech/can-i-change-the-pace-of-the-voice.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100014Z&X-Amz-Expires=604800&X-Amz-Signature=02ee171fc2a2024930626bbbce05e214aa939b77936dfc04a4c4417032e18f1c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a1130594e85e35a2a3073530577fd85e902b7886cbf442a18b4422d9084dfcec/assets/images/help-center/product/core-capabilities/text-to-speech/can-i-change-the-pace-of-the-voice.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260919%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260919T092131Z&X-Amz-Expires=604800&X-Amz-Signature=b997ee05b43a3697e8442e585b221a64b5434e4de9a29bee9fb9eec8d38e676f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       For information on how to control speech when using the API, please see our [API reference.](/docs/api-reference/text-to-speech/convert#request.body.voice_settings.speed)
     </td>
@@ -484,7 +484,7 @@ We are working on more advanced workflows to allow you to influence the AI's del
       * **Browse the Voice Library** and use the search filters to find suitable voices that
         match your needs.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b3e4de803d69ffbd3aed314c2c5f9defa87d3d7fd6fc1931a4a02278041c1c43/assets/images/help-center/product/core-capabilities/text-to-speech/how-do-i-select-the-language-and-accent.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100014Z&X-Amz-Expires=604800&X-Amz-Signature=50ddbba57e0402d83369fc96be2361888fb036e2eea1f538f64d88f7812f5c01&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b3e4de803d69ffbd3aed314c2c5f9defa87d3d7fd6fc1931a4a02278041c1c43/assets/images/help-center/product/core-capabilities/text-to-speech/how-do-i-select-the-language-and-accent.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260919%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260919T092131Z&X-Amz-Expires=604800&X-Amz-Signature=7b1b6b3ffaa3b915d7f95d45328cc93fd33525cbf4afadedfd860e022dce3245&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
     </td>
   </tr>
 
@@ -546,11 +546,11 @@ We are working on more advanced workflows to allow you to influence the AI's del
 
       If this is the case, you will see 'Regenerate speech', and the number of free regenerations remaining will be displayed if you hover over the 'Regenerate speech' button:
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9b75422ebf4bee357d8eb5384d30e03a3c4c5102f422cb87c22ff09c1bfe1c8d/assets/images/help-center/product/core-capabilities/text-to-speech/is-there-a-way-to-preview-audio-without-losing-quota-before-downloading.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100014Z&X-Amz-Expires=604800&X-Amz-Signature=6fbeab1513cc2acf38e888a228fb1d5916d8fff944e87d9069ff821fca784fb2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9b75422ebf4bee357d8eb5384d30e03a3c4c5102f422cb87c22ff09c1bfe1c8d/assets/images/help-center/product/core-capabilities/text-to-speech/is-there-a-way-to-preview-audio-without-losing-quota-before-downloading.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260919%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260919T092131Z&X-Amz-Expires=604800&X-Amz-Signature=0988553d9874c9fcc3f2e481e31fa0dd3cb324ceb7d70c481beb573f88cb0bf4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       Once your free regenerations have been used, the button will return to 'Generate speech', and the number of credits that will be used for the generation will be displayed:
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/72b5058ea9066fbad31cf1a38453ba35947cc7486eb06ded307d1ae13c1011d4/assets/images/help-center/product/core-capabilities/text-to-speech/is-there-a-way-to-preview-audio-without-losing-quota-before-downloading-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100014Z&X-Amz-Expires=604800&X-Amz-Signature=10714185073f633200d873db427b53128411a9dd0522d51a96abaf506aac2657&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/72b5058ea9066fbad31cf1a38453ba35947cc7486eb06ded307d1ae13c1011d4/assets/images/help-center/product/core-capabilities/text-to-speech/is-there-a-way-to-preview-audio-without-losing-quota-before-downloading-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260919%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260919T092131Z&X-Amz-Expires=604800&X-Amz-Signature=ca27d2abfa2f44643bdbc579947b21fb142ca717c086a4166d2ff09aaadf3967&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       Free regenerations are only available in Text to Speech via the website. They are not available via the API.
 

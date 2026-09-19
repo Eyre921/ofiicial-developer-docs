@@ -27,7 +27,7 @@ Stripe Revenue Recognition provides a set of default rules to model the [methodo
 
 - For invoice line items with service periods, the line item amount amortizes evenly over its service period. If a period isn’t set on an invoice line item, the amount is recognized entirely when the invoice finalizes.
 - Other payments not made through an invoice are recognized immediately upon payment if no service period or fulfillment information exists, or by the [imported](https://docs.stripe.com/revenue-recognition/data-import.md) service period or fulfillment data.
-![Default rules](https://b.stripecdn.com/docs-statics-srv/assets/default-rules.1cdaa035a358fec4294971ba23bddaa1.png)
+![Default rules](https://b.stripecdn.com/docs-statics-srv/assets/default-rules.ee79e2089be371ed3673119c51c93274.png)
 
 ## Custom rules
 
@@ -48,10 +48,10 @@ See how to [create a rule and define revenue treatments](https://docs.stripe.com
 Each transaction can only have one rule applied to it when processing revenue reports. In situations where a single transaction fits the “Apply-to” criteria for multiple rules, rule hierarchy determines which rule to apply to the transaction. The higher a rule is ranked on the list, the higher the priority it’s assigned.
 
 You can rearrange the order of the rules by clicking **Change rule order** as shown below:
-![Rules](https://b.stripecdn.com/docs-statics-srv/assets/rules.076bd00821d7a78ec4d541afe8c9b669.png)
+![Rules](https://b.stripecdn.com/docs-statics-srv/assets/rules.1012d93c08e8d3264b362b9b3f2ed6db.png)
 
 After clicking **Change rule order**, you can reorder the rules to adjust their priorities.
-![Rule order](https://b.stripecdn.com/docs-statics-srv/assets/rule-order.6232b5130188f7e9b253d7f9d197e3f0.png)
+![Rule order](https://b.stripecdn.com/docs-statics-srv/assets/rule-order.95fe64bb19ec313d3e4a8320e8a57978.png)
 
 ## Best practices for effectively maintaining your rules
 

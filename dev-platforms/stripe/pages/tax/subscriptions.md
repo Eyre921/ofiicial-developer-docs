@@ -15,7 +15,7 @@ Stripe Tax allows you to calculate the tax amount on your recurring payments whe
 > You can also enable tax for subscriptions using the following integration methods:
 > 
 > - [Collect tax with Payment Links](https://docs.stripe.com/tax/payment-links.md)
-- [Collect tax on Checkout sessions](https://docs.stripe.com/tax/checkout.md)
+> - [Collect tax on Checkout sessions](https://docs.stripe.com/tax/checkout.md)
 
 Watch a demonstration enabling Stripe Tax with a subscription Checkout. 
 [Watch on YouTube](https://www.youtube.com/watch?v=3QBRs4IfDNo)
@@ -285,6 +285,7 @@ curl https://api.stripe.com/v1/credit_notes \
 curl https://api.stripe.com/v1/credit_notes \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d "invoice={{INVOICE_ID}}" \
+  -d amount=1000 \
   -d "refunds[0][refund]={{REFUND_ID}}" \
   -d "refunds[0][amount_refunded]=1000"
 ```

@@ -8,13 +8,9 @@ path: tax/checkout
 
 Learn how to automatically calculate taxes using Stripe Checkout.
 
+If you sell digital products, [Managed Payments](https://docs.stripe.com/payments/managed-payments/tax-compliance.md) transfers tax liability to Stripe, making us responsible for handling sales tax, VAT, and GST globally.
+
 Stripe Tax automatically calculates taxes on purchases and *subscriptions* (A Subscription represents the product details associated with the plan that your customer subscribes to. Allows you to charge the customer on a recurring basis) during a Checkout Session. If you haven’t integrated with Stripe Checkout, start with the [Accept a Payment guide](https://docs.stripe.com/checkout/quickstart.md) first.
-
-Depending on what you sell, you might be able to transfer tax liability to Stripe entirely.
-
-> #### Transfer tax liability to Stripe
-> 
-> If you sell digital products, [Managed Payments](https://docs.stripe.com/payments/managed-payments/tax-compliance.md) lets you transfer tax liability to Stripe, meaning we’re directly responsible for handling sales tax, VAT, or GST globally. Managed Payments also handles fraud prevention, dispute management, and customer support on all transactions.
 
 Before you start, confirm that your Stripe Tax settings are complete.
 
@@ -24,10 +20,10 @@ Before you start, confirm that your Stripe Tax settings are complete.
 | --- | --- |
 | [Checkout page](https://docs.stripe.com/tax/checkout/page.md) | Use the Stripe-hosted Checkout page or the embedded form for a prebuilt UI. |
 | [Checkout elements](https://docs.stripe.com/tax/checkout/elements.md) | Use elements mode for full control over the payment form layout. |
+| [Collect tax IDs with Checkout](https://docs.stripe.com/tax/checkout/tax-ids.md) | Collect VAT and other customer tax IDs during checkout. |
 
 ## See also
 
-- [Collect tax IDs with Checkout](https://docs.stripe.com/tax/checkout/tax-ids.md)
 - [Adaptive Pricing and Stripe Tax](https://docs.stripe.com/tax/calculating/adaptive-pricing.md)
 - [Test your tax integration](https://docs.stripe.com/tax/testing.md)
 

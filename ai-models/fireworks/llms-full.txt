@@ -4984,11 +4984,11 @@ FireConnect fetches coding-tagged serverless models, merges version-tracking ali
 
 ## Latest vs Fast
 
-FireConnect short IDs follow the same [Serverless serving paths](/serverless/serving-paths) as the API:
+FireConnect short IDs follow the same [Serverless modes](/serverless/serverless-modes) as the API:
 
 | Kind                       | Example IDs                                                                 | When to use                                                                                                           |
 | -------------------------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| **Latest** (standard path) | `kimi-latest`, `glm-latest`, `deepseek-pro-latest`, `deepseek-flash-latest` | Best price/quality; tracks current model versions                                                                     |
+| **Latest** (standard mode) | `kimi-latest`, `glm-latest`, `deepseek-pro-latest`, `deepseek-flash-latest` | Best price/quality; tracks current model versions                                                                     |
 | **Fast**                   | `kimi-fast-latest`, `glm-fast-latest`                                       | Interactive coding where token speed matters. Same model quality as latest, higher \$/token, aims for **100+ tok/s**. |
 | **Pinned**                 | `kimi-k3`, `glm-5p2`, `kimi-k3-fast`                                        | Stable ID that does not track new versions.                                                                           |
 
@@ -4999,7 +4999,7 @@ Prefer `*-latest` / `*-fast-latest` unless you need a pin.
 | ID                      | Use when                                                        | Notes                                                                                                                                                                                        |
 | ----------------------- | --------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `kimi-fast-latest`      | Interactive coding; screenshots / UI                            | Vision.                                                                                                                                                                                      |
-| `kimi-latest`           | Strong agentic coding with vision, lower \$/token than Fast     | Vision. Standard path.                                                                                                                                                                       |
+| `kimi-latest`           | Strong agentic coding with vision, lower \$/token than Fast     | Vision. Standard mode.                                                                                                                                                                       |
 | `deepseek-pro-latest`   | Strong text-only coding and reasoning                           | Text-only.                                                                                                                                                                                   |
 | `deepseek-flash-latest` | Haiku / subagent / high-volume background work                  | Text-only.                                                                                                                                                                                   |
 | `glm-flash-latest`      | Vision-capable GLM for Fable / image tasks                      | Vision.                                                                                                                                                                                      |
@@ -6990,9 +6990,9 @@ model_list:
       model: fireworks_ai/accounts/fireworks/models/glm-5p2
       api_key: os.environ/FIREWORKS_AI_API_KEY
 
-  - model_name: accounts/fireworks/routers/kimi-k2p6-fast
+  - model_name: accounts/fireworks/routers/kimi-k3-fast
     litellm_params:
-      model: fireworks_ai/accounts/fireworks/routers/kimi-k2p6-fast
+      model: fireworks_ai/accounts/fireworks/routers/kimi-k3-fast
       api_key: os.environ/FIREWORKS_AI_API_KEY
 ```
 
@@ -8999,7 +8999,7 @@ Merge in BF16; if you need quantized (FP8) weights, quantize the merged result a
 
 ### FP8 (and other quantized) merged weights
 
-If you want an FP8 merged model to run off-platform, merge in BF16 first, then quantize the merged result yourself. For reference, the on-platform serving path is:
+If you want an FP8 merged model to run off-platform, merge in BF16 first, then quantize the merged result yourself. For reference, the on-platform serving flow is:
 
 1. Keep the BF16 base + BF16 LoRA adapter.
 2. At deploy, merge in BF16: `W' = W_bf16 + (B·A)_bf16`.
@@ -13090,7 +13090,7 @@ Source: https://docs.fireworks.ai/fine-tuning/training-api/dedicated
 Run Training API workloads with provisioned trainer and deployment resources, explicit checkpoints, and lifecycle control.
 
 <Info>
-  The Training API is currently in **private preview**. [Request access](https://fireworks.ai/contact-training) before running this guide.
+  Serverless Training is now generally available and a great starting point. Graduate to Dedicated Training for larger workloads, more model selection, or full-parameter training. [Request access here](https://fireworks.ai/contact-training).
 </Info>
 
 Dedicated training provisions trainer and deployment resources for your run. Use it when you need a model outside the serverless pool, full-parameter training, sustained workloads, explicit checkpoint resume, or control over rollout and evaluation deployments.
@@ -13275,7 +13275,7 @@ Source: https://docs.fireworks.ai/fine-tuning/training-api/introduction
 Fireworks Training API — custom training loops with full Python control over objectives, while Fireworks handles distributed GPU infrastructure.
 
 <Info>
-  The Training API is currently in **private preview**. [Request early access](https://fireworks.ai/contact-training) to get started.
+  Serverless Training is generally available. Graduate to Dedicated Training for larger workloads, more model selection, or full-parameter training. [Request access here](https://fireworks.ai/contact-training).
 </Info>
 
 <Tip>
@@ -16910,7 +16910,7 @@ Once you have your API key, export it as an environment variable in your termina
 To create and manage on-demand deployments, you'll need the `firectl` CLI tool. Install it using one of the following methods, based on your platform:
 
 <CodeGroup>
-  ```bash homebrew theme={null} theme={null}
+  ```bash homebrew theme={null}
   brew tap fw-ai/firectl
   brew install firectl
 
@@ -16918,27 +16918,27 @@ To create and manage on-demand deployments, you'll need the `firectl` CLI tool. 
   brew update
   ```
 
-  ```bash macOS (Apple Silicon) theme={null} theme={null}
+  ```bash macOS (Apple Silicon) theme={null}
   curl https://storage.googleapis.com/fireworks-public/firectl/stable/darwin-arm64.gz -o firectl.gz
   gzip -d firectl.gz && chmod a+x firectl
   sudo mv firectl /usr/local/bin/firectl
   sudo chown root: /usr/local/bin/firectl
   ```
 
-  ```bash macOS (x86_64) theme={null} theme={null}
+  ```bash macOS (x86_64) theme={null}
   curl https://storage.googleapis.com/fireworks-public/firectl/stable/darwin-amd64.gz -o firectl.gz
   gzip -d firectl.gz && chmod a+x firectl
   sudo mv firectl /usr/local/bin/firectl
   sudo chown root: /usr/local/bin/firectl
   ```
 
-  ```bash Linux  (x86_64) theme={null} theme={null}
+  ```bash Linux  (x86_64) theme={null}
   wget -O firectl.gz https://storage.googleapis.com/fireworks-public/firectl/stable/linux-amd64.gz
   gunzip firectl.gz
   sudo install -o root -g root -m 0755 firectl /usr/local/bin/firectl
   ```
 
-  ```Text Windows (64 bit) theme={null} theme={null}
+  ```Text Windows (64 bit) theme={null}
   wget -L https://storage.googleapis.com/fireworks-public/firectl/stable/firectl.exe
   ```
 </CodeGroup>
@@ -17014,15 +17014,15 @@ Now you can query your on-demand deployment using the same API as serverless mod
     </Note>
 
     <CodeGroup>
-      ```bash pip theme={null} theme={null}
+      ```bash pip theme={null}
       pip install --pre fireworks-ai
       ```
 
-      ```bash poetry theme={null} theme={null}
+      ```bash poetry theme={null}
       poetry add --pre fireworks-ai
       ```
 
-      ```bash uv theme={null} theme={null}
+      ```bash uv theme={null}
       uv add --pre fireworks-ai
       ```
     </CodeGroup>
@@ -17389,7 +17389,7 @@ Once you have your API key, export it as an environment variable in your termina
 You should see a response like: `"¡Hola!"`
 
 <Tip>
-  For **Priority tier** (`service_tier: "priority"`) and **Fast**, see [Serverless Serving Paths](/serverless/serving-paths).
+  For **Priority tier** (`service_tier: "priority"`) and **Fast**, see [Serverless Modes](/serverless/serverless-modes).
 </Tip>
 
 ## Common use cases
@@ -20896,7 +20896,7 @@ Fireworks provides fast, cost-effective access to leading open-source text model
   Most models automatically format your messages with the correct template. To verify the exact prompt used, enable the [`echo`](/guides/querying-text-models) parameter.
 </Tip>
 
-For **Priority tier** (`service_tier: "priority"`) and **Fast**, see [Serverless Serving Paths](/serverless/serving-paths).
+For **Priority tier** (`service_tier: "priority"`) and **Fast**, see [Serverless Modes](/serverless/serverless-modes).
 
 ## Alternative query methods
 
@@ -24703,7 +24703,7 @@ Some multimodal models can process audio and/or video inputs directly, enabling 
   GLM 5.3 Flash supports image, video, and text inputs. This page does not claim audio input support for GLM 5.3 Flash. Qwen3 Omni supports native video and audio inputs. Molmo2 models are video-only, so use the dedicated request structure below but omit `audio_url`; Molmo2 cannot understand audio from videos.
 </Note>
 
-## Choose a serving path
+## Choose an inference option
 
 ### Serverless
 
@@ -24991,7 +24991,7 @@ def preprocess_video(video_path: str) -> tuple[str, str]:
 * **Preprocess all videos** – 1 FPS at 360p provides good quality with minimal tokens
 * **Extract audio separately** – Opus/Ogg at 24kbps offers excellent compression
 * **Limit video duration** – Start with 60 seconds or less for consistent performance
-* **Choose the appropriate serving path** – Use GLM 5.3 Flash on Serverless, or scale replicas for models that require dedicated deployments
+* **Choose the appropriate inference option** – Use GLM 5.3 Flash on Serverless, or scale replicas for models that require dedicated deployments
 
 ## Known limitations
 
@@ -25785,7 +25785,7 @@ If it returns `FAILED_PRECONDITION`, files are still landing — wait and retry.
 # Serverless Inference Overview
 Source: https://docs.fireworks.ai/serverless/overview
 
-How Serverless Inference works on Fireworks: serving paths, billing, request/response headers, prompt caching, model lifecycle, and when to choose Serverless Inference over On-demand
+How Serverless Inference works on Fireworks: serverless modes, billing, request/response headers, prompt caching, model lifecycle, and when to choose Serverless Inference over On-demand
 
 ## What is Serverless Inference
 
@@ -25793,13 +25793,13 @@ Serverless Inference is multi-tenant inference for popular open models running o
 
 ## Serverless products at a glance
 
-Three serving paths run on the same Serverless framework. They share the same rate-limit policy, but route and price differently:
+Three modes run on the same Serverless framework. They share the same rate-limit policy, but route and price differently:
 
-* **Standard** — the default serving path. No `service_tier` parameter needed.
+* **Standard** — the default mode. No `service_tier` parameter needed.
 * **Priority** — higher reliability during peak periods. Opt in by setting `service_tier: "priority"` on chat completions. Priced at a premium.
-* **Fast** — high-speed deployments for latency-sensitive workloads. Selected by switching the `model` ID to a Fast variant (for example, `accounts/fireworks/routers/kimi-k2p6-fast`).
+* **Fast** — high-speed deployments for latency-sensitive workloads. Selected by switching the `model` ID to a Fast variant (for example, `accounts/fireworks/routers/kimi-k3-fast`).
 
-For usage examples and the full list of supported models, see [Serverless Serving Paths](/serverless/serving-paths). For pricing by serving path, see [Serverless pricing](/serverless/pricing).
+For usage examples and the full list of supported models, see [Serverless Modes](/serverless/serverless-modes). For pricing by mode, see [Serverless pricing](/serverless/pricing).
 
 ## Billing
 
@@ -25871,8 +25871,8 @@ For dedicated infrastructure, see [On-demand deployments](/guides/ondemand-deplo
     Make your first Serverless API call.
   </Card>
 
-  <Card title="Serverless Serving Paths" icon="bolt" href="/serverless/serving-paths">
-    Higher-reliability and higher-speed serving paths.
+  <Card title="Serverless Modes" icon="bolt" href="/serverless/serverless-modes">
+    Higher-reliability and higher-speed modes.
   </Card>
 
   <Card title="US-only Serverless" icon="flag-usa" href="/serverless/us-only-serverless">
@@ -25904,11 +25904,11 @@ For dedicated infrastructure, see [On-demand deployments](/guides/ondemand-deplo
 # Serverless Pricing
 Source: https://docs.fireworks.ai/serverless/pricing
 
-Per-token serverless pricing for text, vision, and embedding models, including Priority and Fast serving paths
+Per-token serverless pricing for text, vision, and embedding models, including Priority and Fast serverless modes
 
 ## Overview
 
-Serverless inference is priced per token. For how Standard, Priority, and Fast serving paths work and how to select one, see [Serverless Serving Paths](/serverless/serving-paths).
+Serverless inference is priced per token. For how Standard, Priority, and Fast modes work and how to select one, see [Serverless Modes](/serverless/serverless-modes).
 
 Every text or vision request is billed across three dimensions:
 
@@ -25929,29 +25929,32 @@ Per-model pricing for headline models. Fast variants appear as adjacent rows. In
 
 Reserved Throughput comes with SLAs and is only available on certain models. Pricing is the same as standard unless otherwise specified. For access to Reserved Throughput, please reach out to [sales](mailto:sales@fireworks.ai).
 
-| Model                                                                                                             | Standard                  | Priority                      | Reserved Throughput |
-| ----------------------------------------------------------------------------------------------------------------- | ------------------------- | ----------------------------- | ------------------- |
-| [Kimi K3](https://app.fireworks.ai/models/fireworks/kimi-k3)                                                      | \$3.00 / \$0.30 / \$15.00 | \$3.75 / \$0.375 / \$18.75    | ✓                   |
-| [Kimi K3 Fast](https://app.fireworks.ai/models/fireworks/kimi-k3)                                                 | \$4.50 / \$0.45 / \$22.50 | —                             | ✓                   |
-| [Kimi K3 (US)](https://app.fireworks.ai/models/fireworks/kimi-k3)                                                 | \$4.50 / \$0.45 / \$22.50 | \$5.625 / \$0.5625 / \$28.125 |                     |
-| [Kimi K2.7 Code](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)                                        | \$0.95 / \$0.19 / \$4.00  | \$1.425 / \$0.285 / \$6.00    |                     |
-| [Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)                                                  | \$0.95 / \$0.16 / \$4.00  | \$1.50 / \$0.22 / \$6.00      |                     |
-| [DeepSeek V4.1 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash)                              | \$0.22 / \$0.007 / \$0.66 | \$0.275 / \$0.00875 / \$0.825 |                     |
-| [DeepSeek V4 Pro (0813)](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro-0813)                          | \$1.32 / \$0.044 / \$3.96 | \$1.65 / \$0.055 / \$4.95     |                     |
-| [DeepSeek V4 Flash (0731)](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)                      | \$0.22 / \$0.007 / \$0.66 | \$0.275 / \$0.00875 / \$0.825 | ✓                   |
-| [DeepSeek V4 Flash Vision Exp](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-vision-exp)            | \$0.22 / \$0.007 / \$0.66 | \$0.275 / \$0.00875 / \$0.825 |                     |
-| [GLM 5.3 Flash](https://app.fireworks.ai/models/fireworks/glm-5p3-flash)                                          | \$0.15 / \$0.03 / \$0.50  | \$0.1875 / \$0.0375 / \$0.625 |                     |
-| [GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3)                                                      | \$1.40 / \$0.26 / \$4.40  | \$1.75 / \$0.325 / \$5.50     | ✓                   |
-| [GLM 5.3 Fast](https://app.fireworks.ai/models/fireworks/glm-5p3)                                                 | \$2.10 / \$0.39 / \$6.60  | —                             |                     |
-| [GLM 5.2](https://app.fireworks.ai/models/fireworks/glm-5p2)                                                      | \$1.40 / \$0.14 / \$4.40  | \$1.75 / \$0.18 / \$5.50      |                     |
-| [GLM 5.2 Fast](https://app.fireworks.ai/models/fireworks/glm-5p2)                                                 | \$2.10 / \$0.21 / \$6.60  | —                             |                     |
-| [GLM 5.2 Fast US](https://app.fireworks.ai/models/fireworks/glm-5p2)                                              | \$2.10 / \$0.21 / \$6.60  | —                             |                     |
-| [Qwen 3.8 Max](https://app.fireworks.ai/models/fireworks/qwen3p8-max)                                             | \$2.00 / \$0.25 / \$6.00  | \$3.00 / \$0.375 / \$9.00     |                     |
-| [MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3)                                                | \$0.30 / \$0.06 / \$1.20  | \$0.45 / \$0.09 / \$1.80      |                     |
-| [OpenAI GPT OSS 120B](https://app.fireworks.ai/models/fireworks/gpt-oss-120b)                                     | \$0.15 / \$0.015 / \$0.60 | \$0.18 / \$0.018 / \$0.72     |                     |
-| [Muse Glimmer 30B](https://app.fireworks.ai/models/fireworks/muse-glimmer-30b)                                    | \$0.35 / \$0.04 / \$1.50  | \$0.525 / \$0.06 / \$2.25     |                     |
-| [NVIDIA Nemotron 3.5 Lightning 30B A3B](https://app.fireworks.ai/models/fireworks/nemotron-lightning-3p5-30b-a3b) | \$0.05 / \$0.01 / \$0.20  | —                             |                     |
-| [NVIDIA Nemotron 3 Ultra (Preview)](https://app.fireworks.ai/models/fireworks/nemotron-3-ultra-nvfp4)             | \$0.60 / \$0.12 / \$2.40  | —                             |                     |
+| Model                                                                                                             | Standard                   | Priority                      | Reserved Throughput |
+| ----------------------------------------------------------------------------------------------------------------- | -------------------------- | ----------------------------- | ------------------- |
+| [Kimi K3](https://app.fireworks.ai/models/fireworks/kimi-k3)                                                      | \$3.00 / \$0.30 / \$15.00  | \$3.75 / \$0.375 / \$18.75    | ✓                   |
+| [Kimi K3 Fast](https://app.fireworks.ai/models/fireworks/kimi-k3)                                                 | \$4.50 / \$0.45 / \$22.50  | —                             | ✓                   |
+| [Kimi K3 (US)](https://app.fireworks.ai/models/fireworks/kimi-k3)                                                 | \$4.50 / \$0.45 / \$22.50  | \$5.625 / \$0.5625 / \$28.125 |                     |
+| [Kimi K2.7 Code](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)                                        | \$0.95 / \$0.19 / \$4.00   | \$1.425 / \$0.285 / \$6.00    |                     |
+| [Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)                                                  | \$0.95 / \$0.16 / \$4.00   | \$1.50 / \$0.22 / \$6.00      |                     |
+| [DeepSeek V4.1 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash)                              | \$0.30 / \$0.006 / \$1.20  | \$0.375 / \$0.0075 / \$1.50   |                     |
+| [DeepSeek V4.1 Flash (US)](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash)                         | \$0.45 / \$0.009 / \$1.80  | \$0.5625 / \$0.01125 / \$2.25 |                     |
+| [DeepSeek V4 Pro (0813)](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro-0813)                          | \$1.32 / \$0.044 / \$3.96  | \$1.65 / \$0.055 / \$4.95     |                     |
+| [DeepSeek V4 Flash (0731)](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)                      | \$0.22 / \$0.007 / \$0.66  | \$0.275 / \$0.00875 / \$0.825 | ✓                   |
+| [DeepSeek V4 Flash Vision Exp](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-vision-exp)            | \$0.22 / \$0.007 / \$0.66  | \$0.275 / \$0.00875 / \$0.825 |                     |
+| [GLM 5.3 Flash](https://app.fireworks.ai/models/fireworks/glm-5p3-flash)                                          | \$0.15 / \$0.03 / \$0.50   | \$0.1875 / \$0.0375 / \$0.625 |                     |
+| [GLM 5.3 Flash (US)](https://app.fireworks.ai/models/fireworks/glm-5p3-flash)                                     | \$0.225 / \$0.045 / \$0.75 | —                             |                     |
+| [GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3)                                                      | \$1.40 / \$0.26 / \$4.40   | \$1.75 / \$0.325 / \$5.50     | ✓                   |
+| [GLM 5.3 (US)](https://app.fireworks.ai/models/fireworks/glm-5p3)                                                 | \$2.10 / \$0.39 / \$6.60   | —                             |                     |
+| [GLM 5.3 Fast](https://app.fireworks.ai/models/fireworks/glm-5p3)                                                 | \$2.10 / \$0.39 / \$6.60   | —                             |                     |
+| [GLM 5.2](https://app.fireworks.ai/models/fireworks/glm-5p2)                                                      | \$1.40 / \$0.14 / \$4.40   | \$1.75 / \$0.18 / \$5.50      |                     |
+| [GLM 5.2 Fast](https://app.fireworks.ai/models/fireworks/glm-5p2)                                                 | \$2.10 / \$0.21 / \$6.60   | —                             |                     |
+| [GLM 5.2 Fast US](https://app.fireworks.ai/models/fireworks/glm-5p2)                                              | \$2.10 / \$0.21 / \$6.60   | —                             |                     |
+| [Qwen 3.8 Max](https://app.fireworks.ai/models/fireworks/qwen3p8-max)                                             | \$2.00 / \$0.25 / \$6.00   | \$3.00 / \$0.375 / \$9.00     |                     |
+| [MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3)                                                | \$0.30 / \$0.06 / \$1.20   | \$0.45 / \$0.09 / \$1.80      |                     |
+| [OpenAI GPT OSS 120B](https://app.fireworks.ai/models/fireworks/gpt-oss-120b)                                     | \$0.15 / \$0.015 / \$0.60  | \$0.18 / \$0.018 / \$0.72     |                     |
+| [Muse Glimmer 30B](https://app.fireworks.ai/models/fireworks/muse-glimmer-30b)                                    | \$0.35 / \$0.04 / \$1.50   | \$0.525 / \$0.06 / \$2.25     |                     |
+| [NVIDIA Nemotron 3.5 Lightning 30B A3B](https://app.fireworks.ai/models/fireworks/nemotron-lightning-3p5-30b-a3b) | \$0.05 / \$0.01 / \$0.20   | —                             |                     |
+| [NVIDIA Nemotron 3 Ultra (Preview)](https://app.fireworks.ai/models/fireworks/nemotron-3-ultra-nvfp4)             | \$0.60 / \$0.12 / \$2.40   | —                             |                     |
 
 **—** in the Priority column means Priority is not available for that model. This pricing table is the source of truth for Priority availability.
 
@@ -25988,7 +25991,7 @@ Source: https://docs.fireworks.ai/serverless/rate-limits
 
 Adaptive rate limits grow and shrink with your usage
 
-When using Serverless, you may experience `429 Too Many Requests` or `503 Service Overloaded`. To avoid 429s, you need to stay below our adaptive rate limits. To reduce the likelihood of 503s, you can upgrade to [Priority tier](/serverless/serving-paths).
+When using Serverless, you may experience `429 Too Many Requests` or `503 Service Overloaded`. To avoid 429s, you need to stay below our adaptive rate limits. To reduce the likelihood of 503s, you can upgrade to [Priority tier](/serverless/serverless-modes).
 
 ## What are your rate limits?
 
@@ -26022,7 +26025,7 @@ Adaptive rate limits have an upper and lower bound. A higher account [Spending T
 
 <AccordionGroup>
   <Accordion title="Am I guaranteed successful responses up to my rate limit?">
-    **No.** Staying within your rate limits does not guarantee that every request succeeds. When a deployment is busy, your traffic can still be **load shed**, and those responses are **`503 Service Overloaded`**. To **decrease the chance** of being load shed, you can use [Priority tier](/serverless/serving-paths), which is prioritized during high load.
+    **No.** Staying within your rate limits does not guarantee that every request succeeds. When a deployment is busy, your traffic can still be **load shed**, and those responses are **`503 Service Overloaded`**. To **decrease the chance** of being load shed, you can use [Priority tier](/serverless/serverless-modes), which is prioritized during high load.
   </Accordion>
 
   <Accordion title="How are rate limits scoped?">
@@ -26168,14 +26171,14 @@ The uplift is not a single price ratio. DeepSeek V4 Pro (0813) is 2.3 times chea
 </AccordionGroup>
 
 
-# Serverless Serving Paths
-Source: https://docs.fireworks.ai/serverless/serving-paths
+# Serverless Modes
+Source: https://docs.fireworks.ai/serverless/serverless-modes
 
-Standard, Priority, and Fast serving paths on Fireworks Serverless
+Standard, Priority, and Fast serverless modes on Fireworks Serverless
 
-Fireworks Serverless offers three serving paths:
+Fireworks Serverless offers three modes:
 
-* **Standard** is the default serving path. No `service_tier` parameter is needed.
+* **Standard** is the default mode. No `service_tier` parameter is needed.
 * **Priority tier** is for workloads that require higher reliability during peak traffic.
 * **Fast** is for workloads that require higher speeds.
 
@@ -26200,20 +26203,25 @@ Priority tier is available on select models. Models and pricing are listed on th
 
 ## Fast
 
-Fast is a high-speed serving path, useful for interactive applications that require fast response speeds, at a higher price point. Fast variants aim for **100+ tokens per second** of generated throughput. It is not a different model and the quality of the model remains the same.
+Fast is a high-speed mode, useful for interactive applications that require fast response speeds, at a higher price point. Fast variants aim for **100+ tokens per second** of generated throughput. It is not a different model and the quality of the model remains the same.
 
 Fast is available for select models. To use Fast, change the `model` ID as listed below.
 
-| Model        | `model` ID                                |
-| ------------ | ----------------------------------------- |
-| GLM 5.2 Fast | `accounts/fireworks/routers/glm-5p2-fast` |
+| Model             | `model` ID                                   |
+| ----------------- | -------------------------------------------- |
+| Kimi K3 Fast      | `accounts/fireworks/routers/kimi-k3-fast`    |
+| GLM 5.3 Fast      | `accounts/fireworks/routers/glm-5p3-fast`    |
+| GLM 5.2 Fast      | `accounts/fireworks/routers/glm-5p2-fast`    |
+| GLM 5.2 Fast (US) | `accounts/fireworks/routers/glm-5p2-fast-us` |
+
+For the US-only Fast variant, call `https://us.api.fireworks.ai`. See [US-only Serverless](/serverless/us-only-serverless).
 
 ```bash theme={null}
 curl https://api.fireworks.ai/inference/v1/chat/completions \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $FIREWORKS_API_KEY" \
   -d '{
-    "model": "accounts/fireworks/routers/glm-5p2-fast",
+    "model": "accounts/fireworks/routers/kimi-k3-fast",
     "messages": [{"role": "user", "content": "Hello"}]
   }'
 ```
@@ -26242,6 +26250,7 @@ US-only Serverless serves inference exclusively from the US, making it a good fi
 | ------------------------ | ------------------------------------------------------ |
 | Kimi K3                  | `accounts/fireworks/routers/kimi-k3-us`                |
 | DeepSeek V4 Flash (0731) | `accounts/fireworks/routers/deepseek-v4-flash-0731-us` |
+| DeepSeek V4.1 Flash      | `accounts/fireworks/routers/deepseek-v4p1-flash-us`    |
 | GLM 5.2                  | `accounts/fireworks/routers/glm-5p2-us`                |
 | GLM 5.2 Fast             | `accounts/fireworks/routers/glm-5p2-fast-us`           |
 | GLM 5.3                  | `accounts/fireworks/routers/glm-5p3-us`                |
@@ -26286,7 +26295,7 @@ For EU-only Serverless, contact [sales](https://fireworks.ai/company/contact-us)
 
 ## Related
 
-* [Serverless Serving Paths](/serverless/serving-paths)
+* [Serverless Modes](/serverless/serverless-modes)
 * [Serverless pricing](/serverless/pricing)
 * [Serverless overview](/serverless/overview)
 * [Data Security](/guides/security_compliance/data_security)
@@ -26677,7 +26686,7 @@ The following parameters and fields are handled differently or are not supported
 * **`max_tokens`**: Optional on Fireworks (required on Anthropic).
 * **`anthropic-version` header**: Not required. Fireworks ignores this header.
 * **`usage` field**: Included in both non-streaming and streaming responses. See [Token usage](#token-usage) for details.
-* **`service_tier`**: Supported. Set `service_tier: "priority"` to opt into [Priority tier](/serverless/serving-paths).
+* **`service_tier`**: Supported. Set `service_tier: "priority"` to opt into [Priority tier](/serverless/serverless-modes).
 * **`inference_geo`**: Deprecated in favor of [data residency](/accounts/data-residency). Remove it from request bodies and headers.
 
 ### Reasoning effort mapping
@@ -31572,6 +31581,23 @@ Source: https://docs.fireworks.ai/updates/changelog
 
 
 
+<Update label="2026-10-01">
+  <Badge>Inference</Badge>
+
+  # Serverless pricing update: DeepSeek V4.1 Flash
+
+  On **October 1, 2026 at 00:00 UTC**, serverless pricing for [DeepSeek V4.1 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash) changes (uncached input / cached input / output price per 1M tokens):
+
+  * **Standard:** \$0.22 / \$0.007 / \$0.66 → **\$0.30 / \$0.006 / \$1.20**
+  * **Priority:** \$0.275 / \$0.00875 / \$0.825 → **\$0.375 / \$0.0075 / \$1.50**
+
+  This adjustment brings our pricing in line with current market rates for this model. It applies only to serverless usage. If you run DeepSeek V4.1 Flash on a dedicated deployment or use Reserved Throughput, your pricing is unaffected.
+
+  We are also rolling out infrastructure improvements designed to improve cache hit rate, minimize cost per task, and deliver a faster, more reliable experience across the board.
+
+  See [Serverless pricing](/serverless/pricing) for the full rate card.
+</Update>
+
 <Update label="2026-09-16">
   <Badge>Platform</Badge>
 
@@ -31680,8 +31706,8 @@ Source: https://docs.fireworks.ai/updates/changelog
 
   * **[MiniMax M2.7](https://app.fireworks.ai/models/fireworks/minimax-m2p7)** — migrate to **[MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3)**
   * **[GPT OSS 20B](https://app.fireworks.ai/models/fireworks/gpt-oss-20b)** — migrate to **[GPT OSS 120B](https://app.fireworks.ai/models/fireworks/gpt-oss-120b)** or **[Qwen3 8B](https://app.fireworks.ai/models/fireworks/qwen3-8b)** for lower-latency workloads
-  * **[Kimi K2.6 Turbo / Fast](https://app.fireworks.ai/models/fireworks/kimi-k2p6)** — migrate to **[Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)** (standard serving path)
-  * **[Kimi K2.7 Code Fast](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)** — migrate to **[Kimi K2.7 Code](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)** (standard serving path)
+  * **[Kimi K2.6 Turbo / Fast](https://app.fireworks.ai/models/fireworks/kimi-k2p6)** — migrate to **[Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)** (standard mode)
+  * **[Kimi K2.7 Code Fast](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)** — migrate to **[Kimi K2.7 Code](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)** (standard mode)
   * **[DeepSeek V4 Pro](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro)** — migrate to **[DeepSeek V4 Pro (0813)](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro-0813)**
 </Update>
 

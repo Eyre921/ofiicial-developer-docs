@@ -8,12 +8,12 @@ path: connect/platform-pricing-tools
 
 Set platform processing fees for your connected accounts from your Stripe Dashboard.
 
-If your platform is [responsible for paying Stripe fees](https://docs.stripe.com/connect/platform-pricing-tools.md#fee-payer-reference), the [platform pricing tool](https://dashboard.stripe.com/settings/connect/platform_pricing) allows you to set pricing logic for all platform processing fees you charge your connected accounts. You can use this fee, known as an “application fee," for different purposes depending on your platform’s Connect configuration and business model:
+If your platform is [responsible for paying Stripe fees](https://docs.stripe.com/connect/platform-pricing-tools.md#fee-payer-reference), you can use the [platform pricing tool](https://dashboard.stripe.com/settings/connect/platform_pricing) to set pricing logic for the *application fees* (A fee that Connect platforms collect from connected accounts for each payment or payout) you charge your connected accounts. You can charge application fees for different purposes, depending on your platform’s configuration and business model. For example:
 
-- SaaS Platforms who are responsible for paying Stripe fees typically use application fees to recover or sometimes mark up payment processing costs they charge to their connected accounts.
-- Marketplaces or other platforms might absorb Stripe fees themselves, but charge a commission when paying out funds to their connected accounts.
+- SaaS Platforms typically use application fees to charge payment processing costs or markups to their connected accounts.
+- Marketplaces or other platforms might use application fees to charge a commission when paying out funds to their connected accounts.
 
-With the platform pricing tool, platforms can implement a range of pricing strategies for different payment processing use-cases, without the need to write any code:
+With the platform pricing tool, platforms can implement a range of pricing strategies for different payment processing use cases, without the need to write any code:
 
 - Create pricing that applies different application fees based on the properties of a transaction.
 - Define pricing groups to use different pricing for different connected accounts.

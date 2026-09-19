@@ -123,6 +123,7 @@ Events are split into the following categories:
 * **Enterprise-managed connection member access restored**: That a workspace member's access to enterprise-managed connections was restored.
 * **Enterprise-managed connection updated**: That enterprise-managed connection settings were updated for the workspace.
 * **Export toggled**: That a workspace owner has disabled or enabled exporting.
+* **External agent access policy updated**: That the workspace external agent access policy changed. Includes the previous and updated policy, without credentials.
 * **External AI tool name changed**: That an external agent's display name was changed.
 * **External membership requests toggled**: That external membership requests for the workspace were enabled or disabled.
 * **External/Public integration connected**: That a public/external integration was connected to the workspace.

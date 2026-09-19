@@ -148,7 +148,7 @@ If you want to block payments based on the early fraud warning score, you can wr
 
 ### Bot score (Private preview)
 
-Stripe Radar assigns payments made on [Stripe Checkout](https://stripe.com/payments/checkout) a numerical bot score between 0 and 99. This score represents the likelihood that a bot made the payment, where 0 is the lowest likelihood and 99 is the highest.
+Stripe Radar assigns a numerical bot score to payments made through [Stripe Checkout](https://docs.stripe.com/payments/checkout.md), [Custom Checkout](https://docs.stripe.com/payments/quickstart.md), [Radar Sessions](https://docs.stripe.com/radar/radar-session.md), or [web Elements](https://docs.stripe.com/payments/elements.md). The score ranges between 0 and 99, where 0 is the lowest likelihood and 99 is the highest likelihood that a bot made the payment.
 
 You can write custom rules on `:bot_score:` to block payments that exceed a threshold you define. For early access, see [Bot abuse prevention](https://docs.stripe.com/radar/bot-abuse.md).
 

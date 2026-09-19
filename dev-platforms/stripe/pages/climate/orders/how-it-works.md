@@ -53,7 +53,7 @@ Because the carbon removal industry is in its early stages, it’s likely that s
 > If an order is delayed or fails, we’ll send you an email and the relevant webhook at least 60 days in advance.
 > 
 > - **Delays**. You’ll have the option of receiving a full refund or waiting for the tons to be delivered.
-- **Individual supplier failures**. We’ll try to substitute your order with another similar supplier in the Frontier portfolio. Substituted carbon removal units might vary by pathway, geography, and price. If you don’t want a substitute, you can cancel the order and receive a full refund.
+> - **Individual supplier failures**. We’ll try to substitute your order with another similar supplier in the Frontier portfolio. Substituted carbon removal units might vary by pathway, geography, and price. If you don’t want a substitute, you can cancel the order and receive a full refund.
 
 Delays and failures don’t apply to *spot purchases* (Carbon removal that has already been verified and delivered to Stripe and is retired to you within 30 days of purchase), which have guaranteed inventory available.
 

@@ -12,7 +12,7 @@ Usage based billing is a legacy feature, and is not available on new self-serve 
 
 For self-serve subscriptions, Pay As You Go is our replacement for usage based billing. For more information, see our [Pay As You Go documentation. ](/docs/overview/administration/pay-as-you-go)
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/707e3ca222db4b26e352bda08d034698c5c69d7cb0836c19ce2f83c65b9b12df/assets/images/help-center/account/general/how-do-i-enable-usage-based-billing-for-my-account.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T113311Z&X-Amz-Expires=604800&X-Amz-Signature=b1f530f1c73af5fb04be2ca9c41553ecb23831c8b817e780e0f6b2707b5404b2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/707e3ca222db4b26e352bda08d034698c5c69d7cb0836c19ce2f83c65b9b12df/assets/images/help-center/account/general/how-do-i-enable-usage-based-billing-for-my-account.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260919%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260919T113428Z&X-Amz-Expires=604800&X-Amz-Signature=59ee54461adc7cf2c15dc8a1e6c4c7c2622aac3c7e171b01bede1c04c5e05e81&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 On Enterprise and legacy Creator, Pro, Scale and Business plans, you have the option to activate usage based billing. If you're on an eligible plan, here’s how to enable usage based billing for your account:
 

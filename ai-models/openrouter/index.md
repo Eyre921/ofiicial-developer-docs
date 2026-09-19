@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 446 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 448 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -280,6 +280,7 @@
 - `docs/cookbook/building-agents/advisor-server-tool` — [Build a Token-Efficient Review Agent](pages/docs/cookbook/building-agents/advisor-server-tool.md) · [原文](https://openrouter.ai/docs/cookbook/building-agents/advisor-server-tool.md)
 - `docs/cookbook/building-agents/create-agent-harness-tui` — [Build Your Own Agent TUI](pages/docs/cookbook/building-agents/create-agent-harness-tui.md) · [原文](https://openrouter.ai/docs/cookbook/building-agents/create-agent-harness-tui.md)
 - `docs/cookbook/building-agents/create-headless-agent` — [Build Your Own Headless Agent](pages/docs/cookbook/building-agents/create-headless-agent.md) · [原文](https://openrouter.ai/docs/cookbook/building-agents/create-headless-agent.md)
+- `docs/cookbook/building-agents/gate-tool-calls-with-jev` — [Gate Agent Tool Calls with Jev](pages/docs/cookbook/building-agents/gate-tool-calls-with-jev.md) · [原文](https://openrouter.ai/docs/cookbook/building-agents/gate-tool-calls-with-jev.md)
 - `docs/cookbook/building-agents/hitl-tools` — [Add Human-in-the-Loop Controls to an Agent SDK Agent](pages/docs/cookbook/building-agents/hitl-tools.md) · [原文](https://openrouter.ai/docs/cookbook/building-agents/hitl-tools.md)
 - `docs/cookbook/building-agents/long-horizon-agents` — [Build a Long-Horizon Agent](pages/docs/cookbook/building-agents/long-horizon-agents.md) · [原文](https://openrouter.ai/docs/cookbook/building-agents/long-horizon-agents.md)
 - `docs/cookbook/building-agents/subagent-server-tool` — [Delegate Routine Work to Cheaper Models](pages/docs/cookbook/building-agents/subagent-server-tool.md) · [原文](https://openrouter.ai/docs/cookbook/building-agents/subagent-server-tool.md)
@@ -295,6 +296,7 @@
 - `docs/cookbook/coding-agents/openclaw-integration` — [OpenClaw 🦞](pages/docs/cookbook/coding-agents/openclaw-integration.md) · [原文](https://openrouter.ai/docs/cookbook/coding-agents/openclaw-integration.md)
 - `docs/cookbook/coding-agents/opencode-integration` — [OpenCode](pages/docs/cookbook/coding-agents/opencode-integration.md) · [原文](https://openrouter.ai/docs/cookbook/coding-agents/opencode-integration.md)
 - `docs/cookbook/evaluate-and-optimize/distillation` — [Distillation](pages/docs/cookbook/evaluate-and-optimize/distillation.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/distillation.md)
+- `docs/cookbook/evaluate-and-optimize/jev-verified-cascade` — [Cut LLM Cost with a Jev-Verified Cascade](pages/docs/cookbook/evaluate-and-optimize/jev-verified-cascade.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/jev-verified-cascade.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-6` — [Claude 4.6 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-6.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-6.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-7` — [Claude 4.7 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-7.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-7.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/fable-5-1` — [Claude Fable 5.1 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/fable-5-1.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/fable-5-1.md)

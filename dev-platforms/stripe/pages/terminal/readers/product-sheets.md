@@ -18,7 +18,7 @@ These product sheets contain important device specifications, operating informat
 - [Stripe Reader S700](https://stripe.com/s700/manual)
 - [Stripe S700/S710 Case](https://stripe.com/s700-s710-case)
 - [Stripe S700/S710 Dock](https://stripe.com/s700-s710-dock)
-- [Stripe S700/S710 Hub](https://stripe.com/s700-s710-hub)
+- [Stripe Reader Hub](https://stripe.com/s700-s710-hub)
 
 ## Stripe Reader M2
 

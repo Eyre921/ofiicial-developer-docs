@@ -23,7 +23,7 @@ The software on the BBPOS Wisepad 3 consists of a firmware version, configuratio
 | Countries | Latest Version |
 | --- | --- |
 | AUMYNZ | `4.01.07.00_Prod_APAC1_on_v28_491001` |
-| HKSG | `4.01.07.00_Prod_APAC1_off_v17_491001` |
+| SG | `4.01.07.00_Prod_APAC1_off_v17_491001` |
 | ATBEDEITLUNLCH | `4.01.07.00_Prod_EU_W1_on_v28_510001` |
 | FR | `4.01.07.00_FR_v26_511001` |
 | DE | `4.01.07.00_DE_v31_511001` |
@@ -121,7 +121,7 @@ The software on the BBPOS Wisepad 3 consists of a firmware version, configuratio
 | `Prod_APAC1_on_v6` | 2020-11-06 | Updated config for Online PIN Asia Pacific countries. |
 | `Prod_APAC1_on_v5` | 2020-10-14 | Updated config for Online PIN Asia Pacific countries. |
 | `Prod_APAC1_on_v4` | 2020-08-28 | Initial config for Online PIN Asia Pacific countries. |
-| **APAC (Offline PIN)**   HKSG | `Prod_APAC1_off_v12` | 2024-04-24 | Updated config for Offline PIN Asia Pacific countries. |
+| **APAC (Offline PIN)**   SG | `Prod_APAC1_off_v12` | 2024-04-24 | Updated config for Offline PIN Asia Pacific countries. |
 | `Prod_APAC1_off_v10` | 2023-05-09 | Updated config for Offline PIN Asia Pacific countries. |
 | `Prod_APAC1_off_v7` | 2021-05-19 | Updated config for Offline PIN Asia Pacific countries. |
 | `Prod_APAC1_off_v6` | 2021-04-21 | Updated config for Offline PIN Asia Pacific countries. |
@@ -159,7 +159,7 @@ The software on the BBPOS Wisepad 3 consists of a firmware version, configuratio
 
 | Identifier | Countries | Description |
 | --- | --- | --- |
-| `490001` | AUHKMYNZSG | The initial key identifier available for the Asia Pacific region on this device. |
+| `490001` | AUMYNZSG | The initial key identifier available for the Asia Pacific region on this device. |
 | `510001` | ATBEDKFRDEIENLNOSEESCHGB | The initial key identifier available for the European region on this device. |
 | `480001` | CA | The initial key identifier available for the North American region on this device. |
 

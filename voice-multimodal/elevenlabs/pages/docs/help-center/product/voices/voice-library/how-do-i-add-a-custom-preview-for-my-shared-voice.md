@@ -8,16 +8,19 @@ path: docs/help-center/product/voices/voice-library/how-do-i-add-a-custom-previe
 
 # How do I add a custom preview for my shared voice?
 
-You can generate a custom preview for your Professional Voice Clone, and choose this to be the preview for your voice in the [Voice Library](https://elevenlabs.io/app/voice-library). You can change the custom preview at any time from the sharing settings for your voice.
+You can generate a custom preview for your Professional Voice Clone, and choose this to be the preview for your voice in the [Voice Library](https://elevenlabs.io/app/voice-library). You can add or change the custom preview during the sharing process, or afterwards.
 
 First, you will need to have generated some suitable audio from a text prompt between 70 and 150 characters long.
 
 If you don't already have any eligible generations, find your voice in [My Voices](https://elevenlabs.io/app/voice-lab), and use the **T** button to open [Text to Speech](https://elevenlabs.io/app/speech-synthesis/text-to-speech) with your voice selected. Enter text of your choice between 70-150 characters and click **Generate speech.** You can generate the audio using any of our models, including v3.
 
-When you have a generation you're happy with, return to [My Voices.](https://elevenlabs.io/app/voice-lab) Find your voice in the list, click **More actions** (three dots) then select **Share voice** to access the sharing settings.
+When you have a generation you're happy with:
 
-In the **Publish to the Voice Library** settings, use the drop down selection for **Custom voice preview** to select your recently generated text. This will then be applied as the preview for your voice. Only audio that meets the criteria (length of 70-150 characters) will appear in the list.
+Go to [My Voices](https://elevenlabs.io/app/voice-lab). Find your voice in the list, click
+**More actions** (three dots) then select **Edit in Library** to access the sharing settings.
 
+Click **Manage your voice**.
 
-
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f70eeb10aa93400ef0d8f390cc3710c96dc20b4bfe10681861e4ded5906ac429/assets/images/help-center/product/voices/voice-library/how-do-i-add-a-custom-preview-for-my-shared-voice.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T113343Z&X-Amz-Expires=604800&X-Amz-Signature=41c55e0802cd716d1383222995bc57e3d7b452ff1a99f300d5895892208ce070&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+In the **Custom voice preview** section, select an eligible generation from the drop-down
+selector. Only audio that meets the criteria (length of 70-150 characters) will appear in the
+list.

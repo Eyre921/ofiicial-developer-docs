@@ -218,7 +218,7 @@ Refer to [Get started with functions](/build/functions/get-started) for the full
 
 Functions deployed from Netlify are immutable. This means that an update to a function on your production branch won't change the version that was deployed in a branch deploy, or in a Deploy Preview. You can access all versions of your functions in the Netlify web interface, under the **Functions** tab.
 
-By default, the list displays all of the functions, including background functions, in the current [published deploy](/deploy/deploy-overview#definitions). To find functions on another deploy, you can use the search field at the top of the list. You can start typing to jump to a particular branch, or find a Deploy Preview by number.
+By default, the list displays all of the functions, including background functions, in the current [published deploy](/deploy/deploy-overview#definitions). To find a specific function, use the search field at the top of the list to filter functions by name. To find functions on another deploy, use the separate filter to select a branch or enter a Deploy Preview number.
 
 ## More Functions resources
 

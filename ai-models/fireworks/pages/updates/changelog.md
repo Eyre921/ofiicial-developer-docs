@@ -4,6 +4,23 @@ source: https://docs.fireworks.ai/updates/changelog
 path: updates/changelog
 ---
 
+<Update label="2026-10-01">
+  <Badge>Inference</Badge>
+
+  # Serverless pricing update: DeepSeek V4.1 Flash
+
+  On **October 1, 2026 at 00:00 UTC**, serverless pricing for [DeepSeek V4.1 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash) changes (uncached input / cached input / output price per 1M tokens):
+
+  * **Standard:** \$0.22 / \$0.007 / \$0.66 → **\$0.30 / \$0.006 / \$1.20**
+  * **Priority:** \$0.275 / \$0.00875 / \$0.825 → **\$0.375 / \$0.0075 / \$1.50**
+
+  This adjustment brings our pricing in line with current market rates for this model. It applies only to serverless usage. If you run DeepSeek V4.1 Flash on a dedicated deployment or use Reserved Throughput, your pricing is unaffected.
+
+  We are also rolling out infrastructure improvements designed to improve cache hit rate, minimize cost per task, and deliver a faster, more reliable experience across the board.
+
+  See [Serverless pricing](/serverless/pricing) for the full rate card.
+</Update>
+
 <Update label="2026-09-16">
   <Badge>Platform</Badge>
 
@@ -112,8 +129,8 @@ path: updates/changelog
 
   * **[MiniMax M2.7](https://app.fireworks.ai/models/fireworks/minimax-m2p7)** — migrate to **[MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3)**
   * **[GPT OSS 20B](https://app.fireworks.ai/models/fireworks/gpt-oss-20b)** — migrate to **[GPT OSS 120B](https://app.fireworks.ai/models/fireworks/gpt-oss-120b)** or **[Qwen3 8B](https://app.fireworks.ai/models/fireworks/qwen3-8b)** for lower-latency workloads
-  * **[Kimi K2.6 Turbo / Fast](https://app.fireworks.ai/models/fireworks/kimi-k2p6)** — migrate to **[Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)** (standard serving path)
-  * **[Kimi K2.7 Code Fast](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)** — migrate to **[Kimi K2.7 Code](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)** (standard serving path)
+  * **[Kimi K2.6 Turbo / Fast](https://app.fireworks.ai/models/fireworks/kimi-k2p6)** — migrate to **[Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)** (standard mode)
+  * **[Kimi K2.7 Code Fast](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)** — migrate to **[Kimi K2.7 Code](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)** (standard mode)
   * **[DeepSeek V4 Pro](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro)** — migrate to **[DeepSeek V4 Pro (0813)](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro-0813)**
 </Update>
 

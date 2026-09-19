@@ -138,7 +138,7 @@ path: api/invoices/object
 - `amount_paid` (integer)
   The amount, in the smallest currency unit, that was paid.
 
-- `amount_paid_off_stripe` (integer, expandable (can be expanded into an object with the `expand` request parameter))
+- `amount_paid_off_stripe` (integer, includable (not returned by default; request it with the `expand` request parameter))
   Amount, in the smallest currency unit, that was paid on the invoice outside of Stripe.
 
 - `amount_remaining` (integer)
@@ -195,7 +195,7 @@ Possible enum values:
   - `send_invoice`
     Email payment instructions to the customer.
 
-- [`confirmation_secret`](https://docs.stripe.com/api/invoices/object.md?query=confirmation_secret) (object, nullable, expandable (can be expanded into an object with the `expand` request parameter))
+- [`confirmation_secret`](https://docs.stripe.com/api/invoices/object.md?query=confirmation_secret) (object, nullable, includable (not returned by default; request it with the `expand` request parameter))
   The confirmation secret associated with this invoice. Currently, this contains the client_secret of the PaymentIntent that Stripe creates during invoice finalization.
 
 - `created` (timestamp)
@@ -307,7 +307,7 @@ Possible enum values:
 - [`payment_settings`](https://docs.stripe.com/api/invoices/object.md?query=payment_settings) (object)
   Configuration settings for the PaymentIntent that is generated when the invoice is finalized.
 
-- [`payments`](https://docs.stripe.com/api/invoices/object.md?query=payments) (object, expandable (can be expanded into an object with the `expand` request parameter))
+- [`payments`](https://docs.stripe.com/api/invoices/object.md?query=payments) (object, includable (not returned by default; request it with the `expand` request parameter))
   Payments for this invoice. Use [invoice payment](https://docs.stripe.com/api/invoice-payment.md) to get more details.
 
 - `period_end` (timestamp)

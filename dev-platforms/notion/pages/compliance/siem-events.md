@@ -230,6 +230,7 @@ When available, applicable events include a top-level `team_ids` array containin
 * **workspace.settings.email\_domain\_removed**: A user removed an allowed email domain from the workspace.
 * **workspace.settings.enable\_saml\_sso\_config\_updated**: An organization owner enabled or disabled SAML.
 * **workspace.settings.enforce\_saml\_sso\_config\_updated**: An organization owner enabled or disabled Enforce SAML.
+* **workspace.settings.external\_agent\_access\_policy\_updated**: The external agent access policy changed. Includes the previous and updated policy, without credentials.
 * **workspace.settings.guest\_invite\_request\_setting\_updated**: The guest invite request approval setting was enabled or disabled.
 * **workspace.settings.guest\_membership\_request\_setting\_updated**: A user enabled or disabled guest membership requests for the workspace.
 * **workspace.settings.hipaa\_compliance\_updated**: A workspace owner enabled or disabled HIPAA compliance by accepting or revoking Notion's Business Associate Agreement.

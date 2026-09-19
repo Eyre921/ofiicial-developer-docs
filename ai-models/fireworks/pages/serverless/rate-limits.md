@@ -6,7 +6,7 @@ path: serverless/rate-limits
 
 Adaptive rate limits grow and shrink with your usage
 
-When using Serverless, you may experience `429 Too Many Requests` or `503 Service Overloaded`. To avoid 429s, you need to stay below our adaptive rate limits. To reduce the likelihood of 503s, you can upgrade to [Priority tier](/serverless/serving-paths).
+When using Serverless, you may experience `429 Too Many Requests` or `503 Service Overloaded`. To avoid 429s, you need to stay below our adaptive rate limits. To reduce the likelihood of 503s, you can upgrade to [Priority tier](/serverless/serverless-modes).
 
 ## What are your rate limits?
 
@@ -40,7 +40,7 @@ Adaptive rate limits have an upper and lower bound. A higher account [Spending T
 
 <AccordionGroup>
   <Accordion title="Am I guaranteed successful responses up to my rate limit?">
-    **No.** Staying within your rate limits does not guarantee that every request succeeds. When a deployment is busy, your traffic can still be **load shed**, and those responses are **`503 Service Overloaded`**. To **decrease the chance** of being load shed, you can use [Priority tier](/serverless/serving-paths), which is prioritized during high load.
+    **No.** Staying within your rate limits does not guarantee that every request succeeds. When a deployment is busy, your traffic can still be **load shed**, and those responses are **`503 Service Overloaded`**. To **decrease the chance** of being load shed, you can use [Priority tier](/serverless/serverless-modes), which is prioritized during high load.
   </Accordion>
 
   <Accordion title="How are rate limits scoped?">

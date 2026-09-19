@@ -8,7 +8,7 @@ path: docs/eleven-creative/audio-tools/audio-native
 
 # Audio Native
 
-![Audio Native](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/46d22deceeb0c48519f5c98400269b282f6919dc7d8e97baec7e2ca4a215dc8c/assets/images/product-guides/audio-native/audio-native-product-feature.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100016Z&X-Amz-Expires=604800&X-Amz-Signature=f835e060d3589d82979d33bfa2aeb29fff7c9537e6f7af9409c1308afaadfab5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Audio Native](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/46d22deceeb0c48519f5c98400269b282f6919dc7d8e97baec7e2ca4a215dc8c/assets/images/product-guides/audio-native/audio-native-product-feature.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260919%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260919T113141Z&X-Amz-Expires=604800&X-Amz-Signature=1c3f6651729e22e3394e0a4ee38d36f6c5c7da48cd9f07c1de06d21e51e98eb4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Overview
 
@@ -138,7 +138,7 @@ Whenever one of these words is encountered in a project, the AI will pronounce t
       Go to the [Audio Native page](https://elevenlabs.io/app/audio-native), click the three dots next to the page you'd like to update, and select **Edit Audio**. This will open the corresponding Studio project.\
 
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/55eda284239de43d8010769153064cb7dade1c95de41a7913b377ef450a52a1a/assets/images/help-center/product/distribution-publishing/audio-native/how-to-update-an-audio-native-player.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100016Z&X-Amz-Expires=604800&X-Amz-Signature=cb2ee74d4e653f834b67b6d9d463cd48875573dabf085df12fb0cf78074555c9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/55eda284239de43d8010769153064cb7dade1c95de41a7913b377ef450a52a1a/assets/images/help-center/product/distribution-publishing/audio-native/how-to-update-an-audio-native-player.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260919%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260919T113141Z&X-Amz-Expires=604800&X-Amz-Signature=6eb0af7ddf243dfd0a8a01c635f5a7ad407ff4f0831a1692864719d7e9b7f9b6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       **Make your changes**\
       Update your project as needed, such as changing the voice or editing the script.
@@ -147,7 +147,7 @@ Whenever one of these words is encountered in a project, the AI will pronounce t
       Go to **Export** and export the project.\
 
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d3116f4d112d3fe033649676abf81212662976589ab131fe56ad96a50c8c7438/assets/images/help-center/product/distribution-publishing/audio-native/how-to-update-an-audio-native-player-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100016Z&X-Amz-Expires=604800&X-Amz-Signature=5f457ed88484d0de8cef51d76dfadf192a7693464c964989785a344c37ddc827&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d3116f4d112d3fe033649676abf81212662976589ab131fe56ad96a50c8c7438/assets/images/help-center/product/distribution-publishing/audio-native/how-to-update-an-audio-native-player-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260919%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260919T113141Z&X-Amz-Expires=604800&X-Amz-Signature=97d1807e871bc3e062e2cbf10f7b5641239c72482e63cfab8d9337267f466fa4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       \
       *Note: This step is required for updating Audio Native, even if you don't need the MP3 file.*
@@ -159,7 +159,7 @@ Whenever one of these words is encountered in a project, the AI will pronounce t
       Click **Published version** and select the newly exported version of your audio to update the embedded player.\
 
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/52cb3fe992bb7540153b7d431aab9f44359c713056c1d35e72b5abfd2cdde2a5/assets/images/help-center/product/distribution-publishing/audio-native/how-to-update-an-audio-native-player-3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100016Z&X-Amz-Expires=604800&X-Amz-Signature=2dccea2bcd81c016063b240c7f1888442c2eb87472a255484841b2f172e31d72&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/52cb3fe992bb7540153b7d431aab9f44359c713056c1d35e72b5abfd2cdde2a5/assets/images/help-center/product/distribution-publishing/audio-native/how-to-update-an-audio-native-player-3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260919%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260919T113141Z&X-Amz-Expires=604800&X-Amz-Signature=db0ede4aa14f12779f27089b9fc2eb3b9a26719bc1182737f7fecd4be59e0545&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       Your Audio Native player will now reflect the latest version of your project.
 
@@ -174,17 +174,17 @@ Whenever one of these words is encountered in a project, the AI will pronounce t
       * Click the hamburger menu (☰) and select Project Settings\
 
 
-        ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ef987276cce601b07bab9390e06adeb9d1b106f7ed78e8efa330a5a8b2181989/assets/images/help-center/product/distribution-publishing/audio-native/how-to-update-an-audio-native-player-4.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100016Z&X-Amz-Expires=604800&X-Amz-Signature=9444950da3c68e117a3a69bce8c5e0def6a4745afa4c26758f072c6a246d6ec6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+        ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ef987276cce601b07bab9390e06adeb9d1b106f7ed78e8efa330a5a8b2181989/assets/images/help-center/product/distribution-publishing/audio-native/how-to-update-an-audio-native-player-4.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260919%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260919T113141Z&X-Amz-Expires=604800&X-Amz-Signature=b4a786ccd80f56ebf3f30ed107e28e53d7f58f447b2bf72255ea802662aa1a72&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       * Go to the Export tab\
 
 
-        ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/87b69fe08f2e63aa905ba3e00035de251f94d43ebee8c9bb7592517538994781/assets/images/help-center/product/distribution-publishing/audio-native/how-to-update-an-audio-native-player-5.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100016Z&X-Amz-Expires=604800&X-Amz-Signature=b7f4c08fad260aff13b856154ba5e860cbc1dd2d59164739343ec0ce4228e040&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+        ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/87b69fe08f2e63aa905ba3e00035de251f94d43ebee8c9bb7592517538994781/assets/images/help-center/product/distribution-publishing/audio-native/how-to-update-an-audio-native-player-5.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260919%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260919T113141Z&X-Amz-Expires=604800&X-Amz-Signature=b7331f7c0d616ea15dd4fbf6f362445d0640f5f5c7aa71c97cdea22991a7627c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       * Edit the Title and Author fields\
 
 
-        ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/77ed6d1a7724b2a6585a92216c4e1247fd115df74886ea5880fcd764a4608d1b/assets/images/help-center/product/distribution-publishing/audio-native/how-to-update-an-audio-native-player-6.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100016Z&X-Amz-Expires=604800&X-Amz-Signature=3fb0732115aedec2584ff737531e35a7e8666fedfc550f8ac33fa6e391d62d0b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+        ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/77ed6d1a7724b2a6585a92216c4e1247fd115df74886ea5880fcd764a4608d1b/assets/images/help-center/product/distribution-publishing/audio-native/how-to-update-an-audio-native-player-6.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260919%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260919T113141Z&X-Amz-Expires=604800&X-Amz-Signature=008f93a1ea34294b47860fe229bf6b073bca32c81e218b4d9c9c6a2062bdd648&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       These changes will be reflected automatically in the embedded player.
     </td>

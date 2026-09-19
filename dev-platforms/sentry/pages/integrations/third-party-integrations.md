@@ -57,6 +57,7 @@ To build and publish your own, see the [Integration Platform docs](https://docs.
 * [Superlog](https://docs.superlog.sh/)
 * [Superlog Responder](https://docs.superlog.sh/)
 * [Supernaut](https://supernaut.dev/docs)
+* [Superplane](https://docs.superplane.com/components/sentry)
 * [Synkrony](https://docs.synkrony.ai/)
 * [Synthreo](https://docs.synthreo.ai)
 * [Terramind](https://terramind.com/docs/integrations/sentry)

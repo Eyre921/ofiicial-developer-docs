@@ -4,7 +4,7 @@ source: https://docs.fireworks.ai/serverless/overview
 path: serverless/overview
 ---
 
-How Serverless Inference works on Fireworks: serving paths, billing, request/response headers, prompt caching, model lifecycle, and when to choose Serverless Inference over On-demand
+How Serverless Inference works on Fireworks: serverless modes, billing, request/response headers, prompt caching, model lifecycle, and when to choose Serverless Inference over On-demand
 
 ## What is Serverless Inference
 
@@ -12,13 +12,13 @@ Serverless Inference is multi-tenant inference for popular open models running o
 
 ## Serverless products at a glance
 
-Three serving paths run on the same Serverless framework. They share the same rate-limit policy, but route and price differently:
+Three modes run on the same Serverless framework. They share the same rate-limit policy, but route and price differently:
 
-* **Standard** — the default serving path. No `service_tier` parameter needed.
+* **Standard** — the default mode. No `service_tier` parameter needed.
 * **Priority** — higher reliability during peak periods. Opt in by setting `service_tier: "priority"` on chat completions. Priced at a premium.
-* **Fast** — high-speed deployments for latency-sensitive workloads. Selected by switching the `model` ID to a Fast variant (for example, `accounts/fireworks/routers/kimi-k2p6-fast`).
+* **Fast** — high-speed deployments for latency-sensitive workloads. Selected by switching the `model` ID to a Fast variant (for example, `accounts/fireworks/routers/kimi-k3-fast`).
 
-For usage examples and the full list of supported models, see [Serverless Serving Paths](/serverless/serving-paths). For pricing by serving path, see [Serverless pricing](/serverless/pricing).
+For usage examples and the full list of supported models, see [Serverless Modes](/serverless/serverless-modes). For pricing by mode, see [Serverless pricing](/serverless/pricing).
 
 ## Billing
 
@@ -90,8 +90,8 @@ For dedicated infrastructure, see [On-demand deployments](/guides/ondemand-deplo
     Make your first Serverless API call.
   </Card>
 
-  <Card title="Serverless Serving Paths" icon="bolt" href="/serverless/serving-paths">
-    Higher-reliability and higher-speed serving paths.
+  <Card title="Serverless Modes" icon="bolt" href="/serverless/serverless-modes">
+    Higher-reliability and higher-speed modes.
   </Card>
 
   <Card title="US-only Serverless" icon="flag-usa" href="/serverless/us-only-serverless">

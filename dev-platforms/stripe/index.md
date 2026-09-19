@@ -1,6 +1,6 @@
 # dev-platforms/stripe 文档索引
 
-> 共 460 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 470 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -485,11 +485,20 @@
 - `tax/checkout` — [Collect tax with Checkout](pages/tax/checkout.md) · [原文](https://docs.stripe.com/tax/checkout.md)
 - `tax/checkout/tax-ids` — [Collect customer tax IDs with Checkout](pages/tax/checkout/tax-ids.md) · [原文](https://docs.stripe.com/tax/checkout/tax-ids.md)
 - `tax/connect` — [Use Stripe Tax with Connect](pages/tax/connect.md) · [原文](https://docs.stripe.com/tax/connect.md)
+- `tax/customer-locations` — [Collect customer locations](pages/tax/customer-locations.md) · [原文](https://docs.stripe.com/tax/customer-locations.md)
+- `tax/digital-products` — [Tax for digital products](pages/tax/digital-products.md) · [原文](https://docs.stripe.com/tax/digital-products.md)
+- `tax/file-with-stripe` — [File US sales tax with Stripe](pages/tax/file-with-stripe.md) · [原文](https://docs.stripe.com/tax/file-with-stripe.md)
+- `tax/file-with-taxually` — [File tax with Taxually](pages/tax/file-with-taxually.md) · [原文](https://docs.stripe.com/tax/file-with-taxually.md)
+- `tax/filing` — [File and remit tax](pages/tax/filing.md) · [原文](https://docs.stripe.com/tax/filing.md)
 - `tax/how-tax-works` — [How Stripe Tax works](pages/tax/how-tax-works.md) · [原文](https://docs.stripe.com/tax/how-tax-works.md)
 - `tax/invoicing` — [Automatically collect tax on invoices](pages/tax/invoicing.md) · [原文](https://docs.stripe.com/tax/invoicing.md)
+- `tax/invoicing/refunds` — [Refund taxed invoices](pages/tax/invoicing/refunds.md) · [原文](https://docs.stripe.com/tax/invoicing/refunds.md)
 - `tax/invoicing/tax-ids` — [Account and customer tax IDs with Invoicing](pages/tax/invoicing/tax-ids.md) · [原文](https://docs.stripe.com/tax/invoicing/tax-ids.md)
+- `tax/monitoring` — [Monitor tax obligations](pages/tax/monitoring.md) · [原文](https://docs.stripe.com/tax/monitoring.md)
+- `tax/payment-intent` — [Stripe Tax with PaymentIntents](pages/tax/payment-intent.md) · [原文](https://docs.stripe.com/tax/payment-intent.md)
 - `tax/payment-links` — [Automatically collect tax on Payment Links](pages/tax/payment-links.md) · [原文](https://docs.stripe.com/tax/payment-links.md)
 - `tax/products-prices-tax-codes-tax-behavior` — [Specify product tax codes and tax behavior](pages/tax/products-prices-tax-codes-tax-behavior.md) · [原文](https://docs.stripe.com/tax/products-prices-tax-codes-tax-behavior.md)
+- `tax/registering` — [Register for tax](pages/tax/registering.md) · [原文](https://docs.stripe.com/tax/registering.md)
 - `tax/registrations-api` — [Use the Registrations API to manage tax registrations](pages/tax/registrations-api.md) · [原文](https://docs.stripe.com/tax/registrations-api.md)
 - `tax/set-up` — [Set up Stripe Tax](pages/tax/set-up.md) · [原文](https://docs.stripe.com/tax/set-up.md)
 - `tax/settings-api` — [Use the Settings API to configure Stripe Tax](pages/tax/settings-api.md) · [原文](https://docs.stripe.com/tax/settings-api.md)
@@ -504,6 +513,7 @@
 - `tax/tax-for-platforms` — [Tax for software platforms](pages/tax/tax-for-platforms.md) · [原文](https://docs.stripe.com/tax/tax-for-platforms.md)
 - `tax/tax-rates` — [Tax rates](pages/tax/tax-rates.md) · [原文](https://docs.stripe.com/tax/tax-rates.md)
 - `tax/testing` — [Testing Stripe Tax](pages/tax/testing.md) · [原文](https://docs.stripe.com/tax/testing.md)
+- `tax/use-stripe-to-register` — [Use Stripe to register for US sales tax](pages/tax/use-stripe-to-register.md) · [原文](https://docs.stripe.com/tax/use-stripe-to-register.md)
 - `tax/zero-tax` — [Zero tax amounts and reverse charges](pages/tax/zero-tax.md) · [原文](https://docs.stripe.com/tax/zero-tax.md)
 
 ## terminal

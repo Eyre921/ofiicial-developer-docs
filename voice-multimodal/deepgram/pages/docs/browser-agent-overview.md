@@ -67,7 +67,6 @@ Each layer pulls in the layer below as a dependency, and re-exports the parts yo
 * **Reconnection with exponential backoff and jitter.** Configurable max attempts, base delay, and ceiling. Connections recover without user intervention.
 * **Playback-aware mode tracking.** The SDK knows when audio has actually finished playing in the browser — not just when the server finished sending it. Mode transitions from "speaking" to "listening" wait for the audio queue to drain.
 * **Audio buffering before settings are applied.** Microphone frames captured before the server acknowledges your configuration are queued and flushed automatically.
-* **Voice Activity Detection.** Optional Silero VAD runs client-side for precise speech endpoint detection.
 * **KeepAlive pings.** Automatic heartbeat prevents idle WebSocket disconnects. Interval is configurable.
 * **Typed event emitter.** Every server message — `Welcome`, `ConversationText`, `AgentAudioDone`, `FunctionCallRequest`, and more — has a typed event. Subscribe to exactly what you need.
 * **Custom WebSocket URL support.** Connect to proxied or self-hosted endpoints by overriding the default Deepgram URL.
@@ -119,7 +118,7 @@ app.get("/api/deepgram-token", async (req, res) => {
       Authorization: `Token ${process.env.DEEPGRAM_API_KEY}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ ttl: 30 }),
+    body: JSON.stringify({ ttl_seconds: 30 }),
   });
   const { access_token } = await response.json();
   res.send(access_token);
@@ -129,6 +128,8 @@ app.get("/api/deepgram-token", async (req, res) => {
 The browser `WebSocket` constructor does not support custom headers. The SDK works around this by passing the token as a `Sec-WebSocket-Protocol` value — the only header browsers allow on a WebSocket handshake. This is handled internally; you just return a token string from your factory function.
 
 The token factory is called before every connection and reconnection attempt. Tokens stay fresh even across network interruptions.
+
+The token only has to be valid at the WebSocket handshake. Once the connection is open it stays open, so the 30-second default comfortably sustains an hour-long call — you rarely need a longer TTL. To request one, pass `ttl_seconds` (the field is named `ttl_seconds`, not `ttl`; an unrecognized field is ignored and you get the 30-second default). The API key you mint tokens with needs **Member** or higher permissions. See [Token-Based Authentication](/guides/fundamentals/token-based-authentication) for details.
 
 The `apiKey` option exists for local development only. Never ship it in client-side code.
 

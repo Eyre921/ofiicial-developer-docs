@@ -13,7 +13,7 @@ description: "Learn about roles, access, and permissions across the Netlify plat
 
 Owners can assign roles to individuals invited to a team and manage their access and permissions across the Netlify platform.
 
-## Overview
+## How roles work
 
 A role defines a standard set of permissions that a person has by default once they are assigned that role. 
 
@@ -46,7 +46,7 @@ The following roles cannot be given granular project access:
 - Team Owners 
 - Billing Admins
 
-To learn more, check out our docs on [managing project access](/manage/accounts-and-billing/team-management/manage-project-access#overview).
+To learn more, check out our docs on [managing project access](/manage/accounts-and-billing/team-management/manage-project-access#how-granular-project-access-works).
 
 ### Note - Git Contributors
 

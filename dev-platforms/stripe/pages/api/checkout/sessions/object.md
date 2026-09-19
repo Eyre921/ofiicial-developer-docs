@@ -200,7 +200,7 @@ Possible enum values:
 - [`invoice_creation`](https://docs.stripe.com/api/checkout/sessions/object.md?query=invoice_creation) (object, nullable)
   Details on the state of invoice creation for the Checkout Session.
 
-- [`line_items`](https://docs.stripe.com/api/checkout/sessions/object.md?query=line_items) (object, nullable, expandable (can be expanded into an object with the `expand` request parameter))
+- [`line_items`](https://docs.stripe.com/api/checkout/sessions/object.md?query=line_items) (object, nullable, includable (not returned by default; request it with the `expand` request parameter))
   The line items purchased by the customer.
 
 - `livemode` (boolean)
@@ -272,7 +272,7 @@ Possible enum values:
 - [`name_collection`](https://docs.stripe.com/api/checkout/sessions/object.md?query=name_collection) (object, nullable)
   Details on the state of name collection for the session.
 
-- `optional_items` (array of objects, nullable, expandable (can be expanded into an object with the `expand` request parameter))
+- `optional_items` (array of objects, nullable, includable (not returned by default; request it with the `expand` request parameter))
   The optional items presented to the customer at checkout.
 
 - `origin_context` (enum, nullable)

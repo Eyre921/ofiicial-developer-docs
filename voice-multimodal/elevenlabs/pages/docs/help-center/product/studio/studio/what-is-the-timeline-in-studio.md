@@ -10,7 +10,7 @@ path: docs/help-center/product/studio/studio/what-is-the-timeline-in-studio
 
 The timeline is a visual representation of the audio in your Studio project, displayed as a horizontal track at the bottom of the interface. It’s enabled by default in all Studio projects.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3a621f89c3a57397df02c1fd6afd303cc1fd732daf24b64c71643bc5b0293f5a/assets/images/help-center/product/studio/what-is-the-timeline-in-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100018Z&X-Amz-Expires=604800&X-Amz-Signature=99d284f6d30185e9f41948981d91e3f2c1bd9887e2ef9f29e2132a931365db94&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3a621f89c3a57397df02c1fd6afd303cc1fd732daf24b64c71643bc5b0293f5a/assets/images/help-center/product/studio/what-is-the-timeline-in-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260919%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260919T113651Z&X-Amz-Expires=604800&X-Amz-Signature=61d125ef40c4b4e56a7c9ef9fa54672bc65e98d971bfc63678b22079a926ccff&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 The timeline gives you a clearer way to view and control the structure of your content. Clips appear automatically as you enter text, and you can rearrange them by dragging and dropping to adjust the flow of your audio.
 
@@ -18,10 +18,10 @@ The timeline gives you a clearer way to view and control the structure of your c
 
 Click the **Expand/Collapse** button in the top-right of the timeline to adjust the view:
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/47f78b252909cc8ea351be1030d4c9a81f124d3e457ac6d5356b25c4a173fe9c/assets/images/help-center/product/studio/studio-expand-collapse.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100018Z&X-Amz-Expires=604800&X-Amz-Signature=2ea6341825e6719800d028e2dc5bb2a81c7291bb59d317ab4e9a244aac5e7e84&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/47f78b252909cc8ea351be1030d4c9a81f124d3e457ac6d5356b25c4a173fe9c/assets/images/help-center/product/studio/studio-expand-collapse.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260919%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260919T113651Z&X-Amz-Expires=604800&X-Amz-Signature=42f17cc588779aade272e236c68826bb3d516feff941eeae6f8c876cba4f6331&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 
 
 Use the **Zoom In** and **Zoom Out** buttons to change how much of the timeline is visible:
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/934f1a9cea93d5a297ee718025c489fb7f3a41bf2ec231787b35af8b8255097f/assets/images/help-center/product/studio/studio-zoom.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100018Z&X-Amz-Expires=604800&X-Amz-Signature=dcca13168f93cd68a1217362f53104acf2eada7bba52bd22fcd7b7dd604fdaae&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/934f1a9cea93d5a297ee718025c489fb7f3a41bf2ec231787b35af8b8255097f/assets/images/help-center/product/studio/studio-zoom.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260919%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260919T113651Z&X-Amz-Expires=604800&X-Amz-Signature=e61595e1c2fe3af306c9bc79e9f269880a8579414abccafb30c41ec35e6aa0db&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)

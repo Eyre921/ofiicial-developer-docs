@@ -71,7 +71,8 @@ def main():
 
             # Save the audio file
             with open(filename, "wb") as audio_file:
-                audio_file.write(response.stream.getvalue())
+                for audio_chunk in response:
+                    audio_file.write(audio_chunk)
             print(f"Audio saved to {filename}")
 
     except Exception as e:
@@ -86,6 +87,7 @@ if __name__ == "__main__":
 ```java Java
 import com.deepgram.DeepgramClient;
 import com.deepgram.resources.speak.v1.audio.requests.SpeakV1Request;
+import com.deepgram.resources.speak.v1.audio.types.AudioGenerateRequestModel;
 
 import java.io.InputStream;
 import java.io.FileOutputStream;
@@ -127,7 +129,7 @@ public class ChunkByMaxCharacters {
             InputStream audioStream = client.speak().v1().audio().generate(
                 SpeakV1Request.builder()
                     .text(chunk)
-                    .model("aura-2-thalia-en")
+                    .model(AudioGenerateRequestModel.AURA2THALIA_EN)
                     .build()
             );
 
@@ -199,7 +201,8 @@ def main():
 
             # Save the audio file
             with open(filename, "wb") as audio_file:
-                audio_file.write(response.stream.getvalue())
+                for audio_chunk in response:
+                    audio_file.write(audio_chunk)
             print(f"Audio saved to {filename}")
 
     except Exception as e:
@@ -214,6 +217,7 @@ if __name__ == "__main__":
 ```java Java
 import com.deepgram.DeepgramClient;
 import com.deepgram.resources.speak.v1.audio.requests.SpeakV1Request;
+import com.deepgram.resources.speak.v1.audio.types.AudioGenerateRequestModel;
 
 import java.io.InputStream;
 import java.io.FileOutputStream;
@@ -258,7 +262,7 @@ public class ChunkByClauseBoundaries {
             InputStream audioStream = client.speak().v1().audio().generate(
                 SpeakV1Request.builder()
                     .text(chunk)
-                    .model("aura-2-thalia-en")
+                    .model(AudioGenerateRequestModel.AURA2THALIA_EN)
                     .build()
             );
 
@@ -347,8 +351,8 @@ def main():
 
             # Save the audio file
             with open(filename, "wb") as audio_file:
-                audio_file.write(response.stream.getvalue())
-            # print(response.to_json(indent=4))
+                for audio_chunk in response:
+                    audio_file.write(audio_chunk)
 
     except Exception as e:
         print(f"Exception: {e}")
@@ -362,6 +366,7 @@ if __name__ == "__main__":
 ```java Java
 import com.deepgram.DeepgramClient;
 import com.deepgram.resources.speak.v1.audio.requests.SpeakV1Request;
+import com.deepgram.resources.speak.v1.audio.types.AudioGenerateRequestModel;
 
 import java.io.InputStream;
 import java.io.FileOutputStream;
@@ -434,7 +439,7 @@ public class DynamicChunking {
             InputStream audioStream = client.speak().v1().audio().generate(
                 SpeakV1Request.builder()
                     .text(chunk)
-                    .model("aura-2-thalia-en")
+                    .model(AudioGenerateRequestModel.AURA2THALIA_EN)
                     .build()
             );
 
@@ -446,11 +451,11 @@ public class DynamicChunking {
 }
 ```
 
-### Chunking + Streaming Audio
+### Chunking + Sequential Playback
 
-Instead of turning each chunk into an audio file such as an MP3 file, you might prefer to stream the audio as it comes in. It is possible to start streaming your text-to-speech audio as soon as the first byte arrives.
+Instead of saving each chunk as an audio file, you can play each chunk in sequence. This example collects each complete MP3 response before decoding and playing it.
 
-In this example, the text is chunked by sentence boundaries. Then each chunk is sent to Deepgram to be processed into audio, but when the first byte of audio arrives back to you, it is played immediately in a stream. Each audio stream is played consecutively in the order that the text splits them into chunks.
+The text is chunked by sentence boundaries, then each chunk is sent to Deepgram and played in order. To begin playback when the first byte arrives, use [Real-Time TTS with WebSockets](/docs/tts-websocket-streaming).
 
 **`Python - SDK`**
 
@@ -459,6 +464,7 @@ In this example, the text is chunked by sentence boundaries. Then each chunk is 
 # For more Python SDK migration guides, visit:
 # https://github.com/deepgram/deepgram-python-sdk/tree/main/docs
 
+import io
 import re
 from deepgram import DeepgramClient
 from pydub import AudioSegment
@@ -490,9 +496,8 @@ def synthesize_audio(text):
         text=text,
         model="aura-2-thalia-en"
     )
-    # Get the audio stream from the response
-    audio_buffer = response.stream
-    audio_buffer.seek(0)
+    # Collect the iterator because pydub decodes a complete MP3 file
+    audio_buffer = io.BytesIO(b"".join(response))
     # Load audio from buffer using pydub
     audio = AudioSegment.from_mp3(audio_buffer)
 
@@ -516,6 +521,9 @@ if __name__ == "__main__":
 ```java Java
 import com.deepgram.DeepgramClient;
 import com.deepgram.resources.speak.v1.audio.requests.SpeakV1Request;
+import com.deepgram.resources.speak.v1.audio.types.AudioGenerateRequestContainer;
+import com.deepgram.resources.speak.v1.audio.types.AudioGenerateRequestEncoding;
+import com.deepgram.resources.speak.v1.audio.types.AudioGenerateRequestModel;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -553,12 +561,14 @@ public class ChunkAndStreamAudio {
             InputStream audioStream = client.speak().v1().audio().generate(
                 SpeakV1Request.builder()
                     .text(chunk)
-                    .model("aura-2-thalia-en")
+                    .model(AudioGenerateRequestModel.AURA2THALIA_EN)
+                    .encoding(AudioGenerateRequestEncoding.LINEAR16)
+                    .container(AudioGenerateRequestContainer.NONE)
+                    .sampleRate(48000.0)
                     .build()
             );
 
             // Stream the audio bytes to playback as they arrive
-            byte[] audioBytes = audioStream.readAllBytes();
             System.out.println("Playing chunk: " + chunk.substring(0, Math.min(50, chunk.length())) + "...");
 
             // Play audio using javax.sound (assumes linear16 PCM, 48kHz, mono)
@@ -567,7 +577,11 @@ public class ChunkAndStreamAudio {
             SourceDataLine line = (SourceDataLine) AudioSystem.getLine(info);
             line.open(format);
             line.start();
-            line.write(audioBytes, 0, audioBytes.length);
+            byte[] audioBytes = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = audioStream.read(audioBytes)) != -1) {
+                line.write(audioBytes, 0, bytesRead);
+            }
             line.drain();
             line.close();
         }

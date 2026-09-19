@@ -125,11 +125,11 @@ dotnet add package Deepgram
 # <dependency>
 #   <groupId>com.deepgram</groupId>
 #   <artifactId>deepgram-java-sdk</artifactId>
-#   <version>0.2.1</version>
+#   <version>0.10.0</version>
 # </dependency>
 
 # Gradle — add to build.gradle:
-# implementation 'com.deepgram:deepgram-java-sdk:0.7.0'
+# implementation 'com.deepgram:deepgram-java-sdk:0.10.0'
 ```
 
 ### Add Dependencies
@@ -184,9 +184,8 @@ const getAudio = async () => {
     container: "wav",
   });
 
-  // STEP 3: Get the audio stream and headers from the response
-  const stream = response.stream;
-  const headers = response.headers;
+  // STEP 3: Get the audio stream from the response
+  const stream = response.stream();
   if (stream) {
     // STEP 4: Convert the stream to an audio buffer
     const buffer = await getAudioBuffer(stream);
@@ -202,9 +201,6 @@ const getAudio = async () => {
     console.error("Error generating audio:", stream);
   }
 
-  if (headers) {
-    console.log("Headers:", headers);
-  }
 };
 
 // helper function to convert stream to audio buffer
@@ -256,7 +252,8 @@ def main():
 
         # Save the audio file
         with open("test.mp3", "wb") as audio_file:
-            audio_file.write(response.stream.getvalue())
+            for chunk in response:
+                audio_file.write(chunk)
 
         print(f"Audio saved to test.mp3")
 

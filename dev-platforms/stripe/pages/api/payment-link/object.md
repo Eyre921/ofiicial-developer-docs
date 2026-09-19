@@ -141,7 +141,7 @@ Possible enum values:
 - [`invoice_creation`](https://docs.stripe.com/api/payment-link/object.md?query=invoice_creation) (object, nullable)
   Configuration for creating invoice for payment mode payment links.
 
-- [`line_items`](https://docs.stripe.com/api/payment-link/object.md?query=line_items) (object, expandable (can be expanded into an object with the `expand` request parameter))
+- [`line_items`](https://docs.stripe.com/api/payment-link/object.md?query=line_items) (object, includable (not returned by default; request it with the `expand` request parameter))
   The line items representing what is being sold.
 
 - `livemode` (boolean)
@@ -159,7 +159,7 @@ Possible enum values:
 - `on_behalf_of` (string, nullable, expandable (can be expanded into an object with the `expand` request parameter))
   The account on behalf of which to charge. See the [Connect documentation](https://support.stripe.com/questions/sending-invoices-on-behalf-of-connected-accounts) for details.
 
-- `optional_items` (array of objects, nullable, expandable (can be expanded into an object with the `expand` request parameter))
+- `optional_items` (array of objects, nullable, includable (not returned by default; request it with the `expand` request parameter))
   The optional items presented to the customer at checkout.
 
 - [`payment_intent_data`](https://docs.stripe.com/api/payment-link/object.md?query=payment_intent_data) (object, nullable)

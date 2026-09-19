@@ -14,6 +14,7 @@ US-only Serverless serves inference exclusively from the US, making it a good fi
 | ------------------------ | ------------------------------------------------------ |
 | Kimi K3                  | `accounts/fireworks/routers/kimi-k3-us`                |
 | DeepSeek V4 Flash (0731) | `accounts/fireworks/routers/deepseek-v4-flash-0731-us` |
+| DeepSeek V4.1 Flash      | `accounts/fireworks/routers/deepseek-v4p1-flash-us`    |
 | GLM 5.2                  | `accounts/fireworks/routers/glm-5p2-us`                |
 | GLM 5.2 Fast             | `accounts/fireworks/routers/glm-5p2-fast-us`           |
 | GLM 5.3                  | `accounts/fireworks/routers/glm-5p3-us`                |
@@ -58,7 +59,7 @@ For EU-only Serverless, contact [sales](https://fireworks.ai/company/contact-us)
 
 ## Related
 
-* [Serverless Serving Paths](/serverless/serving-paths)
+* [Serverless Modes](/serverless/serverless-modes)
 * [Serverless pricing](/serverless/pricing)
 * [Serverless overview](/serverless/overview)
 * [Data Security](/guides/security_compliance/data_security)

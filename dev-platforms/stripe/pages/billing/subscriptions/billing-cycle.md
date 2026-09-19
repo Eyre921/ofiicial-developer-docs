@@ -178,6 +178,7 @@ Call [update the subscription](https://docs.stripe.com/api.md#update_subscriptio
 ```curl
 curl https://api.stripe.com/v1/subscriptions/{{SUBSCRIPTION_ID}} \
   -u "<<YOUR_SECRET_KEY>>:" \
+  -H "Stripe-Version: 2026-08-26.dahlia" \
   -d billing_cycle_anchor=now \
   -d proration_behavior=create_prorations
 ```

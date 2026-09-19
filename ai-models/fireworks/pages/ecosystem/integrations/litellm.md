@@ -28,9 +28,9 @@ model_list:
       model: fireworks_ai/accounts/fireworks/models/glm-5p2
       api_key: os.environ/FIREWORKS_AI_API_KEY
 
-  - model_name: accounts/fireworks/routers/kimi-k2p6-fast
+  - model_name: accounts/fireworks/routers/kimi-k3-fast
     litellm_params:
-      model: fireworks_ai/accounts/fireworks/routers/kimi-k2p6-fast
+      model: fireworks_ai/accounts/fireworks/routers/kimi-k3-fast
       api_key: os.environ/FIREWORKS_AI_API_KEY
 ```
 

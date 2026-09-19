@@ -123,7 +123,7 @@ The following parameters and fields are handled differently or are not supported
 * **`max_tokens`**: Optional on Fireworks (required on Anthropic).
 * **`anthropic-version` header**: Not required. Fireworks ignores this header.
 * **`usage` field**: Included in both non-streaming and streaming responses. See [Token usage](#token-usage) for details.
-* **`service_tier`**: Supported. Set `service_tier: "priority"` to opt into [Priority tier](/serverless/serving-paths).
+* **`service_tier`**: Supported. Set `service_tier: "priority"` to opt into [Priority tier](/serverless/serverless-modes).
 * **`inference_geo`**: Deprecated in favor of [data residency](/accounts/data-residency). Remove it from request bodies and headers.
 
 ### Reasoning effort mapping

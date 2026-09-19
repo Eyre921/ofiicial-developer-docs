@@ -12,75 +12,9 @@ url: https://docs.sentry.io/changelog/
 
 # Documentation Changelog | Sentry Docs
 
-## [August 11, 2026](https://docs.sentry.io/changelog.md#august-11-2026)
+## [September 18, 2026](https://docs.sentry.io/changelog.md#september-18-2026)
 
-### [](https://docs.sentry.io/changelog.md#featagents-agents-and-conversations-updates-for-product-changes)[feat(agents): Agents and conversations updates for product changes](https://github.com/getsentry/sentry-docs/pull/19006)
-
-**Modified:**
-
-* [AI Agents Module](https://develop.sentry.dev/sdk/telemetry/traces/modules/ai-agents/)
-* [Sentry for AI](https://docs.sentry.io/ai.md)
-* [Tracing](https://docs.sentry.io/concepts/key-terms/tracing.md)
-* [Set Up Tracing](https://docs.sentry.io/platforms/dotnet/tracing.md)
-* [Instrument Agents](https://docs.sentry.io/platforms/dotnet/tracing/instrumentation/ai-agents-module.md)
-* [Browser AI Tracing](https://docs.sentry.io/platforms/javascript/agent-tracing.md)
-* [Set Up Agent Tracing](https://docs.sentry.io/platforms/javascript/guides/node/agent-tracing.md)
-* [Manual Instrumentation](https://docs.sentry.io/platforms/javascript/guides/node/agent-tracing/manual-instrumentation.md)
-* [LangChain](https://docs.sentry.io/platforms/javascript/guides/node/configuration/integrations/langchain.md)
-* [LangGraph](https://docs.sentry.io/platforms/javascript/guides/node/configuration/integrations/langgraph.md)
-* [Set Up Tracing](https://docs.sentry.io/platforms/javascript/tracing.md)
-* [Instrument MCP Servers](https://docs.sentry.io/platforms/javascript/guides/node/tracing/instrumentation/mcp-module.md)
-* [Example Instrumentation](https://docs.sentry.io/platforms/javascript/tracing/span-metrics/examples.md)
-* [Cloudflare Agents SDK](https://docs.sentry.io/platforms/javascript/guides/cloudflare/agent-tracing/agents-sdk.md)
-* [Next.js](https://docs.sentry.io/platforms/javascript/guides/nextjs.md)
-* [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup.md)
-* [Pages Router Setup](https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/pages-router.md)
-* [Webpack Setup](https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/webpack-setup.md)
-* [Set Up Tracing in PHP](https://docs.sentry.io/platforms/php/tracing.md)
-* [Set Up Agent Tracing](https://docs.sentry.io/platforms/php/guides/laravel/agent-tracing.md)
-* [Data Collected](https://docs.sentry.io/platforms/php/guides/laravel/data-management/data-collected.md)
-* [Set Up Agent Tracing](https://docs.sentry.io/platforms/python/agent-tracing.md)
-* [Manual Instrumentation](https://docs.sentry.io/platforms/python/agent-tracing/manual-instrumentation.md)
-* [Anthropic](https://docs.sentry.io/platforms/python/integrations/anthropic.md)
-* [Google Gen AI](https://docs.sentry.io/platforms/python/integrations/google-genai.md)
-* [Hugging Face Hub](https://docs.sentry.io/platforms/python/integrations/huggingface_hub.md)
-* [LangChain](https://docs.sentry.io/platforms/python/integrations/langchain.md)
-* [LangGraph](https://docs.sentry.io/platforms/python/integrations/langgraph.md)
-* [LiteLLM](https://docs.sentry.io/platforms/python/integrations/litellm.md)
-* [OpenAI Agents](https://docs.sentry.io/platforms/python/integrations/openai-agents.md)
-* [OpenAI](https://docs.sentry.io/platforms/python/integrations/openai.md)
-* [Pydantic AI](https://docs.sentry.io/platforms/python/integrations/pydantic-ai.md)
-* [Set Up Tracing](https://docs.sentry.io/platforms/python/tracing.md)
-* [Custom Instrumentation](https://docs.sentry.io/platforms/python/tracing/instrumentation/custom-instrumentation.md)
-* [Instrument MCP Servers](https://docs.sentry.io/platforms/python/tracing/instrumentation/custom-instrumentation/mcp-module.md)
-* [Agent Tracing](https://docs.sentry.io/platforms/react-native/agent-tracing.md)
-* [LangGraph](https://docs.sentry.io/platforms/react-native/integrations/langgraph.md)
-* [Set Up Tracing](https://docs.sentry.io/platforms/ruby/tracing.md)
-* [Instrument Agents](https://docs.sentry.io/platforms/ruby/tracing/instrumentation/custom-instrumentation/ai-agents-module.md)
-* [Conversations](https://docs.sentry.io/product/agents/conversations.md)
-* [Model Costs](https://docs.sentry.io/product/agents/costs.md)
-* [Agents Dashboards](https://docs.sentry.io/product/agents/dashboards.md)
-* [Set Up](https://docs.sentry.io/product/agents/getting-started.md)
-* [Agents](https://docs.sentry.io/product/agents.md)
-* [Naming Your Agents](https://docs.sentry.io/product/agents/naming.md)
-* [Data Privacy](https://docs.sentry.io/product/agents/privacy.md)
-* [Sampling Strategies](https://docs.sentry.io/product/agents/sampling.md)
-* [Agents Dashboards](https://docs.sentry.io/product/dashboards/sentry-dashboards/ai/agents.md)
-* [AI](https://docs.sentry.io/product/dashboards/sentry-dashboards/ai.md)
-* [MCP Dashboards](https://docs.sentry.io/product/dashboards/sentry-dashboards/ai/mcp.md)
-* [Product Walkthroughs](https://docs.sentry.io/product.md)
-* [Logs](https://docs.sentry.io/product/logs.md)
-* [MCP Dashboards](https://docs.sentry.io/product/mcp-servers/dashboard.md)
-* [Set Up](https://docs.sentry.io/product/mcp-servers/getting-started.md)
-* [MCP Servers](https://docs.sentry.io/product/mcp-servers.md)
-* [Application Metrics](https://docs.sentry.io/product/metrics.md)
-* [Getting Started With Sentry](https://docs.sentry.io/product/sentry-basics.md)
-* [Performance Monitoring](https://docs.sentry.io/product/sentry-basics/performance-monitoring.md)
-* [Agentic Workflow](https://docs.sentry.io/product/snapshots/agentic-workflow.md)
-
-***
-
-### [](https://docs.sentry.io/changelog.md#docsintegrations-clarify-cursor-integration-redirect)[docs(integrations): Clarify Cursor integration redirect](https://github.com/getsentry/sentry-docs/pull/18935)
+### [](https://docs.sentry.io/changelog.md#docsintegrations-add-superplane-third-party-integration)[docs(integrations): Add Superplane third-party integration](https://github.com/getsentry/sentry-docs/pull/19519)
 
 **Modified:**
 
@@ -88,205 +22,217 @@ url: https://docs.sentry.io/changelog/
 
 ***
 
-### [](https://docs.sentry.io/changelog.md#fixscrubbing-clarify-safe-field-path-selector-logic)[fix(scrubbing): Clarify safe-field path selector logic](https://github.com/getsentry/sentry-docs/pull/19010)
+### [](https://docs.sentry.io/changelog.md#docseve-prevent-duplicate-instrumentation-with-sdk-v11)[docs(eve): Prevent duplicate instrumentation with SDK v11](https://github.com/getsentry/sentry-docs/pull/19461)
 
 **Modified:**
 
-* [Server-Side Data Scrubbing](https://docs.sentry.io/security-legal-pii/scrubbing/server-side-scrubbing.md)
+* [Eve](https://docs.sentry.io/platforms/javascript/guides/eve.md)
 
 ***
 
-### [](https://docs.sentry.io/changelog.md#docsnative-update-note-on-decref-for-event-hooks)[docs(native): update note on `decref` for event hooks](https://github.com/getsentry/sentry-docs/pull/18996)
+### [](https://docs.sentry.io/changelog.md#docsreleases-remove-early-access-alert-from-auto-release-creation)[docs(releases): Remove early access alert from auto release creation](https://github.com/getsentry/sentry-docs/pull/19491)
 
 **Modified:**
 
-* [Options](https://docs.sentry.io/platforms/native/configuration/options.md)
+* [Disable Release Creation](https://docs.sentry.io/product/releases/usage/disable-auto-release-creation.md)
 
 ***
 
-## [August 10, 2026](https://docs.sentry.io/changelog.md#august-10-2026)
-
-### [](https://docs.sentry.io/changelog.md#fixdev-update-installation-command-for-sentryconventions)[fix(dev): Update installation command for @sentry/conventions](https://github.com/getsentry/sentry-docs/pull/19005)
+### [](https://docs.sentry.io/changelog.md#docsagent-tracing-limit-guides-to-server-runtimes)[docs(agent-tracing): Limit guides to server runtimes](https://github.com/getsentry/sentry-docs/pull/19452)
 
 **Modified:**
 
-* [Sentry Conventions](https://develop.sentry.dev/engineering-practices/sentry-conventions/)
+* [Anthropic](https://docs.sentry.io/platforms/javascript/guides/node/agent-tracing/anthropic.md)
+* [Google Gen AI](https://docs.sentry.io/platforms/javascript/guides/node/agent-tracing/google-genai.md)
+* [Set Up Agent Tracing](https://docs.sentry.io/platforms/javascript/agent-tracing.md)
+* [LangChain](https://docs.sentry.io/platforms/javascript/guides/node/agent-tracing/langchain.md)
+* [LangGraph](https://docs.sentry.io/platforms/javascript/guides/node/agent-tracing/langgraph.md)
+* [Manual Instrumentation](https://docs.sentry.io/platforms/javascript/guides/node/agent-tracing/manual-instrumentation.md)
+* [OpenAI](https://docs.sentry.io/platforms/javascript/guides/node/agent-tracing/openai.md)
+* [Vercel AI](https://docs.sentry.io/platforms/javascript/guides/node/agent-tracing/vercelai.md)
+* [APIs](https://docs.sentry.io/platforms/javascript/configuration/apis.md)
+* [Set Up Tracing](https://docs.sentry.io/platforms/javascript/tracing.md)
+* [Set Up Tracing](https://docs.sentry.io/platforms/react-native/tracing.md)
+* [Set Up](https://docs.sentry.io/product/agents/getting-started.md)
+
+**Removed:**
+
+* [Agent Tracing](https://docs.sentry.io/platforms/react-native/agent-tracing.md)
 
 ***
 
-### [](https://docs.sentry.io/changelog.md#docssnapshots-add-github-enterprise-setup)[docs(snapshots): Add GitHub Enterprise setup](https://github.com/getsentry/sentry-docs/pull/19003)
+## [September 17, 2026](https://docs.sentry.io/changelog.md#september-17-2026)
+
+### [](https://docs.sentry.io/changelog.md#docsintegrations-add-arg0-third-party-integration)[docs(integrations): Add Arg0 third-party integration](https://github.com/getsentry/sentry-docs/pull/19483)
 
 **Modified:**
 
-* [Integrating Into CI](https://docs.sentry.io/product/snapshots/integrating-into-ci.md)
+* [Third-Party Integrations](https://docs.sentry.io/integrations/third-party-integrations.md)
 
 ***
 
-### [](https://docs.sentry.io/changelog.md#docsnative-document-metrics-options)[docs(native): Document metrics options](https://github.com/getsentry/sentry-docs/pull/18975)
+### [](https://docs.sentry.io/changelog.md#docssnapshots-document-snapshot-auto-approval)[docs(snapshots): Document snapshot auto-approval](https://github.com/getsentry/sentry-docs/pull/19480)
 
 **Modified:**
 
-* [Options](https://docs.sentry.io/platforms/native/configuration/options.md)
+* [Reviewing Snapshots](https://docs.sentry.io/product/snapshots/reviewing-snapshots.md)
 
 ***
 
-### [](https://docs.sentry.io/changelog.md#docsnative-document-user-feedback-scope-data-and-before_send_feedback)[docs(native): Document user feedback scope data and before\_send\_feedback](https://github.com/getsentry/sentry-docs/pull/18982)
-
-**Modified:**
-
-* [Filtering](https://docs.sentry.io/platforms/native/configuration/filtering.md)
-* [Options](https://docs.sentry.io/platforms/native/configuration/options.md)
-* [Set Up User Feedback](https://docs.sentry.io/platforms/native/user-feedback.md)
-
-***
-
-### [](https://docs.sentry.io/changelog.md#docsnative-document-scope-attributes-and-scoped-logs-and-metrics)[docs(native): Document scope attributes and scoped logs and metrics](https://github.com/getsentry/sentry-docs/pull/18981)
-
-**Modified:**
-
-* [Attributes](https://docs.sentry.io/platforms/native/enriching-events/attributes.md)
-* [Scopes](https://docs.sentry.io/platforms/native/enriching-events/scopes.md)
-
-***
-
-### [](https://docs.sentry.io/changelog.md#docsunity-updated-il2cpp-and-known-limitations)[docs(unity): updated il2cpp and known limitations](https://github.com/getsentry/sentry-docs/pull/18976)
-
-**Modified:**
-
-* [IL2CPP Line Numbers](https://docs.sentry.io/platforms/unity/configuration/il2cpp.md)
-* [Known Limitations](https://docs.sentry.io/platforms/unity/troubleshooting/known-limitations.md)
-* [Automatic Error Capture](https://docs.sentry.io/platforms/unity/usage/automatic-error-capture.md)
-* [Usage](https://docs.sentry.io/platforms/unity/usage.md)
-
-***
-
-## [August 7, 2026](https://docs.sentry.io/changelog.md#august-7-2026)
-
-### [](https://docs.sentry.io/changelog.md#docsanalytics-use-functional-react-examples)[docs(analytics): Use functional React examples](https://github.com/getsentry/sentry-docs/pull/18966)
-
-**Modified:**
-
-* [Analytics](https://develop.sentry.dev/development-infrastructure/analytics/)
-
-***
-
-### [](https://docs.sentry.io/changelog.md#docsnative-rewrite-scopes-page-to-match-the-sdks-scope-model)[docs(native): Rewrite Scopes page to match the SDK's scope model](https://github.com/getsentry/sentry-docs/pull/18947)
-
-**Modified:**
-
-* [Scopes](https://docs.sentry.io/platforms/native/enriching-events/scopes.md)
-
-***
-
-### [](https://docs.sentry.io/changelog.md#docsreact-native-document-enablemetrickit-option)[docs(react-native): Document enableMetricKit option](https://github.com/getsentry/sentry-docs/pull/18881)
+### [](https://docs.sentry.io/changelog.md#featagent-tracing-created-agent-tracing-context-page)[feat(agent tracing): Created agent tracing context page](https://github.com/getsentry/sentry-docs/pull/19437)
 
 **Added:**
 
-* [MetricKit](https://docs.sentry.io/platforms/react-native/configuration/metric-kit.md)
+* [Agent Tracing - What It Is and How To Use It](https://docs.sentry.io/concepts/key-terms/agent-tracing.md)
 
 **Modified:**
 
-* [App Hangs](https://docs.sentry.io/platforms/react-native/configuration/app-hangs.md)
-* [Options](https://docs.sentry.io/platforms/react-native/configuration/options.md)
+* [Agents](https://docs.sentry.io/product/agents.md)
 
 ***
 
-### [](https://docs.sentry.io/changelog.md#docsandroid-document-search-for-anr-issues-with-profiles)[docs(android): Document search for ANR issues with profiles](https://github.com/getsentry/sentry-docs/pull/18970)
+### [](https://docs.sentry.io/changelog.md#docsagent-tracing-normalize-genai-attribute-docs)[docs(agent-tracing): Normalize GenAI attribute docs](https://github.com/getsentry/sentry-docs/pull/19459)
 
 **Modified:**
 
-* [Application Not Responding (ANR)](https://docs.sentry.io/platforms/android/configuration/app-not-respond.md)
+* [Manual Instrumentation](https://docs.sentry.io/platforms/javascript/guides/node/agent-tracing/manual-instrumentation.md)
+* [Mastra](https://docs.sentry.io/platforms/javascript/guides/node/agent-tracing/mastra.md)
+* [Manual Instrumentation](https://docs.sentry.io/platforms/python/agent-tracing/manual-instrumentation.md)
+* [Conversations](https://docs.sentry.io/product/agents/conversations.md)
 
 ***
 
-### [](https://docs.sentry.io/changelog.md#docsissues-update-issue-categories-to-match-sidebar-taxonomy)[docs(issues): Update issue categories to match sidebar taxonomy](https://github.com/getsentry/sentry-docs/pull/18965)
+### [](https://docs.sentry.io/changelog.md#docsreact-native-document-session-replay-runtime-controls)[docs(react-native): Document Session Replay runtime controls](https://github.com/getsentry/sentry-docs/pull/19393)
 
 **Modified:**
 
-* [Issues](https://docs.sentry.io/product/issues.md)
+* [Set Up Session Replay](https://docs.sentry.io/platforms/react-native/session-replay.md)
 
 ***
 
-## [August 6, 2026](https://docs.sentry.io/changelog.md#august-6-2026)
-
-### [](https://docs.sentry.io/changelog.md#docsfrontend-document-pending-request-tests)[docs(frontend): Document pending request tests](https://github.com/getsentry/sentry-docs/pull/18952)
+### [](https://docs.sentry.io/changelog.md#fix-agent-tracing-manual-link-spacing)[fix agent tracing manual link spacing](https://github.com/getsentry/sentry-docs/pull/19457)
 
 **Modified:**
 
-* [Network Requests](https://develop.sentry.dev/frontend/network-requests/)
+* [Set Up Agent Tracing](https://docs.sentry.io/platforms/javascript/agent-tracing.md)
 
 ***
 
-### [](https://docs.sentry.io/changelog.md#docsunreal-automatic-frame-time-metrics-sampling-change)[docs(unreal): Automatic frame time metrics sampling change](https://github.com/getsentry/sentry-docs/pull/18961)
+### [](https://docs.sentry.io/changelog.md#ref-remove-enable_logs-and-enable_metrics)[ref: remove `enable_logs` and `enable_metrics`](https://github.com/getsentry/sentry-docs/pull/19148)
 
 **Modified:**
 
-* [Set Up Metrics](https://docs.sentry.io/platforms/unreal/metrics.md)
+* [What to Log in Sentry](https://docs.sentry.io/get-started/guides/logs.md)
+* [Options](https://docs.sentry.io/platforms/php/configuration/options.md)
+* [Monolog](https://docs.sentry.io/platforms/php/integrations/monolog.md)
+* [Set Up Logs](https://docs.sentry.io/platforms/php/logs.md)
+* [Set Up Metrics](https://docs.sentry.io/platforms/php/metrics.md)
+* [Laravel Options](https://docs.sentry.io/platforms/php/guides/laravel/configuration/laravel-options.md)
+* [Set Up Logs](https://docs.sentry.io/platforms/php/guides/laravel/logs.md)
+* [Symfony Options](https://docs.sentry.io/platforms/php/guides/symfony/configuration/symfony-options.md)
+* [Monolog](https://docs.sentry.io/platforms/php/guides/symfony/integrations/monolog.md)
+* [Set Up Logs](https://docs.sentry.io/platforms/php/guides/symfony/logs.md)
+* [PHP](https://docs.sentry.io/platforms/php.md)
 
 ***
 
-### [](https://docs.sentry.io/changelog.md#docscloudflare-clarify-vite-entry-instrumentation)[docs(cloudflare): clarify Vite entry instrumentation](https://github.com/getsentry/sentry-docs/pull/18944)
+### [](https://docs.sentry.io/changelog.md#docseve-remove-unsupported-guide-pages)[docs(eve): remove unsupported guide pages](https://github.com/getsentry/sentry-docs/pull/19450)
 
 **Modified:**
 
-* [Vite Plugin](https://docs.sentry.io/platforms/javascript/guides/cloudflare/features/vite-plugin.md)
+* [Set Up Feature Flags](https://docs.sentry.io/platforms/javascript/feature-flags.md)
+* [CommonJS (CJS)](https://docs.sentry.io/platforms/javascript/guides/node/install/commonjs.md)
+* [ESM without CLI Flag](https://docs.sentry.io/platforms/javascript/guides/node/install/esm-without-import.md)
+* [ESM (MJS)](https://docs.sentry.io/platforms/javascript/guides/node/install/esm.md)
+* [Installation Methods](https://docs.sentry.io/platforms/javascript/install.md)
+* [Late Initialization (ESM or CJS)](https://docs.sentry.io/platforms/javascript/guides/node/install/late-initialization.md)
+* [Lightweight Mode](https://docs.sentry.io/platforms/javascript/guides/node/install/lightweight.md)
+* [Set Up MCP Monitoring](https://docs.sentry.io/platforms/javascript/guides/node/mcp-monitoring.md)
+* [Configuration](https://docs.sentry.io/platforms/javascript/user-feedback/configuration.md)
+* [Set Up User Feedback](https://docs.sentry.io/platforms/javascript/user-feedback.md)
 
 ***
 
-### [](https://docs.sentry.io/changelog.md#docspython-update-integrations-for-stream-mode)[docs(python): update integrations for stream mode](https://github.com/getsentry/sentry-docs/pull/18526)
+### [](https://docs.sentry.io/changelog.md#docsjs-update-data-collection-options)[docs(js): Update data collection options](https://github.com/getsentry/sentry-docs/pull/19454)
 
 **Modified:**
 
-* [AIOHTTP Client](https://docs.sentry.io/platforms/python/integrations/aiohttp/aiohttp-client.md)
-* [AIOHTTP](https://docs.sentry.io/platforms/python/integrations/aiohttp.md)
-* [aiomysql](https://docs.sentry.io/platforms/python/integrations/aiomysql.md)
-* [Anthropic](https://docs.sentry.io/platforms/python/integrations/anthropic.md)
-* [arq](https://docs.sentry.io/platforms/python/integrations/arq.md)
-* [ASGI](https://docs.sentry.io/platforms/python/integrations/asgi.md)
-* [asyncpg](https://docs.sentry.io/platforms/python/integrations/asyncpg.md)
-* [AWS Lambda Manual Instrumentation](https://docs.sentry.io/platforms/python/integrations/aws-lambda/manual-instrumentation.md)
-* [AWS Lambda Layer](https://docs.sentry.io/platforms/python/integrations/aws-lambda/manual-layer.md)
-* [Bottle](https://docs.sentry.io/platforms/python/integrations/bottle.md)
-* [Celery](https://docs.sentry.io/platforms/python/integrations/celery.md)
-* [clickhouse-driver](https://docs.sentry.io/platforms/python/integrations/clickhouse-driver.md)
-* [Django](https://docs.sentry.io/platforms/python/integrations/django.md)
-* [Falcon](https://docs.sentry.io/platforms/python/integrations/falcon.md)
-* [FastAPI](https://docs.sentry.io/platforms/python/integrations/fastapi.md)
-* [Flask](https://docs.sentry.io/platforms/python/integrations/flask.md)
-* [Google Cloud Functions](https://docs.sentry.io/platforms/python/integrations/gcp-functions.md)
-* [Google Gen AI](https://docs.sentry.io/platforms/python/integrations/google-genai.md)
-* [gRPC](https://docs.sentry.io/platforms/python/integrations/grpc.md)
-* [HTTPX](https://docs.sentry.io/platforms/python/integrations/httpx.md)
-* [HTTPX2](https://docs.sentry.io/platforms/python/integrations/httpx2.md)
-* [huey](https://docs.sentry.io/platforms/python/integrations/huey.md)
-* [Hugging Face Hub](https://docs.sentry.io/platforms/python/integrations/huggingface_hub.md)
-* [LangChain](https://docs.sentry.io/platforms/python/integrations/langchain.md)
-* [LangGraph](https://docs.sentry.io/platforms/python/integrations/langgraph.md)
-* [Litestar](https://docs.sentry.io/platforms/python/integrations/litestar.md)
-* [OpenAI](https://docs.sentry.io/platforms/python/integrations/openai.md)
-* [PyMongo](https://docs.sentry.io/platforms/python/integrations/pymongo.md)
-* [Pyramid](https://docs.sentry.io/platforms/python/integrations/pyramid.md)
-* [pyreqwest](https://docs.sentry.io/platforms/python/integrations/pyreqwest.md)
-* [Quart](https://docs.sentry.io/platforms/python/integrations/quart.md)
-* [Ray](https://docs.sentry.io/platforms/python/integrations/ray.md)
-* [Redis](https://docs.sentry.io/platforms/python/integrations/redis.md)
-* [RQ (Redis Queue)](https://docs.sentry.io/platforms/python/integrations/rq.md)
-* [Sanic](https://docs.sentry.io/platforms/python/integrations/sanic.md)
-* [Socket](https://docs.sentry.io/platforms/python/integrations/socket.md)
-* [SQLAlchemy](https://docs.sentry.io/platforms/python/integrations/sqlalchemy.md)
-* [Starlette](https://docs.sentry.io/platforms/python/integrations/starlette.md)
-* [Starlite](https://docs.sentry.io/platforms/python/integrations/starlite.md)
-* [Strawberry](https://docs.sentry.io/platforms/python/integrations/strawberry.md)
-* [Tornado](https://docs.sentry.io/platforms/python/integrations/tornado.md)
-* [WSGI](https://docs.sentry.io/platforms/python/integrations/wsgi.md)
+* [Options](https://docs.sentry.io/platforms/javascript/configuration/options.md)
+* [Data Collected](https://docs.sentry.io/platforms/javascript/data-management/data-collected.md)
 
 ***
 
-### [](https://docs.sentry.io/changelog.md#docsjs-clarify-openai-instrumentation-for-cloudflare-and-tools)[docs(js): clarify OpenAI instrumentation for Cloudflare and tools](https://github.com/getsentry/sentry-docs/pull/18932)
+### [](https://docs.sentry.io/changelog.md#featdocs-support-default-onboarding-options)[feat(docs): support default onboarding options](https://github.com/getsentry/sentry-docs/pull/19451)
 
 **Modified:**
 
-* [OpenAI](https://docs.sentry.io/platforms/javascript/guides/node/configuration/integrations/openai.md)
+* [MDX Components](https://docs.sentry.io/contributing/pages/components.md)
+* [Eve](https://docs.sentry.io/platforms/javascript/guides/eve.md)
+
+***
+
+### [](https://docs.sentry.io/changelog.md#docsunreal-user-feedback-attachments-and-local-scope)[docs(unreal): User feedback attachments and local scope](https://github.com/getsentry/sentry-docs/pull/19442)
+
+**Modified:**
+
+* [Scopes and Hubs](https://docs.sentry.io/platforms/unreal/enriching-events/scopes.md)
+
+***
+
+## [September 15, 2026](https://docs.sentry.io/changelog.md#september-15-2026)
+
+### [](https://docs.sentry.io/changelog.md#refsentryio-mirror-ip-changes-in-ip-rangesmdx)[ref(sentry.io): Mirror IP changes in ip-ranges.mdx](https://github.com/getsentry/sentry-docs/pull/19375)
+
+**Modified:**
+
+* [IP Ranges](https://docs.sentry.io/security-legal-pii/security/ip-ranges.md)
+
+***
+
+### [](https://docs.sentry.io/changelog.md#docsdevelop-docs-add-redis-ttl-guidance-page)[docs(develop-docs): add redis TTL guidance page](https://github.com/getsentry/sentry-docs/pull/19160)
+
+**Added:**
+
+* [Redis](https://develop.sentry.dev/backend/application-domains/redis/)
+
+***
+
+### [](https://docs.sentry.io/changelog.md#docsgodot-explain-scope-forking-for-active-spans)[docs(godot): Explain scope forking for active spans](https://github.com/getsentry/sentry-docs/pull/19382)
+
+**Modified:**
+
+* [Scopes](https://docs.sentry.io/platforms/godot/enriching-events/scopes.md)
+* [Instrumentation](https://docs.sentry.io/platforms/godot/tracing/instrumentation.md)
+
+***
+
+### [](https://docs.sentry.io/changelog.md#docsgodot-document-distributed-trace-propagation)[docs(godot): Document distributed trace propagation](https://github.com/getsentry/sentry-docs/pull/19325)
+
+**Added:**
+
+* [Custom Trace Propagation](https://docs.sentry.io/platforms/godot/tracing/distributed-tracing/custom-trace-propagation.md)
+* [Dealing with CORS Issues](https://docs.sentry.io/platforms/godot/tracing/distributed-tracing/dealing-with-cors-issues.md)
+* [Set Up Distributed Tracing](https://docs.sentry.io/platforms/godot/tracing/distributed-tracing.md)
+* [Limiting Trace Propagation](https://docs.sentry.io/platforms/godot/tracing/distributed-tracing/limiting-trace-propagation.md)
+
+**Modified:**
+
+* [Options](https://docs.sentry.io/platforms/godot/configuration/options.md)
+* [Set Up Tracing](https://docs.sentry.io/platforms/godot/tracing.md)
+* [Instrumentation](https://docs.sentry.io/platforms/godot/tracing/instrumentation.md)
+
+***
+
+### [](https://docs.sentry.io/changelog.md#docsgodot-document-tracing)[docs(godot): Document tracing](https://github.com/getsentry/sentry-docs/pull/19210)
+
+**Added:**
+
+* [Set Up Tracing](https://docs.sentry.io/platforms/godot/tracing.md)
+* [Instrumentation](https://docs.sentry.io/platforms/godot/tracing/instrumentation.md)
+
+**Modified:**
+
+* [Options](https://docs.sentry.io/platforms/godot/configuration/options.md)
 
 ***
 

@@ -54,7 +54,7 @@ To create a Stripe object using your account, replace the sample API key with yo
 
 
 When you’re ready to accept live payments, replace the test key with your live key in production.
-Learn more about how API keys work in [test mode and live mode](https://docs.stripe.com/dashboard.md#viewing-test-data).
+Learn more about how API keys work in [sandboxes and live mode](https://docs.stripe.com/keys.md#test-live-modes).
 
 When you use the same publishable API key and options, create and share a single instance of the Stripe object. Creating multiple instances might lead to performance issues.
 
@@ -4077,7 +4077,7 @@ customer during checkout.
         The minimum quantity the customer can purchase for the Checkout Session.
 
 - `livemode`
-  Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
+  Has the value `true` if the object exists in live mode or the value `false` if the object exists in a sandbox.
 
 - `minorUnitsAmountDivisor`
   The factor used to convert between minor and major currency units.
@@ -5609,7 +5609,7 @@ customer during checkout.
         The minimum quantity the customer can purchase for the Checkout Session.
 
 - `livemode`
-  Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
+  Has the value `true` if the object exists in live mode or the value `false` if the object exists in a sandbox.
 
 - `minorUnitsAmountDivisor`
   The factor used to convert between minor and major currency units.
@@ -6125,7 +6125,7 @@ customer during checkout.
         The minimum quantity the customer can purchase for the Checkout Session.
 
 - `livemode`
-  Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
+  Has the value `true` if the object exists in live mode or the value `false` if the object exists in a sandbox.
 
 - `minorUnitsAmountDivisor`
   The factor used to convert between minor and major currency units.
@@ -7689,7 +7689,7 @@ customer during checkout.
         The minimum quantity the customer can purchase for the Checkout Session.
 
 - `livemode`
-  Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
+  Has the value `true` if the object exists in live mode or the value `false` if the object exists in a sandbox.
 
 - `minorUnitsAmountDivisor`
   The factor used to convert between minor and major currency units.
@@ -8205,7 +8205,7 @@ customer during checkout.
         The minimum quantity the customer can purchase for the Checkout Session.
 
 - `livemode`
-  Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
+  Has the value `true` if the object exists in live mode or the value `false` if the object exists in a sandbox.
 
 - `minorUnitsAmountDivisor`
   The factor used to convert between minor and major currency units.

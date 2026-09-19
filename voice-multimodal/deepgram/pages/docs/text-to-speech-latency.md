@@ -98,6 +98,9 @@ with requests.post("https://api.deepgram.com/v1/speak?model=aura-2-thalia-en", s
 ```java Java
 import com.deepgram.DeepgramClient;
 import com.deepgram.resources.speak.v1.audio.requests.SpeakV1Request;
+import com.deepgram.resources.speak.v1.audio.types.AudioGenerateRequestContainer;
+import com.deepgram.resources.speak.v1.audio.types.AudioGenerateRequestEncoding;
+import com.deepgram.resources.speak.v1.audio.types.AudioGenerateRequestModel;
 
 import java.io.InputStream;
 import javax.sound.sampled.*;
@@ -108,17 +111,26 @@ DeepgramClient client = DeepgramClient.builder().build();
 InputStream audioStream = client.speak().v1().audio().generate(
     SpeakV1Request.builder()
         .text("Hello world!")
-        .model("aura-2-thalia-en")
+        .model(AudioGenerateRequestModel.AURA2THALIA_EN)
+        .encoding(AudioGenerateRequestEncoding.LINEAR16)
+        .container(AudioGenerateRequestContainer.NONE)
+        .sampleRate(48000.0)
         .build()
 );
 
 // Read and play chunks as they arrive
+AudioFormat format = new AudioFormat(48000, 16, 1, true, false);
+DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+SourceDataLine outputStream = (SourceDataLine) AudioSystem.getLine(info);
+outputStream.open(format);
+outputStream.start();
 byte[] buffer = new byte[1024];
 int bytesRead;
 while ((bytesRead = audioStream.read(buffer)) != -1) {
-    // Write each chunk to your audio output as it arrives
     outputStream.write(buffer, 0, bytesRead);
 }
+outputStream.drain();
+outputStream.close();
 ```
 
 You can begin streaming after receiving the first byte of audio because Deepgram's speed-up factor is high, far greater than the speed-up factor of 1x required to stream the output in real time.
@@ -134,13 +146,27 @@ If you wait for the entire audio file to be returned to you before playing it, y
 **`Python`**
 
 ```python Python
-response = requests.post(“https://api.deepgram.com/v1/speak?model=aura-2-thalia-en”, headers=headers, json={“text”: “Hello world!”})
+# Install dependencies: pip install requests simpleaudio
+import os
+import requests
+import simpleaudio as sa
 
-if response.status_code == 200:
-    data = response.content
-    with open(“out.wav”, “wb”) as f:
-        f.write(data)
-    play_obj = simpleaudio.play_buffer(wav_file.read())
+headers = {
+    "Authorization": f"Token {os.environ['DEEPGRAM_API_KEY']}",
+    "Content-Type": "application/json",
+}
+response = requests.post(
+    "https://api.deepgram.com/v1/speak?model=aura-2-thalia-en&encoding=linear16&container=wav",
+    headers=headers,
+    json={"text": "Hello world!"},
+)
+response.raise_for_status()
+
+with open("out.wav", "wb") as audio_file:
+    audio_file.write(response.content)
+
+play_obj = sa.WaveObject.from_wave_file("out.wav").play()
+play_obj.wait_done()
 ```
 
 **`Java`**
@@ -148,6 +174,7 @@ if response.status_code == 200:
 ```java Java
 import com.deepgram.DeepgramClient;
 import com.deepgram.resources.speak.v1.audio.requests.SpeakV1Request;
+import com.deepgram.resources.speak.v1.audio.types.AudioGenerateRequestModel;
 
 import java.io.InputStream;
 import java.io.FileOutputStream;
@@ -157,13 +184,13 @@ DeepgramClient client = DeepgramClient.builder().build();
 
 InputStream audioStream = client.speak().v1().audio().generate(
     SpeakV1Request.builder()
-        .text(“Hello world!”)
-        .model(“aura-2-thalia-en”)
+        .text("Hello world!")
+        .model(AudioGenerateRequestModel.AURA2THALIA_EN)
         .build()
 );
 
 // Save the complete audio file
-try (FileOutputStream fos = new FileOutputStream(“out.mp3”)) {
+try (FileOutputStream fos = new FileOutputStream("out.mp3")) {
     audioStream.transferTo(fos);
 }
 ```

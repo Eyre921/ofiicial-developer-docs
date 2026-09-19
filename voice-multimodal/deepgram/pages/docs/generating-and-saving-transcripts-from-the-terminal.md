@@ -54,7 +54,7 @@ Let’s look more closely at this request:
 
 When you run this command and it is finished processing (often after only a few seconds), you’ll receive a JSON response that looks similar to the following:
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/317326d600ee839975a185fad761e37495c8d6269e411de69cffffeb96f731bd/images/080c686-full-output.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T113114Z&X-Amz-Expires=604800&X-Amz-Signature=10a3542f4dccf9b8a22348cc05f7d97fd1d3a13f439bc20b713c19661187fe5f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/317326d600ee839975a185fad761e37495c8d6269e411de69cffffeb96f731bd/images/080c686-full-output.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260919%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260919T113155Z&X-Amz-Expires=604800&X-Amz-Signature=2f012d2f352f63ef66147591203d514268e4d43245938373f9d746ed98c56bb9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 This may look daunting, so let's look at a way to make both our curl request and our response easier to read.
 
@@ -104,7 +104,7 @@ Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additi
 
 When you run this command and it is finished processing (often after only a few seconds), you’ll receive a JSON response that looks similar to the following:
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/4e327ad3b8562595dbc6590b7b8d56e215974c91d53bfce7cdfd692e94c08b2b/images/7e3313c-jq.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T113114Z&X-Amz-Expires=604800&X-Amz-Signature=69a81435927b85f82fbfbe770f3ca06eb3ee421f3419ba735e241095d079306b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/4e327ad3b8562595dbc6590b7b8d56e215974c91d53bfce7cdfd692e94c08b2b/images/7e3313c-jq.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260919%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260919T113155Z&X-Amz-Expires=604800&X-Amz-Signature=e8427f0c2f6bd1d6fc43b9b70bf7061393d59c18ae183bc56fe6f80408003f11&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Saving Output to a File
 

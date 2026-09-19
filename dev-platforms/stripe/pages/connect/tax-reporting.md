@@ -33,7 +33,7 @@ Use the [1099-NEC](https://support.stripe.com/questions/intro-to-1099-nec-tax-fo
 The account must meet all of the following criteria in the previous calendar year:
 
 - Based in the US or a US taxpayer
-- $600 or more in payments
+- $2,000 or more in payments
 
 ## 1099-MISC
 
@@ -42,7 +42,7 @@ Use the [1099-MISC](https://support.stripe.com/questions/intro-to-1099-misc-tax-
 The account must meet all of the following criteria in the previous calendar year:
 
 - Based in the US or a US taxpayer
-- $600 or more in payments or $10 in royalties
+- $2,000 or more in payments or $10 in royalties
 
 ## 1099-K
 

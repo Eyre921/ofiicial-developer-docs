@@ -58,7 +58,7 @@ path: api/customers/object
 
   The maximum length is 150 characters.
 
-- [`cash_balance`](https://docs.stripe.com/api/customers/object.md?query=cash_balance) (object, nullable, expandable (can be expanded into an object with the `expand` request parameter))
+- [`cash_balance`](https://docs.stripe.com/api/customers/object.md?query=cash_balance) (object, nullable, includable (not returned by default; request it with the `expand` request parameter))
   The current funds being held by Stripe on behalf of the customer. You can apply these funds towards payment intents when the source is “cash_balance”. The `settings[reconciliation_mode]` field describes if these funds apply to these payment intents manually or automatically.
 
 - `created` (timestamp)
@@ -96,7 +96,7 @@ path: api/customers/object
 
   The maximum length is 150 characters.
 
-- `invoice_credit_balance` (map, expandable (can be expanded into an object with the `expand` request parameter))
+- `invoice_credit_balance` (map, includable (not returned by default; request it with the `expand` request parameter))
   The current multi-currency balances, if any, that’s stored on the customer. If positive in a currency, the customer has a credit to apply to their next invoice denominated in that currency. If negative, the customer has an amount owed that’s added to their next invoice denominated in that currency. These balances don’t apply to unpaid invoices. They solely track amounts that Stripe hasn’t successfully applied to any invoice. Stripe only applies a balance in a specific currency to an invoice after that invoice (which is in the same currency) finalizes.
 
 - `invoice_prefix` (string, nullable)
@@ -126,13 +126,13 @@ path: api/customers/object
 - [`shipping`](https://docs.stripe.com/api/customers/object.md?query=shipping) (object, nullable)
   Mailing and shipping address for the customer. Appears on invoices emailed to this customer.
 
-- [`sources`](https://docs.stripe.com/api/customers/object.md?query=sources) (object, nullable, expandable (can be expanded into an object with the `expand` request parameter))
+- [`sources`](https://docs.stripe.com/api/customers/object.md?query=sources) (object, nullable, includable (not returned by default; request it with the `expand` request parameter))
   The customer’s payment sources, if any.
 
-- [`subscriptions`](https://docs.stripe.com/api/customers/object.md?query=subscriptions) (object, nullable, expandable (can be expanded into an object with the `expand` request parameter))
+- [`subscriptions`](https://docs.stripe.com/api/customers/object.md?query=subscriptions) (object, nullable, includable (not returned by default; request it with the `expand` request parameter))
   The customer’s current subscriptions, if any.
 
-- [`tax`](https://docs.stripe.com/api/customers/object.md?query=tax) (object, expandable (can be expanded into an object with the `expand` request parameter))
+- [`tax`](https://docs.stripe.com/api/customers/object.md?query=tax) (object, includable (not returned by default; request it with the `expand` request parameter))
   Tax details for the customer.
 
 - `tax_exempt` (enum, nullable)
@@ -142,7 +142,7 @@ Possible enum values:
   - `none`
   - `reverse`
 
-- [`tax_ids`](https://docs.stripe.com/api/customers/object.md?query=tax_ids) (object, nullable, expandable (can be expanded into an object with the `expand` request parameter))
+- [`tax_ids`](https://docs.stripe.com/api/customers/object.md?query=tax_ids) (object, nullable, includable (not returned by default; request it with the `expand` request parameter))
   The customer’s tax IDs.
 
 - `test_clock` (string, nullable, expandable (can be expanded into an object with the `expand` request parameter))

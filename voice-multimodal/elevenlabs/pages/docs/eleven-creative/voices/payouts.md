@@ -8,26 +8,28 @@ path: docs/eleven-creative/voices/payouts
 
 # Payouts
 
-![Payouts](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2827fdd8be3ad39ff50a5fe9b0a5d4d7a2dcf4aa7f1fc6a8406d451c1dd3d30d/assets/images/product-guides/voices/payouts-product-feature.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100015Z&X-Amz-Expires=604800&X-Amz-Signature=2caf97f120b47760a3805752522244f3fa117c200c84f31bb034828b63c9669c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Payouts](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2827fdd8be3ad39ff50a5fe9b0a5d4d7a2dcf4aa7f1fc6a8406d451c1dd3d30d/assets/images/product-guides/voices/payouts-product-feature.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260919%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260919T113227Z&X-Amz-Expires=604800&X-Amz-Signature=ff8e043d48196dfcd38b1b5a5ab63abc5975730bd3761f95d31216605095688d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Overview
 
-The [Payouts](https://elevenlabs.io/payouts) system allows you to earn rewards for sharing voices in the [Voice library](/docs/eleven-creative/voices/voice-library). ElevenLabs uses [Stripe Connect](https://stripe.com/connect) to process reward payouts.
+The [Payouts](https://elevenlabs.io/payouts) system allows you to earn rewards for sharing voices in the [Voice library](/docs/eleven-creative/voices/voice-library). A paid ElevenLabs subscription is not required to receive these rewards.
+
+ElevenLabs uses [Stripe Connect](https://stripe.com/connect) to process reward payouts.
 
 ## Account setup
 
 To set up your Payouts account:
 
-* Click on your profile icon in the top right corner and select ["Payouts"](https://elevenlabs.io/app/payouts).
+* Click on your profile icon in the top right corner and select [Payouts](https://elevenlabs.io/app/payouts).
 
-![Payouts overview](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a8a2f7f41a9d548644fbd90d54d416e1d1811c358c8a46f8b64f78b818af63d9/assets/images/product-guides/voices/payouts-overview.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100015Z&X-Amz-Expires=604800&X-Amz-Signature=1a31779ff9dffa3a3806c1bd562be2b65174e45551989f1c54bea8d8325c9415&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Payouts overview](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a8a2f7f41a9d548644fbd90d54d416e1d1811c358c8a46f8b64f78b818af63d9/assets/images/product-guides/voices/payouts-overview.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260919%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260919T113227Z&X-Amz-Expires=604800&X-Amz-Signature=910434a8cd0f5fecea790c78f8e1d7c732e031c8474b3e3e8a600ba8eca056aa&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 * Follow the prompts from Stripe Connect to complete the account setup.
 
 ## Tracking usage and earnings
 
-* You can track the usage of your voices by going to ["My Voices"](https://elevenlabs.io/app/voice-lab), clicking "View" to open the detailed view for your voice, then clicking the sharing icon at the bottom. Once you have the Sharing Options open, click "View Metrics".
-* The rewards you earn are based on the options you selected when [sharing your voice in the Voice Library](/docs/eleven-creative/voices/voice-library#sharing-a-professional-voice-clone).
+* You can track the usage of your voices by going to [My Voices](https://elevenlabs.io/app/voice-lab), clicking **View** to open the detailed view for your voice, then clicking the sharing icon at the bottom. Once you have the Sharing Options open, click **View Metrics**.
+* The rewards you earn are based on the options you selected when [sharing your voice in the Voice Library](/docs/eleven-creative/voices/voice-library#sharing-with-the-voice-library).
 * You can also see your all-time earnings and past payouts by going back to your Payouts page.
 
 ## Reader app rewards
@@ -36,7 +38,9 @@ To set up your Payouts account:
 
 ## Things to know
 
-* Rewards accumulate frequently throughout the day, but payouts typically happen once a week as long as you have an active paid subscription and your accrued payouts exceed the minimum threshold. In most cases this is \$10, but some countries may have a higher threshold.
+* Rewards accumulate frequently throughout the day, but payouts typically happen once a week as long as your accrued payouts exceed the minimum threshold. In most cases this is \$10, but some countries may have a higher threshold.
+
+* A paid ElevenLabs subscription is not required to receive payouts.
 
 * You can see your past payouts by going to your [Payouts](https://elevenlabs.io/app/payouts) page in the sidebar.
 
@@ -182,7 +186,8 @@ To set up your Payouts account:
       * You can choose how long your voice remains available after you decide to withdraw it by setting a **notice period**. This ranges from immediate removal up to a two-year period. This flexibility lets you balance earning potential with personal preference while giving other users clarity on when they’ll need to transition away from your voice.
       * You can enable **live moderation** for your voice to prevent it from being used in restricted or sensitive content categories.
       * Your default payout rate is determined by the notice period you select for your voice.
-      * To receive payments, you’ll need to set up a **Stripe Connect** account and maintain an active paid subscription (Starter plan or above). Payouts are processed automatically every 6–8 days once your earnings exceed the minimum threshold. In most cases, the threshold is \$10, though some countries may have higher limits due to local regulations or payment provider requirements.
+      * To receive payments, you’ll need to set up a **Stripe Connect** account. A paid ElevenLabs subscription is not required. Payouts are processed automatically every 6–8 days once your earnings exceed the minimum threshold. In most cases, the threshold is \$10, though some countries may have higher limits due to local regulations or payment provider requirements.
+      * Stripe Connect accounts aren't available in all countries. See [What countries do you support for Voice Actor Payouts with Stripe Connect?](/docs/help-center/product/monetization-business/payouts/what-countries-do-you-support-for-voice-actor-payouts-with-stripe-connect).
 
       For more information, refer to our [Terms of Service](https://elevenlabs.io/terms-of-use) and [Voice Library Addendum](https://elevenlabs.io/vla).
     </td>
@@ -192,33 +197,29 @@ To set up your Payouts account:
     <td>
       #### Why are Payouts not enabled for my account?
 
-      There are a couple of possible reasons why Payouts are not enabled for your account.
+      There are a couple of possible reasons why Payouts are not enabled for your account. A paid ElevenLabs subscription is not required to receive payouts.
 
-
-
-      **You have not completed the process of setting up your Payout account**
+      ### You have not completed the process of setting up your Payout account
 
       Payouts won't be enabled for your account until you have completed the process of setting up your Payout account, including agreeing to the Terms.
 
       To complete the process, please visit your Payouts page, and click **Complete Account Setup**, and follow the steps.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/eb52e5ffc758de83e815dccbf38f589f443d01943aa46e083839af073a7cd568/assets/images/help-center/product/monetization-business/payouts/why-are-payouts-not-enabled-for-my-account.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100015Z&X-Amz-Expires=604800&X-Amz-Signature=b0b0d863e9a75e7dcb3b58ed7d4589522ae752bf5941aaa0ef94e716709ddbe2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/eb52e5ffc758de83e815dccbf38f589f443d01943aa46e083839af073a7cd568/assets/images/help-center/product/monetization-business/payouts/why-are-payouts-not-enabled-for-my-account.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260919%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260919T113227Z&X-Amz-Expires=604800&X-Amz-Signature=0a240e5d047ef865316f6df410cb82b38a38796fd2604515af8622f873bacf84&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       If you still see **Complete Account Setup** after completing all the steps, please contact Support by emailing [team@elevenlabs.io](mailto:team@elevenlabs.io).
 
-
-
-      **You have not completed your W-8/W-9 certification**
+      ### You have not completed your W-8/W-9 certification
 
       ElevenLabs is required by U.S. tax law to collect W-8/W-9 certification from anyone who receives payments from us and is not a U.S. tax resident. For more information on this, please see our article [What is W-8/W-9 certification?](/docs/help-center/product/monetization-business/payouts/what-is-w-8-w-9-certification)
 
       Payouts will be disabled for any user who does not have a valid tax form. To resume Payouts, please visit your Payouts page and click **Manage Account**.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5b05f4b71a2fa97f474b763834ab81479a21e159b7a24753be81adfd0b61db04/assets/images/help-center/product/monetization-business/payouts/why-are-payouts-not-enabled-for-my-account-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100015Z&X-Amz-Expires=604800&X-Amz-Signature=a4fd17c1e0889ddac712a60d8e279e36acbc404eccdbb7da84da0c97a827d828&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5b05f4b71a2fa97f474b763834ab81479a21e159b7a24753be81adfd0b61db04/assets/images/help-center/product/monetization-business/payouts/why-are-payouts-not-enabled-for-my-account-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260919%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260919T113227Z&X-Amz-Expires=604800&X-Amz-Signature=11b4bd2666e511828fd2efb52d8a4b00c9f2173622fcef30223d6a1340f160f6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       You will then see **Missing W-8/W-9 certification**. To complete your certification, click **Update** and answer the questions in the form.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c86670b2a62775500db5c36908f55acad2dbf83e38440dc52c89d4a1d5348508/assets/images/help-center/product/monetization-business/payouts/why-are-payouts-not-enabled-for-my-account-3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100015Z&X-Amz-Expires=604800&X-Amz-Signature=aa70c2c50b3a26fa5ad604f571f2d0bf21568796db2685107151b420a0bd8057&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c86670b2a62775500db5c36908f55acad2dbf83e38440dc52c89d4a1d5348508/assets/images/help-center/product/monetization-business/payouts/why-are-payouts-not-enabled-for-my-account-3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260919%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260919T113227Z&X-Amz-Expires=604800&X-Amz-Signature=604cc75c41154235097159a6344ed0d1b858eb6fd2e1a7afe9d55d63f242ed2a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
     </td>
   </tr>
 
@@ -305,7 +306,7 @@ To set up your Payouts account:
       You will see a section for W-8/W-9 certification, which will be marked **Incomplete**. Click **Update** to open the form\
 
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c86670b2a62775500db5c36908f55acad2dbf83e38440dc52c89d4a1d5348508/assets/images/help-center/product/monetization-business/payouts/how-do-i-complete-my-w-8w-9-certification.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260918%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260918T100015Z&X-Amz-Expires=604800&X-Amz-Signature=7cfad712d9615c4f2f53b9f6ebd10d309c5cb16c836c26e04ff71c9439591b3e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c86670b2a62775500db5c36908f55acad2dbf83e38440dc52c89d4a1d5348508/assets/images/help-center/product/monetization-business/payouts/how-do-i-complete-my-w-8w-9-certification.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260919%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260919T113227Z&X-Amz-Expires=604800&X-Amz-Signature=bbbad000cd3be066b81c4248bd891cd5cea345c7970d2ce130a0f7226cbe234e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       Answer the questions on screen. The first question, "Are you considered a U.S. person for Federal Tax Purpose?", will determine whether you complete Form W-9 or Form W-8.
 

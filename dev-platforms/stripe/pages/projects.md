@@ -587,12 +587,14 @@ These providers co-designed the integration protocol with Stripe. The protocol s
 | AgentPhone | Communications |
 | Algolia | Search |
 | Amplitude | Analytics, feature flags |
+| Athena | AI |
 | Auth0 | Auth |
 | Base 44 | Hosting, database, AI |
 | Blaxel | Hosting, sandbox, AI |
 | Browserbase | Browser, AI |
 | Chatbase | AI |
 | Chroma | Database, AI |
+| Churnkey | Payments |
 | Clerk | Authentication |
 | ClickHouse | Database, analytics |
 | Cloudflare | Hosting, database, storage, domains, cache, queues, browser |
