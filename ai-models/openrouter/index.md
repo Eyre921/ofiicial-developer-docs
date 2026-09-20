@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 448 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 452 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -196,6 +196,7 @@
 - `docs/client-sdks/go/sdks/responses/readme` — [Responses](pages/docs/client-sdks/go/sdks/responses/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/responses/README.md)
 - `docs/client-sdks/go/sdks/scim/readme` — [Scim](pages/docs/client-sdks/go/sdks/scim/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/scim/README.md)
 - `docs/client-sdks/go/sdks/stt/readme` — [STT](pages/docs/client-sdks/go/sdks/stt/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/stt/README.md)
+- `docs/client-sdks/go/sdks/systemone/readme` — [SystemOne](pages/docs/client-sdks/go/sdks/systemone/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/systemone/README.md)
 - `docs/client-sdks/go/sdks/tts/readme` — [TTS](pages/docs/client-sdks/go/sdks/tts/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/tts/README.md)
 - `docs/client-sdks/go/sdks/vault/readme` — [Vault](pages/docs/client-sdks/go/sdks/vault/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/vault/README.md)
 - `docs/client-sdks/go/sdks/videogeneration/readme` — [VideoGeneration](pages/docs/client-sdks/go/sdks/videogeneration/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/videogeneration/README.md)
@@ -230,6 +231,7 @@
 - `docs/client-sdks/python/sdks/responses/readme` — [Responses](pages/docs/client-sdks/python/sdks/responses/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/responses/README.md)
 - `docs/client-sdks/python/sdks/scim/readme` — [Scim](pages/docs/client-sdks/python/sdks/scim/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/scim/README.md)
 - `docs/client-sdks/python/sdks/stt/readme` — [STT](pages/docs/client-sdks/python/sdks/stt/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/stt/README.md)
+- `docs/client-sdks/python/sdks/systemone/readme` — [SystemOne](pages/docs/client-sdks/python/sdks/systemone/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/systemone/README.md)
 - `docs/client-sdks/python/sdks/tts/readme` — [TTS](pages/docs/client-sdks/python/sdks/tts/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/tts/README.md)
 - `docs/client-sdks/python/sdks/vault/readme` — [Vault](pages/docs/client-sdks/python/sdks/vault/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/vault/README.md)
 - `docs/client-sdks/python/sdks/videogeneration/readme` — [VideoGeneration](pages/docs/client-sdks/python/sdks/videogeneration/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/videogeneration/README.md)
@@ -263,6 +265,7 @@
 - `docs/client-sdks/typescript/sdks/responses/readme` — [Responses](pages/docs/client-sdks/typescript/sdks/responses/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/responses/README.md)
 - `docs/client-sdks/typescript/sdks/scim/readme` — [Scim](pages/docs/client-sdks/typescript/sdks/scim/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/scim/README.md)
 - `docs/client-sdks/typescript/sdks/stt/readme` — [STT](pages/docs/client-sdks/typescript/sdks/stt/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/stt/README.md)
+- `docs/client-sdks/typescript/sdks/systemone/readme` — [SystemOne](pages/docs/client-sdks/typescript/sdks/systemone/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/systemone/README.md)
 - `docs/client-sdks/typescript/sdks/tts/readme` — [TTS](pages/docs/client-sdks/typescript/sdks/tts/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/tts/README.md)
 - `docs/client-sdks/typescript/sdks/vault/readme` — [Vault](pages/docs/client-sdks/typescript/sdks/vault/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/vault/README.md)
 - `docs/client-sdks/typescript/sdks/videogeneration/readme` — [VideoGeneration](pages/docs/client-sdks/typescript/sdks/videogeneration/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/videogeneration/README.md)
@@ -340,6 +343,7 @@
 - `docs/guides/community/render` — [Render](pages/docs/guides/community/render.md) · [原文](https://openrouter.ai/docs/guides/community/render.md)
 - `docs/guides/community/replit` — [Replit](pages/docs/guides/community/replit.md) · [原文](https://openrouter.ai/docs/guides/community/replit.md)
 - `docs/guides/community/tanstack-ai` — [TanStack AI](pages/docs/guides/community/tanstack-ai.md) · [原文](https://openrouter.ai/docs/guides/community/tanstack-ai.md)
+- `docs/guides/community/typesafe-sdk` — [TypeSafe SDK](pages/docs/guides/community/typesafe-sdk.md) · [原文](https://openrouter.ai/docs/guides/community/typesafe-sdk.md)
 - `docs/guides/community/vercel-ai-sdk` — [Vercel AI SDK](pages/docs/guides/community/vercel-ai-sdk.md) · [原文](https://openrouter.ai/docs/guides/community/vercel-ai-sdk.md)
 - `docs/guides/community/xcode` — [Xcode](pages/docs/guides/community/xcode.md) · [原文](https://openrouter.ai/docs/guides/community/xcode.md)
 - `docs/guides/community/zapier` — [Zapier](pages/docs/guides/community/zapier.md) · [原文](https://openrouter.ai/docs/guides/community/zapier.md)
