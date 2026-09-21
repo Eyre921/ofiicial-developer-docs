@@ -249,6 +249,19 @@ paths:
             `session_id` and `usage` (`null` unless the intern reported usage,
             and always `null` after `tool_calls`), and the stream ends with
             `data: [DONE]`.
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternChatSteeredResponse'
+          description: >-
+            A turn is already running on this intern for the same `session_id`,
+            and the message was delivered into it instead of starting a new
+            turn. Nothing streams here: the intern takes the message up on the
+            running turn, whose stream continues on the request that started it.
+            Sent only for a `user` message with a `session_id`; a `tool` reply,
+            a request without a `session_id`, or one for another session gets
+            `409 busy`, as does a message the intern could not take.
         '400':
           content:
             application/json:
@@ -317,9 +330,12 @@ paths:
                 $ref: '#/components/schemas/InternChatErrorResponse'
           description: >-
             The intern is not running (`intern_not_ready`), another turn is
-            running in this session (`busy`), the question is no longer waiting
-            (`interaction_not_pending`), or another request is already attached
-            to the run (`attachment_failed`).
+            already running on this intern for a different session, for no
+            session, or for a `tool` reply (`busy`), the question is no longer
+            waiting (`interaction_not_pending`), or another request is already
+            attached to the run (`attachment_failed`). The turn lock is per
+            intern, not per session. `intern_not_ready` and `busy` report
+            `retryable: true`, and a `busy` refusal carries `Retry-After`.
         '410':
           content:
             application/json:
@@ -500,6 +516,27 @@ components:
           $ref: '#/components/schemas/InternChatCompletionChunk'
       required:
         - data
+      type: object
+    InternChatSteeredResponse:
+      description: >-
+        The message was delivered into the turn already running on the same
+        session. Its effect is streamed on that turn, not here.
+      example:
+        session_id: sess_01j9x0k4q7v8r2t3m6n5p8w9y1
+        status: steered
+      properties:
+        session_id:
+          description: The session of the running turn the message was delivered to.
+          example: sess_01j9x0k4q7v8r2t3m6n5p8w9y1
+          type: string
+        status:
+          description: The message was handed to the turn already running on this session.
+          enum:
+            - steered
+          type: string
+      required:
+        - session_id
+        - status
       type: object
     InternChatErrorResponse:
       description: >-

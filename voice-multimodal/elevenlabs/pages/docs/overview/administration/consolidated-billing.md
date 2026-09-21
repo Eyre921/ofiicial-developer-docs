@@ -78,7 +78,7 @@ consolidated billing.
 
 The billing workspace will be able to see the usage of all linked workspaces.
 
-![Usage analytics grouped by reporting workspace](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7e4b4abd815940402a5e68e37da191da43d4dd70e13efa3a1f84decdec9bc98b/assets/images/product-guides/administration/consolidated-billing-reporting.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260921%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260921T113054Z&X-Amz-Expires=604800&X-Amz-Signature=2d232ffc4bb11a110d5282079b57b69cbe4911472760a84c23fa49477d878cf3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Usage analytics grouped by reporting workspace](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7e4b4abd815940402a5e68e37da191da43d4dd70e13efa3a1f84decdec9bc98b/assets/images/product-guides/administration/consolidated-billing-reporting.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260921%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260921T233107Z&X-Amz-Expires=604800&X-Amz-Signature=b88d7c6f8e5999556e63cd690b08fd3566e9e3f2e3175287ac942700afdcef54&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 The reporting workspace will only be able to see analytics for its own usage.
 

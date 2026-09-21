@@ -44,7 +44,7 @@ Snapshots works for any platform with a frontend and most platforms have a numbe
 
   Structure your snapshot directory and upload from CI with sentry-cli.
 
-- #### [Integrating Into CI](https://docs.sentry.io/product/snapshots/integrating-into-ci.md)
+- #### [Integrating Snapshots Into CI](https://docs.sentry.io/product/snapshots/integrating-into-ci.md)
 
   Set up Snapshots in CI to receive automated visual diff status checks on every pull request.
 

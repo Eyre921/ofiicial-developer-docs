@@ -83,7 +83,7 @@ The other way is to click the **Profiles** tab in the Trace View, which will sho
 
 Read the [Getting Started guide](https://docs.sentry.io/product/profiling/getting-started.md) to start using Continuous Profiling and UI Profiling.
 
-* #### [Set Up](https://docs.sentry.io/product/profiling/getting-started.md)
+* #### [Set Up Profiling](https://docs.sentry.io/product/profiling/getting-started.md)
 
   Get started with Profiling, which allows you to see code-level profiling information for your Sentry apps.
 

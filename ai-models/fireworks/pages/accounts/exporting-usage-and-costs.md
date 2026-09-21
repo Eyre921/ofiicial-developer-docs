@@ -413,6 +413,7 @@ done
 
 * Usage is aggregated into **daily** buckets (`--timezone` / `timezone=` sets the day boundary). There are no sub-daily buckets.
 * Responses are cached for several minutes — fine for cron jobs and dashboards, not for real-time.
+* Rated costs and dashboard **Total Spend** can lag live traffic by a day or more, especially for newly launched models. A jump in spend is often delayed aggregation, not a traffic spike.
 
 ## Coverage caveats
 

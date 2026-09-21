@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 452 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 454 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -347,6 +347,7 @@
 - `docs/guides/community/vercel-ai-sdk` — [Vercel AI SDK](pages/docs/guides/community/vercel-ai-sdk.md) · [原文](https://openrouter.ai/docs/guides/community/vercel-ai-sdk.md)
 - `docs/guides/community/xcode` — [Xcode](pages/docs/guides/community/xcode.md) · [原文](https://openrouter.ai/docs/guides/community/xcode.md)
 - `docs/guides/community/zapier` — [Zapier](pages/docs/guides/community/zapier.md) · [原文](https://openrouter.ai/docs/guides/community/zapier.md)
+- `docs/guides/features/activity` — [Activity](pages/docs/guides/features/activity.md) · [原文](https://openrouter.ai/docs/guides/features/activity.md)
 - `docs/guides/features/broadcast` — [Broadcast](pages/docs/guides/features/broadcast.md) · [原文](https://openrouter.ai/docs/guides/features/broadcast.md)
 - `docs/guides/features/broadcast/arize` — [Arize AX](pages/docs/guides/features/broadcast/arize.md) · [原文](https://openrouter.ai/docs/guides/features/broadcast/arize.md)
 - `docs/guides/features/broadcast/bigquery` — [Google BigQuery](pages/docs/guides/features/broadcast/bigquery.md) · [原文](https://openrouter.ai/docs/guides/features/broadcast/bigquery.md)
@@ -378,6 +379,7 @@
 - `docs/guides/features/guardrails/sensitive-info` — [Sensitive Info Guardrail](pages/docs/guides/features/guardrails/sensitive-info.md) · [原文](https://openrouter.ai/docs/guides/features/guardrails/sensitive-info.md)
 - `docs/guides/features/in-region-routing` — [In-Region Routing](pages/docs/guides/features/in-region-routing.md) · [原文](https://openrouter.ai/docs/guides/features/in-region-routing.md)
 - `docs/guides/features/input-output-logging` — [Input & Output Logging](pages/docs/guides/features/input-output-logging.md) · [原文](https://openrouter.ai/docs/guides/features/input-output-logging.md)
+- `docs/guides/features/logs` — [Logs](pages/docs/guides/features/logs.md) · [原文](https://openrouter.ai/docs/guides/features/logs.md)
 - `docs/guides/features/message-transforms` — [Message Transforms](pages/docs/guides/features/message-transforms.md) · [原文](https://openrouter.ai/docs/guides/features/message-transforms.md)
 - `docs/guides/features/notifications` — [Notifications](pages/docs/guides/features/notifications.md) · [原文](https://openrouter.ai/docs/guides/features/notifications.md)
 - `docs/guides/features/plugins` — [Plugins](pages/docs/guides/features/plugins.md) · [原文](https://openrouter.ai/docs/guides/features/plugins.md)

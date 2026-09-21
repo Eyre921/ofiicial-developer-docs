@@ -135,7 +135,7 @@ By default, Size Analysis processes all uploaded builds. You can configure filte
 
 You can use webhooks to be notified when a new build is uploaded for Size Analysis. To enable, you can follow these [docs](https://docs.sentry.io/integrations/integration-platform/webhooks/preprod-artifacts.md).
 
-* #### [Integrating Into CI](https://docs.sentry.io/product/size-analysis/integrating-into-ci.md)
+* #### [Integrating Size Analysis Into CI](https://docs.sentry.io/product/size-analysis/integrating-into-ci.md)
 
   Set up the integration in CI to receive automated size change notifications
 

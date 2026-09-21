@@ -70,7 +70,7 @@ The "Resolved in a commit" option allows you to wait for a release with the spec
 
 ## [Learn More About Releases](https://docs.sentry.io/product/releases.md#learn-more-about-releases)
 
-* #### [Set Up](https://docs.sentry.io/product/releases/setup.md)
+* #### [Set Up Releases](https://docs.sentry.io/product/releases/setup.md)
 
   Learn about setting up your SDK to enable Releases and to monitor release health.
 

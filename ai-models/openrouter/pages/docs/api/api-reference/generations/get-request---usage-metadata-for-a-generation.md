@@ -333,11 +333,11 @@ components:
                 - completions
                 - embeddings
                 - rerank
+                - decisions
+                - video
                 - tts
                 - stt
-                - video
                 - image
-                - decisions
                 - null
               type:
                 - string

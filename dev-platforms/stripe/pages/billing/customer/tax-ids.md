@@ -169,7 +169,7 @@ Currently, Stripe supports the following Tax ID types in the following regions:
 
 You’re responsible for the accuracy of customer information including their tax ID number. The invoice includes the customer tax ID whether or not it’s valid.
 
-Stripe provides automatic validation to help determine ​​if the formatting is correct when you add the ID to our system. You can see the results of the validation in the Dashboard along with other customer information, including details returned from the government databases, and the registered name and address. However, we don’t continue to validate them over time. ​​If automatic validation isn’t available, you must manually verify these IDs.
+Stripe provides automatic validation to help determine ​​if the formatting is correct when you add the ID to our system. You can see the results of the validation in the Dashboard along with other customer information, including details returned from the government databases, and the registered name and address. However, we don’t continue to validate them over time.
 
 ### Australian Business Numbers (ABN) 
 
@@ -199,14 +199,21 @@ Use these magic tax IDs to trigger certain verification conditions in testing en
 
 ### Validation webhooks and Dashboard display 
 
-Because this validation process happens asynchronously, the [customer.tax_id.updated](https://docs.stripe.com/api/events/types.md#event_types-customer.tax_id.updated) webhook notifies you of validation updates.
+Stripe sends an event when verification finishes for a tax ID saved to either of these objects:
+
+- For a [Customer](https://docs.stripe.com/api/customers/object.md), listen for the [customer.tax_id.updated](https://docs.stripe.com/api/events/types.md#event_types-customer.tax_id.updated) snapshot event. Inspect [data.object.verification.status](https://docs.stripe.com/api/tax_ids/object.md#tax_id_object-verification-status) in the event.
+- For a [customer-configured Account](https://docs.stripe.com/api/v2/core/accounts/object.md#v2_account_object-configuration-customer), listen for the [v1.customer.tax_id.updated](https://docs.stripe.com/api/v2/core/events/event-types.md?api-version=preview#v2_event_types-v1.customer.tax_id.updated) thin event. Retrieve the Tax ID referenced by `related_object`, then inspect its [verification.status](https://docs.stripe.com/api/tax_ids/object.md#tax_id_object-verification-status).
+
+The status is `pending`, `verified`, `unverified`, or `unavailable`.
+
+Stripe reports the verification result, and you’re responsible for determining how to handle an `unverified` tax ID, based on your own compliance requirements. When automatic validation is `unavailable`, you must manually verify the tax ID.
+
+If you use Stripe Tax, Stripe Tax applies the reverse charge or zero rate according to applicable laws when the tax ID has the required number format, regardless of the government verification result.
 ![Tax validation tooltip in the Dashboard](https://b.stripecdn.com/docs-statics-srv/assets/validation-tooltip.de17a6f286a786e5643e39f43c02a42e.png)
 
 Hover over a customer’s EU VAT number to display their VIES information.
 
 The Dashboard displays the results of the validation within the customer details, including information returned from the government databases, and the registered name and address.
-
-When automatic validation isn’t available, you must manually verify these IDs.
 
 ## Managing 
 

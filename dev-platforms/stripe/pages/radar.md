@@ -30,7 +30,7 @@ Use Radar to evaluate transactions, accounts, and customers in real time, using 
 
 ## Customer abuse prevention
 
-[Multi-account and account sharing abuse evaluation](https://docs.stripe.com/radar/multi-account-and-account-sharing-abuse.md): Detect multi-accounting and account sharing abuse at signup and login.
+[Customer account evaluations](https://docs.stripe.com/radar/customer-account-evaluations.md): Detect multi-accounting and account sharing abuse at signup and login.
 
 [Free trial abuse prevention](https://docs.stripe.com/radar/free-trial-abuse.md): Detect customers likely to abuse free trials by collecting a payment method at the start of a trial.
 

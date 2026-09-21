@@ -15,7 +15,7 @@ Learn more about [how Terminal works](https://docs.stripe.com/terminal/overview.
 ## Get started
 
 Use Stripe Terminal to unify online and in-person payments.
-[Choose your reader and integration](https://docs.stripe.com/terminal/designing-integration.md)
+[Choose your reader and integration](https://docs.stripe.com/terminal/payments/setup-reader.md)
 ## Learn about Terminal
 
 [How Terminal works](https://docs.stripe.com/terminal/overview.md): Learn about Terminal concepts and the ways you can accept in-person payments.

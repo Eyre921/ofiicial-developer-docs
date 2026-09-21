@@ -511,6 +511,12 @@ components:
           $ref: '#/components/schemas/ProviderPreferences'
         route:
           $ref: '#/components/schemas/DeprecatedRoute'
+        safeguards:
+          items:
+            $ref: '#/components/schemas/AnthropicSafeguard'
+          type:
+            - array
+            - 'null'
         service_tier:
           type: string
         session_id:
@@ -852,6 +858,12 @@ components:
               $ref: '#/components/schemas/OpenRouterMetadata'
             provider:
               $ref: '#/components/schemas/ProviderName'
+            safeguard_results:
+              items:
+                $ref: '#/components/schemas/AnthropicSafeguardResult'
+              type:
+                - array
+                - 'null'
             usage:
               allOf:
                 - $ref: '#/components/schemas/AnthropicUsage'
@@ -2068,6 +2080,23 @@ components:
       x-fern-ignore: true
       x-speakeasy-deprecation-message: Use providers.sort.partition instead.
       x-speakeasy-ignore: true
+    AnthropicSafeguard:
+      additionalProperties: {}
+      description: A server-side safeguard Anthropic evaluates alongside the completion
+      example:
+        classifier_context:
+          permission_mode: auto
+          v: 1
+        type: dangerous_tool_use
+      properties:
+        classifier_context:
+          additionalProperties: {}
+          type: object
+        type:
+          type: string
+      required:
+        - type
+      type: object
     AnthropicSpeed:
       enum:
         - fast
@@ -2703,6 +2732,34 @@ components:
         - FakeProvider
       example: OpenAI
       type: string
+    AnthropicSafeguardResult:
+      additionalProperties: {}
+      description: >-
+        The outcome of a server-side safeguard, keyed by tool-use id where
+        applicable
+      example:
+        status:
+          tool_uses:
+            toolu_01ABC:
+              outcome: not_flagged
+              type: evaluated
+          type: available
+        type: dangerous_tool_use
+      properties:
+        status:
+          additionalProperties: {}
+          properties:
+            type:
+              type: string
+          required:
+            - type
+          type: object
+        type:
+          type: string
+      required:
+        - type
+        - status
+      type: object
     AnthropicUsage:
       example:
         cache_creation: null
@@ -4487,6 +4544,12 @@ components:
           properties:
             container:
               $ref: '#/components/schemas/AnthropicContainer'
+            safeguard_results:
+              items:
+                $ref: '#/components/schemas/AnthropicSafeguardResult'
+              type:
+                - array
+                - 'null'
             stop_details:
               $ref: '#/components/schemas/AnthropicRefusalStopDetails'
             stop_reason:

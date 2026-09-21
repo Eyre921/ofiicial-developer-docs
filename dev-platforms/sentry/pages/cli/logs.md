@@ -10,7 +10,7 @@ description: "Learn how to view and stream logs using the Sentry CLI."
 url: https://docs.sentry.io/cli/logs/
 ---
 
-# Logs | Sentry Docs
+# Sentry CLI Logs | Sentry Docs
 
 ##### Looking for the new Sentry CLI?
 

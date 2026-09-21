@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 386 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 387 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -236,6 +236,7 @@
 - `fine-tuning/training-api/cookbook/agentic-rl` — [Cookbook: Agentic Reinforcement Learning](pages/fine-tuning/training-api/cookbook/agentic-rl.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/cookbook/agentic-rl)
 - `fine-tuning/training-api/cookbook/distillation` — [Cookbook: Distillation](pages/fine-tuning/training-api/cookbook/distillation.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/cookbook/distillation)
 - `fine-tuning/training-api/cookbook/dpo` — [Cookbook: Preference Optimization](pages/fine-tuning/training-api/cookbook/dpo.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/cookbook/dpo)
+- `fine-tuning/training-api/cookbook/hud-rl-training` — [Cookbook: Fireworks x HUD RL Training](pages/fine-tuning/training-api/cookbook/hud-rl-training.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/cookbook/hud-rl-training)
 - `fine-tuning/training-api/cookbook/overview` — [The Cookbook](pages/fine-tuning/training-api/cookbook/overview.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/cookbook/overview)
 - `fine-tuning/training-api/cookbook/reference` — [Cookbook: Reference](pages/fine-tuning/training-api/cookbook/reference.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/cookbook/reference)
 - `fine-tuning/training-api/cookbook/rl` — [Cookbook: Reinforcement Learning](pages/fine-tuning/training-api/cookbook/rl.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/cookbook/rl)

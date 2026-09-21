@@ -440,6 +440,12 @@ components:
           $ref: '#/components/schemas/ProviderPreferences'
         route:
           $ref: '#/components/schemas/DeprecatedRoute'
+        safeguards:
+          items:
+            $ref: '#/components/schemas/AnthropicSafeguard'
+          type:
+            - array
+            - 'null'
         service_tier:
           type: string
         session_id:
@@ -1996,6 +2002,23 @@ components:
       x-fern-ignore: true
       x-speakeasy-deprecation-message: Use providers.sort.partition instead.
       x-speakeasy-ignore: true
+    AnthropicSafeguard:
+      additionalProperties: {}
+      description: A server-side safeguard Anthropic evaluates alongside the completion
+      example:
+        classifier_context:
+          permission_mode: auto
+          v: 1
+        type: dangerous_tool_use
+      properties:
+        classifier_context:
+          additionalProperties: {}
+          type: object
+        type:
+          type: string
+      required:
+        - type
+      type: object
     AnthropicSpeed:
       enum:
         - fast

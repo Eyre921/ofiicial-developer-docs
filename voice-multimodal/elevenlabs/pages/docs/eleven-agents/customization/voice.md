@@ -49,6 +49,8 @@ Configure different voices for each supported language to ensure natural pronunc
 
 ## Best practices
 
+Voices with live moderation enabled cannot be used in ElevenAgents.
+
 #### Voice selection
 
 Choose voices that match your target language and region for the most natural pronunciation.

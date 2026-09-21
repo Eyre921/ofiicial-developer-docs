@@ -1,6 +1,6 @@
 # dev-platforms/stripe 文档索引
 
-> 共 470 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 471 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -100,6 +100,7 @@
 ## capital
 
 - `capital/api-integration` — [Build a custom Capital program](pages/capital/api-integration.md) · [原文](https://docs.stripe.com/capital/api-integration.md)
+- `capital/connect-integration` — [How Capital affects your Connect integration](pages/capital/connect-integration.md) · [原文](https://docs.stripe.com/capital/connect-integration.md)
 - `capital/getting-started` — [Set up Capital](pages/capital/getting-started.md) · [原文](https://docs.stripe.com/capital/getting-started.md)
 - `capital/how-capital-for-platforms-works` — [How Stripe Capital for platforms works](pages/capital/how-capital-for-platforms-works.md) · [原文](https://docs.stripe.com/capital/how-capital-for-platforms-works.md)
 - `capital/how-stripe-capital-works` — [How Stripe Capital works](pages/capital/how-stripe-capital-works.md) · [原文](https://docs.stripe.com/capital/how-stripe-capital-works.md)

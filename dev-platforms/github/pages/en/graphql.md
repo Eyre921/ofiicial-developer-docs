@@ -20,7 +20,7 @@ To create integrations, retrieve data, and automate your workflows, use the GitH
 
 * [Forming calls with GraphQL](/en/graphql/guides/forming-calls-with-graphql)
 
-  Learn how to authenticate to the GraphQL API, then learn how to create and run queries and mutations.
+  <p>Learn how to authenticate to the GraphQL API, then learn how to create and run queries and mutations.</p>
 
 * [Using pagination in the GraphQL API](/en/graphql/guides/using-pagination-in-the-graphql-api)
 
@@ -124,6 +124,10 @@ To create integrations, retrieve data, and automate your workflows, use the GitH
 
   Reference documentation for GraphQL schema types in the Checks category.
 
+* [Code scanning](/en/graphql/reference/code-scanning)
+
+  Reference documentation for GraphQL schema types in the Code scanning category.
+
 * [Commits](/en/graphql/reference/commits)
 
   Reference documentation for GraphQL schema types in the Commits category.
@@ -184,6 +188,10 @@ To create integrations, retrieve data, and automate your workflows, use the GitH
 
   Reference documentation for GraphQL schema types in the Organizations category.
 
+* [Other](/en/graphql/reference/other)
+
+  Reference documentation for GraphQL schema types in the Other category.
+
 * [Packages](/en/graphql/reference/packages)
 
   Reference documentation for GraphQL schema types in the Packages category.
@@ -231,10 +239,6 @@ To create integrations, retrieve data, and automate your workflows, use the GitH
 * [Users](/en/graphql/reference/users)
 
   Reference documentation for GraphQL schema types in the Users category.
-
-* [Other](/en/graphql/reference/other)
-
-  Reference documentation for GraphQL schema types in the Other category.
 
 * [Introduction to GraphQL](/en/graphql/guides/introduction-to-graphql)
 

@@ -226,7 +226,18 @@ You can add and manage rules from the [Radar Rules page](https://dashboard.strip
 4. Click **Test rule**.
 5. Correct any detected validation errors, if necessary.
 6. On the **Review new rule** page, review how this rule performs against your recent payments to confirm whether you want to enable it. If the rule might impact payments from more than one payment method, use the filter to view rule performance by payment method (for example, ACH or Cards).
-7. Click **Add rule** to apply this rule to all future transactions.
+7. Click **Adjust traffic allocation** to change the percentage of matching payments affected by the rule. Select a percentage, then click **Apply**. Start with a small percentage and increase it as you review the rule’s performance.
+8. Click **Add rule** to apply this rule to all future transactions.
+
+### Roll out a rule gradually
+
+Use traffic allocation to control the percentage of matching payments affected by a custom transaction rule. This lets you monitor the rule’s performance before enforcing its action on every matching payment. You can change the allocation at any time to increase the rollout or gradually roll back the rule.
+
+For example, if you set a block rule’s traffic allocation to 5%, Radar blocks 5% of the payments that match the rule. Monitor the rule’s performance and increase the allocation as you gain confidence in the results. Set the allocation to 100% to apply the rule to every matching payment. Rules use 100% traffic allocation by default.
+
+To evaluate a rule without affecting payments, set its traffic allocation to 0%. At this allocation (shadow), Radar evaluates the rule and reports what would have happened without applying the rule’s action.
+
+Traffic allocation is available only for custom transaction rules.
 
 ### Use Radar Assistant 
 

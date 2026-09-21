@@ -15,6 +15,7 @@ Fireworks operates on a **pre-paid credits** billing system. You purchase credit
 * If your balance reaches zero and Auto Reload is not enabled, usage pauses until you add credits.
 * You can configure Auto Reload to purchase credits when your balance is low.
 * Separately, you can set a monthly spend limit for your usage. Adding credits does not raise this limit.
+* Total Spend can lag live traffic by a day or more, especially for newly launched models. A jump in spend is often delayed aggregation, not a traffic spike.
 
 <Note>
   Enterprise accounts do not have the same self-serve limits. Their monthly spend alerts track the cost of Fireworks usage, including usage paid for with credits. Adding credits itself does not count as spend. See [Enterprise quotas](/faq/enterprise/service/quotas) for more information.

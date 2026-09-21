@@ -32,6 +32,22 @@ Responsibilities are subject to the following restrictions:
 
 For more information about supported configurations, see [Integration recommendations](https://docs.stripe.com/connect/integration-recommendations.md).
 
+### Application fee behavior
+
+Fee collection and reporting for direct charges differs based on your [pricing model](https://docs.stripe.com/connect/saas.md#monetization) and how you configure fee responsibility. If you use application fees to monetize payment processing for your connected accounts:
+
+- If you set the fee collector to `stripe` in Accounts v2 or the fee payer to `account` in Accounts v1, Stripe deducts its processing fee and your application fee from the payment, then pays you your share. Set the application fee amount to include only your fee.
+- If you set the fee collector to `application`, you collect the payment and fees, then pay Stripe its processing fee. Set the application fee amount to include both your fee and the Stripe processing fee.
+
+For example, if the Stripe processing fee is 1.00 and your fee is an additional 1.50, for a total cost to the connected account of 2.50:
+
+- If Stripe collects the fees, set the application fee to 1.50. Stripe deducts its processing fee separately.
+- If your platform collects the fees, set the application fee to 2.50 so it covers both fees.
+
+> #### Changing your pricing model
+> 
+> If you change your pricing model or fee collector configuration, you might charge your connected accounts too much or too little. Make sure your connected account configuration applies processing costs as you intend by reviewing your application fees and pricing model before you set or make changes to your responsibilities.
+
 ## Set Dashboard access
 
 You must set the [dashboard](https://docs.stripe.com/api/v2/core/accounts/create.md#v2_create_accounts-dashboard) property value (if its existing value is null) when you add the Merchant configuration to an account. You must also set the `dashboard` value (if its existing value is null) when you request the [stripe_transfers](https://docs.stripe.com/api/v2/core/accounts/create.md#v2_create_accounts-configuration-recipient-capabilities-stripe_balance-stripe_transfers-requested) feature for the Recipient configuration on an account. Choose from the following values:

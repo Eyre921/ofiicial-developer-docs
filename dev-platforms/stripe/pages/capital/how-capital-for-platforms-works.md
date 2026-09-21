@@ -275,5 +275,6 @@ Stripe and its financial partners handle all Capital-related support and servici
 
 ## See also
 
+- [How Capital affects your Connect integration](https://docs.stripe.com/capital/connect-integration.md)
 - [Set up Capital](https://docs.stripe.com/capital/getting-started.md)
 

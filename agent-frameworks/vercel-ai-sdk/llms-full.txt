@@ -41711,16 +41711,18 @@ The following gateway provider options are available:
 
   The unique identifier for the entity against which quota is tracked. Used for quota management and enforcement purposes.
 
-- **has** _Array&lt;'implicit-caching' | 'vision'&gt;_
+- **has** _Array&lt;'implicit-caching' | 'reasoning' | 'tool-use' | 'vision'&gt;_
 
   Restricts routing to provider models that have all of the specified capabilities. Applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. If no provider model for the requested model satisfies the capabilities, the request fails. Unsupported values are rejected.
 
   Supported capabilities:
 
   - `'implicit-caching'` — models that perform automatic (implicit) prompt caching.
+  - `'reasoning'` — models that support reasoning.
+  - `'tool-use'` — models that support tool calling.
   - `'vision'` — models that accept image input.
 
-  Example: `has: ['implicit-caching']` will only route to models that support implicit caching. Example: `has: ['vision']` will only route to models that accept image input.
+  Example: `has: ['implicit-caching']` will only route to models that support implicit caching. Example: `has: ['vision']` will only route to models that accept image input. Example: `has: ['tool-use']` will only route to models that support tool calling.
 
 - **providerTimeouts** _object_
 
@@ -41832,7 +41834,7 @@ const { text } = await generateText({
 
 #### Filtering by Model Capability
 
-Set `has` to restrict routing to provider models that have the specified capabilities. This applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. `'implicit-caching'` limits routing to models that perform automatic prompt caching, and `'vision'` limits routing to models that accept image input. If no provider model for the requested model satisfies the capabilities, the request fails.
+Set `has` to restrict routing to provider models that have the specified capabilities. This applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. `'implicit-caching'` limits routing to models that perform automatic prompt caching, `'vision'` limits routing to models that accept image input, `'reasoning'` limits routing to models that support reasoning, and `'tool-use'` limits routing to models that support tool calling. If no provider model for the requested model satisfies the capabilities, the request fails.
 
 ```ts
 import type { GatewayProviderOptions } from "@ai-sdk/gateway";
@@ -41993,10 +41995,10 @@ You can use the following optional settings to customize the xAI provider instan
 ## Language Models
 
 You can create [xAI models](https://console.x.ai) using a provider instance. The
-first argument is the model id, e.g. `grok-4.6`.
+first argument is the model id, e.g. `grok-4.7`.
 
 ```ts
-const model = xai('grok-4.6');
+const model = xai('grok-4.7');
 ```
 
 By default, `xai(modelId)` uses the Chat API. To use the Responses API with server-side agentic tools, explicitly use `xai.responses(modelId)`.
@@ -42010,7 +42012,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: xai('grok-4.6'),
+  model: xai('grok-4.7'),
   prompt: 'Write a vegetarian lasagna recipe for 4 people.',
 });
 ```
@@ -42074,7 +42076,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: xai.responses('grok-4.6'),
+  model: xai.responses('grok-4.7'),
   messages: [
     {
       role: 'user',
@@ -47037,6 +47039,42 @@ const { object } = await generateObject({
 For parity with the Anthropic provider,
 `providerOptions.anthropic.structuredOutputMode` is also honored for Anthropic
 models on Bedrock. When both are provided, the `bedrock` value takes precedence.
+
+For an Anthropic application inference profile, prefer the Bedrock Anthropic
+provider. It uses Bedrock's native InvokeModel API, which accepts application
+inference profile ARNs, and identifies the model as Anthropic automatically:
+
+```ts
+import { bedrockAnthropic } from '@ai-sdk/amazon-bedrock/anthropic';
+
+const profileArn =
+  'arn:aws:bedrock:us-east-1:123456789012:application-inference-profile/qibm5eutlkcy';
+
+const model = bedrockAnthropic(profileArn);
+```
+
+Use `modelFamily: 'anthropic'` only when you need to use the generic
+`@ai-sdk/amazon-bedrock` provider, which uses Bedrock's Converse API (for
+example, when IAM permits Converse but not InvokeModel). Application inference
+profile ARNs do not identify their underlying model, so declaring the family
+allows Anthropic-specific features, including native structured output:
+
+```ts
+import {
+  bedrock,
+  type AmazonBedrockChatModelSettings,
+} from '@ai-sdk/amazon-bedrock';
+
+const profileArn =
+  'arn:aws:bedrock:us-east-1:123456789012:application-inference-profile/qibm5eutlkcy';
+
+const model = bedrock(profileArn, {
+  modelFamily: 'anthropic',
+} satisfies AmazonBedrockChatModelSettings);
+```
+
+For an underlying model that does not reliably support native structured
+output, set `structuredOutputMode` to `"jsonTool"`.
 
 ### File Inputs
 
@@ -81724,7 +81762,7 @@ import { generateText, tool } from "ai";
 import { z } from "zod";
 
 const { text } = await generateText({
-  model: "xai/grok-4.6",
+  model: "xai/grok-4.7",
   prompt: "What is the weather like in San Francisco?",
   tools: {
     getWeather: tool({
@@ -82369,16 +82407,18 @@ The following gateway provider options are available:
 
   The unique identifier for the entity against which quota is tracked. Used for quota management and enforcement purposes.
 
-- **has** _Array&lt;'implicit-caching' | 'vision'&gt;_
+- **has** _Array&lt;'implicit-caching' | 'reasoning' | 'tool-use' | 'vision'&gt;_
 
   Restricts routing to provider models that have all of the specified capabilities. Applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. If no provider model for the requested model satisfies the capabilities, the request fails. Unsupported values are rejected.
 
   Supported capabilities:
 
   - `'implicit-caching'` — models that perform automatic (implicit) prompt caching.
+  - `'reasoning'` — models that support reasoning.
+  - `'tool-use'` — models that support tool calling.
   - `'vision'` — models that accept image input.
 
-  Example: `has: ['implicit-caching']` will only route to models that support implicit caching. Example: `has: ['vision']` will only route to models that accept image input.
+  Example: `has: ['implicit-caching']` will only route to models that support implicit caching. Example: `has: ['vision']` will only route to models that accept image input. Example: `has: ['tool-use']` will only route to models that support tool calling.
 
 - **providerTimeouts** _object_
 
@@ -82516,7 +82556,7 @@ const { text } = await generateText({
 
 #### Filtering by Model Capability
 
-Set `has` to restrict routing to provider models that have the specified capabilities. This applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. `'implicit-caching'` limits routing to models that perform automatic prompt caching, and `'vision'` limits routing to models that accept image input. If no provider model for the requested model satisfies the capabilities, the request fails.
+Set `has` to restrict routing to provider models that have the specified capabilities. This applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. `'implicit-caching'` limits routing to models that perform automatic prompt caching, `'vision'` limits routing to models that accept image input, `'reasoning'` limits routing to models that support reasoning, and `'tool-use'` limits routing to models that support tool calling. If no provider model for the requested model satisfies the capabilities, the request fails.
 
 ```ts
 import type { GatewayProviderOptions } from "@ai-sdk/gateway";
@@ -82677,10 +82717,10 @@ You can use the following optional settings to customize the xAI provider instan
 ## Language Models
 
 You can create [xAI models](https://console.x.ai) using a provider instance. The
-first argument is the model id, e.g. `grok-4.6`.
+first argument is the model id, e.g. `grok-4.7`.
 
 ```ts
-const model = xai('grok-4.6');
+const model = xai('grok-4.7');
 ```
 
 By default, `xai(modelId)` uses the Chat API. To use the Responses API with server-side agentic tools, explicitly use `xai.responses(modelId)`.
@@ -82694,7 +82734,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: xai('grok-4.6'),
+  model: xai('grok-4.7'),
   prompt: 'Write a vegetarian lasagna recipe for 4 people.',
 });
 ```
@@ -82734,7 +82774,7 @@ the [standard call settings](/docs/ai-sdk-core/settings). You can pass them in t
 ```ts
 import { xai, type XaiLanguageModelChatOptions } from '@ai-sdk/xai';
 
-const model = xai('grok-4.6');
+const model = xai('grok-4.7');
 
 await generateText({
   model,
@@ -82776,7 +82816,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const { providerMetadata } = await generateText({
-  model: xai('grok-4.6'),
+  model: xai('grok-4.7'),
   prompt: 'Explain quantum entanglement.',
   providerOptions: {
     xai: { serviceTier: 'priority' },
@@ -82800,7 +82840,7 @@ docs](https://docs.x.ai/developers/advanced-api-usage/priority-processing).
 You can use the xAI Responses API with the `xai.responses(modelId)` factory method for server-side agentic tool calling. This enables the model to autonomously orchestrate tool calls and research on xAI's servers.
 
 ```ts
-const model = xai.responses('grok-4.6');
+const model = xai.responses('grok-4.7');
 ```
 
 The Responses API provides server-side tools that the model can autonomously execute during its reasoning process:
@@ -82822,7 +82862,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: xai.responses('grok-4.6'),
+  model: xai.responses('grok-4.7'),
   messages: [
     {
       role: 'user',
@@ -82843,7 +82883,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: xai('grok-4.6'),
+  model: xai('grok-4.7'),
   messages: [
     {
       role: 'user',
@@ -82880,7 +82920,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const { text, sources } = await generateText({
-  model: xai.responses('grok-4.6'),
+  model: xai.responses('grok-4.7'),
   prompt: 'What are the latest developments in AI?',
   tools: {
     web_search: xai.tools.webSearch({
@@ -82918,7 +82958,7 @@ The X search tool enables searching X (Twitter) for posts, with filtering by han
 
 ```ts
 const { text, sources } = await generateText({
-  model: xai.responses('grok-4.6'),
+  model: xai.responses('grok-4.7'),
   prompt: 'What are people saying about AI on X this week?',
   tools: {
     x_search: xai.tools.xSearch({
@@ -82964,7 +83004,7 @@ The code execution tool enables the model to write and execute Python code for c
 
 ```ts
 const { text } = await generateText({
-  model: xai.responses('grok-4.6'),
+  model: xai.responses('grok-4.7'),
   prompt:
     'Calculate the compound interest for $10,000 at 5% annually for 10 years',
   tools: {
@@ -82979,7 +83019,7 @@ The view image tool enables the model to view and analyze images:
 
 ```ts
 const { text } = await generateText({
-  model: xai.responses('grok-4.6'),
+  model: xai.responses('grok-4.7'),
   prompt: 'Describe what you see in the image',
   tools: {
     view_image: xai.tools.viewImage(),
@@ -82993,7 +83033,7 @@ The view X video tool enables the model to view and analyze videos from X (Twitt
 
 ```ts
 const { text } = await generateText({
-  model: xai.responses('grok-4.6'),
+  model: xai.responses('grok-4.7'),
   prompt: 'Summarize the content of this X video',
   tools: {
     view_x_video: xai.tools.viewXVideo(),
@@ -83007,7 +83047,7 @@ The MCP server tool enables the model to connect to remote [Model Context Protoc
 
 ```ts
 const { text } = await generateText({
-  model: xai.responses('grok-4.6'),
+  model: xai.responses('grok-4.7'),
   prompt: 'Use the weather tool to check conditions in San Francisco',
   tools: {
     weather_server: xai.tools.mcpServer({
@@ -83055,7 +83095,7 @@ import { xai, type XaiLanguageModelResponsesOptions } from '@ai-sdk/xai';
 import { streamText } from 'ai';
 
 const result = streamText({
-  model: xai.responses('grok-4.6'),
+  model: xai.responses('grok-4.7'),
   prompt: 'What documents do you have access to?',
   tools: {
     file_search: xai.tools.fileSearch({
@@ -83102,7 +83142,7 @@ import { xai } from '@ai-sdk/xai';
 import { streamText } from 'ai';
 
 const { fullStream } = streamText({
-  model: xai.responses('grok-4.6'),
+  model: xai.responses('grok-4.7'),
   prompt: 'Research AI safety developments and calculate risk metrics',
   tools: {
     web_search: xai.tools.webSearch(),
@@ -83136,7 +83176,7 @@ import { xai, type XaiLanguageModelResponsesOptions } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: xai.responses('grok-4.6'),
+  model: xai.responses('grok-4.7'),
   providerOptions: {
     xai: {
       reasoningEffort: 'high',
@@ -123270,6 +123310,37 @@ client infers `native` for loopback, localhost, and custom-scheme redirects,
 and `web` for remote HTTP(S) redirects. You can override this by setting
 `application_type` in the provider's `clientMetadata`.
 
+### Dynamic Client Credential Recovery
+
+To let the SDK replace invalid credentials created through dynamic client
+registration, implement `isClientInformationDynamicallyRegistered` on the
+OAuth client provider. Return `true` only when the current client information
+came from a dynamic registration response. Persist this provenance alongside
+the credentials when the provider is recreated between requests.
+
+```typescript
+const myOAuthClientProvider = {
+  // ...other OAuthClientProvider methods
+
+  async saveClientInformation(clientInformation) {
+    await saveClientRecord({
+      clientInformation,
+      dynamicallyRegistered: true,
+    });
+  },
+
+  async isClientInformationDynamicallyRegistered() {
+    return (await loadClientRecord())?.dynamicallyRegistered === true;
+  },
+};
+```
+
+When this method is omitted or returns `false`, client information is treated
+as pre-registered and is preserved after `invalid_client` and
+`unauthorized_client` errors. The SDK does not infer provenance from fields such
+as `redirect_uris`, because pre-registered clients can contain the same
+metadata as dynamically registered clients.
+
 ### Retrying Transient Tool Failures
 
 MCP tool calls can fail for transient transport reasons, such as rate limits,
@@ -134720,17 +134791,32 @@ When the user clicks the "Regenerate" button, the AI provider will regenerate th
 
 ### Throttling UI Updates
 
-<Note>This feature is currently only available for React.</Note>
-
 By default, the `useChat` hook will trigger a render every time a new chunk is received.
-You can throttle the UI updates with the `throttle` option.
+React and Vue applications can throttle reactive message updates with the `throttle` option.
+Stream processing and event callbacks remain immediate, and the latest messages are published before the chat enters a terminal `ready` or `error` status.
 
-```tsx filename="page.tsx" highlight="2-3"
-const { messages, ... } = useChat({
-  // Throttle the messages and data updates to 50ms:
-  throttle: 50
-})
-```
+<Tabs items={['React', 'Vue']}>
+  <Tab>
+    ```tsx filename="page.tsx" highlight="2-3"
+    const { messages, ... } = useChat({
+      // Throttle reactive message updates to 50ms:
+      throttle: 50,
+    });
+    ```
+  </Tab>
+  <Tab>
+    ```vue filename="pages/index.vue" highlight="4-6"
+    <script setup lang="ts">
+    import { useChat } from '@ai-sdk/vue';
+
+    const { messages } = useChat({
+      throttle: 50,
+    });
+    </script>
+    ```
+
+  </Tab>
+</Tabs>
 
 ## Event Callbacks
 
@@ -143463,7 +143549,7 @@ import { generateText, tool } from 'ai';
 import { z } from 'zod';
 
 const { text } = await generateText({
-  model: 'xai/grok-4.6',
+  model: 'xai/grok-4.7',
   prompt: 'What is the weather like in San Francisco?',
   tools: {
     getWeather: tool({
@@ -144104,15 +144190,17 @@ The following gateway provider options are available:
 
   The unique identifier for the entity against which quota is tracked. Used for quota management and enforcement purposes.
 
-- **has** _Array&lt;'implicit-caching' | 'vision'&gt;_
+- **has** _Array&lt;'implicit-caching' | 'reasoning' | 'tool-use' | 'vision'&gt;_
 
   Restricts routing to provider models that have all of the specified capabilities. Applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. If no provider model for the requested model satisfies the capabilities, the request fails. Unsupported values are rejected.
 
   Supported capabilities:
   - `'implicit-caching'` — models that perform automatic (implicit) prompt caching.
+  - `'reasoning'` — models that support reasoning.
+  - `'tool-use'` — models that support tool calling.
   - `'vision'` — models that accept image input.
 
-  Example: `has: ['implicit-caching']` will only route to models that support implicit caching. Example: `has: ['vision']` will only route to models that accept image input.
+  Example: `has: ['implicit-caching']` will only route to models that support implicit caching. Example: `has: ['vision']` will only route to models that accept image input. Example: `has: ['tool-use']` will only route to models that support tool calling.
 
 - **providerTimeouts** _object_
 
@@ -144250,7 +144338,7 @@ const { text } = await generateText({
 
 #### Filtering by Model Capability
 
-Set `has` to restrict routing to provider models that have the specified capabilities. This applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. `'implicit-caching'` limits routing to models that perform automatic prompt caching, and `'vision'` limits routing to models that accept image input. If no provider model for the requested model satisfies the capabilities, the request fails.
+Set `has` to restrict routing to provider models that have the specified capabilities. This applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. `'implicit-caching'` limits routing to models that perform automatic prompt caching, `'vision'` limits routing to models that accept image input, `'reasoning'` limits routing to models that support reasoning, and `'tool-use'` limits routing to models that support tool calling. If no provider model for the requested model satisfies the capabilities, the request fails.
 
 ```ts
 import type { GatewayProviderOptions } from '@ai-sdk/gateway';
@@ -144397,10 +144485,10 @@ You can use the following optional settings to customize the xAI provider instan
 ## Language Models
 
 You can create [xAI models](https://console.x.ai) using a provider instance. The
-first argument is the model id, e.g. `grok-4.6`.
+first argument is the model id, e.g. `grok-4.7`.
 
 ```ts
-const model = xai('grok-4.6');
+const model = xai('grok-4.7');
 ```
 
 ### Example
@@ -144412,7 +144500,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: xai('grok-4.6'),
+  model: xai('grok-4.7'),
   prompt: 'Write a vegetarian lasagna recipe for 4 people.',
 });
 ```
@@ -144478,7 +144566,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const { providerMetadata } = await generateText({
-  model: xai('grok-4.6'),
+  model: xai('grok-4.7'),
   prompt: 'Explain quantum entanglement.',
   providerOptions: {
     xai: { serviceTier: 'priority' },
@@ -144527,7 +144615,7 @@ calling pattern.
 The xAI Responses API is the default when using `xai(modelId)` (since AI SDK 7). You can also use `xai.responses(modelId)` explicitly. This enables the model to autonomously orchestrate tool calls and research on xAI's servers.
 
 ```ts
-const model = xai.responses('grok-4.6');
+const model = xai.responses('grok-4.7');
 ```
 
 The Responses API provides server-side tools that the model can autonomously execute during its reasoning process:
@@ -144549,7 +144637,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: xai.responses('grok-4.6'),
+  model: xai.responses('grok-4.7'),
   messages: [
     {
       role: 'user',
@@ -144574,7 +144662,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: xai('grok-4.6'),
+  model: xai('grok-4.7'),
   messages: [
     {
       role: 'user',
@@ -144611,7 +144699,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const { text, sources } = await generateText({
-  model: xai.responses('grok-4.6'),
+  model: xai.responses('grok-4.7'),
   prompt: 'What are the latest developments in AI?',
   tools: {
     web_search: xai.tools.webSearch({
@@ -144649,7 +144737,7 @@ The X search tool enables searching X (Twitter) for posts, with filtering by han
 
 ```ts
 const { text, sources } = await generateText({
-  model: xai.responses('grok-4.6'),
+  model: xai.responses('grok-4.7'),
   prompt: 'What are people saying about AI on X this week?',
   tools: {
     x_search: xai.tools.xSearch({
@@ -144695,7 +144783,7 @@ The code execution tool enables the model to write and execute Python code for c
 
 ```ts
 const { text } = await generateText({
-  model: xai.responses('grok-4.6'),
+  model: xai.responses('grok-4.7'),
   prompt:
     'Calculate the compound interest for $10,000 at 5% annually for 10 years',
   tools: {
@@ -144710,7 +144798,7 @@ The view image tool enables the model to view and analyze images:
 
 ```ts
 const { text } = await generateText({
-  model: xai.responses('grok-4.6'),
+  model: xai.responses('grok-4.7'),
   prompt: 'Describe what you see in the image',
   tools: {
     view_image: xai.tools.viewImage(),
@@ -144724,7 +144812,7 @@ The view X video tool enables the model to view and analyze videos from X (Twitt
 
 ```ts
 const { text } = await generateText({
-  model: xai.responses('grok-4.6'),
+  model: xai.responses('grok-4.7'),
   prompt: 'Summarize the content of this X video',
   tools: {
     view_x_video: xai.tools.viewXVideo(),
@@ -144741,7 +144829,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: xai.responses('grok-4.6'),
+  model: xai.responses('grok-4.7'),
   prompt:
     'Generate an image of a corgi surfing a big wave, in the style of a Japanese woodblock print',
   tools: {
@@ -144779,7 +144867,7 @@ The MCP server tool enables the model to connect to remote [Model Context Protoc
 
 ```ts
 const { text } = await generateText({
-  model: xai.responses('grok-4.6'),
+  model: xai.responses('grok-4.7'),
   prompt: 'Use the weather tool to check conditions in San Francisco',
   tools: {
     weather_server: xai.tools.mcpServer({
@@ -144827,7 +144915,7 @@ import { xai, type XaiLanguageModelResponsesOptions } from '@ai-sdk/xai';
 import { streamText } from 'ai';
 
 const result = streamText({
-  model: xai.responses('grok-4.6'),
+  model: xai.responses('grok-4.7'),
   prompt: 'What documents do you have access to?',
   tools: {
     file_search: xai.tools.fileSearch({
@@ -144874,7 +144962,7 @@ import { xai } from '@ai-sdk/xai';
 import { streamText } from 'ai';
 
 const { stream } = streamText({
-  model: xai.responses('grok-4.6'),
+  model: xai.responses('grok-4.7'),
   prompt: 'Research AI safety developments and calculate risk metrics',
   tools: {
     web_search: xai.tools.webSearch(),
@@ -144908,7 +144996,7 @@ import { xai, type XaiLanguageModelResponsesOptions } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: xai.responses('grok-4.6'),
+  model: xai.responses('grok-4.7'),
   providerOptions: {
     xai: {
       reasoningEffort: 'high',
@@ -153185,12 +153273,12 @@ provider. It uses Bedrock's native InvokeModel API, which accepts application
 inference profile ARNs, and identifies the model as Anthropic automatically:
 
 ```ts
-import { amazonBedrockAnthropic } from '@ai-sdk/amazon-bedrock/anthropic';
+import { bedrockAnthropic } from '@ai-sdk/amazon-bedrock/anthropic';
 
 const profileArn =
   'arn:aws:bedrock:us-east-1:123456789012:application-inference-profile/qibm5eutlkcy';
 
-const model = amazonBedrockAnthropic(profileArn);
+const model = bedrockAnthropic(profileArn);
 ```
 
 Use `modelFamily: 'anthropic'` only when you need to use the generic
@@ -170881,6 +170969,12 @@ Settings:
   `{ type: 'adaptive', display: 'summarized' }`.
 - `port`: bridge port override.
 - `startupTimeoutMs`: maximum time to wait for the bridge to start.
+- `reconnect`: reconnect timing after an established bridge WebSocket
+  connection drops. `maxElapsedMs` controls the total retry window and defaults
+  to 30 seconds. `initialDelayMs` defaults to 50 milliseconds, and
+  `maxDelayMs` defaults to 2 seconds. These retries use exponential backoff and
+  are separate from `startupTimeoutMs`. They cannot recover when the sandbox,
+  bridge process, or port endpoint is permanently unavailable.
 - `mintBridgeToken`: synchronous function that receives the sandbox id and
   returns the bridge authentication token. By default, the adapter generates a
   random 32-byte token. Custom implementations must return a suitably secret
@@ -171083,6 +171177,12 @@ Settings:
 - `webSearch`: allow live web search.
 - `port`: bridge port override.
 - `startupTimeoutMs`: maximum time to wait for the bridge to start.
+- `reconnect`: reconnect timing after an established bridge WebSocket
+  connection drops. `maxElapsedMs` controls the total retry window and defaults
+  to 30 seconds. `initialDelayMs` defaults to 50 milliseconds, and
+  `maxDelayMs` defaults to 2 seconds. These retries use exponential backoff and
+  are separate from `startupTimeoutMs`. They cannot recover when the sandbox,
+  bridge process, or port endpoint is permanently unavailable.
 - `mintBridgeToken`: synchronous function that receives the sandbox id and
   returns the bridge authentication token. By default, the adapter generates a
   random 32-byte token. Custom implementations must return a suitably secret
@@ -171530,6 +171630,12 @@ Settings:
   such as `low`, `medium`, or `high`.
 - `port`: bridge port override.
 - `startupTimeoutMs`: maximum time to wait for the bridge to start.
+- `reconnect`: reconnect timing after an established bridge WebSocket
+  connection drops. `maxElapsedMs` controls the total retry window and defaults
+  to 30 seconds. `initialDelayMs` defaults to 50 milliseconds, and
+  `maxDelayMs` defaults to 2 seconds. These retries use exponential backoff and
+  are separate from `startupTimeoutMs`. They cannot recover when the sandbox,
+  bridge process, or port endpoint is permanently unavailable.
 - `mintBridgeToken`: synchronous function that receives the sandbox id and
   returns the bridge authentication token. By default, the adapter generates a
   random 32-byte token. Custom implementations must return a suitably secret
@@ -171739,6 +171845,12 @@ Settings:
 - `recursionLimit`: maximum LangGraph super-steps per turn. When omitted, the
   Deep Agents default applies.
 - `startupTimeoutMs`: maximum time to wait for the bridge to start.
+- `reconnect`: reconnect timing after an established bridge WebSocket
+  connection drops. `maxElapsedMs` controls the total retry window and defaults
+  to 30 seconds. `initialDelayMs` defaults to 50 milliseconds, and
+  `maxDelayMs` defaults to 2 seconds. These retries use exponential backoff and
+  are separate from `startupTimeoutMs`. They cannot recover when the sandbox,
+  bridge process, or port endpoint is permanently unavailable.
 - `mintBridgeToken`: synchronous function that receives the sandbox id and
   returns the bridge authentication token. By default, the adapter generates a
   random 32-byte token. Custom implementations must return a suitably secret
@@ -171988,6 +172100,12 @@ try {
   creation and restoration.
 - `port`: exposed bridge port override.
 - `startupTimeoutMs`: bridge startup timeout. The default is 120 seconds.
+- `reconnect`: reconnect timing after an established bridge WebSocket
+  connection drops. `maxElapsedMs` controls the total retry window and defaults
+  to 30 seconds. `initialDelayMs` defaults to 50 milliseconds, and
+  `maxDelayMs` defaults to 2 seconds. These retries use exponential backoff and
+  are separate from `startupTimeoutMs`. They cannot recover when the sandbox,
+  bridge process, or port endpoint is permanently unavailable.
 - `mintBridgeToken`: synchronous function that receives the sandbox id and
   returns the bridge authentication token. By default, the adapter generates a
   random 32-byte token. Custom implementations must return a suitably secret
@@ -172657,6 +172775,10 @@ Settings:
 - `mcpServers`: MCP server definitions keyed by server name.
 - `port`: ACP bridge port override.
 - `startupTimeoutMs`: maximum time to wait for the ACP bridge to start.
+- `reconnect`: optional timing configuration for reconnecting after an
+  established ACP bridge connection drops. Set `maxElapsedMs` for the total
+  reconnect window and `initialDelayMs` and `maxDelayMs` for exponential
+  backoff.
 - `mintBridgeToken`: synchronous function that receives the sandbox id and
   returns the ACP bridge authentication token. By default, the adapter generates
   a random 32-byte token. Custom implementations must return a suitably secret
@@ -173089,6 +173211,10 @@ Settings:
 - `mcpServers`: MCP server definitions keyed by server name.
 - `port`: ACP bridge port override.
 - `startupTimeoutMs`: maximum time to wait for the ACP bridge to start.
+- `reconnect`: optional timing configuration for reconnecting after an
+  established ACP bridge connection drops. Set `maxElapsedMs` for the total
+  reconnect window and `initialDelayMs` and `maxDelayMs` for exponential
+  backoff.
 - `mintBridgeToken`: synchronous function that receives the sandbox id and
   returns the ACP bridge authentication token. By default, the adapter generates
   a random 32-byte token. Custom implementations must return a suitably secret
@@ -173296,6 +173422,10 @@ Settings:
 - `portEndpoint`: host endpoint for the ACP bridge when the sandbox session
   cannot expose ports directly.
 - `startupTimeoutMs`: maximum time to wait for the ACP bridge to start.
+- `reconnect`: optional timing configuration for reconnecting after an
+  established ACP bridge connection drops. Set `maxElapsedMs` for the total
+  reconnect window and `initialDelayMs` and `maxDelayMs` for exponential
+  backoff.
 - `mintBridgeToken`: synchronous function that receives the sandbox id and
   returns the ACP bridge authentication token. By default, the adapter generates
   a random 32-byte token.
@@ -173522,6 +173652,10 @@ Settings:
 - `portEndpoint`: host endpoint for the ACP bridge when the sandbox session
   cannot expose ports directly.
 - `startupTimeoutMs`: maximum time to wait for the ACP bridge to start.
+- `reconnect`: optional timing configuration for reconnecting after an
+  established ACP bridge connection drops. Set `maxElapsedMs` for the total
+  reconnect window and `initialDelayMs` and `maxDelayMs` for exponential
+  backoff.
 - `mintBridgeToken`: synchronous function that receives the sandbox id and
   returns the ACP bridge authentication token. By default, the adapter generates
   a random 32-byte token. Custom implementations must return a suitably secret

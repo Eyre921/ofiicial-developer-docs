@@ -58,7 +58,7 @@ For API-based products, Zero Retention Mode is enabled by sending `enable_loggin
 * **Voice Changer**: All endpoints starting with `/v1/speech-to-speech/`.
 * **Speech to Text**: All endpoints starting with `/v1/speech-to-text/`.
 
-After setup, check the request history to verify Zero Retention Mode is enabled. If enabled, there should be no requests in the history.
+After setup, check the TTS request history to verify Zero Retention Mode is enabled. If enabled, there should be no requests in the history with saved audio. Usage Analytics will still show a request was made but no data points will be saved from those requests.
 
 ### ElevenAgents
 

@@ -76,9 +76,9 @@ Stripe doesn’t generate journal entries for free trials.
 
 ## Limitations 
 
-The most detailed level of reporting that Stripe can provide is audit by subscriber. We can’t provide an audit by invoice view because the financial reports from the Apple App Store don’t include invoice IDs.
-
-Stripe also can’t book tax liability and Apple commissions because Apple doesn’t provide this data.
+- The most detailed reporting Stripe can provide is an audit by subscriber. Stripe can’t provide an invoice-level audit because Apple App Store financial reports don’t include invoice IDs.
+- Stripe can’t book tax liabilities or Apple commissions because Apple doesn’t provide the required data.
+- The connector supports auto-renewable subscriptions but not one-time in-app purchases. The report becomes available after you sell at least one auto-renewable subscription. Subscriptions sold at introductory prices count toward this requirement. For more information, see [Apple’s report availability documentation](https://developer.apple.com/help/app-store-connect/reference/reporting/sales-and-trends-reports-availability/).
 
 ## Audit numbers 
 

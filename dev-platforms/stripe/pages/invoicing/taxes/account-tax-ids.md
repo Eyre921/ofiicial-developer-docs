@@ -15,9 +15,7 @@ Displaying your tax IDs on *invoice* (Invoices are statements of amounts owed by
 In the [Invoice template](https://dashboard.stripe.com/settings/billing/invoice), you can:
 
 - Select default tax IDs to appear on every invoice and credit note PDF.
-
 - Automatically display the correct tax IDs based on each invoice’s taxable location (requires [automatic tax](https://docs.stripe.com/invoicing/taxes.md)).
-
 - Define a list of tax IDs to appear on a specific invoice.
 
 > You can’t add, change, or remove account tax IDs after an invoice is finalized.

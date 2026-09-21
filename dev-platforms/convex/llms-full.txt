@@ -129,8 +129,9 @@
 ## ai-gateway
 
 - [HTTP API](/ai-gateway/api.md): Request and response shapes for the AI Gateway HTTP API
+- [Images and videos](/ai-gateway/images-and-videos.md): Generate images and videos from Convex actions with the AI Gateway
 - [Models](/ai-gateway/models.md): Which models the AI Gateway serves and how to name them
-- [AI Gateway](/ai-gateway/overview.md): Managed LLM access from Convex actions
+- [AI Gateway](/ai-gateway/overview.md): Managed AI model access from Convex actions
 - [Getting started](/ai-gateway/setup.md): Call the AI Gateway from a Convex action with the OpenAI SDK, the Agent component, the Vercel AI SDK, or fetch
 - [Usage and Billing](/ai-gateway/usage-and-billing.md): See what your AI Gateway requests cost and how Convex bills them
 
@@ -514,12 +515,14 @@ Agentic workflows are built up by combining contextual prompting (threads, messa
 
 ## Basic Agent definition[​](#basic-agent-definition "Direct link to Basic Agent definition")
 
+These examples use the [Convex AI Gateway](/ai-gateway/overview.md). See [Getting Started](/agents/getting-started.md) for installation and requirements.
+
 ```
 import { components } from "./_generated/api";
 
 import { Agent } from "@convex-dev/agent";
 
-import { openai } from "@ai-sdk/openai";
+import { convexGateway } from "@convex-dev/ai-sdk-provider";
 
 
 
@@ -527,7 +530,7 @@ const agent = new Agent(components.agent, {
 
   name: "Basic Agent",
 
-  languageModel: openai.chat("gpt-4o-mini"),
+  languageModel: convexGateway("openai/gpt-5-mini"),
 
 });
 ```
@@ -720,12 +723,12 @@ Unfortunately, object generation doesn't support using tools. One, however, is t
 
 ## Customizing the agent[​](#customizing-the-agent "Direct link to Customizing the agent")
 
-The agent by default only needs a `chat` model to be configured. However, for vector search, you'll need an `embeddingModel`. A `name` is helpful to attribute each message to a specific agent. Other options are defaults that can be over-ridden at each LLM call-site.
+The agent by default only needs a `languageModel` to be configured. However, for vector search, you'll need an `embeddingModel`. A `name` is helpful to attribute each message to a specific agent. Other options are defaults that can be over-ridden at each LLM call-site.
 
 ```
 import { tool, stepCountIs } from "ai";
 
-import { openai } from "@ai-sdk/openai";
+import { convexGateway } from "@convex-dev/ai-sdk-provider";
 
 import { z } from "zod/v3";
 
@@ -739,11 +742,11 @@ const sharedDefaults = {
 
   // The language model to use for the agent.
 
-  languageModel: openai.chat("gpt-4o-mini"),
+  languageModel: convexGateway("openai/gpt-5-mini"),
 
   // Embedding model to power vector search of message history (RAG).
 
-  embeddingModel: openai.embedding("text-embedding-3-small"),
+  embeddingModel: convexGateway.embeddingModel("openai/text-embedding-3-small"),
 
   // Used for fetching context messages. See https://docs.convex.dev/agents/context
 
@@ -1672,10 +1675,12 @@ Run `npm create convex` or follow any of the [quickstarts](https://docs.convex.d
 
 ## Installation[​](#installation "Direct link to Installation")
 
-Install the component package:
+These examples use the [Convex AI Gateway](/ai-gateway/overview.md), available to paid teams on Convex Cloud and [project-linked local deployments](/ai-gateway/setup.md#local-development). See [Gateway setup](/ai-gateway/setup.md#vercel-ai-sdk) for package and Node.js runtime requirements. On the Free plan, use an [AI SDK provider](https://ai-sdk.dev/providers/ai-sdk-providers) with your own API key stored in an [environment variable](/production/environment-variables.md).
+
+Install the component and Gateway provider:
 
 ```
-npm install @convex-dev/agent
+npm install @convex-dev/agent @convex-dev/ai-sdk-provider ai convex
 ```
 
 Create a `convex.config.ts` file in your app's `convex/` folder and install the component by calling `use`:
@@ -1702,12 +1707,14 @@ Then run `npx convex dev` to generate code for the component. This needs to succ
 
 ## Defining your first Agent[​](#defining-your-first-agent "Direct link to Defining your first Agent")
 
+The Gateway provider obtains a service token automatically when the model is called inside a Convex action; no provider API key is needed. See [Gateway setup](/ai-gateway/setup.md) for details.
+
 ```
 import { components } from "./_generated/api";
 
 import { Agent, stepCountIs } from "@convex-dev/agent";
 
-import { openai } from "@ai-sdk/openai";
+import { convexGateway } from "@convex-dev/ai-sdk-provider";
 
 
 
@@ -1715,7 +1722,7 @@ const agent = new Agent(components.agent, {
 
   name: "My Agent",
 
-  languageModel: openai.chat("gpt-4o-mini"),
+  languageModel: convexGateway("openai/gpt-5-mini"),
 
   instructions: "You are a weather forecaster.",
 
@@ -1730,6 +1737,8 @@ const agent = new Agent(components.agent, {
 
 ```
 import { action } from "./_generated/server";
+
+import { createThread } from "@convex-dev/agent";
 
 import { v } from "convex/values";
 
@@ -2450,12 +2459,14 @@ The Agent component is a core building block for building AI agents. It manages 
 
 Learn more about the motivation by reading: [AI Agents with Built-in Memory](https://stack.convex.dev/ai-agents).
 
-Sample code:
+This example uses the [Convex AI Gateway](/ai-gateway/overview.md). Follow [Getting Started](/agents/getting-started.md) to install the packages and component.
 
 ```
-import { Agent } from "@convex-dev/agents";
+import { Agent } from "@convex-dev/agent";
 
-import { openai } from "@ai-sdk/openai";
+import { convexGateway } from "@convex-dev/ai-sdk-provider";
+
+import { v } from "convex/values";
 
 import { components } from "./_generated/api";
 
@@ -2463,17 +2474,13 @@ import { action } from "./_generated/server";
 
 
 
-// Define an agent
-
 const supportAgent = new Agent(components.agent, {
 
   name: "Support Agent",
 
-  chat: openai.chat("gpt-4o-mini"),
+  languageModel: convexGateway("openai/gpt-5-mini"),
 
   instructions: "You are a helpful assistant.",
-
-  tools: { accountLookup, fileTicket, sendEmail },
 
 });
 
@@ -2509,7 +2516,7 @@ export const continueThread = action({
 
     // This includes previous message history from the thread automatically.
 
-    const { thread } = await anotherAgent.continueThread(ctx, { threadId });
+    const { thread } = await supportAgent.continueThread(ctx, { threadId });
 
     const result = await thread.generateText({ prompt });
 
@@ -3384,6 +3391,8 @@ It consists of using the `DeltaStreamer` class to save the deltas to the databas
 
 The requirements for reading and writing the streams are just that they use a `threadId` from the Agent component, and that each stream is saved with a distinct `order`, for ordering on the client side.
 
+The example uses the [Convex AI Gateway](/ai-gateway/overview.md); see [Getting Started](/agents/getting-started.md) for installation and requirements.
+
 ```
 import { components } from "./_generated/api";
 
@@ -3393,7 +3402,7 @@ import { DeltaStreamer, compressUIMessageChunks } from "@convex-dev/agent";
 
 import { streamText } from "ai";
 
-import { openai } from "@ai-sdk/openai";
+import { convexGateway } from "@convex-dev/ai-sdk-provider";
 
 
 
@@ -3441,7 +3450,7 @@ async function stream(ctx: ActionCtx, threadId: string, order: number) {
 
   const response = streamText({
 
-    model: openai.chat("gpt-4o-mini"),
+    model: convexGateway("openai/gpt-5-mini"),
 
     prompt: "Tell me a joke",
 
@@ -4788,7 +4797,7 @@ Base URL: `https://ai-gateway.convex.dev`. To send a request from an action, see
 Authorization: Bearer <token>
 ```
 
-Mint the token in an action with `getServiceToken("ai-gateway")`. Token rules and errors: [Getting started](/ai-gateway/setup.md#token-and-timeouts).
+Get the token in an action with `getServiceToken("ai-gateway")`. The action runtime caches and refreshes it as needed. Token rules and errors: [Getting started](/ai-gateway/setup.md#token-and-timeouts).
 
 Missing or invalid token:
 
@@ -4938,6 +4947,168 @@ data: [DONE]
 
 Convex rejects the same routing controls as `/v1/chat/completions`, assigns the response `id`, and removes fields that identify the serving provider. The response otherwise uses the OpenAI embeddings shape.
 
+## POST `/v1/images/generations`[​](#post-v1imagesgenerations "Direct link to post-v1imagesgenerations")
+
+Image generation is in alpha
+
+The request and response format may change during alpha.
+
+Send a JSON body with `model` and `prompt`, plus model-supported image options such as `size` and `n`. The response contains `data` entries with image URLs or `b64_json`, depending on the model and requested format. Streaming is rejected. The same routing controls as `/v1/chat/completions` are rejected. The body limit is 16 MiB.
+
+## POST `/v1/videos/generations`[​](#post-v1videosgenerations "Direct link to post-v1videosgenerations")
+
+Video generation is in alpha
+
+The request and response format may change during alpha.
+
+Send `model` and `prompt`, with optional `duration`, `aspect_ratio`, `size`, `resolution`, `seed`, `generate_audio`, `frame_images`, or `input_references`. Supported values depend on the model. Each request generates one video; `n`, `stream`, and `callback_url` are rejected, along with gateway routing controls. The body limit is 16 MiB.
+
+This request waits for completion and downloads the video, with a default ten-minute timeout and a 64 MiB video limit. The JSON response contains a Convex-assigned `id`, `data: [{ b64_json, media_type }]`, and `usage` when available. Cancelling the HTTP request does not cancel generation or its cost.
+
+## Async video routes[​](#async-video-routes "Direct link to Async video routes")
+
+These routes are in alpha. For availability and local development, see [Async videos](/ai-gateway/images-and-videos.md#async-videos). All three routes require a deployment token. Save the opaque `operation` value returned at submission and use a fresh token from the same deployment for later requests. Operations expire after seven days; video retention may be shorter.
+
+### POST `/v1/videos`[​](#post-v1videos "Direct link to post-v1videos")
+
+Accepts the same generation options as `/v1/videos/generations`, plus an optional `webhook_url` on the deployment's HTTPS `<deployment>.convex.site` origin. Returns HTTP 202:
+
+```
+{
+
+  "id": "convex-inference-id",
+
+  "operation": "opaque-operation-handle",
+
+  "webhook_secret": "per-job-signing-secret"
+
+}
+```
+
+`webhook_secret` is null when `webhook_url` is omitted. Store it privately. A lost response can still mean the job was accepted and charged; automatically retrying submission can create another paid job.
+
+### POST `/v1/videos/status`[​](#post-v1videosstatus "Direct link to post-v1videosstatus")
+
+Send `{ "operation": "opaque-operation-handle" }`. Returns `status` as `pending`, `completed`, or `error`, with an error message for failed jobs and usage when available.
+
+### POST `/v1/videos/download`[​](#post-v1videosdownload "Direct link to post-v1videosdownload")
+
+Send the same operation body. Returns the video in the same `data` shape as `/v1/videos/generations`. Returns 409 if the video is not ready. Each call fetches the video again; save it in application storage.
+
+### Application callbacks[​](#application-callbacks "Direct link to Application callbacks")
+
+The gateway posts a signed JSON event to `webhook_url` with `id`, `operation`, `status`, and `type` (`video.generation.<status>`). Terminal statuses are `completed`, `failed`, `cancelled`, and `expired`.
+
+Verify the raw body and `x-convex-video-signature` header with `verifyVideoWebhook` before changing application state. Match the event's `id` to the saved inference ID, and deduplicate by `(id, status)` when saving it. See [receiving a callback](/ai-gateway/images-and-videos.md#receive-a-callback). Callbacks can repeat; check unfinished jobs periodically as a fallback.
+
+## POST `/alpha/decisions`[​](#post-alphadecisions "Direct link to post-alphadecisions")
+
+Decisions is in alpha
+
+The request and response format may change during alpha.
+
+[Jev](https://docs.typesafe.ai/introduction) is TypeSafe's model for making structured decisions. It returns values your code can use to choose an option, rank results, or decide what to do next.
+
+Provide the context to evaluate in `state` and the questions to answer in `questions`. You can ask several questions about the same state in one request. Each question is evaluated independently and has a name that identifies its answer in the response.
+
+`model`, `state`, and `questions` are required. Use `typesafe/jev-1.13` as the model ID; Decisions models are not listed by `GET /v1/models`. Streaming is not supported.
+
+With the [AI SDK provider](/ai-gateway/setup.md), use `evaluate({ model: convexGateway.evaluationModel("typesafe/jev-1.13"), ... })`. The SDK calls the yes-or-no question type `boolean` and returns `probability`; the HTTP API uses `noul` for both.
+
+For example, classify a support ticket by priority:
+
+```
+{
+
+  "model": "typesafe/jev-1.13",
+
+  "state": {
+
+    "ticket": "All users are unable to sign in. There is no workaround."
+
+  },
+
+  "questions": {
+
+    "priority": {
+
+      "type": "choice",
+
+      "instructions": "Choose the support ticket's priority.",
+
+      "criteria": {
+
+        "urgent": "An outage is blocking users.",
+
+        "normal": "A bug affects users but has a workaround."
+
+      }
+
+    }
+
+  }
+
+}
+```
+
+`state` and each question's `instructions` accept a string, object, or array. Each question must specify one of these types:
+
+| `type`   | Purpose                              | Required fields                  | Result field              |
+| -------- | ------------------------------------ | -------------------------------- | ------------------------- |
+| `choice` | Select an option                     | `instructions`, `criteria` map   | `choice`                  |
+| `score`  | Evaluate the state against a rubric  | `instructions`, `criteria` array | `score`                   |
+| `noul`   | Evaluate whether a statement is true | `instructions`                   | `noul`, a number from 0–1 |
+
+Keep each question focused on one decision. For decisions involving several factors, ask about each factor separately and combine the answers in your code.
+
+A `noul` question may include `criteria` with `true` and `false` guidance. Choice criteria values may be strings, objects, arrays, or `null`. Score criteria are an ordered array of strings, objects, or arrays.
+
+The body must be JSON and no larger than 16 MiB. These fields are not supported: `provider`, `route`, `models`, `transforms`, `plugins`, `preset`, `fallbacks`, `speed`, `trace`, `session_id`, `user`, and `stream`.
+
+### Response[​](#response-1 "Direct link to Response")
+
+The answer keys match the request's question keys. Convex assigns `id` and removes fields that identify the serving provider.
+
+`choice` and `score` answers may also include `confidence` and `probabilities`.
+
+```
+{
+
+  "id": "3f1c8a2e-9b14-4d6a-a7e2-0c5b8d1e4f90",
+
+  "model": "typesafe/jev-1.13",
+
+  "answers": {
+
+    "priority": {
+
+      "type": "choice",
+
+      "choice": "urgent",
+
+      "confidence": 0.9,
+
+      "probabilities": { "urgent": 0.9, "normal": 0.1 }
+
+    }
+
+  },
+
+  "usage": {
+
+    "input_tokens": 21,
+
+    "output_tokens": 3,
+
+    "cost": 0.0042
+
+  }
+
+}
+```
+
+`usage` contains the input and output token counts. `usage.cost`, when present, is the request cost in US dollars.
+
 ## POST `/v1/messages`[​](#post-v1messages "Direct link to post-v1messages")
 
 [Anthropic Messages](https://docs.anthropic.com/en/api/messages) body. Model IDs use the `provider/model` form. `model`, `messages`, and `max_tokens` are required. Set `stream: true` for Anthropic-compatible server-sent events.
@@ -4996,22 +5167,6 @@ The endpoint is stateless. OpenRouter rejects `store: true` and a non-null `prev
 
 ## Errors[​](#errors "Direct link to Errors")
 
-```
-{
-
-  "error": {
-
-    "message": "This endpoint is not supported by the Convex AI gateway. Supported endpoints: GET /v1/models, POST /v1/chat/completions, POST /v1/embeddings, POST /v1/messages, POST /v1/responses. See https://docs.convex.dev/ai.",
-
-    "type": "invalid_request_error",
-
-    "code": "unsupported_endpoint"
-
-  }
-
-}
-```
-
 | Status    | code                    | When                               |
 | --------- | ----------------------- | ---------------------------------- |
 | 401       | `invalid_api_key`       | Missing or invalid `Authorization` |
@@ -5022,6 +5177,193 @@ The endpoint is stateless. OpenRouter rejects `store: true` and a non-null `prev
 | 502 / 503 | `upstream_error`        | Provider temporarily unavailable   |
 
 Provider validation errors (unknown model, bad args) keep the provider status. The error object has `message`, `type`, `code`, and `param` when present.
+
+
+---
+
+# Images and videos
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
+Generate images and videos from an [action](/functions/actions.md) with `convexGateway`. For installation and authentication, see [Getting started](/ai-gateway/setup.md#vercel-ai-sdk).
+
+The examples below run inside an action handler.
+
+## Generate images[​](#generate-images "Direct link to Generate images")
+
+Image generation is in alpha
+
+The request and response format may change during alpha.
+
+```
+import { generateImage } from "ai";
+
+import { convexGateway } from "@convex-dev/ai-sdk-provider";
+
+
+
+const { images } = await generateImage({
+
+  model: convexGateway.imageModel("openai/gpt-image-1"),
+
+  prompt: "A mountain lake at sunrise",
+
+});
+```
+
+## Generate videos[​](#generate-videos "Direct link to Generate videos")
+
+Video generation is in alpha
+
+The request and response format may change during alpha.
+
+```
+import { experimental_generateVideo as generateVideo } from "ai";
+
+import { convexGateway } from "@convex-dev/ai-sdk-provider";
+
+
+
+const { video, providerMetadata } = await generateVideo({
+
+  model: convexGateway.videoModel("google/veo-3.1"),
+
+  prompt: "A camera pan across a mountain lake",
+
+  duration: 8,
+
+  aspectRatio: "16:9",
+
+  resolution: "1280x720",
+
+});
+
+
+
+const bytes = video.uint8Array;
+
+const cost = providerMetadata?.convexGateway?.cost;
+```
+
+The call waits for the video, then downloads it. The default timeout is ten minutes; the download limit is 64 MiB. Save `video.uint8Array` in [file storage](/file-storage/store-files.md).
+
+The AI SDK splits `n > 1` into separate requests. Cancelling a request does not cancel generation. A timeout or lost response can still incur a charge.
+
+An image in the prompt becomes the first frame. Set `frameImages` to choose frames, `inputReferences` to pass image, audio, or video references, and `generateAudio` to include audio. `fps` is unsupported and returns a warning.
+
+`providerOptions.convexGateway` accepts `resolution` (such as `720p`), `generate_audio`, `frame_images`, and `input_references`. Standard SDK options take precedence. Supported values depend on the [OpenRouter model](https://openrouter.ai/docs/guides/overview/multimodal/video-generation).
+
+## Async videos[​](#async-videos "Direct link to Async videos")
+
+Use `experimental_startVideo` when the action should return before the video is ready. If the gateway returns "Asynchronous video generation is not configured", contact Convex support.
+
+Completion callbacks are best effort. Save the operation handle so you can check status if a callback is missed.
+
+For local development, omit `webhookUrl` and use the [status and download methods](#retrieve-the-video). Callbacks require a cloud deployment's HTTPS `convex.site` URL; localhost URLs are not accepted.
+
+Create a job in your database before submitting the request. Pass its ID as `requestId` so the callback handler can look up the job.
+
+```
+import { experimental_startVideo as startVideo } from "ai";
+
+import { convexGateway } from "@convex-dev/ai-sdk-provider";
+
+
+
+async function startJob(requestId: string) {
+
+  const modelId = "google/veo-3.1";
+
+  const started = await startVideo({
+
+    model: convexGateway.videoModel(modelId),
+
+    prompt: "A camera pan across a mountain lake",
+
+    duration: 8,
+
+    webhookUrl: `${process.env.CONVEX_SITE_URL}/video-complete?requestId=${requestId}`,
+
+    maxRetries: 0,
+
+  });
+
+
+
+  return {
+
+    modelId,
+
+    operation: started.operation,
+
+    inferenceId: started.providerMetadata?.convexGateway?.inferenceId,
+
+    webhookSecret: started.providerMetadata?.convexGateway?.webhookSecret,
+
+  };
+
+}
+```
+
+Save the returned fields on the job before the action returns. Keep `webhookSecret` private. `maxRetries: 0` prevents automatic submission retries: a lost response can still mean a paid job was accepted. Callback URLs must use the deployment's own HTTPS `<deployment>.convex.site` origin; redirects are rejected. If `CONVEX_SITE_URL` uses a custom domain, use the deployment's default `convex.site` origin in the example instead.
+
+### Receive a callback[​](#receive-a-callback "Direct link to Receive a callback")
+
+In an [HTTP action](/functions/http-actions.md), load the job using `requestId` and verify the raw request body:
+
+```
+import { verifyVideoWebhook } from "@convex-dev/ai-sdk-provider";
+
+
+
+const event = await verifyVideoWebhook({
+
+  body: await request.text(),
+
+  signature: request.headers.get("x-convex-video-signature"),
+
+  secret: savedJob.webhookSecret,
+
+});
+
+
+
+if (event.id !== savedJob.inferenceId) {
+
+  return new Response("Wrong job", { status: 400 });
+
+}
+```
+
+Save the event in a mutation. Check `(event.id, event.status)` in that mutation so repeated callbacks update the job once. For `completed`, schedule an action to download the video. `failed`, `cancelled`, and `expired` are terminal errors.
+
+Return 204 after saving the event. If the job's secret has not been saved yet, return a non-2xx response.
+
+### Retrieve the video[​](#retrieve-the-video "Direct link to Retrieve the video")
+
+In a later action, use the saved operation to check status and download:
+
+```
+const model = convexGateway.videoModel(savedJob.modelId);
+
+const status = await model.getStatus({ operation: savedJob.operation });
+
+
+
+if (status.status === "completed") {
+
+  const result = await model.download({ operation: savedJob.operation });
+
+  const video = result.videos[0];
+
+  const cost = result.providerMetadata?.convexGateway?.cost;
+
+}
+```
+
+`getStatus` returns `pending`, `completed`, or `error`. When the status is `error`, the `error` field contains the error message. Save the downloaded video in file storage; each `download` call fetches it again. Operations expire after seven days. The provider may retain the video for less time.
+
+Omit `webhookUrl` to use status checks alone. If a completion callback is missed, use the saved operation to check the job and retrieve its result. Applications that need automatic recovery can periodically check unfinished jobs.
 
 
 ---
@@ -5371,11 +5713,7 @@ See [Getting started](/ai-gateway/setup.md) for how to send a request, and [HTTP
 
 > For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
-The Convex AI Gateway is a managed service that lets your app talk to LLMs from [actions](/functions/actions.md). Convex holds the provider credentials, so you don't need to obtain, store, or rotate a key. Your action authenticates with a short-lived token scoped to your deployment.
-
-The AI Gateway is in beta
-
-The AI Gateway<!-- --> <!-- -->is<!-- --> currently a [beta feature](/production/state/.md#beta-features). If you have feedback or feature requests, [let us know on Discord](https://convex.dev/community)!
+The Convex AI Gateway is a managed service that lets your app call AI models from [actions](/functions/actions.md). Convex holds the provider credentials, so you don't need to obtain, store, or rotate a key. Your action authenticates with a short-lived token scoped to your deployment.
 
 ```
 const { text } = await generateText({
@@ -5391,6 +5729,10 @@ See [Getting started](/ai-gateway/setup.md) for the full setup.
 
 ## Supported endpoints[​](#supported-endpoints "Direct link to Supported endpoints")
 
+### Text generation[​](#text-generation "Direct link to Text generation")
+
+See [Getting started](/ai-gateway/setup.md) for text generation and embedding examples.
+
 | Endpoint                    | What it does                                    |
 | --------------------------- | ----------------------------------------------- |
 | `GET /v1/models`            | List available models                           |
@@ -5399,18 +5741,43 @@ See [Getting started](/ai-gateway/setup.md) for the full setup.
 | `POST /v1/messages`         | Anthropic Messages, streaming and non-streaming |
 | `POST /v1/responses`        | OpenAI Responses, streaming and non-streaming   |
 
-An unsupported path returns `400` with `unsupported_endpoint`.
+### Decisions with Jev[​](#decisions-with-jev "Direct link to Decisions with Jev")
+
+Call `/alpha/decisions` to classify or score data with Jev. See [Decisions](/ai-gateway/api.md#post-alphadecisions) for the request format.
+
+Decisions is in alpha
+
+The `/alpha/decisions` request and response format may change during alpha.
+
+### Images and videos[​](#images-and-videos "Direct link to Images and videos")
+
+| Endpoint                      | What it does                     |
+| ----------------------------- | -------------------------------- |
+| `POST /v1/images/generations` | Generate images                  |
+| `POST /v1/videos/generations` | Wait for a video and download it |
+| `POST /v1/videos`             | Start an async video job         |
+| `POST /v1/videos/status`      | Check an async job               |
+| `POST /v1/videos/download`    | Download a completed async video |
+
+See [Images and videos](/ai-gateway/images-and-videos.md) for SDK examples and async availability requirements.
+
+Image and video generation are in alpha
+
+The request and response format may change during alpha.
 
 See [HTTP API](/ai-gateway/api.md) for the request and response shapes.
 
 ## Who can use it[​](#who-can-use-it "Direct link to Who can use it")
 
-The AI Gateway is available to teams on a [paid plan](https://www.convex.dev/pricing). It works on Convex Cloud deployments, both production and development. If your team or deployment can't use it, getting a token fails with one of these errors:
+The AI Gateway is available to teams on a [paid plan](https://www.convex.dev/pricing). It works on Convex Cloud production and development deployments, and on [local deployments linked to a Convex project](/ai-gateway/setup.md#local-development).
 
-| Situation                                        | Error                  | What to do                                                                                         |
-| ------------------------------------------------ | ---------------------- | -------------------------------------------------------------------------------------------------- |
-| Free plan, or gateway disabled for the team      | `AiGatewayDisabled`    | Upgrade, or email <support@convex.dev> if this looks wrong                                         |
-| Local backend or [self-hosted](/self-hosting.md) | `AiGatewayUnavailable` | Call the provider with your own key ([environment variable](/production/environment-variables.md)) |
+If your team or deployment can't use the gateway, getting a token fails with one of these errors:
+
+| Situation                                   | Error                  | What to do                                                                                                     |
+| ------------------------------------------- | ---------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Free plan, or gateway disabled for the team | `AiGatewayDisabled`    | Upgrade, or email <support@convex.dev> if this looks wrong                                                     |
+| Anonymous or outdated local deployment      | `AiGatewayUnavailable` | Log in, update the Convex CLI, then restart `npx convex dev` and accept the backend upgrade if prompted        |
+| [Self-hosted deployment](/self-hosting.md)  | `AiGatewayUnavailable` | Call the provider with your own key, stored as an [environment variable](/production/environment-variables.md) |
 
 ## Without the gateway[​](#without-the-gateway "Direct link to Without the gateway")
 
@@ -5505,10 +5872,12 @@ const agent = new Agent(components.agent, {
 
 ## Vercel AI SDK[​](#vercel-ai-sdk "Direct link to Vercel AI SDK")
 
-`convexGateway` works with `generateText`, `streamText`, `embed`, and `embedMany` from the [Vercel AI SDK](https://ai-sdk.dev/). It needs `convex` 1.45+ and AI SDK 7, and runs in the default runtime and [Node.js actions](/functions/runtimes.md):
+`convexGateway` works with `generateText`, `streamText`, `embed`, and `embedMany` from the [Vercel AI SDK](https://ai-sdk.dev/). Use `@convex-dev/ai-sdk-provider` 0.2.0 or later with `convex` 1.45 or later and AI SDK 7.0.105 or later. The provider works in the default runtime and [Node.js actions](/functions/runtimes.md).
+
+For a Node.js action, set [`node.nodeVersion`](/production/project-configuration.md#configuring-the-nodejs-version) to `"22"` or `"24"` in `convex.json`. The default Convex runtime doesn't need this setting.
 
 ```
-npm install @convex-dev/ai-sdk-provider ai
+npm install @convex-dev/ai-sdk-provider@^0.2.0 ai
 ```
 
 ```
@@ -5569,13 +5938,67 @@ for await (const chunk of result.textStream) {
 
 ### Choose a model interface[​](#choose-a-model-interface "Direct link to Choose a model interface")
 
-For text generation, start with `convexGateway(model)`. It works across model providers and is the recommended default. Use the native Messages or Responses interface only when you need endpoint-specific provider features:
+For text generation, start with `convexGateway(model)`, which uses Chat Completions across model providers. Use the native Messages or Responses interface when you need endpoint-specific provider features:
 
 ```
 const messagesModel = convexGateway.messages("anthropic/claude-sonnet-4.5");
 
 const responsesModel = convexGateway.responses("openai/gpt-5");
 ```
+
+The Responses endpoint is stateless. The provider sets `store: false`; it does not support `store: true` or `previous_response_id`.
+
+### Decisions with Jev[​](#decisions-with-jev "Direct link to Decisions with Jev")
+
+Decisions is in alpha
+
+`convexGateway.evaluationModel()` uses `/alpha/decisions`. The endpoint and AI SDK's experimental evaluation interface may change during alpha.
+
+Use AI SDK's `evaluate` to classify or score data with Jev from an action:
+
+```
+import { experimental_evaluate as evaluate } from "ai";
+
+import { convexGateway } from "@convex-dev/ai-sdk-provider";
+
+
+
+const decision = await evaluate({
+
+  model: convexGateway.evaluationModel("typesafe/jev-1.13"),
+
+  state: { ticket: "Customer cannot sign in" },
+
+  questions: {
+
+    priority: {
+
+      type: "choice",
+
+      instructions: "Choose the response priority",
+
+      criteria: {
+
+        urgent: "Respond now",
+
+        normal: "Respond today",
+
+      },
+
+    },
+
+  },
+
+});
+
+
+
+console.log(decision.answers.priority.choice);
+```
+
+Questions can use `choice`, `score`, or `boolean`. Boolean answers contain a `probability` between 0 and 1. The provider translates this to the HTTP API's `noul` question type and authenticates with `getServiceToken("ai-gateway")`. Pass `abortSignal` to `evaluate` to cancel a request.
+
+### Embeddings[​](#embeddings "Direct link to Embeddings")
 
 Create embeddings with `embedMany`. The AI SDK automatically splits batches larger than the gateway's 512-input limit:
 
@@ -5594,6 +6017,10 @@ const { embeddings } = await embedMany({
 
 });
 ```
+
+### Images and videos[​](#images-and-videos "Direct link to Images and videos")
+
+Use `convexGateway.imageModel()` with `generateImage`, or `convexGateway.videoModel()` with `experimental_generateVideo` and `experimental_startVideo`. Image and video generation are in alpha. See [Images and videos](/ai-gateway/images-and-videos.md) for examples and callback handling.
 
 ## Manual fetch[​](#manual-fetch "Direct link to Manual fetch")
 
@@ -5651,11 +6078,29 @@ export const chat = action({
 });
 ```
 
+For Decisions requests with `fetch`, see the [HTTP API example](/ai-gateway/api.md#post-alphadecisions).
+
 See [HTTP API](/ai-gateway/api.md) for request and response shapes.
+
+## Local development[​](#local-development "Direct link to Local development")
+
+Local development requires `convex` 1.46 or later, an up-to-date local backend, and a deployment linked to a project whose team has AI Gateway access. From your project directory, run:
+
+```
+npx convex login
+
+npx convex deployment select local
+
+npx convex dev
+```
+
+Restart `npx convex dev` after signing in if it was already running, and accept the backend upgrade if prompted. The examples above, including `getServiceToken("ai-gateway")`, work unchanged. See [Local deployments](/cli/local-deployments.md) for more setup options.
+
+Inference runs in the cloud and is charged to the linked project's team. Anonymous local deployments cannot use the gateway.
 
 ## Token and timeouts[​](#token-and-timeouts "Direct link to Token and timeouts")
 
-`getServiceToken("ai-gateway")` returns a short-lived token scoped to your deployment. It only works inside a running action, and repeated calls in the same action reuse one token. Keep the token inside your action: don't return it to clients or store it in environment variables.
+Call `getServiceToken("ai-gateway")` inside an action whenever a gateway request needs a credential. It returns a short-lived token scoped to your deployment; the action runtime caches and refreshes it as needed. Keep the token private. Don't return it to clients, store it in environment variables, or cache it yourself.
 
 The request runs inside your action, so a long completion can hit the [action timeout](/production/state/limits.md#execution-time-and-scheduling) (30 minutes in the Convex runtime, 10 minutes in Node) and fail as an action error rather than a gateway error.
 
@@ -5680,11 +6125,21 @@ To see which functions spent the money, scroll to the breakdown by function and 
 
 See the [usage page docs](/dashboard/teams/teams.md#usage) for the rest of the page.
 
+## Usage limits[​](#usage-limits "Direct link to Usage limits")
+
+Set daily or monthly AI Gateway limits for a cloud deployment from **Settings → Usage Limits**. Choose the **AI Gateway** metric and set a disable threshold in dollars. Production and preview deployments also support warning thresholds. Reaching the disable threshold disables the whole deployment, not just AI Gateway requests.
+
+![Deployment usage limits, including AI Gateway spending thresholds](/screenshots/storybook/pages_project_deployment_settings_usage_limits_light.webp)
+
+See [Usage limits](/production/usage-limits.md) for thresholds and reset windows.
+
 ## How billing works[​](#how-billing-works "Direct link to How billing works")
 
-We charge the same rates as [OpenRouter](https://openrouter.ai/models). Price per token depends on the model, when you use it, and whether the tokens are cached. The charge appears as an AI Gateway line item on your Convex invoice, in dollars.
+We charge the same rates as [OpenRouter](https://openrouter.ai/models). Price per token depends on the model, when you use it, and whether the tokens are cached. Image and video prices depend on the model and generation options, such as resolution and duration. Cancelling a video request after submission can still incur its generation cost. The charge appears as an AI Gateway line item on your Convex invoice, in dollars.
 
 [Spending limits](/dashboard/teams/teams.md#spending-limits) apply to AI Gateway spend like any other usage. Set a limit on the team billing page to cap what your team pays per month.
+
+Requests from a project-connected local deployment are attributed to that project's team and count toward the same team spending limit. Local deployments do not have a separate deployment-level live usage meter. Spending-limit state is checked when the gateway credential is minted, so an in-flight request or an already issued short-lived credential may finish after the limit is reached.
 
 
 ---
@@ -12667,13 +13122,15 @@ Extra context available in Convex action functions.
 
 ▸ **getFunctionMetadata**(): `Promise`<[`FunctionMetadata`](/api/modules/server.md#functionmetadata)>
 
+Metadata about the currently executing Convex function.
+
 #### Returns[​](#returns "Direct link to Returns")
 
 `Promise`<[`FunctionMetadata`](/api/modules/server.md#functionmetadata)>
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[server/meta.ts:178](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L178)
+[server/meta.ts:202](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L202)
 
 ***
 
@@ -12681,13 +13138,15 @@ Extra context available in Convex action functions.
 
 ▸ **getDeploymentMetadata**(): `Promise`<[`DeploymentMetadata`](/api/modules/server.md#deploymentmetadata)>
 
+Metadata about the deployment this function is running on.
+
 #### Returns[​](#returns-1 "Direct link to Returns")
 
 `Promise`<[`DeploymentMetadata`](/api/modules/server.md#deploymentmetadata)>
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/meta.ts:179](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L179)
+[server/meta.ts:206](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L206)
 
 ***
 
@@ -12695,13 +13154,19 @@ Extra context available in Convex action functions.
 
 ▸ **getRequestMetadata**(): `Promise`<[`RequestMetadata`](/api/modules/server.md#requestmetadata)>
 
+Metadata about the HTTP request that triggered the current function execution.
+
+`ip` and `userAgent` are `null` when the function was not triggered by an HTTP request (e.g. scheduled jobs or cron jobs).
+
+Functions called from within a function (i.e. using `runMutation` or `runAction`) will have the same request metadata as the parent function.
+
 #### Returns[​](#returns-2 "Direct link to Returns")
 
 `Promise`<[`RequestMetadata`](/api/modules/server.md#requestmetadata)>
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[server/meta.ts:180](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L180)
+[server/meta.ts:216](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L216)
 
 
 ---
@@ -15356,6 +15821,8 @@ Extra context available in Convex mutation functions.
 
 ▸ **getFunctionMetadata**(): `Promise`<[`FunctionMetadata`](/api/modules/server.md#functionmetadata)>
 
+Metadata about the currently executing Convex function.
+
 #### Returns[​](#returns "Direct link to Returns")
 
 `Promise`<[`FunctionMetadata`](/api/modules/server.md#functionmetadata)>
@@ -15366,13 +15833,17 @@ Extra context available in Convex mutation functions.
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[server/meta.ts:133](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L133)
+[server/meta.ts:136](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L136)
 
 ***
 
 ### getTransactionMetrics[​](#gettransactionmetrics "Direct link to getTransactionMetrics")
 
 ▸ **getTransactionMetrics**(): `Promise`<[`TransactionMetrics`](/api/modules/server.md#transactionmetrics)>
+
+The remaining headroom for a transaction before hitting limits.
+
+See <https://docs.convex.dev/production/state/limits>
 
 #### Returns[​](#returns-1 "Direct link to Returns")
 
@@ -15384,13 +15855,15 @@ Extra context available in Convex mutation functions.
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/meta.ts:134](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L134)
+[server/meta.ts:142](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L142)
 
 ***
 
 ### getDeploymentMetadata[​](#getdeploymentmetadata "Direct link to getDeploymentMetadata")
 
 ▸ **getDeploymentMetadata**(): `Promise`<[`DeploymentMetadata`](/api/modules/server.md#deploymentmetadata)>
+
+Metadata about the deployment this function is running on.
 
 #### Returns[​](#returns-2 "Direct link to Returns")
 
@@ -15402,7 +15875,35 @@ Extra context available in Convex mutation functions.
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[server/meta.ts:135](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L135)
+[server/meta.ts:146](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L146)
+
+***
+
+### getSnapshotTs[​](#getsnapshotts "Direct link to getSnapshotTs")
+
+▸ **getSnapshotTs**(): `bigint`
+
+Returns the timestamp of the database snapshot this transaction reads from, in nanoseconds.
+
+All commits at or before this timestamp are observable within the transaction, and no later commits are. The value is fixed for the lifetime of the transaction and shared with all nested `runMutation` and non-stale `runQuery` calls. If a nested query is called with `useStaleSnapshot: true`, then the nested query may in a future backend version choose an older snapshotTs.
+
+It is on the same clock as `db.vars.commitTs`: documents observable in this transaction have `commitTs` values at or before this timestamp, and no new documents will be written with a `commitTs` at or below this, including from the current transaction. When reading documents with an index in commitTs order, you can use this as an upper bound to prevent conflicting with racing inserts.
+
+Since the timestamp differs on every execution, calling this in a query limits caching of the query's result the same way `Date.now()` does.
+
+Note: this should not be compared to `_creationTime` or `Date.now()`, as those are based on wall-clock time rather than the database clock, and aren't guaranteed to follow commit order.
+
+#### Returns[​](#returns-3 "Direct link to Returns")
+
+`bigint`
+
+#### Inherited from[​](#inherited-from-3 "Direct link to Inherited from")
+
+[QueryMeta](/api/interfaces/server.QueryMeta.md).[getSnapshotTs](/api/interfaces/server.QueryMeta.md#getsnapshotts)
+
+#### Defined in[​](#defined-in-3 "Direct link to Defined in")
+
+[server/meta.ts:172](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L172)
 
 ***
 
@@ -15410,13 +15911,19 @@ Extra context available in Convex mutation functions.
 
 ▸ **getRequestMetadata**(): `Promise`<[`RequestMetadata`](/api/modules/server.md#requestmetadata)>
 
-#### Returns[​](#returns-3 "Direct link to Returns")
+Metadata about the HTTP request that triggered the current function execution.
+
+`ip` and `userAgent` are `null` when the function was not triggered by an HTTP request (e.g. scheduled jobs or cron jobs).
+
+Functions called from within a function (i.e. using `runMutation`) will have the same request metadata as the parent function.
+
+#### Returns[​](#returns-4 "Direct link to Returns")
 
 `Promise`<[`RequestMetadata`](/api/modules/server.md#requestmetadata)>
 
-#### Defined in[​](#defined-in-3 "Direct link to Defined in")
+#### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[server/meta.ts:169](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L169)
+[server/meta.ts:190](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L190)
 
 
 ---
@@ -16464,13 +16971,15 @@ Extra context available in Convex query functions.
 
 ▸ **getFunctionMetadata**(): `Promise`<[`FunctionMetadata`](/api/modules/server.md#functionmetadata)>
 
+Metadata about the currently executing Convex function.
+
 #### Returns[​](#returns "Direct link to Returns")
 
 `Promise`<[`FunctionMetadata`](/api/modules/server.md#functionmetadata)>
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[server/meta.ts:133](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L133)
+[server/meta.ts:136](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L136)
 
 ***
 
@@ -16478,13 +16987,17 @@ Extra context available in Convex query functions.
 
 ▸ **getTransactionMetrics**(): `Promise`<[`TransactionMetrics`](/api/modules/server.md#transactionmetrics)>
 
+The remaining headroom for a transaction before hitting limits.
+
+See <https://docs.convex.dev/production/state/limits>
+
 #### Returns[​](#returns-1 "Direct link to Returns")
 
 `Promise`<[`TransactionMetrics`](/api/modules/server.md#transactionmetrics)>
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/meta.ts:134](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L134)
+[server/meta.ts:142](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L142)
 
 ***
 
@@ -16492,13 +17005,39 @@ Extra context available in Convex query functions.
 
 ▸ **getDeploymentMetadata**(): `Promise`<[`DeploymentMetadata`](/api/modules/server.md#deploymentmetadata)>
 
+Metadata about the deployment this function is running on.
+
 #### Returns[​](#returns-2 "Direct link to Returns")
 
 `Promise`<[`DeploymentMetadata`](/api/modules/server.md#deploymentmetadata)>
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[server/meta.ts:135](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L135)
+[server/meta.ts:146](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L146)
+
+***
+
+### getSnapshotTs[​](#getsnapshotts "Direct link to getSnapshotTs")
+
+▸ **getSnapshotTs**(): `bigint`
+
+Returns the timestamp of the database snapshot this transaction reads from, in nanoseconds.
+
+All commits at or before this timestamp are observable within the transaction, and no later commits are. The value is fixed for the lifetime of the transaction and shared with all nested `runMutation` and non-stale `runQuery` calls. If a nested query is called with `useStaleSnapshot: true`, then the nested query may in a future backend version choose an older snapshotTs.
+
+It is on the same clock as `db.vars.commitTs`: documents observable in this transaction have `commitTs` values at or before this timestamp, and no new documents will be written with a `commitTs` at or below this, including from the current transaction. When reading documents with an index in commitTs order, you can use this as an upper bound to prevent conflicting with racing inserts.
+
+Since the timestamp differs on every execution, calling this in a query limits caching of the query's result the same way `Date.now()` does.
+
+Note: this should not be compared to `_creationTime` or `Date.now()`, as those are based on wall-clock time rather than the database clock, and aren't guaranteed to follow commit order.
+
+#### Returns[​](#returns-3 "Direct link to Returns")
+
+`bigint`
+
+#### Defined in[​](#defined-in-3 "Direct link to Defined in")
+
+[server/meta.ts:172](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L172)
 
 
 ---
@@ -23224,7 +23763,7 @@ export default crons;
 
 Get a short-lived credential for calling a Convex-managed service.
 
-This function can only be called while an action is running. The credential is scoped to the current deployment and should be sent as a bearer token. Repeated calls in the same action reuse one token; a failed mint is not cached, so a later call retries.
+This function can only be called while an action is running. The credential is scoped to the current deployment and should be sent as a bearer token. The action runtime caches and refreshes credentials as needed, so call this function whenever making a service request.
 
 #### Parameters[​](#parameters-14 "Direct link to Parameters")
 
@@ -30186,6 +30725,8 @@ Instead of syncing code to a Convex dev deployment hosted in the cloud, you can 
 Each Convex deployment contains its own data, functions, scheduled functions, etc. A project has one production deployment, up to one cloud deployment for development per team member, and potentially many transient [preview deployments](/production/multiple-deployments.md#preview).
 
 You can also develop with Convex using a deployment running on your own machine. Since the deployment is running locally, code sync is faster and means resources like functions calls and database bandwidth don't count against [the quotas for your Convex plan](https://www.convex.dev/pricing).
+
+[AI Gateway](/ai-gateway/setup.md#local-development) requests still use the cloud gateway and are charged to the linked project's team, even when your functions run locally.
 
 You can use local deployments with an existing Convex project, and view your deployment in the Convex dashboard under your project. You can also use local deployments without a Convex account and debug and inspect them with a locally running version of the Convex dashboard.
 
@@ -53363,12 +53904,12 @@ You can configure usage limits from the [usage limits page](https://dashboard.co
 
 ## Thresholds[​](#thresholds "Direct link to Thresholds")
 
-Each metric can have two thresholds, each enforced over a daily or monthly window:
+Each metric supports a disable threshold. Production and preview deployments also support a warning threshold. Each threshold is enforced over a daily or monthly window:
 
 * The **warning threshold** is a soft limit: when it is exceeded, an event is recorded on the deployment's [history page](/dashboard/deployments/history.md).
 * The **disable threshold** is a hard limit: when it is exceeded, the deployment is disabled for the rest of the window, and new function calls return an error explaining that the deployment exceeded a usage limit.
 
-When either threshold is reached on a Production or Preview deployments, Convex sends a notification email to all members of your team. Development deployments do not receive email notifications.
+When either threshold is reached on a production or preview deployment, Convex sends a notification email to all members of your team. Development deployments do not receive email notifications.
 
 A deployment disabled by a usage limit is re-enabled automatically when the window rolls over, or as soon as you raise, disable, or delete the limit that was triggered.
 
@@ -53397,6 +53938,7 @@ The full list of metrics you can configure a usage limit for are:
 | Database I/O                    | GB       | Bandwidth used reading from and writing to the database.                                                                                                               |
 | Search queries                  | query-GB | Bandwidth used serving text and vector search queries.                                                                                                                 |
 | Data egress                     | GB       | Bandwidth used serving file downloads, outgoing fetch requests, and log stream egress.                                                                                 |
+| AI Gateway                      | USD      | Cost of model requests through the [AI Gateway](/ai-gateway/usage-and-billing.md).                                                                                     |
 
 ## Audit log[​](#audit-log "Direct link to Audit log")
 
@@ -59800,7 +60342,7 @@ const modules = import.meta.glob("./**/*.ts");
 
 ### Mocking `fetch` calls[​](#mocking-fetch-calls "Direct link to mocking-fetch-calls")
 
-Assign your mock to `globalThis.fetch`, and restore the original when the test is done:
+You can use Vitest's [vi.stubGlobal](https://vitest.dev/guide/mocking.html#globals) method:
 
 convex/ai.test.ts
 
@@ -59821,31 +60363,23 @@ test("ai", async () => {
 
 
 
-  const originalFetch = globalThis.fetch;
+  vi.stubGlobal(
 
-  globalThis.fetch = vi.fn(
+    "fetch",
 
-    async () => ({ text: async () => "I am the overlord" }) as Response,
+    vi.fn(async () => ({ text: async () => "I am the overlord" }) as Response),
 
   );
 
 
 
-  try {
+  const reply = await t.action(api.messages.sendAIMessage, { prompt: "hello" });
 
-    const reply = await t.action(api.messages.sendAIMessage, {
+  expect(reply).toEqual("I am the overlord");
 
-      prompt: "hello",
 
-    });
 
-    expect(reply).toEqual("I am the overlord");
-
-  } finally {
-
-    globalThis.fetch = originalFetch;
-
-  }
+  vi.unstubAllGlobals();
 
 });
 
@@ -59853,8 +60387,6 @@ test("ai", async () => {
 
 const modules = import.meta.glob("./**/*.ts");
 ```
-
-Don't use Vitest's [vi.stubGlobal](https://vitest.dev/guide/mocking.html#globals) for `fetch` or any of the other globals `convex-test` manages — it defines a new property on `globalThis` instead of assigning through the existing one, which opts the global out of the isolation described in [Overriding globals inside functions](#overriding-globals-inside-functions).
 
 ### Overriding globals inside functions[​](#overriding-globals-inside-functions "Direct link to Overriding globals inside functions")
 

@@ -142,6 +142,10 @@ Anthropic models include a cache write cost in addition to cached input.
 |          |                |           |              |                          |       |              |        |
 | Grok 4.6 | GA             | Versatile | Long context | > 200K                   | $4.00 |        $1.00 | $12.00 |
 |          |                |           |              |                          |       |              |        |
+| Grok 4.7 | GA             | Versatile | Default      | ≤ 200K                   | $2.00 |        $0.50 |  $6.00 |
+|          |                |           |              |                          |       |              |        |
+| Grok 4.7 | GA             | Versatile | Long context | > 200K                   | $4.00 |        $1.00 | $12.00 |
+|          |                |           |              |                          |       |              |        |
 
 ### Moonshot AI
 

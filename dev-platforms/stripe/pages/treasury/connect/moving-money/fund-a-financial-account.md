@@ -216,6 +216,14 @@ curl https://api.stripe.com/v1/account_sessions \
   -d "components[account_management][features][external_account_collection]=true"
 ```
 
+Alternatively, you can verify a US bank account using the API:
+
+1. [Create a US bank account](https://docs.stripe.com/api/v2/core/vault/us-bank-accounts/create.md).
+2. [Send microdeposits](https://docs.stripe.com/api/v2/core/vault/us-bank-accounts/send-microdeposits.md).
+3. [Confirm the microdeposit amounts or descriptor code](https://docs.stripe.com/api/v2/core/vault/us-bank-accounts/confirm-microdeposits.md).
+
+After the `USBankAccount` verification status becomes `verified`, you can use the resulting `usba_*` credential for inbound transfers.
+
 ### Create an inbound transfer
 
 You or your connected account can initiate an inbound transfer to move funds into their financial account from their linked external account.

@@ -135,9 +135,22 @@ In testing environments, you can enter any alphanumeric string that is in the co
 
 ## Validation 
 
-During the Checkout Session, Stripe verifies that the provided tax IDs are formatted correctly, but not that they’re valid. You’re responsible for ensuring the validity of customer information collected during checkout. To help, Stripe automatically performs asynchronous validation against government databases for [Australian Business Numbers (ABNs)](https://docs.stripe.com/tax/invoicing/tax-ids.md#australian-business-numbers-abn), [European Value Added Tax (EU VAT)](https://docs.stripe.com/tax/invoicing/tax-ids.md#european-value-added-tax-eu-vat-numbers), and [United Kingdom Value Added Tax (GB VAT)](https://docs.stripe.com/tax/invoicing/tax-ids.md#united-kingdom-value-added-tax-gb-vat-numbers) numbers. Learn more about the [validation we perform](https://docs.stripe.com/tax/invoicing/tax-ids.md#validation), and how to consume the status of those checks.
+During the Checkout Session, Stripe verifies that the provided tax IDs are formatted correctly, but not that they’re valid. You’re responsible for ensuring the validity of customer information collected during checkout.
 
-If you use Stripe Tax and your customer provides a tax ID, Stripe Tax applies the reverse charge or zero rate according to applicable laws, as long as the tax ID conforms to the necessary number format, regardless of its validity.
+Stripe automatically performs asynchronous validation against government databases for [Australian Business Numbers (ABNs)](https://docs.stripe.com/tax/invoicing/tax-ids.md#australian-business-numbers-abn), [European Value Added Tax (EU VAT)](https://docs.stripe.com/tax/invoicing/tax-ids.md#european-value-added-tax-eu-vat-numbers), and [United Kingdom Value Added Tax (GB VAT)](https://docs.stripe.com/tax/invoicing/tax-ids.md#united-kingdom-value-added-tax-gb-vat-numbers) numbers.
+
+Stripe sends an event when verification finishes for a tax ID saved to either of these objects:
+
+- For a [Customer](https://docs.stripe.com/api/customers/object.md), listen for the [customer.tax_id.updated](https://docs.stripe.com/api/events/types.md#event_types-customer.tax_id.updated) snapshot event. Inspect [data.object.verification.status](https://docs.stripe.com/api/tax_ids/object.md#tax_id_object-verification-status) in the event.
+- For a [customer-configured Account](https://docs.stripe.com/api/v2/core/accounts/object.md#v2_account_object-configuration-customer), listen for the [v1.customer.tax_id.updated](https://docs.stripe.com/api/v2/core/events/event-types.md?api-version=preview#v2_event_types-v1.customer.tax_id.updated) thin event. Retrieve the Tax ID referenced by `related_object`, then inspect its [verification.status](https://docs.stripe.com/api/tax_ids/object.md#tax_id_object-verification-status).
+
+The status is `pending`, `verified`, `unverified`, or `unavailable`.
+
+The [checkout.session.completed](https://docs.stripe.com/api/events/types.md#event_types-checkout.session.completed) event can arrive before the authority verification finishes. Stripe sends the applicable tax ID update event only when Checkout saves the tax ID to a Customer or customer-configured Account. For [Guest customers](https://docs.stripe.com/payments/checkout/guest-customers.md), [customer_details.tax_ids](https://docs.stripe.com/api/checkout/sessions/object.md#checkout_session_object-customer_details-tax_ids) contains the collected tax ID type and value, but not a verification result, and Stripe doesn’t send a tax ID update event. To receive the result, save the tax ID to a Customer or customer-configured Account. Otherwise, verify the tax ID independently.
+
+Stripe reports the verification result, and you’re responsible for determining how to handle an `unverified` tax ID, based on your own compliance requirements. When automatic validation is `unavailable`, you must manually verify the tax ID.
+
+If you use Stripe Tax, Stripe Tax applies the reverse charge or zero rate according to applicable laws when the tax ID has the required number format, regardless of the government verification result.
 
 ## Supported tax ID types 
 

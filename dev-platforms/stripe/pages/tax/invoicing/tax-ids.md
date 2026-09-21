@@ -351,14 +351,19 @@ HMRC validation usually takes only a few seconds, but might take longer, dependi
 
 ### Validation webhooks and Dashboard display
 
-Because this validation process happens asynchronously, the customer.tax_id.updated webhook  notifies you of validation updates.
+Stripe sends an event when verification finishes for a tax ID saved to either of these objects:
+
+- For a [Customer](https://docs.stripe.com/api/customers/object.md), listen for the [customer.tax_id.updated](https://docs.stripe.com/api/events/types.md#event_types-customer.tax_id.updated) snapshot event. Inspect [data.object.verification.status](https://docs.stripe.com/api/tax_ids/object.md#tax_id_object-verification-status) in the event.
+- For a [customer-configured Account](https://docs.stripe.com/api/v2/core/accounts/object.md#v2_account_object-configuration-customer), listen for the [v1.customer.tax_id.updated](https://docs.stripe.com/api/v2/core/events/event-types.md?api-version=preview#v2_event_types-v1.customer.tax_id.updated) thin event. Retrieve the Tax ID referenced by `related_object`, then inspect its [verification.status](https://docs.stripe.com/api/tax_ids/object.md#tax_id_object-verification-status).
+
+The status is `pending`, `verified`, `unverified`, or `unavailable`.
+
+Stripe reports the verification result, and you’re responsible for determining how to handle an `unverified` tax ID, based on your own compliance requirements. When automatic validation is `unavailable`, you must manually verify the tax ID.
+
+If you use Stripe Tax, Stripe Tax applies the reverse charge or zero rate according to applicable laws when the tax ID has the required number format, regardless of the government verification result.
 ![](https://b.stripecdn.com/docs-statics-srv/assets/ids_valid_vat_registered.8c8f0b149549b3f3dd82b62f4e97ebfa.png)
 
 The Dashboard displays the validation results from government databases, including the customer name and address. However, it’s your responsibility to verify whether these validation results match the address and name on the customers page in the Dashboard.
-
-### Validation and tax calculations
-
-If you use Stripe Tax and your customer provides a tax ID, Stripe Tax applies the reverse charge or zero rate according to applicable laws, as long as the tax ID conforms to the necessary number format, regardless of its validity.
 
 ## Managing customer tax IDs 
 

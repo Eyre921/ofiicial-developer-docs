@@ -23,17 +23,20 @@ Automated US filing is available in all 46 US locations with a state-level sales
 
 ## Set up filing
 
-## Select the state for TaxJar to file in
+## Select the location you want to file in
 
 1. In the Dashboard, navigate to **Locations** > [Collecting and filing](https://dashboard.stripe.com/tax/registrations).
-2. Select the state where you want to set up filing.
-3. Click the overflow menu (⋯) on the right side, then select **Set up filing**. If you’re not already subscribed to [Tax Complete](https://stripe.com/tax/pricing), you can sign up now.
+2. Select the location where you want to file, then select **Set up filing**.
 
-Alternatively, you can go to **+ Quick Actions** and select **Setup filing**.
+> If you don’t have a [Tax Complete](https://stripe.com/tax/pricing) subscription, you’ll be prompted to sign up during setup.
 
-## Install the TaxJar app and create an account
+## Set up filing with TaxJar
 
-Select **Install** to connect the TaxJar App. Stripe will then create a TaxJar account for you. If you already have a TaxJar account, select this option and you’ll be redirected to TaxJar Support. This account lets you access TaxJar directly from your Stripe account without needing an additional login or password.
+Stripe files your US sales tax through TaxJar, a Stripe company that enables US filing. Select **Continue**, and Stripe will create a TaxJar account for you.
+
+This account lets you access TaxJar directly from your Stripe account without needing an additional login or password. You can access TaxJar from the Stripe Dashboard to view your filing history.
+
+> If you already have a TaxJar account, you’ll be redirected to TaxJar Support for assistance.
 
 ## Review your business information
 
@@ -60,57 +63,64 @@ The TaxJar team reviews your filing application and emails you if they need more
 
 If you need help during this process, contact [TaxJar Support](https://stripe-tax-filing.helpscoutdocs.com/article/1145-support).
 
-## Review your filing reports
+## How automatic filing works
 
-Each month, before TaxJar begins processing your returns, it sends a summary of your upcoming filings to the email address associated with your account. The email includes the US locations where you’re signed up for automated filing and reminds you to review your filing reports.
+Each month, before your tax filing begins processing, Stripe sends a summary of your upcoming filings to the email address associated with your TaxJar account. The email includes the locations where you’re signed up for automated filing and a link to review the details of what Stripe will file for you.
 
-You can view a summary of what TaxJar will file for you in the current month in the **Filings** tab within the TaxJar app. From there, you can see the estimated tax payment, including any filing discounts the state offers for on-time filing. Select **Review report on TaxJar** to see a detailed breakdown of what TaxJar will file on your behalf.
+You can also review these details in the Stripe Dashboard. Navigate to **Tax > Overview**. Under **Automatic filing with Stripe**, choose the relevant location and period to review what Stripe will file on your behalf.
 
-To reconcile this report with your Stripe data:
+These details show key totals such as total sales, tax collected, and estimated tax due. You can also review the transactions included in the filing and use filters to find specific transactions. It’s important you review your data for accuracy and completeness before Stripe begins filing for you.
 
-### Run the Itemized export in Stripe
+### Import additional transactions
 
-1. Log in to the [Stripe Dashboard](https://dashboard.stripe.com/).
-2. Select **+ Quick actions** > **Export transactions**.
-3. Under **Select a location**, choose the relevant state.
-4. Set your time zone to **UTC**. This ensures you’re comparing the same reporting periods in both Stripe and TaxJar.
-5. Select **Itemized export** and choose your preferred file format: CSV or XLSX.
-6. Select the box to send the export to your account email. We recommend this for exports with a large number of transactions.
-7. Select **Export**.
+If you need to include additional transactions from another platform in the filing period you’re reviewing, import them using Stripe’s CSV import feature. In the details for that relevant location and period, under **Transactions in this filing**, select **Import**.
 
-### Export transactions from TaxJar
+You can also import additional sales transactions from the Stripe Dashboard. Navigate to **Tax > Quick actions > Import transactions**, then upload your CSV file.
 
-1. From the **Filings** tab in the [TaxJar app](https://dashboard.stripe.com/dashboard?apps%5Bcom.app.taxjar%5D%5Bdrawer%5D=), select the relevant state, then click **View Report on TaxJar**.
-2. TaxJar directs you to the state tax report.
-3. Select the correct filing period, if needed.
-4. Select **View Transactions** to see all the sales from that filing period.
-5. From the **Actions** dropdown menu, select **Export Receipts to CSV**.
+For CSV formatting requirements, see [Import transactions](https://docs.stripe.com/tax/imports.md#csv-file-format-requirements).
 
-### Match individual transactions
+### How Stripe files for you
 
-To understand how a particular sale was handled, compare it in both export reports. Individual transactions can be located by their unique order number, which appears in the `id (column A)` of the Stripe itemized tax report and in `order_ID (column B)` of the TaxJar export.
+Stripe files your sales tax returns based on the amount of tax you actually collected. Amounts filed and remitted can vary slightly due to required prepayments, timely filing discounts, rounding, refunds, or incomplete addresses.
 
-### Understanding minor discrepancies
+**Prepayments**: Some tax authorities require prepayments and communicate when a prepayment is required. Prior prepayments made will decrease the amount of tax you owe for a relevant period while currently due prepayments increase the amount owed for a given period.
 
-TaxJar reports the sales tax that was collected through Stripe Tax. It’s common to see slight differences between the two reports, and these are generally caused by routine tax compliance procedures, such as:
-
-**Filing discounts**: Many US states offer a small discount if you file and pay on time. TaxJar automatically applies these discounts where applicable.
+**Filing discounts**: Many US states offer taxpayers a small discount if you file and pay on time. Stripe automatically applies these discounts when calculating the amount it will file.
 
 **Rounding rules specific to each jurisdiction**: Different tax authorities enforce their own standards for how they round figures on official returns. These rounding differences tend to be more apparent for businesses that process high volumes of lower-priced items, but they are both expected and necessary to stay compliant.
 
+**Refunds**: Stripe deducts refunds and returns from gross sales in the filing period when the refund occurred, regardless of the original transaction date. If refunds exceed sales in a given filing period, creating a negative balance, Stripe automatically carries those refunds forward to the next filing period. These refunds will be utilized once sufficient sales are available to offset these amounts.
+
 ### Common scenarios
 
-**Refunds**: TaxJar deducts refunds and returns from gross sales in the filing period when the refund occurred, regardless of the original transaction date. If refunds exceed sales in a given filing period, creating a negative balance, TaxJar automatically carries those refunds forward to the next filing period.
-
-**Transactions without automatic tax enabled**: The TaxJar tax return only includes transactions where automatic tax is enabled in Stripe Tax. Common examples include:
+**Transactions without automatic tax enabled**: Stripe only includes transactions where automatic tax is enabled. Common examples of transactions that would not be included:
 
 - Manual invoices created in Stripe without Stripe Tax applied
 - Transactions using manual tax rates
 - Sales processed before Stripe Tax was enabled on your account
+- Existing subscriptions that have [not yet been migrated to Stripe Tax](https://docs.stripe.com/billing/taxes/migration.md)
 
-TaxJar includes transactions where Stripe Tax calculated and collected the tax. To include other transactions in your tax filings, contact TaxJar support at [support@taxjar.com](mailto:support@taxjar.com).
+### View additional transaction details
+
+The details for each location will show the transactions Stripe will include in your filing. To review additional transaction-level detail, you can either click on any individual transaction or export itemized transaction data from Stripe.
+
+1. Log in to the [Stripe Dashboard](https://dashboard.stripe.com/).
+2. Select **+ Quick actions > Export transactions**.
+3. Under **Select a location**, choose the relevant state.
+4. Set your time zone to **UTC**.
+5. Select **Itemized export** and choose your preferred file format: CSV or XLSX.
+6. Select the box to send the export to your account email. We recommend this for exports with a large number of transactions.
+7. Select **Export**.
+
+### Understand differences in exported data
+
+In certain cases, not all transactions for a given location will be included in your filing. For example, local amusement taxes may be filed separately from state-level sales and use taxes included on the current return. As a result, the itemized export can differ from the transaction details shown for the relevant location and period.
 
 ### Next steps
 
-If you disagree with the filing report or need to make changes, you must [pause your filings](https://stripe-tax-filing.helpscoutdocs.com/article/1152-pause) before the 6th of the month at 6 PM ET. For help understanding specific differences or resolving issues, contact TaxJar support at [support@taxjar.com](mailto:support@taxjar.com). If everything looks correct, no action is required. TaxJar automatically begins processing filings as early as the 7th of the month and sends you a confirmation email when complete. You can view completed filings at any time in your [TaxJar Filing History](https://stripe-tax-filing.helpscoutdocs.com/article/1217-how-to-view-your-completed-filings).
+If all reviewed details are accurate, you don’t need to take further action. Stripe automatically begins processing filings as early as the 7th of the month. You receive an email when your filing is complete.
+
+If you need to make changes to an upcoming automatic filing, submit your request before the 6th of the month at 6 PM ET. In the details for the relevant location and period, click **Request changes** and provide details about the changes you need. After you submit your request, you’ll receive an update at the email address associated with your TaxJar account within three business days.
+
+You can view completed filings at any time in your [TaxJar Filing History](https://stripe-tax-filing.helpscoutdocs.com/article/1217-how-to-view-your-completed-filings).
 
