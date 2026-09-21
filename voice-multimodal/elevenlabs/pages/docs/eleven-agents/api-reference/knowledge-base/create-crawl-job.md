@@ -30,7 +30,6 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base
 This endpoint expects an object.
 
 - `url` (string, required) — URL to a page of documentation that the agent will have access to in order to interact with users.
-- `max_depth` (integer, optional, default: 3) — Maximum depth for crawling (1-5), defaults to 3.
 - `max_pages` (integer, optional, default: 1000) — Maximum number of pages to crawl (1-10,000), defaults to 1000.
 - `pattern` (string, optional) — If set, only URLs that match this pattern are included.
 - `sitemap_urls` (list of string, optional) — List of URLs to crawl from sitemap (optional, overrides automatic URL discovery).
@@ -38,6 +37,7 @@ This endpoint expects an object.
 - `enable_auto_sync` (boolean, optional, default: false) — Whether to enable auto-sync for this URL document.
 - `auto_remove` (boolean, optional, default: false) — Whether to automatically remove the document if the URL becomes unavailable. Only applicable when auto-sync is enabled.
 - `minimum_frequency_days` (integer, optional) — Minimum frequency (in days) at which the underlying eligible documents are refreshed. The actual interval may be shorter, never longer. Defaults to 7, tightened to the parent folder's frequency if that is stricter. Only applicable when auto-sync is enabled.
+- `max_depth` (integer, optional, default: 3, deprecated) — Deprecated - this field is a no-op and will be removed in a future version.
 
 ## Response
 

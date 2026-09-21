@@ -228,7 +228,9 @@ For the full list of base models supported by managed training (SFT, DPO, and RF
 
     <Tabs>
       <Tab title="UI">
-        Simply navigate to the `Fine-Tuning` tab, click `Fine-Tune a Model` and follow the wizard from there. You can even pick a LoRA model to start the training for continued training.
+        Simply navigate to the `Training` tab, click `New job` and follow the wizard from there. You can even pick a LoRA model to start the training for continued training.
+
+        <img alt="Training Pn" />
 
         <img alt="Training Pn" />
 

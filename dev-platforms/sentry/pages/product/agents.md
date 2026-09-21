@@ -18,7 +18,7 @@ Sentry helps you understand what's going on with your agent workflows. Using [ag
 
 To start debugging agents, you must have an existing Sentry account and project set up. If you don't have one, [create an account here](https://sentry.io/signup/).
 
-Use agent tracing by [setting up Sentry for Agents](https://docs.sentry.io/product/agents/getting-started.md) and [name your agents](https://docs.sentry.io/product/agents/naming.md) so they're identifiable in the dashboard.
+Use agent tracing by [setting up Sentry for Agents](https://docs.sentry.io/product/agents/getting-started.md) and [name your agents](https://docs.sentry.io/product/agents/naming.md) so they're identifiable in the dashboard. Then choose a [sampling strategy](https://docs.sentry.io/product/agents/sampling.md) that keeps complete agent runs without sampling all application traffic.
 
 ## [Example Use Cases](https://docs.sentry.io/product/agents.md#example-use-cases)
 

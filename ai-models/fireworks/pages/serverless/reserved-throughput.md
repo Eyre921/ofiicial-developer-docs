@@ -29,18 +29,18 @@ For example, with a **\$10-per-minute reservation**:
 
 <img alt="Bar chart showing eligible usage covered by a $10-per-minute reservation and usage above $10 billed as overage" />
 
-## Example: Kimi K3
+## Example: GLM 5.3
 
-Assume an average workload shape of 5,000 uncached input tokens, 50,000 cached input tokens (about a 91% cache hit rate), and 200 output tokens per request, with average QPS of 4 and p95 QPS of 5.
+Assume an average workload shape of 8,000 uncached input tokens, 50,000 cached input tokens (about an 86% cache hit rate), and 2,000 output tokens per request, with average QPS of 4 and p95 QPS of 5.
 
 You decide to reserve to p95, so you size for 5 QPS × 60 seconds = 300 requests per minute.
 
-| Token type     | Tokens per request | TPM at 300 requests/min | List price   | Cost per minute |
-| -------------- | ------------------ | ----------------------- | ------------ | --------------- |
-| Uncached input | 5,000              | 1.5M                    | \$3.00 / 1M  | \$4.50          |
-| Cached input   | 50,000             | 15M                     | \$0.30 / 1M  | \$4.50          |
-| Output         | 200                | 0.06M                   | \$15.00 / 1M | \$0.90          |
-| **Total**      |                    |                         |              | **\$9.90**      |
+| Token type     | Tokens per request | TPM at 300 requests/min | List price  | Cost per minute |
+| -------------- | ------------------ | ----------------------- | ----------- | --------------- |
+| Uncached input | 8,000              | 2.4M                    | \$1.40 / 1M | \$3.36          |
+| Cached input   | 50,000             | 15M                     | \$0.26 / 1M | \$3.90          |
+| Output         | 2,000              | 0.6M                    | \$4.40 / 1M | \$2.64          |
+| **Total**      |                    |                         |             | **\$9.90**      |
 
 Your p95 workload costs \$9.90 per minute, so you purchase a **\$10-per-minute reservation** for some headroom.
 
@@ -59,26 +59,26 @@ For example, with a \$10-per-minute reservation and \$12 of usage in one minute,
 
 Reserved Throughput can be allocated to any model served on Serverless. We are working on making this self-service. Until then, contact your Fireworks account team to move your reservation.
 
-For example, consider moving all of a \$10-per-minute reservation from Kimi K3 to DeepSeek V4 Pro (0813), while holding the workload shape from the previous example constant:
+For example, consider moving all of a \$10-per-minute reservation from GLM 5.3 to MiniMax M3, while holding the workload shape from the previous example constant:
 
-|                          | Kimi K3      | DeepSeek V4 Pro (0813) |
-| ------------------------ | ------------ | ---------------------- |
-| Uncached input           | \$3.00 / 1M  | \$1.32 / 1M            |
-| Cached input             | \$0.30 / 1M  | \$0.044 / 1M           |
-| Output                   | \$15.00 / 1M | \$3.96 / 1M            |
-| Cost per 1,000 requests  | \$33.00      | \$9.59                 |
-| Requests/min at \$10/min | \~303        | \~1,042                |
-| Sustained QPS            | \~5          | \~17                   |
+|                          | GLM 5.3     | MiniMax M3  |
+| ------------------------ | ----------- | ----------- |
+| Uncached input           | \$1.40 / 1M | \$0.30 / 1M |
+| Cached input             | \$0.26 / 1M | \$0.06 / 1M |
+| Output                   | \$4.40 / 1M | \$1.20 / 1M |
+| Cost per 1,000 requests  | \$33.00     | \$7.80      |
+| Requests/min at \$10/min | \~303       | \~1,282     |
+| Sustained QPS            | \~5         | \~21        |
 
-Because DeepSeek V4 Pro (0813) has lower token pricing than Kimi K3, the same \$10-per-minute reservation sustains roughly 3.4 times the throughput—about 17 QPS instead of 5.
+Because MiniMax M3 has lower token pricing than GLM 5.3, the same \$10-per-minute reservation sustains roughly 4.2 times the throughput—about 21 QPS instead of 5.
 
-The uplift is not a single price ratio. DeepSeek V4 Pro (0813) is 2.3 times cheaper on uncached input, 6.8 times cheaper on cached input, and 3.8 times cheaper on output. The improvement depends on your workload shape; a cache-heavy workload like this one benefits more than a generation-heavy workload.
+The uplift is not a single price ratio. MiniMax M3 is 4.7 times cheaper on uncached input, 4.3 times cheaper on cached input, and 3.7 times cheaper on output. The improvement depends on your workload shape; a cache-heavy workload like this one benefits more than a generation-heavy workload.
 
 ## Pricing and SLAs
 
 <AccordionGroup>
   <Accordion title="How is Reserved Throughput priced?">
-    Reserved throughput is priced per token at standard [Serverless list prices](/serverless/pricing).
+    Reserved throughput is priced per token
   </Accordion>
 
   <Accordion title="How should I size my reservation?">

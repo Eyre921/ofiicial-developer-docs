@@ -456,12 +456,17 @@ customers can contact support to request access.
 | `gpt-image-1`                 | Up to 5, plus a `mask`  | `aspect_ratio` (1:1, 3:2, 2:3), `quality`, `background`                 |
 | `gpt-image-1.5`               | Up to 5, plus a `mask`  | `aspect_ratio` (1:1, 3:2, 2:3), `quality`, `background`                 |
 | `gpt-image-2`                 | Up to 10, plus a `mask` | 15 aspect ratios, `resolution` (1K, 2K, 4K), `quality`                  |
+| `gpt-image-2.5-sunburst`      | Up to 10, plus a `mask` | 15 aspect ratios, `resolution` (1K, 2K, 4K), `quality` (up to `max`)    |
+| `gpt-image-2.5-flare`         | Up to 10, plus a `mask` | 15 aspect ratios, `resolution` (1K, 2K, 4K), `quality` (up to `max`)    |
 | `gemini-2.5-flash-image`      | Up to 5                 | `aspect_ratio`                                                          |
 | `gemini-3-pro-image`          | Up to 10                | `aspect_ratio`, `resolution` (1K, 2K, 4K)                               |
 | `gemini-3.1-flash-image`      | Up to 14                | `aspect_ratio` (including 1:4, 4:1, 1:8, 8:1), `resolution` (512 to 4K) |
 | `gemini-3.1-flash-lite-image` | Up to 14                | `aspect_ratio`, `resolution` (1K)                                       |
 | `bytedance-seedream-5-lite`   | Up to 10                | `aspect_ratio`, `resolution` (2K, 3K), `seed`                           |
 | `bytedance-seedream-5-pro`    | Up to 10                | `aspect_ratio`, `resolution` (1K, 2K), `seed`                           |
+
+The GPT Image 2.5 models accept `quality` values of `low`, `medium`, `high`, `xhigh`, and `max`, and
+default to `high`. GPT Image 2 stops at `high` and defaults to `medium`.
 
 ### Video models
 

@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1180 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1181 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -334,6 +334,7 @@
 - `langsmith/llm-gateway-coding-agents` — [Set up coding agents](pages/langsmith/llm-gateway-coding-agents.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-coding-agents)
 - `langsmith/llm-gateway-credits` — [Gateway Credits](pages/langsmith/llm-gateway-credits.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-credits)
 - `langsmith/llm-gateway-data-policy` — [Data policy](pages/langsmith/llm-gateway-data-policy.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-data-policy)
+- `langsmith/llm-gateway-decision-models` — [Decision models](pages/langsmith/llm-gateway-decision-models.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-decision-models)
 - `langsmith/llm-gateway-direct-model-access` — [Direct model access](pages/langsmith/llm-gateway-direct-model-access.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-direct-model-access)
 - `langsmith/llm-gateway-fallbacks` — [Model fallbacks](pages/langsmith/llm-gateway-fallbacks.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-fallbacks)
 - `langsmith/llm-gateway-header-policies` — [Per-customer policies](pages/langsmith/llm-gateway-header-policies.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-header-policies)

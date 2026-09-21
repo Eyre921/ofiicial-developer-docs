@@ -76,6 +76,10 @@ explicitly enabled by admins. Learn more about [Model approvals](/docs/overview/
 For API requests, ByteDance models are disabled by default and require explicit approval before
 use. Enterprise customers can contact support to request access.
 
+Every model below is available in the Image & Video app. Models that can also be called from the
+[Image & Video API](/docs/eleven-api/guides/cookbooks/image-and-video) list their `model_id` under
+**API**; the rest are app-only.
+
 #### Video generative models
 
 #### Seedance 2.0
@@ -114,9 +118,189 @@ A unified multimodal video model with audio-video joint generation, offering dir
 
 **Cost:** Varies based on selected settings and duration
 
+**API:** [`bytedance-seedance-v2`](/docs/api-reference/flows/video/create#request.body.bytedance-seedance-v2)
+
 Settings can be toggled to adjust credit consumption.
 
 Seedance 2.0 is not available in the United States.
+
+#### Seedance 2.0 Fast
+
+A faster, lower-cost variant of Seedance 2.0 with the same multimodal reference inputs, capped at 720p output.
+
+**Generation inputs:**
+
+* Text-to-Video
+* Start Frame
+* End Frame
+* Image References (up to 9)
+* Video References (up to 3, 15s combined)
+* Audio References (up to 3, 15s combined)
+
+**Features:**
+
+* Same reference handling as Seedance 2.0, with a combined cap of 12 references per generation
+* Frames and references are mutually exclusive: use a start or end frame, or references, not both
+* Flexible generation lengths from 4s up to 15s
+* Native sound control with audio enabled or disabled per generation
+* Batch creation with up to 4 generations at a time
+
+**Output options:**
+
+* Resolutions: 480p, 720p
+* Aspect ratios: 21:9, 16:9, 4:3, 1:1, 3:4, 9:16
+
+**Ideal for:**
+
+* Iterating on Seedance 2.0 prompts before a full-resolution render
+* Reference-driven clips where 720p output is sufficient
+
+**Cost:** Varies based on selected settings and duration
+
+**API:** [`bytedance-seedance-v2-fast`](/docs/api-reference/flows/video/create#request.body.bytedance-seedance-v2-fast)
+
+Seedance 2.0 Fast is not available in the United States.
+
+#### Seedance 2.0 Mini
+
+The smallest Seedance 2.0 variant: roughly twice as fast as Seedance 2.0 at about half the cost, with the same inputs and 720p output.
+
+**Generation inputs:**
+
+* Text-to-Video
+* Start Frame
+* End Frame
+* Image References (up to 9)
+* Video References (up to 3, 15s combined)
+* Audio References (up to 3, 15s combined)
+
+**Features:**
+
+* Same reference handling as Seedance 2.0, with a combined cap of 12 references per generation
+* Frames and references are mutually exclusive: use a start or end frame, or references, not both
+* Flexible generation lengths from 4s up to 15s
+* Native sound control with audio enabled or disabled per generation
+* Batch creation with up to 4 generations at a time
+
+**Output options:**
+
+* Resolutions: 480p, 720p
+* Aspect ratios: 21:9, 16:9, 4:3, 1:1, 3:4, 9:16
+
+**Ideal for:**
+
+* High-volume drafts and previews
+* Cost-sensitive workflows that still need audio and reference inputs
+
+**Cost:** Varies based on selected settings and duration
+
+**API:** [`bytedance-seedance-v2-mini`](/docs/api-reference/flows/video/create#request.body.bytedance-seedance-v2-mini)
+
+Seedance 2.0 Mini is not available in the United States.
+
+#### Seedance 2.5
+
+The successor to Seedance 2.0 with sharper realism, up to 50 combined image, video, and audio references, and generations up to 30 seconds.
+
+**Generation inputs:**
+
+* Text-to-Video
+* Start Frame
+* End Frame
+* Image References (up to 30)
+* Video References (up to 10, 30s combined)
+* Audio References (up to 10, 30s combined)
+
+**Features:**
+
+* No combined cap across reference types; audio-only references are accepted without an image or video
+* Frames and references are mutually exclusive
+* Flexible generation lengths from 4s up to 30s
+* Aspect ratio is taken from the start frame or reference video when one is provided
+* Native sound control with audio enabled or disabled per generation
+* Batch creation with up to 4 generations at a time
+
+**Output options:**
+
+* Resolutions: 480p, 720p
+* Aspect ratios: 21:9, 16:9, 4:3, 1:1, 3:4, 9:16
+
+**Ideal for:**
+
+* Long-form clips that need to stay consistent with many references
+* Dialogue and performance scenes driven by reference audio
+
+**Cost:** Varies based on selected settings and duration
+
+**API:** [`bytedance-seedance-v2.5`](/docs/api-reference/flows/video/create#request.body.bytedance-seedance-v2.5)
+
+Seedance 2.5 does not expose a seed control.
+
+Seedance 2.5 is not available in the United States.
+
+#### Seedance 2.5 Video Edit
+
+Edits an existing video by describing the changes. Output length and aspect ratio follow the input video.
+
+**Generation inputs:**
+
+* Video to edit (required, up to 30s)
+* Text prompt describing the edits
+* Image References (up to 30)
+* Additional Video References (up to 10, 30s combined)
+* Audio References (up to 10, 30s combined)
+
+**Features:**
+
+* No duration control: the output matches the input video length
+* Aspect ratio is taken from the input video
+* Native sound control with audio enabled or disabled per generation
+* Batch creation with up to 4 generations at a time
+
+**Output options:**
+
+* Resolutions: 480p, 720p
+
+**Ideal for:**
+
+* Changing wardrobe, props, lighting, or setting in existing footage
+* Style transfer that preserves the original motion
+
+**Cost:** Varies based on selected settings and duration
+
+Seedance 2.5 Video Edit is not available in the United States.
+
+#### Seedance 2.5 Video Extend
+
+Continues an existing video from where it ends, guided by a prompt and optional references.
+
+**Generation inputs:**
+
+* Video to extend (required, up to 30s)
+* Text prompt describing the continuation
+* Image References (up to 30)
+* Additional Video References (up to 10, 30s combined)
+* Audio References (up to 10, 30s combined)
+
+**Features:**
+
+* Extension length from 4s up to 30s
+* Aspect ratio is taken from the input video
+* Native sound control with audio enabled or disabled per generation
+* Batch creation with up to 4 generations at a time
+
+**Output options:**
+
+* Resolutions: 480p, 720p
+
+**Ideal for:**
+
+* Lengthening a shot that ends too early
+* Chaining several generations into a longer sequence
+
+**Cost:** Varies based on selected settings and duration
+
+Seedance 2.5 Video Extend is not available in the United States.
 
 #### Kling 3.0
 
@@ -252,6 +436,8 @@ A professional-grade model for high-quality, cinematic video generation.
 
 **Cost:** Varies based on selected settings and duration
 
+**API:** [`veo-3.1-generate-001`](/docs/api-reference/flows/video/create#request.body.veo-3.1-generate-001)
+
 Enabling and disabling sound will change the generation credits.
 
 #### Google Veo 3.1 Fast
@@ -283,6 +469,8 @@ A high-speed model optimized for rapid previews and generations, delivering shar
 
 **Cost:** Varies based on selected settings and duration
 
+**API:** [`veo-3.1-fast-generate-001`](/docs/api-reference/flows/video/create#request.body.veo-3.1-fast-generate-001)
+
 #### Google Veo 3.1 Lite
 
 A cost-efficient, high-speed variant of Veo 3.1 optimized for rapid generation at reduced compute.
@@ -307,6 +495,91 @@ A cost-efficient, high-speed variant of Veo 3.1 optimized for rapid generation a
 
 * High-volume content creation where speed and cost efficiency are prioritized
 * Rapid concept exploration and previews
+
+**Cost:** Varies based on selected settings and duration
+
+#### Gemini Omni Flash 1.1
+
+Google's physics-aware video model with native audio, up to 4K output, and both frame interpolation and reference-guided generation.
+
+**Generation inputs:**
+
+* Text-to-Video
+* Start Frame
+* End Frame
+* Image References (up to 10)
+* Video References (up to 3, each up to 10s)
+
+**Features:**
+
+* Frames and references are mutually exclusive: interpolate between frames, or guide with references
+* Fixed durations from 3s to 10s; duration follows the reference video when one is attached
+* Strong rendering of short on-screen text and labels
+* Batch creation with up to 4 generations at a time
+
+**Output options:**
+
+* Resolutions: 360p, 720p, 1080p, 4K
+* Aspect ratios: 16:9, 9:16
+
+**Ideal for:**
+
+* Explainers and kinetic typography with legible text
+* Physically grounded motion with consistent subjects across references
+
+**Cost:** Varies based on selected settings and duration
+
+#### Gemini Omni Flash 1.1 Extend
+
+Continues an existing video from where it ends using Gemini Omni Flash 1.1, for a combined length of up to 40 seconds.
+
+**Generation inputs:**
+
+* Video to extend (required, up to 30s)
+* Text prompt describing the continuation
+
+**Features:**
+
+* Extension length from 3s to 10s
+* Aspect ratio follows the input video
+* Batch creation with up to 4 generations at a time
+
+**Output options:**
+
+* Resolutions: 360p, 720p, 1080p, 4K
+
+**Ideal for:**
+
+* Lengthening Gemini Omni Flash generations without a visible cut
+* Building sequences longer than a single generation allows
+
+**Cost:** Varies based on selected settings and duration
+
+#### Gemini Omni Flash
+
+The first Gemini Omni video model: physics-aware motion, native audio, and the strongest on-screen text rendering of the available video models, at 720p.
+
+**Generation inputs:**
+
+* Text-to-Video
+* Image References (up to 8)
+* Video Reference (1, up to 10s)
+
+**Features:**
+
+* Fixed durations from 3s to 10s; duration follows the reference video when one is attached
+* No start or end frame; use image references to anchor a subject instead
+* Batch creation with up to 4 generations at a time
+
+**Output options:**
+
+* Resolutions: 720p
+* Aspect ratios: 16:9, 9:16
+
+**Ideal for:**
+
+* Short captions, titles, and labeled explainers
+* Multi-image consistency at 720p
 
 **Cost:** Varies based on selected settings and duration
 
@@ -401,6 +674,106 @@ The most advanced, high-fidelity video model for cinematic results at your dispo
 **Cost:** Varies based on selected settings and duration
 
 End frame is not currently supported. Cannot provide image references. Sound is enabled by default.
+
+#### FLUX 3
+
+Black Forest Labs' video model with natural motion, multi-shot scenes, generated audio, and video extension.
+
+**Generation inputs:**
+
+* Text-to-Video
+* Start Frame
+* End Frame
+* Video to extend (1, up to 15s)
+
+**Features:**
+
+* Video extension is mutually exclusive with start and end frames
+* Flexible generation lengths from 5s up to 20s
+* Native sound control with audio enabled or disabled per generation
+* Batch creation with up to 4 generations at a time
+
+**Output options:**
+
+* Resolutions: 720p, 1080p
+* Aspect ratios: 21:9, 2:1, 16:9, 4:3, 1:1, 3:4, 9:16
+
+**Ideal for:**
+
+* Multi-shot scenes from a single prompt
+* Extending an existing clip with matching motion and audio
+
+**Cost:** Varies based on selected settings and duration
+
+#### MiniMax H3
+
+MiniMax's flagship video model with multimodal references, generated audio, and output up to 4K.
+
+**Generation inputs:**
+
+* Text-to-Video
+* Start Frame
+* End Frame
+* Image References (up to 9)
+* Video References (up to 3, each 2s to 15s, 15s combined)
+* Audio References (up to 3, each 2s to 15s, 15s combined)
+
+**Features:**
+
+* Combined cap of 12 references per generation; audio references require at least one image or video reference
+* Frames and references are mutually exclusive
+* Flexible generation lengths from 5s up to 15s
+* Generates synchronized audio
+* Batch creation with up to 4 generations at a time
+
+**Output options:**
+
+* Resolutions: 480p, 768p, 2K, 4K (2K and 4K are upscaled from 768p)
+* Aspect ratios: 21:9, 16:9, 4:3, 1:1, 3:4, 9:16
+
+**Ideal for:**
+
+* Reference-driven scenes that need high-resolution delivery
+* Dialogue clips driven by reference audio
+
+**Cost:** Varies based on selected settings and duration
+
+MiniMax H3 is not available in the United States.
+
+#### MiniMax H3 Max
+
+A near-instant variant of MiniMax H3 with the same inputs and strong aesthetics, rendered natively at up to 768p.
+
+**Generation inputs:**
+
+* Text-to-Video
+* Start Frame
+* End Frame
+* Image References (up to 9)
+* Video References (up to 3, each 2s to 15s, 15s combined)
+* Audio References (up to 3, each 2s to 15s, 15s combined)
+
+**Features:**
+
+* Combined cap of 12 references per generation; audio references require at least one image or video reference
+* Frames and references are mutually exclusive
+* Flexible generation lengths from 5s up to 15s
+* Generates synchronized audio
+* Batch creation with up to 4 generations at a time
+
+**Output options:**
+
+* Resolutions: 480p, 768p
+* Aspect ratios: 21:9, 16:9, 4:3, 1:1, 3:4, 9:16
+
+**Ideal for:**
+
+* Rapid iteration on prompts and references
+* Previews before rendering with MiniMax H3
+
+**Cost:** Varies based on selected settings and duration
+
+MiniMax H3 Max is not available in the United States.
 
 #### Kling O1
 
@@ -688,6 +1061,29 @@ A state-of-the-art in-context video model designed for multi-task visual generat
 
 **Cost:** Varies based on selected settings and duration
 
+#### Runway Aleph 2.0
+
+Runway's video editing model: transforms an existing video toward a target look while preserving motion and consistency.
+
+**Inputs:**
+
+* Source video (required, 2s to 30s)
+* Target look image (required)
+* Text prompt describing the edits
+
+**Features:**
+
+* Output length and framing follow the source video
+* Style transfer guided by the target look image
+* Batch creation with up to 4 generations at a time
+
+**Ideal for:**
+
+* Relighting, restyling, or changing the setting of existing footage
+* Applying a reference image's look to a whole clip
+
+**Cost:** Varies based on selected settings and duration
+
 #### Runway Act-Two
 
 A specialized performance-transfer model that animates characters by mapping the motion, speech, and facial expressions from a driving video onto a character image or video reference.
@@ -877,6 +1273,75 @@ A speed-optimized generative model built for tight feedback loops and high-veloc
 
 **Cost:** Varies based on selected settings and duration
 
+#### Wan 3.0
+
+A cinematic video model with image, video, and audio references, generated audio, and generations up to 30 seconds.
+
+**Generation inputs:**
+
+* Text-to-Video
+* Start Frame
+* End Frame
+* Image References (up to 10)
+* Video References (up to 5, 15s combined)
+* Audio References (up to 5, 15s combined)
+
+**Features:**
+
+* Frames and references are mutually exclusive
+* Fixed durations: 5s, 10s, 15s, 20s, and 30s
+* Native sound control with audio enabled or disabled per generation
+* Optional prompt enhancement
+* Batch creation with up to 4 generations at a time
+
+**Output options:**
+
+* Resolutions: 480p, 720p, 1080p
+* Aspect ratios: Auto, 16:9, 4:3, 1:1, 3:4, 9:16
+
+**Ideal for:**
+
+* Longer cinematic shots with strong prompt adherence
+* Reference-driven scenes with audio
+
+**Cost:** Varies based on selected settings and duration
+
+Wan 3.0 is not available in the United States.
+
+#### Wan 3.0 Prime
+
+A faster variant of Wan 3.0 with the same inputs and output options, suited to ideation.
+
+**Generation inputs:**
+
+* Text-to-Video
+* Start Frame
+* End Frame
+* Image References (up to 10)
+* Video References (up to 5, 15s combined)
+* Audio References (up to 5, 15s combined)
+
+**Features:**
+
+* Roughly half the generation time of Wan 3.0
+* Fixed durations: 5s, 10s, 15s, 20s, and 30s
+* Native sound control with audio enabled or disabled per generation
+* Batch creation with up to 4 generations at a time
+
+**Output options:**
+
+* Resolutions: 480p, 720p, 1080p
+* Aspect ratios: Auto, 16:9, 4:3, 1:1, 3:4, 9:16
+
+**Ideal for:**
+
+* Exploring ideas before a final Wan 3.0 render
+* Turnaround-sensitive workflows
+
+**Cost:** Varies based on selected settings and duration
+
+Wan 3.0 Prime is not available in the United States.
+
 #### Wan 2.6
 
 A next-generation cinematic video platform that utilizes a unified multimodal architecture to deliver production-ready 1080p content with native audio synchronization and intelligent multi-shot sequencing.
@@ -911,7 +1376,7 @@ A next-generation cinematic video platform that utilizes a unified multimodal ar
 
 Wan 2.6 is not available in the United States.
 
-#### Wan 2.5
+#### Wan 2.5 Video
 
 A versatile model that delivers cinematic motion and high prompt fidelity from text or a starting image.
 
@@ -939,9 +1404,67 @@ A versatile model that delivers cinematic motion and high prompt fidelity from t
 
 Generation cost varies based on selected settings.
 
-Wan 2.5 is not available in the United States.
+Wan 2.5 Video is not available in the United States.
 
 #### Image generative models
+
+#### GPT Image 2.5 Sunburst
+
+OpenAI's production-grade image model for highly detailed output and precise editing.
+
+**Generation inputs:**
+
+* Text-to-Image
+* Image References (up to 10)
+
+**Features:**
+
+* Five quality levels from Low to Maximum
+* Custom resolution up to 3840px per side, at aspect ratios up to 3:1
+* Batch creation with up to 4 generations at a time
+
+**Output options:**
+
+* Resolutions: 1K, 2K, 4K, or custom
+* Aspect ratios: 3:1, 21:9, 2:1, 16:9, 3:2, 4:3, 5:4, 1:1, 4:5, 3:4, 2:3, 9:16, 1:2, 1:3
+
+**Ideal for:**
+
+* Final assets where detail and fidelity matter most
+* Precise edits to existing images
+
+**Cost:** Varies based on selected settings and number of variations
+
+**API:** [`gpt-image-2.5-sunburst`](/docs/api-reference/flows/image/create#request.body.gpt-image-2.5-sunburst)
+
+#### GPT Image 2.5 Flare
+
+A fast GPT Image 2.5 variant with the same controls as Sunburst, tuned for everyday, high-volume generation.
+
+**Generation inputs:**
+
+* Text-to-Image
+* Image References (up to 10)
+
+**Features:**
+
+* Five quality levels from Low to Maximum
+* Custom resolution up to 3840px per side, at aspect ratios up to 3:1
+* Batch creation with up to 4 generations at a time
+
+**Output options:**
+
+* Resolutions: 1K, 2K, 4K, or custom
+* Aspect ratios: 3:1, 21:9, 2:1, 16:9, 3:2, 4:3, 5:4, 1:1, 4:5, 3:4, 2:3, 9:16, 1:2, 1:3
+
+**Ideal for:**
+
+* High-volume image generation
+* Quick iterations that still need 4K and custom sizes
+
+**Cost:** Varies based on selected settings and number of variations
+
+**API:** [`gpt-image-2.5-flare`](/docs/api-reference/flows/image/create#request.body.gpt-image-2.5-flare)
 
 #### GPT Image 2
 
@@ -966,6 +1489,8 @@ An advanced AI model designed for precise image generation with enhanced text re
 * Creative projects needing accurate text-based image control
 
 **Cost:** Varies based on selected settings and number of variations
+
+**API:** [`gpt-image-2`](/docs/api-reference/flows/image/create#request.body.gpt-image-2)
 
 #### Nano Banana 2
 
@@ -994,6 +1519,37 @@ An advanced AI image generation model combining production-ready quality with ul
 * Professional visuals with accurate text and typography
 
 **Cost:** Varies based on selected settings and number of variations
+
+**API:** [`gemini-3.1-flash-image`](/docs/api-reference/flows/image/create#request.body.gemini-3.1-flash-image)
+
+#### Nano Banana 2 Lite
+
+A fast, low-cost variant of Nano Banana 2 for rapid generation and editing at 1K.
+
+**Generation inputs:**
+
+* Text-to-Image
+* Image References (up to 14)
+
+**Features:**
+
+* Fixed 1K output for consistent speed and cost
+* Same 14-image reference capacity as Nano Banana 2
+* Batch creation with up to 4 generations at a time
+
+**Output options:**
+
+* Resolutions: 1K
+* Aspect ratios: 21:9, 16:9, 5:4, 4:3, 3:2, 1:1, 2:3, 3:4, 4:5, 9:16
+
+**Ideal for:**
+
+* Rapid iteration and drafts
+* Bulk edits where 1K is sufficient
+
+**Cost:** Varies based on selected settings and number of variations
+
+**API:** [`gemini-3.1-flash-lite-image`](/docs/api-reference/flows/image/create#request.body.gemini-3.1-flash-lite-image)
 
 #### Krea 2 Medium
 
@@ -1037,6 +1593,58 @@ Krea AI's flagship image generation model, delivering maximum visual fidelity an
 
 **Cost:** Varies based on selected settings and number of variations
 
+#### Recraft V4.1
+
+A design-focused text-to-image model with strong prompt control and clean composition.
+
+**Generation inputs:**
+
+* Text-to-Image
+
+**Features:**
+
+* 2K output uses the Pro model variant
+* Batch creation with up to 4 generations at a time
+
+**Output options:**
+
+* Resolutions: 1K, 2K
+* Aspect ratios: 2:1, 16:9, 3:2, 14:10, 4:3, 5:4, 1:1, 4:5, 3:4, 10:14, 2:3, 6:10, 9:16, 1:2
+
+**Ideal for:**
+
+* Layout-driven graphics, icons, and posters
+* Clean compositions from text alone
+
+**Cost:** Varies based on selected settings and number of variations
+
+#### Recraft V4
+
+A design-focused image model that can match the style of reference images.
+
+**Generation inputs:**
+
+* Text-to-Image
+* Style References (up to 10)
+
+**Features:**
+
+* Style match control: Precise follows the reference style closely, Flexible matches the general look
+* 2K output uses the Pro model variant
+* Batch creation with up to 4 generations at a time
+
+**Output options:**
+
+* Resolutions: 1K, 2K
+* Aspect ratios: 2:1, 16:9, 3:2, 14:10, 4:3, 5:4, 1:1, 4:5, 3:4, 10:14, 2:3, 6:10, 9:16, 1:2
+
+**Ideal for:**
+
+* Brand-consistent graphics from a set of style references
+* Illustration and design work
+
+**Cost:** Varies based on selected settings and number of variations
+
 #### Seedream 5 Lite
 
 A lightweight, fast-generation image model from ByteDance delivering high-quality results with reduced compute requirements.
@@ -1058,7 +1666,40 @@ A lightweight, fast-generation image model from ByteDance delivering high-qualit
 
 **Cost:** Varies based on selected settings and number of variations
 
+**API:** [`bytedance-seedream-5-lite`](/docs/api-reference/flows/image/create#request.body.bytedance-seedream-5-lite)
+
 Seedream 5 Lite is not available in the United States.
+
+#### Seedream 5 Pro
+
+The higher-fidelity Seedream 5 variant for precise editing, multilingual text, and dense infographics.
+
+**Generation inputs:**
+
+* Text-to-Image
+* Image References (up to 10)
+
+**Features:**
+
+* Accurate multilingual text rendering
+* Handles dense layouts such as infographics and posters
+* Batch creation with up to 4 generations at a time
+
+**Output options:**
+
+* Resolutions: 1K, 2K
+* Aspect ratios: 16:9, 4:3, 1:1, 3:4, 9:16
+
+**Ideal for:**
+
+* Text-heavy designs in multiple languages
+* Multi-image editing with strict reference adherence
+
+**Cost:** Varies based on selected settings and number of variations
+
+**API:** [`bytedance-seedream-5-pro`](/docs/api-reference/flows/image/create#request.body.bytedance-seedream-5-pro)
+
+Seedream 5 Pro is not available in the United States.
 
 #### GPT Image 1.5
 
@@ -1083,6 +1724,35 @@ A high-speed flagship model designed for precise text-based image generation and
 * Rapid iteration of text-to-image concepts
 
 **Cost:** Varies based on selected settings and number of variations
+
+**API:** [`gpt-image-1.5`](/docs/api-reference/flows/image/create#request.body.gpt-image-1.5)
+
+#### GPT Image 1
+
+OpenAI's first-generation image model with good prompt adherence, legible text, and detailed editing.
+
+**Generation inputs:**
+
+* Text-to-Image
+* Image References (up to 5)
+
+**Features:**
+
+* Three quality levels: Low, Medium, High
+* Batch creation with up to 4 generations at a time
+
+**Output options:**
+
+* Aspect ratios: 3:2, 1:1, 2:3
+
+**Ideal for:**
+
+* Workflows already built around GPT Image 1 output
+* Simple edits and text-in-image tasks at standard resolution
+
+**Cost:** Varies based on selected settings and number of variations
+
+**API:** [`gpt-image-1`](/docs/api-reference/flows/image/create#request.body.gpt-image-1)
 
 #### Seedream 4.5
 
@@ -1195,6 +1865,8 @@ A professional-grade, reasoning-based image generation and editing model designe
 
 **Cost:** Varies based on selected settings and number of variations
 
+**API:** [`gemini-3-pro-image`](/docs/api-reference/flows/image/create#request.body.gemini-3-pro-image)
+
 #### Nano Banana
 
 A high-speed model for quick, high-quality image generation and editing directly from text prompts.
@@ -1213,6 +1885,8 @@ A high-speed model for quick, high-quality image generation and editing directly
 * Rapid image creation and iteration
 
 **Cost:** Varies based on selected settings and number of variations
+
+**API:** [`gemini-2.5-flash-image`](/docs/api-reference/flows/image/create#request.body.gemini-2.5-flash-image)
 
 #### Runway Gen-4 Image
 
@@ -1287,6 +1961,33 @@ A specialized image model for generating multi-shot sequences or scenes with lar
 
 Seedream 4 is not available in the United States.
 
+#### Wan 2.5 Image
+
+The image variant of Wan 2.5, with strong prompt fidelity and support for reference images.
+
+**Generation inputs:**
+
+* Text-to-Image
+* Image References (up to 2)
+
+**Features:**
+
+* Negative prompt and seed controls
+* Batch creation with up to 4 generations at a time
+
+**Output options:**
+
+* Aspect ratios: 16:9, 4:3, 1:1, 3:4, 9:16
+
+**Ideal for:**
+
+* Stills that match the look of Wan video generations
+* Prompt-faithful concept images
+
+**Cost:** Varies based on selected settings and number of variations
+
+Wan 2.5 Image is not available in the United States.
+
 #### FLUX.1 Kontext \[Pro]
 
 A professional model for advanced image generation and editing, offering strong scene coherence and style control.
@@ -1338,6 +2039,8 @@ A state-of-the-art diffusion transformer (DiT) model designed for rendering ultr
 * Long-form educational or training videos requiring consistent character presence
 
 **Cost:** Varies based on input, settings and duration
+
+**API:** [`creatify-aurora`](/docs/api-reference/flows/video/create#request.body.creatify-aurora)
 
 #### Veed Fabric
 
@@ -1490,7 +2193,31 @@ A fast, affordable, and precise utility model for applying realistic lip-sync to
 
 For best results, the video should contain a detectable figure.
 
-#### Upscaling model
+#### Veed Lipsync 2.0
+
+The higher-quality successor to Veed Lipsync for applying realistic lip-sync to existing videos.
+
+**Inputs:**
+
+* Source video
+* New speech audio file
+
+**Features:**
+
+* Re-animates mouth movements in the source video to match new audio
+* Video-to-video lip-sync tool, not a full video generator
+* Batch creation with up to 4 generations at a time
+
+**Ideal for:**
+
+* Dubbing and translation where output quality matters more than cost
+* Correcting dialogue in finished clips
+
+**Cost:** Varies based on input, settings and duration
+
+For best results, the video should contain a detectable figure.
+
+#### Utility models
 
 #### Topaz Upscale
 
@@ -1510,3 +2237,43 @@ A dedicated utility model for image and video upscaling, designed to enhance res
 * Preparing assets for high-resolution displays
 
 **Cost:** Varies depending on input
+
+#### Background Removal
+
+Removes the background from an image and returns it with alpha transparency.
+
+**Inputs:**
+
+* Source image
+
+**Features:**
+
+* No prompt required
+* Single output per run
+
+**Ideal for:**
+
+* Product cutouts and compositing
+* Preparing subjects for use as references in other generations
+
+**Cost:** Varies depending on input
+
+#### Runway Ruby
+
+Converts standard dynamic range video into HDR.
+
+**Inputs:**
+
+* Source video (up to 30s)
+
+**Features:**
+
+* No prompt required
+* Single output per run; length and framing follow the source
+
+**Ideal for:**
+
+* Preparing footage for HDR displays
+* Re-grading generated video for delivery
+
+**Cost:** Varies based on video duration

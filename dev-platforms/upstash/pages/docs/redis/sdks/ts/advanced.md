@@ -83,6 +83,24 @@ const redis = new Redis({
 });
 ```
 
+- [ARCOUNT](https://upstash.com/docs/redis/sdks/ts/commands/array/arcount.md): Count the occupied slots in an array.
+- [ARDEL](https://upstash.com/docs/redis/sdks/ts/commands/array/ardel.md): Delete array values without shifting later indexes.
+- [ARDELRANGE](https://upstash.com/docs/redis/sdks/ts/commands/array/ardelrange.md): Delete occupied slots in one or more inclusive ranges.
+- [ARGET](https://upstash.com/docs/redis/sdks/ts/commands/array/arget.md): Read the value at an array index.
+- [ARGETRANGE](https://upstash.com/docs/redis/sdks/ts/commands/array/argetrange.md): Read every slot in an inclusive array range.
+- [ARGREP](https://upstash.com/docs/redis/sdks/ts/commands/array/argrep.md): Search array values using one or more predicates.
+- [ARINFO](https://upstash.com/docs/redis/sdks/ts/commands/array/arinfo.md): Inspect array size, storage layout, and append position.
+- [ARINSERT](https://upstash.com/docs/redis/sdks/ts/commands/array/arinsert.md): Append values after the array append cursor.
+- [ARLASTITEMS](https://upstash.com/docs/redis/sdks/ts/commands/array/arlastitems.md): Read the most recently appended array values.
+- [ARLEN](https://upstash.com/docs/redis/sdks/ts/commands/array/arlen.md): Get the highest occupied array index plus one.
+- [ARMGET](https://upstash.com/docs/redis/sdks/ts/commands/array/armget.md): Read several array slots in request order.
+- [ARMSET](https://upstash.com/docs/redis/sdks/ts/commands/array/armset.md): Write values at several array indexes.
+- [ARNEXT](https://upstash.com/docs/redis/sdks/ts/commands/array/arnext.md): Read the next append index without moving the cursor.
+- [AROP](https://upstash.com/docs/redis/sdks/ts/commands/array/arop.md): Aggregate values in an inclusive array range.
+- [ARRING](https://upstash.com/docs/redis/sdks/ts/commands/array/arring.md): Append values to a fixed-size ring buffer.
+- [ARSCAN](https://upstash.com/docs/redis/sdks/ts/commands/array/arscan.md): Read occupied array slots with their indexes.
+- [ARSEEK](https://upstash.com/docs/redis/sdks/ts/commands/array/arseek.md): Choose the index where the next append will write.
+- [ARSET](https://upstash.com/docs/redis/sdks/ts/commands/array/arset.md): Write consecutive values starting at an array index.
 - [ECHO](https://upstash.com/docs/redis/sdks/ts/commands/auth/echo.md)
 - [PING](https://upstash.com/docs/redis/sdks/ts/commands/auth/ping.md): Send a ping to the server and get a response if the server is alive.
 - [BITCOUNT](https://upstash.com/docs/redis/sdks/ts/commands/bitmap/bitcount.md): Count the number of set bits.

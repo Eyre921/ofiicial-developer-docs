@@ -22374,17 +22374,27 @@ ARCOUNT my-array
 
 <Accordion title="@upstash/redis" icon="node-js" iconType="brands">
 
-<Note>
-  This command is not supported yet in `@upstash/redis`.
-</Note>
+```ts
+import { Redis } from "@upstash/redis";
+
+const redis = Redis.fromEnv();
+
+const result = await redis.arcount("my-array");
+console.log(result);
+```
 
 </Accordion>
 
 <Accordion title="upstash_redis" icon="python" iconType="brands">
 
-<Note>
-  This command is not supported yet in `upstash_redis`.
-</Note>
+```python
+from upstash_redis import Redis
+
+redis = Redis.from_env()
+
+result = redis.arcount("my-array")
+print(result)
+```
 
 </Accordion>
 
@@ -22544,17 +22554,27 @@ ARDEL my-array 0 1
 
 <Accordion title="@upstash/redis" icon="node-js" iconType="brands">
 
-<Note>
-  This command is not supported yet in `@upstash/redis`.
-</Note>
+```ts
+import { Redis } from "@upstash/redis";
+
+const redis = Redis.fromEnv();
+
+const result = await redis.ardel("my-array", 0, 1);
+console.log(result);
+```
 
 </Accordion>
 
 <Accordion title="upstash_redis" icon="python" iconType="brands">
 
-<Note>
-  This command is not supported yet in `upstash_redis`.
-</Note>
+```python
+from upstash_redis import Redis
+
+redis = Redis.from_env()
+
+result = redis.ardel("my-array", 0, 1)
+print(result)
+```
 
 </Accordion>
 
@@ -22721,17 +22741,27 @@ ARDELRANGE my-array 0 99 200 299
 
 <Accordion title="@upstash/redis" icon="node-js" iconType="brands">
 
-<Note>
-  This command is not supported yet in `@upstash/redis`.
-</Note>
+```ts
+import { Redis } from "@upstash/redis";
+
+const redis = Redis.fromEnv();
+
+const result = await redis.ardelrange("my-array", [0, 99], [200, 299]);
+console.log(result);
+```
 
 </Accordion>
 
 <Accordion title="upstash_redis" icon="python" iconType="brands">
 
-<Note>
-  This command is not supported yet in `upstash_redis`.
-</Note>
+```python
+from upstash_redis import Redis
+
+redis = Redis.from_env()
+
+result = redis.ardelrange("my-array", (0, 99), (200, 299))
+print(result)
+```
 
 </Accordion>
 
@@ -22894,17 +22924,27 @@ ARGET my-array 0
 
 <Accordion title="@upstash/redis" icon="node-js" iconType="brands">
 
-<Note>
-  This command is not supported yet in `@upstash/redis`.
-</Note>
+```ts
+import { Redis } from "@upstash/redis";
+
+const redis = Redis.fromEnv();
+
+const result = await redis.arget("my-array", 0);
+console.log(result);
+```
 
 </Accordion>
 
 <Accordion title="upstash_redis" icon="python" iconType="brands">
 
-<Note>
-  This command is not supported yet in `upstash_redis`.
-</Note>
+```python
+from upstash_redis import Redis
+
+redis = Redis.from_env()
+
+result = redis.arget("my-array", 0)
+print(result)
+```
 
 </Accordion>
 
@@ -23072,17 +23112,27 @@ ARGETRANGE my-array 0 9
 
 <Accordion title="@upstash/redis" icon="node-js" iconType="brands">
 
-<Note>
-  This command is not supported yet in `@upstash/redis`.
-</Note>
+```ts
+import { Redis } from "@upstash/redis";
+
+const redis = Redis.fromEnv();
+
+const result = await redis.argetrange("my-array", 0, 9);
+console.log(result);
+```
 
 </Accordion>
 
 <Accordion title="upstash_redis" icon="python" iconType="brands">
 
-<Note>
-  This command is not supported yet in `upstash_redis`.
-</Note>
+```python
+from upstash_redis import Redis
+
+redis = Redis.from_env()
+
+result = redis.argetrange("my-array", 0, 9)
+print(result)
+```
 
 </Accordion>
 
@@ -23261,17 +23311,30 @@ ARGREP my-array - + GLOB error:* LIMIT 10
 
 <Accordion title="@upstash/redis" icon="node-js" iconType="brands">
 
-<Note>
-  This command is not supported yet in `@upstash/redis`.
-</Note>
+```ts
+import { Redis } from "@upstash/redis";
+
+const redis = Redis.fromEnv();
+
+const result = await redis.argrep("my-array", "-", "+", {
+  predicates: [{ glob: "error:*" }],
+  limit: 10,
+});
+console.log(result);
+```
 
 </Accordion>
 
 <Accordion title="upstash_redis" icon="python" iconType="brands">
 
-<Note>
-  This command is not supported yet in `upstash_redis`.
-</Note>
+```python
+from upstash_redis import Redis
+
+redis = Redis.from_env()
+
+result = redis.argrep("my-array", "-", "+", glob="error:*", limit=10)
+print(result)
+```
 
 </Accordion>
 
@@ -23464,17 +23527,27 @@ ARINFO my-array
 
 <Accordion title="@upstash/redis" icon="node-js" iconType="brands">
 
-<Note>
-  This command is not supported yet in `@upstash/redis`.
-</Note>
+```ts
+import { Redis } from "@upstash/redis";
+
+const redis = Redis.fromEnv();
+
+const result = await redis.arinfo("my-array");
+console.log(result);
+```
 
 </Accordion>
 
 <Accordion title="upstash_redis" icon="python" iconType="brands">
 
-<Note>
-  This command is not supported yet in `upstash_redis`.
-</Note>
+```python
+from upstash_redis import Redis
+
+redis = Redis.from_env()
+
+result = redis.arinfo("my-array")
+print(result)
+```
 
 </Accordion>
 
@@ -23639,17 +23712,27 @@ ARINSERT my-array hello world
 
 <Accordion title="@upstash/redis" icon="node-js" iconType="brands">
 
-<Note>
-  This command is not supported yet in `@upstash/redis`.
-</Note>
+```ts
+import { Redis } from "@upstash/redis";
+
+const redis = Redis.fromEnv();
+
+const result = await redis.arinsert("my-array", "hello", "world");
+console.log(result);
+```
 
 </Accordion>
 
 <Accordion title="upstash_redis" icon="python" iconType="brands">
 
-<Note>
-  This command is not supported yet in `upstash_redis`.
-</Note>
+```python
+from upstash_redis import Redis
+
+redis = Redis.from_env()
+
+result = redis.arinsert("my-array", "hello", "world")
+print(result)
+```
 
 </Accordion>
 
@@ -23812,17 +23895,27 @@ ARLASTITEMS my-array 10
 
 <Accordion title="@upstash/redis" icon="node-js" iconType="brands">
 
-<Note>
-  This command is not supported yet in `@upstash/redis`.
-</Note>
+```ts
+import { Redis } from "@upstash/redis";
+
+const redis = Redis.fromEnv();
+
+const result = await redis.arlastitems("my-array", 10);
+console.log(result);
+```
 
 </Accordion>
 
 <Accordion title="upstash_redis" icon="python" iconType="brands">
 
-<Note>
-  This command is not supported yet in `upstash_redis`.
-</Note>
+```python
+from upstash_redis import Redis
+
+redis = Redis.from_env()
+
+result = redis.arlastitems("my-array", 10)
+print(result)
+```
 
 </Accordion>
 
@@ -23986,17 +24079,27 @@ ARLEN my-array
 
 <Accordion title="@upstash/redis" icon="node-js" iconType="brands">
 
-<Note>
-  This command is not supported yet in `@upstash/redis`.
-</Note>
+```ts
+import { Redis } from "@upstash/redis";
+
+const redis = Redis.fromEnv();
+
+const result = await redis.arlen("my-array");
+console.log(result);
+```
 
 </Accordion>
 
 <Accordion title="upstash_redis" icon="python" iconType="brands">
 
-<Note>
-  This command is not supported yet in `upstash_redis`.
-</Note>
+```python
+from upstash_redis import Redis
+
+redis = Redis.from_env()
+
+result = redis.arlen("my-array")
+print(result)
+```
 
 </Accordion>
 
@@ -24156,17 +24259,27 @@ ARMGET my-array 0 1 5
 
 <Accordion title="@upstash/redis" icon="node-js" iconType="brands">
 
-<Note>
-  This command is not supported yet in `@upstash/redis`.
-</Note>
+```ts
+import { Redis } from "@upstash/redis";
+
+const redis = Redis.fromEnv();
+
+const result = await redis.armget("my-array", 0, 1, 5);
+console.log(result);
+```
 
 </Accordion>
 
 <Accordion title="upstash_redis" icon="python" iconType="brands">
 
-<Note>
-  This command is not supported yet in `upstash_redis`.
-</Note>
+```python
+from upstash_redis import Redis
+
+redis = Redis.from_env()
+
+result = redis.armget("my-array", 0, 1, 5)
+print(result)
+```
 
 </Accordion>
 
@@ -24334,17 +24447,27 @@ ARMSET my-array 0 hello 5 world
 
 <Accordion title="@upstash/redis" icon="node-js" iconType="brands">
 
-<Note>
-  This command is not supported yet in `@upstash/redis`.
-</Note>
+```ts
+import { Redis } from "@upstash/redis";
+
+const redis = Redis.fromEnv();
+
+const result = await redis.armset("my-array", { 0: "hello", 5: "world" });
+console.log(result);
+```
 
 </Accordion>
 
 <Accordion title="upstash_redis" icon="python" iconType="brands">
 
-<Note>
-  This command is not supported yet in `upstash_redis`.
-</Note>
+```python
+from upstash_redis import Redis
+
+redis = Redis.from_env()
+
+result = redis.armset("my-array", {0: "hello", 5: "world"})
+print(result)
+```
 
 </Accordion>
 
@@ -24513,17 +24636,27 @@ ARNEXT my-array
 
 <Accordion title="@upstash/redis" icon="node-js" iconType="brands">
 
-<Note>
-  This command is not supported yet in `@upstash/redis`.
-</Note>
+```ts
+import { Redis } from "@upstash/redis";
+
+const redis = Redis.fromEnv();
+
+const result = await redis.arnext("my-array");
+console.log(result);
+```
 
 </Accordion>
 
 <Accordion title="upstash_redis" icon="python" iconType="brands">
 
-<Note>
-  This command is not supported yet in `upstash_redis`.
-</Note>
+```python
+from upstash_redis import Redis
+
+redis = Redis.from_env()
+
+result = redis.arnext("my-array")
+print(result)
+```
 
 </Accordion>
 
@@ -24698,17 +24831,27 @@ AROP my-array 0 999 SUM
 
 <Accordion title="@upstash/redis" icon="node-js" iconType="brands">
 
-<Note>
-  This command is not supported yet in `@upstash/redis`.
-</Note>
+```ts
+import { Redis } from "@upstash/redis";
+
+const redis = Redis.fromEnv();
+
+const result = await redis.arop("my-array", 0, 999, "SUM");
+console.log(result);
+```
 
 </Accordion>
 
 <Accordion title="upstash_redis" icon="python" iconType="brands">
 
-<Note>
-  This command is not supported yet in `upstash_redis`.
-</Note>
+```python
+from upstash_redis import Redis
+
+redis = Redis.from_env()
+
+result = redis.arop("my-array", 0, 999, "SUM")
+print(result)
+```
 
 </Accordion>
 
@@ -24881,17 +25024,27 @@ ARRING my-array 100 hello world
 
 <Accordion title="@upstash/redis" icon="node-js" iconType="brands">
 
-<Note>
-  This command is not supported yet in `@upstash/redis`.
-</Note>
+```ts
+import { Redis } from "@upstash/redis";
+
+const redis = Redis.fromEnv();
+
+const result = await redis.arring("my-array", 100, "hello", "world");
+console.log(result);
+```
 
 </Accordion>
 
 <Accordion title="upstash_redis" icon="python" iconType="brands">
 
-<Note>
-  This command is not supported yet in `upstash_redis`.
-</Note>
+```python
+from upstash_redis import Redis
+
+redis = Redis.from_env()
+
+result = redis.arring("my-array", 100, "hello", "world")
+print(result)
+```
 
 </Accordion>
 
@@ -25061,17 +25214,27 @@ ARSCAN my-array 0 1000 LIMIT 10
 
 <Accordion title="@upstash/redis" icon="node-js" iconType="brands">
 
-<Note>
-  This command is not supported yet in `@upstash/redis`.
-</Note>
+```ts
+import { Redis } from "@upstash/redis";
+
+const redis = Redis.fromEnv();
+
+const result = await redis.arscan("my-array", 0, 1000, { limit: 10 });
+console.log(result);
+```
 
 </Accordion>
 
 <Accordion title="upstash_redis" icon="python" iconType="brands">
 
-<Note>
-  This command is not supported yet in `upstash_redis`.
-</Note>
+```python
+from upstash_redis import Redis
+
+redis = Redis.from_env()
+
+result = redis.arscan("my-array", 0, 1000, limit=10)
+print(result)
+```
 
 </Accordion>
 
@@ -25240,17 +25403,27 @@ ARSEEK my-array 0
 
 <Accordion title="@upstash/redis" icon="node-js" iconType="brands">
 
-<Note>
-  This command is not supported yet in `@upstash/redis`.
-</Note>
+```ts
+import { Redis } from "@upstash/redis";
+
+const redis = Redis.fromEnv();
+
+const result = await redis.arseek("my-array", 0);
+console.log(result);
+```
 
 </Accordion>
 
 <Accordion title="upstash_redis" icon="python" iconType="brands">
 
-<Note>
-  This command is not supported yet in `upstash_redis`.
-</Note>
+```python
+from upstash_redis import Redis
+
+redis = Redis.from_env()
+
+result = redis.arseek("my-array", 0)
+print(result)
+```
 
 </Accordion>
 
@@ -25417,17 +25590,27 @@ ARSET my-array 0 hello world
 
 <Accordion title="@upstash/redis" icon="node-js" iconType="brands">
 
-<Note>
-  This command is not supported yet in `@upstash/redis`.
-</Note>
+```ts
+import { Redis } from "@upstash/redis";
+
+const redis = Redis.fromEnv();
+
+const result = await redis.arset("my-array", 0, "hello", "world");
+console.log(result);
+```
 
 </Accordion>
 
 <Accordion title="upstash_redis" icon="python" iconType="brands">
 
-<Note>
-  This command is not supported yet in `upstash_redis`.
-</Note>
+```python
+from upstash_redis import Redis
+
+redis = Redis.from_env()
+
+result = redis.arset("my-array", 0, "hello", "world")
+print(result)
+```
 
 </Accordion>
 
@@ -77630,7 +77813,7 @@ fn main() -> redis::RedisResult<()> {
 Source: https://upstash.com/docs/redis/commands/vector/overview
 
 <Note>
-  Vector indexes are an Upstash extension. They are not part of open-source Redis, and client libraries reach them through their generic command interface. They are also separate from [Upstash Vector](/docs/vector/overall/getstarted), which is a standalone vector database with its own API and SDKs.
+  Vector indexes are an Upstash extension. They are not part of open-source Redis: the Upstash SDKs have typed helpers for them, and other client libraries reach them through their generic command interface. They are also separate from [Upstash Vector](/docs/vector/overall/getstarted), which is a standalone vector database with its own API and SDKs.
 </Note>
 
 A vector index stores embeddings under IDs and answers nearest-neighbour queries over them. It lives at an ordinary Redis key, so [`EXISTS`](/docs/redis/commands/generic/exists), [`EXPIRE`](/docs/redis/commands/generic/expire), and [`DEL`](/docs/redis/commands/generic/del) apply to it, and a key already holding another type cannot be turned into one.
@@ -77654,7 +77837,38 @@ Vectors can be given three ways. `VALUES` lists the elements as decimal numbers,
 
 ## SDK support
 
-No client library has typed helpers for these commands yet, the Upstash [`@upstash/redis`](/docs/redis/sdks/ts/overview) and [`upstash-redis`](/docs/redis/sdks/py/overview) SDKs included. Send them through the generic command interface: `redis.call("VECTOR.QUERY", ...)` in ioredis, `client.sendCommand(["VECTOR.QUERY", ...])` in node-redis, `client.execute_command("VECTOR.QUERY", ...)` in redis-py, `client.Do(ctx, "VECTOR.QUERY", ...)` in go-redis, and `redis::cmd("VECTOR.QUERY")` in redis-rs.
+The Upstash SDKs expose vector indexes through a `vector` namespace that returns a handle to an index.
+
+<Tabs>
+<Tab title="TypeScript">
+```ts
+import { Redis } from "@upstash/redis";
+
+const redis = Redis.fromEnv();
+
+const index = await redis.vector.createIndex({ name: "docs", dimension: 3, metric: "COSINE" });
+// or, for an existing index: const index = redis.vector.index("docs");
+
+await index.add("doc-1", [0.1, 0.2, 0.3]); // number[], Float32Array, or { base64 }
+const hits = await index.query({ vector: [0.1, 0.2, 0.3], topK: 5 }); // [{ id, score }]
+```
+</Tab>
+<Tab title="Python">
+```python
+from upstash_redis import Redis
+
+redis = Redis.from_env()
+
+index = redis.vector.create_index(name="docs", dimension=3, metric="COSINE")
+# or, for an existing index: index = redis.vector.index("docs")
+
+index.add("doc-1", [0.1, 0.2, 0.3])  # list of numbers, FP32 bytes, or a base64 string
+hits = index.query(vector=[0.1, 0.2, 0.3], top_k=5)  # [VectorQueryResult(id, score)]
+```
+</Tab>
+</Tabs>
+
+Other client libraries send them through the generic command interface: `redis.call("VECTOR.QUERY", ...)` in ioredis, `client.sendCommand(["VECTOR.QUERY", ...])` in node-redis, `client.execute_command("VECTOR.QUERY", ...)` in redis-py, `client.Do(ctx, "VECTOR.QUERY", ...)` in go-redis, and `redis::cmd("VECTOR.QUERY")` in redis-rs.
 
 ## REST API usage
 
@@ -77729,17 +77943,29 @@ VECTOR.ADD my-index doc:1 VALUES 3 0.1 0.2 0.3
 
 <Accordion title="@upstash/redis" icon="node-js" iconType="brands">
 
-<Note>
-  This command is not supported yet in `@upstash/redis`.
-</Note>
+```ts
+import { Redis } from "@upstash/redis";
+
+const redis = Redis.fromEnv();
+
+const index = redis.vector.index("my-index");
+const result = await index.add("doc:1", [0.1, 0.2, 0.3]);
+console.log(result);
+```
 
 </Accordion>
 
 <Accordion title="upstash_redis" icon="python" iconType="brands">
 
-<Note>
-  This command is not supported yet in `upstash_redis`.
-</Note>
+```python
+from upstash_redis import Redis
+
+redis = Redis.from_env()
+
+index = redis.vector.index("my-index")
+result = index.add("doc:1", [0.1, 0.2, 0.3])
+print(result)
+```
 
 </Accordion>
 
@@ -77906,17 +78132,29 @@ VECTOR.COUNT my-index
 
 <Accordion title="@upstash/redis" icon="node-js" iconType="brands">
 
-<Note>
-  This command is not supported yet in `@upstash/redis`.
-</Note>
+```ts
+import { Redis } from "@upstash/redis";
+
+const redis = Redis.fromEnv();
+
+const index = redis.vector.index("my-index");
+const count = await index.count();
+console.log(count);
+```
 
 </Accordion>
 
 <Accordion title="upstash_redis" icon="python" iconType="brands">
 
-<Note>
-  This command is not supported yet in `upstash_redis`.
-</Note>
+```python
+from upstash_redis import Redis
+
+redis = Redis.from_env()
+
+index = redis.vector.index("my-index")
+count = index.count()
+print(count)
+```
 
 </Accordion>
 
@@ -78084,17 +78322,29 @@ VECTOR.CREATE my-index DIM 1536 METRIC COSINE
 
 <Accordion title="@upstash/redis" icon="node-js" iconType="brands">
 
-<Note>
-  This command is not supported yet in `@upstash/redis`.
-</Note>
+```ts
+import { Redis } from "@upstash/redis";
+
+const redis = Redis.fromEnv();
+
+const index = await redis.vector.createIndex({
+  name: "my-index",
+  dimension: 1536,
+  metric: "COSINE",
+});
+```
 
 </Accordion>
 
 <Accordion title="upstash_redis" icon="python" iconType="brands">
 
-<Note>
-  This command is not supported yet in `upstash_redis`.
-</Note>
+```python
+from upstash_redis import Redis
+
+redis = Redis.from_env()
+
+index = redis.vector.create_index(name="my-index", dimension=1536, metric="COSINE")
+```
 
 </Accordion>
 
@@ -78260,17 +78510,29 @@ VECTOR.DEL my-index doc:1
 
 <Accordion title="@upstash/redis" icon="node-js" iconType="brands">
 
-<Note>
-  This command is not supported yet in `@upstash/redis`.
-</Note>
+```ts
+import { Redis } from "@upstash/redis";
+
+const redis = Redis.fromEnv();
+
+const index = redis.vector.index("my-index");
+const result = await index.delete("doc:1");
+console.log(result);
+```
 
 </Accordion>
 
 <Accordion title="upstash_redis" icon="python" iconType="brands">
 
-<Note>
-  This command is not supported yet in `upstash_redis`.
-</Note>
+```python
+from upstash_redis import Redis
+
+redis = Redis.from_env()
+
+index = redis.vector.index("my-index")
+result = index.delete("doc:1")
+print(result)
+```
 
 </Accordion>
 
@@ -78433,17 +78695,29 @@ VECTOR.DROP my-index
 
 <Accordion title="@upstash/redis" icon="node-js" iconType="brands">
 
-<Note>
-  This command is not supported yet in `@upstash/redis`.
-</Note>
+```ts
+import { Redis } from "@upstash/redis";
+
+const redis = Redis.fromEnv();
+
+const index = redis.vector.index("my-index");
+const result = await index.drop();
+console.log(result);
+```
 
 </Accordion>
 
 <Accordion title="upstash_redis" icon="python" iconType="brands">
 
-<Note>
-  This command is not supported yet in `upstash_redis`.
-</Note>
+```python
+from upstash_redis import Redis
+
+redis = Redis.from_env()
+
+index = redis.vector.index("my-index")
+result = index.drop()
+print(result)
+```
 
 </Accordion>
 
@@ -78607,17 +78881,29 @@ VECTOR.GET my-index doc:1
 
 <Accordion title="@upstash/redis" icon="node-js" iconType="brands">
 
-<Note>
-  This command is not supported yet in `@upstash/redis`.
-</Note>
+```ts
+import { Redis } from "@upstash/redis";
+
+const redis = Redis.fromEnv();
+
+const index = redis.vector.index("my-index");
+const vector = await index.get("doc:1");
+console.log(vector);
+```
 
 </Accordion>
 
 <Accordion title="upstash_redis" icon="python" iconType="brands">
 
-<Note>
-  This command is not supported yet in `upstash_redis`.
-</Note>
+```python
+from upstash_redis import Redis
+
+redis = Redis.from_env()
+
+index = redis.vector.index("my-index")
+vector = index.get("doc:1")
+print(vector)
+```
 
 </Accordion>
 
@@ -78782,17 +79068,29 @@ VECTOR.INFO my-index
 
 <Accordion title="@upstash/redis" icon="node-js" iconType="brands">
 
-<Note>
-  This command is not supported yet in `@upstash/redis`.
-</Note>
+```ts
+import { Redis } from "@upstash/redis";
+
+const redis = Redis.fromEnv();
+
+const index = redis.vector.index("my-index");
+const info = await index.info();
+console.log(info); // { dimension, metric } or null
+```
 
 </Accordion>
 
 <Accordion title="upstash_redis" icon="python" iconType="brands">
 
-<Note>
-  This command is not supported yet in `upstash_redis`.
-</Note>
+```python
+from upstash_redis import Redis
+
+redis = Redis.from_env()
+
+index = redis.vector.index("my-index")
+info = index.info()
+print(info)  # VectorIndexInfo(dimension=..., metric=...) or None
+```
 
 </Accordion>
 
@@ -78967,17 +79265,30 @@ VECTOR.QUERY my-index TOPK 5 VALUES 3 0.1 0.2 0.3
 
 <Accordion title="@upstash/redis" icon="node-js" iconType="brands">
 
-<Note>
-  This command is not supported yet in `@upstash/redis`.
-</Note>
+```ts
+import { Redis } from "@upstash/redis";
+
+const redis = Redis.fromEnv();
+
+const index = redis.vector.index("my-index");
+const results = await index.query({ vector: [0.1, 0.2, 0.3], topK: 5 });
+console.log(results); // [{ id, score }, ...]
+```
 
 </Accordion>
 
 <Accordion title="upstash_redis" icon="python" iconType="brands">
 
-<Note>
-  This command is not supported yet in `upstash_redis`.
-</Note>
+```python
+from upstash_redis import Redis
+
+redis = Redis.from_env()
+
+index = redis.vector.index("my-index")
+results = index.query(vector=[0.1, 0.2, 0.3], top_k=5)
+for match in results:
+    print(match.id, match.score)
+```
 
 </Accordion>
 
@@ -85742,6 +86053,24 @@ To connect over TCP instead, set `UPSTASH_REDIS_TCP_URL` to your `rediss://` con
 
 Any MCP-compatible client works. If yours isn't listed, add a stdio server that runs `npx -y @upstash/redis-mcp` with the two env vars above.
 
+- [ARCOUNT](https://upstash.com/docs/redis/sdks/py/commands/array/arcount.md): Count the occupied slots in an array.
+- [ARDEL](https://upstash.com/docs/redis/sdks/py/commands/array/ardel.md): Delete array values without shifting later indexes.
+- [ARDELRANGE](https://upstash.com/docs/redis/sdks/py/commands/array/ardelrange.md): Delete occupied slots in one or more inclusive ranges.
+- [ARGET](https://upstash.com/docs/redis/sdks/py/commands/array/arget.md): Read the value at an array index.
+- [ARGETRANGE](https://upstash.com/docs/redis/sdks/py/commands/array/argetrange.md): Read every slot in an inclusive array range.
+- [ARGREP](https://upstash.com/docs/redis/sdks/py/commands/array/argrep.md): Search array values using one or more predicates.
+- [ARINFO](https://upstash.com/docs/redis/sdks/py/commands/array/arinfo.md): Inspect array size, storage layout, and append position.
+- [ARINSERT](https://upstash.com/docs/redis/sdks/py/commands/array/arinsert.md): Append values after the array append cursor.
+- [ARLASTITEMS](https://upstash.com/docs/redis/sdks/py/commands/array/arlastitems.md): Read the most recently appended array values.
+- [ARLEN](https://upstash.com/docs/redis/sdks/py/commands/array/arlen.md): Get the highest occupied array index plus one.
+- [ARMGET](https://upstash.com/docs/redis/sdks/py/commands/array/armget.md): Read several array slots in request order.
+- [ARMSET](https://upstash.com/docs/redis/sdks/py/commands/array/armset.md): Write values at several array indexes.
+- [ARNEXT](https://upstash.com/docs/redis/sdks/py/commands/array/arnext.md): Read the next append index without moving the cursor.
+- [AROP](https://upstash.com/docs/redis/sdks/py/commands/array/arop.md): Aggregate values in an inclusive array range.
+- [ARRING](https://upstash.com/docs/redis/sdks/py/commands/array/arring.md): Append values to a fixed-size ring buffer.
+- [ARSCAN](https://upstash.com/docs/redis/sdks/py/commands/array/arscan.md): Read occupied array slots with their indexes.
+- [ARSEEK](https://upstash.com/docs/redis/sdks/py/commands/array/arseek.md): Choose the index where the next append will write.
+- [ARSET](https://upstash.com/docs/redis/sdks/py/commands/array/arset.md): Write consecutive values starting at an array index.
 - [ECHO](https://upstash.com/docs/redis/sdks/py/commands/auth/echo.md)
 - [PING](https://upstash.com/docs/redis/sdks/py/commands/auth/ping.md): Send a ping to the server and get a response if the server is alive.
 - [BITCOUNT](https://upstash.com/docs/redis/sdks/py/commands/bitmap/bitcount.md): Count the number of set bits.
@@ -87747,6 +88076,24 @@ const redis = new Redis({
 });
 ```
 
+- [ARCOUNT](https://upstash.com/docs/redis/sdks/ts/commands/array/arcount.md): Count the occupied slots in an array.
+- [ARDEL](https://upstash.com/docs/redis/sdks/ts/commands/array/ardel.md): Delete array values without shifting later indexes.
+- [ARDELRANGE](https://upstash.com/docs/redis/sdks/ts/commands/array/ardelrange.md): Delete occupied slots in one or more inclusive ranges.
+- [ARGET](https://upstash.com/docs/redis/sdks/ts/commands/array/arget.md): Read the value at an array index.
+- [ARGETRANGE](https://upstash.com/docs/redis/sdks/ts/commands/array/argetrange.md): Read every slot in an inclusive array range.
+- [ARGREP](https://upstash.com/docs/redis/sdks/ts/commands/array/argrep.md): Search array values using one or more predicates.
+- [ARINFO](https://upstash.com/docs/redis/sdks/ts/commands/array/arinfo.md): Inspect array size, storage layout, and append position.
+- [ARINSERT](https://upstash.com/docs/redis/sdks/ts/commands/array/arinsert.md): Append values after the array append cursor.
+- [ARLASTITEMS](https://upstash.com/docs/redis/sdks/ts/commands/array/arlastitems.md): Read the most recently appended array values.
+- [ARLEN](https://upstash.com/docs/redis/sdks/ts/commands/array/arlen.md): Get the highest occupied array index plus one.
+- [ARMGET](https://upstash.com/docs/redis/sdks/ts/commands/array/armget.md): Read several array slots in request order.
+- [ARMSET](https://upstash.com/docs/redis/sdks/ts/commands/array/armset.md): Write values at several array indexes.
+- [ARNEXT](https://upstash.com/docs/redis/sdks/ts/commands/array/arnext.md): Read the next append index without moving the cursor.
+- [AROP](https://upstash.com/docs/redis/sdks/ts/commands/array/arop.md): Aggregate values in an inclusive array range.
+- [ARRING](https://upstash.com/docs/redis/sdks/ts/commands/array/arring.md): Append values to a fixed-size ring buffer.
+- [ARSCAN](https://upstash.com/docs/redis/sdks/ts/commands/array/arscan.md): Read occupied array slots with their indexes.
+- [ARSEEK](https://upstash.com/docs/redis/sdks/ts/commands/array/arseek.md): Choose the index where the next append will write.
+- [ARSET](https://upstash.com/docs/redis/sdks/ts/commands/array/arset.md): Write consecutive values starting at an array index.
 - [ECHO](https://upstash.com/docs/redis/sdks/ts/commands/auth/echo.md)
 - [PING](https://upstash.com/docs/redis/sdks/ts/commands/auth/ping.md): Send a ping to the server and get a response if the server is alive.
 - [BITCOUNT](https://upstash.com/docs/redis/sdks/ts/commands/bitmap/bitcount.md): Count the number of set bits.
@@ -94469,9 +94816,55 @@ automatically.
 
 Use `ON STREAM` followed by the exact stream key. `PREFIX` is not supported for stream indexes.
 
+<Tabs>
+
+<Tab title="TypeScript">
+```ts
+import { Redis, s } from "@upstash/redis";
+
+const redis = Redis.fromEnv();
+
+const index = await redis.search.createIndex({
+  name: "event-search",
+  dataType: "stream",
+  stream: "events", // exact stream key, in place of `prefix`
+  schema: s.object({
+    message: s.string(),
+    service: s.keyword(),
+    severity: s.number("U64"),
+    occurredAt: s.date().fast(),
+  }),
+});
+```
+</Tab>
+
+<Tab title="Python">
+```python
+from upstash_redis import Redis
+
+redis = Redis.from_env()
+
+index = redis.search.create_index(
+    name="event-search",
+    data_type="STREAM",
+    stream="events",  # exact stream key, in place of `prefixes`
+    schema={
+        "message": "TEXT",
+        "service": "KEYWORD",
+        "severity": {"type": "U64", "fast": True},
+        "occurredAt": {"type": "DATE", "fast": True},
+    },
+)
+```
+</Tab>
+
+<Tab title="Redis CLI">
 ```bash
 SEARCH.CREATE event-search ON STREAM events SCHEMA message TEXT service KEYWORD severity U64 FAST occurredAt DATE FAST
 ```
+</Tab>
+
+</Tabs>
 
 Only one search index can be bound to a stream at a time. To bind the stream to a different index,
 first drop the existing index with [`SEARCH.DROP`](/docs/redis/commands/search/search-drop).
@@ -94481,6 +94874,59 @@ first drop the existing index with [`SEARCH.DROP`](/docs/redis/commands/search/s
 Add entries with regular stream commands. The field names do not need to appear in the schema, but
 only schema fields are searchable.
 
+<Tabs>
+
+<Tab title="TypeScript">
+```ts
+await redis.xadd("events", "1-0", {
+  message: "Payment authorization failed",
+  service: "checkout",
+  severity: 4,
+  occurredAt: "2026-08-24T09:30:00Z",
+});
+await redis.xadd("events", "2-0", {
+  message: "Order completed",
+  service: "checkout",
+  severity: 1,
+  occurredAt: "2026-08-24T09:31:00Z",
+});
+
+await index.waitIndexing();
+
+const results = await index.query({
+  filter: { message: "authorization", severity: { $gte: 3 } },
+  select: { message: true, service: true, severity: true },
+});
+// [{ key: "1-0", score, data: { message, service, severity } }]
+```
+</Tab>
+
+<Tab title="Python">
+```python
+redis.xadd("events", "1-0", {
+    "message": "Payment authorization failed",
+    "service": "checkout",
+    "severity": 4,
+    "occurredAt": "2026-08-24T09:30:00Z",
+})
+redis.xadd("events", "2-0", {
+    "message": "Order completed",
+    "service": "checkout",
+    "severity": 1,
+    "occurredAt": "2026-08-24T09:31:00Z",
+})
+
+index.wait_indexing()
+
+results = index.query(
+    filter={"message": "authorization", "severity": {"$gte": 3}},
+    select={"message": True, "service": True, "severity": True},
+)
+# [QueryResult(key="1-0", score=..., data={...})]
+```
+</Tab>
+
+<Tab title="Redis CLI">
 ```bash
 XADD events 1-0 message "Payment authorization failed" service checkout severity 4 occurredAt 2026-08-24T09:30:00Z
 XADD events 2-0 message "Order completed" service checkout severity 1 occurredAt 2026-08-24T09:31:00Z
@@ -94489,8 +94935,11 @@ SEARCH.WAITINDEXING event-search
 
 SEARCH.QUERY event-search '{"message":"authorization","severity":{"$gte":3}}' SELECT 3 message service severity
 ```
+</Tab>
 
-The matching result has `1-0` as its document ID. Each result contains the entry ID, relevance score,
+</Tabs>
+
+The matching result has `1-0` as its document ID. The raw Redis response contains the entry ID, relevance score,
 and field-value pairs. For example, with an illustrative score:
 
 ```json
@@ -94505,6 +94954,11 @@ and field-value pairs. For example, with an illustrative score:
 Field values are returned as strings, even when indexed as numeric types. `SELECT` limits the returned
 fields; `NOCONTENT` omits the content entirely. Filtering, highlighting, sorting, pagination, and score
 functions work with stream indexes as well.
+
+<Note>
+The TypeScript SDK automatically deserializes numeric field values, so `severity` is `4`.
+The Python SDK keeps it as the string `"4"`.
+</Note>
 
 Use the returned ID with [`XRANGE`](/docs/redis/commands/streams/xrange) to read the original entry,
 including fields not selected by the query:

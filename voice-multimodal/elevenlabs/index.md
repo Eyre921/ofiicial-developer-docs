@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1304 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1306 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -209,6 +209,7 @@
 - `docs/api-reference/phone-numbers/get` — [Get phone number](pages/docs/api-reference/phone-numbers/get.md) · [原文](https://elevenlabs.io/docs/api-reference/phone-numbers/get.md)
 - `docs/api-reference/phone-numbers/get-sip-messages` — [Get SIP messages for a phone number](pages/docs/api-reference/phone-numbers/get-sip-messages.md) · [原文](https://elevenlabs.io/docs/api-reference/phone-numbers/get-sip-messages.md)
 - `docs/api-reference/phone-numbers/list` — [List phone numbers](pages/docs/api-reference/phone-numbers/list.md) · [原文](https://elevenlabs.io/docs/api-reference/phone-numbers/list.md)
+- `docs/api-reference/phone-numbers/list-v-2` — [List Phone Numbers Page](pages/docs/api-reference/phone-numbers/list-v-2.md) · [原文](https://elevenlabs.io/docs/api-reference/phone-numbers/list-v-2.md)
 - `docs/api-reference/phone-numbers/update` — [Update phone number](pages/docs/api-reference/phone-numbers/update.md) · [原文](https://elevenlabs.io/docs/api-reference/phone-numbers/update.md)
 - `docs/api-reference/pronunciation-dictionaries/create-from-file` — [Create a pronunciation dictionary from a file](pages/docs/api-reference/pronunciation-dictionaries/create-from-file.md) · [原文](https://elevenlabs.io/docs/api-reference/pronunciation-dictionaries/create-from-file.md)
 - `docs/api-reference/pronunciation-dictionaries/create-from-rules` — [Create a pronunciation dictionary from rules](pages/docs/api-reference/pronunciation-dictionaries/create-from-rules.md) · [原文](https://elevenlabs.io/docs/api-reference/pronunciation-dictionaries/create-from-rules.md)
@@ -509,6 +510,7 @@
 - `docs/eleven-agents/api-reference/phone-numbers/get` — [Get phone number](pages/docs/eleven-agents/api-reference/phone-numbers/get.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/phone-numbers/get.md)
 - `docs/eleven-agents/api-reference/phone-numbers/get-sip-messages` — [Get SIP messages for a phone number](pages/docs/eleven-agents/api-reference/phone-numbers/get-sip-messages.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/phone-numbers/get-sip-messages.md)
 - `docs/eleven-agents/api-reference/phone-numbers/list` — [List phone numbers](pages/docs/eleven-agents/api-reference/phone-numbers/list.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/phone-numbers/list.md)
+- `docs/eleven-agents/api-reference/phone-numbers/list-v-2` — [List Phone Numbers Page](pages/docs/eleven-agents/api-reference/phone-numbers/list-v-2.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/phone-numbers/list-v-2.md)
 - `docs/eleven-agents/api-reference/phone-numbers/update` — [Update phone number](pages/docs/eleven-agents/api-reference/phone-numbers/update.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/phone-numbers/update.md)
 - `docs/eleven-agents/api-reference/sip-trunk/outbound-call` — [Outbound call via SIP trunk](pages/docs/eleven-agents/api-reference/sip-trunk/outbound-call.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/sip-trunk/outbound-call.md)
 - `docs/eleven-agents/api-reference/speech-engine-upstream/speech-engine-upstream` — [Speech Engine Upstream](pages/docs/eleven-agents/api-reference/speech-engine-upstream/speech-engine-upstream.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/speech-engine-upstream/speech-engine-upstream.md)

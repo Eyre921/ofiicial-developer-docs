@@ -38,7 +38,6 @@ Successful Response
 
 - `crawl_jobs` (list of object, required)
   - `seed_url` (string, required)
-  - `max_depth` (integer, required)
   - `max_pages` (integer, required)
   - `root_folder_id` (string, required)
   - `updated_at` (integer, required)
@@ -53,6 +52,7 @@ Successful Response
   - `pages_scraped` (integer, optional, default: 0)
   - `pages_skipped` (integer, optional, default: 0)
   - `pages_failed` (integer, optional, default: 0)
+  - `max_depth` (integer, optional, default: 3, deprecated) — Deprecated - this field is a no-op and will be removed in a future version.
 - `next_cursor` (string, optional, nullable)
 
 ## Errors
@@ -75,7 +75,6 @@ Validation Error
   "crawl_jobs": [
     {
       "seed_url": "string",
-      "max_depth": 1,
       "max_pages": 1,
       "root_folder_id": "string",
       "updated_at": 1,
@@ -87,7 +86,8 @@ Validation Error
       "pages_identified": 0,
       "pages_scraped": 0,
       "pages_skipped": 0,
-      "pages_failed": 0
+      "pages_failed": 0,
+      "max_depth": 3
     }
   ],
   "next_cursor": "string"

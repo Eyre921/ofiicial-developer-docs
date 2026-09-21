@@ -58,7 +58,7 @@ In Sentry, go to **Settings > Projects > (select project) > SDK Setup > Loader S
 
 Sentry provides different bundles that include specific feature combinations. Go to our list of [available bundles](https://docs.sentry.io/platforms/javascript/install/loader.md#cdn) and copy the one that fits your needs. Next, place the script tag before all other scripts in your app.
 
-If you're updating your Sentry SDK to the latest version, check out our [migration guide](https://github.com/getsentry/sentry-javascript/blob/master/MIGRATION.md) to learn more about breaking changes.
+If you're updating your Sentry SDK to the latest version, check out our [migration guide](https://docs.sentry.io/platforms/javascript/migration/v10-to-v11.md) to learn more about breaking changes.
 
 ## [Configure](https://docs.sentry.io/platforms/javascript.md#configure)
 

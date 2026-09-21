@@ -35,7 +35,6 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base
 Successful Response
 
 - `seed_url` (string, required)
-- `max_depth` (integer, required)
 - `max_pages` (integer, required)
 - `root_folder_id` (string, required)
 - `updated_at` (integer, required)
@@ -50,6 +49,7 @@ Successful Response
 - `pages_scraped` (integer, optional, default: 0)
 - `pages_skipped` (integer, optional, default: 0)
 - `pages_failed` (integer, optional, default: 0)
+- `max_depth` (integer, optional, default: 3, deprecated) — Deprecated - this field is a no-op and will be removed in a future version.
 
 ## Errors
 
@@ -64,30 +64,23 @@ Validation Error
 
 ## Examples
 
-**Request**
-
-```json
-{}
-```
-
 **Response**
 
 ```json
 {
-  "seed_url": "https://www.example.com",
-  "max_depth": 3,
-  "max_pages": 100,
-  "root_folder_id": "folder_9a8b7c6d5e4f3g2h1i0j",
-  "updated_at": 1687804800,
-  "id": "crawljob_1234567890abcdef",
-  "created_at": 1687718400,
+  "seed_url": "seed_url",
+  "max_pages": 1,
+  "root_folder_id": "root_folder_id",
+  "updated_at": 1,
+  "id": "id",
+  "created_at": 1,
   "type": "discovery",
-  "pattern": "/blog/*",
-  "status": "processing",
-  "pages_identified": 75,
-  "pages_scraped": 50,
-  "pages_skipped": 10,
-  "pages_failed": 5
+  "pattern": "pattern",
+  "status": "queued",
+  "pages_identified": 1,
+  "pages_scraped": 1,
+  "pages_skipped": 1,
+  "pages_failed": 1
 }
 ```
 
@@ -120,7 +113,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
@@ -129,11 +121,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/knowledge-base/crawl/crawl_job_id"
 
-	payload := strings.NewReader("{}")
-
-	req, _ := http.NewRequest("GET", url, payload)
-
-	req.Header.Add("Content-Type", "application/json")
+	req, _ := http.NewRequest("GET", url, nil)
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -156,8 +144,6 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["Content-Type"] = 'application/json'
-request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -168,8 +154,6 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/knowledge-base/crawl/crawl_job_id")
-  .header("Content-Type", "application/json")
-  .body("{}")
   .asString();
 ```
 
@@ -179,12 +163,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/knowledge-base/crawl/crawl_job_id', [
-  'body' => '{}',
-  'headers' => [
-    'Content-Type' => 'application/json',
-  ],
-]);
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/knowledge-base/crawl/crawl_job_id');
 
 echo $response->getBody();
 ```
@@ -194,25 +173,16 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/knowledge-base/crawl/crawl_job_id");
 var request = new RestRequest(Method.GET);
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = ["Content-Type": "application/json"]
-let parameters = [] as [String : Any]
-
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
-
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/knowledge-base/crawl/crawl_job_id")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
-request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
