@@ -239,6 +239,9 @@ When available, applicable events include a top-level `team_ids` array containin
 * **workspace.settings.internal\_integration\_creation\_policy\_updated**: The workspace policy controlling who can create internal integrations was updated.
 * **workspace.settings.invite\_link\_reset**: A user reset the workspace invite link.
 * **workspace.settings.invite\_link\_setting\_updated**: A user enabled or disabled the workspace invite link.
+* **workspace.settings.mcp\_server\_added\_to\_allowlist**: That an MCP server URL or pattern was added to the approved connections allowlist.
+* **workspace.settings.mcp\_server\_allowlist\_setting\_updated**: That enforcement of the MCP server URL allowlist was enabled or disabled.
+* **workspace.settings.mcp\_server\_removed\_from\_allowlist**: That an MCP server URL or pattern was removed from the approved connections allowlist.
 * **workspace.settings.member\_add\_policy\_updated**: A user updated who can add members to the workspace.
 * **workspace.settings.membership\_request\_setting\_updated**: A user enabled or disabled new workspace membership requests.
 * **workspace.settings.name\_updated**: A user updated the workspace's name.

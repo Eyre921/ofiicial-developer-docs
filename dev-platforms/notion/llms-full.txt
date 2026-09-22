@@ -1236,7 +1236,10 @@ Events are split into the following categories:
 * **MCP client added to allowlist**: That an MCP client was added to the allowlist.
 * **MCP client removed from allowlist**: That an MCP client was removed from the allowlist.
 * **MCP connection tools updated**: That the selected tools for a workspace MCP connection were updated.
+* **MCP server added to allowlist**: That an MCP server URL or pattern was added to the approved connections allowlist.
+* **MCP server allowlist setting updated**: That enforcement of the MCP server URL allowlist was enabled or disabled.
 * **MCP server connected**: That an MCP server was connected to the workspace, including via an enterprise-managed connection.
+* **MCP server removed from allowlist**: That an MCP server URL or pattern was removed from the approved connections allowlist.
 * **Member add policy updated**: That the policy controlling who can add workspace members was updated.
 * **Member added to group**: That a workspace owner or membership admin has added a user to a group.
 * **Member invited**: That a workspace owner, Membership admin, or member with permission invited a user to the workspace. The new user's role will be specified as `Workspace owner` if they are invited as a workspace owner, or as `Membership admin` if they are invited as a membership admin.
@@ -1695,6 +1698,9 @@ When available, applicable events include a top-level `team_ids` array containin
 * **workspace.settings.internal\_integration\_creation\_policy\_updated**: The workspace policy controlling who can create internal integrations was updated.
 * **workspace.settings.invite\_link\_reset**: A user reset the workspace invite link.
 * **workspace.settings.invite\_link\_setting\_updated**: A user enabled or disabled the workspace invite link.
+* **workspace.settings.mcp\_server\_added\_to\_allowlist**: That an MCP server URL or pattern was added to the approved connections allowlist.
+* **workspace.settings.mcp\_server\_allowlist\_setting\_updated**: That enforcement of the MCP server URL allowlist was enabled or disabled.
+* **workspace.settings.mcp\_server\_removed\_from\_allowlist**: That an MCP server URL or pattern was removed from the approved connections allowlist.
 * **workspace.settings.member\_add\_policy\_updated**: A user updated who can add members to the workspace.
 * **workspace.settings.membership\_request\_setting\_updated**: A user enabled or disabled new workspace membership requests.
 * **workspace.settings.name\_updated**: A user updated the workspace's name.
@@ -11063,45 +11069,45 @@ Notion's `/mcp` endpoint is stateless, so the id carries no server-side state:
 * Echoing it lets Notion group the requests of one client session together,
   which helps when you report an issue — include the id in your report.
 
-### Identify the connected workspace
+### Check tool availability
 
-The OAuth token response includes `user_id` and `workspace_id`, but not
-display names, and the public REST API's `GET /v1/users/me` does not accept
-MCP-audienced tokens. To label a connection with the workspace name after
-connecting, call the `fetch` tool with the special id `self`:
+Call `notion-get-tool-access` with `{}` before using conditionally available tools,
+and reuse the returned map across tools for this connection.
 
 <CodeGroup>
   ```typescript TypeScript theme={null}
   const result = await client.callTool({
-    name: "notion-fetch", // "fetch" for OpenAI clients (the notion- prefix is dropped)
-    arguments: { id: "self" },
+    name: "notion-get-tool-access",
+    arguments: {},
   })
 
-  // Tool results come back as MCP content blocks, not as a typed object. The Notion
-  // MCP server returns the tool's JSON payload as a single text block, so parse it
-  // and read the `self` field from the result.
   const [block] = result.content
-  if (block?.type !== "text") {
-    throw new Error("Expected a text content block from notion-fetch")
+  if (result.isError || block?.type !== "text") {
+    throw new Error("Could not read tool access from notion-get-tool-access")
   }
 
-  const { workspace, user, current_tool_access } = JSON.parse(block.text).self
-  console.log(`Connected to ${workspace.name} (${workspace.id}) as ${user.name}`)
-  // workspace:           { id, name }
-  // user:                { id, name, type, email }
-  // current_tool_access: { [toolName]: { status, upgrade_url? } }
+  const { current_tool_access } = JSON.parse(block.text)
+  console.log(current_tool_access)
+  // { [toolName]: { status, restricted_parameters?, upgrade_url?, ... } }
   ```
 </CodeGroup>
 
-The `self` payload also carries a `current_tool_access` map, so an MCP client
-can tell up front which tools will actually run on the connected workspace's
-plan and which would only return an upgrade prompt. For content search, inspect
-`current_tool_access.ai_search.status`: use `notion-ai-search` when it is
-`available`, and use `notion-search` only when it is not. Each entry's `status` is
-`available`, `available_with_limit` (calls can be made up to the limit included with
-the workspace's plan), `upgrade_required` (calls return an upgrade prompt, and the entry
-includes an `upgrade_url` into the workspace's upgrade flow), or `not_enabled`.
-See [Supported tools](/guides/mcp/mcp-supported-tools) for details.
+The map includes only tools advertised for this connection. When `ai_search` is
+`available`, prefer `notion-ai-search`; the map omits `search` in that case.
+Otherwise, use `notion-search` if exposed. If only `notion-ai-search` is exposed,
+it can still perform Notion-only keyword search when its status is
+`upgrade_required` or `plan_required`. Billing restrictions still return errors.
+
+User lookup has separate requirements: both search tools need user information
+capabilities, and workspace-owned MCP connections must also expose
+`notion-get-users`. AI-search availability doesn't grant these permissions.
+
+Read each `restricted_parameters` reason against your requested value. A listed
+parameter isn't always forbidden: a restriction on multiple teamspaces still
+allows a single teamspace. An `upgrade_required` status means full access needs
+an upgrade; it doesn't rule out documented fallback results.
+See [Supported tools](/guides/mcp/mcp-supported-tools) for all access statuses,
+recovery links, and search behavior.
 
 ## Step 8: Handle token refresh
 
@@ -12048,14 +12054,18 @@ An MCP client can call several tools in one task. For example, it can search for
   <Accordion title="Search Notion">
     `notion-search`
 
-    Before a content search, call `notion-fetch` with the id `self` and inspect the `ai_search` entry in the returned `current_tool_access` map. When its status is `available`, use `notion-ai-search` for every content search, including exact keywords. If the entry is missing or its status is not `available`, use `notion-search` for content. `notion-search` remains the tool for a user lookup by name or email. It supports short, specific keywords, location (page, data source, or teamspace), creator or editor, date, title, content-status filters, sorting, and up to 50 results.
+    Before a content search, call `notion-get-tool-access` with `{}` and reuse the returned `current_tool_access` map. Follow the routing guidance in "Check tool access" below, and select only tools exposed by the connection. User lookup has additional permission requirements described under "AI search".
 
-    When the connection can use AI search, a keyword content search sent to `notion-search` runs AI search instead. It returns the same unified Notion and connected-source results as `notion-ai-search` and reports `type: "ai_search"`. A call that passes an exact filter, an empty query, or a sort other than `relevance` stays on Notion workspace search and reports `type: "workspace_search"`. Routing follows the access that `notion-fetch` with the id `self` reports for the connection, so a connection whose tool list leaves out `notion-ai-search` keeps its content searches on Notion workspace search. A user lookup with `query_type: "user"` always runs the user search.
+    `notion-search` supports short, specific keywords, location (page, data source, or teamspace), creator or editor, date, title, content-status filters, sorting, and up to 50 results.
+
+    When the connection can use AI search, a keyword content search sent to `notion-search` runs AI search instead. It returns the same unified Notion and connected-source results as `notion-ai-search` and reports `type: "ai_search"`. A call that passes an exact filter, an empty query, or a sort other than `relevance` stays on Notion workspace search and reports `type: "workspace_search"`. Routing follows the access that `notion-get-tool-access` reports for the connection, so a connection whose tool list leaves out `notion-ai-search` keeps its content searches on Notion workspace search. A user lookup with `query_type: "user"` always runs the user search.
 
     Workspace search results may include `path` and `verification` details. Fetch important matches before relying on them. Unified results from AI search omit `verification`, so fetch a Notion result with `notion-fetch` when verification state matters.
 
+    A filter or sort that the workspace's plan doesn't include doesn't fail the call. Notion drops the unavailable options, runs the rest of the search, and adds a `notices` array to the response. A notice names the dropped fields, such as `filters.title_only`, and may include an upgrade link. Results can be broader than requested and use relevance sorting. On a plan without multiple-teamspace search, when `teamspace_id` and `filters.teamspace_ids` select different teamspaces, both are dropped. If dropping the options leaves an empty query with no supported constraint, the response returns no results and a notice asking for a non-empty query or a supported filter.
+
     <Note>
-      Full Notion MCP on Business or Enterprise is required to filter by editor, last-edited date, multiple teamspaces, title only, or content status, and to sort by date. Other filters are available on every plan.
+      Full Notion MCP on Business or Enterprise is required to filter by editor, last-edited date, multiple teamspaces, title only, or content status, and to sort by date. Other filters are available on every plan. On a plan without them, `restricted_parameters` lists each option with the reason it's unavailable. Read the entry for the search tool you're calling, and check each restriction's reason against the values you plan to send.
     </Note>
 
     **Example prompts:**
@@ -12068,14 +12078,18 @@ An MCP client can call several tools in one task. For example, it can search for
   <Accordion title="AI search">
     `notion-ai-search`
 
-    Before a content search, call `notion-fetch` with the id `self` and inspect the `ai_search` entry in the returned `current_tool_access` map. When its status is `available`, use `notion-ai-search` for every content search, including exact keywords. If the entry is missing or its status is not `available`, use `notion-search` instead. Search Notion and sources connected to your workspace, such as Slack, Mail, Calendar, Google Drive, and Jira, with keywords, a page title, or a concise natural-language question. It searches a source only when it is connected and available to you. Keep the query under about 50 words, and use one query per call. Narrow results to a page and its descendants, a data source, or a teamspace, and return up to 50 results.
+    Use the "Check tool access" guidance below to select an exposed search tool. Search Notion and sources connected to your workspace, such as Slack, Mail, Calendar, Google Drive, and Jira, with keywords, a page title, or a concise natural-language question. It searches a source only when it is connected and available to you. Keep the query under about 50 words, and use one query per call. Narrow results to a page and its descendants, a data source, or a teamspace, and return up to 50 results.
 
-    This tool also accepts the exact filters, sorting, and filter-only browsing supported by `notion-search`. These options return Notion-only results to enforce the constraints exactly; omit them to search Notion and connected sources together. The same Business access requirements apply to advanced filters and sorting. User lookup still uses `notion-search`.
+    This tool also accepts the exact filters, sorting, and filter-only browsing supported by `notion-search`. These options return Notion-only results to enforce the constraints exactly; omit them to search Notion and connected sources together. Access to advanced filters and sorting is separate from AI access, so check `current_tool_access.ai_search.restricted_parameters` before sending them. A restricted option is dropped with a notice, the same as on `notion-search`.
 
-    Results use the same shape as `notion-search` and may include `path`. Unified results omit `verification` details, so fetch a Notion result with `notion-fetch` when verification state matters. Connected-app results cannot be fetched with `notion-fetch`. The response reports `type: "ai_search"` for every `notion-ai-search` call, including the Notion-only results returned for exact filters, non-relevance sorting, and filter-only browsing.
+    This tool also handles a user lookup. Set `query_type: "user"` and pass a name or email, and omit content filters and sorting, which return a `validation_error` for a user lookup. The response reports `type: "user_search"` and lists the matching users. A user lookup doesn't need AI access. Both search tools require user information [capabilities](/reference/capabilities); workspace-owned MCP connections must also expose `notion-get-users`. AI-search availability alone doesn't grant user lookup, and switching to `notion-search` doesn't bypass these requirements. Omit `query_type`, or set it to `internal`, for a content search.
+
+    Results use the same shape as `notion-search` and may include `path`. Unified results omit `verification` details, so fetch a Notion result with `notion-fetch` when verification state matters. Connected-app results cannot be fetched with `notion-fetch`. The response reports `type: "ai_search"` for every `notion-ai-search` content-search call, including the Notion-only results returned for exact filters, non-relevance sorting, and filter-only browsing.
+
+    When the workspace's plan doesn't include AI search, a content search sent to this exposed tool runs a keyword search in Notion only instead of returning an upgrade error. The response still reports `type: "ai_search"` and adds a `notices` entry saying that connected sources weren't searched, with an upgrade link when available.
 
     <Note>
-      Listed on all plans, but using it requires Notion AI. An administrator can exclude AI search from a workspace MCP connection's selected tool list. In that case, the connection omits both the tool and its `ai_search` entry in `current_tool_access`. `notion-fetch` with the id `self` reports the API key `ai_search` in `current_tool_access` as `available` when the workspace can use AI search. Otherwise it reports `upgrade_required` with an `upgrade_url`, or `plan_required` with a `landing_page_url` and `landing_page_action` when Notion routes the user through a plan landing page. If the workspace has a billing restriction, such as an unpaid invoice, calls return a permission error that asks a workspace owner to manage billing, and `current_tool_access` reports the `ai_search` key as `not_enabled`.
+      Listed on all plans. Searching connected sources requires Notion AI. An administrator can exclude AI search from a workspace MCP connection's selected tool list. In that case, the connection omits both the tool and its `ai_search` entry in `current_tool_access`. `notion-get-tool-access` reports the API key `ai_search` as `available` when the workspace can use AI search. Otherwise it reports `upgrade_required` with an `upgrade_url`, or `plan_required` with a `landing_page_url` and `landing_page_action` when Notion routes the user through a plan landing page. If the workspace has a billing restriction, such as an unpaid invoice, calls return a permission error that asks a workspace owner to manage billing instead of falling back to keyword search, and `current_tool_access` reports the `ai_search` key as `not_enabled`.
     </Note>
 
     **Example prompts:**
@@ -12085,6 +12099,32 @@ An MCP client can call several tools in one task. For example, it can search for
     * "Find context about our customer onboarding strategy"
     * "Find related work on improving search results for AI workspaces"
     * "Find discussions about this launch in my connected Slack and Mail"
+    * "Look up the workspace user with the email [ada@example.com](mailto:ada@example.com)"
+  </Accordion>
+
+  <Accordion title="Check tool access">
+    `notion-get-tool-access`
+
+    Reports which tools run on the connected workspace's plan, which of their parameters are restricted, and where to upgrade. Call it before you use a tool whose availability depends on the plan, unless you already know that tool's access. Those tools say so in their own descriptions. Ask for the whole map in one call and reuse it across those tools instead of checking them one at a time. It reads connection metadata, so it doesn't grant access or change the workspace.
+
+    Pass `tool_names` to narrow the response, for example `["search", "ai_search"]`. Omit it to get every tool visible to the connection. Unknown names and tools the connection doesn't expose are left out, and an empty list returns an empty map.
+
+    The response contains `current_tool_access`, a map of tool names to their access state on this workspace's plan. Each entry's `status` is `available`, `available_with_limit` (calls can be made up to the limit included with the workspace's plan), `plan_required`, `upgrade_required` (full access requires an upgrade; tools such as AI search can still return fallback results with a notice), `full_version_required`, or `not_enabled`. An entry carries an `upgrade_url` when a workspace upgrade changes the status, a `full_version_url` when the tool needs the full version of Notion MCP, and a `landing_page_url` with a `landing_page_action` of `start_trial`, `request_trial`, or `learn_more` when Notion routes the user through a plan landing page.
+
+    An entry can also carry `restricted_parameters`, a map from a parameter path such as `filters.title_only` to the reason it's unavailable. These restrictions are independent of the entry's `status`. Read each reason and check whether it applies to your requested value. For example, `filters.teamspace_ids` restricts multiple distinct teamspaces below Business; a single teamspace remains supported. Likewise, a restriction on date sorting doesn't prevent `sort: "relevance"`.
+
+    For content search, prefer `notion-ai-search` when `ai_search.status` is `available`. In that case, the map omits `search`, even if you request it by name. Otherwise, use `notion-search` if the connection exposes it. If only `notion-ai-search` is exposed and its status is `upgrade_required` or `plan_required`, it can still return Notion-only keyword results with a notice. A `not_enabled` status doesn't promise this fallback; billing restrictions still return errors. If neither search tool is exposed, the connection needs an administrator to enable one.
+
+    The map can include both `search` and an unavailable `ai_search` entry. A missing entry means the map doesn't advertise that tool; it doesn't identify a usable fallback. For user lookup, choose an exposed search tool and satisfy the separate user-information and `notion-get-users` requirements above, regardless of AI access.
+
+    Tools can be listed on every plan. Consult this map together with each tool's documented fallback behavior. The map covers the tools in a current tool list, so a tool that is no longer advertised has no entry, even when a cached tool list can still call it. For `query_data_sources`, view mode is always available; Business and Enterprise plans with Notion AI can query any number of data sources, while other plans receive metered single-data-source access.
+
+    Keys are the tools' base names. A tool that appears with a `notion-` prefix and hyphens, such as `notion-query-data-sources`, corresponds to the map key with the prefix dropped and hyphens as underscores (`query_data_sources`).
+
+    **Example prompts:**
+
+    * "Can this connection use AI search, or should you use keyword search?"
+    * "Which search filters aren't available on this workspace's plan?"
   </Accordion>
 
   <Accordion title="Search Notion Skills">
@@ -12127,9 +12167,7 @@ An MCP client can call several tools in one task. For example, it can search for
 
     Pass a `view://` URL from a database response to read a saved view's filters, sorts, and display settings. A database URL with a `?v=` parameter still returns the database. To read the rows shown by a view, use `notion-query-data-sources` with `mode: "view"`.
 
-    Pass the special id `self` to retrieve the connected workspace and user identity instead of an entity. The response includes a `self` object with the workspace's ID and name, and the authenticated user's ID, name, type, and email — useful for labeling a connection after OAuth.
-
-    The `self` object also includes `current_tool_access`, a map of tool names to their access state on this workspace's plan: `available`, `available_with_limit` (calls can be made up to the limit included with the workspace's plan), `upgrade_required` (calls return an upgrade prompt, and the map entry carries an `upgrade_url`), or `not_enabled`. For content search, inspect the `ai_search` entry: use `notion-ai-search` whenever its status is `available`. If the returned map has no `ai_search` entry or its status is not `available`, use `notion-search`. The same rule covers searches with exact filters or sorting, because `notion-ai-search` accepts those options too. Tools are listed on every plan, so consult this map to route away from tools that would only return an upgrade prompt. The map covers the tools in a current tool list, so a tool that is no longer advertised has no entry, even when a cached tool list can still call it. For `query_data_sources`, view mode is always available; Business and Enterprise plans with Notion AI can query any number of data sources, while other plans receive metered single-data-source access. Keys are the tools' base names; when tools appear with a `notion-` prefix and hyphens (e.g. `notion-query-data-sources`), they correspond to the map key with the prefix dropped and hyphens as underscores (`query_data_sources`).
+    To check tool availability, call `notion-get-tool-access` with `{}` and reuse the map. See "Check tool access" above for search routing, user-lookup requirements, statuses, recovery links, and parameter restrictions.
 
     When a page is large enough that some subtrees could not be loaded, the response sets `truncated` to `true` and includes `unknown_block_ids` (up to 50 omitted subtree root IDs) and `unknown_block_count` (the total number of omitted subtree roots). Pass one of the returned IDs back to `notion-fetch` to retrieve that subtree directly. An ID may also represent content the caller cannot access, so treat an `object_not_found` error on retry as a permissions signal rather than a failure to handle.
 
@@ -12139,7 +12177,6 @@ An MCP client can call several tools in one task. For example, it can search for
     * "Fetch the data source `collection://f336d0bc-b841-465b-8045-024475c079dd` to see its schema"
     * "Fetch the view `view://8ac3f3d0-1f2b-4c7e-9d51-4b0c0a9f2e77` to see how it's filtered and sorted"
     * "Fetch the bug tracking database so I can see the available templates"
-    * "Fetch `self` to see which workspace and user this connection is for"
   </Accordion>
 
   <Accordion title="Create a file upload URL">
@@ -17423,6 +17460,26 @@ Source: https://developers.notion.com/guides/resources/notion-s-api-workspace
 Source: https://developers.notion.com/page/changelog
 
 
+
+<Update label="September 17, 2026">
+  ### Check tool access with `notion-get-tool-access`
+
+  Notion MCP has a new [`notion-get-tool-access`](/guides/mcp/mcp-supported-tools) tool. Call it with `{}` to get the full connection-scoped `current_tool_access` map. It takes an optional `tool_names` array such as `["search", "ai_search"]` to narrow the result. Call it before you use a tool whose availability depends on the plan: to choose between `notion-search` and `notion-ai-search`, for example, or to see which parameters the workspace's plan restricts. Those tools now say so in their descriptions, and each points to one call for the whole map that you can reuse across them. It doesn't grant access or change the workspace.
+
+  Entries in the map can now include `restricted_parameters`, which maps a parameter path such as `filters.title_only` to the reason it's unavailable. A restriction applies even when the entry's `status` is `available`, so check it before sending the parameter. Read the reason against your requested value: a single teamspace remains supported even when `filters.teamspace_ids` lists a restriction on multiple teamspaces.
+
+  When `ai_search` is exposed and `available`, the map omits `search`, even when requested by name. Otherwise, the map can include both an available `search` entry and an unavailable `ai_search` entry, depending on the connection's selected tools. Choose only an exposed tool. If only `notion-ai-search` is exposed, plan restrictions still allow its Notion-only keyword fallback; billing restrictions don't.
+
+  ### Search drops unavailable options instead of failing
+
+  A [`notion-search`](/guides/mcp/mcp-supported-tools) or `notion-ai-search` call that asks for a filter or sort the workspace's plan doesn't include now runs the supported part of the search. These calls previously returned a `validation_error`. The response adds a `notices` array naming the dropped fields, with an upgrade link when available, and results can be broader than requested and use relevance sorting. On a plan without multiple-teamspace search, when `teamspace_id` and `filters.teamspace_ids` select different teamspaces, both are dropped. If dropping the options leaves an empty query with no supported constraint, the response returns no results and a notice asking for a non-empty query or a supported filter.
+
+  `notion-ai-search` content search on a plan without AI access now runs a keyword search in Notion only rather than returning an upgrade error. It still reports `type: "ai_search"` and explains in `notices` that connected sources weren't searched. A workspace with a billing restriction, such as an unpaid invoice, still gets a permission error asking a workspace owner to manage billing.
+
+  ### `notion-ai-search` handles user lookup
+
+  [`notion-ai-search`](/guides/mcp/mcp-supported-tools) now takes `query_type`. Set it to `user` with a name or email to look up a workspace user, and the response reports `type: "user_search"`, the same as `notion-search`. Omit `query_type`, or set it to `internal`, for a content search. Content filters and sorting aren't valid with a user lookup and return a `validation_error`. A user lookup doesn't need AI access, but both search tools need user information [capabilities](/reference/capabilities). Workspace-owned MCP connections must also expose `notion-get-users`. Choose an exposed search tool; switching tools doesn't bypass these permissions.
+</Update>
 
 <Update label="September 10, 2026">
   ### AI search accepts filters, and `notion-search` routes content queries to it
@@ -28068,7 +28125,7 @@ Put outgoing requests through a queue so a burst from one job does not consume t
 3. If another 429 or 529 arrives, increase the delay with exponential backoff and jitter.
 4. Set a retry limit. Log or surface the final error when the limit is reached.
 
-Do not retry every error. Retry 429 and 529 responses. Retry 500, 502, 503, and 504 responses only when the request is idempotent, such as GET or DELETE, unless your application has its own idempotency protection. Fix the request before retrying most 400 responses. A 401 means authentication failed. A 403 can mean a permission failure or a [workspace block limit](/reference/workspace-block-limits); check the error message before retrying.
+Do not retry every error. Retry 429 and 529 responses. Retry 500, 502, 503, and 504 responses only when the request is idempotent, such as GET or DELETE, unless your application has its own idempotency protection. A write that returns 503 needs an extra check first; see [Retry a write that returns 503](#retry-a-write-that-returns-503). Fix the request before retrying most 400 responses. A 401 means authentication failed. A 403 can mean a permission failure or a [workspace block limit](/reference/workspace-block-limits); check the error message before retrying.
 
 The JavaScript SDK retries 429 responses for every method. It also retries 500 and 503 responses for GET and DELETE requests. It respects `Retry-After`, uses exponential backoff with jitter, and limits retries. If you call the REST API directly, use the same safeguards and add explicit handling for 529 responses. These examples show the same policy in several common HTTP clients:
 
@@ -28219,6 +28276,34 @@ The same rules apply in other languages: centralize retries in the HTTP client, 
 
   In the future, Notion plans to adjust rate limits to balance for demand and reliability.
 </Warning>
+
+### Retry a write that returns 503
+
+A write can save its change and still return 503 when Notion runs out of time building the response. Repeating that write applies the change twice, so read `additional_data.retry_guidance` before you retry. When the change was already saved, the guidance tells you to read the object instead.
+
+```json 503 response example theme={null}
+{
+  "object": "error",
+  "status": 503,
+  "code": "service_unavailable",
+  "message": "The change was saved, but the response could not be built in time. Read the object again instead of repeating the write.",
+  "additional_data": {
+    "from": "publicApi.pageObjectPointerToPageObject.beforePreload",
+    "elapsed_ms": "55012",
+    "deadline_ms": "55000",
+    "retry_guidance": [
+      "Read the object again to confirm the saved change.",
+      "Do not repeat the write."
+    ]
+  }
+}
+```
+
+When the request created a page or a database, `additional_data.committed_resource_id` holds the ID of the new object. Use it to retrieve the object, since the timed-out response never returned that ID. Other requests that change an existing object omit the field, because you already have its ID.
+
+When the request appended block children, `committed_resource_id` holds the parent block ID. `additional_data.committed_child_ids` lists the direct children created by this request, in request order. It excludes nested descendants. Retrieve each block with `GET /v1/blocks/:id`, using an ID from that list. These IDs distinguish your new blocks from identical existing blocks or blocks appended by another request. Do not repeat the write.
+
+Other 503 responses carry different guidance, or none at all. Notion cannot always tell you whether a write was saved, so check the object's current state before you retry it.
 
 ## Size limits
 
@@ -29301,26 +29386,26 @@ Responses from the API use HTTP response codes to indicate general classes of su
 
 Error responses contain more detail about the error in the response body, in the `"code"` and `"message"` properties. Some error responses may also include an `"additional_data"` object with extra context, such as retry guidance or endpoint-specific details.
 
-| HTTP status code | `"code"`                            | Description                                                                                                                                                                                                                                                                                                                                                            | `"message"` example                                                                                                                                                      |
-| :--------------- | :---------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 400              | `"invalid_json"`                    | The request body could not be decoded as JSON.                                                                                                                                                                                                                                                                                                                         | `"Error parsing JSON body."`                                                                                                                                             |
-| 400              | `"invalid_request_url"`             | The request URL is not valid.                                                                                                                                                                                                                                                                                                                                          | `"Invalid request URL"`                                                                                                                                                  |
-| 400              | `"invalid_request"`                 | This request is not supported.                                                                                                                                                                                                                                                                                                                                         | `"Unsupported request: <request name>."`                                                                                                                                 |
-| 400              | `"invalid_grant"`                   | The provided authorization grant (e.g., authorization code, resource owner credentials) or refresh token is invalid, expired, revoked, does not match the redirection URI used in the authorization request, or was issued to another client. See [OAuth 2.0 documentation](https://datatracker.ietf.org/doc/html/rfc6749#section-5.2) for more information.           | `"Invalid code: this code has been revoked."`                                                                                                                            |
-| 400              | `"validation_error"`                | The request body does not match the schema for the expected parameters. Check the `"message"` property for more details.                                                                                                                                                                                                                                               | `"body failed validation: body.properties should be defined, instead was undefined."`                                                                                    |
-| 400              | `"missing_version"`                 | The request is missing the required `Notion-Version` header. See [Versioning](/reference/versioning).                                                                                                                                                                                                                                                                  | `"Notion-Version header failed validation: Notion-Version header should be defined, instead was undefined."`                                                             |
-| 400              | `"invalid_beta"`                    | The `Notion-Beta` header is malformed, names an unknown beta, uses an unsupported revision, or is missing from an endpoint that requires it. See [Versioning](/reference/versioning#beta-versions).                                                                                                                                                                    | `"Beta \"notion-as-code\" revision 2026-07-01 is no longer supported. Send Notion-Beta: notion-as-code-2026-07-31."`                                                     |
-| 401              | `"unauthorized"`                    | The bearer token is not valid.                                                                                                                                                                                                                                                                                                                                         | `"API token is invalid."`                                                                                                                                                |
-| 403              | `"restricted_resource"`             | The token lacks permission, or the request exceeds a [workspace block limit](/reference/workspace-block-limits). The message explains the cause.                                                                                                                                                                                                                       | `"API token does not have access to this resource."`                                                                                                                     |
-| 404              | `"object_not_found"`                | Given the bearer token used, the resource does not exist. This error can also indicate that the resource has not been shared with owner of the bearer token. If the connection name is available, it will be included in the error message.                                                                                                                            | `"Could not find database with ID: be907abe-510e-4116-a3d1-7ea71018c06f. Make sure the relevant pages and databases are shared with your connection \"My Connection\"."` |
-| 409              | `"conflict_error"`                  | The transaction could not be completed, potentially due to a data collision. Make sure the parameters are up to date and try again.      We also use this HTTP status code in rare cases when our [File Upload](/reference/file-upload) third-party data storage provider has downtime and sending file contents failed. In this case, please retry the request later. | `"Conflict occurred while saving. Please try again."`                                                                                                                    |
-| 429              | `"rate_limited"`                    | This request exceeds the number of requests allowed. Slow down and try again. [More details on rate limits](/reference/request-limits).                                                                                                                                                                                                                                | `"You have been rate limited. Please try again later."`                                                                                                                  |
-| 500              | `"internal_server_error"`           | An unexpected error occurred. Reach out to [Notion support](https://www.notion.com/help).                                                                                                                                                                                                                                                                              | `"Unexpected error occurred."`                                                                                                                                           |
-| 502              | `"bad_gateway"`                     | Notion encountered an issue while attempting to complete this request (e.g., failed to establish a connection with an upstream server). Please try again.                                                                                                                                                                                                              | `"Bad Gateway"`                                                                                                                                                          |
-| 503              | `"service_unavailable"`             | Notion is unavailable. This can occur when the time to respond to a request takes longer than 60 seconds, the maximum request timeout. Please try again later.                                                                                                                                                                                                         | `"Notion is unavailable, please try again later."`                                                                                                                       |
-| 503              | `"database_connection_unavailable"` | Notion's database is unavailable or is not in a state that can be queried. Please try again later.                                                                                                                                                                                                                                                                     | `"Notion is unavailable, please try again later."`                                                                                                                       |
-| 504              | `"gateway_timeout"`                 | Notion timed out while attempting to complete this request. Please try again later.                                                                                                                                                                                                                                                                                    | `"Gateway Timeout"`                                                                                                                                                      |
-| 529              | `"service_overload"`                | Notion is temporarily overloaded. Respect the `Retry-After` response header and try again later.                                                                                                                                                                                                                                                                       | `"Notion is temporarily overloaded. Please try again later."`                                                                                                            |
+| HTTP status code | `"code"`                            | Description                                                                                                                                                                                                                                                                                                                                                                                       | `"message"` example                                                                                                                                                      |
+| :--------------- | :---------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 400              | `"invalid_json"`                    | The request body could not be decoded as JSON.                                                                                                                                                                                                                                                                                                                                                    | `"Error parsing JSON body."`                                                                                                                                             |
+| 400              | `"invalid_request_url"`             | The request URL is not valid.                                                                                                                                                                                                                                                                                                                                                                     | `"Invalid request URL"`                                                                                                                                                  |
+| 400              | `"invalid_request"`                 | This request is not supported.                                                                                                                                                                                                                                                                                                                                                                    | `"Unsupported request: <request name>."`                                                                                                                                 |
+| 400              | `"invalid_grant"`                   | The provided authorization grant (e.g., authorization code, resource owner credentials) or refresh token is invalid, expired, revoked, does not match the redirection URI used in the authorization request, or was issued to another client. See [OAuth 2.0 documentation](https://datatracker.ietf.org/doc/html/rfc6749#section-5.2) for more information.                                      | `"Invalid code: this code has been revoked."`                                                                                                                            |
+| 400              | `"validation_error"`                | The request body does not match the schema for the expected parameters. Check the `"message"` property for more details.                                                                                                                                                                                                                                                                          | `"body failed validation: body.properties should be defined, instead was undefined."`                                                                                    |
+| 400              | `"missing_version"`                 | The request is missing the required `Notion-Version` header. See [Versioning](/reference/versioning).                                                                                                                                                                                                                                                                                             | `"Notion-Version header failed validation: Notion-Version header should be defined, instead was undefined."`                                                             |
+| 400              | `"invalid_beta"`                    | The `Notion-Beta` header is malformed, names an unknown beta, uses an unsupported revision, or is missing from an endpoint that requires it. See [Versioning](/reference/versioning#beta-versions).                                                                                                                                                                                               | `"Beta \"notion-as-code\" revision 2026-07-01 is no longer supported. Send Notion-Beta: notion-as-code-2026-07-31."`                                                     |
+| 401              | `"unauthorized"`                    | The bearer token is not valid.                                                                                                                                                                                                                                                                                                                                                                    | `"API token is invalid."`                                                                                                                                                |
+| 403              | `"restricted_resource"`             | The token lacks permission, or the request exceeds a [workspace block limit](/reference/workspace-block-limits). The message explains the cause.                                                                                                                                                                                                                                                  | `"API token does not have access to this resource."`                                                                                                                     |
+| 404              | `"object_not_found"`                | Given the bearer token used, the resource does not exist. This error can also indicate that the resource has not been shared with owner of the bearer token. If the connection name is available, it will be included in the error message.                                                                                                                                                       | `"Could not find database with ID: be907abe-510e-4116-a3d1-7ea71018c06f. Make sure the relevant pages and databases are shared with your connection \"My Connection\"."` |
+| 409              | `"conflict_error"`                  | The transaction could not be completed, potentially due to a data collision. Make sure the parameters are up to date and try again.      We also use this HTTP status code in rare cases when our [File Upload](/reference/file-upload) third-party data storage provider has downtime and sending file contents failed. In this case, please retry the request later.                            | `"Conflict occurred while saving. Please try again."`                                                                                                                    |
+| 429              | `"rate_limited"`                    | This request exceeds the number of requests allowed. Slow down and try again. [More details on rate limits](/reference/request-limits).                                                                                                                                                                                                                                                           | `"You have been rate limited. Please try again later."`                                                                                                                  |
+| 500              | `"internal_server_error"`           | An unexpected error occurred. Reach out to [Notion support](https://www.notion.com/help).                                                                                                                                                                                                                                                                                                         | `"Unexpected error occurred."`                                                                                                                                           |
+| 502              | `"bad_gateway"`                     | Notion encountered an issue while attempting to complete this request (e.g., failed to establish a connection with an upstream server). Please try again.                                                                                                                                                                                                                                         | `"Bad Gateway"`                                                                                                                                                          |
+| 503              | `"service_unavailable"`             | Notion is unavailable, or it could not build the response in time. This can occur when a request takes longer than 60 seconds, the maximum request timeout. A write can save its change and still return this code, so check `additional_data.retry_guidance` before you retry it. [More details on retrying a write that returns 503](/reference/request-limits#retry-a-write-that-returns-503). | `"Notion is unavailable, please try again later."` or `"The change was saved, but the response could not be built in time."`                                             |
+| 503              | `"database_connection_unavailable"` | Notion's database is unavailable or is not in a state that can be queried. Please try again later.                                                                                                                                                                                                                                                                                                | `"Notion is unavailable, please try again later."`                                                                                                                       |
+| 504              | `"gateway_timeout"`                 | Notion timed out while attempting to complete this request. Please try again later.                                                                                                                                                                                                                                                                                                               | `"Gateway Timeout"`                                                                                                                                                      |
+| 529              | `"service_overload"`                | Notion is temporarily overloaded. Respect the `Retry-After` response header and try again later.                                                                                                                                                                                                                                                                                                  | `"Notion is temporarily overloaded. Please try again later."`                                                                                                            |
 
 
 # Trash a page
@@ -30347,6 +30432,8 @@ For this endpoint, use a `Content-Type` of `multipart/form-data`, and provide yo
 When `mode=multi_part`, each part must include a form field `part_number` to indicate which part is being sent. Parts may be sent concurrently up to standard Notion API [rate limits](/reference/request-limits), and may be sent out of order as long as all parts (1, ..., `part_number`) are successfully sent before calling the [complete file upload API](/reference/complete-file-upload).
 
 The maximum allowed length of a file name is 900 bytes, including any file extension included in the file name or inferred based on the `content_type`. However, we recommend using shorter names for performance and easier file management and lookup using the [List file uploads](/reference/list-file-uploads) API.
+
+Multipart filenames decode browser-escaped quotation marks (`%22`) and line breaks (`%0A`, `%0D`) before filename normalization. Normalization removes quotation marks and replaces whitespace with underscores. For example, `report%22draft%22%0A2026.txt` becomes `reportdraft_2026.txt`. A filename set during [Create a file upload](/reference/create-file) takes precedence over the multipart filename.
 
 
 # User

@@ -10,7 +10,7 @@ path: docs/api/api-reference/interns/update-an-intern
 
 # Update an intern
 
-> Changes the intern name, description, instructions or model. Omitted fields stay unchanged. The request body is capped at 1048576 bytes and a larger body is refused with 413. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
+> Changes the intern name, description, instructions or model. Omitted fields stay unchanged. The request body is capped at 1048576 bytes and a larger body is refused with 413. A non-empty body must declare `Content-Type: application/json` or it is refused with 415. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
 
 
 
@@ -107,6 +107,11 @@ tags:
   - description: Speech-to-text endpoints
     name: STT
     x-displayName: Transcriptions
+  - description: >-
+      System One endpoints for models such as Jev, compatible with the TypeSafe
+      SDKs. See https://openrouter.ai/docs/guides/community/typesafe-sdk.
+    name: SystemOne
+    x-displayName: System One
   - description: Text-to-speech endpoints
     name: TTS
     x-displayName: Speech
@@ -119,7 +124,7 @@ tags:
     name: Video Generation
   - description: Workspaces endpoints
     name: Workspaces
-  - description: Alpha feature endpoints for Decisions (questions and answers) requests
+  - description: Alpha feature endpoints for Decisions requests
     name: alpha.decisions
 externalDocs:
   description: OpenRouter Documentation
@@ -133,10 +138,12 @@ paths:
       description: >-
         Changes the intern name, description, instructions or model. Omitted
         fields stay unchanged. The request body is capped at 1048576 bytes and a
-        larger body is refused with 413. The API key selects the caller,
-        workspace and visible interns. There is no default workspace fallback.
-        Requests on regional hostnames such as `eu.openrouter.ai` are refused.
-        [API key](/docs/api-reference/authentication) required.
+        larger body is refused with 413. A non-empty body must declare
+        `Content-Type: application/json` or it is refused with 415. The API key
+        selects the caller, workspace and visible interns. There is no default
+        workspace fallback. Requests on regional hostnames such as
+        `eu.openrouter.ai` are refused. [API
+        key](/docs/api-reference/authentication) required.
       operationId: updateIntern
       parameters:
         - description: ID of an intern visible to the authenticated API key.
@@ -184,8 +191,11 @@ paths:
             application/json:
               example:
                 error:
-                  code: invalid_body
+                  code: 400
                   message: Invalid request body
+                  metadata:
+                    reason: invalid_body
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: The request body is invalid.
@@ -216,8 +226,11 @@ paths:
             application/json:
               example:
                 error:
-                  code: not_found
+                  code: 404
                   message: Intern not found
+                  metadata:
+                    reason: not_found
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: >-
@@ -229,30 +242,77 @@ paths:
               example:
                 error:
                   code: 408
-                  message: Request timed out
+                  message: Operation timed out after 10s. Please try again later.
+                  metadata:
+                    reason: timeout
+                    retryable: true
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: The request exceeded its route deadline.
+          description: >-
+            The request exceeded its route deadline. The deadline quoted in the
+            message is the route's own, so it differs between operations.
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: >-
+                    An intern named "research-assistant" already exists in this
+                    workspace
+                  metadata:
+                    reason: name_taken
+                    retryable: false
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: The new name is already taken by an intern in this workspace.
         '413':
           content:
             application/json:
               example:
                 error:
-                  code: payload_too_large
+                  code: 413
                   message: Request body exceeds 1048576 bytes
+                  metadata:
+                    reason: payload_too_large
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: The request body is larger than 1048576 bytes.
+        '415':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 415
+                  message: Request body must be sent as application/json
+                  metadata:
+                    reason: unsupported_media_type
+                    retryable: false
+              schema:
+                $ref: '#/components/schemas/InternLifecycleError'
+          description: >-
+            The request body is non-empty and its Content-Type is not
+            application/json.
         '500':
           content:
             application/json:
               example:
                 error:
-                  code: internal_error
+                  code: 500
                   message: The request could not be completed
+                  metadata:
+                    reason: internal_error
+                    retryable: true
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: The request could not be completed.
+          description: >-
+            The request could not be completed. `metadata.reason` says whether
+            to try again: `internal_error` is a transient failure and carries
+            `metadata.retryable: true`, so the same request may be sent again,
+            while `configuration_error` carries `retryable: false` because the
+            next attempt reads the same missing binding or unusable stored
+            credential.
       security:
         - apiKey: []
 components:
@@ -424,8 +484,11 @@ components:
       description: Intern lifecycle request failure.
       example:
         error:
-          code: not_found
+          code: 404
           message: Intern not found
+          metadata:
+            reason: not_found
+            retryable: false
       properties:
         error:
           additionalProperties: false
@@ -436,6 +499,17 @@ components:
                 - type: integer
             message:
               type: string
+            metadata:
+              additionalProperties: false
+              properties:
+                reason:
+                  type: string
+                retryable:
+                  type: boolean
+              required:
+                - reason
+                - retryable
+              type: object
           required:
             - code
             - message

@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 454 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 455 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -26,7 +26,7 @@
 - `docs/agent-sdk/dev-tools/devtools` — [DevTools](pages/docs/agent-sdk/dev-tools/devtools.md) · [原文](https://openrouter.ai/docs/agent-sdk/dev-tools/devtools.md)
 - `docs/agent-sdk/overview` — [Agent SDK](pages/docs/agent-sdk/overview.md) · [原文](https://openrouter.ai/docs/agent-sdk/overview.md)
 - `docs/agent-sdk/usage-for-agents` — [Usage for Agents](pages/docs/agent-sdk/usage-for-agents.md) · [原文](https://openrouter.ai/docs/agent-sdk/usage-for-agents.md)
-- `docs/api/api-reference/alphadecisions/submit-a-decisions-questions-and-answers-request` — [Submit a Decisions (questions and answers) request](pages/docs/api/api-reference/alphadecisions/submit-a-decisions-questions-and-answers-request.md) · [原文](https://openrouter.ai/docs/api/api-reference/alphadecisions/submit-a-decisions-questions-and-answers-request.md)
+- `docs/api/api-reference/alphadecisions/submit-a-decisions-request` — [Submit a Decisions request](pages/docs/api/api-reference/alphadecisions/submit-a-decisions-request.md) · [原文](https://openrouter.ai/docs/api/api-reference/alphadecisions/submit-a-decisions-request.md)
 - `docs/api/api-reference/analytics/get-available-analytics-metrics-and-dimensions` — [Get available analytics metrics and dimensions](pages/docs/api/api-reference/analytics/get-available-analytics-metrics-and-dimensions.md) · [原文](https://openrouter.ai/docs/api/api-reference/analytics/get-available-analytics-metrics-and-dimensions.md)
 - `docs/api/api-reference/analytics/get-user-activity-grouped-by-endpoint` — [Get user activity grouped by endpoint](pages/docs/api/api-reference/analytics/get-user-activity-grouped-by-endpoint.md) · [原文](https://openrouter.ai/docs/api/api-reference/analytics/get-user-activity-grouped-by-endpoint.md)
 - `docs/api/api-reference/analytics/query-analytics-data` — [Query analytics data](pages/docs/api/api-reference/analytics/query-analytics-data.md) · [原文](https://openrouter.ai/docs/api/api-reference/analytics/query-analytics-data.md)
@@ -124,6 +124,7 @@
 - `docs/api/api-reference/scim/start-a-scim-directory-sync` — [Start a SCIM directory sync](pages/docs/api/api-reference/scim/start-a-scim-directory-sync.md) · [原文](https://openrouter.ai/docs/api/api-reference/scim/start-a-scim-directory-sync.md)
 - `docs/api/api-reference/scim/update-a-scim-group-mapping` — [Update a SCIM group mapping](pages/docs/api/api-reference/scim/update-a-scim-group-mapping.md) · [原文](https://openrouter.ai/docs/api/api-reference/scim/update-a-scim-group-mapping.md)
 - `docs/api/api-reference/stt/create-transcription` — [Create transcription](pages/docs/api/api-reference/stt/create-transcription.md) · [原文](https://openrouter.ai/docs/api/api-reference/stt/create-transcription.md)
+- `docs/api/api-reference/systemone/submit-a-system-one-request` — [Submit a System One request](pages/docs/api/api-reference/systemone/submit-a-system-one-request.md) · [原文](https://openrouter.ai/docs/api/api-reference/systemone/submit-a-system-one-request.md)
 - `docs/api/api-reference/tts/create-speech` — [Create speech](pages/docs/api/api-reference/tts/create-speech.md) · [原文](https://openrouter.ai/docs/api/api-reference/tts/create-speech.md)
 - `docs/api/api-reference/vault/copy-workspace-secrets-to-an-intern` — [Copy workspace secrets to an intern](pages/docs/api/api-reference/vault/copy-workspace-secrets-to-an-intern.md) · [原文](https://openrouter.ai/docs/api/api-reference/vault/copy-workspace-secrets-to-an-intern.md)
 - `docs/api/api-reference/vault/delete-a-workspace-secret` — [Delete a workspace secret](pages/docs/api/api-reference/vault/delete-a-workspace-secret.md) · [原文](https://openrouter.ai/docs/api/api-reference/vault/delete-a-workspace-secret.md)

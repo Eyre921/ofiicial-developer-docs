@@ -629,45 +629,45 @@ Notion's `/mcp` endpoint is stateless, so the id carries no server-side state:
 * Echoing it lets Notion group the requests of one client session together,
   which helps when you report an issue — include the id in your report.
 
-### Identify the connected workspace
+### Check tool availability
 
-The OAuth token response includes `user_id` and `workspace_id`, but not
-display names, and the public REST API's `GET /v1/users/me` does not accept
-MCP-audienced tokens. To label a connection with the workspace name after
-connecting, call the `fetch` tool with the special id `self`:
+Call `notion-get-tool-access` with `{}` before using conditionally available tools,
+and reuse the returned map across tools for this connection.
 
 <CodeGroup>
   ```typescript TypeScript theme={null}
   const result = await client.callTool({
-    name: "notion-fetch", // "fetch" for OpenAI clients (the notion- prefix is dropped)
-    arguments: { id: "self" },
+    name: "notion-get-tool-access",
+    arguments: {},
   })
 
-  // Tool results come back as MCP content blocks, not as a typed object. The Notion
-  // MCP server returns the tool's JSON payload as a single text block, so parse it
-  // and read the `self` field from the result.
   const [block] = result.content
-  if (block?.type !== "text") {
-    throw new Error("Expected a text content block from notion-fetch")
+  if (result.isError || block?.type !== "text") {
+    throw new Error("Could not read tool access from notion-get-tool-access")
   }
 
-  const { workspace, user, current_tool_access } = JSON.parse(block.text).self
-  console.log(`Connected to ${workspace.name} (${workspace.id}) as ${user.name}`)
-  // workspace:           { id, name }
-  // user:                { id, name, type, email }
-  // current_tool_access: { [toolName]: { status, upgrade_url? } }
+  const { current_tool_access } = JSON.parse(block.text)
+  console.log(current_tool_access)
+  // { [toolName]: { status, restricted_parameters?, upgrade_url?, ... } }
   ```
 </CodeGroup>
 
-The `self` payload also carries a `current_tool_access` map, so an MCP client
-can tell up front which tools will actually run on the connected workspace's
-plan and which would only return an upgrade prompt. For content search, inspect
-`current_tool_access.ai_search.status`: use `notion-ai-search` when it is
-`available`, and use `notion-search` only when it is not. Each entry's `status` is
-`available`, `available_with_limit` (calls can be made up to the limit included with
-the workspace's plan), `upgrade_required` (calls return an upgrade prompt, and the entry
-includes an `upgrade_url` into the workspace's upgrade flow), or `not_enabled`.
-See [Supported tools](/guides/mcp/mcp-supported-tools) for details.
+The map includes only tools advertised for this connection. When `ai_search` is
+`available`, prefer `notion-ai-search`; the map omits `search` in that case.
+Otherwise, use `notion-search` if exposed. If only `notion-ai-search` is exposed,
+it can still perform Notion-only keyword search when its status is
+`upgrade_required` or `plan_required`. Billing restrictions still return errors.
+
+User lookup has separate requirements: both search tools need user information
+capabilities, and workspace-owned MCP connections must also expose
+`notion-get-users`. AI-search availability doesn't grant these permissions.
+
+Read each `restricted_parameters` reason against your requested value. A listed
+parameter isn't always forbidden: a restriction on multiple teamspaces still
+allows a single teamspace. An `upgrade_required` status means full access needs
+an upgrade; it doesn't rule out documented fallback results.
+See [Supported tools](/guides/mcp/mcp-supported-tools) for all access statuses,
+recovery links, and search behavior.
 
 ## Step 8: Handle token refresh
 

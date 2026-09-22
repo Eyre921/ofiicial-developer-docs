@@ -107,6 +107,11 @@ tags:
   - description: Speech-to-text endpoints
     name: STT
     x-displayName: Transcriptions
+  - description: >-
+      System One endpoints for models such as Jev, compatible with the TypeSafe
+      SDKs. See https://openrouter.ai/docs/guides/community/typesafe-sdk.
+    name: SystemOne
+    x-displayName: System One
   - description: Text-to-speech endpoints
     name: TTS
     x-displayName: Speech
@@ -119,7 +124,7 @@ tags:
     name: Video Generation
   - description: Workspaces endpoints
     name: Workspaces
-  - description: Alpha feature endpoints for Decisions (questions and answers) requests
+  - description: Alpha feature endpoints for Decisions requests
     name: alpha.decisions
 externalDocs:
   description: OpenRouter Documentation

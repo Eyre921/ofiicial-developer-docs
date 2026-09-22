@@ -32,7 +32,7 @@ Use Stripe Terminal to unify online and in-person payments.
 
 [Use apps on devices](https://docs.stripe.com/terminal/features/apps-on-devices/overview.md): Deploy your Android POS app to Stripe smart readers.
 
-[Use standalone mode (Preview)](https://docs.stripe.com/terminal/payments/standalone-mode.md): Accept in-person payments on a compatible reader using Stripe’s no-code solution.
+[Use Terminal ready-made apps (Preview)](https://docs.stripe.com/terminal/payments/ready-made-apps.md): Accept in-person payments on a compatible reader using Stripe’s no-code solution.
 
 [Use a third-party POS](https://docs.stripe.com/use-stripe-apps.md#in-person): You can incorporate Stripe Terminal into your existing stack using third-party POS, hardware, and commerce integrations—no code required.
 
@@ -76,5 +76,5 @@ Learn how to integrate Stripe Terminal with your [Connect](https://docs.stripe.c
 
 - [Accept payments offline](https://docs.stripe.com/terminal/features/operate-offline/overview.md): Accept payments with intermittent, limited, or no internet connectivity.
 
-- [No-code solutions](https://docs.stripe.com/no-code/in-person.md): Accept payments on compatible readers with [standalone mode](https://docs.stripe.com/terminal/payments/standalone-mode.md), or Tap to Pay on a mobile device with the [Dashboard app](https://docs.stripe.com/dashboard/mobile.md).
+- [Terminal ready-made apps](https://docs.stripe.com/terminal/payments/ready-made-apps.md): Accept in-person payments with no code using standalone mode on a compatible reader or the Stripe Terminal app on a mobile device.
 

@@ -4,6 +4,26 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+<Update label="September 17, 2026">
+  ### Check tool access with `notion-get-tool-access`
+
+  Notion MCP has a new [`notion-get-tool-access`](/guides/mcp/mcp-supported-tools) tool. Call it with `{}` to get the full connection-scoped `current_tool_access` map. It takes an optional `tool_names` array such as `["search", "ai_search"]` to narrow the result. Call it before you use a tool whose availability depends on the plan: to choose between `notion-search` and `notion-ai-search`, for example, or to see which parameters the workspace's plan restricts. Those tools now say so in their descriptions, and each points to one call for the whole map that you can reuse across them. It doesn't grant access or change the workspace.
+
+  Entries in the map can now include `restricted_parameters`, which maps a parameter path such as `filters.title_only` to the reason it's unavailable. A restriction applies even when the entry's `status` is `available`, so check it before sending the parameter. Read the reason against your requested value: a single teamspace remains supported even when `filters.teamspace_ids` lists a restriction on multiple teamspaces.
+
+  When `ai_search` is exposed and `available`, the map omits `search`, even when requested by name. Otherwise, the map can include both an available `search` entry and an unavailable `ai_search` entry, depending on the connection's selected tools. Choose only an exposed tool. If only `notion-ai-search` is exposed, plan restrictions still allow its Notion-only keyword fallback; billing restrictions don't.
+
+  ### Search drops unavailable options instead of failing
+
+  A [`notion-search`](/guides/mcp/mcp-supported-tools) or `notion-ai-search` call that asks for a filter or sort the workspace's plan doesn't include now runs the supported part of the search. These calls previously returned a `validation_error`. The response adds a `notices` array naming the dropped fields, with an upgrade link when available, and results can be broader than requested and use relevance sorting. On a plan without multiple-teamspace search, when `teamspace_id` and `filters.teamspace_ids` select different teamspaces, both are dropped. If dropping the options leaves an empty query with no supported constraint, the response returns no results and a notice asking for a non-empty query or a supported filter.
+
+  `notion-ai-search` content search on a plan without AI access now runs a keyword search in Notion only rather than returning an upgrade error. It still reports `type: "ai_search"` and explains in `notices` that connected sources weren't searched. A workspace with a billing restriction, such as an unpaid invoice, still gets a permission error asking a workspace owner to manage billing.
+
+  ### `notion-ai-search` handles user lookup
+
+  [`notion-ai-search`](/guides/mcp/mcp-supported-tools) now takes `query_type`. Set it to `user` with a name or email to look up a workspace user, and the response reports `type: "user_search"`, the same as `notion-search`. Omit `query_type`, or set it to `internal`, for a content search. Content filters and sorting aren't valid with a user lookup and return a `validation_error`. A user lookup doesn't need AI access, but both search tools need user information [capabilities](/reference/capabilities). Workspace-owned MCP connections must also expose `notion-get-users`. Choose an exposed search tool; switching tools doesn't bypass these permissions.
+</Update>
+
 <Update label="September 10, 2026">
   ### AI search accepts filters, and `notion-search` routes content queries to it
 

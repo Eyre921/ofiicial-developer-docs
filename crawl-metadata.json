@@ -1,6 +1,6 @@
 {
   "ai-models/xai-grok": {
-    "status": "error: curl failed (28) for https://docs.x.ai/llms.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://docs.x.ai/llms.txt: curl: (28) Connection timed out after 15004 milliseconds\ncurl: (28) Connection timed out after 15004 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/mistral": {
     "status": "error: curl failed (28) for https://docs.mistral.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
@@ -10,7 +10,7 @@
     "status": "ok"
   },
   "ai-models/perplexity": {
-    "status": "error: curl failed (28) for https://docs.perplexity.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://docs.perplexity.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15004 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/anthropic-claude-code": {
     "pages": 197,
@@ -46,20 +46,18 @@
     "status": "ok"
   },
   "agent-frameworks/langchain": {
-    "pages": 1181,
+    "pages": 1183,
     "status": "ok"
   },
   "voice-multimodal/assemblyai": {
-    "pages": 0,
-    "status": "ok"
+    "status": "error: curl failed (16) for https://www.assemblyai.com/docs/llms-full.txt: curl: (28) Operation timed out after 90000 milliseconds with 1033728 bytes received\ncurl: (16) Error in the HTTP2 framing layer\n"
   },
   "voice-multimodal/vapi": {
     "pages": 0,
     "status": "ok"
   },
   "vector-db/pinecone": {
-    "pages": 568,
-    "status": "ok"
+    "status": "error: curl failed (16) for https://docs.pinecone.io/llms-full.txt: curl: (28) Operation timed out after 90000 milliseconds with 1490944 bytes received\ncurl: (16) Error in the HTTP2 framing layer\n"
   },
   "vector-db/qdrant": {
     "status": "error: curl failed (22) for https://qdrant.tech/llms-full.txt: curl: (22) The requested URL returned error: 404\n"
@@ -101,7 +99,7 @@
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15003 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15000 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
@@ -155,7 +153,8 @@
     "status": "ok"
   },
   "dev-platforms/twilio": {
-    "status": "error: curl failed (28) for https://www.twilio.com/docs/llms.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\n"
+    "pages": 0,
+    "status": "ok"
   },
   "libraries/hono": {
     "pages": 0,
@@ -185,7 +184,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 105,
+    "pages": 99,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -193,16 +192,16 @@
     "status": "ok"
   },
   "ai-models/openrouter": {
-    "pages": 454,
+    "pages": 455,
     "status": "ok"
   },
   "voice-multimodal/deepgram": {
-    "pages": 388,
+    "pages": 389,
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
     "pages": 1306,
     "status": "ok"
   },
-  "_last_crawl": "2026-09-21T23:30:25Z"
+  "_last_crawl": "2026-09-22T11:30:39Z"
 }

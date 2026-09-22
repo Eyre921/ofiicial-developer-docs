@@ -32149,7 +32149,7 @@ You can find the example in [`bots/telegram-bot-http`](https://github.com/neonda
 
 --- [Document source](https://neon.com/docs/compute/functions/triggers/object-storage.md) ---
 
-> Summary: Create and manage storage_object_created Function Triggers from the Neon Console or the Neon API: a Hono handler for the upload event, the bucket and prefix filter, what your function receives, and how to confirm a run in the logs.
+> Summary: Create and manage storage_object_created Function Triggers from the Neon Console, the CLI, the Neon API, or neon.ts: a Hono handler for the upload event, the bucket and prefix filter, what your function receives, and how to confirm a run in the logs.
 
 # Trigger on an object upload
 
@@ -32157,7 +32157,7 @@ Run a function when an object is created in a bucket.
 
 A `storage_object_created` trigger tells Neon to invoke a deployed [Neon Function](https://neon.com/docs/compute/functions/overview) when an object is created in an [Object Storage](https://neon.com/docs/storage/overview) bucket. Optionally scope it to a key `prefix`, so only uploads under that path fire the function. There's no external event wiring and no compute kept running to watch the bucket.
 
-For what a trigger is and how it behaves across branches, see the [overview](https://neon.com/docs/compute/functions/triggers/overview). The scheduled trigger type is covered in [Schedule a function](https://neon.com/docs/compute/functions/triggers/schedule); this page covers the object-created type. You can manage object-created triggers from the Neon Console or the Neon API.
+For what a trigger is and how it behaves across branches, see the [overview](https://neon.com/docs/compute/functions/triggers/overview). The scheduled trigger type is covered in [Schedule a function](https://neon.com/docs/compute/functions/triggers/schedule); this page covers the object-created type. You can manage object-created triggers from the Neon Console, the [`neon triggers`](https://neon.com/docs/cli/triggers) CLI, the Neon API, or declaratively in [`neon.ts`](https://neon.com/docs/reference/neon-ts#triggers); the steps below show each.
 
 Because the function is long-running, it can do real work on each upload, whatever the file size.
 
@@ -32184,7 +32184,7 @@ Docs: https://neon.com/docs/compute/functions/triggers/object-storage.md
 
 - Add one unauthenticated POST route (trigger invocations arrive without credentials). Read `data.bucket_name` and `data.object_key` from the JSON body; keep the handler idempotent.
 - If the task uses Postgres, connect with the injected DATABASE_URL.
-- Deploy it, then create a `storage_object_created` trigger via the Neon API with the bucket name, optionally scoped to a key prefix. Upload an object to confirm a run in the logs.
+- Deploy it, then create a `storage_object_created` trigger via the Console, CLI, API, or `neon.ts` with the bucket name, optionally scoped to a key prefix. Upload an object to confirm a run in the logs.
 - The route and trigger both default to `/`; set `function_path` on both if you want a different path.
 ```
 
@@ -32259,6 +32259,16 @@ In the [Neon Console](https://console.neon.tech), open **Functions**, click the 
 
 Click **Create trigger** to save.
 
+**CLI**
+
+[`neon triggers create`](https://neon.com/docs/cli/triggers#create) needs `--function-slug`, `--name`, and `--bucket`; `--prefix`, `--function-path`, and `--enabled` are optional. Object-created triggers require Neon CLI 4.21.0 or later.
+
+```bash
+neon triggers create --function-slug onupload --name record-uploads --bucket my-bucket --prefix 'uploads/'
+```
+
+The CLI resolves the project and branch from your [context file](https://neon.com/docs/cli/set-context), or pass `--project-id` and `--branch`. See [`neon triggers`](https://neon.com/docs/cli/triggers) for the full command reference.
+
 **API**
 
 `POST` to the branch's triggers collection. `type`, `function_slug`, `name`, and `storage_object_created` (with `bucket_name`) are required; `prefix`, `function_path`, and `enabled` are optional.
@@ -32303,6 +32313,27 @@ Neon responds `201` with the trigger wrapped in a `trigger` object:
 
 Unlike a scheduled trigger, an object-created trigger has no `schedule` or `next_run_at`: it fires on the event, not the clock.
 
+**neon.ts**
+
+Declare the trigger in the top-level `triggers` record in [`neon.ts`](https://neon.com/docs/reference/neon-ts#triggers), with `function` pointing at your function's slug, then apply it with `neon deploy`. `bucket` selects the bucket and `prefix` optionally scopes it to keys under that path.
+
+```ts filename="neon.ts"
+functions: {
+  onupload: {
+    name: "On upload",
+    source: "./functions/onupload.ts",
+  },
+},
+triggers: {
+  "record-uploads": {
+    type: "storage_object_created",
+    function: "onupload",
+    bucket: "my-bucket",
+    prefix: "uploads/",
+  },
+},
+```
+
 ## Confirm it ran
 
 Upload an object under the bucket and prefix you configured (see [Upload and manage objects](https://neon.com/docs/storage/objects)), then read the function's logs:
@@ -32312,6 +32343,8 @@ neon logs query --source function
 ```
 
 Your `object created: ...` line appears with the `bucket_name` and `object_key` from the request body. See [Observability](https://neon.com/docs/compute/functions/triggers/object-storage#observability) for why that line matters.
+
+To iterate on the handler without uploading objects, replay the payload against `neon dev` locally. See [Test triggers locally](https://neon.com/docs/compute/functions/triggers/overview#test-triggers-locally).
 
 **Note:** A newly created trigger takes a few seconds to become active. If your first test upload doesn't fire the function, wait a moment and upload again.
 
@@ -32351,9 +32384,26 @@ The top-level `type`, `function_slug`, `name`, `function_path`, and `enabled` fi
 
 ## Manage triggers
 
+List, update, disable, and delete triggers from the Console, CLI, or API. Triggers declared in [`neon.ts`](https://neon.com/docs/reference/neon-ts#triggers) are managed by editing the declaration and re-running `neon deploy`.
+
 **Console**
 
 Manage object-created triggers from the same **Functions → ⋮ → Manage Triggers** panel: edit a trigger's fields, toggle **Enable trigger** on or off, or delete it.
+
+**CLI**
+
+The [`neon triggers`](https://neon.com/docs/cli/triggers) command group manages triggers by ID:
+
+```bash
+neon triggers list
+neon triggers get <trigger-id>
+neon triggers update <trigger-id> --bucket my-bucket --prefix 'incoming/'
+neon triggers disable <trigger-id>
+neon triggers enable <trigger-id>
+neon triggers delete <trigger-id>
+```
+
+See [`neon triggers`](https://neon.com/docs/cli/triggers) for every subcommand and flag.
 
 **API**
 
@@ -32397,6 +32447,7 @@ The request body is strict: any field not in the schema is rejected rather than 
 
 - [Function Triggers overview](https://neon.com/docs/compute/functions/triggers/overview)
 - [Schedule a function](https://neon.com/docs/compute/functions/triggers/schedule): the time-based trigger type
+- [Triggers in `neon.ts`](https://neon.com/docs/reference/neon-ts#triggers): declare triggers as code
 - [Object Storage](https://neon.com/docs/storage/overview) and [Upload and manage objects](https://neon.com/docs/storage/objects)
 - [Deploy and manage](https://neon.com/docs/compute/functions/deploy)
 - [Logs](https://neon.com/docs/compute/functions/logs)
@@ -32477,6 +32528,38 @@ A trigger invocation can be slower on a cold start: if the function's runtime wa
 Neon delivers trigger calls to the function's public URL. To confirm a request is a genuine trigger invocation and not an arbitrary caller, check for the `X-Neon-Trigger-Invocation-Id` header: Neon strips any client-supplied `X-Neon-*` header at the edge, so a request that carries one is sent by Neon's trigger system. A handler that only serves triggers can reject requests that lack it, as the [worked handler](https://neon.com/docs/compute/functions/triggers/schedule#write-a-handler-for-the-scheduled-call) does.
 
 The `invocation_id` is a correlation ID, not a secret. It's a digest of the trigger and its occurrence, stable across retries, so it ties your logs to a specific run. What proves the request came from Neon is the presence of the header, not its value, so matching the header against the body is only a consistency check. Keep the handler idempotent and guard destructive actions regardless.
+
+## Test triggers locally
+
+Triggers only fire from Neon's side against the deployed function, so a trigger never calls your local machine. To iterate on the handler, serve the function with [`neon dev`](https://neon.com/docs/compute/functions/get-started#develop-locally) and replay the trigger payload yourself with `curl`.
+
+1. Start the dev server:
+
+   ```bash
+   neon dev
+   ```
+
+   It serves the functions declared in `neon.ts` with hot reload, injects `DATABASE_URL` and other Neon variables from the linked branch, and prints a local URL for each function (by default `http://localhost:8787`).
+
+2. Send a `POST` to the local URL plus the trigger's `function_path`, with the same JSON envelope the trigger would send. Include an `X-Neon-Trigger-Invocation-Id` header if your handler checks for it. A schedule replay carries `data.scheduled_at`:
+
+   ```bash
+   curl -X POST http://localhost:8787/ \
+     -H "Content-Type: application/json" \
+     -H "X-Neon-Trigger-Invocation-Id: local-test" \
+     -d '{"version":1,"invocation_id":"local-1","trigger":{"type":"schedule","id":"trigger-local","name":"local-schedule"},"data":{"scheduled_at":"2026-09-08T19:30:00Z"}}'
+   ```
+
+   An object-created replay carries `data.bucket_name` and `data.object_key`:
+
+   ```bash
+   curl -X POST http://localhost:8787/ \
+     -H "Content-Type: application/json" \
+     -H "X-Neon-Trigger-Invocation-Id: local-test" \
+     -d '{"version":1,"invocation_id":"local-2","trigger":{"type":"storage_object_created","id":"trigger-local","name":"local-upload"},"data":{"bucket_name":"my-bucket","object_key":"uploads/report.csv"}}'
+   ```
+
+Handler output appears in the `neon dev` terminal rather than in `neon logs query`. Leave off the `X-Neon-Trigger-Invocation-Id` header to confirm a guarded handler returns `403`. If the handler reads from Object Storage, the bucket and object live on the branch, so deploy first and make sure the object you replay exists there.
 
 ## Triggers and branching
 
@@ -32656,14 +32739,20 @@ Neon responds `201` with the trigger wrapped in a `trigger` object:
 
 **neon.ts**
 
-Declare the trigger on the function in [`neon.ts`](https://neon.com/docs/reference/neon-ts), then apply it with `neon deploy`. `cron` is a five-field UTC expression.
+Declare the trigger in the top-level `triggers` record in [`neon.ts`](https://neon.com/docs/reference/neon-ts), with `function` pointing at your function's slug, then apply it with `neon deploy`. `cron` is a five-field UTC expression.
 
 ```ts filename="neon.ts"
 functions: {
   uptime: {
     name: "Uptime",
     source: "./functions/uptime.ts",
-    triggers: [{ type: "schedule", name: "uptime-check", cron: "* * * * *" }],
+  },
+},
+triggers: {
+  "uptime-check": {
+    type: "schedule",
+    function: "uptime",
+    cron: "* * * * *",
   },
 },
 ```
@@ -32678,6 +32767,8 @@ neon logs query --source function
 
 Your `check ...` line appears with the `scheduled_at` value read from `data`. See [Observability](https://neon.com/docs/compute/functions/triggers/schedule#observability) for why that line matters.
 
+To iterate on the handler without waiting for the clock, replay the payload against `neon dev` locally. See [Test triggers locally](https://neon.com/docs/compute/functions/triggers/overview#test-triggers-locally).
+
 Once you've seen a run, move the trigger to its real cadence (see [Manage triggers](https://neon.com/docs/compute/functions/triggers/schedule#manage-triggers)). Left at `* * * * *`, it keeps invoking the function every minute.
 
 ## Cron reference
@@ -32686,7 +32777,7 @@ A schedule is a five-field numeric cron expression, always interpreted in **UTC*
 
 ![The five cron fields (minute, hour, day of month, month, day of week); 0 9 \* \* 1-5 means 09:00 Monday through Friday](https://neon.com/docs/compute/functions/triggers/cron-anatomy.png)
 
-To track local time, convert to UTC yourself, and account for daylight saving shifts.
+To track local time, convert to UTC yourself, and account for daylight saving shifts. You can test your expressions with [crontab.guru](https://crontab.guru/).
 
 | Expression     | Meaning (UTC)                     |
 | -------------- | --------------------------------- |
@@ -32847,6 +32938,7 @@ The request body is strict: any field not in the schema is rejected rather than 
 
 - [Function Triggers overview](https://neon.com/docs/compute/functions/triggers/overview)
 - [Trigger on an object upload](https://neon.com/docs/compute/functions/triggers/object-storage): the object-created trigger type
+- [Triggers in `neon.ts`](https://neon.com/docs/reference/neon-ts#triggers): declare triggers as code
 - [pg_cron](https://neon.com/docs/extensions/pg_cron): schedule SQL inside Postgres instead
 - [Deploy and manage](https://neon.com/docs/compute/functions/deploy)
 - [Authentication](https://neon.com/docs/compute/functions/authentication)
@@ -129982,6 +130074,7 @@ Declare services as top-level keys in `defineConfig`; declare only the ones you 
 | `aiGateway` | `true`, `false`, `{ enabled: bool }`                                                | `false` | [Neon AI Gateway](https://neon.com/docs/ai-gateway/overview). Injects `NEON_AI_GATEWAY_TOKEN`, `NEON_AI_GATEWAY_BASE_URL`                                                                                                                                                      |
 | `functions` | Record of slug → [function def](https://neon.com/docs/reference/neon-ts#functions)  | (none)  | [Neon Functions](https://neon.com/docs/compute/functions/overview). Long-running Node.js compute. The branch's service variables (`DATABASE_URL` and more) are injected at runtime; see [Environment variables](https://neon.com/docs/compute/functions/environment-variables) |
 | `buckets`   | Record of name → [bucket def](https://neon.com/docs/reference/neon-ts#buckets)      | (none)  | [Neon Object Storage](https://neon.com/docs/storage/overview). S3-compatible object storage, branched with your database. Injects `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_ENDPOINT_URL_S3`, `AWS_REGION`                                                            |
+| `triggers`  | Record of name → [trigger def](https://neon.com/docs/reference/neon-ts#triggers)    | (none)  | [Function Triggers](https://neon.com/docs/compute/functions/triggers/overview). Invoke a function on a schedule or when an object is created in a bucket.                                                                                                                      |
 
 **Note: preview is deprecated**
 
@@ -130023,13 +130116,6 @@ functions: {
     dev?: {
       port?: number,    // local port for neon dev; fails if taken; auto-assigned if omitted
     },
-    triggers?: Array<{    // cron schedule triggers; see below
-      type: "schedule",
-      name: string,
-      cron: string,
-      functionPath?: string,  // default "/"
-      enabled?: boolean,      // default true
-    }>,
     customDomains?: string[],  // hostnames to serve this function; default branch only
   },
 },
@@ -130046,7 +130132,6 @@ preview: {
       env?: Record<string, string>,
       bundler?: "esbuild" | "none" | ((fn) => Promise<FunctionBundle>),
       dev?: { port?: number },
-      triggers?: Array<{ type: "schedule", name: string, cron: string, functionPath?: string, enabled?: boolean }>,
       customDomains?: string[],  // hostnames to serve this function; default branch only
     },
   },
@@ -130069,19 +130154,39 @@ Use `neon deploy --env .env.production` to load a `.env` file before evaluation.
 
 `dev` settings apply only to `neon dev` and never affect deploy.
 
-`triggers` declares cron schedule triggers on the function, reconciled by `neon deploy` as the declarative counterpart to [`neon triggers`](https://neon.com/docs/cli/triggers). `cron` is a five-field UTC expression. See [Schedule a function](https://neon.com/docs/compute/functions/triggers/schedule).
+Triggers are declared separately in [`triggers`](https://neon.com/docs/reference/neon-ts#triggers); each entry's `function` field references a slug declared here.
 
-```ts filename="neon.ts"
-functions: {
-  reports: {
-    name: "Reports",
-    source: "./functions/reports.ts",
-    triggers: [{ type: "schedule", name: "nightly", cron: "0 6 * * *" }],
+`customDomains` lists hostnames you own that serve the function, such as `["api.example.com"]`. `neon deploy` registers them, and each hostname can point at only one function on one branch. Static `customDomains` apply on the default branch only. For DNS setup, per-branch domains, status checks, and TLS verification, see [Custom domains for Neon Functions](https://neon.com/docs/compute/functions/custom-domains).
+
+### triggers
+
+Each key is the trigger's name, unique across the branch. Each entry's `function` field references a function slug declared under `functions`.
+
+```ts
+triggers: {
+  "<name>": {
+    type: "schedule" | "storage_object_created",
+    function: string,       // slug of the function to invoke
+    cron?: string,          // schedule only: five-field UTC expression
+    bucket?: string,        // storage only: bucket name declared under buckets
+    prefix?: string,        // storage only: object-key prefix filter
+    functionPath?: string,  // request path sent to the function; default "/"
+    enabled?: boolean,      // default true
   },
 },
 ```
 
-`customDomains` lists hostnames you own that serve the function, such as `["api.example.com"]`. `neon deploy` registers them, and each hostname can point at only one function on one branch. Static `customDomains` apply on the default branch only. For DNS setup, per-branch domains, status checks, and TLS verification, see [Custom domains for Neon Functions](https://neon.com/docs/compute/functions/custom-domains).
+| Field          | Required                 | Description                                                                                     |
+| -------------- | ------------------------ | ----------------------------------------------------------------------------------------------- |
+| `type`         | Yes                      | `"schedule"` or `"storage_object_created"`                                                      |
+| `function`     | Yes                      | Slug of the function to invoke. The API and CLI call this `function_slug`                       |
+| `cron`         | `schedule`               | Five-field UTC cron expression                                                                  |
+| `bucket`       | `storage_object_created` | Bucket to watch. The API and CLI call this `storage_object_created.bucket_name`                 |
+| `prefix`       | No                       | Only objects whose key starts with this prefix fire the trigger (`storage_object_created` only) |
+| `functionPath` | No                       | Request path sent to the function. Default `/`                                                  |
+| `enabled`      | No                       | Default `true`                                                                                  |
+
+Triggers that exist remotely but are omitted from `neon.ts` are left alone. Inherited triggers on a child branch start disabled; deploying a `neon.ts` that declares the same trigger enables the inherited copy. See [Function Triggers overview](https://neon.com/docs/compute/functions/triggers/overview) for branching behavior, delivery payloads, and the Console, CLI, and API alternatives.
 
 ### buckets
 

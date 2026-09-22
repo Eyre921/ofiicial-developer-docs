@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1181 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1183 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -364,7 +364,6 @@
 - `langsmith/manage-with-terraform` — [Manage LangSmith with Terraform](pages/langsmith/manage-with-terraform.md) · [原文](https://docs.langchain.com/langsmith/manage-with-terraform)
 - `langsmith/managing-model-configurations` — [Configure prompt settings](pages/langsmith/managing-model-configurations.md) · [原文](https://docs.langchain.com/langsmith/managing-model-configurations)
 - `langsmith/mask-inputs-outputs` — [Prevent logging of sensitive data in traces](pages/langsmith/mask-inputs-outputs.md) · [原文](https://docs.langchain.com/langsmith/mask-inputs-outputs)
-- `langsmith/messages-view-integrations` — [Messages view integrations](pages/langsmith/messages-view-integrations.md) · [原文](https://docs.langchain.com/langsmith/messages-view-integrations)
 - `langsmith/metric-type` — [How to return categorical vs numerical metrics](pages/langsmith/metric-type.md) · [原文](https://docs.langchain.com/langsmith/metric-type)
 - `langsmith/model-configurations` — [Manage model configurations](pages/langsmith/model-configurations.md) · [原文](https://docs.langchain.com/langsmith/model-configurations)
 - `langsmith/monitor-deployment` — [Monitor a deployment](pages/langsmith/monitor-deployment.md) · [原文](https://docs.langchain.com/langsmith/monitor-deployment)
@@ -950,6 +949,7 @@
 - `langsmith/smith-api/sandboxes/get-sandbox-status` — [Get sandbox status](pages/langsmith/smith-api/sandboxes/get-sandbox-status.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/get-sandbox-status)
 - `langsmith/smith-api/sandboxes/glob-a-sandbox-filesystem` — [Glob a sandbox filesystem](pages/langsmith/smith-api/sandboxes/glob-a-sandbox-filesystem.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/glob-a-sandbox-filesystem)
 - `langsmith/smith-api/sandboxes/grep-a-sandbox-filesystem` — [Grep a sandbox filesystem](pages/langsmith/smith-api/sandboxes/grep-a-sandbox-filesystem.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/grep-a-sandbox-filesystem)
+- `langsmith/smith-api/sandboxes/list-a-sandboxs-shared-service-urls` — [List a sandbox's shared service urls](pages/langsmith/smith-api/sandboxes/list-a-sandboxs-shared-service-urls.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/list-a-sandboxs-shared-service-urls)
 - `langsmith/smith-api/sandboxes/list-hourly-sandbox-usage-costs` — [List hourly sandbox usage costs](pages/langsmith/smith-api/sandboxes/list-hourly-sandbox-usage-costs.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/list-hourly-sandbox-usage-costs)
 - `langsmith/smith-api/sandboxes/list-registries` — [List registries](pages/langsmith/smith-api/sandboxes/list-registries.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/list-registries)
 - `langsmith/smith-api/sandboxes/list-sandboxes` — [List sandboxes](pages/langsmith/smith-api/sandboxes/list-sandboxes.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/list-sandboxes)
@@ -959,6 +959,7 @@
 - `langsmith/smith-api/sandboxes/start-a-sandbox` — [Start a sandbox](pages/langsmith/smith-api/sandboxes/start-a-sandbox.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/start-a-sandbox)
 - `langsmith/smith-api/sandboxes/start-a-streamed-sandbox-command` — [Start a streamed sandbox command](pages/langsmith/smith-api/sandboxes/start-a-streamed-sandbox-command.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/start-a-streamed-sandbox-command)
 - `langsmith/smith-api/sandboxes/stop-a-sandbox` — [Stop a sandbox](pages/langsmith/smith-api/sandboxes/stop-a-sandbox.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/stop-a-sandbox)
+- `langsmith/smith-api/sandboxes/stop-sharing-a-sandbox-service-url` — [Stop sharing a sandbox service URL](pages/langsmith/smith-api/sandboxes/stop-sharing-a-sandbox-service-url.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/stop-sharing-a-sandbox-service-url)
 - `langsmith/smith-api/sandboxes/update-a-registry` — [Update a registry](pages/langsmith/smith-api/sandboxes/update-a-registry.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/update-a-registry)
 - `langsmith/smith-api/sandboxes/update-a-sandbox` — [Update a sandbox](pages/langsmith/smith-api/sandboxes/update-a-sandbox.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/update-a-sandbox)
 - `langsmith/smith-api/sandboxes/upload-a-sandbox-file` — [Upload a sandbox file](pages/langsmith/smith-api/sandboxes/upload-a-sandbox-file.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/upload-a-sandbox-file)
@@ -1141,6 +1142,7 @@
 - `langsmith/trace-with-vscode-copilot` — [Trace Visual Studio Code Copilot Chat sessions](pages/langsmith/trace-with-vscode-copilot.md) · [原文](https://docs.langchain.com/langsmith/trace-with-vscode-copilot)
 - `langsmith/trace-without-env-vars` — [Trace without setting environment variables](pages/langsmith/trace-without-env-vars.md) · [原文](https://docs.langchain.com/langsmith/trace-without-env-vars)
 - `langsmith/trajectory-evals` — [How to evaluate your agent with trajectory evaluations](pages/langsmith/trajectory-evals.md) · [原文](https://docs.langchain.com/langsmith/trajectory-evals)
+- `langsmith/trajectory-view-integrations` — [Trajectory view integrations](pages/langsmith/trajectory-view-integrations.md) · [原文](https://docs.langchain.com/langsmith/trajectory-view-integrations)
 - `langsmith/troubleshooting` — [Troubleshooting](pages/langsmith/troubleshooting.md) · [原文](https://docs.langchain.com/langsmith/troubleshooting)
 - `langsmith/troubleshooting-studio` — [Studio troubleshooting](pages/langsmith/troubleshooting-studio.md) · [原文](https://docs.langchain.com/langsmith/troubleshooting-studio)
 - `langsmith/troubleshooting-variable-caching` — [Troubleshoot variable caching](pages/langsmith/troubleshooting-variable-caching.md) · [原文](https://docs.langchain.com/langsmith/troubleshooting-variable-caching)

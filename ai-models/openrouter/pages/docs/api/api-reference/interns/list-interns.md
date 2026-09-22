@@ -107,6 +107,11 @@ tags:
   - description: Speech-to-text endpoints
     name: STT
     x-displayName: Transcriptions
+  - description: >-
+      System One endpoints for models such as Jev, compatible with the TypeSafe
+      SDKs. See https://openrouter.ai/docs/guides/community/typesafe-sdk.
+    name: SystemOne
+    x-displayName: System One
   - description: Text-to-speech endpoints
     name: TTS
     x-displayName: Speech
@@ -119,7 +124,7 @@ tags:
     name: Video Generation
   - description: Workspaces endpoints
     name: Workspaces
-  - description: Alpha feature endpoints for Decisions (questions and answers) requests
+  - description: Alpha feature endpoints for Decisions requests
     name: alpha.decisions
 externalDocs:
   description: OpenRouter Documentation
@@ -148,13 +153,17 @@ paths:
             maximum: 500
             minimum: 1
             type: integer
-        - description: Comma-separated lifecycle statuses to include.
+        - description: >-
+            Comma-separated lifecycle statuses to include, at most 8. Repeats
+            are collapsed.
           explode: false
           in: query
           name: status
           required: false
           schema:
-            description: Comma-separated lifecycle statuses to include.
+            description: >-
+              Comma-separated lifecycle statuses to include, at most 8. Repeats
+              are collapsed.
             example:
               - queued
               - running
@@ -169,6 +178,7 @@ paths:
                 - destroying
                 - destroy_failed
               type: string
+            maxItems: 8
             type: array
           style: form
         - description: >-
@@ -228,8 +238,11 @@ paths:
             application/json:
               example:
                 error:
-                  code: invalid_body
+                  code: 400
                   message: Invalid list query
+                  metadata:
+                    reason: invalid_body
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: The list filters are invalid.
@@ -260,8 +273,11 @@ paths:
             application/json:
               example:
                 error:
-                  code: not_found
+                  code: 404
                   message: Intern not found
+                  metadata:
+                    reason: not_found
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
           description: >-
@@ -273,20 +289,34 @@ paths:
               example:
                 error:
                   code: 408
-                  message: Request timed out
+                  message: Operation timed out after 10s. Please try again later.
+                  metadata:
+                    reason: timeout
+                    retryable: true
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: The request exceeded its route deadline.
+          description: >-
+            The request exceeded its route deadline. The deadline quoted in the
+            message is the route's own, so it differs between operations.
         '500':
           content:
             application/json:
               example:
                 error:
-                  code: internal_error
+                  code: 500
                   message: The request could not be completed
+                  metadata:
+                    reason: internal_error
+                    retryable: true
               schema:
                 $ref: '#/components/schemas/InternLifecycleError'
-          description: The request could not be completed.
+          description: >-
+            The request could not be completed. `metadata.reason` says whether
+            to try again: `internal_error` is a transient failure and carries
+            `metadata.retryable: true`, so the same request may be sent again,
+            while `configuration_error` carries `retryable: false` because the
+            next attempt reads the same missing binding or unusable stored
+            credential.
       security:
         - apiKey: []
 components:
@@ -335,8 +365,11 @@ components:
       description: Intern lifecycle request failure.
       example:
         error:
-          code: not_found
+          code: 404
           message: Intern not found
+          metadata:
+            reason: not_found
+            retryable: false
       properties:
         error:
           additionalProperties: false
@@ -347,6 +380,17 @@ components:
                 - type: integer
             message:
               type: string
+            metadata:
+              additionalProperties: false
+              properties:
+                reason:
+                  type: string
+                retryable:
+                  type: boolean
+              required:
+                - reason
+                - retryable
+              type: object
           required:
             - code
             - message

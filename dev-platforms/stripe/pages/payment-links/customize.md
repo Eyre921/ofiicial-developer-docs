@@ -257,7 +257,7 @@ You can also set pricing manually for each currency using [manual currency price
 
 ## Save payment details for future use 
 
-> Consult with your legal counsel or compliance team regarding saving and using payment details. For example, the European Data Protection Board issued [guidance](https://edpb.europa.eu/system/files/2021-05/recommendations022021_on_storage_of_credit_card_data_en_1.pdf) regarding the saving of payment details for faster future checkouts.
+> Consult with your legal counsel or compliance team regarding saving and using payment details. For example, the European Data Protection Board issued [guidance](https://www.edpb.europa.eu/documents/recommendation/recommendations-022021-on-the-legal-basis-for-the-storage-of-credit-card) regarding the saving of payment details for faster future checkouts.
 > 
 > If you want to save the payment method information to provide returning customers optional one-click payments in the future, we recommend using [Link](https://docs.stripe.com/payments/link/checkout-link.md).
 

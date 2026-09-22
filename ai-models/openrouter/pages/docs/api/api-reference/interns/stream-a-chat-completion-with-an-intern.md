@@ -119,6 +119,11 @@ tags:
   - description: Speech-to-text endpoints
     name: STT
     x-displayName: Transcriptions
+  - description: >-
+      System One endpoints for models such as Jev, compatible with the TypeSafe
+      SDKs. See https://openrouter.ai/docs/guides/community/typesafe-sdk.
+    name: SystemOne
+    x-displayName: System One
   - description: Text-to-speech endpoints
     name: TTS
     x-displayName: Speech
@@ -131,7 +136,7 @@ tags:
     name: Video Generation
   - description: Workspaces endpoints
     name: Workspaces
-  - description: Alpha feature endpoints for Decisions (questions and answers) requests
+  - description: Alpha feature endpoints for Decisions requests
     name: alpha.decisions
 externalDocs:
   description: OpenRouter Documentation
@@ -271,6 +276,7 @@ paths:
                   message: The intern did not accept that answer for this tool_call_id.
                   metadata:
                     reason: bad_request
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternChatErrorResponse'
           description: >-
@@ -311,12 +317,29 @@ paths:
                   message: No pending question has this tool_call_id.
                   metadata:
                     reason: interaction_unknown
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternChatErrorResponse'
           description: >-
             The caller is outside the interns programme, the intern does not
             exist for this key (`not_found`), or no pending question has this
             `tool_call_id` in this session (`interaction_unknown`).
+        '408':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 408
+                  message: Operation timed out after 300s. Please try again later.
+                  metadata:
+                    reason: timeout
+                    retryable: true
+              schema:
+                $ref: '#/components/schemas/InternChatErrorResponse'
+          description: >-
+            The request exceeded the route's own deadline before the handler
+            answered (`timeout`). Distinct from the 504, which is the intern
+            failing to answer within the turn budget.
         '409':
           content:
             application/json:
@@ -326,6 +349,7 @@ paths:
                   message: The run that asked this question has already ended.
                   metadata:
                     reason: interaction_not_pending
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternChatErrorResponse'
           description: >-
@@ -336,6 +360,18 @@ paths:
             attached to the run (`attachment_failed`). The turn lock is per
             intern, not per session. `intern_not_ready` and `busy` report
             `retryable: true`, and a `busy` refusal carries `Retry-After`.
+          headers:
+            Retry-After:
+              description: >-
+                Seconds to wait before retrying this request. Present only on a
+                `busy` refusal.
+              required: false
+              schema:
+                description: >-
+                  Seconds to wait before retrying this request. Present only on
+                  a `busy` refusal.
+                example: '5'
+                type: string
         '410':
           content:
             application/json:
@@ -347,6 +383,7 @@ paths:
                     replay.
                   metadata:
                     reason: attachment_failed
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternChatErrorResponse'
           description: >-
@@ -361,6 +398,7 @@ paths:
                   message: Request body exceeds 1048576 bytes
                   metadata:
                     reason: payload_too_large
+                    retryable: false
               schema:
                 $ref: '#/components/schemas/InternChatErrorResponse'
           description: The body exceeds 1 MiB (`payload_too_large`).
@@ -373,11 +411,21 @@ paths:
                   message: Too many intern turns. Please wait a moment.
                   metadata:
                     reason: rate_limited
+                    retryable: true
               schema:
                 $ref: '#/components/schemas/InternChatErrorResponse'
           description: >-
             Too many turns for the user or organization this key acts as
-            (`rate_limited`).
+            (`rate_limited`). It reports `retryable: true` and carries
+            `Retry-After`.
+          headers:
+            Retry-After:
+              description: Seconds to wait before retrying this request.
+              required: true
+              schema:
+                description: Seconds to wait before retrying this request.
+                example: '60'
+                type: string
         '502':
           content:
             application/json:
@@ -387,13 +435,18 @@ paths:
                   message: The intern could not be reached.
                   metadata:
                     reason: intern_unreachable
+                    retryable: true
               schema:
                 $ref: '#/components/schemas/InternChatErrorResponse'
           description: >-
             The intern could not be reached or rejected the request
             (`intern_unreachable`, `intern_rejected`), the intern refused the
             turn before any output (`turn_failed`), or its stream ended before
-            the turn started (`stream_severed`).
+            the turn started (`stream_severed`). `intern_unreachable` and
+            `stream_severed` are transient and report `retryable: true`;
+            `intern_rejected` reports `false`. A `turn_failed` varies by failure
+            and carries the intern's own classification of what went wrong, so
+            read `metadata.retryable` rather than assuming from the reason.
         '503':
           content:
             application/json:
@@ -405,11 +458,20 @@ paths:
                     right now. Retry later.
                   metadata:
                     reason: busy
+                    retryable: true
               schema:
                 $ref: '#/components/schemas/InternChatErrorResponse'
           description: >-
             The intern cannot hold another run open across a question right now
-            (`busy`). Retry later.
+            (`busy`). It reports `retryable: true` and carries `Retry-After`.
+          headers:
+            Retry-After:
+              description: Seconds to wait before retrying this request.
+              required: true
+              schema:
+                description: Seconds to wait before retrying this request.
+                example: '5'
+                type: string
         '504':
           content:
             application/json:
@@ -419,6 +481,7 @@ paths:
                   message: The intern did not answer in time.
                   metadata:
                     reason: timeout
+                    retryable: true
               schema:
                 $ref: '#/components/schemas/InternChatErrorResponse'
           description: The intern did not answer within the request budget (`timeout`).
@@ -549,6 +612,7 @@ components:
           message: That question is no longer waiting for an answer.
           metadata:
             reason: interaction_not_pending
+            retryable: false
       properties:
         error:
           $ref: '#/components/schemas/InternChatError'
@@ -674,6 +738,7 @@ components:
         message: That question is no longer waiting for an answer.
         metadata:
           reason: interaction_not_pending
+          retryable: false
       properties:
         code:
           description: The HTTP status of the response.
@@ -841,6 +906,7 @@ components:
         message: The intern could not continue this run.
         metadata:
           reason: attachment_failed
+          retryable: false
       properties:
         code:
           description: >-
@@ -889,6 +955,7 @@ components:
       description: Machine-readable detail for the failure.
       example:
         reason: interaction_not_pending
+        retryable: false
       properties:
         reason:
           description: A stable reason a client can branch on.
@@ -910,8 +977,23 @@ components:
             - timeout
             - turn_failed
           type: string
+        retryable:
+          description: >-
+            Whether the same request may be sent again unchanged. Always `true`
+            for the transient refusals — `busy`, `intern_not_ready`,
+            `intern_unreachable`, `rate_limited`, `stream_severed` and `timeout`
+            — and always `false` for the ones a retry cannot fix. For
+            `turn_failed` it varies by failure and is the intern's own
+            classification of what went wrong: `true` for an upstream overload,
+            rate limit, timeout or transport fault, `false` for an
+            authentication or bad-request failure that would be rejected the
+            same way again. Branch on this field rather than on `reason` when
+            deciding whether to retry. A `429`, and a `409` or `503` with reason
+            `busy`, also carry a `Retry-After` header saying how long to wait.
+          type: boolean
       required:
         - reason
+        - retryable
       type: object
     InternChatMessageContent:
       anyOf:

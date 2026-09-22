@@ -1,22 +1,22 @@
 ---
-title: "Submit a Decisions (questions and answers) request"
-source: https://openrouter.ai/docs/api/api-reference/alphadecisions/submit-a-decisions-questions-and-answers-request.md
-path: docs/api/api-reference/alphadecisions/submit-a-decisions-questions-and-answers-request
+title: "Submit a System One request"
+source: https://openrouter.ai/docs/api/api-reference/systemone/submit-a-system-one-request.md
+path: docs/api/api-reference/systemone/submit-a-system-one-request
 ---
 
 > ## Documentation Index
 > Fetch the complete documentation index at: https://openrouter.ai/docs/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-# Submit a Decisions (questions and answers) request
+# Submit a System One request
 
-> Submits a Decisions request to the Decisions router
+> Sends state and typed questions to a System One model such as Jev and returns its answers. Compatible with the TypeSafe SDKs. Bare System One model IDs such as `jev-1.13` and `jev-latest` are mapped onto the `typesafe/` namespace.
 
 
 
 ## OpenAPI
 
-````yaml /openapi/openapi.yaml post /api/alpha/decisions
+````yaml /openapi/openapi.yaml post /systemone
 openapi: 3.1.0
 info:
   contact:
@@ -107,6 +107,11 @@ tags:
   - description: Speech-to-text endpoints
     name: STT
     x-displayName: Transcriptions
+  - description: >-
+      System One endpoints for models such as Jev, compatible with the TypeSafe
+      SDKs. See https://openrouter.ai/docs/guides/community/typesafe-sdk.
+    name: SystemOne
+    x-displayName: System One
   - description: Text-to-speech endpoints
     name: TTS
     x-displayName: Speech
@@ -119,19 +124,23 @@ tags:
     name: Video Generation
   - description: Workspaces endpoints
     name: Workspaces
-  - description: Alpha feature endpoints for Decisions (questions and answers) requests
+  - description: Alpha feature endpoints for Decisions requests
     name: alpha.decisions
 externalDocs:
   description: OpenRouter Documentation
   url: https://openrouter.ai/docs
 paths:
-  /api/alpha/decisions:
+  /systemone:
     post:
       tags:
-        - alpha.decisions
-      summary: Submit a Decisions (questions and answers) request
-      description: Submits a Decisions request to the Decisions router
-      operationId: createApiAlphaDecisions
+        - SystemOne
+      summary: Submit a System One request
+      description: >-
+        Sends state and typed questions to a System One model such as Jev and
+        returns its answers. Compatible with the TypeSafe SDKs. Bare System One
+        model IDs such as `jev-1.13` and `jev-latest` are mapped onto the
+        `typesafe/` namespace.
+      operationId: createSystemone
       requestBody:
         content:
           application/json:
@@ -329,8 +338,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProviderOverloadedResponse'
           description: Provider Overloaded - Provider is temporarily overloaded
-      servers:
-        - url: https://openrouter.ai
 components:
   schemas:
     DecisionsRequest:

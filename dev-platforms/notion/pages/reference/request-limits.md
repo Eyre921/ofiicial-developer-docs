@@ -42,7 +42,7 @@ Put outgoing requests through a queue so a burst from one job does not consume t
 3. If another 429 or 529 arrives, increase the delay with exponential backoff and jitter.
 4. Set a retry limit. Log or surface the final error when the limit is reached.
 
-Do not retry every error. Retry 429 and 529 responses. Retry 500, 502, 503, and 504 responses only when the request is idempotent, such as GET or DELETE, unless your application has its own idempotency protection. Fix the request before retrying most 400 responses. A 401 means authentication failed. A 403 can mean a permission failure or a [workspace block limit](/reference/workspace-block-limits); check the error message before retrying.
+Do not retry every error. Retry 429 and 529 responses. Retry 500, 502, 503, and 504 responses only when the request is idempotent, such as GET or DELETE, unless your application has its own idempotency protection. A write that returns 503 needs an extra check first; see [Retry a write that returns 503](#retry-a-write-that-returns-503). Fix the request before retrying most 400 responses. A 401 means authentication failed. A 403 can mean a permission failure or a [workspace block limit](/reference/workspace-block-limits); check the error message before retrying.
 
 The JavaScript SDK retries 429 responses for every method. It also retries 500 and 503 responses for GET and DELETE requests. It respects `Retry-After`, uses exponential backoff with jitter, and limits retries. If you call the REST API directly, use the same safeguards and add explicit handling for 529 responses. These examples show the same policy in several common HTTP clients:
 
@@ -193,6 +193,34 @@ The same rules apply in other languages: centralize retries in the HTTP client, 
 
   In the future, Notion plans to adjust rate limits to balance for demand and reliability.
 </Warning>
+
+### Retry a write that returns 503
+
+A write can save its change and still return 503 when Notion runs out of time building the response. Repeating that write applies the change twice, so read `additional_data.retry_guidance` before you retry. When the change was already saved, the guidance tells you to read the object instead.
+
+```json 503 response example theme={null}
+{
+  "object": "error",
+  "status": 503,
+  "code": "service_unavailable",
+  "message": "The change was saved, but the response could not be built in time. Read the object again instead of repeating the write.",
+  "additional_data": {
+    "from": "publicApi.pageObjectPointerToPageObject.beforePreload",
+    "elapsed_ms": "55012",
+    "deadline_ms": "55000",
+    "retry_guidance": [
+      "Read the object again to confirm the saved change.",
+      "Do not repeat the write."
+    ]
+  }
+}
+```
+
+When the request created a page or a database, `additional_data.committed_resource_id` holds the ID of the new object. Use it to retrieve the object, since the timed-out response never returned that ID. Other requests that change an existing object omit the field, because you already have its ID.
+
+When the request appended block children, `committed_resource_id` holds the parent block ID. `additional_data.committed_child_ids` lists the direct children created by this request, in request order. It excludes nested descendants. Retrieve each block with `GET /v1/blocks/:id`, using an ID from that list. These IDs distinguish your new blocks from identical existing blocks or blocks appended by another request. Do not repeat the write.
+
+Other 503 responses carry different guidance, or none at all. Notion cannot always tell you whether a write was saved, so check the object's current state before you retry it.
 
 ## Size limits
 

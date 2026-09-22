@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 388 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 389 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -86,6 +86,7 @@
 - `docs/determining-your-audio-format-for-live-streaming-audio` — [Determining Your Audio Format for Live Streaming Audio](pages/docs/determining-your-audio-format-for-live-streaming-audio.md) · [原文](https://developers.deepgram.com/docs/determining-your-audio-format-for-live-streaming-audio.md)
 - `docs/diarization` — [Speaker Diarization](pages/docs/diarization.md) · [原文](https://developers.deepgram.com/docs/diarization.md)
 - `docs/dictation` — [Dictation](pages/docs/dictation.md) · [原文](https://developers.deepgram.com/docs/dictation.md)
+- `docs/dockerpodman` — [Docker/Podman](pages/docs/dockerpodman.md) · [原文](https://developers.deepgram.com/docs/dockerpodman.md)
 - `docs/drivers-and-containerization-platforms` — [Drivers and Container Orchestration Tools](pages/docs/drivers-and-containerization-platforms.md) · [原文](https://developers.deepgram.com/docs/drivers-and-containerization-platforms.md)
 - `docs/encoding` — [Encoding](pages/docs/encoding.md) · [原文](https://developers.deepgram.com/docs/encoding.md)
 - `docs/endpointing` — [Endpointing](pages/docs/endpointing.md) · [原文](https://developers.deepgram.com/docs/endpointing.md)

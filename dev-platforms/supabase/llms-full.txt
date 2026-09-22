@@ -138933,6 +138933,7 @@ results = index.query(
 - [Realtime: Handling Silent Disconnections in Background Applications](https://supabase.com/docs/guides/troubleshooting/realtime-handling-silent-disconnections-in-backgrounded-applications-592794)
 - [Understanding and Monitoring Realtime Heartbeats](https://supabase.com/docs/guides/troubleshooting/realtime-heartbeat-messages)
 - [Realtime: Isolating Server-Side vs. Client-Side Issues with Inspector and DevTools](https://supabase.com/docs/guides/troubleshooting/realtime-isolating-server-side-vs-client-side-issues-with-inspector-and-devtools)
+- [Realtime: Messages Not Arriving Troubleshooting](https://supabase.com/docs/guides/troubleshooting/realtime-messages-not-arriving)
 - [Realtime: Postgres Changes Troubleshooting](https://supabase.com/docs/guides/troubleshooting/realtime-postgres-changes-troubleshooting)
 - [Realtime: Project suspended for exceeding quotas](https://supabase.com/docs/guides/troubleshooting/realtime-project-suspended-for-exceeding-quotas)
 - [Fixing the TooManyChannels Error](https://supabase.com/docs/guides/troubleshooting/realtime-too-many-channels-error)
@@ -138943,6 +138944,7 @@ results = index.query(
 - [Resolving 500 Status Authentication Errors](https://supabase.com/docs/guides/troubleshooting/resolving-500-status-authentication-errors-7bU5U8)
 - [Resolving 'cannot execute UPDATE in a read-only transaction' on transaction pooler connections](https://supabase.com/docs/guides/troubleshooting/resolving-cannot-execute-update-in-a-read-only-transaction-on-transaction-pooler-connections-ef582c)
 - [Resolving database hostname and managing your IP address](https://supabase.com/docs/guides/troubleshooting/resolving-database-hostname-and-managing-your-ip-address-pVlwE0)
+- [Resolving 'permission denied for database postgres' during migrations](https://supabase.com/docs/guides/troubleshooting/resolving-permission-denied-for-database-postgres-during-migrations-78f33a)
 - [How To Restore a Project Paused for More Than 1 Year](https://supabase.com/docs/guides/troubleshooting/restore-project-after-90-days-pause)
 - [RLS Performance and Best Practices](https://supabase.com/docs/guides/troubleshooting/rls-performance-and-best-practices-Z5Jjwv)
 - [RLS Simplified](https://supabase.com/docs/guides/troubleshooting/rls-simplified-BJTcS8)
@@ -142948,6 +142950,14 @@ If you don't have the password, [reset it](https://supabase.com/docs/guides/trou
 ## Rotated the password?
 
 If you're connecting through the shared pooler and this started right after resetting the role's password — with the username and password otherwise correct — see [Supavisor error: "password authentication failed" after rotating database password](https://supabase.com/docs/guides/troubleshooting/supavisor-error-password-authentication-failed-after-password-rotation).
+
+## Using a custom role
+
+Custom Postgres roles with `LOGIN` are supported. They work on direct connections, the dedicated pooler, and the shared Supavisor pooler. You do not register a role with the pooler as a separate step. The pooler reads the role's credentials from Postgres on demand, so creating the role in the database is all that is needed.
+
+If you reset the password of a custom role while using the shared pooler (Supavisor), a pooled connection can still fail with `FATAL: password authentication failed` (SQLSTATE `28P01`) even when the new password is correct. The pooler may still use cached credentials briefly. Confirm the new password with a direct connection, then retry through Supavisor with bounded retries. Direct connections and the dedicated pooler are not affected by this cache behavior.
+
+For the full rotation flow, see [Supavisor error: "password authentication failed" after rotating database password](https://supabase.com/docs/guides/troubleshooting/supavisor-error-password-authentication-failed-after-password-rotation).
 
 ## Repeated failures cause a different error
 
@@ -147613,6 +147623,67 @@ If you still need help, [contact Support](https://supabase.com/support) and incl
 
 ---
 
+# Realtime: Messages Not Arriving Troubleshooting
+
+Your channel subscribes, something changes, and the client never hears about it. No error, silence. This guide is a quick-reference across the main causes: connection problems, Broadcast, Postgres Changes, and Presence.
+
+Start with [Connection problems](#connection-problems) if your channel never subscribes. If it connects fine and the problem is that specific events aren't showing up, skip ahead to whichever feature you're using.
+
+## Connection problems
+
+Look for `CHANNEL_ERROR`, `TIMED_OUT`, or `CLOSED` right after you call `.subscribe()`:
+
+```javascript
+channel.subscribe((status, err) => {
+  console.log(status, err)
+})
+```
+
+1. Check your project isn't paused and Realtime is enabled for it. That toggle ("Enable Realtime service") lives under **Realtime → Settings**. See [Realtime Settings](https://supabase.com/docs/guides/realtime/settings).
+2. On a private channel, you need an RLS policy that allows the join for your role. Check **Realtime → Policies** on `realtime.messages`. See [Realtime Authorization](https://supabase.com/docs/guides/realtime/authorization) for how the policies work. A slow policy can also cause the join to time out instead of failing outright, so check the policy's own performance too, not merely whether it grants access.
+3. Bad JWTs are a common cause. Not expired, has `role` and `exp` claims, and if you're on a third-party auth provider, its JWKS endpoint needs to be reachable. Decode the token (jwt.io, or `atob(token.split('.')[1])`) to check the claims directly. Logging the second argument in `.subscribe((status, err) => ...)` will show you the actual rejection reason instead of leaving you guessing. More detail: [Channel-level system errors](https://supabase.com/docs/guides/realtime/protocol#channel-level-system-errors).
+4. Reverse proxy or custom SSL termination in front of your app? Make sure it forwards the `Upgrade` and `Connection` headers, or the WebSocket handshake never completes in the first place.
+5. Clients need to heartbeat at least every 25 seconds or the connection times out ([Reconnection](https://supabase.com/docs/guides/realtime/protocol#reconnection)). So reconnect on unexpected `CLOSED`/`TIMED_OUT` instead of treating either as a hard error: log the status callback so you can tell an expected disconnect apart from a real failure. One caveat: if you're seeing `TIMED_OUT` specifically, that's more often a Node.js version mismatch with your `realtime-js` version than an idle timeout. See [Realtime connections giving `TIMED_OUT` errors](./realtime-connections-timed_out-status).
+6. You might be hitting a connection or join-rate limit for your plan (`too_many_connections`, `too_many_joins`). Check the project's usage page in the dashboard, or look for the error code directly in `err`. Plan numbers: [Realtime Limits](https://supabase.com/docs/guides/realtime/limits#limits-by-plan). Related: [Realtime: "Concurrent Peak Connections" Quota](./realtime-concurrent-peak-connections-quota-jdDqcp).
+
+## Broadcast from the client
+
+This applies to messages sent with `channel.send({ type: 'broadcast', ... })`.
+
+1. Topic name has to match exactly on the sender and every listener (`supabase.channel('room-1')`). A typo, a casing difference, or an ID built differently on each side won't throw any error, it'll fail quietly. Log the topic string on both sides and diff them if you're stuck, or enable client and server logging to see what the Realtime server actually received: [Debug Realtime with Logger and Log Levels](./realtime-debugging-with-logger).
+2. Private channel? You'll need RLS policies on `realtime.messages` scoped to `extension = 'broadcast'` for the connecting role: an `insert` policy to send, and a `select` policy to receive. Missing the `select` policy means sends succeed but nothing comes back. Check **Realtime → Policies**, and see [Realtime Authorization: Broadcast](https://supabase.com/docs/guides/realtime/authorization#broadcast) for a working example.
+3. Same rate limits apply here as connections (message-per-second, channel limits). Same usage page, same [Realtime Limits](https://supabase.com/docs/guides/realtime/limits#limits-by-plan) reference.
+
+## Broadcast from the database
+
+This applies to `realtime.send()` and `realtime.broadcast_changes()`.
+
+1. Check your Postgres logs for a `WarnSendingBroadcastMessage` warning. `realtime.messages` is partitioned by day, and that partition only gets created once a client has connected over WebSocket. Broadcast before that happens, or after your clients stop connecting for a while, and the insert fails with this warning. Connecting a client first usually clears it up. Background: [Realtime: `WarnSendingBroadcastMessage`](./realtime-warn-sending-broadcast-message) and [Broadcast from Postgres](https://supabase.com/docs/guides/realtime/architecture#broadcast-from-postgres).
+2. Is the trigger even firing? Add a `raise notice` inside it and check **Logs → Postgres Logs**. Nothing logged means the trigger isn't wired up right: wrong table, wrong event, or it was never created. That's a problem upstream of Realtime entirely.
+3. Check that `is_private` (the last argument to `realtime.send()`, or the equivalent flag on `realtime.broadcast_changes()`) matches the client channel's `config.private` setting. It's the public/private flag on the topic itself, separate from the RLS checks above. A mismatch there means the client never receives the message even when the trigger fires and the topic name is right. See [Broadcast](https://supabase.com/docs/guides/realtime/broadcast).
+
+## `postgres_changes`
+
+1. Row Level Security gates delivery for `INSERT` and `UPDATE` events. `postgres_changes` only sends rows the subscribing role could `select`. Run that same select using the subscribing role's credentials, not as `postgres` in the SQL Editor (which bypasses RLS by default): an empty result means RLS is the culprit. Add a permissive select policy for testing, then tighten it back up once you've confirmed that's the issue. `DELETE` events aren't RLS-filtered at all, since Postgres has no way to check access on a row that's already gone. Related reading: [Interaction with Postgres Changes](https://supabase.com/docs/guides/realtime/authorization#interaction-with-postgres-changes).
+2. Double-check your filter arguments against the actual row that changed: `schema`, `table`, `event` (`INSERT`/`UPDATE`/`DELETE`/`*`), and any `.eq()`/`.in()` filter. See [Available filters](https://supabase.com/docs/guides/realtime/postgres-changes#available-filters) for the full list.
+3. The table needs to be in the `supabase_realtime` publication, regardless of schema. That's under **Database → Publications**. If it's not in `public`, there's a separate requirement too. Grant `select` on the table to the role in the subscriber's access token: `authenticated` for a logged-in user, `anon` for an anonymous client, or another role if you're on a custom JWT (e.g. `grant select on "your_schema"."your_table" to authenticated;`). There's no dashboard toggle for that part. Details: [Private schemas](https://supabase.com/docs/guides/realtime/postgres-changes#private-schemas).
+4. When none of the above turns anything up, strip the subscription down to bare minimum: no filter, `event: '*'`. If that still never fires, you're looking at a publication or RLS problem, not a filter syntax issue.
+
+Once you've ruled out the basics, [Realtime: Postgres Changes Troubleshooting](./realtime-postgres-changes-troubleshooting) goes deeper into this exact scenario.
+
+## Presence
+
+1. Something in your codebase may have set `presence: { enabled: false }` on the channel config. Worth grepping for it. Config shape reference: [phx\_join config](https://supabase.com/docs/guides/realtime/protocol#phx_join).
+2. Private channel? You'll need RLS policies on `realtime.messages` scoped to `extension = 'presence'` for the connecting role: a `select` policy to receive presence updates and an `insert` policy for `channel.track()` to publish your own. Missing either can silently drop presence even though the channel subscription itself succeeds. See [Realtime Authorization: Presence](https://supabase.com/docs/guides/realtime/authorization#presence) for a working example.
+3. `channel.track()` needs to wait for `SUBSCRIBED`: every example in the Presence guide gates it this way, and calling it earlier won't reliably register. Log the status callback and confirm `track()` only fires after `SUBSCRIBED` shows up. See [Sending state](https://supabase.com/docs/guides/realtime/presence#sending-state) for the canonical pattern.
+
+## Still stuck?
+
+The [Realtime troubleshooting entries](https://supabase.com/docs/guides/troubleshooting) cover related issues too: `TIMED_OUT` connections, too many channels, rate limits, logger debugging.
+
+
+---
+
 # Realtime: Postgres Changes Troubleshooting
 
 A Realtime subscription connects, a row changes in the database, and nothing arrives on the client. No error, no event — silence. This is one of the more common issues developers run into with Supabase Realtime, and the cause is almost always one of a handful of things.
@@ -148598,6 +148669,31 @@ Opting for the static [IPv4 add-on](https://supabase.com/docs/guides/platform/ip
 
 - The project is paused or resumed.
 - Unlike the IPv6 address, upgrading your database does not affect the IPv4 address.
+
+
+---
+
+# Resolving 'permission denied for database postgres' during migrations
+
+If you encounter a `permission denied for database postgres` error during migrations, it typically occurs when executing `CREATE SCHEMA` or similar commands after a `SET ROLE` statement.
+
+## Why this happens
+
+Postgres 15 and later versions remove default `CREATE` privileges from the `PUBLIC` role. This means custom roles do not automatically have permission to create objects in the database, even if the session was initiated by the `postgres` user.
+
+## How to resolve the issue
+
+To resolve this, you must grant the `CREATE` privilege on the database to the specific role used in your migration script. Run the following command in the [SQL editor](https://supabase.com/dashboard/project/_/sql/new):
+
+```sql
+GRANT CREATE ON DATABASE postgres TO example_role;
+```
+
+Replace `example_role` with the name of the role being assumed during the migration (for example, the owner role of your schemas).
+
+## Related
+
+If this happened via a REST/GraphQL request instead of a direct connection or migration script, see [Database API 42501 errors](https://supabase.com/docs/guides/troubleshooting/database-api-42501-errors) instead — that guide covers a different set of causes specific to the Data API.
 
 
 ---
