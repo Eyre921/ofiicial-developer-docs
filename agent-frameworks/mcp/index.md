@@ -1,6 +1,6 @@
 # agent-frameworks/mcp 文档索引
 
-> 共 151 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 152 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -23,6 +23,7 @@
 - `community/interest-groups/enterprise-managed-authorization` — [Enterprise-Managed Authorization Charter](pages/community/interest-groups/enterprise-managed-authorization.md) · [原文](https://modelcontextprotocol.io/community/interest-groups/enterprise-managed-authorization)
 - `community/interest-groups/financial-services` — [Financial Services Charter](pages/community/interest-groups/financial-services.md) · [原文](https://modelcontextprotocol.io/community/interest-groups/financial-services)
 - `community/interest-groups/primitive-grouping` — [Primitive Grouping Charter](pages/community/interest-groups/primitive-grouping.md) · [原文](https://modelcontextprotocol.io/community/interest-groups/primitive-grouping)
+- `community/interest-groups/scientific-computing` — [Scientific Computing Charter](pages/community/interest-groups/scientific-computing.md) · [原文](https://modelcontextprotocol.io/community/interest-groups/scientific-computing)
 - `community/interest-groups/security` — [Security Charter](pages/community/interest-groups/security.md) · [原文](https://modelcontextprotocol.io/community/interest-groups/security)
 - `community/interest-groups/tool-annotations` — [Tool Annotations Charter](pages/community/interest-groups/tool-annotations.md) · [原文](https://modelcontextprotocol.io/community/interest-groups/tool-annotations)
 - `community/sdk-tiers` — [SDK Tiering System](pages/community/sdk-tiers.md) · [原文](https://modelcontextprotocol.io/community/sdk-tiers)

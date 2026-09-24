@@ -1,19 +1,19 @@
 ---
 title: "Coding Harnesses"
-source: https://docs.fireworks.ai/ecosystem/fireconnect/harnesses
-path: ecosystem/fireconnect/harnesses
+source: https://docs.fireworks.ai/nexus/harnesses
+path: nexus/harnesses
 ---
 
 Connect Claude Code, OpenCode, Codex, Pi, Cursor IDE, VS Code, Copilot, or DeepSeek Harness to Fireworks
 
-Install [FireConnect](/ecosystem/fireconnect/overview) and run `fireconnect login` once. Then choose your harness below. Each section shows the connect command, the settings FireConnect writes, and how to apply a new `--model`.
+Install [FireConnect](/nexus/fireconnect) and run `fireconnect login` once. Then choose your harness below. Each section shows the connect command, the settings FireConnect writes, and how to apply a new `--model`.
 
 ## Shared rules
 
 * **Auth:** `fireconnect login` once, then `fireconnect <harness>`. You do not need `--api-key` on connect when a key is already saved.
 * **Quit first:** fully quit Cursor IDE, VS Code, and the Copilot App before connecting or running `off`. Restart other harnesses after connect.
 * **`status` is read-only** while the app is open.
-* **Models:** Pass `--model <id>` when you connect. Browse IDs with `fireconnect model list`. See [FireRouter](/ecosystem/firerouter/overview) for router behavior.
+* **Models:** Pass `--model <id>` when you connect. Browse IDs with `fireconnect model list`. See [FireRouter](/nexus/firerouter) for router behavior.
 * **Web search:** Claude Code, Codex, and ChatGPT keep native search. See [Web Search](/nexus/web-search) for details.
 
 ## Claude Code
@@ -40,7 +40,7 @@ fireconnect claude --model glm-5p3-flash
 * Optional `statusLine` unless you already have one.
 * Native web search and fetch stay on.
 
-**Usage.** For the status line and `fireconnect claude usage`, see [Usage and Cost](/nexus/metrics). For a side-by-side model comparison, see the [Side-by-Side Demo](/ecosystem/fireconnect/demo).
+**Usage.** For the status line and `fireconnect claude usage`, see [Usage and Cost](/nexus/metrics). For a side-by-side model comparison, see the [Side-by-Side Demo](/nexus/demo).
 
 **Routers**
 
@@ -297,6 +297,10 @@ fireconnect deepseek --model glm-5p2
 
 ## Foundry across harnesses
 
-[Microsoft Foundry](/nexus/microsoft-foundry) runs Fireworks models in your Azure subscription and bills usage through Azure. It supports **OpenCode, Codex, Pi, Cursor IDE, and VS Code**. It does not support Claude Code, DeepSeek Harness, Copilot, or model routers.
+[Microsoft Foundry](/nexus/microsoft-foundry) runs Fireworks models in your Azure subscription and bills usage through Azure. Direct FireConnect routing supports **OpenCode, Codex, Pi, Cursor IDE, and VS Code**. Direct routing does not support Claude Code, DeepSeek Harness, Copilot, or model routers.
 
 Pass the Foundry **deployment name** (`FW-GLM-5.2`), not a Fireworks short ID. Setup, switching, and restore behavior: [Microsoft Foundry](/nexus/microsoft-foundry).
+
+<Note>
+  **Need Claude Code on Foundry?** Use an LLM gateway between Claude Code and Foundry. Two proven patterns are Claude Code to Envoy AI Gateway to Foundry, and Claude Code to LiteLLM to Foundry. The gateway translates requests and responses. FireConnect does not configure this path. See [Microsoft Foundry](/nexus/microsoft-foundry#claude-code-through-a-gateway) for details and a reference implementation.
+</Note>

@@ -298,9 +298,9 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   Control the availability of GitHub Copilot features and models for your users.
 
-* [About default availability of Copilot models](/en/copilot/concepts/enterprise/default-model-availability)
+* [About default availability of Copilot features and models](/en/copilot/concepts/enterprise/default-availability)
 
-  A policy controls whether unconfigured models default to enabled or disabled.
+  Policies control whether unconfigured features and models default to enabled or disabled.
 
 * [FedRAMP-compliant models for GitHub Copilot](/en/copilot/concepts/enterprise/fedramp-models)
 
@@ -690,6 +690,10 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   Citations link spans of an assistant response back to the sources that support them. Turn on `enableCitations` when you create or resume a session, then read the `citations` payload on `assistant.message` events to render footnotes, source lists, or inline links.
 
+* [Client info](/en/copilot/how-tos/copilot-sdk/features/client-info)
+
+  Client info identifies the application using the Copilot SDK and, when applicable, a specific integration within it. An integration is an identifiable sub-part of the application through which the SDK is used, such as an extension or plugin. Set the optional `clientInfo` client option to attribute runtime telemetry for that connection to your application instead of the runtime's own build.
+
 * [Cloud sessions](/en/copilot/how-tos/copilot-sdk/features/cloud-sessions)
 
   Cloud sessions run Copilot work on GitHub-hosted compute and appear in the agents panel on GitHub. Use them when your app should create a session that executes remotely instead of starting a local GitHub Copilot CLI session on the user's machine or your server.
@@ -805,6 +809,10 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 * [GitHub OAuth setup](/en/copilot/how-tos/copilot-sdk/setup/github-oauth)
 
   Let users authenticate with their GitHub accounts to use Copilot through your application. This supports individual accounts, organization memberships, and enterprise identities.
+
+* [Run the Copilot runtime in process](/en/copilot/how-tos/copilot-sdk/setup/in-process-runtime)
+
+  In-process hosting loads the native Copilot runtime into your application process instead of starting a separate Copilot CLI process. Use it to remove child-process management while keeping the same Copilot SDK sessions, events, tools, hooks, and JSON-RPC behavior.
 
 * [Local CLI setup](/en/copilot/how-tos/copilot-sdk/setup/local-cli)
 

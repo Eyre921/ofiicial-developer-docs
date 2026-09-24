@@ -111,7 +111,7 @@ try {
 }
 ```
 
-If you're unable to resolve the error, email Support at [team@elevenlabs.io](mailto:team@elevenlabs.io) with the `request_id` from the error response, the full error message, and steps to reproduce the issue.
+If you're unable to resolve the error, email Support at [support@elevenlabs.io](mailto:support@elevenlabs.io) with the `request_id` from the error response, the full error message, and steps to reproduce the issue.
 
 #### Rate limiting and concurrency
 

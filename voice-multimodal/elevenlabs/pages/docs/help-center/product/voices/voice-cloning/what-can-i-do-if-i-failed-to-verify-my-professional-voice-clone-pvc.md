@@ -10,7 +10,7 @@ path: docs/help-center/product/voices/voice-cloning/what-can-i-do-if-i-failed-to
 
 If you fail all your verification attempts during the creation of your professional voice clone, you can wait 24 hours, after which time you will be able to retry the process.
 
-You can also contact support by emailing [team@elevenlabs.io](mailto:team@elevenlabs.io) so they can look into it for you. If everything looks correct, they will reset your verification attempts so you can retry the process.
+You can also contact support by emailing [support@elevenlabs.io](mailto:support@elevenlabs.io) so they can look into it for you. If everything looks correct, they will reset your verification attempts so you can retry the process.
 
 Here are some recommendations to help you successfully verify your Professional Voice Clone:
 

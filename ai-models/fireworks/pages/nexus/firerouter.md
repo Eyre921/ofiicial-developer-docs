@@ -1,7 +1,7 @@
 ---
 title: "FireRouter"
-source: https://docs.fireworks.ai/ecosystem/firerouter/overview
-path: ecosystem/firerouter/overview
+source: https://docs.fireworks.ai/nexus/firerouter
+path: nexus/firerouter
 ---
 
 Learn how Fireworks model routers choose a model for each user turn, how router IDs work, what credentials you need, and how serving models are billed.
@@ -16,7 +16,7 @@ fireconnect claude --model firerouter/opus
 
 Restart Claude Code, open `/model`, and select `firerouter/opus`.
 
-For coding harnesses, start with [FireConnect](/ecosystem/fireconnect/overview). If your team uses an LLM gateway to access models, follow [LLM Gateways](/ecosystem/integrations/llm-gateways). For direct API or SDK calls, see [APIs and SDKs](/ecosystem/firerouter/apis-and-sdks).
+For coding harnesses, start with [FireConnect](/nexus/fireconnect). If your team uses an LLM gateway to access models, follow [LLM Gateways](/nexus/llm-gateways). For direct API or SDK calls, see [APIs and SDKs](/nexus/apis-and-sdks).
 
 ## Choose a router
 

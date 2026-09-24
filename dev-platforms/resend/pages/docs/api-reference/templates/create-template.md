@@ -106,12 +106,17 @@ Create a new template with optional variables.
         key: 'PRICE',
         type: 'number',
         fallbackValue: 25,
-      }
+      },
     ],
   });
 
   // Or create and publish a template in one step
-  await resend.templates.create({ ... }).publish();
+  const { data: published, error: publishError } = await resend.templates
+    .create({
+      name: 'order-confirmation',
+      html: '<p>Thanks for your order!</p>',
+    })
+    .publish();
   ```
 
   ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -187,7 +192,7 @@ Create a new template with optional variables.
   import (
   	"context"
 
-  	"github.com/resend/resend-go/v3"
+  	"github.com/resend/resend-go/v4"
   )
 
   func main() {
@@ -240,10 +245,15 @@ Create a new template with optional variables.
   ```
 
   ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import com.resend.*;
+  import com.resend.Resend;
+  import com.resend.core.exception.ResendException;
+  import com.resend.services.templates.model.CreateTemplateOptions;
+  import com.resend.services.templates.model.CreateTemplateResponseSuccess;
+  import com.resend.services.templates.model.Variable;
+  import com.resend.services.templates.model.VariableType;
 
   public class Main {
-      public static void main(String[] args) {
+      public static void main(String[] args) throws ResendException {
           Resend resend = new Resend("re_xxxxxxxxx");
 
           CreateTemplateOptions params = CreateTemplateOptions.builder()

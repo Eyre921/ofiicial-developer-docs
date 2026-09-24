@@ -6,7 +6,7 @@ path: nexus/session-usage
 
 Use FireConnect commands to inspect Claude Code session cost, model mix, cache share, token buckets, and request-level estimates.
 
-Claude Code session-cost tools run on the machine where the session ran. After you [connect Claude Code](/ecosystem/fireconnect/harnesses#claude-code), use the status line for a live estimate or `fireconnect claude usage` for a detailed breakdown.
+Claude Code session-cost tools run on the machine where the session ran. After you [connect Claude Code](/nexus/harnesses#claude-code), use the status line for a live estimate or `fireconnect claude usage` for a detailed breakdown.
 
 ## Read the status line
 
@@ -17,7 +17,7 @@ Claude Code session-cost tools run on the machine where the session ran. After y
 | **1** | A spend bar and the estimated session cost. Each segment represents a model that served traffic                                                 |
 | **2** | Each model's name, estimated cost, and cache share. For bare `firerouter`, it also shows the routing level, such as `balanced` or `max-savings` |
 
-Several models can appear in one bar. See [FireRouter](/ecosystem/firerouter/overview) for why `firerouter/...` can use multiple backends.
+Several models can appear in one bar. See [FireRouter](/nexus/firerouter) for why `firerouter/...` can use multiple backends.
 
 The auto-mode line below the bar belongs to Claude Code, not the Fireworks `auto` model ID.
 

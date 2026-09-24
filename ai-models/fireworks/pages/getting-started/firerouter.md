@@ -6,4 +6,4 @@ path: getting-started/firerouter
 
 Use one model ID while a router chooses the model for each user turn.
 
-Open the [FireRouter documentation](/ecosystem/firerouter/overview).
+Open the [FireRouter documentation](/nexus/firerouter).

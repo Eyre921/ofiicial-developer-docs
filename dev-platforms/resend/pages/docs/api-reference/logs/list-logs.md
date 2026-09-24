@@ -33,6 +33,8 @@ Retrieve a list of API request logs.
   ```
 
   ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
   Resend.api_key = "re_xxxxxxxxx"
 
   logs = Resend::Logs.list
@@ -45,7 +47,7 @@ Retrieve a list of API request logs.
   import (
   	"context"
 
-  	"github.com/resend/resend-go/v3"
+  	"github.com/resend/resend-go/v4"
   )
 
   func main() {
@@ -83,10 +85,11 @@ Retrieve a list of API request logs.
   ```
 
   ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import com.resend.*;
+  import com.resend.Resend;
+  import com.resend.core.exception.ResendException;
 
   public class Main {
-      public static void main(String[] args) {
+      public static void main(String[] args) throws ResendException {
           Resend resend = new Resend("re_xxxxxxxxx");
 
           resend.logs().list();

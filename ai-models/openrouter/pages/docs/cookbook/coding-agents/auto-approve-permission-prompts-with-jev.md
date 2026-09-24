@@ -382,4 +382,5 @@ Cursor's default is to let a command run when a hook crashes or times out, which
 * [OpenCode Integration](/docs/cookbook/coding-agents/opencode-integration) covers pointing OpenCode at OpenRouter and picking models, which the OpenCode section assumes is done
 * [Add Human-in-the-Loop Controls](/docs/cookbook/building-agents/hitl-tools) is the pause-and-resume pattern that these prompts are a coding-agent version of
 * [TypeSafe SDK on OpenRouter](/docs/guides/community/typesafe-sdk) shows the Choice, Score, and Noul primitives if you want a three-way `approve`, `ask`, `deny` question instead of two Nouls
+* [Jev documentation hub](/docs/guides/community/jev) for the [Jev tutorial](/docs/guides/community/jev-tutorial), pricing, and the TypeSafe docs on choosing a threshold
 

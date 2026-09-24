@@ -120,7 +120,7 @@ Use FireConnect to route local coding harnesses through your Foundry deployments
   Configure `--provider azure`, then run `fireconnect opencode`, `fireconnect codex`, `fireconnect cursor`, `fireconnect vscode`, or `fireconnect pi --model FW-GLM-5.2`
 </Card>
 
-FireConnect implements Azure routing for **OpenCode**, **Codex**, **Pi**, **Cursor**, and **VS Code** in v0.9.0+. **Claude Code** and **DeepSeek Harness** do not. Running `fireconnect claude` or `fireconnect deepseek` always wires direct Fireworks, regardless of global `--provider azure`.
+FireConnect implements Azure routing for **OpenCode**, **Codex**, **Pi**, **Cursor**, and **VS Code** in v0.9.0+. Direct routing does not cover **Claude Code** and **DeepSeek Harness**. Running `fireconnect claude` or `fireconnect deepseek` always wires direct Fireworks, regardless of global `--provider azure`. To run Claude Code against Foundry, place an LLM gateway such as Envoy AI Gateway or LiteLLM between Claude Code and Foundry. See [Claude Code through a gateway](/nexus/microsoft-foundry#claude-code-through-a-gateway).
 
 ```bash theme={null}
 export AZURE_API_KEY=<your-azure-api-key>

@@ -1,7 +1,7 @@
 ---
 title: "FireConnect"
-source: https://docs.fireworks.ai/ecosystem/fireconnect/overview
-path: ecosystem/fireconnect/overview
+source: https://docs.fireworks.ai/nexus/fireconnect
+path: nexus/fireconnect
 ---
 
 Point Claude Code, Cursor IDE, Codex, Copilot, and the rest at Fireworks with one FireConnect command
@@ -9,7 +9,7 @@ Point Claude Code, Cursor IDE, Codex, Copilot, and the rest at Fireworks with on
 [FireConnect](https://github.com/fw-ai/fireconnect) is an open-source CLI that connects your existing coding harness to Fireworks. Install it, sign in once, then run one command for each harness you use. You do not need to host another service.
 
 <Tip>
-  Start with [Quick start](#quick-start). Then review the setup details for your app in [Coding Harnesses](/ecosystem/fireconnect/harnesses). To choose a router, see [FireRouter](/ecosystem/firerouter/overview).
+  Start with [Quick start](#quick-start). Then review the setup details for your app in [Coding Harnesses](/nexus/harnesses). To choose a router, see [FireRouter](/nexus/firerouter).
 </Tip>
 
 ## Quick start
@@ -48,7 +48,7 @@ fireconnect claude status
 
 `status` shows the configured model and which Fireworks models appear in the picker.
 
-Replace `claude` with a supported harness name from [Coding Harnesses](/ecosystem/fireconnect/harnesses). `cursor` means **Cursor IDE** only; Cursor CLI is not supported.
+Replace `claude` with a supported harness name from [Coding Harnesses](/nexus/harnesses). `cursor` means **Cursor IDE** only; Cursor CLI is not supported.
 
 <Note>
   **Windows:** run the install command from Git Bash. PowerShell breaks the install script line endings.
@@ -82,7 +82,7 @@ Connecting registers coding-ready Fireworks models, including `auto`. Use `--mod
 fireconnect claude --model glm-latest
 ```
 
-See [FireRouter](/ecosystem/firerouter/overview) for router behavior. See [Coding Harnesses](/ecosystem/fireconnect/harnesses) for app-specific restart rules. See [Harness Compatibility](/nexus/harness-compatibility) for credentials and explicit model changes. See [Open Models](/nexus/open-models) for aliases, fast tiers, and pinned versions.
+See [FireRouter](/nexus/firerouter) for router behavior. See [Coding Harnesses](/nexus/harnesses) for app-specific restart rules. See [Harness Compatibility](/nexus/harness-compatibility) for credentials and explicit model changes. See [Open Models](/nexus/open-models) for aliases, fast tiers, and pinned versions.
 
 ## Upgrade and uninstall
 

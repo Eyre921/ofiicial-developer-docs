@@ -278,6 +278,8 @@ Yes. The current Jev release is tracked under the `~typesafe/jev-latest` alias. 
 * [Jev documentation hub](/docs/guides/community/jev) for concepts, every Jev page on OpenRouter, and links to the TypeSafe docs
 * [Gate Agent Tool Calls with Jev](/docs/cookbook/building-agents/gate-tool-calls-with-jev) to approve, block, or escalate agent tool calls
 * [Cut LLM Cost with a Jev-Verified Cascade](/docs/cookbook/evaluate-and-optimize/jev-verified-cascade) to verify cheap-model answers before escalating
+* [Classify and Tag Text at Scale with Jev](/docs/cookbook/evaluate-and-optimize/jev-classification) to run the Choice and Noul questions from this tutorial over a whole batch and pick thresholds from labeled data
+* [Auto-Approve Coding Agent Permission Prompts with Jev](/docs/cookbook/coding-agents/auto-approve-permission-prompts-with-jev) to put a Noul threshold in front of Claude Code, Codex, Cursor, or OpenCode permission prompts
 * [Jev Lab](https://openrouter.ai/labs/jev) for interactive demos of triage, extraction, and oversight
 * [TypeSafe primitives](https://docs.typesafe.ai/primitives) and [confidence](https://docs.typesafe.ai/confidence) docs for writing better questions and choosing thresholds
 

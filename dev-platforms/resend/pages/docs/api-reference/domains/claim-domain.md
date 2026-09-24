@@ -88,7 +88,9 @@ Claim a domain that is already verified by another team.
   ```
 
   ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
-  Resend.api_key = ENV["RESEND_API_KEY"]
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
 
   params = {
     name: "example.com",
@@ -100,7 +102,7 @@ Claim a domain that is already verified by another team.
   ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
   package main
 
-  import "github.com/resend/resend-go/v3"
+  import "github.com/resend/resend-go/v4"
 
   func main() {
   	client := resend.NewClient("re_xxxxxxxxx")
@@ -128,10 +130,13 @@ Claim a domain that is already verified by another team.
   ```
 
   ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import com.resend.*;
+  import com.resend.Resend;
+  import com.resend.core.exception.ResendException;
+  import com.resend.services.domains.model.ClaimDomainOptions;
+  import com.resend.services.domains.model.DomainClaimResponseSuccess;
 
   public class Main {
-      public static void main(String[] args) {
+      public static void main(String[] args) throws ResendException {
           Resend resend = new Resend("re_xxxxxxxxx");
 
           ClaimDomainOptions params = ClaimDomainOptions

@@ -68,7 +68,7 @@ Add a new API key to authenticate communications with Resend.
   ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
   package main
 
-  import "github.com/resend/resend-go/v3"
+  import "github.com/resend/resend-go/v4"
 
   func main() {
   	client := resend.NewClient("re_xxxxxxxxx")
@@ -96,10 +96,13 @@ Add a new API key to authenticate communications with Resend.
   ```
 
   ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import com.resend.*;
+  import com.resend.Resend;
+  import com.resend.core.exception.ResendException;
+  import com.resend.services.apikeys.model.CreateApiKeyOptions;
+  import com.resend.services.apikeys.model.CreateApiKeyResponse;
 
   public class Main {
-      public static void main(String[] args) {
+      public static void main(String[] args) throws ResendException {
           Resend resend = new Resend("re_xxxxxxxxx");
 
           CreateApiKeyOptions params = CreateApiKeyOptions

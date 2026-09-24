@@ -10,6 +10,10 @@ path: docs/tts-streaming-template-apps
 
 # Template Apps
 
+> **Info**
+>
+> For new English builds, start with the [Flux TTS template apps](/docs/flux-tts/template-apps) on `/v2/speak`. These templates use Aura on `/v1/speak`.
+
 * [Node.js](https://github.com/deepgram-starters/node-live-text-to-speech) — Streaming text-to-speech demo app using Node.js
 * [Bun](https://github.com/deepgram-starters/bun-live-text-to-speech) — Streaming text-to-speech demo app using Bun
 * [Deno](https://github.com/deepgram-starters/deno-live-text-to-speech) — Streaming text-to-speech demo app using Deno

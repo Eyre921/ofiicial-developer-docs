@@ -32,6 +32,7 @@ Review the API reference for the [Realtime Speech to Text API](/docs/api-referen
 | `committed_transcript`                 | Settled transcript for a segment. This is the stable, final text for the segment and will not change | After a commit (either manual or VAD triggered)                                                                                                            |
 | `committed_transcript_with_timestamps` | Committed transcript with word-level timestamps and the detected `language_code`                     | Sent after the committed transcript. Only received when `include_timestamps=true` or `include_language_detection=true` is included in the query parameters |
 | `committed_transcript_entities`        | Entities detected in the committed transcript segment, with character offsets                        | Sent shortly after each committed transcript. Only received when `entity_detection` is included in the query parameters                                    |
+| `edited_transcript`                    | Edited version of the committed transcript segment, alongside the original committed text            | Sent shortly after each committed transcript. Only received when `transcript_edit` is included in the query parameters                                     |
 
 ## Error handling
 

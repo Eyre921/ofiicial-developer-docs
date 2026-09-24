@@ -146,7 +146,7 @@ Update a template.
   import (
   	"context"
 
-  	"github.com/resend/resend-go/v3"
+  	"github.com/resend/resend-go/v4"
   )
 
   func main() {
@@ -184,10 +184,13 @@ Update a template.
   ```
 
   ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import com.resend.*;
+  import com.resend.Resend;
+  import com.resend.core.exception.ResendException;
+  import com.resend.services.templates.model.UpdateTemplateOptions;
+  import com.resend.services.templates.model.UpdateTemplateResponseSuccess;
 
   public class Main {
-      public static void main(String[] args) {
+      public static void main(String[] args) throws ResendException {
           Resend resend = new Resend("re_xxxxxxxxx");
 
           UpdateTemplateOptions params = UpdateTemplateOptions.builder()

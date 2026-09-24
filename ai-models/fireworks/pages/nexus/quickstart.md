@@ -21,7 +21,7 @@ Connect through a coding harness, an API or SDK, or an LLM gateway. Harnesses an
 
     Or use the raw GitHub URL instead: `curl -fsSL https://raw.githubusercontent.com/fw-ai/fireconnect/main/install.sh | bash`.
 
-    Restart Claude Code, then open `/model`. FireConnect automatically adds coding-ready open models and `auto`. Replace `claude` with another harness from [Coding Harnesses](/ecosystem/fireconnect/harnesses).
+    Restart Claude Code, then open `/model`. FireConnect automatically adds coding-ready open models and `auto`. Replace `claude` with another harness from [Coding Harnesses](/nexus/harnesses).
   </Tab>
 
   <Tab title="API or SDK">
@@ -50,7 +50,7 @@ Connect through a coding harness, an API or SDK, or an LLM gateway. Harnesses an
     print(response.output_text)
     ```
 
-    Fireworks also supports Chat Completions and Anthropic Messages. See [APIs and SDKs](/ecosystem/firerouter/apis-and-sdks).
+    Fireworks also supports Chat Completions and Anthropic Messages. See [APIs and SDKs](/nexus/apis-and-sdks).
   </Tab>
 
   <Tab title="LLM gateway">
@@ -84,7 +84,7 @@ Connect through a coding harness, an API or SDK, or an LLM gateway. Harnesses an
       }'
     ```
 
-    Provider names, key configuration, and model catalogs vary by gateway. See [LLM Gateways](/ecosystem/integrations/llm-gateways).
+    Provider names, key configuration, and model catalogs vary by gateway. See [LLM Gateways](/nexus/llm-gateways).
   </Tab>
 </Tabs>
 
@@ -95,7 +95,7 @@ Connect through a coding harness, an API or SDK, or an LLM gateway. Harnesses an
     Use `auto`, follow a model family, choose a fast tier, or pin a version.
   </Card>
 
-  <Card title="FireRouter" icon="shuffle" href="/ecosystem/firerouter/overview">
+  <Card title="FireRouter" icon="shuffle" href="/nexus/firerouter">
     Let one model ID choose a model for each new user turn.
   </Card>
 

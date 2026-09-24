@@ -30,4 +30,4 @@ Here are a few common errors you might see:
   This means a dynamic variable required by the transferred-to agent wasn’t available, causing the
   call to end.
 
-If your call failed and no error message is displayed, please contact support by emailing us at [team@elevenlabs.io](mailto:team@elevenlabs.io).
+If your call failed and no error message is displayed, please contact support by emailing us at [support@elevenlabs.io](mailto:support@elevenlabs.io).

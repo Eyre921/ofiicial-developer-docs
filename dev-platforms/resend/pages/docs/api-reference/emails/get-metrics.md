@@ -121,6 +121,10 @@ All parameters are optional. With none, the response covers the last 7 days
 
 <RequestExample>
   ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
   const { data } = await resend.emails.metrics({
     startDate: '2026-07-01',
     endDate: '2026-07-08',
@@ -131,6 +135,10 @@ All parameters are optional. With none, the response covers the last 7 days
   ```
 
   ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
   params: resend.Emails.MetricsParams = {
     "start_date": "2026-07-01",
     "end_date": "2026-07-08",
@@ -144,6 +152,10 @@ All parameters are optional. With none, the response covers the last 7 days
   ```
 
   ```rb Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
   params = {
     start_date: "2026-07-01",
     end_date: "2026-07-08",
@@ -163,7 +175,7 @@ All parameters are optional. With none, the response covers the last 7 days
   	"context"
   	"fmt"
 
-  	"github.com/resend/resend-go/v3"
+  	"github.com/resend/resend-go/v4"
   )
 
   func main() {
@@ -179,7 +191,7 @@ All parameters are optional. With none, the response covers the last 7 days
       Metrics: []resend.MetricName{
         resend.MetricSent,
         resend.MetricDelivered,
-        resend.MetricOpenRate
+        resend.MetricOpenRate,
       },
       Dimensions: []resend.MetricsDimension{
         resend.MetricsDimensionPeriod,
@@ -218,11 +230,12 @@ All parameters are optional. With none, the response covers the last 7 days
   ```
 
   ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import com.resend.*;
+  import com.resend.Resend;
+  import com.resend.core.exception.ResendException;
   import com.resend.services.emails.model.*;
 
   public class Main {
-      public static void main(String[] args) {
+      public static void main(String[] args) throws ResendException {
           Resend resend = new Resend("re_xxxxxxxxx");
 
           GetEmailsMetricsOptions options = GetEmailsMetricsOptions.builder()

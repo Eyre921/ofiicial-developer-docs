@@ -352,7 +352,7 @@ func main() {
         openrouter.WithSecurity(os.Getenv("OPENROUTER_API_KEY")),
     )
 
-    res, err := s.Scim.ListGroups(ctx, optionalnullable.From(openrouter.Pointer[int64](0)), openrouter.Pointer[int64](50))
+    res, err := s.Scim.ListGroups(ctx, optionalnullable.From(openrouter.Pointer[int64](0)), openrouter.Pointer[int64](50), nil, nil)
     if err != nil {
         log.Fatal(err)
     }
@@ -376,12 +376,14 @@ func main() {
 
 ### Parameters
 
-| Parameter | Type                                                       | Required             | Description                                   | Example |
-| --------- | ---------------------------------------------------------- | -------------------- | --------------------------------------------- | ------- |
-| `ctx`     | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request.           |         |
-| `offset`  | optionalnullable.OptionalNullable\[`int64`]                | :heavy\_minus\_sign: | Number of records to skip for pagination      | 0       |
-| `limit`   | `*int64`                                                   | :heavy\_minus\_sign: | Maximum number of records to return (max 100) | 50      |
-| `opts`    | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.                 |         |
+| Parameter     | Type                                                       | Required             | Description                                                                                                                                                                                                                                   | Example                              |
+| ------------- | ---------------------------------------------------------- | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
+| `ctx`         | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request.                                                                                                                                                                                                           |                                      |
+| `offset`      | optionalnullable.OptionalNullable\[`int64`]                | :heavy\_minus\_sign: | Number of records to skip for pagination                                                                                                                                                                                                      | 0                                    |
+| `limit`       | `*int64`                                                   | :heavy\_minus\_sign: | Maximum number of records to return (max 100)                                                                                                                                                                                                 | 50                                   |
+| `displayName` | `*string`                                                  | :heavy\_minus\_sign: | Exact match filter on display\_name. Omitted or empty returns groups unfiltered by name (subject to offset/limit). When external\_id is also present, both must match.                                                                        | Engineering                          |
+| `externalID`  | `*string`                                                  | :heavy\_minus\_sign: | Exact match filter on external\_id, e.g. the identity provider (such as Entra ID) group object ID. Omitted or empty returns groups unfiltered by external\_id (subject to offset/limit). When display\_name is also present, both must match. | a1b2c3d4-e5f6-7890-abcd-ef1234567890 |
+| `opts`        | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.                                                                                                                                                                                                                 |                                      |
 
 ### Response
 

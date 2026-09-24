@@ -3461,6 +3461,13 @@ components:
         Updates each parameter, if it is supplied. If a particular threshold parameter
         is not supplied, the configuration continues using the currently configured value.
       title: ChannelsListenV2MessagesListenV2ConfigureSuccessThresholds
+    ListenV2ConfigureNumerals:
+      type: boolean
+      default: false
+      description: >-
+        Numerals converts numbers from written format to numerical format. Applies to transcripts Flux STT sends after
+        it processes the update.
+      title: ListenV2ConfigureNumerals
     ListenV2_ListenV2ConfigureSuccess:
       type: object
       properties:
@@ -3486,6 +3493,10 @@ components:
             type: string
           description: |
             The currently active language hints. Only applicable to the flux-general-multi model.
+        numerals:
+          $ref: '#/components/schemas/ListenV2ConfigureNumerals'
+          default: false
+          description: Whether numeral formatting is enabled for transcripts Flux STT sends after it processes the update.
         sequence_id:
           type: integer
           minimum: 0
@@ -3600,13 +3611,6 @@ components:
         Updates each parameter, if it is supplied. If a particular threshold parameter
         is not supplied, the configuration continues using the currently configured value.
       title: ChannelsListenV2MessagesListenV2ConfigureThresholds
-    ListenV2ConfigureNumerals:
-      type: boolean
-      default: false
-      description: >-
-        Numerals converts numbers from written format to numerical format. Applies to turns transcribed after the
-        update.
-      title: ListenV2ConfigureNumerals
     ListenV2_ListenV2Configure:
       type: object
       properties:

@@ -24,7 +24,7 @@ Jev is cheap enough you can run it on every comment: \$0.00057 for the captured 
   * Your existing TypeScript app runs on Node.js or Bun as an ES module, so top-level `await` works.
   * You have `@openrouter/sdk` and `zod` installed, plus `@types/node` or `@types/bun` so `process.env` and `fetch` typecheck.
   * You've configured `OPENROUTER_API_KEY` and `SCRAPECREATORS_API_KEY`. ScrapeCreators accounts start with 100 free credits, so you can sign up at [scrapecreators.com](https://scrapecreators.com).
-  * Keep the [Decisions API reference](/docs/api/api-reference/alphadecisions/submit-a-decisions-request) and the [ScrapeCreators API docs](https://docs.scrapecreators.com) open.
+  * Keep the [Decisions API reference](/docs/api/api-reference/alphadecisions/submit-a-decisions-request) and the [ScrapeCreators API docs](https://docs.scrapecreators.com) open. If this is your first Decisions request, the [Jev tutorial](/docs/guides/community/jev-tutorial) walks through the request shape and how to read the probabilities.
 </Tip>
 
 **Goal:** Define an async `triage` function that takes comments from ScrapeCreators and returns one decision per comment with `action: 'record' | 'review' | 'ignore'`, the reason, and Jev's raw judgment.
@@ -317,8 +317,10 @@ The full list had 5 recorded, 12 in review, and 10 ignored. The review item abov
 
 ## Next steps
 
+* [Classify and Tag Text at Scale with Jev](/docs/cookbook/evaluate-and-optimize/jev-classification) to add multi-label tags, pick each threshold from a labeled sample, and run the batch with backoff inside rate limits.
 * [Gate agent tool calls with Jev](/docs/cookbook/building-agents/gate-tool-calls-with-jev) to apply the same Noul-and-threshold pattern to actions instead of comments.
 * [Cut LLM cost with a Jev-verified cascade](/docs/cookbook/evaluate-and-optimize/jev-verified-cascade) to use Choice confidence to decide when to escalate to a larger model.
 * [TypeSafe SDK guide](/docs/guides/community/typesafe-sdk) to call Jev through the TypeSafe JavaScript or Python SDK instead of `@openrouter/sdk`.
+* [Jev documentation hub](/docs/guides/community/jev) for every Jev page on OpenRouter, pricing, and the TypeSafe docs on writing questions.
 * [Jev Lab](https://openrouter.ai/labs/jev) to try Jev's triage and extraction demos in the browser.
 

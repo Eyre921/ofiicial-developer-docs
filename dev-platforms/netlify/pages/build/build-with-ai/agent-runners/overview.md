@@ -24,6 +24,7 @@ Agent Runners offer agents unique advantages on Netlify's platform with the foll
    - no additional setup or extra accounts needed
    - quick access from your mobile phone
    - staging environments to preview changes
+   - inline Deploy Previews that appear right next to your prompt as you iterate
    - staging environments with and without Git version control
    - rollback capabilities
    - consistent production and staging environments

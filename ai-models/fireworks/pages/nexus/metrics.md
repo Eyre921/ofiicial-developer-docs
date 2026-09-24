@@ -8,12 +8,12 @@ Track estimated Claude Code session cost and model mix locally. Then view Firewo
 
 Track estimated cost and model choices for one Claude Code session, then review Fireworks model usage and cost across your account.
 
-| View                        | Best for                                                                              | Open it                                                      |
-| --------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
-| **Claude Code status line** | Live estimated session cost, model mix, cache share                                   | Connect with `fireconnect claude`                            |
-| **Session meter**           | Requests and estimated cost for one Claude Code session                               | `fireconnect claude usage`                                   |
-| **Usage dashboard**         | Fireworks model usage by model, user, or API key                                      | [Account usage](https://app.fireworks.ai/account/usage)      |
-| **User Limits**             | Current-period spend on supported Fireworks serverless models against each user's cap | [User Limits](https://app.fireworks.ai/settings/user-limits) |
+| View                        | Best for                                                                              | Open it                                                 |
+| --------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| **Claude Code status line** | Live estimated session cost, model mix, cache share                                   | Connect with `fireconnect claude`                       |
+| **Session meter**           | Requests and estimated cost for one Claude Code session                               | `fireconnect claude usage`                              |
+| **Usage dashboard**         | Fireworks model usage by model, user, or API key                                      | [Account usage](https://app.fireworks.ai/account/usage) |
+| **User Limits**             | Current-period spend on supported Fireworks serverless models against each user's cap | [User Limits](/nexus/usage-limits)                      |
 
 ## Track one Claude Code session
 

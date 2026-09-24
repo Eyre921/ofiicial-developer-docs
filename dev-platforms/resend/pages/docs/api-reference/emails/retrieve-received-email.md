@@ -108,10 +108,12 @@ Retrieve a single received email.
   ```
 
   ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
   import (
   	"context"
 
-  	"github.com/resend/resend-go/v3"
+  	"github.com/resend/resend-go/v4"
   )
 
   func main() {
@@ -125,7 +127,7 @@ Retrieve a single received email.
   ```
 
   ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
-  use resend_rs::{Resend, Result};
+  use resend_rs::{types::GetInboundEmailOptions, Resend, Result};
 
   #[tokio::main]
   async fn main() -> Result<()> {
@@ -133,7 +135,10 @@ Retrieve a single received email.
 
     let _email = resend
       .receiving
-      .get("37e4414c-5e25-4dbc-a071-43552a4bd53b")
+      .get(
+        "37e4414c-5e25-4dbc-a071-43552a4bd53b",
+        GetInboundEmailOptions::default(),
+      )
       .await?;
 
     Ok(())
@@ -141,10 +146,12 @@ Retrieve a single received email.
   ```
 
   ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import com.resend.*;
+  import com.resend.Resend;
+  import com.resend.core.exception.ResendException;
+  import com.resend.services.receiving.model.ReceivedEmail;
 
   public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ResendException {
       Resend resend = new Resend("re_xxxxxxxxx");
 
       ReceivedEmail email = resend.receiving().get("37e4414c-5e25-4dbc-a071-43552a4bd53b");

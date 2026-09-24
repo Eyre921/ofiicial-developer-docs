@@ -46,6 +46,8 @@ Keyterm prompting, up to 1000 terms
 
 Entity detection, 65 entity types
 
+Transcript editing with natural-language instructions
+
 Precise word-level timestamps
 
 Speaker diarization, up to 32 speakers
@@ -67,6 +69,8 @@ Low latency (\~150ms†)
 Precise word-level timestamps
 
 Entity detection, 65 entity types
+
+Transcript editing with natural-language instructions
 
 #### [Scribe v2 Medical](/docs/overview/models#scribe-v2-medical)
 
@@ -484,7 +488,7 @@ For example, a 15 minute audio file will be transcribed with a concurrency of 2,
 
 > **Warning**
 >
-> Keyterm prompting and entity detection come at an additional cost. See the [API pricing page](https://elevenlabs.io/pricing?price.section=speech_to_text\&price.sections=speech_to_text,speech_to_text#pricing-table)
+> Keyterm prompting and transcript editing come at an additional cost. See the [API pricing page](https://elevenlabs.io/pricing?price.section=speech_to_text\&price.sections=speech_to_text,speech_to_text#pricing-table)
 > for detailed pricing information.
 
 ### Keyterm prompting
@@ -514,6 +518,17 @@ When `no_verbatim` is enabled, the model removes filler words, false starts and 
 Batch models and Scribe v2 Realtime can detect several categories of entities in the transcript, providing their exact timestamps. This is useful to highlight credit card numbers, names, medical conditions or SSNs.
 
 For a full list of supported entities, see the [entity detection documentation](/docs/eleven-api/guides/how-to/speech-to-text/batch/entity-detection).
+
+### Transcript editing
+
+> **Info**
+>
+> Transcript editing is an experimental feature available with all batch models and Scribe v2
+> Realtime.
+
+Pass a natural-language instruction with the `transcript_edit` parameter and it will be applied to the finished transcript. The edited text is returned in `edited_transcript` alongside the original transcript, so timestamps and speaker labels stay intact. This is useful for normalizing how dates, times or units are written, applying a different style, or rewriting the transcript in a single request.
+
+To learn more, see the [transcript editing documentation](/docs/eleven-api/guides/how-to/speech-to-text/batch/transcript-editing) and the [realtime transcript editing guide](/docs/eleven-api/guides/how-to/speech-to-text/realtime/transcript-editing).
 
 ## Supported languages
 

@@ -275,3 +275,7 @@ model sees it. In this example, it adds a `reviewedAt` timestamp.
 * Changing the threshold or adding new conditions in `onToolCalled` does not
   require changes to the resume flow.
 
+## Next steps
+
+* [Gate Agent Tool Calls with Jev](/docs/cookbook/building-agents/gate-tool-calls-with-jev) replaces the hand-written threshold in `onToolCalled` with a decision model that returns `approve`, `block`, or `review` for each call, so only ambiguous calls reach the pause path built here.
+

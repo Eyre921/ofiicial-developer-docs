@@ -41787,7 +41787,7 @@ The following gateway provider options are available:
 
   The unique identifier for the entity against which quota is tracked. Used for quota management and enforcement purposes.
 
-- **has** _Array&lt;'implicit-caching' | 'reasoning' | 'tool-use' | 'vision'&gt;_
+- **has** _Array&lt;'implicit-caching' | 'reasoning' | 'tool-use' | 'vision' | `quantization:${string}` | `!quantization:${string}`&gt;_
 
   Restricts routing to provider models that have all of the specified capabilities. Applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. If no provider model for the requested model satisfies the capabilities, the request fails. Unsupported values are rejected.
 
@@ -41798,7 +41798,9 @@ The following gateway provider options are available:
   - `'tool-use'` — models that support tool calling.
   - `'vision'` — models that accept image input.
 
-  Example: `has: ['implicit-caching']` will only route to models that support implicit caching. Example: `has: ['vision']` will only route to models that accept image input. Example: `has: ['tool-use']` will only route to models that support tool calling.
+  Weight-format conditions route on the serving provider's recorded weight format: `'quantization:fp8'` requires a provider serving fp8 weights, while `'!quantization:fp8'` excludes fp8 providers. A negated condition also matches providers whose weight format is not recorded, so exclusions remain usable while the catalog is populated.
+
+  Example: `has: ['implicit-caching']` will only route to models that support implicit caching. Example: `has: ['vision']` will only route to models that accept image input. Example: `has: ['tool-use']` will only route to models that support tool calling. Example: `has: ['!quantization:fp8']` will only route to providers that do not serve fp8 weights.
 
 - **providerTimeouts** _object_
 
@@ -41910,7 +41912,7 @@ const { text } = await generateText({
 
 #### Filtering by Model Capability
 
-Set `has` to restrict routing to provider models that have the specified capabilities. This applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. `'implicit-caching'` limits routing to models that perform automatic prompt caching, `'vision'` limits routing to models that accept image input, `'reasoning'` limits routing to models that support reasoning, and `'tool-use'` limits routing to models that support tool calling. If no provider model for the requested model satisfies the capabilities, the request fails.
+Set `has` to restrict routing to provider models that have the specified capabilities. This applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. `'implicit-caching'` limits routing to models that perform automatic prompt caching, `'vision'` limits routing to models that accept image input, `'reasoning'` limits routing to models that support reasoning, and `'tool-use'` limits routing to models that support tool calling. Weight-format conditions (`'quantization:fp8'` to require, `'!quantization:fp8'` to exclude) limit routing by the serving provider's recorded weight format. If no provider model for the requested model satisfies the capabilities, the request fails.
 
 ```ts
 import type { GatewayProviderOptions } from "@ai-sdk/gateway";
@@ -70428,6 +70430,63 @@ This hook is called before the SDK fetches authorization server metadata, so a
 rejected URL is not requested. It is optional and does not change existing OAuth
 flows unless you implement it.
 
+### OAuth Callback Issuer Validation
+
+When completing an OAuth authorization callback, pass the callback's `iss`
+parameter to `auth` as `callbackIssuer`:
+
+```typescript
+import { auth } from '@ai-sdk/mcp';
+
+const callbackUrl = new URL(request.url);
+
+await auth(myOAuthClientProvider, {
+  serverUrl: 'https://mcp.example.com',
+  authorizationCode: callbackUrl.searchParams.get('code')!,
+  callbackState: callbackUrl.searchParams.get('state') ?? undefined,
+  callbackIssuer: callbackUrl.searchParams.get('iss') ?? undefined,
+});
+```
+
+When `iss` is present, it must exactly match the discovered authorization
+server issuer. The authorization code is not exchanged when it does not match.
+
+Dynamic client registration requests include an OAuth `application_type`. The
+client infers `native` for loopback, localhost, and custom-scheme redirects,
+and `web` for remote HTTP(S) redirects. You can override this by setting
+`application_type` in the provider's `clientMetadata`.
+
+### Dynamic Client Credential Recovery
+
+To let the SDK replace invalid credentials created through dynamic client
+registration, implement `isClientInformationDynamicallyRegistered` on the
+OAuth client provider. Return `true` only when the current client information
+came from a dynamic registration response. Persist this provenance alongside
+the credentials when the provider is recreated between requests.
+
+```typescript
+const myOAuthClientProvider = {
+  // ...other OAuthClientProvider methods
+
+  async saveClientInformation(clientInformation) {
+    await saveClientRecord({
+      clientInformation,
+      dynamicallyRegistered: true,
+    });
+  },
+
+  async isClientInformationDynamicallyRegistered() {
+    return (await loadClientRecord())?.dynamicallyRegistered === true;
+  },
+};
+```
+
+When this method is omitted or returns `false`, client information is treated
+as pre-registered and is preserved after `invalid_client` and
+`unauthorized_client` errors. The SDK does not infer provenance from fields such
+as `redirect_uris`, because pre-registered clients can contain the same
+metadata as dynamically registered clients.
+
 ### Retrying Transient Tool Failures
 
 MCP tool calls can fail for transient transport reasons, such as rate limits,
@@ -78443,6 +78502,13 @@ the `approval-responded` state after `addToolApprovalResponse` is called. This
 lets clients render or persist server-computed approval metadata without using
 it to determine whether the tool was approved.
 
+When a tool input schema transforms its input, approval requests also preserve
+the original value as `part.approval.inputSchemaInput`. Keep this field when
+persisting UI messages or model response messages so the SDK can reconstruct
+and verify the approved input before execution. The original value can include
+fields removed by the transform, so approval metadata should not be treated as
+redacted input.
+
 ### Auto-Submit After Approval
 
 <Note>
@@ -82685,7 +82751,7 @@ The following gateway provider options are available:
 
   The unique identifier for the entity against which quota is tracked. Used for quota management and enforcement purposes.
 
-- **has** _Array&lt;'implicit-caching' | 'reasoning' | 'tool-use' | 'vision'&gt;_
+- **has** _Array&lt;'implicit-caching' | 'reasoning' | 'tool-use' | 'vision' | `quantization:${string}` | `!quantization:${string}`&gt;_
 
   Restricts routing to provider models that have all of the specified capabilities. Applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. If no provider model for the requested model satisfies the capabilities, the request fails. Unsupported values are rejected.
 
@@ -82696,7 +82762,9 @@ The following gateway provider options are available:
   - `'tool-use'` — models that support tool calling.
   - `'vision'` — models that accept image input.
 
-  Example: `has: ['implicit-caching']` will only route to models that support implicit caching. Example: `has: ['vision']` will only route to models that accept image input. Example: `has: ['tool-use']` will only route to models that support tool calling.
+  Weight-format conditions route on the serving provider's recorded weight format: `'quantization:fp8'` requires a provider serving fp8 weights, while `'!quantization:fp8'` excludes fp8 providers. A negated condition also matches providers whose weight format is not recorded, so exclusions remain usable while the catalog is populated.
+
+  Example: `has: ['implicit-caching']` will only route to models that support implicit caching. Example: `has: ['vision']` will only route to models that accept image input. Example: `has: ['tool-use']` will only route to models that support tool calling. Example: `has: ['!quantization:fp8']` will only route to providers that do not serve fp8 weights.
 
 - **providerTimeouts** _object_
 
@@ -82834,7 +82902,7 @@ const { text } = await generateText({
 
 #### Filtering by Model Capability
 
-Set `has` to restrict routing to provider models that have the specified capabilities. This applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. `'implicit-caching'` limits routing to models that perform automatic prompt caching, `'vision'` limits routing to models that accept image input, `'reasoning'` limits routing to models that support reasoning, and `'tool-use'` limits routing to models that support tool calling. If no provider model for the requested model satisfies the capabilities, the request fails.
+Set `has` to restrict routing to provider models that have the specified capabilities. This applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. `'implicit-caching'` limits routing to models that perform automatic prompt caching, `'vision'` limits routing to models that accept image input, `'reasoning'` limits routing to models that support reasoning, and `'tool-use'` limits routing to models that support tool calling. Weight-format conditions (`'quantization:fp8'` to require, `'!quantization:fp8'` to exclude) limit routing by the serving provider's recorded weight format. If no provider model for the requested model satisfies the capabilities, the request fails.
 
 ```ts
 import type { GatewayProviderOptions } from "@ai-sdk/gateway";
@@ -84820,55 +84888,104 @@ The following OpenAI-specific metadata may be returned:
 
 #### Changing Reasoning Effort Mid-Conversation
 
-GPT-6 and later models can change reasoning effort between responses without
-changing the request-level `reasoningEffort` setting. The provider sends
-`reasoningEffortUpdate` as an OpenAI `configuration_update` input item before
-the next user message. Keeping the request-level effort unchanged preserves the
-original prompt prefix for prompt caching.
+You can increase reasoning effort for difficult work or reduce it for routine
+follow-ups while preserving the conversation prefix for prompt caching:
 
-```ts highlight="13,32,34"
+- Set the initial effort with request-level `providerOptions.openai.reasoningEffort` and keep that setting
+  unchanged throughout the conversation.
+- For later changes, add a message-level `reasoningEffortUpdate` before the next
+  user message, following
+  [OpenAI's configuration update guidance](https://developers.openai.com/api/docs/guides/reasoning#change-reasoning-mid-conversation).
+
+The new effort applies until another update changes it. When sending conversation
+history in `messages`, include earlier effort updates along with the other messages.
+
+Represent an update as an empty system message with
+`providerOptions.openai.reasoningEffortUpdate`.
+
+Set `allowSystemInMessages: true` to explicitly allow these trusted system messages
+and suppress the warning for system messages in `messages`.
+
+In this example, the conversation starts at low effort and switches to high
+effort for the follow-up. Both requests keep `providerOptions.openai.reasoningEffort: 'low'`.
+
+```ts
 import {
   openai,
-  type OpenAILanguageModelResponsesOptions,
-  type OpenaiResponsesProviderMetadata,
+  type OpenAIResponsesSystemMessageOptions,
 } from '@ai-sdk/openai';
-import { generateText } from 'ai';
+import { generateText, type ModelMessage } from 'ai';
+
+const messages: ModelMessage[] = [
+  { role: 'user', content: 'Draft a migration plan.' },
+];
 
 const first = await generateText({
   model: openai.responses('gpt-6-astra'),
-  prompt: 'Draft a database migration plan.',
-  providerOptions: {
-    openai: {
-      reasoningEffort: 'low',
-    } satisfies OpenAILanguageModelResponsesOptions,
-  },
+  providerOptions: { openai: { reasoningEffort: 'low' } },
+  messages,
 });
 
-const metadata = first.providerMetadata as
-  | OpenaiResponsesProviderMetadata
-  | undefined;
-const previousResponseId = metadata?.openai.responseId;
-
-if (!previousResponseId) {
-  throw new Error('OpenAI did not return a response ID.');
-}
+messages.push(...first.response.messages);
+messages.push(
+  {
+    role: 'system',
+    content: '',
+    providerOptions: {
+      openai: {
+        reasoningEffortUpdate: 'high',
+      } satisfies OpenAIResponsesSystemMessageOptions,
+    },
+  },
+  { role: 'user', content: 'Analyze the failure modes.' },
+);
 
 const second = await generateText({
   model: openai.responses('gpt-6-astra'),
-  prompt: 'Analyze the failure modes and propose rollback steps.',
-  providerOptions: {
-    openai: {
-      previousResponseId,
-      reasoningEffort: 'low',
-      reasoningEffortUpdate: 'high',
-    } satisfies OpenAILanguageModelResponsesOptions,
-  },
+  providerOptions: { openai: { reasoningEffort: 'low' } },
+  allowSystemInMessages: true,
+  messages,
 });
+
+messages.push(...second.response.messages);
 ```
 
-The response metadata continues to report the request-level reasoning effort,
-not the effective effort selected by `reasoningEffortUpdate`. Configuration
-updates are not supported with `reasoningMode: 'pro'` or `truncation: 'auto'`.
+<Note>
+  The OpenAI Responses provider sends each message-level effort update as a
+  `configuration_update` input item.
+</Note>
+
+Message-level updates also work with `streamText` and `previousResponseId`.
+
+##### Restrictions
+
+Effort updates are supported on GPT-6-family models with these settings:
+
+| Setting             | Required value         |
+| ------------------- | ---------------------- |
+| `reasoningMode`     | `'standard'` (default) |
+| `truncation`        | `'disabled'` (default) |
+
+- Each update **must** use exactly `content: ''`.
+- Updates cannot be consecutive, even with the same effort. This also applies
+  across the boundary with history referenced by previousResponseId or
+  conversation.
+
+Requests that violate these restrictions are rejected.
+
+<Note>
+  Effort update messages are sent even if `systemMessageMode` is set to
+  `remove`.
+</Note>
+
+##### Request-Level Update Option
+
+The request-level `providerOptions.openai.reasoningEffortUpdate` option is a
+convenience that prepends a configuration update to the input. When using
+message-level updates, omit this option.
+
+The request-level option continues to warn and omit updates for unsupported
+models or configurations.
 
 #### Reasoning Output
 
@@ -87838,6 +87955,54 @@ The following Azure-specific metadata may be returned:
 <Note>
   The providerMetadata is only returned with the default responses API, and is
   not supported when using 'azure.chat' or 'azure.completion'
+</Note>
+
+#### Changing Reasoning Effort Mid-Conversation
+
+Azure Responses models support message-level reasoning effort updates through
+`providerOptions.azure.reasoningEffortUpdate`. The `openai` namespace is also
+accepted when the message has no `azure` options. Use the
+`OpenAIResponsesSystemMessageOptions` type exported from `@ai-sdk/azure` to
+validate these options:
+
+```ts
+import { azure, type OpenAIResponsesSystemMessageOptions } from '@ai-sdk/azure';
+import { generateText } from 'ai';
+
+const result = await generateText({
+  // Use the name of your GPT-6 deployment.
+  model: azure.responses('gpt-6-astra'),
+  providerOptions: { azure: { reasoningEffort: 'low' } },
+  allowSystemInMessages: true,
+  messages: [
+    {
+      role: 'system',
+      content: '',
+      providerOptions: {
+        azure: {
+          reasoningEffortUpdate: 'high',
+        } satisfies OpenAIResponsesSystemMessageOptions,
+      },
+    },
+    { role: 'user', content: 'Analyze the failure modes of this migration.' },
+  ],
+});
+```
+
+Keep the request-level `providerOptions.azure.reasoningEffort` unchanged throughout the conversation and
+retain earlier effort updates when resending message history. These updates
+also work with `streamText`. See the [OpenAI reasoning effort
+guide](/providers/ai-sdk-providers/openai#changing-reasoning-effort-mid-conversation)
+for continuation and configuration restrictions.
+
+<Note>
+  The SDK infers support for effort updates from the deployment name passed to
+  `azure.responses()`. The name must identify a supported GPT-6-or-later model
+  family, such as `gpt-6-astra`. A custom name such as `production` is not
+  recognized, even when the underlying deployment runs GPT-6. In that case,
+  message-level updates throw, and request-level updates are omitted with a
+  warning. Setting `forceReasoning: true` does not override this capability
+  check.
 </Note>
 
 #### Web Search Tool
@@ -109331,7 +109496,7 @@ export async function POST(req: Request) {
   const { messages }: { messages: UIMessage[] } = await req.json();
 
   const result = streamText({
-    model: 'openai/gpt-4o',
+    model: 'openai/gpt-6-astra',
     messages: await convertToModelMessages(messages),
   });
 
@@ -109367,7 +109532,7 @@ export async function POST(req: Request) {
   const { messages }: { messages: UIMessage[] } = await req.json();
 
   const result = streamText({
-    model: 'openai/gpt-4o',
+    model: 'openai/gpt-6-astra',
     instructions: `You are a helpful assistant. Check your knowledge base before answering any questions.
     Only respond to questions using information from tool calls.
     if no relevant information is found in the tool calls, respond, "Sorry, I don't know."`,
@@ -109413,7 +109578,7 @@ export async function POST(req: Request) {
   const { messages }: { messages: UIMessage[] } = await req.json();
 
   const result = streamText({
-    model: 'openai/gpt-4o',
+    model: 'openai/gpt-6-astra',
     instructions: `You are a helpful assistant. Check your knowledge base before answering any questions.
     Only respond to questions using information from tool calls.
     if no relevant information is found in the tool calls, respond, "Sorry, I don't know."`,
@@ -109546,7 +109711,7 @@ export async function POST(req: Request) {
   const { messages }: { messages: UIMessage[] } = await req.json();
 
   const result = streamText({
-    model: 'openai/gpt-4o',
+    model: 'openai/gpt-6-astra',
     instructions: `You are a helpful assistant. Check your knowledge base before answering any questions.
     Only respond to questions using information from tool calls.
     if no relevant information is found in the tool calls, respond, "Sorry, I don't know."`,
@@ -109661,7 +109826,7 @@ export async function POST(req: Request) {
   const { messages }: { messages: UIMessage[] } = await req.json();
 
   const result = streamText({
-    model: 'openai/gpt-4o',
+    model: 'openai/gpt-6-astra',
     messages: await convertToModelMessages(messages),
     stopWhen: isStepCount(5),
     instructions: `You are a helpful assistant. Check your knowledge base before answering any questions.
@@ -109728,7 +109893,7 @@ Multi-modal refers to the ability of the agent to understand and generate respon
   [providers documentation](/providers/ai-sdk-providers).
 </Note>
 
-We'll build this agent using OpenAI's GPT-4o, but the same code works seamlessly with other providers - you can switch between them by changing just one line of code.
+We'll build this agent using OpenAI's GPT-6 Astra, but the same code works seamlessly with other providers - you can switch between them by changing just one line of code.
 
 ## Prerequisites
 
@@ -109819,7 +109984,7 @@ export async function POST(req: Request) {
   const { messages }: { messages: UIMessage[] } = await req.json();
 
   const result = streamText({
-    model: 'openai/gpt-4o',
+    model: 'openai/gpt-6-astra',
     messages: await convertToModelMessages(messages),
   });
 
@@ -110068,13 +110233,13 @@ With the AI SDK's unified provider interface you can easily switch to other prov
 ```tsx filename="app/api/chat/route.ts"
 // Using Anthropic
 const result = streamText({
-  model: 'anthropic/claude-sonnet-4-20250514',
+  model: 'anthropic/claude-sonnet-5',
   messages: await convertToModelMessages(messages),
 });
 
 // Using Google
 const result = streamText({
-  model: 'google/gemini-2.5-flash',
+  model: 'google/gemini-3.8-flash',
   messages: await convertToModelMessages(messages),
 });
 ```
@@ -110771,7 +110936,7 @@ As a reminder, this application will have three main features:
 2. Create a chart from the query results
 3. Explain SQL queries in plain English
 
-For each of these features, you'll use the AI SDK via [ Server Actions ](https://react.dev/reference/rsc/server-actions) to interact with OpenAI's GPT-4o and GPT-4o-mini models. Server Actions are a powerful React Server Component feature that allows you to call server-side functions directly from your frontend code.
+For each of these features, you'll use the AI SDK via [ Server Actions ](https://react.dev/reference/rsc/server-actions) to interact with OpenAI's GPT-6 Astra and GPT-6 Luna models. Server Actions are a powerful React Server Component feature that allows you to call server-side functions directly from your frontend code.
 
 Let's start with generating a SQL query from natural language.
 
@@ -110870,7 +111035,7 @@ export const generateQuery = async (input: string) => {
   'use server';
   try {
     const result = await generateText({
-      model: 'openai/gpt-4o',
+      model: 'openai/gpt-6-astra',
       instructions: `You are a SQL (postgres) ...`, // SYSTEM PROMPT AS ABOVE - OMITTED FOR BREVITY
       prompt: `Generate the query necessary to retrieve the data the user wants: ${input}`,
       output: Output.object({
@@ -110987,7 +111152,7 @@ export const explainQuery = async (input: string, sqlQuery: string) => {
   'use server';
   try {
     const result = await generateText({
-      model: 'openai/gpt-4o',
+      model: 'openai/gpt-6-astra',
       instructions: `You are a SQL (postgres) expert. ...`, // SYSTEM PROMPT AS ABOVE - OMITTED FOR BREVITY
       prompt: `Explain the SQL query you generated to retrieve the data the user wanted. Assume the user is not an expert in SQL. Break down the query into steps. Be concise.
 
@@ -111034,7 +111199,7 @@ export const explainQuery = async (input: string, sqlQuery: string) => {
   'use server';
   try {
     const result = await generateText({
-      model: 'openai/gpt-4o',
+      model: 'openai/gpt-6-astra',
       instructions: `You are a SQL (postgres) expert. ...`, // SYSTEM PROMPT AS ABOVE - OMITTED FOR BREVITY
       prompt: `Explain the SQL query you generated to retrieve the data the user wanted. Assume the user is not an expert in SQL. Break down the query into steps. Be concise.
 
@@ -111187,7 +111352,7 @@ export const generateChartConfig = async (
 
   try {
     const { output: config } = await generateText({
-      model: 'openai/gpt-4o',
+      model: 'openai/gpt-6-astra',
       instructions: 'You are a data visualization expert.',
       prompt: `Given the following data from a SQL query result, generate the chart config that best visualises the data and answers the users query.
       For multiple groups use multi-lines.
@@ -112654,7 +112819,7 @@ import { google } from '@ai-sdk/google';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: google('gemini-3-pro-preview'),
+  model: google('gemini-3.1-pro-preview'),
   prompt: 'Explain the concept of the Hilbert space.',
 });
 console.log(text);
@@ -112669,7 +112834,7 @@ import { google, GoogleLanguageModelOptions } from '@ai-sdk/google';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: google('gemini-3-pro-preview'),
+  model: google('gemini-3.1-pro-preview'),
   prompt: 'What is the sum of the first 10 prime numbers?',
   providerOptions: {
     google: {
@@ -112699,7 +112864,7 @@ import { generateText, tool, isStepCount } from 'ai';
 import { google } from '@ai-sdk/google';
 
 const result = await generateText({
-  model: google('gemini-3-pro-preview'),
+  model: google('gemini-3.1-pro-preview'),
   prompt: 'What is the weather in San Francisco?',
   tools: {
     weather: tool({
@@ -112731,7 +112896,7 @@ import { GoogleProviderMetadata } from '@ai-sdk/google';
 import { generateText } from 'ai';
 
 const { text, sources, providerMetadata } = await generateText({
-  model: google('gemini-3-pro-preview'),
+  model: google('gemini-3.1-pro-preview'),
   tools: {
     google_search: google.tools.googleSearch({}),
   },
@@ -112779,7 +112944,7 @@ export async function POST(req: Request) {
   const { messages }: { messages: UIMessage[] } = await req.json();
 
   const result = streamText({
-    model: google('gemini-3-pro-preview'),
+    model: google('gemini-3.1-pro-preview'),
     messages: await convertToModelMessages(messages),
   });
 
@@ -113101,14 +113266,14 @@ The AI SDK is the TypeScript toolkit designed to help developers build AI-powere
 
 The AI SDK abstracts away the differences between model providers, eliminates boilerplate code for building chatbots, and allows you to go beyond text output to generate rich, interactive components.
 
-At the center of the AI SDK is [AI SDK Core](/docs/ai-sdk-core/overview), which provides a unified API to call any LLM. The code snippet below is all you need to call GPT-4o with the new Responses API using the AI SDK:
+At the center of the AI SDK is [AI SDK Core](/docs/ai-sdk-core/overview), which provides a unified API to call any LLM. The code snippet below is all you need to call GPT-6 Astra with the new Responses API using the AI SDK:
 
 ```ts
 import { generateText } from 'ai';
 import { openai } from '@ai-sdk/openai';
 
 const { text } = await generateText({
-  model: openai.responses('gpt-4o'),
+  model: openai.responses('gpt-6-astra'),
   prompt: 'Explain the concept of quantum entanglement.',
 });
 ```
@@ -113123,7 +113288,7 @@ import { openai } from '@ai-sdk/openai';
 import { z } from 'zod';
 
 const { output } = await generateText({
-  model: openai.responses('gpt-4o'),
+  model: openai.responses('gpt-6-astra'),
   output: Output.object({
     schema: z.object({
       recipe: z.object({
@@ -113151,7 +113316,7 @@ import { openai } from '@ai-sdk/openai';
 import { z } from 'zod';
 
 const { text } = await generateText({
-  model: openai.responses('gpt-4o'),
+  model: openai.responses('gpt-6-astra'),
   prompt: 'What is the weather like today in San Francisco?',
   tools: {
     getWeather: tool({
@@ -113180,7 +113345,7 @@ import { openai } from '@ai-sdk/openai';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: openai.responses('gpt-4o-mini'),
+  model: openai.responses('gpt-6-luna'),
   prompt: 'What happened in San Francisco last week?',
   tools: {
     web_search_preview: openai.tools.webSearchPreview(),
@@ -113197,7 +113362,7 @@ The `webSearch` tool also allows you to specify query-specific metadata that can
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: openai.responses('gpt-4o-mini'),
+  model: openai.responses('gpt-6-luna'),
   prompt: 'What happened in San Francisco last week?',
   tools: {
     web_search_preview: openai.tools.webSearchPreview({
@@ -113224,7 +113389,7 @@ import { openai } from '@ai-sdk/openai';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: openai.responses('gpt-5-mini'),
+  model: openai.responses('gpt-6-luna'),
   prompt: 'Search the web for the latest NYC mayoral election results',
   tools: {
     mcp: openai.tools.mcp({
@@ -113253,12 +113418,12 @@ import { openai } from '@ai-sdk/openai';
 import { generateText } from 'ai';
 
 const result1 = await generateText({
-  model: openai.responses('gpt-4o-mini'),
+  model: openai.responses('gpt-6-luna'),
   prompt: 'Invent a new holiday and describe its traditions.',
 });
 
 const result2 = await generateText({
-  model: openai.responses('gpt-4o-mini'),
+  model: openai.responses('gpt-6-luna'),
   prompt: 'Summarize in 2 sentences',
   providerOptions: {
     openai: {
@@ -113279,7 +113444,7 @@ import { openai } from '@ai-sdk/openai';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: openai.responses('gpt-4o-mini'),
+  model: openai.responses('gpt-6-luna'),
   prompt: 'Summarize in 2 sentences',
   providerOptions: {
     openai: {
@@ -113298,15 +113463,15 @@ Migrating from the OpenAI Completions API (via the AI SDK) to the new Responses 
 import { generateText } from 'ai';
 import { openai } from '@ai-sdk/openai';
 
-// Completions API
+// Chat Completions API
 const { text } = await generateText({
-  model: openai('gpt-4o'),
+  model: openai.chat('gpt-6-astra'),
   prompt: 'Explain the concept of quantum entanglement.',
 });
 
 // Responses API
 const { text } = await generateText({
-  model: openai.responses('gpt-4o'),
+  model: openai.responses('gpt-6-astra'),
   prompt: 'Explain the concept of quantum entanglement.',
 });
 ```
@@ -113317,9 +113482,9 @@ When using the Responses API, provider specific options that were previously spe
 import { generateText } from 'ai';
 import { openai } from '@ai-sdk/openai';
 
-// Completions API
+// Chat Completions API
 const { text } = await generateText({
-  model: openai('gpt-4o'),
+  model: openai.chat('gpt-6-astra'),
   prompt: 'Explain the concept of quantum entanglement.',
   providerOptions: {
     openai: {
@@ -113330,7 +113495,7 @@ const { text } = await generateText({
 
 // Responses API
 const { text } = await generateText({
-  model: openai.responses('gpt-4o'),
+  model: openai.responses('gpt-6-astra'),
   prompt: 'Explain the concept of quantum entanglement.',
   providerOptions: {
     openai: {
@@ -113351,17 +113516,17 @@ Ready to get started? Here's how you can dive in:
 
 ---
 title: Google Gemini Image Generation
-description: Generate and edit images with Google Gemini 2.5 Flash Image using the AI SDK.
+description: Generate and edit images with Google Gemini 3.1 Flash Image using the AI SDK.
 tags: ['image-generation', 'google', 'gemini']
 ---
 
-# Generate and Edit Images with Google Gemini 2.5 Flash
+# Generate and Edit Images with Google Gemini 3.1 Flash
 
-This guide will show you how to generate and edit images with the AI SDK and Google's latest multimodal language model Gemini 2.5 Flash Image.
+This guide will show you how to generate and edit images with the AI SDK and Google's Gemini 3.1 Flash Image model.
 
 ## Generating Images
 
-As Gemini 2.5 Flash Image is a language model with multimodal capabilities, you can use the `generateText` or `streamText` functions (not `generateImage`) to create images. The model determines which modality to respond in based on your prompt and configuration. Here's how to create your first image:
+As Gemini 3.1 Flash Image is a language model with multimodal capabilities, you can use the `generateText` or `streamText` functions to create multimodal responses that include images. The model determines which modality to respond in based on your prompt and configuration. Here's how to create your first image:
 
 ```ts
 import { generateText } from 'ai';
@@ -113370,7 +113535,7 @@ import 'dotenv/config';
 
 async function generateImage() {
   const result = await generateText({
-    model: 'google/gemini-2.5-flash-image',
+    model: 'google/gemini-3.1-flash-image-preview',
     prompt:
       'Create a picture of a nano banana dish in a fancy restaurant with a Gemini theme',
   });
@@ -113400,7 +113565,7 @@ Here are some key points to remember:
 
 ## Editing Images
 
-Gemini 2.5 Flash Image excels at editing existing images with natural language instructions. You can add elements, modify styles, or transform images while maintaining their core characteristics:
+Gemini 3.1 Flash Image excels at editing existing images with natural language instructions. You can add elements, modify styles, or transform images while maintaining their core characteristics:
 
 ```ts
 import { generateText } from 'ai';
@@ -113409,7 +113574,7 @@ import 'dotenv/config';
 
 async function editImage() {
   const editResult = await generateText({
-    model: 'google/gemini-2.5-flash-image',
+    model: 'google/gemini-3.1-flash-image-preview',
     prompt: [
       {
         role: 'user',
@@ -113451,7 +113616,7 @@ editImage().catch(console.error);
 
 ## What's Next?
 
-You've learned how to generate new images from text prompts and edit existing images using natural language instructions with Google's Gemini 2.5 Flash Image model.
+You've learned how to generate new images from text prompts and edit existing images using natural language instructions with Google's Gemini 3.1 Flash Image model.
 
 For more advanced techniques, integration patterns, and practical examples, check out our [Cookbook](/cookbook) where you'll find comprehensive guides for building sophisticated AI-powered applications.
 
@@ -114015,7 +114180,7 @@ import { generateText } from 'ai';
 import { openai } from '@ai-sdk/openai';
 
 const { text } = await generateText({
-  model: openai('gpt-4.1'),
+  model: openai('gpt-6-astra'),
   prompt: 'What is love?',
 });
 ```
@@ -114035,9 +114200,9 @@ const { text } = await generateText({
 Thanks to the unified API, the core structure of the code remains the same. The main differences are:
 
 1. Creating a DeepInfra client
-2. Changing the model name from `openai("gpt-4.1")` to `deepinfra("meta-llama/Meta-Llama-3.1-70B-Instruct")`.
+2. Changing the model name from `openai("gpt-6-astra")` to `deepinfra("meta-llama/Meta-Llama-3.1-70B-Instruct")`.
 
-With just these few changes, you've migrated from using OpenAI's GPT-4-Turbo to Meta's Llama 3.1 hosted on DeepInfra. The `generateText` function and its usage remain identical, showcasing the power of the AI SDK's unified API.
+With just these few changes, you've migrated from using OpenAI's GPT-6 Astra to Meta's Llama 3.1 hosted on DeepInfra. The `generateText` function and its usage remain identical, showcasing the power of the AI SDK's unified API.
 
 This feature allows you to easily experiment with different models, compare their performance, and choose the best one for your specific use case without having to rewrite large portions of your codebase.
 
@@ -114091,9 +114256,14 @@ With the [release of OpenAI's GPT-5 model](https://openai.com/index/introducing-
 
 The [AI SDK](/) is a powerful TypeScript toolkit for building AI applications with large language models (LLMs) like OpenAI GPT-5 alongside popular frameworks like React, Next.js, Vue, Svelte, Node.js, and more.
 
+<Note>
+  This guide covers GPT-5-specific behavior. For current models and examples,
+  see the [OpenAI provider documentation](/providers/ai-sdk-providers/openai).
+</Note>
+
 ## OpenAI GPT-5
 
-OpenAI's GPT-5 represents their latest advancement in language models, offering powerful new features including verbosity control for tailored response lengths, integrated web search capabilities, reasoning summaries for transparency, and native support for text, images, audio, and PDFs. The model is available in three variants: `gpt-5`, `gpt-5-mini` for faster, more cost-effective processing, and `gpt-5-nano` for ultra-efficient operations.
+OpenAI's GPT-5 introduced powerful new features including verbosity control for tailored response lengths, integrated web search capabilities, reasoning summaries for transparency, and native support for text, images, audio, and PDFs. The model is available in three variants: `gpt-5`, `gpt-5-mini` for faster, more cost-effective processing, and `gpt-5-nano` for ultra-efficient operations.
 
 ### Prompt Engineering for GPT-5
 
@@ -114424,6 +114594,12 @@ tags: ['getting-started', 'reasoning']
 
 # Get started with OpenAI o1
 
+<Note>
+  This guide covers the o1 model family and keeps its model IDs intentionally.
+  For current models, see the [OpenAI provider
+  documentation](/providers/ai-sdk-providers/openai).
+</Note>
+
 With the [release of OpenAI's o1 series models](https://openai.com/index/learning-to-reason-with-llms/), there has never been a better time to start building AI applications, particularly those that require complex reasoning capabilities.
 
 The [AI SDK](/) is a powerful TypeScript toolkit for building AI applications with large language models (LLMs) like OpenAI o1 alongside popular frameworks like React, Next.js, Vue, Svelte, Node.js, and more.
@@ -114670,6 +114846,12 @@ tags: ['getting-started', 'reasoning']
 ---
 
 # Get started with OpenAI o3-mini
+
+<Note>
+  This guide covers o3-mini and keeps its model ID intentionally. For current
+  models, see the [OpenAI provider
+  documentation](/providers/ai-sdk-providers/openai).
+</Note>
 
 With the [release of OpenAI's o3-mini model](https://openai.com/index/openai-o3-mini/), there has never been a better time to start building AI applications, particularly those that require complex STEM reasoning capabilities.
 
@@ -115512,7 +115694,7 @@ import { createServer } from 'http';
 
 createServer(async (req, res) => {
   const result = streamText({
-    model: 'openai/gpt-4o',
+    model: 'openai/gpt-6-astra',
     prompt: 'Invent a new holiday and describe its traditions.',
   });
 
@@ -115552,7 +115734,7 @@ createServer(async (req, res) => {
           });
 
           const result = streamText({
-            model: 'openai/gpt-4o',
+            model: 'openai/gpt-6-astra',
             prompt: 'Invent a new holiday and describe its traditions.',
           });
 
@@ -115588,7 +115770,7 @@ import { createServer } from 'http';
 
 createServer(async (req, res) => {
   const result = streamText({
-    model: 'openai/gpt-4o',
+    model: 'openai/gpt-6-astra',
     prompt: 'Invent a new holiday and describe its traditions.',
   });
 
@@ -115644,7 +115826,7 @@ const app = express();
 
 app.post('/', async (req: Request, res: Response) => {
   const result = streamText({
-    model: 'openai/gpt-4o',
+    model: 'openai/gpt-6-astra',
     prompt: 'Invent a new holiday and describe its traditions.',
   });
 
@@ -115689,7 +115871,7 @@ app.post('/custom-data-parts', async (req: Request, res: Response) => {
         });
 
         const result = streamText({
-          model: 'openai/gpt-4o',
+          model: 'openai/gpt-6-astra',
           prompt: 'Invent a new holiday and describe its traditions.',
         });
 
@@ -115718,7 +115900,7 @@ const app = express();
 
 app.post('/', async (req: Request, res: Response) => {
   const result = streamText({
-    model: 'openai/gpt-4o',
+    model: 'openai/gpt-6-astra',
     prompt: 'Invent a new holiday and describe its traditions.',
   });
 
@@ -115779,7 +115961,7 @@ const app = new Hono();
 
 app.post('/', async c => {
   const result = streamText({
-    model: 'openai/gpt-4o',
+    model: 'openai/gpt-6-astra',
     prompt: 'Invent a new holiday and describe its traditions.',
   });
   return createUIMessageStreamResponse({
@@ -115803,7 +115985,7 @@ const app = new Hono();
 
 app.post('/text', async c => {
   const result = streamText({
-    model: 'openai/gpt-4o',
+    model: 'openai/gpt-6-astra',
     prompt: 'Write a short poem about coding.',
   });
   return createTextStreamResponse({
@@ -115844,7 +116026,7 @@ app.post('/stream-data', async c => {
       });
 
       const result = streamText({
-        model: 'openai/gpt-4o',
+        model: 'openai/gpt-6-astra',
         prompt: 'Invent a new holiday and describe its traditions.',
       });
 
@@ -115908,7 +116090,7 @@ const fastify = Fastify({ logger: true });
 
 fastify.post('/', async function (request, reply) {
   const result = streamText({
-    model: 'openai/gpt-4o',
+    model: 'openai/gpt-6-astra',
     prompt: 'Invent a new holiday and describe its traditions.',
   });
 
@@ -115944,7 +116126,7 @@ fastify.post('/stream-data', async function (request, reply) {
       });
 
       const result = streamText({
-        model: 'openai/gpt-4o',
+        model: 'openai/gpt-6-astra',
         prompt: 'Invent a new holiday and describe its traditions.',
       });
 
@@ -115979,7 +116161,7 @@ const fastify = Fastify({ logger: true });
 
 fastify.post('/', async function (request, reply) {
   const result = streamText({
-    model: 'openai/gpt-4o',
+    model: 'openai/gpt-6-astra',
     prompt: 'Invent a new holiday and describe its traditions.',
   });
 
@@ -116029,7 +116211,7 @@ export class AppController {
   @Post('/')
   async root(@Res() res: Response) {
     const result = streamText({
-      model: 'openai/gpt-4o',
+      model: 'openai/gpt-6-astra',
       prompt: 'Invent a new holiday and describe its traditions.',
     });
 
@@ -116072,7 +116254,7 @@ export class AppController {
         });
 
         const result = streamText({
-          model: 'openai/gpt-4o',
+          model: 'openai/gpt-6-astra',
           prompt: 'Invent a new holiday and describe its traditions.',
         });
         writer.merge(
@@ -116107,7 +116289,7 @@ export class AppController {
   @Post()
   async example(@Res() res: Response) {
     const result = streamText({
-      model: 'openai/gpt-4o',
+      model: 'openai/gpt-6-astra',
       prompt: 'Invent a new holiday and describe its traditions.',
     });
 
@@ -117064,8 +117246,8 @@ async function handleCustomerQuery(query: string) {
   const { text: response } = await generateText({
     model:
       classification.complexity === 'simple'
-        ? 'openai/gpt-4o-mini'
-        : 'openai/o4-mini',
+        ? 'openai/gpt-6-luna'
+        : 'openai/gpt-6-astra',
     instructions: {
       general:
         'You are an expert customer service agent handling general inquiries.',
@@ -117483,7 +117665,7 @@ import { ToolLoopAgent } from 'ai';
 __PROVIDER_IMPORT__;
 
 const agent = new ToolLoopAgent({
-  model: 'openai/gpt-4o-mini', // Default model
+  model: 'openai/gpt-6-luna', // Default model
   tools: {
     // your tools
   },
@@ -117927,7 +118109,9 @@ const agent = new ToolLoopAgent({
   prepareCall: ({ options, ...settings }) => ({
     ...settings,
     model:
-      options.complexity === 'simple' ? 'openai/gpt-4o-mini' : 'openai/o1-mini',
+      options.complexity === 'simple'
+        ? 'openai/gpt-6-luna'
+        : 'openai/gpt-6-astra',
   }),
 });
 
@@ -117998,7 +118182,7 @@ import { ToolLoopAgent } from 'ai';
 import { z } from 'zod';
 
 const agent = new ToolLoopAgent({
-  model: 'openai/o3',
+  model: 'openai/gpt-6-astra',
   callOptionsSchema: z.object({
     taskDifficulty: z.enum(['low', 'medium', 'high']),
   }),
@@ -118256,7 +118440,7 @@ const mem0 = createMem0({
 });
 
 const agent = new ToolLoopAgent({
-  model: mem0('gpt-4.1', { user_id: 'user-123' }),
+  model: mem0('gpt-6-astra', { user_id: 'user-123' }),
 });
 
 const { text } = await agent.generate({
@@ -118367,7 +118551,7 @@ const mongodbMemory = createMongoDBMemory({
 
 // Scope to a user and session per request
 const agent = new ToolLoopAgent({
-  model: openai('gpt-4.1'),
+  model: openai('gpt-6-astra'),
   tools: mongodbMemory({ userId: 'alice', sessionId: 'sess-001' }),
   stopWhen: isLoopFinished(),
 });
@@ -118478,7 +118662,7 @@ const toolApproval = opaPolicy({
 
 // 3. Pass it to generateText (or streamText / ToolLoopAgent). Everything else is normal.
 const result = await generateText({
-  model: anthropic('claude-sonnet-4-5'),
+  model: anthropic('claude-sonnet-5'),
   tools: { git, bash, queryLogs },
   toolApproval,
   prompt: 'find the failing test and push the fix',
@@ -118689,7 +118873,7 @@ import { wasmPolicyClient, opaCapabilityMiddleware } from '@ai-sdk/policy-opa';
 const client = await wasmPolicyClient({ wasm });
 
 const wrappedModel = wrapLanguageModel({
-  model: anthropic('claude-sonnet-4-5'),
+  model: anthropic('claude-sonnet-5'),
   middleware: opaCapabilityMiddleware({ client, path: 'agent/tools/allowed' }),
 });
 ```
@@ -119449,6 +119633,22 @@ When a manual approval status includes a reason, it is available as
 `part.approval.requestReason`. A reason supplied with
 `addToolApprovalResponse` is stored separately as `part.approval.reason`.
 
+### Schema transforms and persisted approvals
+
+Approval requests preserve the original schema input in `inputSchemaInput` when
+it differs from the input presented for approval. Keep this field when persisting
+`responseMessages` or UI messages; the UI message conversion functions preserve it
+automatically.
+
+On continuation, the SDK reconstructs the transformed input and checks that it
+matches the approved input. It never replaces the approved input with a different
+value. Older or projected histories that omit the original input are rejected as
+invalid tool input if revalidation fails or would change the approved value.
+
+The original input is included in persisted messages and UI approval streams,
+including fields removed by schema transforms. A transform that removes a field
+does not redact it from approval metadata.
+
 ## Security Considerations
 
 ### Trust model
@@ -119567,7 +119767,7 @@ import { tool } from 'ai';
 import { z } from 'zod';
 
 const agent = new WorkflowAgent({
-  model: 'anthropic/claude-sonnet-4-6',
+  model: 'anthropic/claude-sonnet-5',
   instructions: 'You are a helpful assistant.',
   tools: {
     weather: tool({
@@ -119590,11 +119790,11 @@ The `model` parameter accepts two forms:
 
 ```ts
 // String — AI Gateway model ID
-new WorkflowAgent({ model: 'anthropic/claude-sonnet-4-6' });
+new WorkflowAgent({ model: 'anthropic/claude-sonnet-5' });
 
 // Provider instance
 import { openai } from '@ai-sdk/openai';
-new WorkflowAgent({ model: openai('gpt-4o') });
+new WorkflowAgent({ model: openai('gpt-6-astra') });
 ```
 
 ## Using the Agent in a Workflow
@@ -119619,7 +119819,7 @@ export async function chat(messages: UIMessage[]) {
   const modelMessages = await convertToModelMessages(messages);
 
   const agent = new WorkflowAgent({
-    model: 'anthropic/claude-sonnet-4-6',
+    model: 'anthropic/claude-sonnet-5',
     instructions: 'You are a flight booking assistant.',
     tools: {
       searchFlights: tool({
@@ -119844,7 +120044,7 @@ the writable stream. The workflow suspends until the user approves or denies:
 
 ```ts
 const agent = new WorkflowAgent({
-  model: 'anthropic/claude-sonnet-4-6',
+  model: 'anthropic/claude-sonnet-5',
   tools: {
     bookFlight: tool({
       description: 'Book a flight',
@@ -119878,7 +120078,7 @@ workflow. For tools that perform sensitive operations, configure
 
 ```ts highlight="4"
 const agent = new WorkflowAgent({
-  model: 'anthropic/claude-sonnet-4-6',
+  model: 'anthropic/claude-sonnet-5',
   experimental_toolApprovalSecret: {
     environmentVariable: 'TOOL_APPROVAL_SECRET',
   },
@@ -120042,7 +120242,7 @@ current step:
 
 ```ts
 const agent = new WorkflowAgent({
-  model: 'anthropic/claude-sonnet-4-6',
+  model: 'anthropic/claude-sonnet-5',
   tools: {
     shell: tool({
       description: 'Run a shell command in the sandbox.',
@@ -120077,7 +120277,7 @@ Called once before the agent loop starts. Use it to transform model, instruction
 
 ```ts
 const agent = new WorkflowAgent({
-  model: 'anthropic/claude-sonnet-4-6',
+  model: 'anthropic/claude-sonnet-5',
   prepareCall: async ({ model, tools, messages }) => {
     return {
       instructions: `Current time: ${new Date().toISOString()}`,
@@ -120113,7 +120313,7 @@ Agents provide lifecycle callbacks for logging, observability, and custom teleme
 
 ```ts
 const agent = new WorkflowAgent({
-  model: 'anthropic/claude-sonnet-4-6',
+  model: 'anthropic/claude-sonnet-5',
 
   onStart({ messages }) {
     console.log(`Agent started with ${messages.length} messages`);
@@ -120198,7 +120398,7 @@ export type MyAgentUIMessage = InferWorkflowAgentUIMessage<typeof myAgent>;
 
 - const agent = new DurableAgent({
 + const agent = new WorkflowAgent({
-    model: 'anthropic/claude-sonnet-4-6',
+    model: 'anthropic/claude-sonnet-5',
     instructions: 'You are a helpful assistant.',
     tools: { /* ... */ },
   });
@@ -120311,7 +120511,7 @@ For persistence, store `UIMessage[]` as your source of truth and call [`convertT
 
 ```diff
   const agent = new WorkflowAgent({
-    model: 'anthropic/claude-sonnet-4-6',
+    model: 'anthropic/claude-sonnet-5',
     tools: { weather: weatherTool },
 -   experimental_context: { tenantId: 'tenant_123', apiKey: 'sk-...' },
 +   runtimeContext: { tenantId: 'tenant_123' },
@@ -120362,7 +120562,7 @@ import { ToolLoopAgent, tool } from 'ai';
 import { z } from 'zod';
 
 const agent = new ToolLoopAgent({
-  model: openai('gpt-5'),
+  model: openai('gpt-6-astra'),
   instructions:
     'You are a helpful terminal assistant. Answer in markdown and use tools when they help.',
   tools: {
@@ -120472,7 +120672,7 @@ tool call before the agent continues.
 
 ```ts
 const agent = new ToolLoopAgent({
-  model: openai('gpt-5'),
+  model: openai('gpt-6-astra'),
   tools: { weather },
   toolApproval: {
     weather: ({ location }) =>
@@ -121338,7 +121538,7 @@ When you use `generateText`, you can access the sources using the `sources` prop
 
 ```ts
 const result = await generateText({
-  model: 'google/gemini-2.5-flash',
+  model: 'google/gemini-3.8-flash',
   tools: {
     google_search: google.tools.googleSearch({}),
   },
@@ -121360,7 +121560,7 @@ When you use `streamText`, you can access the sources using the `stream` propert
 
 ```tsx
 const result = streamText({
-  model: 'google/gemini-2.5-flash',
+  model: 'google/gemini-3.8-flash',
   tools: {
     google_search: google.tools.googleSearch({}),
   },
@@ -124245,7 +124445,7 @@ export async function POST(req: Request) {
     const tools = client.toolsFromDefinitions(modelVisible);
 
     const result = streamText({
-      model: openai('gpt-4o-mini'),
+      model: openai('gpt-6-luna'),
       tools,
       messages: await convertToModelMessages(messages),
       onEnd: async () => {
@@ -125080,7 +125280,7 @@ When you create prompts that include tools, getting good results can be tricky a
 
 Here are a few tips to help you get the best results:
 
-1. Use a model that is strong at tool calling, such as `gpt-5` or `gpt-4.1`. Weaker models will often struggle to call tools effectively and flawlessly.
+1. Use a model that is strong at tool calling, such as `gpt-6-astra` or `claude-sonnet-5`. Weaker models will often struggle to call tools effectively and flawlessly.
 1. Keep the number of tools low, e.g. to 5 or less.
 1. Keep the complexity of the tool parameters low. Complex Zod schemas with many nested and optional elements, unions, etc. can be challenging for the model to work with.
 1. Use semantically meaningful names for your tools, parameters, parameter properties, etc. The more information you pass to the model, the better it can understand what you want.
@@ -125513,7 +125713,7 @@ Many language models support an internal "reasoning" phase (sometimes also calle
 import { generateText } from 'ai';
 
 const { text, reasoning, reasoningText } = await generateText({
-  model: 'anthropic/claude-sonnet-4.6',
+  model: 'anthropic/claude-sonnet-5',
   reasoning: 'medium',
   prompt: 'How many people will live in the world in 2040?',
 });
@@ -125539,7 +125739,7 @@ The `reasoning` parameter works the same way with `streamText`:
 import { streamText } from 'ai';
 
 const result = streamText({
-  model: 'google/gemini-3-flash-preview',
+  model: 'google/gemini-3.8-flash',
   reasoning: 'high',
   prompt: 'Explain the Riemann hypothesis in simple terms.',
 });
@@ -125562,7 +125762,7 @@ import { generateText } from 'ai';
 import { openai } from '@ai-sdk/openai';
 
 const { text } = await generateText({
-  model: openai.responses('gpt-5.4'),
+  model: openai.responses('gpt-6-astra'),
   reasoning: 'low', // ignored because providerOptions.openai.reasoningEffort is set
   providerOptions: {
     openai: {
@@ -125589,10 +125789,11 @@ If you currently control reasoning via `providerOptions`, you can migrate to the
 
 ```ts
 const { text } = await generateText({
-  model: anthropic('claude-opus-4.6'),
+  model: anthropic('claude-opus-5-5'),
   providerOptions: {
     anthropic: {
-      thinking: { type: 'adaptive', effort: 'high' },
+      thinking: { type: 'adaptive' },
+      effort: 'high',
     },
   },
   prompt: 'How many people will live in the world in 2040?',
@@ -125603,7 +125804,7 @@ const { text } = await generateText({
 
 ```ts
 const { text } = await generateText({
-  model: anthropic('claude-opus-4.6'),
+  model: anthropic('claude-opus-5-5'),
   reasoning: 'high',
   prompt: 'How many people will live in the world in 2040?',
 });
@@ -125639,10 +125840,10 @@ If you need to enforce an exact token budget (e.g. exactly 12000 tokens), keep u
 
 ```ts
 const { text } = await generateText({
-  model: google('gemini-3-flash-preview'),
+  model: google('gemini-3.8-flash'),
   providerOptions: {
     google: {
-      thinkingConfig: { thinkingBudget: 4096, includeThoughts: true },
+      thinkingConfig: { thinkingLevel: 'high', includeThoughts: true },
     },
   },
   prompt: 'Explain the Riemann hypothesis in simple terms.',
@@ -125653,8 +125854,8 @@ const { text } = await generateText({
 
 ```ts
 const { text } = await generateText({
-  model: google('gemini-3-flash-preview'),
-  reasoning: 'medium',
+  model: google('gemini-3.8-flash'),
+  reasoning: 'high',
   providerOptions: {
     google: { thinkingConfig: { includeThoughts: true } },
   },
@@ -125666,7 +125867,7 @@ const { text } = await generateText({
 
 ```ts
 const { text } = await generateText({
-  model: openai.responses('o3'),
+  model: openai.responses('gpt-6-astra'),
   providerOptions: {
     openai: { reasoningEffort: 'high', reasoningSummary: 'auto' },
   },
@@ -125678,7 +125879,7 @@ const { text } = await generateText({
 
 ```ts
 const { text } = await generateText({
-  model: openai.responses('o3'),
+  model: openai.responses('gpt-6-astra'),
   reasoning: 'high',
   providerOptions: {
     openai: { reasoningSummary: 'auto' },
@@ -125943,7 +126144,7 @@ often producing more accurate relevance scores.
 ## Reranking Documents
 
 The AI SDK provides the [`rerank`](/docs/reference/ai-sdk-core/rerank) function to rerank documents based on their relevance to a query.
-You can use it with reranking models, e.g. `cohere.reranking('rerank-v3.5')` or `bedrock.reranking('cohere.rerank-v3-5:0')`.
+You can use it with reranking models, e.g. `cohere.reranking('rerank-v4.0-pro')` or `bedrock.reranking('cohere.rerank-v3-5:0')`.
 
 ```tsx
 import { rerank } from 'ai';
@@ -125956,7 +126157,7 @@ const documents = [
 ];
 
 const { ranking } = await rerank({
-  model: cohere.reranking('rerank-v3.5'),
+  model: cohere.reranking('rerank-v4.0-pro'),
   documents,
   query: 'talk about rain',
   topN: 2, // Return top 2 most relevant documents
@@ -125991,7 +126192,7 @@ const documents = [
 ];
 
 const { ranking, rerankedDocuments } = await rerank({
-  model: cohere.reranking('rerank-v3.5'),
+  model: cohere.reranking('rerank-v4.0-pro'),
   documents,
   query: 'Which pricing did we get from Oracle?',
   topN: 1,
@@ -126010,7 +126211,7 @@ import { cohere } from '@ai-sdk/cohere';
 import { rerank } from 'ai';
 
 const { ranking, rerankedDocuments, originalDocuments } = await rerank({
-  model: cohere.reranking('rerank-v3.5'),
+  model: cohere.reranking('rerank-v4.0-pro'),
   documents: ['sunny day at the beach', 'rainy afternoon in the city'],
   query: 'talk about rain',
 });
@@ -126037,7 +126238,7 @@ import { cohere } from '@ai-sdk/cohere';
 import { rerank } from 'ai';
 
 const { ranking } = await rerank({
-  model: cohere.reranking('rerank-v3.5'),
+  model: cohere.reranking('rerank-v4.0-pro'),
   documents: ['doc1', 'doc2', 'doc3', 'doc4', 'doc5'],
   query: 'relevant information',
   topN: 3, // Return only top 3 most relevant documents
@@ -126053,7 +126254,7 @@ import { cohere } from '@ai-sdk/cohere';
 import { rerank } from 'ai';
 
 const { ranking } = await rerank({
-  model: cohere.reranking('rerank-v3.5'),
+  model: cohere.reranking('rerank-v4.0-pro'),
   documents: ['sunny day at the beach', 'rainy afternoon in the city'],
   query: 'talk about rain',
   providerOptions: {
@@ -126075,7 +126276,7 @@ import { cohere } from '@ai-sdk/cohere';
 import { rerank } from 'ai';
 
 const { ranking } = await rerank({
-  model: cohere.reranking('rerank-v3.5'),
+  model: cohere.reranking('rerank-v4.0-pro'),
   documents: ['sunny day at the beach', 'rainy afternoon in the city'],
   query: 'talk about rain',
   maxRetries: 0, // Disable retries
@@ -126093,7 +126294,7 @@ import { cohere } from '@ai-sdk/cohere';
 import { rerank } from 'ai';
 
 const { ranking } = await rerank({
-  model: cohere.reranking('rerank-v3.5'),
+  model: cohere.reranking('rerank-v4.0-pro'),
   documents: ['sunny day at the beach', 'rainy afternoon in the city'],
   query: 'talk about rain',
   abortSignal: AbortSignal.timeout(5000), // Abort after 5 seconds
@@ -126110,7 +126311,7 @@ import { cohere } from '@ai-sdk/cohere';
 import { rerank } from 'ai';
 
 const { ranking } = await rerank({
-  model: cohere.reranking('rerank-v3.5'),
+  model: cohere.reranking('rerank-v4.0-pro'),
   documents: ['sunny day at the beach', 'rainy afternoon in the city'],
   query: 'talk about rain',
   headers: { 'X-Custom-Header': 'custom-value' },
@@ -126126,7 +126327,7 @@ import { cohere } from '@ai-sdk/cohere';
 import { rerank } from 'ai';
 
 const { ranking, response } = await rerank({
-  model: cohere.reranking('rerank-v3.5'),
+  model: cohere.reranking('rerank-v4.0-pro'),
   documents: ['sunny day at the beach', 'rainy afternoon in the city'],
   query: 'talk about rain',
 });
@@ -126140,6 +126341,8 @@ Several providers offer reranking models:
 
 | Provider                                                                      | Model                                 |
 | ----------------------------------------------------------------------------- | ------------------------------------- |
+| [Cohere](/providers/ai-sdk-providers/cohere#reranking-models)                 | `rerank-v4.0-pro`                     |
+| [Cohere](/providers/ai-sdk-providers/cohere#reranking-models)                 | `rerank-v4.0-fast`                    |
 | [Cohere](/providers/ai-sdk-providers/cohere#reranking-models)                 | `rerank-v3.5`                         |
 | [Cohere](/providers/ai-sdk-providers/cohere#reranking-models)                 | `rerank-english-v3.0`                 |
 | [Cohere](/providers/ai-sdk-providers/cohere#reranking-models)                 | `rerank-multilingual-v3.0`            |
@@ -126243,7 +126446,7 @@ const registry = createProviderRegistry({
   triage: customProvider({
     evaluationModels: {
       native: typeSafeAi.evaluationModel('jev-latest'),
-      compact: openai.evaluationModel('gpt-5.6-luna'),
+      compact: openai.evaluationModel('gpt-6-luna'),
     },
     fallbackProvider: typeSafeAi,
   }),
@@ -126721,7 +126924,7 @@ const { image } = await generateImage({
 
 ## Generating Images with Language Models
 
-Some language models such as Google `gemini-2.5-flash-image` support multi-modal outputs including images.
+Some language models such as Google `gemini-3.1-flash-image-preview` support multi-modal outputs including images.
 With such models, you can access the generated images using the `files` property of the response.
 
 ```ts
@@ -126729,7 +126932,7 @@ import { google } from '@ai-sdk/google';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: google('gemini-2.5-flash-image'),
+  model: google('gemini-3.1-flash-image-preview'),
   prompt: 'Generate an image of a comic cat',
 });
 
@@ -127664,7 +127867,7 @@ import { generateSpeech } from 'ai';
 import { openai } from '@ai-sdk/openai';
 
 const audio = await generateSpeech({
-  model: openai.speech('tts-1'),
+  model: openai.speech('gpt-4o-mini-tts'),
   text: 'Hello, world!',
   voice: 'alloy',
 });
@@ -127689,7 +127892,7 @@ import { generateSpeech } from 'ai';
 import { openai } from '@ai-sdk/openai';
 
 const audio = await generateSpeech({
-  model: openai.speech('tts-1'),
+  model: openai.speech('gpt-4o-mini-tts'),
   text: 'Hello, world!',
   providerOptions: {
     openai: {
@@ -127710,7 +127913,7 @@ import { openai } from '@ai-sdk/openai';
 import { generateSpeech } from 'ai';
 
 const audio = await generateSpeech({
-  model: openai.speech('tts-1'),
+  model: openai.speech('gpt-4o-mini-tts'),
   text: 'Hello, world!',
   abortSignal: AbortSignal.timeout(1000), // Abort after 1 second
 });
@@ -127726,7 +127929,7 @@ import { openai } from '@ai-sdk/openai';
 import { generateSpeech } from 'ai';
 
 const audio = await generateSpeech({
-  model: openai.speech('tts-1'),
+  model: openai.speech('gpt-4o-mini-tts'),
   text: 'Hello, world!',
   headers: { 'X-Custom-Header': 'custom-value' },
 });
@@ -127741,7 +127944,7 @@ import { openai } from '@ai-sdk/openai';
 import { generateSpeech } from 'ai';
 
 const audio = await generateSpeech({
-  model: openai.speech('tts-1'),
+  model: openai.speech('gpt-4o-mini-tts'),
   text: 'Hello, world!',
 });
 
@@ -127768,7 +127971,7 @@ import { openai } from '@ai-sdk/openai';
 
 try {
   await generateSpeech({
-    model: openai.speech('tts-1'),
+    model: openai.speech('gpt-4o-mini-tts'),
     text: 'Hello, world!',
   });
 } catch (error) {
@@ -127798,6 +128001,8 @@ try {
 | [Google](/providers/ai-sdk-providers/google#speech-models)               | `gemini-2.5-flash-preview-tts`      |
 | [Google](/providers/ai-sdk-providers/google#speech-models)               | `gemini-2.5-pro-preview-tts`        |
 | [Google](/providers/ai-sdk-providers/google#speech-models)               | `gemini-3.1-flash-tts-preview`      |
+| [Google](/providers/ai-sdk-providers/google#speech-models)               | `gemini-3.8-flash-tts`              |
+| [Google](/providers/ai-sdk-providers/google#speech-models)               | `gemini-3.8-flash-lite-tts`         |
 | [Google Vertex](/providers/ai-sdk-providers/google-vertex#speech-models) | `gemini-2.5-flash-tts`              |
 | [Google Vertex](/providers/ai-sdk-providers/google-vertex#speech-models) | `gemini-2.5-pro-tts`                |
 | [Google Vertex](/providers/ai-sdk-providers/google-vertex#speech-models) | `gemini-2.5-flash-lite-preview-tts` |
@@ -128329,7 +128534,7 @@ const { providerReference } = await uploadFile({
 });
 
 const { text } = await generateText({
-  model: openai.responses('gpt-4o-mini'),
+  model: openai.responses('gpt-6-luna'),
   messages: [
     {
       role: 'user',
@@ -129265,7 +129470,7 @@ Pass the `providerReference` inside the `shell` tool's `environment.skills` arra
 
 ```ts
 await generateText({
-  model: openai.responses('gpt-5.2'),
+  model: openai.responses('gpt-6-astra'),
   tools: {
     shell: openai.tools.shell({
       environment: {
@@ -129431,7 +129636,7 @@ const batch = await startBatch({
     {
       id: 'red-panda',
       type: 'image',
-      model: 'gemini-2.5-flash-image',
+      model: 'gemini-3.1-flash-image-preview',
       prompt: 'A red panda reading beside a cabin window',
       aspectRatio: '16:9',
     },
@@ -129699,8 +129904,8 @@ import {
 export const openai = customProvider({
   languageModels: {
     // replacement model with custom provider options:
-    'gpt-5.1': wrapLanguageModel({
-      model: gateway('openai/gpt-5.1'),
+    'gpt-6-astra': wrapLanguageModel({
+      model: gateway('openai/gpt-6-astra'),
       middleware: defaultSettingsMiddleware({
         settings: {
           providerOptions: {
@@ -129712,8 +129917,8 @@ export const openai = customProvider({
       }),
     }),
     // alias model with custom provider options:
-    'gpt-5.1-high-reasoning': wrapLanguageModel({
-      model: gateway('openai/gpt-5.1'),
+    'gpt-6-astra-high-reasoning': wrapLanguageModel({
+      model: gateway('openai/gpt-6-astra'),
       middleware: defaultSettingsMiddleware({
         settings: {
           providerOptions: {
@@ -129739,8 +129944,8 @@ import { customProvider, gateway } from 'ai';
 // custom provider with alias names:
 export const anthropic = customProvider({
   languageModels: {
-    opus: gateway('anthropic/claude-opus-4.1'),
-    sonnet: gateway('anthropic/claude-sonnet-4.5'),
+    opus: gateway('anthropic/claude-opus-5.5'),
+    sonnet: gateway('anthropic/claude-sonnet-5'),
     haiku: gateway('anthropic/claude-haiku-4.5'),
   },
   fallbackProvider: gateway,
@@ -129761,10 +129966,10 @@ import {
 
 export const myProvider = customProvider({
   languageModels: {
-    'text-medium': gateway('anthropic/claude-3-5-sonnet-20240620'),
-    'text-small': gateway('openai/gpt-5-mini'),
+    'text-medium': gateway('anthropic/claude-sonnet-5'),
+    'text-small': gateway('openai/gpt-6-luna'),
     'reasoning-medium': wrapLanguageModel({
-      model: gateway('openai/gpt-5.1'),
+      model: gateway('openai/gpt-6-astra'),
       middleware: defaultSettingsMiddleware({
         settings: {
           providerOptions: {
@@ -129776,7 +129981,7 @@ export const myProvider = customProvider({
       }),
     }),
     'reasoning-fast': wrapLanguageModel({
-      model: gateway('openai/gpt-5.1'),
+      model: gateway('openai/gpt-6-astra'),
       middleware: defaultSettingsMiddleware({
         settings: {
           providerOptions: {
@@ -129807,7 +130012,7 @@ import { customProvider, uploadFile, uploadSkill } from 'ai';
 // custom provider with files interface:
 const myOpenAI = customProvider({
   languageModels: {
-    'gpt-4o-mini': openai.responses('gpt-4o-mini'),
+    'gpt-6-luna': openai.responses('gpt-6-luna'),
   },
   files: openai.files(),
 });
@@ -129815,7 +130020,7 @@ const myOpenAI = customProvider({
 // custom provider with skills interface:
 const myAnthropic = customProvider({
   languageModels: {
-    sonnet: anthropic('claude-sonnet-4-5'),
+    sonnet: anthropic('claude-sonnet-5'),
   },
   skills: anthropic.skills(),
 });
@@ -129885,9 +130090,9 @@ import { generateText } from 'ai';
 import { registry } from './registry';
 
 const { text } = await generateText({
-  model: registry.languageModel('openai:gpt-5.1'), // default separator
+  model: registry.languageModel('openai:gpt-6-astra'), // default separator
   // or with custom separator:
-  // model: customSeparatorRegistry.languageModel('openai > gpt-5.1'),
+  // model: customSeparatorRegistry.languageModel('openai > gpt-6-astra'),
   prompt: 'Invent a new holiday and describe its traditions.',
 });
 ```
@@ -129956,7 +130161,7 @@ import {
 
 const registry = createProviderRegistry({
   openai: customProvider({
-    languageModels: { 'gpt-4o-mini': openai.responses('gpt-4o-mini') },
+    languageModels: { 'gpt-6-luna': openai.responses('gpt-6-luna') },
     files: openai.files(),
   }),
 });
@@ -129968,7 +130173,7 @@ const { providerReference } = await uploadFile({
 });
 
 const { text } = await generateText({
-  model: registry.languageModel('openai:gpt-4o-mini'),
+  model: registry.languageModel('openai:gpt-6-luna'),
   messages: [
     {
       role: 'user',
@@ -129991,7 +130196,7 @@ import { createProviderRegistry, customProvider, uploadSkill } from 'ai';
 
 const registry = createProviderRegistry({
   anthropic: customProvider({
-    languageModels: { sonnet: anthropic('claude-sonnet-4-5') },
+    languageModels: { sonnet: anthropic('claude-sonnet-5') },
     skills: anthropic.skills(),
   }),
 });
@@ -130017,7 +130222,7 @@ Here is an example that implements the following concepts:
 - pre-configure model settings (here: `anthropic > reasoning`)
 - validate the provider-specific options (here: `AnthropicLanguageModelOptions`)
 - use a fallback provider (here: `anthropic > *`)
-- limit a provider to certain models without a fallback (here: `groq > gemma2-9b-it`, `groq > qwen-qwq-32b`)
+- limit a provider to certain models without a fallback (here: `groq > llama-3.1-8b-instant`, `groq > qwen/qwen3.6-27b`)
 - define a custom separator for the provider registry (here: `>`)
 
 ```ts
@@ -130080,8 +130285,8 @@ export const registry = createProviderRegistry(
     // limit a provider to certain models without a fallback
     groq: customProvider({
       languageModels: {
-        'gemma2-9b-it': groq('gemma2-9b-it'),
-        'qwen-qwq-32b': groq('qwen-qwq-32b'),
+        'llama-3.1-8b-instant': groq('llama-3.1-8b-instant'),
+        'qwen/qwen3.6-27b': groq('qwen/qwen3.6-27b'),
       },
     }),
   },
@@ -130123,7 +130328,7 @@ globalThis.AI_SDK_DEFAULT_PROVIDER = openai;
 import { streamText } from 'ai';
 
 const result = await streamText({
-  model: 'gpt-5.1', // Uses OpenAI provider without prefix
+  model: 'gpt-6-astra', // Uses OpenAI provider without prefix
   prompt: 'Invent a new holiday and describe its traditions.',
 });
 ```
@@ -130914,7 +131119,7 @@ import { streamText } from 'ai';
 import { DevToolsTelemetry } from '@ai-sdk/devtools';
 
 const result = streamText({
-  model: openai('gpt-4o'),
+  model: openai('gpt-6-astra'),
   prompt: 'Hello!',
   telemetry: {
     integrations: [DevToolsTelemetry()],
@@ -131637,7 +131842,7 @@ Telemetry is enabled automatically once an integration is registered — no per-
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: openai('gpt-4o'),
+  model: openai('gpt-6-astra'),
   prompt: 'What cities are in the United States?',
 });
 ```
@@ -131649,7 +131854,7 @@ import { streamText } from 'ai';
 import { DevToolsTelemetry } from '@ai-sdk/devtools';
 
 const result = streamText({
-  model: openai('gpt-4o'),
+  model: openai('gpt-6-astra'),
   prompt: 'Hello!',
   telemetry: {
     integrations: [DevToolsTelemetry()],
@@ -131747,7 +131952,7 @@ Telemetry is enabled automatically, but AI SDK 7 excludes raw request and respon
 
 ```ts highlight="4-7"
 const result = await generateText({
-  model: openai('gpt-4o'),
+  model: openai('gpt-6-astra'),
   prompt: 'Hello!',
   include: {
     requestBody: true,
@@ -132047,7 +132252,7 @@ const { embeddings } = await embedMany({
 });
 
 const { ranking } = await rerank({
-  model: cohere.reranking('rerank-v3.5'),
+  model: cohere.reranking('rerank-v4.0-pro'),
   documents: values,
   query: 'talk about rain',
 
@@ -135725,7 +135930,7 @@ return createUIMessageStreamResponse({
       if (part.type === 'start') {
         return {
           createdAt: Date.now(),
-          model: 'gpt-5.1',
+          model: 'gpt-6-astra',
         };
       }
 
@@ -136129,7 +136334,7 @@ Check out the [stream protocol guide](/docs/ai-sdk-ui/stream-protocol) for more 
 ## Reasoning
 
 Some models such as DeepSeek `deepseek-r1`
-and Anthropic `claude-sonnet-4-5-20250929` support reasoning tokens.
+and Anthropic `claude-sonnet-5` support reasoning tokens.
 These tokens are typically sent before the message content.
 You can forward them to the client with the `sendReasoning` option:
 
@@ -136256,7 +136461,7 @@ messages.map(message => (
 
 ## Image Generation
 
-Some models such as Google `gemini-2.5-flash-image` support image generation.
+Some models such as Google `gemini-3.1-flash-image-preview` support image generation.
 When images are generated, they are exposed as files to the client.
 On the client side, you can access file parts of the message object
 and render them as images.
@@ -136744,7 +136949,7 @@ export async function POST(req: Request) {
   });
 
   const result = streamText({
-    model: 'openai/gpt-5-mini',
+    model: 'openai/gpt-6-luna',
     messages: convertToModelMessages(validatedMessages),
     tools,
   });
@@ -136909,7 +137114,7 @@ export async function POST(req: Request) {
     await req.json();
 
   const result = streamText({
-    model: 'openai/gpt-5-mini',
+    model: 'openai/gpt-6-luna',
     messages: await convertToModelMessages(messages),
   });
 
@@ -137037,7 +137242,7 @@ export async function POST(req: Request) {
       });
 
       const result = streamText({
-        model: 'openai/gpt-5-mini',
+        model: 'openai/gpt-6-luna',
         messages: await convertToModelMessages(messages),
       });
 
@@ -137333,7 +137538,7 @@ export async function POST(req: Request) {
   saveChat({ id, messages, activeStreamId: null });
 
   const result = streamText({
-    model: 'openai/gpt-5-mini',
+    model: 'openai/gpt-6-luna',
     messages: await convertToModelMessages(messages),
   });
 
@@ -140532,7 +140737,7 @@ import { tool } from 'ai';
 import { z } from 'zod';
 
 const agent = new WorkflowAgent({
-  model: 'anthropic/claude-sonnet-4-6',
+  model: 'anthropic/claude-sonnet-5',
   instructions: 'You are a helpful assistant.',
   tools: {
     weather: tool({
@@ -140586,7 +140791,7 @@ To see `WorkflowAgent` in action, check out [these examples](#examples).
       type: 'LanguageModel',
       isRequired: true,
       description:
-        "The language model to use. A string compatible with the Vercel AI Gateway (e.g., 'anthropic/claude-sonnet-4-6') or a provider instance (e.g., `openai('gpt-4o')`).",
+        "The language model to use. A string compatible with the Vercel AI Gateway (e.g., 'anthropic/claude-sonnet-5') or a provider instance (e.g., `openai('gpt-6-astra')`).",
     },
     {
       name: 'instructions',
@@ -141323,7 +141528,7 @@ Infers the UI message type for a `WorkflowAgent` instance. Optionally accepts a 
 import { WorkflowAgent, InferWorkflowAgentUIMessage } from '@ai-sdk/workflow';
 
 const agent = new WorkflowAgent({
-  model: 'anthropic/claude-sonnet-4-6',
+  model: 'anthropic/claude-sonnet-5',
   tools: { weather: weatherTool },
 });
 
@@ -141350,7 +141555,7 @@ import { tool } from 'ai';
 import { z } from 'zod';
 
 const agent = new WorkflowAgent({
-  model: 'anthropic/claude-sonnet-4-6',
+  model: 'anthropic/claude-sonnet-5',
   instructions: 'You are a helpful assistant.',
   tools: {
     weather: tool({
@@ -141405,7 +141610,7 @@ export async function chat(messages: UIMessage[]) {
   const modelMessages = await convertToModelMessages(messages);
 
   const agent = new WorkflowAgent({
-    model: 'anthropic/claude-sonnet-4-6',
+    model: 'anthropic/claude-sonnet-5',
     instructions: 'You are a flight booking assistant.',
     tools: {
       searchFlights: tool({
@@ -141452,7 +141657,7 @@ import { WorkflowAgent, Output } from '@ai-sdk/workflow';
 import { z } from 'zod';
 
 const analysisAgent = new WorkflowAgent({
-  model: 'anthropic/claude-sonnet-4-6',
+  model: 'anthropic/claude-sonnet-5',
 });
 
 const result = await analysisAgent.stream({
@@ -141492,7 +141697,7 @@ import { tool } from 'ai';
 import { z } from 'zod';
 
 const agent = new WorkflowAgent({
-  model: 'anthropic/claude-sonnet-4-6',
+  model: 'anthropic/claude-sonnet-5',
   experimental_toolApprovalSecret: {
     environmentVariable: 'TOOL_APPROVAL_SECRET',
   },
@@ -141524,7 +141729,7 @@ serialize it. A stream-level reference overrides the constructor value.
 import { WorkflowAgent } from '@ai-sdk/workflow';
 
 const agent = new WorkflowAgent({
-  model: 'anthropic/claude-sonnet-4-6',
+  model: 'anthropic/claude-sonnet-5',
   tools: { weather: weatherTool },
 
   // Agent-wide callbacks
@@ -143296,7 +143501,7 @@ import { runAgentTUI } from '@ai-sdk/tui';
 import { ToolLoopAgent } from 'ai';
 
 const agent = new ToolLoopAgent({
-  model: openai('gpt-5'),
+  model: openai('gpt-6-astra'),
   instructions: 'You are a helpful terminal assistant.',
 });
 
@@ -143556,7 +143761,7 @@ For most use cases, you can use the AI Gateway directly with a model string:
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: 'openai/gpt-5.4',
+  model: 'openai/gpt-6-astra',
   prompt: 'Hello world',
 });
 ```
@@ -143566,7 +143771,7 @@ const { text } = await generateText({
 import { generateText, gateway } from 'ai';
 
 const { text } = await generateText({
-  model: gateway('openai/gpt-5.4'),
+  model: gateway('openai/gpt-6-astra'),
   prompt: 'Hello world',
 });
 ```
@@ -143727,7 +143932,7 @@ You can create language models using a provider instance. The first argument is 
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: 'openai/gpt-5.4',
+  model: 'openai/gpt-6-astra',
   prompt: 'Explain quantum computing in simple terms',
 });
 ```
@@ -144113,7 +144318,7 @@ availableModels.models.forEach(model => {
 
 // Use any discovered model with plain string
 const { text } = await generateText({
-  model: availableModels.models[0].id, // e.g., 'openai/gpt-5.4'
+  model: availableModels.models[0].id, // e.g., 'openai/gpt-6-astra'
   prompt: 'Hello world',
 });
 ```
@@ -144147,7 +144352,7 @@ import { gateway, generateText } from 'ai';
 
 // Make a request
 const result = await generateText({
-  model: gateway('anthropic/claude-sonnet-4'),
+  model: gateway('anthropic/claude-sonnet-5'),
   prompt: 'Explain quantum entanglement briefly',
 });
 
@@ -144170,7 +144375,7 @@ With `streamText`, you can capture the generation ID from the first chunk via `s
 import { gateway, streamText } from 'ai';
 
 const result = streamText({
-  model: gateway('anthropic/claude-sonnet-4'),
+  model: gateway('anthropic/claude-sonnet-5'),
   prompt: 'Explain quantum entanglement briefly',
 });
 
@@ -144200,7 +144405,7 @@ a tool is running:
 import { gateway, generateText } from 'ai';
 
 await generateText({
-  model: gateway('anthropic/claude-sonnet-4'),
+  model: gateway('anthropic/claude-sonnet-5'),
   prompt: 'Explain quantum entanglement briefly',
   onLanguageModelCallEnd({ providerMetadata }) {
     const generationId = providerMetadata?.gateway?.generationId as
@@ -144247,7 +144452,7 @@ It returns a `GatewayGenerationInfo` object with the following fields:
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: 'anthropic/claude-sonnet-4.6',
+  model: 'anthropic/claude-sonnet-5',
   prompt: 'Write a haiku about programming',
 });
 
@@ -144260,7 +144465,7 @@ console.log(text);
 import { streamText } from 'ai';
 
 const { textStream } = await streamText({
-  model: 'openai/gpt-5.4',
+  model: 'openai/gpt-6-astra',
   prompt: 'Explain the benefits of serverless architecture',
 });
 
@@ -144276,7 +144481,7 @@ import { generateText, tool } from 'ai';
 import { z } from 'zod';
 
 const { text } = await generateText({
-  model: 'xai/grok-4.7',
+  model: 'spacexai/grok-4.7',
   prompt: 'What is the weather like in San Francisco?',
   tools: {
     getWeather: tool({
@@ -144302,7 +144507,7 @@ import { generateText, isStepCount } from 'ai';
 import { openai } from '@ai-sdk/openai';
 
 const result = await generateText({
-  model: 'openai/gpt-5.4-mini',
+  model: 'openai/gpt-6-luna',
   prompt: 'What is the Vercel AI Gateway?',
   stopWhen: isStepCount(10),
   tools: {
@@ -144734,7 +144939,7 @@ import type { GatewayProviderOptions } from '@ai-sdk/gateway';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: 'openai/gpt-5.4',
+  model: 'openai/gpt-6-astra',
   prompt: 'Summarize this document...',
   providerOptions: {
     gateway: {
@@ -144776,7 +144981,7 @@ The `getSpendReport()` method accepts the following parameters:
 - **groupBy** _string_ - Aggregation dimension: `'day'` (default), `'user'`, `'model'`, `'tag'`, `'provider'`, or `'credential_type'`
 - **datePart** _string_ - Time granularity when `groupBy` is `'day'`: `'day'` or `'hour'`
 - **userId** _string_ - Filter to a specific user
-- **model** _string_ - Filter to a specific model (e.g. `'anthropic/claude-sonnet-4.5'`)
+- **model** _string_ - Filter to a specific model (e.g. `'anthropic/claude-sonnet-5'`)
 - **provider** _string_ - Filter to a specific provider (e.g. `'anthropic'`)
 - **credentialType** _string_ - Filter by `'byok'` or `'system'` credentials
 - **tags** _string[]_ - Filter to requests matching these tags
@@ -144835,7 +145040,7 @@ import type { GatewayProviderOptions } from '@ai-sdk/gateway';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: 'anthropic/claude-sonnet-4.6',
+  model: 'anthropic/claude-sonnet-5',
   prompt: 'Explain quantum computing',
   providerOptions: {
     gateway: {
@@ -144877,7 +145082,7 @@ The following gateway provider options are available:
 
   Specifies fallback models to use when the primary model fails or is unavailable. The gateway will try the primary model first (specified in the `model` parameter), then try each model in this array in order until one succeeds.
 
-  Example: `models: ['openai/gpt-5.4-nano', 'gemini-3-flash-preview']` will try the fallback models in order if the primary model fails.
+  Example: `models: ['openai/gpt-5.4-nano', 'google/gemini-3.8-flash']` will try the fallback models in order if the primary model fails.
 
 - **user** _string_
 
@@ -144917,7 +145122,7 @@ The following gateway provider options are available:
 
   The unique identifier for the entity against which quota is tracked. Used for quota management and enforcement purposes.
 
-- **has** _Array&lt;'implicit-caching' | 'reasoning' | 'tool-use' | 'vision'&gt;_
+- **has** _Array&lt;'implicit-caching' | 'reasoning' | 'tool-use' | 'vision' | `quantization:${string}` | `!quantization:${string}`&gt;_
 
   Restricts routing to provider models that have all of the specified capabilities. Applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. If no provider model for the requested model satisfies the capabilities, the request fails. Unsupported values are rejected.
 
@@ -144927,7 +145132,9 @@ The following gateway provider options are available:
   - `'tool-use'` — models that support tool calling.
   - `'vision'` — models that accept image input.
 
-  Example: `has: ['implicit-caching']` will only route to models that support implicit caching. Example: `has: ['vision']` will only route to models that accept image input. Example: `has: ['tool-use']` will only route to models that support tool calling.
+  Weight-format conditions route on the serving provider's recorded weight format: `'quantization:fp8'` requires a provider serving fp8 weights, while `'!quantization:fp8'` excludes fp8 providers. A negated condition also matches providers whose weight format is not recorded, so exclusions remain usable while the catalog is populated.
+
+  Example: `has: ['implicit-caching']` will only route to models that support implicit caching. Example: `has: ['vision']` will only route to models that accept image input. Example: `has: ['tool-use']` will only route to models that support tool calling. Example: `has: ['!quantization:fp8']` will only route to providers that do not serve fp8 weights.
 
 - **providerTimeouts** _object_
 
@@ -144953,7 +145160,7 @@ The following gateway provider options are available:
   import { generateText } from 'ai';
 
   const { text } = await generateText({
-    model: 'openai/gpt-5-mini',
+    model: 'openai/gpt-6-luna',
     prompt: 'Hello',
     providerOptions: {
       gateway: {
@@ -144970,7 +145177,7 @@ import type { GatewayProviderOptions } from '@ai-sdk/gateway';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: 'anthropic/claude-sonnet-4.6',
+  model: 'anthropic/claude-sonnet-5',
   prompt: 'Write a haiku about programming',
   providerOptions: {
     gateway: {
@@ -144990,11 +145197,11 @@ import type { GatewayProviderOptions } from '@ai-sdk/gateway';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: 'openai/gpt-5.4', // Primary model
+  model: 'openai/gpt-6-astra', // Primary model
   prompt: 'Write a TypeScript haiku',
   providerOptions: {
     gateway: {
-      models: ['openai/gpt-5.4-nano', 'gemini-3-flash-preview'], // Fallback models
+      models: ['openai/gpt-5.4-nano', 'gemini-3.8-flash'], // Fallback models
     } satisfies GatewayProviderOptions,
   },
 });
@@ -145015,7 +145222,7 @@ import type { GatewayProviderOptions } from '@ai-sdk/gateway';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: 'anthropic/claude-sonnet-4.6',
+  model: 'anthropic/claude-sonnet-5',
   prompt: 'Analyze this sensitive document...',
   providerOptions: {
     gateway: {
@@ -145034,7 +145241,7 @@ import type { GatewayProviderOptions } from '@ai-sdk/gateway';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: 'anthropic/claude-sonnet-4.6',
+  model: 'anthropic/claude-sonnet-5',
   prompt: 'Analyze this proprietary business data...',
   providerOptions: {
     gateway: {
@@ -145053,7 +145260,7 @@ import type { GatewayProviderOptions } from '@ai-sdk/gateway';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: 'anthropic/claude-sonnet-4.6',
+  model: 'anthropic/claude-sonnet-5',
   prompt: 'Summarize this report...',
   providerOptions: {
     gateway: {
@@ -145065,14 +145272,14 @@ const { text } = await generateText({
 
 #### Filtering by Model Capability
 
-Set `has` to restrict routing to provider models that have the specified capabilities. This applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. `'implicit-caching'` limits routing to models that perform automatic prompt caching, `'vision'` limits routing to models that accept image input, `'reasoning'` limits routing to models that support reasoning, and `'tool-use'` limits routing to models that support tool calling. If no provider model for the requested model satisfies the capabilities, the request fails.
+Set `has` to restrict routing to provider models that have the specified capabilities. This applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. `'implicit-caching'` limits routing to models that perform automatic prompt caching, `'vision'` limits routing to models that accept image input, `'reasoning'` limits routing to models that support reasoning, and `'tool-use'` limits routing to models that support tool calling. Weight-format conditions (`'quantization:fp8'` to require, `'!quantization:fp8'` to exclude) limit routing by the serving provider's recorded weight format. If no provider model for the requested model satisfies the capabilities, the request fails.
 
 ```ts
 import type { GatewayProviderOptions } from '@ai-sdk/gateway';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: 'openai/gpt-5.5',
+  model: 'openai/gpt-6-astra',
   prompt: 'Summarize this report...',
   providerOptions: {
     gateway: {
@@ -145091,7 +145298,7 @@ import { generateText } from 'ai';
 import fs from 'node:fs';
 
 const { text } = await generateText({
-  model: 'anthropic/claude-sonnet-4.6',
+  model: 'anthropic/claude-sonnet-5',
   messages: [
     {
       role: 'user',
@@ -145741,15 +145948,39 @@ The following provider options are available:
 
 - **logprobs** _boolean_
 
-  Return log probabilities for output tokens.
+  Return log probabilities for output tokens. This is silently ignored by `grok-4.20` and newer models.
 
 - **topLogprobs** _number_
 
-  Number of most likely tokens to return per token position (0-8). When set, `logprobs` is automatically enabled.
+  Number of most likely tokens to return per token position (0-8). When set, `logprobs` is automatically enabled. This is silently ignored by `grok-4.20` and newer models.
 
-- **include** _Array&lt;'file_search_call.results'&gt;_
+- **minP** _number_
 
-  Specify additional output data to include in the model response. Use `['file_search_call.results']` to include file search results with scores and content.
+  Set the min-p sampling threshold between 0 and 1. Tokens whose probability is below `minP` times the most likely token's probability are excluded. Unlike the standard AI SDK `topK` option, `minP` is xAI-specific and must be set in `providerOptions.xai`.
+
+- **maxTurns** _number_
+
+  Set the maximum number of assistant/server-side tool turns xAI may perform within one API request. This limits xAI's internal loop for provider-executed tools such as web search; it is separate from AI SDK's `stopWhen`, which limits the outer loop of AI SDK steps and API requests.
+
+- **parallelToolCalls** _boolean_
+
+  Allow the model to call tools in parallel. Defaults to `true`.
+
+- **promptCacheKey** _string_
+
+  Route requests with shared prompt prefixes to improve cache reuse.
+
+- **safetyIdentifier** _string_
+
+  Provide a stable, preferably hashed end-user identifier for safety monitoring.
+
+- **user** _string_
+
+  Provide an end-user identifier for abuse monitoring.
+
+- **include** _Array&lt;'file_search_call.results' | 'web_search_call.action.sources' | 'code_interpreter_call.outputs' | 'reasoning.encrypted_content' | 'no_inline_citations'&gt;_
+
+  Include file-search results, web-search sources, code-interpreter outputs, or encrypted reasoning content, or disable inline citations.
 
 - **store** _boolean_
 
@@ -146215,7 +146446,7 @@ import { xai, type XaiVideoModelOptions } from '@ai-sdk/xai';
 import { experimental_generateVideo as generateVideo } from 'ai';
 
 const { video } = await generateVideo({
-  model: xai.video('grok-imagine-video'),
+  model: xai.video('grok-imagine-video-1.5'),
   prompt: 'A chicken flying into the sunset in the style of 90s anime.',
   aspectRatio: '16:9',
   duration: 5,
@@ -146237,7 +146468,7 @@ import { xai, type XaiVideoModelOptions } from '@ai-sdk/xai';
 import { experimental_generateVideo as generateVideo } from 'ai';
 
 const { video } = await generateVideo({
-  model: xai.video('grok-imagine-video'),
+  model: xai.video('grok-imagine-video-1.5'),
   prompt: {
     image: 'https://example.com/start-frame.png',
     text: 'The cat slowly turns its head and blinks',
@@ -146259,7 +146490,7 @@ import { experimental_generateVideo as generateVideo } from 'ai';
 import fs from 'node:fs';
 
 const { video } = await generateVideo({
-  model: xai.video('grok-imagine-video'),
+  model: xai.video('grok-imagine-video-1.5'),
   prompt: 'The cat slowly turns its head and blinks',
   frameImages: [
     {
@@ -146291,7 +146522,7 @@ import { xai, type XaiVideoModelOptions } from '@ai-sdk/xai';
 import { experimental_generateVideo as generateVideo } from 'ai';
 
 const { video } = await generateVideo({
-  model: xai.video('grok-imagine-video'),
+  model: xai.video('grok-imagine-video-1.5'),
   prompt: 'Give the person sunglasses and a hat',
   providerOptions: {
     xai: {
@@ -146329,7 +146560,7 @@ const providerOptions = {
 
 // Step 1: Apply an initial edit
 const step1 = await generateVideo({
-  model: xai.video('grok-imagine-video'),
+  model: xai.video('grok-imagine-video-1.5'),
   prompt: 'Add a party hat to the person',
   providerOptions,
 });
@@ -146340,7 +146571,7 @@ const step1VideoUrl = step1.providerMetadata?.xai?.videoUrl as string;
 // Step 2: Apply two more edits concurrently, building on step 1
 const [withSunglasses, withScarf] = await Promise.all([
   generateVideo({
-    model: xai.video('grok-imagine-video'),
+    model: xai.video('grok-imagine-video-1.5'),
     prompt: 'Add sunglasses',
     providerOptions: {
       xai: {
@@ -146351,7 +146582,7 @@ const [withSunglasses, withScarf] = await Promise.all([
     },
   }),
   generateVideo({
-    model: xai.video('grok-imagine-video'),
+    model: xai.video('grok-imagine-video-1.5'),
     prompt: 'Add a scarf',
     providerOptions: {
       xai: {
@@ -146374,7 +146605,7 @@ import { experimental_generateVideo as generateVideo } from 'ai';
 
 // Step 1: Generate a source video
 const source = await generateVideo({
-  model: xai.video('grok-imagine-video'),
+  model: xai.video('grok-imagine-video-1.5'),
   prompt: 'A cat sitting on a sunlit windowsill, tail gently swishing.',
   duration: 5,
   aspectRatio: '16:9',
@@ -146389,7 +146620,7 @@ const sourceUrl = source.providerMetadata?.xai?.videoUrl as string;
 
 // Step 2: Extend the video with a new scene
 const extended = await generateVideo({
-  model: xai.video('grok-imagine-video'),
+  model: xai.video('grok-imagine-video-1.5'),
   prompt: 'The cat turns its head, notices a butterfly, and leaps off.',
   duration: 6,
   providerOptions: {
@@ -146417,7 +146648,7 @@ import { xai, type XaiVideoModelOptions } from '@ai-sdk/xai';
 import { experimental_generateVideo as generateVideo } from 'ai';
 
 const { video } = await generateVideo({
-  model: xai.video('grok-imagine-video'),
+  model: xai.video('grok-imagine-video-1.5'),
   prompt:
     'The comic cat from <IMAGE_1> and the comic dog from <IMAGE_2> ' +
     'are having a playful chase through a sunlit park. ' +
@@ -146447,7 +146678,7 @@ import { experimental_generateVideo as generateVideo } from 'ai';
 import fs from 'node:fs';
 
 const { video } = await generateVideo({
-  model: xai.video('grok-imagine-video'),
+  model: xai.video('grok-imagine-video-1.5'),
   prompt:
     'The comic cat and the comic dog are having a playful chase ' +
     'through a sunlit park. Cinematic slow-motion, warm afternoon light.',
@@ -146715,14 +146946,14 @@ You can use the following optional settings to customize the OpenAI provider ins
 The OpenAI provider instance is a function that you can invoke to create a language model:
 
 ```ts
-const model = openai('gpt-5');
+const model = openai('gpt-6-astra');
 ```
 
 It automatically selects the correct API based on the model id.
 You can also pass additional settings in the second argument:
 
 ```ts
-const model = openai('gpt-5', {
+const model = openai('gpt-6-astra', {
   // additional settings
 });
 ```
@@ -146744,7 +146975,7 @@ import { openai } from '@ai-sdk/openai';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: openai('gpt-5'),
+  model: openai('gpt-6-astra'),
   prompt: 'Write a vegetarian lasagna recipe for 4 people.',
 });
 ```
@@ -146758,7 +146989,7 @@ and support structured data generation with [`Output`](/docs/reference/ai-sdk-co
 You can use the OpenAI responses API with the `openai(modelId)` or `openai.responses(modelId)` factory methods. It is the default API that is used by the OpenAI provider (since AI SDK 5).
 
 ```ts
-const model = openai('gpt-5');
+const model = openai('gpt-6-astra');
 ```
 
 Further configuration can be done using OpenAI provider options.
@@ -146769,7 +147000,7 @@ import { openai, OpenAILanguageModelResponsesOptions } from '@ai-sdk/openai';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: openai('gpt-5'), // or openai.responses('gpt-5')
+  model: openai('gpt-6-astra'), // or openai.responses('gpt-6-astra')
   providerOptions: {
     openai: {
       parallelToolCalls: false,
@@ -146927,7 +147158,7 @@ import { openai, type OpenaiResponsesProviderMetadata } from '@ai-sdk/openai';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: openai('gpt-5'),
+  model: openai('gpt-6-astra'),
 });
 
 const providerMetadata = result.providerMetadata as
@@ -146954,58 +147185,121 @@ The following OpenAI-specific metadata may be returned:
 
 #### Changing Reasoning Effort Mid-Conversation
 
-GPT-6 and later models can change reasoning effort between responses without
-changing the request-level `reasoning` setting. The provider sends
-`reasoningEffortUpdate` as an OpenAI `configuration_update` input item before
-the next user message. Keeping the request-level effort unchanged preserves the
-original prompt prefix for prompt caching.
+You can increase reasoning effort for difficult work or reduce it for routine
+follow-ups while preserving the conversation prefix for prompt caching:
 
-```ts highlight="8,26,32"
+- Set the initial effort with request-level `reasoning` and keep that setting
+  unchanged throughout the conversation.
+- For later changes, add a message-level `reasoningEffortUpdate` before the next
+  user message, following
+  [OpenAI's configuration update guidance](https://developers.openai.com/api/docs/guides/reasoning#change-reasoning-mid-conversation).
+
+The new effort applies until another update changes it. When sending conversation
+history in `messages`, include earlier effort updates along with the other messages.
+
+Represent an update as an empty system message with
+`providerOptions.openai.reasoningEffortUpdate`.
+
+You **must** set `allowSystemInMessages: true` to allow these trusted system messages.
+
+In this example, the conversation starts at low effort and switches to high
+effort for the follow-up. Both requests keep `reasoning: 'low'`.
+
+```ts
 import {
   openai,
-  type OpenAILanguageModelResponsesOptions,
-  type OpenaiResponsesProviderMetadata,
+  type OpenAIResponsesSystemMessageOptions,
 } from '@ai-sdk/openai';
-import { generateText } from 'ai';
+import { generateText, type ModelMessage } from 'ai';
+
+const messages: ModelMessage[] = [
+  { role: 'user', content: 'Draft a migration plan.' },
+];
 
 const first = await generateText({
   model: openai.responses('gpt-6-astra'),
   reasoning: 'low',
-  prompt: 'Draft a database migration plan.',
+  messages,
 });
 
-const metadata = first.finalStep.providerMetadata as
-  | OpenaiResponsesProviderMetadata
-  | undefined;
-const previousResponseId = metadata?.openai.responseId;
-
-if (!previousResponseId) {
-  throw new Error('OpenAI did not return a response ID.');
-}
+messages.push(...first.responseMessages);
+messages.push(
+  {
+    role: 'system',
+    content: '',
+    providerOptions: {
+      openai: {
+        reasoningEffortUpdate: 'high',
+      } satisfies OpenAIResponsesSystemMessageOptions,
+    },
+  },
+  { role: 'user', content: 'Analyze the failure modes.' },
+);
 
 const second = await generateText({
   model: openai.responses('gpt-6-astra'),
   reasoning: 'low',
-  prompt: 'Analyze the failure modes and propose rollback steps.',
-  providerOptions: {
-    openai: {
-      previousResponseId,
-      reasoningEffortUpdate: 'high',
-    } satisfies OpenAILanguageModelResponsesOptions,
-  },
+  allowSystemInMessages: true,
+  messages,
 });
+
+messages.push(...second.responseMessages);
 ```
 
-The response metadata continues to report the request-level reasoning effort,
-not the effective effort selected by `reasoningEffortUpdate`. Configuration
-updates are not supported with `reasoningMode: 'pro'`,
-`contextManagement`, or `truncation: 'auto'`. Explicit compaction with
-`compactionTrigger` remains supported; send a new `reasoningEffortUpdate` after
-compaction when the effort should change again.
+<Note>
+  The OpenAI Responses provider sends each message-level effort update as a
+  `configuration_update` input item.
+</Note>
+
+Message-level updates also work with `streamText` and `previousResponseId`.
+
+##### Restrictions
+
+Effort updates are supported on GPT-6-family models with these settings:
+
+| Setting             | Required value         |
+| ------------------- | ---------------------- |
+| `reasoningMode`     | `'standard'` (default) |
+| `contextManagement` | Omitted                |
+| `truncation`        | `'disabled'` (default) |
+
+- Each update **must** use exactly `content: ''`.
+- Updates cannot be consecutive, even with the same effort. This also applies
+  across the boundary with history referenced by previousResponseId or
+  conversation.
+
+Requests that violate these restrictions are rejected.
+
+<Note>
+  Effort update messages are sent even if `systemMessageMode` is set to
+  `remove`.
+</Note>
+
+##### Compaction
+
+**Effort updates are incompatible with automatic compaction through
+`providerOptions.openai.contextManagement` or compaction through OpenAI's
+`/responses/compact` endpoint.**
+
+To compact conversations containing effort updates, use [explicit
+compaction](#explicit-compaction) with
+`providerOptions.openai.compactionTrigger`.
+
+After compaction, add a fresh effort update before the next user message,
+[as OpenAI recommends](https://developers.openai.com/api/docs/guides/reasoning#change-reasoning-mid-conversation). Keep request-level `reasoning` unchanged.
+
+##### Request-Level Update Option
+
+The request-level `providerOptions.openai.reasoningEffortUpdate` option is a
+convenience that prepends a configuration update to the input. When using
+message-level updates, omit this option.
+
+The request-level option continues to warn and omit updates for unsupported
+models or configurations.
 
 #### Reasoning Output
 
-For reasoning models like `gpt-5`, you can enable reasoning summaries to see the model's thought process. Different models support different summarizers—for example, `o4-mini` supports detailed summaries. Set `reasoningSummary: "auto"` to automatically receive the richest level available. When `reasoningEffort` is set to a value other than `'none'`, the OpenAI Responses provider defaults `reasoningSummary` to `'detailed'`; set `reasoningSummary: null` to omit reasoning summaries.
+For reasoning models like `gpt-6-astra`, you can enable reasoning summaries to see the model's thought process. Different models support different summarizers—for example, `o4-mini` supports detailed summaries. Set `reasoningSummary: "auto"` to automatically receive the richest level available. When `reasoningEffort` is set to a value other than `'none'`, the OpenAI Responses provider defaults `reasoningSummary` to `'detailed'`; set `reasoningSummary: null` to omit reasoning summaries.
 
 ```ts highlight="10-14,17-23"
 import {
@@ -147015,7 +147309,7 @@ import {
 import { streamText } from 'ai';
 
 const result = streamText({
-  model: openai('gpt-5'),
+  model: openai('gpt-6-astra'),
   prompt: 'Tell me about the Mission burrito debate in San Francisco.',
   providerOptions: {
     openai: {
@@ -147043,7 +147337,7 @@ import {
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: openai('gpt-5'),
+  model: openai('gpt-6-astra'),
   prompt: 'Tell me about the Mission burrito debate in San Francisco.',
   providerOptions: {
     openai: {
@@ -147080,7 +147374,7 @@ const wsFetch = createWebSocketFetch();
 const openai = createOpenAI({ fetch: wsFetch });
 
 const result = streamText({
-  model: openai('gpt-4.1-mini'),
+  model: openai('gpt-6-luna'),
   prompt: 'Hello!',
   tools: {
     // ...
@@ -147116,7 +147410,7 @@ import {
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: openai('gpt-5-mini'),
+  model: openai('gpt-6-luna'),
   prompt: 'Write a poem about a boy and his first pet dog.',
   providerOptions: {
     openai: {
@@ -147226,7 +147520,7 @@ import { generateText, isStepCount, tool } from 'ai';
 import { z } from 'zod';
 
 const result = await generateText({
-  model: openai('gpt-5.6'),
+  model: openai('gpt-6-astra'),
   stopWhen: isStepCount(10),
   prompt: 'Compare inventory with demand for sku_123.',
   tools: {
@@ -147281,7 +147575,7 @@ The OpenAI responses API supports web search through the `openai.tools.webSearch
 
 ```ts
 const result = await generateText({
-  model: openai('gpt-5'),
+  model: openai('gpt-6-astra'),
   prompt: 'What happened in San Francisco last week?',
   tools: {
     web_search: openai.tools.webSearch({
@@ -147337,7 +147631,7 @@ You can force the use of the file search tool by setting the `toolChoice` parame
 
 ```ts
 const result = await generateText({
-  model: openai('gpt-5'),
+  model: openai('gpt-6-astra'),
   prompt: 'What does the document say about user authentication?',
   tools: {
     file_search: openai.tools.fileSearch({
@@ -147419,7 +147713,7 @@ import { openai } from '@ai-sdk/openai';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: openai('gpt-5'),
+  model: openai('gpt-6-astra'),
   prompt:
     'Generate an image of an echidna swimming across the Mozambique channel.',
   tools: {
@@ -147439,7 +147733,7 @@ import { openai } from '@ai-sdk/openai';
 import { streamText } from 'ai';
 
 const result = streamText({
-  model: openai('gpt-5'),
+  model: openai('gpt-6-astra'),
   prompt:
     'Generate an image of an echidna swimming across the Mozambique channel.',
   tools: {
@@ -147489,7 +147783,7 @@ import { openai } from '@ai-sdk/openai';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: openai('gpt-5'),
+  model: openai('gpt-6-astra'),
   prompt: 'Write and run Python code to calculate the factorial of 10',
   tools: {
     code_interpreter: openai.tools.codeInterpreter({
@@ -147522,7 +147816,7 @@ import { openai } from '@ai-sdk/openai';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: openai('gpt-5'),
+  model: openai('gpt-6-astra'),
   prompt: 'Search the web for the latest news about AI developments',
   tools: {
     mcp: openai.tools.mcp({
@@ -147614,7 +147908,7 @@ import { generateText, isStepCount } from 'ai';
 import { captureScreenshot, executeComputerAction } from '@/utils/computer-use';
 
 const result = await generateText({
-  model: openai.responses('gpt-5.4'),
+  model: openai.responses('gpt-6-astra'),
   tools: {
     computer: openai.tools.computer({
       needsApproval: ({ pendingSafetyChecks }) =>
@@ -147736,7 +148030,7 @@ import { openai } from '@ai-sdk/openai';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: openai('gpt-5.2'),
+  model: openai('gpt-6-astra'),
   tools: {
     shell: openai.tools.shell({
       execute: async ({ action }) => {
@@ -147755,7 +148049,7 @@ Set `environment.type` to `'containerAuto'` to run commands in an OpenAI-hosted 
 
 ```ts
 const result = await generateText({
-  model: openai('gpt-5.2'),
+  model: openai('gpt-6-astra'),
   tools: {
     shell: openai.tools.shell({
       environment: {
@@ -147788,7 +148082,7 @@ Set `environment.type` to `'containerReference'` to use an existing container by
 
 ```ts
 const result = await generateText({
-  model: openai('gpt-5.2'),
+  model: openai('gpt-6-astra'),
   tools: {
     shell: openai.tools.shell({
       environment: {
@@ -147817,7 +148111,7 @@ For local execution (default or `type: 'local'`), your execute function must ret
 
 ```ts
 const result = await generateText({
-  model: openai('gpt-5.2'),
+  model: openai('gpt-6-astra'),
   tools: {
     shell: openai.tools.shell({
       environment: {
@@ -147848,7 +148142,7 @@ const result = await generateText({
 
 ```ts
 const result = await generateText({
-  model: openai('gpt-5.2'),
+  model: openai('gpt-6-astra'),
   tools: {
     shell: openai.tools.shell({
       execute: async ({ action }) => {
@@ -147886,7 +148180,7 @@ import { openai } from '@ai-sdk/openai';
 import { generateText, isStepCount } from 'ai';
 
 const result = await generateText({
-  model: openai('gpt-5.1'),
+  model: openai('gpt-6-astra'),
   tools: {
     apply_patch: openai.tools.applyPatch({
       execute: async ({ callId, operation }) => {
@@ -147927,7 +148221,7 @@ import { generateText, tool, isStepCount } from 'ai';
 import { z } from 'zod';
 
 const result = await generateText({
-  model: openai.responses('gpt-5.4'),
+  model: openai.responses('gpt-6-astra'),
   prompt: 'What is the weather in San Francisco?',
   stopWhen: isStepCount(10),
   tools: {
@@ -147979,7 +148273,7 @@ const crmNamespace = {
 };
 
 const result = await generateText({
-  model: openai.responses('gpt-5.4'),
+  model: openai.responses('gpt-6-astra'),
   prompt: 'List open orders for customer cust_123.',
   tools: {
     toolSearch: openai.tools.toolSearch(),
@@ -148024,7 +148318,7 @@ import { generateText, tool, isStepCount } from 'ai';
 import { z } from 'zod';
 
 const result = await generateText({
-  model: openai.responses('gpt-5.4'),
+  model: openai.responses('gpt-6-astra'),
   prompt: 'What is the weather in San Francisco?',
   stopWhen: isStepCount(10),
   tools: {
@@ -148103,7 +148397,7 @@ import { openai } from '@ai-sdk/openai';
 import { generateText, isStepCount } from 'ai';
 
 const result = await generateText({
-  model: openai.responses('gpt-5.2-codex'),
+  model: openai.responses('gpt-6-sol'),
   tools: {
     write_sql: openai.tools.customTool({
       description: 'Write a SQL SELECT query to answer the user question.',
@@ -148132,7 +148426,7 @@ import { openai } from '@ai-sdk/openai';
 import { streamText } from 'ai';
 
 const result = streamText({
-  model: openai.responses('gpt-5.2-codex'),
+  model: openai.responses('gpt-6-sol'),
   tools: {
     write_sql: openai.tools.customTool({
       description: 'Write a SQL SELECT query to answer the user question.',
@@ -148178,7 +148472,7 @@ import { openai } from '@ai-sdk/openai';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: openai.responses('gpt-5.5'),
+  model: openai.responses('gpt-6-astra'),
   tools: {
     weather: weatherTool,
     cityAttractions: cityAttractionsTool,
@@ -148229,7 +148523,7 @@ You can pass Image files as part of the message content using the 'image' type:
 
 ```ts
 const result = await generateText({
-  model: openai('gpt-5'),
+  model: openai('gpt-6-astra'),
   messages: [
     {
       role: 'user',
@@ -148279,7 +148573,7 @@ You can pass PDF files as part of the message content using the `file` type:
 
 ```ts
 const result = await generateText({
-  model: openai('gpt-5'),
+  model: openai('gpt-6-astra'),
   messages: [
     {
       role: 'user',
@@ -148332,7 +148626,7 @@ The OpenAI Responses API supports structured outputs. You can use `generateText`
 
 ```ts
 const result = await generateText({
-  model: openai('gpt-4.1'),
+  model: openai('gpt-6-astra'),
   output: Output.object({
     schema: z.object({
       recipe: z.object({
@@ -148386,7 +148680,7 @@ import {
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: openai('gpt-4.1-mini'),
+  model: openai('gpt-6-luna'),
   prompt:
     'Create a program that generates five random numbers between 1 and 100 with two decimal places, and show me the execution results. Also save the result to a file.',
   tools: {
@@ -148466,7 +148760,7 @@ import {
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: openai('gpt-5'),
+  model: openai('gpt-6-astra'),
   prompt: 'How many "r"s are in the word "strawberry"?',
   providerOptions: {
     openai: {
@@ -148509,7 +148803,7 @@ import {
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: openai('gpt-4.1-mini'),
+  model: openai('gpt-6-luna'),
   prompt:
     'Create a program that generates five random numbers between 1 and 100 with two decimal places, and show me the execution results. Also save the result to a file.',
   tools: {
@@ -148577,7 +148871,7 @@ import {
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: openai.responses('gpt-5.2'),
+  model: openai.responses('gpt-6-astra'),
   messages: conversationHistory,
   providerOptions: {
     openai: {
@@ -148642,7 +148936,7 @@ import {
 import { streamText } from 'ai';
 
 const result = streamText({
-  model: openai.responses('gpt-5.2'),
+  model: openai.responses('gpt-6-astra'),
   messages: conversationHistory,
   providerOptions: {
     openai: {
@@ -148740,13 +149034,13 @@ models differ.
 ### Chat Models
 
 You can create models that call the [OpenAI chat API](https://platform.openai.com/docs/api-reference/chat) using the `.chat()` factory method.
-The first argument is the model id, e.g. `gpt-4`.
+The first argument is the model id, e.g. `gpt-6-astra`.
 The OpenAI chat models support tool calls and some have multi-modal capabilities.
 Use this factory when a custom `baseURL` points at an OpenAI-compatible endpoint
 that implements Chat Completions but not the Responses API.
 
 ```ts
-const model = openai.chat('gpt-5');
+const model = openai.chat('gpt-6-astra');
 ```
 
 OpenAI chat models support also some model specific provider options that are not part of the [standard call settings](/docs/ai-sdk-core/settings).
@@ -148896,7 +149190,7 @@ import { openai, type OpenAILanguageModelChatOptions } from '@ai-sdk/openai';
 import { generateText } from 'ai';
 
 const { text, usage } = await generateText({
-  model: openai.chat('gpt-5'),
+  model: openai.chat('gpt-6-astra'),
   prompt: 'Invent a new holiday and describe its traditions.',
   providerOptions: {
     openai: {
@@ -148924,7 +149218,7 @@ import { openai, type OpenAILanguageModelChatOptions } from '@ai-sdk/openai';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: openai.chat('gpt-5'),
+  model: openai.chat('gpt-6-astra'),
   messages: [
     { role: 'system', content: 'You are a helpful assistant.' },
     { role: 'user', content: 'Tell me a joke.' },
@@ -148959,7 +149253,7 @@ import { generateText, Output } from 'ai';
 import { z } from 'zod';
 
 const result = await generateText({
-  model: openai.chat('gpt-4o-2024-08-06'),
+  model: openai.chat('gpt-6-astra'),
   providerOptions: {
     openai: {
       strictJsonSchema: false,
@@ -149029,7 +149323,7 @@ You can pass Image files as part of the message content using the 'image' type:
 
 ```ts
 const result = await generateText({
-  model: openai.chat('gpt-5'),
+  model: openai.chat('gpt-6-astra'),
   messages: [
     {
       role: 'user',
@@ -149069,7 +149363,7 @@ You can pass PDF files as part of the message content using the `file` type:
 
 ```ts
 const result = await generateText({
-  model: openai.chat('gpt-5'),
+  model: openai.chat('gpt-6-astra'),
   messages: [
     {
       role: 'user',
@@ -149124,7 +149418,7 @@ You can enable predicted outputs by adding the `prediction` option to the `provi
 
 ```ts highlight="15-18"
 const result = streamText({
-  model: openai.chat('gpt-5'),
+  model: openai.chat('gpt-4o'),
   messages: [
     {
       role: 'user',
@@ -149168,7 +149462,7 @@ You can use the `openai` provider option to set the [image input detail](https:/
 
 ```ts highlight="13-16"
 const result = await generateText({
-  model: openai.chat('gpt-5'),
+  model: openai.chat('gpt-6-astra'),
   messages: [
     {
       role: 'user',
@@ -149249,7 +149543,7 @@ import { openai } from '@ai-sdk/openai';
 import { generateText } from 'ai';
 
 const { text, usage } = await generateText({
-  model: openai.chat('gpt-4o-mini'),
+  model: openai.chat('gpt-6-luna'),
   prompt: `A 1024-token or longer prompt...`,
 });
 
@@ -149263,7 +149557,7 @@ import { openai, type OpenAILanguageModelChatOptions } from '@ai-sdk/openai';
 import { generateText } from 'ai';
 
 const { text, usage } = await generateText({
-  model: openai.chat('gpt-5'),
+  model: openai.chat('gpt-6-astra'),
   prompt: `A 1024-token or longer prompt...`,
   providerOptions: {
     openai: {
@@ -149285,7 +149579,7 @@ import {
 import { generateText } from 'ai';
 
 const { usage } = await generateText({
-  model: openai('gpt-5.6'),
+  model: openai('gpt-6-astra'),
   providerOptions: {
     openai: {
       promptCacheKey: 'tenant:acme:support-v1',
@@ -149324,7 +149618,7 @@ import { openai, type OpenAILanguageModelChatOptions } from '@ai-sdk/openai';
 import { generateText } from 'ai';
 
 const { text, usage } = await generateText({
-  model: openai.chat('gpt-5.5'),
+  model: openai.chat('gpt-6-astra'),
   prompt: `A 1024-token or longer prompt...`,
   providerOptions: {
     openai: {
@@ -149657,7 +149951,7 @@ You can create models that call the [OpenAI image generation API](https://platfo
 using the `.image()` factory method.
 
 ```ts
-const model = openai.image('dall-e-3');
+const model = openai.image('gpt-image-2.5-sunburst');
 ```
 
 <Note>
@@ -149824,10 +150118,10 @@ For more information on the available OpenAI image model options, see the [OpenA
 You can create models that call the [OpenAI transcription API](https://platform.openai.com/docs/api-reference/audio/transcribe)
 using the `.transcription()` factory method.
 
-The first argument is the model id e.g. `whisper-1`.
+The first argument is the model id e.g. `gpt-4o-transcribe`.
 
 ```ts
-const model = openai.transcription('whisper-1');
+const model = openai.transcription('gpt-4o-transcribe');
 ```
 
 You can also pass additional provider-specific options using the `providerOptions` argument. For example, supplying the input language in ISO-639-1 (e.g. `en`) format will improve accuracy and latency.
@@ -149837,7 +150131,7 @@ import { transcribe } from 'ai';
 import { openai, type OpenAITranscriptionModelOptions } from '@ai-sdk/openai';
 
 const result = await transcribe({
-  model: openai.transcription('whisper-1'),
+  model: openai.transcription('gpt-4o-transcribe'),
   audio: new Uint8Array([1, 2, 3, 4]),
   providerOptions: {
     openai: { language: 'en' } satisfies OpenAITranscriptionModelOptions,
@@ -149979,10 +150273,10 @@ Unsupported source and output settings surface as call warnings.
 You can create models that call the [OpenAI speech API](https://platform.openai.com/docs/api-reference/audio/speech)
 using the `.speech()` factory method.
 
-The first argument is the model id e.g. `tts-1`.
+The first argument is the model id e.g. `gpt-4o-mini-tts`.
 
 ```ts
-const model = openai.speech('tts-1');
+const model = openai.speech('gpt-4o-mini-tts');
 ```
 
 The `voice` argument can be set to one of OpenAI's available voices: `alloy`, `ash`, `coral`, `echo`, `fable`, `onyx`, `nova`, `sage`, or `shimmer`.
@@ -149992,7 +150286,7 @@ import { generateSpeech } from 'ai';
 import { openai } from '@ai-sdk/openai';
 
 const result = await generateSpeech({
-  model: openai.speech('tts-1'),
+  model: openai.speech('gpt-4o-mini-tts'),
   text: 'Hello, world!',
   voice: 'alloy', // OpenAI voice ID
 });
@@ -150005,7 +150299,7 @@ import { generateSpeech } from 'ai';
 import { openai, type OpenAISpeechModelOptions } from '@ai-sdk/openai';
 
 const result = await generateSpeech({
-  model: openai.speech('tts-1'),
+  model: openai.speech('gpt-4o-mini-tts'),
   text: 'Hello, world!',
   voice: 'alloy',
   providerOptions: {
@@ -150039,14 +150333,14 @@ const result = await generateSpeech({
 
 Create an experimental evaluation model with `openai.evaluationModel(modelId)`.
 It uses the Responses API with structured output to answer Choice, Score, and
-Boolean questions. Choose a model that supports structured output, such as `gpt-5.6-luna`.
+Boolean questions. Choose a model that supports structured output, such as `gpt-6-luna`.
 
 ```ts
 import { openai } from '@ai-sdk/openai';
 import { experimental_evaluate } from 'ai';
 
 const { answers } = await experimental_evaluate({
-  model: openai.evaluationModel('gpt-5.6-luna'),
+  model: openai.evaluationModel('gpt-6-luna'),
   state: 'I was charged twice.',
   questions: {
     requestsRefund: {
@@ -150499,6 +150793,54 @@ The following Azure-specific metadata may be returned:
 <Note>
   The providerMetadata is only returned with the default responses API, and is
   not supported when using 'azure.chat' or 'azure.completion'
+</Note>
+
+#### Changing Reasoning Effort Mid-Conversation
+
+Azure Responses models support message-level reasoning effort updates through
+`providerOptions.azure.reasoningEffortUpdate`. The `openai` namespace is also
+accepted when the message has no `azure` options. Use the
+`OpenAIResponsesSystemMessageOptions` type exported from `@ai-sdk/azure` to
+validate these options:
+
+```ts
+import { azure, type OpenAIResponsesSystemMessageOptions } from '@ai-sdk/azure';
+import { generateText } from 'ai';
+
+const result = await generateText({
+  // Use the name of your GPT-6 deployment.
+  model: azure.responses('gpt-6-astra'),
+  reasoning: 'low',
+  allowSystemInMessages: true,
+  messages: [
+    {
+      role: 'system',
+      content: '',
+      providerOptions: {
+        azure: {
+          reasoningEffortUpdate: 'high',
+        } satisfies OpenAIResponsesSystemMessageOptions,
+      },
+    },
+    { role: 'user', content: 'Analyze the failure modes of this migration.' },
+  ],
+});
+```
+
+Keep the request-level `reasoning` unchanged throughout the conversation and
+retain earlier effort updates when resending message history. These updates
+also work with `streamText`. See the [OpenAI reasoning effort
+guide](/providers/ai-sdk-providers/openai#changing-reasoning-effort-mid-conversation)
+for continuation, compaction, and configuration restrictions.
+
+<Note>
+  The SDK infers support for effort updates from the deployment name passed to
+  `azure.responses()`. The name must identify a supported GPT-6-or-later model
+  family, such as `gpt-6-astra`. A custom name such as `production` is not
+  recognized, even when the underlying deployment runs GPT-6. In that case,
+  message-level updates throw, and request-level updates are omitted with a
+  warning. Setting `forceReasoning: true` does not override this capability
+  check.
 </Note>
 
 #### Web Search Tool
@@ -151329,18 +151671,18 @@ You can use the following optional settings to customize the Anthropic provider 
 ## Language Models
 
 You can create models that call the [Anthropic Messages API](https://docs.anthropic.com/claude/reference/messages_post) using the provider instance.
-The first argument is the model id, e.g. `claude-3-haiku-20240307`.
+The first argument is the model id, e.g. `claude-haiku-4-5`.
 Some models have multi-modal capabilities.
 
 ```ts
-const model = anthropic('claude-3-haiku-20240307');
+const model = anthropic('claude-haiku-4-5');
 ```
 
 You can also use the following aliases for model creation:
 
-- `anthropic.languageModel('claude-3-haiku-20240307')` - Creates a language model
-- `anthropic.chat('claude-3-haiku-20240307')` - Alias for `languageModel`
-- `anthropic.messages('claude-3-haiku-20240307')` - Alias for `languageModel`
+- `anthropic.languageModel('claude-haiku-4-5')` - Creates a language model
+- `anthropic.chat('claude-haiku-4-5')` - Alias for `languageModel`
+- `anthropic.messages('claude-haiku-4-5')` - Alias for `languageModel`
 
 You can use Anthropic language models to generate text with the `generateText` function:
 
@@ -151349,7 +151691,7 @@ import { anthropic } from '@ai-sdk/anthropic';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: anthropic('claude-3-haiku-20240307'),
+  model: anthropic('claude-haiku-4-5'),
   prompt: 'Write a vegetarian lasagna recipe for 4 people.',
 });
 ```
@@ -151444,7 +151786,7 @@ import { streamText, tool } from 'ai';
 import { z } from 'zod';
 
 const result = streamText({
-  model: anthropic('claude-sonnet-4-20250514'),
+  model: anthropic('claude-sonnet-5'),
   tools: {
     writeFile: tool({
       description: 'Write content to a file',
@@ -151488,7 +151830,7 @@ import { anthropic, AnthropicLanguageModelOptions } from '@ai-sdk/anthropic';
 import { generateText } from 'ai';
 
 const { text, usage } = await generateText({
-  model: anthropic('claude-opus-4-20250514'),
+  model: anthropic('claude-opus-5-5'),
   prompt: 'How many people will live in the world in 2040?',
   providerOptions: {
     anthropic: {
@@ -151533,7 +151875,7 @@ import { anthropic, AnthropicLanguageModelOptions } from '@ai-sdk/anthropic';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: anthropic('claude-opus-4-8'),
+  model: anthropic('claude-opus-5-5'),
   prompt: 'Research the pros and cons of Rust vs Go for building CLI tools.',
   providerOptions: {
     anthropic: {
@@ -151571,7 +151913,7 @@ import { anthropic, AnthropicLanguageModelOptions } from '@ai-sdk/anthropic';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: anthropic('claude-opus-4-6'),
+  model: anthropic('claude-opus-5-5'),
   prompt: 'Summarize the key points of this document.',
   providerOptions: {
     anthropic: {
@@ -151616,7 +151958,7 @@ import { anthropic, AnthropicLanguageModelOptions } from '@ai-sdk/anthropic';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: anthropic('claude-fable-5'),
+  model: anthropic('claude-fable-5-1'),
   prompt: 'Explain the history of cryptography.',
   providerOptions: {
     anthropic: {
@@ -151633,11 +151975,11 @@ import { anthropic, AnthropicLanguageModelOptions } from '@ai-sdk/anthropic';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: anthropic('claude-fable-5'),
+  model: anthropic('claude-fable-5-1'),
   prompt: 'Explain the history of cryptography.',
   providerOptions: {
     anthropic: {
-      fallbacks: [{ model: 'claude-fable-5' }],
+      fallbacks: [{ model: 'claude-fable-5-1' }],
     } satisfies AnthropicLanguageModelOptions,
   },
 });
@@ -151670,7 +152012,7 @@ import { generateText, tool } from 'ai';
 import { z } from 'zod';
 
 const result = await generateText({
-  model: anthropic('claude-sonnet-4-5'),
+  model: anthropic('claude-sonnet-5'),
   prompt: 'Use the bash tool to run: echo hello',
   tools: { bash: tool({ inputSchema: z.object({ command: z.string() }) }) },
   providerOptions: {
@@ -151980,7 +152322,89 @@ const result = await generateText({
 });
 ```
 
-#### Compaction
+#### On-Demand Compaction
+
+Use the `compaction` provider option to ask Anthropic to summarize the supplied
+conversation immediately. The provider automatically adds the
+`compact-2026-09-04` beta header.
+
+```ts highlight="10-15,21-22"
+import { anthropic, AnthropicLanguageModelOptions } from '@ai-sdk/anthropic';
+import { generateText, ModelMessage } from 'ai';
+
+const history: ModelMessage[] = [
+  { role: 'user', content: 'Help me design a recipe application.' },
+  { role: 'assistant', content: 'Start with Recipe and Ingredient.' },
+  { role: 'user', content: 'Recipe also needs a title and servings.' },
+];
+
+const summary = await generateText({
+  model: anthropic('claude-opus-5'),
+  messages: history,
+  maxOutputTokens: 4096,
+  providerOptions: {
+    anthropic: {
+      compaction: {
+        type: 'summarize',
+        instructions: 'Preserve all agreed entities and fields.',
+      },
+    } satisfies AnthropicLanguageModelOptions,
+  },
+});
+
+if (summary.rawFinishReason === 'compaction') {
+  const [compactionMessage] = summary.finalStep.response.messages;
+
+  const continuation = await generateText({
+    model: anthropic('claude-opus-5'),
+    messages: [
+      compactionMessage,
+      { role: 'user', content: 'Which fields should be required?' },
+    ],
+  });
+
+  console.log(continuation.text);
+}
+```
+
+Anthropic returns the summary as a text part whose
+`providerMetadata.anthropic.type` is `compaction`. Its opaque signature is
+available as `providerMetadata.anthropic.signature`. Response messages copy
+that metadata to `providerOptions`, so passing
+`summary.finalStep.response.messages` back to the AI SDK preserves the signed
+block and automatically adds the beta header on the continuation request.
+
+Check `rawFinishReason` before reading the response block. Anthropic can return
+a successful HTTP response without a summary when summarization ends for
+another reason, such as `max_tokens`, `model_context_window_exceeded`,
+`tool_use`, `refusal`, or `end_turn`. In that case, keep the existing history
+and retry later; the unsuccessful summarization is still included in
+`providerMetadata.anthropic.iterations`.
+
+Send exactly one signed compaction block on continuation requests. It must be
+the first content block in `messages` and must be replayed without changing its
+text or signature. Remove the messages it summarizes before continuing. Keep
+the same system prompt and tool definitions on the compaction request that you
+use for the conversation, especially when preserving later thinking blocks.
+
+Before requesting compaction, resolve any unfinished tool call from the last
+assistant turn. Do not combine `compaction` with `contextManagement`,
+`stopSequences`, structured output, a required or named `toolChoice`, or a
+`taskBudget.remaining` value. Also omit `taskBudget.remaining` from later
+requests that carry the signed block.
+
+On-demand compaction usage is reported in
+`providerMetadata.anthropic.iterations`. Sum the iteration usage when
+calculating the tokens consumed by the summarization request.
+
+On-demand compaction can also be initiated in a Message Batch. Configure the
+`compaction` provider option on the individual batch request; the provider
+automatically adds `compact-2026-09-04` to the batch beta header.
+
+For more details, see
+[Anthropic's on-demand compaction documentation](https://platform.claude.com/docs/en/build-with-claude/compaction-on-demand).
+
+#### Threshold Compaction
 
 The `compact_20260112` edit type automatically summarizes earlier conversation context when token limits are reached. This is useful for long-running conversations where you want to preserve the essence of earlier exchanges while staying within token limits.
 
@@ -151989,7 +152413,7 @@ import { anthropic, AnthropicLanguageModelOptions } from '@ai-sdk/anthropic';
 import { streamText } from 'ai';
 
 const result = streamText({
-  model: anthropic('claude-opus-4-6'),
+  model: anthropic('claude-opus-5-5'),
   messages: conversationHistory,
   providerOptions: {
     anthropic: {
@@ -152113,7 +152537,7 @@ import { generateText } from 'ai';
 const errorMessage = '... long error message ...';
 
 const result = await generateText({
-  model: anthropic('claude-sonnet-4-5'),
+  model: anthropic('claude-sonnet-5'),
   messages: [
     {
       role: 'user',
@@ -152147,7 +152571,7 @@ You can also use cache control on system messages by providing multiple system m
 
 ```ts highlight="3,7-9"
 const result = await generateText({
-  model: anthropic('claude-sonnet-4-5'),
+  model: anthropic('claude-sonnet-5'),
   messages: [
     {
       role: 'system',
@@ -152484,7 +152908,7 @@ const webSearchTool = anthropic.tools.webSearch_20260318({
 });
 
 const result = await generateText({
-  model: anthropic('claude-opus-5'),
+  model: anthropic('claude-opus-5-5'),
   prompt: 'What are the latest developments in AI?',
   tools: {
     web_search: webSearchTool,
@@ -152543,7 +152967,7 @@ const webSearchTool = anthropic.tools.webSearch_20260318({
 });
 
 const result = await generateText({
-  model: anthropic('claude-opus-5'),
+  model: anthropic('claude-opus-5-5'),
   prompt: 'Find local news about technology',
   tools: {
     web_search: webSearchTool,
@@ -152569,7 +152993,7 @@ import { anthropic } from '@ai-sdk/anthropic';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: anthropic('claude-opus-5'),
+  model: anthropic('claude-opus-5-5'),
   prompt:
     'What is this page about? https://en.wikipedia.org/wiki/Maglemosian_culture',
   tools: {
@@ -152661,7 +153085,7 @@ import { generateText, tool } from 'ai';
 import { z } from 'zod';
 
 const result = await generateText({
-  model: anthropic('claude-sonnet-4-5'),
+  model: anthropic('claude-sonnet-5'),
   prompt: 'What is the weather in San Francisco?',
   tools: {
     toolSearch: anthropic.tools.toolSearchBm25_20251119(),
@@ -152691,7 +153115,7 @@ For more precise tool matching, you can use the regex variant:
 
 ```ts
 const result = await generateText({
-  model: anthropic('claude-sonnet-4-5'),
+  model: anthropic('claude-sonnet-5'),
   prompt: 'Get the weather data',
   tools: {
     toolSearch: anthropic.tools.toolSearchRegex_20251119(),
@@ -152712,7 +153136,7 @@ import { generateText, tool } from 'ai';
 import { z } from 'zod';
 
 const result = await generateText({
-  model: anthropic('claude-sonnet-4-5'),
+  model: anthropic('claude-sonnet-5'),
   prompt: 'What is the weather in San Francisco?',
   tools: {
     // Custom search tool
@@ -152872,7 +153296,7 @@ import { anthropic, AnthropicLanguageModelOptions } from '@ai-sdk/anthropic';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: anthropic('claude-sonnet-4-5'),
+  model: anthropic('claude-sonnet-5'),
   prompt: `Call the echo tool with "hello world". what does it respond with back?`,
   providerOptions: {
     anthropic: {
@@ -152944,7 +153368,7 @@ Web search errors throw exceptions that you can catch:
 ```ts
 try {
   const result = await generateText({
-    model: anthropic('claude-opus-4-20250514'),
+    model: anthropic('claude-opus-5-5'),
     prompt: 'Search for something',
     tools: {
       web_search: webSearchTool,
@@ -152963,7 +153387,7 @@ Web search errors are delivered as error parts in the stream:
 
 ```ts
 const result = await streamText({
-  model: anthropic('claude-opus-4-20250514'),
+  model: anthropic('claude-opus-5-5'),
   prompt: 'Search for something',
   tools: {
     web_search: webSearchTool,
@@ -153058,7 +153482,7 @@ Code execution errors are delivered as tool result parts in the response:
 
 ```ts
 const result = await generateText({
-  model: anthropic('claude-opus-4-20250514'),
+  model: anthropic('claude-opus-5-5'),
   prompt: 'Execute some Python script',
   tools: {
     code_execution: codeExecutionTool,
@@ -153083,7 +153507,7 @@ Code execution errors are delivered as error parts in the stream:
 
 ```ts
 const result = await streamText({
-  model: anthropic('claude-opus-4-20250514'),
+  model: anthropic('claude-opus-5-5'),
   prompt: 'Execute some Python script',
   tools: {
     code_execution: codeExecutionTool,
@@ -153243,7 +153667,7 @@ Option 1: URL-based PDF document
 
 ```ts
 const result = await generateText({
-  model: anthropic('claude-sonnet-4-5'),
+  model: anthropic('claude-sonnet-5'),
   messages: [
     {
       role: 'user',
@@ -153269,7 +153693,7 @@ Option 2: Base64-encoded PDF document
 
 ```ts
 const result = await generateText({
-  model: anthropic('claude-sonnet-4-5'),
+  model: anthropic('claude-sonnet-5'),
   messages: [
     {
       role: 'user',
@@ -153424,14 +153848,30 @@ You can use the following optional settings to customize the Open Responses prov
 
   API key that is sent as a bearer token in the `Authorization` header.
 
-- **headers** _Record&lt;string,string&gt;_
+- **headers** _Record&lt;string,string&gt; | () => Record&lt;string,string&gt;_
 
-  Custom headers to include in the requests.
+  Custom headers to include in requests. Pass a function when headers must be
+  resolved lazily for each request.
 
 - **fetch** _(input: RequestInfo, init?: RequestInit) => Promise&lt;Response&gt;_
 
   Custom [fetch](https://developer.mozilla.org/en-US/docs/Web/API/fetch) implementation.
   Defaults to the global `fetch` function.
+
+- **failedResponseHandler** _ResponseHandler&lt;APICallError&gt;_
+
+  Custom handler for non-successful HTTP responses. Use this when an endpoint
+  returns an error envelope that differs from the default OpenAI-compatible
+  `{ error: { message, type, param, code } }` shape.
+
+- **getResponseErrorMetadata** _function_
+
+  Extracts optional `statusCode` and `isRetryable` metadata from a response error
+  object, including endpoint-specific fields. Applies to generation failures and
+  streaming `response.failed` and `error` events. The standard Open Responses
+  error fields are `code` and `message`; endpoint-specific status fields require
+  this callback. When only a status code is supplied, the SDK derives retryability
+  from it. HTTP failures are handled separately by `failedResponseHandler`.
 
 - **strictResponseInput** _boolean_
 
@@ -153439,6 +153879,21 @@ You can use the following optional settings to customize the Open Responses prov
   Assistant messages without an item ID are sent as easy input messages, while
   messages with a genuine provider item ID are sent as complete output items.
   Defaults to `false`.
+
+- **customToolId** _`${string}.${string}`_
+
+  Provider-tool ID used by `provider.tools.customTool`. Defaults to
+  `open-responses.custom`.
+
+- **structuredOutputs** _boolean_
+
+  Whether JSON response formats are sent to the endpoint. When `false`,
+  structured-output requests are omitted with an unsupported warning.
+  Defaults to `true`.
+
+- **userAgentSuffix** _string_
+
+  Overrides the default `ai-sdk/open-responses/<version>` user-agent suffix.
 
 ### Endpoint Examples
 
@@ -153570,6 +154025,39 @@ set, `providerOptions` `reasoningEffort` takes precedence over the top-level
 combined with either reasoning effort setting. Reasoning support and accepted
 effort values depend on the endpoint and model; unsupported values may be
 rejected or ignored by the endpoint.
+
+## Custom Tools
+
+Endpoints with OpenAI-compatible custom-tool support can call tools with raw
+string inputs, optionally constrained by a regex or Lark grammar. These tools
+execute in your application:
+
+```ts
+import { generateText, isStepCount } from 'ai';
+
+const result = await generateText({
+  model: openResponses('your-model-id'),
+  prompt: 'Write a SQL query that lists active users.',
+  tools: {
+    write_sql: openResponses.tools.customTool({
+      description: 'Return a SQL SELECT query.',
+      format: {
+        type: 'grammar',
+        syntax: 'regex',
+        definition: 'SELECT .+',
+      },
+      execute: async sql => runReadOnlyQuery(sql),
+    }),
+  },
+  stopWhen: isStepCount(3),
+});
+```
+
+The endpoint must support the OpenAI-compatible `custom` tool,
+`custom_tool_call`, and `custom_tool_call_output` wire types, as OpenAI and
+QuiverAI do. These are compatibility extensions, not part of the Open Responses
+2026-04-24 specification. Custom-tool results can include text, images, and files
+when supported by the endpoint.
 
 ## File Inputs
 
@@ -153854,7 +154342,7 @@ You can create models that call the Anthropic Messages API on AWS using the prov
 ```ts
 import { anthropicAws } from '@ai-sdk/anthropic-aws';
 
-const model = anthropicAws('claude-sonnet-4-6');
+const model = anthropicAws('claude-sonnet-5');
 ```
 
 Model IDs are identical to the first-party Anthropic API. See the [Anthropic provider docs](/providers/ai-sdk-providers/anthropic#language-models) for the full list of language model options, prompt caching, computer use, web search, code execution, and Agent Skills. All of these work identically here because Claude Platform on AWS uses Anthropic's runtime directly.
@@ -153866,7 +154354,7 @@ import { anthropicAws } from '@ai-sdk/anthropic-aws';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: anthropicAws('claude-sonnet-4-6'),
+  model: anthropicAws('claude-sonnet-5'),
   prompt: 'Invent a new holiday and describe its traditions.',
 });
 ```
@@ -154209,7 +154697,7 @@ import { amazonBedrock } from '@ai-sdk/amazon-bedrock';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: amazonBedrock('anthropic.claude-3-haiku-20240307-v1:0'),
+  model: amazonBedrock('us.anthropic.claude-haiku-4-5-20251001-v1:0'),
   messages: [
     {
       role: 'user',
@@ -154425,7 +154913,7 @@ const cyberpunkAnalysis =
   '... literary analysis of cyberpunk themes and concepts ...';
 
 const result = await generateText({
-  model: amazonBedrock('anthropic.claude-3-5-sonnet-20241022-v2:0'),
+  model: amazonBedrock('us.anthropic.claude-sonnet-5'),
   messages: [
     {
       role: 'system',
@@ -154461,7 +154949,7 @@ const cyberpunkAnalysis =
   '... literary analysis of cyberpunk themes and concepts ...';
 
 const result = streamText({
-  model: amazonBedrock('anthropic.claude-3-5-sonnet-20241022-v2:0'),
+  model: amazonBedrock('us.anthropic.claude-sonnet-5'),
   messages: [
     {
       role: 'assistant',
@@ -155471,10 +155959,10 @@ You can use the following optional settings to customize the Bedrock Anthropic p
 ### Language Models
 
 You can create models that call the [Anthropic Messages API](https://docs.anthropic.com/claude/reference/messages_post) using the provider instance.
-The first argument is the model id, e.g. `us.anthropic.claude-3-5-sonnet-20241022-v2:0`.
+The first argument is the model id, e.g. `us.anthropic.claude-sonnet-5`.
 
 ```ts
-const model = bedrockAnthropic('us.anthropic.claude-3-5-sonnet-20241022-v2:0');
+const model = bedrockAnthropic('us.anthropic.claude-sonnet-5');
 ```
 
 You can use Bedrock Anthropic language models to generate text with the `generateText` function:
@@ -155484,7 +155972,7 @@ import { bedrockAnthropic } from '@ai-sdk/amazon-bedrock/anthropic';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: bedrockAnthropic('us.anthropic.claude-3-5-sonnet-20241022-v2:0'),
+  model: bedrockAnthropic('us.anthropic.claude-sonnet-5'),
   prompt: 'Write a vegetarian lasagna recipe for 4 people.',
 });
 ```
@@ -155508,7 +155996,7 @@ import { bedrockAnthropic } from '@ai-sdk/amazon-bedrock/anthropic';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: bedrockAnthropic('us.anthropic.claude-sonnet-4-5-20250929-v1:0'),
+  model: bedrockAnthropic('us.anthropic.claude-sonnet-5'),
   messages: [
     {
       role: 'system',
@@ -155704,7 +156192,7 @@ on how to integrate reasoning into your chatbot.
 
 ## Bedrock Mantle Provider Usage
 
-The Bedrock Mantle provider offers access to OpenAI-compatible models through Amazon Bedrock's Mantle API at `https://bedrock-mantle.{region}.api.aws/v1`. This endpoint supports the Chat Completions API and the Responses API, and provides access to models that may only be available through the Mantle endpoint (such as `openai.gpt-oss-120b`).
+The Bedrock Mantle provider offers access to OpenAI-compatible models through Amazon Bedrock's Mantle API. It automatically selects the `/v1` or `/openai/v1` route based on the model. These endpoints support the Chat Completions API and the Responses API, and provide access to models that may only be available through the Mantle endpoint (such as `openai.gpt-oss-120b`).
 
 ### Provider Instance
 
@@ -155760,7 +156248,9 @@ You can use the following optional settings to customize the Bedrock Mantle prov
 - **baseURL** _string_
 
   Base URL for the Bedrock Mantle API calls.
-  Defaults to `https://bedrock-mantle.{region}.api.aws/v1`.
+  By default, the provider selects either
+  `https://bedrock-mantle.{region}.api.aws/v1` or
+  `https://bedrock-mantle.{region}.api.aws/openai/v1` based on the model.
 
 - **headers** _Record&lt;string, string | undefined&gt;_
 
@@ -155931,15 +156421,15 @@ You can use the following optional settings to customize the Groq provider insta
 ## Language Models
 
 You can create [Groq models](https://console.groq.com/docs/models) using a provider instance.
-The first argument is the model id, e.g. `gemma2-9b-it`.
+The first argument is the model id, e.g. `llama-3.1-8b-instant`.
 
 ```ts
-const model = groq('gemma2-9b-it');
+const model = groq('llama-3.1-8b-instant');
 ```
 
 ### Reasoning Models
 
-Groq offers several reasoning models such as `qwen-qwq-32b` and `deepseek-r1-distill-llama-70b`.
+Groq offers reasoning models such as `qwen/qwen3.6-27b` and `openai/gpt-oss-120b`.
 You can configure how the reasoning is exposed in the generated text by using the `reasoningFormat` option.
 It supports the options `parsed`, `hidden`, and `raw`.
 
@@ -155966,7 +156456,7 @@ The following optional provider options are available for Groq language models:
 
 - **reasoningFormat** _'parsed' | 'raw' | 'hidden'_
 
-  Controls how reasoning is exposed in the generated text. Only supported by reasoning models like `qwen-qwq-32b` and `deepseek-r1-distill-*` models.
+  Controls how reasoning is exposed in the generated text. Supported by reasoning models such as `qwen/qwen3.6-27b`; available formats depend on the model.
 
   For a complete list of reasoning models and their capabilities, see [Groq's reasoning models documentation](https://console.groq.com/docs/reasoning).
 
@@ -156056,7 +156546,7 @@ import { generateText, Output } from 'ai';
 import { z } from 'zod';
 
 const result = await generateText({
-  model: groq('gemma2-9b-it'),
+  model: groq('llama-3.1-8b-instant'),
   providerOptions: {
     groq: {
       structuredOutputs: false,
@@ -156094,7 +156584,7 @@ import { groq } from '@ai-sdk/groq';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: groq('gemma2-9b-it'),
+  model: groq('llama-3.1-8b-instant'),
   prompt: 'Write a vegetarian lasagna recipe for 4 people.',
 });
 ```
@@ -156269,7 +156759,7 @@ const result = await generateText({
 
 // ❌ Unsupported - will show warning and ignore tool
 const result = await generateText({
-  model: groq('gemma2-9b-it'),
+  model: groq('llama-3.1-8b-instant'),
   tools: { browser_search: groq.tools.browserSearch({}) },
 });
 // Warning: "Browser search is only supported on models: openai/gpt-oss-20b, openai/gpt-oss-120b"
@@ -159563,14 +160053,14 @@ The `vertexRagStore` tool accepts the following configuration options:
 
 ### Image Outputs
 
-Gemini models with image generation capabilities (e.g. `gemini-2.5-flash-image`) support generating images as part of a multimodal response. Images are exposed as files in the response.
+Gemini models with image generation capabilities (e.g. `gemini-3.1-flash-image-preview`) support generating images as part of a multimodal response. Images are exposed as files in the response.
 
 ```ts
 import { google } from '@ai-sdk/google';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: google('gemini-2.5-flash-image'),
+  model: google('gemini-3.1-flash-image-preview'),
   prompt:
     'Create a picture of a nano banana dish in a fancy restaurant with a Gemini theme',
 });
@@ -159728,7 +160218,7 @@ You can pass a `webhookUrl` to receive a notification when the batch reaches a t
 import { google } from '@ai-sdk/google';
 import { experimental_startBatch as startBatch } from 'ai';
 
-const model = 'gemini-3.6-flash';
+const model = 'gemini-3.8-flash';
 
 const batch = await startBatch({
   provider: google,
@@ -160218,7 +160708,7 @@ import { google, type GoogleInteractionsVideoOptions } from '@ai-sdk/google';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: google.interactions('gemini-3.7-flash'),
+  model: google.interactions('gemini-3.8-flash'),
   messages: [
     {
       role: 'user',
@@ -160418,7 +160908,7 @@ import {
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: google.interactions('gemini-2.5-flash-image'),
+  model: google.interactions('gemini-3.1-flash-image-preview'),
   prompt:
     'Tell me a three sentence bedtime story about a unicorn, accompanied by a suitable illustration.',
   providerOptions: {
@@ -160682,7 +161172,7 @@ You can create models that call the [Google Generative AI embeddings API](https:
 using the `.embedding()` factory method.
 
 ```ts
-const model = google.embedding('gemini-embedding-001');
+const model = google.embedding('gemini-embedding-2');
 ```
 
 The Google provider sends API calls to the right endpoint based on the type of embedding:
@@ -160718,7 +161208,7 @@ import { google, type GoogleEmbeddingModelOptions } from '@ai-sdk/google';
 import { embedMany } from 'ai';
 
 const { embeddings } = await embedMany({
-  model: google.embedding('gemini-embedding-2-preview'),
+  model: google.embedding('gemini-embedding-2'),
   values: ['sunny day at the beach', 'rainy afternoon in the city'],
   providerOptions: {
     google: {
@@ -160772,14 +161262,14 @@ output capabilities through the `:generateContent` API.
 
 ### Gemini Image Models
 
-[Gemini image models](https://ai.google.dev/gemini-api/docs/image-generation) (e.g. `gemini-2.5-flash-image`) are technically multimodal output language models, but they can be used with the `generateImage()` function for a simpler image generation experience. Internally, the provider calls the language model API with `responseModalities: ['IMAGE']`.
+[Gemini image models](https://ai.google.dev/gemini-api/docs/image-generation) (e.g. `gemini-3.1-flash-image-preview`) are technically multimodal output language models, but they can be used with the `generateImage()` function for a simpler image generation experience. Internally, the provider calls the language model API with `responseModalities: ['IMAGE']`.
 
 ```ts
 import { google } from '@ai-sdk/google';
 import { generateImage } from 'ai';
 
 const { image } = await generateImage({
-  model: google.image('gemini-2.5-flash-image'),
+  model: google.image('gemini-3.1-flash-image-preview'),
   prompt: 'A photorealistic image of a cat wearing a wizard hat',
   aspectRatio: '1:1',
 });
@@ -160795,7 +161285,7 @@ import fs from 'node:fs';
 const sourceImage = fs.readFileSync('./cat.png');
 
 const { image } = await generateImage({
-  model: google.image('gemini-2.5-flash-image'),
+  model: google.image('gemini-3.1-flash-image-preview'),
   prompt: {
     text: 'Add a small wizard hat to this cat',
     images: [sourceImage],
@@ -160810,7 +161300,7 @@ import { google } from '@ai-sdk/google';
 import { generateImage } from 'ai';
 
 const { image } = await generateImage({
-  model: google.image('gemini-2.5-flash-image'),
+  model: google.image('gemini-3.1-flash-image-preview'),
   prompt: {
     text: 'Add a small wizard hat to this cat',
     images: ['https://example.com/cat.png'],
@@ -160873,45 +161363,100 @@ console.log(result.providerMetadata?.google?.groundingMetadata);
 You can create models that call the [Gemini text-to-speech API](https://ai.google.dev/gemini-api/docs/speech-generation)
 using the `.speech()` factory method.
 
-The first argument is the model id e.g. `gemini-2.5-flash-preview-tts`.
+The first argument is the model ID, such as `gemini-3.8-flash-tts` or
+`gemini-3.8-flash-lite-tts`. Speech generation uses the `generateContent` API.
 
 ```ts
-const model = google.speech('gemini-2.5-flash-preview-tts');
+const model = google.speech('gemini-3.8-flash-tts');
 ```
 
 The `voice` argument can be set to one of Gemini's [30 prebuilt voices](https://ai.google.dev/gemini-api/docs/speech-generation#voices)
-e.g. `Kore`, `Puck`, `Zephyr`, or `Charon`. Voice names are case-sensitive. It defaults to `Kore`.
+e.g. `Kore`, `Puck`, `Zephyr`, or `Charon`. Voice names are case-sensitive.
+The default voice is `Kore`. Custom voice IDs and replication keys are not supported.
 
 ```ts highlight="6"
 import { generateSpeech } from 'ai';
 import { google } from '@ai-sdk/google';
 
 const result = await generateSpeech({
-  model: google.speech('gemini-2.5-flash-preview-tts'),
+  model: google.speech('gemini-3.8-flash-tts'),
   text: 'Hello, world!',
   voice: 'Kore', // Gemini voice name
 });
 ```
 
-By default the generated audio is returned as a playable WAV file (`result.audio.mediaType` is
-`audio/wav`). Set `outputFormat: 'pcm'` to receive the raw signed 16-bit little-endian mono PCM
-bytes instead; the sample rate is reported in `result.providerMetadata.google.sampleRate`.
+By default the generated audio is returned as a playable WAV file
+(`result.audio.mediaType` is `audio/wav`). Gemini 3.8 returns a complete WAV file;
+the provider passes those bytes through unchanged. Older models return raw PCM,
+which the provider wraps in a WAV container. Write `result.audio.uint8Array`
+directly to disk without adding another WAV header.
 
-Gemini honors natural-language style direction. The `instructions` argument is prepended to the
-spoken text, so `instructions: 'Say cheerfully'` with `text: 'Hello'` speaks `Say cheerfully: Hello`.
+Gemini 3.8 supports the following `outputFormat` values:
+
+| Format | Values                 | Result                       |
+| ------ | ---------------------- | ---------------------------- |
+| WAV    | `wav`, `audio/wav`     | WAV with a RIFF header       |
+| PCM    | `pcm`, `audio/l16`     | Headerless signed 16-bit PCM |
+| Mu-law | `mulaw`, `audio/mulaw` | Headerless mu-law audio      |
+| A-law  | `alaw`, `audio/alaw`   | Headerless A-law audio       |
+
+These map to `generationConfig.responseFormat.audio.mimeType` in
+`generateContent`. Older models support `wav` and `pcm`. The source MIME type and
+sample rate are available in `result.providerMetadata.google`.
+
+Gemini 2.5 and 3.1 model IDs retain the legacy request format. Other model IDs,
+including custom aliases, use the structured speech format.
+
+### Speech directions in Gemini 3.8
+
+Gemini 3.8 treats text as a verbatim transcript. The provider sends `instructions`
+as `speechMetadata.style`, leaving the text unchanged. You can also supply
+`providerOptions.google.speechMetadata` with `style` and `speaker` fields.
+An explicit style overrides `instructions`, including an empty style string.
+
+```ts
+const result = await generateSpeech({
+  model: google.speech('gemini-3.8-flash-tts'),
+  text: 'Welcome back. <short pause> It is good to see you. <laugh>',
+  instructions: 'Warm, relaxed, and speaking slowly',
+});
+```
+
+Put sustained delivery directions such as whispering, speaking slowly, or being
+out of breath in metadata. Keep momentary vocal events and pauses such as
+`<laugh>`, `<sigh>`, `<cough>`, `<breath>`, and `<short pause>` in the transcript.
+Avoid sound-effect tags such as applause or thuds. The provider preserves inline
+tags as written.
+
+For Gemini 3.1 and earlier, the provider retains the existing behavior of
+prepending `instructions` to single-speaker text. It ignores instructions with a
+warning for older multi-speaker requests. Structured `turns` and `speechMetadata`
+require Gemini 3.8.
 
 ### Multi-speaker audio
 
-For multi-speaker dialogue, pass a `multiSpeakerVoiceConfig` through `providerOptions`. Each speaker
-name must match a name used in the input text. When set, it overrides the top-level `voice`.
+For Gemini 3.8 dialogue, pass `multiSpeakerVoiceConfig` and `turns` through
+`providerOptions.google`. Every turn must include `speechMetadata.speaker`
+matching a configured speaker; missing or unknown speakers produce an error
+before the request is sent. Speaker labels belong in metadata, not the text.
 
-```ts highlight="7-22"
+The `turns` array replaces the top-level text, so pass `text: ''`. The combined
+turn text must be non-empty. Passing
+nonempty top-level text with turns produces a warning. Put metadata on each turn
+instead of combining turns with top-level `speechMetadata`. Each turn's style
+overrides `instructions`; turns without a style inherit `instructions`.
+
+`multiSpeakerVoiceConfig` overrides the top-level `voice`. Each `voiceConfig`
+uses `prebuiltVoiceConfig: { voiceName: 'Kore' }`. Google supports up to two
+prebuilt voices in a multi-speaker request.
+
+```ts
 import { generateSpeech } from 'ai';
 import { google, type GoogleSpeechModelOptions } from '@ai-sdk/google';
 
 const result = await generateSpeech({
-  model: google.speech('gemini-2.5-flash-preview-tts'),
-  text: 'Joe: How are you? Jane: Doing great, thanks!',
+  model: google.speech('gemini-3.8-flash-lite-tts'),
+  text: '',
   providerOptions: {
     google: {
       multiSpeakerVoiceConfig: {
@@ -160926,10 +161471,24 @@ const result = await generateSpeech({
           },
         ],
       },
+      turns: [
+        {
+          text: 'How are you?',
+          speechMetadata: { speaker: 'Joe', style: 'curious' },
+        },
+        {
+          text: '<laugh> Doing great, thanks!',
+          speechMetadata: { speaker: 'Jane', style: 'cheerful' },
+        },
+      ],
     } satisfies GoogleSpeechModelOptions,
   },
 });
 ```
+
+Older models continue to use labelled transcripts, such as
+`text: 'Joe: How are you? Jane: Doing great, thanks!'`, with
+`multiSpeakerVoiceConfig` and without `turns`.
 
 <Note>
   Gemini TTS models do not support the `speed` or `language` options; passing
@@ -160944,6 +161503,8 @@ const result = await generateSpeech({
 | `gemini-2.5-flash-preview-tts` | <Check />     | <Check />              |
 | `gemini-2.5-pro-preview-tts`   | <Check />     | <Check />              |
 | `gemini-3.1-flash-tts-preview` | <Check />     | <Check />              |
+| `gemini-3.8-flash-tts`         | <Check />     | <Check />              |
+| `gemini-3.8-flash-lite-tts`    | <Check />     | <Check />              |
 
 ## Evaluation Models
 
@@ -161769,12 +162330,12 @@ import { generateText, streamText } from 'ai';
 
 // For generateText:
 const { text, reasoningText, reasoning } = await generateText({
-  model: googleVertex('gemini-2.0-flash-001'), // Or other supported model via Vertex
+  model: googleVertex('gemini-3.8-flash'), // Or other supported model via Vertex
   providerOptions: {
     vertex: {
       thinkingConfig: {
         includeThoughts: true,
-        // thinkingBudget: 2048, // Optional
+        // thinkingLevel: 'high', // Optional
       },
     } satisfies GoogleLanguageModelOptions,
   },
@@ -161787,12 +162348,12 @@ console.log('Final Text:', text);
 
 // For streamText:
 const result = streamText({
-  model: googleVertex('gemini-2.0-flash-001'), // Or other supported model via Vertex
+  model: googleVertex('gemini-3.8-flash'), // Or other supported model via Vertex
   providerOptions: {
     vertex: {
       thinkingConfig: {
         includeThoughts: true,
-        // thinkingBudget: 2048, // Optional
+        // thinkingLevel: 'high', // Optional
       },
     } satisfies GoogleLanguageModelOptions,
   },
@@ -161912,7 +162473,7 @@ const ai = new GoogleGenAI({
   location: process.env.GOOGLE_VERTEX_LOCATION,
 });
 
-const model = 'gemini-2.5-pro';
+const model = 'gemini-3.1-pro-preview';
 
 // Create a cache with the content you want to reuse
 const cache = await ai.caches.create({
@@ -162156,14 +162717,14 @@ For more on image generation with the AI SDK see
 
 #### Gemini Image Models
 
-[Gemini image models](https://cloud.google.com/vertex-ai/generative-ai/docs/models/gemini/2-5-flash-image) (e.g. `gemini-2.5-flash-image`) are multimodal output language models that can be used with `generateImage()` for a simpler image generation experience. Internally, the provider calls the language model API with `responseModalities: ['IMAGE']`.
+[Gemini image models](https://cloud.google.com/vertex-ai/generative-ai/docs/models/gemini/2-5-flash-image) (e.g. `gemini-3.1-flash-image-preview`) are multimodal output language models that can be used with `generateImage()` for a simpler image generation experience. Internally, the provider calls the language model API with `responseModalities: ['IMAGE']`.
 
 ```ts
 import { googleVertex } from '@ai-sdk/google-vertex';
 import { generateImage } from 'ai';
 
 const { image } = await generateImage({
-  model: googleVertex.image('gemini-2.5-flash-image'),
+  model: googleVertex.image('gemini-3.1-flash-image-preview'),
   prompt: 'A photorealistic image of a cat wearing a wizard hat',
   aspectRatio: '1:1',
 });
@@ -162179,7 +162740,7 @@ import fs from 'node:fs';
 const sourceImage = fs.readFileSync('./cat.png');
 
 const { image } = await generateImage({
-  model: googleVertex.image('gemini-2.5-flash-image'),
+  model: googleVertex.image('gemini-3.1-flash-image-preview'),
   prompt: {
     text: 'Add a small wizard hat to this cat',
     images: [sourceImage],
@@ -162656,11 +163217,11 @@ You can use the following optional settings to customize the provider instance:
 ### Language Models
 
 You can create models that call the [Anthropic Messages API](https://docs.anthropic.com/claude/reference/messages_post) using the provider instance.
-The first argument is the model id, e.g. `claude-3-haiku-20240307`.
+The first argument is the model id, e.g. `claude-sonnet-5`.
 Some models have multi-modal capabilities.
 
 ```ts
-const model = anthropic('claude-3-haiku-20240307');
+const model = vertexAnthropic('claude-sonnet-5');
 ```
 
 You can use Anthropic language models to generate text with the `generateText` function:
@@ -162670,7 +163231,7 @@ import { vertexAnthropic } from '@ai-sdk/google-vertex/anthropic';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: vertexAnthropic('claude-3-haiku-20240307'),
+  model: vertexAnthropic('claude-sonnet-5'),
   prompt: 'Write a vegetarian lasagna recipe for 4 people.',
 });
 ```
@@ -162755,7 +163316,7 @@ import { generateText } from 'ai';
 const errorMessage = '... long error message ...';
 
 const result = await generateText({
-  model: vertexAnthropic('claude-3-5-sonnet-20240620'),
+  model: vertexAnthropic('claude-sonnet-5'),
   messages: [
     {
       role: 'user',
@@ -162789,7 +163350,7 @@ You can also use cache control on system messages by providing multiple system m
 
 ```ts highlight="3,7-9"
 const result = await generateText({
-  model: vertexAnthropic('claude-3-5-sonnet-20240620'),
+  model: vertexAnthropic('claude-sonnet-5'),
   messages: [
     {
       role: 'system',
@@ -164037,7 +164598,7 @@ description: Learn how to use QuiverAI models with the AI SDK.
 
 # QuiverAI Provider
 
-[QuiverAI](https://quiver.ai/) generates SVG documents directly from text prompts, vectorizes raster images into clean SVGs, and edits and animates existing SVGs. The QuiverAI provider for the AI SDK exposes these operations through `generateImage`.
+[QuiverAI](https://quiver.ai/) provides Arrow language models that can reason about and create SVG documents, plus native SVG generation, vectorization, editing, and animation endpoints. The AI SDK provider exposes Arrow 2 through `generateText` and `streamText` and exposes image operations through `generateImage`.
 
 ## Setup
 
@@ -164088,6 +164649,119 @@ You can use the following optional settings to customize the QuiverAI provider i
   Custom [fetch](https://developer.mozilla.org/en-US/docs/Web/API/fetch) implementation.
   You can use it as a middleware to intercept requests,
   or to provide a custom fetch implementation for e.g. testing.
+
+## Language Models
+
+Create an Arrow language model by calling the provider or using
+`.languageModel()`:
+
+```ts
+import { quiverai } from '@ai-sdk/quiverai';
+import { generateText } from 'ai';
+
+const { text } = await generateText({
+  model: quiverai('arrow-2'),
+  prompt: 'Design a simple compass icon and explain the visual choices.',
+});
+
+console.log(text);
+```
+
+The language-model factory supports `arrow-2` and `arrow-2-telos` through
+QuiverAI's stateless `POST /v1/responses` endpoint.
+
+### Reasoning Options
+
+Configure QuiverAI reasoning through `providerOptions.quiverai`:
+
+```ts
+import { quiverai, type QuiverAILanguageModelOptions } from '@ai-sdk/quiverai';
+import { generateText } from 'ai';
+
+await generateText({
+  model: quiverai('arrow-2-telos'),
+  prompt: 'Create a precise technical SVG diagram.',
+  providerOptions: {
+    quiverai: {
+      reasoningEffort: 'xhigh',
+      reasoningSummary: 'auto',
+    } satisfies QuiverAILanguageModelOptions,
+  },
+});
+```
+
+- **reasoningEffort** _'low' | 'medium' | 'high' | 'xhigh'_
+- **reasoningSummary** _'auto'_
+
+The provider does not request encrypted reasoning. During tool loops it replays
+the full conversation, matching tool calls and results, and opaque reasoning
+item IDs in order without resending private reasoning text or encrypted
+reasoning state.
+
+### Caller-Executed Tools
+
+Standard AI SDK tools are sent as Responses API function tools and execute in
+your application. Use a bounded loop because each step performs another model
+request:
+
+```ts
+import { quiverai } from '@ai-sdk/quiverai';
+import { generateText, isStepCount, tool } from 'ai';
+import { z } from 'zod';
+
+const result = await generateText({
+  model: quiverai('arrow-2'),
+  prompt: 'Create an SVG compass and stage it as compass.svg.',
+  tools: {
+    write_file: tool({
+      description: 'Stage an SVG file in the calling application.',
+      inputSchema: z.object({
+        path: z.string(),
+        content: z.string(),
+      }),
+      execute: async ({ path, content }) => {
+        // Validate and restrict paths before writing model-generated content.
+        return { path, staged: content.startsWith('<svg') };
+      },
+    }),
+  },
+  stopWhen: isStepCount(4),
+});
+```
+
+QuiverAI custom tools return raw strings and are also executed by the caller:
+
+```ts
+const result = await generateText({
+  model: quiverai('arrow-2'),
+  prompt: 'Return a minimal SVG document.',
+  tools: {
+    write_svg: quiverai.tools.customTool({
+      description: 'Return SVG source.',
+      format: { type: 'text' },
+      execute: async svg => ({ accepted: svg.startsWith('<svg') }),
+    }),
+  },
+  stopWhen: isStepCount(3),
+});
+```
+
+Hosted tools, including legacy `quiver:*` tools, are not supported.
+
+### Responses API Limitations
+
+- Requests are stateless. The provider does not enable response storage or
+  response-ID continuation.
+- QuiverAI currently documents text response format for this endpoint.
+  Structured-output settings are omitted and reported in `warnings`.
+- Streaming tool calls are assembled completely before application execution.
+- Abort signals, custom headers, and custom `fetch` implementations are
+  forwarded to the Responses request.
+
+### Language Model Usage
+
+`result.usage` and streaming finish events include input, cache-read,
+cache-write, text-output, and reasoning token counts when returned by QuiverAI.
 
 ## Image Models
 
@@ -164351,7 +165025,7 @@ Source SVGs, text instructions, and remote source URLs are sent to QuiverAI. Ani
 
 Arrow 2 models return measured token counts in `result.usage`. Fixed-credit models may return compatibility token counts of zero; their credit charge is available in `result.providerMetadata?.quiverai?.credits` when supplied by the API.
 
-Model availability and supported operations depend on your organization and API key permissions. Consult QuiverAI's [model catalog](https://docs.quiver.ai/developers/models) for current capabilities and billing. The Responses API is not yet exposed by this provider.
+Model availability and supported operations depend on your organization and API key permissions. Consult QuiverAI's [model catalog](https://docs.quiver.ai/developers/models) for current capabilities and billing.
 
 ---
 title: Fish Audio
@@ -165867,11 +166541,11 @@ You can use the following optional settings to customize the Cohere provider ins
 ## Language Models
 
 You can create models that call the [Cohere chat API](https://docs.cohere.com/v2/docs/chat-api) using a provider instance.
-The first argument is the model id, e.g. `command-r-plus`.
+The first argument is the model id, e.g. `command-a-03-2025`.
 Some Cohere chat models support tool calls.
 
 ```ts
-const model = cohere('command-r-plus');
+const model = cohere('command-a-03-2025');
 ```
 
 ### Example
@@ -165883,7 +166557,7 @@ import { cohere } from '@ai-sdk/cohere';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: cohere('command-r-plus'),
+  model: cohere('command-a-03-2025'),
   prompt: 'Write a vegetarian lasagna recipe for 4 people.',
 });
 ```
@@ -166010,7 +166684,7 @@ You can create models that call the [Cohere embed API](https://docs.cohere.com/v
 using the `.embedding()` factory method.
 
 ```ts
-const model = cohere.embedding('embed-english-v3.0');
+const model = cohere.embedding('embed-v4.0');
 ```
 
 You can use Cohere embedding models to generate embeddings with the `embed` function:
@@ -166020,7 +166694,7 @@ import { cohere, type CohereEmbeddingModelOptions } from '@ai-sdk/cohere';
 import { embed } from 'ai';
 
 const { embedding } = await embed({
-  model: cohere.embedding('embed-english-v3.0'),
+  model: cohere.embedding('embed-v4.0'),
   value: 'sunny day at the beach',
   providerOptions: {
     cohere: {
@@ -166037,7 +166711,7 @@ import { cohere, type CohereEmbeddingModelOptions } from '@ai-sdk/cohere';
 import { embed } from 'ai';
 
 const { embedding } = await embed({
-  model: cohere.embedding('embed-english-v3.0'),
+  model: cohere.embedding('embed-v4.0'),
   value: 'sunny day at the beach',
   providerOptions: {
     cohere: {
@@ -166084,7 +166758,7 @@ You can create models that call the [Cohere rerank API](https://docs.cohere.com/
 using the `.reranking()` factory method.
 
 ```ts
-const model = cohere.reranking('rerank-v3.5');
+const model = cohere.reranking('rerank-v4.0-pro');
 ```
 
 You can use Cohere reranking models to rerank documents with the `rerank` function:
@@ -166100,7 +166774,7 @@ const documents = [
 ];
 
 const { ranking } = await rerank({
-  model: cohere.reranking('rerank-v3.5'),
+  model: cohere.reranking('rerank-v4.0-pro'),
   documents,
   query: 'talk about rain',
   topN: 2,
@@ -166120,7 +166794,7 @@ import { cohere, type CohereRerankingModelOptions } from '@ai-sdk/cohere';
 import { rerank } from 'ai';
 
 const { ranking } = await rerank({
-  model: cohere.reranking('rerank-v3.5'),
+  model: cohere.reranking('rerank-v4.0-pro'),
   documents: ['sunny day at the beach', 'rainy afternoon in the city'],
   query: 'talk about rain',
   providerOptions: {
@@ -166146,6 +166820,8 @@ The following provider options are available:
 
 | Model                      |
 | -------------------------- |
+| `rerank-v4.0-pro`          |
+| `rerank-v4.0-fast`         |
 | `rerank-v3.5`              |
 | `rerank-english-v3.0`      |
 | `rerank-multilingual-v3.0` |
@@ -166707,7 +167383,7 @@ You can create models that call the [Voyage AI embeddings API](https://docs.voya
 using the `.embedding()` factory method.
 
 ```ts
-const model = voyage.embedding('voyage-3.5');
+const model = voyage.embedding('voyage-4');
 ```
 
 You can use Voyage AI embedding models to generate embeddings with the `embed` function:
@@ -166717,7 +167393,7 @@ import { voyage } from '@ai-sdk/voyage';
 import { embed } from 'ai';
 
 const { embedding } = await embed({
-  model: voyage.embedding('voyage-3.5'),
+  model: voyage.embedding('voyage-4'),
   value: 'sunny day at the beach',
 });
 ```
@@ -167027,7 +167703,7 @@ import {
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: deepSeek('deepseek-chat'),
+  model: deepSeek('deepseek-flash'),
   instructions: {
     role: 'system',
     content: 'Help the customer plan a short trip.',
@@ -167079,7 +167755,7 @@ import {
 import { streamText } from 'ai';
 
 const result = streamText({
-  model: deepSeek('deepseek-chat'),
+  model: deepSeek('deepseek-flash'),
   messages: [
     {
       role: 'user',
@@ -167192,7 +167868,7 @@ const deepSeek = createDeepSeek({
 });
 
 const result = await generateText({
-  model: deepSeek('deepseek-chat'),
+  model: deepSeek('deepseek-flash'),
   prompt: 'What is the weather in San Francisco?',
   tools: {
     weather: tool({
@@ -170791,7 +171467,7 @@ import { klingai, type KlingAIVideoModelOptions } from '@ai-sdk/klingai';
 import { experimental_generateVideo as generateVideo } from 'ai';
 
 const { videos } = await generateVideo({
-  model: klingai.video('kling-v2.6-t2v'),
+  model: klingai.video('kling-v3.0-t2v'),
   prompt: 'A chicken flying into the sunset in the style of 90s anime.',
   aspectRatio: '16:9',
   duration: 5,
@@ -170812,7 +171488,7 @@ import { klingai, type KlingAIVideoModelOptions } from '@ai-sdk/klingai';
 import { experimental_generateVideo as generateVideo } from 'ai';
 
 const { videos } = await generateVideo({
-  model: klingai.video('kling-v2.6-i2v'),
+  model: klingai.video('kling-v3.0-i2v'),
   prompt: {
     image: 'https://example.com/start-frame.png',
     text: 'The cat slowly turns its head and blinks',

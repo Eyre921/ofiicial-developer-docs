@@ -296,7 +296,7 @@ If you or your users think the entity type should be `company` but are unsure, t
 | `sole_proprietorship` | A business that isn’t a separate legal entity from its individual owner. |
 | `unincorporated_association` | A business venture of two or more people that doesn’t have a formal corporate or entity structure. |
 
-### Non-profits
+### Non-profits 
 
 See the table below for descriptions of the different business structures that you can use to classify a `non_profit` with. Refer to the [US required verification information](https://docs.stripe.com/connect/required-verification-information.md#minimum-verification-requirements-for-united-states) section for more details on requirements.
 

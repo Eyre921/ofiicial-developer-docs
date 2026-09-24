@@ -14,4 +14,4 @@ If you made your purchase through the App Store or Google Play, refund requests 
 
 [Google Play Refunds](https://support.google.com/googleplay/workflow/9813244?visit_id=638824150999007546-2590214717\&p=refundAWF\&rd=1)
 
-If you made a purchase through the website, please contact support by emailing us at [team@elevenlabs.io](mailto:team@elevenlabs.io). Only users who have made a purchase via Stripe should contact our support directly for this purpose.
+If you made a purchase through the website, please contact support by emailing us at [support@elevenlabs.io](mailto:support@elevenlabs.io). Only users who have made a purchase via Stripe should contact our support directly for this purpose.

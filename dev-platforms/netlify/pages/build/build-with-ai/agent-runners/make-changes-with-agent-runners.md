@@ -96,11 +96,15 @@ If you change your mind about a run that's still going, you can stop it and take
 
 ### 4. Preview Agent Runners updates 
 
-To preview your agent run's proposed updates, check out the **Files changed** tab, which shows you the changes that the agent made. 
+Your agent run shows a preview of the changes the agent made right next to your prompt, so you can review the result and write your next prompt in one view.
 
-You can also preview your agent run's proposed updates in a preview environment by choosing **Open preview**, which opens a [Deploy Preview](/deploy/compare-preview-options) of your changes. The Deploy Preview URL for agent runs uses the format `https://agent-[run-id]--my-site.netlify.app`.
+ The preview that loads next to your prompt is the same [Deploy Preview](/deploy/compare-preview-options) you'd visit if you entered the preview URL in your browser. 
 
-  ![Open preview button highlighted for agent run](/images/open-preview-button-for-agent-run.png)
+You can also compare updates the agent made in your project's files with how they render, which is especially useful for troubleshooting or refining your work. Check the **Code** tab to see the changes in your project's files, including the following: 
+- images or other assets changed, removed, or added
+- content changed, removed, or added
+- code changes in your project files
+- internal docs for your project, including agent skill files
 
 If your project is connected to a GitHub repository, then you can optionally open up a pull request or update an existing pull request with your updates from your agent run.
 

@@ -30,4 +30,4 @@ Each promotional code can only be redeemed once.
 To confirm your subscription is active, open the ElevenReader app, tap the profile icon on the
 Home screen, and check that your account displays "Ultra" status.
 
-If you're still experiencing issues after redeeming your offer, please contact support by emailing us at [team@elevenlabs.io](mailto:team@elevenlabs.io).
+If you're still experiencing issues after redeeming your offer, please contact support by emailing us at [support@elevenlabs.io](mailto:support@elevenlabs.io).

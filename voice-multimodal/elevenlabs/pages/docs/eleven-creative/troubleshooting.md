@@ -97,4 +97,4 @@ problem often originates there.
 > **Note**
 >
 > If an issue persists after following this troubleshooting guide, please email Support at
-> [team@elevenlabs.io](mailto:team@elevenlabs.io).
+> [support@elevenlabs.io](mailto:support@elevenlabs.io).

@@ -40,7 +40,9 @@ Use Terminal to take the complexity out of in-person payments:
 
 ## Ways to use Terminal 
 
-- **Use no-code options**: Accept payments without building a custom POS integration.
+- **Use [ready-made apps](https://docs.stripe.com/terminal/payments/ready-made-apps.md) instead of coding an integration**: Accept payments in the following ways instead of building a custom POS integration:
+  - Standalone mode (Public preview) on a reader
+  - The Stripe Terminal app (Private preview) on a supported iPhone or Android device
 - **Build a custom POS integration**: Use Terminal SDKs or Stripe APIs to integrate in-person payments into your own POS, mobile app, or web app.
 - **Use Tap to Pay**: Accept contactless payments on compatible iPhone or Android devices.
 - **Use a third-party POS or gateway**: Connect Stripe with supported partner POS, hardware, or gateway integrations.
@@ -61,6 +63,6 @@ If you’ve enabled P2PE, consult the [P2PE Instruction Manual (PIM)](https://do
 - [Terminal overview](https://docs.stripe.com/terminal.md)
 - [Availability](https://docs.stripe.com/terminal/payments/collect-card-payment/supported-card-brands.md)
 - [Readers](https://docs.stripe.com/terminal/payments/setup-reader.md)
-- [No-code options](https://docs.stripe.com/no-code/in-person.md)
+- [Ready-made apps](https://docs.stripe.com/terminal/payments/ready-made-apps.md)
 - [Design an integration](https://docs.stripe.com/terminal/designing-integration.md)
 

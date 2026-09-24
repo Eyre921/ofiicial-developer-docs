@@ -60435,28 +60435,43 @@ but tight integration with other AssemblyAI products for a more seamless experie
 
 ## Quickstart
 
-```python {11}
-import requests
+```python highlight={6}
+import assemblyai as aai
 
-headers = {
-  "authorization": "<YOUR_API_KEY>"
-}
+aai.settings.api_key = "<YOUR_API_KEY>"
 
-response = requests.post(
-    "https://llm-gateway.assemblyai.com/v1/chat/completions",
-    headers = headers,
-    json = {
-        "model": "qwen3.5-4b-32k-fast",
-        "messages": [
-            {"role": "user", "content": "What is the capital of France?"}
-        ],
-        "max_tokens": 1000
-    }
+gateway = aai.LLMGateway()
+completion = gateway.chat.completions.create(
+    model="qwen3.5-4b-32k-fast",
+    messages=[{"role": "user", "content": "What is the capital of France?"}],
+    max_tokens=1000,
 )
-
-result = response.json()
-print(result["choices"][0]["message"]["content"])
+print(completion.choices[0].message.content)
+print(completion.usage.total_tokens, completion.request_id)
 ```
+
+  ```python highlight={11}
+  import requests
+  
+  headers = {
+    "authorization": "<YOUR_API_KEY>"
+  }
+  
+  response = requests.post(
+      "https://llm-gateway.assemblyai.com/v1/chat/completions",
+      headers = headers,
+      json = {
+          "model": "qwen3.5-4b-32k-fast",
+          "messages": [
+              {"role": "user", "content": "What is the capital of France?"}
+          ],
+          "max_tokens": 1000
+      }
+  )
+  
+  result = response.json()
+  print(result["choices"][0]["message"]["content"])
+  ```
 
 ```javascript {10}
 const response = await fetch(
@@ -60742,30 +60757,45 @@ The Fallback feature lets you specify one or more backup models that the LLM Gat
 To add a fallback, include a `fallbacks` array in your request. Each entry specifies an alternative `model` to use if the primary model is unavailable:
 
 ```python expandable
-import requests
+import assemblyai as aai
 
-headers = {
-  "authorization": "<YOUR_API_KEY>"
-}
+aai.settings.api_key = "<YOUR_API_KEY>"
 
-response = requests.post(
-    "https://llm-gateway.assemblyai.com/v1/chat/completions",
-    headers=headers,
-    json={
-        "model": "gemini-2.5-flash-lite",
-        "messages": [
-            {"role": "user", "content": "Tell me a short fairy tale."}
-        ],
-        "max_tokens": 400,
-        "fallbacks": [
-            {"model": "claude-sonnet-4-6"}
-        ]
-    }
+gateway = aai.LLMGateway()
+completion = gateway.chat.completions.create(
+    model="gemini-2.5-flash-lite",
+    messages=[{"role": "user", "content": "Tell me a short fairy tale."}],
+    max_tokens=400,
+    fallbacks=[{"model": "claude-sonnet-4-6"}],
 )
-
-result = response.json()
-print(result["choices"][0]["message"]["content"])
+print(completion.choices[0].message.content)
 ```
+
+  ```python expandable
+  import requests
+  
+  headers = {
+    "authorization": "<YOUR_API_KEY>"
+  }
+  
+  response = requests.post(
+      "https://llm-gateway.assemblyai.com/v1/chat/completions",
+      headers=headers,
+      json={
+          "model": "gemini-2.5-flash-lite",
+          "messages": [
+              {"role": "user", "content": "Tell me a short fairy tale."}
+          ],
+          "max_tokens": 400,
+          "fallbacks": [
+              {"model": "claude-sonnet-4-6"}
+          ]
+      }
+  )
+  
+  result = response.json()
+  print(result["choices"][0]["message"]["content"])
+  ```
 
 ```javascript
 const response = await fetch(
@@ -60800,37 +60830,61 @@ If `gemini-2.5-flash-lite` fails, the LLM Gateway automatically retries the requ
 In the advanced case, you can override specific request fields for each fallback model. For example, you can change the `messages` or `temperature` for the fallback:
 
 ```python expandable
-import requests
+import assemblyai as aai
 
-headers = {
-  "authorization": "<YOUR_API_KEY>"
-}
+aai.settings.api_key = "<YOUR_API_KEY>"
 
-response = requests.post(
-    "https://llm-gateway.assemblyai.com/v1/chat/completions",
-    headers=headers,
-    json={
-        "model": "gemini-2.5-flash-lite",
-        "messages": [
-            {"role": "user", "content": "Tell me a short fairy tale."}
-        ],
-        "temperature": 0.2,
-        "max_tokens": 400,
-        "fallbacks": [
-            {
-                "model": "claude-sonnet-4-6",
-                "messages": [
-                    {"role": "user", "content": "Tell me a fairy tale, but be very concise."}
-                ],
-                "temperature": 0.4
-            }
-        ]
-    }
+gateway = aai.LLMGateway()
+completion = gateway.chat.completions.create(
+    model="gemini-2.5-flash-lite",
+    messages=[{"role": "user", "content": "Tell me a short fairy tale."}],
+    temperature=0.2,
+    max_tokens=400,
+    fallbacks=[
+        {
+            "model": "claude-sonnet-4-6",
+            "messages": [
+                {"role": "user", "content": "Tell me a fairy tale, but be very concise."}
+            ],
+            "temperature": 0.4,
+        }
+    ],
 )
-
-result = response.json()
-print(result["choices"][0]["message"]["content"])
+print(completion.choices[0].message.content)
 ```
+
+  ```python expandable
+  import requests
+  
+  headers = {
+    "authorization": "<YOUR_API_KEY>"
+  }
+  
+  response = requests.post(
+      "https://llm-gateway.assemblyai.com/v1/chat/completions",
+      headers=headers,
+      json={
+          "model": "gemini-2.5-flash-lite",
+          "messages": [
+              {"role": "user", "content": "Tell me a short fairy tale."}
+          ],
+          "temperature": 0.2,
+          "max_tokens": 400,
+          "fallbacks": [
+              {
+                  "model": "claude-sonnet-4-6",
+                  "messages": [
+                      {"role": "user", "content": "Tell me a fairy tale, but be very concise."}
+                  ],
+                  "temperature": 0.4
+              }
+          ]
+      }
+  )
+  
+  result = response.json()
+  print(result["choices"][0]["message"]["content"])
+  ```
 
 ```javascript expandable
 const response = await fetch(
@@ -60956,11 +61010,9 @@ Claude models require you to explicitly mark which content blocks to cache using
 
 ```python expandable
 import os
-import requests
+import assemblyai as aai
 
-headers = {
-  "authorization": os.environ["ASSEMBLYAI_API_KEY"]
-}
+aai.settings.api_key = os.environ["ASSEMBLYAI_API_KEY"]
 
 system_prompt = (
     "You are a customer support agent for Acme Corp. "
@@ -60968,34 +61020,71 @@ system_prompt = (
     "and policy documentation. Always be helpful and concise."
 )
 
-response = requests.post(
-    "https://llm-gateway.assemblyai.com/v1/chat/completions",
-    headers=headers,
-    json={
-        "model": "claude-sonnet-4-6",
-        "messages": [
-            {
-                "role": "system",
-                "content": system_prompt,
-                "cache_control": {"type": "ephemeral"}
-            },
-            {
-                "role": "user",
-                "content": "What is your return policy?"
-            }
-        ],
-        "max_tokens": 1000
-    }
+gateway = aai.LLMGateway()
+completion = gateway.chat.completions.create(
+    model="claude-sonnet-4-6",
+    messages=[
+        {
+            "role": "system",
+            "content": system_prompt,
+            "cache_control": {"type": "ephemeral"},
+        },
+        {
+            "role": "user",
+            "content": "What is your return policy?",
+        },
+    ],
+    max_tokens=1000,
 )
-
-result = response.json()
-print(result["choices"][0]["message"]["content"])
+print(completion.choices[0].message.content)
 
 # Check cache usage in the response
-usage = result["usage"]
-cache_details = usage.get("prompt_tokens_details", {})
+cache_details = getattr(completion.usage, "prompt_tokens_details", {}) or {}
 print(f"Cached tokens: {cache_details.get('cached_tokens', 0)}")
 ```
+
+  ```python expandable
+  import os
+  import requests
+  
+  headers = {
+    "authorization": os.environ["ASSEMBLYAI_API_KEY"]
+  }
+  
+  system_prompt = (
+      "You are a customer support agent for Acme Corp. "
+      "You have access to our full product catalog, pricing, "
+      "and policy documentation. Always be helpful and concise."
+  )
+  
+  response = requests.post(
+      "https://llm-gateway.assemblyai.com/v1/chat/completions",
+      headers=headers,
+      json={
+          "model": "claude-sonnet-4-6",
+          "messages": [
+              {
+                  "role": "system",
+                  "content": system_prompt,
+                  "cache_control": {"type": "ephemeral"}
+              },
+              {
+                  "role": "user",
+                  "content": "What is your return policy?"
+              }
+          ],
+          "max_tokens": 1000
+      }
+  )
+  
+  result = response.json()
+  print(result["choices"][0]["message"]["content"])
+  
+  # Check cache usage in the response
+  usage = result["usage"]
+  cache_details = usage.get("prompt_tokens_details", {})
+  print(f"Cached tokens: {cache_details.get('cached_tokens', 0)}")
+  ```
 
 ```javascript expandable
 const response = await fetch(
@@ -61074,38 +61163,66 @@ OpenAI models cache prompts automatically. No configuration is needed — the ga
 
 ```python expandable
 import os
-import requests
+import assemblyai as aai
 
-headers = {
-  "authorization": os.environ["ASSEMBLYAI_API_KEY"]
-}
+aai.settings.api_key = os.environ["ASSEMBLYAI_API_KEY"]
 
 # OpenAI models cache automatically — no cache_control needed
-response = requests.post(
-    "https://llm-gateway.assemblyai.com/v1/chat/completions",
-    headers=headers,
-    json={
-        "model": "gpt-4.1",
-        "messages": [
-            {
-                "role": "system",
-                "content": "You are a customer support agent..."
-            },
-            {
-                "role": "user",
-                "content": "What is your return policy?"
-            }
-        ],
-        "max_tokens": 1000
-    }
+gateway = aai.LLMGateway()
+completion = gateway.chat.completions.create(
+    model="gpt-4.1",
+    messages=[
+        {
+            "role": "system",
+            "content": "You are a customer support agent...",
+        },
+        {
+            "role": "user",
+            "content": "What is your return policy?",
+        },
+    ],
+    max_tokens=1000,
 )
 
-result = response.json()
-
 # Cached tokens still appear in usage
-cache_details = result["usage"].get("prompt_tokens_details", {})
+cache_details = getattr(completion.usage, "prompt_tokens_details", {}) or {}
 print(f"Cached tokens: {cache_details.get('cached_tokens', 0)}")
 ```
+
+  ```python expandable
+  import os
+  import requests
+  
+  headers = {
+    "authorization": os.environ["ASSEMBLYAI_API_KEY"]
+  }
+  
+  # OpenAI models cache automatically — no cache_control needed
+  response = requests.post(
+      "https://llm-gateway.assemblyai.com/v1/chat/completions",
+      headers=headers,
+      json={
+          "model": "gpt-4.1",
+          "messages": [
+              {
+                  "role": "system",
+                  "content": "You are a customer support agent..."
+              },
+              {
+                  "role": "user",
+                  "content": "What is your return policy?"
+              }
+          ],
+          "max_tokens": 1000
+      }
+  )
+  
+  result = response.json()
+  
+  # Cached tokens still appear in usage
+  cache_details = result["usage"].get("prompt_tokens_details", {})
+  print(f"Cached tokens: {cache_details.get('cached_tokens', 0)}")
+  ```
 
 ```javascript expandable
 // OpenAI models cache automatically — no cache_control needed
@@ -61152,38 +61269,66 @@ Gemini models also cache automatically — no configuration needed.
 
 ```python expandable
 import os
-import requests
+import assemblyai as aai
 
-headers = {
-  "authorization": os.environ["ASSEMBLYAI_API_KEY"]
-}
+aai.settings.api_key = os.environ["ASSEMBLYAI_API_KEY"]
 
 # Gemini models cache automatically
-response = requests.post(
-    "https://llm-gateway.assemblyai.com/v1/chat/completions",
-    headers=headers,
-    json={
-        "model": "gemini-2.5-flash",
-        "messages": [
-            {
-                "role": "system",
-                "content": "You are a customer support agent..."
-            },
-            {
-                "role": "user",
-                "content": "What is your return policy?"
-            }
-        ],
-        "max_tokens": 1000
-    }
+gateway = aai.LLMGateway()
+completion = gateway.chat.completions.create(
+    model="gemini-2.5-flash",
+    messages=[
+        {
+            "role": "system",
+            "content": "You are a customer support agent...",
+        },
+        {
+            "role": "user",
+            "content": "What is your return policy?",
+        },
+    ],
+    max_tokens=1000,
 )
 
-result = response.json()
-
 # Cached tokens appear in usage
-cache_details = result["usage"].get("prompt_tokens_details", {})
+cache_details = getattr(completion.usage, "prompt_tokens_details", {}) or {}
 print(f"Cached tokens: {cache_details.get('cached_tokens', 0)}")
 ```
+
+  ```python expandable
+  import os
+  import requests
+  
+  headers = {
+    "authorization": os.environ["ASSEMBLYAI_API_KEY"]
+  }
+  
+  # Gemini models cache automatically
+  response = requests.post(
+      "https://llm-gateway.assemblyai.com/v1/chat/completions",
+      headers=headers,
+      json={
+          "model": "gemini-2.5-flash",
+          "messages": [
+              {
+                  "role": "system",
+                  "content": "You are a customer support agent..."
+              },
+              {
+                  "role": "user",
+                  "content": "What is your return policy?"
+              }
+          ],
+          "max_tokens": 1000
+      }
+  )
+  
+  result = response.json()
+  
+  # Cached tokens appear in usage
+  cache_details = result["usage"].get("prompt_tokens_details", {})
+  print(f"Cached tokens: {cache_details.get('cached_tokens', 0)}")
+  ```
 
 ```javascript expandable
 // Gemini models cache automatically

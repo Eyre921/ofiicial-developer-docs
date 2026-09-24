@@ -51,7 +51,7 @@ Create a custom property for your contacts.
 
   resend.api_key = 're_xxxxxxxxx'
 
-  params = {
+  params: resend.ContactProperties.CreateParams = {
       "key": "company_name",
       "type": "string",
       "fallback_value": "Acme Corp",
@@ -79,7 +79,7 @@ Create a custom property for your contacts.
   	"context"
   	"fmt"
 
-  	"github.com/resend/resend-go/v3"
+  	"github.com/resend/resend-go/v4"
   )
 
   func main() {
@@ -120,10 +120,12 @@ Create a custom property for your contacts.
   ```
 
   ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import com.resend.*;
+  import com.resend.Resend;
+  import com.resend.core.exception.ResendException;
+  import com.resend.services.contactproperties.model.CreateContactPropertyOptions;
 
   public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ResendException {
       Resend resend = new Resend("re_xxxxxxxxx");
 
       CreateContactPropertyOptions options = CreateContactPropertyOptions.builder()

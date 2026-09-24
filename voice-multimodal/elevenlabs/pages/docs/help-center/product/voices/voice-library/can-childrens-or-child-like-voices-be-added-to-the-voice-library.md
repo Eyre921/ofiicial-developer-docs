@@ -14,4 +14,4 @@ We made this decision to align with our [Prohibited Use Policy](https://elevenla
 
 For more information, please refer to our [Prohibited Use Policy.](https://elevenlabs.io/use-policy)
 
-If you have further questions or need clarification, please contact support by emailing us at [team@elevenlabs.io](mailto:team@elevenlabs.io).
+If you have further questions or need clarification, please contact support by emailing us at [support@elevenlabs.io](mailto:support@elevenlabs.io).

@@ -249,7 +249,7 @@ With the result from Chroma, we can build the correct context for an AI model.
       prompt = f"{user_query}. Use this as context for answering: {context}"
 
       response = client.messages.create(
-          model="claude-sonnet-4-20250514",
+          model="claude-sonnet-5",
           max_tokens=1024,
           messages=[
               {"role": "user", "content": prompt}
@@ -267,7 +267,7 @@ With the result from Chroma, we can build the correct context for an AI model.
       const prompt = `${userQuery}. Use this as context for answering: ${context}`;
 
       const response = await client.messages.create({
-        model: "claude-sonnet-4-20250514",
+        model: "claude-sonnet-5",
         max_tokens: 1024,
         messages: [
           {

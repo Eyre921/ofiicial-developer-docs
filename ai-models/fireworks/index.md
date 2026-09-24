@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 386 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 385 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -147,17 +147,12 @@
 
 ## ecosystem
 
-- `ecosystem/fireconnect/harnesses` — [Coding Harnesses](pages/ecosystem/fireconnect/harnesses.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/harnesses)
-- `ecosystem/fireconnect/overview` — [FireConnect](pages/ecosystem/fireconnect/overview.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/overview)
-- `ecosystem/firerouter/apis-and-sdks` — [APIs and SDKs](pages/ecosystem/firerouter/apis-and-sdks.md) · [原文](https://docs.fireworks.ai/ecosystem/firerouter/apis-and-sdks)
-- `ecosystem/firerouter/overview` — [FireRouter](pages/ecosystem/firerouter/overview.md) · [原文](https://docs.fireworks.ai/ecosystem/firerouter/overview)
 - `ecosystem/integrations/agent-frameworks` — [Agent Frameworks](pages/ecosystem/integrations/agent-frameworks.md) · [原文](https://docs.fireworks.ai/ecosystem/integrations/agent-frameworks)
 - `ecosystem/integrations/azure-foundry` — [Microsoft Foundry](pages/ecosystem/integrations/azure-foundry.md) · [原文](https://docs.fireworks.ai/ecosystem/integrations/azure-foundry)
 - `ecosystem/integrations/byoc/how-setup-works` — [How Setup Works](pages/ecosystem/integrations/byoc/how-setup-works.md) · [原文](https://docs.fireworks.ai/ecosystem/integrations/byoc/how-setup-works)
 - `ecosystem/integrations/byoc/operational-model` — [Operational Model](pages/ecosystem/integrations/byoc/operational-model.md) · [原文](https://docs.fireworks.ai/ecosystem/integrations/byoc/operational-model)
 - `ecosystem/integrations/byoc/overview` — [Bring Your Own Cluster](pages/ecosystem/integrations/byoc/overview.md) · [原文](https://docs.fireworks.ai/ecosystem/integrations/byoc/overview)
 - `ecosystem/integrations/development-setup` — [Development Setup with Fireworks Docs MCP](pages/ecosystem/integrations/development-setup.md) · [原文](https://docs.fireworks.ai/ecosystem/integrations/development-setup)
-- `ecosystem/integrations/llm-gateways` — [LLM Gateways](pages/ecosystem/integrations/llm-gateways.md) · [原文](https://docs.fireworks.ai/ecosystem/integrations/llm-gateways)
 - `ecosystem/integrations/mlops-observability` — [MLOps & Observability](pages/ecosystem/integrations/mlops-observability.md) · [原文](https://docs.fireworks.ai/ecosystem/integrations/mlops-observability)
 
 ## examples
@@ -286,8 +281,13 @@
 
 ## nexus
 
+- `nexus/apis-and-sdks` — [APIs and SDKs](pages/nexus/apis-and-sdks.md) · [原文](https://docs.fireworks.ai/nexus/apis-and-sdks)
 - `nexus/cli-reference` — [CLI Reference](pages/nexus/cli-reference.md) · [原文](https://docs.fireworks.ai/nexus/cli-reference)
+- `nexus/fireconnect` — [FireConnect](pages/nexus/fireconnect.md) · [原文](https://docs.fireworks.ai/nexus/fireconnect)
+- `nexus/firerouter` — [FireRouter](pages/nexus/firerouter.md) · [原文](https://docs.fireworks.ai/nexus/firerouter)
 - `nexus/harness-compatibility` — [Harness Compatibility](pages/nexus/harness-compatibility.md) · [原文](https://docs.fireworks.ai/nexus/harness-compatibility)
+- `nexus/harnesses` — [Coding Harnesses](pages/nexus/harnesses.md) · [原文](https://docs.fireworks.ai/nexus/harnesses)
+- `nexus/llm-gateways` — [LLM Gateways](pages/nexus/llm-gateways.md) · [原文](https://docs.fireworks.ai/nexus/llm-gateways)
 - `nexus/metrics` — [Usage and Cost](pages/nexus/metrics.md) · [原文](https://docs.fireworks.ai/nexus/metrics)
 - `nexus/microsoft-foundry` — [Microsoft Foundry](pages/nexus/microsoft-foundry.md) · [原文](https://docs.fireworks.ai/nexus/microsoft-foundry)
 - `nexus/open-models` — [Open Models](pages/nexus/open-models.md) · [原文](https://docs.fireworks.ai/nexus/open-models)
@@ -296,7 +296,6 @@
 - `nexus/routing-preferences` — [Routing Preferences](pages/nexus/routing-preferences.md) · [原文](https://docs.fireworks.ai/nexus/routing-preferences)
 - `nexus/session-usage` — [Session Cost](pages/nexus/session-usage.md) · [原文](https://docs.fireworks.ai/nexus/session-usage)
 - `nexus/usage-limits` — [Spend Limits](pages/nexus/usage-limits.md) · [原文](https://docs.fireworks.ai/nexus/usage-limits)
-- `nexus/usage-limits-reference` — [Spend Limits Reference](pages/nexus/usage-limits-reference.md) · [原文](https://docs.fireworks.ai/nexus/usage-limits-reference)
 - `nexus/web-search` — [Web Search](pages/nexus/web-search.md) · [原文](https://docs.fireworks.ai/nexus/web-search)
 
 ## serverless

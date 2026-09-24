@@ -134,6 +134,8 @@ Logs are a powerful tool for monitoring activity and troubleshooting issues.
       ```
 
       ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+      require "resend"
+
       Resend.api_key = "re_xxxxxxxxx"
 
       logs = Resend::Logs.list
@@ -146,7 +148,7 @@ Logs are a powerful tool for monitoring activity and troubleshooting issues.
       import (
         "context"
 
-        "github.com/resend/resend-go/v3"
+        "github.com/resend/resend-go/v4"
       )
 
       func main() {
@@ -185,9 +187,10 @@ Logs are a powerful tool for monitoring activity and troubleshooting issues.
 
       ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
       import com.resend.*;
+      import com.resend.core.exception.ResendException;
 
       public class Main {
-          public static void main(String[] args) {
+          public static void main(String[] args) throws ResendException {
               Resend resend = new Resend("re_xxxxxxxxx");
 
               resend.logs().list();
@@ -241,6 +244,8 @@ Logs are a powerful tool for monitoring activity and troubleshooting issues.
       ```
 
       ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+      require "resend"
+
       Resend.api_key = "re_xxxxxxxxx"
 
       log = Resend::Logs.get("37e4414c-5e25-4dbc-a071-43552a4bd53b")
@@ -250,7 +255,7 @@ Logs are a powerful tool for monitoring activity and troubleshooting issues.
       ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
       package main
 
-      import "github.com/resend/resend-go/v3"
+      import "github.com/resend/resend-go/v4"
 
       func main() {
         client := resend.NewClient("re_xxxxxxxxx")
@@ -277,9 +282,10 @@ Logs are a powerful tool for monitoring activity and troubleshooting issues.
 
       ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
       import com.resend.*;
+      import com.resend.core.exception.ResendException;
 
       public class Main {
-          public static void main(String[] args) {
+          public static void main(String[] args) throws ResendException {
               Resend resend = new Resend("re_xxxxxxxxx");
 
               resend.logs().get("37e4414c-5e25-4dbc-a071-43552a4bd53b");

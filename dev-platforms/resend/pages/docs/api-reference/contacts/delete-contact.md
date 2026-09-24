@@ -25,14 +25,9 @@ Either `id` or `email` must be provided.
 
   const resend = new Resend('re_xxxxxxxxx');
 
-  // Delete by contact id
   const { data, error } = await resend.contacts.remove({
     id: '520784e2-887d-4c25-b53c-4ad46ad38100',
-  });
-
-  // Delete by contact email
-  const { data, error } = await resend.contacts.remove({
-    email: 'acme@example.com',
+    // or: email: 'acme@example.com',
   });
   ```
 
@@ -41,12 +36,12 @@ Either `id` or `email` must be provided.
 
   // Delete by contact id
   $resend->contacts->remove(
-    id: '520784e2-887d-4c25-b53c-4ad46ad38100'
+    idOrEmail: '520784e2-887d-4c25-b53c-4ad46ad38100'
   );
 
   // Delete by contact email
   $resend->contacts->remove(
-    email: 'acme@example.com'
+    idOrEmail: 'acme@example.com'
   );
   ```
 
@@ -85,16 +80,20 @@ Either `id` or `email` must be provided.
   ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
   package main
 
-  import "github.com/resend/resend-go/v3"
+  import "github.com/resend/resend-go/v4"
 
   func main() {
   	client := resend.NewClient("re_xxxxxxxxx")
 
   	// Delete by contact id
-  	client.Contacts.Remove("520784e2-887d-4c25-b53c-4ad46ad38100")
+  	client.Contacts.Remove(&resend.RemoveContactOptions{
+  		Id: "520784e2-887d-4c25-b53c-4ad46ad38100",
+  	})
 
   	// Delete by contact email
-  	client.Contacts.Remove("acme@example.com")
+  	client.Contacts.Remove(&resend.RemoveContactOptions{
+  		Id: "acme@example.com",
+  	})
   }
   ```
 
@@ -122,19 +121,21 @@ Either `id` or `email` must be provided.
   ```
 
   ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import com.resend.*;
+  import com.resend.Resend;
+  import com.resend.core.exception.ResendException;
+  import com.resend.services.contacts.model.RemoveContactOptions;
 
   public class Main {
-      public static void main(String[] args) {
+      public static void main(String[] args) throws ResendException {
           Resend resend = new Resend("re_xxxxxxxxx");
 
           // Delete by contact id
-          resend.contacts().remove(ContactRequestOptions.builder()
+          resend.contacts().remove(RemoveContactOptions.builder()
                           .id("520784e2-887d-4c25-b53c-4ad46ad38100")
                           .build());
 
           // Delete by contact email
-          resend.contacts().remove(ContactRequestOptions.builder()
+          resend.contacts().remove(RemoveContactOptions.builder()
                           .email("acme@example.com")
                           .build());
       }

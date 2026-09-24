@@ -79,8 +79,7 @@ You can also use our [Broadcast API](/docs/api-reference/broadcasts/create-broad
   ```
 
   ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import "fmt"
-  import 	"github.com/resend/resend-go/v3"
+  import "github.com/resend/resend-go/v4"
 
   client := resend.NewClient("re_xxxxxxxxx")
 
@@ -91,7 +90,7 @@ You can also use our [Broadcast API](/docs/api-reference/broadcasts/create-broad
     Subject:    "Hello, world!",
   }
 
-  broadcast, _ := client.Broadcasts.Create(params)
+  client.Broadcasts.Create(params)
   ```
 
   ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -115,6 +114,10 @@ You can also use our [Broadcast API](/docs/api-reference/broadcasts/create-broad
   ```
 
   ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+  import com.resend.services.broadcasts.model.CreateBroadcastOptions;
+  import com.resend.services.broadcasts.model.CreateBroadcastResponseSuccess;
+
   Resend resend = new Resend("re_xxxxxxxxx");
 
   CreateBroadcastOptions params = CreateBroadcastOptions.builder()

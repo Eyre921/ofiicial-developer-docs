@@ -17,13 +17,13 @@ Architect is one assistant with two placements:
 * **Sidebar**: available across the whole ElevenLabs app from a floating button or sidebar. Use it to ask product questions, navigate the dashboard, and get help finding a setting.
 * **Architect tab**: a full-screen view inside a specific agent, opened from that agent's page or from "Discuss", "Improve", or "Make with Architect" buttons. Here, Architect additionally reads and edits that agent's configuration, workflow, tools, tests, and knowledge base.
 
-![Architect tab home screen](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ed0d216d50539bce021442606fa5a8b82bd29b1596707571e2247081c399546d/assets/images/agents/architect-landing-page.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T094853Z&X-Amz-Expires=604800&X-Amz-Signature=a03efb37441798c269405289b5ba22e6b68c58945e40906fa28ca3caa01092bc&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Architect tab home screen](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ed0d216d50539bce021442606fa5a8b82bd29b1596707571e2247081c399546d/assets/images/agents/architect-landing-page.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T233136Z&X-Amz-Expires=604800&X-Amz-Signature=96587782f4b0a3c998e49faa1a8dfcb810afad189c495836d0d1f77641e524a5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## What Architect is specialized for
 
 Architect's primary job is helping you iterate on an agent you have already built: reviewing how it performed on real conversations, understanding what went wrong, and turning that into a concrete change to its prompt, workflow, tools, tests, or knowledge base. See [Triage](/docs/eleven-agents/operate/triage) for how this review loop works.
 
-![Architect running an agent's test suite](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e3f2c99d7b123f8ef399f7a68ad326b96285a581dfe70fa1653784b8fb19b83d/assets/images/agents/architect-running-test.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T094853Z&X-Amz-Expires=604800&X-Amz-Signature=89c94a3f0b5cf004db97a6ece24f4be36d42cb3bb980987a69f4448d475682e2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Architect running an agent's test suite](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e3f2c99d7b123f8ef399f7a68ad326b96285a581dfe70fa1653784b8fb19b83d/assets/images/agents/architect-running-test.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T233136Z&X-Amz-Expires=604800&X-Amz-Signature=c7b984da5fb539239bd62fb3aa6aaf708e9e2908591aa0058f22bc9a6e868ecf&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Outside of a specific agent, Architect in the sidebar also answers general product questions and helps you navigate the dashboard.
 
@@ -49,6 +49,10 @@ What Architect can see, the tools it can use, and how it applies changes.
 #### [Triage](/docs/eleven-agents/operate/triage)
 
 Review conversation issues flagged for follow-up.
+
+#### [Merge proposals](/docs/eleven-agents/operate/merge-proposals)
+
+Ask for a branch's changes to be reviewed before they reach another branch.
 
 #### [Flag issue for review](/docs/eleven-agents/customization/tools/system-tools/flag-issue-for-review)
 

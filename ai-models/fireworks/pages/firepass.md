@@ -45,7 +45,7 @@ Use a standard Fireworks key (`fw_...`) for models and features outside Fire Pas
 
 ## Using your Fire Pass
 
-Fire Pass is designed for personal agentic coding. [FireConnect](/ecosystem/fireconnect/overview) detects `fpk_...` keys, selects `kimi-fast-latest` by default, and exposes only the routers supported by Fire Pass.
+Fire Pass is designed for personal agentic coding. [FireConnect](/nexus/fireconnect) detects `fpk_...` keys, selects `kimi-fast-latest` by default, and exposes only the routers supported by Fire Pass.
 
 ```bash theme={null}
 fireconnect login
@@ -94,7 +94,7 @@ page](https://app.fireworks.ai/fire-pass) when the latest alias changes.
   </Accordion>
 
   <Accordion title="OpenCode">
-    Use [FireConnect](/ecosystem/fireconnect/harnesses#opencode):
+    Use [FireConnect](/nexus/harnesses#opencode):
 
     ```bash theme={null}
     fireconnect login
@@ -131,7 +131,7 @@ page](https://app.fireworks.ai/fire-pass) when the latest alias changes.
   </Accordion>
 
   <Accordion title="Claude Code">
-    Use [FireConnect](/ecosystem/fireconnect/harnesses#claude-code):
+    Use [FireConnect](/nexus/harnesses#claude-code):
 
     ```bash theme={null}
     fireconnect login

@@ -51,7 +51,7 @@ You can only delete Broadcasts that have not yet been sent (i.e., `draft` or `sc
   ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
   package main
 
-  import "github.com/resend/resend-go/v3"
+  import "github.com/resend/resend-go/v4"
 
   func main() {
   	client := resend.NewClient("re_xxxxxxxxx")
@@ -77,6 +77,9 @@ You can only delete Broadcasts that have not yet been sent (i.e., `draft` or `sc
   ```
 
   ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.Resend;
+  import com.resend.services.broadcasts.model.RemoveBroadcastResponseSuccess;
+
   Resend resend = new Resend("re_xxxxxxxxx");
 
   RemoveBroadcastResponseSuccess data = resend.broadcasts().remove("559ac32e-9ef5-46fb-82a1-b76b840c0f7b");

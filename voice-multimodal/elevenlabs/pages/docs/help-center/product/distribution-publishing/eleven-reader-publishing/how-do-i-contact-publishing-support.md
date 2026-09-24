@@ -8,4 +8,4 @@ path: docs/help-center/product/distribution-publishing/eleven-reader-publishing/
 
 # How do I contact publishing support?
 
-For technical issues or assistance, please email [team@elevenlabs.io](mailto:team@elevenlabs.io) and our team will respond promptly.
+For technical issues or assistance, please email [support@elevenlabs.io](mailto:support@elevenlabs.io) and our team will respond promptly.

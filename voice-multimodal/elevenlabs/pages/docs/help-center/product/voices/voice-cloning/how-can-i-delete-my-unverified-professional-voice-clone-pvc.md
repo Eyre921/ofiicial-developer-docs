@@ -10,4 +10,4 @@ path: docs/help-center/product/voices/voice-cloning/how-can-i-delete-my-unverifi
 
 Unfortunately, this is not possible. As mentioned during the setup process of your Professional Voice Clone (PVC), once you advance to the verification stage, you are locked in until you've verified your voice.
 
-If you need help with your Professional Voice Clone, please contact support by emailing us at [team@elevenlabs.io](mailto:team@elevenlabs.io).
+If you need help with your Professional Voice Clone, please contact support by emailing us at [support@elevenlabs.io](mailto:support@elevenlabs.io).

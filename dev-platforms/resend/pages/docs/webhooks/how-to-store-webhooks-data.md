@@ -1,7 +1,7 @@
 ---
 title: "How to Store Webhooks Data"
-source: https://resend.com/docs/dashboard/webhooks/how-to-store-webhooks-data
-path: docs/dashboard/webhooks/how-to-store-webhooks-data
+source: https://resend.com/docs/webhooks/how-to-store-webhooks-data
+path: docs/webhooks/how-to-store-webhooks-data
 ---
 
 Storing your email event data matters. Learn how to set up your own data storage.

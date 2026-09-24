@@ -10,7 +10,7 @@ path: docs/help-center/product/voices/my-voices/how-do-i-delete-voices-from-my-v
 
 To delete a voice from [My Voices](https://elevenlabs.io/app/voice-lab), first find it in your list of voices, click the **More actions** (three dots) button, then select **Delete voice.**
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ee3031105ec93f8664704768ad3802973e91cba07922c854dda7ccf1c87a5586/assets/images/help-center/product/voices/my-voices/how-do-i-delete-voices-from-my-voices.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113333Z&X-Amz-Expires=604800&X-Amz-Signature=b5b0fe96665864e1e1befe863fe2473cb5624473906a5e1e5f110ffd2030b31b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ee3031105ec93f8664704768ad3802973e91cba07922c854dda7ccf1c87a5586/assets/images/help-center/product/voices/my-voices/how-do-i-delete-voices-from-my-voices.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T233305Z&X-Amz-Expires=604800&X-Amz-Signature=eab127a5e05d2fa4ee2f302a895e08ff7443a367b711bc56859509fe16b5d8d7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Deleting a voice cannot be undone, and you will be asked to confirm the deletion.
 
@@ -18,6 +18,6 @@ Default and Legacy voices cannot be deleted, but these voices do not take up you
 
 Voices saved from the Voice Library do not take up your custom voice slots. If you remove a voice that has been removed from the Voice Library, you will not be able to save it to [My Voices](https://elevenlabs.io/app/voice-lab) again in the future.
 
-Unverified Professional Voice Clones cannot be deleted. Please contact support by emailing us at [team@elevenlabs.io](mailto:team@elevenlabs.io) if you need help with this.
+Unverified Professional Voice Clones cannot be deleted. Please contact support by emailing us at [support@elevenlabs.io](mailto:support@elevenlabs.io) if you need help with this.
 
 If you have shared a voice with the Voice Library, you will need to stop sharing it before you can delete it. For details on how to do this, please see [How do I delete a voice I've shared with the Voice Library?](/docs/help-center/product/voices/voice-library/how-do-i-delete-a-voice-ive-shared-with-the-voice-library)

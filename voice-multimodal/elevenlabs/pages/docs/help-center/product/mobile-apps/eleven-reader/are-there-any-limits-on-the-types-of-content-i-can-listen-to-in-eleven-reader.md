@@ -18,4 +18,4 @@ Some specific examples of content that may violate this policy include:
 * Do not engage in illegal behavior.
 * Do not create violent, hateful, or harassing material outside of fictional contexts.
 
-If you believe your account has been incorrectly banned, or your material has been incorrectly removed, you can let us know by emailing [team@elevenlabs.io](mailto:team@elevenlabs.io) from the email you currently use for your ElevenLabs account.
+If you believe your account has been incorrectly banned, or your material has been incorrectly removed, you can let us know by emailing [support@elevenlabs.io](mailto:support@elevenlabs.io) from the email you currently use for your ElevenLabs account.

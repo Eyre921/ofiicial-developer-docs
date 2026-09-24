@@ -18,11 +18,11 @@ Connection and model choice are independent. Bring a coding tool, application, o
   </Card>
 
   <Card title="Connect" icon="plug">
-    [FireConnect](/ecosystem/fireconnect/overview) · [APIs and SDKs](/ecosystem/firerouter/apis-and-sdks) · [LLM gateways](/ecosystem/integrations/llm-gateways)
+    [FireConnect](/nexus/fireconnect) · [APIs and SDKs](/nexus/apis-and-sdks) · [LLM gateways](/nexus/llm-gateways)
   </Card>
 
   <Card title="Choose models" icon="shuffle">
-    Select [Open Models](/nexus/open-models) directly or let [FireRouter](/ecosystem/firerouter/overview) choose for each user turn.
+    Select [Open Models](/nexus/open-models) directly or let [FireRouter](/nexus/firerouter) choose for each user turn.
   </Card>
 
   <Card title="Access closed models" icon="key">

@@ -6,12 +6,42 @@ path: deploy/create-deploys
 
 ---
 title: "Create deploys"
-description: "Discover different methods of deploying a site using our platform. Take advantage of continuous deployment, manual deployment, or integration options."
+description: "Discover different ways of deploying a site using our platform. Take advantage of working with agents, continuous deployment, manual deployment, or integration options."
 ---
 
 > For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
+When you create a deploy, you create a new version of your site or app that Netlify builds on its infrastructure and gives a URL.
+
+You can deploy a preview version of your site/app or a production version of your site/app that is designed to go live at your primary domain.
+
+Netlify supports many different ways to deploy. Learn more in our [ways to deploy summary](#ways-to-deploy-summary) or [get guided help](#not-sure-where-to-start) deciding on the best and quickest way for you to deploy.
+
+## Not sure where to start? 
+
+Find your fastest path to publishing your project live on the web (deploying! 🚀) by answering a few questions.
+
+> **Navigator** component (self-closing)
+
+## Ways to deploy summary
+
+| Deploy method | Description |
+|---|---|
+| [Deploy with AI agents](#deploy-with-ai-agents) | Build and iterate using Claude Code, OpenAI Codex, or Google Gemini directly from your Netlify dashboard |
+| [Deploy with Git](#deploy-with-git) | Connect a Git repository for automatic continuous deployment on every push |
+| [Netlify CLI](#netlify-cli) | Deploy from the command line, with or without a Git repository |
+| [Drag and drop](#drag-and-drop) | Drop a project folder to Netlify Drop for instant deployment, no account required |
+| [API endpoints](#api-endpoints) | Create deploys programmatically using a file digest or ZIP file |
+| [Deploy to Netlify button](#deploy-to-netlify-button) | Let others deploy your templates with a single click |
+| [Build hooks](#build-hooks) | Trigger deploys from external services using a unique URL |
+| [Zapier integrations](#zapier-integrations) | Automate deploys in response to events from other apps |
+| [n8n integrations](#n8n-integrations) | Build custom deploy automations with open source workflow tooling |
+
 This page covers features and tools you can use to create deploys with or without continuous deployment.
+
+### Tip - New to web development?
+
+Continuous deployment means Netlify automatically builds your site every time you push a change to your connected Git repository. You don't trigger deploys manually; the push itself kicks off the process. Methods like [Deploy with Git](#deploy-with-git) and the [Netlify CLI](#netlify-cli) support continuous deployment. Methods like [drag and drop](#drag-and-drop) and the [API](#api-endpoints) create one-off manual deploys instead.
 
 ### Note - Note
 

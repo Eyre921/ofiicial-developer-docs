@@ -31,4 +31,4 @@ cycle, you can click **Cancel downgrade** to remain on your current subscription
 
 Your browser can sometimes block popups from appearing or a button from working. If this happens, try using a different browser. The browsers that generally work best are Chrome, Edge, and Firefox.
 
-If you still have issues, please contact Support by emailing [team@elevenlabs.io](mailto:team@elevenlabs.io). Make sure to contact us from the email you currently use for your ElevenLabs account.
+If you still have issues, please contact Support by emailing [support@elevenlabs.io](mailto:support@elevenlabs.io). Make sure to contact us from the email you currently use for your ElevenLabs account.

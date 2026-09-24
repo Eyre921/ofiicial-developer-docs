@@ -14,4 +14,4 @@ If your subscription isn’t reflected in the app, try the following steps:
 * Use the Restore Purchase option in the app’s settings.
 * Restart the app and check again.
 
-If you still have issues, please contact Support by emailing [team@elevenlabs.io](mailto:team@elevenlabs.io). Make sure to contact us from the email you currently use for your ElevenReader account.
+If you still have issues, please contact Support by emailing [support@elevenlabs.io](mailto:support@elevenlabs.io). Make sure to contact us from the email you currently use for your ElevenReader account.

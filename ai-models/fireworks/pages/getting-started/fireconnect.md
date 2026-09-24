@@ -6,4 +6,4 @@ path: getting-started/fireconnect
 
 Connect coding harnesses to Fireworks models and model routers.
 
-Open the [FireConnect documentation](/ecosystem/fireconnect/overview).
+Open the [FireConnect documentation](/nexus/fireconnect).

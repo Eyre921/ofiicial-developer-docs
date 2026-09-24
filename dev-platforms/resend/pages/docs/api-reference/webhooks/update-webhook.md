@@ -90,7 +90,7 @@ Update an existing webhook configuration.
   ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
   package main
 
-  import "github.com/resend/resend-go/v3"
+  import "github.com/resend/resend-go/v4"
 
   func main() {
   	client := resend.NewClient("re_xxxxxxxxx")
@@ -134,11 +134,15 @@ Update an existing webhook configuration.
   ```
 
   ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import com.resend.*;
+  import com.resend.Resend;
+  import com.resend.core.exception.ResendException;
+  import com.resend.services.webhooks.model.UpdateWebhookOptions;
+  import com.resend.services.webhooks.model.UpdateWebhookResponseSuccess;
+  import com.resend.services.webhooks.model.WebhookStatus;
   import static com.resend.services.webhooks.model.WebhookEvent.*;
 
   public class Main {
-      public static void main(String[] args) {
+      public static void main(String[] args) throws ResendException {
           Resend resend = new Resend("re_xxxxxxxxx");
 
           UpdateWebhookOptions options = UpdateWebhookOptions.builder()

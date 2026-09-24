@@ -66,6 +66,6 @@ FireConnect accepts values `1` to `5` or the corresponding level names. Claude C
 
 ## Related
 
-* [FireRouter](/ecosystem/firerouter/overview): `firerouter`, `firerouter/opus`, and `firerouter/astra`
-* [APIs and SDKs](/ecosystem/firerouter/apis-and-sdks): HTTP headers and Provider Keys
-* [FireConnect](/ecosystem/fireconnect/overview): enable a router in a coding harness
+* [FireRouter](/nexus/firerouter): `firerouter`, `firerouter/opus`, and `firerouter/astra`
+* [APIs and SDKs](/nexus/apis-and-sdks): HTTP headers and Provider Keys
+* [FireConnect](/nexus/fireconnect): enable a router in a coding harness

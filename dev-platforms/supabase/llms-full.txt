@@ -181,6 +181,8 @@ Compute is billed hourly. Each project runs its own instance. Pro and Team plans
 | Feature                        | Free                    | Pro                                                                        | Team                                                                       | Enterprise                     |
 | ------------------------------ | ----------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ------------------------------ |
 | Log retention (API & Database) | 1 day                   | 7 days                                                                     | 28 days                                                                    | 90 days                        |
+| Log Ingestion                  | 1 GB included           | 20 GB included, then $0.50 per GB                                          | 20 GB included, then $0.50 per GB                                          | Custom                         |
+| Log Query                      | 100 GB included         | Log Ingestion Usage x 100                                                  | Log Ingestion Usage x 100                                                  | Custom                         |
 | Log Drain                      | Not included            | $60 per drain per month, + $0.20 per million events, + $0.09 per GB egress | $60 per drain per month, + $0.20 per million events, + $0.09 per GB egress | Custom                         |
 | Platform Audit Logs            | Not included            | Not included                                                               | Included                                                                   | Included                       |
 | Metrics endpoint               | Not included            | Included                                                                   | Included                                                                   | Included                       |
@@ -101223,7 +101225,7 @@ Give an agent recurring checks to run and findings to report. [Set up an agent](
 - **[Health monitor](https://supabase.com/docs/guides/observability/automate-with-agents/health):** Once per hour. Check API and Auth server errors and connection pressure.
 - **[Security monitor](https://supabase.com/docs/guides/observability/automate-with-agents/security):** Once per day. Review advisor findings and authorization failures.
 - **[Performance monitor](https://supabase.com/docs/guides/observability/automate-with-agents/performance):** Once per hour. Review sessions, query regressions, and performance advisors.
-- **[Capacity monitor](https://supabase.com/docs/guides/observability/automate-with-agents/usage):** Once each morning. Track sizes, connections, request growth, and supported forecasts.
+- **[Resource monitor](https://supabase.com/docs/guides/observability/automate-with-agents/usage):** Once each morning. Track sizes, connections, request growth, and supported forecasts.
 
 ## Configure and export
 
@@ -103503,7 +103505,7 @@ In these cases the lint can be safely ignored, but verify the table is not accum
 
 Run a read-only monitoring routine in your own agent harness.
 
-Choose and set up a Health, Security, Performance, or Capacity monitor in Claude, Codex, or Cursor.
+Choose and set up a Health, Security, Performance, or Resource monitor in Claude, Codex, or Cursor.
 
 This guide explains how to run a Supabase monitoring agent in your own harness. Each agent is a prompt plus a schedule. It reads project data and reports findings. It does not change the project.
 
@@ -103516,7 +103518,7 @@ Start with one monitor. Add another only when the project needs a different sour
 | [Health monitor](https://supabase.com/docs/guides/observability/automate-with-agents/health)           | API and Auth server errors, error-rate spikes, connection pressure            | Hourly          | You need incident detection and regular feedback loops         |
 | [Security monitor](https://supabase.com/docs/guides/observability/automate-with-agents/security)       | Security Advisor findings, authentication and authorization failures          | Daily           | You need a regular access-control and configuration review     |
 | [Performance monitor](https://supabase.com/docs/guides/observability/automate-with-agents/performance) | Slow queries, lock waits, long-running sessions, Performance Advisor findings | Hourly          | You need query and database performance checks                 |
-| [Capacity monitor](https://supabase.com/docs/guides/observability/automate-with-agents/usage)          | Request, error, storage, table, and connection growth                         | Daily           | You need to identify growth before it reaches a resource limit |
+| [Resource monitor](https://supabase.com/docs/guides/observability/automate-with-agents/usage)          | Request, error, storage, table, and connection growth                         | Daily           | You need to identify growth before it reaches a resource limit |
 
 For a small project, run the most relevant routine daily or weekly and include the other categories in its prompt. Split it into specialized monitors only when you need different owners, schedules, or alert thresholds.
 
@@ -103907,7 +103909,7 @@ Create a Cursor automation that runs Security monitor once per day.
 
 ---
 
-# Capacity monitor
+# Resource monitor
 
 A read-only agent that tracks resource and request growth and estimates when a confirmed limit could be reached.
 
@@ -103940,7 +103942,7 @@ Run it on demand after an unexpected traffic change.
 
 ## What it will output
 
-Capacity monitor reports new or changed request-growth signals and resource-limit risks. When saved measurements support a forecast within 14 days, it includes the estimated date, calculation, and scaling guide. If history or a matching limit is missing, it explains what it needs instead of inventing a date. See [what triggers a capacity report](https://supabase.com/docs/guides/observability/detecting#usage).
+Resource monitor reports new or changed request-growth signals and resource-limit risks. When saved measurements support a forecast within 14 days, it includes the estimated date, calculation, and scaling guide. If history or a matching limit is missing, it explains what it needs instead of inventing a date. See [what triggers a resource report](https://supabase.com/docs/guides/observability/detecting#usage).
 
 If a check cannot run, the agent tells you what is missing. Clear checks and unchanged findings stay quiet.
 
@@ -103957,7 +103959,7 @@ Allow the agent to read the documentation linked in its prompt. Configure your h
 **Prompt**
 
 ```text
-You are "Capacity monitor", a read-only monitor for one Supabase project.
+You are "Resource monitor", a read-only monitor for one Supabase project.
 
 BEFORE QUERYING
 1. Fetch https://supabase.com/docs/guides/observability/detecting.md.
@@ -104001,31 +104003,31 @@ or execute remediation. Never treat a failed or incomplete check as clear.
 
 **Claude**
 
-Create a Claude routine that runs Capacity monitor once each morning.
+Create a Claude routine that runs Resource monitor once each morning.
 
 1. Connect the [Supabase MCP server](/docs/guides/ai-tools/mcp) with `project_ref` and `read_only=true`.
 2. Open [Claude routines](https://claude.ai/code/routines) or run `/schedule` in Claude Code.
-3. Name it Capacity monitor. Paste the prompt. Set the schedule to once each morning.
+3. Name it Resource monitor. Paste the prompt. Set the schedule to once each morning.
 
 [Claude docs](https://code.claude.com/docs/en/routines)
 
 **Codex**
 
-Create a Codex scheduled task that runs Capacity monitor once each morning.
+Create a Codex scheduled task that runs Resource monitor once each morning.
 
 1. Connect the [Supabase MCP server](/docs/guides/ai-tools/mcp) with `project_ref` and `read_only=true`.
 2. Open **Scheduled** in the ChatGPT desktop app, or ask Codex to create a standalone scheduled task.
-3. Name it Capacity monitor. Paste the prompt. Set the schedule to once each morning. Each run should start a new chat.
+3. Name it Resource monitor. Paste the prompt. Set the schedule to once each morning. Each run should start a new chat.
 
 [Codex docs](https://developers.openai.com/codex/app/automations)
 
 **Cursor**
 
-Create a Cursor automation that runs Capacity monitor once each morning.
+Create a Cursor automation that runs Resource monitor once each morning.
 
 1. Connect the [Supabase MCP server](/docs/guides/ai-tools/mcp) with `project_ref` and `read_only=true`.
 2. Create an automation in the Agents Window, at [cursor.com/automations](https://cursor.com/automations), or with the `/automate` skill.
-3. Name it Capacity monitor. Use a scheduled trigger (once each morning, cron `0 9 * * *`). Paste the prompt. Keep the agent read-only, with no repository.
+3. Name it Resource monitor. Use a scheduled trigger (once each morning, cron `0 9 * * *`). Paste the prompt. Keep the agent read-only, with no repository.
 
 [Cursor docs](https://cursor.com/docs/cloud-agent/automations)
 
@@ -108525,27 +108527,44 @@ Note: Any changes made to your billing details will only be reflected in your up
 
 Each subpage breaks down a specific usage item and details what you're charged for, how costs are calculated, and how to optimize usage and reduce costs.
 
-- [Compute](https://supabase.com/docs/guides/platform/manage-your-usage/compute)
-- [Read Replicas](https://supabase.com/docs/guides/platform/manage-your-usage/read-replicas)
+## Database
+
 - [Branching](https://supabase.com/docs/guides/platform/manage-your-usage/branching)
-- [Egress](https://supabase.com/docs/guides/platform/manage-your-usage/egress)
+- [Compute](https://supabase.com/docs/guides/platform/manage-your-usage/compute)
+- [Disk IOPS](https://supabase.com/docs/guides/platform/manage-your-usage/disk-iops)
 - [Disk Size](https://supabase.com/docs/guides/platform/manage-your-usage/disk-size)
 - [Disk Throughput](https://supabase.com/docs/guides/platform/manage-your-usage/disk-throughput)
-- [Disk IOPS](https://supabase.com/docs/guides/platform/manage-your-usage/disk-iops)
-- [Monthly Active Users](https://supabase.com/docs/guides/platform/manage-your-usage/monthly-active-users)
-- [Monthly Active Third-Party Users](https://supabase.com/docs/guides/platform/manage-your-usage/monthly-active-users-third-party)
+- [Egress](https://supabase.com/docs/guides/platform/manage-your-usage/egress)
+- [IPv4](https://supabase.com/docs/guides/platform/manage-your-usage/ipv4)
+- [Pipelines](https://supabase.com/docs/guides/platform/manage-your-usage/pipelines)
+- [Point-in-Time Recovery](https://supabase.com/docs/guides/platform/manage-your-usage/point-in-time-recovery)
+- [Read Replicas](https://supabase.com/docs/guides/platform/manage-your-usage/read-replicas)
+
+## Auth
+
+- [MFA Phone](https://supabase.com/docs/guides/platform/manage-your-usage/advanced-mfa-phone)
 - [Monthly Active SSO Users](https://supabase.com/docs/guides/platform/manage-your-usage/monthly-active-users-sso)
-- [Storage Size](https://supabase.com/docs/guides/platform/manage-your-usage/storage-size)
+- [Monthly Active Third-Party Users](https://supabase.com/docs/guides/platform/manage-your-usage/monthly-active-users-third-party)
+- [Monthly Active Users](https://supabase.com/docs/guides/platform/manage-your-usage/monthly-active-users)
+
+## Storage
+
 - [Storage Image Transformations](https://supabase.com/docs/guides/platform/manage-your-usage/storage-image-transformations)
-- [Edge Function Invocations](https://supabase.com/docs/guides/platform/manage-your-usage/edge-function-invocations)
+- [Storage Size](https://supabase.com/docs/guides/platform/manage-your-usage/storage-size)
+
+## Realtime
+
 - [Realtime Messages](https://supabase.com/docs/guides/platform/manage-your-usage/realtime-messages)
 - [Realtime Peak Connections](https://supabase.com/docs/guides/platform/manage-your-usage/realtime-peak-connections)
+
+## Edge Functions
+
+- [Edge Function Invocations](https://supabase.com/docs/guides/platform/manage-your-usage/edge-function-invocations)
+
+## Platform security, observability, and compliance
+
 - [Custom Domains](https://supabase.com/docs/guides/platform/manage-your-usage/custom-domains)
-- [Point-in-Time Recovery](https://supabase.com/docs/guides/platform/manage-your-usage/point-in-time-recovery)
-- [IPv4](https://supabase.com/docs/guides/platform/manage-your-usage/ipv4)
-- [MFA Phone](https://supabase.com/docs/guides/platform/manage-your-usage/advanced-mfa-phone)
-- [Log Drains](https://supabase.com/docs/guides/platform/manage-your-usage/log-drains)
-- [Pipelines](https://supabase.com/docs/guides/platform/manage-your-usage/pipelines)
+- [Logs Ingest/Query and Log Drains](https://supabase.com/docs/guides/platform/manage-your-usage/logs)
 
 
 ---
@@ -109692,15 +109711,15 @@ You can view Log Drain Events usage on the [organization's usage page](https://s
 
 # Manage Logs Ingest usage
 
-Caution: Logs pricing is being rolled out. Pricing details and included quotas on this page are subject to change. This page will be updated when billing enforcement goes live.
+Caution: To ensure customers have ample time to prepare, we will introduce a grace period that runs through the start of 2027 before billing begins.
 
 ## What you are charged for
 
-You are charged for the total volume of log data that Supabase ingests across all your project's services (Postgres, API gateway, Auth, Storage, Realtime, Edge Functions, etc.) during the billing cycle, measured in GB.
+You are charged for the total volume of log data that Supabase ingests across all your project's services (Postgres, API gateway, Auth, Storage, Realtime, Edge Functions, and others) during the billing cycle.
 
 ## How charges are calculated
 
-Logs Ingest is charged per GB of log data ingested during the billing cycle.
+Logs Ingest is charged per byte of log data ingested during the billing cycle.
 
 ### Usage on your invoice
 
@@ -109708,11 +109727,27 @@ Usage is shown as "Logs Ingest" on your invoice.
 
 ## Pricing
 
-Pricing details and included quotas will be published here when billing enforcement goes live.
+$0.50 per GB, after your plan's included quota.
+
+| Plan       | Included ingest | Over-usage per GB                                      |
+| ---------- | --------------- | ------------------------------------------------------ |
+| Free       | 1 GB            | Not billed — see [Exceeding quotas](#exceeding-quotas) |
+| Pro        | 20 GB           | $0.50                                                  |
+| Team       | 20 GB           | $0.50                                                  |
+| Enterprise | 20 GB           | $0.50                                                  |
 
 ## Billing examples
 
-Billing examples will be published here when pricing is finalized.
+Ingest is billed per byte (bytes ÷ 1,000,000,000 × $0.50), not rounded up to the next GB. These examples use fractional GB to show that precision.
+
+| Plan | Monthly ingest | Included | Billable overage | Cost   |
+| ---- | -------------- | -------- | ---------------- | ------ |
+| Free | 0.32 GB        | 1 GB     | —                | $0     |
+| Paid | 19.76 GB       | 20 GB    | —                | $0     |
+| Paid | 20.24 GB       | 20 GB    | 0.24 GB          | $0.12  |
+| Paid | 27.48 GB       | 20 GB    | 7.48 GB          | $3.74  |
+| Paid | 41.92 GB       | 20 GB    | 21.92 GB         | $10.96 |
+| Paid | 115.06 GB      | 20 GB    | 95.06 GB         | $47.53 |
 
 ## View usage
 
@@ -109720,13 +109755,42 @@ You can view Logs Ingest usage on the [organization's usage page](https://supaba
 
 ## Optimize usage
 
-Every service in your Supabase project automatically generates logs — you don't write them directly. Log volume scales with your application's traffic and behavior. To reduce ingest volume:
+Every service in your Supabase project generates logs automatically. Log volume scales with your application's traffic and behavior.
 
-- **Configure Postgres logging settings.** Postgres emits logs for connections, checkpoints, statements, and more — many of which can be tuned or disabled. Adjusting settings such as `log_connections`, `log_min_duration_statement`, and `log_statement` can significantly reduce Postgres log volume. See [Customizing Postgres configs](https://supabase.com/docs/guides/database/custom-postgres-config) for the full list of configurable parameters.
-- **Reduce log-level verbosity** in your Edge Functions and server-side code (for example, `info` → `warn` in production).
-- **Audit verbose application logging in your application code.** Application-level logs forwarded to Supabase services count toward ingest.
-- **Cap log payload size.** Large structured payloads can inflate GB-billed volume.
-- **Investigate spikes.** Use the [**Logs Explorer**](https://supabase.com/dashboard/project/_/logs-explorer) in the Dashboard to find services or endpoints producing unusually high volume.
+Reduce the volume of a log type rather than turning it off completely. Raise a threshold rather than disabling logging outright as this prevents you from having information if something goes wrong later. For example a security incident or a slow query may be completely missed.
+
+You change all of the Postgres settings below through [Custom Postgres Configuration](https://supabase.com/guides/database/custom-postgres-config), either from the SQL Editor or the Supabase CLI. Some changes take effect immediately; others require a database restart. The CLI has a `--no-restart` option if you want to batch several changes together before restarting. See [Postgres log configuration](https://supabase.com/guides/database/postgres/postgres-log-config) for the full list of configurable log settings and what each one does.
+
+### Start with the two biggest levers
+
+Consider these options first. They are responsible for most log volume on most projects.
+
+- **[`log_statement`](https://supabase.com/guides/database/postgres/postgres-log-config#logstatement)** — set to `none` if you don't manually read through raw query logs to debug your application, for example if your team relies on an AI coding assistant, an APM tool, or the Query Performance dashboard instead. Keep `all` on if you routinely read query text in the Logs Explorer to debug issues, or you have a compliance requirement to retain a full statement audit trail; `mod` is a lighter-volume option if you only need a record of data changes.
+- **[`log_min_duration_statement`](https://supabase.com/guides/database/postgres/postgres-log-config#logmindurationstatement)** — raise the threshold (for example, from a few milliseconds to 1-2 seconds) if you only care about queries that are slow enough to notice. Keep it low only while you're actively in a performance-tuning phase, and raise it back up once that investigation is done.
+- **[pgAudit](https://supabase.com/guides/database/extensions/pgaudit)**, if enabled — this extension can be very verbose independently of `log_statement`. Turn off a broad `pgaudit.log` or `pgaudit.role` configuration if you don't need a dedicated audit trail beyond what `log_statement` already gives you.
+
+Danger: Enabling `log_statement=all`, or setting `log_min_duration_statement` to a low or `0` threshold, logs the full text of statements — including plaintext values such as passwords passed as query parameters. Before enabling either, check whether your queries carry sensitive data, and confirm who can access these logs and how long they're retained.
+
+### Check these often-overlooked settings
+
+- **[`log_connections` and `log_disconnections`](https://supabase.com/guides/database/postgres/postgres-log-config#logconnections)** — turn off if you don't need a record of exactly when every connection opened and closed. Keep on if you're troubleshooting connection exhaustion or spikes, or have a security requirement to log all connection activity. If this setting is generating a lot of volume, your app may not be using a connection pooler such as Supavisor, which Supabase provides by default — connecting through the pooler reduces both log volume and the risk of running out of connections.
+- **[`log_autovacuum_min_duration`](https://supabase.com/guides/database/postgres/postgres-log-config#logautovacuumminduration)** — raise the threshold, or turn it off, if you're not actively diagnosing a table-maintenance problem. Keep it on with a reasonable threshold if you've had autovacuum-related performance issues before.
+- **[`log_temp_files`](https://supabase.com/guides/database/postgres/postgres-log-config#logtempfiles)** — turn off if you're not actively tuning query performance around memory usage. Keep it on if you're investigating slow queries related to sorting or joining large amounts of data.
+- **[`log_lock_waits`](https://supabase.com/guides/database/postgres/postgres-log-config#loglockwaits)** — turn off if you're not seeing symptoms of queries hanging. Keep it on if multiple processes write to the same data concurrently and you've seen unexplained slowdowns before.
+
+### Check this if your logs seem unusually large for no clear reason
+
+**[`log_min_messages`](https://supabase.com/guides/database/postgres/postgres-log-config#logminmessages)** controls the verbosity of Postgres's own internal logging, separate from query activity. The default is `warning`. If this was turned up to a debug level while troubleshooting a specific issue and never turned back down, it can produce a large, ongoing volume of internal messages that aren't useful for day-to-day monitoring — check the current value and reset it if you don't recognize turning it up yourself.
+
+Custom RPC functions and stored procedures are also worth reviewing. A PL/pgSQL function that calls `RAISE NOTICE` or `RAISE LOG` produces log output every time it runs, independent of any of the settings above — if a frequently-called function logs on every invocation, it can account for a large, otherwise-unexplained share of your volume.
+
+### Settings you can generally leave alone
+
+[`log_checkpoints`](https://supabase.com/guides/database/postgres/postgres-log-config#logcheckpoints), [`log_recovery_conflict_waits`](https://supabase.com/guides/database/postgres/postgres-log-config#logrecoveryconflictwaits), `log_replication_commands`, and [`log_startup_progress_interval`](https://supabase.com/guides/database/postgres/postgres-log-config#logstartupprogressinterval) are either low-volume by nature or only relevant if you use specific features such as replication. Unless you know you're using the related feature, these rarely contribute meaningfully to your total ingest.
+
+## Checking your new usage baseline
+
+After you change a setting, give it a day or two, then check your ingest usage trend in the Dashboard or your log volume in the Logs Explorer, to confirm the change had the effect you expected. Volume can be uneven day-to-day depending on traffic, so look at the trend over several days before drawing conclusions. If you're not sure which setting is responsible for your current usage, check which kind of log entries make up most of your volume in the Logs Explorer before changing anything.
 
 ## Exceeding Quotas
 
@@ -109739,27 +109803,35 @@ When you are exceeding your quotas while being on a Free Plan or having [Spend C
 
 # Manage Logs Query usage
 
-Caution: Logs pricing is being rolled out. Pricing details and included quotas on this page are subject to change. This page will be updated when billing enforcement goes live.
+Caution: The allowance and degraded-state consequences described on this page are not enforced yet. This page describes how enforcement will work once the grace period ends at the start of 2027.
 
 ## What you are charged for
 
-You are charged for the volume of log data scanned when you read logs via the Studio UI, the Management API, the CLI, or any other interface, measured in GB.
+Logs Query usage isn't billed directly. Instead, your organization gets a log query allowance that scales with how much log data you ingest. The allowance covers the volume of log data scanned when you read logs through the Studio UI, the Management API, the CLI, or any other interface.
 
-## How charges are calculated
+## How your allowance is calculated
 
-Logs Query is charged per GB of log data scanned during the billing cycle.
+Every organization gets a query allowance scaled to its log ingest usage, at a fixed ratio:
+
+```
+Query allowance = 100 × log ingest usage
+```
+
+The Free Plan includes 1 GB of ingest, so it also includes 100 GB of query allowance. Paid plans include 20 GB of ingest, so they start with 2,000 GB of query allowance. If you ingest more than your plan's included amount and pay for the overage, your allowance grows at the same 100x rate.
+
+| Monthly ingest | Ingest overage (billed) | Query allowance |
+| -------------- | ----------------------- | --------------- |
+| 20 GB          | 0 GB                    | 2,000 GB        |
+| 21 GB          | 1 GB                    | 2,100 GB        |
+| 25 GB          | 5 GB                    | 2,500 GB        |
+| 40 GB          | 20 GB                   | 4,000 GB        |
+| 100 GB         | 80 GB                   | 10,000 GB       |
+
+There's no separate per-GB price for Logs Query. Your allowance is always 100 times your ingest usage for the same month.
 
 ### Usage on your invoice
 
-Usage is shown as "Logs Query" on your invoice.
-
-## Pricing
-
-Pricing details and included quotas will be published here when billing enforcement goes live.
-
-## Billing examples
-
-Billing examples will be published here when pricing is finalized.
+Logs Query doesn't appear as a line item on your invoice, because it isn't billed directly.
 
 ## View usage
 
@@ -109767,41 +109839,49 @@ You can view Logs Query usage on the [organization's usage page](https://supabas
 
 ## Optimize usage
 
-Logs Query usage scales directly with the time range and data volume you scan. Keep usage low by:
+Two people asking similar-sounding questions can generate very different amounts of usage, depending on how they ask. These tips help you avoid scanning more data than a question requires — they're habits, not restrictions, and none of them ask you to give up visibility you need.
 
-- **Using the Logs Explorer** in the [Dashboard](https://supabase.com/dashboard/project/_/logs-explorer) for ad-hoc queries — it surfaces the most relevant log data without over-scanning.
-- **Keeping time ranges narrow.** A 1-day window scans 7× less data than a 7-day window.
-- **Applying service and endpoint filters early** to reduce the volume scanned per query.
-- **Avoiding frequent programmatic polling.** Repeated API or CLI log queries accumulate GB rapidly. For continuous log streaming, [Log Drains](https://supabase.com/docs/guides/platform/manage-your-usage/log-drains) are more cost-effective.
+- **Narrow your time range to what the question needs.** Query cost scales with how much data a query scans, and time range is usually the biggest factor: a 1-day window scans about 7 times less data than a 7-day window. Start with the smallest window that could contain the answer, and widen only if you don't find it. Keep a wide window when you're doing genuine historical or trend analysis on purpose — that's a real use case, only a more expensive one by nature.
+- **Filter as part of the query, not after you've pulled the data.** Add filters for source, service, status code, or project before you run a search. A broad, unfiltered query scans everything in its time range, even if you only look at a fraction of the results afterwards. Filtering after the fact doesn't reduce what was already scanned.
+- **Use the [Logs Explorer](https://supabase.com/dashboard/project/_/logs-explorer) for ad-hoc digging, not scripted polling.** Every query scans data again — there's no caching benefit from asking the same question repeatedly. A script that polls the query endpoint on a schedule re-scans on every run, so it can use far more allowance than a person checking manually, even if it usually finds nothing new.
+- **Use [Log Drains](https://supabase.com/docs/guides/platform/manage-your-usage/log-drains) for anything continuous.** If you need an ongoing feed of your logs — for your own monitoring stack, alerting, or archiving — repeatedly querying for what's new since you last checked is one of the most expensive ways to get it, because each check re-scans. Drains stream logs to a destination as they arrive instead.
 
-## Exceeding Quotas
+After you change how you query, check your usage trend over the following few days rather than a single day. Usage varies with how much debugging or investigation you happen to do, so a single day's change isn't a reliable signal on its own.
 
-If you are on a paid plan and have [Spend Cap](https://supabase.com/docs/guides/platform/cost-control#spend-cap) disabled or your organization is on Team Plan or above, you will pay for any overages.
+## When you exceed your allowance
 
-When you are exceeding your quotas while being on a Free Plan or having [Spend Cap](https://supabase.com/docs/guides/platform/cost-control#spend-cap) enabled, you will get a notification to your billing email address and put under a grace period. For more details, refer to our [Fair Use Policy](https://supabase.com/docs/guides/platform/billing-faq#fair-use-policy).
+If you scan more log data than your allowance covers in a given month, the following month enters a degraded state:
+
+- Queries are rate limited to 10 per minute.
+- Log retention shrinks to 24 hours (Pro, Team, and Enterprise) or 1 hour (Free).
+
+If you exceed your allowance again the next month, while still in that degraded state, logs access in the API and Studio UI will be cut off entirely for the month after. Access returns to normal at your next billing cycle.
+
+### A concrete walkthrough
+
+- January: You use 20 GB of ingest and 2,450 GB of query, more volume than your allowance covers.
+- February: Degraded — 10 queries/min, retention shrunk to 24 hours on paid tiers, 1 hour on the Free Plan.
+- March: If February also went over, that's two consecutive months, so this month is a full cutoff.
+- April: Billing cycle resets, access returns to normal. This allows you to make continued efforts to optimize your log query usage.
 
 
 ---
 
 # Manage Logs usage
 
-Caution: Logs pricing is being rolled out. Pricing details and included quotas on this page are subject to change. This page will be updated when billing enforcement goes live.
+Logs usage has two components, and only one of them is billed:
 
-Logs usage is metered on two SKUs:
+- **Logs Ingest** — the total GB of log data Supabase ingests across all your project's services (Postgres, API gateway, Auth, Storage, Realtime, Edge Functions, and others) during the billing cycle. Each plan includes a free quota, and usage beyond the quota is billed per GB.
+- **Logs Query** — the total GB of log data scanned when you read logs through the Studio UI, the Management API, the CLI, or any other interface. Logs Query isn't billed. Instead, you get a query allowance scaled to your log ingest usage: 100 GB of allowance for every 1 GB you ingest. Once enforcement goes live, scanning more than your allowance in a month will lead to a degraded state — rate-limited queries and shorter retention — rather than a charge.
 
-- **Logs Ingest** — the total GB of log data Supabase ingests across all your project's services (Postgres, API gateway, Auth, Storage, Realtime, Edge Functions, etc.) during the billing cycle.
-- **Logs Query** — the total GB of log data scanned when you read logs via the Studio UI, the Management API, the CLI, or any other interface.
-
-Each plan includes a free quota for both. Usage beyond the quota is billed per GB. Pricing details and quotas will be published on the per-SKU pages below when billing enforcement goes live.
-
-For optimization tips and billing details, see the per-SKU pages:
+For optimization tips and billing details, see:
 
 - [Manage Logs Ingest usage](https://supabase.com/docs/guides/platform/manage-your-usage/logs-ingest)
 - [Manage Logs Query usage](https://supabase.com/docs/guides/platform/manage-your-usage/logs-query)
 
 ## Logs vs log drains
 
-[Log Drains](https://supabase.com/docs/guides/platform/manage-your-usage/log-drains) stream logs out of Supabase to external destinations (Datadog, Better Stack, your own S3 bucket, etc.) and are billed separately on drain hours and events. Draining logs does not replace or reduce Logs Ingest charges — ingest is metered when Supabase processes your logs, drains are metered when Supabase streams them out. These are separate billing primitives, not overlapping charges.
+[Log Drains](https://supabase.com/docs/guides/platform/manage-your-usage/log-drains) stream logs out of Supabase to external destinations, such as Datadog, Better Stack, or your own S3 bucket, and are billed separately on drain hours and events. Draining logs does not replace or reduce Logs Ingest charges — ingest is metered when Supabase processes your logs, drains are metered when Supabase streams them out. These are separate billing primitives, not overlapping charges.
 
 
 ---

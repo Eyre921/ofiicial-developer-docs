@@ -8,7 +8,7 @@ FireConnect global commands, providers, authentication, and migration
 
 Connect a harness with `fireconnect <harness>`. Use `off` to restore its previous settings, `status` to inspect the connection, and `help` to see harness-specific options. The optional `on` command remains available for backward compatibility.
 
-For model selection and credentials, see [Open Models](/nexus/open-models) and [Harness Compatibility](/nexus/harness-compatibility). For router behavior, see [FireRouter](/ecosystem/firerouter/overview).
+For model selection and credentials, see [Open Models](/nexus/open-models) and [Harness Compatibility](/nexus/harness-compatibility). For router behavior, see [FireRouter](/nexus/firerouter).
 
 ## Global commands
 
@@ -77,13 +77,13 @@ In `configure`, `--api-key` is the **Azure** endpoint key and requires `--provid
 | `fireworks` (default) | Fireworks gateway              | Fireworks API key |
 | `azure`               | Fireworks on Microsoft Foundry | Azure API key     |
 
-See [Coding Harnesses](/ecosystem/fireconnect/harnesses#foundry-across-harnesses) for current Foundry compatibility. Connections use the configured provider by default. To use Foundry for one command, pass `--azure`, or pass both `--base-url` and `--api-key`.
+See [Coding Harnesses](/nexus/harnesses#foundry-across-harnesses) for current Foundry compatibility. Connections use the configured provider by default. To use Foundry for one command, pass `--azure`, or pass both `--base-url` and `--api-key`.
 
 ## Harness commands
 
 CLI harnesses support connect, `off`, `status`, and `help`. Claude Code also supports `usage`, `live`, and `demo`.
 
-IDE commands require you to quit the app before FireConnect writes settings. `status` is read-only. See [Coding Harnesses](/ecosystem/fireconnect/harnesses) for app-specific commands and restart rules.
+IDE commands require you to quit the app before FireConnect writes settings. `status` is read-only. See [Coding Harnesses](/nexus/harnesses) for app-specific commands and restart rules.
 
 ## Choose a model or router
 

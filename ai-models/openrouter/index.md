@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 462 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 463 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -86,6 +86,7 @@
 - [Create an intern](pages/docs/api/api-reference/interns/create-an-intern.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/create-an-intern.md)
 - `docs/api/api-reference/interns/delete-an-intern` — [Delete an intern](pages/docs/api/api-reference/interns/delete-an-intern.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/delete-an-intern.md)
 - `docs/api/api-reference/interns/get-an-intern` — [Get an intern](pages/docs/api/api-reference/interns/get-an-intern.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/get-an-intern.md)
+- `docs/api/api-reference/interns/get-an-interns-daemon-access` — [Get an intern's daemon access](pages/docs/api/api-reference/interns/get-an-interns-daemon-access.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/get-an-interns-daemon-access.md)
 - `docs/api/api-reference/interns/list-interns` — [List interns](pages/docs/api/api-reference/interns/list-interns.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/list-interns.md)
 - `docs/api/api-reference/interns/provision-an-intern` — [Provision an intern](pages/docs/api/api-reference/interns/provision-an-intern.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/provision-an-intern.md)
 - `docs/api/api-reference/interns/start-an-intern-run-without-waiting-for-it` — [Start an intern run without waiting for it](pages/docs/api/api-reference/interns/start-an-intern-run-without-waiting-for-it.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/start-an-intern-run-without-waiting-for-it.md)

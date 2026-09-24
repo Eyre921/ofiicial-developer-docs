@@ -47,10 +47,12 @@ Remove an existing topic.
   ```
 
   ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
   import (
   	"context"
 
-  	"github.com/resend/resend-go/v3"
+  	"github.com/resend/resend-go/v4"
   )
 
   func main() {
@@ -77,10 +79,12 @@ Remove an existing topic.
   ```
 
   ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import com.resend.*;
+  import com.resend.Resend;
+  import com.resend.core.exception.ResendException;
+  import com.resend.services.topics.model.RemoveTopicResponseSuccess;
 
   public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ResendException {
       Resend resend = new Resend("re_xxxxxxxxx");
 
       RemoveTopicResponseSuccess response = resend.topics().remove("b6d24b8e-af0b-4c3c-be0c-359bbd97381e");

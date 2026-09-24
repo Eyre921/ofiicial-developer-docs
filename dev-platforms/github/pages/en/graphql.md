@@ -20,7 +20,7 @@ To create integrations, retrieve data, and automate your workflows, use the GitH
 
 * [Forming calls with GraphQL](/en/graphql/guides/forming-calls-with-graphql)
 
-  <p>Learn how to authenticate to the GraphQL API, then learn how to create and run queries and mutations.</p>
+  Learn how to authenticate to the GraphQL API, then learn how to create and run queries and mutations.
 
 * [Using pagination in the GraphQL API](/en/graphql/guides/using-pagination-in-the-graphql-api)
 
@@ -32,7 +32,7 @@ To create integrations, retrieve data, and automate your workflows, use the GitH
 
 * [Rate limits and query limits for the GraphQL API](/en/graphql/overview/rate-limits-and-query-limits-for-the-graphql-api)
 
-  <p>The GitHub GraphQL API has limitations in place to protect against excessive or abusive calls to GitHub's servers.</p>
+  The GitHub GraphQL API has limitations in place to protect against excessive or abusive calls to GitHub's servers.
 
 ## Links
 

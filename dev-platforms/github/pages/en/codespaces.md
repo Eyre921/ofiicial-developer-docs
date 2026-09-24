@@ -16,11 +16,11 @@ Create a codespace to start developing in a secure, configurable, and dedicated 
 
 * [What are GitHub Codespaces?](/en/codespaces/about-codespaces/what-are-codespaces)
 
-  Learn about what GitHub Codespaces are.
+  <p>Learn about what GitHub Codespaces are.</p>
 
 * [Understanding the codespace lifecycle](/en/codespaces/about-codespaces/understanding-the-codespace-lifecycle)
 
-  <p>Learn how to develop in a GitHub Codespaces environment, and maintain your data throughout the entire codespace lifecycle.</p>
+  Learn how to develop in a GitHub Codespaces environment, and maintain your data throughout the entire codespace lifecycle.
 
 * [Creating a codespace for a repository](/en/codespaces/developing-in-a-codespace/creating-a-codespace-for-a-repository)
 
@@ -44,7 +44,7 @@ Create a codespace to start developing in a secure, configurable, and dedicated 
 
 * [Security in GitHub Codespaces](/en/codespaces/reference/security-in-github-codespaces)
 
-  Overview of the GitHub Codespaces security architecture, with guidelines to help you maintain security and minimize the risk of attack.
+  <p>Overview of the GitHub Codespaces security architecture, with guidelines to help you maintain security and minimize the risk of attack.</p>
 
 ## Links
 

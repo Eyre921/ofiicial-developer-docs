@@ -20,7 +20,7 @@ Before configuring FireConnect, open [Microsoft Foundry](/ecosystem/integrations
 * The resource endpoint and Azure API key
 * FireConnect installed
 
-See [Coding Harnesses](/ecosystem/fireconnect/harnesses#foundry-across-harnesses) for current compatibility.
+See [Coding Harnesses](/nexus/harnesses#foundry-across-harnesses) for current compatibility.
 
 <Warning>
   Use an **Azure API key** from Foundry, not a Fireworks key (`fw_...`).
@@ -89,11 +89,26 @@ If global config already has a Foundry endpoint, `--azure` alone reuses it:
 fireconnect cursor --azure --model FW-GLM-5.2
 ```
 
-FireConnect keeps Foundry configuration separate from direct Fireworks configuration. `fireconnect <harness> status` reports the provider, endpoint, and model. See [Coding Harnesses](/ecosystem/fireconnect/harnesses) for files changed and restore behavior.
+FireConnect keeps Foundry configuration separate from direct Fireworks configuration. `fireconnect <harness> status` reports the provider, endpoint, and model. See [Coding Harnesses](/nexus/harnesses) for files changed and restore behavior.
 
 <Note>
   `fireconnect model list` shows the Fireworks serverless catalog, not Foundry deployments. Enter a Foundry deployment name with `--model`.
 </Note>
+
+## Claude Code through a gateway
+
+Direct FireConnect routing does not support Claude Code on Foundry. To use Claude Code with a Foundry deployment, run an LLM gateway between Claude Code and Foundry. The gateway translates between the Anthropic Messages format that Claude Code sends and the OpenAI-compatible format that Foundry expects. FireConnect does not configure this path.
+
+Two patterns are in production use:
+
+* **Claude Code to Envoy AI Gateway to Foundry.** Point `ANTHROPIC_BASE_URL` at the gateway. You keep your Claude Code install unchanged. The gateway renames fields, maps tool schemas, reframes streams, and injects the Azure key, the deployment name, and a shared prompt cache key.
+* **Claude Code to LiteLLM to Foundry.** Point Claude Code at LiteLLM and configure Foundry as the upstream provider. See [LLM Gateways](/nexus/llm-gateways) for LiteLLM setup.
+
+Reference implementation for the Envoy path with GLM 5.2 on Foundry:
+
+* [Claude Code on Foundry with Fireworks models](https://github.com/ganac-tech/Claude-code-on-foundry-FW-Open-Source-Models) (gateway config, demos, and cache measurement scripts)
+
+Keep the Azure key in the gateway config. Do not paste it into Claude Code. Model routers stay unavailable on the Foundry path, including through a gateway.
 
 ## Switch or disconnect
 
@@ -117,6 +132,6 @@ Confirm that the provider is `azure` and that the endpoint and deployment name a
 
 ## Related documentation
 
-* [Coding Harnesses](/ecosystem/fireconnect/harnesses)
+* [Coding Harnesses](/nexus/harnesses)
 * [Microsoft Foundry](/ecosystem/integrations/azure-foundry)
 * [CLI Reference](/nexus/cli-reference)

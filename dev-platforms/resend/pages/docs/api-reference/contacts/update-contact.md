@@ -54,15 +54,9 @@ Either `id` or `email` must be provided.
 
   const resend = new Resend('re_xxxxxxxxx');
 
-  // Update by contact id
   const { data, error } = await resend.contacts.update({
     id: 'e169aa45-1ecf-4183-9955-b1499d5701d3',
-    unsubscribed: true,
-  });
-
-  // Update by contact email
-  const { data, error } = await resend.contacts.update({
-    email: 'acme@example.com',
+    // or: email: 'acme@example.com',
     unsubscribed: true,
   });
   ```
@@ -72,7 +66,7 @@ Either `id` or `email` must be provided.
 
   // Update by contact id
   $resend->contacts->update(
-    id: 'e169aa45-1ecf-4183-9955-b1499d5701d3',
+    idOrEmail: 'e169aa45-1ecf-4183-9955-b1499d5701d3',
     parameters: [
       'unsubscribed' => true
     ]
@@ -80,7 +74,7 @@ Either `id` or `email` must be provided.
 
   // Update by contact email
   $resend->contacts->update(
-    email: 'acme@example.com',
+    idOrEmail: 'acme@example.com',
     parameters: [
       'unsubscribed' => true
     ]
@@ -134,7 +128,7 @@ Either `id` or `email` must be provided.
   ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
   package main
 
-  import "github.com/resend/resend-go/v3"
+  import "github.com/resend/resend-go/v4"
 
   func main() {
   	client := resend.NewClient("re_xxxxxxxxx")
@@ -183,21 +177,17 @@ Either `id` or `email` must be provided.
   ```
 
   ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import com.resend.*;
+  import com.resend.Resend;
+  import com.resend.core.exception.ResendException;
+  import com.resend.services.contacts.model.UpdateContactOptions;
+  import com.resend.services.contacts.model.UpdateContactResponseSuccess;
 
   public class Main {
-      public static void main(String[] args) {
+      public static void main(String[] args) throws ResendException {
           Resend resend = new Resend("re_xxxxxxxxx");
 
-          // Update by contact id
           UpdateContactOptions params = UpdateContactOptions.builder()
-                  .id("e169aa45-1ecf-4183-9955-b1499d5701d3")
-                  .unsubscribed(true)
-                  .build();
-
-          // Update by contact email
-          UpdateContactOptions params = UpdateContactOptions.builder()
-                  .email("acme@example.com")
+                  .id("e169aa45-1ecf-4183-9955-b1499d5701d3") // or: .email("acme@example.com")
                   .unsubscribed(true)
                   .build();
 

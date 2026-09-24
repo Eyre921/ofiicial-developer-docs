@@ -92,7 +92,7 @@ Update a broadcast to send to your contacts.
   resend.api_key = "re_xxxxxxxxx"
 
   params: resend.Broadcasts.UpdateParams = {
-    "id": "49a3999c-0ce1-4ea6-ab68-afcd6dc2e794",
+    "broadcast_id": "49a3999c-0ce1-4ea6-ab68-afcd6dc2e794",
     "html": "Hi {{{contact.first_name|there}}}, you can unsubscribe here: {{{RESEND_UNSUBSCRIBE_URL}}}"
   }
 
@@ -105,7 +105,7 @@ Update a broadcast to send to your contacts.
   Resend.api_key = "re_xxxxxxxxx"
 
   params = {
-    "id": "49a3999c-0ce1-4ea6-ab68-afcd6dc2e794",
+    "broadcast_id": "49a3999c-0ce1-4ea6-ab68-afcd6dc2e794",
     "html": "Hi {{{contact.first_name|there}}}, you can unsubscribe here: {{{RESEND_UNSUBSCRIBE_URL}}}",
   }
   Resend::Broadcasts.update(params)
@@ -114,14 +114,14 @@ Update a broadcast to send to your contacts.
   ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
   package main
 
-  import "github.com/resend/resend-go/v3"
+  import "github.com/resend/resend-go/v4"
 
   func main() {
   	client := resend.NewClient("re_xxxxxxxxx")
 
   	params := &resend.UpdateBroadcastRequest{
-  		Id:   "49a3999c-0ce1-4ea6-ab68-afcd6dc2e794",
-  		Html: "Hi {{{contact.first_name|there}}}, you can unsubscribe here: {{{RESEND_UNSUBSCRIBE_URL}}}",
+  		BroadcastId: "49a3999c-0ce1-4ea6-ab68-afcd6dc2e794",
+  		Html:        "Hi {{{contact.first_name|there}}}, you can unsubscribe here: {{{RESEND_UNSUBSCRIBE_URL}}}",
   	}
 
   	client.Broadcasts.Update(params)
@@ -147,6 +147,10 @@ Update a broadcast to send to your contacts.
   ```
 
   ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.Resend;
+  import com.resend.services.broadcasts.model.UpdateBroadcastOptions;
+  import com.resend.services.broadcasts.model.UpdateBroadcastResponseSuccess;
+
   Resend resend = new Resend("re_xxxxxxxxx");
 
   UpdateBroadcastOptions params = UpdateBroadcastOptions.builder()

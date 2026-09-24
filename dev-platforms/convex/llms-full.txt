@@ -6453,16 +6453,41 @@ Skills are installed into `.agents/skills/` in your project and are automaticall
 
 ## Available Skills[​](#available-skills "Direct link to Available Skills")
 
-| Skill                       | Description                                                            |
-| --------------------------- | ---------------------------------------------------------------------- |
-| `/convex`                   | Top-level entry point — routes to the right Convex skill for your task |
-| `/convex-quickstart`        | Set up a new Convex project from scratch                               |
-| `/convex-setup-auth`        | Configure authentication for your Convex app                           |
-| `/convex-migration-helper`  | Plan and run data migrations                                           |
-| `/convex-create-component`  | Create a new Convex component                                          |
-| `/convex-performance-audit` | Audit and optimize Convex queries and mutations                        |
-
-Skills are added and updated regularly, so this list may not be exhaustive. See the [get-convex/agent-skills](https://github.com/get-convex/agent-skills) repo for the latest.
+| Skill                                                                                                                                | Description                                                                                                                                                                                                                                                                                      |
+| ------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [`/convex`](https://github.com/get-convex/agent-skills/blob/main/skills/convex/SKILL.md)                                             | Convex is the backend agents get right on the first try: an all-TypeScript reactive platform where the database, server functions, scheduling, file storage, auth, and realtime sync are one type-safe system, every function is a transaction, and \`tsc\` catches most mistakes before deploy. |
+| [`/convex-add`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-add/SKILL.md)                                     | Add a capability to the CURRENT Convex app — consults the served Convex capability catalog for always-current procedures (billing, crons, auth, agent, search, …); falls back to built-in hosting or @convex-dev component search.                                                               |
+| [`/convex-advisor`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-advisor/SKILL.md)                             | Read the Convex deployment's 72h insights (read limits, OCC contention), root-cause each event in code, report evidence-backed perf/cost findings with fixes.                                                                                                                                    |
+| [`/convex-agent`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-agent/SKILL.md)                                 | Add an AI agent / RAG backend (@convex-dev/agent) to the Convex app.                                                                                                                                                                                                                             |
+| [`/convex-auth`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-auth/SKILL.md)                                   | Add authentication (passkeys/OAuth) to the current Convex app, including the auth.config.ts wiring.                                                                                                                                                                                              |
+| [`/convex-authz`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-authz/SKILL.md)                                 | Audit and harden a Convex app's authorization: identity-from-arg impersonation, missing per-document ownership checks, public queries leaking data by a client-supplied id, and writes into a parent/container the caller doesn't own.                                                           |
+| [`/convex-backup`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-backup/SKILL.md)                               | Set up Convex backups and run a restore DRILL that proves recovery — snapshot, restore into a throwaway preview, assert the data came back — plus a schedule matched to your RPO and a gated recovery runbook.                                                                                   |
+| [`/convex-billing`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-billing/SKILL.md)                             | Add Stripe billing/payments to the Convex app via @convex-dev/stripe (checkout + webhook + gating).                                                                                                                                                                                              |
+| [`/convex-cost`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-cost/SKILL.md)                                   | Preview Convex spend — rank functions by bytes/documents-read × call-volume from insights, project each cost driver's growth curve, name the cheapest fix; confirm-cost for paid actions.                                                                                                        |
+| [`/convex-create-component`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-create-component/SKILL.md)           | Builds reusable Convex components with isolated tables and app-facing APIs.                                                                                                                                                                                                                      |
+| [`/convex-crons`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-crons/SKILL.md)                                 | Add recurring scheduled jobs (crons) to the Convex app.                                                                                                                                                                                                                                          |
+| [`/convex-deploy-guard`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-deploy-guard/SKILL.md)                   | Classify + announce the target Convex deployment before any deployment-affecting command; fresh explicit consent for prod actions; session read-only mode.                                                                                                                                       |
+| [`/convex-design`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-design/SKILL.md)                               | Design and build reactive, type-safe, production-grade backends on Convex.                                                                                                                                                                                                                       |
+| [`/convex-docs`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-docs/SKILL.md)                                   | Pull version-current Convex docs for the version this project uses — pin the installed version, fetch page-as-markdown or check node\_modules types, freshness hierarchy — instead of writing a possibly-stale API from memory.                                                                  |
+| [`/convex-domains`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-domains/SKILL.md)                             | Point a domain you already own at your Convex app (DNS records, custom-domain attach, auth-origin rebind).                                                                                                                                                                                       |
+| [`/convex-env`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-env/SKILL.md)                                     | Set and wire Convex deployment env vars / secrets for the app.                                                                                                                                                                                                                                   |
+| [`/convex-expert`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-expert/SKILL.md)                               | Convex backend specialist.                                                                                                                                                                                                                                                                       |
+| [`/convex-explain-app`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-explain-app/SKILL.md)                     | Explain an existing Convex app — data model + relationships, public vs internal functions, auth/ownership model, components, a request→data flow — read from the schema and function surface.                                                                                                    |
+| [`/convex-improve-convex-plugin`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-improve-convex-plugin/SKILL.md) | Send this coding session's transcript to the Convex team for an AI post-mortem that improves the quickstart system.                                                                                                                                                                              |
+| [`/convex-insights`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-insights/SKILL.md)                           | Query a running Convex app's logs + health in natural language (official MCP): failures, slow/expensive functions, deploy causality — scoped, evidence-backed, with a dashboard deep link.                                                                                                       |
+| [`/convex-launch-readiness`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-launch-readiness/SKILL.md)           | Run every Convex audit (authz, reviewer, advisor, insights) into one scored, deduped readiness report with an ordered fix plan — Lighthouse for your backend.                                                                                                                                    |
+| [`/convex-migrate`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-migrate/SKILL.md)                             | Migrate schema + backfill data on a deployed Convex app using @convex-dev/migrations.                                                                                                                                                                                                            |
+| [`/convex-migrate-rehearse`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-migrate-rehearse/SKILL.md)           | Rehearse a live-app schema change + backfill on a snapshot-seeded preview deployment, verify, then promote the proven change to prod with the snapshot as rollback.                                                                                                                              |
+| [`/convex-monitor`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-monitor/SKILL.md)                             | Watch for the next dev/prod error or request in a Convex app and react to it.                                                                                                                                                                                                                    |
+| [`/convex-optimize`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-optimize/SKILL.md)                           | Audit and optimize an existing Convex app: security, scale, upgrades, observability.                                                                                                                                                                                                             |
+| [`/convex-quickstart`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-quickstart/SKILL.md)                       | Get a barebones Convex + web template running from a one-sentence idea.                                                                                                                                                                                                                          |
+| [`/convex-reviewer`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-reviewer/SKILL.md)                           | Convex code reviewer — security, auth, validators, performance, and pattern checks for code in a convex/ directory.                                                                                                                                                                              |
+| [`/convex-seed`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-seed/SKILL.md)                                   | Seed or import data into the Convex database.                                                                                                                                                                                                                                                    |
+| [`/convex-self-heal`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-self-heal/SKILL.md)                         | Production error → triaged, root-caused, repaired, and certified (tsc + rehearsal + reproduce-then-gone) fix PR for a human to merge — then confirm the error stops recurring.                                                                                                                   |
+| [`/convex-sentinel`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-sentinel/SKILL.md)                           | Set up Sentinel production error capture in your own Convex deployment.                                                                                                                                                                                                                          |
+| [`/convex-suggest`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-suggest/SKILL.md)                             | Suggest the matching Convex component when the user hand-rolls a pattern it already solves (crons, sharded-counter, rate-limiter, storage, search, presence, workflow, RAG, prosemirror-sync).                                                                                                   |
+| [`/convex-test`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-test/SKILL.md)                                   | Generate convex-test tests for the app's Convex functions.                                                                                                                                                                                                                                       |
+| [`/convex-verify`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-verify/SKILL.md)                               | Prove a Convex feature works — seed, drive as multiple mocked users via convex-test, assert behavior including the negative authz cases (wrong user refused, data-scope enforced).                                                                                                               |
 
 ## Using Skills[​](#using-skills "Direct link to Using Skills")
 
@@ -6478,7 +6503,7 @@ Skills are applied automatically when the agent determines they're relevant. How
 For example, to kick off auth setup in Cursor or Claude Code:
 
 ```
-/convex-setup-auth
+/convex-auth
 ```
 
 ## Learn More[​](#learn-more "Direct link to Learn More")
@@ -13413,7 +13438,7 @@ Metadata about the currently executing Convex function.
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[server/meta.ts:202](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L202)
+[server/meta.ts:218](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L218)
 
 ***
 
@@ -13429,7 +13454,7 @@ Metadata about the deployment this function is running on.
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/meta.ts:206](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L206)
+[server/meta.ts:222](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L222)
 
 ***
 
@@ -13449,7 +13474,7 @@ Functions called from within a function (i.e. using `runMutation` or `runAction`
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[server/meta.ts:216](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L216)
+[server/meta.ts:232](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L232)
 
 
 ---
@@ -16116,7 +16141,7 @@ Metadata about the currently executing Convex function.
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[server/meta.ts:136](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L136)
+[server/meta.ts:152](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L152)
 
 ***
 
@@ -16138,7 +16163,7 @@ See <https://docs.convex.dev/production/state/limits>
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/meta.ts:142](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L142)
+[server/meta.ts:158](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L158)
 
 ***
 
@@ -16158,7 +16183,7 @@ Metadata about the deployment this function is running on.
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[server/meta.ts:146](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L146)
+[server/meta.ts:162](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L162)
 
 ***
 
@@ -16186,7 +16211,7 @@ Note: this should not be compared to `_creationTime` or `Date.now()`, as those a
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[server/meta.ts:172](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L172)
+[server/meta.ts:188](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L188)
 
 ***
 
@@ -16206,7 +16231,7 @@ Functions called from within a function (i.e. using `runMutation`) will have the
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[server/meta.ts:190](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L190)
+[server/meta.ts:206](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L206)
 
 
 ---
@@ -17262,7 +17287,7 @@ Metadata about the currently executing Convex function.
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[server/meta.ts:136](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L136)
+[server/meta.ts:152](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L152)
 
 ***
 
@@ -17280,7 +17305,7 @@ See <https://docs.convex.dev/production/state/limits>
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/meta.ts:142](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L142)
+[server/meta.ts:158](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L158)
 
 ***
 
@@ -17296,7 +17321,7 @@ Metadata about the deployment this function is running on.
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[server/meta.ts:146](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L146)
+[server/meta.ts:162](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L162)
 
 ***
 
@@ -17320,7 +17345,7 @@ Note: this should not be compared to `_creationTime` or `Date.now()`, as those a
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[server/meta.ts:172](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L172)
+[server/meta.ts:188](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L188)
 
 
 ---
@@ -18632,7 +18657,7 @@ Custom limits for a nested transaction. Each field specifies the absolute maximu
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[server/meta.ts:39](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L39)
+[server/meta.ts:47](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L47)
 
 ***
 
@@ -18642,7 +18667,7 @@ Custom limits for a nested transaction. Each field specifies the absolute maximu
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/meta.ts:40](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L40)
+[server/meta.ts:48](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L48)
 
 ***
 
@@ -18652,7 +18677,7 @@ Custom limits for a nested transaction. Each field specifies the absolute maximu
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[server/meta.ts:41](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L41)
+[server/meta.ts:49](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L49)
 
 ***
 
@@ -18662,7 +18687,7 @@ Custom limits for a nested transaction. Each field specifies the absolute maximu
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[server/meta.ts:42](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L42)
+[server/meta.ts:50](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L50)
 
 ***
 
@@ -18672,7 +18697,7 @@ Custom limits for a nested transaction. Each field specifies the absolute maximu
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[server/meta.ts:43](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L43)
+[server/meta.ts:51](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L51)
 
 ***
 
@@ -18682,7 +18707,7 @@ Custom limits for a nested transaction. Each field specifies the absolute maximu
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[server/meta.ts:44](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L44)
+[server/meta.ts:52](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L52)
 
 ***
 
@@ -18692,7 +18717,7 @@ Custom limits for a nested transaction. Each field specifies the absolute maximu
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[server/meta.ts:45](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L45)
+[server/meta.ts:53](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L53)
 
 
 ---
@@ -22587,7 +22612,7 @@ Metadata about the currently executing Convex function.
 
 #### Defined in[​](#defined-in-55 "Direct link to Defined in")
 
-[server/meta.ts:53](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L53)
+[server/meta.ts:69](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L69)
 
 ***
 
@@ -22607,7 +22632,7 @@ Metadata about the deployment this function is running on.
 
 #### Defined in[​](#defined-in-56 "Direct link to Defined in")
 
-[server/meta.ts:74](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L74)
+[server/meta.ts:90](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L90)
 
 ***
 
@@ -22633,7 +22658,7 @@ Functions called from within a function (i.e. using `runMutation` or `runAction`
 
 #### Defined in[​](#defined-in-57 "Direct link to Defined in")
 
-[server/meta.ts:103](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L103)
+[server/meta.ts:119](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L119)
 
 ***
 
@@ -24078,6 +24103,32 @@ A JWT to send as `Authorization: Bearer <token>`. Keep it inside the action: don
 
 ***
 
+### getServiceUrl[​](#getserviceurl "Direct link to getServiceUrl")
+
+▸ **getServiceUrl**(`service`): `Promise`<`string`>
+
+Get the base URL of a Convex-managed service.
+
+This function can only be called while an action is running. Pair it with [getServiceToken](/api/modules/server.md#getservicetoken) to reach the service.
+
+#### Parameters[​](#parameters-15 "Direct link to Parameters")
+
+| Name      | Type           | Description             |
+| --------- | -------------- | ----------------------- |
+| `service` | `"ai-gateway"` | The service to address. |
+
+#### Returns[​](#returns-17 "Direct link to Returns")
+
+`Promise`<`string`>
+
+The service's origin, without a trailing slash.
+
+#### Defined in[​](#defined-in-115 "Direct link to Defined in")
+
+[server/impl/actions\_impl.ts:103](https://github.com/get-convex/convex-js/blob/main/src/server/impl/actions_impl.ts#L103)
+
+***
+
 ### mutationGeneric[​](#mutationgeneric "Direct link to mutationGeneric")
 
 ▸ **mutationGeneric**<`ArgsValidator`, `ReturnsValidator`, `ReturnValue`, `OneOrZeroArgs`>(`mutation`): [`RegisteredMutation`](/api/modules/server.md#registeredmutation)<`"public"`, [`ArgsArrayToObject`](/api/modules/server.md#argsarraytoobject)<`OneOrZeroArgs`>, `ReturnValue`>
@@ -24139,19 +24190,19 @@ export const createTask = mutation({
 | `ReturnValue`      | extends `any` = `any`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | `OneOrZeroArgs`    | extends [`ArgsArray`](/api/modules/server.md#argsarray) \| `OneArgArray`<[`Infer`](/api/modules/values.md#infer)<`ArgsValidator`>> \| `OneArgArray`<[`Expand`](/api/modules/server.md#expand)<{ \[Property in string \| number \| symbol]?: Exclude\<Infer\<ArgsValidator\[Property]>, undefined> } & { \[Property in string \| number \| symbol]: Infer\<ArgsValidator\[Property]> }>> = [`DefaultArgsForOptionalValidator`](/api/modules/server.md#defaultargsforoptionalvalidator)<`ArgsValidator`> |
 
-#### Parameters[​](#parameters-15 "Direct link to Parameters")
+#### Parameters[​](#parameters-16 "Direct link to Parameters")
 
 | Name       | Type                                                                                                                                                                                                                                                                                                                                              |
 | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `mutation` | { `args?`: `ArgsValidator` ; `returns?`: `ReturnsValidator` ; `handler`: (`ctx`: [`GenericMutationCtx`](/api/interfaces/server.GenericMutationCtx.md)<`any`>, ...`args`: `OneOrZeroArgs`) => `ReturnValue` } \| (`ctx`: [`GenericMutationCtx`](/api/interfaces/server.GenericMutationCtx.md)<`any`>, ...`args`: `OneOrZeroArgs`) => `ReturnValue` |
 
-#### Returns[​](#returns-17 "Direct link to Returns")
+#### Returns[​](#returns-18 "Direct link to Returns")
 
 [`RegisteredMutation`](/api/modules/server.md#registeredmutation)<`"public"`, [`ArgsArrayToObject`](/api/modules/server.md#argsarraytoobject)<`OneOrZeroArgs`>, `ReturnValue`>
 
 The wrapped mutation. Include this as an `export` to name it and make it accessible.
 
-#### Defined in[​](#defined-in-115 "Direct link to Defined in")
+#### Defined in[​](#defined-in-116 "Direct link to Defined in")
 
 [server/registration.ts:777](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L777)
 
@@ -24210,19 +24261,19 @@ export const markTaskCompleted = internalMutation({
 | `ReturnValue`      | extends `any` = `any`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | `OneOrZeroArgs`    | extends [`ArgsArray`](/api/modules/server.md#argsarray) \| `OneArgArray`<[`Infer`](/api/modules/values.md#infer)<`ArgsValidator`>> \| `OneArgArray`<[`Expand`](/api/modules/server.md#expand)<{ \[Property in string \| number \| symbol]?: Exclude\<Infer\<ArgsValidator\[Property]>, undefined> } & { \[Property in string \| number \| symbol]: Infer\<ArgsValidator\[Property]> }>> = [`DefaultArgsForOptionalValidator`](/api/modules/server.md#defaultargsforoptionalvalidator)<`ArgsValidator`> |
 
-#### Parameters[​](#parameters-16 "Direct link to Parameters")
+#### Parameters[​](#parameters-17 "Direct link to Parameters")
 
 | Name       | Type                                                                                                                                                                                                                                                                                                                                              |
 | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `mutation` | { `args?`: `ArgsValidator` ; `returns?`: `ReturnsValidator` ; `handler`: (`ctx`: [`GenericMutationCtx`](/api/interfaces/server.GenericMutationCtx.md)<`any`>, ...`args`: `OneOrZeroArgs`) => `ReturnValue` } \| (`ctx`: [`GenericMutationCtx`](/api/interfaces/server.GenericMutationCtx.md)<`any`>, ...`args`: `OneOrZeroArgs`) => `ReturnValue` |
 
-#### Returns[​](#returns-18 "Direct link to Returns")
+#### Returns[​](#returns-19 "Direct link to Returns")
 
 [`RegisteredMutation`](/api/modules/server.md#registeredmutation)<`"internal"`, [`ArgsArrayToObject`](/api/modules/server.md#argsarraytoobject)<`OneOrZeroArgs`>, `ReturnValue`>
 
 The wrapped mutation. Include this as an `export` to name it and make it accessible.
 
-#### Defined in[​](#defined-in-116 "Direct link to Defined in")
+#### Defined in[​](#defined-in-117 "Direct link to Defined in")
 
 [server/registration.ts:777](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L777)
 
@@ -24301,19 +24352,19 @@ export const listTasks = query({
 | `ReturnValue`      | extends `any` = `any`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | `OneOrZeroArgs`    | extends [`ArgsArray`](/api/modules/server.md#argsarray) \| `OneArgArray`<[`Infer`](/api/modules/values.md#infer)<`ArgsValidator`>> \| `OneArgArray`<[`Expand`](/api/modules/server.md#expand)<{ \[Property in string \| number \| symbol]?: Exclude\<Infer\<ArgsValidator\[Property]>, undefined> } & { \[Property in string \| number \| symbol]: Infer\<ArgsValidator\[Property]> }>> = [`DefaultArgsForOptionalValidator`](/api/modules/server.md#defaultargsforoptionalvalidator)<`ArgsValidator`> |
 
-#### Parameters[​](#parameters-17 "Direct link to Parameters")
+#### Parameters[​](#parameters-18 "Direct link to Parameters")
 
 | Name    | Type                                                                                                                                                                                                                                                                                                                                  |
 | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `query` | { `args?`: `ArgsValidator` ; `returns?`: `ReturnsValidator` ; `handler`: (`ctx`: [`GenericQueryCtx`](/api/interfaces/server.GenericQueryCtx.md)<`any`>, ...`args`: `OneOrZeroArgs`) => `ReturnValue` } \| (`ctx`: [`GenericQueryCtx`](/api/interfaces/server.GenericQueryCtx.md)<`any`>, ...`args`: `OneOrZeroArgs`) => `ReturnValue` |
 
-#### Returns[​](#returns-19 "Direct link to Returns")
+#### Returns[​](#returns-20 "Direct link to Returns")
 
 [`RegisteredQuery`](/api/modules/server.md#registeredquery)<`"public"`, [`ArgsArrayToObject`](/api/modules/server.md#argsarraytoobject)<`OneOrZeroArgs`>, `ReturnValue`>
 
 The wrapped query. Include this as an `export` to name it and make it accessible.
 
-#### Defined in[​](#defined-in-117 "Direct link to Defined in")
+#### Defined in[​](#defined-in-118 "Direct link to Defined in")
 
 [server/registration.ts:963](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L963)
 
@@ -24386,19 +24437,19 @@ export const getUser = internalQuery({
 | `ReturnValue`      | extends `any` = `any`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | `OneOrZeroArgs`    | extends [`ArgsArray`](/api/modules/server.md#argsarray) \| `OneArgArray`<[`Infer`](/api/modules/values.md#infer)<`ArgsValidator`>> \| `OneArgArray`<[`Expand`](/api/modules/server.md#expand)<{ \[Property in string \| number \| symbol]?: Exclude\<Infer\<ArgsValidator\[Property]>, undefined> } & { \[Property in string \| number \| symbol]: Infer\<ArgsValidator\[Property]> }>> = [`DefaultArgsForOptionalValidator`](/api/modules/server.md#defaultargsforoptionalvalidator)<`ArgsValidator`> |
 
-#### Parameters[​](#parameters-18 "Direct link to Parameters")
+#### Parameters[​](#parameters-19 "Direct link to Parameters")
 
 | Name    | Type                                                                                                                                                                                                                                                                                                                                  |
 | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `query` | { `args?`: `ArgsValidator` ; `returns?`: `ReturnsValidator` ; `handler`: (`ctx`: [`GenericQueryCtx`](/api/interfaces/server.GenericQueryCtx.md)<`any`>, ...`args`: `OneOrZeroArgs`) => `ReturnValue` } \| (`ctx`: [`GenericQueryCtx`](/api/interfaces/server.GenericQueryCtx.md)<`any`>, ...`args`: `OneOrZeroArgs`) => `ReturnValue` |
 
-#### Returns[​](#returns-20 "Direct link to Returns")
+#### Returns[​](#returns-21 "Direct link to Returns")
 
 [`RegisteredQuery`](/api/modules/server.md#registeredquery)<`"internal"`, [`ArgsArrayToObject`](/api/modules/server.md#argsarraytoobject)<`OneOrZeroArgs`>, `ReturnValue`>
 
 The wrapped query. Include this as an `export` to name it and make it accessible.
 
-#### Defined in[​](#defined-in-118 "Direct link to Defined in")
+#### Defined in[​](#defined-in-119 "Direct link to Defined in")
 
 [server/registration.ts:963](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L963)
 
@@ -24489,19 +24540,19 @@ export const generateSummary = action({
 | `ReturnValue`      | extends `any` = `any`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | `OneOrZeroArgs`    | extends [`ArgsArray`](/api/modules/server.md#argsarray) \| `OneArgArray`<[`Infer`](/api/modules/values.md#infer)<`ArgsValidator`>> \| `OneArgArray`<[`Expand`](/api/modules/server.md#expand)<{ \[Property in string \| number \| symbol]?: Exclude\<Infer\<ArgsValidator\[Property]>, undefined> } & { \[Property in string \| number \| symbol]: Infer\<ArgsValidator\[Property]> }>> = [`DefaultArgsForOptionalValidator`](/api/modules/server.md#defaultargsforoptionalvalidator)<`ArgsValidator`> |
 
-#### Parameters[​](#parameters-19 "Direct link to Parameters")
+#### Parameters[​](#parameters-20 "Direct link to Parameters")
 
 | Name   | Type                                                                                                                                                                                                                                                                                                                                      | Description                                                                                                       |
 | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
 | `func` | { `args?`: `ArgsValidator` ; `returns?`: `ReturnsValidator` ; `handler`: (`ctx`: [`GenericActionCtx`](/api/interfaces/server.GenericActionCtx.md)<`any`>, ...`args`: `OneOrZeroArgs`) => `ReturnValue` } \| (`ctx`: [`GenericActionCtx`](/api/interfaces/server.GenericActionCtx.md)<`any`>, ...`args`: `OneOrZeroArgs`) => `ReturnValue` | The function. It receives a [GenericActionCtx](/api/interfaces/server.GenericActionCtx.md) as its first argument. |
 
-#### Returns[​](#returns-21 "Direct link to Returns")
+#### Returns[​](#returns-22 "Direct link to Returns")
 
 [`RegisteredAction`](/api/modules/server.md#registeredaction)<`"public"`, [`ArgsArrayToObject`](/api/modules/server.md#argsarraytoobject)<`OneOrZeroArgs`>, `ReturnValue`>
 
 The wrapped function. Include this as an `export` to name it and make it accessible.
 
-#### Defined in[​](#defined-in-119 "Direct link to Defined in")
+#### Defined in[​](#defined-in-120 "Direct link to Defined in")
 
 [server/registration.ts:1141](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L1141)
 
@@ -24570,19 +24621,19 @@ export const sendEmail = internalAction({
 | `ReturnValue`      | extends `any` = `any`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | `OneOrZeroArgs`    | extends [`ArgsArray`](/api/modules/server.md#argsarray) \| `OneArgArray`<[`Infer`](/api/modules/values.md#infer)<`ArgsValidator`>> \| `OneArgArray`<[`Expand`](/api/modules/server.md#expand)<{ \[Property in string \| number \| symbol]?: Exclude\<Infer\<ArgsValidator\[Property]>, undefined> } & { \[Property in string \| number \| symbol]: Infer\<ArgsValidator\[Property]> }>> = [`DefaultArgsForOptionalValidator`](/api/modules/server.md#defaultargsforoptionalvalidator)<`ArgsValidator`> |
 
-#### Parameters[​](#parameters-20 "Direct link to Parameters")
+#### Parameters[​](#parameters-21 "Direct link to Parameters")
 
 | Name   | Type                                                                                                                                                                                                                                                                                                                                      | Description                                                                                                       |
 | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
 | `func` | { `args?`: `ArgsValidator` ; `returns?`: `ReturnsValidator` ; `handler`: (`ctx`: [`GenericActionCtx`](/api/interfaces/server.GenericActionCtx.md)<`any`>, ...`args`: `OneOrZeroArgs`) => `ReturnValue` } \| (`ctx`: [`GenericActionCtx`](/api/interfaces/server.GenericActionCtx.md)<`any`>, ...`args`: `OneOrZeroArgs`) => `ReturnValue` | The function. It receives a [GenericActionCtx](/api/interfaces/server.GenericActionCtx.md) as its first argument. |
 
-#### Returns[​](#returns-22 "Direct link to Returns")
+#### Returns[​](#returns-23 "Direct link to Returns")
 
 [`RegisteredAction`](/api/modules/server.md#registeredaction)<`"internal"`, [`ArgsArrayToObject`](/api/modules/server.md#argsarraytoobject)<`OneOrZeroArgs`>, `ReturnValue`>
 
 The wrapped function. Include this as an `export` to name it and make it accessible.
 
-#### Defined in[​](#defined-in-120 "Direct link to Defined in")
+#### Defined in[​](#defined-in-121 "Direct link to Defined in")
 
 [server/registration.ts:1141](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L1141)
 
@@ -24646,19 +24697,19 @@ export default http;
 
 <https://docs.convex.dev/functions/http-actions>
 
-#### Parameters[​](#parameters-21 "Direct link to Parameters")
+#### Parameters[​](#parameters-22 "Direct link to Parameters")
 
 | Name   | Type                                                                                                                                                                                    | Description                                                                                                                                             |
 | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `func` | (`ctx`: [`GenericActionCtx`](/api/interfaces/server.GenericActionCtx.md)<[`GenericDataModel`](/api/modules/server.md#genericdatamodel)>, `request`: `Request`) => `Promise`<`Response`> | The function. It receives a [GenericActionCtx](/api/interfaces/server.GenericActionCtx.md) as its first argument, and a `Request` object as its second. |
 
-#### Returns[​](#returns-23 "Direct link to Returns")
+#### Returns[​](#returns-24 "Direct link to Returns")
 
 [`PublicHttpAction`](/api/modules/server.md#publichttpaction)
 
 The wrapped function. Route a URL path to this function in `convex/http.ts`.
 
-#### Defined in[​](#defined-in-121 "Direct link to Defined in")
+#### Defined in[​](#defined-in-122 "Direct link to Defined in")
 
 [server/impl/registration\_impl.ts:741](https://github.com/get-convex/convex-js/blob/main/src/server/impl/registration_impl.ts#L741)
 
@@ -24692,19 +24743,19 @@ const paginationResultValidator = paginationResultValidator(v.object({
 | ---- | ------------------------------------------------------------------------------------------------------------------------ |
 | `T`  | extends [`Validator`](/api/modules/values.md#validator)<[`Value`](/api/modules/values.md#value), `"required"`, `string`> |
 
-#### Parameters[​](#parameters-22 "Direct link to Parameters")
+#### Parameters[​](#parameters-23 "Direct link to Parameters")
 
 | Name            | Type | Description                           |
 | --------------- | ---- | ------------------------------------- |
 | `itemValidator` | `T`  | A validator for the items in the page |
 
-#### Returns[​](#returns-24 "Direct link to Returns")
+#### Returns[​](#returns-25 "Direct link to Returns")
 
 [`VObject`](/api/classes/values.VObject.md)<{ `splitCursor`: `undefined` | `null` | `string` ; `pageStatus`: `undefined` | `null` | `"SplitRecommended"` | `"SplitRequired"` ; `page`: `T`\[`"type"`]\[] ; `continueCursor`: `string` ; `isDone`: `boolean` }, { `page`: [`VArray`](/api/classes/values.VArray.md)<`T`\[`"type"`]\[], `T`, `"required"`> ; `continueCursor`: [`VString`](/api/classes/values.VString.md)<`string`, `"required"`> ; `isDone`: [`VBoolean`](/api/classes/values.VBoolean.md)<`boolean`, `"required"`> ; `splitCursor`: [`VUnion`](/api/classes/values.VUnion.md)<`undefined` | `null` | `string`, \[[`VString`](/api/classes/values.VString.md)<`string`, `"required"`>, [`VNull`](/api/classes/values.VNull.md)<`null`, `"required"`>], `"optional"`, `never`> ; `pageStatus`: [`VUnion`](/api/classes/values.VUnion.md)<`undefined` | `null` | `"SplitRecommended"` | `"SplitRequired"`, \[[`VLiteral`](/api/classes/values.VLiteral.md)<`"SplitRecommended"`, `"required"`>, [`VLiteral`](/api/classes/values.VLiteral.md)<`"SplitRequired"`, `"required"`>, [`VNull`](/api/classes/values.VNull.md)<`null`, `"required"`>], `"optional"`, `never`> }, `"required"`, `"page"` | `"continueCursor"` | `"isDone"` | `"splitCursor"` | `"pageStatus"`>
 
 A validator for the pagination result
 
-#### Defined in[​](#defined-in-122 "Direct link to Defined in")
+#### Defined in[​](#defined-in-123 "Direct link to Defined in")
 
 [server/pagination.ts:192](https://github.com/get-convex/convex-js/blob/main/src/server/pagination.ts#L192)
 
@@ -24716,11 +24767,11 @@ A validator for the pagination result
 
 Return a new [HttpRouter](/api/classes/server.HttpRouter.md) object.
 
-#### Returns[​](#returns-25 "Direct link to Returns")
+#### Returns[​](#returns-26 "Direct link to Returns")
 
 [`HttpRouter`](/api/classes/server.HttpRouter.md)
 
-#### Defined in[​](#defined-in-123 "Direct link to Defined in")
+#### Defined in[​](#defined-in-124 "Direct link to Defined in")
 
 [server/router.ts:47](https://github.com/get-convex/convex-js/blob/main/src/server/router.ts#L47)
 
@@ -24764,19 +24815,19 @@ defineTable(
 | ---------------- | ------------------------------------------------------------------------------------------------------- |
 | `DocumentSchema` | extends [`Validator`](/api/modules/values.md#validator)<`Record`<`string`, `any`>, `"required"`, `any`> |
 
-#### Parameters[​](#parameters-23 "Direct link to Parameters")
+#### Parameters[​](#parameters-24 "Direct link to Parameters")
 
 | Name             | Type             | Description                                 |
 | ---------------- | ---------------- | ------------------------------------------- |
 | `documentSchema` | `DocumentSchema` | The type of documents stored in this table. |
 
-#### Returns[​](#returns-26 "Direct link to Returns")
+#### Returns[​](#returns-27 "Direct link to Returns")
 
 [`TableDefinition`](/api/classes/server.TableDefinition.md)<`DocumentSchema`>
 
 A [TableDefinition](/api/classes/server.TableDefinition.md) for the table.
 
-#### Defined in[​](#defined-in-124 "Direct link to Defined in")
+#### Defined in[​](#defined-in-125 "Direct link to Defined in")
 
 [server/schema.ts:675](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L675)
 
@@ -24816,19 +24867,19 @@ defineTable(
 | ---------------- | ----------------------------------------------------------------------------------------- |
 | `DocumentSchema` | extends `Record`<`string`, [`GenericValidator`](/api/modules/values.md#genericvalidator)> |
 
-#### Parameters[​](#parameters-24 "Direct link to Parameters")
+#### Parameters[​](#parameters-25 "Direct link to Parameters")
 
 | Name             | Type             | Description                                 |
 | ---------------- | ---------------- | ------------------------------------------- |
 | `documentSchema` | `DocumentSchema` | The type of documents stored in this table. |
 
-#### Returns[​](#returns-27 "Direct link to Returns")
+#### Returns[​](#returns-28 "Direct link to Returns")
 
 [`TableDefinition`](/api/classes/server.TableDefinition.md)<[`VObject`](/api/classes/values.VObject.md)<[`ObjectType`](/api/modules/values.md#objecttype)<`DocumentSchema`>, `DocumentSchema`>>
 
 A [TableDefinition](/api/classes/server.TableDefinition.md) for the table.
 
-#### Defined in[​](#defined-in-125 "Direct link to Defined in")
+#### Defined in[​](#defined-in-126 "Direct link to Defined in")
 
 [server/schema.ts:703](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L703)
 
@@ -24867,20 +24918,20 @@ export const get = query({
 | `TableName` | extends `string`                                                                                         |
 | `Table`     | extends [`TableDefinition`](/api/classes/server.TableDefinition.md)<`any`, `any`, `any`, `any`, `Table`> |
 
-#### Parameters[​](#parameters-25 "Direct link to Parameters")
+#### Parameters[​](#parameters-26 "Direct link to Parameters")
 
 | Name        | Type        | Description                                                                   |
 | ----------- | ----------- | ----------------------------------------------------------------------------- |
 | `tableName` | `TableName` | The name of the table, used for the `_id` validator.                          |
 | `table`     | `Table`     | The [TableDefinition](/api/classes/server.TableDefinition.md) for that table. |
 
-#### Returns[​](#returns-28 "Direct link to Returns")
+#### Returns[​](#returns-29 "Direct link to Returns")
 
 [`DocValidator`](/api/modules/server.md#docvalidator)<`TableName`, `Table`\[`"validator"`]>
 
 A validator matching documents of the table.
 
-#### Defined in[​](#defined-in-126 "Direct link to Defined in")
+#### Defined in[​](#defined-in-127 "Direct link to Defined in")
 
 [server/schema.ts:822](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L822)
 
@@ -24974,20 +25025,20 @@ export default defineSchema({
 | `Schema`               | extends [`GenericSchema`](/api/modules/server.md#genericschema) |
 | `StrictTableNameTypes` | extends `boolean` = `true`                                      |
 
-#### Parameters[​](#parameters-26 "Direct link to Parameters")
+#### Parameters[​](#parameters-27 "Direct link to Parameters")
 
 | Name       | Type                                                                                           | Description                                                                                                               |
 | ---------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
 | `schema`   | `Schema`                                                                                       | A map from table name to [TableDefinition](/api/classes/server.TableDefinition.md) for all of the tables in this project. |
 | `options?` | [`DefineSchemaOptions`](/api/interfaces/server.DefineSchemaOptions.md)<`StrictTableNameTypes`> | Optional configuration. See [DefineSchemaOptions](/api/interfaces/server.DefineSchemaOptions.md) for a full description.  |
 
-#### Returns[​](#returns-29 "Direct link to Returns")
+#### Returns[​](#returns-30 "Direct link to Returns")
 
 [`SchemaDefinition`](/api/classes/server.SchemaDefinition.md)<`Schema`, `StrictTableNameTypes`>
 
 The schema.
 
-#### Defined in[​](#defined-in-127 "Direct link to Defined in")
+#### Defined in[​](#defined-in-128 "Direct link to Defined in")
 
 [server/schema.ts:1062](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L1062)
 
@@ -59942,15 +59993,15 @@ Select **Configure** in the **Directory sync** section.
 
 ![The Directory Sync section before a directory has been configured](/screenshots/storybook/pages_team_authentication_directory_sync_light.webp)
 
-The dashboard describes what connecting a directory does, then opens a separate configuration page in a new tab. On that page you pick your identity provider and follow its instructions to point the directory at Convex.
+The dashboard describes what connecting a directory does, then opens a separate configuration page in a new tab. That page is where the connection is set up: you pick your identity provider, follow its instructions to point the directory at Convex, and select which directory groups to sync. Complete every step there before coming back to the Convex dashboard, because the directory is not connected until they are all done.
 
 ![The dialog that explains the identity provider step before configuring a directory](/screenshots/storybook/pages_team_authentication_directory_sync_configure_light.webp)
 
-The dialog shows the connection's progress while you work through that page, and updates once the directory is linked. You can close it and come back later without losing your progress.
+Back in the Convex dashboard, the dialog shows the connection's progress while you work through that page, and updates once the directory is linked. You can close it and come back later without losing your progress.
 
 ### 3. Wait for the initial sync[​](#3-wait-for-the-initial-sync "Direct link to 3. Wait for the initial sync")
 
-After the connection is made, your identity provider sends over the directory's groups and users. This usually takes a few minutes, and can take up to an hour. Groups appear in **Directory group roles** as they arrive.
+After the connection is made, your identity provider sends over its users and the groups you selected to sync. Syncing those groups usually takes a few minutes, and can take up to an hour, as directory updates are processed on a schedule. Groups appear in **Directory group roles** as they arrive.
 
 ![The Directory Sync section during the initial sync, with no groups yet](/screenshots/storybook/pages_team_authentication_directory_sync_initial_sync_light.webp)
 
@@ -60023,7 +60074,7 @@ Once Directory Sync is enabled, changes in your identity provider are applied to
 * Changing a group's mapping updates the role of everyone in that group.
 * Suspending a user in the directory, or removing them from it, removes them from the Convex team. See [Deprovisioning removes members](#deprovisioning-removes-members) for what that means for them.
 
-Changes can take up to an hour to arrive, so your Convex team can lag behind your identity provider.
+Directory updates are processed on a schedule, so changes can take up to an hour to arrive and your Convex team can lag behind your identity provider.
 
 Your directory also takes over the parts of the members page it covers:
 

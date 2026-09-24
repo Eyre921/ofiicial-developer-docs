@@ -37,14 +37,17 @@ Retrieve a list of domains for the authenticated user.
   ```
 
   ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
-  Resend.api_key = ENV["RESEND_API_KEY"]
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
   Resend::Domains.list
   ```
 
   ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
   package main
 
-  import "github.com/resend/resend-go/v3"
+  import "github.com/resend/resend-go/v4"
 
   func main() {
   	client := resend.NewClient("re_xxxxxxxxx")
@@ -67,10 +70,12 @@ Retrieve a list of domains for the authenticated user.
   ```
 
   ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import com.resend.*;
+  import com.resend.Resend;
+  import com.resend.core.exception.ResendException;
+  import com.resend.services.domains.model.ListDomainsResponse;
 
   public class Main {
-      public static void main(String[] args) {
+      public static void main(String[] args) throws ResendException {
           Resend resend = new Resend("re_xxxxxxxxx");
 
           ListDomainsResponse response = resend.domains().list();

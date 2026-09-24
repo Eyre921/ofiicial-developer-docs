@@ -121,6 +121,8 @@ Update an existing domain.
   ```
 
   ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
   Resend.api_key = "re_xxxxxxxxx"
 
   Resend::Domains.update({
@@ -135,7 +137,7 @@ Update an existing domain.
   ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
   package main
 
-  import "github.com/resend/resend-go/v3"
+  import "github.com/resend/resend-go/v4"
 
   func main() {
   	client := resend.NewClient("re_xxxxxxxxx")
@@ -174,6 +176,10 @@ Update an existing domain.
   ```
 
   ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.Resend;
+  import com.resend.services.domains.model.Tls;
+  import com.resend.services.domains.model.UpdateDomainOptions;
+
   Resend resend = new Resend("re_xxxxxxxxx");
 
   UpdateDomainOptions params = UpdateDomainOptions.builder()

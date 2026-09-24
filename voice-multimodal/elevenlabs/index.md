@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1319 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1322 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -695,6 +695,7 @@
 - `docs/eleven-agents/operate/cli` — [ElevenLabs CLI](pages/docs/eleven-agents/operate/cli.md) · [原文](https://elevenlabs.io/docs/eleven-agents/operate/cli.md)
 - `docs/eleven-agents/operate/experiments` — [Experiments](pages/docs/eleven-agents/operate/experiments.md) · [原文](https://elevenlabs.io/docs/eleven-agents/operate/experiments.md)
 - `docs/eleven-agents/operate/hosted-mcp` — [Hosted MCP server](pages/docs/eleven-agents/operate/hosted-mcp.md) · [原文](https://elevenlabs.io/docs/eleven-agents/operate/hosted-mcp.md)
+- `docs/eleven-agents/operate/merge-proposals` — [Merge proposals](pages/docs/eleven-agents/operate/merge-proposals.md) · [原文](https://elevenlabs.io/docs/eleven-agents/operate/merge-proposals.md)
 - `docs/eleven-agents/operate/overview` — [Operate](pages/docs/eleven-agents/operate/overview.md) · [原文](https://elevenlabs.io/docs/eleven-agents/operate/overview.md)
 - `docs/eleven-agents/operate/triage` — [Triage](pages/docs/eleven-agents/operate/triage.md) · [原文](https://elevenlabs.io/docs/eleven-agents/operate/triage.md)
 - `docs/eleven-agents/operate/users` — [Users](pages/docs/eleven-agents/operate/users.md) · [原文](https://elevenlabs.io/docs/eleven-agents/operate/users.md)
@@ -760,11 +761,13 @@
 - `docs/eleven-api/guides/how-to/speech-to-text/batch/keyterm-prompting` — [Keyterm prompting](pages/docs/eleven-api/guides/how-to/speech-to-text/batch/keyterm-prompting.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/batch/keyterm-prompting.md)
 - `docs/eleven-api/guides/how-to/speech-to-text/batch/multichannel-transcription` — [Multichannel speech-to-text](pages/docs/eleven-api/guides/how-to/speech-to-text/batch/multichannel-transcription.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/batch/multichannel-transcription.md)
 - `docs/eleven-api/guides/how-to/speech-to-text/batch/telegram-bot` — [Transcription Telegram Bot](pages/docs/eleven-api/guides/how-to/speech-to-text/batch/telegram-bot.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/batch/telegram-bot.md)
+- `docs/eleven-api/guides/how-to/speech-to-text/batch/transcript-editing` — [Transcript editing](pages/docs/eleven-api/guides/how-to/speech-to-text/batch/transcript-editing.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/batch/transcript-editing.md)
 - `docs/eleven-api/guides/how-to/speech-to-text/batch/vercel-ai-sdk` — [Vercel AI SDK](pages/docs/eleven-api/guides/how-to/speech-to-text/batch/vercel-ai-sdk.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/batch/vercel-ai-sdk.md)
 - `docs/eleven-api/guides/how-to/speech-to-text/batch/webhooks` — [Asynchronous Speech to Text](pages/docs/eleven-api/guides/how-to/speech-to-text/batch/webhooks.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/batch/webhooks.md)
 - `docs/eleven-api/guides/how-to/speech-to-text/realtime/client-side-streaming` — [Client-side streaming](pages/docs/eleven-api/guides/how-to/speech-to-text/realtime/client-side-streaming.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/realtime/client-side-streaming.md)
 - `docs/eleven-api/guides/how-to/speech-to-text/realtime/event-reference` — [Realtime event reference](pages/docs/eleven-api/guides/how-to/speech-to-text/realtime/event-reference.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/realtime/event-reference.md)
 - `docs/eleven-api/guides/how-to/speech-to-text/realtime/server-side-streaming` — [Server-side streaming](pages/docs/eleven-api/guides/how-to/speech-to-text/realtime/server-side-streaming.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/realtime/server-side-streaming.md)
+- `docs/eleven-api/guides/how-to/speech-to-text/realtime/transcript-editing` — [Transcript editing](pages/docs/eleven-api/guides/how-to/speech-to-text/realtime/transcript-editing.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/realtime/transcript-editing.md)
 - `docs/eleven-api/guides/how-to/speech-to-text/realtime/transcripts-and-commit-strategies` — [Transcripts and commit strategies](pages/docs/eleven-api/guides/how-to/speech-to-text/realtime/transcripts-and-commit-strategies.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/realtime/transcripts-and-commit-strategies.md)
 - `docs/eleven-api/guides/how-to/text-to-speech/pronunciation-dictionaries` — [Using pronunciation dictionaries](pages/docs/eleven-api/guides/how-to/text-to-speech/pronunciation-dictionaries.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/text-to-speech/pronunciation-dictionaries.md)
 - `docs/eleven-api/guides/how-to/text-to-speech/request-stitching` — [Stitching multiple requests](pages/docs/eleven-api/guides/how-to/text-to-speech/request-stitching.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/text-to-speech/request-stitching.md)

@@ -6,7 +6,7 @@ path: nexus/harness-compatibility
 
 Connect credentials for closed model families, understand harness support, and troubleshoot explicit model changes.
 
-Start with [Coding Harnesses](/ecosystem/fireconnect/harnesses) for setup by client. This page covers explicit model changes, closed-model credentials, and Foundry support.
+Start with [Coding Harnesses](/nexus/harnesses) for setup by client. This page covers explicit model changes, closed-model credentials, and Foundry support.
 
 ## Add an explicit model
 
@@ -16,7 +16,7 @@ Connecting a harness already registers coding-ready Fireworks models, including 
 fireconnect claude --model glm-latest
 ```
 
-Replace `claude` and `glm-latest` with the harness and model you want. On Claude Code, `--model` adds the model to `/model` without replacing native Anthropic tiers. After changing a model, follow the restart or reopen instructions in [Coding Harnesses](/ecosystem/fireconnect/harnesses).
+Replace `claude` and `glm-latest` with the harness and model you want. On Claude Code, `--model` adds the model to `/model` without replacing native Anthropic tiers. After changing a model, follow the restart or reopen instructions in [Coding Harnesses](/nexus/harnesses).
 
 For model IDs, aliases, fast tiers, pinned versions, image support, and US-only models, see [Open Models](/nexus/open-models).
 
@@ -42,7 +42,7 @@ Your Fireworks key pays for the open-model leg. A closed model family also needs
 
 FireConnect currently refuses routes that require Anthropic credentials on Cursor IDE, Copilot App, Copilot CLI, and DeepSeek Harness. For Cursor IDE, this is a client header limitation. For Copilot and DeepSeek, it is a FireConnect integration gap.
 
-OpenAI models use an account-level OpenAI Provider Key. FireConnect does not have a local OpenAI-key flag. For direct HTTP calls, see [APIs and SDKs](/ecosystem/firerouter/apis-and-sdks#credentials).
+OpenAI models use an account-level OpenAI Provider Key. FireConnect does not have a local OpenAI-key flag. For direct HTTP calls, see [APIs and SDKs](/nexus/apis-and-sdks#credentials).
 
 To control the balance between predicted quality and cost, see [Routing Preferences](/nexus/routing-preferences).
 
@@ -50,12 +50,14 @@ To control the balance between predicted quality and cost, see [Routing Preferen
 
 On the Foundry path, pass the Azure deployment name, such as `FW-GLM-5.2`, instead of a short Fireworks ID.
 
-Model routers are not available on the Foundry path. Claude Code, DeepSeek Harness, Copilot App, and Copilot CLI do not support Foundry.
+Model routers are not available on the Foundry path. Direct FireConnect routing does not support Claude Code, DeepSeek Harness, Copilot App, and Copilot CLI on Foundry.
+
+To run Claude Code against a Foundry deployment, place an LLM gateway between Claude Code and Foundry. See [Microsoft Foundry](/nexus/microsoft-foundry#claude-code-through-a-gateway).
 
 ## Troubleshooting
 
 <AccordionGroup>
   <Accordion title="Nothing changed after --model">
-    Follow the restart or reopen instructions for your client in [Coding Harnesses](/ecosystem/fireconnect/harnesses).
+    Follow the restart or reopen instructions for your client in [Coding Harnesses](/nexus/harnesses).
   </Accordion>
 </AccordionGroup>

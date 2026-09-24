@@ -8,7 +8,7 @@ path: docs/help-center/account/payment-billing/how-do-i-use-my-coupon-link
 
 # How do I use my coupon link?
 
-Coupon links can only be used if you are currently on the free plan.  Please email [team@elevenlabs.io](mailto:team@elevenlabs.io) if you are trying to use a coupon link but are currently on a paid subscription.
+Coupon links can only be used if you are currently on the free plan.  Please email [support@elevenlabs.io](mailto:support@elevenlabs.io) if you are trying to use a coupon link but are currently on a paid subscription.
 
 Create a free account, or log into your free account.
 

@@ -23,6 +23,7 @@ Create, inspect, update, provision, suspend and delete OpenRouter interns throug
 * [delete\_intern](#delete_intern) - Delete an intern
 * [get\_intern](#get_intern) - Get an intern
 * [update\_intern](#update_intern) - Update an intern
+* [get\_intern\_daemon\_access](#get_intern_daemon_access) - Get an intern's daemon access
 * [provision\_intern](#provision_intern) - Provision an intern
 * [suspend\_intern](#suspend_intern) - Suspend an intern
 * [chat](#chat) - Stream a chat completion with an intern
@@ -276,6 +277,53 @@ with OpenRouter(
 | errors.InternLifecycleError   | 400, 401, 403, 404, 408, 409, 413, 415 | application/json |
 | errors.InternLifecycleError   | 500                                    | application/json |
 | errors.OpenRouterDefaultError | 4XX, 5XX                               | \*/\*            |
+
+## get\_intern\_daemon\_access
+
+Returns the origin and daemon token that attach `ori tui --host` to one visible, running intern. The token is a credential: the response is sent with `Cache-Control: no-store`, each reveal is logged by caller and intern, and a caller may make 10 reveals per minute. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/client-sdks/python/docs/api-reference/authentication) required.
+
+### Example Usage
+
+```python theme={null}
+from openrouter import OpenRouter
+import os
+
+
+with OpenRouter(
+    http_referer="<value>",
+    x_open_router_title="<value>",
+    x_open_router_categories="<value>",
+    api_key=os.getenv("OPENROUTER_API_KEY", ""),
+) as open_router:
+
+    res = open_router.interns.get_intern_daemon_access(intern_id="7c9e6679-7425-40de-944b-e07fc1f90ae7")
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                 | Example                              |
+| -------------------------- | ------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
+| `intern_id`                | *str*                                                               | :heavy\_check\_mark: | ID of an intern visible to the authenticated API key.                                                                                                       | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
+| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |                                      |
+| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |                                      |
+| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |                                      |
+| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |                                      |
+
+### Response
+
+**[components.InternDaemonAccess](../../components/interndaemonaccess.mdx)**
+
+### Errors
+
+| Error Type                    | Status Code                  | Content Type     |
+| ----------------------------- | ---------------------------- | ---------------- |
+| errors.InternLifecycleError   | 401, 403, 404, 408, 409, 429 | application/json |
+| errors.InternLifecycleError   | 500                          | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX                     | \*/\*            |
 
 ## provision\_intern
 

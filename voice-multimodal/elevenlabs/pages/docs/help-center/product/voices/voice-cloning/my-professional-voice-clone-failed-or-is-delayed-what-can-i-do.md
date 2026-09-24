@@ -21,4 +21,4 @@ You can try to resolve this by deleting the voice and uploading the data again, 
 
 If this doesn't resolve the issue, you may need to review your training audio and potentially use different training audio.
 
-You can always contact support by emailing us at [team@elevenlabs.io](mailto:team@elevenlabs.io) if you're experiencing failures during the fine-tuning process.
+You can always contact support by emailing us at [support@elevenlabs.io](mailto:support@elevenlabs.io) if you're experiencing failures during the fine-tuning process.

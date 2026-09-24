@@ -786,6 +786,8 @@ components:
           type:
             - array
             - 'null'
+        options:
+          $ref: '#/components/schemas/ProviderOptions'
         order:
           description: >-
             An ordered list of provider slugs. The router will attempt to use
@@ -1377,6 +1379,445 @@ components:
         - FakeProvider
       example: OpenAI
       type: string
+    ProviderOptions:
+      description: >-
+        Provider-specific options keyed by provider slug. Only options for the
+        matched provider are forwarded; the rest are ignored. Unrecognized keys
+        are silently dropped.
+      example:
+        openai:
+          max_tokens: 1000
+      properties:
+        01ai:
+          additionalProperties: {}
+          type: object
+        ai21:
+          additionalProperties: {}
+          type: object
+        aion-labs:
+          additionalProperties: {}
+          type: object
+        akashml:
+          additionalProperties: {}
+          type: object
+        alibaba:
+          additionalProperties: {}
+          type: object
+        amazon-bedrock:
+          additionalProperties: {}
+          type: object
+        amazon-bedrock/claude-on-aws:
+          additionalProperties: {}
+          type: object
+        amazon-nova:
+          additionalProperties: {}
+          type: object
+        ambient:
+          additionalProperties: {}
+          type: object
+        anthropic:
+          additionalProperties: {}
+          type: object
+        anthropic/2:
+          additionalProperties: {}
+          type: object
+        anyscale:
+          additionalProperties: {}
+          type: object
+        arcee-ai:
+          additionalProperties: {}
+          type: object
+        assemblyai:
+          additionalProperties: {}
+          type: object
+        atlas-cloud:
+          additionalProperties: {}
+          type: object
+        atoma:
+          additionalProperties: {}
+          type: object
+        avian:
+          additionalProperties: {}
+          type: object
+        azure:
+          additionalProperties: {}
+          type: object
+        baidu:
+          additionalProperties: {}
+          type: object
+        baseten:
+          additionalProperties: {}
+          type: object
+        black-forest-labs:
+          additionalProperties: {}
+          type: object
+        byteplus:
+          additionalProperties: {}
+          type: object
+        centml:
+          additionalProperties: {}
+          type: object
+        cerebras:
+          additionalProperties: {}
+          type: object
+        chutes:
+          additionalProperties: {}
+          type: object
+        cirrascale:
+          additionalProperties: {}
+          type: object
+        clarifai:
+          additionalProperties: {}
+          type: object
+        claude-on-aws:
+          additionalProperties: {}
+          type: object
+        cloudflare:
+          additionalProperties: {}
+          type: object
+        cohere:
+          additionalProperties: {}
+          type: object
+        coreweave:
+          additionalProperties: {}
+          type: object
+        cosine:
+          additionalProperties: {}
+          type: object
+        crofai:
+          additionalProperties: {}
+          type: object
+        crucible:
+          additionalProperties: {}
+          type: object
+        crusoe:
+          additionalProperties: {}
+          type: object
+        darkbloom:
+          additionalProperties: {}
+          type: object
+        databricks:
+          additionalProperties: {}
+          type: object
+        decart:
+          additionalProperties: {}
+          type: object
+        deepgram:
+          additionalProperties: {}
+          type: object
+        deepinfra:
+          additionalProperties: {}
+          type: object
+        deepseek:
+          additionalProperties: {}
+          type: object
+        dekallm:
+          additionalProperties: {}
+          type: object
+        digitalocean:
+          additionalProperties: {}
+          type: object
+        enfer:
+          additionalProperties: {}
+          type: object
+        fake-provider:
+          additionalProperties: {}
+          type: object
+        featherless:
+          additionalProperties: {}
+          type: object
+        fireworks:
+          additionalProperties: {}
+          type: object
+        fish-audio:
+          additionalProperties: {}
+          type: object
+        friendli:
+          additionalProperties: {}
+          type: object
+        gmicloud:
+          additionalProperties: {}
+          type: object
+        google-ai-studio:
+          additionalProperties: {}
+          type: object
+        google-vertex:
+          additionalProperties: {}
+          type: object
+        gopomelo:
+          additionalProperties: {}
+          type: object
+        groq:
+          additionalProperties: {}
+          type: object
+        heygen:
+          additionalProperties: {}
+          type: object
+        huggingface:
+          additionalProperties: {}
+          type: object
+        hyperbolic:
+          additionalProperties: {}
+          type: object
+        hyperbolic-quantized:
+          additionalProperties: {}
+          type: object
+        inception:
+          additionalProperties: {}
+          type: object
+        inceptron:
+          additionalProperties: {}
+          type: object
+        inferact-vllm:
+          additionalProperties: {}
+          type: object
+        inference-net:
+          additionalProperties: {}
+          type: object
+        infermatic:
+          additionalProperties: {}
+          type: object
+        inflection:
+          additionalProperties: {}
+          type: object
+        inocloud:
+          additionalProperties: {}
+          type: object
+        io-net:
+          additionalProperties: {}
+          type: object
+        ionstream:
+          additionalProperties: {}
+          type: object
+        klusterai:
+          additionalProperties: {}
+          type: object
+        krea:
+          additionalProperties: {}
+          type: object
+        lambda:
+          additionalProperties: {}
+          type: object
+        lepton:
+          additionalProperties: {}
+          type: object
+        liquid:
+          additionalProperties: {}
+          type: object
+        lynn:
+          additionalProperties: {}
+          type: object
+        lynn-private:
+          additionalProperties: {}
+          type: object
+        makora:
+          additionalProperties: {}
+          type: object
+        mancer:
+          additionalProperties: {}
+          type: object
+        mancer-old:
+          additionalProperties: {}
+          type: object
+        mara:
+          additionalProperties: {}
+          type: object
+        meta:
+          additionalProperties: {}
+          type: object
+        minimax:
+          additionalProperties: {}
+          type: object
+        mistral:
+          additionalProperties: {}
+          type: object
+        modal:
+          additionalProperties: {}
+          type: object
+        modelrun:
+          additionalProperties: {}
+          type: object
+        modular:
+          additionalProperties: {}
+          type: object
+        moonshotai:
+          additionalProperties: {}
+          type: object
+        morph:
+          additionalProperties: {}
+          type: object
+        ncompass:
+          additionalProperties: {}
+          type: object
+        near-ai:
+          additionalProperties: {}
+          type: object
+        nebius:
+          additionalProperties: {}
+          type: object
+        nex-agi:
+          additionalProperties: {}
+          type: object
+        nextbit:
+          additionalProperties: {}
+          type: object
+        nineteen:
+          additionalProperties: {}
+          type: object
+        novita:
+          additionalProperties: {}
+          type: object
+        nvidia:
+          additionalProperties: {}
+          type: object
+        octoai:
+          additionalProperties: {}
+          type: object
+        ollama:
+          additionalProperties: {}
+          type: object
+        open-inference:
+          additionalProperties: {}
+          type: object
+        openai:
+          additionalProperties: {}
+          type: object
+        parasail:
+          additionalProperties: {}
+          type: object
+        perceptron:
+          additionalProperties: {}
+          type: object
+        perplexity:
+          additionalProperties: {}
+          type: object
+        phala:
+          additionalProperties: {}
+          type: object
+        poolside:
+          additionalProperties: {}
+          type: object
+        primeintellect:
+          additionalProperties: {}
+          type: object
+        quiver:
+          additionalProperties: {}
+          type: object
+        recraft:
+          additionalProperties: {}
+          type: object
+        recursal:
+          additionalProperties: {}
+          type: object
+        reflection:
+          additionalProperties: {}
+          type: object
+        reka:
+          additionalProperties: {}
+          type: object
+        relace:
+          additionalProperties: {}
+          type: object
+        replicate:
+          additionalProperties: {}
+          type: object
+        runway:
+          additionalProperties: {}
+          type: object
+        sail-research:
+          additionalProperties: {}
+          type: object
+        sakana:
+          additionalProperties: {}
+          type: object
+        sakana-ai:
+          additionalProperties: {}
+          type: object
+        sambanova:
+          additionalProperties: {}
+          type: object
+        sambanova-cloaked:
+          additionalProperties: {}
+          type: object
+        seed:
+          additionalProperties: {}
+          type: object
+        sf-compute:
+          additionalProperties: {}
+          type: object
+        siliconflow:
+          additionalProperties: {}
+          type: object
+        sourceful:
+          additionalProperties: {}
+          type: object
+        stealth:
+          additionalProperties: {}
+          type: object
+        stepfun:
+          additionalProperties: {}
+          type: object
+        streamlake:
+          additionalProperties: {}
+          type: object
+        switchpoint:
+          additionalProperties: {}
+          type: object
+        targon:
+          additionalProperties: {}
+          type: object
+        tencent:
+          additionalProperties: {}
+          type: object
+        tenstorrent:
+          additionalProperties: {}
+          type: object
+        thinkingmachines:
+          additionalProperties: {}
+          type: object
+        together:
+          additionalProperties: {}
+          type: object
+        together-lite:
+          additionalProperties: {}
+          type: object
+        typesafe:
+          additionalProperties: {}
+          type: object
+        ubicloud:
+          additionalProperties: {}
+          type: object
+        unbiased:
+          additionalProperties: {}
+          type: object
+        upstage:
+          additionalProperties: {}
+          type: object
+        venice:
+          additionalProperties: {}
+          type: object
+        voyageai:
+          additionalProperties: {}
+          type: object
+        wafer:
+          additionalProperties: {}
+          type: object
+        wandb:
+          additionalProperties: {}
+          type: object
+        wandb-legacy:
+          additionalProperties: {}
+          type: object
+        xai:
+          additionalProperties: {}
+          type: object
+        xiaomi:
+          additionalProperties: {}
+          type: object
+        z-ai:
+          additionalProperties: {}
+          type: object
+      type: object
     PreferredMaxLatency:
       anyOf:
         - format: double

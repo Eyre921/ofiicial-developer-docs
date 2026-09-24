@@ -36,8 +36,8 @@ The Package Search MCP Server is an [MCP](https://modelcontextprotocol.io/docs/g
       )
 
       response = client.beta.messages.create(
-          model="claude-sonnet-4-20250514",
-          max_tokens=1000,
+          model="claude-sonnet-5",
+          max_tokens=4096,
           messages=[
               {
                   "role": "user",
@@ -52,7 +52,8 @@ The Package Search MCP Server is an [MCP](https://modelcontextprotocol.io/docs/g
                   "authorization_token": "<YOUR_CHROMA_API_KEY>",
               }
           ],
-          betas=["mcp-client-2025-04-04"],
+          tools=[{"type": "mcp_toolset", "mcp_server_name": "package-search"}],
+          betas=["mcp-client-2025-11-20"],
       )
 
       print(response)
@@ -74,7 +75,6 @@ The Package Search MCP Server is an [MCP](https://modelcontextprotocol.io/docs/g
       func main() {
       	client := anthropic.NewClient(
       		option.WithAPIKey("<YOUR_ANTHROPIC_API_KEY>"),
-      		option.WithHeader("anthropic-beta", anthropic.AnthropicBetaMCPClient2025_04_04),
       	)
 
       	content := "Explain how numpy implements its FFT. Use package search."
@@ -91,19 +91,22 @@ The Package Search MCP Server is an [MCP](https://modelcontextprotocol.io/docs/g
       			URL:                "https://mcp.trychroma.com/package-search/v1",
       			Name:               "package-search",
       			AuthorizationToken: param.NewOpt("<YOUR_CHROMA_API_KEY>"),
-      			ToolConfiguration: anthropic.BetaRequestMCPServerToolConfigurationParam{
-      				Enabled:      anthropic.Bool(true),
-      			},
       		},
+      	}
+
+      	tools := []anthropic.BetaToolUnionParam{
+      		{OfMCPToolset: &anthropic.BetaMCPToolsetParam{MCPServerName: "package-search"}},
       	}
 
       	message, err := client.Beta.Messages.New(
       		context.TODO(),
       		anthropic.BetaMessageNewParams{
-      			MaxTokens:  1024,
+      			MaxTokens:  4096,
       			Messages:   messages,
-      			Model:      anthropic.ModelClaudeSonnet4_20250514,
+      			Model:      anthropic.ModelClaudeSonnet5,
       			MCPServers: mcpServers,
+      			Tools:      tools,
+      			Betas:      []anthropic.AnthropicBeta{anthropic.AnthropicBetaMCPClient2025_11_20},
       		},
       	)
       	if err != nil {
@@ -111,8 +114,9 @@ The Package Search MCP Server is an [MCP](https://modelcontextprotocol.io/docs/g
       	}
 
       	for _, block := range message.Content {
-      		textBlock := block.AsText()
-      		fmt.Println("[assistant]:", textBlock.Text)
+      		if block.Type == "text" {
+      			fmt.Println("[assistant]:", block.AsText().Text)
+      		}
       	}
       }
       ```

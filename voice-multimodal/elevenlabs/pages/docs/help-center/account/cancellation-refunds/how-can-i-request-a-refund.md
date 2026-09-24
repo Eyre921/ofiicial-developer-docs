@@ -10,6 +10,6 @@ path: docs/help-center/account/cancellation-refunds/how-can-i-request-a-refund
 
 You are eligible for a refund if a request is filed within 14 days of payment and no credit quota was used in the period for which you are seeking the refund.
 
-If you want to apply for a refund for your purchase, please contact Support by emailing [team@elevenlabs.io](mailto:team@elevenlabs.io) and someone from the team will get back to you shortly.
+If you want to apply for a refund for your purchase, please contact Support by emailing [support@elevenlabs.io](mailto:support@elevenlabs.io) and someone from the team will get back to you shortly.
 
 Please email directly from your ElevenLabs account email address, and state the reasons for your refund.

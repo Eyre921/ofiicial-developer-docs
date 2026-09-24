@@ -353,12 +353,14 @@ If they rule in favor of the customer, the balance charge becomes permanent.
 Customers must authenticate Affirm payments by logging into their Affirm account. This requirement helps reduce the risk of fraud or unrecognized payments. While Affirm covers losses incurred from customer fraud, Stripe might contact you on behalf of Affirm and request to stop or pause shipment before any losses are incurred. Comply promptly with these requests.
 
 ## Stripe product support 
-Products:
-  ✓ Checkout
+Checkout UIs:
+  ✓ Full page (Recommended)
   ✓ Payment Links
-  ✓ Payment Element
+  ✓ Embedded form
   ✗ Express Checkout Element
-  ✗ Mobile Payment Element
+  ✗ In-app payments
+
+Products:
   ✗ Managed Payments
   ✗ Billing
   ✓ Invoicing
@@ -369,10 +371,10 @@ Products:
   ✓ Connect
 
 APIs:
-  ✓ PaymentIntents
-  ✗ PaymentIntents with setup_future_usage
-  ✗ SetupIntents
-  ✓ CheckoutSessions
+  ✓ Checkout Sessions (Recommended)
+  ✓ Payment Intents
+  ✗ Payment Intents with setup_future_usage
+  ✗ Setup Intents
 ### Affirm branding 
 
 Use the [Payment Method Messaging Element](https://docs.stripe.com/elements/payment-method-messaging.md) on your site to let customers know that you offer Affirm ahead of checkout. You must comply with Affirm’s [marketing compliance guides](https://docs.affirm.com/developers/docs/compliance_and_guidelines) and use the Affirm [guide](https://businesshub.affirm.com/hc/en-us/articles/10653174159636-Affirm-Marketing-Compliance-Guides) that relates to the Affirm payment options you offer your customers.

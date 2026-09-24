@@ -71,7 +71,7 @@ Start sending broadcasts to your audience through the Resend API.
   ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
   package main
 
-  import "github.com/resend/resend-go/v3"
+  import "github.com/resend/resend-go/v4"
 
   func main() {
   	client := resend.NewClient("re_xxxxxxxxx")
@@ -102,6 +102,10 @@ Start sending broadcasts to your audience through the Resend API.
   ```
 
   ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.Resend;
+  import com.resend.services.broadcasts.model.SendBroadcastOptions;
+  import com.resend.services.broadcasts.model.SendBroadcastResponseSuccess;
+
   Resend resend = new Resend("re_xxxxxxxxx");
 
   SendBroadcastOptions params = SendBroadcastOptions.builder()

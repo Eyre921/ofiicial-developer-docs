@@ -243,12 +243,14 @@ If they rule in favor of the customer, the balance charge becomes permanent.
 Customers must authenticate Afterpay payments by logging into their Afterpay account. This requirement helps reduce the risk of fraud or unrecognized payments. Afterpay covers losses incurred from customer fraud or the inability to repay installments. However, Stripe might contact you on behalf of Afterpay and request to stop or pause a shipment before any losses are incurred. It’s important to comply promptly with these requests.
 
 ## Stripe product support 
-Products:
-  ✓ Checkout
+Checkout UIs:
+  ✓ Full page (Recommended)
   ✓ Payment Links
-  ✓ Payment Element
+  ✓ Embedded form
   ✗ Express Checkout Element
-  ✓ Mobile Payment Element
+  ✓ In-app payments
+
+Products:
   ✓ Managed Payments
   ✗ Billing
   ✗ Invoicing
@@ -259,10 +261,10 @@ Products:
   ✓ Connect
 
 APIs:
-  ✓ PaymentIntents
-  ✗ PaymentIntents with setup_future_usage
-  ✗ SetupIntents
-  ✓ CheckoutSessions
+  ✓ Checkout Sessions (Recommended)
+  ✓ Payment Intents
+  ✗ Payment Intents with setup_future_usage
+  ✗ Setup Intents
 ### Add Afterpay branding to your website 
 
 Let your customers know you accept payments with Afterpay by including the [Payment Method Messaging Element](https://docs.stripe.com/elements/payment-method-messaging.md) on your product and cart pages.

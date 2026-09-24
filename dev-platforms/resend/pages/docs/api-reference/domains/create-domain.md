@@ -117,7 +117,9 @@ Create a domain through the Resend Email API.
   ```
 
   ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
-  Resend.api_key = ENV["RESEND_API_KEY"]
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
 
   params = {
     name: "example.com",
@@ -129,7 +131,7 @@ Create a domain through the Resend Email API.
   ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
   package main
 
-  import "github.com/resend/resend-go/v3"
+  import "github.com/resend/resend-go/v4"
 
   func main() {
   	client := resend.NewClient("re_xxxxxxxxx")
@@ -159,10 +161,13 @@ Create a domain through the Resend Email API.
   ```
 
   ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import com.resend.*;
+  import com.resend.Resend;
+  import com.resend.core.exception.ResendException;
+  import com.resend.services.domains.model.CreateDomainOptions;
+  import com.resend.services.domains.model.CreateDomainResponse;
 
   public class Main {
-      public static void main(String[] args) {
+      public static void main(String[] args) throws ResendException {
           Resend resend = new Resend("re_xxxxxxxxx");
 
           CreateDomainOptions params = CreateDomainOptions
@@ -213,6 +218,14 @@ Create a domain through the Resend Email API.
     },
     "records": [
       {
+        "record": "DKIM",
+        "name": "resend._domainkey",
+        "value": "p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDsc4Lh8xilsngyKEgN2S84+21gn+x6SEXtjWvPiAAmnmggr5FWG42WnqczpzQ/mNblqHz4CDwUum6LtY6SdoOlDmrhvp5khA3cd661W9FlK3yp7+jVACQElS7d9O6jv8VsBbVg4COess3gyLE5RyxqF1vYsrEXqyM8TBz1n5AGkQIDAQA2",
+        "type": "TXT",
+        "status": "not_started",
+        "ttl": "Auto"
+      },
+      {
         "record": "SPF",
         "name": "send",
         "type": "MX",
@@ -224,39 +237,15 @@ Create a domain through the Resend Email API.
       {
         "record": "SPF",
         "name": "send",
-        "value": "\"v=spf1 include:amazonses.com ~all\"",
+        "value": "v=spf1 include:amazonses.com ~all",
         "type": "TXT",
         "ttl": "Auto",
         "status": "not_started"
       },
       {
-        "record": "DKIM",
-        "name": "nhapbbryle57yxg3fbjytyodgbt2kyyg._domainkey",
-        "value": "nhapbbryle57yxg3fbjytyodgbt2kyyg.dkim.amazonses.com.",
-        "type": "CNAME",
-        "status": "not_started",
-        "ttl": "Auto"
-      },
-      {
-        "record": "DKIM",
-        "name": "xbakwbe5fcscrhzshpap6kbxesf6pfgn._domainkey",
-        "value": "xbakwbe5fcscrhzshpap6kbxesf6pfgn.dkim.amazonses.com.",
-        "type": "CNAME",
-        "status": "not_started",
-        "ttl": "Auto"
-      },
-      {
-        "record": "DKIM",
-        "name": "txrcreso3dqbvcve45tqyosxwaegvhgn._domainkey",
-        "value": "txrcreso3dqbvcve45tqyosxwaegvhgn.dkim.amazonses.com.",
-        "type": "CNAME",
-        "status": "not_started",
-        "ttl": "Auto"
-      },
-      {
         "record": "Tracking",
-        "name": "links.example.com",
         "type": "CNAME",
+        "name": "links",
         "value": "links1.resend-dns.com",
         "ttl": "Auto",
         "status": "not_started"

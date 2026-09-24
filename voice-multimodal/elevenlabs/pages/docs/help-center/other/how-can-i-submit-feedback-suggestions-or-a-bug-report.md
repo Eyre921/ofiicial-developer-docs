@@ -8,4 +8,4 @@ path: docs/help-center/other/how-can-i-submit-feedback-suggestions-or-a-bug-repo
 
 # How can I submit feedback, suggestions or a bug report?
 
-If you want to leave feedback or report a bug, you can reach out directly to our customer support by emailing [team@elevenlabs.io](mailto:team@elevenlabs.io).
+If you want to leave feedback or report a bug, you can reach out directly to our customer support by emailing [support@elevenlabs.io](mailto:support@elevenlabs.io).

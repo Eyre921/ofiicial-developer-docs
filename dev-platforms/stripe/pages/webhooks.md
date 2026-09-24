@@ -20,7 +20,7 @@ Complete the steps below to start receiving webhook events in your app. You can 
 
 Use the [API](https://docs.stripe.com/api/v2/event-destinations.md) or the [Webhooks](https://dashboard.stripe.com/webhooks) tab in Workbench to register your webhook endpoint’s accessible URL so Stripe knows where to deliver events. You can register up to 16 webhook endpoints with Stripe. Registered webhook endpoints must be publicly accessible HTTPS URLs.
 
-- If you have a localhost server but don’t have a publically accessible HTTPS URL, you can use a tunnelling tool such as [ngrok](https://ngrok.com/) to generate a temporary publically accessible HTTPS URL to use for testing purposes.
+- If you have a localhost server but don’t have a publicly accessible HTTPS URL, you can use a tunnelling tool such as [ngrok](https://ngrok.com/) to generate a temporary publicly accessible HTTPS URL to use for testing purposes.
 - Alternatively, you can [test locally using Stripe CLI](https://docs.stripe.com/webhooks.md#local-listener) before registering a publicly accessible HTTPS URL.
 
 ### Webhook URL format 

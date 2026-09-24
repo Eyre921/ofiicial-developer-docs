@@ -74,6 +74,8 @@ Keyterm prompting, up to 1000 terms
 
 Entity detection, 65 entity types
 
+Transcript editing with natural-language instructions
+
 Precise word-level timestamps
 
 Speaker diarization, up to 32 speakers
@@ -95,6 +97,8 @@ Low latency (\~150ms†)
 Precise word-level timestamps
 
 Entity detection, 65 entity types
+
+Transcript editing with natural-language instructions
 
 #### [Scribe v2 Medical](/docs/overview/models#scribe-v2-medical)
 
@@ -357,6 +361,7 @@ Key features:
 * Support for 90+ languages
 * Entity detection
 * Keyterm prompting
+* Transcript editing
 
 Read more about Scribe v2 [here](/docs/overview/capabilities/speech-to-text).
 
@@ -378,6 +383,7 @@ Key features:
 * Voice Activity Detection (VAD): Automatic speech segmentation based on silence detection
 * Manual commit control: Full control over when to finalize transcript segments
 * Entity detection
+* Transcript editing
 
 Read more about Scribe v2 Realtime [here](/docs/overview/capabilities/speech-to-text).
 
@@ -497,7 +503,7 @@ As a general rule of thumb, a concurrency limit of 5 can typically support up to
 This is because of the speed it takes for audio to be generated relative to the time it takes for the TTS request to be processed.
 The diagram below is an example of how 4 concurrent calls with different users can be facilitated while only hitting 2 concurrent requests.
 
-![Concurrency limits](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/dcc5e3bd18993a9f862bd526f3dc1b32cfa89003a58ded6f4f6a7bda1bd5a2ea/assets/images/product-guides/speech-to-text/tts-concurrency.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T102755Z&X-Amz-Expires=604800&X-Amz-Signature=f68f39ad29e38d061b3f922403d40571705298c6c2345a5fd8cd15064a4a83a9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Concurrency limits](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/dcc5e3bd18993a9f862bd526f3dc1b32cfa89003a58ded6f4f6a7bda1bd5a2ea/assets/images/product-guides/speech-to-text/tts-concurrency.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T164926Z&X-Amz-Expires=604800&X-Amz-Signature=aacb3bd76306962d65ecc5c13904aa726af8d23118ab85d6702ca75fb13d78fa&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Building AI Voice Agents
 

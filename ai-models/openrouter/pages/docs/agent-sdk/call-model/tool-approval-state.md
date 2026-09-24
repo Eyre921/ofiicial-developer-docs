@@ -391,4 +391,5 @@ console.log(await r3.getText());
 * **[Stop Conditions](/docs/agent-sdk/call-model/stop-conditions)** - Control when tool execution loops terminate
 * **[Dynamic Parameters](/docs/agent-sdk/call-model/dynamic-parameters)** - Adjust parameters between turns
 * **[Examples](/docs/agent-sdk/call-model/examples/weather-tool)** - Complete tool implementations
+* **[Gate Agent Tool Calls with Jev](/docs/cookbook/building-agents/gate-tool-calls-with-jev)** - Decide `approve`, `block`, or `review` per call with a decision model instead of a static `requireApproval` flag
 

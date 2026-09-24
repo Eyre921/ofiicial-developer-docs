@@ -22,4 +22,4 @@ If you are connecting from one of these sanctioned countries, your access to our
 
 Some servers may be impacted by this block even if they are not physically located in one of the affected regions, as our cloud provider might flag them as associated with one of these countries. We recommend obtaining a new IP address if possible.
 
-If you believe you have been incorrectly blocked, please email us at [team@elevenlabs.io](mailto:team@elevenlabs.io).
+If you believe you have been incorrectly blocked, please email us at [support@elevenlabs.io](mailto:support@elevenlabs.io).

@@ -14,4 +14,4 @@ You can check which account you're currently logged into by clicking your profil
 
 If you are logged into the correct account, please try logging out and back in again as that might resolve the issue if there is a problem loading the content.
 
-Please contact support by emailing [team@elevenlabs.io](mailto:team@elevenlabs.io) if these suggestions do not resolve the issue for you.
+Please contact support by emailing [support@elevenlabs.io](mailto:support@elevenlabs.io) if these suggestions do not resolve the issue for you.

@@ -123,7 +123,7 @@ Instead of sending one email per HTTP request, Resend provides a batching endpoi
 <ParamField type="object">
   Template variables object with key/value pairs.
 
-  ```ts theme={"theme":{"light":"github-light","dark":"vesper"}}
+  ```ts theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
   variables: {
   	CTA: 'Sign up now',
   	CTA_LINK: 'https://example.com/signup'
@@ -266,10 +266,10 @@ When the request succeeds, each entry in `data` corresponds to the email at the 
   package main
 
   import (
+  	"context"
   	"fmt"
-  	"os"
 
-  	"github.com/resend/resend-go/v3"
+  	"github.com/resend/resend-go/v4"
   )
 
   func main() {
@@ -332,10 +332,14 @@ When the request succeeds, each entry in `data` corresponds to the email at the 
   ```
 
   ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import com.resend.*;
+  import com.resend.Resend;
+  import com.resend.core.exception.ResendException;
+  import com.resend.services.batch.model.CreateBatchEmailsResponse;
+  import com.resend.services.emails.model.CreateEmailOptions;
+  import java.util.Arrays;
 
   public class Main {
-      public static void main(String[] args) {
+      public static void main(String[] args) throws ResendException {
           Resend resend = new Resend("re_xxxxxxxxx");
 
           CreateEmailOptions firstEmail = CreateEmailOptions.builder()

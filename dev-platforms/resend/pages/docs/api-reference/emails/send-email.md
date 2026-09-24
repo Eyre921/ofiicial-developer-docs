@@ -149,7 +149,7 @@ Start sending emails through the Resend Email API.
 <ParamField type="object">
   Template variables object with key/value pairs.
 
-  ```ts theme={"theme":{"light":"github-light","dark":"vesper"}}
+  ```ts theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
   variables: {
   	CTA: 'Sign up now',
   	CTA_LINK: 'https://example.com/signup'
@@ -256,7 +256,7 @@ Start sending emails through the Resend Email API.
   	"context"
   	"fmt"
 
-  	"github.com/resend/resend-go/v3"
+  	"github.com/resend/resend-go/v4"
   )
 
   func main() {
@@ -267,7 +267,7 @@ Start sending emails through the Resend Email API.
         From:        "Acme <onboarding@resend.dev>",
         To:          []string{"delivered@resend.dev"},
         Subject:     "hello world",
-        Html:        "<p>it works!</p>"
+        Html:        "<p>it works!</p>",
     }
 
     sent, err := client.Emails.SendWithContext(ctx, params)
@@ -302,10 +302,13 @@ Start sending emails through the Resend Email API.
   ```
 
   ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import com.resend.*;
+  import com.resend.Resend;
+  import com.resend.core.exception.ResendException;
+  import com.resend.services.emails.model.CreateEmailOptions;
+  import com.resend.services.emails.model.CreateEmailResponse;
 
   public class Main {
-      public static void main(String[] args) {
+      public static void main(String[] args) throws ResendException {
           Resend resend = new Resend("re_xxxxxxxxx");
 
           CreateEmailOptions params = CreateEmailOptions.builder()

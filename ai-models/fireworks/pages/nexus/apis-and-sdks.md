@@ -1,7 +1,7 @@
 ---
 title: "APIs and SDKs"
-source: https://docs.fireworks.ai/ecosystem/firerouter/apis-and-sdks
-path: ecosystem/firerouter/apis-and-sdks
+source: https://docs.fireworks.ai/nexus/apis-and-sdks
+path: nexus/apis-and-sdks
 ---
 
 Call Fireworks from custom agents, background runners, services, HTTP APIs, and SDKs
@@ -124,6 +124,6 @@ A `firerouter/...` id is a model router. [Routers](/deployments/routers) load-ba
 
 ## See also
 
-* [FireRouter](/ecosystem/firerouter/overview)
+* [FireRouter](/nexus/firerouter)
 * [Provider Keys](/nexus/provider-keys)
 * [Routing Preferences](/nexus/routing-preferences)

@@ -298,6 +298,12 @@ Traffic routing is deterministic based on the conversation ID, ensuring the same
 
 When you're satisfied with changes on a branch, merge them into another branch. Any non-archived branch can be merged into any other non-archived branch, not just into main.
 
+> **Note**
+>
+> To have a branch's changes reviewed before they're merged, or to reach a branch you don't have
+> write access to, open a [merge proposal](/docs/eleven-agents/operate/merge-proposals) instead of
+> merging directly.
+
 ```python
 merge = client.conversational_ai.agents.branches.merge(
     agent_id="agent_7101k5zvyjhmfg983brhmhkd98n6",

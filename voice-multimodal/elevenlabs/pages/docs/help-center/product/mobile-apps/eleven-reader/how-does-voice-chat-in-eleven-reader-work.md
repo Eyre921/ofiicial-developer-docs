@@ -14,4 +14,4 @@ Voice Chat may also reference source material from your current reading to provi
 
 Each time you interact with Voice Chat, you consent to the recording, storage, and sharing of your communications with third-party service providers, as necessary to provide and improve voice interaction features, in accordance with our [Privacy Policy](https://elevenlabs.io/privacy). If you do not wish to have your conversations recorded, please refrain from using this feature.
 
-For any questions or to share feedback about this beta feature, please contact support by emailing us at [team@elevenlabs.io](mailto:team@elevenlabs.io) or fill out [this feedback form](https://form.typeform.com/to/hXh0AAb5).
+For any questions or to share feedback about this beta feature, please contact support by emailing us at [support@elevenlabs.io](mailto:support@elevenlabs.io) or fill out [this feedback form](https://form.typeform.com/to/hXh0AAb5).

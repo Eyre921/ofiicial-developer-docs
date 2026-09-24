@@ -6,7 +6,7 @@ path: nexus/web-search
 
 Use native web search and fetch in Claude Code, Codex, and ChatGPT while connected through FireConnect.
 
-FireConnect preserves native web search when a supported harness routes through Fireworks. Connect the harness through [Coding Harnesses](/ecosystem/fireconnect/harnesses). You do not need a separate search service or command.
+FireConnect preserves native web search when a supported harness routes through Fireworks. Connect the harness through [Coding Harnesses](/nexus/harnesses). You do not need a separate search service or command.
 
 | Harness                                                          | Search behavior                                    | Wire API       |
 | ---------------------------------------------------------------- | -------------------------------------------------- | -------------- |

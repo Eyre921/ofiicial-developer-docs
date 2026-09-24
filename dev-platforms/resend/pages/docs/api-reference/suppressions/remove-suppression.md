@@ -19,14 +19,8 @@ Remove a single suppression by ID or email.
 
   const resend = new Resend('re_xxxxxxxxx');
 
-  // Remove by suppression id
   const { data, error } = await resend.suppressions.remove(
-    'e169aa45-1ecf-4183-9955-b1499d5701d3',
-  );
-
-  // Remove by email
-  const { data, error } = await resend.suppressions.remove(
-    'steve.wozniak@example.com',
+    'e169aa45-1ecf-4183-9955-b1499d5701d3', // or: 'steve.wozniak@example.com'
   );
   ```
 
@@ -71,7 +65,7 @@ Remove a single suppression by ID or email.
   ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
   package main
 
-  import "github.com/resend/resend-go/v3"
+  import "github.com/resend/resend-go/v4"
 
   func main() {
   	client := resend.NewClient("re_xxxxxxxxx")
@@ -108,10 +102,11 @@ Remove a single suppression by ID or email.
   ```
 
   ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import com.resend.*;
+  import com.resend.Resend;
+  import com.resend.core.exception.ResendException;
 
   public class Main {
-      public static void main(String[] args) {
+      public static void main(String[] args) throws ResendException {
           Resend resend = new Resend("re_xxxxxxxxx");
 
           // Remove by suppression id

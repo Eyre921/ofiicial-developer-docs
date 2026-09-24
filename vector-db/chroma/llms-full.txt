@@ -220,8 +220,8 @@ The Package Search MCP Server is an [MCP](https://modelcontextprotocol.io/docs/g
       )
 
       response = client.beta.messages.create(
-          model="claude-sonnet-4-20250514",
-          max_tokens=1000,
+          model="claude-sonnet-5",
+          max_tokens=4096,
           messages=[
               {
                   "role": "user",
@@ -236,7 +236,8 @@ The Package Search MCP Server is an [MCP](https://modelcontextprotocol.io/docs/g
                   "authorization_token": "<YOUR_CHROMA_API_KEY>",
               }
           ],
-          betas=["mcp-client-2025-04-04"],
+          tools=[{"type": "mcp_toolset", "mcp_server_name": "package-search"}],
+          betas=["mcp-client-2025-11-20"],
       )
 
       print(response)
@@ -258,7 +259,6 @@ The Package Search MCP Server is an [MCP](https://modelcontextprotocol.io/docs/g
       func main() {
       	client := anthropic.NewClient(
       		option.WithAPIKey("<YOUR_ANTHROPIC_API_KEY>"),
-      		option.WithHeader("anthropic-beta", anthropic.AnthropicBetaMCPClient2025_04_04),
       	)
 
       	content := "Explain how numpy implements its FFT. Use package search."
@@ -275,19 +275,22 @@ The Package Search MCP Server is an [MCP](https://modelcontextprotocol.io/docs/g
       			URL:                "https://mcp.trychroma.com/package-search/v1",
       			Name:               "package-search",
       			AuthorizationToken: param.NewOpt("<YOUR_CHROMA_API_KEY>"),
-      			ToolConfiguration: anthropic.BetaRequestMCPServerToolConfigurationParam{
-      				Enabled:      anthropic.Bool(true),
-      			},
       		},
+      	}
+
+      	tools := []anthropic.BetaToolUnionParam{
+      		{OfMCPToolset: &anthropic.BetaMCPToolsetParam{MCPServerName: "package-search"}},
       	}
 
       	message, err := client.Beta.Messages.New(
       		context.TODO(),
       		anthropic.BetaMessageNewParams{
-      			MaxTokens:  1024,
+      			MaxTokens:  4096,
       			Messages:   messages,
-      			Model:      anthropic.ModelClaudeSonnet4_20250514,
+      			Model:      anthropic.ModelClaudeSonnet5,
       			MCPServers: mcpServers,
+      			Tools:      tools,
+      			Betas:      []anthropic.AnthropicBeta{anthropic.AnthropicBetaMCPClient2025_11_20},
       		},
       	)
       	if err != nil {
@@ -295,8 +298,9 @@ The Package Search MCP Server is an [MCP](https://modelcontextprotocol.io/docs/g
       	}
 
       	for _, block := range message.Content {
-      		textBlock := block.AsText()
-      		fmt.Println("[assistant]:", textBlock.Text)
+      		if block.Type == "text" {
+      			fmt.Println("[assistant]:", block.AsText().Text)
+      		}
       	}
       }
       ```
@@ -12777,15 +12781,15 @@ For example, we can use AI to write a general purpose function that extracts nam
           system_prompt = "You are a name extractor. The user will give you text, and you must return a JSON array of names mentioned in the text. Do not include any explanation or formatting."
 
           response = client.messages.create(
-              model="claude-sonnet-4-20250514",
-              max_tokens=1000,
+              model="claude-sonnet-5",
+              max_tokens=4096,
               system=system_prompt,
               messages=[
                   {"role": "user", "content": text}
               ]
           )
 
-          response_text = response.content[0].text
+          response_text = next((b.text for b in response.content if b.type == "text"), "[]")
           return json.loads(response_text)
       ```
 
@@ -12801,14 +12805,14 @@ For example, we can use AI to write a general purpose function that extracts nam
           "You are a name extractor. The user will give you text, and you must return a JSON array of names mentioned in the text. Do not include any explanation or formatting.";
 
         const message = await anthropic.messages.create({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 1000,
+          model: "claude-sonnet-5",
+          max_tokens: 4096,
           system: systemPrompt,
           messages: [{ role: "user", content: text }],
         });
 
-        const responseText =
-          message.content[0]?.type === "text" ? message.content[0].text : "[]";
+        const textBlock = message.content.find((block) => block.type === "text");
+        const responseText = textBlock?.type === "text" ? textBlock.text : "[]";
         return JSON.parse(responseText);
       }
       ```
@@ -13587,7 +13591,7 @@ With the result from Chroma, we can build the correct context for an AI model.
       prompt = f"{user_query}. Use this as context for answering: {context}"
 
       response = client.messages.create(
-          model="claude-sonnet-4-20250514",
+          model="claude-sonnet-5",
           max_tokens=1024,
           messages=[
               {"role": "user", "content": prompt}
@@ -13605,7 +13609,7 @@ With the result from Chroma, we can build the correct context for an AI model.
       const prompt = `${userQuery}. Use this as context for answering: ${context}`;
 
       const response = await client.messages.create({
-        model: "claude-sonnet-4-20250514",
+        model: "claude-sonnet-5",
         max_tokens: 1024,
         messages: [
           {

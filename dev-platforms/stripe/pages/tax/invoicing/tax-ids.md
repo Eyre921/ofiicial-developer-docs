@@ -84,7 +84,7 @@ Stripe uses the following priority when determining which of your account tax ID
 
 When you enable automatic tax ID display, Stripe resolves and stamps the most appropriate tax IDs at invoice finalization time, based on the invoice’s taxable location. If you don’t have matching tax IDs for the taxable location, we display the tax IDs of your head office location.
 
-> Automatic tax ID display requires [automatic tax](https://docs.stripe.com/invoicing/taxes.md) (`automatic_tax[enabled]=true`) on the invoice.
+> Automatic tax ID display requires [automatic tax](https://docs.stripe.com/invoicing/taxes.md) (`automatic_tax[enabled]=true`) on the invoice. This feature isn’t available in the Dashboard Invoice Editor.
 
 To enable automatic tax ID display:
 

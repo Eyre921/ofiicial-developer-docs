@@ -27,7 +27,7 @@ The following steps will help you build the question set up front, run the whole
 
   * Your existing TypeScript app runs on Node.js or Bun as an ES module (step 3 uses top-level `await`), has `@types/node` or `@types/bun` for `process` and `fetch`, and keeps the items to classify in an array of strings named `posts`.
   * You've configured `OPENROUTER_API_KEY` and have `zod` 4 installed, since this page imports it directly.
-  * You've read the [TypeSafe SDK guide](/docs/guides/community/typesafe-sdk) or the [Decisions API reference](/docs/api/api-reference/alphadecisions/submit-a-decisions-questions-and-answers-request) once, so the `state` and `questions` request shape is familiar.
+  * You've followed the [Jev tutorial](/docs/guides/community/jev-tutorial) or read the [Decisions API reference](/docs/api/api-reference/alphadecisions/submit-a-decisions-questions-and-answers-request) once, so the `state` and `questions` request shape is familiar.
   * Keep the [rate limits page](/docs/api_reference/limits) open for the status codes that step 3 retries.
 </Tip>
 
@@ -372,8 +372,10 @@ The following are things to check about the behavior you've implemented.
 
 Here are a few things you can try next:
 
+* [Classify Reddit and YouTube Comments with Jev and ScrapeCreators](/docs/cookbook/evaluate-and-optimize/classify-reddit-comments-with-jev) to point the same `choice` and `noul` questions at scraped comments and re-tune thresholds on stored judgments
 * [Gate Tool Calls with Jev](/docs/cookbook/building-agents/gate-tool-calls-with-jev) to apply the same `noul` thresholds to agent actions
 * [Cut LLM Cost with a Jev-Verified Cascade](/docs/cookbook/evaluate-and-optimize/jev-verified-cascade) to verify generated answers with a `choice` question
+* [Jev documentation hub](/docs/guides/community/jev) for every Jev page on OpenRouter and the TypeSafe docs on writing questions and choosing thresholds
 * [TypeSafe SDK guide](/docs/guides/community/typesafe-sdk) to call Jev through the TypeSafe JS or Python SDK instead of raw `fetch`
 * [Decisions API reference](/docs/api/api-reference/alphadecisions/submit-a-decisions-questions-and-answers-request)
 

@@ -81,4 +81,4 @@ Users can be organized into groups. A group is a named set of users in your acco
 
 Groups are provisioned from your identity provider through [SCIM group provisioning](/accounts/sso#group-provisioning), which is the only way to create one. They are read-only in Fireworks: create, rename, delete, and populate groups in your directory.
 
-Groups do not confer roles — roles are set per user. What a group can carry is a [group limit](/nexus/usage-limits-reference#group-limits), which caps serverless spend for each of its members. That is a **Fireworks Nexus** feature, enabled separately from group sync.
+Groups do not confer roles — roles are set per user. What a group can carry is a [group limit](/nexus/usage-limits#group-limits), which caps serverless spend for each of its members. That is a **Fireworks Nexus** feature, enabled separately from group sync.

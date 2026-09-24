@@ -63,6 +63,8 @@ Learn how to provide financial services to connected accounts.
 
 [Make cross-border payouts and configure automatic transfer rules](https://docs.stripe.com/treasury/connect/examples/cross-border-and-automatic-transfer-rules.md): Make payouts from financial accounts to recipients in other regions and create automatic transfer rules to manage risk.
 
+[Create a multi-currency financial account (Private preview)](https://docs.stripe.com/treasury/connect/examples/multi-currency-financial-accounts-and-currency-conversion.md): Set up your financial account to hold multiple currencies, convert funds, and send local payouts.
+
 [Embed finance components (Private preview)](https://docs.stripe.com/treasury/connect/prebuilt-embedded-finance.md): Embed prebuilt components to render financial account dashboards, transaction history, and bill pay actions in your application UI.
 
 [Allow marketplace consumers to store and respend funds (Private preview)](https://docs.stripe.com/treasury/connect/examples/closed-loop-respend-wallet.md): Create financial accounts for your marketplace consumers. They can then withdraw the balance funds or use them to pay for purchases directly or from a prepaid debit card.

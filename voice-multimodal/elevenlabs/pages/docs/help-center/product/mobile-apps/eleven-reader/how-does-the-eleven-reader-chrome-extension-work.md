@@ -52,4 +52,4 @@ If the extension doesn’t appear to import content correctly:
 * Uninstall and re-install the Chrome extension. \
 
 
-If the problem persists, please contact support by emailing us at [team@elevenlabs.io](mailto:team@elevenlabs.io) and include a short description of what’s happening so we can help.
+If the problem persists, please contact support by emailing us at [support@elevenlabs.io](mailto:support@elevenlabs.io) and include a short description of what’s happening so we can help.
