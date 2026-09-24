@@ -47,11 +47,7 @@ Successful Response
 - `anonymous_access_level_override` (enum, required, nullable) — The access level for anonymous users. If None, the resource is not shared publicly.
   - Allowed values: `admin`, `editor`, `commenter`, `viewer`
 - `role_to_group_ids` (map from string to list of string, required) — A mapping of grant slots to group IDs. Keys are the preset access roles plus workspace custom-role ids ('role_...'). When the resource is shared with a user, the group id is the user's id.
-- `share_options` (list of object, required) — List of options for sharing the resource further in the workspace. These are users who don't have access to the resource yet.
-  - `name` (string, required) — The name of the principal.
-  - `id` (string, required) — The ID of the principal.
-  - `type` (enum, required) — The type of the principal: user, group, or service account (under 'key').
-    - Allowed values: `user`, `group`, `key`
+- `share_options` (list of ShareOptionResponseModel, required) — List of options for sharing the resource further in the workspace. These are users who don't have access to the resource yet.
 
 ## Errors
 
@@ -59,10 +55,24 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ShareOptionResponseModel
+
+- `name` (string, required) — The name of the principal.
+- `id` (string, required) — The ID of the principal.
+- `type` (enum, required) — The type of the principal: user, group, or service account (under 'key').
+  - Allowed values: `user`, `group`, `key`
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

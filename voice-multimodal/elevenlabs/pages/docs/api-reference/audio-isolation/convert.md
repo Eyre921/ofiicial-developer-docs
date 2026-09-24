@@ -45,10 +45,17 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

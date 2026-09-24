@@ -6,63 +6,28 @@ path: reference/retrieve-a-page-property
 
 get /v1/pages/{page_id}/properties/{property_id}
 
-Retrieves a `property_item` object for a given `page_id` and `property_id`. Depending on the property type, the object returned will either be a value or a [paginated](/reference/pagination) list of property item values. See [Property item objects](/reference/property-item-object) for specifics.
+Retrieves one property on a page. The response is a [property item or paginated list](/reference/property-item-object), depending on the type.
 
-To obtain `property_id`s, use the [Retrieve a database](/reference/retrieve-a-database) endpoint.
+Get the property ID from [Retrieve a page](/reference/retrieve-a-page) or [Retrieve a data source](/reference/retrieve-a-data-source). Pass URL-encoded IDs as returned by the API.
 
-In cases where a property item has more than 25 references, this endpoint should be used, rather than [Retrieve a page](/reference/retrieve-a-page). ([Retrieve a page](/reference/retrieve-a-page) will not return a complete list when the list exceeds 25 references.)
+## Property item objects
 
-## Property Item Objects
+### Simple properties
 
-For more detailed information refer to the [Property item object documentation](/reference/property-item-object)
+Most types return one `property_item` object. This includes `status`, `select`, `files`, and `multi_select`. See [Response shape by type](/reference/property-item-object#response-shape-by-type).
 
-### Simple Properties
+### Paginated properties
 
-Each individual `property_item` properties will have a `type` and under the the key with the value for `type`, an object that identifies the property value, documented under [Page property values](/reference/page-property-values).
+`title`, `rich_text`, `people`, and `relation` return a paginated list. Use this endpoint when a page response omits references. Continue with `next_cursor` until `has_more` is `false`. The next URL is nested at `property_item.next_url`.
 
-### Paginated Properties
+See [Pagination fields and examples](/reference/property-item-object#paginated-values) or [Read every item in a page property](/guides/data-apis/read-page-property-values).
 
-Property types that return a paginated list of property item objects are:
+### Rollup properties
 
-* `title`
-* `rich_text`
-* `relation`
-* `people`
-
-Look for the `next_url` value in the response object for these property items to view paginated results. Refer to [paginated page properties](/reference/page-property-values#paginated-page-properties) for a full description of the response object for these properties.
-
-Refer to the [pagination reference](/reference/intro#pagination) for details on how to iterate through a results list.
-
-### Rollup Properties
-
-<Check>
-  Learn more about rollup properties on the [Page properties page](/reference/page-property-values#rollup) or in Notion’s [Help Center](https://www.notion.com/help/relations-and-rollups).
-</Check>
-
-For regular "Show original" rollups, the endpoint returns a flattened list of all the property items in the rollup.
-
-For rollups with an aggregation, the API returns a [rollup property value](/reference/page-property-values#rollup) under the `rollup` key and the list of relations.
-
-In order to avoid timeouts, if the rollup has a with a large number of aggregations or properties the endpoint returns a `next_cursor` value that is used to determinate the aggregation value *so far* for the subset of relations that have been paginated through.
-
-Once `has_more` is `false`, then the final rollup value is returned. Refer to the [Pagination documentation](/reference/pagination) for more information on pagination in the Notion API.
-
-Computing the values of following aggregations are *not* supported. Instead the endpoint returns a list of `property_item` objects for the rollup:
-
-* `show_unique` (Show unique values)
-* `unique` (Count unique values)
-* `median`(Median)
-
-<Info>
-  **Connection capabilities**
-
-  This endpoint requires a connection to have read content capabilities. Attempting to call this API without read content capabilities will return an HTTP response with a 403 status code. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).
-</Info>
+Rollups return a list with calculation metadata at `property_item.rollup`. Read every page before using a calculated result. See [Rollup response rules and limits](/reference/property-item-object#rollup).
 
 ### Errors
 
-Returns a 404 HTTP response if the page or property doesn't exist, or if the connection doesn't have access to the page.
+The connection needs [read content capabilities](/reference/capabilities). Missing capabilities return `403`. A missing page or property, or missing access to the page, returns `404`.
 
-Returns a 400 or 429 HTTP response if the request exceeds the [request limits](/reference/request-limits).
-
-*Note: Each Public API endpoint can return several possible error codes. See the [Error codes section](/reference/status-codes#error-codes) of the Status codes documentation for more information.*
+Requests can also fail with a [validation or rate-limit error](/reference/status-codes#error-codes). See [Request limits](/reference/request-limits).

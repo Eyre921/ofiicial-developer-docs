@@ -10,18 +10,24 @@ path: docs/eleven-api/guides/how-to/voices/professional-voice-cloning
 
 This guide will show you how to create a Professional Voice Clone (PVC) using the PVC API. To create a PVC via the dashboard, refer to the [Professional Voice Clone](/docs/eleven-creative/voices/voice-cloning/professional-voice-cloning) product guide.
 
-Creating a PVC requires you to be on the [Creator plan or above](https://elevenlabs.io/pricing).
+> **Info**
+>
+> Creating a PVC requires you to be on the [Creator plan or above](https://elevenlabs.io/pricing).
 
 For an in-depth explanation of how IVC and PVC work under the hood and when to choose each, see [Voice cloning: how it works](/docs/eleven-api/concepts/voice-cloning).
 
-If you are unsure about what is permissible from a legal standpoint, please consult the [Terms of Service](https://elevenlabs.io/terms-of-use) and our [AI Safety information](https://elevenlabs.io/safety) for more information.
+> **Warning**
+>
+> If you are unsure about what is permissible from a legal standpoint, please consult the [Terms of Service](https://elevenlabs.io/terms-of-use) and our [AI Safety information](https://elevenlabs.io/safety) for more information.
 
 In terms of creating a PVC via the API, it contains considerably more steps than creating an Instant Voice Clone. This is due to the fact that PVCs are more complex and require more data and fine-tuning to create a high quality clone.
 
 ## Using the Professional Voice Clone API
 
-This guide assumes you have [set up your API key and SDK](/docs/eleven-api/quickstart). Complete
-the quickstart first if you haven't.
+> **Note**
+>
+> This guide assumes you have [set up your API key and SDK](/docs/eleven-api/quickstart). Complete
+> the quickstart first if you haven't.
 
 #### Create a PVC voice
 
@@ -178,7 +184,9 @@ const interval = setInterval(async () => {
 
 #### Retrieve speaker audio
 
-Since the previous step will take some time to complete, the following step should be run in a separate process after the previous step has completed.
+> **Warning**
+>
+> Since the previous step will take some time to complete, the following step should be run in a separate process after the previous step has completed.
 
 Once speaker separation is complete, you will have a list of speakers for each sample. In the case of samples with multiple speakers, you will have to pick the speaker you want to use for the PVC. To identify the speaker, you can retrieve the audio for each speaker and listen to them.
 

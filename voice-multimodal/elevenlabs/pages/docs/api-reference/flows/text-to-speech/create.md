@@ -27,59 +27,35 @@ Reference: https://elevenlabs.io/docs/api-reference/flows/text-to-speech/create
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a TextToSpeechGenerationRequest.
 
-- `object`
+- `TextToSpeechGenerationRequest`
   - `model_id`: `eleven_flash_v2_5` (ElevenFlashV2_5Request)
     - `text` (string, required) — The text to synthesize into speech.
     - `voice` (string, required) — The ID of the voice to speak with.
     - `language_code` (string, optional, nullable) — ISO 639-1 language code to enforce on the output. Omit to detect the language from the text.
     - `output_format` (enum, optional, default: mp3_44100_128) — The audio encoding of the output, as `codec_sampleRateHz_bitrateKbps`. `mp3_44100_192` requires the Creator tier or above.
       - Allowed values: `mp3_22050_32`, `mp3_24000_48`, `mp3_44100_32`, `mp3_44100_64`, `mp3_44100_96`, `mp3_44100_128`, `mp3_44100_192`
-    - `pronunciation_dictionary_locators` (list of object, optional) — Pronunciation dictionaries to apply to the text, in order of precedence. Up to 3.
-      - `pronunciation_dictionary_id` (string, required) — The ID of a pronunciation dictionary created via `POST /v1/pronunciation-dictionaries/add-from-file` or `POST /v1/pronunciation-dictionaries/add-from-rules`.
-      - `version_id` (string, optional, nullable) — The version of the dictionary to use. Omit to use the latest version.
-    - `voice_settings` (object, optional, nullable) — Overrides for the voice's saved settings, applied to this generation only.
-      - `stability` (double, optional, nullable) — How consistent the voice stays across generations. Lower values give more expressive, varied speech.
-      - `similarity_boost` (double, optional, nullable) — How closely the output adheres to the original voice.
-      - `speed` (double, optional, nullable) — The speed of the generated speech, where 1.0 is the voice's natural pace.
-    - `webhook` (object, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
-      - `type`: `all` (WebhookTargetAll)
-      - `type`: `ids` (WebhookTargetIds)
-        - `ids` (list of string, required) — The IDs of the workspace flows webhooks to deliver the result to. Each must be one of the workspace's configured flows webhooks.
+    - `pronunciation_dictionary_locators` (list of PronunciationDictionaryVersionLocator, optional) — Pronunciation dictionaries to apply to the text, in order of precedence. Up to 3.
+    - `voice_settings` (ElevenFlashV2_5VoiceSettings, optional, nullable) — Overrides for the voice's saved settings, applied to this generation only.
+    - `webhook` (WebhookTarget, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
   - `model_id`: `eleven_multilingual_v2` (ElevenMultilingualV2Request)
     - `text` (string, required) — The text to synthesize into speech.
     - `voice` (string, required) — The ID of the voice to speak with.
     - `output_format` (enum, optional, default: mp3_44100_128) — The audio encoding of the output, as `codec_sampleRateHz_bitrateKbps`. `mp3_44100_192` requires the Creator tier or above.
       - Allowed values: `mp3_22050_32`, `mp3_24000_48`, `mp3_44100_32`, `mp3_44100_64`, `mp3_44100_96`, `mp3_44100_128`, `mp3_44100_192`
-    - `pronunciation_dictionary_locators` (list of object, optional) — Pronunciation dictionaries to apply to the text, in order of precedence. Up to 3.
-      - `pronunciation_dictionary_id` (string, required) — The ID of a pronunciation dictionary created via `POST /v1/pronunciation-dictionaries/add-from-file` or `POST /v1/pronunciation-dictionaries/add-from-rules`.
-      - `version_id` (string, optional, nullable) — The version of the dictionary to use. Omit to use the latest version.
-    - `voice_settings` (object, optional, nullable) — Overrides for the voice's saved settings, applied to this generation only.
-      - `stability` (double, optional, nullable) — How consistent the voice stays across generations. Lower values give more expressive, varied speech.
-      - `similarity_boost` (double, optional, nullable) — How closely the output adheres to the original voice.
-      - `style` (double, optional, nullable) — How strongly the speaking style is exaggerated.
-      - `use_speaker_boost` (boolean, optional, nullable) — Whether to boost similarity to the original speaker, at some latency cost.
-      - `speed` (double, optional, nullable) — The speed of the generated speech, where 1.0 is the voice's natural pace.
-    - `webhook` (object, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
-      - `type`: `all` (WebhookTargetAll)
-      - `type`: `ids` (WebhookTargetIds)
-        - `ids` (list of string, required) — The IDs of the workspace flows webhooks to deliver the result to. Each must be one of the workspace's configured flows webhooks.
+    - `pronunciation_dictionary_locators` (list of PronunciationDictionaryVersionLocator, optional) — Pronunciation dictionaries to apply to the text, in order of precedence. Up to 3.
+    - `voice_settings` (TtsVoiceSettings, optional, nullable) — Overrides for the voice's saved settings, applied to this generation only.
+    - `webhook` (WebhookTarget, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
   - `model_id`: `eleven_v3` (ElevenV3Request)
     - `text` (string, required) — The text to synthesize into speech.
     - `voice` (string, required) — The ID of the voice to speak with.
     - `language_code` (string, optional, nullable) — ISO 639-1 language code to enforce on the output. Omit to detect the language from the text.
     - `output_format` (enum, optional, default: mp3_44100_128) — The audio encoding of the output, as `codec_sampleRateHz_bitrateKbps`. `mp3_44100_192` requires the Creator tier or above.
       - Allowed values: `mp3_22050_32`, `mp3_24000_48`, `mp3_44100_32`, `mp3_44100_64`, `mp3_44100_96`, `mp3_44100_128`, `mp3_44100_192`
-    - `pronunciation_dictionary_locators` (list of object, optional) — Pronunciation dictionaries to apply to the text, in order of precedence. Up to 3.
-      - `pronunciation_dictionary_id` (string, required) — The ID of a pronunciation dictionary created via `POST /v1/pronunciation-dictionaries/add-from-file` or `POST /v1/pronunciation-dictionaries/add-from-rules`.
-      - `version_id` (string, optional, nullable) — The version of the dictionary to use. Omit to use the latest version.
-    - `voice_settings` (object, optional, nullable) — Overrides for the voice's saved settings, applied to this generation only.
-      - `stability` (double, optional, nullable) — How consistent the voice stays across generations. Lower values give more expressive, varied speech.
-    - `webhook` (object, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
-      - `type`: `all` (WebhookTargetAll)
-      - `type`: `ids` (WebhookTargetIds)
-        - `ids` (list of string, required) — The IDs of the workspace flows webhooks to deliver the result to. Each must be one of the workspace's configured flows webhooks.
+    - `pronunciation_dictionary_locators` (list of PronunciationDictionaryVersionLocator, optional) — Pronunciation dictionaries to apply to the text, in order of precedence. Up to 3.
+    - `voice_settings` (ElevenV3VoiceSettings, optional, nullable) — Overrides for the voice's saved settings, applied to this generation only.
+    - `webhook` (WebhookTarget, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
 
 ## Response
 
@@ -96,10 +72,54 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### PronunciationDictionaryVersionLocator
+
+A pronunciation dictionary to apply during speech synthesis.
+
+- `pronunciation_dictionary_id` (string, required) — The ID of a pronunciation dictionary created via `POST /v1/pronunciation-dictionaries/add-from-file` or `POST /v1/pronunciation-dictionaries/add-from-rules`.
+- `version_id` (string, optional, nullable) — The version of the dictionary to use. Omit to use the latest version.
+
+### ElevenFlashV2_5VoiceSettings
+
+Overrides for the voice's saved settings, applied to one generation.
+
+- `stability` (double, optional, nullable) — How consistent the voice stays across generations. Lower values give more expressive, varied speech.
+- `similarity_boost` (double, optional, nullable) — How closely the output adheres to the original voice.
+- `speed` (double, optional, nullable) — The speed of the generated speech, where 1.0 is the voice's natural pace.
+
+### WebhookTarget
+
+- `type`: `all` (WebhookTargetAll)
+- `type`: `ids` (WebhookTargetIds)
+  - `ids` (list of string, required) — The IDs of the workspace flows webhooks to deliver the result to. Each must be one of the workspace's configured flows webhooks.
+
+### TtsVoiceSettings
+
+Overrides for the voice's saved settings, applied to one generation.
+
+- `stability` (double, optional, nullable) — How consistent the voice stays across generations. Lower values give more expressive, varied speech.
+- `similarity_boost` (double, optional, nullable) — How closely the output adheres to the original voice.
+- `style` (double, optional, nullable) — How strongly the speaking style is exaggerated.
+- `use_speaker_boost` (boolean, optional, nullable) — Whether to boost similarity to the original speaker, at some latency cost.
+- `speed` (double, optional, nullable) — The speed of the generated speech, where 1.0 is the voice's natural pace.
+
+### ElevenV3VoiceSettings
+
+Overrides for the voice's saved settings, applied to one generation.
+
+- `stability` (double, optional, nullable) — How consistent the voice stays across generations. Lower values give more expressive, varied speech.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

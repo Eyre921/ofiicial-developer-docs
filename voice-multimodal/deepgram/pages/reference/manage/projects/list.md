@@ -26,9 +26,7 @@ Reference: https://developers.deepgram.com/reference/manage/projects/list
 
 A list of projects
 
-- `projects` (list of object, optional)
-  - `project_id` (string, optional) — The unique identifier of the project
-  - `name` (string, optional) — The name of the project
+- `projects` (list of ListProjectsV1ResponseProjectsItems, optional)
 
 ## Errors
 
@@ -36,16 +34,27 @@ A list of projects
 
 Invalid Request
 
-- `string or object or object`
-  - ErrorResponseLegacyError
-    - `err_code` (string, optional) — The error code
-    - `err_msg` (string, optional) — The error message
-    - `request_id` (string, optional) — The request ID
-  - ErrorResponseModernError
-    - `category` (string, optional) — The category of the error
-    - `message` (string, optional) — A message about the error
-    - `details` (string, optional) — A description of the error
-    - `request_id` (string, optional) — The unique identifier of the request
+- `ErrorResponse`
+
+## Types
+
+### ListProjectsV1ResponseProjectsItems
+
+- `project_id` (string, optional) — The unique identifier of the project
+- `name` (string, optional) — The name of the project
+
+### ErrorResponseLegacyError
+
+- `err_code` (string, optional) — The error code
+- `err_msg` (string, optional) — The error message
+- `request_id` (string, optional) — The request ID
+
+### ErrorResponseModernError
+
+- `category` (string, optional) — The category of the error
+- `message` (string, optional) — A message about the error
+- `details` (string, optional) — A description of the error
+- `request_id` (string, optional) — The unique identifier of the request
 
 ## Examples
 

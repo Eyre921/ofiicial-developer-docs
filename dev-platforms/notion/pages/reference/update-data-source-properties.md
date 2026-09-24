@@ -4,124 +4,168 @@ source: https://developers.notion.com/reference/update-data-source-properties
 path: reference/update-data-source-properties
 ---
 
-The API represents columns of a data source in the Notion app UI as data source **properties**.
+Add, rename, remove, or change properties in a data source schema.
 
-To use the API to update a data source's properties, send a [PATCH request](/reference/update-a-data-source) with a `properties` body param.
+Use [Update a data source](/reference/update-a-data-source) to change its schema. This changes the properties for all pages in that data source. To change one page’s values, use [Update page](/reference/patch-page).
+
+First, [retrieve the data source](/reference/retrieve-a-data-source) to get its current property IDs and settings. Choose an operation below and send its JSON body to `PATCH /v1/data_sources/{data_source_id}`. Your connection needs access to the data source and [update content capabilities](/reference/capabilities).
+
+## Add a property
+
+Add a new key to `properties` and provide the type’s settings. This example adds a number and a date property. Existing properties that you omit stay unchanged.
+
+```json Request body theme={null}
+{
+  "properties": {
+    "Estimate": { "number": { "format": "number" } },
+    "Due date": { "date": {} }
+  }
+}
+```
+
+See [Property schemas](/reference/property-object) for every type and its settings.
 
 ## Remove a property
 
-To remove a data source property, set the property object to null.
+Set the property entry to `null`. This removes the column for all pages in the data source. To clear a value on one page instead, use [Update page](/reference/page-property-values#writing-and-clearing-values).
 
 <CodeGroup>
-  ```json removing properties by ID theme={null}
-  "properties": {
-    "J@cT": null,
+  ```json By ID theme={null}
+  {
+    "properties": {
+      "oldP": null
+    }
   }
   ```
-</CodeGroup>
 
-<CodeGroup>
-  ```json removing properties by name theme={null}
-  "properties": {
-    "propertyToDelete": null
+  ```json By name theme={null}
+  {
+    "properties": {
+      "Old estimate": null
+    }
   }
   ```
 </CodeGroup>
 
 ## Rename a property
 
-To change the name of a data source property, indicate the new name in the `name` property object value.
+Set `name` on the existing entry. Its ID stays the same. Prefer the ID if another user might rename the property while your connection is running.
 
 <CodeGroup>
-  ```json renaming properties by ID theme={null}
-  "properties": {
-  	"J@cT": {
-  		"name": "New Property Name"
+  ```json By ID theme={null}
+  {
+    "properties": {
+      "estM": { "name": "Hours" }
+    }
+  }
+  ```
+
+  ```json By name theme={null}
+  {
+    "properties": {
+      "Estimate": { "name": "Hours" }
     }
   }
   ```
 </CodeGroup>
 
-<CodeGroup>
-  ```json renaming properties by name theme={null}
-  "properties": {
-    "Old Property Name": {
-      "name": "New Property Name
-    }
-  }
-  ```
-</CodeGroup>
-
-| Property | Type     | Description                                       |
-| :------- | :------- | :------------------------------------------------ |
-| `name`   | `string` | The name of the property as it appears in Notion. |
+To update a property’s `description`, include it beside the type’s settings. Repeat the current description when changing settings if you want to keep it. A rename that sends only `name` preserves the description.
 
 ## Update property type
 
-To update the property type, the property schema object should contain the key of the type. This type contains behavior of this property. Possible values of this key are `"rich_text"`, `"number"`, `"select"`, `"multi_select"`, `"status"`, `"date"`, `"people"`, `"files"`, `"checkbox"`, `"url"`, `"email"`, `"phone_number"`, `"formula"`, `"relation"`, `"rollup"`, `"created_time"`, `"created_by"`, `"last_edited_time"`, `"last_edited_by"`. Within this property, the configuration is a [property schema object](/reference/property-schema-object).
+Supply the new type’s settings under the existing name or ID.
 
-<Danger>
-  **Limitations**
+```json Change Estimate to a number theme={null}
+{
+  "properties": {
+    "Estimate": { "number": { "format": "number" } }
+  }
+}
+```
 
-  Every data source has exactly one `title` property. Its type cannot be changed to something else, and no other property can be changed to `title`.
-</Danger>
+<Warning>
+  Changing a type can make existing values unreadable in the new type. Check the change on a test data source first. The Name property (`title`) cannot be removed or converted. Other properties cannot become `title`. Place properties cannot be converted to or from another type.
+</Warning>
 
 ### Select configuration updates
 
-To update an existing select configuration, the property schema object optionally contains the following configuration within the `select` property:
+Set `select.options` to the complete list of options you want to keep. Omitted options are removed. New names add options. Omitting `options` keeps the current list.
 
-| Property  | Type                                                                                                                                                | Description                                                                                                                                                                | Example value |
-| :-------- | :-------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
-| `options` | optional array of [existing select options](#existing-select-options) and [select option objects](/reference/property-schema-object#select-options) | Settings for select properties. If an existing option is omitted, it will be removed from the data source property. New options will be added to the data source property. |               |
+<Warning>
+  When updating `select` or `multi_select` settings, include the current property-level `description` to keep it. Omitting it clears it. This is separate from each option’s description. The examples below assume the property descriptions shown; copy yours from the retrieved schema.
+</Warning>
+
+```json Keep High and add Medium theme={null}
+{
+  "properties": {
+    "Priority": {
+      "description": "How soon this work needs attention.",
+      "select": {
+        "options": [
+          { "id": "ff8e9269-9579-47f7-8f6e-83a84716863c" },
+          { "name": "Medium", "color": "yellow", "description": "Schedule after high-priority work." }
+        ]
+      }
+    }
+  }
+}
+```
 
 #### Existing select options
 
-Note that the name and color of an existing option cannot be updated.
-
-| Property | Type              | Description         | Example value                            |
-| :------- | :---------------- | :------------------ | :--------------------------------------- |
-| `name`   | optional `string` | Name of the option. | `"Fruit"`                                |
-| `id`     | optional `string` | ID of the option.   | `"ff8e9269-9579-47f7-8f6e-83a84716863c"` |
+Use an existing option’s `id` or `name` to retain it. You can update its `description`. The API does not rename existing options or change their colors; make those changes in Notion. New options accept `name`, optional `color`, and optional `description`. See [Option fields](/reference/property-object#select-options).
 
 ### Multi-select configuration updates
 
-To update an existing select configuration, the property schema object optionally contains the following configuration within the `multi_select` property:
+Set `multi_select.options` using the same rules as select. Include every option to retain. This changes the available tags, not the tags selected on one page.
 
-| Property  | Type                                                                                                                                                                  | Description                                                                                                                                                                      | Example value |
-| :-------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
-| `options` | optional array of [existing select options](#existing-multi-select-options) and [multi-select option objects](/reference/property-schema-object#multi-select-options) | Settings for multi select properties. If an existing option is omitted, it will be removed from the data source property. New options will be added to the data source property. |               |
+```json Keep High and add Launch theme={null}
+{
+  "properties": {
+    "Tags": {
+      "description": "Labels used to organize work.",
+      "multi_select": {
+        "options": [
+          { "id": "ff8e9269-9579-47f7-8f6e-83a84716863c" },
+          { "name": "Launch", "color": "blue" }
+        ]
+      }
+    }
+  }
+}
+```
 
 #### Existing multi-select options
 
-Note that the name and color of an existing option cannot be updated.
-
-| Property | Type              | Description                                 | Example value                            |
-| :------- | :---------------- | :------------------------------------------ | :--------------------------------------- |
-| `name`   | `string`          | Name of the option as it appears in Notion. | `"Fruit"`                                |
-| `id`     | optional `string` | ID of the option.                           | `"ff8e9269-9579-47f7-8f6e-83a84716863c"` |
+Existing options follow the [same ID, name, color, and description rules](#existing-select-options).
 
 ### Status configuration updates
 
-To update an existing status configuration, the property schema object optionally contains the following configuration within the `status` property:
+Set `status.options` to the complete list to retain. Use `group` to place an option in `To-do`, `In progress`, or `Complete`.
 
-| Property  | Type                                                                                                                                                | Description                                                                                                                                                                         | Example value |
-| :-------- | :-------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
-| `options` | optional array of [existing status options](#existing-status-options) and [status option objects](/reference/property-schema-object#status-options) | Settings for status properties. If an existing option is omitted, it will be removed from the data source property. New options will be added to the requested group when provided. |               |
+```json Keep In progress and add Shipped theme={null}
+{
+  "properties": {
+    "Status": {
+      "status": {
+        "options": [
+          { "id": "330aeafb-598c-4e1c-bc13-1148aa5963d3", "group": "In progress" },
+          { "name": "Shipped", "color": "green", "group": "Complete" }
+        ]
+      }
+    }
+  }
+}
+```
 
 #### Existing status options
 
-Note that the name and color of an existing option cannot be updated. Use `group` to assign an existing or new option to one of the existing status groups.
+Existing options follow the [same ID, name, color, and description rules](#existing-select-options). When you omit `group`, an existing option keeps its group. A new option uses `To-do` if that group exists, or the first existing group otherwise.
 
-| Property | Type                     | Description                                                                                                                                                                                                                            | Example value                            |
-| :------- | :----------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------- |
-| `name`   | optional `string`        | Name of the option.                                                                                                                                                                                                                    | `"In progress"`                          |
-| `id`     | optional `string`        | ID of the option.                                                                                                                                                                                                                      | `"ff8e9269-9579-47f7-8f6e-83a84716863c"` |
-| `group`  | optional `string` (enum) | Status group to assign the option to. Possible values are `To-do`, `In progress`, and `Complete`. Existing options keep their current group when omitted. New options use `To-do` when present, or the first existing group otherwise. | `"In progress"`                          |
-
-<Note>
-  When updating status options, group membership is kept consistent: removed options are automatically pruned from groups, and omitted `group` values preserve backwards-compatible placement. Groups themselves cannot be reconfigured via the API; use the Notion UI instead.
-</Note>
+Removed options are also removed from their groups. To rename, reorder, or change the groups themselves, use Notion. To select an option on a page, [write the page’s status value](/reference/page-property-values#status).
 
 ## Limitations
 
-Reading computed [formula](/reference/page-property-values#formula) and [rollup](/reference/page-property-values#rollup) property values has its own limitations, such as values that are too complex to compute.
+Keep schema changes within the [schema size limit](/reference/update-a-data-source#recommended-data-source-schema-size-limit). Changes to synced data sources are restricted. Share related databases with the connection before configuring relations or rollups.
+
+After a change, retrieve the data source again and check the returned names, IDs, and settings. Read a sample page if you changed a property’s type.

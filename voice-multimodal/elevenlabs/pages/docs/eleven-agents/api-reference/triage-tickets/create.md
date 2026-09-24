@@ -30,10 +30,8 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets
 This endpoint expects an object.
 
 - `conversation_id` (string, required) — Conversation this ticket is about.
-- `qa_comment` (string, optional) — The QA finding covering the whole conversation.
-- `turn_comments` (list of object, optional) — Optional turn-level comments on what went wrong.
-  - `turn_index` (integer, required) — Zero-based index of the transcript turn this comment refers to.
-  - `comment` (string, required) — What went wrong at this turn.
+- `qa_comment` (string, optional) — The issue this ticket is about, covering the whole conversation rather than a single turn.
+- `turn_comments` (list of TurnCommentRequestModel, optional) — Optional turn-level comments on what went wrong.
 
 ## Response
 
@@ -48,15 +46,8 @@ Successful Response
 - `needs_clustering` (boolean, required)
 - `labels` (list of string, required)
 - `conversation_ids` (list of string, required)
-- `ticket_comments` (list of object, required)
-  - `comment` (string, required)
-  - `created_at_unix_secs` (integer, required)
-  - `owner_user_id` (string, optional)
-- `turn_comments` (list of object, required)
-  - `turn_index` (integer, required)
-  - `comment` (string, required)
-  - `created_at_unix_secs` (integer, required)
-  - `owner_user_id` (string, optional)
+- `ticket_comments` (list of TicketCommentResponseModel, required)
+- `turn_comments` (list of TurnCommentResponseModel, required)
 - `status` (enum, required)
   - Allowed values: `open`, `in_progress`, `resolved`, `merged`
 - `source` (enum, required)
@@ -76,10 +67,35 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### TurnCommentRequestModel
+
+- `turn_index` (integer, required) — Zero-based index of the transcript turn this comment refers to.
+- `comment` (string, required) — What went wrong at this turn.
+
+### TicketCommentResponseModel
+
+- `comment` (string, required)
+- `created_at_unix_secs` (integer, required)
+- `owner_user_id` (string, optional)
+
+### TurnCommentResponseModel
+
+- `turn_index` (integer, required)
+- `comment` (string, required)
+- `created_at_unix_secs` (integer, required)
+- `owner_user_id` (string, optional)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItem, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItem
 
 ## Examples
 

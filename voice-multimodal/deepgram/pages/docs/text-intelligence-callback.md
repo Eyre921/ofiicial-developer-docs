@@ -49,7 +49,9 @@ Authentication ensures the security and integrity of callback requests. There ar
 
 You may embed username-password authentication credentials in the callback URL in the format `https://username:[email protected]`. However, it's important to note that only ports 80, 443, 8080, and 8443 are permitted for callbacks.
 
-Only ports 80, 443, 8080, and 8443 are permitted for callbacks.
+> **Warning**
+>
+> Only ports 80, 443, 8080, and 8443 are permitted for callbacks.
 
 ### Using the `dg-token` Request Header
 

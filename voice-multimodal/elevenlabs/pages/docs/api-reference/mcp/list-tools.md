@@ -39,28 +39,8 @@ Reference: https://elevenlabs.io/docs/api-reference/mcp/list-tools
 Successful Response
 
 - `success` (boolean, required) — Indicates if the operation was successful.
-- `tools` (list of object, required) — A list of tools available on the MCP server.
-  - `name` (string, required)
-  - `inputSchema` (map from string to any, required)
-  - `title` (string, optional, nullable)
-  - `description` (string, optional, nullable)
-  - `execution` (object, optional, nullable) — Execution-related properties for a tool (2025-11-25 only).
-    - `taskSupport` (enum, optional, nullable)
-      - Allowed values: `forbidden`, `optional`, `required`
-  - `outputSchema` (map from string to any, optional, nullable)
-  - `icons` (list of object, optional, nullable)
-    - `src` (string, required)
-    - `mimeType` (string, optional, nullable)
-    - `sizes` (list of string, optional, nullable)
-    - `theme` (enum, optional, nullable)
-      - Allowed values: `light`, `dark`
-  - `annotations` (object, optional, nullable) — Additional properties describing a Tool to clients. NOTE: all properties in ToolAnnotations are **hints**. They are not guaranteed to provide a faithful description of tool behavior (including descriptive properties like `title`). Clients should never make tool use decisions based on ToolAnnotations received from untrusted servers.
-    - `title` (string, optional, nullable)
-    - `readOnlyHint` (boolean, optional, nullable)
-    - `destructiveHint` (boolean, optional, nullable)
-    - `idempotentHint` (boolean, optional, nullable)
-    - `openWorldHint` (boolean, optional, nullable)
-  - `_meta` (map from string to any, optional, nullable)
+- `tools` (list of Tool, required) — A list of tools available on the MCP server.
+- `tool_approval_statuses` (list of MCPToolApprovalStatus, optional) — Derived approval states for currently discovered tools. Populated only for persisted MCP servers using per-tool approval; otherwise empty.
 - `error_message` (string, optional, nullable) — Error message if the operation was not successful.
 
 ## Errors
@@ -69,10 +49,76 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### Tool
+
+Definition for a tool the client can call.
+
+- `name` (string, required)
+- `inputSchema` (map from string to any, required)
+- `title` (string, optional, nullable)
+- `description` (string, optional, nullable)
+- `execution` (ToolExecution, optional, nullable) — Execution-related properties for a tool (2025-11-25 only).
+- `outputSchema` (map from string to any, optional, nullable)
+- `icons` (list of Icon, optional, nullable)
+- `annotations` (ToolAnnotations, optional, nullable) — Additional properties describing a Tool to clients. NOTE: all properties in ToolAnnotations are **hints**. They are not guaranteed to provide a faithful description of tool behavior (including descriptive properties like `title`). Clients should never make tool use decisions based on ToolAnnotations received from untrusted servers.
+- `_meta` (map from string to any, optional, nullable)
+
+### MCPToolApprovalStatus
+
+Derived approval state for a currently discovered MCP tool.
+
+- `tool_id` (string, required) — Canonical MCP tool identifier in the form mcp:\<server\_id>:\<tool\_name>
+- `state` (enum, required) — Whether a stored approval exists and still matches the live tool definition
+  - Allowed values: `up_to_date`, `needs_review`, `not_approved`
+- `approval_policy` (enum, optional, nullable, default: requires_approval) — Stored execution policy. Set when the tool has an approval.
+  - Allowed values: `auto_approved`, `requires_approval`
+- `approved_definition` (MCPApprovedToolDefinition, optional, nullable) — Previously approved definition, included when the tool needs review and a snapshot exists.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ToolExecution
+
+Execution-related properties for a tool (2025-11-25 only).
+
+- `taskSupport` (enum, optional, nullable)
+  - Allowed values: `forbidden`, `optional`, `required`
+
+### Icon
+
+An optionally-sized icon for display in a user interface (2025-11-25+).
+
+- `src` (string, required)
+- `mimeType` (string, optional, nullable)
+- `sizes` (list of string, optional, nullable)
+- `theme` (enum, optional, nullable)
+  - Allowed values: `light`, `dark`
+
+### ToolAnnotations
+
+Additional properties describing a Tool to clients. NOTE: all properties in ToolAnnotations are **hints**. They are not guaranteed to provide a faithful description of tool behavior (including descriptive properties like `title`). Clients should never make tool use decisions based on ToolAnnotations received from untrusted servers.
+
+- `title` (string, optional, nullable)
+- `readOnlyHint` (boolean, optional, nullable)
+- `destructiveHint` (boolean, optional, nullable)
+- `idempotentHint` (boolean, optional, nullable)
+- `openWorldHint` (boolean, optional, nullable)
+
+### MCPApprovedToolDefinition
+
+Snapshot of the MCP tool definition that was approved.
+
+- `description` (string, optional, default: ) — The MCP server-provided tool description at approval time
+- `input_schema` (map from string to any, optional) — The MCP server-provided JSON input schema at approval time
+
+### ValidationErrorLocItems
 
 ## Examples
 
@@ -111,7 +157,8 @@ Validation Error
       },
       "description": "Description of tool2"
     }
-  ]
+  ],
+  "tool_approval_statuses": []
 }
 ```
 

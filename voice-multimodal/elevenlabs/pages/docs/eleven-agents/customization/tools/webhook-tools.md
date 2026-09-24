@@ -19,7 +19,9 @@ Here are a few examples where tools can be useful:
 * **Fetching data**: enable an assistant to retrieve real-time data from any REST-enabled database or 3rd party integration before responding to the user.
 * **Taking action**: allow an assistant to trigger authenticated actions based on the conversation, like scheduling meetings or initiating order returns.
 
-To interact with Application UIs or trigger client-side events use [client tools](/docs/eleven-agents/customization/tools/client-tools) instead.
+> **Info**
+>
+> To interact with Application UIs or trigger client-side events use [client tools](/docs/eleven-agents/customization/tools/client-tools) instead.
 
 ## Tool configuration
 
@@ -38,22 +40,24 @@ All tool configurations and parameter descriptions help the assistant determine 
 
 Define a high-level `Name` and `Description` to describe the tool's purpose. This helps the LLM understand the tool and know when to call it.
 
-If the API requires path parameters, include variables in the URL path by wrapping them in curly
-braces `{}`, for example: `/api/resource/{id}` where `id` is a path parameter.
+> **Info**
+>
+> If the API requires path parameters, include variables in the URL path by wrapping them in curly
+> braces `{}`, for example: `/api/resource/{id}` where `id` is a path parameter.
 
-![Configuration](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/fb6e6619e4e7a5f19c2a86f9c2a489f5cb33cfb0883c14a06f0eec3cb35d71d5/assets/images/conversational-ai/tool-configuration.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T082242Z&X-Amz-Expires=604800&X-Amz-Signature=5154d2f4d06e80427c1f1f7581472004868dbaadd2e599dce1decff0246dd95e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Configuration](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/fb6e6619e4e7a5f19c2a86f9c2a489f5cb33cfb0883c14a06f0eec3cb35d71d5/assets/images/conversational-ai/tool-configuration.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T111741Z&X-Amz-Expires=604800&X-Amz-Signature=1132cff469ca2274092effe02e8db21465955e254a4bf233ebaa21617e04b523&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Authentication
 
 Configure authentication by adding custom headers or using out-of-the-box authentication methods through auth connections.
 
-![Tool authentication](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5ffae070945a86b74975cd9b56679c2bb76f0ce70d05fe7b10e8e5dff6ddd630/assets/images/conversational-ai/tool-secrets.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T082242Z&X-Amz-Expires=604800&X-Amz-Signature=fd74515033f0559104601ac0159e1b52ff3c5a512f7dc082e9ce758009b86402&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Tool authentication](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5ffae070945a86b74975cd9b56679c2bb76f0ce70d05fe7b10e8e5dff6ddd630/assets/images/conversational-ai/tool-secrets.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T111741Z&X-Amz-Expires=604800&X-Amz-Signature=402edfb364553c29050a32f8a2c1b3efa3f4ed8100a7b1cda35e334c74273e5a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Headers
 
 Specify any headers that need to be included in the request.
 
-![Headers](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9c8c3f2d42f84a6e40922a4c777199e79646b174fa51b9e4d5b21695d7da3f66/assets/images/conversational-ai/tool-headers.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T082242Z&X-Amz-Expires=604800&X-Amz-Signature=fd0f543964cc6d589bd5bfe8a19ed9a791e45b713a05ed44884516d5cdfddbb0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Headers](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9c8c3f2d42f84a6e40922a4c777199e79646b174fa51b9e4d5b21695d7da3f66/assets/images/conversational-ai/tool-headers.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T111741Z&X-Amz-Expires=604800&X-Amz-Signature=3f642b25d0f6a029e19879b39f3f7402d275e1474baf931fbba49299fb5cbf0f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Path parameters
 
@@ -61,13 +65,13 @@ Include variables in the URL path by wrapping them in curly braces `{}`:
 
 * **Example**: `/api/resource/{id}` where `id` is a path parameter.
 
-![Path parameters](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/12dde95654a12f8fd5894eefe2bdbebb8b819072d3589ed32ddd578997f53c1d/assets/images/conversational-ai/tool-path-parameters.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T082242Z&X-Amz-Expires=604800&X-Amz-Signature=a7c4796d8a0e8b192d6e655eaa25d59460046da82261f94cdc3ad785aacb9e56&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Path parameters](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/12dde95654a12f8fd5894eefe2bdbebb8b819072d3589ed32ddd578997f53c1d/assets/images/conversational-ai/tool-path-parameters.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T111741Z&X-Amz-Expires=604800&X-Amz-Signature=de968afe5c18ab218638d95dc437f90a16c8a49c6d9f51c763be829b5790f0e0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Body parameters
 
 Specify any body parameters to be included in the request.
 
-![Body parameters](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/17627460d24323cc40f461196625d34a5825dbe85d684618be0bc46b11ff9205/assets/images/conversational-ai/tool-body-parameters.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T082242Z&X-Amz-Expires=604800&X-Amz-Signature=8ba9324ea2a51a1e6517efd14908fbbd50f0c45a5b8662cb0b2aa85f3de8b603&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Body parameters](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/17627460d24323cc40f461196625d34a5825dbe85d684618be0bc46b11ff9205/assets/images/conversational-ai/tool-body-parameters.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T111741Z&X-Amz-Expires=604800&X-Amz-Signature=2af4e41f0b61995856e171583c6b3da933529e2c607df56b041194b9c1cdc0f2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Content Type
 
@@ -83,19 +87,21 @@ URL-encoded format is useful when integrating with APIs that require form data s
 * Payment processing APIs
 * Third-party integrations with specific content-type requirements
 
-The content type setting only applies to POST, PUT, and PATCH requests with body parameters.
+> **Info**
+>
+> The content type setting only applies to POST, PUT, and PATCH requests with body parameters.
 
 #### Query parameters
 
 Specify any query parameters to be included in the request.
 
-![Query parameters](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4127f87fe066cdaa71df0e6f75caa24ec8174e7d156c74b3c62ea9df98b9712e/assets/images/conversational-ai/tool-query-parameters.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T082242Z&X-Amz-Expires=604800&X-Amz-Signature=2fce004649283f58bc8be6b6d189fc3e0247b1fffbca22c5271ff97af7e57a1a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Query parameters](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4127f87fe066cdaa71df0e6f75caa24ec8174e7d156c74b3c62ea9df98b9712e/assets/images/conversational-ai/tool-query-parameters.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T111741Z&X-Amz-Expires=604800&X-Amz-Signature=97d2365771b89a0ddbe9d9dad5b6664830b3383deb3efc821afc1360770f58b7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Dynamic variable assignment
 
 Specify dynamic variables to update from the tool response for later use in the conversation.
 
-![Query parameters](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/95ff0cae8613eafa8bc4312e7cafa39ac0eab34d2fd2b21f0894a30775366110/assets/images/conversational-ai/dv-assignment.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T082242Z&X-Amz-Expires=604800&X-Amz-Signature=d96d044b6a73e4168bb9c06bdeea65198901aaec7c1eed8587d72a04463b4c2e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Query parameters](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/95ff0cae8613eafa8bc4312e7cafa39ac0eab34d2fd2b21f0894a30775366110/assets/images/conversational-ai/dv-assignment.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T111741Z&X-Amz-Expires=604800&X-Amz-Signature=f6025be4a4aa274c6202a688ed14bfe287a2d75f3226142912a2ef50bacb95bf&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Guide
 
@@ -238,7 +244,9 @@ await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd9
 });
 ```
 
-An API key is not required for this tool. If one is required, this should be passed in the headers and stored as a secret.
+> **Warning**
+>
+> An API key is not required for this tool. If one is required, this should be passed in the headers and stored as a secret.
 
 #### Orchestration
 
@@ -265,19 +273,21 @@ concise, accurate, and helpful.
 First message: "Hey, how can I help you today?"
 ```
 
-Test your assistant by asking about the weather in different locations. The assistant should
-handle specific locations ("What's the weather in Tokyo?") and ask for clarification after general queries ("How's
-the weather looking today?").
+> **Success**
+>
+> Test your assistant by asking about the weather in different locations. The assistant should
+> handle specific locations ("What's the weather in Tokyo?") and ask for clarification after general queries ("How's
+> the weather looking today?").
 
 ## Supported Authentication Methods
 
 ElevenLabs Agents supports multiple authentication methods to securely connect your tools with external APIs. Authentication methods are configured in your agent settings and then connected to individual tools as needed.
 
-![Workspace Auth Connection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/131f7e017f01eaba444cddc672efdb77415db1a4c3a39f05b92a1678c5cd68f1/assets/images/conversational-ai/workspace-auth-connection.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T082242Z&X-Amz-Expires=604800&X-Amz-Signature=b6a56df9cc7f6cfabbe57e68746ae9b311e62dd8b589609aa5767781380d10b7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Workspace Auth Connection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/131f7e017f01eaba444cddc672efdb77415db1a4c3a39f05b92a1678c5cd68f1/assets/images/conversational-ai/workspace-auth-connection.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T111741Z&X-Amz-Expires=604800&X-Amz-Signature=913100f3814f1483f0b3c40b1a13682aa71550323fa181db6b07a4128c7c682c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Once configured, you can connect these authentication methods to your tools and manage custom headers in the tool configuration:
 
-![Tool Auth Connection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c018c5bf11266512a6d6157e33274b1a12f8c20768e5ab18da0f20f933f8aea9/assets/images/conversational-ai/tool-auth-config.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T082242Z&X-Amz-Expires=604800&X-Amz-Signature=a56aadfca840803ed335be978d7401b537999c6435f15d6937fab09a8ac401e0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Tool Auth Connection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c018c5bf11266512a6d6157e33274b1a12f8c20768e5ab18da0f20f933f8aea9/assets/images/conversational-ai/tool-auth-config.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T111741Z&X-Amz-Expires=604800&X-Amz-Signature=ff9fc3e7228db4178b72e24ff22e903aa84bd681038a1bf6263704421d7402d8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### OAuth2 Client Credentials
 
@@ -327,8 +337,10 @@ Before scheduling a meeting with `schedule_meeting`, check the user's calendar f
 
 #### LLM selection
 
-When using tools, we recommend picking high intelligence models like GPT 5.2, Gemini-2.5-Flash, or
-Claude Sonnet 4.5 and avoiding Gemini-2.0-Flash.
+> **Warning**
+>
+> When using tools, we recommend picking high intelligence models like GPT 5.2, Gemini-2.5-Flash, or
+> Claude Sonnet 4.5 and avoiding Gemini-2.0-Flash.
 
 It's important to note that the choice of LLM matters to the success of function calls. Some LLMs can struggle with extracting the relevant parameters from the conversation.
 

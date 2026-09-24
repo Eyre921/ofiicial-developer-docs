@@ -52,14 +52,16 @@ If you want the agent to respond automatically to customer activity on tickets, 
 
 When you activate the trigger, ElevenLabs creates a Freshdesk automation rule in your account that POSTs to our webhook on ticket creation and customer reply. Deactivating removes the rule. No manual Freshdesk admin steps are required.
 
-**Automation rule ordering for new tickets.** Freshdesk runs **Ticket Creation** automation rules
-top to bottom and executes only the **first** rule whose conditions match a new ticket — it then
-stops. If you already have one or more Ticket Creation rules that match the same tickets and sit
-**above** the ElevenLabs rule, our rule will never fire and the agent won't respond to new
-tickets. If that happens, open **Admin → Workflows → Automations → Ticket Creation** and move the
-`ElevenLabs agent …` rule above any conflicting rule. (Ticket-reply triggers use the **Ticket
-Updates** category, where all matching rules run, so this only affects responses to brand-new
-tickets.)
+> **Warning**
+>
+> **Automation rule ordering for new tickets.** Freshdesk runs **Ticket Creation** automation rules
+> top to bottom and executes only the **first** rule whose conditions match a new ticket — it then
+> stops. If you already have one or more Ticket Creation rules that match the same tickets and sit
+> **above** the ElevenLabs rule, our rule will never fire and the agent won't respond to new
+> tickets. If that happens, open **Admin → Workflows → Automations → Ticket Creation** and move the
+> `ElevenLabs agent …` rule above any conflicting rule. (Ticket-reply triggers use the **Ticket
+> Updates** category, where all matching rules run, so this only affects responses to brand-new
+> tickets.)
 
 ### Shadow mode
 
@@ -67,20 +69,26 @@ Enable shadow mode on a Freshdesk trigger to let the agent draft responses witho
 
 Freshdesk does not expose a ticket-reply draft API. Private notes are the supported equivalent: staff copy the suggested reply into the ticket's reply editor, edit if needed, and send.
 
-Shadow mode only affects how the agent posts its responses. If the agent uses tools that modify
-the ticket (for example changing status, adding tags, or assigning the ticket), those changes
-still apply. To prevent unintended modifications, use a separate branch of the agent with
-modifying tool calls removed.
+> **Warning**
+>
+> Shadow mode only affects how the agent posts its responses. If the agent uses tools that modify
+> the ticket (for example changing status, adding tags, or assigning the ticket), those changes
+> still apply. To prevent unintended modifications, use a separate branch of the agent with
+> modifying tool calls removed.
 
 Shadow mode is useful for evaluating agent quality before going live. Review the private notes alongside the actual support responses to compare accuracy and tone, then turn shadow mode off once you are confident in the output.
 
 ### CLI
 
-CLI documentation for this integration is coming soon.
+> **Note**
+>
+> CLI documentation for this integration is coming soon.
 
 ### SDK
 
-SDK documentation for this integration is coming soon.
+> **Note**
+>
+> SDK documentation for this integration is coming soon.
 
 ## Useful links
 

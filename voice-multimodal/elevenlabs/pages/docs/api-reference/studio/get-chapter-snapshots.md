@@ -35,12 +35,7 @@ Reference: https://elevenlabs.io/docs/api-reference/studio/get-chapter-snapshots
 
 Successful Response
 
-- `snapshots` (list of object, required) — List of chapter snapshots.
-  - `chapter_snapshot_id` (string, required) — The ID of the chapter snapshot.
-  - `project_id` (string, required) — The ID of the project.
-  - `chapter_id` (string, required) — The ID of the chapter.
-  - `created_at_unix` (integer, required) — The creation date of the chapter snapshot.
-  - `name` (string, required) — The name of the chapter snapshot.
+- `snapshots` (list of ChapterSnapshotResponseModel, required) — List of chapter snapshots.
 
 ## Errors
 
@@ -48,10 +43,25 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ChapterSnapshotResponseModel
+
+- `chapter_snapshot_id` (string, required) — The ID of the chapter snapshot.
+- `project_id` (string, required) — The ID of the project.
+- `chapter_id` (string, required) — The ID of the chapter.
+- `created_at_unix` (integer, required) — The creation date of the chapter snapshot.
+- `name` (string, required) — The name of the chapter snapshot.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

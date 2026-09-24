@@ -179,8 +179,10 @@ A generation chunk can be conditioned on a slice of stored audio with `condition
 }
 ```
 
-The first chunk influences the generation of all subsequent chunks. To condition the entire song
-on a reference, apply `conditioning_ref` starting from the first chunk.
+> **Tip**
+>
+> The first chunk influences the generation of all subsequent chunks. To condition the entire song
+> on a reference, apply `conditioning_ref` starting from the first chunk.
 
 A conditioning reference can be at most 30 seconds (30,000ms) long.
 
@@ -653,8 +655,10 @@ A `music_v2` plan contains up to 30 chunks. Each chunk is either a generation ch
 | `conditioning_ref`   | object \| null | Optional `{ song_id, range }` slice of stored audio to condition on. Defaults to `null`.                       |
 | `condition_strength` | string \| null | `low`, `medium` (default), `high`, or `xhigh`. How strongly the chunk follows the conditioning reference.      |
 
-The styles for the first chunk are the most important as they set the overall tone and genre. Aim
-for at least 6-7 styles in early chunks until the direction is established.
+> **Tip**
+>
+> The styles for the first chunk are the most important as they set the overall tone and genre. Aim
+> for at least 6-7 styles in early chunks until the direction is established.
 
 ### Audio reference chunk
 

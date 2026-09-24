@@ -27,7 +27,9 @@ Function call context is particularly useful when:
 
 Function call context is included in the conversation history using the `History` message type with a `function_calls` array. Each function call entry contains complete information about the execution, including arguments and results.
 
-Function call context can be disabled by setting `settings.flags.history` to `false` in the agent configuration. History is enabled by default.
+> **Info**
+>
+> Function call context can be disabled by setting `settings.flags.history` to `false` in the agent configuration. History is enabled by default.
 
 **`JSON`**
 

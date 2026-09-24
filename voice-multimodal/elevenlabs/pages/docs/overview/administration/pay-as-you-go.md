@@ -14,7 +14,9 @@ Pay As You Go (PAYG) allows you to prepay for usage without committing to a mont
 
 PAYG is a feature available on self-serve subscription plans, including free. Enterprise contracts remain on overage-based billing and are not affected by this change.
 
-Existing subscribers who already have usage based billing enabled are not affected.
+> **Note**
+>
+> Existing subscribers who already have usage based billing enabled are not affected.
 
 ## How it works
 
@@ -49,8 +51,24 @@ Key limits:
 * **Minimum Top Up**: \$5 USD / ₹500 INR
 * **Supported currencies**: USD, INR
 * **Maximum Top Ups per month**: 250
+* **Monthly purchase cap without 2FA**: Plan-based limit per calendar month. See [Monthly purchase cap without 2FA](#monthly-purchase-cap-without-2fa).
 
 Your balance is displayed in USD or INR in [Developer settings](https://elevenlabs.io/app/developers) → Top Up, but is converted to credits and displayed as credits elsewhere in the platform.
+
+### Monthly purchase cap without 2FA
+
+If [two-factor authentication (2FA)](/docs/help-center/account/general/how-do-i-add-two-factor-authentication-2-fa-to-my-account) is not enabled on your account, the amount of PAYG credits you can purchase is capped per calendar month. The cap depends on your subscription plan:
+
+| Plan                   | Cap (USD) | Cap (INR) |
+| ---------------------- | --------- | --------- |
+| Free, Starter, Creator | \$100     | ₹8,800    |
+| Pro                    | \$200     | ₹17,600   |
+| Scale                  | \$600     | ₹52,800   |
+| Business               | \$2,000   | ₹176,000  |
+
+This cap applies to every Top Up in the calendar month, including Auto Top Up. It resets at the start of each calendar month. Enable 2FA to remove the cap.
+
+This limit is separate from the optional monthly spend cap in Top Up settings and from the 250 Top Ups per month limit.
 
 To top up manually:
 
@@ -68,8 +86,10 @@ Confirm payment with your saved payment method
 
 If you do not yet have a payment method on file, you will be prompted to add one before completing your first Top Up.
 
-If your balance hits \$0 and Auto Top Up is off (or fails), your service will pause immediately.
-This is by design. PAYG is a prepaid model with no overage charges.
+> **Warning**
+>
+> If your balance hits \$0 and Auto Top Up is off (or fails), your service will pause immediately.
+> This is by design. PAYG is a prepaid model with no overage charges.
 
 ## Auto Top Up
 
@@ -93,13 +113,15 @@ Set your Top Up amount (the amount to be charged each time). Default is \$20 USD
 
 Set your low balance threshold (the balance level that triggers a Top Up). Default is \$10 USD / ₹1,000 INR
 
-With Auto Top Up on, a minimum balance of \$5 USD / ₹500 INR is required to ensure service continues in the event of a payment failure. If an Auto Top Up attempt fails, your service will pause until you top up manually.
+With Auto Top Up on, a minimum balance of \$5 USD / ₹500 INR is required to ensure service continues in the event of a payment failure. If an Auto Top Up attempt fails, your service will pause until you top up manually. Auto Top Up purchases count toward the [monthly purchase cap](#monthly-purchase-cap-without-2fa) if 2FA is not enabled.
 
 With Auto Top Up off, your balance can run down to \$0. Once depleted, your usage will be paused until you manually top up.
 
-Auto Top Up can occasionally be delayed or fail due to payment processing issues. If you rely on
-uninterrupted API usage, consider maintaining a healthy balance buffer or contacting Sales about
-an Enterprise plan.
+> **Warning**
+>
+> Auto Top Up can occasionally be delayed or fail due to payment processing issues. If you rely on
+> uninterrupted API usage, consider maintaining a healthy balance buffer or contacting Sales about
+> an Enterprise plan.
 
 ## Credit rollover
 
@@ -107,8 +129,10 @@ If you upgrade to a subscription plan, your remaining PAYG balance carries over 
 
 There is no monthly rollover cap on PAYG funds.
 
-PAYG credits expire 12 months after purchase. Any unused credits will be removed from your balance
-after this period.
+> **Warning**
+>
+> PAYG credits expire 12 months after purchase. Any unused credits will be removed from your balance
+> after this period.
 
 ## Plan changes and credit conversion
 
@@ -153,7 +177,9 @@ Choose **Switch to new pricing** to move onto the new version of your current su
 
 Once confirmed, the change will take effect at the end of your current billing cycle
 
-If you move onto the new plan, it won't be possible to return to the legacy plan in the future.
+> **Warning**
+>
+> If you move onto the new plan, it won't be possible to return to the legacy plan in the future.
 
 ## FAQ
 
@@ -195,7 +221,9 @@ plan, including Music, Sound Effects, and more.
 
 #### Is there a monthly spend cap?
 
-You can optionally set a monthly spend cap in the Top Up settings. This is off by default.
+You can optionally set a monthly spend cap in the Top Up settings. This is off by default. If
+2FA is not enabled, a separate plan-based purchase cap also applies per calendar month. See
+[Monthly purchase cap without 2FA](#monthly-purchase-cap-without-2fa).
 
 #### How many Top Ups can I make per month?
 
@@ -203,9 +231,16 @@ You can make up to 250 Top Ups per month, whether Manual or via Auto Top Up.
 
 #### What is the maximum I can purchase in one transaction?
 
-There is no fixed maximum. Your available Top Up limit depends on your account status and
-currency. Visit [Developer settings](https://elevenlabs.io/app/developers) → Top Up to see the
-amounts available to you.
+There is no fixed per-transaction maximum. Your available Top Up limit depends on your account
+status and currency. Visit [Developer settings](https://elevenlabs.io/app/developers) → Top Up
+to see the amounts available to you. If 2FA is not enabled, a monthly purchase cap also applies.
+See [Monthly purchase cap without 2FA](#monthly-purchase-cap-without-2fa).
+
+#### Is there a limit on PAYG purchases without 2FA?
+
+Yes. If 2FA is not enabled on your account, the amount of PAYG credits you can purchase is
+capped per calendar month. The cap depends on your plan. Enable [two-factor authentication](/docs/help-center/account/general/how-do-i-add-two-factor-authentication-2-fa-to-my-account)
+to remove this cap. See [Monthly purchase cap without 2FA](#monthly-purchase-cap-without-2fa).
 
 #### What was usage based billing, and how is PAYG different?
 

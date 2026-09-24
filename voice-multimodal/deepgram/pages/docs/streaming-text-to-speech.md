@@ -12,7 +12,9 @@ path: docs/streaming-text-to-speech
 
 This guide will walk you through how to turn streaming text into speech with Deepgram's text-to-speech Websocket API.
 
-Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
+> **Info**
+>
+> Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
 
 ## Text-to-Speech Implementations
 
@@ -581,7 +583,9 @@ namespace SampleApp
 }
 ```
 
-To learn more, check out our audio format tips for websockets in the [TTS Chunking for Optimization Guide](/docs/text-chunking-for-tts-optimization) and our [Audio Format Combinations](/docs/tts-media-output-settings#audio-format-combinations) that we offer.
+> **Info**
+>
+> To learn more, check out our audio format tips for websockets in the [TTS Chunking for Optimization Guide](/docs/text-chunking-for-tts-optimization) and our [Audio Format Combinations](/docs/tts-media-output-settings#audio-format-combinations) that we offer.
 
 ## Text-to-Speech Workflow
 
@@ -662,13 +666,17 @@ The maximum number of times you can send the [Flush message](/docs/tts-ws-flush)
 
 ### Rate Limits
 
-For information on Deepgram's Concurrency Rate Limits, refer to our [API Rate Limits Documentation](/reference/api-rate-limits).
+> **Info**
+>
+> For information on Deepgram's Concurrency Rate Limits, refer to our [API Rate Limits Documentation](/reference/api-rate-limits).
 
 #### Handling Rate Limits
 
 If the number of in-progress requests for a project meets or exceeds the rate limit, new requests will receive a **429: Too Many Requests** error.
 
-For suggestions on handling Concurrency Rate Limits, refer to our [Working with Concurrency Rate Limits Documentation](/docs/working-with-concurrency-rate-limits) guide.
+> **Info**
+>
+> For suggestions on handling Concurrency Rate Limits, refer to our [Working with Concurrency Rate Limits Documentation](/docs/working-with-concurrency-rate-limits) guide.
 
 ## What's Next?
 

@@ -19,7 +19,9 @@ Try this feature out in our API Playground.
 
 This guide walks you through transcribing pre-recorded audio with the Deepgram API using cURL or one of Deepgram's SDKs.
 
-Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
+> **Info**
+>
+> Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
 
 ## cURL
 
@@ -49,9 +51,11 @@ curl \
   --url 'https://api.deepgram.com/v1/listen?model=nova-3&smart_format=true'
 ```
 
-The above examples include `model=nova-3`, which tells the API to use Deepgram's latest model. Removing this parameter defaults to `model=base`.
-
-They also include Deepgram's [Smart Formatting](/docs/smart-format) feature (`smart_format=true`), which formats currency amounts, phone numbers, email addresses, and more for enhanced readability.
+> **Info**
+>
+> The above examples include `model=nova-3`, which tells the API to use Deepgram's latest model. Removing this parameter defaults to `model=base`.
+>
+> They also include Deepgram's [Smart Formatting](/docs/smart-format) feature (`smart_format=true`), which formats currency amounts, phone numbers, email addresses, and more for enhanced readability.
 
 ## SDKs
 
@@ -333,7 +337,9 @@ public class Main {
 }
 ```
 
-To transcribe a **local file** instead of a remote URL, use the `transcribeFile` (JavaScript), `transcribe_file` (Python), `TranscribeFile` (C#), `FromFile` (Go), or `transcribeFile` (Java) method. Pass the file's binary content and the same options. See the [Pre-Recorded Audio API reference](/reference/speech-to-text/listen-pre-recorded) for details.
+> **Info**
+>
+> To transcribe a **local file** instead of a remote URL, use the `transcribeFile` (JavaScript), `transcribe_file` (Python), `TranscribeFile` (C#), `FromFile` (Go), or `transcribeFile` (Java) method. Pass the file's binary content and the same options. See the [Pre-Recorded Audio API reference](/reference/speech-to-text/listen-pre-recorded) for details.
 
 ### Transcribe a local file
 
@@ -604,7 +610,9 @@ go run main.go
 mvn compile exec:java -Dexec.mainClass="Main"
 ```
 
-Deepgram does not store transcripts, so the API response is the only opportunity to retrieve the transcript. Save output or [return transcriptions to a callback URL for custom processing](/docs/callback/).
+> **Warning**
+>
+> Deepgram does not store transcripts, so the API response is the only opportunity to retrieve the transcript. Save output or [return transcriptions to a callback URL for custom processing](/docs/callback/).
 
 ### Analyze the response
 
@@ -680,7 +688,9 @@ When the file finishes processing (often after only a few seconds), you receive 
 }
 ```
 
-The response above is truncated for brevity. The full response includes a `words` entry for every word in the transcript and all sentences in the `paragraphs` object.
+> **Info**
+>
+> The response above is truncated for brevity. The full response includes a `words` entry for every word in the transcript and all sentences in the `paragraphs` object.
 
 In this response:
 
@@ -689,7 +699,9 @@ In this response:
 * `words`: an object containing each `word` in the transcript, along with its `start` time and `end` time (in seconds) from the beginning of the audio stream, and a `confidence` value.
   * Because we passed the `smart_format: true` option, each word object also includes its `punctuated_word` value, which contains the transformed word after punctuation and capitalization are applied.
 
-The `transaction_key` in the `metadata` field can be ignored. The result is always `"transaction_key": "deprecated"`.
+> **Info**
+>
+> The `transaction_key` in the `metadata` field can be ignored. The result is always `"transaction_key": "deprecated"`.
 
 ## Limits
 

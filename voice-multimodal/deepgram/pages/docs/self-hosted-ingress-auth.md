@@ -26,9 +26,11 @@ API keys provide a simple and effective way to control access to your API. They 
 
 There are several ways to implement API key authentication for your self-hosted Deepgram instance. This API key setup will be entirely separate from the Deepgram API keys [you generate in the Deepgram Console](/docs/create-additional-api-keys).
 
-You should not expose your Deepgram API keys to a third-party. Your Deepgram API keys are a critical security component of your product's integration with Deepgram, and no other parties should have access to your Deepgram API keys.
-
-Always use a separate set of API keys for authenticating ingress requests versus the Deepgram self-hosted API keys you use to license your Deepgram containers.
+> **Warning**
+>
+> You should not expose your Deepgram API keys to a third-party. Your Deepgram API keys are a critical security component of your product's integration with Deepgram, and no other parties should have access to your Deepgram API keys.
+>
+> Always use a separate set of API keys for authenticating ingress requests versus the Deepgram self-hosted API keys you use to license your Deepgram containers.
 
 One straightforward method to implement API key authentication for your server is to use [AWS API Gateway](https://aws.amazon.com/api-gateway/).
 
@@ -58,7 +60,9 @@ If you're not using AWS, see your cloud provider's documentation for their equiv
 
 If you prefer a different approach, you can implement API key authentication directly on your server.
 
-Consult your internal security team before implementing your own authentication solution.
+> **Info**
+>
+> Consult your internal security team before implementing your own authentication solution.
 
 1. Modify your server configuration to check for an API key in incoming request headers
    1. Web server software, such as `nginx`, typically include request verification features

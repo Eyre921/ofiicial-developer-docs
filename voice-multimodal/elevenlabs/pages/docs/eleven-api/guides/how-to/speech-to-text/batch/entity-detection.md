@@ -8,12 +8,16 @@ path: docs/eleven-api/guides/how-to/speech-to-text/batch/entity-detection
 
 # Entity detection
 
-**How-to guide** · Assumes you have completed the [Speech to Text quickstart](/docs/eleven-api/guides/cookbooks/speech-to-text).
+> **Note**
+>
+> **How-to guide** · Assumes you have completed the [Speech to Text quickstart](/docs/eleven-api/guides/cookbooks/speech-to-text).
 
 ## Overview
 
-Entity detection comes at an additional cost. See the [API pricing page](https://elevenlabs.io/pricing?price.section=speech_to_text\&price.sections=speech_to_text,speech_to_text#pricing-table)
-for detailed pricing information.
+> **Warning**
+>
+> Entity detection comes at an additional cost. See the [API pricing page](https://elevenlabs.io/pricing?price.section=speech_to_text\&price.sections=speech_to_text,speech_to_text#pricing-table)
+> for detailed pricing information.
 
 Entity detection is a feature that allows you to detect specific words and phrases in the transcript, providing their exact timestamps. This is useful to detect credit card numbers, names, medical conditions or SSNs which can then be redacted.
 
@@ -264,7 +268,9 @@ The `entity_redaction_mode` parameter controls the marker format:
 | `entity_type`            | The entity type in braces                  | `Hi {NAME}`             |
 | `enumerated_entity_type` | The entity type plus an occurrence counter | `Hi {NAME_0}` (default) |
 
-Entity detection and redaction are not supported with the `combined` multichannel output style.
+> **Warning**
+>
+> Entity detection and redaction are not supported with the `combined` multichannel output style.
 
 ## Next steps
 

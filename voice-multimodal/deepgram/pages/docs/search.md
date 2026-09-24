@@ -18,7 +18,9 @@ Pre-recorded  Streaming:Nova Streaming: Flux  All available languages
 
 Deepgram’s Search feature searches for terms or phrases by matching acoustic patterns in audio (which we have found is more accurate than matching for text patterns in transcripts) and returns results in the response JSON object. This allows you to accurately identify whether a phrase was uttered in submitted audio by letting Deepgram "hear" whether the phrase was uttered rather than by trying to look for sufficiently close matches in the text transcript.
 
-Because the search feature is looking for phonetic matches, it works best on longer, multisyllabic terms, or even on short to medium-length phrases.
+> **Info**
+>
+> Because the search feature is looking for phonetic matches, it works best on longer, multisyllabic terms, or even on short to medium-length phrases.
 
 ## Enable Feature
 
@@ -26,7 +28,9 @@ To enable Search, when you call Deepgram’s API, add a `search` parameter in th
 
 `search=TERM_OR_PHRASE`
 
-You can include up to 50 search terms per request.
+> **Info**
+>
+> You can include up to 50 search terms per request.
 
 To transcribe audio from a file on your computer, run the following cURL command in a terminal or your favorite API client.
 
@@ -41,7 +45,9 @@ curl \
   --url 'https://api.deepgram.com/v1/listen?search=TERM_OR_PHRASE'
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 ### Search for a Term
 
@@ -78,7 +84,9 @@ curl \
   --url 'https://api.deepgram.com/v1/listen?search=epistemology'
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 When the file is finished processing (often after only a few seconds), you’ll receive a JSON response that has the following basic structure:
 

@@ -28,28 +28,7 @@ Reference: https://elevenlabs.io/docs/api-reference/models/list
 
 Successful Response
 
-- `list of object`
-  - `model_id` (string, required) — The unique identifier of the model.
-  - `name` (string, optional) — The name of the model.
-  - `can_be_finetuned` (boolean, optional) — Whether the model can be finetuned.
-  - `can_do_text_to_speech` (boolean, optional) — Whether the model can do text-to-speech.
-  - `can_do_voice_conversion` (boolean, optional) — Whether the model can do voice conversion.
-  - `can_use_style` (boolean, optional) — Whether the model can use style.
-  - `can_use_speaker_boost` (boolean, optional) — Whether the model can use speaker boost.
-  - `serves_pro_voices` (boolean, optional) — Whether the model serves pro voices.
-  - `token_cost_factor` (double, optional) — The cost factor for the model.
-  - `description` (string, optional) — The description of the model.
-  - `requires_alpha_access` (boolean, optional) — Whether the model requires alpha access.
-  - `max_characters_request_free_user` (integer, optional) — The maximum number of characters that can be requested by a free user.
-  - `max_characters_request_subscribed_user` (integer, optional) — The maximum number of characters that can be requested by a subscribed user.
-  - `maximum_text_length_per_request` (integer, optional) — The maximum length of text that can be requested for this model.
-  - `languages` (list of object, optional) — The languages supported by the model.
-    - `language_id` (string, required) — The unique identifier of the language.
-    - `name` (string, required) — The name of the language.
-  - `model_rates` (object, optional) — The rates for the model.
-    - `character_cost_multiplier` (double, required) — The cost multiplier for characters.
-    - `cost_discount_multiplier` (double, optional, default: 1) — Discount multiplier applied to cost estimates. Defaults to 1.0 (no discount).
-  - `concurrency_group` (string, optional) — The concurrency group for the model.
+- `list of ModelResponseModel`
 
 ## Errors
 
@@ -57,10 +36,47 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ModelResponseModel
+
+- `model_id` (string, required) — The unique identifier of the model.
+- `name` (string, optional) — The name of the model.
+- `can_be_finetuned` (boolean, optional) — Whether the model can be finetuned.
+- `can_do_text_to_speech` (boolean, optional) — Whether the model can do text-to-speech.
+- `can_do_voice_conversion` (boolean, optional) — Whether the model can do voice conversion.
+- `can_use_style` (boolean, optional) — Whether the model can use style.
+- `can_use_speaker_boost` (boolean, optional) — Whether the model can use speaker boost.
+- `serves_pro_voices` (boolean, optional) — Whether the model serves pro voices.
+- `token_cost_factor` (double, optional) — The cost factor for the model.
+- `description` (string, optional) — The description of the model.
+- `requires_alpha_access` (boolean, optional) — Whether the model requires alpha access.
+- `maximum_text_length_per_request` (integer, optional) — The maximum number of input text characters accepted per request for this model. Longer requests are rejected.
+- `languages` (list of LanguageResponseModel, optional) — The languages supported by the model.
+- `model_rates` (ModelRatesResponseModel, optional) — The rates for the model.
+- `concurrency_group` (string, optional) — The concurrency group for the model.
+- `max_characters_request_free_user` (integer, optional, deprecated) — Deprecated. Not enforced; use `maximum_text_length_per_request` instead.
+- `max_characters_request_subscribed_user` (integer, optional, deprecated) — Deprecated. Not enforced; use `maximum_text_length_per_request` instead.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### LanguageResponseModel
+
+- `language_id` (string, required) — The unique identifier of the language.
+- `name` (string, required) — The name of the language.
+
+### ModelRatesResponseModel
+
+- `character_cost_multiplier` (double, required) — The cost multiplier for characters.
+- `cost_discount_multiplier` (double, optional, default: 1) — Discount multiplier applied to cost estimates. Defaults to 1.0 (no discount).
+
+### ValidationErrorLocItems
 
 ## Examples
 
@@ -80,8 +96,6 @@ Validation Error
     "token_cost_factor": 1.1,
     "description": "string",
     "requires_alpha_access": true,
-    "max_characters_request_free_user": 1,
-    "max_characters_request_subscribed_user": 1,
     "maximum_text_length_per_request": 1,
     "languages": [
       {
@@ -93,7 +107,9 @@ Validation Error
       "character_cost_multiplier": 1,
       "cost_discount_multiplier": 1
     },
-    "concurrency_group": "string"
+    "concurrency_group": "string",
+    "max_characters_request_free_user": 1,
+    "max_characters_request_subscribed_user": 1
   }
 ]
 ```

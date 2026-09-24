@@ -31,7 +31,7 @@ Reference: https://elevenlabs.io/docs/api-reference/music/finetunes/update
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects an UpdateMusicFinetuneRequestModel.
 
 - `name` (string, optional, nullable) — Updated name for the finetune.
 - `tags` (list of string, optional, nullable) — Replacement set of tags.
@@ -79,10 +79,17 @@ Finetune not found.
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

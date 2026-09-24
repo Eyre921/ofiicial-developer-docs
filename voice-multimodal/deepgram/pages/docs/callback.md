@@ -52,13 +52,17 @@ Authentication ensures the security and integrity of callback requests. There ar
 
 You may embed username-password authentication credentials in the callback URL in the format `https://username:[email protected]`. However, it's important to note that only ports 80, 443, 8080, and 8443 are permitted for callbacks.
 
-Only ports 80, 443, 8080, and 8443 are permitted for callbacks.
+> **Warning**
+>
+> Only ports 80, 443, 8080, and 8443 are permitted for callbacks.
 
 ### Using the `dg-token` Request Header
 
 Alternatively, the callback request may include a header named `dg-token`. When present, this header is set to the API Key Identifier associated with the API Key used to submit the original request, which lets you verify that the callback came from Deepgram.
 
-The `dg-token` header is not guaranteed on every callback request, so this method is less reliable than Basic Auth or [Extra Metadata](/docs/extra-metadata). Use `dg-token` as a supplementary check rather than your only means of authentication.
+> **Note**
+>
+> The `dg-token` header is not guaranteed on every callback request, so this method is less reliable than Basic Auth or [Extra Metadata](/docs/extra-metadata). Use `dg-token` as a supplementary check rather than your only means of authentication.
 
 ## Results
 
@@ -92,6 +96,8 @@ As Deepgram analyzes the audio, the way in which it sends requests back to the p
 * If your callback URL begins with `http://` or `https://`, then Deepgram will send `POST` requests to the callback server for each streaming response.
 * If your callback URL begins with `ws://` or `wss://`, then Deepgram will establish a WebSocket connection with the callback server and send WebSocket text messages that contain the streaming responses.
 
-If a WebSocket callback connection is disconnected at any point, the entire real-time transcription stream is killed; this maintains the strong guarantee of a one-to-one relationship between incoming real-time connections and outgoing WebSocket callback connections.
+> **Warning**
+>
+> If a WebSocket callback connection is disconnected at any point, the entire real-time transcription stream is killed; this maintains the strong guarantee of a one-to-one relationship between incoming real-time connections and outgoing WebSocket callback connections.
 
 ---

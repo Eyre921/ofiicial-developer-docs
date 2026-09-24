@@ -92,7 +92,9 @@ After the `EndOfTurn`, `turn_index` increments and Flux is ready for the next `S
 | `manual`  | The turn ended because you sent a `ForceEndTurn` message. |
 | `timeout` | The turn ended because `eot_timeout_ms` elapsed.          |
 
-`trigger` is an open set — new values may be added, so handle unrecognized ones gracefully.
+> **Info**
+>
+> `trigger` is an open set — new values may be added, so handle unrecognized ones gracefully.
 
 ## Behavior and edge cases
 

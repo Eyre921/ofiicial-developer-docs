@@ -20,7 +20,9 @@ To enable Language in your API request you can add the `language` parameter in t
 
 `language=OPTION`
 
-For a full list of languages and compatible models see our [Model & Language Overview](/docs/models-languages-overview).
+> **Info**
+>
+> For a full list of languages and compatible models see our [Model & Language Overview](/docs/models-languages-overview).
 
 To transcribe audio from a file on your computer, run the following curl command in a terminal or your favorite API client.
 
@@ -35,7 +37,9 @@ curl \
   --url 'https://api.deepgram.com/v1/listen?language=OPTION'
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 ## Language Restriction Behavior
 

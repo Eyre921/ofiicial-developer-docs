@@ -39,45 +39,7 @@ This endpoint expects a multipart form containing an optional file.
 
 Successful Response
 
-- `voices` (list of object, required) — The list of shared voices
-  - `public_owner_id` (string, required) — The public owner id of the voice.
-  - `voice_id` (string, required) — The id of the voice.
-  - `date_unix` (integer, required) — The date the voice was added to the library in Unix time.
-  - `name` (string, required) — The name of the voice.
-  - `accent` (string, required) — The accent of the voice.
-  - `gender` (string, required) — The gender of the voice.
-  - `age` (string, required) — The age of the voice.
-  - `descriptive` (string, required) — The descriptive of the voice.
-  - `use_case` (string, required) — The use case of the voice.
-  - `category` (enum, required) — The category of the voice.
-    - Allowed values: `generated`, `cloned`, `premade`, `professional`, `famous`, `high_quality`
-  - `usage_character_count_1y` (integer, required) — The usage character count of the voice in the last year.
-  - `usage_character_count_7d` (integer, required) — The usage character count of the voice in the last 7 days.
-  - `play_api_usage_character_count_1y` (integer, required) — The play API usage character count of the voice in the last year.
-  - `cloned_by_count` (integer, required) — The number of times the voice has been cloned.
-  - `free_users_allowed` (boolean, required) — Whether free users are allowed to use the voice.
-  - `live_moderation_enabled` (boolean, required) — Whether live moderation is enabled for the voice.
-  - `featured` (boolean, required) — Whether the voice is featured.
-  - `language` (string, optional, nullable) — The language of the voice.
-  - `locale` (string, optional, nullable) — The locale of the voice.
-  - `description` (string, optional, nullable) — The description of the voice.
-  - `preview_url` (string, optional, nullable) — The preview URL of the voice.
-  - `rate` (double, optional, nullable) — The rate multiplier of the voice.
-  - `fiat_rate` (double, optional, nullable) — The rate of the voice in USD per 1000 credits. null if default
-  - `verified_languages` (list of object, optional, nullable) — The verified languages of the voice.
-    - `language` (string, required) — The language of the voice.
-    - `model_id` (string, required) — The voice's model ID.
-    - `accent` (string, optional, nullable) — The voice's accent, if applicable.
-    - `locale` (string, optional, nullable) — The voice's locale, if applicable.
-    - `preview_url` (string, optional, nullable) — The voice's preview URL, if applicable.
-  - `notice_period` (integer, optional, nullable) — The notice period of the voice.
-  - `instagram_username` (string, optional, nullable) — The Instagram username of the voice.
-  - `twitter_username` (string, optional, nullable) — The Twitter username of the voice.
-  - `youtube_username` (string, optional, nullable) — The YouTube username of the voice.
-  - `tiktok_username` (string, optional, nullable) — The TikTok username of the voice.
-  - `image_url` (string, optional, nullable) — The image URL of the voice.
-  - `is_added_by_user` (boolean, optional, nullable) — Whether the voice was added by the user.
-  - `is_bookmarked` (boolean, optional, nullable) — Whether the voice is bookmarked by the current user. Only relevant when is_added_by_user is True.
+- `voices` (list of LibraryVoiceResponseModel, required) — The list of shared voices
 - `has_more` (boolean, required) — Whether there are more shared voices in subsequent pages.
 - `total_count` (integer, optional, default: 0) — The total number of shared voices matching the query.
 - `last_sort_id` (string, optional, nullable)
@@ -88,10 +50,61 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### LibraryVoiceResponseModel
+
+- `public_owner_id` (string, required) — The public owner id of the voice.
+- `voice_id` (string, required) — The id of the voice.
+- `date_unix` (integer, required) — The date the voice was added to the library in Unix time.
+- `name` (string, required) — The name of the voice.
+- `accent` (string, required) — The accent of the voice.
+- `gender` (string, required) — The gender of the voice.
+- `age` (string, required) — The age of the voice.
+- `descriptive` (string, required) — The descriptive of the voice.
+- `use_case` (string, required) — The use case of the voice.
+- `category` (enum, required) — The category of the voice.
+  - Allowed values: `generated`, `cloned`, `premade`, `professional`, `famous`, `high_quality`
+- `usage_character_count_1y` (integer, required) — The usage character count of the voice in the last year.
+- `usage_character_count_7d` (integer, required) — The usage character count of the voice in the last 7 days.
+- `play_api_usage_character_count_1y` (integer, required) — The play API usage character count of the voice in the last year.
+- `cloned_by_count` (integer, required) — The number of times the voice has been cloned.
+- `free_users_allowed` (boolean, required) — Whether free users are allowed to use the voice.
+- `live_moderation_enabled` (boolean, required) — Whether live moderation is enabled for the voice.
+- `featured` (boolean, required) — Whether the voice is featured.
+- `language` (string, optional, nullable) — The language of the voice.
+- `locale` (string, optional, nullable) — The locale of the voice.
+- `description` (string, optional, nullable) — The description of the voice.
+- `preview_url` (string, optional, nullable) — The preview URL of the voice.
+- `rate` (double, optional, nullable) — The rate multiplier of the voice.
+- `fiat_rate` (double, optional, nullable) — The rate of the voice in USD per 1000 credits. null if default
+- `verified_languages` (list of VerifiedVoiceLanguageResponseModel, optional, nullable) — The verified languages of the voice.
+- `notice_period` (integer, optional, nullable) — The notice period of the voice.
+- `instagram_username` (string, optional, nullable) — The Instagram username of the voice.
+- `twitter_username` (string, optional, nullable) — The Twitter username of the voice.
+- `youtube_username` (string, optional, nullable) — The YouTube username of the voice.
+- `tiktok_username` (string, optional, nullable) — The TikTok username of the voice.
+- `image_url` (string, optional, nullable) — The image URL of the voice.
+- `is_added_by_user` (boolean, optional, nullable) — Whether the voice was added by the user.
+- `is_bookmarked` (boolean, optional, nullable) — Whether the voice is bookmarked by the current user. Only relevant when is_added_by_user is True.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### VerifiedVoiceLanguageResponseModel
+
+- `language` (string, required) — The language of the voice.
+- `model_id` (string, required) — The voice's model ID.
+- `accent` (string, optional, nullable) — The voice's accent, if applicable.
+- `locale` (string, optional, nullable) — The voice's locale, if applicable.
+- `preview_url` (string, optional, nullable) — The voice's preview URL, if applicable.
+
+### ValidationErrorLocItems
 
 ## Examples
 

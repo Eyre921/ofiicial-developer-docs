@@ -32,16 +32,7 @@ Reference: https://developers.deepgram.com/reference/self-hosted/distribution-cr
 
 A list of distribution credentials for a specific project
 
-- `distribution_credentials` (list of object, optional) — Array of distribution credentials with associated member information
-  - `member` (object, required)
-    - `member_id` (string, required) — Unique identifier for the member
-    - `email` (string, required) — Email address of the member
-  - `distribution_credentials` (object, required)
-    - `distribution_credentials_id` (string, required) — Unique identifier for the distribution credentials
-    - `provider` (string, required) — The provider of the distribution service
-    - `scopes` (list of string, required) — List of permission scopes for the credentials
-    - `created` (string, required) — Timestamp when the credentials were created
-    - `comment` (string, optional) — Optional comment about the credentials
+- `distribution_credentials` (list of ListProjectDistributionCredentialsV1ResponseDistributionCredentialsItems, optional) — Array of distribution credentials with associated member information
 
 ## Errors
 
@@ -49,16 +40,40 @@ A list of distribution credentials for a specific project
 
 Invalid Request
 
-- `string or object or object`
-  - ErrorResponseLegacyError
-    - `err_code` (string, optional) — The error code
-    - `err_msg` (string, optional) — The error message
-    - `request_id` (string, optional) — The request ID
-  - ErrorResponseModernError
-    - `category` (string, optional) — The category of the error
-    - `message` (string, optional) — A message about the error
-    - `details` (string, optional) — A description of the error
-    - `request_id` (string, optional) — The unique identifier of the request
+- `ErrorResponse`
+
+## Types
+
+### ListProjectDistributionCredentialsV1ResponseDistributionCredentialsItems
+
+- `member` (ListProjectDistributionCredentialsV1ResponseDistributionCredentialsItemsMember, required)
+- `distribution_credentials` (ListProjectDistributionCredentialsV1ResponseDistributionCredentialsItemsDistributionCredentials, required)
+
+### ErrorResponseLegacyError
+
+- `err_code` (string, optional) — The error code
+- `err_msg` (string, optional) — The error message
+- `request_id` (string, optional) — The request ID
+
+### ErrorResponseModernError
+
+- `category` (string, optional) — The category of the error
+- `message` (string, optional) — A message about the error
+- `details` (string, optional) — A description of the error
+- `request_id` (string, optional) — The unique identifier of the request
+
+### ListProjectDistributionCredentialsV1ResponseDistributionCredentialsItemsMember
+
+- `member_id` (string, required) — Unique identifier for the member
+- `email` (string, required) — Email address of the member
+
+### ListProjectDistributionCredentialsV1ResponseDistributionCredentialsItemsDistributionCredentials
+
+- `distribution_credentials_id` (string, required) — Unique identifier for the distribution credentials
+- `provider` (string, required) — The provider of the distribution service
+- `scopes` (list of string, required) — List of permission scopes for the credentials
+- `created` (string, required) — Timestamp when the credentials were created
+- `comment` (string, optional) — Optional comment about the credentials
 
 ## Examples
 

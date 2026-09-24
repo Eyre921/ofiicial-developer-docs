@@ -39,7 +39,7 @@ plugins {
 }
 // ___PRODUCT_OPTION_START___ profiling
 dependencies {
-  implementation 'io.sentry:sentry-async-profiler:8.57.0'
+  implementation 'io.sentry:sentry-async-profiler:8.58.0'
 }
 // ___PRODUCT_OPTION_END___ profiling
 ```
@@ -84,7 +84,7 @@ dependencies {
   <dependency>
       <groupId>io.sentry</groupId>
       <artifactId>sentry-async-profiler</artifactId>
-      <version>8.57.0</version>
+      <version>8.58.0</version>
   </dependency>
 </dependencies>
 // ___PRODUCT_OPTION_END___ profiling
@@ -93,9 +93,9 @@ dependencies {
 **SBT**
 
 ```scala
-libraryDependencies += "io.sentry" % "sentry" % "8.57.0"
+libraryDependencies += "io.sentry" % "sentry" % "8.58.0"
 // ___PRODUCT_OPTION_START___ profiling
-libraryDependencies += "io.sentry" % "sentry-async-profiler" % "8.57.0"
+libraryDependencies += "io.sentry" % "sentry-async-profiler" % "8.58.0"
 // ___PRODUCT_OPTION_END___ profiling
 ```
 
@@ -105,16 +105,16 @@ If you are manually adding multiple Sentry dependencies, you can add a [bill of 
 
 When running your application, please add our `sentry-opentelemetry-agent` to the `java` command.
 
-Download the latest version of the `sentry-opentelemetry-agent-8.57.0.jar` from [MavenCentral](https://search.maven.org/artifact/io.sentry/sentry-opentelemetry-agent):
+Download the latest version of the `sentry-opentelemetry-agent-8.58.0.jar` from [MavenCentral](https://search.maven.org/artifact/io.sentry/sentry-opentelemetry-agent):
 
 ```bash
-curl https://repo1.maven.org/maven2/io/sentry/sentry-opentelemetry-agent/8.57.0/sentry-opentelemetry-agent-8.57.0.jar -o sentry-opentelemetry-agent-8.57.0.jar
+curl https://repo1.maven.org/maven2/io/sentry/sentry-opentelemetry-agent/8.58.0/sentry-opentelemetry-agent-8.58.0.jar -o sentry-opentelemetry-agent-8.58.0.jar
 ```
 
 Then run your application with:
 
 ```bash
-SENTRY_PROPERTIES_FILE=sentry.properties JAVA_TOOL_OPTIONS="-javaagent:sentry-opentelemetry-agent-8.57.0.jar" java -jar your-application.jar
+SENTRY_PROPERTIES_FILE=sentry.properties JAVA_TOOL_OPTIONS="-javaagent:sentry-opentelemetry-agent-8.58.0.jar" java -jar your-application.jar
 ```
 
 *Other available variations of the above snippet: Java CLI argument*
@@ -129,9 +129,11 @@ import io.sentry.Sentry;
 Sentry.init(options -> {
   options.setDsn("https://<key>@o<orgId>.ingest.sentry.io/<projectId>");
 
-  // Add data like request headers and IP for users,
-  // see https://docs.sentry.io/platforms/java/data-management/data-collected/ for more info
-  options.setSendDefaultPii(true);
+  // Use Data Collection defaults but don't collect automatic user information.
+  // https://docs.sentry.io/platforms/java/data-management/data-collected/
+  options.getDataCollection().forceDataCollection();
+  options.getDataCollection().setUserInfo(false);
+  // Configure other data categories here.
   // ___PRODUCT_OPTION_START___ performance
 
   // Set traces_sample_rate to 1.0 to capture 100%
@@ -161,9 +163,10 @@ The SDK can be configured using a `sentry.properties` file:
 
 ```properties
 dsn=https://<key>@o<orgId>.ingest.sentry.io/<projectId>
-# Add data like request headers and IP for users,
-# see https://docs.sentry.io/platforms/java/data-management/data-collected/ for more info
-send-default-pii=true
+# Use Data Collection defaults but don't collect automatic user information.
+# https://docs.sentry.io/platforms/java/data-management/data-collected/
+data-collection.user-info=false
+# Configure other data categories here.
 # ___PRODUCT_OPTION_START___ performance
 traces-sample-rate=1.0
 # ___PRODUCT_OPTION_END___ performance

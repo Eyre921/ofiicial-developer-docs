@@ -16,7 +16,9 @@ Pre-recorded  Streaming:Nova Streaming:Flux  All available languages
 
 Encoding is required when raw, headerless audio packets are sent to the streaming service. If containerized audio packets are sent to the streaming service, this feature should not be used.
 
-If you are using the Encoding feature, the [Sample Rate](/docs/sample-rate) feature is also required.
+> **Info**
+>
+> If you are using the Encoding feature, the [Sample Rate](/docs/sample-rate) feature is also required.
 
 ## Enable Feature
 
@@ -37,7 +39,9 @@ curl \
 
 Deepgram supports the following audio coding algorithms:
 
-Flux supports `linear16`, `linear32`, `mulaw`, `alaw`, `opus`, and `ogg-opus` for non-containerized/raw audio. Flux also supports containerized formats: `linear16` in WAV containers, `opus` in Ogg containers, and `opus` in WebM containers (omit the `encoding` parameter for containerized audio).
+> **Info**
+>
+> Flux supports `linear16`, `linear32`, `mulaw`, `alaw`, `opus`, and `ogg-opus` for non-containerized/raw audio. Flux also supports containerized formats: `linear16` in WAV containers, `opus` in Ogg containers, and `opus` in WebM containers (omit the `encoding` parameter for containerized audio).
 
 * `linear16`: 16-bit, little endian, signed PCM WAV data
 * `linear32`: 32-bit, little endian, floating-point PCM WAV data

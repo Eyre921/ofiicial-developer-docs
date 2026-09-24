@@ -12,7 +12,9 @@ path: docs/browser-agent-react-ui
 
 > API reference for @deepgram/ui — composable components for building voice agent UIs with Deepgram. Includes orb visualizer, waveforms, frequency bars, conversation display, and CSS custom property theming.
 
-These components require an `AgentProvider` ancestor. See [React Hooks](/docs/browser-agent-react) for provider setup. For the core JavaScript SDK, see [JavaScript](/docs/browser-agent-javascript).
+> **Info**
+>
+> These components require an `AgentProvider` ancestor. See [React Hooks](/docs/browser-agent-react) for provider setup. For the core JavaScript SDK, see [JavaScript](/docs/browser-agent-javascript).
 
 ## Installation
 
@@ -26,7 +28,9 @@ Import the stylesheet in your app's entry point:
 import "@deepgram/ui/styles.css";
 ```
 
-`@deepgram/ui` re-exports all hooks from `@deepgram/react` and all types from `@deepgram/agents`. You can import everything from a single package.
+> **Note**
+>
+> `@deepgram/ui` re-exports all hooks from `@deepgram/react` and all types from `@deepgram/agents`. You can import everything from a single package.
 
 ## Live Preview
 

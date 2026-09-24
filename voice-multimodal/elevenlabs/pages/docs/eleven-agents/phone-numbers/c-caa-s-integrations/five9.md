@@ -8,8 +8,10 @@ path: docs/eleven-agents/phone-numbers/c-caa-s-integrations/five9
 
 # Five9
 
-Before following this guide, consider reading the [SIP trunking guide](/docs/eleven-agents/phone-numbers/sip-trunking) to understand how ElevenLabs supports SIP
-trunks and custom SIP headers.
+> **Note**
+>
+> Before following this guide, consider reading the [SIP trunking guide](/docs/eleven-agents/phone-numbers/sip-trunking) to understand how ElevenLabs supports SIP
+> trunks and custom SIP headers.
 
 ## Overview
 
@@ -33,11 +35,15 @@ Before setting up the Five9 integration, ensure you have:
 3. An ElevenLabs account and an [agent](/docs/eleven-agents/quickstart) to handle the transferred calls.
 4. A [SIP trunk phone number](/docs/eleven-agents/phone-numbers/sip-trunking) imported in ElevenLabs to use as the Five9 transfer destination.
 
-AI Agent Connect is a paid add-on to Five9 VCC and is not enabled by default. Contact your Five9
-Account Manager to enable it for your domain before starting this integration.
+> **Note**
+>
+> AI Agent Connect is a paid add-on to Five9 VCC and is not enabled by default. Contact your Five9
+> Account Manager to enable it for your domain before starting this integration.
 
-Both teams should agree on the transfer phone number, the header names sent in each direction, the
-routing values, and the test plan before configuration begins.
+> **Note**
+>
+> Both teams should agree on the transfer phone number, the header names sent in each direction, the
+> routing values, and the test plan before configuration begins.
 
 ## ElevenLabs setup
 
@@ -84,11 +90,13 @@ Five9 can send call metadata as SIP `X-` headers on the INVITE. Header names are
 
 Use these variables in agent prompts, first messages, and tools to personalize the conversation.
 
-The reserved headers `X-Call-ID` and `X-Caller-ID` map to the `system__call_sid` and
-`system__caller_id` [system dynamic variables](/docs/eleven-agents/customization/personalization/dynamic-variables#system-dynamic-variables).
-Five9 sends the unhyphenated `X-CallID` and `X-CallANI`, which normalize to `sip_callid` and
-`sip_callani` instead. Confirm which variables are populated during test calls before referencing
-them in prompts.
+> **Note**
+>
+> The reserved headers `X-Call-ID` and `X-Caller-ID` map to the `system__call_sid` and
+> `system__caller_id` [system dynamic variables](/docs/eleven-agents/customization/personalization/dynamic-variables#system-dynamic-variables).
+> Five9 sends the unhyphenated `X-CallID` and `X-CallANI`, which normalize to `sip_callid` and
+> `sip_callani` instead. Confirm which variables are populated during test calls before referencing
+> them in prompts.
 
 ## Headers returned from ElevenLabs to Five9
 

@@ -27,13 +27,11 @@ Reference: https://elevenlabs.io/docs/api-reference/triage-tickets/create
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a CreateAgentConversationTicketRequestModel.
 
 - `conversation_id` (string, required) — Conversation this ticket is about.
-- `qa_comment` (string, optional, nullable) — The QA finding covering the whole conversation.
-- `turn_comments` (list of object, optional) — Optional turn-level comments on what went wrong.
-  - `turn_index` (integer, required) — Zero-based index of the transcript turn this comment refers to.
-  - `comment` (string, required) — What went wrong at this turn.
+- `qa_comment` (string, optional, nullable) — The issue this ticket is about, covering the whole conversation rather than a single turn.
+- `turn_comments` (list of TurnCommentRequestModel, optional) — Optional turn-level comments on what went wrong.
 
 ## Response
 
@@ -53,15 +51,8 @@ Successful Response
 - `first_seen_unix_secs` (integer, required, nullable)
 - `last_seen_unix_secs` (integer, required, nullable)
 - `qa_comment` (string, required, nullable)
-- `ticket_comments` (list of object, required)
-  - `comment` (string, required)
-  - `created_at_unix_secs` (integer, required)
-  - `owner_user_id` (string, required, nullable)
-- `turn_comments` (list of object, required)
-  - `turn_index` (integer, required)
-  - `comment` (string, required)
-  - `created_at_unix_secs` (integer, required)
-  - `owner_user_id` (string, required, nullable)
+- `ticket_comments` (list of TicketCommentResponseModel, required)
+- `turn_comments` (list of TurnCommentResponseModel, required)
 - `status` (enum, required)
   - Allowed values: `open`, `in_progress`, `resolved`, `merged`
 - `source` (enum, required)
@@ -76,10 +67,35 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### TurnCommentRequestModel
+
+- `turn_index` (integer, required) — Zero-based index of the transcript turn this comment refers to.
+- `comment` (string, required) — What went wrong at this turn.
+
+### TicketCommentResponseModel
+
+- `comment` (string, required)
+- `created_at_unix_secs` (integer, required)
+- `owner_user_id` (string, required, nullable)
+
+### TurnCommentResponseModel
+
+- `turn_index` (integer, required)
+- `comment` (string, required)
+- `created_at_unix_secs` (integer, required)
+- `owner_user_id` (string, required, nullable)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

@@ -13,16 +13,18 @@ path: docs/eleven-agents/phone-numbers/microsoft-teams/widget-tab
 Host a small HTML page that loads the [agent widget](/docs/eleven-agents/customization/widget) and surface it as a **Teams tab**. Users open the tab and talk to the agent in the Teams client — no phone number or telephony. This is the lightest-weight approach; use it for internal self-service assistants and demos.
 
 ![The ElevenLabs agent widget open in a Microsoft Teams
-tab](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8fedd2110258c6751012619128601214cdfcd4a11aaa832f62050c00c52106e7/assets/images/conversational-ai/teams-widget-tab.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113249Z&X-Amz-Expires=604800&X-Amz-Signature=70dc44ff408857e008accec957c69e71831767f1e006af262876792bfb546cbd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+tab](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8fedd2110258c6751012619128601214cdfcd4a11aaa832f62050c00c52106e7/assets/images/conversational-ai/teams-widget-tab.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113203Z&X-Amz-Expires=604800&X-Amz-Signature=a4e5136e833492b51da091b48efa7d9010f6b4b9c1cef7dfd0a9ed5745c6fdbd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## How it works
 
 The widget is a web component. Teams renders a tab's `contentUrl` inside a webview (iframe), so the widget runs exactly as it would on a website — including microphone capture, provided the page is allowed to embed in Teams and is granted media permission.
 
-![Teams user opens a tab whose webview iframes a hosted page running the ElevenLabs agent widget, which streams audio to ElevenLabs](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c90698c01d5e874b3a3fa8a07af5ef64620e0fe8a602155aed31bd3f1ce06273/assets/images/conversational-ai/teams-widget-architecture.svg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113249Z&X-Amz-Expires=604800&X-Amz-Signature=a85b47faf27e904adbc7552b2d553b30402765b3830003b4f919b30bec6bd904&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Teams user opens a tab whose webview iframes a hosted page running the ElevenLabs agent widget, which streams audio to ElevenLabs](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c90698c01d5e874b3a3fa8a07af5ef64620e0fe8a602155aed31bd3f1ce06273/assets/images/conversational-ai/teams-widget-architecture.svg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113203Z&X-Amz-Expires=604800&X-Amz-Signature=9ad52fedd74bf8a9c3e635d122e7a3fc0b12e29a4f4d1e275d40c3ba1231a61d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-Teams will **not** execute a raw `<script>` pasted into a chat, message, or Loop page. The widget
-script must live on a page **you host**, which Teams then embeds as a tab.
+> **Note**
+>
+> Teams will **not** execute a raw `<script>` pasted into a chat, message, or Loop page. The widget
+> script must live on a page **you host**, which Teams then embeds as a tab.
 
 ## Requirements
 
@@ -59,12 +61,16 @@ Create `agent-widget.html` with the widget embed and your agent ID:
 
 Deploy it to your HTTPS host and confirm it loads and the mic works in a normal browser first.
 
-If your workspace is on a [data residency](/docs/overview/administration/data-residency)
-environment, add the widget's `server-location` attribute so it connects to your region — see
-[widget customization](/docs/eleven-agents/customization/widget) for the supported values.
+> **Note**
+>
+> If your workspace is on a [data residency](/docs/overview/administration/data-residency)
+> environment, add the widget's `server-location` attribute so it connects to your region — see
+> [widget customization](/docs/eleven-agents/customization/widget) for the supported values.
 
-Test the page standalone in a browser before touching Teams. If the mic doesn't work there, it
-won't work in the Teams webview either.
+> **Tip**
+>
+> Test the page standalone in a browser before touching Teams. If the mic doesn't work there, it
+> won't work in the Teams webview either.
 
 ## Step 2 — Add it to Teams
 
@@ -74,9 +80,11 @@ You have two options, in increasing order of reliability for voice.
 
 In a chat or channel, **+ Add a tab → Website**, paste your HTTPS URL, and save.
 
-The built-in **Website** tab sometimes opens the page as an external link rather than embedding it
-— and even when embedded, microphone access in the Teams desktop webview can be blocked. If voice
-fails, use Option B.
+> **Warning**
+>
+> The built-in **Website** tab sometimes opens the page as an external link rather than embedding it
+> — and even when embedded, microphone access in the Teams desktop webview can be blocked. If voice
+> fails, use Option B.
 
 ### Option B — Custom tab app (recommended for voice)
 
@@ -135,17 +143,19 @@ zip -j voice-agent.zip manifest.json color.png outline.png
 
 In Teams: **Apps → Manage your apps → Upload an app → Upload a custom app**, select `voice-agent.zip`, then open the **Voice Agent** tab and grant microphone access when prompted.
 
-Teams admins can skip the client UI and publish the app to the whole org from PowerShell — it then shows up for everyone under **Apps → Built for your org**:
-
-```powershell
-Connect-MicrosoftTeams
-New-TeamsApp -DistributionMethod organization -Path ./voice-agent.zip
-```
+> **Tip**
+>
+> Teams admins can skip the client UI and publish the app to the whole org from PowerShell — it then shows up for everyone under **Apps → Built for your org**:
+>
+> ```powershell
+> Connect-MicrosoftTeams
+> New-TeamsApp -DistributionMethod organization -Path ./voice-agent.zip
+> ```
 
 If no prompt appears, open the tab's dropdown and choose **App permissions** to grant microphone access manually:
 
 ![The Teams tab dropdown menu with App permissions
-highlighted](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/308d95d230864371f4ad2cd8b329c503e672878788a1fdcbc49ab2ce6aa8ce7d/assets/images/conversational-ai/teams-widget-app-permissions.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113249Z&X-Amz-Expires=604800&X-Amz-Signature=a9c19bd82968e3fc3fd716ee8b3b92eff083dc699410d7248bcd1849b047dab6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+highlighted](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/308d95d230864371f4ad2cd8b329c503e672878788a1fdcbc49ab2ce6aa8ce7d/assets/images/conversational-ai/teams-widget-app-permissions.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113203Z&X-Amz-Expires=604800&X-Amz-Signature=a8d2efe97a2fdb1f1d8a45f7b42bff9017e8a2cc3192837d464f275252b178b5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Step 3 — Allow Teams to embed the page
 

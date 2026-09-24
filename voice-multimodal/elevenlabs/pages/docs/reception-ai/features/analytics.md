@@ -61,5 +61,7 @@ An upward trend in new clients indicates the receptionist is handling first-time
 
 Revenue is calculated from booked services and their prices. It reflects scheduled value, not collected payments.
 
-Check analytics weekly to spot trends early. A drop in call-to-booking rate might mean your
-availability is too limited or your services need updating.
+> **Tip**
+>
+> Check analytics weekly to spot trends early. A drop in call-to-booking rate might mean your
+> availability is too limited or your services need updating.

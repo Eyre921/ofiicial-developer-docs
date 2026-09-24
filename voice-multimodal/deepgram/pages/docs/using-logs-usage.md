@@ -10,7 +10,9 @@ path: docs/using-logs-usage
 
 # Logs & Usage Data
 
-You can obtain up to 90 days of log usage data from Deepgram. If you need log usage data for a longer period of time you can use our [Usage API ](/reference/manage/requests/list)to programmatically fetch usage data on an interval and store it for retrieval as needed.
+> **Info**
+>
+> You can obtain up to 90 days of log usage data from Deepgram. If you need log usage data for a longer period of time you can use our [Usage API ](/reference/manage/requests/list)to programmatically fetch usage data on an interval and store it for retrieval as needed.
 
 # Using Console Logs & Usage
 
@@ -40,7 +42,9 @@ You can use the Deepgram API to programmatically fetch usage data. Please refer 
 
 This also enables exporting and reporting on your usage, which can be imported into other tools of your choosing, such as Tableau, Grafana, or Datadog.
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 ### Get All Requests
 
@@ -78,7 +82,9 @@ A response will be returned as such:
 
 ### Summarize Usage
 
-Summarized usage data is not limited to 90 days.
+> **Info**
+>
+> Summarized usage data is not limited to 90 days.
 
 Replace `YOUR_PROJECT_ID`with your Deepgram project id.
 

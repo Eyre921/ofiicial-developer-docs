@@ -35,11 +35,7 @@ Reference: https://elevenlabs.io/docs/api-reference/voices/accents/get
 
 Successful Response
 
-- `accents` (list of object, required) — A list of available voice accents.
-  - `accent` (string, required) — The accent value used for filtering shared voices via the `accent` query parameter on `GET /v1/shared-voices`.
-  - `language` (string, required) — The language code this accent belongs to, e.g. `en`.
-  - `code` (string, required) — The full accent code, e.g. `en-american`.
-  - `name` (string, required) — The human-readable accent name, e.g. `American`.
+- `accents` (list of VoiceAccentResponseModel, required) — A list of available voice accents.
 
 ## Errors
 
@@ -47,10 +43,24 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### VoiceAccentResponseModel
+
+- `accent` (string, required) — The accent value used for filtering shared voices via the `accent` query parameter on `GET /v1/shared-voices`.
+- `language` (string, required) — The language code this accent belongs to, e.g. `en`.
+- `code` (string, required) — The full accent code, e.g. `en-american`.
+- `name` (string, required) — The human-readable accent name, e.g. `American`.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

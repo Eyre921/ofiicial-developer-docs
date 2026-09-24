@@ -35,13 +35,7 @@ Reference: https://elevenlabs.io/docs/api-reference/conversations/tags/list
 
 Successful Response
 
-- `conversation_tags` (list of object, required)
-  - `tag_id` (string, required)
-  - `workspace_id` (string, required)
-  - `owner_user_id` (string, required)
-  - `title` (string, required)
-  - `description` (string, required, nullable)
-  - `created_at_unix_secs` (integer, required)
+- `conversation_tags` (list of ConversationTagResponseModel, required)
 - `has_more` (boolean, required)
 - `next_cursor` (string, optional, nullable)
 
@@ -51,10 +45,26 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ConversationTagResponseModel
+
+- `tag_id` (string, required)
+- `workspace_id` (string, required)
+- `owner_user_id` (string, required)
+- `title` (string, required)
+- `description` (string, required, nullable)
+- `created_at_unix_secs` (integer, required)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

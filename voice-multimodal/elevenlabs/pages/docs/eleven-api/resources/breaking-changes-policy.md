@@ -12,7 +12,9 @@ path: docs/eleven-api/resources/breaking-changes-policy
 
 In order to balance rapid development and maintaining stability, ElevenLabs has specific guidelines on what are considered breaking changes within the scope of the API. Outlined here are what we do and do not consider breaking changes.
 
-All API updates and changes are published in the [changelog](/docs/changelog) on a weekly cadence.
+> **Note**
+>
+> All API updates and changes are published in the [changelog](/docs/changelog) on a weekly cadence.
 
 ## Response and Schema Changes
 

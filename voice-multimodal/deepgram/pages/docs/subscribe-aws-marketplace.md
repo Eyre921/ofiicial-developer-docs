@@ -42,9 +42,13 @@ Once the subscription is active, continue to [Find the Model Package ARN](#find-
 
 If you provision infrastructure as code, you can subscribe to a Deepgram SageMaker product entirely through the AWS Marketplace API instead of the console. This section is an alternative to [subscribing through the console](#subscribe-through-the-aws-marketplace-console) — use whichever method fits your workflow, then continue to [Find the Model Package ARN](#find-the-model-package-arn).
 
-The steps below use the AWS CLI, but AWS also publishes [SDKs for many languages](https://aws.amazon.com/developer/tools/) — including Python (Boto3), Node.js, Java, Go, and .NET — that expose the same Marketplace Discovery and Agreement Service APIs. Use whichever SDK fits your stack to build your own subscription automations and scripts.
+> **Note**
+>
+> The steps below use the AWS CLI, but AWS also publishes [SDKs for many languages](https://aws.amazon.com/developer/tools/) — including Python (Boto3), Node.js, Java, Go, and .NET — that expose the same Marketplace Discovery and Agreement Service APIs. Use whichever SDK fits your stack to build your own subscription automations and scripts.
 
-Subscribing creates a billing agreement on your AWS account. You are not charged until you deploy a SageMaker Endpoint and send it traffic — the usage-based pricing term has no upfront cost — but `AcceptAgreementRequest` (the last step below) is not a dry run. It creates a real, active agreement.
+> **Info**
+>
+> Subscribing creates a billing agreement on your AWS account. You are not charged until you deploy a SageMaker Endpoint and send it traffic — the usage-based pricing term has no upfront cost — but `AcceptAgreementRequest` (the last step below) is not a dry run. It creates a real, active agreement.
 
 ### Additional permissions
 
@@ -146,7 +150,9 @@ Returns an `agreementRequestId` and a `chargeSummary`. For usage-based pricing, 
 
 Calls the [`CreateAgreementRequest`](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-agreements_CreateAgreementRequest.html) action of the [AWS Marketplace Agreement Service API](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_Operations_AWS_Marketplace_Agreement_Service.html).
 
-`FreeTrialPricingTerm` can be accepted only once per product. If your account has already used the trial for this product, omit that term's `id` from `requestedTerms` — including it again returns a `ValidationException`. If your account already has an active agreement for this product at all, the whole call fails with `ValidationException` / `UNSUPPORTED_ACTION` ("This action is not supported when an active agreement exists on the same resourceId"). Check first with the [`SearchAgreements`](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-agreements_SearchAgreements.html) action: `aws marketplace-agreement search-agreements --region us-east-1 --catalog AWSMarketplace --filters '[{"name":"PartyType","values":["Acceptor"]},{"name":"AgreementType","values":["PurchaseAgreement"]},{"name":"ResourceIdentifier","values":["<productId>"]}]'`. `SearchAgreements` returns `EXPIRED`, `CANCELLED`, and `REPLACED` agreements as well as `ACTIVE` ones, so check the `status` of each result: only an agreement with `"status": "ACTIVE"` means you're subscribed. If one exists, skip to [Find the Model Package ARN](#find-the-model-package-arn).
+> **Warning**
+>
+> `FreeTrialPricingTerm` can be accepted only once per product. If your account has already used the trial for this product, omit that term's `id` from `requestedTerms` — including it again returns a `ValidationException`. If your account already has an active agreement for this product at all, the whole call fails with `ValidationException` / `UNSUPPORTED_ACTION` ("This action is not supported when an active agreement exists on the same resourceId"). Check first with the [`SearchAgreements`](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-agreements_SearchAgreements.html) action: `aws marketplace-agreement search-agreements --region us-east-1 --catalog AWSMarketplace --filters '[{"name":"PartyType","values":["Acceptor"]},{"name":"AgreementType","values":["PurchaseAgreement"]},{"name":"ResourceIdentifier","values":["<productId>"]}]'`. `SearchAgreements` returns `EXPIRED`, `CANCELLED`, and `REPLACED` agreements as well as `ACTIVE` ones, so check the `status` of each result: only an agreement with `"status": "ACTIVE"` means you're subscribed. If one exists, skip to [Find the Model Package ARN](#find-the-model-package-arn).
 
 #### Accept the quote to subscribe
 
@@ -198,7 +204,9 @@ uv run resolve_model_package_arn.py nova-3-mono-streaming --region us-east-2 --v
 
 The script prints the ARN together with the version's `SupportedRealtimeInferenceInstanceTypes`, so you can confirm your planned instance types before deploying. Pass `--list-versions` to see the available versions of a product first.
 
-The script calls the same read-only Marketplace operation the **Manage subscriptions** console uses to render the **Model ARNs** list. That operation is not part of the documented AWS API, so if the script fails, fall back to the console steps above. The documented `aws marketplace-discovery list-fulfillment-options --region us-east-1 --product-id <product-id>` command lists a product's versions, release notes, and recommended instance type, but does not return the Model Package ARN.
+> **Note**
+>
+> The script calls the same read-only Marketplace operation the **Manage subscriptions** console uses to render the **Model ARNs** list. That operation is not part of the documented AWS API, so if the script fails, fall back to the console steps above. The documented `aws marketplace-discovery list-fulfillment-options --region us-east-1 --product-id <product-id>` command lists a product's versions, release notes, and recommended instance type, but does not return the Model Package ARN.
 
 ## Private offers
 

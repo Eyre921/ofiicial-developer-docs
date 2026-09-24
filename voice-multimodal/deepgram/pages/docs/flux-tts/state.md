@@ -55,7 +55,9 @@ stateDiagram-v2
 \
 
 
-**Voice consistency carries across turns.** The model keeps conversational state across the turns it generates, so prosody stays consistent from turn to turn — with no API surface to manage. See [Cross-Turn Context](/docs/flux-tts/context).
+> **Info**
+>
+> **Voice consistency carries across turns.** The model keeps conversational state across the turns it generates, so prosody stays consistent from turn to turn — with no API surface to manage. See [Cross-Turn Context](/docs/flux-tts/context).
 
 ## Key rules
 

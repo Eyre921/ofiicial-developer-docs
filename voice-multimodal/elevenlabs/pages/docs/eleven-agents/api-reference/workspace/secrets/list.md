@@ -37,50 +37,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/secr
 
 Successful Response
 
-- `secrets` (list of object, required)
-  - `type` ("stored", required)
-  - `secret_id` (string, required)
-  - `name` (string, required)
-  - `used_by` (object, required)
-    - `tools` (list of object, required)
-      - `type`: `available`
-        - `access_level` (enum, required)
-          - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-        - `created_at_unix_secs` (integer, required)
-        - `id` (string, required)
-        - `name` (string, required)
-      - `type`: `unknown`
-        - `id` (string, required)
-    - `agents` (list of object, required)
-      - `type`: `available`
-        - `access_level` (enum, required)
-          - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-        - `created_at_unix_secs` (integer, required)
-        - `id` (string, required)
-        - `name` (string, required)
-        - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
-      - `type`: `unknown`
-        - `id` (string, required)
-        - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
-    - `others` (list of "conversation_initiation_webhook", required)
-    - `tools_has_more` (boolean, optional, default: false) — Whether there are more tool dependents beyond the returned preview
-    - `agents_has_more` (boolean, optional, default: false) — Whether there are more agent dependents beyond the returned preview
-    - `phone_numbers` (list of object, optional)
-      - `phone_number_id` (string, required)
-      - `phone_number` (string, required)
-      - `label` (string, required)
-      - `provider` (enum, required)
-        - Allowed values: `twilio`, `sip_trunk`, `exotel`
-    - `phone_numbers_has_more` (boolean, optional, default: false) — Whether there are more phone number dependents beyond the returned preview
-    - `mcp_servers` (list of object, optional)
-      - `type`: `available`
-        - `access_level` (enum, required)
-          - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-        - `created_at_unix_secs` (integer, required)
-        - `id` (string, required)
-        - `name` (string, required)
-      - `type`: `unknown`
-        - `id` (string, required)
+- `secrets` (list of ConvAiWorkspaceStoredSecretConfig, required)
 - `next_cursor` (string, optional) — Cursor for fetching the next page of secrets
 
 ## Errors
@@ -89,10 +46,78 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ConvAiWorkspaceStoredSecretConfig
+
+- `type` ("stored", required)
+- `secret_id` (string, required)
+- `name` (string, required)
+- `used_by` (ConvAiStoredSecretDependencies, required)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItem, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ConvAiStoredSecretDependencies
+
+- `tools` (list of ConvAiStoredSecretDependenciesToolsItem, required)
+- `agents` (list of ConvAiStoredSecretDependenciesAgentsItem, required)
+- `others` (list of "conversation_initiation_webhook", required)
+- `tools_has_more` (boolean, optional, default: false) — Whether there are more tool dependents beyond the returned preview
+- `agents_has_more` (boolean, optional, default: false) — Whether there are more agent dependents beyond the returned preview
+- `phone_numbers` (list of DependentPhoneNumberIdentifier, optional)
+- `phone_numbers_has_more` (boolean, optional, default: false) — Whether there are more phone number dependents beyond the returned preview
+- `mcp_servers` (list of ConvAiStoredSecretDependenciesMcpServersItem, optional)
+
+### ValidationErrorLocItem
+
+### ConvAiStoredSecretDependenciesToolsItem
+
+- `type`: `available`
+  - `access_level` (enum, required)
+    - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+  - `created_at_unix_secs` (integer, required)
+  - `id` (string, required)
+  - `name` (string, required)
+- `type`: `unknown`
+  - `id` (string, required)
+
+### ConvAiStoredSecretDependenciesAgentsItem
+
+- `type`: `available`
+  - `access_level` (enum, required)
+    - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+  - `created_at_unix_secs` (integer, required)
+  - `id` (string, required)
+  - `name` (string, required)
+  - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
+- `type`: `unknown`
+  - `id` (string, required)
+  - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
+
+### DependentPhoneNumberIdentifier
+
+- `phone_number_id` (string, required)
+- `phone_number` (string, required)
+- `label` (string, required)
+- `provider` (enum, required)
+  - Allowed values: `twilio`, `sip_trunk`, `exotel`
+
+### ConvAiStoredSecretDependenciesMcpServersItem
+
+- `type`: `available`
+  - `access_level` (enum, required)
+    - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+  - `created_at_unix_secs` (integer, required)
+  - `id` (string, required)
+  - `name` (string, required)
+- `type`: `unknown`
+  - `id` (string, required)
 
 ## Examples
 

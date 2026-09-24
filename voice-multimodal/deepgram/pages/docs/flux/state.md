@@ -46,9 +46,13 @@ stateDiagram-v2
 7. Every `EndOfTurn` event includes a `trigger` field — `model` (native detection), `manual` ([`ForceEndTurn`](/docs/flux/force-end-turn)), or `timeout` (`eot_timeout_ms`) — indicating what ended the turn.
 8. You can end the current turn at any time by sending a [`ForceEndTurn`](/docs/flux/force-end-turn) message. Flux emits an `EndOfTurn` with `trigger: "manual"` from any in-turn state.
 
-**Configuring Event Behavior**: The `EagerEndOfTurn` and `TurnResumed` events are only triggered when you set the `eager_eot_threshold` parameter. The `EndOfTurn` event behavior is controlled by `eot_threshold` and `eot_timeout_ms` parameters. See the [End-of-Turn Configuration](/docs/flux/configuration) for details on tuning these thresholds for your use case.
+> **Info**
+>
+> **Configuring Event Behavior**: The `EagerEndOfTurn` and `TurnResumed` events are only triggered when you set the `eager_eot_threshold` parameter. The `EndOfTurn` event behavior is controlled by `eot_threshold` and `eot_timeout_ms` parameters. See the [End-of-Turn Configuration](/docs/flux/configuration) for details on tuning these thresholds for your use case.
 
-**Barge-in and audio quality**: Flux's `StartOfTurn` event is the recommended way to trigger barge-in — it's more reliable than an external VAD because every `StartOfTurn` is guaranteed to contain a non-empty transcript. For guidance on echo cancellation, noise suppression, and other audio preprocessing that affects turn detection, see [Audio Preprocessing & Barge-In](/guides/deep-dives/audio-preprocessing-barge-in).
+> **Info**
+>
+> **Barge-in and audio quality**: Flux's `StartOfTurn` event is the recommended way to trigger barge-in — it's more reliable than an external VAD because every `StartOfTurn` is guaranteed to contain a non-empty transcript. For guidance on echo cancellation, noise suppression, and other audio preprocessing that affects turn detection, see [Audio Preprocessing & Barge-In](/guides/deep-dives/audio-preprocessing-barge-in).
 
 ## Turn Lifecycle Example
 

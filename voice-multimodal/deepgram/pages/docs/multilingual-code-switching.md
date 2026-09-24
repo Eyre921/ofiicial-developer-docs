@@ -16,7 +16,9 @@ Pre-recorded  Streaming:Nova  Specific languages only
 
 The Multilingual Codeswitching feature in Deepgram's API allows you to transcribe conversations where speakers switch between multiple languages. This guide will walk you through enabling this feature, how to use it with cURL, and how to analyze and interpret the response.
 
-Multilingual Code Switching is available on Nova-2, Nova-3, and Flux Multilingual (`flux-general-multi`). See [the list of supported languages](/docs/models-languages-overview) for each multilingual model.
+> **Info**
+>
+> Multilingual Code Switching is available on Nova-2, Nova-3, and Flux Multilingual (`flux-general-multi`). See [the list of supported languages](/docs/models-languages-overview) for each multilingual model.
 
 ## 1. Enable Feature
 
@@ -41,13 +43,17 @@ curl \
   --url 'https://api.deepgram.com/v1/listen?language=multi&model=nova-3
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 ### Streaming Audio
 
 To transcribe an audio stream, initiate a websocket connection, including the parameter `language=multi`. For instance:
 
-We recommend using an endpointing value of 100 ms for code-switching, `endpointing=100`.
+> **Info**
+>
+> We recommend using an endpointing value of 100 ms for code-switching, `endpointing=100`.
 
 ```
 wss://api.deepgram.com/v1/listen?language=multi&model=nova-3&sample_rate=44100&encoding=linear16&endpointing=100

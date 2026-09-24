@@ -4,6 +4,10 @@ source: https://upstash.com/docs/blob/overall/quickstart
 path: docs/blob/overall/quickstart
 ---
 
+import { AgentSetup } from "/snippets/agent-setup.jsx";
+
+<AgentSetup product="Blob" />
+
 Upstash Blob is S3-compatible object storage. `@upstash/blob` has a `Bucket` client for your server, and an upload handler plus React hooks that upload from the browser straight to storage. This page builds a working file picker on Next.js App Router. Other frameworks work the same way; see [Other frameworks](/docs/blob/uploads/upload-handler#other-frameworks).
 
 ***

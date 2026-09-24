@@ -16,9 +16,11 @@ This tutorial will guide you through creating a web client that can interact wit
 2. `npm` installed on your local system.
 3. We'll use Typescript for this tutorial, but you can use Javascript if you prefer.
 
-Looking for a complete example? Check out our [Next.js demo on GitHub](https://github.com/elevenlabs/examples/tree/main/agents/nextjs/quickstart).
+> **Note**
+>
+> Looking for a complete example? Check out our [Next.js demo on GitHub](https://github.com/elevenlabs/examples/tree/main/agents/nextjs/quickstart).
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c1bc26a84d079cebcdfe6b4eb602bd27476d5afc92419e9ddfb92b755ca8058e/assets/images/conversational-ai/nextjs-guide.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113321Z&X-Amz-Expires=604800&X-Amz-Signature=3f225665ceaf590b30e7e1f12761fdeab695619ed3ca11066238d4b5f4fea073&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c1bc26a84d079cebcdfe6b4eb602bd27476d5afc92419e9ddfb92b755ca8058e/assets/images/conversational-ai/nextjs-guide.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113227Z&X-Amz-Expires=604800&X-Amz-Signature=a07ed4a7df6f23bfa90460c9007c775ad263d30613a9540b43b45407f1972eeb&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Setup
 
@@ -52,7 +54,7 @@ Run the following command to start the development server and open the provided 
 npm run dev
 ```
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/537e2c5609df75b2fd15bf3a37c86da75410de053dfb0c76267a72d7b8d9914a/assets/images/conversational-ai/nextjs-splash.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113321Z&X-Amz-Expires=604800&X-Amz-Signature=6038ca42b6cf081a38e3a0bd84477ddfadcbedc678df5efb61b4ad03c1bfa101&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/537e2c5609df75b2fd15bf3a37c86da75410de053dfb0c76267a72d7b8d9914a/assets/images/conversational-ai/nextjs-splash.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113227Z&X-Amz-Expires=604800&X-Amz-Signature=54d3ef9c79601d503d30720afdd13085838d054801613e3be9677bbc18d189b7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Implement ElevenLabs Agents
 
@@ -155,8 +157,10 @@ export default function Home() {
 
 #### (Optional) Authenticate the agents with a signed URL
 
-This authentication step is only required for private agents. If you're using a public agent, you
-can skip this section and directly use the `agentId` in the `startSession` call.
+> **Note**
+>
+> This authentication step is only required for private agents. If you're using a public agent, you
+> can skip this section and directly use the `agentId` in the `startSession` call.
 
 If you're using a private agent that requires authentication, you'll need to generate
 a signed URL from your server. This section explains how to set this up.
@@ -176,8 +180,10 @@ ELEVENLABS_API_KEY=your-api-key-here
 NEXT_PUBLIC_AGENT_ID=your-agent-id-here
 ```
 
-1. Make sure to add `.env.local` to your `.gitignore` file to prevent accidentally committing sensitive credentials to version control.
-2. Never expose your API key in the client-side code. Always keep it secure on the server.
+> **Warning**
+>
+> 1. Make sure to add `.env.local` to your `.gitignore` file to prevent accidentally committing sensitive credentials to version control.
+> 2. Never expose your API key in the client-side code. Always keep it secure on the server.
 
 #### Create an API route
 
@@ -255,7 +261,9 @@ export function Conversation() {
 }
 ```
 
-Signed URLs expire after a short period. However, any conversations initiated before expiration will continue uninterrupted. In a production environment, implement proper error handling and URL refresh logic for starting new conversations.
+> **Warning**
+>
+> Signed URLs expire after a short period. However, any conversations initiated before expiration will continue uninterrupted. In a production environment, implement proper error handling and URL refresh logic for starting new conversations.
 
 ## Next Steps
 
@@ -266,5 +274,7 @@ Now that you have a basic implementation, you can:
 3. Add a chat history display
 4. Customize the UI to match your brand
 
-For more advanced features and customization options, check out the
-[@elevenlabs/react](https://www.npmjs.com/package/@elevenlabs/react) package.
+> **Info**
+>
+> For more advanced features and customization options, check out the
+> [@elevenlabs/react](https://www.npmjs.com/package/@elevenlabs/react) package.

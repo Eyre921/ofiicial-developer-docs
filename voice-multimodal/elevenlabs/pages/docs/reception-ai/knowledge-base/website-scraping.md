@@ -31,5 +31,7 @@ Once complete, you can view a list of all scraped pages with extracted content s
 
 Websites change over time. Use **Reprocess** on a knowledge source to re-scan your website and update the receptionist's knowledge. Run this after making significant content changes to your site.
 
-After updating pricing, services, or policies on your website, reprocess your knowledge source to
-ensure your receptionist has the latest information.
+> **Tip**
+>
+> After updating pricing, services, or policies on your website, reprocess your knowledge source to
+> ensure your receptionist has the latest information.

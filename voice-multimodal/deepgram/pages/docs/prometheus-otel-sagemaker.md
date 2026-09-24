@@ -14,7 +14,9 @@ path: docs/prometheus-otel-sagemaker
 
 Amazon SageMaker **detailed observability** runs an AWS-managed [OpenTelemetry (OTel) Collector](https://opentelemetry.io/docs/collector/) on every instance backing your endpoint. The collector gathers per-GPU accelerator metrics, host-level system metrics, and Prometheus metrics scraped from the model container, and exports them to CloudWatch, where you query them with [PromQL](https://prometheus.io/docs/prometheus/latest/querying/basics/). This gives you finer-grained visibility than the standard CloudWatch metrics covered in [Observability for Amazon SageMaker](/docs/observability-sagemaker) — including per-GPU utilization on multi-GPU instances and metrics emitted directly by the Deepgram engine.
 
-This page covers turning the feature on and querying the results for Deepgram workloads. For full setup details — including account prerequisites, IAM permissions, and connecting third-party observability tools — see the AWS documentation: [Detailed observability for SageMaker AI endpoints](https://docs.aws.amazon.com/sagemaker/latest/dg/monitoring-cloudwatch-detailed-observability.html). For the standard endpoint metrics available without this feature, see [Observability for Amazon SageMaker](/docs/observability-sagemaker).
+> **Info**
+>
+> This page covers turning the feature on and querying the results for Deepgram workloads. For full setup details — including account prerequisites, IAM permissions, and connecting third-party observability tools — see the AWS documentation: [Detailed observability for SageMaker AI endpoints](https://docs.aws.amazon.com/sagemaker/latest/dg/monitoring-cloudwatch-detailed-observability.html). For the standard endpoint metrics available without this feature, see [Observability for Amazon SageMaker](/docs/observability-sagemaker).
 
 ## What you get
 
@@ -65,8 +67,10 @@ sagemaker.create_endpoint_config(
 
 To change the setting on an endpoint that is already serving traffic — including opting out with `"EnableDetailedObservability": false` — create a new endpoint configuration with the same production variants plus `MetricsConfig`, then run `update-endpoint`. The update is a blue/green deployment and the endpoint stays `InService`; see [Update an Amazon SageMaker Endpoint](/docs/update-amazon-sagemaker-endpoint).
 
-* `EnableDetailedObservability` requires a recent AWS SDK — botocore/boto3 `1.43.49` or later, or an equally recent AWS CLI. Older clients reject the parameter.
-* The feature has account-level prerequisites (CloudWatch OTel-enriched metrics must be active in the account). Follow the [AWS getting-started guide](https://docs.aws.amazon.com/sagemaker/latest/dg/monitoring-detailed-observability-getting-started.html) to enable them.
+> **Note**
+>
+> * `EnableDetailedObservability` requires a recent AWS SDK — botocore/boto3 `1.43.49` or later, or an equally recent AWS CLI. Older clients reject the parameter.
+> * The feature has account-level prerequisites (CloudWatch OTel-enriched metrics must be active in the account). Follow the [AWS getting-started guide](https://docs.aws.amazon.com/sagemaker/latest/dg/monitoring-detailed-observability-getting-started.html) to enable them.
 
 ## Query with PromQL
 
@@ -86,7 +90,9 @@ Then filter to one endpoint. The SageMaker resource labels use OTel dotted names
 DCGM_FI_DEV_GPU_UTIL{"aws.sagemaker.endpoint.name"="YOUR_ENDPOINT_NAME"}
 ```
 
-Substituting underscores for the dots — `aws_sagemaker_endpoint_name` — is valid PromQL that matches no series. The query succeeds and returns an empty result rather than an error, which is easy to misread as the metric not being published. Always quote the dotted label name.
+> **Warning**
+>
+> Substituting underscores for the dots — `aws_sagemaker_endpoint_name` — is valid PromQL that matches no series. The query succeeds and returns an empty result rather than an error, which is easy to misread as the metric not being published. Always quote the dotted label name.
 
 ### Prometheus-compatible HTTP API
 
@@ -106,8 +112,10 @@ awscurl --service monitoring --region YOUR_AWS_REGION \
 
 Because the API is Prometheus-compatible, you can also point Grafana or other Prometheus-native observability tools at it. See the [AWS documentation](https://docs.aws.amazon.com/sagemaker/latest/dg/monitoring-cloudwatch-detailed-observability.html) for supported integrations.
 
-* Detailed-observability metrics live in the OTel metric store only — they do not appear in `aws cloudwatch list-metrics` or the classic metric namespaces. Use PromQL to query them.
-* `/metrics` always responds, even when the container's internal API and Engine metric sources are not yet reachable. In that case it serves the container's own health gauges alone, so a scrape during startup returns health rather than failing.
+> **Note**
+>
+> * Detailed-observability metrics live in the OTel metric store only — they do not appear in `aws cloudwatch list-metrics` or the classic metric namespaces. Use PromQL to query them.
+> * `/metrics` always responds, even when the container's internal API and Engine metric sources are not yet reachable. In that case it serves the container's own health gauges alone, so a scrape during startup returns health rather than failing.
 
 ### Check endpoint health
 

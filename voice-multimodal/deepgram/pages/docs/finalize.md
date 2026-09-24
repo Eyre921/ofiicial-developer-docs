@@ -53,7 +53,9 @@ If you specified a `channel` to be finalized, use the response's `channel_index`
 }
 ```
 
-In most cases, you will receive this response, but it is not guaranteed if there is no significant amount of audio data to process.
+> **Info**
+>
+> In most cases, you will receive this response, but it is not guaranteed if there is no significant amount of audio data to process.
 
 ## Language-Specific Implementations
 

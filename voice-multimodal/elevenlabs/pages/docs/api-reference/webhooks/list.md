@@ -34,22 +34,7 @@ Reference: https://elevenlabs.io/docs/api-reference/webhooks/list
 
 Successful Response
 
-- `webhooks` (list of object, required) — List of webhooks currently configured for the workspace
-  - `name` (string, required) — The display name for this webhook.
-  - `webhook_id` (string, required) — The unique ID for this webhook.
-  - `webhook_url` (string, required) — The HTTPS callback URL that is called when this webhook is triggered in the platform.
-  - `is_disabled` (boolean, required) — Whether the webhook has been manually disabled by a user.
-  - `is_auto_disabled` (boolean, required) — Whether the webhook has been automatically disabled due to repeated consecutive failures over a long period of time.
-  - `created_at_unix` (integer, required) — Original creation time of the webhook.
-  - `auth_type` (enum, required) — The authentication mode used to secure the webhook.
-    - Allowed values: `hmac`, `oauth2`, `mtls`
-  - `usage` (list of object, optional, nullable) — The list of products that are currently configured to trigger this webhook.
-    - `usage_type` (enum, required)
-      - Allowed values: `ConvAI Agent Settings`, `ConvAI Settings`, `Voice Library Removal Notices`, `Speech to Text`, `Agent QA Evaluations`, `ConvAI Alerting`, `Flows`, `Dubbing`
-  - `events` (list of enum, optional, nullable) — The workspace-level events this webhook is currently subscribed to. Only populated when usages are requested.
-    - Allowed values: `voice_library_removal_notice`, `speech_to_text`, `agent_qa`, `flows`
-  - `most_recent_failure_error_code` (integer, optional, nullable) — The most recent error code returned from the callback URL.
-  - `most_recent_failure_timestamp` (integer, optional, nullable) — The most recent time the webhook failed, failures are any non-200 codes returned by the callback URL.
+- `webhooks` (list of WorkspaceWebhookResponseModel, required) — List of webhooks currently configured for the workspace
 
 ## Errors
 
@@ -57,10 +42,38 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### WorkspaceWebhookResponseModel
+
+- `name` (string, required) — The display name for this webhook.
+- `webhook_id` (string, required) — The unique ID for this webhook.
+- `webhook_url` (string, required) — The HTTPS callback URL that is called when this webhook is triggered in the platform.
+- `is_disabled` (boolean, required) — Whether the webhook has been manually disabled by a user.
+- `is_auto_disabled` (boolean, required) — Whether the webhook has been automatically disabled due to repeated consecutive failures over a long period of time.
+- `created_at_unix` (integer, required) — Original creation time of the webhook.
+- `auth_type` (enum, required) — The authentication mode used to secure the webhook.
+  - Allowed values: `hmac`, `oauth2`, `mtls`
+- `usage` (list of WorkspaceWebhookUsageResponseModel, optional, nullable) — The list of products that are currently configured to trigger this webhook.
+- `events` (list of enum, optional, nullable) — The workspace-level events this webhook is currently subscribed to. Only populated when usages are requested.
+  - Allowed values: `voice_library_removal_notice`, `speech_to_text`, `agent_qa`, `flows`
+- `most_recent_failure_error_code` (integer, optional, nullable) — The most recent error code returned from the callback URL.
+- `most_recent_failure_timestamp` (integer, optional, nullable) — The most recent time the webhook failed, failures are any non-200 codes returned by the callback URL.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### WorkspaceWebhookUsageResponseModel
+
+- `usage_type` (enum, required)
+  - Allowed values: `ConvAI Agent Settings`, `ConvAI Settings`, `Voice Library Removal Notices`, `Speech to Text`, `Agent QA Evaluations`, `ConvAI Alerting`, `Flows`, `Dubbing`
+
+### ValidationErrorLocItems
 
 ## Examples
 

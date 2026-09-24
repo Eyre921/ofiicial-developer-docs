@@ -40,39 +40,8 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/branches/list
 
 Successful Response
 
-- `results` (list of object, required)
-  - `id` (string, required)
-  - `name` (string, required)
-  - `agent_id` (string, required)
-  - `description` (string, required)
-  - `created_at` (integer, required)
-  - `last_committed_at` (integer, required)
-  - `is_archived` (boolean, required)
-  - `protection_status` (enum, optional, default: writer_perms_required)
-    - Allowed values: `writer_perms_required`, `admin_perms_required`
-  - `access_info` (object, optional, nullable) — Access information for the branch
-    - `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
-    - `creator_name` (string, required) — Name of the agent's creator
-    - `creator_email` (string, required) — Email of the agent's creator
-    - `role` (enum, required) — The role of the user making the request
-      - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-    - `anonymous_access_level_override` (enum, optional, nullable) — The access level for anonymous users. If None, the resource is not shared publicly.
-      - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-    - `access_source` (enum, optional, nullable) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
-      - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
-  - `current_live_percentage` (double, optional, default: 0) — Percentage of traffic live on the branch
-  - `parent_branch_id` (string, optional, nullable) — ID of the parent branch
-  - `draft_exists` (boolean, optional, default: false) — Whether a draft exists for the branch
-  - `draft_created_at` (integer, optional, nullable) — Unix seconds when the caller's draft on this branch was first created, or null when they have no draft. A draft created before last_committed_at was written against a config the branch has since moved past, so it may not reflect the current one.
-  - `draft_is_behind_tip` (boolean, optional, default: false) — Whether the caller's draft on this branch was created before the branch's last commit, meaning it was written against a config the branch has since moved past and may not reflect the current one.
-  - `calls_7d` (integer, optional, default: 0) — Number of calls in the last 7 days
-  - `commits_ahead` (integer, optional, nullable) — Number of commits on this branch not yet on main, relative to their common ancestor. Null if it could not be computed (e.g. no common ancestor, or the branch history exceeds the comparison budget).
-  - `commits_behind` (integer, optional, nullable) — Number of commits on main not yet incorporated into this branch, relative to their common ancestor. Null if it could not be computed (e.g. no common ancestor, or the branch history exceeds the comparison budget).
-  - `merged_into_branch_id` (string, optional, nullable) — ID of the branch this branch's tip version was merged into, if any
-- `meta` (object, optional)
-  - `total` (integer, optional, nullable)
-  - `page` (integer, optional, nullable)
-  - `page_size` (integer, optional, nullable)
+- `results` (list of AgentBranchSummary, required)
+- `meta` (ListResponseMeta, optional)
 
 ## Errors
 
@@ -80,10 +49,57 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### AgentBranchSummary
+
+- `id` (string, required)
+- `name` (string, required)
+- `agent_id` (string, required)
+- `description` (string, required)
+- `created_at` (integer, required)
+- `last_committed_at` (integer, required)
+- `is_archived` (boolean, required)
+- `protection_status` (enum, optional, default: writer_perms_required)
+  - Allowed values: `writer_perms_required`, `admin_perms_required`
+- `access_info` (ResourceAccessInfo, optional, nullable) — Access information for the branch
+- `current_live_percentage` (double, optional, default: 0) — Percentage of traffic live on the branch
+- `parent_branch_id` (string, optional, nullable) — ID of the parent branch
+- `draft_exists` (boolean, optional, default: false) — Whether a draft exists for the branch
+- `draft_created_at` (integer, optional, nullable) — Unix seconds when the caller's draft on this branch was first created, or null when they have no draft. A draft created before last_committed_at was written against a config the branch has since moved past, so it may not reflect the current one.
+- `draft_is_behind_tip` (boolean, optional, default: false) — Whether the caller's draft on this branch was created before the branch's last commit, meaning it was written against a config the branch has since moved past and may not reflect the current one.
+- `calls_7d` (integer, optional, default: 0) — Number of calls in the last 7 days
+- `commits_ahead` (integer, optional, nullable) — Number of commits on this branch not yet on main, relative to their common ancestor. Null if it could not be computed (e.g. no common ancestor, or the branch history exceeds the comparison budget).
+- `commits_behind` (integer, optional, nullable) — Number of commits on main not yet incorporated into this branch, relative to their common ancestor. Null if it could not be computed (e.g. no common ancestor, or the branch history exceeds the comparison budget).
+- `merged_into_branch_id` (string, optional, nullable) — ID of the branch this branch's tip version was merged into, if any
+
+### ListResponseMeta
+
+- `total` (integer, optional, nullable)
+- `page` (integer, optional, nullable)
+- `page_size` (integer, optional, nullable)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ResourceAccessInfo
+
+- `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
+- `creator_name` (string, required) — Name of the agent's creator
+- `creator_email` (string, required) — Email of the agent's creator
+- `role` (enum, required) — The role of the user making the request
+  - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+- `anonymous_access_level_override` (enum, optional, nullable) — The access level for anonymous users. If None, the resource is not shared publicly.
+  - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+- `access_source` (enum, optional, nullable) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
+  - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
+
+### ValidationErrorLocItems
 
 ## Examples
 

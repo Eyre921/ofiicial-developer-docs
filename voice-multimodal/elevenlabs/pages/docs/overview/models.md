@@ -100,7 +100,7 @@ Entity detection, 65 entity types
 
 Speech recognition fine-tuned for clinical audio
 
-18% fewer transcription errors on clinical audio than Scribe v2
+35% fewer transcription errors on clinical audio than Scribe v2
 
 Same accuracy on everyday speech as Scribe v2
 
@@ -160,10 +160,12 @@ The ElevenLabs API offers a range of audio models optimized for different use ca
 
 ### Deprecated models
 
-The `eleven_turbo_v2_5` and `eleven_turbo_v2` models are functionally equivalent to the
-`eleven_flash_v2_5` and `eleven_flash_v2` models respectively, except the latency on the Flash
-models is lower on average. We recommend using the Flash models over Turbo models in all use
-cases.
+> **Warning**
+>
+> The `eleven_turbo_v2_5` and `eleven_turbo_v2` models are functionally equivalent to the
+> `eleven_flash_v2_5` and `eleven_flash_v2` models respectively, except the latency on the Flash
+> models is lower on average. We recommend using the Flash models over Turbo models in all use
+> cases.
 
 | Model ID            | Description                                                     | Languages                                                                                                                                                                                       | Replacement model suggestion |
 | ------------------- | --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- |
@@ -332,7 +334,9 @@ The maximum number of characters supported in a single text-to-speech request va
 | `eleven_english_sts_v2`  | 10,000          | \~10 minutes               |
 | `eleven_english_sts_v1`  | 10,000          | \~10 minutes               |
 
-For longer content, consider splitting the input into multiple requests.
+> **Note**
+>
+> For longer content, consider splitting the input into multiple requests.
 
 ## Scribe v2
 
@@ -381,15 +385,17 @@ Read more about Scribe v2 Realtime [here](/docs/overview/capabilities/speech-to-
 
 Scribe v2 Medical is a batch speech recognition model specialized for medical and clinical audio. It is a fine-tune of Scribe v2 that improves recognition of drug names, anatomy, pathology, and clinical dictation while matching Scribe v2's accuracy on everyday speech. It uses the same Speech to Text API as Scribe v2 and is billed at the same rate. Pass `scribe_v2_medical` as `model_id`.
 
-### Intended purpose
-
-Scribe v2 Medical is a batch Speech-to-Text API model for developers and
-organizations to integrate into applications that convert clinical audio, including
-clinician-patient conversations, dictation, intake and care-coordination calls, into draft
-transcripts for documentation and related administrative workflows. The resulting text is intended
-for review and correction by a healthcare professional or other authorized user before use. Scribe
-v2 Medical is not intended to interpret clinical information or provide diagnoses, treatment
-recommendations, clinical decisions or other clinical guidance.
+> **Note**
+>
+> ### Intended purpose
+>
+> Scribe v2 Medical is a batch Speech-to-Text API model for developers and
+> organizations to integrate into applications that convert clinical audio, including
+> clinician-patient conversations, dictation, intake and care-coordination calls, into draft
+> transcripts for documentation and related administrative workflows. The resulting text is intended
+> for review and correction by a healthcare professional or other authorized user before use. Scribe
+> v2 Medical is not intended to interpret clinical information or provide diagnoses, treatment
+> recommendations, clinical decisions or other clinical guidance.
 
 This model is well-suited for:
 
@@ -412,8 +418,10 @@ Scribe v2 Medical is a batch model. For live transcription, use Scribe v2 Realti
 
 Scribe v2 Medical is eligible for HIPAA, with Business Associate Agreements available to Enterprise customers as well as Zero Retention Mode (ZRM). With ZRM enabled, audio input and text output are deleted immediately after each request completes. ElevenLabs retains nothing, and your application receives the full API response and retains transcripts under your own controls.
 
-Companies requiring HIPAA compliance must contact [ElevenLabs Sales](https://elevenlabs.io/contact-sales) to sign a Business Associate Agreement (BAA) before
-sending protected health information.
+> **Info**
+>
+> Companies requiring HIPAA compliance must contact [ElevenLabs Sales](https://elevenlabs.io/contact-sales) to sign a Business Associate Agreement (BAA) before
+> sending protected health information.
 
 Read more about Speech to Text [here](/docs/overview/capabilities/speech-to-text).
 
@@ -453,7 +461,9 @@ In practice this typically only adds \~50ms of latency.
 | Business   | 15                                   | 30                         | 60                    | 45                             | 5                       | 5              |
 | Enterprise | Elevated                             | Elevated                   | Elevated              | Elevated                       | Highest                 | 6              |
 
-Startup grants recipients receive Scale level benefits.
+> **Note**
+>
+> Startup grants recipients receive Scale level benefits.
 
 The response headers include `current-concurrent-requests` and `maximum-concurrent-requests` which you can use to monitor your concurrency.
 
@@ -487,7 +497,7 @@ As a general rule of thumb, a concurrency limit of 5 can typically support up to
 This is because of the speed it takes for audio to be generated relative to the time it takes for the TTS request to be processed.
 The diagram below is an example of how 4 concurrent calls with different users can be facilitated while only hitting 2 concurrent requests.
 
-![Concurrency limits](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/dcc5e3bd18993a9f862bd526f3dc1b32cfa89003a58ded6f4f6a7bda1bd5a2ea/assets/images/product-guides/speech-to-text/tts-concurrency.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T112106Z&X-Amz-Expires=604800&X-Amz-Signature=70366267b6940e34745cc833905f484500251d9b1c8e08ab8f13a14aa558b1c3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Concurrency limits](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/dcc5e3bd18993a9f862bd526f3dc1b32cfa89003a58ded6f4f6a7bda1bd5a2ea/assets/images/product-guides/speech-to-text/tts-concurrency.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T102755Z&X-Amz-Expires=604800&X-Amz-Signature=f68f39ad29e38d061b3f922403d40571705298c6c2345a5fd8cd15064a4a83a9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Building AI Voice Agents
 
@@ -509,9 +519,11 @@ If the broadcast involves periods of conversational pauses (e.g. because of a so
 
 If you exceed your plan's concurrency limits at any point and you are on the Enterprise plan, model requests may still succeed, albeit slower, on a best efforts basis depending on available capacity.
 
-To increase your concurrency limit & queue priority, [upgrade your subscription plan](https://elevenlabs.io/pricing/api).
-
-Enterprise customers can request a higher concurrency limit by contacting their account manager.
+> **Note**
+>
+> To increase your concurrency limit & queue priority, [upgrade your subscription plan](https://elevenlabs.io/pricing/api).
+>
+> Enterprise customers can request a higher concurrency limit by contacting their account manager.
 
 ### Text to Dialogue concurrency
 

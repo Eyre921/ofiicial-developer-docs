@@ -6397,8 +6397,20 @@ MCP is an open protocol supported across a wide range of clients and servers. AI
 ## Learn more
 
 <CardGroup>
-  <Card title="Understand concepts" icon="book" href="/docs/2026-07-28/learn/architecture">
+  <Card title="Architecture" icon="book" href="/docs/2026-07-28/learn/architecture">
     Learn the core concepts and architecture of MCP
+  </Card>
+
+  <Card title="Security" icon="lock" href="/docs/2026-07-28/tutorials/security/security_best_practices">
+    Understand the security considerations and best practices for MCP
+  </Card>
+</CardGroup>
+
+## Community
+
+<CardGroup>
+  <Card title="Contributing" icon="users" href="/community/contributing">
+    Learn how to get involved and contribute to MCP
   </Card>
 </CardGroup>
 
@@ -18878,7 +18890,7 @@ The capability supports two optional features:
 
 Servers may advertise either feature independently, together or neither.
 
-Serves that support neither `listChanged` or `subscribe` may omit it:
+Servers that support neither `listChanged` nor `subscribe` may omit it:
 
 ```json theme={null}
 {
@@ -26284,8 +26296,8 @@ export interface ElicitResult extends Result {
   "title": "Color Selection",
   "description": "Choose your favorite color",
   "enum": ["#FF0000", "#00FF00", "#0000FF"],
-  “enumNames”: ["Red", "Green", "Blue"],
-  "default": "Green"
+  "enumNames": ["Red", "Green", "Blue"],
+  "default": "#00FF00"
 }
 ```
 
@@ -30173,6 +30185,15 @@ community. This guide walks you through everything you need to get started.
 
 ## Before You Begin
 
+### Join the Community
+
+You don't need to have a change ready to get involved. Join the
+[MCP Contributor Discord](https://discord.gg/6CSzBmMkjX) to connect with contributors and
+maintainers, ask questions, and find out where help is needed. See the
+[Contributor Communication](/community/communication) guide for all channels - including
+[live calls](https://meet.modelcontextprotocol.io/) and GitHub Discussions - and when to use
+each one, or jump to [Getting Help](#getting-help) below.
+
 ### Prerequisites
 
 Before contributing, ensure you have the following installed and ready:
@@ -30508,13 +30529,53 @@ lot of time on a spec proposal, make sure to follow these best practices.
   <Step title="Find a sponsor">
     A maintainer from the [maintainer
     list](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/MAINTAINERS.md)
-    who will champion your proposal.
+    who will champion your proposal. See [Finding a Sponsor for
+    SEPs](#finding-a-sponsor-for-seps) below.
   </Step>
 
   <Step title="Write the SEP">
     Follow the [SEP Guidelines](/community/sep-guidelines).
   </Step>
 </Steps>
+
+### Finding a Sponsor for SEPs
+
+A **sponsor** is a Core Maintainer or Maintainer who champions your SEP through the review
+process. They provide feedback, help refine your proposal, and present it at Core Maintainer
+meetings.
+
+<Warning>
+  Every SEP needs a sponsor to move forward. SEPs that don't find a sponsor
+  within 6 months are marked as **dormant**. Dormant SEPs aren't rejected
+  outright - they can be revived later if a sponsor is found or the proposal is
+  re-assessed to be needed.
+</Warning>
+
+To find a sponsor:
+
+<Steps>
+  <Step title="Find relevant maintainers">
+    Look at the [maintainer
+    list](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/MAINTAINERS.md)
+    to find maintainers working in your area.
+  </Step>
+
+  <Step title="Tag maintainers in your PR">
+    Tag 1-2 relevant maintainers (don't spam everyone).
+  </Step>
+
+  <Step title="Share in Discord">
+    Post your PR in the relevant Discord channel to increase visibility.
+  </Step>
+
+  <Step title="Follow up if needed">
+    If no response after 2 weeks, ask in `#general` or reach out to a Core
+    Maintainer.
+  </Step>
+</Steps>
+
+Maintainers review open proposals regularly, but response time varies based on complexity and
+availability.
 
 ## Working with the SDK Repositories
 
@@ -30584,8 +30645,6 @@ Before diving into code, follow these steps.
 
 ## Getting Help
 
-### Communication Channels
-
 Got questions or need guidance? The MCP community is here to help.
 
 * **[Discord](/community/communication#discord)** - Real-time discussion with contributors and
@@ -30605,45 +30664,6 @@ documentation.
 For protocol discussions, join [Working Group](/community/working-interest-groups) channels like
 `#auth-wg` or `#server-identity-wg`. For SDK help, find your language's channel (e.g.,
 `#typescript-sdk-dev`).
-
-### Finding a Sponsor for SEPs
-
-A **sponsor** is a Core Maintainer or Maintainer who champions your SEP through the review
-process. They provide feedback, help refine your proposal, and present it at Core Maintainer
-meetings.
-
-<Warning>
-  Every SEP needs a sponsor to move forward. SEPs that don't find a sponsor
-  within 6 months are marked as **dormant**. Dormant SEPs aren't rejected
-  outright - they can be revived later if a sponsor is found or the proposal is
-  re-assessed to be needed.
-</Warning>
-
-To find a sponsor:
-
-<Steps>
-  <Step title="Find relevant maintainers">
-    Look at the [maintainer
-    list](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/MAINTAINERS.md)
-    to find maintainers working in your area.
-  </Step>
-
-  <Step title="Tag maintainers in your PR">
-    Tag 1-2 relevant maintainers (don't spam everyone).
-  </Step>
-
-  <Step title="Share in Discord">
-    Post your PR in the relevant Discord channel to increase visibility.
-  </Step>
-
-  <Step title="Follow up if needed">
-    If no response after 2 weeks, ask in `#general` or reach out to a Core
-    Maintainer.
-  </Step>
-</Steps>
-
-Maintainers review open proposals regularly, but response time varies based on complexity and
-availability.
 
 ## Troubleshooting
 
@@ -30673,6 +30693,8 @@ Common causes:
 1. Make sure your idea has been discussed in Discord or an Interest Group first
 2. Proposals with demonstrated community interest are more likely to find sponsors
 3. Consider whether your change might be too large - could it be split into smaller SEPs?
+
+See [Finding a Sponsor for SEPs](#finding-a-sponsor-for-seps) for the full process.
 
 ### My SEP was rejected
 
@@ -31860,7 +31882,7 @@ institutions who can bring real-world deployment constraints and help drive prop
 Meetings are held 16:00–17:00 London (BST/GMT). An agenda is shared in `#financial-services-ig`
 ahead of each call, and notes with decisions and action items are published afterwards.
 
-Discord: [#financial-services-ig](https://discord.gg/NzkBHsrGf)
+Discord: [#financial-services-ig](https://discord.gg/6CSzBmMkjX)
 
 ## Discussion Topics
 
@@ -33108,6 +33130,120 @@ The group's first act is to take up SEP-2571 with its author, since it already c
 | 2026-08-24 | Initial charter |
 
 
+# Infrastructure Charter
+Source: https://modelcontextprotocol.io/community/working-groups/infrastructure
+
+Charter for the MCP Infrastructure Working Group.
+
+## Group Type
+
+**Working Group**
+
+## Mission Statement
+
+The Infrastructure Working Group builds and maintains MCP's shared infrastructure and automation. It makes routine administration self-service for maintainers and contributors. Governance defines who can do what; Infra implements those decisions through standard tools and workflows.
+
+## Scope
+
+### In Scope
+
+* **Access and accounts:** Organization invitations, team membership, permissions, and account provisioning. This includes letting authorized leads of MCP working groups invite contributors to the organization and manage access for their own groups, including contributors who cannot yet open pull requests.
+* **GitHub administration:** Creating and configuring repositories, managing teams and access, and automating common administrative tasks.
+* **Group setup:** Setting up repositories, permissions, email, meetings, and other resources for approved MCP groups.
+* **Meetings and communication:** Google Workspace accounts, aliases, mailing lists, calendars, scheduling, agendas, and notifications. Discord integrations and MCP bridges for important project events.
+* **Shared services:** Improving MCP's [planning](https://plan.modelcontextprotocol.io), [voting](https://voting.modelcontextprotocol.io), and [meeting](https://meet.modelcontextprotocol.io) services with their current owners.
+* **Hosting and publishing:** Websites, documentation hosting, CI/CD, deployment, package publishing access, domains, DNS, and certificates.
+* **Supporting resources:** Compute, storage, credentials, and other infrastructure MCP needs now or adopts later.
+* **Maintenance:** Monitoring, upgrades, recovery, ownership changes, and removal of unused resources.
+
+The Infrastructure WG should start with gaps and repeated manual work. Infrastructure that works well should stay in place. Changes to an existing setup or its ownership should be agreed with its owners.
+
+The Infrastructure WG should build on existing repositories and tools. Shared workflows should make resources easy to create, manage, and remove. Configuration and changes should be recorded so they can be reviewed and reproduced.
+
+### Out of Scope
+
+* Setting governance policy, deciding who holds a role, or changing approval requirements.
+* Setting voting rules, moderation policy, or communications policy.
+* Protocol and SDK design, release decisions, website content, and other groups' roadmaps.
+* Taking over services or requiring migrations without agreement from their owners.
+* Infrastructure for individuals, companies, or third-party MCP deployments.
+
+### Related Groups
+
+* **SDK WG and SDK maintainers:** The Infrastructure WG provides shared tools for repository setup, access, CI, and publishing. SDK maintainers keep responsibility for their SDKs and releases.
+* **Other WGs and IGs:** The Infrastructure WG provides tools for group setup, membership, communication, and infrastructure. Each group keeps responsibility for its work and services.
+
+## Leadership
+
+| Role | Name                    | Organization | GitHub                                                                 | Term    |
+| ---- | ----------------------- | ------------ | ---------------------------------------------------------------------- | ------- |
+| Lead | David Soria Parra (DSP) | Anthropic    | [@dsp](https://github.com/dsp), [@dsp-ant](https://github.com/dsp-ant) | Initial |
+| Lead | Den Delimarsky          | Anthropic    | [@localden](https://github.com/localden)                               | Initial |
+| Lead | Sambhav Kothari         | Bloomberg    | [@sambhav](https://github.com/sambhav)                                 | Initial |
+
+## Authority & Decision Rights
+
+This table covers decisions about the Infrastructure WG's own work.
+
+| Decision Type                                                 | Authority Level                                  |
+| ------------------------------------------------------------- | ------------------------------------------------ |
+| Meeting logistics and scheduling                              | Infrastructure WG Leads (autonomous)             |
+| Infrastructure WG priorities                                  | Infrastructure WG Leads (autonomous)             |
+| Infrastructure and automation design within scope             | Infrastructure WG consensus                      |
+| Routine maintenance of Infrastructure WG-owned infrastructure | Infrastructure maintainers, within agreed policy |
+| Changes to another team's infrastructure                      | Agreement with the responsible owners            |
+| Infrastructure WG scope expansion                             | Core Maintainer approval required                |
+| Infrastructure WG Member approval                             | Infrastructure WG Member sponsors                |
+
+## Membership
+
+The initial Leads are listed above. The Infrastructure WG will record additional members and their participation levels as they join. Access is managed in [modelcontextprotocol/access](https://github.com/modelcontextprotocol/access).
+
+## Operations
+
+The Infrastructure WG tracks tasks in GitHub issues in the relevant repositories. A shared GitHub Project board will track priorities, owners, status, and target dates. The board will be linked here once created. Contributors can take on tasks based on their availability.
+
+| Meeting         | Frequency           | Duration     | Purpose                                      |
+| --------------- | ------------------- | ------------ | -------------------------------------------- |
+| Working session | As needed initially | To be agreed | Review priorities, designs, and ongoing work |
+
+Coordination starts in the Infrastructure Working Group discussion on MCP's Discord. Links to the Infrastructure WG channel and meeting notes will be added once confirmed. Meetings will be published at [meet.modelcontextprotocol.io](https://meet.modelcontextprotocol.io).
+
+The [Working and Interest Groups governance rules](/community/working-interest-groups) apply.
+
+## Deliverables & Success Metrics
+
+### Active Work Items
+
+The Infrastructure WG's deliverables are working infrastructure, automation repositories, and documentation for using and maintaining them. Initial work should build on [modelcontextprotocol/access](https://github.com/modelcontextprotocol/access) and the existing service repositories.
+
+The first priorities come from the founding discussion: access and account provisioning, organization invitations, planning and voting tools, meetings, and Discord notifications and MCP bridges. The initial deliverables are listed below. Tasks, owners, dates, and progress will be tracked on the board.
+
+* Let authorized leads of MCP working groups invite contributors to the organization and manage access for their own groups
+* Improve account, email, and permission provisioning
+* Improve planning, voting, and meeting services
+* Automate meeting setup, calendars, agendas, and notifications
+* Add Discord notifications and MCP bridge support for important events
+* Automate group setup and routine repository administration
+* Provide shared workflows for hosting, deployment, DNS, and supporting resources
+* Document existing infrastructure, its owners, and remaining manual tasks
+
+### Success Criteria
+
+* Maintainers and contributors can complete routine administrative tasks through self-service workflows, with approvals defined by project governance.
+* Routine requests take less time and require fewer manual steps. The Infrastructure WG measures both before and after automation.
+* The same roles and approval rules are applied consistently across supported systems.
+* Maintainers use shared workflows for common tasks. The Infrastructure WG tracks adoption and failures.
+* Resources managed by the Infrastructure WG have a named owner, recorded configuration, and instructions for maintenance, recovery, and removal.
+* Automation supports access changes, ownership transfers, and cleanup as well as initial setup. Steps that still need manual action are documented.
+
+## Changelog
+
+| Date       | Change                                                                              |
+| ---------- | ----------------------------------------------------------------------------------- |
+| 2026-09-22 | Initial draft with David Soria Parra, Sambhav Kothari, and Den Delimarsky as Leads. |
+
+
 # Inspector V2 Working Group Charter
 Source: https://modelcontextprotocol.io/community/working-groups/inspector-v2
 
@@ -33729,6 +33865,7 @@ of the published extension.
 | Kaxil Naik               | Astronomer / Apache Airflow PMC | [@kaxil](https://github.com/kaxil)                     |         | Participant |
 | Cliff Hall               | Futurescale                     | [@cliffhall](https://github.com/cliffhall)             |         | Participant |
 | Haoyu Wang               | Google                          | [@helloeve](https://github.com/helloeve)               |         | Participant |
+| Nate Barbettini          | Arcade.dev                      | [@nbarbettini](https://github.com/nbarbettini)         |         | Participant |
 
 ## Operations
 
@@ -33774,6 +33911,7 @@ Owners, progress, and priorities are maintained there rather than in this charte
 
 | Date       | Change                                                                                                                                                                                                                                                                                                           |
 | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-09-15 | Added @nbarbettini (Arcade.dev) as Participant                                                                                                                                                                                                                                                                   |
 | 2026-04-25 | Linked SEP-2640 in Active Work Items; added @helloeve (Google) as Participant                                                                                                                                                                                                                                    |
 | 2026-04-16 | Converted from Interest Group to Working Group                                                                                                                                                                                                                                                                   |
 | 2026-04-14 | Initial charter (formalized from [experimental-ext-skills](https://github.com/modelcontextprotocol/experimental-ext-skills) repo README, which served as the de facto charter before the charter process was established via [SEP-2149](https://github.com/modelcontextprotocol/modelcontextprotocol/pull/2149)) |

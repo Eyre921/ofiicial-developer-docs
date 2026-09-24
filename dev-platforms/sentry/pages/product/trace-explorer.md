@@ -105,7 +105,7 @@ Dive deeper into your data with aggregation capabilities in Trace Explorer.
 
 ## [Compare Attributes (Beta)](https://docs.sentry.io/product/trace-explorer.md#compare-attributes-beta)
 
-Attribute Breakdowns is currently in beta. To access this feature, enable the Early Adopter flag in your [organization settings](https://sentry.io/orgredirect/settings/:orgslug/).
+Attribute Breakdowns is currently in beta. To access this feature, enable the Early Adopter flag in your [organization settings](https://sentry.io/orgredirect/organizations/:orgslug/settings/).
 
 When investigating performance issues, you often need to answer: *"What's different about this spike compared to normal behavior?"*. Sentry's compare attributes feature lets you analyze attribute distributions between a selected time range and your baseline data without writing additional queries.
 

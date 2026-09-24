@@ -5,8 +5,9 @@ path: docs/search/overall/getstarted
 ---
 
 import { Catalog } from "/snippets/catalog.jsx";
+import { AgentSetup } from "/snippets/agent-setup.jsx";
 
-***
+<AgentSetup product="Search" />
 
 <iframe
   id="intro-video" width='560' height='315'

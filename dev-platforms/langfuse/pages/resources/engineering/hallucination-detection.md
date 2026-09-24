@@ -194,6 +194,8 @@ Reliable enough to trend on and to route with, not reliable enough to treat ever
 
 No. Evaluator scores are produced asynchronously, after the response has shipped, which makes them the right tool for detecting regressions, routing traces to review, and building regression datasets. A check that must stop an answer in flight is a guardrail and belongs in your application code at request time, and the guardrail's decisions should then be scored like any other output.
 
+[Ask another question](/docs/ask-ai)
+
 <!-- agent-instructions -->
 
 ---

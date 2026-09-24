@@ -23,7 +23,9 @@ Flux TTS maintains internal state that evolves as it generates. Cross-turn conte
 3. **Turn 2** — The model generates from the existing state. Delivery is informed by the prior output, so prosody and pacing carry forward.
 4. **Turn N** — State has accumulated across the conversation. There is no prompt re-consumption and no replay, which is a meaningful cost and latency advantage over re-priming each turn.
 
-**State is the model's own prior generations — nothing else.** It does **not** include the user's audio or text, and it does not include your LLM's reasoning. It is purely the model's evolving acoustic state across the turns it has spoken. No API field turns this on; it is the default behavior of `/v2/speak`.
+> **Info**
+>
+> **State is the model's own prior generations — nothing else.** It does **not** include the user's audio or text, and it does not include your LLM's reasoning. It is purely the model's evolving acoustic state across the turns it has spoken. No API field turns this on; it is the default behavior of `/v2/speak`.
 
 ## What resets state, and what doesn't
 
@@ -34,7 +36,9 @@ Ending a turn does **not** reset the model's conversational state — it carries
 | `Flush` (ends the turn) |                No               |
 | New connection          | Yes — each session starts fresh |
 
-Barge-in (`Interrupt`) also leaves model state intact — it stops synthesis and reports what the user heard, while prosody continues consistently into the next turn. See [Interruption Handling](/docs/flux-tts/interrupt-handling).
+> **Info**
+>
+> Barge-in (`Interrupt`) also leaves model state intact — it stops synthesis and reports what the user heard, while prosody continues consistently into the next turn. See [Interruption Handling](/docs/flux-tts/interrupt-handling).
 
 ## Operational notes
 

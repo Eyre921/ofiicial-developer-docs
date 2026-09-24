@@ -33,8 +33,10 @@ When staff-first is enabled, you configure:
 | **Agent fallback message** | Spoken when staff doesn't answer and AI takes over                                              |
 | **Staff answering hours**  | Schedule when staff-first is active (outside these hours, AI answers directly)                  |
 
-Staff-first mode is useful during business hours when you prefer personal interaction, with AI as
-a safety net for missed calls.
+> **Tip**
+>
+> Staff-first mode is useful during business hours when you prefer personal interaction, with AI as
+> a safety net for missed calls.
 
 ## Call transfer rules
 

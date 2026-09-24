@@ -15,7 +15,9 @@ The Voice Agent API uses Deepgram speech-to-text. Two model families are support
 * **Flux** for conversational voice agents that need model-integrated end-of-turn detection and ultra-low latency.
 * **Nova** for conventional streaming transcription with the broadest feature set: smart formatting, language detection, multilingual code-switching, custom keyterms.
 
-You can set your Voice Agent's speech-to-text model in the [Settings Message](/docs/configure-voice-agent). See the docs for more information.
+> **Info**
+>
+> You can set your Voice Agent's speech-to-text model in the [Settings Message](/docs/configure-voice-agent). See the docs for more information.
 
 ## Choosing a model family
 

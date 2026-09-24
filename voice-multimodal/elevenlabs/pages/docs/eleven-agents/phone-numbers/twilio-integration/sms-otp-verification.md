@@ -8,7 +8,7 @@ path: docs/eleven-agents/phone-numbers/twilio-integration/sms-otp-verification
 
 # SMS OTP verification
 
-![Agent conversation collecting a phone number, OTP code, and verification success](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/97201c6fdad0c63900236b52726c867d3ff9405fdbd30725858f384653c95803/assets/images/conversational-ai/twilio-verify-sms-otp-conversation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113241Z&X-Amz-Expires=604800&X-Amz-Signature=3367cf1597d1c8eed9c81d7a021b3cf179624cd85fb02889620d1f07540d1712&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Agent conversation collecting a phone number, OTP code, and verification success](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/97201c6fdad0c63900236b52726c867d3ff9405fdbd30725858f384653c95803/assets/images/conversational-ai/twilio-verify-sms-otp-conversation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113158Z&X-Amz-Expires=604800&X-Amz-Signature=ae97863d629e818e2ab23351156c15eb210569de72d5c3f3706f9ca1bc46962d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Overview
 
@@ -42,7 +42,9 @@ Give it a descriptive name (for example, `ElevenLabs OTP`).
 
 Open the service **Settings** page and copy the **Verify Service SID**. It starts with `VA` and is different from your Account SID.
 
-**Common Mistake**: Use your **Verify Service SID** (`VA...`) from the Authenticate (Verify) service in the tool URLs below. Do not put your **Account SID** (`AC...`) in the path. The Verify API expects the service SID in the URL; using the Account SID produces `4xx` invalid-parameter errors.
+> **Warning**
+>
+> **Common Mistake**: Use your **Verify Service SID** (`VA...`) from the Authenticate (Verify) service in the tool URLs below. Do not put your **Account SID** (`AC...`) in the path. The Verify API expects the service SID in the URL; using the Account SID produces `4xx` invalid-parameter errors.
 
 You can use the Twilio API Explorer in the console to test requests before you attach them to your agent.
 
@@ -72,7 +74,7 @@ Basic dkFDxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx==
 
 ### send\_SMS\_verification
 
-![Agent conversation collecting a phone number, OTP code, and verification success](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9d72a753674c17481e99ea871b1b178cd7791f2da1ec3491ad4786c3fbc9a84e/assets/images/conversational-ai/configure-webhook-tool-twilio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113241Z&X-Amz-Expires=604800&X-Amz-Signature=426ba6cab7fc36ea55a0d41b3daed4913a6954c69ffa4a97a6150e6f39a938ed&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Agent conversation collecting a phone number, OTP code, and verification success](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9d72a753674c17481e99ea871b1b178cd7791f2da1ec3491ad4786c3fbc9a84e/assets/images/conversational-ai/configure-webhook-tool-twilio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113158Z&X-Amz-Expires=604800&X-Amz-Signature=838e8f99da3e8acae9a7bf5cd2392c768d20a2c6b1528fced396b7deec8ebb8b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 In the **Agent** section of your agent settings, choose **Add Tool** and select **Webhook**.
 
@@ -111,7 +113,9 @@ Use the same Verify Service SID and the same `Authorization` secret as for `send
 
 #### Add via the CLI
 
-Create a [workspace secret](/docs/api-reference/workspace/secrets/create) whose value is the full `Authorization` header (`Basic ` plus Base64). Put the secret ID in the JSON below as `YOUR_SECRET_ID`.
+> **Note**
+>
+> Create a [workspace secret](/docs/api-reference/workspace/secrets/create) whose value is the full `Authorization` header (`Basic ` plus Base64). Put the secret ID in the JSON below as `YOUR_SECRET_ID`.
 
 #### Add tool config files
 
@@ -198,7 +202,9 @@ elevenlabs agents push --agent "<agent-name>"
 
 #### Add via the API
 
-Create a [workspace secret](/docs/api-reference/workspace/secrets/create) holding the full `Basic ...` header value, then pass its ID as `secret_id` in `request_headers`.
+> **Note**
+>
+> Create a [workspace secret](/docs/api-reference/workspace/secrets/create) holding the full `Basic ...` header value, then pass its ID as `secret_id` in `request_headers`.
 
 ```python
 from elevenlabs import ElevenLabs, ToolRequestModel
@@ -361,7 +367,9 @@ await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd9
 });
 ```
 
-If you configure **`Channel`** as an LLM-filled field in the dashboard, add instructions in your system prompt so the model always passes `sms`. The CLI and API examples above pin `sms` with `constant_value` / `constantValue`, so the model does not choose the channel.
+> **Note**
+>
+> If you configure **`Channel`** as an LLM-filled field in the dashboard, add instructions in your system prompt so the model always passes `sms`. The CLI and API examples above pin `sms` with `constant_value` / `constantValue`, so the model does not choose the channel.
 
 #### Enable the \`skip\_turn\` system tool
 

@@ -20,9 +20,13 @@ This guide will focus on LiveHub, as it is accessible to all users. However, if 
 
 ## Before you Begin
 
-Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key.
+> **Info**
+>
+> Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key.
 
-You will need an [AudioCodes LiveHub](https://livehub.audiocodes.io/login) account to connect the two services.
+> **Info**
+>
+> You will need an [AudioCodes LiveHub](https://livehub.audiocodes.io/login) account to connect the two services.
 
 ## The Problem This SDK Solves
 
@@ -119,4 +123,6 @@ Follow the [LiveHub Bot Connection setup guide](https://techdocs.audiocodes.com/
 * **Authentication** — LiveHub supports No Auth, Permanent Token (shared secret), and OAuth 2.0. Pick one and match it on the bridge side via `BridgeConfig`. See the SDK's [auth example](https://github.com/deepgram/deepgram-audiocodes-bridge/tree/main/examples/03_auth) for copy-pasteable walkthroughs of all three modes.
 * **Barge-in** — toggle on if you want callers to interrupt the agent. The Voice Agent API supports barge-in natively and the bridge handles it for you, but VAIC's own barge-in setting can override it. **This defaults to off** when you create a new Bot Connection. See [Edit your Bot Connection](https://techdocs.audiocodes.com/livehub/#LiveHub/Editing%20your%20bot.htm?TocPath=Bot%2520connectivity%257C_____6) for the toggle.
 
-Always consult the [AudioCodes API documentation](https://techdocs.audiocodes.com/voice-ai-connect/#VAIG_API/Speech-to-Text.htm?TocPath=AudioCodes%2520API%257C_____4) for the most up to date information.
+> **Warning**
+>
+> Always consult the [AudioCodes API documentation](https://techdocs.audiocodes.com/voice-ai-connect/#VAIG_API/Speech-to-Text.htm?TocPath=AudioCodes%2520API%257C_____4) for the most up to date information.

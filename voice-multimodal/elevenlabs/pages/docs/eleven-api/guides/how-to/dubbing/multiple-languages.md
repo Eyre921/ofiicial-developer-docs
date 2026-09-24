@@ -8,7 +8,9 @@ path: docs/eleven-api/guides/how-to/dubbing/multiple-languages
 
 # Dub into multiple languages
 
-**How-to guide** · Assumes you have created a dubbing project, as shown in the [Dubbing quickstart](/docs/eleven-api/guides/cookbooks/dubbing).
+> **Note**
+>
+> **How-to guide** · Assumes you have created a dubbing project, as shown in the [Dubbing quickstart](/docs/eleven-api/guides/cookbooks/dubbing).
 
 A single project holds one source transcript, and you can add as many language targets as you need. Each language is generated independently and carries its own status and output, so you translate the source once and produce every dub from it.
 
@@ -118,6 +120,8 @@ for (const language of result.languages) {
 
 Signed URLs expire about an hour after they are issued. If a download fails because the URL has expired, fetch the language again with `language.get` to obtain a fresh URL.
 
-If a language fails to generate, add it again with `language.create` on the same project rather
-than creating a new project. The project and its transcript are reusable, so only the failed
-language is regenerated.
+> **Tip**
+>
+> If a language fails to generate, add it again with `language.create` on the same project rather
+> than creating a new project. The project and its transcript are reusable, so only the failed
+> language is regenerated.

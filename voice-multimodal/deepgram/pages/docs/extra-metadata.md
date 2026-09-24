@@ -36,7 +36,9 @@ curl \
   --url 'https://api.deepgram.com/v1/listen?extra=KEY:VALUE'
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/guides/fundamentals/make-your-first-api-request).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/guides/fundamentals/make-your-first-api-request).
 
 ## Response
 
@@ -70,9 +72,11 @@ To apply multiple extra key-value pairs, submit the query parameter multiple tim
 
 `extra=team:marketing&extra=purpose:legal`
 
-If your request contains multiple instances of `extra` with the same key, the corresponding values will *not* be merged. Instead, the last value will overwrite any previous values.
-
-For example, `extra=team:marketing&extra=team:gtm` will return `"extra": { "team": "gtm" }` in the response.
+> **Warning**
+>
+> If your request contains multiple instances of `extra` with the same key, the corresponding values will *not* be merged. Instead, the last value will overwrite any previous values.
+>
+> For example, `extra=team:marketing&extra=team:gtm` will return `"extra": { "team": "gtm" }` in the response.
 
 ## Comparison to Tagging
 

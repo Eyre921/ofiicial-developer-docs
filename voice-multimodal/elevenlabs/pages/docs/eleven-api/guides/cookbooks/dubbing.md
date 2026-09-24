@@ -12,9 +12,11 @@ This guide shows you how to dub a media file into another language with the Dubb
 
 A dubbing project has two parts: a **project**, which holds one source of media and its transcript, and one or more **language targets**, each producing a dubbed output in a single language. You create a project, wait for its source to be transcribed, add a language, then download the finished dub.
 
-Creating a project charges you for one language up front — a dubbing project's minimum charge.
-This prepays your first language target: the first language you add consumes it, and each
-additional language is charged separately. See [How much does Dubbing cost?](/docs/help-center/product/dubbing/how-much-does-dubbing-cost) for details.
+> **Note**
+>
+> Creating a project charges you for one language up front — a dubbing project's minimum charge.
+> This prepays your first language target: the first language you add consumes it, and each
+> additional language is charged separately. See [How much does Dubbing cost?](/docs/help-center/product/dubbing/how-much-does-dubbing-cost) for details.
 
 Languages are specified as BCP-47 tags, for example `es` or `fr-CA`. See the [supported languages and dialects](/docs/overview/capabilities/dubbing#supported-languages) for all accepted values.
 
@@ -77,11 +79,13 @@ npm install -g @elevenlabs/cli
 curl --proto '=https' --tlsv1.2 -LsSf https://github.com/elevenlabs/cli/releases/latest/download/elevenlabs-cli-installer.sh | sh
 ```
 
-Working with an AI coding assistant? Run `elevenlabs generate-skills` in your project to write a
-`SKILL.md` for every command group into `skills/`, so your assistant knows the CLI's full surface
-without you pasting docs. Use `--output-dir` to put them elsewhere. This reads the CLI's own
-embedded API definition, so it needs no API key and works offline — and it stays in step with
-whichever CLI version you have installed.
+> **Tip**
+>
+> Working with an AI coding assistant? Run `elevenlabs generate-skills` in your project to write a
+> `SKILL.md` for every command group into `skills/`, so your assistant knows the CLI's full surface
+> without you pasting docs. Use `--output-dir` to put them elsewhere. This reads the CLI's own
+> embedded API definition, so it needs no API key and works offline — and it stays in step with
+> whichever CLI version you have installed.
 
 Then authenticate — this opens your browser to authorize the CLI:
 
@@ -89,8 +93,10 @@ Then authenticate — this opens your browser to authorize the CLI:
 elevenlabs auth login
 ```
 
-The Python example uses the `requests` library to download the dubbed audio. Install it
-with `pip install requests`.
+> **Note**
+>
+> The Python example uses the `requests` library to download the dubbed audio. Install it
+> with `pip install requests`.
 
 #### Make the API request
 
@@ -205,8 +211,10 @@ await writeFile("dubbed.wav", buffer);
 console.log("Saved dubbed audio to dubbed.wav");
 ```
 
-The download URL in `outputs.lossless_audio` is signed and expires about an hour after it
-is issued. Fetch the language again to get a fresh URL if it has expired.
+> **Note**
+>
+> The download URL in `outputs.lossless_audio` is signed and expires about an hour after it
+> is issued. Fetch the language again to get a fresh URL if it has expired.
 
 Then run it:
 
@@ -258,8 +266,10 @@ If adding a language does not succeed, add the same language to the existing pro
 
 Only create a new project if the project itself reaches `failed` while preparing, which means its source could not be transcribed. Check the source file or URL, then create a new project.
 
-Enterprise workspaces can review and correct the source transcript before adding a language, which
-produces more accurate translations. See [Refine and regenerate a dub](/docs/eleven-api/guides/how-to/dubbing/refine-and-regenerate).
+> **Tip**
+>
+> Enterprise workspaces can review and correct the source transcript before adding a language, which
+> produces more accurate translations. See [Refine and regenerate a dub](/docs/eleven-api/guides/how-to/dubbing/refine-and-regenerate).
 
 ## Next steps
 

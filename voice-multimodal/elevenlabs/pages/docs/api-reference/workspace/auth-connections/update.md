@@ -31,42 +31,9 @@ Reference: https://elevenlabs.io/docs/api-reference/workspace/auth-connections/u
 
 ### Body (application/json)
 
-This endpoint expects an object or object or object or object.
+This endpoint expects a workspace_auth_connections_update_Request.
 
-- `object or object or object or object`
-  - UpdateOAuth2ClientCredsRequest
-    - `auth_type` ("oauth2_client_credentials", optional, default: oauth2_client_credentials)
-    - `provider` (string, optional, nullable)
-    - `client_id` (string, optional, nullable)
-    - `scopes` (list of string, optional, nullable)
-    - `extra_params` (map from string to string, optional, nullable)
-    - `basic_auth_in_header` (boolean, optional, nullable)
-    - `client_secret` (string, optional, nullable)
-    - `custom_headers` (map from string to string, optional, nullable)
-  - UpdateBasicAuthRequest
-    - `auth_type` ("basic_auth", optional, default: basic_auth)
-    - `provider` (string, optional, nullable)
-    - `username` (string, optional, nullable)
-    - `password` (string, optional, nullable)
-  - UpdateBearerAuthRequest
-    - `auth_type` ("bearer_auth", optional, default: bearer_auth)
-    - `provider` (string, optional, nullable)
-    - `token` (string, optional, nullable)
-  - UpdateOAuth2JWTRequest
-    - `auth_type` ("oauth2_jwt", optional, default: oauth2_jwt)
-    - `provider` (string, optional, nullable)
-    - `algorithm` (enum, optional, nullable)
-      - Allowed values: `HS256`, `HS384`, `HS512`, `RS256`, `RS384`, `RS512`
-    - `key_id` (string, optional, nullable)
-    - `issuer` (string, optional, nullable)
-    - `audience` (string, optional, nullable)
-    - `subject` (string, optional, nullable)
-    - `expiration_seconds` (integer, optional, nullable)
-    - `extra_params` (map from string to string, optional, nullable)
-    - `scopes` (list of string, optional, nullable)
-    - `token_response_field` (enum, optional, nullable)
-      - Allowed values: `access_token`, `id_token`
-    - `secret_key` (string, optional, nullable)
+- `workspace_auth_connections_update_Request`
 
 ## Response
 
@@ -74,7 +41,7 @@ This endpoint expects an object or object or object or object.
 
 Successful Response
 
-- `object`
+- `workspace_auth_connections_update_Response_200`
   - `auth_type`: `oauth2_client_credentials` (OAuth2ClientCredsResponse)
     - `client_id` (string, required)
     - `id` (string, required)
@@ -89,28 +56,7 @@ Successful Response
       - Allowed values: `active`, `refresh_failed`, `revoked`, `credential_invalid`
     - `status_detail` (string, optional, nullable)
     - `status_updated_at` (string, optional, nullable)
-    - `used_by` (object, optional, nullable) — Dependencies that use an auth connection
-      - `tools` (list of object, optional, default: [])
-        - `type`: `available` (DependentAvailableToolIdentifier)
-          - `access_level` (enum, required)
-            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-          - `created_at_unix_secs` (integer, required)
-          - `id` (string, required)
-          - `name` (string, required)
-        - `type`: `unknown` (DependentUnknownToolIdentifier)
-          - `id` (string, required)
-      - `mcp_servers` (list of object, optional, default: [])
-        - `type`: `available` (DependentAvailableMCPServerIdentifier)
-          - `access_level` (enum, required)
-            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-          - `created_at_unix_secs` (integer, required)
-          - `id` (string, required)
-          - `name` (string, required)
-        - `type`: `unknown` (DependentUnknownMCPServerIdentifier)
-          - `id` (string, required)
-      - `integration_connections` (list of object, optional, default: [])
-        - `id` (string, required)
-        - `name` (string, required)
+    - `used_by` (AuthConnectionDependencies, optional, nullable) — Dependencies that use an auth connection
   - `auth_type`: `refresh_token_auth` (RefreshTokenAuthResponse)
     - `client_id` (string, required)
     - `id` (string, required)
@@ -123,28 +69,7 @@ Successful Response
       - Allowed values: `active`, `refresh_failed`, `revoked`, `credential_invalid`
     - `status_detail` (string, optional, nullable)
     - `status_updated_at` (string, optional, nullable)
-    - `used_by` (object, optional, nullable) — Dependencies that use an auth connection
-      - `tools` (list of object, optional, default: [])
-        - `type`: `available` (DependentAvailableToolIdentifier)
-          - `access_level` (enum, required)
-            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-          - `created_at_unix_secs` (integer, required)
-          - `id` (string, required)
-          - `name` (string, required)
-        - `type`: `unknown` (DependentUnknownToolIdentifier)
-          - `id` (string, required)
-      - `mcp_servers` (list of object, optional, default: [])
-        - `type`: `available` (DependentAvailableMCPServerIdentifier)
-          - `access_level` (enum, required)
-            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-          - `created_at_unix_secs` (integer, required)
-          - `id` (string, required)
-          - `name` (string, required)
-        - `type`: `unknown` (DependentUnknownMCPServerIdentifier)
-          - `id` (string, required)
-      - `integration_connections` (list of object, optional, default: [])
-        - `id` (string, required)
-        - `name` (string, required)
+    - `used_by` (AuthConnectionDependencies, optional, nullable) — Dependencies that use an auth connection
   - `auth_type`: `basic_auth` (BasicAuthResponse)
     - `id` (string, required)
     - `name` (string, required)
@@ -154,28 +79,7 @@ Successful Response
       - Allowed values: `active`, `refresh_failed`, `revoked`, `credential_invalid`
     - `status_detail` (string, optional, nullable)
     - `status_updated_at` (string, optional, nullable)
-    - `used_by` (object, optional, nullable) — Dependencies that use an auth connection
-      - `tools` (list of object, optional, default: [])
-        - `type`: `available` (DependentAvailableToolIdentifier)
-          - `access_level` (enum, required)
-            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-          - `created_at_unix_secs` (integer, required)
-          - `id` (string, required)
-          - `name` (string, required)
-        - `type`: `unknown` (DependentUnknownToolIdentifier)
-          - `id` (string, required)
-      - `mcp_servers` (list of object, optional, default: [])
-        - `type`: `available` (DependentAvailableMCPServerIdentifier)
-          - `access_level` (enum, required)
-            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-          - `created_at_unix_secs` (integer, required)
-          - `id` (string, required)
-          - `name` (string, required)
-        - `type`: `unknown` (DependentUnknownMCPServerIdentifier)
-          - `id` (string, required)
-      - `integration_connections` (list of object, optional, default: [])
-        - `id` (string, required)
-        - `name` (string, required)
+    - `used_by` (AuthConnectionDependencies, optional, nullable) — Dependencies that use an auth connection
   - `auth_type`: `bearer_auth` (BearerAuthResponse)
     - `id` (string, required)
     - `name` (string, required)
@@ -184,28 +88,7 @@ Successful Response
       - Allowed values: `active`, `refresh_failed`, `revoked`, `credential_invalid`
     - `status_detail` (string, optional, nullable)
     - `status_updated_at` (string, optional, nullable)
-    - `used_by` (object, optional, nullable) — Dependencies that use an auth connection
-      - `tools` (list of object, optional, default: [])
-        - `type`: `available` (DependentAvailableToolIdentifier)
-          - `access_level` (enum, required)
-            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-          - `created_at_unix_secs` (integer, required)
-          - `id` (string, required)
-          - `name` (string, required)
-        - `type`: `unknown` (DependentUnknownToolIdentifier)
-          - `id` (string, required)
-      - `mcp_servers` (list of object, optional, default: [])
-        - `type`: `available` (DependentAvailableMCPServerIdentifier)
-          - `access_level` (enum, required)
-            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-          - `created_at_unix_secs` (integer, required)
-          - `id` (string, required)
-          - `name` (string, required)
-        - `type`: `unknown` (DependentUnknownMCPServerIdentifier)
-          - `id` (string, required)
-      - `integration_connections` (list of object, optional, default: [])
-        - `id` (string, required)
-        - `name` (string, required)
+    - `used_by` (AuthConnectionDependencies, optional, nullable) — Dependencies that use an auth connection
   - `auth_type`: `oauth2_jwt` (OAuth2JWTResponse)
     - `audience` (string, required) — JWT audience (aud claim)
     - `id` (string, required)
@@ -226,28 +109,7 @@ Successful Response
     - `status_updated_at` (string, optional, nullable)
     - `token_response_field` (enum, optional, default: access_token) — Token field to extract from the token endpoint response.
       - Allowed values: `access_token`, `id_token`
-    - `used_by` (object, optional, nullable) — Dependencies that use an auth connection
-      - `tools` (list of object, optional, default: [])
-        - `type`: `available` (DependentAvailableToolIdentifier)
-          - `access_level` (enum, required)
-            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-          - `created_at_unix_secs` (integer, required)
-          - `id` (string, required)
-          - `name` (string, required)
-        - `type`: `unknown` (DependentUnknownToolIdentifier)
-          - `id` (string, required)
-      - `mcp_servers` (list of object, optional, default: [])
-        - `type`: `available` (DependentAvailableMCPServerIdentifier)
-          - `access_level` (enum, required)
-            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-          - `created_at_unix_secs` (integer, required)
-          - `id` (string, required)
-          - `name` (string, required)
-        - `type`: `unknown` (DependentUnknownMCPServerIdentifier)
-          - `id` (string, required)
-      - `integration_connections` (list of object, optional, default: [])
-        - `id` (string, required)
-        - `name` (string, required)
+    - `used_by` (AuthConnectionDependencies, optional, nullable) — Dependencies that use an auth connection
   - `auth_type`: `private_key_jwt` (PrivateKeyJWTResponse)
     - `audience` (string, required) — JWT audience (aud claim)
     - `id` (string, required)
@@ -264,28 +126,7 @@ Successful Response
       - Allowed values: `active`, `refresh_failed`, `revoked`, `credential_invalid`
     - `status_detail` (string, optional, nullable)
     - `status_updated_at` (string, optional, nullable)
-    - `used_by` (object, optional, nullable) — Dependencies that use an auth connection
-      - `tools` (list of object, optional, default: [])
-        - `type`: `available` (DependentAvailableToolIdentifier)
-          - `access_level` (enum, required)
-            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-          - `created_at_unix_secs` (integer, required)
-          - `id` (string, required)
-          - `name` (string, required)
-        - `type`: `unknown` (DependentUnknownToolIdentifier)
-          - `id` (string, required)
-      - `mcp_servers` (list of object, optional, default: [])
-        - `type`: `available` (DependentAvailableMCPServerIdentifier)
-          - `access_level` (enum, required)
-            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-          - `created_at_unix_secs` (integer, required)
-          - `id` (string, required)
-          - `name` (string, required)
-        - `type`: `unknown` (DependentUnknownMCPServerIdentifier)
-          - `id` (string, required)
-      - `integration_connections` (list of object, optional, default: [])
-        - `id` (string, required)
-        - `name` (string, required)
+    - `used_by` (AuthConnectionDependencies, optional, nullable) — Dependencies that use an auth connection
   - `auth_type`: `mtls` (MTLSAuthResponse)
     - `id` (string, required)
     - `name` (string, required)
@@ -294,28 +135,7 @@ Successful Response
       - Allowed values: `active`, `refresh_failed`, `revoked`, `credential_invalid`
     - `status_detail` (string, optional, nullable)
     - `status_updated_at` (string, optional, nullable)
-    - `used_by` (object, optional, nullable) — Dependencies that use an auth connection
-      - `tools` (list of object, optional, default: [])
-        - `type`: `available` (DependentAvailableToolIdentifier)
-          - `access_level` (enum, required)
-            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-          - `created_at_unix_secs` (integer, required)
-          - `id` (string, required)
-          - `name` (string, required)
-        - `type`: `unknown` (DependentUnknownToolIdentifier)
-          - `id` (string, required)
-      - `mcp_servers` (list of object, optional, default: [])
-        - `type`: `available` (DependentAvailableMCPServerIdentifier)
-          - `access_level` (enum, required)
-            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-          - `created_at_unix_secs` (integer, required)
-          - `id` (string, required)
-          - `name` (string, required)
-        - `type`: `unknown` (DependentUnknownMCPServerIdentifier)
-          - `id` (string, required)
-      - `integration_connections` (list of object, optional, default: [])
-        - `id` (string, required)
-        - `name` (string, required)
+    - `used_by` (AuthConnectionDependencies, optional, nullable) — Dependencies that use an auth connection
   - `auth_type`: `custom_header_auth` (CustomHeaderAuthResponse)
     - `header_name` (string, required) — The name of the header to use for authentication (e.g., 'x-api-key')
     - `id` (string, required)
@@ -325,28 +145,7 @@ Successful Response
       - Allowed values: `active`, `refresh_failed`, `revoked`, `credential_invalid`
     - `status_detail` (string, optional, nullable)
     - `status_updated_at` (string, optional, nullable)
-    - `used_by` (object, optional, nullable) — Dependencies that use an auth connection
-      - `tools` (list of object, optional, default: [])
-        - `type`: `available` (DependentAvailableToolIdentifier)
-          - `access_level` (enum, required)
-            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-          - `created_at_unix_secs` (integer, required)
-          - `id` (string, required)
-          - `name` (string, required)
-        - `type`: `unknown` (DependentUnknownToolIdentifier)
-          - `id` (string, required)
-      - `mcp_servers` (list of object, optional, default: [])
-        - `type`: `available` (DependentAvailableMCPServerIdentifier)
-          - `access_level` (enum, required)
-            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-          - `created_at_unix_secs` (integer, required)
-          - `id` (string, required)
-          - `name` (string, required)
-        - `type`: `unknown` (DependentUnknownMCPServerIdentifier)
-          - `id` (string, required)
-      - `integration_connections` (list of object, optional, default: [])
-        - `id` (string, required)
-        - `name` (string, required)
+    - `used_by` (AuthConnectionDependencies, optional, nullable) — Dependencies that use an auth connection
   - `auth_type`: `api_integration_oauth2_auth_code` (ApiIntegrationOAuth2AuthCodeResponse)
     - `credential_id` (string, required)
     - `expires_at` (string, required) — ISO 8601 timestamp of when the access token expires
@@ -362,28 +161,7 @@ Successful Response
       - Allowed values: `active`, `refresh_failed`, `revoked`, `credential_invalid`
     - `status_detail` (string, optional, nullable)
     - `status_updated_at` (string, optional, nullable)
-    - `used_by` (object, optional, nullable) — Dependencies that use an auth connection
-      - `tools` (list of object, optional, default: [])
-        - `type`: `available` (DependentAvailableToolIdentifier)
-          - `access_level` (enum, required)
-            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-          - `created_at_unix_secs` (integer, required)
-          - `id` (string, required)
-          - `name` (string, required)
-        - `type`: `unknown` (DependentUnknownToolIdentifier)
-          - `id` (string, required)
-      - `mcp_servers` (list of object, optional, default: [])
-        - `type`: `available` (DependentAvailableMCPServerIdentifier)
-          - `access_level` (enum, required)
-            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-          - `created_at_unix_secs` (integer, required)
-          - `id` (string, required)
-          - `name` (string, required)
-        - `type`: `unknown` (DependentUnknownMCPServerIdentifier)
-          - `id` (string, required)
-      - `integration_connections` (list of object, optional, default: [])
-        - `id` (string, required)
-        - `name` (string, required)
+    - `used_by` (AuthConnectionDependencies, optional, nullable) — Dependencies that use an auth connection
   - `auth_type`: `api_integration_oauth2_custom_app` (ApiIntegrationOAuth2CustomAppResponse)
     - `client_id` (string, required) — OAuth client ID (rendered from template if credential uses templated credentials, None for legacy connections)
     - `credential_id` (string, required)
@@ -400,28 +178,7 @@ Successful Response
       - Allowed values: `active`, `refresh_failed`, `revoked`, `credential_invalid`
     - `status_detail` (string, optional, nullable)
     - `status_updated_at` (string, optional, nullable)
-    - `used_by` (object, optional, nullable) — Dependencies that use an auth connection
-      - `tools` (list of object, optional, default: [])
-        - `type`: `available` (DependentAvailableToolIdentifier)
-          - `access_level` (enum, required)
-            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-          - `created_at_unix_secs` (integer, required)
-          - `id` (string, required)
-          - `name` (string, required)
-        - `type`: `unknown` (DependentUnknownToolIdentifier)
-          - `id` (string, required)
-      - `mcp_servers` (list of object, optional, default: [])
-        - `type`: `available` (DependentAvailableMCPServerIdentifier)
-          - `access_level` (enum, required)
-            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-          - `created_at_unix_secs` (integer, required)
-          - `id` (string, required)
-          - `name` (string, required)
-        - `type`: `unknown` (DependentUnknownMCPServerIdentifier)
-          - `id` (string, required)
-      - `integration_connections` (list of object, optional, default: [])
-        - `id` (string, required)
-        - `name` (string, required)
+    - `used_by` (AuthConnectionDependencies, optional, nullable) — Dependencies that use an auth connection
   - `auth_type`: `whatsapp_auth` (WhatsAppAuthResponse)
     - `id` (string, required)
     - `name` (string, required)
@@ -431,28 +188,7 @@ Successful Response
       - Allowed values: `active`, `refresh_failed`, `revoked`, `credential_invalid`
     - `status_detail` (string, optional, nullable)
     - `status_updated_at` (string, optional, nullable)
-    - `used_by` (object, optional, nullable) — Dependencies that use an auth connection
-      - `tools` (list of object, optional, default: [])
-        - `type`: `available` (DependentAvailableToolIdentifier)
-          - `access_level` (enum, required)
-            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-          - `created_at_unix_secs` (integer, required)
-          - `id` (string, required)
-          - `name` (string, required)
-        - `type`: `unknown` (DependentUnknownToolIdentifier)
-          - `id` (string, required)
-      - `mcp_servers` (list of object, optional, default: [])
-        - `type`: `available` (DependentAvailableMCPServerIdentifier)
-          - `access_level` (enum, required)
-            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-          - `created_at_unix_secs` (integer, required)
-          - `id` (string, required)
-          - `name` (string, required)
-        - `type`: `unknown` (DependentUnknownMCPServerIdentifier)
-          - `id` (string, required)
-      - `integration_connections` (list of object, optional, default: [])
-        - `id` (string, required)
-        - `name` (string, required)
+    - `used_by` (AuthConnectionDependencies, optional, nullable) — Dependencies that use an auth connection
   - `auth_type`: `slack_bot_auth` (SlackBotAuthResponse)
     - `id` (string, required)
     - `name` (string, required)
@@ -461,28 +197,7 @@ Successful Response
       - Allowed values: `active`, `refresh_failed`, `revoked`, `credential_invalid`
     - `status_detail` (string, optional, nullable)
     - `status_updated_at` (string, optional, nullable)
-    - `used_by` (object, optional, nullable) — Dependencies that use an auth connection
-      - `tools` (list of object, optional, default: [])
-        - `type`: `available` (DependentAvailableToolIdentifier)
-          - `access_level` (enum, required)
-            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-          - `created_at_unix_secs` (integer, required)
-          - `id` (string, required)
-          - `name` (string, required)
-        - `type`: `unknown` (DependentUnknownToolIdentifier)
-          - `id` (string, required)
-      - `mcp_servers` (list of object, optional, default: [])
-        - `type`: `available` (DependentAvailableMCPServerIdentifier)
-          - `access_level` (enum, required)
-            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-          - `created_at_unix_secs` (integer, required)
-          - `id` (string, required)
-          - `name` (string, required)
-        - `type`: `unknown` (DependentUnknownMCPServerIdentifier)
-          - `id` (string, required)
-      - `integration_connections` (list of object, optional, default: [])
-        - `id` (string, required)
-        - `name` (string, required)
+    - `used_by` (AuthConnectionDependencies, optional, nullable) — Dependencies that use an auth connection
   - `auth_type`: `url_secret` (UrlSecretAuthResponse)
     - `id` (string, required)
     - `name` (string, required)
@@ -491,28 +206,7 @@ Successful Response
       - Allowed values: `active`, `refresh_failed`, `revoked`, `credential_invalid`
     - `status_detail` (string, optional, nullable)
     - `status_updated_at` (string, optional, nullable)
-    - `used_by` (object, optional, nullable) — Dependencies that use an auth connection
-      - `tools` (list of object, optional, default: [])
-        - `type`: `available` (DependentAvailableToolIdentifier)
-          - `access_level` (enum, required)
-            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-          - `created_at_unix_secs` (integer, required)
-          - `id` (string, required)
-          - `name` (string, required)
-        - `type`: `unknown` (DependentUnknownToolIdentifier)
-          - `id` (string, required)
-      - `mcp_servers` (list of object, optional, default: [])
-        - `type`: `available` (DependentAvailableMCPServerIdentifier)
-          - `access_level` (enum, required)
-            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-          - `created_at_unix_secs` (integer, required)
-          - `id` (string, required)
-          - `name` (string, required)
-        - `type`: `unknown` (DependentUnknownMCPServerIdentifier)
-          - `id` (string, required)
-      - `integration_connections` (list of object, optional, default: [])
-        - `id` (string, required)
-        - `name` (string, required)
+    - `used_by` (AuthConnectionDependencies, optional, nullable) — Dependencies that use an auth connection
 
 ## Errors
 
@@ -520,10 +214,95 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### UpdateOAuth2ClientCredsRequest
+
+- `auth_type` ("oauth2_client_credentials", optional, default: oauth2_client_credentials)
+- `provider` (string, optional, nullable)
+- `client_id` (string, optional, nullable)
+- `scopes` (list of string, optional, nullable)
+- `extra_params` (map from string to string, optional, nullable)
+- `basic_auth_in_header` (boolean, optional, nullable)
+- `client_secret` (string, optional, nullable)
+- `custom_headers` (map from string to string, optional, nullable)
+
+### UpdateBasicAuthRequest
+
+- `auth_type` ("basic_auth", optional, default: basic_auth)
+- `provider` (string, optional, nullable)
+- `username` (string, optional, nullable)
+- `password` (string, optional, nullable)
+
+### UpdateBearerAuthRequest
+
+- `auth_type` ("bearer_auth", optional, default: bearer_auth)
+- `provider` (string, optional, nullable)
+- `token` (string, optional, nullable)
+
+### UpdateOAuth2JWTRequest
+
+- `auth_type` ("oauth2_jwt", optional, default: oauth2_jwt)
+- `provider` (string, optional, nullable)
+- `algorithm` (enum, optional, nullable)
+  - Allowed values: `HS256`, `HS384`, `HS512`, `RS256`, `RS384`, `RS512`
+- `key_id` (string, optional, nullable)
+- `issuer` (string, optional, nullable)
+- `audience` (string, optional, nullable)
+- `subject` (string, optional, nullable)
+- `expiration_seconds` (integer, optional, nullable)
+- `extra_params` (map from string to string, optional, nullable)
+- `scopes` (list of string, optional, nullable)
+- `token_response_field` (enum, optional, nullable)
+  - Allowed values: `access_token`, `id_token`
+- `secret_key` (string, optional, nullable)
+
+### AuthConnectionDependencies
+
+Dependencies that use an auth connection
+
+- `tools` (list of AuthConnectionDependenciesToolsItems, optional, default: [])
+- `mcp_servers` (list of AuthConnectionDependenciesMcpServersItems, optional, default: [])
+- `integration_connections` (list of DependentIntegrationConnectionIdentifier, optional, default: [])
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### AuthConnectionDependenciesToolsItems
+
+- `type`: `available` (DependentAvailableToolIdentifier)
+  - `access_level` (enum, required)
+    - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+  - `created_at_unix_secs` (integer, required)
+  - `id` (string, required)
+  - `name` (string, required)
+- `type`: `unknown` (DependentUnknownToolIdentifier)
+  - `id` (string, required)
+
+### AuthConnectionDependenciesMcpServersItems
+
+- `type`: `available` (DependentAvailableMCPServerIdentifier)
+  - `access_level` (enum, required)
+    - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+  - `created_at_unix_secs` (integer, required)
+  - `id` (string, required)
+  - `name` (string, required)
+- `type`: `unknown` (DependentUnknownMCPServerIdentifier)
+  - `id` (string, required)
+
+### DependentIntegrationConnectionIdentifier
+
+Identifier for an integration connection that depends on an auth connection
+
+- `id` (string, required)
+- `name` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

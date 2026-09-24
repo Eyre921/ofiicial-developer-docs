@@ -42,12 +42,7 @@ This endpoint expects a multipart form containing a file.
 Successful Response
 
 - `agent_id` (string, required)
-- `hold_audio` (object, required) — Custom hold audio played on loop to callers waiting in the agent's queue. Set by uploading a file through the agent hold-audio endpoint. Values sent in agent create or update requests are ignored.
-  - `audio_path` (string, required) — Storage path of the uploaded clip
-  - `audio_url` (string, required) — Public CDN URL of the uploaded clip
-  - `original_filename` (string, required) — Filename of the uploaded clip as provided by the user
-  - `duration_secs` (double, required) — Duration of the uploaded clip in seconds
-  - `size_bytes` (integer, required) — Size of the uploaded clip in bytes
+- `hold_audio` (AgentHoldAudioConfig, required) — Custom hold audio played on loop to callers waiting in the agent's queue. Set by uploading a file through the agent hold-audio endpoint. Values sent in agent create or update requests are ignored.
 
 ## Errors
 
@@ -55,10 +50,27 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### AgentHoldAudioConfig
+
+Custom hold audio played on loop to callers waiting in the agent's queue. Set by uploading a file through the agent hold-audio endpoint. Values sent in agent create or update requests are ignored.
+
+- `audio_path` (string, required) — Storage path of the uploaded clip
+- `audio_url` (string, required) — Public CDN URL of the uploaded clip
+- `original_filename` (string, required) — Filename of the uploaded clip as provided by the user
+- `duration_secs` (double, required) — Duration of the uploaded clip in seconds
+- `size_bytes` (integer, required) — Size of the uploaded clip in bytes
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItem, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItem
 
 ## Examples
 

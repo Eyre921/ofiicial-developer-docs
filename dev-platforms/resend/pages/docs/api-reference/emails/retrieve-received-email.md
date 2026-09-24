@@ -38,6 +38,29 @@ Retrieve a single received email.
 </ParamField>
 
 <ParamField type="object | null">
+  The SPF, DKIM, and DMARC results computed when the email was received. These
+  come from the receiving mail server, not from the message headers, so the
+  sender cannot forge them. `null` for emails received before this field was
+  introduced.
+
+  <Expandable title="properties">
+    <ParamField type="'pass' | 'fail' | 'gray' | 'processing_failed' | 'unknown'">
+      SPF result. `gray` means the result was `none`, `softfail`, or `neutral`.
+    </ParamField>
+
+    <ParamField type="'pass' | 'fail' | 'gray' | 'processing_failed' | 'unknown'">
+      DKIM result. `gray` means the message is not signed, or the signing
+      domain does not match the `From` domain.
+    </ParamField>
+
+    <ParamField type="'pass' | 'fail' | 'gray' | 'processing_failed' | 'unknown'">
+      DMARC result. `gray` means SPF or DKIM passed but the sending domain has
+      no DMARC policy or uses `p=none`.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField type="object | null">
   Raw email content download information. Contains a signed URL to download the original email file including all attachments.
 
   <Expandable title="properties">
@@ -169,6 +192,11 @@ Retrieve a single received email.
     "cc": [],
     "reply_to": [],
     "received_for": ["forwarded@example.com"],
+    "authentication": {
+      "spf": "pass",
+      "dkim": "pass",
+      "dmarc": "pass"
+    },
     "message_id": "<111-222-333@email.example.com>",
     "raw": {
       "download_url": "https://example.resend.com/receiving/raw/054da427-439a-4e91-b785-e4fb1966285f?Signature=...",

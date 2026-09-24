@@ -100,7 +100,9 @@ sudo docker compose restart
 sudo docker compose up -d
 ```
 
-Contact your Deepgram account representative if you need assistance obtaining the entity-detector model files or verifying that NER formatting is active in your deployment.
+> **Info**
+>
+> Contact your Deepgram account representative if you need assistance obtaining the entity-detector model files or verifying that NER formatting is active in your deployment.
 
 ## NER compatibility by model type
 
@@ -113,7 +115,9 @@ When NER formatting is enabled (`streaming_ner = true` and/or `format_entity_tag
 | Nova-2      | Formatted                           | Yes         | **Not compatible** — NER requires non-formatted model output |
 | Nova-2      | Formatted                           | No          | Smart-formatted transcript (formatting built into model)     |
 
-If you enable NER formatting and deploy Nova-2 **formatted** models, smart formatting requests will raise 400 Bad Request errors, since no model exists to serve the requests. NER formatting expects non-formatted model output as input. When using NER, replace any Nova-2 formatted models with their non-formatted equivalents.
+> **Warn**
+>
+> If you enable NER formatting and deploy Nova-2 **formatted** models, smart formatting requests will raise 400 Bad Request errors, since no model exists to serve the requests. NER formatting expects non-formatted model output as input. When using NER, replace any Nova-2 formatted models with their non-formatted equivalents.
 
 ## Further reading
 

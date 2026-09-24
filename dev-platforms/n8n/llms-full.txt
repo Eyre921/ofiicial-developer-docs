@@ -1,3 +1,8 @@
+> This is part 1 of 14 of the full documentation (pages 1–100 of 1357).
+> The content is paginated: fetch every part to see all of it.
+> Next part: https://docs.n8n.io/llms-full.txt/1
+> Page index: https://docs.n8n.io/llms.txt
+
 # n8n Docs
 
 Get set up on n8n, build your first workflow, and find inspiration for what to automate.
@@ -133,6 +138,13 @@ Ready to begin?
 * [**Get started with self-hosted**](/deploy/host-n8n) — installation and deployment guides, then [choose a plan or edition](/deploy/host-n8n/community-edition-features)
 
 For the current plans, editions, licenses, and prices, always check the [pricing page](https://n8n.io/pricing/).
+
+## Related resources
+
+* [n8n Docs](/)
+* [Build your first workflow](/build-your-first-workflow)
+* [Learning paths](/learning-paths)
+* [Key concept glossary](/key-concept-glossary)
 
 
 # Build your first workflow
@@ -299,6 +311,13 @@ There are plenty of things you could add to this (perhaps add some more credenti
 * Take [courses at n8n Academy](https://learn.n8n.io).
 * Explore more examples in [workflow templates](https://n8n.io/workflows/).
 
+## Related resources
+
+* [n8n Docs](/)
+* [Choose how to use n8n](/choose-how-to-use-n8n)
+* [Learning paths](/learning-paths)
+* [Key concept glossary](/key-concept-glossary)
+
 [^1]: An n8n workflow is a collection of nodes that automate a process. Workflows begin execution when a trigger condition occurs and execute sequentially to achieve complex tasks.
 
 [^2]: In n8n, credentials store authentication information to connect with specific apps and services. After creating credentials with your authentication information (username and password, API key, OAuth secrets, etc.), you can use the associated app node to interact with the service.
@@ -320,6 +339,13 @@ All courses include:
 * Practice APIs (no external accounts needed for most courses)
 
 For a complete list of courses, see [n8n Academy courses](https://learn.n8n.io/courses). To start building right away instead, see [Build your first workflow](/build-your-first-workflow).
+
+## Related resources
+
+* [n8n Docs](/)
+* [Choose how to use n8n](/choose-how-to-use-n8n)
+* [Build your first workflow](/build-your-first-workflow)
+* [Key concept glossary](/key-concept-glossary)
 
 
 # Key concept glossary
@@ -456,6 +482,13 @@ A trigger node is a special node responsible for executing the workflow in respo
 
 An n8n workflow is a collection of nodes that automate a process. Workflows begin execution when a trigger condition occurs and execute sequentially to achieve complex tasks.
 
+### Related resources
+
+* [n8n Docs](/)
+* [Choose how to use n8n](/choose-how-to-use-n8n)
+* [Build your first workflow](/build-your-first-workflow)
+* [Learning paths](/learning-paths)
+
 
 # Deploy
 
@@ -516,33 +549,22 @@ Requires Docker on Linux or macOS (or WSL on Windows). Sets up n8n locally in on
 
 Manage your n8n Cloud trial, plan, and instance, including the admin dashboard and updates.
 
-{% content-ref url="/pages/ziS002yiEqmQSjXZALLO" %}
-[Try free then choose a plan](/deploy/use-n8n-cloud/start-your-free-trial)
-{% endcontent-ref %}
+Manage your n8n Cloud trial, plan, and instance.
 
-{% content-ref url="/pages/mHEBRlhziSCHqhGnNTXi" %}
-[Use the admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard)
-{% endcontent-ref %}
+## In this section
 
-{% content-ref url="/pages/CTls7DnN9awcFDKo7wiF" %}
-[Update your version](/deploy/use-n8n-cloud/update-your-version)
-{% endcontent-ref %}
+* [Try free then choose a plan](/deploy/use-n8n-cloud/start-your-free-trial): start a free trial, then compare the Starter, Pro, and Enterprise plans.
+* [Use the admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard): access the Cloud admin dashboard.
+* [Update your version](/deploy/use-n8n-cloud/update-your-version): update your n8n version on Cloud.
+* [Configure Cloud](/deploy/use-n8n-cloud/configure-cloud): set your timezone, find your IP addresses, and manage your data.
+* [Gateway credits](/deploy/use-n8n-cloud/gateway-credits): use AI models and third-party services without provider accounts or API keys.
+* [Understand concurrency](/deploy/use-n8n-cloud/understand-concurrency): how n8n Cloud handles concurrent executions.
+* [Download workflows](/deploy/use-n8n-cloud/download-workflows): download workflows from n8n Cloud with the admin dashboard.
 
-{% content-ref url="/pages/gkVnVHykpSXYXwX6ZqyT" %}
-[Configure Cloud](/deploy/use-n8n-cloud/configure-cloud)
-{% endcontent-ref %}
+## Related resources
 
-{% content-ref url="/pages/EYLYcr1BAGjTozHgLl8d" %}
-[Gateway credits](/deploy/use-n8n-cloud/gateway-credits)
-{% endcontent-ref %}
-
-{% content-ref url="/pages/9EfpVVUfKqLf574RAV8G" %}
-[Understand concurrency](/deploy/use-n8n-cloud/understand-concurrency)
-{% endcontent-ref %}
-
-{% content-ref url="/pages/x5mIP3TcjJQuKqSsEY4V" %}
-[Download workflows](/deploy/use-n8n-cloud/download-workflows)
-{% endcontent-ref %}
+* [Deploy](/deploy)
+* [Host n8n](/deploy/host-n8n)
 
 
 # Try free then choose a plan
@@ -616,6 +638,16 @@ To test the [Enterprise plan](https://n8n.io/pricing/), contact the sales team. 
 
 Select the **Contact** button on the [n8n website](https://n8n.io/pricing/).
 
+## Related resources
+
+* [Use n8n Cloud](/deploy/use-n8n-cloud)
+* [Use the admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard)
+* [Update your version](/deploy/use-n8n-cloud/update-your-version)
+* [Configure Cloud](/deploy/use-n8n-cloud/configure-cloud)
+* [Gateway credits](/deploy/use-n8n-cloud/gateway-credits)
+* [Understand concurrency](/deploy/use-n8n-cloud/understand-concurrency)
+* [Download workflows](/deploy/use-n8n-cloud/download-workflows)
+
 
 # Use the admin dashboard
 
@@ -631,6 +663,16 @@ Instance owners can access the admin dashboard to manage their Cloud instance. T
 ## Access the dashboard if the app is offline <a href="#access-the-dashboard-if-the-app-is-offline" id="access-the-dashboard-if-the-app-is-offline"></a>
 
 If your instance is down, you can still access the admin dashboard. When you log in to the app, n8n will ask you if you want a magic link to access your dashboard. Select **Send magic link**, then check your email for the link.
+
+## Related resources
+
+* [Use n8n Cloud](/deploy/use-n8n-cloud)
+* [Try free then choose a plan](/deploy/use-n8n-cloud/start-your-free-trial)
+* [Update your version](/deploy/use-n8n-cloud/update-your-version)
+* [Configure Cloud](/deploy/use-n8n-cloud/configure-cloud)
+* [Gateway credits](/deploy/use-n8n-cloud/gateway-credits)
+* [Understand concurrency](/deploy/use-n8n-cloud/understand-concurrency)
+* [Download workflows](/deploy/use-n8n-cloud/download-workflows)
 
 
 # Update your version
@@ -678,24 +720,37 @@ The maintenance window sets when n8n can apply upgrades, so you can reduce disru
 * **Upgrade anytime**: n8n applies upgrades as soon as they're available.
 * **Pick a window**: n8n only applies upgrades during the time range you set.
 
+## Related resources
+
+* [Use n8n Cloud](/deploy/use-n8n-cloud)
+* [Try free then choose a plan](/deploy/use-n8n-cloud/start-your-free-trial)
+* [Use the admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard)
+* [Configure Cloud](/deploy/use-n8n-cloud/configure-cloud)
+* [Gateway credits](/deploy/use-n8n-cloud/gateway-credits)
+* [Understand concurrency](/deploy/use-n8n-cloud/understand-concurrency)
+* [Download workflows](/deploy/use-n8n-cloud/download-workflows)
+
 
 # Configure Cloud
 
-{% content-ref url="/pages/qexcPsKoWp0PmphCtIOv" %}
-[Set your timezone](/deploy/use-n8n-cloud/configure-cloud/set-your-timezone)
-{% endcontent-ref %}
+Configure timezone, IP addresses, data management, and ownership settings for your n8n Cloud instance.
 
-{% content-ref url="/pages/NZmg6WYBQuBaNYov8oZ2" %}
-[Find your IP addresses](/deploy/use-n8n-cloud/configure-cloud/find-your-ip-addresses)
-{% endcontent-ref %}
+## In this section
 
-{% content-ref url="/pages/NaSVSCb9naTK5SHxccJp" %}
-[Manage your data](/deploy/use-n8n-cloud/configure-cloud/manage-your-data)
-{% endcontent-ref %}
+* [Set your timezone](/deploy/use-n8n-cloud/configure-cloud/set-your-timezone): set your timezone on n8n Cloud.
+* [Find your IP addresses](/deploy/use-n8n-cloud/configure-cloud/find-your-ip-addresses): the IP addresses n8n Cloud uses.
+* [Manage your data](/deploy/use-n8n-cloud/configure-cloud/manage-your-data): manage your data on n8n Cloud.
+* [Change instance ownership or username](/deploy/use-n8n-cloud/configure-cloud/change-instance-ownership-or-username): transfer ownership or change your username.
 
-{% content-ref url="/pages/N5MQTEz4LEwFO0gQ0C94" %}
-[Change instance ownership or username](/deploy/use-n8n-cloud/configure-cloud/change-instance-ownership-or-username)
-{% endcontent-ref %}
+## Related resources
+
+* [Use n8n Cloud](/deploy/use-n8n-cloud)
+* [Try free then choose a plan](/deploy/use-n8n-cloud/start-your-free-trial)
+* [Use the admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard)
+* [Update your version](/deploy/use-n8n-cloud/update-your-version)
+* [Gateway credits](/deploy/use-n8n-cloud/gateway-credits)
+* [Understand concurrency](/deploy/use-n8n-cloud/understand-concurrency)
+* [Download workflows](/deploy/use-n8n-cloud/download-workflows)
 
 
 # Set your timezone
@@ -706,6 +761,13 @@ You can change the timezone for your n8n instance. This affects the [Schedule Tr
 
 1. On your dashboard, select **Manage**.
 2. Change the **Timezone** dropdown to the timezone you want.
+
+## Related resources
+
+* [Configure Cloud](/deploy/use-n8n-cloud/configure-cloud)
+* [Find your IP addresses](/deploy/use-n8n-cloud/configure-cloud/find-your-ip-addresses)
+* [Manage your data](/deploy/use-n8n-cloud/configure-cloud/manage-your-data)
+* [Change instance ownership or username](/deploy/use-n8n-cloud/configure-cloud/change-instance-ownership-or-username)
 
 
 # Find your IP addresses
@@ -747,6 +809,13 @@ Outbound traffic may appear to originate from any of:
 * 9.223.34.48/28
 * 20.240.204.176/28
 * 20.240.52.208/28
+
+## Related resources
+
+* [Configure Cloud](/deploy/use-n8n-cloud/configure-cloud)
+* [Set your timezone](/deploy/use-n8n-cloud/configure-cloud/set-your-timezone)
+* [Manage your data](/deploy/use-n8n-cloud/configure-cloud/manage-your-data)
+* [Change instance ownership or username](/deploy/use-n8n-cloud/configure-cloud/change-instance-ownership-or-username)
 
 
 # Manage your data
@@ -835,6 +904,13 @@ Heavier executions and use cases can exceed database capacity despite the automa
 
 Due to the human steps in this process, the alert system isn't perfect. If warnings are triggered after hours or if data consumption rates are high, there might not be time to prune the data before the remaining disk space fills up.
 
+## Related resources
+
+* [Configure Cloud](/deploy/use-n8n-cloud/configure-cloud)
+* [Set your timezone](/deploy/use-n8n-cloud/configure-cloud/set-your-timezone)
+* [Find your IP addresses](/deploy/use-n8n-cloud/configure-cloud/find-your-ip-addresses)
+* [Change instance ownership or username](/deploy/use-n8n-cloud/configure-cloud/change-instance-ownership-or-username)
+
 
 # Change instance ownership or username
 
@@ -851,6 +927,13 @@ If the workspace is deactivated, there will be no **Settings** page and no possi
 It's not currently possible to change usernames.
 
 If you want your instance to have a different name you will need to create a new account and transfer your work into it. [The import/export documentation](/build/manage-workflows/export-and-import) explains how you can transfer your work to a new n8n instance.
+
+### Related resources
+
+* [Configure Cloud](/deploy/use-n8n-cloud/configure-cloud)
+* [Set your timezone](/deploy/use-n8n-cloud/configure-cloud/set-your-timezone)
+* [Find your IP addresses](/deploy/use-n8n-cloud/configure-cloud/find-your-ip-addresses)
+* [Manage your data](/deploy/use-n8n-cloud/configure-cloud/manage-your-data)
 
 
 # Understand concurrency
@@ -890,6 +973,16 @@ Queue mode is available for n8n Cloud Enterprise plans. To enable it, [contact n
 
 Concurrency in queue mode is a separate mechanism from concurrency in regular mode. In queue mode, the concurrency settings determine how many jobs each worker can run in parallel. In regular mode, concurrency limits apply to the entire instance.
 
+## Related resources
+
+* [Use n8n Cloud](/deploy/use-n8n-cloud)
+* [Try free then choose a plan](/deploy/use-n8n-cloud/start-your-free-trial)
+* [Use the admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard)
+* [Update your version](/deploy/use-n8n-cloud/update-your-version)
+* [Configure Cloud](/deploy/use-n8n-cloud/configure-cloud)
+* [Gateway credits](/deploy/use-n8n-cloud/gateway-credits)
+* [Download workflows](/deploy/use-n8n-cloud/download-workflows)
+
 [^1]: In n8n, evaluation allows you to tag and organize execution history and compare it against new executions. You can use this to understand how your workflow performs over time as you make changes. In particular, this is useful while developing AI-centered workflows.
 
 
@@ -898,6 +991,11 @@ Concurrency in queue mode is a separate mechanism from concurrency in regular mo
 Use Gateway credits to run AI models and third-party services in your n8n workflows without provider accounts or API keys.
 
 Gateway credits let you use supported AI models and third-party services in your workflows without creating provider accounts or managing API keys. Instead of setting up a credential, you select Gateway credits on a supported node, and n8n bills the usage from a prepaid credit balance.
+
+## In this section
+
+* [Top up Gateway credits](/deploy/use-n8n-cloud/gateway-credits/top-up-gateway-credits): add credit manually or automatically.
+* [Track Gateway credit spend](/deploy/use-n8n-cloud/gateway-credits/track-gateway-credit-spend): monitor your balance, spend, and top-up history.
 
 {% hint style="info" %}
 **Feature availability**
@@ -948,11 +1046,11 @@ When your balance reaches zero, nodes using Gateway credits stop working until y
 
 n8n has more than one kind of credit. They have separate balances and pay for different things:
 
-| Credit type             | What it pays for                                                                                                                               | Where you see it                                                                    |
-| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| Gateway credits         | AI models and tool services used by nodes in your workflows                                                                                    | On supported nodes, and on the **Gateway credits** tab in the Cloud admin dashboard |
-| n8n Assistant credits   | Your usage of [n8n Assistant](https://app.gitbook.com/s/rPN1zU5jaYNvwH7RzxqA/ways-of-building-workflows/n8n-assistant) and AI Workflow Builder | In the n8n Assistant panel in the editor                                            |
-| Free OpenAI API credits | A legacy one-time OpenAI allowance for new Cloud users                                                                                         | Only on instances without Gateway credits                                           |
+| Credit type             | What it pays for                                                                                       | Where you see it                                                                    |
+| ----------------------- | ------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------- |
+| Gateway credits         | AI models and tool services used by nodes in your workflows                                            | On supported nodes, and on the **Gateway credits** tab in the Cloud admin dashboard |
+| n8n Assistant credits   | Your usage of [n8n Assistant](/build/ways-of-building-workflows/n8n-assistant) and AI Workflow Builder | In the n8n Assistant panel in the editor                                            |
+| Free OpenAI API credits | A legacy one-time OpenAI allowance for new Cloud users                                                 | Only on instances without Gateway credits                                           |
 
 Topping up Gateway credits doesn't add n8n Assistant credits, and using the n8n Assistant doesn't spend your Gateway credit balance.
 
@@ -962,9 +1060,14 @@ When a node runs on Gateway credits, n8n sends the request through its gateway t
 
 ## Related resources
 
+* [Use n8n Cloud](/deploy/use-n8n-cloud)
+* [Try free then choose a plan](/deploy/use-n8n-cloud/start-your-free-trial)
+* [Use the admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard)
+* [Update your version](/deploy/use-n8n-cloud/update-your-version)
+* [Configure Cloud](/deploy/use-n8n-cloud/configure-cloud)
+* [Understand concurrency](/deploy/use-n8n-cloud/understand-concurrency)
+* [Download workflows](/deploy/use-n8n-cloud/download-workflows)
 * [Use Gateway credits](/build/understand-workflows/use-gateway-credits): select Gateway credits on a node and find supported nodes.
-* [Top up Gateway credits](/deploy/use-n8n-cloud/gateway-credits/top-up-gateway-credits): add credit manually or automatically.
-* [Track Gateway credit spend](/deploy/use-n8n-cloud/gateway-credits/track-gateway-credit-spend): monitor your balance, spend, and top-up history.
 * [Service pricing page](https://app.n8n.cloud/service-pricing): current rates for all supported services and models.
 
 
@@ -1089,6 +1192,16 @@ You can do this with the [Cloud admin dashboard](/deploy/use-n8n-cloud/use-the-a
 
 You have **90 days** to download your workflows after your free trial ends. After that, all workflows will be **permanently deleted** and are unrecoverable.
 
+## Related resources
+
+* [Use n8n Cloud](/deploy/use-n8n-cloud)
+* [Try free then choose a plan](/deploy/use-n8n-cloud/start-your-free-trial)
+* [Use the admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard)
+* [Update your version](/deploy/use-n8n-cloud/update-your-version)
+* [Configure Cloud](/deploy/use-n8n-cloud/configure-cloud)
+* [Gateway credits](/deploy/use-n8n-cloud/gateway-credits)
+* [Understand concurrency](/deploy/use-n8n-cloud/understand-concurrency)
+
 
 # Host n8n
 
@@ -1107,6 +1220,16 @@ Requires Docker on Linux or macOS (or WSL on Windows). Sets up n8n locally in on
 {% endhint %}
 
 All self-hosted installations use the same core product. Without a license key, n8n runs as the free Community edition. Adding a Business or Enterprise license key enables those editions. See [Compare editions](/deploy/host-n8n/community-edition-features) for the differences between the self-hosted editions.
+
+## In this section
+
+* [Install options](/deploy/host-n8n/install-options): set up n8n with Docker, npm, Docker Compose, or a cloud provider.
+* [Configure n8n](/deploy/host-n8n/configure-n8n): manage databases, environment variables, users, licenses, and security settings.
+* [Keep n8n running](/deploy/host-n8n/keep-n8n-running): monitor, log, trace, and update your instance.
+* [Understand the architecture](/deploy/host-n8n/understand-the-architecture): learn how n8n works and how it structures its database.
+* [Deploy as an OEM integration](/deploy/host-n8n/deploy-as-an-oem-integration): embed n8n's interface inside your own product's UI.
+* [Deploy with the AI starter kit](/deploy/host-n8n/deploy-with-the-ai-starter-kit): use n8n's curated self-hosted AI Starter Kit.
+* [Compare editions](/deploy/host-n8n/community-edition-features): compare the self-hosted Community, Business, and Enterprise editions.
 
 ## Choose your installation method <a href="#choose-your-installation-method" id="choose-your-installation-method"></a>
 
@@ -1177,32 +1300,35 @@ Select the installation method that best fits your technical requirements and in
 
   [npm installation guide](/deploy/host-n8n/install-options/install-with-npm)
 
+## Related resources
+
+* [Deploy](/deploy)
+* [Use n8n Cloud](/deploy/use-n8n-cloud)
+
 
 # Install options
 
 Compare ways to install self-hosted n8n, including one-line setup, Docker, Docker Compose, npm, and cloud providers.
 
-{% content-ref url="/pages/v0g3kb2fsMoDP6jwGXeu" %}
-[One-line setup](/deploy/host-n8n/install-options/one-line-setup)
-{% endcontent-ref %}
+Compare ways to install self-hosted n8n.
 
-{% content-ref url="/pages/UG58o6rsrfmn5LPW3DE4" %}
-[Install using Docker Compose](/deploy/host-n8n/install-options/install-using-docker-compose)
-{% endcontent-ref %}
+## In this section
 
-{% content-ref url="/pages/mCDV3p515YyTtwGnNdLq" %}
-[Install with npm](/deploy/host-n8n/install-options/install-with-npm)
-{% endcontent-ref %}
+* [One-line setup](/deploy/host-n8n/install-options/one-line-setup): install n8n from the command line using a one-line setup.
+* [Install using Docker Compose](/deploy/host-n8n/install-options/install-using-docker-compose): build a Docker Compose setup for self-hosted n8n.
+* [Install with npm](/deploy/host-n8n/install-options/install-with-npm): install n8n directly using Node Package Manager.
+* [Install with Docker](/deploy/host-n8n/install-options/install-with-docker): install and run n8n using Docker.
+* [Use a cloud provider](/deploy/host-n8n/install-options/use-a-cloud-provider): deploy self-hosted n8n to DigitalOcean, AWS, Azure, Google Cloud, and more.
 
-{% content-ref url="/pages/69yLdGbIionxWshakLo7" %}
-[Install with Docker](/deploy/host-n8n/install-options/install-with-docker)
-{% endcontent-ref %}
+## Related resources
 
-{% content-ref url="/pages/o0tyrSRLdqerPqm6bDW8" %}
-[Use a cloud provider](/deploy/host-n8n/install-options/use-a-cloud-provider)
-{% endcontent-ref %}
-
-See [Host n8n](/deploy/host-n8n) for other self-hosting topics.
+* [Host n8n](/deploy/host-n8n)
+* [Configure n8n](/deploy/host-n8n/configure-n8n)
+* [Keep n8n running](/deploy/host-n8n/keep-n8n-running)
+* [Understand the architecture](/deploy/host-n8n/understand-the-architecture)
+* [Deploy as an OEM integration](/deploy/host-n8n/deploy-as-an-oem-integration)
+* [Deploy with the AI starter kit](/deploy/host-n8n/deploy-with-the-ai-starter-kit)
+* [Compare editions](/deploy/host-n8n/community-edition-features)
 
 
 # One-line setup
@@ -1350,6 +1476,14 @@ The one-line setup command needs a terminal that understands shell scripts, whic
 
 * **WSL** (Windows Subsystem for Linux), with Docker Desktop's WSL2 integration turned on.
 * **Git Bash** (installed alongside [Git for Windows](https://git-scm.com/downloads/win)) with Docker Desktop running can also run POSIX shell scripts, but n8n hasn't verified it end-to-end for the one-line setup command. Stick with WSL unless you've confirmed Git Bash works for your setup.
+
+## Related resources
+
+* [Install options](/deploy/host-n8n/install-options)
+* [Install using Docker Compose](/deploy/host-n8n/install-options/install-using-docker-compose)
+* [Install with npm](/deploy/host-n8n/install-options/install-with-npm)
+* [Install with Docker](/deploy/host-n8n/install-options/install-with-docker)
+* [Use a cloud provider](/deploy/host-n8n/install-options/use-a-cloud-provider)
 
 
 # Install using Docker Compose
@@ -1595,6 +1729,14 @@ flowchart LR
 
 n8n sends code execution requests to `sandbox-api`, which hands them to `sandbox-runner-1`, which creates and runs the actual sandbox containers. `sandbox-certs` runs once at startup to generate the TLS certificates the other two need and then exits; everything else waits on it.
 
+## Related resources
+
+* [Install options](/deploy/host-n8n/install-options)
+* [One-line setup](/deploy/host-n8n/install-options/one-line-setup)
+* [Install with npm](/deploy/host-n8n/install-options/install-with-npm)
+* [Install with Docker](/deploy/host-n8n/install-options/install-with-docker)
+* [Use a cloud provider](/deploy/host-n8n/install-options/use-a-cloud-provider)
+
 
 # Install with npm
 
@@ -1727,6 +1869,14 @@ If the upgrade involved a database migration:
 
 If you're experiencing issues running n8n on Windows, verify your Node.js environment setup. Follow Microsoft's guide to [Install NodeJS on Windows](https://learn.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-windows).
 
+### Related resources
+
+* [Install options](/deploy/host-n8n/install-options)
+* [One-line setup](/deploy/host-n8n/install-options/one-line-setup)
+* [Install using Docker Compose](/deploy/host-n8n/install-options/install-using-docker-compose)
+* [Install with Docker](/deploy/host-n8n/install-options/install-with-docker)
+* [Use a cloud provider](/deploy/host-n8n/install-options/use-a-cloud-provider)
+
 
 # Install with Docker
 
@@ -1769,7 +1919,7 @@ Before proceeding, install Docker:
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.40.5 Current `beta`: 2.40.5
+Current `stable`: 2.40.6 Current `beta`: 2.41.2
 {% endhint %}
 
 ### Starting n8n <a href="#starting-n8n" id="starting-n8n"></a>
@@ -1953,6 +2103,14 @@ pnpm --filter n8n-containers services:clean
 * Learn more about [configuring](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables) and [scaling](/deploy/host-n8n/configure-n8n/scaling) n8n.
 * Or explore using n8n: try the [Quickstarts](/build-your-first-workflow).
 
+## Related resources
+
+* [Install options](/deploy/host-n8n/install-options)
+* [One-line setup](/deploy/host-n8n/install-options/one-line-setup)
+* [Install using Docker Compose](/deploy/host-n8n/install-options/install-using-docker-compose)
+* [Install with npm](/deploy/host-n8n/install-options/install-with-npm)
+* [Use a cloud provider](/deploy/host-n8n/install-options/use-a-cloud-provider)
+
 [^1]: In n8n, credentials store authentication information to connect with specific apps and services. After creating credentials with your authentication information (username and password, API key, OAuth secrets, etc.), you can use the associated app node to interact with the service.
 
 
@@ -1960,27 +2118,36 @@ pnpm --filter n8n-containers services:clean
 
 Deploy self-hosted n8n to a cloud provider, including DigitalOcean, AWS, Azure, and Google Cloud.
 
+## In this section
+
 Self-host with Docker Compose:
 
-* [Digital Ocean](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-digital-ocean)
-* [Heroku](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-heroku)
-* [Hetzner Cloud](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-hetzner)
+* [DigitalOcean](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-digital-ocean): self-host n8n on a DigitalOcean droplet with a real domain and automatic HTTPS.
+* [Heroku](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-heroku): self-host n8n on Heroku.
+* [Hetzner Cloud](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-hetzner): self-host n8n on a Hetzner Cloud server.
 
 Self-host with Google Cloud Run (with access to n8n workflow tools for Google Workspace, for example Gmail and Drive):
 
-* [Google Cloud Run](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-google-cloud-run)
+* [Google Cloud Run](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-google-cloud-run): self-host n8n on Google Cloud Run, a serverless container runtime.
 
 Starting points for a Kubernetes setup:
 
-* [AWS](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws)
-* [Azure](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-azure)
-* [Google Kubernetes Engine (GKE)](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-google-kubernetes)
+* [AWS](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws): self-host n8n on Amazon Web Services with Postgres and Kubernetes.
+* [Azure](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-azure): self-host n8n on Azure with Postgres and Kubernetes.
+* [Google Kubernetes Engine (GKE)](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-google-kubernetes): self-host n8n on Google Kubernetes Engine.
+* [OpenShift Local (CRC)](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-openshift-local-crc): deploy n8n on a local OpenShift cluster for testing, without cloud costs.
 
 Configuration guides to help you get started on other platforms:
 
-* [Docker Compose](/deploy/host-n8n/install-options/use-a-cloud-provider/use-docker-compose)
+* [Docker Compose](/deploy/host-n8n/install-options/use-a-cloud-provider/use-docker-compose): install and run n8n using Docker Compose.
 
-See [Install options](/deploy/host-n8n/install-options) for other ways to install n8n.
+## Related resources
+
+* [Install options](/deploy/host-n8n/install-options)
+* [One-line setup](/deploy/host-n8n/install-options/one-line-setup)
+* [Install using Docker Compose](/deploy/host-n8n/install-options/install-using-docker-compose)
+* [Install with npm](/deploy/host-n8n/install-options/install-with-npm)
+* [Install with Docker](/deploy/host-n8n/install-options/install-with-docker)
 
 
 # Deploy to Digital Ocean
@@ -2010,7 +2177,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.40.5 Current `beta`: 2.40.5
+Current `stable`: 2.40.6 Current `beta`: 2.41.2
 {% endhint %}
 
 ## Create a Droplet <a href="#create-a-droplet" id="create-a-droplet"></a>
@@ -2343,6 +2510,18 @@ docker compose up -d
 * Learn more about [configuring](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables) and [scaling](/deploy/host-n8n/configure-n8n/scaling) n8n.
 * Or explore using n8n: try the [Quickstarts](/build-your-first-workflow).
 
+## Related resources
+
+* [Use a cloud provider](/deploy/host-n8n/install-options/use-a-cloud-provider)
+* [Heroku](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-heroku)
+* [Hetzner Cloud](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-hetzner)
+* [AWS](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws)
+* [Azure](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-azure)
+* [Google Cloud Run](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-google-cloud-run)
+* [Google Kubernetes Engine](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-google-kubernetes)
+* [OpenShift Local (CRC)](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-openshift-local-crc)
+* [Use Docker Compose](/deploy/host-n8n/install-options/use-a-cloud-provider/use-docker-compose)
+
 
 # Deploy to Heroku
 
@@ -2370,7 +2549,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.40.5 Current `beta`: 2.40.5
+Current `stable`: 2.40.6 Current `beta`: 2.41.2
 {% endhint %}
 
 ## Use the deployment template to create a Heroku project <a href="#use-the-deployment-template-to-create-a-heroku-project" id="use-the-deployment-template-to-create-a-heroku-project"></a>
@@ -2432,6 +2611,18 @@ The `heroku.yml` file defines the application you want to create on Heroku. It c
 * Learn more about [configuring](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables) and [scaling](/deploy/host-n8n/configure-n8n/scaling) n8n.
 * Or explore using n8n: try the [Quickstarts](/build-your-first-workflow).
 
+## Related resources
+
+* [Use a cloud provider](/deploy/host-n8n/install-options/use-a-cloud-provider)
+* [DigitalOcean](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-digital-ocean)
+* [Hetzner Cloud](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-hetzner)
+* [AWS](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws)
+* [Azure](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-azure)
+* [Google Cloud Run](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-google-cloud-run)
+* [Google Kubernetes Engine](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-google-kubernetes)
+* [OpenShift Local (CRC)](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-openshift-local-crc)
+* [Use Docker Compose](/deploy/host-n8n/install-options/use-a-cloud-provider/use-docker-compose)
+
 
 # Deploy to Hetzner
 
@@ -2460,7 +2651,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.40.5 Current `beta`: 2.40.5
+Current `stable`: 2.40.6 Current `beta`: 2.41.2
 {% endhint %}
 
 ## Create a server <a href="#create-a-server" id="create-a-server"></a>
@@ -2777,6 +2968,18 @@ docker compose up -d
 * Learn more about [configuring](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables) and [scaling](/deploy/host-n8n/configure-n8n/scaling) n8n.
 * Or explore using n8n: try the [Quickstarts](/build-your-first-workflow).
 
+## Related resources
+
+* [Use a cloud provider](/deploy/host-n8n/install-options/use-a-cloud-provider)
+* [DigitalOcean](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-digital-ocean)
+* [Heroku](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-heroku)
+* [AWS](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws)
+* [Azure](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-azure)
+* [Google Cloud Run](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-google-cloud-run)
+* [Google Kubernetes Engine](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-google-kubernetes)
+* [OpenShift Local (CRC)](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-openshift-local-crc)
+* [Use Docker Compose](/deploy/host-n8n/install-options/use-a-cloud-provider/use-docker-compose)
+
 
 # Deploy to AWS
 
@@ -2812,7 +3015,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.40.5 Current `beta`: 2.40.5
+Current `stable`: 2.40.6 Current `beta`: 2.41.2
 {% endhint %}
 
 ## Create a cluster <a href="#create-a-cluster" id="create-a-cluster"></a>
@@ -2986,6 +3189,18 @@ kubectl delete -f .
 * Learn more about [configuring](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables) and [scaling](/deploy/host-n8n/configure-n8n/scaling) n8n.
 * Or explore using n8n: try the [Quickstarts](/build-your-first-workflow).
 
+## Related resources
+
+* [Use a cloud provider](/deploy/host-n8n/install-options/use-a-cloud-provider)
+* [DigitalOcean](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-digital-ocean)
+* [Heroku](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-heroku)
+* [Hetzner Cloud](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-hetzner)
+* [Azure](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-azure)
+* [Google Cloud Run](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-google-cloud-run)
+* [Google Kubernetes Engine](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-google-kubernetes)
+* [OpenShift Local (CRC)](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-openshift-local-crc)
+* [Use Docker Compose](/deploy/host-n8n/install-options/use-a-cloud-provider/use-docker-compose)
+
 
 # Deploy to Azure
 
@@ -3013,7 +3228,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.40.5 Current `beta`: 2.40.5
+Current `stable`: 2.40.6 Current `beta`: 2.41.2
 {% endhint %}
 
 ## Hosting options <a href="#hosting-options" id="hosting-options"></a>
@@ -3188,6 +3403,18 @@ kubectl delete -f .
 * Learn more about [configuring](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables) and [scaling](/deploy/host-n8n/configure-n8n/scaling) n8n.
 * Or explore using n8n: try the [Quickstarts](/build-your-first-workflow).
 
+## Related resources
+
+* [Use a cloud provider](/deploy/host-n8n/install-options/use-a-cloud-provider)
+* [DigitalOcean](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-digital-ocean)
+* [Heroku](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-heroku)
+* [Hetzner Cloud](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-hetzner)
+* [AWS](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws)
+* [Google Cloud Run](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-google-cloud-run)
+* [Google Kubernetes Engine](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-google-kubernetes)
+* [OpenShift Local (CRC)](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-openshift-local-crc)
+* [Use Docker Compose](/deploy/host-n8n/install-options/use-a-cloud-provider/use-docker-compose)
+
 
 # Deploy to Google Cloud Run
 
@@ -3215,7 +3442,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.40.5 Current `beta`: 2.40.5
+Current `stable`: 2.40.6 Current `beta`: 2.41.2
 {% endhint %}
 
 ## Before you begin: get a Google Cloud project <a href="#before-you-begin-get-a-google-cloud-project" id="before-you-begin-get-a-google-cloud-project"></a>
@@ -3452,6 +3679,18 @@ Lastly, you must setup OAuth for these services. Visit `https://console.cloud.go
 7. Click "Data Access" and add the scopes you want n8n to have access for (e.g. to access Google Sheets, you need `https://googleapis.com/auth/drive.file` and `https://googleapis.com/auth/spreadsheets`)
 8. Now you should be able to use these workspace services. You can test if it works by logging into n8n, add a Tool for the respective service and add its credentials using the information in the OAuth client JSON file from step 6.
 
+## Related resources
+
+* [Use a cloud provider](/deploy/host-n8n/install-options/use-a-cloud-provider)
+* [DigitalOcean](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-digital-ocean)
+* [Heroku](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-heroku)
+* [Hetzner Cloud](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-hetzner)
+* [AWS](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws)
+* [Azure](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-azure)
+* [Google Kubernetes Engine](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-google-kubernetes)
+* [OpenShift Local (CRC)](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-openshift-local-crc)
+* [Use Docker Compose](/deploy/host-n8n/install-options/use-a-cloud-provider/use-docker-compose)
+
 
 # Deploy to Google Kubernetes
 
@@ -3484,7 +3723,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.40.5 Current `beta`: 2.40.5
+Current `stable`: 2.40.6 Current `beta`: 2.41.2
 {% endhint %}
 
 ## Create project <a href="#create-project" id="create-project"></a>
@@ -3658,6 +3897,18 @@ kubectl delete -f .
 
 * Learn more about [configuring](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables) and [scaling](/deploy/host-n8n/configure-n8n/scaling) n8n.
 * Or explore using n8n: try the [Quickstarts](/build-your-first-workflow).
+
+## Related resources
+
+* [Use a cloud provider](/deploy/host-n8n/install-options/use-a-cloud-provider)
+* [DigitalOcean](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-digital-ocean)
+* [Heroku](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-heroku)
+* [Hetzner Cloud](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-hetzner)
+* [AWS](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws)
+* [Azure](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-azure)
+* [Google Cloud Run](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-google-cloud-run)
+* [OpenShift Local (CRC)](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-openshift-local-crc)
+* [Use Docker Compose](/deploy/host-n8n/install-options/use-a-cloud-provider/use-docker-compose)
 
 
 # Deploy to OpenShift Local (CRC)
@@ -4723,6 +4974,18 @@ Log in with `kubeadmin` / your password to see a graphical view of everything ru
 * Learn more about [configuring](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables) and [scaling](/deploy/host-n8n/configure-n8n/scaling) n8n.
 * Or explore using n8n: try the [Quickstarts](/build-your-first-workflow).
 
+## Related resources
+
+* [Use a cloud provider](/deploy/host-n8n/install-options/use-a-cloud-provider)
+* [DigitalOcean](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-digital-ocean)
+* [Heroku](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-heroku)
+* [Hetzner Cloud](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-hetzner)
+* [AWS](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws)
+* [Azure](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-azure)
+* [Google Cloud Run](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-google-cloud-run)
+* [Google Kubernetes Engine](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-google-kubernetes)
+* [Use Docker Compose](/deploy/host-n8n/install-options/use-a-cloud-provider/use-docker-compose)
+
 
 # Use Docker Compose
 
@@ -4752,7 +5015,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.40.5 Current `beta`: 2.40.5
+Current `stable`: 2.40.6 Current `beta`: 2.41.2
 {% endhint %}
 
 ## 1. Install Docker and Docker Compose <a href="#id-1-install-docker-and-docker-compose" id="id-1-install-docker-and-docker-compose"></a>
@@ -4947,74 +5210,52 @@ If you have trouble reaching your instance, check your server's firewall setting
 * Learn more about [configuring](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables) and [scaling](/deploy/host-n8n/configure-n8n/scaling) n8n.
 * Or explore using n8n: try the [Quickstarts](/build-your-first-workflow).
 
-See [Use a cloud provider](/deploy/host-n8n/install-options/use-a-cloud-provider) for other cloud deployment options.
+## Related resources
+
+* [Use a cloud provider](/deploy/host-n8n/install-options/use-a-cloud-provider)
+* [DigitalOcean](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-digital-ocean)
+* [Heroku](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-heroku)
+* [Hetzner Cloud](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-hetzner)
+* [AWS](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws)
+* [Azure](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-azure)
+* [Google Cloud Run](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-google-cloud-run)
+* [Google Kubernetes Engine](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-google-kubernetes)
+* [OpenShift Local (CRC)](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-openshift-local-crc)
 
 
 # Configure n8n
 
 Configure a self-hosted n8n instance, including database, security, scaling, and license settings.
 
-{% content-ref url="/pages/D6nQbN5MsPG3tDAln3tB" %}
-[Basic configuration](/deploy/host-n8n/configure-n8n/basic-configuration)
-{% endcontent-ref %}
+Configure a self-hosted n8n instance, including database, security, scaling, and license settings.
 
-{% content-ref url="/pages/Q9ye9YCvkrdBZn6tvKjF" %}
-[Choose n8n's database](/deploy/host-n8n/configure-n8n/choose-n8ns-database)
-{% endcontent-ref %}
+## In this section
 
-{% content-ref url="/pages/O1byznxN1LxOdaAHa0aS" %}
-[External hooks](/deploy/host-n8n/configure-n8n/external-hooks)
-{% endcontent-ref %}
+* [Basic configuration](/deploy/host-n8n/configure-n8n/basic-configuration): set environment variables, and browse configuration examples.
+* [Choose n8n's database](/deploy/host-n8n/configure-n8n/choose-n8ns-database): SQLite and PostgreSQL configuration.
+* [External hooks](/deploy/host-n8n/configure-n8n/external-hooks): run your own code at specific points in n8n's lifecycle.
+* [Use the command line](/deploy/host-n8n/configure-n8n/use-the-command-line): the n8n CLI reference.
+* [User management](/deploy/host-n8n/configure-n8n/user-management): manage users on a self-hosted instance.
+* [Change instance owner email](/deploy/host-n8n/configure-n8n/change-instance-owner-email): update the email address of the instance owner.
+* [Manage settings using environment variables](/deploy/host-n8n/configure-n8n/manage-settings-using-environment-variables): configure instance settings without the UI.
+* [Set up task runners](/deploy/host-n8n/configure-n8n/set-up-task-runners): run Code node executions in external processes.
+* [Durable scheduler](/deploy/host-n8n/configure-n8n/durable-scheduler): make scheduled triggers resilient to restarts.
+* [System tasks](/deploy/host-n8n/configure-n8n/system-tasks): the Prometheus metrics n8n's system tasks expose.
+* [Set up n8n Assistant](/deploy/host-n8n/configure-n8n/set-up-n8n-assistant): configure AI-assisted building for self-hosted n8n.
+* [Deploy n8n in canvas-only mode](/deploy/host-n8n/configure-n8n/deploy-n8n-in-canvas-only-mode): restrict an instance to the workflow canvas.
+* [Manage your license](/deploy/host-n8n/configure-n8n/manage-your-license): activate, renew, and manage your n8n license.
+* [Security](/deploy/host-n8n/configure-n8n/security): audit, harden, and restrict a self-hosted instance.
+* [Scaling](/deploy/host-n8n/configure-n8n/scaling): configure n8n for a large number of users, workflows, or executions.
 
-{% content-ref url="/pages/Cv5f734flyiKZxQhF1Ct" %}
-[Use the command line](/deploy/host-n8n/configure-n8n/use-the-command-line)
-{% endcontent-ref %}
+## Related resources
 
-{% content-ref url="/pages/7Emph05tu5JellItH8LV" %}
-[User management](/deploy/host-n8n/configure-n8n/user-management)
-{% endcontent-ref %}
-
-{% content-ref url="/pages/UvywXurTNZ4KD632dxJK" %}
-[Change instance owner email](/deploy/host-n8n/configure-n8n/change-instance-owner-email)
-{% endcontent-ref %}
-
-{% content-ref url="/pages/5zJ5MrOPv0rnpgvXkac8" %}
-[Manage settings using environment variables](/deploy/host-n8n/configure-n8n/manage-settings-using-environment-variables)
-{% endcontent-ref %}
-
-{% content-ref url="/pages/TvMvdEdlJ4JBXsxwF1Pc" %}
-[Set up task runners](/deploy/host-n8n/configure-n8n/set-up-task-runners)
-{% endcontent-ref %}
-
-{% content-ref url="/pages/wcYiGRHkLfvIu9gCZwvT" %}
-[Durable scheduler](/deploy/host-n8n/configure-n8n/durable-scheduler)
-{% endcontent-ref %}
-
-{% content-ref url="/pages/k37ii8WFk8kqamOFyEk7" %}
-[System tasks](/deploy/host-n8n/configure-n8n/system-tasks)
-{% endcontent-ref %}
-
-{% content-ref url="/pages/9l6pj0ytwtjt4yTL12Te" %}
-[Set up n8n Assistant](/deploy/host-n8n/configure-n8n/set-up-n8n-assistant)
-{% endcontent-ref %}
-
-{% content-ref url="/pages/fbNF5ZifLqOi3Rhx3eKy" %}
-[Deploy n8n in canvas-only mode](/deploy/host-n8n/configure-n8n/deploy-n8n-in-canvas-only-mode)
-{% endcontent-ref %}
-
-{% content-ref url="/pages/Ljv5adv9oCTKuAvqhHNb" %}
-[Manage your license](/deploy/host-n8n/configure-n8n/manage-your-license)
-{% endcontent-ref %}
-
-{% content-ref url="/pages/9MH78dGe8tTsfGxGqLNY" %}
-[Security](/deploy/host-n8n/configure-n8n/security)
-{% endcontent-ref %}
-
-{% content-ref url="/pages/SZsPeev6baoyRzZBcevG" %}
-[Scaling](/deploy/host-n8n/configure-n8n/scaling)
-{% endcontent-ref %}
-
-See [Host n8n](/deploy/host-n8n) for other self-hosting topics.
+* [Host n8n](/deploy/host-n8n)
+* [Install options](/deploy/host-n8n/install-options)
+* [Keep n8n running](/deploy/host-n8n/keep-n8n-running)
+* [Understand the architecture](/deploy/host-n8n/understand-the-architecture)
+* [Deploy as an OEM integration](/deploy/host-n8n/deploy-as-an-oem-integration)
+* [Deploy with the AI starter kit](/deploy/host-n8n/deploy-with-the-ai-starter-kit)
+* [Compare editions](/deploy/host-n8n/community-edition-features)
 
 
 # Basic configuration
@@ -5094,7 +5335,14 @@ DB_POSTGRESDB_SSL_KEY_FILE=/path/to/ssl_key
 DB_POSTGRESDB_SSL_REJECT_UNAUTHORIZED_FILE=/path/to/ssl_reject_unauth
 ```
 
-See [Configure n8n](/deploy/host-n8n/configure-n8n) for other configuration topics.
+## In this section
+
+* [Environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables): reference for every environment variable n8n supports.
+* [Configuration examples](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples): examples for how to configure n8n to solve particular use cases.
+
+## Related resources
+
+* [Configure n8n](/deploy/host-n8n/configure-n8n)
 
 [^1]: In n8n, credentials store authentication information to connect with specific apps and services. After creating credentials with your authentication information (username and password, API key, OAuth secrets, etc.), you can use the associated app node to interact with the service.
 
@@ -5111,6 +5359,41 @@ This section lists the environment variables that you can use to change n8n's co
 You can provide a [configuration file](/deploy/host-n8n/configure-n8n/basic-configuration) for n8n. You can also append `_FILE` to certain variables to provide their configuration in a separate file.
 {% endhint %}
 
+## In this section
+
+* [Ask n8n AI](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/ai-assistant): variables for n8n's built-in AI help assistant.
+* [Binary data](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/binary-data): variables for storing and handling binary data.
+* [Credentials](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/credentials): variables for credential overwrites and encryption.
+* [Database](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/database): variables for database connection and configuration.
+* [Deployment](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/deployment): variables for instance identity, encryption, and the public API.
+* [Endpoints](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/endpoints): variables for customizing n8n's REST and webhook endpoint paths.
+* [Executions](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/executions): variables for execution timeouts, data pruning, and process modes.
+* [Expression engine](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/expression-engine): variables for controlling expression evaluation.
+* [External data storage](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/external-data-storage): variables for storing data outside the n8n database.
+* [External hooks](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/external-hooks): variables for the external hooks file location.
+* [External secrets](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/external-secrets): variables for external secrets vaults.
+* [Insights](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/insights): variables for the Insights usage tracking feature.
+* [Logs](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/logs): variables for logging level, format, and destinations.
+* [License](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/license): variables for activating and managing your n8n license.
+* [Nodes](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/nodes): variables for excluding or including specific nodes.
+* [OpenTelemetry](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/opentelemetry): variables for exporting execution traces.
+* [Queue mode](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/queue-mode): variables for running n8n across multiple worker processes.
+* [Scheduler](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/scheduler): variables for the durable scheduler.
+* [Security](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/security): variables for hardening a self-hosted instance.
+* [Source control](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/source-control): variables for Git-based source control.
+* [SSO](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/sso): variables for single sign-on.
+* [SSRF protection](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/ssrf-protection): variables for restricting outbound requests from workflow nodes.
+* [Task runners](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/task-runners): variables for configuring external Code node execution.
+* [Timezone and localization](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/timezone-and-localization): variables for setting your instance's timezone and locale.
+* [User management and 2FA](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/user-management-and-2fa): variables for user management and two-factor authentication.
+* [Workflows](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/workflows): variables for workflow defaults and templates.
+* [Workflow history](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/workflow-history): variables for workflow version history.
+
+## Related resources
+
+* [Basic configuration](/deploy/host-n8n/configure-n8n/basic-configuration)
+* [Configuration examples](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples)
+
 
 # Ask n8n AI
 
@@ -5119,6 +5402,10 @@ Environment variables to configure Ask n8n AI.
 | Variable                    | Type   | Default | Description                                                                                                                                     |
 | --------------------------- | ------ | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
 | `N8N_AI_ASSISTANT_BASE_URL` | String | (empty) | Base URL of the AI assistant service, specified as `https://ai-assistant.n8n.io` . Required if you self-host n8n and want to enable Ask n8n AI. |
+
+## Related resources
+
+* [Environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables)
 
 
 # Binary data
@@ -5140,6 +5427,10 @@ By default, n8n uses memory to store binary data. On self-hosted Business and En
 | `N8N_BINARY_DATA_STORAGE_PATH`           | String | `N8N_USER_FOLDER/binaryData` | The path where n8n stores binary data.                                                                                                                                                                                                                                                                                                                                                                                                           |
 | `N8N_DEFAULT_BINARY_DATA_MODE`           | String | `default`                    | The default binary data mode. `default` keeps binary data in memory. Set to `filesystem` to use the filesystem, `s3` to use AWS S3, `azure` to use Azure Blob Storage, or `database` to use the DB. Note that binary data pruning operates on the active binary data mode. For example, if your instance stored data in S3, and you later switched to filesystem mode, n8n only prunes binary data in the filesystem. This may change in future. |
 
+## Related resources
+
+* [Environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables)
+
 
 # Credentials
 
@@ -5160,6 +5451,10 @@ Enable credential overwrites using the following environment variables. Refer to
 | `CREDENTIALS_OVERWRITE_PERSISTENCE`                                      | Boolean | `false`          | Enable database persistence for credential overwrites. Required for multi-instance or queue mode to propagate overwrites to workers through a publish/subscribe approach. |
 | `N8N_MANAGED_OAUTH_SHOW_SCOPES`                                          | String  | -                | Comma-separated list of managed OAuth credential types for which users can configure scope fields.                                                                        |
 | `CREDENTIALS_DEFAULT_NAME`                                               | String  | `My credentials` | The default name for credentials.                                                                                                                                         |
+
+## Related resources
+
+* [Environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables)
 
 
 # Database
@@ -5232,6 +5527,10 @@ Here's the cycle the variables on this page control:
 
 The health checks and the recovery cycle (the `DB_PING_*` and `DB_RECOVERY_BACKOFF_*` variables) apply to every database type. The remaining settings (`DB_CONNECTION_ACQUISITION_TIMEOUT_MS`, `DB_POSTGRESDB_MAX_CONNECTION_LIFETIME_MS`, `DB_POSTGRESDB_KEEP_ALIVE`, and `DB_POSTGRESDB_KEEP_ALIVE_INITIAL_DELAY_MS`) apply to PostgreSQL only. The default values suit most deployments, so you can leave them unchanged unless you run into connection problems.
 {% endhint %}
+
+## Related resources
+
+* [Environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables)
 
 
 # Deployment
@@ -5306,6 +5605,10 @@ To learn more about proxy environment variables, check the [environment variable
 | `N8N_TUNNEL_SUBDOMAIN`                  | String                       | -                                                                | Specifies the subdomain for the n8n tunnel. If not set, n8n generates a random subdomain.                                                                                                                                                                                                                                                                                                                                                                                                       |
 | `N8N_PROXY_HOPS`                        | Number                       | 0                                                                | Number of reverse-proxies n8n is running behind.                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 
+## Related resources
+
+* [Environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables)
+
 [^1]: n8n templates are pre-built workflows designed by n8n and community members that you can import into your n8n instance. When using templates, you may need to fill in credentials and adjust the configuration to suit your needs.
 
 
@@ -5354,6 +5657,10 @@ This page lists environment variables for customizing endpoints in n8n.
 | `WEBHOOK_URL`                                   | String  | -                 | Deprecated from n8n 2.35.0; alias of `N8N_WEBHOOK_URL`. Still works, but n8n logs a deprecation warning on startup.                                                                                                                                                                                                                                                             |
 | `N8N_DISABLE_PRODUCTION_MAIN_PROCESS`           | Boolean | `false`           | Disable production webhooks from main process. This helps ensure no HTTP traffic load to main process when using webhook-specific processes.                                                                                                                                                                                                                                    |
 
+## Related resources
+
+* [Environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables)
+
 
 # Executions
 
@@ -5391,6 +5698,10 @@ This page lists environment variables to configure workflow execution settings.
 | `N8N_WORKFLOW_AUTODEACTIVATION_ENABLED`             | Boolean                                              | `false`                   | Whether workflows are automatically unpublished after repeated crashed executions.                                                                                                                                                                                                                                                                                                                            |
 | `N8N_WORKFLOW_AUTODEACTIVATION_MAX_LAST_EXECUTIONS` | Number                                               | `3`                       | Number of crashed executions before unpublishing a workflow.                                                                                                                                                                                                                                                                                                                                                  |
 
+## Related resources
+
+* [Environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables)
+
 
 # Expression engine
 
@@ -5418,6 +5729,10 @@ The `vm` engine is experimental. n8n runs the `legacy` engine by default. The va
 | `N8N_EXPRESSION_ENGINE_TIMEOUT`             | Number                      | `5000`   | Execution timeout in milliseconds for each expression evaluation.                                                                                                          |
 | `N8N_EXPRESSION_ENGINE_MEMORY_LIMIT`        | Number                      | `128`    | Memory limit in MiB for each V8 isolate.                                                                                                                                   |
 | `N8N_EXPRESSION_ENGINE_IDLE_TIMEOUT`        | Number                      | -        | If set, scales the isolate pool to zero warm isolates after this many seconds with no activity.                                                                            |
+
+## Related resources
+
+* [Environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables)
 
 
 # External data storage
@@ -5472,6 +5787,10 @@ Set `N8N_EXTERNAL_STORAGE_AZURE_ENDPOINT` only if you use a custom endpoint, suc
 | `N8N_EXTERNAL_STORAGE_AZURE_ENDPOINT`          | String  | -       | Custom blob endpoint, for example for Azurite or sovereign clouds.                                                                                       |
 | `N8N_EXTERNAL_STORAGE_AZURE_AUTH_AUTO_DETECT`  | Boolean | `false` | Authenticate via `DefaultAzureCredential` (managed identity, environment, or Azure CLI) instead of an account key. Ignores the account key when enabled. |
 
+## Related resources
+
+* [Environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables)
+
 
 # External hooks
 
@@ -5491,6 +5810,10 @@ You can define external hooks that n8n executes whenever a specific operation ru
 | `EXTERNAL_HOOK_FILES_SEPARATOR` | String | `:`     | Separator character for `EXTERNAL_HOOK_FILES`. Use `;` on Windows to avoid conflicts with drive-letter paths like `C:\`.               |
 | `EXTERNAL_FRONTEND_HOOKS_URLS`  | String | -       | URLs to files containing frontend external hooks. Provide multiple URLs as a colon-separated list ("`:`").                             |
 
+## Related resources
+
+* [Environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables)
+
 
 # External secrets
 
@@ -5509,6 +5832,10 @@ You can use an external secrets store to manage credentials for n8n. Refer to [E
 | `N8N_EXTERNAL_SECRETS_UPDATE_INTERVAL` | Number | `300` (5 minutes) | How often (in seconds) to check for secret updates.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | `N8N_EXTERNAL_SECRETS_CONNECT_TIMEOUT` | Number | `20`              | Maximum time (in seconds) n8n waits for a secrets vault to connect. If the vault doesn't answer in time, n8n marks it as errored, retries the connection in the background with increasing delays, and startup continues without its secrets. Available from n8n 2.41.0.                                                                                                                                                                                                                                                                                                                                                                       |
 | `N8N_EXTERNAL_SECRETS_REFRESH_TIMEOUT` | Number | `20`              | Maximum time (in seconds) n8n waits for a secrets vault to deliver its secrets, at startup and on each update interval. If the fetch takes longer, n8n stops waiting and the fetch keeps running in the background. When it completes successfully, n8n stores the secrets. At startup, workflows that use secrets from that vault fail until the first fetch completes. On an update interval, the previously fetched secrets stay available. Increase this value for vaults with many secrets. For HashiCorp Vault and Infisical, n8n also cancels each single HTTP request after the larger of the two timeouts. Available from n8n 2.41.0. |
+
+## Related resources
+
+* [Environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables)
 
 
 # Insights
@@ -5554,6 +5881,10 @@ These settings only control compaction workload and scheduling. They don't chang
 | `N8N_INSIGHTS_FLUSH_INTERVAL_SECONDS`                    | Number | 30      | The interval (in seconds) at which n8n flushes insights data to the database.                                                                     |
 | `N8N_INSIGHTS_MAX_AGE_DAYS`                              | Number | 365     | Number of days n8n keeps compacted insights data before pruning. The maximum value is 730 (two years).                                            |
 | `N8N_INSIGHTS_PRUNE_CHECK_INTERVAL_HOURS`                | Number | 24      | How often (in hours) the instance checks for insights data older than the effective max age and deletes it.                                       |
+
+## Related resources
+
+* [Environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables)
 
 
 # Logs
@@ -5608,6 +5939,10 @@ Set `N8N_LOG_STREAMING_MANAGED_BY_ENV` to `true` to manage log streaming destina
 | `N8N_LOG_STREAMING_MANAGED_BY_ENV` | Boolean     | `false` | Set to `true` to manage log streaming from environment variables. When `true`, n8n applies the log streaming variables on every startup and locks the matching UI controls. |
 | `N8N_LOG_STREAMING_DESTINATIONS`   | JSON string | -       | JSON array of log streaming destinations. Each destination is an object with a `type` of `webhook`, `syslog`, or `sentry`, plus the configuration for that type.            |
 
+## Related resources
+
+* [Environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables)
+
 
 # License
 
@@ -5631,6 +5966,10 @@ To enable certain licensed features, you must first activate your license. You c
 | `N8N_LICENSE_SERVER_URL`                  | String  | `https://license.n8n.io/v1`    | Server URL to retrieve license.                                                                                                                                                                                                                                                                                                                                                       |
 | `N8N_LICENSE_TENANT_ID`                   | Number  | `1`                            | Tenant ID associated with the license. Only set this variable if explicitly instructed by n8n.                                                                                                                                                                                                                                                                                        |
 | `https_proxy_license_server`              | String  | `https://user:pass@proxy:port` | Proxy server URL for HTTPS requests to retrieve license. This variable name needs to be lowercase.                                                                                                                                                                                                                                                                                    |
+
+## Related resources
+
+* [Environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables)
 
 
 # Nodes
@@ -5686,6 +6025,10 @@ Pre-provision installed [community packages](/integrations/community-nodes/insta
 | `N8N_COMMUNITY_PACKAGES_MANAGED_BY_ENV` | Boolean     | `false` | Set to `true` to manage installed community packages from environment variables. When `true`, n8n reconciles the installed packages against `N8N_COMMUNITY_PACKAGES` on every startup, installing missing packages, correcting versions, and **uninstalling any currently-installed packages that aren't in the list**. The **Community nodes** settings page becomes read-only: you can't install, update, or uninstall packages from the UI while this is enabled. |
 | `N8N_COMMUNITY_PACKAGES`                | JSON string | -       | JSON array of community packages to install. Each entry is an object with a `name` (required) and optional `version` and `checksum` fields. You can also embed the version in the name as `<package-name>@<version>`. See [environment variable installation](/integrations/community-nodes/installation-and-management/environment-variable-installation) for the full per-field reference.                                                                         |
 
+## Related resources
+
+* [Environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables)
+
 [^1]: In n8n, nodes are individual components that you compose to create workflows. Nodes define when the workflow should run, allow you to fetch, send, and process data, can define flow control logic, and connect with external services.
 
 
@@ -5717,6 +6060,10 @@ n8n can export workflow and node execution traces over OTLP to an OpenTelemetry 
 | `N8N_AGENTS_TRACING_ENABLED`               | Boolean | `true`                  | Whether agent runs emit OpenTelemetry spans. Inherits the endpoint, headers, sampling, and transport settings from `N8N_OTEL_*`. Spans have nowhere to go until you configure an OTel provider, so set this to `false` to run workflow tracing without agent spans.                                                                                                                 | 2.33.0         |
 | `N8N_AGENTS_TRACING_RECORD_INPUTS`         | Boolean | `true`                  | Whether agent tracing records inputs, such as prompts and tool arguments. Set to `false` to exclude sensitive input data from traces.                                                                                                                                                                                                                                               | 2.33.0         |
 | `N8N_AGENTS_TRACING_RECORD_OUTPUTS`        | Boolean | `true`                  | Whether agent tracing records outputs, such as responses and tool results. Set to `false` to exclude sensitive output data from traces.                                                                                                                                                                                                                                             | 2.33.0         |
+
+## Related resources
+
+* [Environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables)
 
 
 # Queue mode
@@ -5770,6 +6117,10 @@ Refer to [Configuring multi-main setup](/deploy/host-n8n/configure-n8n/scaling/e
 | `N8N_MULTI_MAIN_SETUP_ENABLED`        | Boolean | `false` | Whether to enable multi-main setup for queue mode (license required). |
 | `N8N_MULTI_MAIN_SETUP_KEY_TTL`        | Number  | `10`    | Time to live (in seconds) for leader key in multi-main setup.         |
 | `N8N_MULTI_MAIN_SETUP_CHECK_INTERVAL` | Number  | `3`     | Interval (in seconds) for leader check in multi-main setup.           |
+
+## Related resources
+
+* [Environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables)
 
 
 # Scheduler
@@ -5887,6 +6238,10 @@ Controls how the scheduler overlaps its background passes and spreads database l
 | `N8N_SCHEDULER_TRIGGER_NODE_MODE` | Enum (`legacy`, `new`) | `legacy` | How a Schedule Trigger node's "every N seconds" and "every N minutes" schedules fire. `legacy` keeps clock-aligned timing matching the in-memory scheduler; `new` spaces runs a steady N apart from activation time. Only affects second and minute intervals. See [Schedule Trigger timing](/deploy/host-n8n/configure-n8n/durable-scheduler#trigger-node-mode).                                                                                                                                                                                                                                            |
 | `N8N_SCHEDULER_MISFIRE_GRACE`     | Number                 | `60`     | How late, in seconds, a run may start and still count as on time. A run later than this counts as missed, and its trigger's misfire policy decides what happens to it and to any backlog behind it. This is the default a schedule inherits; from n8n 2.36.0, a Schedule Trigger node can set its own grace period instead. Should exceed `N8N_SCHEDULER_EXECUTOR_INTERVAL` and be at least `N8N_SCHEDULER_MATERIALIZATION_WINDOW`; n8n warns at startup if it doesn't. Capped at 30 days. See [Misfire policy](/deploy/host-n8n/configure-n8n/durable-scheduler#misfire-policy). Available from n8n 2.34.0. |
 
+## Related resources
+
+* [Environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables)
+
 
 # Security
 
@@ -5923,6 +6278,10 @@ Set `N8N_SECURITY_POLICY_MANAGED_BY_ENV` to `true` to manage the security policy
 | `N8N_PERSONAL_SPACE_PUBLISHING_ENABLED` | Boolean | `true`  | Whether users can publish from their personal space (`true`) or not (`false`).                                                                                                      |
 | `N8N_PERSONAL_SPACE_SHARING_ENABLED`    | Boolean | `true`  | Whether users can share resources from their personal space (`true`) or not (`false`).                                                                                              |
 
+## Related resources
+
+* [Environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables)
+
 
 # Source control
 
@@ -5939,6 +6298,10 @@ n8n uses Git-based source control to support environments. Refer to [Source cont
 | Variable                                 | Type   | Default   | Description                                                                                                                                          |
 | ---------------------------------------- | ------ | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `N8N_SOURCECONTROL_DEFAULT_SSH_KEY_TYPE` | String | `ed25519` | Set to `rsa` to make RSA the default SSH key type for [Source control setup](/administer/use-source-control-and-environments/set-up-source-control). |
+
+## Related resources
+
+* [Environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables)
 
 
 # SSO
@@ -5988,6 +6351,10 @@ Refer to [Set up SSO](/deploy/host-n8n/configure-n8n/security/configure-sso) for
 | `N8N_SSO_SAML_LOGIN_ENABLED` | Boolean | `false` | Whether to enable SAML login.                                                                                          |
 | `N8N_SSO_SAML_METADATA`      | String  | -       | SAML identity provider metadata as an XML string. Mutually exclusive with `N8N_SSO_SAML_METADATA_URL`; don't set both. |
 | `N8N_SSO_SAML_METADATA_URL`  | String  | -       | URL to fetch SAML identity provider metadata from. Mutually exclusive with `N8N_SSO_SAML_METADATA`; don't set both.    |
+
+## Related resources
+
+* [Environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables)
 
 
 # SSRF protection
@@ -6082,6 +6449,10 @@ A request blocked by IP fails with the error "The request was blocked because it
 Protection is off by default so it doesn't break existing self-hosted setups that call internal services. Before you turn it on, list the internal hosts your workflows need and add them to the allow lists. Prefer narrow allow entries, such as a single host or hostname, over turning protection off.
 {% endhint %}
 
+## Related resources
+
+* [Environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables)
+
 
 # Task runners
 
@@ -6157,6 +6528,10 @@ Unlike the main n8n image, you CANNOT use file-based configuration for secrets i
 | `N8N_RUNNERS_BUILTINS_DENY`            | String  | `eval,exec,compile,open,input,breakpoint,getattr,object,type,vars,setattr,delattr,hasattr,dir,memoryview,__build_class__,globals,locals` | Python built-ins that you can't use in the Code node. Set to an empty string to allow all built-ins.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | `N8N_BLOCK_RUNNER_ENV_ACCESS`          | Boolean | `true`                                                                                                                                   | Whether to block access to the runner's environment from within Python code tasks. Set to `false` to enable all Python code node users access to the runner's environment via `os.environ`. For security reasons, environment variable access is blocked by default.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 
+## Related resources
+
+* [Environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables)
+
 
 # Timezone and localization
 
@@ -6172,6 +6547,10 @@ You can add `_FILE` to individual variables to provide their configuration in a 
 | -------------------- | ------ | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `GENERIC_TIMEZONE`   | \*     | `America/New_York` | The n8n instance timezone. Important for schedule nodes (such as Cron).                                                                                                                                                                                                                                                                                        |
 | `N8N_DEFAULT_LOCALE` | String | `en`               | A locale identifier, compatible with the [Accept-Language header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Language). n8n doesn't support regional identifiers, such as `de-AT`. When running in a locale other than the default, n8n displays UI strings in the selected locale, and falls back to `en` for any untranslated strings. |
+
+## Related resources
+
+* [Environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables)
 
 
 # User management and 2FA
@@ -6227,6 +6606,10 @@ Set `N8N_INSTANCE_OWNER_MANAGED_BY_ENV` to `true` to pre-provision the instance 
 `N8N_INSTANCE_OWNER_EMAIL` must not already belong to another user on the instance. This setting updates the existing instance owner account; it doesn't transfer ownership to another existing user or merge user accounts. To use an email address that already belongs to another user, change or delete that user first so the email becomes available.
 {% endhint %}
 
+## Related resources
+
+* [Environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables)
+
 
 # Workflows
 
@@ -6246,6 +6629,10 @@ You can add `_FILE` to individual variables to provide their configuration in a 
 | `N8N_WORKFLOW_TAGS_DISABLED`                | Boolean | `false`                  | Whether to disable workflow tags (true) or enable tags (false).                                                                                                                                       |
 | `WORKFLOWS_DEFAULT_NAME`                    | String  | `My workflow`            | The default name used for new workflows.                                                                                                                                                              |
 
+## Related resources
+
+* [Environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables)
+
 
 # Workflow history
 
@@ -6255,12 +6642,37 @@ Environment variables to configure workflow history in n8n.
 | --------------------------------- | ------ | ------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | `N8N_WORKFLOW_HISTORY_PRUNE_TIME` | Number | `-1`    | How long to keep workflow history versions before automatically deleting them (in hours). Set to `-1` to keep all versions indefinitely. |
 
+## Related resources
+
+* [Environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables)
+
 
 # Configuration examples
 
 An overview containing different configuration examples.
 
 This section contains examples for how to configure n8n to solve particular use cases.
+
+## In this section
+
+* [Isolate n8n](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples/isolate-n8n): prevent your n8n instance from connecting with n8n's servers.
+* [Configure the Base URL](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples/configure-the-base-url): define the front end's access path to the back end's REST API.
+* [Configure custom SSL certificate authorities](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples/configure-custom-ssl-certificate-authorities): work with self-signed certificates when connecting to services.
+* [Set a custom encryption key](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples/set-a-custom-encryption-key): set a custom encryption key to securely encrypt credentials.
+* [Configure workflow timeouts](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples/configure-workflow-timeouts): set execution timeouts to determine how long workflows can run.
+* [Specify custom nodes location](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples/specify-custom-nodes-location): add folders and specify paths for your custom nodes.
+* [Enable modules in Code node](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples/enable-modules-in-code-node): allow the use of built-in and external modules in the Code node.
+* [Set the timezone](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples/set-the-timezone): change the default timezone for your self-hosted instance.
+* [Specify user folder path](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples/specify-user-folder-path): specify the location of the folder that stores user-specific data.
+* [Configure webhook URLs with reverse proxy](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples/configure-webhook-urls-with-reverse-proxy): customize webhook URLs for compatibility with reverse proxy setups.
+* [Enable Prometheus metrics](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples/enable-prometheus-metrics): enable the Prometheus metrics endpoint.
+* [Pre-configure Microsoft OAuth credentials](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples/pre-configure-microsoft-oauth-credentials): let users connect without their own app registration.
+* [Configure a custom workflow templates library](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples/configure-a-custom-workflow-templates-library): set up a custom workflow template library.
+
+## Related resources
+
+* [Basic configuration](/deploy/host-n8n/configure-n8n/basic-configuration)
+* [Environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables)
 
 
 # Isolate n8n
@@ -6287,6 +6699,10 @@ N8N_DIAGNOSTICS_CONFIG_BACKEND=
 
 Refer to [Environment variables reference](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/deployment) for more information on these variables.
 
+## Related resources
+
+* [Configuration examples](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples)
+
 
 # Configure the Base URL
 
@@ -6305,6 +6721,10 @@ export VUE_APP_URL_BASE_API=https://n8n.example.com/
 ```
 
 Refer to [Environment variables reference](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/deployment) for more information on this variable.
+
+## Related resources
+
+* [Configuration examples](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples)
 
 
 # Configure custom SSL certificate authorities
@@ -6387,6 +6807,10 @@ The system doesn't accept:
 * Private key files
 * Convert these formats to PEM before use.
 
+## Related resources
+
+* [Configuration examples](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples)
+
 
 # Set a custom encryption key
 
@@ -6401,6 +6825,10 @@ export N8N_ENCRYPTION_KEY=<SOME RANDOM STRING>
 ```
 
 Refer to [Environment variables reference](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/deployment) for more information on this variable.
+
+## Related resources
+
+* [Configuration examples](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples)
 
 
 # Configure workflow timeouts
@@ -6423,6 +6851,10 @@ export EXECUTIONS_TIMEOUT_MAX=7200
 
 Refer to [Environment variables reference](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/executions) for more information on these variables.
 
+## Related resources
+
+* [Configuration examples](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples)
+
 
 # Specify custom nodes location
 
@@ -6437,6 +6869,10 @@ export N8N_CUSTOM_EXTENSIONS="/home/jim/n8n/custom-nodes;/data/n8n/nodes"
 ```
 
 Refer to [Environment variables reference](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/nodes) for more information on this variable.
+
+## Related resources
+
+* [Configuration examples](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples)
 
 
 # Enable modules in Code node
@@ -6470,6 +6906,10 @@ If n8n instance is setup with [Task Runners](/deploy/host-n8n/configure-n8n/set-
 
 Refer to [Environment variables reference](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/nodes) for more information on these variables.
 
+## Related resources
+
+* [Configuration examples](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples)
+
 
 # Set the timezone
 
@@ -6481,9 +6921,13 @@ The default timezone is America/New\_York. For instance, the Schedule node uses 
 export GENERIC_TIMEZONE=Europe/Berlin
 ```
 
-You can find the name of your timezone [here](https://momentjs.com/timezone/).
+Refer to [the list of timezone names](https://momentjs.com/timezone/) to find your timezone.
 
 Refer to [Environment variables reference](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/timezone-and-localization) for more information on this variable.
+
+## Related resources
+
+* [Configuration examples](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples)
 
 
 # Specify user folder path
@@ -6497,6 +6941,10 @@ export N8N_USER_FOLDER=/home/jim/n8n
 ```
 
 Refer to [Environment variables reference](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/deployment) for more information on this variable.
+
+## Related resources
+
+* [Configuration examples](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples)
 
 
 # Configure webhook URLs with reverse proxy
@@ -6522,6 +6970,10 @@ export N8N_PROXY_HOPS=1
 Refer to [Environment variables reference](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/endpoints) for more information on this variable.
 
 If you also run n8n's [instance-level MCP server](/connect/connect-to-n8n-mcp-server) behind the same reverse proxy, make sure it forwards the [MCP request headers](/connect/connect-to-n8n-mcp-server#mcp-request-headers) too.
+
+## Related resources
+
+* [Configuration examples](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples)
 
 
 # Enable Prometheus metrics
@@ -6571,6 +7023,10 @@ n8n_scaling_mode_queue_jobs_failed 0
 # TYPE n8n_scaling_mode_queue_jobs_waiting gauge <a href="#type-n8nscalingmodequeuejobswaiting-gauge" id="type-n8nscalingmodequeuejobswaiting-gauge"></a>
 n8n_scaling_mode_queue_jobs_waiting 0
 ```
+
+## Related resources
+
+* [Configuration examples](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples)
 
 
 # Pre-configure Microsoft OAuth credentials
@@ -7133,6 +7589,10 @@ echo -n '{"microsoftOutlookOAuth2Api":{"clientId":"NEW_CLIENT_ID","clientSecret"
 
 Because the SecretProviderClass references `versions/latest`, the CSI driver picks up the new version on its next sync. Restart the n8n pod for n8n to read the updated file.
 
+## Related resources
+
+* [Configuration examples](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples)
+
 
 # Configure a custom workflow templates library
 
@@ -7604,6 +8064,10 @@ n8n is working on a creator program, and developing a marketplace of templates. 
 
 Refer to [n8n Creator hub](https://www.notion.so/n8n/n8n-Creator-hub-7bd2cbe0fce0449198ecb23ff4a2f76f) for information on how to submit templates and become a creator.
 
+## Related resources
+
+* [Configuration examples](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples)
+
 [^1]: n8n templates are pre-built workflows designed by n8n and community members that you can import into your n8n instance. When using templates, you may need to fill in credentials and adjust the configuration to suit your needs.
 
 
@@ -7704,6 +8168,10 @@ You can choose between these configurations:
 This is the default database that gets used if nothing is defined.
 
 The database file is located at: `~/.n8n/database.sqlite`
+
+## Related resources
+
+* [Configure n8n](/deploy/host-n8n/configure-n8n)
 
 
 # External hooks
@@ -7978,6 +8446,10 @@ You can define multiple hook functions per hook. n8n calls each hook function wi
 
 * `store`: The Vuex store object. You can use this to change or get data from the store.
 * `metadata`: The object that contains any data provided by the hook. To see what's passed, search for the hook in the `editor-ui` package.
+
+## Related resources
+
+* [Configure n8n](/deploy/host-n8n/configure-n8n)
 
 
 # Use the command line
@@ -8449,6 +8921,10 @@ You can run a [security audit](/deploy/host-n8n/configure-n8n/security/run-secur
 n8n audit
 ```
 
+## Related resources
+
+* [Configure n8n](/deploy/host-n8n/configure-n8n)
+
 [^1]: In n8n, entitlements grant n8n instances access to plan-restricted features for a specific period of time.
 
 
@@ -8587,6 +9063,10 @@ You can now invite other people to your n8n instance.
 5. Enter the new user's email address.
 6. Click **Invite user**. n8n sends an email with a link for the new user to join.
 
+## Related resources
+
+* [Configure n8n](/deploy/host-n8n/configure-n8n)
+
 
 # Change instance owner email
 
@@ -8627,6 +9107,10 @@ This variable expects a pre-hashed bcrypt value. Setting a plaintext password br
 {% endhint %}
 
 For more information, see [Manage instance settings using environment variables](/deploy/host-n8n/configure-n8n/manage-settings-using-environment-variables#instance-owner).
+
+## Related resources
+
+* [Configure n8n](/deploy/host-n8n/configure-n8n)
 
 
 # Manage settings using environment variables
@@ -8858,6 +9342,10 @@ export N8N_COMMUNITY_PACKAGES='[{"name":"n8n-nodes-foo","version":"1.2.3"}]'
 
 For the supported ways to set environment variables, see [Configuration methods](/deploy/host-n8n/configure-n8n/basic-configuration).
 
+## Related resources
+
+* [Configure n8n](/deploy/host-n8n/configure-n8n)
+
 
 # Set up task runners
 
@@ -9063,6 +9551,10 @@ docker run --rm -it \
   -p 5680:5680 \
   n8nio/runners:custom
 ```
+
+## Related resources
+
+* [Configure n8n](/deploy/host-n8n/configure-n8n)
 
 
 # Durable scheduler
@@ -9275,7 +9767,9 @@ The two cursor metrics track the dedicated cursor table. A node starts reporting
 
 All names above assume the default `n8n_` metrics prefix. If you set `N8N_METRICS_PREFIX`, substitute your own.
 
-See [Configure n8n](/deploy/host-n8n/configure-n8n) for other configuration topics.
+## Related resources
+
+* [Configure n8n](/deploy/host-n8n/configure-n8n)
 
 
 # System tasks
@@ -9361,7 +9855,9 @@ These series only cover in-memory runs. The durable path has its own equivalents
 | `n8n_system_task_retries_total`      | Counter   | How many retries n8n scheduled after a failed run. Only tasks that declare a retry delay retry at all, so a failing task with a flat count here isn't a bug.                                                                                                                                                                                                                                                                                                                           |
 | `n8n_system_task_fire_lag_seconds`   | Histogram | How late each timer fires, in seconds. Small values mean a busy event loop. Large ones mean the process paused or slept, and its buckets reach a day because a coalesced fire is late by at least one full cadence.                                                                                                                                                                                                                                                                    |
 
-See [Configure n8n](/deploy/host-n8n/configure-n8n) for other configuration topics.
+## Related resources
+
+* [Configure n8n](/deploy/host-n8n/configure-n8n)
 
 
 # Set up n8n Assistant
@@ -9709,7 +10205,9 @@ If n8n Assistant doesn't appear or doesn't work, check for these issues.
 * `INSTANCE_AI_BRAVE_SEARCH_API_KEY` is set, or `N8N_INSTANCE_AI_SEARXNG_URL` is set.
 * If nothing is set, this is expected. Web search is optional and the rest of n8n Assistant still works.
 
-See [Configure n8n](/deploy/host-n8n/configure-n8n) for other configuration topics.
+## Related resources
+
+* [Configure n8n](/deploy/host-n8n/configure-n8n)
 
 
 # Deploy n8n in canvas-only mode
@@ -9750,6 +10248,10 @@ n8n keeps the following visible:
 * **The logs panel** to display execution logs of individual nodes.
 * **The node creator panel.** The "Add a node" panel still opens from the canvas, repositioned to the top of the screen instead of below the header.
 
+## Related resources
+
+* [Configure n8n](/deploy/host-n8n/configure-n8n)
+
 
 # Manage your license
 
@@ -9789,6 +10291,10 @@ N8N_LICENSE_CERT=<base64-encoded-license-string>
 
 Set either `N8N_LICENSE_CERT` or `N8N_LICENSE_ACTIVATION_KEY`, never both.
 
+## Related resources
+
+* [Configure n8n](/deploy/host-n8n/configure-n8n)
+
 
 # Security
 
@@ -9796,27 +10302,27 @@ You can secure a self-hosted n8n instance to protect credentials and workflow da
 
 Securing your n8n instance can take several forms.
 
-At a high level, you can:
+## In this section
 
-* Conduct a [security audit](/deploy/host-n8n/configure-n8n/security/run-security-audits) to identify security risks.
-* [Set up SSL](/deploy/host-n8n/configure-n8n/security/set-up-ssl) to enforce secure connections.
-* [Set up Single Sign-On](/deploy/host-n8n/configure-n8n/security/configure-sso) for user account management.
-* Use [token exchange](/deploy/host-n8n/deploy-as-an-oem-integration/set-up-token-exchange) to log users in from your own identity provider when embedding n8n, or to call n8n APIs on their behalf.
-* Use [two-factor authentication (2FA)](/administer/manage-users-and-access/verify-user-identity/require-two-factor-auth) for your users.
-* Enable [encryption key rotation](/deploy/host-n8n/configure-n8n/security/rotate-encryption-keys) to periodically replace the key that encrypts credentials and other sensitive data.
-* Enable [JWE token decryption for OAuth 2.0 credentials](/deploy/host-n8n/configure-n8n/security/decrypt-oauth-20-tokens-with-jwe) so your identity provider can encrypt access and ID tokens that only your instance can decrypt.
+* [Manage security policies](/deploy/host-n8n/configure-n8n/security/manage-security-policies): manage instance-wide security policies including MFA enforcement and personal space controls.
+* [Run security audits](/deploy/host-n8n/configure-n8n/security/run-security-audits): run a security audit to identify security risks.
+* [Set up SSL](/deploy/host-n8n/configure-n8n/security/set-up-ssl): enforce secure connections.
+* [Configure SSO](/deploy/host-n8n/configure-n8n/security/configure-sso): set up SAML or OIDC Single Sign-On.
+* [Rotate encryption keys](/deploy/host-n8n/configure-n8n/security/rotate-encryption-keys): periodically replace the key that encrypts credentials and other sensitive data.
+* [Decrypt OAuth 2.0 tokens with JWE](/deploy/host-n8n/configure-n8n/security/decrypt-oauth-20-tokens-with-jwe): let your identity provider encrypt access and ID tokens that only your instance can decrypt.
+* [Harden task runners](/deploy/host-n8n/configure-n8n/security/harden-task-runners): better isolation for Code node executions.
+* [Redact execution data](/deploy/host-n8n/configure-n8n/security/redact-execution-data): hide input and output data from workflow executions.
+* [Disable the public API](/deploy/host-n8n/configure-n8n/security/disable-the-public-api): prevent others from using the n8n public REST API.
+* [Control telemetry](/deploy/host-n8n/configure-n8n/security/control-telemetry): opt out of the anonymous data n8n collects automatically.
+* [Block specific nodes](/deploy/host-n8n/configure-n8n/security/block-specific-nodes): prevent your n8n users from accessing specific nodes.
+* [Enable SSRF protection](/deploy/host-n8n/configure-n8n/security/enable-ssrf-protection): control which hosts and IP ranges workflow nodes can connect to.
+* [Verify user emails](/deploy/host-n8n/configure-n8n/security/verify-user-emails): restrict account registration to email-verified users.
 
-You can also protect sensitive data processed by your workflows:
+## Related resources
 
-* [Redact execution data](/deploy/host-n8n/configure-n8n/security/redact-execution-data) to hide input and output data from workflow executions.
-
-More granularly, consider blocking or opting out of features or data collection you don't want:
-
-* [Disable the public API](/deploy/host-n8n/configure-n8n/security/disable-the-public-api) if you aren't using it.
-* [Opt out of data collection](/deploy/host-n8n/configure-n8n/security/control-telemetry) of the anonymous data n8n collects automatically.
-* [Block certain nodes](/deploy/host-n8n/configure-n8n/security/block-specific-nodes) from being available to your users.
-* [Protect against SSRF attacks](/deploy/host-n8n/configure-n8n/security/enable-ssrf-protection) to control which hosts and IP ranges workflow nodes can connect to.
-* [Restrict account registration](/deploy/host-n8n/configure-n8n/security/verify-user-emails) to email-verified users.
+* [Configure n8n](/deploy/host-n8n/configure-n8n)
+* [Set up token exchange](/deploy/host-n8n/deploy-as-an-oem-integration/set-up-token-exchange): authenticate users from your own identity provider when embedding n8n.
+* [Require two-factor auth](/administer/manage-users-and-access/verify-user-identity/require-two-factor-auth): enable 2FA for your users.
 
 
 # Manage security policies
@@ -9922,7 +10428,7 @@ To enable workflow reviews:
 1. Navigate to **Settings** > **Security & policies**.
 2. In the **Workflow reviews** section, turn on **Enable workflow reviews**.
 
-When the setting is off, users can't create or manage reviews. Turning the feature off also lifts the publish block for workflows that still have an open review. For how to submit, approve, and publish after you enable the feature, refer to [Workflow reviews](https://app.gitbook.com/s/rPN1zU5jaYNvwH7RzxqA/manage-workflows/workflow-reviews).
+When the setting is off, users can't create or manage reviews. Turning the feature off also lifts the publish block for workflows that still have an open review. For how to submit, approve, and publish after you enable the feature, refer to [Workflow reviews](/build/manage-workflows/workflow-reviews).
 
 ## Enforce execution data redaction <a href="#enforce-execution-data-redaction" id="enforce-execution-data-redaction"></a>
 
@@ -9969,6 +10475,10 @@ When `N8N_SECURITY_POLICY_MANAGED_BY_ENV` is `true`, the **Enforce two-factor au
 | `N8N_PERSONAL_SPACE_PUBLISHING_ENABLED` | Boolean | `true`  | Whether users can publish from their personal space (`true`) or not (`false`).                                                                                                      |
 | `N8N_PERSONAL_SPACE_SHARING_ENABLED`    | Boolean | `true`  | Whether users can share resources from their personal space (`true`) or not (`false`).                                                                                              |
 
+## Related resources
+
+* [Security](/deploy/host-n8n/configure-n8n/security)
+
 
 # Set up SSL
 
@@ -9989,6 +10499,10 @@ You can also choose to pass certificates into n8n directly. To do so, set the `N
 You'll need to make sure the certificate stays renewed and up to date.
 
 Refer to [Deployment environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/deployment) for more information on these variables and [Configuration](/deploy/host-n8n/configure-n8n/basic-configuration) for more information on setting environment variables.
+
+## Related resources
+
+* [Security](/deploy/host-n8n/configure-n8n/security)
 
 
 # Configure SSO
@@ -10020,6 +10534,10 @@ Configuring SSO with environment variables is available from n8n 2.18.0.
 {% endhint %}
 
 You can also configure SSO from environment variables instead of through the UI. See [SSO environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/sso) for the full list of variables, and [Manage instance settings using environment variables](/deploy/host-n8n/configure-n8n/manage-settings-using-environment-variables) for how the activation pattern works.
+
+## Related resources
+
+* [Security](/deploy/host-n8n/configure-n8n/security)
 
 
 # Run security audits
@@ -10084,6 +10602,10 @@ This report shows:
 * Missing security settings
 * If your instance is outdated.
 
+## Related resources
+
+* [Security](/deploy/host-n8n/configure-n8n/security)
+
 
 # Disable the public API
 
@@ -10109,9 +10631,9 @@ export N8N_PUBLIC_API_SWAGGERUI_DISABLED=true
 
 ## Related resources <a href="#related-resources" id="related-resources"></a>
 
-Refer to [Deployment environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/deployment) for more information on these environment variables.
-
-Refer to [Configuration](/deploy/host-n8n/configure-n8n/basic-configuration) for more information on setting environment variables.
+* [Security](/deploy/host-n8n/configure-n8n/security): audit, harden, and restrict a self-hosted instance.
+* [Deployment environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/deployment): more information on these environment variables.
+* [Configuration](/deploy/host-n8n/configure-n8n/basic-configuration): how to set environment variables.
 
 
 # Control telemetry
@@ -10154,6 +10676,7 @@ To prevent all communication with n8n's servers, refer to [Isolate n8n](/deploy/
 
 ## Related resources <a href="#related-resources" id="related-resources"></a>
 
+* [Security](/deploy/host-n8n/configure-n8n/security): audit, harden, and restrict a self-hosted instance.
 * [Deployment environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/deployment): More information on these environment variables.
 * [Configuration](/deploy/host-n8n/configure-n8n/basic-configuration): How to set environment variables.
 
@@ -10197,14 +10720,14 @@ NODES_EXCLUDE: "[]"
 
 ## Related resources <a href="#related-resources" id="related-resources"></a>
 
-Refer to [Nodes environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/nodes) for more information on this environment variable.
-
-Refer to [Configuration](/deploy/host-n8n/configure-n8n/basic-configuration) for more information on setting environment variables.
+* [Security](/deploy/host-n8n/configure-n8n/security): audit, harden, and restrict a self-hosted instance.
+* [Nodes environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/nodes): more information on this environment variable.
+* [Configuration](/deploy/host-n8n/configure-n8n/basic-configuration): how to set environment variables.
 
 
 
 
 ---
 
-[Next Page](/llms-full.txt/1)
+[Next Page](https://docs.n8n.io/llms-full.txt/1)
 

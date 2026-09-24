@@ -10,12 +10,12 @@ path: docs/eleven-agents/build/overview
 
 The Build section covers everything you need to create sophisticated conversational agents, from defining their behavior and voice to connecting external tools and knowledge sources.
 
-#### Build agents from your AI assistant
+> **Build agents from your AI assistant**
+>
+> Everything on this page can also be configured conversationally. Connect the [hosted MCP server](/docs/eleven-agents/operate/hosted-mcp) to Claude or another MCP client to create and
+> update agents through natural language.
 
-Everything on this page can also be configured conversationally. Connect the [hosted MCP server](/docs/eleven-agents/operate/hosted-mcp) to Claude or another MCP client to create and
-update agents through natural language.
-
-![Build your agent](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aa4e5442250b80183bf690e4bcc3bf9517932e1c5a569e5acb539c98604a213e/assets/images/agents/agents-overview-build.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113149Z&X-Amz-Expires=604800&X-Amz-Signature=19b5c45301eadabeac592d38e4bcaf0cf5299d4b6125b8321a6a9d235a88052a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Build your agent](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aa4e5442250b80183bf690e4bcc3bf9517932e1c5a569e5acb539c98604a213e/assets/images/agents/agents-overview-build.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T094851Z&X-Amz-Expires=604800&X-Amz-Signature=91634e91e7a47a0a81a940e81564e5cc5e01e5e48cd1fe635cb6fef001d5d770&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Design and configure
 

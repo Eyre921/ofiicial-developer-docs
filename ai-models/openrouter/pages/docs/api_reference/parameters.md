@@ -257,3 +257,5 @@ Constrains the verbosity of the model's response. Lower values produce more conc
 
 For Anthropic models, this parameter maps to `output_config.effort`. The 'xhigh' level is supported by Anthropic Claude 4.7 Opus and later models. The 'max' level is supported by Anthropic Claude 4.6 Opus and later models.
 
+Anthropic Messages API callers set `output_config.effort` directly. See [Reasoning with the Anthropic Messages API](/docs/guides/best-practices/reasoning-tokens#anthropic-messages-api).
+

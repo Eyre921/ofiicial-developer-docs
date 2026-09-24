@@ -41,10 +41,7 @@ Successful Response
 - `chapter_id` (string, required) — The ID of the chapter.
 - `created_at_unix` (integer, required) — The creation date of the chapter snapshot.
 - `name` (string, required) — The name of the chapter snapshot.
-- `character_alignments` (list of object, required)
-  - `characters` (list of string, required)
-  - `character_start_times_seconds` (list of double, required)
-  - `character_end_times_seconds` (list of double, required)
+- `character_alignments` (list of CharacterAlignmentModel, required)
 
 ## Errors
 
@@ -52,10 +49,23 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### CharacterAlignmentModel
+
+- `characters` (list of string, required)
+- `character_start_times_seconds` (list of double, required)
+- `character_end_times_seconds` (list of double, required)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

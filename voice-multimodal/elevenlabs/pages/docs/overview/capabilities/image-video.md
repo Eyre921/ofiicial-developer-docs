@@ -12,16 +12,18 @@ path: docs/overview/capabilities/image-video
 
 Image & Video enables you to create high-quality visual content from simple text descriptions or reference images. Generate static images or dynamic videos in any style, then refine them iteratively with additional prompts, upscale for high-resolution output, and even add lip-sync with audio.
 
-This feature is currently in beta.
+> **Warning**
+>
+> Some Image & Video models and input upload capabilities are restricted in the United States due to
+> regulatory or provider requirements. Check individual model descriptions for specific
+> availability.
 
-Some Image & Video models and input upload capabilities are restricted in the United States due to
-regulatory or provider requirements. Check individual model descriptions for specific
-availability.
-
-Free plan users can only generate images and are limited to three image requests per day. Video
-generation requires a paid plan. Generating through the API requires a Pro plan or above. For API
-requests, ByteDance models are disabled by default and require explicit approval before use.
-Enterprise customers can contact support to request access.
+> **Info**
+>
+> Free plan users can only generate images and are limited to three image requests per day. Video
+> generation requires a paid plan. Generating through the API requires a Pro plan or above. For API
+> requests, ByteDance models are disabled by default and require explicit approval before use.
+> Enterprise customers can contact support to request access.
 
 #### [Products](/docs/eleven-creative/playground/image-video)
 
@@ -69,16 +71,22 @@ Image & Video provides access to specialized models optimized for different use 
 
 Post-processing models require an existing generated output, though you can also upload your own image or video file.
 
-Enterprise workspace admins can control which image and video generation models are available to
-workspace members. By default, all models are disabled for Enterprise workspaces and must be
-explicitly enabled by admins. Learn more about [Model approvals](/docs/overview/administration/workspaces/model-approvals).
+> **Info**
+>
+> Enterprise workspace admins can control which image and video generation models are available to
+> workspace members. By default, all models are disabled for Enterprise workspaces and must be
+> explicitly enabled by admins. Learn more about [Model approvals](/docs/overview/administration/workspaces/model-approvals).
 
-For API requests, ByteDance models are disabled by default and require explicit approval before
-use. Enterprise customers can contact support to request access.
+> **Warning**
+>
+> For API requests, ByteDance models are disabled by default and require explicit approval before
+> use. Enterprise customers can contact support to request access.
 
-Every model below is available in the Image & Video app. Models that can also be called from the
-[Image & Video API](/docs/eleven-api/guides/cookbooks/image-and-video) list their `model_id` under
-**API**; the rest are app-only.
+> **Info**
+>
+> Every model below is available in the Image & Video app. Models that can also be called from the
+> [Image & Video API](/docs/eleven-api/guides/cookbooks/image-and-video) list their `model_id` under
+> **API**; the rest are app-only.
 
 #### Video generative models
 
@@ -120,9 +128,13 @@ A unified multimodal video model with audio-video joint generation, offering dir
 
 **API:** [`bytedance-seedance-v2`](/docs/api-reference/flows/video/create#request.body.bytedance-seedance-v2)
 
-Settings can be toggled to adjust credit consumption.
+> **Note**
+>
+> Settings can be toggled to adjust credit consumption.
 
-Seedance 2.0 is not available in the United States.
+> **Warning**
+>
+> Seedance 2.0 is not available in the United States.
 
 #### Seedance 2.0 Fast
 
@@ -159,7 +171,9 @@ A faster, lower-cost variant of Seedance 2.0 with the same multimodal reference 
 
 **API:** [`bytedance-seedance-v2-fast`](/docs/api-reference/flows/video/create#request.body.bytedance-seedance-v2-fast)
 
-Seedance 2.0 Fast is not available in the United States.
+> **Warning**
+>
+> Seedance 2.0 Fast is not available in the United States.
 
 #### Seedance 2.0 Mini
 
@@ -196,7 +210,9 @@ The smallest Seedance 2.0 variant: roughly twice as fast as Seedance 2.0 at abou
 
 **API:** [`bytedance-seedance-v2-mini`](/docs/api-reference/flows/video/create#request.body.bytedance-seedance-v2-mini)
 
-Seedance 2.0 Mini is not available in the United States.
+> **Warning**
+>
+> Seedance 2.0 Mini is not available in the United States.
 
 #### Seedance 2.5
 
@@ -234,9 +250,13 @@ The successor to Seedance 2.0 with sharper realism, up to 50 combined image, vid
 
 **API:** [`bytedance-seedance-v2.5`](/docs/api-reference/flows/video/create#request.body.bytedance-seedance-v2.5)
 
-Seedance 2.5 does not expose a seed control.
+> **Note**
+>
+> Seedance 2.5 does not expose a seed control.
 
-Seedance 2.5 is not available in the United States.
+> **Warning**
+>
+> Seedance 2.5 is not available in the United States.
 
 #### Seedance 2.5 Video Edit
 
@@ -268,7 +288,9 @@ Edits an existing video by describing the changes. Output length and aspect rati
 
 **Cost:** Varies based on selected settings and duration
 
-Seedance 2.5 Video Edit is not available in the United States.
+> **Warning**
+>
+> Seedance 2.5 Video Edit is not available in the United States.
 
 #### Seedance 2.5 Video Extend
 
@@ -300,7 +322,9 @@ Continues an existing video from where it ends, guided by a prompt and optional 
 
 **Cost:** Varies based on selected settings and duration
 
-Seedance 2.5 Video Extend is not available in the United States.
+> **Warning**
+>
+> Seedance 2.5 Video Extend is not available in the United States.
 
 #### Kling 3.0
 
@@ -332,9 +356,13 @@ An advanced video model that functions like an AI director, maintaining high con
 
 **Cost:** Varies based on selected settings and duration
 
-Supports negative prompts for granular control. Sound can be enabled or disabled per generation.
+> **Note**
+>
+> Supports negative prompts for granular control. Sound can be enabled or disabled per generation.
 
-Kling 3.0 is not available in the United States.
+> **Warning**
+>
+> Kling 3.0 is not available in the United States.
 
 #### Kling O3
 
@@ -368,9 +396,13 @@ A high-consistency video model that functions like an AI director, preserving th
 
 **Cost:** Varies based on selected settings and duration
 
-Settings can be toggled to adjust credit consumption.
+> **Note**
+>
+> Settings can be toggled to adjust credit consumption.
 
-Kling O3 is not available in the United States.
+> **Warning**
+>
+> Kling O3 is not available in the United States.
 
 #### Kling O3 Edit
 
@@ -403,7 +435,9 @@ A natural language-driven video-to-video editing model based on the O3 architect
 
 **Cost:** Varies based on video duration and selected settings
 
-Kling O3 Edit is not available in the United States.
+> **Warning**
+>
+> Kling O3 Edit is not available in the United States.
 
 #### Google Veo 3.1
 
@@ -438,7 +472,9 @@ A professional-grade model for high-quality, cinematic video generation.
 
 **API:** [`veo-3.1-generate-001`](/docs/api-reference/flows/video/create#request.body.veo-3.1-generate-001)
 
-Enabling and disabling sound will change the generation credits.
+> **Note**
+>
+> Enabling and disabling sound will change the generation credits.
 
 #### Google Veo 3.1 Fast
 
@@ -613,67 +649,11 @@ An upgraded specialized model for creating dynamic, high-fidelity sequences with
 
 **Cost:** Varies based on selected settings and duration
 
-Seedance 1.5 Pro is not available in the United States.
-
-#### OpenAI Sora 2
-
-The standard, high-speed version of OpenAI's advanced video model, tuned for everyday content creation.
-
-**Generation inputs:**
-
-* Text-to-Video
-* Start Frame
-
-**Features:**
-
-* Realistic, physics-aware videos with synced audio
-* Fine scene control
-* Fixed durations: 4s, 8s, and 12s
-* Batch creation with up to 4 generations at a time
-* Strong narrative and character consistency
-
-**Output options:**
-
-* Resolutions: 720p, 1080p
-* Aspect ratios: 16:9, 9:16
-
-**Ideal for:**
-
-* Everyday content creation with realistic physics
-
-**Cost:** Varies based on selected settings and duration
-
-End frame is not currently supported. Cannot provide image references. Sound is enabled by default.
-
-#### OpenAI Sora 2 Pro
-
-The most advanced, high-fidelity video model for cinematic results at your disposal.
-
-**Generation inputs:**
-
-* Text-to-Video
-* Start Frame
-
-**Features:**
-
-* Highest-fidelity, professional-grade output with synced audio
-* Precise multi-shot control
-* Excels at complex motion and prompt adherence
-* Fixed durations: 4s, 8s, and 12s
-* Batch creation with up to 4 generations at a time
-
-**Output options:**
-
-* Resolutions: 720p, 1080p
-* Aspect ratios: 16:9, 9:16
-
-**Ideal for:**
-
-* Cinematic, professional-grade video content
-
-**Cost:** Varies based on selected settings and duration
-
-End frame is not currently supported. Cannot provide image references. Sound is enabled by default.
+> **Warning**
+>
+> Seedance 1.5 Pro is deprecated. ByteDance retires the model on November 11, 2026, and it is
+> no longer offered for new generations. Use a Seedance 2.0 model instead. Seedance 1.5 Pro is
+> not available in the United States.
 
 #### FLUX 3
 
@@ -738,7 +718,9 @@ MiniMax's flagship video model with multimodal references, generated audio, and 
 
 **Cost:** Varies based on selected settings and duration
 
-MiniMax H3 is not available in the United States.
+> **Warning**
+>
+> MiniMax H3 is not available in the United States.
 
 #### MiniMax H3 Max
 
@@ -773,7 +755,9 @@ A near-instant variant of MiniMax H3 with the same inputs and strong aesthetics,
 
 **Cost:** Varies based on selected settings and duration
 
-MiniMax H3 Max is not available in the United States.
+> **Warning**
+>
+> MiniMax H3 Max is not available in the United States.
 
 #### Kling O1
 
@@ -806,7 +790,9 @@ A state-of-the-art reasoning video model designed for superior prompt adherence 
 
 **Cost:** Varies based on selected settings and duration
 
-Kling O1 is not available in the United States.
+> **Warning**
+>
+> Kling O1 is not available in the United States.
 
 #### Kling O1 Edit
 
@@ -839,7 +825,9 @@ A natural language-driven video-to-video editing model that enables complex visu
 
 **Cost:** Varies based on video duration and selected settings
 
-Kling O1 Edit is not available in the United States.
+> **Warning**
+>
+> Kling O1 Edit is not available in the United States.
 
 #### Kling 2.6 Motion Control
 
@@ -872,7 +860,9 @@ A specialized model for precise motion transfer, allowing you to drive a charact
 
 **Cost:** Varies based on selected settings and duration
 
-Kling 2.6 Motion Control is not available in the United States.
+> **Warning**
+>
+> Kling 2.6 Motion Control is not available in the United States.
 
 #### Kling 3.0 Motion Control
 
@@ -905,7 +895,9 @@ A specialized model for precise motion transfer built on the Kling 3.0 architect
 
 **Cost:** Varies based on selected settings and duration
 
-Kling 3.0 Motion Control is not available in the United States.
+> **Warning**
+>
+> Kling 3.0 Motion Control is not available in the United States.
 
 #### Kling 2.6
 
@@ -936,7 +928,9 @@ An optimized generative model designed for enhanced motion fidelity and smoother
 
 **Cost:** Varies based on selected settings and duration
 
-Kling 2.6 is not available in the United States.
+> **Warning**
+>
+> Kling 2.6 is not available in the United States.
 
 #### Kling 2.5
 
@@ -965,9 +959,13 @@ A balanced and versatile model for high-quality, full-HD video generation.
 
 **Cost:** Varies based on selected settings and duration
 
-End frame is not currently supported. Cannot provide image references. Sound control not available.
+> **Note**
+>
+> End frame is not currently supported. Cannot provide image references. Sound control not available.
 
-Kling 2.5 is not available in the United States.
+> **Warning**
+>
+> Kling 2.5 is not available in the United States.
 
 #### Runway Gen-4.5
 
@@ -1142,9 +1140,13 @@ A specialized model for creating dynamic, multi-shot sequences with large moveme
 
 **Cost:** Varies based on selected settings and duration
 
-Aspect ratio and resolution do not affect generation credits, but duration does.
+> **Note**
+>
+> Aspect ratio and resolution do not affect generation credits, but duration does.
 
-Seedance 1 Pro is not available in the United States.
+> **Warning**
+>
+> Seedance 1 Pro is not available in the United States.
 
 #### LTX Audio-to-Video
 
@@ -1306,7 +1308,9 @@ A cinematic video model with image, video, and audio references, generated audio
 
 **Cost:** Varies based on selected settings and duration
 
-Wan 3.0 is not available in the United States.
+> **Warning**
+>
+> Wan 3.0 is not available in the United States.
 
 #### Wan 3.0 Prime
 
@@ -1340,7 +1344,9 @@ A faster variant of Wan 3.0 with the same inputs and output options, suited to i
 
 **Cost:** Varies based on selected settings and duration
 
-Wan 3.0 Prime is not available in the United States.
+> **Warning**
+>
+> Wan 3.0 Prime is not available in the United States.
 
 #### Wan 2.6
 
@@ -1374,7 +1380,9 @@ A next-generation cinematic video platform that utilizes a unified multimodal ar
 
 **Cost:** Varies based on selected settings and duration
 
-Wan 2.6 is not available in the United States.
+> **Warning**
+>
+> Wan 2.6 is not available in the United States.
 
 #### Wan 2.5 Video
 
@@ -1402,9 +1410,13 @@ A versatile model that delivers cinematic motion and high prompt fidelity from t
 
 **Cost:** Varies based on selected settings and duration
 
-Generation cost varies based on selected settings.
+> **Note**
+>
+> Generation cost varies based on selected settings.
 
-Wan 2.5 Video is not available in the United States.
+> **Warning**
+>
+> Wan 2.5 Video is not available in the United States.
 
 #### Image generative models
 
@@ -1668,7 +1680,9 @@ A lightweight, fast-generation image model from ByteDance delivering high-qualit
 
 **API:** [`bytedance-seedream-5-lite`](/docs/api-reference/flows/image/create#request.body.bytedance-seedream-5-lite)
 
-Seedream 5 Lite is not available in the United States.
+> **Warning**
+>
+> Seedream 5 Lite is not available in the United States.
 
 #### Seedream 5 Pro
 
@@ -1699,7 +1713,9 @@ The higher-fidelity Seedream 5 variant for precise editing, multilingual text, a
 
 **API:** [`bytedance-seedream-5-pro`](/docs/api-reference/flows/image/create#request.body.bytedance-seedream-5-pro)
 
-Seedream 5 Pro is not available in the United States.
+> **Warning**
+>
+> Seedream 5 Pro is not available in the United States.
 
 #### GPT Image 1.5
 
@@ -1779,7 +1795,9 @@ A high-performance multimodal foundation model that unifies text-to-image synthe
 
 **Cost:** Varies based on selected settings and number of variations
 
-Seedream 4.5 is not available in the United States.
+> **Warning**
+>
+> Seedream 4.5 is not available in the United States.
 
 #### Kling O1 Image
 
@@ -1804,7 +1822,9 @@ A high-fidelity image generation model with advanced reasoning capabilities, des
 
 **Cost:** Varies based on selected settings and number of variations
 
-Kling O1 Image is not available in the United States.
+> **Warning**
+>
+> Kling O1 Image is not available in the United States.
 
 #### FLUX.2 \[Pro]
 
@@ -1959,7 +1979,9 @@ A specialized image model for generating multi-shot sequences or scenes with lar
 
 **Cost:** Varies based on selected settings and number of variations
 
-Seedream 4 is not available in the United States.
+> **Warning**
+>
+> Seedream 4 is not available in the United States.
 
 #### Wan 2.5 Image
 
@@ -1986,7 +2008,9 @@ The image variant of Wan 2.5, with strong prompt fidelity and support for refere
 
 **Cost:** Varies based on selected settings and number of variations
 
-Wan 2.5 Image is not available in the United States.
+> **Warning**
+>
+> Wan 2.5 Image is not available in the United States.
 
 #### FLUX.1 Kontext \[Pro]
 
@@ -2065,7 +2089,9 @@ A fast, precise image-to-video lip-sync model that animates a still image to mat
 
 **Cost:** Varies based on input, settings and duration
 
-For best results, the image should contain a detectable figure.
+> **Note**
+>
+> For best results, the image should contain a detectable figure.
 
 #### HeyGen Avatar 4
 
@@ -2090,7 +2116,9 @@ HeyGen's latest avatar model for generating highly realistic, expressive talking
 
 **Cost:** Varies based on input, settings and duration
 
-For best results, the image should contain a clearly visible face.
+> **Note**
+>
+> For best results, the image should contain a clearly visible face.
 
 #### Sync 3
 
@@ -2115,7 +2143,9 @@ The latest generation video lip-sync model from Sync, delivering studio-quality 
 
 **Cost:** Varies based on input, settings and duration
 
-For best results, the video should contain a detectable figure.
+> **Note**
+>
+> For best results, the video should contain a detectable figure.
 
 #### Sync Lipsync 2 Pro
 
@@ -2165,9 +2195,13 @@ A dedicated utility model for generating exceptionally realistic, humanlike lip-
 
 **Cost:** Varies based on input, settings and duration
 
-For best results, the image should contain a detectable figure.
+> **Note**
+>
+> For best results, the image should contain a detectable figure.
 
-OmniHuman 1.5 is not available in the United States.
+> **Warning**
+>
+> OmniHuman 1.5 is not available in the United States.
 
 #### Veed Lipsync
 
@@ -2191,7 +2225,9 @@ A fast, affordable, and precise utility model for applying realistic lip-sync to
 
 **Cost:** Varies based on input, settings and duration
 
-For best results, the video should contain a detectable figure.
+> **Note**
+>
+> For best results, the video should contain a detectable figure.
 
 #### Veed Lipsync 2.0
 
@@ -2215,7 +2251,9 @@ The higher-quality successor to Veed Lipsync for applying realistic lip-sync to 
 
 **Cost:** Varies based on input, settings and duration
 
-For best results, the video should contain a detectable figure.
+> **Note**
+>
+> For best results, the video should contain a detectable figure.
 
 #### Utility models
 

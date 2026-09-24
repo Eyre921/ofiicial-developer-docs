@@ -35,22 +35,24 @@ The table below shows which models are supported on commonly used NVIDIA GPUs.
 | Flux STT           |  ❌  |      ✅     |  ✅  |   ✅  |   ✅  |   ✅  |     ✅     |
 | Flux TTS           |  ❌  |      ❌     |  ✅  |   ✅  |   ✅  |   ✅  |     ✅     |
 
-The Flux models support fewer GPUs than Nova and Aura do:
-
-* **Flux STT** requires a GPU from the Ampere generation or newer, such as the NVIDIA A10, L4, L40S, A100, H100, or a Blackwell-generation GPU. GPUs like the NVIDIA T4 are incompatible.
-* **Flux TTS** runs on the NVIDIA L4, L40S, A100, H100, and Blackwell-generation GPUs. The NVIDIA T4 and A10 are not supported. Contact [Support](https://deepgram.com/contact-us/) before provisioning any other GPU for Flux TTS.
+> **Warning**
+>
+> The Flux models support fewer GPUs than Nova and Aura do:
+>
+> * **Flux STT** requires a GPU from the Ampere generation or newer, such as the NVIDIA A10, L4, L40S, A100, H100, or a Blackwell-generation GPU. GPUs like the NVIDIA T4 are incompatible.
+> * **Flux TTS** runs on the NVIDIA L4, L40S, A100, H100, and Blackwell-generation GPUs. The NVIDIA T4 and A10 are not supported. Contact [Support](https://deepgram.com/contact-us/) before provisioning any other GPU for Flux TTS.
 
 Aura and Aura-2 require **exactly two dedicated GPUs per TTS Engine container**, on any of the supported GPUs above. This is a requirement on device count: a single larger GPU does not substitute for two, and one Engine will not schedule work across more than two. See [Hardware Specifications](#hardware-specifications) for the full TTS Engine requirements.
 
 A Flux TTS Engine also allocates up to 60 GB of system RAM while it loads its model, so every host running one needs at least 64 GB. See [Deploying Flux TTS](/docs/deploy-flux-tts) for its memory and Engine requirements.
 
-#### Deepgram requires the open NVIDIA kernel modules, driver >=580
-
-Deepgram's Engine image is built against CUDA 13, and NVIDIA's official CUDA 13 support begins with the `580` driver branch — see NVIDIA's [CUDA Compatibility](https://docs.nvidia.com/deploy/cuda-compatibility/minor-version-compatibility.html) documentation. **Driver `>=580` is the minimum for every GPU in the table above**, and it must be the **open** kernel module flavor (for example `nvidia-driver-580-open`) rather than the proprietary build.
-
-On Blackwell this is especially consequential: NVIDIA did not add Blackwell support to the proprietary `580` branch, so a Blackwell GPU running that driver will not be visible to the system at all. NVIDIA documents the open kernel module requirement in the [NVIDIA Driver Installation Guide](https://docs.nvidia.com/datacenter/tesla/driver-installation-guide/kernel-modules.html), and describes the transition in [NVIDIA Transitions Fully Towards Open-Source GPU Kernel Modules](https://developer.nvidia.com/blog/nvidia-transitions-fully-towards-open-source-gpu-kernel-modules/).
-
-See [Drivers and Containerization Platforms](/docs/drivers-and-containerization-platforms) for installation and verification steps.
+> **Deepgram requires the open NVIDIA kernel modules, driver >=580**
+>
+> Deepgram's Engine image is built against CUDA 13, and NVIDIA's official CUDA 13 support begins with the `580` driver branch — see NVIDIA's [CUDA Compatibility](https://docs.nvidia.com/deploy/cuda-compatibility/minor-version-compatibility.html) documentation. **Driver `>=580` is the minimum for every GPU in the table above**, and it must be the **open** kernel module flavor (for example `nvidia-driver-580-open`) rather than the proprietary build.
+>
+> On Blackwell this is especially consequential: NVIDIA did not add Blackwell support to the proprietary `580` branch, so a Blackwell GPU running that driver will not be visible to the system at all. NVIDIA documents the open kernel module requirement in the [NVIDIA Driver Installation Guide](https://docs.nvidia.com/datacenter/tesla/driver-installation-guide/kernel-modules.html), and describes the transition in [NVIDIA Transitions Fully Towards Open-Source GPU Kernel Modules](https://developer.nvidia.com/blog/nvidia-transitions-fully-towards-open-source-gpu-kernel-modules/).
+>
+> See [Drivers and Containerization Platforms](/docs/drivers-and-containerization-platforms) for installation and verification steps.
 
 ## Amazon SageMaker
 
@@ -71,7 +73,9 @@ Hardware requirements vary significantly depending on which Deepgram services yo
 * **Speech-to-Text (STT) services** - For transcription and real-time speech recognition
 * **Text-to-Speech (TTS) services** - For conversational AI voice synthesis
 
-While Deepgram uses the same container images for both STT and TTS deployments, **we strongly recommend dedicating each node to a single service type**. Configure nodes specifically for either STT or TTS workloads to ensure optimal performance, avoid resource contention, and maintain predictable latency.
+> **Warning**
+>
+> While Deepgram uses the same container images for both STT and TTS deployments, **we strongly recommend dedicating each node to a single service type**. Configure nodes specifically for either STT or TTS workloads to ensure optimal performance, avoid resource contention, and maintain predictable latency.
 
 A system that meets these baseline requirements will provide the maximum speedup possible with Deepgram models, provided you scale according to the number of requests you are servicing.
 
@@ -109,7 +113,9 @@ For each machine running an STT Engine container, we recommend a machine with th
 
 ##### Text-to-Speech (TTS) Engine
 
-These specifications describe Aura and Aura-2. Flux TTS runs on a single GPU rather than two, supports fewer GPU models, and allocates up to 60 GB of system RAM while it loads. See [Deploying Flux TTS](/docs/deploy-flux-tts) for its requirements.
+> **Info**
+>
+> These specifications describe Aura and Aura-2. Flux TTS runs on a single GPU rather than two, supports fewer GPU models, and allocates up to 60 GB of system RAM while it loads. See [Deploying Flux TTS](/docs/deploy-flux-tts) for its requirements.
 
 Aura and Aura-2 require exactly two dedicated GPUs per TTS Engine container. This is a requirement on device count, not on total GPU memory or compute: a single larger GPU does not substitute for two, and one Engine will not schedule work across more than two. Additional GPUs on a machine let you run additional Engine instances.
 

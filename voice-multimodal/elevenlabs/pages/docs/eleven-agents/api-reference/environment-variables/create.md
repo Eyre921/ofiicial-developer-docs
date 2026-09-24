@@ -27,20 +27,18 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/environment-va
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects an EnvironmentVariablesCreateRequestBody.
 
-- `object`
+- `EnvironmentVariablesCreateRequestBody`
   - `type`: `string`
     - `label` (string, required) — Unique label for the environment variable.
     - `values` (map from string to string, required) — Environment-specific values. Must include 'production' key.
   - `type`: `secret`
     - `label` (string, required) — Unique label for the environment variable.
-    - `values` (map from string to object, required) — Environment-specific secret references. Must include 'production' key.
-      - `secret_id` (string, required)
+    - `values` (map from string to EnvironmentVariableSecretValueRequest, required) — Environment-specific secret references. Must include 'production' key.
   - `type`: `auth_connection`
     - `label` (string, required) — Unique label for the environment variable.
-    - `values` (map from string to object, required) — Environment-specific auth connection references. Must include 'production' key.
-      - `auth_connection_id` (string, required)
+    - `values` (map from string to EnvironmentVariableAuthConnectionValueRequest, required) — Environment-specific auth connection references. Must include 'production' key.
 
 ## Response
 
@@ -55,7 +53,7 @@ Successful Response
   - Allowed values: `string`, `secret`, `auth_connection`
 - `id` (string, required)
 - `workspace_id` (string, required)
-- `values` (map from string to string or map from string to object or map from string to object, required)
+- `values` (EnvironmentVariableResponseValues, required)
 - `created_by_user_id` (string, optional)
 
 ## Errors
@@ -76,10 +74,27 @@ Environment variable with this label already exists
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### EnvironmentVariableSecretValueRequest
+
+- `secret_id` (string, required)
+
+### EnvironmentVariableAuthConnectionValueRequest
+
+- `auth_connection_id` (string, required)
+
+### EnvironmentVariableResponseValues
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItem, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItem
 
 ## Examples
 

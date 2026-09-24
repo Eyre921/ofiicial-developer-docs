@@ -24,7 +24,9 @@ The AWS SDKs give you three ways to select FIPS endpoints, from broadest to narr
 | `use_fips_endpoint = true` in `~/.aws/config`     | Every client using that profile | You want FIPS tied to a profile rather than a shell                                              |
 | Per-client configuration in code                  | One client                      | You want explicit, reviewable control — **recommended**                                          |
 
-If you authenticate with AWS IAM Identity Center (SSO), use per-client configuration. Authenticate over the standard IAM Identity Center endpoint, then apply FIPS to the service you call. The environment variable and the profile setting instead apply FIPS to every client in the process, including the one that resolves your SSO credentials, and the AWS SDKs then derive an IAM Identity Center hostname that does not resolve. Credential resolution fails before your request reaches SageMaker, and a cached credential masks the failure, so it appears intermittent.
+> **Warning**
+>
+> If you authenticate with AWS IAM Identity Center (SSO), use per-client configuration. Authenticate over the standard IAM Identity Center endpoint, then apply FIPS to the service you call. The environment variable and the profile setting instead apply FIPS to every client in the process, including the one that resolves your SSO credentials, and the AWS SDKs then derive an IAM Identity Center hostname that does not resolve. Credential resolution fails before your request reaches SageMaker, and a cached credential masks the failure, so it appears intermittent.
 
 ## Configure clients in code
 
@@ -80,7 +82,9 @@ The equivalent in Python, using `aws_sdk_sagemaker_runtime_http2`:
 endpoint_uri = f"https://runtime-fips.sagemaker.{region}.amazonaws.com:8443"
 ```
 
-If you omit the port, the connection is accepted but the response never arrives: the client hangs instead of reporting an error. Set the endpoint explicitly, with the port, on every bidirectional streaming client.
+> **Note**
+>
+> If you omit the port, the connection is accepted but the response never arrives: the client hangs instead of reporting an error. Set the endpoint explicitly, with the port, on every bidirectional streaming client.
 
 For the full streaming request shape — payload parts, control messages, and result handling — see [Invoke a Deepgram SageMaker Endpoint](/docs/invoke-sagemaker-endpoint).
 

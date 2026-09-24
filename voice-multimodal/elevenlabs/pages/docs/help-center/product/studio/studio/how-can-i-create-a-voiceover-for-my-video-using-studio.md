@@ -8,21 +8,24 @@ path: docs/help-center/product/studio/studio/how-can-i-create-a-voiceover-for-my
 
 # How can I create a voiceover for my video using Studio?
 
-To create a voiceover for a video, you can either:
+Create a new video project from the Studio home page. Enter a prompt, select an Inspiration, or select **+ New blank project** > **Video project (New)**.
 
-* Start a new project using the **New video voiceover** option, which lets you upload a video file, or
-* Start a blank project using the **New blank project option** > **Video project**.
+Use the **Library** panel to add the video and voiceover:
 
-You can also add a video to an existing project:
+Select **Create +**.
 
-* To upload a video, use the **Imports** option and either drag and drop your file, or specify the location using the **Upload file** option.
-* To add a video that you've generated using Image & Video, click **Video** in the sidebar. You'll see your previously generated videos and can import using the **+** button.
-* You can also generate a video directly in Studio using the Video prompt, which you can access by clicking **Video** in the sidebar.
+Select **Upload** to add an existing video, or select **Video** to generate one.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9bd8a0e0c3d81158b4fe3416484c762c58aead9246a55ee5dd7c7b68400bb0e3/assets/images/help-center/product/studio/how-can-i-create-a-voiceover-for-my-video-using-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113645Z&X-Amz-Expires=604800&X-Amz-Signature=fb31a5f87ce3ab0ca6667d17c5b5a32bd01b3b67596ca16dd4334c727d28e077&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+Select **Speech** to generate the voiceover.
 
-You can:
+Drag the video and speech clips from the Library to the timeline.
 
-* **Resize the video view** by dragging the vertical divider between the video and text panes.
-* **Remove the video** by right-clicking it in the timeline and selecting **Delete**.
-* **Export your project** as a full video or audio-only file by clicking **Export**.
+Adjust the clips on the timeline to align the voiceover with the video.
+
+![Library panel in a Studio video project](https://files.buildwithfern.com/visual-editor-images/elevenlabs.io/docs/2026-09-22T08:55:34.233Z/docs/eleven-creative/products/studio/Contextual_Sidebar_Video_project.webp)
+
+Use the **Script** panel to edit the narration or change its voice and model. Changes to the text or voice require regeneration.
+
+To add captions, open the **Captions** panel and select the voiceover track as the caption source. Edit the transcript and caption style as required.
+
+Select **Export** to render and download the finished video.

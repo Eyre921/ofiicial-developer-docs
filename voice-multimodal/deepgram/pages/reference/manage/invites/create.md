@@ -29,7 +29,7 @@ Reference: https://developers.deepgram.com/reference/manage/invites/create
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a CreateProjectInviteV1Request.
 
 - `email` (string, required) — The email address of the invitee
 - `scope` (string, required) — The scope of the invitee
@@ -48,16 +48,22 @@ The invite was successfully generated
 
 Invalid Request
 
-- `string or object or object`
-  - ErrorResponseLegacyError
-    - `err_code` (string, optional) — The error code
-    - `err_msg` (string, optional) — The error message
-    - `request_id` (string, optional) — The request ID
-  - ErrorResponseModernError
-    - `category` (string, optional) — The category of the error
-    - `message` (string, optional) — A message about the error
-    - `details` (string, optional) — A description of the error
-    - `request_id` (string, optional) — The unique identifier of the request
+- `ErrorResponse`
+
+## Types
+
+### ErrorResponseLegacyError
+
+- `err_code` (string, optional) — The error code
+- `err_msg` (string, optional) — The error message
+- `request_id` (string, optional) — The request ID
+
+### ErrorResponseModernError
+
+- `category` (string, optional) — The category of the error
+- `message` (string, optional) — A message about the error
+- `details` (string, optional) — A description of the error
+- `request_id` (string, optional) — The unique identifier of the request
 
 ## Examples
 

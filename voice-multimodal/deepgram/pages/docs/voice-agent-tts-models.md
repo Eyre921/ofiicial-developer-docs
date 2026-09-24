@@ -17,7 +17,9 @@ By default [Deepgram Text-to-Speech](/docs/tts-models) will be used with the Voi
 
 You can also use Deepgram's native Cartesia support or opt to use another provider's TTS model with your Agent by applying the following settings.
 
-You can set your Text-to-Speech model in the [Settings Message](/docs/configure-voice-agent) for your Voice Agent. See the docs for more information.
+> **Info**
+>
+> You can set your Text-to-Speech model in the [Settings Message](/docs/configure-voice-agent) for your Voice Agent. See the docs for more information.
 
 ## Deepgram TTS models
 
@@ -45,7 +47,9 @@ Deepgram offers two TTS model families for the Voice Agent API. Set `agent.speak
 | `agent.speak.provider.speed`        | Float   | Speaking rate multiplier. Accepts `0.5` to `1.5` in `0.05` increments. Defaults to `1.0`.                                                                                                                          |
 | `agent.speak.provider.expressivity` | Integer | Delivery register on a calm to animated axis, available on every Flux voice. Accepts `-2`, `-1`, `0`, `1`, or `2`. Defaults to `0`, the voice's tuned delivery. Beta — see [Expressivity](/docs/tts-expressivity). |
 
-Flux TTS voices are served only on `agent.speak.provider.version`: `v2`, and Aura voices only on `agent.speak.provider.version`: `v1`. Switch families by changing `agent.speak.provider.version` and `model` together.
+> **Info**
+>
+> Flux TTS voices are served only on `agent.speak.provider.version`: `v2`, and Aura voices only on `agent.speak.provider.version`: `v1`. Switch families by changing `agent.speak.provider.version` and `model` together.
 
 #### Example
 
@@ -79,7 +83,9 @@ Flux TTS streams raw audio frames, so it accepts a narrower set of `audio.output
 
 Requesting a compressed encoding (`mp3`, `opus`, `flac`, `aac`) or a container such as `wav` returns `INVALID_SETTINGS`. Configure an Aura voice to use those formats.
 
-Flux TTS is the default when `agent.speak` is omitted, so a session that omits it **and** requests compressed output is now rejected where it previously received Aura audio. Configure an Aura voice to keep that behavior.
+> **Warning**
+>
+> Flux TTS is the default when `agent.speak` is omitted, so a session that omits it **and** requests compressed output is now rejected where it previously received Aura audio. Configure an Aura voice to keep that behavior.
 
 ### Aura
 
@@ -185,7 +191,9 @@ For OpenAI you can refer to [OpenAI's text-to-speech guide](https://developers.o
 
 For ElevenLabs you can refer to [this article](https://help.elevenlabs.io/hc/en-us/articles/14599760033937-How-do-I-find-my-voices-ID-of-my-voices-via-the-website-and-through-the-API) on how to find your Voice ID or [use their API](https://elevenlabs.io/docs/api-reference/voices/search) to retrieve it. See their [TTS Docs](https://elevenlabs.io/docs/api-reference/text-to-speech/v-1-text-to-speech-voice-id-multi-stream-input) for more information. ElevenLabs [does not support](https://elevenlabs.io/docs/api-reference/text-to-speech/v-1-text-to-speech-voice-id-multi-stream-input) WebSocket streaming for the `eleven_v3` model - instead, use the HTTPS REST endpoint ([see example](#example-eleven_v3-via-https)).
 
-We support any of [ElevenLabs' Turbo 2.5](https://elevenlabs.io/docs/models#turbo-v25) voices to ensure low latency interactions
+> **Info**
+>
+> We support any of [ElevenLabs' Turbo 2.5](https://elevenlabs.io/docs/models#turbo-v25) voices to ensure low latency interactions
 
 | Parameter                            | Type   | Description                       |
 | ------------------------------------ | ------ | --------------------------------- |
@@ -294,7 +302,9 @@ For Cartesia you can [use their API](https://docs.cartesia.ai/api-reference/voic
 
 For Amazon (AWS) Polly you can refer to [this article](https://docs.aws.amazon.com/polly/latest/dg/available-voices.html) for a list of available voices.
 
-If no engine is specified, Amazon (AWS) Polly defaults to Standard. If the chosen voice doesn't support Standard, you'll get an error like: "Standard engine not supported for \{voice}." In that case, you must explicitly specify the correct engine.
+> **Warning**
+>
+> If no engine is specified, Amazon (AWS) Polly defaults to Standard. If the chosen voice doesn't support Standard, you'll get an error like: "Standard engine not supported for \{voice}." In that case, you must explicitly specify the correct engine.
 
 | Parameter                            | Type   | Description              |
 | ------------------------------------ | ------ | ------------------------ |
@@ -374,7 +384,9 @@ The `speak` object accepts both a single provider and an array of providers. Whe
 
 The fallback is per-request — each new agent utterance starts again from the first provider. Provider order matters, so place your preferred provider first and your most reliable fallback last.
 
-Fallback providers do not need to use the same `provider.type`. You can mix providers (for example, `deepgram` primary with an `open_ai` fallback) to maximize availability across independent infrastructure.
+> **Info**
+>
+> Fallback providers do not need to use the same `provider.type`. You can mix providers (for example, `deepgram` primary with an `open_ai` fallback) to maximize availability across independent infrastructure.
 
 ### Example
 

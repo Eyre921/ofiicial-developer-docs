@@ -20,18 +20,18 @@ To make use of the full power of ElevenLabs Agents you need to use a model that 
 
 When browsing the [model catalog](https://developers.cloudflare.com/workers-ai/models/), look for models with the function calling property beside it.
 
-#### Try out DeepSeek R1
-
-Cloudflare Workers AI provides access to
-[DeepSeek-R1-Distill-Qwen-32B](https://developers.cloudflare.com/workers-ai/models/deepseek-r1-distill-qwen-32b/),
-a model distilled from DeepSeek-R1 based on Qwen2.5. It outperforms OpenAI-o1-mini across various
-benchmarks, achieving new state-of-the-art results for dense models.
+> **Try out DeepSeek R1**
+>
+> Cloudflare Workers AI provides access to
+> [DeepSeek-R1-Distill-Qwen-32B](https://developers.cloudflare.com/workers-ai/models/deepseek-r1-distill-qwen-32b/),
+> a model distilled from DeepSeek-R1 based on Qwen2.5. It outperforms OpenAI-o1-mini across various
+> benchmarks, achieving new state-of-the-art results for dense models.
 
 ## Set up DeepSeek R1 on Cloudflare Workers AI
 
 Navigate to [dash.cloudflare.com](https://dash.cloudflare.com) and create or sign in to your account. In the navigation, select AI > Workers AI, and then click on the "Use REST API" widget.
 
-![Add Secret](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ba8414d3dc5f806d004f8b4ac0c7dc0d77a0b292a9dbd86dfb8b2d6736a40118/assets/images/conversational-ai/cloudflare-workers-ai/cloudflare-workers-ai-api-key.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113315Z&X-Amz-Expires=604800&X-Amz-Signature=d56b968604796f0d5751d561c6fab23b0816be8bdf8c90d43b4a34540c12ef1b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Add Secret](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ba8414d3dc5f806d004f8b4ac0c7dc0d77a0b292a9dbd86dfb8b2d6736a40118/assets/images/conversational-ai/cloudflare-workers-ai/cloudflare-workers-ai-api-key.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113222Z&X-Amz-Expires=604800&X-Amz-Signature=a33a94540b4c305c04c105c656e7a5083324e19ca6d2260ca2f061a5abaf6601&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Once you have your API key, you can try it out immediately with a curl request. Cloudflare provides an OpenAI-compatible API endpoint making this very convenient. At this point make a note of the model and the full endpoint — including the account ID. For example: `https://api.cloudflare.com/client/v4/accounts/{ACCOUNT_ID}c/ai/v1/`.
 
@@ -51,14 +51,14 @@ curl https://api.cloudflare.com/client/v4/accounts/{ACCOUNT_ID}/ai/v1/chat/compl
 
 Navigate to your [AI Agent](https://elevenlabs.io/app/agents), scroll down to the "Secrets" section and select "Add Secret". After adding the secret, make sure to hit "Save" to make the secret available to your agent.
 
-![Add Secret](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/59dbfcd46a69b9f28e58e68de7b3dd678ee9f6bfd499fd23699017e92b11931f/assets/images/conversational-ai/cloudflare-workers-ai/cloudflare-workers-ai-secret.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113315Z&X-Amz-Expires=604800&X-Amz-Signature=91733e1fa8fb80ef132a0e83524e7734b21d69db0bc285fbfad3e1be96683663&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Add Secret](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/59dbfcd46a69b9f28e58e68de7b3dd678ee9f6bfd499fd23699017e92b11931f/assets/images/conversational-ai/cloudflare-workers-ai/cloudflare-workers-ai-secret.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113222Z&X-Amz-Expires=604800&X-Amz-Signature=90ad869d24657e6360dae8f3b89eab3e24a544a8d7336574496b213cf2e2a851&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Choose "Custom LLM" from the dropdown menu.
 
-![Choose custom llm](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/45ec75f558a5c8e5070bd3170d96cbc54ef63e15d9f04ac472a45854a22a17ac/assets/images/conversational-ai/byollm-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113315Z&X-Amz-Expires=604800&X-Amz-Signature=0507b703c87ba4cc1495c5783778f2c6e1d946b1651c3d548b35949c7745b451&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Choose custom llm](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/45ec75f558a5c8e5070bd3170d96cbc54ef63e15d9f04ac472a45854a22a17ac/assets/images/conversational-ai/byollm-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113222Z&X-Amz-Expires=604800&X-Amz-Signature=6f6bc4debf83d6cfd817ade19448c5df9e1172d220714912ee5e4a20819a3a5a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 For the Server URL, specify Cloudflare's OpenAI-compatible API endpoint: `https://api.cloudflare.com/client/v4/accounts/{ACCOUNT_ID}/ai/v1/`. For the Model ID, specify `@cf/deepseek-ai/deepseek-r1-distill-qwen-32b` as discussed above, and select your API key from the dropdown menu.
 
-![Enter url](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/da17a1626b64d7b3eadb23ee17eb0e7bd3bb5156f8edf2357816820169d74d94/assets/images/conversational-ai/cloudflare-workers-ai/cloudflare-workers-ai-llm.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113315Z&X-Amz-Expires=604800&X-Amz-Signature=ddd589a0e7391221cb835d88ddb81ad64c3bc78fc8f63e743c943886b0521e2b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Enter url](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/da17a1626b64d7b3eadb23ee17eb0e7bd3bb5156f8edf2357816820169d74d94/assets/images/conversational-ai/cloudflare-workers-ai/cloudflare-workers-ai-llm.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113222Z&X-Amz-Expires=604800&X-Amz-Signature=b8f4a3e3cab07add181038e8b3e6e216373b1e98f64569a223b12484bf8043a2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Now you can go ahead and click "Test AI Agent" to chat with your custom DeepSeek R1 model.

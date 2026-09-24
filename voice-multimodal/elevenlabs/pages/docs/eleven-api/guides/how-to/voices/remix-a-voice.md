@@ -12,9 +12,11 @@ This guide will show you how to create an entirely new voice by remixing an exis
 
 ## Using the Voice Design API
 
-This guide assumes you have [set up your API key and SDK](/docs/eleven-api/quickstart). Complete
-the quickstart first if you haven't. To play audio through your speakers, you may also need
-[MPV](https://mpv.io/) and/or [ffmpeg](https://ffmpeg.org/).
+> **Note**
+>
+> This guide assumes you have [set up your API key and SDK](/docs/eleven-api/quickstart). Complete
+> the quickstart first if you haven't. To play audio through your speakers, you may also need
+> [MPV](https://mpv.io/) and/or [ffmpeg](https://ffmpeg.org/).
 
 #### Make the API request
 
@@ -27,7 +29,9 @@ We'll start by generating a preview of the new voice.
 
 Create a new file named `example.py` or `example.mts`, depending on your language of choice and add the following code:
 
-You can only remix previously designed voices, IVC or PVC voices, and any voices from the Voice Library that have infinite notice periods.
+> **Warning**
+>
+> You can only remix previously designed voices, IVC or PVC voices, and any voices from the Voice Library that have infinite notice periods.
 
 ```python maxLines=0
 # example.py

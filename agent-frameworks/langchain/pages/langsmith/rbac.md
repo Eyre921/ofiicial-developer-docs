@@ -47,7 +47,7 @@ Organization roles are **distinct from the workspace RBAC feature** and are used
 - `organization:read` - Read access to all organization information
 - `organization:pats:create` - Create organization-level [personal access tokens](/langsmith/administration-overview#personal-access-tokens-pats)
 - `organization:pats:read` - View every organization member's personal access tokens
-- `organization:pats:manage` - Revoke or delete any organization member's personal access token
+- `organization:pats:manage` - Deactivate, reactivate, or delete any organization member's personal access token
 
 For a comprehensive list of required permissions along with the operations and roles that can perform them, refer to the [Organization and workspace reference](/langsmith/organization-workspace-operations).
 
@@ -57,7 +57,7 @@ For a comprehensive list of required permissions along with the operations and r
 - Manage [billing](/langsmith/billing) and subscription plans
 - Create and delete [workspaces](/langsmith/set-up-hierarchy)
 - Invite and remove organization members
-- View, revoke, and delete any member's [personal access tokens](/langsmith/administration-overview#personal-access-tokens-pats)
+- View, deactivate, reactivate, and delete any member's [personal access tokens](/langsmith/administration-overview#personal-access-tokens-pats)
 - Assign organization and workspace roles to members
 - Create and manage [custom roles](#custom-roles)
 - Configure RBAC and ABAC (Attribute-Based Access Control) policies
@@ -75,7 +75,7 @@ Management access for day-to-day operations including workspace and user managem
 - `organization:read` - Read access to all organization information
 - `organization:pats:create` - Create personal access tokens
 - `organization:pats:read` - View every organization member's personal access tokens
-- `organization:pats:manage` - Revoke or delete any organization member's personal access token
+- `organization:pats:manage` - Deactivate, reactivate, or delete any organization member's personal access token
 
 For a comprehensive list of required permissions along with the operations and roles that can perform them, refer to the [Organization and workspace reference](/langsmith/organization-workspace-operations).
 
@@ -83,7 +83,7 @@ For a comprehensive list of required permissions along with the operations and r
 - Create and manage [workspaces](/langsmith/set-up-hierarchy#set-up-a-workspace)
 - Invite organization members (all roles except Organization Admin)
 - Manage non-admin organization members (modify and remove Organization Users, Viewers, and Operators)
-- View, revoke, and delete any member's [personal access tokens](/langsmith/administration-overview#personal-access-tokens-pats)
+- View, deactivate, reactivate, and delete any member's [personal access tokens](/langsmith/administration-overview#personal-access-tokens-pats)
 - Assign workspace roles to members
 - Create workspace-scoped service keys and service accounts
 - View organization [usage](/langsmith/usage-and-billing#usage-limits) and analytics
@@ -252,7 +252,7 @@ Some permissions offer granular control when used in custom roles:
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
+    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/rbac.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

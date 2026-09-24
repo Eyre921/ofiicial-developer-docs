@@ -8,13 +8,17 @@ path: docs/eleven-api/guides/how-to/text-to-speech/request-stitching
 
 # Stitching multiple requests
 
-**How-to guide** · Assumes you have completed the [ElevenAPI quickstart](/docs/eleven-api/quickstart).
+> **Note**
+>
+> **How-to guide** · Assumes you have completed the [ElevenAPI quickstart](/docs/eleven-api/quickstart).
 
 When converting a large body of text into audio, you may encounter abrupt changes in prosody from one chunk to another. This can be particularly noticeable when converting text that spans multiple paragraphs or sections. In order to maintain voice prosody over multiple chunks, you can use the Request Stitching feature.
 
 This feature allows you to provide context on what has already been generated and what will be generated in the future, helping to maintain a consistent voice and prosody throughout the entire text.
 
-Request stitching is not available for the `eleven_v3` model.
+> **Info**
+>
+> Request stitching is not available for the `eleven_v3` model.
 
 Here's an example without Request Stitching:
 
@@ -24,8 +28,10 @@ And the same example with Request Stitching:
 
 Request Stitching is easiest when using the ElevenLabs SDKs.
 
-This guide assumes you have [set up your API key and SDK](/docs/eleven-api/quickstart). Complete
-the quickstart first if you haven't.
+> **Note**
+>
+> This guide assumes you have [set up your API key and SDK](/docs/eleven-api/quickstart). Complete
+> the quickstart first if you haven't.
 
 #### Stitch multiple requests together
 

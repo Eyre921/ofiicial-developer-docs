@@ -20,13 +20,15 @@ When using Deepgram’s API to transcribe audio with specialized terminology or 
 
 Keywords will not increase the likelihood that common words or proper nouns are predicted. Keywords are designed as a quick way to provide our models with new vocabulary they have not previously encountered.
 
-Keywords is only available for use with Nova-2, Nova-1, Enhanced, and Base speech to text models. For Nova-3, use [Keyterm Prompting](/docs/keyterm).
+> **Info**
+>
+> Keywords is only available for use with Nova-2, Nova-1, Enhanced, and Base speech to text models. For Nova-3, use [Keyterm Prompting](/docs/keyterm).
+>
+> Training a custom model is always the most effective and accurate way to recognize keywords and context in your transcripts. If you require more than 100 keywords, please [contact us](https://deepgram.com/contact-us) to discuss custom model training which is available on our [Enterprise Plan](https://deepgram.com/pricing).
 
-Training a custom model is always the most effective and accurate way to recognize keywords and context in your transcripts. If you require more than 100 keywords, please [contact us](https://deepgram.com/contact-us) to discuss custom model training which is available on our [Enterprise Plan](https://deepgram.com/pricing).
-
-#### Moving to Keyterm Prompting?
-
-The `keywords=KEYWORD:INTENSIFIER` syntax on this page is specific to the `keywords` feature. When you migrate to [Keyterm Prompting](/docs/keyterm) for Nova-3, drop the `:INTENSIFIER` weight—`keyterm` does not support weights or intensifiers. Appending one (for example, `keyterm=term:0.15`) is not rejected; the weight is silently ignored and the entire value is treated as a literal keyterm. Pass plain terms instead, repeating the `keyterm` parameter for multiple terms (`keyterm=term1&keyterm=term2`).
+> **Moving to Keyterm Prompting?**
+>
+> The `keywords=KEYWORD:INTENSIFIER` syntax on this page is specific to the `keywords` feature. When you migrate to [Keyterm Prompting](/docs/keyterm) for Nova-3, drop the `:INTENSIFIER` weight—`keyterm` does not support weights or intensifiers. Appending one (for example, `keyterm=term:0.15`) is not rejected; the weight is silently ignored and the entire value is treated as a literal keyterm. Pass plain terms instead, repeating the `keyterm` parameter for multiple terms (`keyterm=term1&keyterm=term2`).
 
 ## Enable Feature
 
@@ -47,7 +49,9 @@ curl \
   --url 'https://api.deepgram.com/v1/listen?keywords=KEYWORD:INTENSIFIER'
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 ## Keyword Limits
 
@@ -81,7 +85,9 @@ You can boost multiple keywords individually:
 
 ## Suppress a Keyword
 
-Keyword suppression only works on [Base models](/docs/models-languages-overview#base).
+> **Info**
+>
+> Keyword suppression only works on [Base models](/docs/models-languages-overview#base).
 
 To use keyword suppression, send one or more instances of the `keywords` parameter in the query string and append a negative intensifier, which will suppress the recognition of the specified word:
 

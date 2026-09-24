@@ -10,22 +10,24 @@ path: reference/api-rate-limits
 
 # API Rate Limits
 
-Rate limits vary by region. North America, Europe, Australia, and India limits are shown separately for each service.
-
-* **North America:** `api.deepgram.com`
-* **Europe:** `api.eu.deepgram.com`
-* **Australia:** `api.au.deepgram.com`
-* **India:** `api.in.deepgram.com`
+> **Info**
+>
+> Rate limits vary by region. North America, Europe, Australia, and India limits are shown separately for each service.
+>
+> * **North America:** `api.deepgram.com`
+> * **Europe:** `api.eu.deepgram.com`
+> * **Australia:** `api.au.deepgram.com`
+> * **India:** `api.in.deepgram.com`
 
 ## Pay as You Go
 
 Limits to consider if you use the Pay as You Go plan with Deepgram.
 
-#### Rate limits apply per project
-
-Rate limits apply per project, not per account or API key. Creating additional projects under the same account will not grant you additional concurrency. Secondary projects created on a self-serve account are limited to a single concurrent stream by design. Bypassing rate limits by spreading traffic across multiple projects violates our Terms of Service.
-
-If you need higher concurrency, [contact sales](https://deepgram.com/contact-us) about a growth or enterprise agreement.
+> **Rate limits apply per project**
+>
+> Rate limits apply per project, not per account or API key. Creating additional projects under the same account will not grant you additional concurrency. Secondary projects created on a self-serve account are limited to a single concurrent stream by design. Bypassing rate limits by spreading traffic across multiple projects violates our Terms of Service.
+>
+> If you need higher concurrency, [contact sales](https://deepgram.com/contact-us) about a growth or enterprise agreement.
 
 ### Voice Agent
 
@@ -161,7 +163,9 @@ If you include Audio Intelligence features in requests to `/listen`, you will be
 
 Starting limits to consider if you have an Enterprise Contract with Deepgram. Enterprise limits are the same across all regions unless a row states otherwise.
 
-New and existing Enterprise customers can request a Service Limit increase by discussing your needs with the [Deepgram Sales Team.](mailto:sales@deepgram.com)
+> **Info**
+>
+> New and existing Enterprise customers can request a Service Limit increase by discussing your needs with the [Deepgram Sales Team.](mailto:sales@deepgram.com)
 
 ### Voice Agent
 

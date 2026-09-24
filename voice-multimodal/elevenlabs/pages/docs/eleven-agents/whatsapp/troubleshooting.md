@@ -54,8 +54,10 @@ The conversation fails if these required dynamic variables are not present.
 * The agent workspace is in [Zero-Retention Mode](/docs/eleven-api/resources/zero-retention-mode), which ignores inbound WhatsApp messages entirely.
 * The inbound message is an unsupported type (for example video, or a WhatsApp Flow reply) — see [Limitations](/docs/eleven-agents/whatsapp#limitations).
 
-If **Enable typing indicator** is turned off for the account, this check does not apply — work
-through both lists.
+> **Note**
+>
+> If **Enable typing indicator** is turned off for the account, this check does not apply — work
+> through both lists.
 
 ## The first reply after a template misbehaves
 

@@ -12,7 +12,7 @@ This glossary defines Claude Code terminology. Each entry links to the page wher
 
 ### AGENTS.md
 
-A markdown file of project instructions you write for AI coding agents. If your repository has one and no [CLAUDE.md](#claude-md), Claude reads it as your project instructions without you adding a second file. You can change the **Project instructions** setting in `/config` to have Claude read both files or only `CLAUDE.md`. Reading `AGENTS.md` directly requires Claude Code v2.1.277 or later in a session that fetches feature flags; on other versions, import it from a CLAUDE.md.
+A markdown file of project instructions you write for AI coding agents. If your repository has one and no [CLAUDE.md](#claude-md), Claude reads it as your project instructions without you adding a second file. You can change the **Project instructions** setting in `/config` to have Claude read both files or only `CLAUDE.md`. Reading `AGENTS.md` directly requires Claude Code v2.1.277 or later. In some sessions Claude [can't read `AGENTS.md`](/docs/en/memory#when-agents-md-support-is-unavailable), so [import it from a `CLAUDE.md`](/docs/en/memory#share-one-file-with-other-coding-tools) there instead.
 
 Learn more: [AGENTS.md](/docs/en/memory#agents-md)
 
@@ -153,6 +153,14 @@ Learn more: [Adjust effort level](/docs/en/model-config#adjust-effort-level)
 Visible step-by-step reasoning the model performs before responding. You can adjust it with the [effort level](#effort-level), or cap thinking tokens with `MAX_THINKING_TOKENS` on models with a fixed thinking budget. Thinking appears in gray italic text in the terminal.
 
 Learn more: [Use extended thinking](/docs/en/model-config#extended-thinking)
+
+## F
+
+### Frontmatter
+
+A block of YAML settings at the very top of a Markdown file, between an opening `---` line and a closing `---` line. Skills, subagents, output styles, and rules each read their configuration from frontmatter, such as a skill's `description` or a subagent's `tools`, and treat everything after the closing `---` as the instructions. The opening `---` must be the file's first line. Each file type accepts its own set of fields.
+
+Learn more: [Skill frontmatter](/docs/en/skills#frontmatter-reference), [Subagent frontmatter](/docs/en/sub-agents#supported-frontmatter-fields), [Output style frontmatter](/docs/en/output-styles#frontmatter), [Rule frontmatter](/docs/en/memory#rules-frontmatter-reference)
 
 ## H
 

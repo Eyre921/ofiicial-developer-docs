@@ -41,23 +41,8 @@ Successful Response
 - `version_description` (string, required)
 - `seq_no_in_branch` (integer, required)
 - `time_committed_secs` (integer, required)
-- `parents` (object, required)
-  - `in_branch_parent_id` (string, optional, nullable)
-  - `out_of_branch_parent_id` (string, optional, nullable)
-  - `merged_into_branch_id` (string, optional, nullable)
-  - `merged_from_branch_id` (string, optional, nullable)
-  - `merged_from_version_id` (string, optional, nullable)
-  - `rebased_from_version_id` (string, optional, nullable)
-- `access_info` (object, optional, nullable)
-  - `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
-  - `creator_name` (string, required) — Name of the agent's creator
-  - `creator_email` (string, required) — Email of the agent's creator
-  - `role` (enum, required) — The role of the user making the request
-    - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-  - `anonymous_access_level_override` (enum, optional, nullable) — The access level for anonymous users. If None, the resource is not shared publicly.
-    - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-  - `access_source` (enum, optional, nullable) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
-    - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
+- `parents` (AgentVersionParents, required)
+- `access_info` (ResourceAccessInfo, optional, nullable)
 
 ## Errors
 
@@ -65,10 +50,38 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### AgentVersionParents
+
+- `in_branch_parent_id` (string, optional, nullable)
+- `out_of_branch_parent_id` (string, optional, nullable)
+- `merged_into_branch_id` (string, optional, nullable)
+- `merged_from_branch_id` (string, optional, nullable)
+- `merged_from_version_id` (string, optional, nullable)
+- `rebased_from_version_id` (string, optional, nullable)
+
+### ResourceAccessInfo
+
+- `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
+- `creator_name` (string, required) — Name of the agent's creator
+- `creator_email` (string, required) — Email of the agent's creator
+- `role` (enum, required) — The role of the user making the request
+  - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+- `anonymous_access_level_override` (enum, optional, nullable) — The access level for anonymous users. If None, the resource is not shared publicly.
+  - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+- `access_source` (enum, optional, nullable) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
+  - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

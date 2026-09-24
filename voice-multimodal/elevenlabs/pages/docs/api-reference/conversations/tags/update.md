@@ -31,7 +31,7 @@ Reference: https://elevenlabs.io/docs/api-reference/conversations/tags/update
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a PatchConversationTagRequestModel.
 
 - `title` (string, optional, nullable) — If provided, replaces the tag title. Omit to leave unchanged.
 - `description` (string, optional, nullable) — If provided, replaces the tag description. Omit to leave unchanged.
@@ -55,10 +55,17 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

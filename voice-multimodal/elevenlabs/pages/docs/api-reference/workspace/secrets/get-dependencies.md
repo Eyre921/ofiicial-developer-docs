@@ -41,7 +41,7 @@ Reference: https://elevenlabs.io/docs/api-reference/workspace/secrets/get-depend
 
 Successful Response
 
-- `dependencies` (list of object or list of object or list of object, required)
+- `dependencies` (GetSecretDependenciesResponseModelDependencies, required)
 - `next_cursor` (string, optional, nullable) — Cursor for fetching the next page of dependencies
 
 ## Errors
@@ -50,10 +50,19 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### GetSecretDependenciesResponseModelDependencies
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

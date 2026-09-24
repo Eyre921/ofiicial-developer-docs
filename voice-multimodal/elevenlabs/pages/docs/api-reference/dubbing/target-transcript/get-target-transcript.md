@@ -36,13 +36,7 @@ Reference: https://elevenlabs.io/docs/api-reference/dubbing/target-transcript/ge
 Successful Response
 
 - `target_language` (string, required) — BCP-47 language tag this target is translated into.
-- `segments` (list of object, required) — The target segments, in playback order.
-  - `id` (string, required) — Stable identifier of the segment (from the source).
-  - `speaker_id` (string, required) — Identifier of the segment's speaker.
-  - `start_s` (double, required) — Start time of the segment, in seconds.
-  - `end_s` (double, required) — End time of the segment, in seconds.
-  - `source_text` (string, required) — The source-language text of the segment.
-  - `translation` (string, optional, nullable) — The translated text, or null if not translated yet (needs translation).
+- `segments` (list of DubbingTargetTranscriptSegment, required) — The target segments, in playback order.
 - `revision` (integer, required) — The target's revision at read time.
 - `source_language` (string, optional, nullable) — BCP-47 language tag of the source transcript.
 
@@ -52,10 +46,28 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### DubbingTargetTranscriptSegment
+
+One segment of a target transcript: a source segment plus its translation.
+
+- `id` (string, required) — Stable identifier of the segment (from the source).
+- `speaker_id` (string, required) — Identifier of the segment's speaker.
+- `start_s` (double, required) — Start time of the segment, in seconds.
+- `end_s` (double, required) — End time of the segment, in seconds.
+- `source_text` (string, required) — The source-language text of the segment.
+- `translation` (string, optional, nullable) — The translated text, or null if not translated yet (needs translation).
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

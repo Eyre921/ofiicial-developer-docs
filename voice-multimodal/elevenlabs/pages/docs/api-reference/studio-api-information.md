@@ -8,7 +8,9 @@ path: docs/api-reference/studio-api-information
 
 # ElevenCreative Studio API
 
-The ElevenCreative Studio API is only available upon request. To get access, [contact sales](https://elevenlabs.io/contact-sales).
+> **Note**
+>
+> The ElevenCreative Studio API is only available upon request. To get access, [contact sales](https://elevenlabs.io/contact-sales).
 
 ## FAQ
 
@@ -17,40 +19,40 @@ The ElevenCreative Studio API is only available upon request. To get access, [co
     <td>
       #### What is Studio?
 
-      Studio is our production workflow for creating professional audio and video content. It brings together text, visuals, and sound to help you produce narrations, audiobooks, video voiceovers, and more.
+      ElevenCreative Studio is a workspace for creating audio and video projects. Studio 4.0 combines a prompt-first workflow with timeline editing, generated media, sharing, and comments.
 
-      ### Creating Audio Content
+      ![ElevenCreative Studio project editor](https://files.buildwithfern.com/visual-editor-images/elevenlabs.io/docs/2026-09-22T09:10:38.702Z/docs/eleven-creative/products/studio/Studio1.webp)
 
-      To generate audio, you can upload a full book, document, or script, or even import an entire webpage via URL. Studio supports a wide range of formats, including:
+      ## Audio projects
 
-      * EPUB
-      * PDF
-      * DOCX
-      * TXT
-      * HTML
-      * URL
+      Use Audio projects to create long-form narration, podcasts, and audiobooks. Upload a script or document, assign voices, and arrange narration, music, and sound effects on the timeline.
 
-      Once imported, you can edit and organize text directly in the interface and apply any voice from our Voice Library to bring your content to life. When your project is complete, you can export as either MP3 or WAV.
+      The Audio project editor includes:
 
-      ### Creating Video and Voiceover Content
+      * A contextual sidebar for voice, model, playback, and generation settings.
+      * A Chapters sidebar for organizing long-form content.
+      * Generation history and paragraph locking.
+      * Actor Mode for guiding speech delivery with a recording.
+      * MP3 and WAV export options.
 
-      Studio also allows you to import videos and images to create voiceovers. The timeline includes a video track and caption layer, giving you precise control over timing and synchronization. You can also import music and sound effects on separate tracks for richer productions.
+      ## Video projects
 
-      When your project is ready for review, you can share it using our built-in collaboration tools, which include feedback and commenting features.
+      Use Video projects to combine video, images, speech, music, sound effects, text, and captions. Start with a prompt, an Inspiration, an upload, or a blank project.
 
-      ### Advanced Features
+      The Video project editor includes:
 
-      Studio includes powerful organization and editing tools that make it easy to manage complex projects:
+      * A **Library** for project and workspace assets.
+      * A **Script** panel for narration and pronunciation rules.
+      * A **Captions** panel for transcript and style controls.
+      * A multi-track timeline for arranging media.
+      * Aspect ratios for widescreen, vertical, portrait, and square video.
+      * Studio Agent for planning and editing video projects.
 
-      * Assign different voices and settings to sections or characters.
-      * Regenerate individual paragraphs or words to fine-tune delivery.
-      * Lock sections once you’re satisfied with the result.
-      * Access Generation History to restore and download previous versions.
-      * Adjust playback speed between 0.8× and 2.0× for efficient review.
+      ## Sharing and export
 
-      These controls make Studio ideal for creating everything from table reads and audio dramas to narrated videos and multimedia productions.
+      Share a project to collect comments from teammates. Select **Export** to render the current chapter or project as audio or video.
 
-      For a full overview and step-by-step guidance, see our [Studio documentation.](/docs/product-guides/products/studio)
+      For detailed instructions, see the [ElevenCreative Studio guide](/docs/product-guides/products/studio).
     </td>
   </tr>
 
@@ -70,15 +72,13 @@ The ElevenCreative Studio API is only available upon request. To get access, [co
     <td>
       #### How do I add chapters to a Studio project?
 
-      When you create a Studio project using the **New audiobook** option and import a document that includes chapters, chapters will be automatically detected.
+      The **Chapters** sidebar is available in Audio projects. When you import a document that contains chapters, Studio detects them automatically.
 
-      To manage chapters in an existing project, go to **Project options** in the top left corner, then select **Manage chapters**. This will open the **Chapters sidebar**.
+      Select the **Chapters** tab to open the sidebar.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/70c468910efa03c84f4cd309a937cbe537c223c2f1e6598db37eef6bd26e4f0d/assets/images/help-center/product/studio/studio-manage-chapters.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113410Z&X-Amz-Expires=604800&X-Amz-Signature=5ea21c98a767762e64518d7cf1accf29c11086f2f719d63305631172a9b09c86&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![Chapters sidebar in a Studio Audio project](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6f636820458f31c4388e8e6f5ce5433fba73340fc4e8712f0ec818f5966365d9/assets/images/product-guides/studio/studio-chapters.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113307Z&X-Amz-Expires=604800&X-Amz-Signature=dd223d724c60f22dd29ccb72d6d99f063bb90272692d80fe615ea263bf3126d8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-      You can add a new chapter using the **+** button. You can also rename and remove chapters using the **Chapter actions** (three dots) button, and drag and drop the chapters to rearrange them.
-
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0a498e857491f4974398d85b788ad49025892cf3aeed63913b03ce6e28d5d0cf/assets/images/help-center/product/studio/studio-chapter-options.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113410Z&X-Amz-Expires=604800&X-Amz-Signature=195c72bcde3f7c5a75c689eeeae92f933c1c6b9075c5c89085827cd96e4998a9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      Select **+** to add a chapter. Use **Chapter actions** to rename or remove a chapter. Drag chapters to reorder them.
     </td>
   </tr>
 
@@ -92,7 +92,7 @@ The ElevenCreative Studio API is only available upon request. To get access, [co
 
       If the selection is eligible for a free regeneration, you will see that the Generate/Regenerate button in the toolbar says **Regenerate**, and if you hover over it, you will see a notification letting you know how many free regenerations are remaining.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f3af89ec341d3d0e493219796067b35ce8d129e6d51edc70178f6a1ea22d4977/assets/images/help-center/product/studio/does-it-cost-credits-to-regenerate-in-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113410Z&X-Amz-Expires=604800&X-Amz-Signature=7451acdcd487b4ce5c2268de3b9d72787fffeda528b814d6a43566616cad8aa3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![Generate and Regenerate controls in Studio](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/648aadb17d5d4c3bb29a3d1e568f37ad4139f941e092e7fce740c7f34821374c/assets/images/product-guides/studio/studio_generate.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113307Z&X-Amz-Expires=604800&X-Amz-Signature=15d8aa648328f80d1d5d9ffc956c91da038197c649df8ed0096b994b59b942cc&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       If your selection isn't eligible for a free regeneration, the button will say **Generate**, and you will be charged for the generation.
     </td>
@@ -102,24 +102,27 @@ The ElevenCreative Studio API is only available upon request. To get access, [co
     <td>
       #### How can I create a voiceover for my video using Studio?
 
-      To create a voiceover for a video, you can either:
+      Create a new video project from the Studio home page. Enter a prompt, select an Inspiration, or select **+ New blank project** > **Video project (New)**.
 
-      * Start a new project using the **New video voiceover** option, which lets you upload a video file, or
-      * Start a blank project using the **New blank project option** > **Video project**.
+      Use the **Library** panel to add the video and voiceover:
 
-      You can also add a video to an existing project:
+      Select **Create +**.
 
-      * To upload a video, use the **Imports** option and either drag and drop your file, or specify the location using the **Upload file** option.
-      * To add a video that you've generated using Image & Video, click **Video** in the sidebar. You'll see your previously generated videos and can import using the **+** button.
-      * You can also generate a video directly in Studio using the Video prompt, which you can access by clicking **Video** in the sidebar.
+      Select **Upload** to add an existing video, or select **Video** to generate one.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9bd8a0e0c3d81158b4fe3416484c762c58aead9246a55ee5dd7c7b68400bb0e3/assets/images/help-center/product/studio/how-can-i-create-a-voiceover-for-my-video-using-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113410Z&X-Amz-Expires=604800&X-Amz-Signature=d087bddeba1b741e6a207572f1250681b776287564c791ec54f4c30756354aae&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      Select **Speech** to generate the voiceover.
 
-      You can:
+      Drag the video and speech clips from the Library to the timeline.
 
-      * **Resize the video view** by dragging the vertical divider between the video and text panes.
-      * **Remove the video** by right-clicking it in the timeline and selecting **Delete**.
-      * **Export your project** as a full video or audio-only file by clicking **Export**.
+      Adjust the clips on the timeline to align the voiceover with the video.
+
+      ![Library panel in a Studio video project](https://files.buildwithfern.com/visual-editor-images/elevenlabs.io/docs/2026-09-22T08:55:34.233Z/docs/eleven-creative/products/studio/Contextual_Sidebar_Video_project.webp)
+
+      Use the **Script** panel to edit the narration or change its voice and model. Changes to the text or voice require regeneration.
+
+      To add captions, open the **Captions** panel and select the voiceover track as the caption source. Edit the transcript and caption style as required.
+
+      Select **Export** to render and download the finished video.
     </td>
   </tr>
 </tbody>

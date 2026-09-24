@@ -36,19 +36,7 @@ Reference: https://elevenlabs.io/docs/api-reference/audio-isolation/list
 
 Successful Response
 
-- `items` (list of object, required)
-  - `id` (string, required)
-  - `title` (string, required, nullable)
-  - `created_at_unix` (integer, required)
-  - `format` (string, required)
-  - `duration_seconds` (double, required, nullable)
-  - `download_url` (string, required, nullable)
-  - `icon_url` (string, required, nullable)
-  - `source_video_url` (string, required, nullable)
-  - `supports_video` (boolean, required)
-  - `processing` (boolean, required)
-  - `video_processing_failed` (boolean, required)
-  - `preview_b64` (string, required, nullable)
+- `items` (list of AudioIsolationHistoryItemResponseModel, required)
 - `has_more` (boolean, required)
 
 ## Errors
@@ -57,10 +45,32 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### AudioIsolationHistoryItemResponseModel
+
+- `id` (string, required)
+- `title` (string, required, nullable)
+- `created_at_unix` (integer, required)
+- `format` (string, required)
+- `duration_seconds` (double, required, nullable)
+- `download_url` (string, required, nullable)
+- `icon_url` (string, required, nullable)
+- `source_video_url` (string, required, nullable)
+- `supports_video` (boolean, required)
+- `processing` (boolean, required)
+- `video_processing_failed` (boolean, required)
+- `preview_b64` (string, required, nullable)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

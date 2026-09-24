@@ -29,37 +29,7 @@ Reference: https://elevenlabs.io/docs/api-reference/user/get
 Successful Response
 
 - `user_id` (string, required) — The unique identifier of the user.
-- `subscription` (object, required) — Details of the user's subscription.
-  - `tier` (string, required) — The tier of the user's subscription.
-  - `character_count` (integer, required) — The number of characters used by the user.
-  - `character_limit` (integer, required) — The maximum number of characters allowed in the current billing period.
-  - `max_character_limit_extension` (integer, required, nullable) — Deprecated: use `max_credit_limit_extension`. Maximum number of characters that the character limit can be exceeded by. Managed by the workspace admin.
-  - `max_credit_limit_extension` (integer or "unlimited", required) — Maximum number of credits that the credit limit can be exceeded by. Managed by the workspace admin. `"unlimited"` means no cap, `0` means usage-based billing is disabled.
-  - `can_extend_character_limit` (boolean, required) — Whether the workspace is entitled to enter overages (usage-based billing).
-  - `allowed_to_extend_character_limit` (boolean, required) — Deprecated: use `max_credit_limit_extension != 0`. Whether the user is allowed to extend their character limit.
-  - `voice_slots_used` (integer, required) — The number of voice slots used by the user.
-  - `professional_voice_slots_used` (integer, required) — The number of professional voice slots used. For consolidated billing this is the group-wide count across all workspaces in the group; see professional_voice_slots_used_in_workspace for the current workspace only.
-  - `professional_voice_slots_used_in_workspace` (integer, required) — The number of professional voice slots used in the current workspace. For consolidated billing, professional_voice_slots_used counts across all workspaces in the group, while this counts only the current workspace.
-  - `voice_limit` (integer, required) — The maximum number of voice slots allowed for the user.
-  - `voice_add_edit_counter` (integer, required) — The number of voice add/edits used by the user.
-  - `professional_voice_limit` (integer, required) — The maximum number of professional voices allowed for the user.
-  - `can_extend_voice_limit` (boolean, required) — Whether the user can extend their voice limit.
-  - `can_use_instant_voice_cloning` (boolean, required) — Whether the user can use instant voice cloning.
-  - `can_use_professional_voice_cloning` (boolean, required) — Whether the user can use professional voice cloning.
-  - `current_overage` (object, required) — The current usage-based overage cost.
-    - `amount` (string, required)
-    - `currency` (enum, required)
-      - Allowed values: `usd`, `eur`, `inr`, `pln`, `gbp`
-  - `status` (enum, required) — The status of the user's subscription.
-    - Allowed values: `trialing`, `active`, `incomplete`, `past_due`, `free`, `free_disabled`
-  - `next_character_count_reset_unix` (integer, optional, nullable) — The Unix timestamp of the next character count reset.
-  - `max_voice_add_edits` (integer, optional, nullable) — The maximum number of voice add/edits allowed for the user.
-  - `currency` (enum, optional, nullable) — The currency of the user's subscription.
-    - Allowed values: `usd`, `eur`, `inr`, `pln`, `gbp`
-  - `billing_period` (enum, optional, nullable) — The billing period of the user's subscription.
-    - Allowed values: `monthly_period`, `3_month_period`, `6_month_period`, `annual_period`
-  - `character_refresh_period` (enum, optional, nullable) — The character refresh period of the user's subscription.
-    - Allowed values: `monthly_period`, `3_month_period`, `6_month_period`, `annual_period`
+- `subscription` (SubscriptionResponseModel, required) — Details of the user's subscription.
 - `is_onboarding_completed` (boolean, required) — Whether the user's onboarding is completed.
 - `is_onboarding_checklist_completed` (boolean, required) — Whether the user's onboarding checklist is completed.
 - `created_at` (integer, required) — The unix timestamp of the user's creation. 0 if the user was created before the unix timestamp was added.
@@ -80,10 +50,59 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### SubscriptionResponseModel
+
+- `tier` (string, required) — The tier of the user's subscription.
+- `character_count` (integer, required) — The number of characters used by the user.
+- `character_limit` (integer, required) — The maximum number of characters allowed in the current billing period.
+- `max_character_limit_extension` (integer, required, nullable) — Deprecated: use `max_credit_limit_extension`. Maximum number of characters that the character limit can be exceeded by. Managed by the workspace admin.
+- `max_credit_limit_extension` (SubscriptionResponseModelMaxCreditLimitExtension, required) — Maximum number of credits that the credit limit can be exceeded by. Managed by the workspace admin. `"unlimited"` means no cap, `0` means usage-based billing is disabled.
+- `can_extend_character_limit` (boolean, required) — Whether the workspace is entitled to enter overages (usage-based billing).
+- `allowed_to_extend_character_limit` (boolean, required) — Deprecated: use `max_credit_limit_extension != 0`. Whether the user is allowed to extend their character limit.
+- `voice_slots_used` (integer, required) — The number of voice slots used by the user.
+- `professional_voice_slots_used` (integer, required) — The number of professional voice slots used. For consolidated billing this is the group-wide count across all workspaces in the group; see professional_voice_slots_used_in_workspace for the current workspace only.
+- `professional_voice_slots_used_in_workspace` (integer, required) — The number of professional voice slots used in the current workspace. For consolidated billing, professional_voice_slots_used counts across all workspaces in the group, while this counts only the current workspace.
+- `voice_limit` (integer, required) — The maximum number of voice slots allowed for the user.
+- `voice_add_edit_counter` (integer, required) — The number of voice add/edits used by the user.
+- `professional_voice_limit` (integer, required) — The maximum number of professional voices allowed for the user.
+- `can_extend_voice_limit` (boolean, required) — Whether the user can extend their voice limit.
+- `can_use_instant_voice_cloning` (boolean, required) — Whether the user can use instant voice cloning.
+- `can_use_professional_voice_cloning` (boolean, required) — Whether the user can use professional voice cloning.
+- `current_overage` (Price, required) — The current usage-based overage cost.
+- `status` (enum, required) — The status of the user's subscription.
+  - Allowed values: `trialing`, `active`, `incomplete`, `past_due`, `free`, `free_disabled`
+- `next_character_count_reset_unix` (integer, optional, nullable) — The Unix timestamp of the next character count reset.
+- `max_voice_add_edits` (integer, optional, nullable) — The maximum number of voice add/edits allowed for the user.
+- `currency` (enum, optional, nullable) — The currency of the user's subscription.
+  - Allowed values: `usd`, `eur`, `inr`, `pln`, `gbp`
+- `billing_period` (enum, optional, nullable) — The billing period of the user's subscription.
+  - Allowed values: `monthly_period`, `3_month_period`, `6_month_period`, `annual_period`
+- `character_refresh_period` (enum, optional, nullable) — The character refresh period of the user's subscription.
+  - Allowed values: `monthly_period`, `3_month_period`, `6_month_period`, `annual_period`
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### SubscriptionResponseModelMaxCreditLimitExtension
+
+Maximum number of credits that the credit limit can be exceeded by. Managed by the workspace admin. `"unlimited"` means no cap, `0` means usage-based billing is disabled.
+
+### Price
+
+Currency/amount pair.
+
+- `amount` (string, required)
+- `currency` (enum, required)
+  - Allowed values: `usd`, `eur`, `inr`, `pln`, `gbp`
+
+### ValidationErrorLocItems
 
 ## Examples
 

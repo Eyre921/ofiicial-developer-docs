@@ -28,6 +28,7 @@ Reference: https://elevenlabs.io/docs/api-reference/conversations/messages/searc
 
 - `text_query` (string, required) — The search query text for semantic similarity matching
 - `agent_id` (string, optional, nullable) — Agent id (agent_…) or speech engine external id (seng_), resolved to the same underlying resource.
+- `branch_id` (string, optional, nullable) — Filter conversations by branch ID.
 - `page_size` (integer, optional, default: 20) — Number of results per page. Max 50.
 - `cursor` (string, optional, nullable) — Used for fetching next page. Cursor is returned in the response.
 
@@ -37,22 +38,9 @@ Reference: https://elevenlabs.io/docs/api-reference/conversations/messages/searc
 
 Successful Response
 
-- `results` (list of object, required)
-  - `conversation_id` (string, required)
-  - `agent_id` (string, required)
-  - `transcript_index` (integer, required)
-  - `chunk_text` (string, required)
-  - `score` (double, required)
-  - `conversation_start_time_unix_secs` (integer, required)
-  - `agent_name` (string, optional, nullable)
-  - `chunk_highlights` (list of object, optional, nullable)
-    - `value` (string, required)
-    - `is_hit` (boolean, required)
+- `results` (list of MessagesSearchResult, required)
 - `has_more` (boolean, required) — Whether there are more results available
-- `meta` (object, optional)
-  - `total` (integer, optional, nullable)
-  - `page` (integer, optional, nullable)
-  - `page_size` (integer, optional, nullable)
+- `meta` (ListResponseMeta, optional)
 - `next_cursor` (string, optional, nullable) — Cursor for the next page of results
 
 ## Errors
@@ -61,10 +49,41 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### MessagesSearchResult
+
+transcript_index: index of the message in the conversation transcript chunk_text: text of the transcript; transcript messages if very long could have several chunks. chunk_highlights: chunk_text split into matched/unmatched segments for highlighting. Only populated for keyword/text search, not semantic search. score: similarity score of the message to the search query
+
+- `conversation_id` (string, required)
+- `agent_id` (string, required)
+- `transcript_index` (integer, required)
+- `chunk_text` (string, required)
+- `score` (double, required)
+- `conversation_start_time_unix_secs` (integer, required)
+- `agent_name` (string, optional, nullable)
+- `chunk_highlights` (list of SearchHighlightSegment, optional, nullable)
+
+### ListResponseMeta
+
+- `total` (integer, optional, nullable)
+- `page` (integer, optional, nullable)
+- `page_size` (integer, optional, nullable)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### SearchHighlightSegment
+
+- `value` (string, required)
+- `is_hit` (boolean, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

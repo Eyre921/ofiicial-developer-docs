@@ -16,7 +16,9 @@ When dealing with lengthy text inputs, latency can become an issue as the proces
 
 The following three code examples build upon each previous example in complexity to present strategies for using text chunking to optimize your Text-to-Speech applications.
 
-These examples rely on Deepgram's Python SDK. Learn how to get started with Aura and Deepgram's SDKs by reading the [Aura Text-to-Speech](/docs/text-to-speech) guide.
+> **Info**
+>
+> These examples rely on Deepgram's Python SDK. Learn how to get started with Aura and Deepgram's SDKs by reading the [Aura Text-to-Speech](/docs/text-to-speech) guide.
 
 ### Chunk By Maximum Number of Characters
 
@@ -589,7 +591,9 @@ public class ChunkAndStreamAudio {
 }
 ```
 
-Read more about about streaming the TTS audio output in the guide [Streaming Audio Outputs](/docs/streaming-the-audio-output).
+> **Info**
+>
+> Read more about about streaming the TTS audio output in the guide [Streaming Audio Outputs](/docs/streaming-the-audio-output).
 
 ## Considerations
 

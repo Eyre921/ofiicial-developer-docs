@@ -34,7 +34,9 @@ Query the status of the `/v1/status/engine`endpoint and check whether it is in a
 curl --silent http://localhost:PORT/v1/status/engine | grep --quiet -e '^{\"engine_connection_status\"\:\"Connected\".*}$'
 ```
 
-Make sure to replace the `PORT` placeholder with the port your container is listening on (port 8080 by default).
+> **Info**
+>
+> Make sure to replace the `PORT` placeholder with the port your container is listening on (port 8080 by default).
 
 ### Model Metadata
 
@@ -54,13 +56,15 @@ The Deepgram Engine container image publishes an extensive set of system metrics
 
 Choose a host port `HOST_PORT` where external queries can be made, and choose a container port `CONTAINER_PORT` where Engine can internally publish its metrics. These can be the same port number, since they are binding to different networks (the host network versus the container network)
 
-## Port Collision
-
-"Port collision" can occur when you try to bind to the same port from two different services. Since we are binding to both a container port and a host port, we have to be aware of this on two different networks.
-
-When selecting a host port, do not use the same port that is used by any other Deepgram service, or any other service running on the host machine. In the default Deepgram `docker-compose.yml` file, the API often uses port `8080`, and the License Proxy often uses ports `8443` and `8089`. A common default value for the Engine `HOST_PORT` is `9991`.
-
-When selecting a container port, do not select port `8080`, as this is used on the container network to communicate between the Engine and the API. A common default value for the Engine `CONTAINER_PORT` is `9991`.
+> **Warning**
+>
+> ## Port Collision
+>
+> "Port collision" can occur when you try to bind to the same port from two different services. Since we are binding to both a container port and a host port, we have to be aware of this on two different networks.
+>
+> When selecting a host port, do not use the same port that is used by any other Deepgram service, or any other service running on the host machine. In the default Deepgram `docker-compose.yml` file, the API often uses port `8080`, and the License Proxy often uses ports `8443` and `8089`. A common default value for the Engine `HOST_PORT` is `9991`.
+>
+> When selecting a container port, do not select port `8080`, as this is used on the container network to communicate between the Engine and the API. A common default value for the Engine `CONTAINER_PORT` is `9991`.
 
 Within your `docker-compose.yml` file you must publish the internal container port to the external host port, as shown below. See [Published Ports](https://docs.docker.com/network/#published-ports) in the official Docker documentation for more details.
 
@@ -85,7 +89,9 @@ To modify the Engine configuration, edit your `engine.toml` file to specify the 
   port = CONTAINER_PORT
 ```
 
-Make sure to replace the placeholders `HOST_PORT` and `CONTAINER_PORT` in both of the above snippets.
+> **Info**
+>
+> Make sure to replace the placeholders `HOST_PORT` and `CONTAINER_PORT` in both of the above snippets.
 
 Metrics may now be queried from the self-hosted instance on the local host at `:HOST_PORT/metrics`.
 
@@ -491,7 +497,9 @@ Query the status of the `/v1/status`endpoint and check the connection state.
 curl --silent http://localhost:8080/v1/status | grep --quiet -e '^{.*\"state\"\:\"\(Connected\|TrustBased\)\".*}$'
 ```
 
-Make sure to replace the `PORT` placeholder with the port your container is listening on (port 8080 by default).
+> **Info**
+>
+> Make sure to replace the `PORT` placeholder with the port your container is listening on (port 8080 by default).
 
 ## Summary
 

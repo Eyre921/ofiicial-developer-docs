@@ -5,6 +5,9 @@ path: docs/redis/overall/getstarted
 ---
 
 import { Catalog } from "/snippets/catalog.jsx";
+import { AgentSetup } from "/snippets/agent-setup.jsx";
+
+<AgentSetup product="Redis" />
 
 Upstash Redis is a **highly available, infinitely scalable** Redis-compatible database:
 

@@ -14,7 +14,9 @@ path: docs/using-the-sec-websocket-protocol
 
 The `Sec-WebSocket-Protocol` header plays a crucial role in WebSocket communications by enabling the client and server to agree on a specific subprotocol. Subprotocols define a higher-level protocol that runs over the WebSocket connection, specifying the format and semantics of the exchanged messages. This guide aims to provide a comprehensive understanding of how to use this header with Deepgram's Listen WebSocket and and Speak WebSocket endpoint to facilitate seamless , secure and structured communication.
 
-The use of this header is only required when making "client side" connections to Deepgram, where custom `Authorization` headers are prohibited by security measures in apps, including web apps, mobile apps and certain desktop apps.
+> **Info**
+>
+> The use of this header is only required when making "client side" connections to Deepgram, where custom `Authorization` headers are prohibited by security measures in apps, including web apps, mobile apps and certain desktop apps.
 
 ## Risks of Use
 
@@ -80,7 +82,9 @@ Sec-WebSocket-Protocol: token, YOUR_DEEPGRAM_API_KEY
 
 In this example, the `Sec-WebSocket-Protocol` header specifies two subprotocols: `token` and a valid Deepgram API Key. During the WebSocket handshake, the server will select one of these subprotocols for the communication and authentication.
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 ## TTS WebSocket Example
 
@@ -100,6 +104,8 @@ Sec-WebSocket-Protocol: token, YOUR_DEEPGRAM_API_KEY
 
 In this example, the `Sec-WebSocket-Protocol` header specifies two subprotocols: `token` and a valid Deepgram API Key. During the WebSocket handshake, the server will select one of these subprotocols for the communication and authentication.
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 ---

@@ -10,8 +10,9 @@ path: docs/changelog/llms.txt
 
 > ElevenLabs provides APIs and SDKs for text to speech, voice cloning, speech to text, sound effects, voice isolator, voice changer, and conversational AI agents. Build voice-enabled applications with lifelike audio generation.
 
-## Docs
+## Entries
 
+- [September 23, 2026](https://elevenlabs.io/docs/changelog/2026/9/23.md)
 - [September 14, 2026](https://elevenlabs.io/docs/changelog/2026/9/14.md)
 - [September 11, 2026](https://elevenlabs.io/docs/changelog/2026/9/11.md)
 - [September 7, 2026](https://elevenlabs.io/docs/changelog/2026/9/7.md)

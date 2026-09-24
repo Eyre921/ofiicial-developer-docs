@@ -8,7 +8,9 @@ path: docs/eleven-api/guides/how-to/speech-to-text/realtime/client-side-streamin
 
 # Client-side streaming
 
-**How-to guide** · Assumes you have completed the [Speech to Text quickstart](/docs/eleven-api/guides/cookbooks/speech-to-text).
+> **Note**
+>
+> **How-to guide** · Assumes you have completed the [Speech to Text quickstart](/docs/eleven-api/guides/cookbooks/speech-to-text).
 
 ## Overview
 
@@ -25,8 +27,10 @@ For streaming audio from a URL, see the [Server-side streaming](/docs/eleven-api
 
 ## Quickstart
 
-This guide assumes you have [set up your API key](/docs/eleven-api/quickstart). Complete the
-quickstart first if you haven't.
+> **Note**
+>
+> This guide assumes you have [set up your API key](/docs/eleven-api/quickstart). Complete the
+> quickstart first if you haven't.
 
 #### Install the SDK
 
@@ -46,7 +50,9 @@ npm install @elevenlabs/client @elevenlabs/elevenlabs-js
 
 To use the client side SDK, you need to create a single use token. This is a temporary token that can be used to connect to the API without exposing your API key. This can be done via the ElevenLabs API on the server side.
 
-Never expose your API key to the client.
+> **Warning**
+>
+> Never expose your API key to the client.
 
 ```typescript
 // Node.js server
@@ -63,13 +69,17 @@ app.get("/scribe-token", yourAuthMiddleware, async (req, res) => {
 });
 ```
 
-A single use token automatically expires after 15 minutes.
+> **Info**
+>
+> A single use token automatically expires after 15 minutes.
 
 #### Start the transcribing session
 
 Transcription can be done either via the microphone or manually chunking your own audio. Your own audio can be a file or a stream.
 
-For a full list of parameters and options the API supports, please refer to the [API reference](/docs/api-reference/speech-to-text/v-1-speech-to-text-realtime).
+> **Info**
+>
+> For a full list of parameters and options the API supports, please refer to the [API reference](/docs/api-reference/speech-to-text/v-1-speech-to-text-realtime).
 
 #### Microphone
 

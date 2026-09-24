@@ -33,15 +33,21 @@ The payload uses the same shape as `agent.listen` in the [`Settings`](/docs/voic
 | `listen.provider.keyterms`            | Array   | [Keyterms](/docs/keyterm) to boost recognition for. Replaces the current keyterms list. Flux models only.                                                                                                                                               |
 | `listen.provider.language_hints`      | Array   | Array of BCP-47 language codes to bias toward. Only supported with `flux-general-multi`. See [supported languages](/docs/flux/language-prompting#supported-languages).                                                                                  |
 
-Send the fields that apply to the model you are switching to: `language` for V1 (Nova) models, and `keyterms`, the end-of-turn fields, and `language_hints` for V2 (Flux) models.
+> **Note**
+>
+> Send the fields that apply to the model you are switching to: `language` for V1 (Nova) models, and `keyterms`, the end-of-turn fields, and `language_hints` for V2 (Flux) models.
 
-Keyterms can only be updated mid-session for Flux models. Nova-3 keyterms are fixed for the life of the session — set them in the [`Settings`](/docs/voice-agent-settings) message at the start of the session, which works for both Flux and Nova-3.
+> **Warning**
+>
+> Keyterms can only be updated mid-session for Flux models. Nova-3 keyterms are fixed for the life of the session — set them in the [`Settings`](/docs/voice-agent-settings) message at the start of the session, which works for both Flux and Nova-3.
 
 ### Partial Update Semantics
 
 `UpdateListen` is a partial update — any tunable field you omit keeps its current value, with one exception:
 
-`language_hints` is cleared (reset to empty) when omitted. Always re-send `language_hints` if you want to preserve language biasing.
+> **Warning**
+>
+> `language_hints` is cleared (reset to empty) when omitted. Always re-send `language_hints` if you want to preserve language biasing.
 
 ## Example Payloads
 

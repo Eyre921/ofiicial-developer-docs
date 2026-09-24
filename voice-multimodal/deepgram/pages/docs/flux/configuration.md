@@ -73,7 +73,9 @@ Confidence threshold for triggering `EagerEndOfTurn` events, enabling early LLM 
 wss://api.deepgram.com/v2/listen?model=flux-general-en&eager_eot_threshold=0.6&eot_threshold=0.8
 ```
 
-**Important**: The transcript in `EagerEndOfTurn` will **exactly match** the transcript in the subsequent `EndOfTurn` event (if no `TurnResumed` occurs). This guarantees consistency for caching strategies.
+> **Info**
+>
+> **Important**: The transcript in `EagerEndOfTurn` will **exactly match** the transcript in the subsequent `EndOfTurn` event (if no `TurnResumed` occurs). This guarantees consistency for caching strategies.
 
 ---
 

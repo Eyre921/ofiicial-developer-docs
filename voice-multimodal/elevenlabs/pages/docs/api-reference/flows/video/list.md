@@ -38,20 +38,7 @@ Reference: https://elevenlabs.io/docs/api-reference/flows/video/list
 
 Successful Response
 
-- `generations` (list of object, required) — The generations on this page, newest first. Each item has the same shape as the corresponding GET endpoint's response.
-  - `status`: `completed` (MediaGenerationCompletedResponse)
-    - `content_mime_type` (string, required) — The MIME type of the generated media.
-    - `content_url` (string, required) — A signed URL to download the generated media from. It expires about an hour after this response is returned; fetch the generation again for a fresh URL.
-    - `id` (string, required) — The unique identifier of the generation.
-  - `status`: `failed` (MediaGenerationFailedResponse)
-    - `error_message` (string, required) — A human-readable description of the failure. Failed generations are not charged.
-    - `failure_reason` (enum, required) — The category of failure.
-      - Allowed values: `timeout`, `model_error`, `moderated`, `invalid_parameters`, `dependency_failed`, `charging_failed`, `internal_error`
-    - `id` (string, required) — The unique identifier of the generation.
-  - `status`: `generating` (MediaGenerationInProgressResponse)
-    - `id` (string, required) — The unique identifier of the generation.
-  - `status`: `pending` (MediaGenerationInProgressResponse)
-    - `id` (string, required) — The unique identifier of the generation.
+- `generations` (list of MediaGenerationResponse, required) — The generations on this page, newest first. Each item has the same shape as the corresponding GET endpoint's response.
 - `next_cursor` (string, required, nullable) — Pass as `cursor` to fetch the next page. `null` when there is no further page.
 - `has_more` (boolean, required) — Whether more generations exist beyond this page.
 
@@ -61,10 +48,33 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### MediaGenerationResponse
+
+- `status`: `completed` (MediaGenerationCompletedResponse)
+  - `content_mime_type` (string, required) — The MIME type of the generated media.
+  - `content_url` (string, required) — A signed URL to download the generated media from. It expires about an hour after this response is returned; fetch the generation again for a fresh URL.
+  - `id` (string, required) — The unique identifier of the generation.
+- `status`: `failed` (MediaGenerationFailedResponse)
+  - `error_message` (string, required) — A human-readable description of the failure. Failed generations are not charged.
+  - `failure_reason` (enum, required) — The category of failure.
+    - Allowed values: `timeout`, `model_error`, `moderated`, `invalid_parameters`, `dependency_failed`, `charging_failed`, `internal_error`
+  - `id` (string, required) — The unique identifier of the generation.
+- `status`: `generating` (MediaGenerationInProgressResponse)
+  - `id` (string, required) — The unique identifier of the generation.
+- `status`: `pending` (MediaGenerationInProgressResponse)
+  - `id` (string, required) — The unique identifier of the generation.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

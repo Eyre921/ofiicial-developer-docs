@@ -12,16 +12,20 @@ path: docs/flux/agent
 
 Flux tackles the most critical challenges for voice agents today: knowing when to listen, when to think, and when to speak. The model features first-of-its-kind model-integrated end-of-turn detection, configurable turn-taking dynamics, and ultra-low latency optimized for voice agent pipelines, all with Nova-3 level accuracy.
 
-If you'd prefer to skip building, managing, and scaling a voice agent yourself -- explore our [Voice Agent API](/docs/voice-agent).
+> **Info**
+>
+> If you'd prefer to skip building, managing, and scaling a voice agent yourself -- explore our [Voice Agent API](/docs/voice-agent).
 
 ## Let's Build!
 
 This guide walks you through building a basic voice agent powered by Deepgram Flux, OpenAI, and Deepgram TTS—streaming speech-to-text with advanced turn detection—to create natural, real-time conversations with users.
 
-This walkthrough uses `flux-general-en` and an English Aura voice to keep the example focused. To make the
-agent multilingual, switch the STT model to `flux-general-multi` and apply `language_hint` values as shown in
-[Flux Multilingual & Language Prompting](/docs/flux/language-prompting). The rest of the pipeline stays the
-same.
+> **Info**
+>
+> This walkthrough uses `flux-general-en` and an English Aura voice to keep the example focused. To make the
+> agent multilingual, switch the STT model to `flux-general-multi` and apply `language_hint` values as shown in
+> [Flux Multilingual & Language Prompting](/docs/flux/language-prompting). The rest of the pipeline stays the
+> same.
 
 By the end of this guide, you’ll have:
 
@@ -37,7 +41,9 @@ Flux supports the use of any LLM you wish to use. So you can use the best LLM fo
 
 ## Voice Agent Patterns
 
-For this demo will opt to use `EndOfTurn` only for simplicity.
+> **Info**
+>
+> For this demo will opt to use `EndOfTurn` only for simplicity.
 
 Flux enables two voice agent patterns. You can decide which one to use based on your latency vs complexity/cost tradeoffs.
 
@@ -57,11 +63,15 @@ We recommend starting with a purely `EndOfTurn` driven implementation to get up 
 * **`EndOfTurn`**: Send transcript to LLM and trigger agent response
 * **`StartOfTurn`**: Interrupt agent if speaking, otherwise wait
 
-If you're experiencing echo (the agent responding to itself) or false barge-ins from background noise, see [Audio Preprocessing & Barge-In](/guides/deep-dives/audio-preprocessing-barge-in) for recommendations on echo cancellation, noise suppression, and using Flux's `StartOfTurn` for reliable barge-in detection.
+> **Info**
+>
+> If you're experiencing echo (the agent responding to itself) or false barge-ins from background noise, see [Audio Preprocessing & Barge-In](/guides/deep-dives/audio-preprocessing-barge-in) for recommendations on echo cancellation, noise suppression, and using Flux's `StartOfTurn` for reliable barge-in detection.
 
 ### EagerEndOfTurn + EndOfTurn
 
-For more information `EagerEndOfTurn` see our guide [Optimize Voice Agent Latency with Eager End of Turn](/docs/flux/voice-agent-eager-eot)
+> **Info**
+>
+> For more information `EagerEndOfTurn` see our guide [Optimize Voice Agent Latency with Eager End of Turn](/docs/flux/voice-agent-eager-eot)
 
 **Considerations:**
 
@@ -79,11 +89,17 @@ Once comfortable with End of Turn, you can decide if you need to optimize latenc
 * **`EndOfTurn`**: Proceed with prepared response (user definitely finished)
 * **`StartOfTurn`**: Interrupt agent if speaking, otherwise wait
 
-**Tuning Turn Detection**: You can fine-tune the behavior of these events using the `eot_threshold`, `eager_eot_threshold`, and `eot_timeout_ms` parameters. See the [End-of-Turn Configuration](/docs/flux/configuration) for detailed tuning guidance and use-case specific recommendations.
+> **Info**
+>
+> **Tuning Turn Detection**: You can fine-tune the behavior of these events using the `eot_threshold`, `eager_eot_threshold`, and `eot_timeout_ms` parameters. See the [End-of-Turn Configuration](/docs/flux/configuration) for detailed tuning guidance and use-case specific recommendations.
 
-**Dynamic Tuning**: In production voice agents powered by Flux, you can use the [Configure control message](/docs/flux/configure) to adjust these thresholds, or keyterms, mid-stream as desired behavior changes throughout a conversation. Each `keyterms` entry is a plain string with no weights or intensifiers, and a multi-word phrase is a single array element—see [Keyterm Prompting](/docs/keyterm) for the full syntax rules.
+> **Info**
+>
+> **Dynamic Tuning**: In production voice agents powered by Flux, you can use the [Configure control message](/docs/flux/configure) to adjust these thresholds, or keyterms, mid-stream as desired behavior changes throughout a conversation. Each `keyterms` entry is a plain string with no weights or intensifiers, and a multi-word phrase is a single array element—see [Keyterm Prompting](/docs/keyterm) for the full syntax rules.
 
-**External turn signals**: If you have your own turn-end signal — a push-to-talk release, a DTMF tone, or an existing VAD — you can end the current turn explicitly with the [`ForceEndTurn`](/docs/flux/force-end-turn) control message instead of relying on Flux's detection. Every `EndOfTurn` carries a `trigger` field (`model`, `manual`, or `timeout`) that tells you what ended the turn. To fully own turn detection, see [Bring Your Own Turn Detection](/docs/flux/own-turn-detection).
+> **Info**
+>
+> **External turn signals**: If you have your own turn-end signal — a push-to-talk release, a DTMF tone, or an existing VAD — you can end the current turn explicitly with the [`ForceEndTurn`](/docs/flux/force-end-turn) control message instead of relying on Flux's detection. Every `EndOfTurn` carries a `trigger` field (`model`, `manual`, or `timeout`) that tells you what ended the turn. To fully own turn detection, see [Bring Your Own Turn Detection](/docs/flux/own-turn-detection).
 
 ### Voice Agent vs Flux Agent Pipeline
 
@@ -95,7 +111,9 @@ flowchart LR
     B --> C[Agent Audio Output]
 ```
 
-If you want to use Flux with the Voice Agent API set your `listen.provider.model` to `flux-general-en`, or `flux-general-multi` for multilingual agents (with optional `language_hint` values). See [Multilingual Voice Agents](/docs/multilingual-voice-agent) for setup details.
+> **Info**
+>
+> If you want to use Flux with the Voice Agent API set your `listen.provider.model` to `flux-general-en`, or `flux-general-multi` for multilingual agents (with optional `language_hint` values). See [Multilingual Voice Agents](/docs/multilingual-voice-agent) for setup details.
 
 If you opt to build your own voice agent from scratch, you can use Flux to handle the speech to text and rely on its turn-taking cues to coordinate the rest of your pipeline.
 
@@ -187,8 +205,10 @@ DEEPGRAM_API_KEY="your_deepgram_api_key"
 OPENAI_API_KEY="your_open_ai_api_key"
 ```
 
-Replace `your_deepgram_api_key` with your actual Deepgram API key.
-Replace `your_open_ai_api_key` with your actual Open API key.
+> **Info**
+>
+> Replace `your_deepgram_api_key` with your actual Deepgram API key.
+> Replace `your_open_ai_api_key` with your actual Open API key.
 
 ### 4. Set Imports & Audio File
 

@@ -39,17 +39,7 @@ Reference: https://elevenlabs.io/docs/api-reference/pronunciation-dictionaries/l
 
 Successful Response
 
-- `pronunciation_dictionaries` (list of object, required) — A list of pronunciation dictionaries and their metadata.
-  - `id` (string, required) — The ID of the pronunciation dictionary.
-  - `latest_version_id` (string, required) — The ID of the latest version of the pronunciation dictionary.
-  - `latest_version_rules_num` (integer, required) — The number of rules in the latest version of the pronunciation dictionary.
-  - `name` (string, required) — The name of the pronunciation dictionary.
-  - `permission_on_resource` (enum, required, nullable) — The permission on the resource of the pronunciation dictionary.
-    - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-  - `created_by` (string, required) — The user ID of the creator of the pronunciation dictionary.
-  - `creation_time_unix` (integer, required) — The creation time of the pronunciation dictionary in Unix timestamp.
-  - `archived_time_unix` (integer, optional, nullable) — The archive time of the pronunciation dictionary in Unix timestamp.
-  - `description` (string, optional, nullable) — The description of the pronunciation dictionary.
+- `pronunciation_dictionaries` (list of GetPronunciationDictionaryMetadataResponseModel, required) — A list of pronunciation dictionaries and their metadata.
 - `has_more` (boolean, required) — Whether there are more pronunciation dictionaries to fetch.
 - `next_cursor` (string, optional, nullable) — The next cursor to use for pagination.
 
@@ -59,10 +49,30 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### GetPronunciationDictionaryMetadataResponseModel
+
+- `id` (string, required) — The ID of the pronunciation dictionary.
+- `latest_version_id` (string, required) — The ID of the latest version of the pronunciation dictionary.
+- `latest_version_rules_num` (integer, required) — The number of rules in the latest version of the pronunciation dictionary.
+- `name` (string, required) — The name of the pronunciation dictionary.
+- `permission_on_resource` (enum, required, nullable) — The permission on the resource of the pronunciation dictionary.
+  - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+- `created_by` (string, required) — The user ID of the creator of the pronunciation dictionary.
+- `creation_time_unix` (integer, required) — The creation time of the pronunciation dictionary in Unix timestamp.
+- `archived_time_unix` (integer, optional, nullable) — The archive time of the pronunciation dictionary in Unix timestamp.
+- `description` (string, optional, nullable) — The description of the pronunciation dictionary.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

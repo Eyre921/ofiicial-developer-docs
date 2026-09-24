@@ -10,12 +10,14 @@ path: docs/tts-expressivity
 
 # Expressivity
 
-**`expressivity` is a beta parameter.**
-
-* **Behavior and values may be tuned** based on feedback before the parameter is finalized. Re-validate the value you ship after model updates rather than treating it as a contract.
-* **The default (`0`) is production-ready.** It is Deepgram's tuned delivery for enterprise voice agents and the only value validated for production.
-* **Changing it can degrade quality** - hallucinations (extra, dropped, or repeated words) and pronunciation errors become more likely at larger magnitudes.
-* **Audition before shipping.** Test the exact value you plan to ship and check for hallucinations and pronunciation issues. The API covers every voice and every value; see the Usage section below. [talk.deepgram.com](https://talk.deepgram.com) is faster for a first listen: it offers the full `-2` to `2` range, labeled Calm to Animated, on a subset of voices. Expressivity controls in the Playground are coming soon.
+> **Warning**
+>
+> **`expressivity` is a beta parameter.**
+>
+> * **Behavior and values may be tuned** based on feedback before the parameter is finalized. Re-validate the value you ship after model updates rather than treating it as a contract.
+> * **The default (`0`) is production-ready.** It is Deepgram's tuned delivery for enterprise voice agents and the only value validated for production.
+> * **Changing it can degrade quality** - hallucinations (extra, dropped, or repeated words) and pronunciation errors become more likely at larger magnitudes.
+> * **Audition before shipping.** Test the exact value you plan to ship and check for hallucinations and pronunciation issues. The API covers every voice and every value; see the Usage section below. [talk.deepgram.com](https://talk.deepgram.com) is faster for a first listen: it offers the full `-2` to `2` range, labeled Calm to Animated, on a subset of voices. Expressivity controls in the Playground are coming soon.
 
 The `expressivity` parameter shifts a Flux TTS voice's delivery register along a calm to animated axis. Negative values typically produce calmer, steadier, slightly lower-pitched delivery; positive values typically produce more animated delivery with a wider pitch range.
 
@@ -23,7 +25,9 @@ Every Flux voice is tuned by Deepgram to its most natural delivery out of the bo
 
 Expressivity is a register dial, not a quality slider. The calm end is a deliberate production choice for contexts like support and IVR, not a lesser mode; the animated end is a different character, not a better one.
 
-**Availability: Flux TTS only.** `expressivity` is available on Flux TTS (`/v2/speak`), on both streaming and batch. It is not available on Aura-2 (`/v1/speak`).
+> **Info**
+>
+> **Availability: Flux TTS only.** `expressivity` is available on Flux TTS (`/v2/speak`), on both streaming and batch. It is not available on Aura-2 (`/v1/speak`).
 
 ## Parameter reference
 

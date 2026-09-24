@@ -8,11 +8,15 @@ path: docs/eleven-api/guides/how-to/dubbing/refine-and-regenerate
 
 # Refine and regenerate a dub
 
-**How-to guide** · Assumes you have created a dubbing project and generated at least one language,
-as shown in the [Dubbing quickstart](/docs/eleven-api/guides/cookbooks/dubbing).
+> **Note**
+>
+> **How-to guide** · Assumes you have created a dubbing project and generated at least one language,
+> as shown in the [Dubbing quickstart](/docs/eleven-api/guides/cookbooks/dubbing).
 
-The transcript editing and regeneration endpoints used in this guide are only available to
-enterprise workspaces. Contact [sales](https://elevenlabs.io/contact-sales) for access.
+> **Warning**
+>
+> The transcript editing and regeneration endpoints used in this guide are only available to
+> enterprise workspaces. Contact [sales](https://elevenlabs.io/contact-sales) for access.
 
 A dub is only as accurate as the transcript it is built from. This guide covers the two places you can make corrections — the source transcript and a language's translation — and how to regenerate the audio once you are satisfied.
 
@@ -180,6 +184,8 @@ console.log("Fresh output at", language.outputs!.losslessAudio!);
 
 Regenerate returns a `409 Conflict` if the project is not `ready` or the language is not in a settled state, for example when it is already generating. Once the language reaches `completed` again, `output_revision` equals `revision` and the downloaded audio reflects your edits.
 
-You can control how strongly the dubbed speakers clone the source voices with the
-`cloning_strength` voice setting (0 to 10, default 7) when adding a language. See the [create language target](/docs/api-reference/dubbing/language-targets/create-language-target) API
-reference.
+> **Note**
+>
+> You can control how strongly the dubbed speakers clone the source voices with the
+> `cloning_strength` voice setting (0 to 10, default 7) when adding a language. See the [create language target](/docs/api-reference/dubbing/language-targets/create-language-target) API
+> reference.

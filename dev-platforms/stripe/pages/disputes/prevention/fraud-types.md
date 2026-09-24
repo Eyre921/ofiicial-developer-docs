@@ -42,7 +42,7 @@ The business complies and pays the fee to this fake freight company but no shipm
 
 ## Card testing 
 
-This is the practice of testing a card (or multiple cards) on one site to see if it’s still valid before using it on another site to make a fraudulent payment. Sites with free text fields, such as donation sites and “pay what you like” e-commerce businesses, are predominately the targets of card testing. Implementing [CAPTCHA](http://captcha.net/) or rate-limiting charges can help combat this type of fraud. To learn more see, [Protect yourself from card testing](https://docs.stripe.com/disputes/prevention/card-testing.md).
+This is the practice of testing a card (or multiple cards) on one site to see if it’s still valid before using it on another site to make a fraudulent payment. Sites with free text fields, such as donation sites and “pay what you like” e-commerce businesses, are predominately the targets of card testing. Implementing [CAPTCHA](https://en.wikipedia.org/wiki/CAPTCHA) or rate-limiting charges can help combat this type of fraud. To learn more see, [Protect yourself from card testing](https://docs.stripe.com/disputes/prevention/card-testing.md).
 
 ## Alternative refunds 
 

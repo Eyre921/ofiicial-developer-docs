@@ -31,7 +31,7 @@ All prices are **per 1 million tokens**.
 
 > \[!NOTE] Models with a **Long context** tier, offer extended capabilities and longer context windows. See [Supported AI models in GitHub Copilot](/en/copilot/reference/ai-models/supported-models#models-with-extended-capabilities)
 
-GPT-5.6 Sol, GPT-5.6 Terra, GPT-5.6 Luna, and GPT-6 Astra include a cache write cost in addition to cached input. Earlier OpenAI models have no cache write cost.
+GPT-5.6 Sol, GPT-5.6 Terra, GPT-5.6 Luna, GPT-6 Astra, GPT-6 Luna, and GPT-6 Sol include a cache write cost in addition to cached input. Earlier OpenAI models have no cache write cost.
 
 | Model         | Release status | Category    | Tier         | Threshold (input tokens) |  Input | Cached input |    Cache write | Output |
 | ------------- | -------------- | ----------- | ------------ | ------------------------ | -----: | -----------: | -------------: | -----: |
@@ -68,6 +68,14 @@ GPT-5.6 Sol, GPT-5.6 Terra, GPT-5.6 Luna, and GPT-6 Astra include a cache write 
 |               |                |             |              |                          |        |              |                |        |
 | GPT-6 Astra   | GA             | Powerful    | Long context | > 272K                   | $20.00 |        $2.00 |         $25.00 | $75.00 |
 |               |                |             |              |                          |        |              |                |        |
+| GPT-6 Luna    | GA             | Lightweight | Default      | ≤ 272K                   |  $0.10 |        $0.01 |         $0.125 |  $0.50 |
+|               |                |             |              |                          |        |              |                |        |
+| GPT-6 Luna    | GA             | Lightweight | Long context | > 272K                   |  $0.20 |        $0.02 |          $0.25 |  $0.75 |
+|               |                |             |              |                          |        |              |                |        |
+| GPT-6 Sol     | GA             | Powerful    | Default      | ≤ 272K                   |  $2.00 |        $0.20 |          $2.50 | $10.00 |
+|               |                |             |              |                          |        |              |                |        |
+| GPT-6 Sol     | GA             | Powerful    | Long context | > 272K                   |  $4.00 |        $0.40 |          $5.00 | $15.00 |
+|               |                |             |              |                          |        |              |                |        |
 
 ### Anthropic
 
@@ -87,6 +95,8 @@ Anthropic models include a cache write cost in addition to cached input.
 | Claude Opus 4.8                       | GA             | Powerful  |  $5.00 |        $0.50 |       $6.25 | $25.00 |
 |                                       |                |           |        |              |             |        |
 | Claude Opus 5                         | GA             | Powerful  |  $5.00 |        $0.50 |       $6.25 | $25.00 |
+|                                       |                |           |        |              |             |        |
+| Claude Opus 5.5                       | GA             | Powerful  |  $4.00 |        $0.20 |       $5.00 | $20.00 |
 |                                       |                |           |        |              |             |        |
 | Claude Sonnet 5                       | GA             | Versatile |  $2.00 |        $0.20 |       $2.50 | $10.00 |
 |                                       |                |           |        |              |             |        |

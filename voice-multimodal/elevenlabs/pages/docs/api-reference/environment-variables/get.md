@@ -41,7 +41,7 @@ Successful Response
   - Allowed values: `string`, `secret`, `auth_connection`
 - `id` (string, required)
 - `workspace_id` (string, required)
-- `values` (map from string to string or map from string to object or map from string to object, required)
+- `values` (EnvironmentVariableResponseValues, required)
 - `created_by_user_id` (string, optional, nullable)
 
 ## Errors
@@ -56,10 +56,19 @@ Environment variable not found
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### EnvironmentVariableResponseValues
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

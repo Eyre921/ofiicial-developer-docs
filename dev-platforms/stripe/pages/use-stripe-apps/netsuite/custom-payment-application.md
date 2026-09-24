@@ -150,7 +150,7 @@ For example, you can add a metadata key on a Stripe charge and `itemid` or `disp
 
 ## Connector add-ons 
 
-[Contact us](http://stripe.com/sales) to learn more or to get started with connector add-ons.
+[Contact us](https://stripe.com/contact/sales) to learn more or to get started with connector add-ons.
 
 The connector provides NetSuite add-ons (bundles) to support common use cases and allow seamless operation with core workflows. You can work with an official implementation partner to customize your integration with these add-ons, which live exclusively in NetSuite.
 

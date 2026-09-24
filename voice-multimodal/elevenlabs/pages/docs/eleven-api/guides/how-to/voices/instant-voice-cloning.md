@@ -14,8 +14,10 @@ For an in-depth explanation of how IVC and PVC work under the hood and when to c
 
 ## Using the Instant Voice Clone API
 
-This guide assumes you have [set up your API key and SDK](/docs/eleven-api/quickstart). Complete
-the quickstart first if you haven't.
+> **Note**
+>
+> This guide assumes you have [set up your API key and SDK](/docs/eleven-api/quickstart). Complete
+> the quickstart first if you haven't.
 
 #### Make the API request
 

@@ -18,7 +18,9 @@ The Sample Rate feature allows users to specify the desired sample rate of the r
 
 Choosing the appropriate sample rate is crucial as it directly impacts the audio quality and file size of the output. Higher sample rates typically result in better audio quality but may increase the file size, while lower sample rates may reduce file size but can compromise audio fidelity.
 
-The `sample_rate` value must adhere to the [Audio Format Combinations table](/docs/tts-media-output-settings#audio-format-combinations). Choose a value based on the encoding type and your use case. Based on encoding `8000` or `24000`are possible defaults. For some encodings sample rate is not configurable.
+> **Warning**
+>
+> The `sample_rate` value must adhere to the [Audio Format Combinations table](/docs/tts-media-output-settings#audio-format-combinations). Choose a value based on the encoding type and your use case. Based on encoding `8000` or `24000`are possible defaults. For some encodings sample rate is not configurable.
 
 ## Enable Feature
 
@@ -41,7 +43,9 @@ curl --request POST \
      --silent || echo "Request failed"
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 ### Query Parameters
 
@@ -53,7 +57,9 @@ Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additi
 
 Upon successful processing of the request, you will receive an audio file containing the synthesized text-to-speech output, along with response headers providing additional information.
 
-The audio file is streamed back to you, so you may begin playback as soon as the first byte arrives. Read the guide [Streaming Audio Outputs](/docs/streaming-the-audio-output) to learn how to begin playing the stream immediately versus waiting for the entire file to arrive.
+> **Info**
+>
+> The audio file is streamed back to you, so you may begin playback as soon as the first byte arrives. Read the guide [Streaming Audio Outputs](/docs/streaming-the-audio-output) to learn how to begin playing the stream immediately versus waiting for the entire file to arrive.
 
 ### Response Headers Example
 
@@ -70,7 +76,9 @@ HTTP/1.1 200 OK
 < date: Thu, 29 Feb 2024 19:20:48 GMT
 ```
 
-To see these response headers when making a CURL request, add `-v` or `--verbose` to your request.
+> **Info**
+>
+> To see these response headers when making a CURL request, add `-v` or `--verbose` to your request.
 
 This includes:
 

@@ -39,10 +39,7 @@ Successful Response
 - `project_id` (string, required) — The ID of the project.
 - `created_at_unix` (integer, required) — The creation date of the project snapshot.
 - `name` (string, required) — The name of the project snapshot.
-- `character_alignments` (list of object, required)
-  - `characters` (list of string, required)
-  - `character_start_times_seconds` (list of double, required)
-  - `character_end_times_seconds` (list of double, required)
+- `character_alignments` (list of CharacterAlignmentModel, required)
 - `audio_duration_secs` (double, required) — The total duration of the audio in seconds.
 - `audio_upload` (map from string to any, optional, nullable) — (Deprecated)
 - `zip_upload` (map from string to any, optional, nullable) — (Deprecated)
@@ -53,10 +50,23 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### CharacterAlignmentModel
+
+- `characters` (list of string, required)
+- `character_start_times_seconds` (list of double, required)
+- `character_end_times_seconds` (list of double, required)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

@@ -12,7 +12,9 @@ path: docs/lower-level-websockets
 
 The [Deepgram's Streaming API](/reference/speech-to-text/listen-streaming) unlocks many use cases ranging from captioning to notetaking and much more. If you aren't able to use our Deepgram SDKs for your Streaming needs, this guide will provide a Reference Implementation for you.
 
-Most users will not need this Reference Implementation because Deepgram provides [SDKs](/home) that already implement the Streaming API. This is an **optional** guide to help individuals interested in building and maintaining their own SDK specific to the Deepgram Streaming API.
+> **Info**
+>
+> Most users will not need this Reference Implementation because Deepgram provides [SDKs](/home) that already implement the Streaming API. This is an **optional** guide to help individuals interested in building and maintaining their own SDK specific to the Deepgram Streaming API.
 
 For additional reference see our Deepgram SDKs which include the Websocket-based Streaming API:
 

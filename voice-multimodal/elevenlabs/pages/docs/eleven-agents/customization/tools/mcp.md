@@ -8,21 +8,25 @@ path: docs/eleven-agents/customization/tools/mcp
 
 # Model Context Protocol
 
-#### User Responsibility
-
-You are responsible for the security, compliance, and behavior of any third-party MCP server you
-integrate with your ElevenLabs conversational agents. ElevenLabs provides the platform for
-integration but does not manage, endorse, or secure external MCP servers.
+> **User Responsibility**
+>
+> You are responsible for the security, compliance, and behavior of any third-party MCP server you
+> integrate with your ElevenLabs conversational agents. ElevenLabs provides the platform for
+> integration but does not manage, endorse, or secure external MCP servers.
 
 ## Overview
 
-This guide covers giving your ElevenLabs agents access to external MCP servers. If you want the
-reverse, managing your ElevenLabs agents from Claude or another MCP client, use the [hosted MCP server](/docs/eleven-agents/operate/hosted-mcp).
+> **Note**
+>
+> This guide covers giving your ElevenLabs agents access to external MCP servers. If you want the
+> reverse, managing your ElevenLabs agents from Claude or another MCP client, use the [hosted MCP server](/docs/eleven-agents/operate/hosted-mcp).
 
 The [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) is an open standard that defines how applications provide context to Large Language Models (LLMs). Think of MCP as a universal connector that enables AI models to seamlessly interact with diverse data sources and tools. By integrating servers that implement MCP, you can significantly extend the capabilities of your ElevenLabs conversational agents.
 
-MCP support is not currently available for users on Zero Retention Mode or those requiring HIPAA
-compliance.
+> **Warning**
+>
+> MCP support is not currently available for users on Zero Retention Mode or those requiring HIPAA
+> compliance.
 
 ElevenLabs allows you to connect your conversational agents to external MCP servers. This enables your agents to:
 
@@ -60,23 +64,31 @@ await elevenlabs.conversationalAi.settings.update({ canUseMcpServers: true });
 
 Setting `can_use_mcp_servers` back to `false` disables MCP for the workspace. Existing MCP server integrations are kept, but agents can no longer use them until the setting is enabled again.
 
-Enabling MCP is a workspace-wide setting rather than a per-agent one. Any member, or any API key
-with the `convai_write` permission, can turn it on or off — this is not restricted to workspace
-admins.
+> **Note**
+>
+> Enabling MCP is a workspace-wide setting rather than a per-agent one. Any member, or any API key
+> with the `convai_write` permission, can turn it on or off — this is not restricted to workspace
+> admins.
 
 Once MCP is enabled for the workspace, each MCP server you add is its own resource: the member who creates it can share it with other workspace members individually, similar to sharing an agent or a knowledge base document.
 
-Enabling this setting does not override the Zero Retention Mode and HIPAA restriction above.
-Workspaces with Zero Retention Mode or HIPAA compliance enabled cannot use MCP servers, regardless
-of the `can_use_mcp_servers` setting.
+> **Warning**
+>
+> Enabling this setting does not override the Zero Retention Mode and HIPAA restriction above.
+> Workspaces with Zero Retention Mode or HIPAA compliance enabled cannot use MCP servers, regardless
+> of the `can_use_mcp_servers` setting.
 
 ## Getting started
 
-ElevenLabs supports both SSE (Server-Sent Events) and HTTP streamable transport MCP servers.
+> **Note**
+>
+> ElevenLabs supports both SSE (Server-Sent Events) and HTTP streamable transport MCP servers.
 
 In this example, we'll use [Zapier MCP](https://zapier.com/mcp), which lets you connect ElevenAgents to hundreds of tools and services.
 
-MCP servers are not yet manageable via the ElevenLabs CLI — use the dashboard or SDK.
+> **Note**
+>
+> MCP servers are not yet manageable via the ElevenLabs CLI — use the dashboard or SDK.
 
 #### Add via the dashboard
 
@@ -84,7 +96,7 @@ MCP servers are not yet manageable via the ElevenLabs CLI — use the dashboard 
 
 Navigate to the [MCP server integrations dashboard](https://elevenlabs.io/app/agents/integrations) and click **Add Custom MCP Server**.
 
-![Creating your first MCP server](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/335d1d8fced3cd82eed4ed43ba0058d3a8dbc431f81cdb387bf3d5964e5ead80/assets/images/conversational-ai/mcp-create.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T112240Z&X-Amz-Expires=604800&X-Amz-Signature=9fe959ff48124dbaf9f65bc7b3643b1e0656a93a04e0f930b1fc106a5653fe81&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Creating your first MCP server](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/335d1d8fced3cd82eed4ed43ba0058d3a8dbc431f81cdb387bf3d5964e5ead80/assets/images/conversational-ai/mcp-create.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T105638Z&X-Amz-Expires=604800&X-Amz-Signature=6ff43ee2293c026b62aae26049c772345c8508fcf4cca362dbd22df505d20290&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Configure the MCP server
 
@@ -100,13 +112,13 @@ Enter the following details:
 
 Click **Add Integration** to save the integration and test the connection to list available tools.
 
-![Zapier example tools](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7c9d83baedd0e2dc74014d4a690159333bbef0eec37c36fa9ee0fd6cd455df0e/assets/images/conversational-ai/mcp-zapier.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T112240Z&X-Amz-Expires=604800&X-Amz-Signature=f0d2d11000c5e7d531a8cac41ebc6405e6dc3876317f5f9fa3fe81912a53b616&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Zapier example tools](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7c9d83baedd0e2dc74014d4a690159333bbef0eec37c36fa9ee0fd6cd455df0e/assets/images/conversational-ai/mcp-zapier.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T105638Z&X-Amz-Expires=604800&X-Amz-Signature=72515e9f27cba1206f1f4cab60ba66819dcf113ff1d5e20354bd94dd21e21099&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Attach the server to an agent
 
 The MCP server is now available to add to your agents. MCP support is available for both public and private agents.
 
-![Adding the MCP server to an agent](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b18756710b4466a5fa462080d6f3b237d84f76f898d5c94d4583f31d2fa0395b/assets/images/conversational-ai/mcp-add.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T112240Z&X-Amz-Expires=604800&X-Amz-Signature=6f68e7801edc9a5c405ba5bf334b45a03dd1904d6d6839d4d06865072366f6e2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Adding the MCP server to an agent](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b18756710b4466a5fa462080d6f3b237d84f76f898d5c94d4583f31d2fa0395b/assets/images/conversational-ai/mcp-add.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T105638Z&X-Amz-Expires=604800&X-Amz-Signature=267dfcee66845a746da92eb43ec08685eb3cb2038cc5d407cfcfcc27329e71d8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Add via the API
 
@@ -159,7 +171,7 @@ await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd9
 
 ElevenLabs provides flexible approval controls to manage how agents request permission to use tools from MCP servers. You can configure approval settings at both the MCP server level and individual tool level for maximum security control.
 
-![Tool approval mode settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9f4c208459131622478de5010e2234d3af8a03dc9bc5b7ec2fcab48a7be3bde3/assets/images/conversational-ai/mcp-approval.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T112240Z&X-Amz-Expires=604800&X-Amz-Signature=c356419ede2eb2ec37043f326e7a3c2261e8ee44770e43df42caba9a88372fe0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Tool approval mode settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9f4c208459131622478de5010e2234d3af8a03dc9bc5b7ec2fcab48a7be3bde3/assets/images/conversational-ai/mcp-approval.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T105638Z&X-Amz-Expires=604800&X-Amz-Signature=19a71ea7b862fc29286eeb5d9b3bc176d7665b64f5d7d475e09edf778ae27bff&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Available approval modes
 
@@ -172,7 +184,7 @@ ElevenLabs provides flexible approval controls to manage how agents request perm
 The Fine-Grained Tool Approval mode allows you to configure individual tools with different approval requirements, giving you precise control over which tools can run automatically and which require explicit permission.
 
 ![Fine-grained tool approval
-settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/041cad753319ed92189ee8d4f70a9d3ed07177303bf71777ce36a90270a5dd24/assets/images/conversational-ai/mcp-finegrained-approvals.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T112240Z&X-Amz-Expires=604800&X-Amz-Signature=3b621a41542193c053eefe44119b18b9e330eb75059ef24c2f7d2d04a6b7abc2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/041cad753319ed92189ee8d4f70a9d3ed07177303bf71777ce36a90270a5dd24/assets/images/conversational-ai/mcp-finegrained-approvals.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T105638Z&X-Amz-Expires=604800&X-Amz-Signature=e4dc60c8d1f9a03327230b426513e52e94a12a8966acd1b726fb2c7959ebb7a2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 For each tool, you can set:
 
@@ -180,8 +192,10 @@ For each tool, you can set:
 * **Requires approval**: Tool requires explicit permission before execution
 * **Disabled**: Tool is completely disabled and cannot be used
 
-Use Fine-Grained Tool Approval to allow low-risk read-only tools to run automatically while
-requiring approval for tools that modify data or perform sensitive operations.
+> **Tip**
+>
+> Use Fine-Grained Tool Approval to allow low-risk read-only tools to run automatically while
+> requiring approval for tools that modify data or perform sensitive operations.
 
 ## Key considerations for ElevenLabs integration
 
@@ -193,12 +207,12 @@ requiring approval for tools that modify data or perform sensitive operations.
 
 Integrating external MCP servers can expose your agents and data to third-party services. It is crucial to understand the security implications.
 
-#### Important Disclaimer
-
-By enabling MCP server integrations, you acknowledge that this may involve data sharing with
-third-party services not controlled by ElevenLabs. This could incur additional security risks.
-Please ensure you fully understand the implications, vet the security of any MCP server you
-integrate, and review our [MCP Integration Security Guidelines](/docs/eleven-agents/customization/tools/mcp/security) before proceeding.
+> **Important Disclaimer**
+>
+> By enabling MCP server integrations, you acknowledge that this may involve data sharing with
+> third-party services not controlled by ElevenLabs. This could incur additional security risks.
+> Please ensure you fully understand the implications, vet the security of any MCP server you
+> integrate, and review our [MCP Integration Security Guidelines](/docs/eleven-agents/customization/tools/mcp/security) before proceeding.
 
 Refer to our [MCP Integration Security Guidelines](/docs/eleven-agents/customization/tools/mcp/security) for detailed best practices.
 

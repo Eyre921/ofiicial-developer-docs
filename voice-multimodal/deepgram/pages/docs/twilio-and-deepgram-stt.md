@@ -89,7 +89,9 @@ PUBLIC_HOSTNAME=your-host.ngrok-free.app   # the public host Twilio reaches, no 
 
 This app needs no LLM key and no text-to-speech key — it only listens and transcribes. Speech-to-text runs through the official Deepgram Python SDK (`deepgram-sdk`).
 
-**Verify:** running `python -c "import app"` with the two environment variables set imports cleanly.
+> **Info**
+>
+> **Verify:** running `python -c "import app"` with the two environment variables set imports cleanly.
 
 ## Step 2: Serve TwiML with `<Start><Stream>`
 
@@ -111,7 +113,9 @@ async def twiml(request: Request) -> Response:
 
 That one design choice separates transcription from a voice agent. `<Start><Stream>` runs one-way in the background, which fits perfectly when your server never speaks back. Its bidirectional sibling, `<Connect><Stream>`, exists specifically to carry audio *back* into the call — which a transcriber never does. Because the stream runs in the background, the call itself needs something to do or Twilio hangs up; the `<Say>` and `<Pause>` simply hold the line open while the caller talks.
 
-**Verify:** `curl -X POST https://YOUR_HOST/twiml` returns the XML above with your `wss://` URL and a `<Start>` (not `<Connect>`) element.
+> **Info**
+>
+> **Verify:** `curl -X POST https://YOUR_HOST/twiml` returns the XML above with your `wss://` URL and a `<Start>` (not `<Connect>`) element.
 
 ## Step 3: Bridge the Twilio media stream to Deepgram
 

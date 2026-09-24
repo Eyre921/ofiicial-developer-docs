@@ -42,7 +42,7 @@ For [type](https://docs.stripe.com/api/invoice-line-item/object.md#invoice_line_
 
 ## Set default tax rates for the entire invoice 
 
-If you sell one type of product, or have simple tax needs, you can set a default tax rate on the invoice. Default tax rates apply to all invoice line items. For more complex use cases, you can also set an item-level tax rate that overrides the default tax rate. You can add up to five default tax rates to each invoice.
+If you sell one type of product, or have simple tax needs, you can set a default tax rate on the invoice. Default tax rates apply to all invoice line items. For more complex use cases, you can also set an item-level tax rate that overrides the default tax rate. You can add up to 10 default tax rates to each invoice.
 
 #### Dashboard
 

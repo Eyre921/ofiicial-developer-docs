@@ -19,7 +19,9 @@ Try this feature out in our API Playground.
 
 In this guide, you'll learn how to analyze audio using Deepgram's intelligence features: Summarization, Topic Detection, Intent Recognition, and Sentiment Analysis. The code examples use [Deepgram's SDKs](/home).
 
-Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
+> **Info**
+>
+> Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
 
 ## Purpose
 

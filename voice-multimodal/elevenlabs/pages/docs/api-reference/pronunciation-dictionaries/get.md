@@ -42,20 +42,7 @@ Successful Response
   - Allowed values: `admin`, `editor`, `commenter`, `viewer`
 - `created_by` (string, required) — The user ID of the creator of the pronunciation dictionary.
 - `creation_time_unix` (integer, required) — The creation time of the pronunciation dictionary in Unix timestamp.
-- `rules` (list of object or object, required) — The rules in the latest version of the pronunciation dictionary.
-  - PronunciationDictionaryAliasRuleResponseModel
-    - `string_to_replace` (string, required)
-    - `type` ("alias", required)
-    - `alias` (string, required)
-    - `case_sensitive` (boolean, optional, default: true) — Whether the rule matches case-sensitively.
-    - `word_boundaries` (boolean, optional, default: true) — Whether the rule only matches at word boundaries.
-  - PronunciationDictionaryPhonemeRuleResponseModel
-    - `string_to_replace` (string, required)
-    - `type` ("phoneme", required)
-    - `phoneme` (string, required)
-    - `alphabet` (string, required)
-    - `case_sensitive` (boolean, optional, default: true) — Whether the rule matches case-sensitively.
-    - `word_boundaries` (boolean, optional, default: true) — Whether the rule only matches at word boundaries.
+- `rules` (list of GetPronunciationDictionaryWithRulesResponseModelRulesItems, required) — The rules in the latest version of the pronunciation dictionary.
 - `archived_time_unix` (integer, optional, nullable) — The archive time of the pronunciation dictionary in Unix timestamp.
 - `description` (string, optional, nullable) — The description of the pronunciation dictionary.
 
@@ -65,10 +52,36 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### GetPronunciationDictionaryWithRulesResponseModelRulesItems
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### PronunciationDictionaryAliasRuleResponseModel
+
+- `string_to_replace` (string, required)
+- `type` ("alias", required)
+- `alias` (string, required)
+- `case_sensitive` (boolean, optional, default: true) — Whether the rule matches case-sensitively.
+- `word_boundaries` (boolean, optional, default: true) — Whether the rule only matches at word boundaries.
+
+### PronunciationDictionaryPhonemeRuleResponseModel
+
+- `string_to_replace` (string, required)
+- `type` ("phoneme", required)
+- `phoneme` (string, required)
+- `alphabet` (string, required)
+- `case_sensitive` (boolean, optional, default: true) — Whether the rule matches case-sensitively.
+- `word_boundaries` (boolean, optional, default: true) — Whether the rule only matches at word boundaries.
+
+### ValidationErrorLocItems
 
 ## Examples
 

@@ -31,14 +31,18 @@ Set an expiry when you create or edit a key from your [personal API keys setting
 
 Once a key passes its expiry it stops authenticating, and requests made with it are rejected with a [`401` error](/docs/eleven-api/resources/errors). You can extend or clear the expiry by editing the key before it lapses; otherwise, [rotate](#rotating-api-keys) to a new key.
 
-Expiry applies only to user API keys. Service account API keys are intended for long-lived backend
-and production workloads, so they do not expire.
+> **Note**
+>
+> Expiry applies only to user API keys. Service account API keys are intended for long-lived backend
+> and production workloads, so they do not expire.
 
 ## Rotating API keys
 
-When creating a new API key to replace one that you are rotating out, copy the permissions from
-the old key to the new one so that no access is lost. For service account keys, make sure to
-create the new key for the same service account.
+> **Info**
+>
+> When creating a new API key to replace one that you are rotating out, copy the permissions from
+> the old key to the new one so that no access is lost. For service account keys, make sure to
+> create the new key for the same service account.
 
 Rotation follows the same pattern in both cases: create a new key, switch your applications over to it, then delete the old key.
 
@@ -61,8 +65,10 @@ You can restrict an API key so that it only works from specific IP addresses or 
 
 You can add between 1 and 100 entries per API key. Bare IP addresses are automatically normalized to `/32` (IPv4) or `/128` (IPv6).
 
-Private IP ranges (e.g. `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) are not accepted. Only
-public IP addresses can be allowlisted.
+> **Note**
+>
+> Private IP ranges (e.g. `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) are not accepted. Only
+> public IP addresses can be allowlisted.
 
 ## Detecting leaked keys
 
@@ -70,8 +76,10 @@ ElevenLabs participates in [GitHub's secret scanning partner program](https://do
 
 A key disabled this way reports a `disable_reason` of `exposed_publicly`. To restore access, [rotate the key](#rotating-api-keys) and update your applications to use the new one.
 
-Automatic disabling of leaked keys only applies when third-party disabling is allowed for the key.
-See [Controlling who can disable keys](#controlling-who-can-disable-keys).
+> **Note**
+>
+> Automatic disabling of leaked keys only applies when third-party disabling is allowed for the key.
+> See [Controlling who can disable keys](#controlling-who-can-disable-keys).
 
 ## Self-disabling a key
 
@@ -81,9 +89,11 @@ If you believe a key has been compromised, the holder of the key can disable it 
 
 The `third_party_disable_allowed` setting controls whether a key can be disabled by its holder, either through the self-disable endpoint or automatically when it leaks publicly. By default, this is enabled for non-Enterprise plans and disabled for Enterprise plans.
 
-A notification email is sent to the workspace owner and the key's owner when a key is disabled by
-a third party, either automatically through GitHub secret scanning or through the self-disable
-endpoint. Disabling a key yourself in the web UI does not send a notification.
+> **Note**
+>
+> A notification email is sent to the workspace owner and the key's owner when a key is disabled by
+> a third party, either automatically through GitHub secret scanning or through the self-disable
+> endpoint. Disabling a key yourself in the web UI does not send a notification.
 
 **Per key:** set `third_party_disable_allowed` when you [create](/docs/api-reference/service-accounts/api-keys/create) or [update](/docs/api-reference/service-accounts/api-keys/update) a service account API key. Omit it to use the workspace default, or pass `clear` on update to reset an individual key to the workspace default.
 

@@ -35,7 +35,9 @@ To enable Smart Formatting, when you call Deepgram's API, add a `smart_format` p
 
 `smart_format=true`
 
-Smart Format enables Deepgram's Punctuation feature. If you've set `smart_format=true`, no need to also set `punctuate=true`.
+> **Info**
+>
+> Smart Format enables Deepgram's Punctuation feature. If you've set `smart_format=true`, no need to also set `punctuate=true`.
 
 To transcribe audio from a file on your computer, run the following cURL command in a terminal or your favorite API client.
 
@@ -50,7 +52,9 @@ curl \
   --url 'https://api.deepgram.com/v1/listen?smart_format=true'
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 ## Results
 
@@ -77,7 +81,9 @@ For more control over finalization timing:
 
 ## Using No Delay
 
-Setting `no_delay=true` forces immediate finalization of streaming transcripts without waiting for entity completion. NOTE: This will result in skipping formatting altogether in many cases.
+> **Info**
+>
+> Setting `no_delay=true` forces immediate finalization of streaming transcripts without waiting for entity completion. NOTE: This will result in skipping formatting altogether in many cases.
 
 To override the default waiting behavior and return results immediately, add the parameter `no_delay=true` to your streaming API request:
 
@@ -92,7 +98,9 @@ curl \
   --url 'https://api.deepgram.com/v1/listen?smart_format=true&no_delay=true'
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 ## Additional Formatters
 

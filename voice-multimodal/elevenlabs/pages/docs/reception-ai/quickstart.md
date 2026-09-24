@@ -79,7 +79,9 @@ Choose what your business does (multi-select):
 
 Then select your industry vertical (salon, medical, dental, fitness, home services, legal, etc.).
 
-Medical and dental verticals show a compliance notice before proceeding.
+> **Note**
+>
+> Medical and dental verticals show a compliance notice before proceeding.
 
 ### Pick your phone number
 
@@ -102,7 +104,9 @@ When you complete the wizard:
 3. Your AI receptionist goes live immediately
 4. A booking page URL is reserved (if applicable)
 
-Your onboarding session lasts up to 4 hours — after that you'll need to start fresh.
+> **Info**
+>
+> Your onboarding session lasts up to 4 hours — after that you'll need to start fresh.
 
 ## Next steps
 

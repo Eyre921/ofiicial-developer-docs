@@ -37,11 +37,15 @@ curl \
   --url 'https://api.deepgram.com/v1/listen?multichannel=true'
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 ## Analyze Response
 
-For this example, we use an MP3 split stereo audio file that contains the first 10 seconds of a customer call with a florist. If you would like to follow along, you can [download it](https://res.cloudinary.com/deepgram/video/upload/v1682106551/devex/florist_altodz.mp3).
+> **Info**
+>
+> For this example, we use an MP3 split stereo audio file that contains the first 10 seconds of a customer call with a florist. If you would like to follow along, you can [download it](https://res.cloudinary.com/deepgram/video/upload/v1682106551/devex/florist_altodz.mp3).
 
 When the file is finished processing (often after only a few seconds), you’ll receive a JSON response.
 

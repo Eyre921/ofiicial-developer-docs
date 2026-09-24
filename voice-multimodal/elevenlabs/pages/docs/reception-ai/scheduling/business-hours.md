@@ -37,8 +37,10 @@ When time off overlaps with existing appointments, the system warns you and list
 
 Time off never silently removes existing bookings.
 
-Add all known holidays at the beginning of the year so your receptionist never accidentally books
-during a closure.
+> **Tip**
+>
+> Add all known holidays at the beginning of the year so your receptionist never accidentally books
+> during a closure.
 
 ## How availability is calculated
 

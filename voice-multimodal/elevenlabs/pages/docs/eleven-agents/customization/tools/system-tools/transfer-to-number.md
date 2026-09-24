@@ -14,8 +14,10 @@ The `transfer_to_number` system tool allows an ElevenLabs agent to transfer the 
 
 This feature supports transfers via Twilio and SIP trunk numbers. When triggered, the agent can provide a message to the user while they wait and a separate message summarizing the situation for the human operator receiving the call.
 
-The `transfer_to_number` system tool is only available for phone calls and is not available in the
-chat widget.
+> **Note**
+>
+> The `transfer_to_number` system tool is only available for phone calls and is not available in the
+> chat widget.
 
 ## Transfer Types
 
@@ -25,13 +27,17 @@ The system supports three types of transfers:
 * **Blind Transfer**: Transfers the call directly to the destination without a warm transfer message to the human operator. Preserves the original caller ID. Only available when the agent's phone number is imported via the [native Twilio integration](/docs/eleven-agents/phone-numbers/twilio-integration/native-integration).
 * **SIP REFER Transfer**: Uses the SIP REFER protocol to transfer calls directly to the destination. Works with both phone numbers and SIP URIs, but only available when using SIP protocol during the conversation and requires your SIP Trunk to allow transfer via SIP REFER. Does not support warm transfer messages.
 
-Warm transfer messages (`agent_message`) are only available when the agent's phone number is
-imported via the [native Twilio integration](/docs/eleven-agents/phone-numbers/twilio-integration/native-integration). SIP-based
-transfers do not support warm transfer messages.
+> **Note**
+>
+> Warm transfer messages (`agent_message`) are only available when the agent's phone number is
+> imported via the [native Twilio integration](/docs/eleven-agents/phone-numbers/twilio-integration/native-integration). SIP-based
+> transfers do not support warm transfer messages.
 
-**Blind transfers** are only available when the agent's phone number is imported via the [native Twilio integration](/docs/eleven-agents/phone-numbers/twilio-integration/native-integration) and
-must currently be configured via the JSON editor in the UI. Select "Edit as JSON" on the transfer
-tool configuration and set `"transfer_type": "blind"` for the desired transfer rule.
+> **Note**
+>
+> **Blind transfers** are only available when the agent's phone number is imported via the [native Twilio integration](/docs/eleven-agents/phone-numbers/twilio-integration/native-integration) and
+> must currently be configured via the JSON editor in the UI. Select "Edit as JSON" on the transfer
+> tool configuration and set `"transfer_type": "blind"` for the desired transfer rule.
 
 **Purpose**: Seamlessly hand off conversations to human operators when AI assistance is insufficient.
 
@@ -75,13 +81,13 @@ Human transfer is configured using the `transfer_to_number` system tool.
 
 Enable human transfer by selecting the `transfer_to_number` system tool in your agent's configuration within the `Agent` tab. Choose "Transfer to Human" when adding a tool.
 
-![Add Human Transfer Tool](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1b0a0985dd32cab9532b38b80aaa90873b4076bb26e7a47ce2e12832dd78ea45/assets/images/conversational-ai/transfer_human.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T112232Z&X-Amz-Expires=604800&X-Amz-Signature=4f4f95f80632f8e8936da5c586e9902a732581cd27abd6dc6c5400ce90ea2b48&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Add Human Transfer Tool](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1b0a0985dd32cab9532b38b80aaa90873b4076bb26e7a47ce2e12832dd78ea45/assets/images/conversational-ai/transfer_human.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113139Z&X-Amz-Expires=604800&X-Amz-Signature=730d58265d02760e9b1752a304422da764e28d0f0332e07b7ec11b4733381904&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Configure tool description (optional)
 
 You can provide a custom description to guide the LLM on when to trigger a transfer. If left blank, a default description encompassing the defined transfer rules will be used.
 
-![Human Transfer Tool Description](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/23b446030f915db9a10693153e44f95ab59c313e01df2b95291e40e12f2f4bde/assets/images/conversational-ai/transfer_human_tool.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T112232Z&X-Amz-Expires=604800&X-Amz-Signature=0f762604e081ab23befbddf927332b6e15d9025858b32989eadbe78a7bd05dad&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Human Transfer Tool Description](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/23b446030f915db9a10693153e44f95ab59c313e01df2b95291e40e12f2f4bde/assets/images/conversational-ai/transfer_human_tool.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113139Z&X-Amz-Expires=604800&X-Amz-Signature=02c663d550ec428f505c11fe3fc76d8cbe08b13e0aaefa0695a9818e2ae7814c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Define transfer rules
 
@@ -96,16 +102,22 @@ Configure the specific rules for transferring to phone numbers or SIP URIs. For 
 
 The LLM will use these conditions, along with the tool description, to decide when and to which destination to transfer.
 
-**SIP REFER transfers** require SIP protocol during the conversation and your SIP Trunk must allow transfer via SIP REFER. Only SIP REFER supports transferring to a SIP URI.
+> **Note**
+>
+> **SIP REFER transfers** require SIP protocol during the conversation and your SIP Trunk must allow transfer via SIP REFER. Only SIP REFER supports transferring to a SIP URI.
 
-**Blind transfers** are only available when the agent's phone number is imported via the [native Twilio integration](/docs/eleven-agents/phone-numbers/twilio-integration/native-integration) and must be configured via the JSON editor. The original caller ID is preserved, but no warm transfer message is sent to the human operator.
+> **Note**
+>
+> **Blind transfers** are only available when the agent's phone number is imported via the [native Twilio integration](/docs/eleven-agents/phone-numbers/twilio-integration/native-integration) and must be configured via the JSON editor. The original caller ID is preserved, but no warm transfer message is sent to the human operator.
 
-![Human Transfer Rules Configuration](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/86e46148dc133fe68e6b517752d38bf493bef8347fee91a577e9f27600bafa5d/assets/images/conversational-ai/transfer_human_rule.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T112232Z&X-Amz-Expires=604800&X-Amz-Signature=6539c06784be2cdff60a3d38a734c18903cdd4fc119ae6b64c6bb0c13f60ff10&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Human Transfer Rules Configuration](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/86e46148dc133fe68e6b517752d38bf493bef8347fee91a577e9f27600bafa5d/assets/images/conversational-ai/transfer_human_rule.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113139Z&X-Amz-Expires=604800&X-Amz-Signature=494700b47debf19dc849c545f10c7a742df978355d8adddbd354be331d3f5f39&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-Ensure destinations are correctly formatted:
-
-* Phone numbers: E.164 format and associated with a properly configured account
-* SIP URIs: Valid SIP format (sip:user\@domain or sips:user\@domain)
+> **Note**
+>
+> Ensure destinations are correctly formatted:
+>
+> * Phone numbers: E.164 format and associated with a properly configured account
+> * SIP URIs: Valid SIP format (sip:user\@domain or sips:user\@domain)
 
 #### Configure custom SIP REFER headers (optional)
 
@@ -116,9 +128,13 @@ For each custom header, specify:
 * **Header Name**: The SIP header name (e.g., `X-Customer-ID`, `X-Priority`)
 * **Header Value**: The header value, which can be static text or include [dynamic variables](/docs/eleven-agents/customization/personalization/dynamic-variables)
 
-Custom SIP REFER headers are only included with **SIP REFER transfers**. Conference transfers do not support custom headers.
+> **Note**
+>
+> Custom SIP REFER headers are only included with **SIP REFER transfers**. Conference transfers do not support custom headers.
 
-System headers `X-Conversation-ID` and `X-Caller-ID` are automatically included by ElevenLabs and will override any custom headers with the same names (case-insensitive).
+> **Warning**
+>
+> System headers `X-Conversation-ID` and `X-Caller-ID` are automatically included by ElevenLabs and will override any custom headers with the same names (case-insensitive).
 
 #### Configure User-to-User Information (UUI) (optional)
 
@@ -130,9 +146,13 @@ Configure UUI per transfer rule with the `uui` object:
 * **`protocol_discriminator`**: A single hex octet, for example `04`. Include it for platforms that strip the first octet of the payload; omit it for platforms that pass the payload through.
 * **`protocol_discriminator_mode`**: `prefix` (default) prepends the octet, producing `04<hex>;encoding=hex`. `pd_parameter` adds it as a separate parameter, producing `<hex>;pd=04;encoding=hex`.
 
-Talkdesk passes the value through unchanged, so omit the protocol discriminator. Genesys Cloud strips the first octet of the payload unless a discriminator is present, so include a `protocol_discriminator`. See [Genesys UUI data formats](https://help.genesys.cloud/articles/uui-data-formats/).
+> **Note**
+>
+> Talkdesk passes the value through unchanged, so omit the protocol discriminator. Genesys Cloud strips the first octet of the payload unless a discriminator is present, so include a `protocol_discriminator`. See [Genesys UUI data formats](https://help.genesys.cloud/articles/uui-data-formats/).
 
-The 256-byte limit applies after dynamic variables are substituted. Pass identifiers or short codes such as an account ID, not free-form text like a full call summary, which exceeds the limit and is dropped from the transfer.
+> **Warning**
+>
+> The 256-byte limit applies after dynamic variables are substituted. Pass identifiers or short codes such as an account ID, not free-form text like a full call summary, which exceeds the limit and is dropped from the transfer.
 
 To receive UUI on inbound SIP calls, no configuration is required. When an incoming INVITE contains a `User-to-User` header, its value is exposed to the agent as the `{{sip_uui_raw}}` and `{{sip_uui_data}}` dynamic variables. See the [SIP reference](/docs/eleven-agents/phone-numbers/sip-reference).
 
@@ -149,9 +169,13 @@ For each transfer rule, you can specify a `post_dial_digits` string containing:
 
 For example, `ww1234` waits 1 second after the call connects, then dials extension 1234.
 
-**Post-dial digits** are only available when the agent's phone number (the number initiating the transfer) is imported via the [native Twilio integration](/docs/eleven-agents/phone-numbers/twilio-integration/native-integration). The destination number can be any phone number.
+> **Note**
+>
+> **Post-dial digits** are only available when the agent's phone number (the number initiating the transfer) is imported via the [native Twilio integration](/docs/eleven-agents/phone-numbers/twilio-integration/native-integration). The destination number can be any phone number.
 
-Post-dial digits are supported for **conference** and **blind** transfer types only. SIP REFER transfers do not support post-dial digits.
+> **Note**
+>
+> Post-dial digits are supported for **conference** and **blind** transfer types only. SIP REFER transfers do not support post-dial digits.
 
 ## API Implementation
 

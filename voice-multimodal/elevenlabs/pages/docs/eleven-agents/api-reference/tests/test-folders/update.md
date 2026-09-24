@@ -43,9 +43,7 @@ Folder successfully updated
 
 - `id` (string, required)
 - `name` (string, required)
-- `folder_path` (list of object, optional) — The path from the root folder to the current folder.
-  - `id` (string, required)
-  - `name` (string, optional, default: )
+- `folder_path` (list of AgentTestFolderPathSegmentResponseModel, optional) — The path from the root folder to the current folder.
 - `children_count` (integer, optional, default: 0) — The number of direct children (tests and subfolders) in this folder
 
 ## Errors
@@ -54,10 +52,22 @@ Folder successfully updated
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### AgentTestFolderPathSegmentResponseModel
+
+- `id` (string, required)
+- `name` (string, optional, default: )
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItem, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItem
 
 ## Examples
 

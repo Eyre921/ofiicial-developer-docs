@@ -8,7 +8,7 @@ path: docs/overview/administration/workspaces/sharing-resources
 
 # Sharing resources
 
-![Sharing a project](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1d1fe7f982282bb04bf6f27a363e384a83f7cf25725bef4a47a536d7e8f5f70e/assets/images/product-guides/workspaces/share-project.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T080925Z&X-Amz-Expires=604800&X-Amz-Signature=3309879f1a878638dc58acbbfbb46caeed23f1806a09c72cab8597a4363bd3d4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Sharing a project](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1d1fe7f982282bb04bf6f27a363e384a83f7cf25725bef4a47a536d7e8f5f70e/assets/images/product-guides/workspaces/share-project.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113101Z&X-Amz-Expires=604800&X-Amz-Signature=b59d4fe75ab1fe618a8ff17395088a7d3681a7e83ca5b2ee3d3bf0d13c3e73b0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Overview
 
@@ -65,5 +65,7 @@ When you share a resource with a principal, you can assign them a **role**. We s
 
 When you create a resource, you have admin permissions on it. Other resource admins cannot remove your admin permissions on the resources you created.
 
-Workspace admins have admin permissions on all resources in the workspace. This can be removed
-from them only by removing their Workspace admin role.
+> **Warning**
+>
+> Workspace admins have admin permissions on all resources in the workspace. This can be removed
+> from them only by removing their Workspace admin role.

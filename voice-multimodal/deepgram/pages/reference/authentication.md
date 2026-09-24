@@ -10,7 +10,9 @@ path: reference/authentication
 
 # Authentication
 
-If you need to create short lived tokens for `/Listen`, `/Speak`, or `/Read` API requests, you can use the [Token-based Auth API](/reference/auth/tokens/grant).
+> **Info**
+>
+> If you need to create short lived tokens for `/Listen`, `/Speak`, or `/Read` API requests, you can use the [Token-based Auth API](/reference/auth/tokens/grant).
 
 Send requests to the API with an `Authorization` header that references your project's API Key:
 

@@ -36,13 +36,7 @@ Reference: https://developers.deepgram.com/reference/manage/billing/purchases/ge
 
 A list of purchases for a specific project
 
-- `orders` (list of object, optional)
-  - `order_id` (string, optional)
-  - `expiration` (string, optional)
-  - `created` (string, optional)
-  - `amount` (float, optional)
-  - `units` (string, optional)
-  - `order_type` (string, optional)
+- `orders` (list of ListProjectPurchasesV1ResponseOrdersItems, optional)
 
 ## Errors
 
@@ -50,16 +44,31 @@ A list of purchases for a specific project
 
 Invalid Request
 
-- `string or object or object`
-  - ErrorResponseLegacyError
-    - `err_code` (string, optional) — The error code
-    - `err_msg` (string, optional) — The error message
-    - `request_id` (string, optional) — The request ID
-  - ErrorResponseModernError
-    - `category` (string, optional) — The category of the error
-    - `message` (string, optional) — A message about the error
-    - `details` (string, optional) — A description of the error
-    - `request_id` (string, optional) — The unique identifier of the request
+- `ErrorResponse`
+
+## Types
+
+### ListProjectPurchasesV1ResponseOrdersItems
+
+- `order_id` (string, optional)
+- `expiration` (string, optional)
+- `created` (string, optional)
+- `amount` (float, optional)
+- `units` (string, optional)
+- `order_type` (string, optional)
+
+### ErrorResponseLegacyError
+
+- `err_code` (string, optional) — The error code
+- `err_msg` (string, optional) — The error message
+- `request_id` (string, optional) — The request ID
+
+### ErrorResponseModernError
+
+- `category` (string, optional) — The category of the error
+- `message` (string, optional) — A message about the error
+- `details` (string, optional) — A description of the error
+- `request_id` (string, optional) — The unique identifier of the request
 
 ## Examples
 

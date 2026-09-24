@@ -32,7 +32,7 @@ ntn api v1/data_sources/<data-source-id>
 
 ## Create a data source
 
-Add a new data source to an existing database. `parent[type]=database_id` is the type discriminator; `parent[database_id]` is the database's unique ID. `properties` is a map of column name to [property schema](/reference/property-schema-object). See [Create a data source](/reference/create-a-data-source) for every supported field:
+Add a new data source to an existing database. `parent[type]=database_id` is the type discriminator; `parent[database_id]` is the database's unique ID. `properties` is a map of column name to [property schema](/reference/property-object). See [Create a data source](/reference/create-a-data-source) for every supported field:
 
 ```bash theme={null}
 ntn api v1/data_sources \

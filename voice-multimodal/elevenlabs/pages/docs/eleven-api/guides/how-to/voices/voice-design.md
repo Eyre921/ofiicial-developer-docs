@@ -12,9 +12,11 @@ This guide will show you how to design a voice via a prompt using the Voice Desi
 
 ## Using the Voice Design API
 
-This guide assumes you have [set up your API key and SDK](/docs/eleven-api/quickstart). Complete
-the quickstart first if you haven't. To play audio through your speakers, you may also need
-[MPV](https://mpv.io/) and/or [ffmpeg](https://ffmpeg.org/).
+> **Note**
+>
+> This guide assumes you have [set up your API key and SDK](/docs/eleven-api/quickstart). Complete
+> the quickstart first if you haven't. To play audio through your speakers, you may also need
+> [MPV](https://mpv.io/) and/or [ffmpeg](https://ffmpeg.org/).
 
 #### Make the API request
 

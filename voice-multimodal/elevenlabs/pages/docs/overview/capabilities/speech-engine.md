@@ -73,8 +73,10 @@ If you want a fully hosted solution where ElevenLabs provides the LLM, knowledge
 
 If your server is behind a firewall or uses IP-based access controls, you can allowlist the static egress IPs from which ElevenLabs WebSocket connections originate. See [IP allowlisting](/docs/eleven-api/resources/ip-allowlisting) for the complete list of IP addresses.
 
-Using IP allowlisting ensures your server only accepts WebSocket connections from ElevenLabs'
-systems.
+> **Tip**
+>
+> Using IP allowlisting ensures your server only accepts WebSocket connections from ElevenLabs'
+> systems.
 
 ## FAQ
 

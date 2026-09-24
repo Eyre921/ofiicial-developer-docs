@@ -24,7 +24,9 @@ To enable Find and Replace, use the following parameter in the querystring:
 
 The find term should be always be lowercase and the replacement term can be any case.
 
-The suggested maximum number of terms for Find and Replace is 200. Above 200 terms, please [contact us](https://deepgram.com/contact-us) to learn about custom model training.
+> **Info**
+>
+> The suggested maximum number of terms for Find and Replace is 200. Above 200 terms, please [contact us](https://deepgram.com/contact-us) to learn about custom model training.
 
 To transcribe audio from a file on your computer, run the following curl command in a terminal or your favorite API client.
 
@@ -39,7 +41,9 @@ curl \
   --url 'https://api.deepgram.com/v1/listen?replace=TERM_OR_PHRASE_TO_FIND:REPLACEMENT_TERM_OR_PHRASE'
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 ### Replace a Single Term
 
@@ -102,7 +106,9 @@ curl \
   --url 'https://api.deepgram.com/v1/listen?replace=kpis:Key%20Performance%20Indicators'
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 When the file is finished processing, you’ll receive a JSON response. Let's look more closely at the `words` object within the `alternatives` object within this response. Notice that the audio contains an occurrence of the word "kpis":
 

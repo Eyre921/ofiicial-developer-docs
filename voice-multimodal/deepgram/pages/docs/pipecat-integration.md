@@ -16,9 +16,13 @@ Pipecat is an open-source Python framework for building voice and multimodal AI 
 
 ## Before you begin
 
-Before you can use Deepgram, you need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes \$200 in credit.
+> **Note**
+>
+> Before you can use Deepgram, you need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes \$200 in credit.
 
-Daily is the WebRTC transport layer that handles audio between the browser and your agent. See the [Pipecat Daily transport guide](https://docs.pipecat.ai/server/services/transport/daily) for more.
+> **Note**
+>
+> Daily is the WebRTC transport layer that handles audio between the browser and your agent. See the [Pipecat Daily transport guide](https://docs.pipecat.ai/server/services/transport/daily) for more.
 
 You need:
 
@@ -121,7 +125,9 @@ Remove `CARTESIA_API_KEY` from your `.env` file — it is no longer needed. No o
 
 Flux TTS voices use the model string format `flux-{voice}-{language}`, such as `flux-alexis-en`. This differs from the `aura-2-{voice}-{language}` format used by Deepgram's Aura-2 voices. Browse the [Flux TTS voice catalog](/docs/flux-tts/voices) to choose a different voice.
 
-Flux TTS currently synthesizes English only. If your agent needs another language, use `DeepgramTTSService` with an [Aura-2 voice](/docs/tts-models) instead — Aura-2 covers English, Spanish, German, French, Dutch, Italian, and Japanese.
+> **Warning**
+>
+> Flux TTS currently synthesizes English only. If your agent needs another language, use `DeepgramTTSService` with an [Aura-2 voice](/docs/tts-models) instead — Aura-2 covers English, Spanish, German, French, Dutch, Italian, and Japanese.
 
 Continue building by adding a [Pipecat Client](#next-steps)
 

@@ -8,8 +8,10 @@ path: docs/overview/administration/workspaces/domain-verification
 
 # Domain Verification
 
-Domain verification is available for **Enterprise** workspaces. Only Workspace admins can manage
-domain verifications.
+> **Info**
+>
+> Domain verification is available for **Enterprise** workspaces. Only Workspace admins can manage
+> domain verifications.
 
 ## Overview
 
@@ -75,8 +77,10 @@ manually invite each team member.
 
 Auto-provisioning can be enabled or disabled at any time from the domain verification settings.
 
-Auto-provisioning applies to new sign-ups only. Existing ElevenLabs users with a matching email
-domain are not automatically added to your workspace.
+> **Warning**
+>
+> Auto-provisioning applies to new sign-ups only. Existing ElevenLabs users with a matching email
+> domain are not automatically added to your workspace.
 
 ## Remove a domain
 

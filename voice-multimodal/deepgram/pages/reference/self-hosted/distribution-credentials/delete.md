@@ -33,15 +33,8 @@ Reference: https://developers.deepgram.com/reference/self-hosted/distribution-cr
 
 Single distribution credential
 
-- `member` (object, required)
-  - `member_id` (string, required) — Unique identifier for the member
-  - `email` (string, required) — Email address of the member
-- `distribution_credentials` (object, required)
-  - `distribution_credentials_id` (string, required) — Unique identifier for the distribution credentials
-  - `provider` (string, required) — The provider of the distribution service
-  - `scopes` (list of string, required) — List of permission scopes for the credentials
-  - `created` (string, required) — Timestamp when the credentials were created
-  - `comment` (string, optional) — Optional comment about the credentials
+- `member` (GetProjectDistributionCredentialsV1ResponseMember, required)
+- `distribution_credentials` (GetProjectDistributionCredentialsV1ResponseDistributionCredentials, required)
 
 ## Errors
 
@@ -49,16 +42,35 @@ Single distribution credential
 
 Invalid Request
 
-- `string or object or object`
-  - ErrorResponseLegacyError
-    - `err_code` (string, optional) — The error code
-    - `err_msg` (string, optional) — The error message
-    - `request_id` (string, optional) — The request ID
-  - ErrorResponseModernError
-    - `category` (string, optional) — The category of the error
-    - `message` (string, optional) — A message about the error
-    - `details` (string, optional) — A description of the error
-    - `request_id` (string, optional) — The unique identifier of the request
+- `ErrorResponse`
+
+## Types
+
+### GetProjectDistributionCredentialsV1ResponseMember
+
+- `member_id` (string, required) — Unique identifier for the member
+- `email` (string, required) — Email address of the member
+
+### GetProjectDistributionCredentialsV1ResponseDistributionCredentials
+
+- `distribution_credentials_id` (string, required) — Unique identifier for the distribution credentials
+- `provider` (string, required) — The provider of the distribution service
+- `scopes` (list of string, required) — List of permission scopes for the credentials
+- `created` (string, required) — Timestamp when the credentials were created
+- `comment` (string, optional) — Optional comment about the credentials
+
+### ErrorResponseLegacyError
+
+- `err_code` (string, optional) — The error code
+- `err_msg` (string, optional) — The error message
+- `request_id` (string, optional) — The request ID
+
+### ErrorResponseModernError
+
+- `category` (string, optional) — The category of the error
+- `message` (string, optional) — A message about the error
+- `details` (string, optional) — A description of the error
+- `request_id` (string, optional) — The unique identifier of the request
 
 ## Examples
 

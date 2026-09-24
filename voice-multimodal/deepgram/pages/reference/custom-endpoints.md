@@ -59,7 +59,9 @@ For self-hosted Deepgram deployments, you'll use your own custom domain and infr
 
 ### How to configure
 
-For more information about self-hosted deployments, see our [Self-Hosted Documentation](/docs/self-hosted-introduction).
+> **Info**
+>
+> For more information about self-hosted deployments, see our [Self-Hosted Documentation](/docs/self-hosted-introduction).
 
 1. **Replace the base URL**: In any SDK or API request, replace `api.deepgram.com` with your self-hosted endpoint
 2. **Use your distribution credentials**: Self-hosted deployments require specific credentials provided during setup.

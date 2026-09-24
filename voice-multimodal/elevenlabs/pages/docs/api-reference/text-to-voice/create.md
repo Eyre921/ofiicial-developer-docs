@@ -27,7 +27,7 @@ Reference: https://elevenlabs.io/docs/api-reference/text-to-voice/create
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_Create_a_new_voice_from_voice_preview_v1_text_to_voice_post.
 
 - `voice_name` (string, required) — Name to use for the created voice.
 - `voice_description` (string, required) — Description to use for the created voice.
@@ -43,155 +43,22 @@ Successful Response
 
 - `voice_id` (string, required) — The ID of the voice.
 - `name` (string, optional) — The name of the voice.
-- `samples` (list of object, optional, nullable) — List of samples associated with the voice.
-  - `sample_id` (string, optional) — The ID of the sample.
-  - `file_name` (string, optional) — The name of the sample file.
-  - `mime_type` (string, optional) — The MIME type of the sample file.
-  - `size_bytes` (integer, optional) — The size of the sample file in bytes.
-  - `hash` (string, optional) — The hash of the sample file.
-  - `duration_secs` (double, optional, nullable)
-  - `remove_background_noise` (boolean, optional, nullable)
-  - `has_isolated_audio` (boolean, optional, nullable)
-  - `has_isolated_audio_preview` (boolean, optional, nullable)
-  - `speaker_separation` (object, optional, nullable)
-    - `voice_id` (string, required) — The ID of the voice.
-    - `sample_id` (string, required) — The ID of the sample.
-    - `status` (enum, required) — The status of the speaker separation.
-      - Allowed values: `not_started`, `pending`, `completed`, `failed`
-    - `speakers` (map from string to object, optional, nullable) — The speakers of the sample.
-      - `speaker_id` (string, required) — The ID of the speaker.
-      - `duration_secs` (double, required) — The duration of the speaker segment in seconds.
-      - `utterances` (list of object, optional, nullable) — The utterances of the speaker.
-        - `start` (double, required) — The start time of the utterance in seconds.
-        - `end` (double, required) — The end time of the utterance in seconds.
-    - `selected_speaker_ids` (list of string, optional, nullable) — The IDs of the selected speakers.
-  - `trim_start` (integer, optional, nullable)
-  - `trim_end` (integer, optional, nullable)
+- `samples` (list of SampleResponseModel, optional, nullable) — List of samples associated with the voice.
 - `category` (enum, optional) — The category of the voice.
   - Allowed values: `generated`, `cloned`, `premade`, `professional`, `famous`, `high_quality`
-- `fine_tuning` (object, optional, nullable) — Fine-tuning information for the voice.
-  - `is_allowed_to_fine_tune` (boolean, optional) — Whether the user is allowed to fine-tune the voice.
-  - `state` (map from string to enum, optional) — The state of the fine-tuning process for each model.
-    - Allowed values: `not_started`, `queued`, `fine_tuning`, `fine_tuned`, `failed`, `delayed`
-  - `verification_failures` (list of string, optional) — List of verification failures in the fine-tuning process.
-  - `verification_attempts_count` (integer, optional) — The number of verification attempts in the fine-tuning process.
-  - `manual_verification_requested` (boolean, optional) — Whether a manual verification was requested for the fine-tuning process.
-  - `language` (string, optional, nullable) — The language of the fine-tuning process.
-  - `progress` (map from string to double, optional, nullable) — The progress of the fine-tuning process.
-  - `message` (map from string to string, optional, nullable) — The message of the fine-tuning process.
-  - `dataset_duration_seconds` (double, optional, nullable) — The duration of the dataset in seconds.
-  - `verification_attempts` (list of object, optional, nullable) — The number of verification attempts.
-    - `text` (string, required) — The text of the verification attempt.
-    - `date_unix` (integer, required) — The date of the verification attempt in Unix time.
-    - `accepted` (boolean, required) — Whether the verification attempt was accepted.
-    - `similarity` (double, required) — The similarity of the verification attempt.
-    - `levenshtein_distance` (double, required) — The Levenshtein distance of the verification attempt.
-    - `recording` (object, optional, nullable) — The recording of the verification attempt.
-      - `recording_id` (string, required) — The ID of the recording.
-      - `mime_type` (string, required) — The MIME type of the recording.
-      - `size_bytes` (integer, required) — The size of the recording in bytes.
-      - `upload_date_unix` (integer, required) — The date of the recording in Unix time.
-      - `transcription` (string, required) — The transcription of the recording.
-  - `slice_ids` (list of string, optional, nullable) — List of slice IDs.
-  - `manual_verification` (object, optional, nullable) — The manual verification of the fine-tuning process.
-    - `extra_text` (string, required) — The extra text of the manual verification.
-    - `request_time_unix` (integer, required) — The date of the manual verification in Unix time.
-    - `files` (list of object, required) — The files of the manual verification.
-      - `file_id` (string, required) — The ID of the file.
-      - `file_name` (string, required) — The name of the file.
-      - `mime_type` (string, required) — The MIME type of the file.
-      - `size_bytes` (integer, required) — The size of the file in bytes.
-      - `upload_date_unix` (integer, required) — The date of the file in Unix time.
-  - `max_verification_attempts` (integer, optional, nullable) — The maximum number of verification attempts.
-  - `next_max_verification_attempts_reset_unix_ms` (integer, optional, nullable) — The next maximum verification attempts reset time in Unix milliseconds.
-  - `finetuning_state` (any, optional)
+- `fine_tuning` (FineTuningResponseModel, optional, nullable) — Fine-tuning information for the voice.
 - `labels` (map from string to string, optional) — Labels associated with the voice.
 - `description` (string, optional, nullable) — The description of the voice.
 - `preview_url` (string, optional, nullable) — The preview URL of the voice.
 - `available_for_tiers` (list of string, optional) — The tiers the voice is available for.
-- `settings` (object, optional, nullable) — The settings of the voice.
-  - `stability` (double, optional, nullable, default: 0.5) — Determines how stable the voice is and the randomness between each generation. Lower values introduce broader emotional range for the voice. Higher values can result in a monotonous voice with limited emotion.
-  - `use_speaker_boost` (boolean, optional, nullable, default: true) — This setting boosts the similarity to the original speaker. Using this setting requires a slightly higher computational load, which in turn increases latency.
-  - `similarity_boost` (double, optional, nullable, default: 0.75) — Determines how closely the AI should adhere to the original voice when attempting to replicate it.
-  - `style` (double, optional, nullable, default: 0) — Determines the style exaggeration of the voice. This setting attempts to amplify the style of the original speaker. It does consume additional computational resources and might increase latency if set to anything other than 0.
-  - `speed` (double, optional, nullable, default: 1) — Adjusts the speed of the voice. A value of 1.0 is the default speed, while values less than 1.0 slow down the speech, and values greater than 1.0 speed it up.
-- `sharing` (object, optional, nullable) — The sharing information of the voice.
-  - `status` (enum, optional) — The status of the voice sharing.
-    - Allowed values: `enabled`, `disabled`, `copied`, `copied_disabled`
-  - `history_item_sample_id` (string, optional, nullable) — The sample ID of the history item.
-  - `date_unix` (integer, optional) — The date of the voice sharing in Unix time.
-  - `whitelisted_emails` (list of string, optional) — A list of whitelisted emails.
-  - `public_owner_id` (string, optional) — The ID of the public owner.
-  - `original_voice_id` (string, optional) — The ID of the original voice.
-  - `financial_rewards_enabled` (boolean, optional) — Whether financial rewards are enabled.
-  - `free_users_allowed` (boolean, optional) — Whether free users are allowed.
-  - `live_moderation_enabled` (boolean, optional) — Whether live moderation is enabled.
-  - `rate` (double, optional, nullable) — The rate of the voice sharing.
-  - `fiat_rate` (double, optional, nullable) — The rate of the voice sharing in USD per 1000 credits.
-  - `notice_period` (integer, optional) — The notice period of the voice sharing.
-  - `disable_at_unix` (integer, optional, nullable) — The date of the voice sharing in Unix time.
-  - `voice_mixing_allowed` (boolean, optional) — Whether voice mixing is allowed.
-  - `featured` (boolean, optional) — Whether the voice is featured.
-  - `category` (enum, optional) — The category of the voice.
-    - Allowed values: `generated`, `cloned`, `premade`, `professional`, `famous`, `high_quality`
-  - `reader_app_enabled` (boolean, optional, nullable) — Whether the reader app is enabled.
-  - `image_url` (string, optional, nullable) — The image URL of the voice.
-  - `ban_reason` (string, optional, nullable) — The ban reason of the voice.
-  - `liked_by_count` (integer, optional) — The number of likes on the voice.
-  - `cloned_by_count` (integer, optional) — The number of clones on the voice.
-  - `name` (string, optional) — The name of the voice.
-  - `description` (string, optional, nullable) — The description of the voice.
-  - `labels` (map from string to string, optional) — The labels of the voice.
-  - `review_status` (enum, optional) — The review status of the voice.
-    - Allowed values: `not_requested`, `pending`, `declined`, `allowed`, `allowed_with_changes`
-  - `review_message` (string, optional, nullable) — The review message of the voice.
-  - `enabled_in_library` (boolean, optional) — Whether the voice is enabled in the library.
-  - `instagram_username` (string, optional, nullable) — The Instagram username of the voice.
-  - `twitter_username` (string, optional, nullable) — The Twitter/X username of the voice.
-  - `youtube_username` (string, optional, nullable) — The YouTube username of the voice.
-  - `tiktok_username` (string, optional, nullable) — The TikTok username of the voice.
-  - `moderation_check` (object, optional, nullable) — The moderation check of the voice.
-    - `date_checked_unix` (integer, optional, nullable) — The date the moderation check was made in Unix time.
-    - `name_value` (string, optional, nullable) — The name value of the voice.
-    - `name_check` (boolean, optional, nullable) — Whether the name check was successful.
-    - `description_value` (string, optional, nullable) — The description value of the voice.
-    - `description_check` (boolean, optional, nullable) — Whether the description check was successful.
-    - `sample_ids` (list of string, optional, nullable) — A list of sample IDs.
-    - `sample_checks` (list of double, optional, nullable) — A list of sample checks.
-    - `captcha_ids` (list of string, optional, nullable) — A list of captcha IDs.
-    - `captcha_checks` (list of double, optional, nullable) — A list of CAPTCHA check values.
-  - `reader_restricted_on` (list of object, optional, nullable) — The reader restricted on of the voice.
-    - `resource_type` (enum, required) — The type of resource.
-      - Allowed values: `read`, `collection`
-    - `resource_id` (string, required) — The ID of the resource.
+- `settings` (VoiceSettingsResponseModel, optional, nullable) — The settings of the voice.
+- `sharing` (VoiceSharingResponseModel, optional, nullable) — The sharing information of the voice.
 - `high_quality_base_model_ids` (list of string, optional) — The base model IDs for high-quality voices.
-- `verified_languages` (list of object, optional, nullable) — The verified languages of the voice.
-  - `language` (string, required) — The language of the voice.
-  - `model_id` (string, required) — The voice's model ID.
-  - `accent` (string, optional, nullable) — The voice's accent, if applicable.
-  - `locale` (string, optional, nullable) — The voice's locale, if applicable.
-  - `preview_url` (string, optional, nullable) — The voice's preview URL, if applicable.
+- `verified_languages` (list of VerifiedVoiceLanguageResponseModel, optional, nullable) — The verified languages of the voice.
 - `collection_ids` (list of string, optional, nullable) — The IDs of collections this voice belongs to.
 - `safety_control` (enum, optional, nullable) — The safety controls of the voice.
   - Allowed values: `NONE`, `BAN`, `CAPTCHA`, `ENTERPRISE_BAN`, `ENTERPRISE_CAPTCHA`
-- `voice_verification` (object, optional, nullable) — The voice verification of the voice.
-  - `requires_verification` (boolean, required) — Whether the voice requires verification.
-  - `is_verified` (boolean, required) — Whether the voice has been verified.
-  - `verification_failures` (list of string, required) — List of verification failures.
-  - `verification_attempts_count` (integer, required) — The number of verification attempts.
-  - `language` (string, optional, nullable) — The language of the voice.
-  - `verification_attempts` (list of object, optional, nullable) — Number of times a verification was attempted.
-    - `text` (string, required) — The text of the verification attempt.
-    - `date_unix` (integer, required) — The date of the verification attempt in Unix time.
-    - `accepted` (boolean, required) — Whether the verification attempt was accepted.
-    - `similarity` (double, required) — The similarity of the verification attempt.
-    - `levenshtein_distance` (double, required) — The Levenshtein distance of the verification attempt.
-    - `recording` (object, optional, nullable) — The recording of the verification attempt.
-      - `recording_id` (string, required) — The ID of the recording.
-      - `mime_type` (string, required) — The MIME type of the recording.
-      - `size_bytes` (integer, required) — The size of the recording in bytes.
-      - `upload_date_unix` (integer, required) — The date of the recording in Unix time.
-      - `transcription` (string, required) — The transcription of the recording.
+- `voice_verification` (VoiceVerificationResponseModel, optional, nullable) — The voice verification of the voice.
 - `permission_on_resource` (string, optional, nullable) — The permission on the resource of the voice.
 - `is_owner` (boolean, optional, nullable) — Whether the voice is owned by the user.
 - `is_legacy` (boolean, optional, default: false) — Whether the voice is legacy.
@@ -207,14 +74,194 @@ Successful Response
 
 ## Errors
 
+### 409 Conflict Error
+
+A generation for this preview is already in progress. Retry the request.
+
+- `any`
+
 ### 422 Unprocessable Entity Error
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### SampleResponseModel
+
+- `sample_id` (string, optional) — The ID of the sample.
+- `file_name` (string, optional) — The name of the sample file.
+- `mime_type` (string, optional) — The MIME type of the sample file.
+- `size_bytes` (integer, optional) — The size of the sample file in bytes.
+- `hash` (string, optional) — The hash of the sample file.
+- `duration_secs` (double, optional, nullable)
+- `remove_background_noise` (boolean, optional, nullable)
+- `has_isolated_audio` (boolean, optional, nullable)
+- `has_isolated_audio_preview` (boolean, optional, nullable)
+- `speaker_separation` (SpeakerSeparationResponseModel, optional, nullable)
+- `trim_start` (integer, optional, nullable)
+- `trim_end` (integer, optional, nullable)
+
+### FineTuningResponseModel
+
+- `is_allowed_to_fine_tune` (boolean, optional) — Whether the user is allowed to fine-tune the voice.
+- `state` (map from string to enum, optional) — The state of the fine-tuning process for each model.
+  - Allowed values: `not_started`, `queued`, `fine_tuning`, `fine_tuned`, `failed`, `delayed`
+- `verification_failures` (list of string, optional) — List of verification failures in the fine-tuning process.
+- `verification_attempts_count` (integer, optional) — The number of verification attempts in the fine-tuning process.
+- `manual_verification_requested` (boolean, optional) — Whether a manual verification was requested for the fine-tuning process.
+- `language` (string, optional, nullable) — The language of the fine-tuning process.
+- `progress` (map from string to double, optional, nullable) — The progress of the fine-tuning process.
+- `message` (map from string to string, optional, nullable) — The message of the fine-tuning process.
+- `dataset_duration_seconds` (double, optional, nullable) — The duration of the dataset in seconds.
+- `verification_attempts` (list of VerificationAttemptResponseModel, optional, nullable) — The number of verification attempts.
+- `slice_ids` (list of string, optional, nullable) — List of slice IDs.
+- `manual_verification` (ManualVerificationResponseModel, optional, nullable) — The manual verification of the fine-tuning process.
+- `max_verification_attempts` (integer, optional, nullable) — The maximum number of verification attempts.
+- `next_max_verification_attempts_reset_unix_ms` (integer, optional, nullable) — The next maximum verification attempts reset time in Unix milliseconds.
+- `finetuning_state` (any, optional)
+
+### VoiceSettingsResponseModel
+
+- `stability` (double, optional, nullable, default: 0.5) — Determines how stable the voice is and the randomness between each generation. Lower values introduce broader emotional range for the voice. Higher values can result in a monotonous voice with limited emotion.
+- `use_speaker_boost` (boolean, optional, nullable, default: true) — This setting boosts the similarity to the original speaker. Using this setting requires a slightly higher computational load, which in turn increases latency.
+- `similarity_boost` (double, optional, nullable, default: 0.75) — Determines how closely the AI should adhere to the original voice when attempting to replicate it.
+- `style` (double, optional, nullable, default: 0) — Determines the style exaggeration of the voice. This setting attempts to amplify the style of the original speaker. It does consume additional computational resources and might increase latency if set to anything other than 0.
+- `speed` (double, optional, nullable, default: 1) — Adjusts the speed of the voice. A value of 1.0 is the default speed, while values less than 1.0 slow down the speech, and values greater than 1.0 speed it up.
+
+### VoiceSharingResponseModel
+
+- `status` (enum, optional) — The status of the voice sharing.
+  - Allowed values: `enabled`, `disabled`, `copied`, `copied_disabled`
+- `history_item_sample_id` (string, optional, nullable) — The sample ID of the history item.
+- `date_unix` (integer, optional) — The date of the voice sharing in Unix time.
+- `whitelisted_emails` (list of string, optional) — A list of whitelisted emails.
+- `public_owner_id` (string, optional) — The ID of the public owner.
+- `original_voice_id` (string, optional) — The ID of the original voice.
+- `financial_rewards_enabled` (boolean, optional) — Whether financial rewards are enabled.
+- `free_users_allowed` (boolean, optional) — Whether free users are allowed.
+- `live_moderation_enabled` (boolean, optional) — Whether live moderation is enabled.
+- `rate` (double, optional, nullable) — The rate of the voice sharing.
+- `fiat_rate` (double, optional, nullable) — The rate of the voice sharing in USD per 1000 credits.
+- `notice_period` (integer, optional) — The notice period of the voice sharing.
+- `disable_at_unix` (integer, optional, nullable) — The date of the voice sharing in Unix time.
+- `voice_mixing_allowed` (boolean, optional) — Whether voice mixing is allowed.
+- `featured` (boolean, optional) — Whether the voice is featured.
+- `category` (enum, optional) — The category of the voice.
+  - Allowed values: `generated`, `cloned`, `premade`, `professional`, `famous`, `high_quality`
+- `reader_app_enabled` (boolean, optional, nullable) — Whether the reader app is enabled.
+- `image_url` (string, optional, nullable) — The image URL of the voice.
+- `ban_reason` (string, optional, nullable) — The ban reason of the voice.
+- `liked_by_count` (integer, optional) — The number of likes on the voice.
+- `cloned_by_count` (integer, optional) — The number of clones on the voice.
+- `name` (string, optional) — The name of the voice.
+- `description` (string, optional, nullable) — The description of the voice.
+- `labels` (map from string to string, optional) — The labels of the voice.
+- `review_status` (enum, optional) — The review status of the voice.
+  - Allowed values: `not_requested`, `pending`, `declined`, `allowed`, `allowed_with_changes`
+- `review_message` (string, optional, nullable) — The review message of the voice.
+- `enabled_in_library` (boolean, optional) — Whether the voice is enabled in the library.
+- `instagram_username` (string, optional, nullable) — The Instagram username of the voice.
+- `twitter_username` (string, optional, nullable) — The Twitter/X username of the voice.
+- `youtube_username` (string, optional, nullable) — The YouTube username of the voice.
+- `tiktok_username` (string, optional, nullable) — The TikTok username of the voice.
+- `moderation_check` (VoiceSharingModerationCheckResponseModel, optional, nullable) — The moderation check of the voice.
+- `reader_restricted_on` (list of ReaderResourceResponseModel, optional, nullable) — The reader restricted on of the voice.
+
+### VerifiedVoiceLanguageResponseModel
+
+- `language` (string, required) — The language of the voice.
+- `model_id` (string, required) — The voice's model ID.
+- `accent` (string, optional, nullable) — The voice's accent, if applicable.
+- `locale` (string, optional, nullable) — The voice's locale, if applicable.
+- `preview_url` (string, optional, nullable) — The voice's preview URL, if applicable.
+
+### VoiceVerificationResponseModel
+
+- `requires_verification` (boolean, required) — Whether the voice requires verification.
+- `is_verified` (boolean, required) — Whether the voice has been verified.
+- `verification_failures` (list of string, required) — List of verification failures.
+- `verification_attempts_count` (integer, required) — The number of verification attempts.
+- `language` (string, optional, nullable) — The language of the voice.
+- `verification_attempts` (list of VerificationAttemptResponseModel, optional, nullable) — Number of times a verification was attempted.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### SpeakerSeparationResponseModel
+
+- `voice_id` (string, required) — The ID of the voice.
+- `sample_id` (string, required) — The ID of the sample.
+- `status` (enum, required) — The status of the speaker separation.
+  - Allowed values: `not_started`, `pending`, `completed`, `failed`
+- `speakers` (map from string to SpeakerResponseModel, optional, nullable) — The speakers of the sample.
+- `selected_speaker_ids` (list of string, optional, nullable) — The IDs of the selected speakers.
+
+### VerificationAttemptResponseModel
+
+- `text` (string, required) — The text of the verification attempt.
+- `date_unix` (integer, required) — The date of the verification attempt in Unix time.
+- `accepted` (boolean, required) — Whether the verification attempt was accepted.
+- `similarity` (double, required) — The similarity of the verification attempt.
+- `levenshtein_distance` (double, required) — The Levenshtein distance of the verification attempt.
+- `recording` (RecordingResponseModel, optional, nullable) — The recording of the verification attempt.
+
+### ManualVerificationResponseModel
+
+- `extra_text` (string, required) — The extra text of the manual verification.
+- `request_time_unix` (integer, required) — The date of the manual verification in Unix time.
+- `files` (list of ManualVerificationFileResponseModel, required) — The files of the manual verification.
+
+### VoiceSharingModerationCheckResponseModel
+
+- `date_checked_unix` (integer, optional, nullable) — The date the moderation check was made in Unix time.
+- `name_value` (string, optional, nullable) — The name value of the voice.
+- `name_check` (boolean, optional, nullable) — Whether the name check was successful.
+- `description_value` (string, optional, nullable) — The description value of the voice.
+- `description_check` (boolean, optional, nullable) — Whether the description check was successful.
+- `sample_ids` (list of string, optional, nullable) — A list of sample IDs.
+- `sample_checks` (list of double, optional, nullable) — A list of sample checks.
+- `captcha_ids` (list of string, optional, nullable) — A list of captcha IDs.
+- `captcha_checks` (list of double, optional, nullable) — A list of CAPTCHA check values.
+
+### ReaderResourceResponseModel
+
+- `resource_type` (enum, required) — The type of resource.
+  - Allowed values: `read`, `collection`
+- `resource_id` (string, required) — The ID of the resource.
+
+### ValidationErrorLocItems
+
+### SpeakerResponseModel
+
+- `speaker_id` (string, required) — The ID of the speaker.
+- `duration_secs` (double, required) — The duration of the speaker segment in seconds.
+- `utterances` (list of UtteranceResponseModel, optional, nullable) — The utterances of the speaker.
+
+### RecordingResponseModel
+
+- `recording_id` (string, required) — The ID of the recording.
+- `mime_type` (string, required) — The MIME type of the recording.
+- `size_bytes` (integer, required) — The size of the recording in bytes.
+- `upload_date_unix` (integer, required) — The date of the recording in Unix time.
+- `transcription` (string, required) — The transcription of the recording.
+
+### ManualVerificationFileResponseModel
+
+- `file_id` (string, required) — The ID of the file.
+- `file_name` (string, required) — The name of the file.
+- `mime_type` (string, required) — The MIME type of the file.
+- `size_bytes` (integer, required) — The size of the file in bytes.
+- `upload_date_unix` (integer, required) — The date of the file in Unix time.
+
+### UtteranceResponseModel
+
+- `start` (double, required) — The start time of the utterance in seconds.
+- `end` (double, required) — The end time of the utterance in seconds.
 
 ## Examples
 

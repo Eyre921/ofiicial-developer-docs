@@ -22,13 +22,17 @@ ElevenLabs supports three types of post-call webhooks:
 
 Post-call webhooks can be enabled for all agents in your workspace through the ElevenAgents [settings page](https://elevenlabs.io/app/agents/settings).
 
-![Post-call webhook settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/eb5d768612d6461a21bc3127611f60724be3e1a55005af43faf48f2d7bf23807/assets/images/conversational-ai/postcallwebhooksettings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T112221Z&X-Amz-Expires=604800&X-Amz-Signature=a42f8c4370ba134107ad05d9fbbbec345cd5418a11f5831d7228f1bb7753ad3d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Post-call webhook settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/eb5d768612d6461a21bc3127611f60724be3e1a55005af43faf48f2d7bf23807/assets/images/conversational-ai/postcallwebhooksettings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T103308Z&X-Amz-Expires=604800&X-Amz-Signature=3c389047ae69e3ec8a6142cfd70c4472a10199eb13ba65f3a0fc731d27b0757a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-Post-call webhooks must return a 200 status code to be considered successful. Webhooks that
-repeatedly fail are auto disabled if there are 10 or more consecutive failures and the last
-successful delivery was more than 7 days ago or has never been successfully delivered.
+> **Warning**
+>
+> Post-call webhooks must return a 200 status code to be considered successful. Webhooks that
+> repeatedly fail are auto disabled if there are 10 or more consecutive failures and the last
+> successful delivery was more than 7 days ago or has never been successfully delivered.
 
-Post-call webhooks can be automatically retried if they fail. See [webhook retries](/docs/eleven-api/resources/webhooks#retries).
+> **Note**
+>
+> Post-call webhooks can be automatically retried if they fail. See [webhook retries](/docs/eleven-api/resources/webhooks#retries).
 
 ### Authentication
 
@@ -155,8 +159,10 @@ export async function POST(req: NextRequest) {
 
 For additional security, you can add ElevenLabs' static egress IPs to your allowlist. See [IP allowlisting](/docs/eleven-api/resources/ip-allowlisting) for the complete list of IP addresses.
 
-Using IP allowlisting in combination with HMAC signature validation provides multiple layers of
-security.
+> **Tip**
+>
+> Using IP allowlisting in combination with HMAC signature validation provides multiple layers of
+> security.
 
 ## Webhook response structure
 
@@ -218,17 +224,21 @@ The `data` object contains only:
 | `conversation_id` | string | Unique identifier for the conversation                                         |
 | `full_audio`      | string | Base64-encoded string containing the complete conversation audio in MP3 format |
 
-Audio webhooks contain only the three fields listed above. They do NOT include transcript data,
-metadata, analysis results, or any other conversation details.
+> **Warning**
+>
+> Audio webhooks contain only the three fields listed above. They do NOT include transcript data,
+> metadata, analysis results, or any other conversation details.
 
 ### Call initiation failure webhooks (`call_initiation_failure`)
 
 Contains information about telephony call initiation attempts, including failure reasons and telephony-provider metadata.
 
-Call initiation failure webhook events are sent when a call fails to initiate due to connection
-errors, user declining the call, or user not picking up. If a call goes to voicemail or is picked
-up by an automated service, no call initiation failure webhook is sent as the call was
-successfully initiated.
+> **Note**
+>
+> Call initiation failure webhook events are sent when a call fails to initiate due to connection
+> errors, user declining the call, or user not picking up. If a call goes to voicemail or is picked
+> up by an automated service, no call initiation failure webhook is sent as the call was
+> successfully initiated.
 
 #### Top-level fields
 
@@ -475,9 +485,11 @@ The `body` object for SIP metadata contains:
 
 Audio webhooks are delivered separately from transcription webhooks and contain only the essential fields needed to identify the conversation along with the base64-encoded audio data.
 
-Audio webhooks can be enabled or disabled using the "Send audio data" toggle in your webhook
-settings. This setting can be configured at both the workspace level (in ElevenAgents settings)
-and at the agent level (in individual agent webhook overrides).
+> **Note**
+>
+> Audio webhooks can be enabled or disabled using the "Send audio data" toggle in your webhook
+> settings. This setting can be configured at both the workspace level (in ElevenAgents settings)
+> and at the agent level (in individual agent webhook overrides).
 
 ### Streaming delivery
 
@@ -627,8 +639,10 @@ function handleCallFailureWebhook(data) {
 }
 ```
 
-Audio webhooks can be large files, so ensure your webhook endpoint can handle streaming requests
-and has sufficient memory/storage capacity. The audio is delivered in MP3 format.
+> **Note**
+>
+> Audio webhooks can be large files, so ensure your webhook endpoint can handle streaming requests
+> and has sufficient memory/storage capacity. The audio is delivered in MP3 format.
 
 ## Use cases
 

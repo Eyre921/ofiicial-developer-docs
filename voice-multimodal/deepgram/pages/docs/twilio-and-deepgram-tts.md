@@ -56,7 +56,9 @@ You need the following accounts, keys, and tools.
 * **Python 3.10 or later.**
 * A tunneling tool to expose your local server to Twilio. This guide uses [ngrok](https://ngrok.com/download).
 
-Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
+> **Info**
+>
+> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
 
 Install ngrok and authenticate it once with the token from your ngrok dashboard.
 
@@ -151,7 +153,9 @@ async def deepgram_tts(text: str):
 
 Flux model strings follow the format `flux-{voice}-{language}` (for example, `flux-alexis-en`); swap the voice to change how the message sounds. See [Flux TTS voices](/docs/flux-tts/voices) for the current list.
 
-`/v2/speak` rejects Aura model strings such as `aura-2-thalia-en`. Those still run on the older [`speak.v1` REST API](/docs/tts-rest).
+> **Info**
+>
+> `/v2/speak` rejects Aura model strings such as `aura-2-thalia-en`. Those still run on the older [`speak.v1` REST API](/docs/tts-rest).
 
 ## Step 4: Stream the audio into the call
 
@@ -224,7 +228,9 @@ python app.py                   # or: uvicorn app:app --port 5050 --reload
 ngrok http 127.0.0.1:5050       # in another terminal; copy the forwarding host into .env PUBLIC_HOSTNAME
 ```
 
-Use port 5050 (not 5000) to avoid the macOS AirPlay Receiver, which squats on port 5000 and returns 403. Use the `127.0.0.1:` form so ngrok forwards over IPv4 to uvicorn — plain `localhost` can resolve to IPv6 and miss the server.
+> **Info**
+>
+> Use port 5050 (not 5000) to avoid the macOS AirPlay Receiver, which squats on port 5000 and returns 403. Use the `127.0.0.1:` form so ngrok forwards over IPv4 to uvicorn — plain `localhost` can resolve to IPv6 and miss the server.
 
 Next, connect the phone number to your webhook. In the [Twilio Console](https://console.twilio.com), open **Phone Numbers → Manage → Active numbers → \[your number] → Voice Configuration**, set **A call comes in** to a **Webhook** pointing at `https://YOUR_HOST/twiml` with method **HTTP POST**, and save.
 
@@ -244,7 +250,9 @@ Your tunnel exposes both endpoints to the public internet. The companion `app.py
 * `TWILIO_AUTH_TOKEN` — validates the `X-Twilio-Signature` header so `/twiml` answers only real Twilio requests. Find it in the Twilio Console under **Account → API keys & tokens → Auth Token**.
 * `STREAM_SECRET` — a random string the TwiML passes as a `<Parameter>` and the app checks on the `/media` `start` event, so `/media` accepts only the sockets your own TwiML opened. Generate one with `python -c "import secrets; print(secrets.token_urlsafe(32))"`.
 
-Both guards are off by default (the app prints a warning) so a first local run just works. Set them before leaving the tunnel up or sharing the number.
+> **Warning**
+>
+> Both guards are off by default (the app prints a warning) so a first local run just works. Set them before leaving the tunnel up or sharing the number.
 
 ## Go further with Deepgram
 

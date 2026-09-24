@@ -10,13 +10,17 @@ path: docs/eleven-api/guides/cookbooks/music
 
 This guide will show you how to generate music with our Music API.
 
-Use the [ElevenLabs music skill](https://github.com/elevenlabs/skills/tree/main/music) to generate music tracks from your AI coding assistant:
+> **Tip**
+>
+> Use the [ElevenLabs music skill](https://github.com/elevenlabs/skills/tree/main/music) to generate music tracks from your AI coding assistant:
+>
+> ```bash
+> npx skills add elevenlabs/skills --skill music
+> ```
 
-```bash
-npx skills add elevenlabs/skills --skill music
-```
-
-The Music API is only available to paid users.
+> **Info**
+>
+> The Music API is only available to paid users.
 
 ## Using the Music API
 
@@ -77,11 +81,13 @@ npm install -g @elevenlabs/cli
 curl --proto '=https' --tlsv1.2 -LsSf https://github.com/elevenlabs/cli/releases/latest/download/elevenlabs-cli-installer.sh | sh
 ```
 
-Working with an AI coding assistant? Run `elevenlabs generate-skills` in your project to write a
-`SKILL.md` for every command group into `skills/`, so your assistant knows the CLI's full surface
-without you pasting docs. Use `--output-dir` to put them elsewhere. This reads the CLI's own
-embedded API definition, so it needs no API key and works offline — and it stays in step with
-whichever CLI version you have installed.
+> **Tip**
+>
+> Working with an AI coding assistant? Run `elevenlabs generate-skills` in your project to write a
+> `SKILL.md` for every command group into `skills/`, so your assistant knows the CLI's full surface
+> without you pasting docs. Use `--output-dir` to put them elsewhere. This reads the CLI's own
+> embedded API definition, so it needs no API key and works offline — and it stays in step with
+> whichever CLI version you have installed.
 
 Then authenticate — this opens your browser to authorize the CLI:
 
@@ -358,8 +364,10 @@ try {
 
 If styles using copyrighted material are used when generating a composition plan, a `bad_composition_plan` error will be returned. Similar to music prompts, a suggested composition plan `composition_plan_suggestion` will be returned within the error.
 
-In the case of a composition plan or prompt that contains harmful material, no suggested prompt
-will be returned.
+> **Warning**
+>
+> In the case of a composition plan or prompt that contains harmful material, no suggested prompt
+> will be returned.
 
 ## Next steps
 

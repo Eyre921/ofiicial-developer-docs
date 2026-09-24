@@ -8,7 +8,9 @@ path: docs/eleven-api/guides/how-to/speech-to-text/batch/multichannel-transcript
 
 # Multichannel speech-to-text
 
-**How-to guide** · Assumes you have completed the [Speech to Text quickstart](/docs/eleven-api/guides/cookbooks/speech-to-text).
+> **Note**
+>
+> **How-to guide** · Assumes you have completed the [Speech to Text quickstart](/docs/eleven-api/guides/cookbooks/speech-to-text).
 
 ## Overview
 
@@ -60,9 +62,11 @@ The `num_speakers` parameter cannot be used with multichannel mode as the speake
 
 By default (`multichannel_output_style=separate`), multichannel audio returns a different response format than single-channel:
 
-If you set `use_multi_channel: true` but provide a single-channel (mono) audio file, you'll
-receive a standard single-channel response, not the multichannel format. The multichannel response
-format is only returned when the audio file actually contains multiple channels.
+> **Note**
+>
+> If you set `use_multi_channel: true` but provide a single-channel (mono) audio file, you'll
+> receive a standard single-channel response, not the multichannel format. The multichannel response
+> format is only returned when the audio file actually contains multiple channels.
 
 **`Single channel response`**
 
@@ -279,9 +283,11 @@ for turn in conversation:
 
 Multichannel transcription supports [webhook delivery](/docs/eleven-api/guides/how-to/speech-to-text/batch/webhooks) for asynchronous processing:
 
-Webhooks return the `separate` (per-channel) format. `multichannel_output_style=combined` is not
-currently supported with webhook delivery — use a synchronous request, or merge the per-channel
-webhook payload client-side.
+> **Note**
+>
+> Webhooks return the `separate` (per-channel) format. `multichannel_output_style=combined` is not
+> currently supported with webhook delivery — use a synchronous request, or merge the per-channel
+> webhook payload client-side.
 
 ```python
 from elevenlabs import ElevenLabs
@@ -345,9 +351,11 @@ when using webhooks and merge client-side.
 
 ### Audio preparation
 
-For optimal results: - Use 16kHz sample rate for better performance - Remove silent or unused
-channels before processing - Ensure each channel contains only one speaker - Use lossless formats
-(WAV) when possible for best quality
+> **Tip**
+>
+> For optimal results: - Use 16kHz sample rate for better performance - Remove silent or unused
+> channels before processing - Ensure each channel contains only one speaker - Use lossless formats
+> (WAV) when possible for best quality
 
 ### Performance optimization
 

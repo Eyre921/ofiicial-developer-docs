@@ -16,7 +16,9 @@ Amazon SageMaker polls a `/ping` endpoint on every instance backing your Endpoin
 
 Deepgram containers report healthy only when they can actually serve inference — models loaded, inference path functional — rather than answering a static `200`. An instance that has failed to load its model reports that state instead of silently collecting requests it cannot serve.
 
-For the platform side of this contract — request timeouts, the startup window, and replacement behavior — see [How Your Container Should Respond to Health Check (Ping) Requests](https://docs.aws.amazon.com/sagemaker/latest/dg/your-algorithms-inference-code.html#your-algorithms-inference-algo-ping-requests) in the AWS documentation.
+> **Info**
+>
+> For the platform side of this contract — request timeouts, the startup window, and replacement behavior — see [How Your Container Should Respond to Health Check (Ping) Requests](https://docs.aws.amazon.com/sagemaker/latest/dg/your-algorithms-inference-code.html#your-algorithms-inference-algo-ping-requests) in the AWS documentation.
 
 ## While the container is starting
 
@@ -87,7 +89,9 @@ sagemaker_time_to_critical_seconds >= 0 and sagemaker_time_to_critical_seconds <
 
 A container that dips into a countdown and returns to `-1` recovered on its own, exactly as intended.
 
-The container emits this gauge itself, so `/metrics` answers even when the internal API and Engine metric sources are not yet reachable — during startup, for example. In that window the response carries the health gauge alone rather than failing the scrape.
+> **Info**
+>
+> The container emits this gauge itself, so `/metrics` answers even when the internal API and Engine metric sources are not yet reachable — during startup, for example. In that window the response carries the health gauge alone rather than failing the scrape.
 
 ## Streaming connections use a separate check
 

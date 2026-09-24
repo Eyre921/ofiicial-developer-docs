@@ -46,13 +46,17 @@ The Azure virtual machine creation wizard includes multiple high-level groups/ta
    4. "Run with Azure Spot discount" is not recommended for services that need to be highly available.
    5. For the size, click "See all sizes" and open the "N-Series" dropdown for Azure's GPU powered VMs. Select a size that meets Deepgram's [minimum required hardware specifications](/docs/self-hosted-deployment-environments#engine).
 
-      Make sure to select a VM size that is powered by a NVIDIA GPU, such as the NCv3 series, NCasT4\_v3 series, or NC A100 v4 series. Some Azure VM types, such as the NVv4 series, are powered by AMD GPUs. These will not work with Deepgram services at this time.
-
-      See [Azure support documentation](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes-gpu) for up-to-date details on which VM sizes are powered by NVIDIA GPUs.
+      > **Warning**
+      >
+      > Make sure to select a VM size that is powered by a NVIDIA GPU, such as the NCv3 series, NCasT4\_v3 series, or NC A100 v4 series. Some Azure VM types, such as the NVv4 series, are powered by AMD GPUs. These will not work with Deepgram services at this time.
+      >
+      > See [Azure support documentation](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes-gpu) for up-to-date details on which VM sizes are powered by NVIDIA GPUs.
 
 3. For the **Administrator account** wizard step, we recommend using an SSH public key for remote administration of the virtual machine. Fill out the username, SSH public key source, and other fields as needed.
 
-   As of Q4 2023, Azure only accepts RSA SSH keys. If you have an existing SSH key that is not RSA, you will need to create a new one.
+   > **Info**
+   >
+   > As of Q4 2023, Azure only accepts RSA SSH keys. If you have an existing SSH key that is not RSA, you will need to create a new one.
 
 4. For the **Inbound port rules** wizard step, you must allow the SSH (22) inbound port for remote administration as configured in the previous step. If you want to be able to receive requests from the public internet, make sure to also check the box to allow HTTPS traffic from the public internet.
 

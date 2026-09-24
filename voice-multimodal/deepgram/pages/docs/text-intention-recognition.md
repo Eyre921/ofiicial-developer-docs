@@ -79,7 +79,9 @@ curl -vX POST \
  "https://api.deepgram.com/v1/read?intents=true&language=en"
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
 
 ### Basic URL Request
 
@@ -112,7 +114,9 @@ curl -vX POST \
 
 ```
 
-Read our [Text Intelligence Getting Started guide](/docs/text-intelligence), which will walk you through making a basic text request and a basic URL request with the Deepgram SDKs.
+> **Info**
+>
+> Read our [Text Intelligence Getting Started guide](/docs/text-intelligence), which will walk you through making a basic text request and a basic URL request with the Deepgram SDKs.
 
 ### Query Parameters
 

@@ -27,18 +27,14 @@ Reference: https://elevenlabs.io/docs/api-reference/analytics/workspace/requests
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_List_API_requests_v1_workspace_analytics_requests_post.
 
 - `start_time` (integer, optional, nullable) — Start of the time range as a Unix timestamp in milliseconds.
 - `end_time` (integer, optional, nullable) — End of the time range as a Unix timestamp in milliseconds.
 - `limit` (integer, optional, default: 100)
 - `sort` (enum, optional, nullable) — Optional timestamp sort direction. If omitted, defaults to desc when end_time is provided, otherwise asc.
   - Allowed values: `asc`, `desc`
-- `filters` (list of object, optional, nullable)
-  - `column` (string, required)
-  - `operation` (enum, required)
-    - Allowed values: `in`, `not_in`, `le`, `ge`, `lt`, `gt`, `eq`, `neq`
-  - `values` (list of string or integer or double or string or boolean, required)
+- `filters` (list of ColumnFilter, optional, nullable)
 - `search` (string, optional, nullable)
 
 ## Response
@@ -50,7 +46,7 @@ Successful Response
 - `columns` (list of string, required)
 - `column_types` (list of enum, required)
   - Allowed values: `String`, `Float`, `DateTime`, `Int`, `Bool`, `JSON`, `Map`, `Array`
-- `rows` (list of list of string or integer or double or boolean or string, required)
+- `rows` (list of list of WorkspaceAnalyticsQueryResponseModelRowsItemsItems, required)
 - `column_units` (list of enum, required)
   - Allowed values: `ms`, `s`, `min`, `duration`, `credits`, `usd`, `eur`, `inr`, `pln`, `gbp`, `ratio`, `rating`
 
@@ -60,10 +56,28 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ColumnFilter
+
+- `column` (string, required)
+- `operation` (enum, required)
+  - Allowed values: `in`, `not_in`, `le`, `ge`, `lt`, `gt`, `eq`, `neq`
+- `values` (list of ColumnFilterValuesItems, required)
+
+### WorkspaceAnalyticsQueryResponseModelRowsItemsItems
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ColumnFilterValuesItems
+
+### ValidationErrorLocItems
 
 ## Examples
 

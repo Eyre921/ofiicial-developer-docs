@@ -23,8 +23,10 @@ A well-curated knowledge base gives your agent the information that matters to y
 
 A single document can be attached to multiple agents, so you can maintain shared knowledge in one place.
 
-The agent on this page is configured with full knowledge of ElevenLabs' documentation and sitemap.
-Ask it anything about ElevenLabs.
+> **Info**
+>
+> The agent on this page is configured with full knowledge of ElevenLabs' documentation and sitemap.
+> Ask it anything about ElevenLabs.
 
 ## How your agent uses knowledge
 

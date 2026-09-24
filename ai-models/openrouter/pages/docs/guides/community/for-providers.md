@@ -122,6 +122,7 @@ Below is an example of the response format:
       "deprecation_date": "2025-06-01T15:00:00Z",
       "is_ready": true,
       "is_free": false,
+      "service_tier": "priority", // omit for the default tier
       "discount_to_user": 0,
       "openrouter": {
         "slug": "anthropic/claude-sonnet-4"
@@ -702,6 +703,7 @@ The operational fields control model availability and routing:
 | `deprecation_date` | ISO 8601 date or UTC hour. See [Deprecation Date](#deprecation-date)                                       |
 | `is_ready`         | Launch control. See [Controlling Launch with `is_ready`](#controlling-launch-with-is_ready)                |
 | `is_free`          | Free variant marker. See [Free Model Variants with `is_free`](#free-model-variants-with-is_free)           |
+| `service_tier`     | Service tier of this entry. See [Service tiers with `service_tier`](#service-tiers-with-service_tier)      |
 | `discount_to_user` | Fractional user-facing discount. See [Discounts with `discount_to_user`](#discounts-with-discount_to_user) |
 | `openrouter.slug`  | The OpenRouter slug this model maps to                                                                     |
 
@@ -757,6 +759,30 @@ Behavior:
 
 You can list both a free and a paid version of the same model. Just always set `is_free: true` on the free one.
 
+#### Service tiers with `service_tier`
+
+If you sell more than one grade of capacity for a model, publish one document per tier under the same `id` and mark each non-default document with `service_tier`:
+
+```json lines theme={null}
+[
+  { "id": "your-org/your-model", "pricing": [/* default tier prices */] },
+  { "id": "your-org/your-model", "service_tier": "flex", "pricing": [/* flex prices */] },
+  { "id": "your-org/your-model", "service_tier": "priority", "pricing": [/* priority prices */] }
+]
+```
+
+Accepted values are `flex`, `priority`, and `fast`. `fast` is an alias for `priority`, so publish one or the other for a given `id`, not both. An omitted field means the default tier. Any other value fails validation and the document is dropped.
+
+Behavior:
+
+* OpenRouter creates a separate endpoint for each tier document, using that document's own pricing, context length, limits, and capabilities. A priority tier with a shorter context window, or a flex tier with fewer supported parameters, declares those differences in its own document.
+* A tier document is staged only once OpenRouter serves the default tier of the same `id`. Publish the default document first, or alongside the tier documents. Tier endpoints then go through the standard staging, baseline test, and unhide flow.
+* Tier endpoints appear to users as [service tier endpoints](/docs/guides/features/service-tiers): they are reachable through the `service_tier` request parameter, the `:nitro` and `:floor` variants, and tier-suffixed provider slugs, and they stay out of default routing.
+* `service_tier` is OpenRouter's vocabulary, not your API's. If your API names a tier differently, for example `standby` for a discounted tier, still publish it as `flex` here. The mapping to your wire format lives in OpenRouter's integration for your API.
+* A document cannot combine `is_free: true` with `service_tier`. Free endpoints are a separate variant of the default tier.
+
+For OpenRouter to serve a tier endpoint, your inference API must accept `service_tier` on the request and report the tier that served the request in the response, and OpenRouter's integration for your API must forward it. Tier endpoints stay hidden until that integration is in place, so coordinate with us before publishing tier documents. The `passthrough_parameters` example above describes a request parameter you accept, which is unrelated to this field.
+
 #### Discounts with `discount_to_user`
 
 To offer a discount on the prices users see and pay, include the optional `discount_to_user` field. It's a decimal fraction that OpenRouter applies to your displayed pricing:
@@ -787,6 +813,8 @@ Send `discount_to_user` as a number, not a string. Unlike the `cost_usd` fields,
 The full schema is available as an OpenAPI 3.1 document, in which every closed value domain (modality types, pricing types and units, capacity windows, descriptor types, media sources, formats) surfaces as an explicit `enum`:
 
 [Download the provider schema (OpenAPI 3.1 JSON)](/docs/assets/provider-monitor-schema-v2.openapi.json)
+
+The schema only gains optional fields. Existing fields are never removed, renamed, narrowed, or made required, so a document you publish today keeps validating when we add fields. `schema_version` marks a V2 document: we publish `2.4` in these docs, and any `2.x` value is accepted, so you never need to republish to track it.
 
 ### 9. Auto top up or invoicing
 

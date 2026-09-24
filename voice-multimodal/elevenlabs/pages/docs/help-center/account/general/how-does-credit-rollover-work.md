@@ -10,10 +10,12 @@ path: docs/help-center/account/general/how-does-credit-rollover-work
 
 Credit rollover allows you to carry over up to twice your usual subscription credit quota when you begin a new billing cycle, provided you remain on the same subscription.
 
-Pay As You Go credits are not affected by monthly credit rollover, and will expire 12 months after
-purchase. However, if you change subscription plans, your PAYG credit balance may be adjusted
-because credits are stored as a dollar value and converted at your current plan's rate. See [What happens to my PAYG credits if I change subscription plans?](/docs/help-center/account/general/what-happens-to-my-payg-credits-if-i-change-subscription-plans)
-for details.
+> **Note**
+>
+> Pay As You Go credits are not affected by monthly credit rollover, and will expire 12 months after
+> purchase. However, if you change subscription plans, your PAYG credit balance may be adjusted
+> because credits are stored as a dollar value and converted at your current plan's rate. See [What happens to my PAYG credits if I change subscription plans?](/docs/help-center/account/general/what-happens-to-my-payg-credits-if-i-change-subscription-plans)
+> for details.
 
 On our standard subscription plans (Starter, Creator, Pro, Scale and Business), your monthly credit quota will reset at the beginning of each billing cycle. If you have unused subscription credits at the end of your billing cycle, you will automatically rollover up to twice your usual monthly quota.
 

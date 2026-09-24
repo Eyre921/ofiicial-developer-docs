@@ -38,15 +38,8 @@ This endpoint expects a multipart form containing a file.
 
 Successful Response
 
-- `characters` (list of object, required) — List of characters with their timing information.
-  - `text` (string, required) — The character that was transcribed.
-  - `start` (double, required) — The start time of the character in seconds.
-  - `end` (double, required) — The end time of the character in seconds.
-- `words` (list of object, required) — List of words with their timing information.
-  - `text` (string, required) — The word that was transcribed.
-  - `start` (double, required) — The start time of the word in seconds.
-  - `end` (double, required) — The end time of the word in seconds.
-  - `loss` (double, required) — The average alignment loss/confidence score for this word, calculated from its constituent characters.
+- `characters` (list of ForcedAlignmentCharacterResponseModel, required) — List of characters with their timing information.
+- `words` (list of ForcedAlignmentWordResponseModel, required) — List of words with their timing information.
 - `loss` (double, required) — The average alignment loss/confidence score for the entire transcript, calculated from all characters.
 
 ## Errors
@@ -55,10 +48,34 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ForcedAlignmentCharacterResponseModel
+
+Model representing a single character with its timing information from the aligner.
+
+- `text` (string, required) — The character that was transcribed.
+- `start` (double, required) — The start time of the character in seconds.
+- `end` (double, required) — The end time of the character in seconds.
+
+### ForcedAlignmentWordResponseModel
+
+Model representing a single word with its timing information from the aligner.
+
+- `text` (string, required) — The word that was transcribed.
+- `start` (double, required) — The start time of the word in seconds.
+- `end` (double, required) — The end time of the word in seconds.
+- `loss` (double, required) — The average alignment loss/confidence score for this word, calculated from its constituent characters.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

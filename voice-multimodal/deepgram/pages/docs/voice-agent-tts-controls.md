@@ -12,7 +12,9 @@ path: docs/voice-agent-tts-controls
 
 If you're building with the [Voice Agent API](/docs/voice-agent), Deepgram's [TTS voice controls](/docs/tts-voice-controls) — speed, expressivity, pronunciation, and pacing — work inside your agent pipeline. Where you apply each control depends on what it does and what context the decision needs.
 
-Speed applies to both [Flux TTS](/docs/flux-tts/overview) (`agent.speak.provider.version` `v2`) and Aura (`v1`), with different accepted values for each. Expressivity applies to Flux TTS only. The pronunciation and pacing guidance applies to every TTS model you can use with the Voice Agent, though the inline pronunciation control syntax itself works with Aura (`v1`) only.
+> **Info**
+>
+> Speed applies to both [Flux TTS](/docs/flux-tts/overview) (`agent.speak.provider.version` `v2`) and Aura (`v1`), with different accepted values for each. Expressivity applies to Flux TTS only. The pronunciation and pacing guidance applies to every TTS model you can use with the Voice Agent, though the inline pronunciation control syntax itself works with Aura (`v1`) only.
 
 ## Where each control belongs
 
@@ -71,7 +73,9 @@ See [TTS Models](/docs/voice-agent-tts-models#deepgram-tts-models) for the full 
 
 A consistent session-level speed is useful for agents that serve accessibility-sensitive audiences, or any conversation where pacing should stay steady throughout the call.
 
-The `speed` parameter is also supported for Cartesia TTS in Voice Agent sessions. See [Deepgram-managed Cartesia TTS models](/docs/voice-agent-tts-models#deepgram-managed-cartesia-tts-models) for the accepted values.
+> **Info**
+>
+> The `speed` parameter is also supported for Cartesia TTS in Voice Agent sessions. See [Deepgram-managed Cartesia TTS models](/docs/voice-agent-tts-models#deepgram-managed-cartesia-tts-models) for the accepted values.
 
 ## Expressivity: set the delivery register at the session level
 
@@ -99,7 +103,9 @@ It accepts the whole numbers `-2` to `2` and defaults to `0`, the voice's tuned 
 
 Match the register to the conversation your agent handles: the calm end suits support, de-escalation, healthcare, and IVR, and the animated end suits consumer, entertainment, and outbound engagement. Because each voice has its own character, the same value lands differently from one voice to the next.
 
-`expressivity` is a beta parameter. `0` is the only value validated for production, and moving away from it raises the chance of hallucinations and pronunciation errors, so test the value you plan to ship and re-check it after model updates.
+> **Warning**
+>
+> `expressivity` is a beta parameter. `0` is the only value validated for production, and moving away from it raises the chance of hallucinations and pronunciation errors, so test the value you plan to ship and re-check it after model updates.
 
 Expressivity is not a speed control: it changes pitch range, pacing variation, and timbre together rather than the speaking rate. Combine it with `speed` when you need both, and test the combination.
 
@@ -132,4 +138,6 @@ For example, prefer "555. 867. 5309" over "5558675309".
 
 This keeps your pronunciation map and pacing rules in the LLM layer, not in a separate lexicon or orchestration config. To add a term, edit the prompt — no redeploy required.
 
-For Aura's override syntax, validation rules, and IPA sourcing tips, see [TTS Voice Controls](/docs/tts-voice-controls#pronunciation-control); check your provider's documentation when using a third-party voice. The curly braces must be escaped (`\{` and `\}`); unescaped braces are treated as plain text and read aloud. Flux TTS does not support inline pronunciation controls in the Voice Agent and rejects any request whose text contains them, ending the session with a `DATA-0002` error — prompt the LLM for the pronunciation you want instead. For pause and pacing techniques, see [Text to Speech Prompting](/docs/text-to-speech-prompting) and [Formatting Text for Aura-2](/docs/improving-aura-2-formatting).
+> **Info**
+>
+> For Aura's override syntax, validation rules, and IPA sourcing tips, see [TTS Voice Controls](/docs/tts-voice-controls#pronunciation-control); check your provider's documentation when using a third-party voice. The curly braces must be escaped (`\{` and `\}`); unescaped braces are treated as plain text and read aloud. Flux TTS does not support inline pronunciation controls in the Voice Agent and rejects any request whose text contains them, ending the session with a `DATA-0002` error — prompt the LLM for the pronunciation you want instead. For pause and pacing techniques, see [Text to Speech Prompting](/docs/text-to-speech-prompting) and [Formatting Text for Aura-2](/docs/improving-aura-2-formatting).

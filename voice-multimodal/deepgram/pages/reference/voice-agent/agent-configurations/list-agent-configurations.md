@@ -32,12 +32,7 @@ Reference: https://developers.deepgram.com/reference/voice-agent/agent-configura
 
 A list of agent configurations
 
-- `agents` (list of object, optional) — A list of agent configurations for the project
-  - `agent_id` (string, required) — The unique identifier of the agent configuration
-  - `config` (object, required) — The agent configuration object
-  - `metadata` (map from string to string, optional) — A map of arbitrary key-value pairs for labeling or organizing the agent configuration
-  - `created_at` (string, optional) — Timestamp when the configuration was created
-  - `updated_at` (string, optional) — Timestamp when the configuration was last updated
+- `agents` (list of AgentConfigurationV1, optional) — A list of agent configurations for the project
 
 ## Errors
 
@@ -45,16 +40,36 @@ A list of agent configurations
 
 Invalid Request
 
-- `string or object or object`
-  - ErrorResponseLegacyError
-    - `err_code` (string, optional) — The error code
-    - `err_msg` (string, optional) — The error message
-    - `request_id` (string, optional) — The request ID
-  - ErrorResponseModernError
-    - `category` (string, optional) — The category of the error
-    - `message` (string, optional) — A message about the error
-    - `details` (string, optional) — A description of the error
-    - `request_id` (string, optional) — The unique identifier of the request
+- `ErrorResponse`
+
+## Types
+
+### AgentConfigurationV1
+
+A reusable agent configuration
+
+- `agent_id` (string, required) — The unique identifier of the agent configuration
+- `config` (AgentConfigurationV1Config, required) — The agent configuration object
+- `metadata` (map from string to string, optional) — A map of arbitrary key-value pairs for labeling or organizing the agent configuration
+- `created_at` (string, optional) — Timestamp when the configuration was created
+- `updated_at` (string, optional) — Timestamp when the configuration was last updated
+
+### ErrorResponseLegacyError
+
+- `err_code` (string, optional) — The error code
+- `err_msg` (string, optional) — The error message
+- `request_id` (string, optional) — The request ID
+
+### ErrorResponseModernError
+
+- `category` (string, optional) — The category of the error
+- `message` (string, optional) — A message about the error
+- `details` (string, optional) — A description of the error
+- `request_id` (string, optional) — The unique identifier of the request
+
+### AgentConfigurationV1Config
+
+The agent configuration object
 
 ## Examples
 

@@ -56,7 +56,9 @@ Read the [prompting guide](/docs/overview/capabilities/text-to-speech/best-pract
 
 ### Emotional deliveries with audio tags
 
-This feature is still under active development, actual results may vary.
+> **Warning**
+>
+> This feature is still under active development, actual results may vary.
 
 The Eleven v3 model allows the use of non-speech audio events to influence the delivery of the dialogue. This is done by inserting the audio events into the text input wrapped in square brackets.
 
@@ -132,7 +134,9 @@ The default response format is `mp3`, but other formats like `pcm` and `ulaw` ar
   * Sample rate: 48kHz
   * Bitrates: 32kbps - 192kbps
 
-Higher quality audio options are only available on paid tiers - see our [pricing page](https://elevenlabs.io/pricing/api) for details.
+> **Success**
+>
+> Higher quality audio options are only available on paid tiers - see our [pricing page](https://elevenlabs.io/pricing/api) for details.
 
 ## Supported languages
 

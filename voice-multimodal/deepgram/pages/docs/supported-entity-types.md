@@ -24,11 +24,15 @@ Deepgram's redaction functionality supports over 50 unique entity types for both
 
 You can also use redaction groups (`pci`, `pii`, `phi`, `numbers`) to redact multiple related entity types at once. See the **Redaction Groups** column in the tables below to see which groups include each entity type.
 
-`redact=true` and `redact=numbers` redact any sequence of three or more consecutive numerals, in addition to the entity types listed in the `numbers` group below. `redact=aggressive_numbers` extends digit-sequence redaction to single- and two-digit numbers as well.
+> **Info**
+>
+> `redact=true` and `redact=numbers` redact any sequence of three or more consecutive numerals, in addition to the entity types listed in the `numbers` group below. `redact=aggressive_numbers` extends digit-sequence redaction to single- and two-digit numbers as well.
+>
+> Digit-sequence redaction is independent of entity recognition. Numerals that match an entity type in the `numbers` group are tagged with the specific entity (`[CREDIT_CARD_1]`, `[SSN_1]`, etc.). Sequences caught only by the digit-length rule are replaced with a generic `[REDACTED]` placeholder.
 
-Digit-sequence redaction is independent of entity recognition. Numerals that match an entity type in the `numbers` group are tagged with the specific entity (`[CREDIT_CARD_1]`, `[SSN_1]`, etc.). Sequences caught only by the digit-length rule are replaced with a generic `[REDACTED]` placeholder.
-
-Some entity types (`cardinal`, `ordinal`, `percent`) are not included in any redaction group. To redact these, you must specify them individually (e.g. `redact=cardinal`).
+> **Info**
+>
+> Some entity types (`cardinal`, `ordinal`, `percent`) are not included in any redaction group. To redact these, you must specify them individually (e.g. `redact=cardinal`).
 
 ## Supported Entity Types
 

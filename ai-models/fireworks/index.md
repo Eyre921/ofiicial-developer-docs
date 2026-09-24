@@ -1,11 +1,12 @@
 # ai-models/fireworks 文档索引
 
-> 共 387 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 386 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
 
-- `firepass` — [Fire Pass Setup](pages/firepass.md) · [原文](https://docs.fireworks.ai/firepass)
+- `firepass` — [Fire Pass](pages/firepass.md) · [原文](https://docs.fireworks.ai/firepass)
+- `nexus` — [Overview](pages/nexus.md) · [原文](https://docs.fireworks.ai/nexus)
 
 ## accounts
 
@@ -146,32 +147,17 @@
 
 ## ecosystem
 
-- `ecosystem/fireconnect/claude-code` — [Claude Code](pages/ecosystem/fireconnect/claude-code.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/claude-code)
-- `ecosystem/fireconnect/cli-reference` — [CLI reference](pages/ecosystem/fireconnect/cli-reference.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/cli-reference)
-- `ecosystem/fireconnect/codex` — [Codex](pages/ecosystem/fireconnect/codex.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/codex)
-- `ecosystem/fireconnect/cursor` — [Cursor](pages/ecosystem/fireconnect/cursor.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/cursor)
-- `ecosystem/fireconnect/deepseek` — [DeepSeek Harness](pages/ecosystem/fireconnect/deepseek.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/deepseek)
-- `ecosystem/fireconnect/demo` — [Side-by-side demo](pages/ecosystem/fireconnect/demo.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/demo)
-- `ecosystem/fireconnect/microsoft-foundry` — [Microsoft Foundry](pages/ecosystem/fireconnect/microsoft-foundry.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/microsoft-foundry)
-- `ecosystem/fireconnect/models` — [Models](pages/ecosystem/fireconnect/models.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/models)
-- `ecosystem/fireconnect/opencode` — [OpenCode](pages/ecosystem/fireconnect/opencode.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/opencode)
-- `ecosystem/fireconnect/overview` — [Overview](pages/ecosystem/fireconnect/overview.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/overview)
-- `ecosystem/fireconnect/pi` — [Pi](pages/ecosystem/fireconnect/pi.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/pi)
-- `ecosystem/fireconnect/vscode` — [VS Code](pages/ecosystem/fireconnect/vscode.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/vscode)
-- `ecosystem/fireconnect/websearch-mcp` — [WebSearch MCP](pages/ecosystem/fireconnect/websearch-mcp.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/websearch-mcp)
-- `ecosystem/firerouter/authentication` — [Authentication](pages/ecosystem/firerouter/authentication.md) · [原文](https://docs.fireworks.ai/ecosystem/firerouter/authentication)
-- `ecosystem/firerouter/claude-code` — [Claude Code (manual setup)](pages/ecosystem/firerouter/claude-code.md) · [原文](https://docs.fireworks.ai/ecosystem/firerouter/claude-code)
-- `ecosystem/firerouter/litellm` — [LiteLLM](pages/ecosystem/firerouter/litellm.md) · [原文](https://docs.fireworks.ai/ecosystem/firerouter/litellm)
-- `ecosystem/firerouter/overview` — [Overview](pages/ecosystem/firerouter/overview.md) · [原文](https://docs.fireworks.ai/ecosystem/firerouter/overview)
-- `ecosystem/firerouter/quickstart` — [Quickstart](pages/ecosystem/firerouter/quickstart.md) · [原文](https://docs.fireworks.ai/ecosystem/firerouter/quickstart)
-- `ecosystem/firerouter/routing-preferences` — [Routing preferences](pages/ecosystem/firerouter/routing-preferences.md) · [原文](https://docs.fireworks.ai/ecosystem/firerouter/routing-preferences)
+- `ecosystem/fireconnect/harnesses` — [Coding Harnesses](pages/ecosystem/fireconnect/harnesses.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/harnesses)
+- `ecosystem/fireconnect/overview` — [FireConnect](pages/ecosystem/fireconnect/overview.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/overview)
+- `ecosystem/firerouter/apis-and-sdks` — [APIs and SDKs](pages/ecosystem/firerouter/apis-and-sdks.md) · [原文](https://docs.fireworks.ai/ecosystem/firerouter/apis-and-sdks)
+- `ecosystem/firerouter/overview` — [FireRouter](pages/ecosystem/firerouter/overview.md) · [原文](https://docs.fireworks.ai/ecosystem/firerouter/overview)
 - `ecosystem/integrations/agent-frameworks` — [Agent Frameworks](pages/ecosystem/integrations/agent-frameworks.md) · [原文](https://docs.fireworks.ai/ecosystem/integrations/agent-frameworks)
 - `ecosystem/integrations/azure-foundry` — [Microsoft Foundry](pages/ecosystem/integrations/azure-foundry.md) · [原文](https://docs.fireworks.ai/ecosystem/integrations/azure-foundry)
 - `ecosystem/integrations/byoc/how-setup-works` — [How Setup Works](pages/ecosystem/integrations/byoc/how-setup-works.md) · [原文](https://docs.fireworks.ai/ecosystem/integrations/byoc/how-setup-works)
 - `ecosystem/integrations/byoc/operational-model` — [Operational Model](pages/ecosystem/integrations/byoc/operational-model.md) · [原文](https://docs.fireworks.ai/ecosystem/integrations/byoc/operational-model)
 - `ecosystem/integrations/byoc/overview` — [Bring Your Own Cluster](pages/ecosystem/integrations/byoc/overview.md) · [原文](https://docs.fireworks.ai/ecosystem/integrations/byoc/overview)
 - `ecosystem/integrations/development-setup` — [Development Setup with Fireworks Docs MCP](pages/ecosystem/integrations/development-setup.md) · [原文](https://docs.fireworks.ai/ecosystem/integrations/development-setup)
-- `ecosystem/integrations/litellm` — [LiteLLM](pages/ecosystem/integrations/litellm.md) · [原文](https://docs.fireworks.ai/ecosystem/integrations/litellm)
+- `ecosystem/integrations/llm-gateways` — [LLM Gateways](pages/ecosystem/integrations/llm-gateways.md) · [原文](https://docs.fireworks.ai/ecosystem/integrations/llm-gateways)
 - `ecosystem/integrations/mlops-observability` — [MLOps & Observability](pages/ecosystem/integrations/mlops-observability.md) · [原文](https://docs.fireworks.ai/ecosystem/integrations/mlops-observability)
 
 ## examples
@@ -253,16 +239,14 @@
 - `fine-tuning/training-api/serverless` — [Serverless Training](pages/fine-tuning/training-api/serverless.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/serverless)
 - `fine-tuning/training-api/training-shapes` — [Training Shapes](pages/fine-tuning/training-api/training-shapes.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/training-shapes)
 
-## fireworks-nexus
-
-- `fireworks-nexus/provider-keys` — [Provider Keys (Bring Your Own)](pages/fireworks-nexus/provider-keys.md) · [原文](https://docs.fireworks.ai/fireworks-nexus/provider-keys)
-- `fireworks-nexus/usage-limits` — [Per-User Usage Limits](pages/fireworks-nexus/usage-limits.md) · [原文](https://docs.fireworks.ai/fireworks-nexus/usage-limits)
-
 ## getting-started
 
 - `getting-started/concepts` — [Concepts](pages/getting-started/concepts.md) · [原文](https://docs.fireworks.ai/getting-started/concepts)
+- `getting-started/fireconnect` — [FireConnect](pages/getting-started/fireconnect.md) · [原文](https://docs.fireworks.ai/getting-started/fireconnect)
+- `getting-started/firerouter` — [FireRouter](pages/getting-started/firerouter.md) · [原文](https://docs.fireworks.ai/getting-started/firerouter)
 - `getting-started/glossary` — [Glossary](pages/getting-started/glossary.md) · [原文](https://docs.fireworks.ai/getting-started/glossary)
 - `getting-started/introduction` — [Build with Fireworks AI](pages/getting-started/introduction.md) · [原文](https://docs.fireworks.ai/getting-started/introduction)
+- `getting-started/nexus` — [Fireworks Nexus](pages/getting-started/nexus.md) · [原文](https://docs.fireworks.ai/getting-started/nexus)
 - `getting-started/ondemand-quickstart` — [Deployments Quickstart](pages/getting-started/ondemand-quickstart.md) · [原文](https://docs.fireworks.ai/getting-started/ondemand-quickstart)
 - `getting-started/quickstart` — [Serverless Quickstart](pages/getting-started/quickstart.md) · [原文](https://docs.fireworks.ai/getting-started/quickstart)
 
@@ -299,6 +283,21 @@
 - `models/quantization` — [Quantization](pages/models/quantization.md) · [原文](https://docs.fireworks.ai/models/quantization)
 - `models/uploading-custom-models` — [Custom Models](pages/models/uploading-custom-models.md) · [原文](https://docs.fireworks.ai/models/uploading-custom-models)
 - `models/uploading-custom-models-api` — [Upload via REST API](pages/models/uploading-custom-models-api.md) · [原文](https://docs.fireworks.ai/models/uploading-custom-models-api)
+
+## nexus
+
+- `nexus/cli-reference` — [CLI Reference](pages/nexus/cli-reference.md) · [原文](https://docs.fireworks.ai/nexus/cli-reference)
+- `nexus/harness-compatibility` — [Harness Compatibility](pages/nexus/harness-compatibility.md) · [原文](https://docs.fireworks.ai/nexus/harness-compatibility)
+- `nexus/metrics` — [Usage and Cost](pages/nexus/metrics.md) · [原文](https://docs.fireworks.ai/nexus/metrics)
+- `nexus/microsoft-foundry` — [Microsoft Foundry](pages/nexus/microsoft-foundry.md) · [原文](https://docs.fireworks.ai/nexus/microsoft-foundry)
+- `nexus/open-models` — [Open Models](pages/nexus/open-models.md) · [原文](https://docs.fireworks.ai/nexus/open-models)
+- `nexus/provider-keys` — [Provider Keys](pages/nexus/provider-keys.md) · [原文](https://docs.fireworks.ai/nexus/provider-keys)
+- `nexus/quickstart` — [Quickstart](pages/nexus/quickstart.md) · [原文](https://docs.fireworks.ai/nexus/quickstart)
+- `nexus/routing-preferences` — [Routing Preferences](pages/nexus/routing-preferences.md) · [原文](https://docs.fireworks.ai/nexus/routing-preferences)
+- `nexus/session-usage` — [Session Cost](pages/nexus/session-usage.md) · [原文](https://docs.fireworks.ai/nexus/session-usage)
+- `nexus/usage-limits` — [Spend Limits](pages/nexus/usage-limits.md) · [原文](https://docs.fireworks.ai/nexus/usage-limits)
+- `nexus/usage-limits-reference` — [Spend Limits Reference](pages/nexus/usage-limits-reference.md) · [原文](https://docs.fireworks.ai/nexus/usage-limits-reference)
+- `nexus/web-search` — [Web Search](pages/nexus/web-search.md) · [原文](https://docs.fireworks.ai/nexus/web-search)
 
 ## serverless
 

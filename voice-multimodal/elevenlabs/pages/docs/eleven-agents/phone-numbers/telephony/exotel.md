@@ -31,9 +31,11 @@ Before setting up the Exotel integration, ensure you have:
 2. Administrator access to the Exotel dashboard at [my.exotel.com](https://my.exotel.com) (Singapore) or [my.exotel.in](https://my.exotel.in) (Mumbai).
 3. An ElevenLabs account and an [agent](/docs/eleven-agents/quickstart) you want to attach the phone number to.
 
-Exotel is currently supported on the **Singapore** (`api.exotel.com`) and **Mumbai**
-(`api.in.exotel.com`) clusters. Pick the cluster your Exotel account was provisioned in. Using the
-wrong region will cause authentication failures.
+> **Note**
+>
+> Exotel is currently supported on the **Singapore** (`api.exotel.com`) and **Mumbai**
+> (`api.in.exotel.com`) clusters. Pick the cluster your Exotel account was provisioned in. Using the
+> wrong region will cause authentication failures.
 
 ## Enabling Voicebot on your Exotel account
 
@@ -42,7 +44,9 @@ Before anything else, contact **Exotel support** and ask them to:
 1. **Enable the Voicebot applet** on your account. It is gated by default and won't appear in the App Bazaar until your account has been provisioned for it.
 2. **Provision the number of channels (concurrent calls)** you need. This is the cap on simultaneous Voicebot calls Exotel will let your account run. Size it for your expected peak traffic.
 
-This step usually takes 1 to 2 business days. Start it before you begin the rest of the setup.
+> **Warning**
+>
+> This step usually takes 1 to 2 business days. Start it before you begin the rest of the setup.
 
 ## ElevenLabs WebSocket endpoint
 
@@ -54,8 +58,10 @@ You will configure your Exotel Voicebot applet to stream audio to the following 
 | EU Residency               | `wss://api.eu.residency.elevenlabs.io/v1/convai/conversation/exotel` |
 | India Residency            | `wss://api.in.residency.elevenlabs.io/v1/convai/conversation/exotel` |
 
-If your ElevenLabs account is on an isolated residency environment (EU or India), you must use the
-corresponding residency URL. Learn more about [data residency](/docs/overview/administration/data-residency).
+> **Info**
+>
+> If your ElevenLabs account is on an isolated residency environment (EU or India), you must use the
+> corresponding residency URL. Learn more about [data residency](/docs/overview/administration/data-residency).
 
 ## Setup on Exotel
 
@@ -63,7 +69,7 @@ corresponding residency URL. Learn more about [data residency](/docs/overview/ad
 
 In the Exotel dashboard, open the left-hand **Monitor** menu and click **Developer**. This opens the API credentials page where you can read the Account SID, API Key and API Token.
 
-![Exotel sidebar: Developer](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ebe936f8cd0d1773a88bb4922a7642cf8c2f844f39eb4ee9ee04eab50ecfa6c4/assets/images/conversational-ai/exotel-developer-sidebar.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T100026Z&X-Amz-Expires=604800&X-Amz-Signature=af0dbd6c0da7109131fb25eccbac400d4bdf60d9f19c14f20335e565b3db3dc4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Exotel sidebar: Developer](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ebe936f8cd0d1773a88bb4922a7642cf8c2f844f39eb4ee9ee04eab50ecfa6c4/assets/images/conversational-ai/exotel-developer-sidebar.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113200Z&X-Amz-Expires=604800&X-Amz-Signature=6489769b6a4636b7d0c8bec78392e1aa2604b6367d91ad10bbfc1e9d9bbfa630&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 You will need four values:
 
@@ -78,16 +84,16 @@ ElevenLabs uses the API Key + API Token for HTTP Basic Auth when calling Exotel'
 
 1. In the Exotel dashboard, open the left-hand **Manage** menu and click **App Bazaar**.
 
-   ![Exotel sidebar: App Bazaar](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1e50c6687044e4fea1e6e636bc2db8a4a481c87eb44cdfc8019cff20bd1fe363/assets/images/conversational-ai/exotel-app-bazaar.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T100026Z&X-Amz-Expires=604800&X-Amz-Signature=d5359de62709a2f574a89f527f887229e8f2efcc1929d4761b2d37d9b3ced118&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+   ![Exotel sidebar: App Bazaar](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1e50c6687044e4fea1e6e636bc2db8a4a481c87eb44cdfc8019cff20bd1fe363/assets/images/conversational-ai/exotel-app-bazaar.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113200Z&X-Amz-Expires=604800&X-Amz-Signature=44501962cecf4ac2415d56d79cf619d34ba2f351a7da3d7ca39c023a9af923a8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 2. Click **Create / Add New Flow** and give the app a descriptive name (e.g. `ElevenLabs`), then click **OK**.
 
-   ![Exotel: Add New Flow dialog](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/928f17d1351f93e7a9bd60d92498dde8b24d350686cf273be146e9d315927704/assets/images/conversational-ai/exotel-add-new-flow.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T100026Z&X-Amz-Expires=604800&X-Amz-Signature=b27db69505f75b60e73d8ab1a9a2d4c04ee7e0c914b8e3d7515d2df3c3e4f2fe&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+   ![Exotel: Add New Flow dialog](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/928f17d1351f93e7a9bd60d92498dde8b24d350686cf273be146e9d315927704/assets/images/conversational-ai/exotel-add-new-flow.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113200Z&X-Amz-Expires=604800&X-Amz-Signature=a2b19a48854604b3d6225d4d01806d8b5cbf994a275c9fd672eafdd709c115b8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 3. From the applet palette on the right, drag the **Voicebot** applet onto the **Call Start** canvas.
 
    ![Exotel applet palette with Voicebot
-   highlighted](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d19a0e66925d5931cd8f9eae7a1264b8a0e259d07736564cab4e1e894401c508/assets/images/conversational-ai/exotel-voicebot-applet.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T100026Z&X-Amz-Expires=604800&X-Amz-Signature=b9616fef4366cf053923bc49e4ec624f182bd6c1ec4f98e4b8f7bc18aaf1b951&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+   highlighted](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d19a0e66925d5931cd8f9eae7a1264b8a0e259d07736564cab4e1e894401c508/assets/images/conversational-ai/exotel-voicebot-applet.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113200Z&X-Amz-Expires=604800&X-Amz-Signature=260707c9755aa00b27f8c0b5bb382f4dbcf540c128f79bbf53a92f1d5934a7e9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 4. Open the Voicebot applet's configuration and paste the ElevenLabs WebSocket URL for your residency into the **URL** field (the "Which bot you want to connect the enduser?" field):
 
@@ -95,21 +101,23 @@ ElevenLabs uses the API Key + API Token for HTTP Basic Auth when calling Exotel'
    wss://api.elevenlabs.io/v1/convai/conversation/exotel
    ```
 
-   If your ElevenLabs account is on EU or India residency, use the matching residency URL from the
-   table above (e.g. `wss://api.in.residency.elevenlabs.io/v1/convai/conversation/exotel`) instead
-   of the default `api.elevenlabs.io`.
+   > **Info**
+   >
+   > If your ElevenLabs account is on EU or India residency, use the matching residency URL from the
+   > table above (e.g. `wss://api.in.residency.elevenlabs.io/v1/convai/conversation/exotel`) instead
+   > of the default `api.elevenlabs.io`.
 
    The rest of the Voicebot options ("Record this?", "Recording Channels", "Recording Format", "Encrypt DTMF") can stay at their defaults unless you have a specific recording or compliance need.
 
    ![Voicebot applet configured with the ElevenLabs WebSocket
-   URL](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bb375863bb02b0908786403c080280f4561f21d887fb490050d54ff4ec211794/assets/images/conversational-ai/exotel-voicebot-configured.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T100026Z&X-Amz-Expires=604800&X-Amz-Signature=a3403ce02abd1c107d9fc13accd96667737b65d74361c247198466625a377930&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+   URL](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bb375863bb02b0908786403c080280f4561f21d887fb490050d54ff4ec211794/assets/images/conversational-ai/exotel-voicebot-configured.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113200Z&X-Amz-Expires=604800&X-Amz-Signature=d5435b358a6c17f110380ed4b55ec088b98ac3ea0c75e1ed0e307d4b020e45df&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 5. **(Optional) Chain a Connect applet for human transfers.** Skip this if you don't need the agent to be able to transfer the call to a human. If you want to use the agent's **Transfer to number** tool, you must add a **Connect** applet immediately after the Voicebot applet in the flow.
 
    From the **Voice Applets** palette on the right, drag the **Connect** applet into the **Next → Continue to the next applet** slot of the Voicebot.
 
    ![Voice Applets palette with Connect
-   highlighted](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1c325fc4ae992db551209b667519ffd75161b6a97ebf71ed6b751bbf26339faf/assets/images/conversational-ai/exotel-connect-applet-palette.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T100026Z&X-Amz-Expires=604800&X-Amz-Signature=4e351dfc61fccef18edc37d0d79f4b31b3a727d325da91fae10aa9267eab995b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+   highlighted](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1c325fc4ae992db551209b667519ffd75161b6a97ebf71ed6b751bbf26339faf/assets/images/conversational-ai/exotel-connect-applet-palette.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113200Z&X-Amz-Expires=604800&X-Amz-Signature=cfaa62daaf4a7c02f2cbaa9af1c5cc9c11fc47efa3ccfaff25930362df33f620&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
    In the Connect applet's configuration, choose **Configure parameters dynamically by providing a URL** and paste the ElevenLabs connect-applet endpoint for your residency into **Primary URL**:
 
@@ -118,7 +126,7 @@ ElevenLabs uses the API Key + API Token for HTTP Basic Auth when calling Exotel'
    ```
 
    ![Connect applet configured with the ElevenLabs dynamic
-   URL](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7ed4516ec33ea62830d9279a266ada20311741d0489fe2661dc528b8dbcbe126/assets/images/conversational-ai/exotel-connect-applet-configured.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T100026Z&X-Amz-Expires=604800&X-Amz-Signature=1598db231c7362d7029ab3a0097d183e44a3c824184c8fd61e5e76fee49c5224&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+   URL](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7ed4516ec33ea62830d9279a266ada20311741d0489fe2661dc528b8dbcbe126/assets/images/conversational-ai/exotel-connect-applet-configured.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113200Z&X-Amz-Expires=604800&X-Amz-Signature=96e4e0b95cb8cb94ebaef3302f08a916cd5137a0872895f415a274a4cd51a597&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
    The matching residency URLs are:
 
@@ -128,16 +136,20 @@ ElevenLabs uses the API Key + API Token for HTTP Basic Auth when calling Exotel'
    | EU Residency               | `https://api.eu.residency.elevenlabs.io/v1/convai/exotel/connect-applet` |
    | India Residency            | `https://api.in.residency.elevenlabs.io/v1/convai/exotel/connect-applet` |
 
-   When the agent invokes its **Transfer to number** tool, ElevenLabs hands control back to Exotel
-   and Exotel fetches this URL to retrieve the destination number to dial. Leave **Fallback URL**
-   empty and keep all other defaults.
+   > **Info**
+   >
+   > When the agent invokes its **Transfer to number** tool, ElevenLabs hands control back to Exotel
+   > and Exotel fetches this URL to retrieve the destination number to dial. Leave **Fallback URL**
+   > empty and keep all other defaults.
 
 6. Save and publish the applet.
 
 7. Note the **Applet ID** (sometimes called **App ID**). You'll find it in the URL of the ExoML editor (e.g. `.../exoml/start_voice/12345`) or in the App list. You will need this when importing the number into ElevenLabs.
 
-The Voicebot applet handles both inbound and outbound legs. You only need a single applet per
-account. Every phone number you import into ElevenLabs can share it.
+> **Note**
+>
+> The Voicebot applet handles both inbound and outbound legs. You only need a single applet per
+> account. Every phone number you import into ElevenLabs can share it.
 
 #### Assign the flow to a phone number (inbound only)
 
@@ -145,19 +157,21 @@ Save and publish the ExoML flow from the previous step. Then route an Exotel pho
 
 1. In the Exotel dashboard, open the left-hand **Manage** menu and click **ExoPhones** (just below **App Bazaar**).
 
-   ![Exotel sidebar: ExoPhones](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/30351173b2c2cfaa2ccd8d9e29e6aaba319ac3b5f2ee51d91a4f7913d3e218a4/assets/images/conversational-ai/exotel-exophones-sidebar.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T100026Z&X-Amz-Expires=604800&X-Amz-Signature=7eb70e84fb18768c28ec8403c192516cbeb1dd6db3ee0e48dce660309aa398eb&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+   ![Exotel sidebar: ExoPhones](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/30351173b2c2cfaa2ccd8d9e29e6aaba319ac3b5f2ee51d91a4f7913d3e218a4/assets/images/conversational-ai/exotel-exophones-sidebar.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113200Z&X-Amz-Expires=604800&X-Amz-Signature=f5d7b62becfe6d00cc51c0dd8ce9f05e1af6d9723c5883c9fc71f89e46090c66&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 2. If you don't already have a phone number, click **Buy a number** and purchase one in the country / area you need before continuing.
 
 3. Find the number you want to use with your ElevenLabs agent. In its **Installed App** column, open the dropdown and select the flow you created in the previous step (e.g. **ElevenLabs**).
 
    ![ExoPhones: assign Installed App to a phone
-   number](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5ed6b42794bb00f330dd52d50a5831622e3156955d59adb1ca64b746d1ec7d2b/assets/images/conversational-ai/exotel-exophones-install-app.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T100026Z&X-Amz-Expires=604800&X-Amz-Signature=3f9eadeec3dbc1947980d64fcaa66df3484509487bd4ab9e28bd83f41cb94373&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+   number](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5ed6b42794bb00f330dd52d50a5831622e3156955d59adb1ca64b746d1ec7d2b/assets/images/conversational-ai/exotel-exophones-install-app.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113200Z&X-Amz-Expires=604800&X-Amz-Signature=5d3c69d3c85ae36280f4d5d06fdfbc5ab754cd5092ef361fb769227a5c78d809&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 4. Save the configuration. Incoming calls to that number will now be routed straight into the Voicebot applet and streamed to ElevenLabs.
 
-If the number will only be used for outbound calls, you can skip this step. Outbound calls are
-dialed via the Connect API from ElevenLabs and don't depend on the **Installed App** assignment.
+> **Note**
+>
+> If the number will only be used for outbound calls, you can skip this step. Outbound calls are
+> dialed via the Connect API from ElevenLabs and don't depend on the **Installed App** assignment.
 
 ## Setup on ElevenLabs
 
@@ -166,7 +180,7 @@ dialed via the Connect API from ElevenLabs and don't depend on the **Installed A
 In the ElevenAgents dashboard, go to the [**Phone Numbers**](https://elevenlabs.io/app/agents/phone-numbers) tab. Click **+ Import number** and select **From Exotel** from the dropdown.
 
 ![ElevenAgents: Import number dropdown with From Exotel
-selected](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2a62cf9f6b63914c5688da5f58515168fa1ff39b8602f70fea7a1ff257bb6918/assets/images/conversational-ai/exotel-import-dropdown.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T100026Z&X-Amz-Expires=604800&X-Amz-Signature=6777a2d7638a40d8af3992d59ac588cd09dbc72c5c7684163b7809771c486a45&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+selected](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2a62cf9f6b63914c5688da5f58515168fa1ff39b8602f70fea7a1ff257bb6918/assets/images/conversational-ai/exotel-import-dropdown.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113200Z&X-Amz-Expires=604800&X-Amz-Signature=ad63b5aaf69df9ea23711ded4b3eab494e2368c63f1c2b0146bb8cd4bbc026b1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Fill in the following fields:
 
@@ -184,15 +198,19 @@ Click **Import** to save the number. ElevenLabs will verify the credentials agai
 
 Once the number is imported, open it from the **Phone Numbers** list and pick the agent that should handle inbound calls in the **Assigned agent** dropdown.
 
-Inbound calls require that the Voicebot applet is assigned to the number on Exotel's side (see the
-previous section). Outbound-only setups do not need an inbound assignment.
+> **Note**
+>
+> Inbound calls require that the Voicebot applet is assigned to the number on Exotel's side (see the
+> previous section). Outbound-only setups do not need an inbound assignment.
 
 #### Test an inbound call
 
 Call your Exotel number from any phone. The call will be routed by Exotel to the Voicebot applet, which opens a WebSocket to ElevenLabs. Your agent will pick up and start the conversation.
 
-Monitor the call in the [Calls History dashboard](https://elevenlabs.io/app/agents/history) to
-verify everything is working as expected.
+> **Tip**
+>
+> Monitor the call in the [Calls History dashboard](https://elevenlabs.io/app/agents/history) to
+> verify everything is working as expected.
 
 ## Making outbound calls
 
@@ -212,8 +230,10 @@ In the Outbound Call modal:
 
 ElevenLabs calls Exotel's Connect API with your stored credentials. Exotel dials the recipient and routes the audio back through the Voicebot applet when the call is answered.
 
-When making outbound calls, your agent is the initiator of the conversation, so ensure your agent
-has an appropriate first message configured.
+> **Note**
+>
+> When making outbound calls, your agent is the initiator of the conversation, so ensure your agent
+> has an appropriate first message configured.
 
 To trigger outbound calls programmatically instead of from the dashboard, use the [Outbound call via Exotel](/docs/api-reference/exotel/outbound-call) endpoint. The API reference includes the request schema and ready-to-use SDK snippets.
 

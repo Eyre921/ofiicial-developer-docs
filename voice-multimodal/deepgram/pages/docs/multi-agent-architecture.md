@@ -10,7 +10,9 @@ path: docs/multi-agent-architecture
 
 # Build a Multi-Agent Architecture
 
-For more information and to use our reference implementation, visit the [Deepgram Multi-Agent repo](https://github.com/deepgram-devs/deepgram-voice-agent-multi-agent).
+> **Info**
+>
+> For more information and to use our reference implementation, visit the [Deepgram Multi-Agent repo](https://github.com/deepgram-devs/deepgram-voice-agent-multi-agent).
 
 ## Why Multi-Agent Architecture?
 

@@ -18,7 +18,9 @@ Deepgram's word confidence is a **calibrated probability**. A confidence of 0.93
 
 "Calibrated" means the scores are statistically honest: if you took all words the model scored at 0.93, approximately 93% of them would actually be correct. The model's probability outputs are naturally well-calibrated.
 
-Confidence score definitions and calibration vary across STT providers. You cannot directly compare raw confidence distributions between providers. A provider whose scores are spread evenly across 0–1 is not necessarily providing "more informative" scores — they may simply be poorly calibrated, meaning their stated confidence does not match actual accuracy.
+> **Warning**
+>
+> Confidence score definitions and calibration vary across STT providers. You cannot directly compare raw confidence distributions between providers. A provider whose scores are spread evenly across 0–1 is not necessarily providing "more informative" scores — they may simply be poorly calibrated, meaning their stated confidence does not match actual accuracy.
 
 ## Why Most Scores Are High
 
@@ -28,7 +30,9 @@ For example, if Deepgram achieves 95% word accuracy on your audio, you should ex
 
 A flat or uniform distribution of confidence scores across 0–1 would actually indicate **poor calibration** — it would mean the model is equally uncertain about every word, which does not reflect reality for a high-accuracy model.
 
-The concentration of scores near 1.0 does not mean the scores lack discriminatory power. Words with lower scores are meaningfully more likely to be errors. The signal is in the tail of the distribution, not the center.
+> **Info**
+>
+> The concentration of scores near 1.0 does not mean the scores lack discriminatory power. Words with lower scores are meaningfully more likely to be errors. The signal is in the tail of the distribution, not the center.
 
 ## Using Confidence for Error Detection
 
@@ -156,7 +160,9 @@ In streaming mode with `interim_results=true`, interim transcripts may show lowe
 
 As more audio arrives, interim confidence values typically improve. Final transcripts (`is_final: true`) will have higher and more reliable confidence scores.
 
-Use confidence values from final transcripts for any downstream decision-making. Use interim confidence only for low-latency display purposes where you expect corrections. See [Interim Results](/docs/interim-results) for details on how interim and final transcripts work.
+> **Info**
+>
+> Use confidence values from final transcripts for any downstream decision-making. Use interim confidence only for low-latency display purposes where you expect corrections. See [Interim Results](/docs/interim-results) for details on how interim and final transcripts work.
 
 ## Limitations
 
@@ -223,9 +229,11 @@ There are two distinct confidence fields in the response:
 * **Transcript-level `confidence`** (in `alternatives`): Overall reliability of the full transcript.
 * **Word-level `confidence`** (in each `words` entry): Per-word probability of correctness.
 
-For Nova-3 streaming results, the transcript-level `confidence` value in `alternatives` is calculated as the **median** of the word-level confidence scores for all words in that chunk's final transcript. This means the transcript-level score is robust to individual outlier words — a single low-confidence word will not significantly affect the overall score, but a pattern of low-confidence words will pull it down.
-
-If you threshold on transcript-level confidence for routing decisions (for example, escalating to human review), be aware that a transcript with one very low-confidence entity word might still pass a high transcript-level threshold because the median is unaffected by a single outlier. Supplement with word-level checks on critical entities.
+> **Info**
+>
+> For Nova-3 streaming results, the transcript-level `confidence` value in `alternatives` is calculated as the **median** of the word-level confidence scores for all words in that chunk's final transcript. This means the transcript-level score is robust to individual outlier words — a single low-confidence word will not significantly affect the overall score, but a pattern of low-confidence words will pull it down.
+>
+> If you threshold on transcript-level confidence for routing decisions (for example, escalating to human review), be aware that a transcript with one very low-confidence entity word might still pass a high transcript-level threshold because the median is unaffected by a single outlier. Supplement with word-level checks on critical entities.
 
 ## Related Resources
 

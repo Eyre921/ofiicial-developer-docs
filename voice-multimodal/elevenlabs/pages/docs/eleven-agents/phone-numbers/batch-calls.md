@@ -8,9 +8,11 @@ path: docs/eleven-agents/phone-numbers/batch-calls
 
 # Batch calling
 
-When conducting outbound call campaigns, ensure compliance with all relevant regulations,
-including the [TCPA (Telephone Consumer Protection Act)](/docs/eleven-agents/legal/tcpa) and any
-applicable state laws.
+> **Note**
+>
+> When conducting outbound call campaigns, ensure compliance with all relevant regulations,
+> including the [TCPA (Telephone Consumer Protection Act)](/docs/eleven-agents/legal/tcpa) and any
+> applicable state laws.
 
 ## Overview
 
@@ -36,8 +38,10 @@ This ensures that sufficient concurrent capacity remains available for other con
 * An ElevenLabs account with an [agent setup](https://elevenlabs.io/app/agents).
 * A phone number imported
 
-Zero Retention Mode (ZRM) cannot be enabled for batch calls. If your use case requires ZRM, you
-will need to initiate calls individually rather than using the batch calling feature.
+> **Warning**
+>
+> Zero Retention Mode (ZRM) cannot be enabled for batch calls. If your use case requires ZRM, you
+> will need to initiate calls individually rather than using the batch calling feature.
 
 ## Creating a batch call
 
@@ -52,7 +56,7 @@ ElevenAgents dashboard
 
 Click on the "Create a batch call" button. This will open the "Create a batch call" page.
 
-![Create a batch call page showing fields for batch name, phone number, agent selection, recipient upload, and timing options.](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/defec00e1f267346775021283bdc6038cfabcd27427dffb7cd7e5cd9382b53e0/assets/images/conversational-ai/batch-call-creation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T112320Z&X-Amz-Expires=604800&X-Amz-Signature=fa87d18fd49e0f8165fcd06d14859dd4051bd10109e86e0842b83e145aa3baf7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Create a batch call page showing fields for batch name, phone number, agent selection, recipient upload, and timing options.](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/defec00e1f267346775021283bdc6038cfabcd27427dffb7cd7e5cd9382b53e0/assets/images/conversational-ai/batch-call-creation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113209Z&X-Amz-Expires=604800&X-Amz-Signature=7a0bd1598c012a79de55639da68b60373e649657589aaedbeda093cdd137e81f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Configure batch details
 
@@ -68,18 +72,18 @@ Click on the "Create a batch call" button. This will open the "Create a batch ca
   * You can include other columns (e.g., `name`, `user_name`) which will be passed as dynamic variables to personalize the calls.
   * A template is available for download to ensure correct formatting.
 
-#### Setting overrides
-
-The following column headers are special fields that are used to override an agent's initial
-configuration:
-
-* language
-* first\_message
-* system\_prompt
-* voice\_id
-
-The batch call will fail if those fields are passed but are not set to be overridable in the agent's security settings. See more
-[here](/docs/eleven-agents/customization/personalization/overrides).
+> **Setting overrides**
+>
+> The following column headers are special fields that are used to override an agent's initial
+> configuration:
+>
+> * language
+> * first\_message
+> * system\_prompt
+> * voice\_id
+>
+> The batch call will fail if those fields are passed but are not set to be overridable in the agent's security settings. See more
+> [here](/docs/eleven-agents/customization/personalization/overrides).
 
 #### Set timing
 
@@ -99,13 +103,13 @@ Once a batch call is created, you can monitor its progress and view its details.
 
 The Batch Calling overview page displays a list of all your batch calls.
 
-![Batch Calling overview page listing several batch calls with their status, recipient count, and progress.](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a371de67085f7c63765a90dacbe2ba50b6d5cb8544cb8554233d9a39567b0994/assets/images/conversational-ai/batch-call-summary.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T112320Z&X-Amz-Expires=604800&X-Amz-Signature=1f35f581c5ec9755d7580533d0985b7271c8e618b6f7b9b79b4e3f9c520d6d53&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Batch Calling overview page listing several batch calls with their status, recipient count, and progress.](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a371de67085f7c63765a90dacbe2ba50b6d5cb8544cb8554233d9a39567b0994/assets/images/conversational-ai/batch-call-summary.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113209Z&X-Amz-Expires=604800&X-Amz-Signature=6ac03c4888e74740681237588077970c0dc1f6cd143dff8e47a58eed17f7993c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Viewing batch call details
 
 Clicking on a specific batch call from the overview page will take you to its detailed view, from where you can view individual conversations.
 
-![Batch call details page showing a summary (status, total recipients, started, progress) and a list of call recipients with phone number, dynamic variables, and status.](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a9ef3ded53870849fea0c86bc9ddf9ae43ca86ba98199b988370a67d11a447ee/assets/images/conversational-ai/batch-call-completed-summary.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T112320Z&X-Amz-Expires=604800&X-Amz-Signature=4a6c859c7910b22cfe552f408e18809ef6ad944614f6c596042e090bb028ca1d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Batch call details page showing a summary (status, total recipients, started, progress) and a list of call recipients with phone number, dynamic variables, and status.](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a9ef3ded53870849fea0c86bc9ddf9ae43ca86ba98199b988370a67d11a447ee/assets/images/conversational-ai/batch-call-completed-summary.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113209Z&X-Amz-Expires=604800&X-Amz-Signature=b752194827a870d4d0c59feb5fd90c5780a56861d6f10c9ee0b29d438faf7475&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## API Usage
 

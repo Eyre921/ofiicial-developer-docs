@@ -36,18 +36,7 @@ Successful Response
 
 - `enabled` (boolean, required) — Whether the project is enabled.
 - `snapshot_id` (string, optional, nullable) — The ID of the latest snapshot of the project.
-- `settings` (object, optional, nullable) — The settings of the project.
-  - `title` (string, required) — The title of the project.
-  - `image` (string, required) — The image of the project.
-  - `author` (string, required) — The author of the project.
-  - `small` (boolean, required) — Whether the project is small.
-  - `text_color` (string, required) — The text color of the project.
-  - `background_color` (string, required) — The background color of the project.
-  - `sessionization` (integer, required) — The sessionization of the project. Specifies for how many minutes to persist the session across page reloads.
-  - `audio_path` (string, optional, nullable) — The path of the audio file.
-  - `audio_url` (string, optional, nullable) — The URL of the audio file.
-  - `status` (enum, optional, default: ready) — Current state of the project
-    - Allowed values: `processing`, `ready`
+- `settings` (AudioNativeProjectSettingsResponseModel, optional, nullable) — The settings of the project.
 
 ## Errors
 
@@ -55,10 +44,31 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### AudioNativeProjectSettingsResponseModel
+
+- `title` (string, required) — The title of the project.
+- `image` (string, required) — The image of the project.
+- `author` (string, required) — The author of the project.
+- `small` (boolean, required) — Whether the project is small.
+- `text_color` (string, required) — The text color of the project.
+- `background_color` (string, required) — The background color of the project.
+- `sessionization` (integer, required) — The sessionization of the project. Specifies for how many minutes to persist the session across page reloads.
+- `audio_path` (string, optional, nullable) — The path of the audio file.
+- `audio_url` (string, optional, nullable) — The URL of the audio file.
+- `status` (enum, optional, default: ready) — Current state of the project
+  - Allowed values: `processing`, `ready`
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

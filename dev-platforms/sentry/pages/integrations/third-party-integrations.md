@@ -33,6 +33,7 @@ To build and publish your own, see the [Integration Platform docs](https://docs.
 * [Flow Relay](https://www.flowrelay.it/downloads)
 * [FML](https://fml.inc/)
 * [Kawach.ai](https://support.kawach.ai/articles/sentry)
+* [Kosuke](https://docs.kosuke.ai/integrations/sentry)
 * [Leroy](https://useleroy.com/sentry)
 * [LogBrew](https://docs.logbrew.co)
 * [Mendral](https://mendral.com/)

@@ -19,6 +19,8 @@ For this endpoint, use a `Content-Type` of `multipart/form-data`, and provide yo
 
 When `mode=multi_part`, each part must include a form field `part_number` to indicate which part is being sent. Parts may be sent concurrently up to standard Notion API [rate limits](/reference/request-limits), and may be sent out of order as long as all parts (1, ..., `part_number`) are successfully sent before calling the [complete file upload API](/reference/complete-file-upload).
 
+If your client labels the `file` part `application/octet-stream` because it has no MIME type for the extension, the API resolves the real type from the `content_type` set during [Create a file upload](/reference/create-file), or from the filename extension. The request fails if neither gives a [supported file type](/guides/data-apis/working-with-files-and-media#supported-file-types).
+
 The maximum allowed length of a file name is 900 bytes, including any file extension included in the file name or inferred based on the `content_type`. However, we recommend using shorter names for performance and easier file management and lookup using the [List file uploads](/reference/list-file-uploads) API.
 
 Multipart filenames decode browser-escaped quotation marks (`%22`) and line breaks (`%0A`, `%0D`) before filename normalization. Normalization removes quotation marks and replaces whitespace with underscores. For example, `report%22draft%22%0A2026.txt` becomes `reportdraft_2026.txt`. A filename set during [Create a file upload](/reference/create-file) takes precedence over the multipart filename.

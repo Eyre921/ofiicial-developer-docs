@@ -41,9 +41,9 @@ Reference: https://elevenlabs.io/docs/api-reference/conversations/list
 - `rating_min` (integer, optional, nullable) — Minimum overall rating (1-5).
 - `has_feedback_comment` (boolean, optional, nullable) — Filter conversations with user feedback comments.
 - `user_id` (string, optional, nullable) — Filter conversations by the user ID who initiated them.
-- `evaluation_params` (list of string, optional, nullable) — Evaluation filters. Repeat param. Format: criteria_id:result. Example: eval=value_framing:success
-- `data_collection_params` (list of string, optional, nullable) — Data collection filters. Repeat param. Format: id:op:value where op is one of eq|gt|gte|lt|lte. An empty value matches conversations where the field was not collected.
-- `dynamic_variable_params` (list of string, optional, nullable) — Dynamic variable filters. Repeat param. Format: name:op:value where op is one of eq|gt|gte|lt|lte. Comparison operators require a numeric value. An empty value matches conversations where the variable was not set. Names containing ':' cannot be expressed.
+- `evaluation_params` (list of string, optional, nullable) — Evaluation filters. Repeat param. Format: criteria_id:result where result is one of success|failure|unknown. Example: eval=value_framing:success
+- `data_collection_params` (list of string, optional, nullable) — Data collection filters. Repeat param. Format: id:op:value where op is one of eq|neq|gt|gte|lt|lte|in. For in, pipe-delimit values. An empty value matches conversations where the field was not collected (id:eq:), and neq with an empty value matches where it was (id:neq:). eq is exact equality. gt|gte|lt|lte require a numeric value.
+- `dynamic_variable_params` (list of string, optional, nullable) — Dynamic variable filters. Repeat param. Format: name:op:value where op is one of eq|neq|gt|gte|lt|lte|in. For in, pipe-delimit values. An empty value matches conversations where the variable was not set (name:eq:), and neq with an empty value matches where it was (name:neq:). eq is exact equality. gt|gte|lt|lte require a numeric value. Names containing ':' cannot be expressed.
 - `data_collection_ids` (list of string, optional, nullable) — Data collection field IDs to include in each conversation summary. Repeat param. When omitted, data_collection_results is not returned.
 - `evaluation_criteria_ids` (list of string, optional, nullable) — Evaluation criteria IDs to include in each conversation summary. Repeat param. When omitted, evaluation_criteria_results is not returned.
 - `tool_names` (list of string, optional, nullable) — Filter conversations by tool names used during the call.
@@ -81,45 +81,7 @@ Reference: https://elevenlabs.io/docs/api-reference/conversations/list
 
 Successful Response
 
-- `conversations` (list of object, required)
-  - `agent_id` (string, required)
-  - `conversation_id` (string, required)
-  - `start_time_unix_secs` (integer, required)
-  - `call_duration_secs` (integer, required)
-  - `message_count` (integer, required)
-  - `status` (enum, required)
-    - Allowed values: `initiated`, `in-progress`, `processing`, `done`, `failed`
-  - `call_successful` (enum, required)
-    - Allowed values: `success`, `failure`, `unknown`
-  - `branch_id` (string, optional, nullable)
-  - `version_id` (string, optional, nullable)
-  - `agent_name` (string, optional, nullable)
-  - `termination_reason` (string, optional, default: )
-  - `call_success_score` (double, optional, nullable)
-  - `transcript_summary` (string, optional, nullable)
-  - `call_summary_title` (string, optional, nullable)
-  - `main_language` (string, optional, nullable)
-  - `conversation_initiation_source` (enum, optional, nullable, default: unknown) — Enum representing the possible sources for conversation initiation.
-    - Allowed values: `unknown`, `android_sdk`, `node_js_sdk`, `react_native_sdk`, `react_sdk`, `js_sdk`, `python_sdk`, `widget`, `sip_trunk`, `twilio`, `exotel`, `genesys`, `avaya`, `audiocodes`, `swift_sdk`, `whatsapp`, `twilio_sms`, `flutter_sdk`, `zendesk_integration`, `slack_integration`, `telegram_integration`, `intercom_integration`, `freshdesk_integration`, `salesforce_integration`, `template_preview`, `genesys_bot_connector`, `subagent_tool`
-  - `tool_names` (list of string, optional, nullable)
-  - `direction` (enum, optional, nullable, default: inbound)
-    - Allowed values: `inbound`, `outbound`
-  - `rating` (double, optional, nullable)
-  - `sentiment_analysis` (object, optional, nullable)
-    - `overall_label` (enum, required)
-      - Allowed values: `positive`, `neutral`, `negative`
-    - `overall_sentiment_score` (double, required)
-    - `overall_frustration_score` (double, required)
-    - `min_user_sentiment_score` (double, required)
-    - `max_user_frustration_score` (double, required)
-    - `num_scored_user_turns` (integer, required)
-  - `data_collection_results` (map from string to any, optional, nullable)
-  - `evaluation_criteria_results` (map from string to object, optional, nullable)
-    - `result` (enum, required)
-      - Allowed values: `success`, `failure`, `unknown`
-    - `score` (integer, optional, nullable)
-    - `max_score` (integer, optional, nullable)
-  - `tag_ids` (list of string, optional) — Conversation tag ids assigned to this conversation.
+- `conversations` (list of ConversationSummaryResponseModel, required)
 - `has_more` (boolean, required)
 - `next_cursor` (string, optional, nullable)
 
@@ -129,10 +91,64 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ConversationSummaryResponseModel
+
+- `agent_id` (string, required)
+- `conversation_id` (string, required)
+- `start_time_unix_secs` (integer, required)
+- `call_duration_secs` (integer, required)
+- `message_count` (integer, required)
+- `status` (enum, required)
+  - Allowed values: `initiated`, `in-progress`, `processing`, `done`, `failed`
+- `call_successful` (enum, required)
+  - Allowed values: `success`, `failure`, `unknown`
+- `branch_id` (string, optional, nullable)
+- `version_id` (string, optional, nullable)
+- `agent_name` (string, optional, nullable)
+- `termination_reason` (string, optional, default: )
+- `call_success_score` (double, optional, nullable)
+- `transcript_summary` (string, optional, nullable)
+- `call_summary_title` (string, optional, nullable)
+- `main_language` (string, optional, nullable)
+- `conversation_initiation_source` (enum, optional, nullable, default: unknown) — Enum representing the possible sources for conversation initiation.
+  - Allowed values: `unknown`, `android_sdk`, `node_js_sdk`, `react_native_sdk`, `react_sdk`, `js_sdk`, `python_sdk`, `widget`, `sip_trunk`, `twilio`, `exotel`, `genesys`, `avaya`, `audiocodes`, `swift_sdk`, `whatsapp`, `twilio_sms`, `flutter_sdk`, `zendesk_integration`, `slack_integration`, `telegram_integration`, `intercom_integration`, `freshdesk_integration`, `salesforce_integration`, `template_preview`, `genesys_bot_connector`, `subagent_tool`
+- `tool_names` (list of string, optional, nullable)
+- `direction` (enum, optional, nullable, default: inbound)
+  - Allowed values: `inbound`, `outbound`
+- `rating` (double, optional, nullable)
+- `sentiment_analysis` (ConversationSentimentAnalysis, optional, nullable)
+- `data_collection_results` (map from string to any, optional, nullable)
+- `evaluation_criteria_results` (map from string to EvaluationCriteriaSummaryResult, optional, nullable)
+- `tag_ids` (list of string, optional) — Conversation tag ids assigned to this conversation.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ConversationSentimentAnalysis
+
+- `overall_label` (enum, required)
+  - Allowed values: `positive`, `neutral`, `negative`
+- `overall_sentiment_score` (double, required)
+- `overall_frustration_score` (double, required)
+- `min_user_sentiment_score` (double, required)
+- `max_user_frustration_score` (double, required)
+- `num_scored_user_turns` (integer, required)
+
+### EvaluationCriteriaSummaryResult
+
+- `result` (enum, required)
+  - Allowed values: `success`, `failure`, `unknown`
+- `score` (integer, optional, nullable)
+- `max_score` (integer, optional, nullable)
+
+### ValidationErrorLocItems
 
 ## Examples
 

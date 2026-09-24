@@ -47,4 +47,6 @@ Deepgram's APIs allows you to interact with Deepgram programmatically.  You can 
 \
 
 
-To create your first API key refer to our Guide [Creating API Keys](/docs/create-additional-api-keys).
+> **Info**
+>
+> To create your first API key refer to our Guide [Creating API Keys](/docs/create-additional-api-keys).

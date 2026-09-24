@@ -48,15 +48,8 @@ Successful Response
 - `needs_clustering` (boolean, required)
 - `labels` (list of string, required)
 - `conversation_ids` (list of string, required)
-- `ticket_comments` (list of object, required)
-  - `comment` (string, required)
-  - `created_at_unix_secs` (integer, required)
-  - `owner_user_id` (string, optional)
-- `turn_comments` (list of object, required)
-  - `turn_index` (integer, required)
-  - `comment` (string, required)
-  - `created_at_unix_secs` (integer, required)
-  - `owner_user_id` (string, optional)
+- `ticket_comments` (list of TicketCommentResponseModel, required)
+- `turn_comments` (list of TurnCommentResponseModel, required)
 - `status` (enum, required)
   - Allowed values: `open`, `in_progress`, `resolved`, `merged`
 - `source` (enum, required)
@@ -76,10 +69,30 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### TicketCommentResponseModel
+
+- `comment` (string, required)
+- `created_at_unix_secs` (integer, required)
+- `owner_user_id` (string, optional)
+
+### TurnCommentResponseModel
+
+- `turn_index` (integer, required)
+- `comment` (string, required)
+- `created_at_unix_secs` (integer, required)
+- `owner_user_id` (string, optional)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItem, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItem
 
 ## Examples
 

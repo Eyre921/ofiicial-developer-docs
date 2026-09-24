@@ -32,9 +32,7 @@ Reference: https://developers.deepgram.com/reference/manage/invites/list
 
 A list of invites for a specific project
 
-- `invites` (list of object, optional)
-  - `email` (string, optional) — The email address of the invitee
-  - `scope` (string, optional) — The scope of the invitee
+- `invites` (list of ListProjectInvitesV1ResponseInvitesItems, optional)
 
 ## Errors
 
@@ -42,16 +40,27 @@ A list of invites for a specific project
 
 Invalid Request
 
-- `string or object or object`
-  - ErrorResponseLegacyError
-    - `err_code` (string, optional) — The error code
-    - `err_msg` (string, optional) — The error message
-    - `request_id` (string, optional) — The request ID
-  - ErrorResponseModernError
-    - `category` (string, optional) — The category of the error
-    - `message` (string, optional) — A message about the error
-    - `details` (string, optional) — A description of the error
-    - `request_id` (string, optional) — The unique identifier of the request
+- `ErrorResponse`
+
+## Types
+
+### ListProjectInvitesV1ResponseInvitesItems
+
+- `email` (string, optional) — The email address of the invitee
+- `scope` (string, optional) — The scope of the invitee
+
+### ErrorResponseLegacyError
+
+- `err_code` (string, optional) — The error code
+- `err_msg` (string, optional) — The error message
+- `request_id` (string, optional) — The request ID
+
+### ErrorResponseModernError
+
+- `category` (string, optional) — The category of the error
+- `message` (string, optional) — A message about the error
+- `details` (string, optional) — A description of the error
+- `request_id` (string, optional) — The unique identifier of the request
 
 ## Examples
 

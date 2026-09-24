@@ -14,7 +14,9 @@ Voice Agent
 
 The `ForceEndTurn` message is a JSON message that ends the current turn immediately.
 
-`ForceEndTurn` requires a Deepgram V2 (Flux) listen provider — set `agent.listen.provider.version` to `v2` in the [`Settings`](/docs/voice-agent-settings) message. With any other listen provider the server replies with a [`FORCE_END_TURN_UNSUPPORTED`](/docs/voice-agent-errors-warnings#warning-codes) warning and the turn does not end.
+> **Warning**
+>
+> `ForceEndTurn` requires a Deepgram V2 (Flux) listen provider — set `agent.listen.provider.version` to `v2` in the [`Settings`](/docs/voice-agent-settings) message. With any other listen provider the server replies with a [`FORCE_END_TURN_UNSUPPORTED`](/docs/voice-agent-errors-warnings#warning-codes) warning and the turn does not end.
 
 ## Purpose
 

@@ -34,13 +34,7 @@ Reference: https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/ge
 
 Successful Response
 
-- `segments` (list of object, required) — The source segments, in playback order.
-  - `id` (string, required) — Stable identifier of the segment, used to address it in edit requests.
-  - `text` (string, required) — The transcribed text of the segment.
-  - `speaker_id` (string, required) — Identifier of the segment's speaker.
-  - `start_s` (double, required) — Start time of the segment, in seconds.
-  - `end_s` (double, required) — End time of the segment, in seconds.
-  - `external_id` (string, optional, nullable) — The caller-supplied external ID for this segment, if one was provided.
+- `segments` (list of DubbingTranscriptSegment, required) — The source segments, in playback order.
 - `revision` (integer, required) — The project's source-transcript revision at read time.
 - `language` (string, optional, nullable) — BCP-47 language tag of the source transcript (null if unknown).
 
@@ -50,10 +44,28 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### DubbingTranscriptSegment
+
+One segment of a source transcript.
+
+- `id` (string, required) — Stable identifier of the segment, used to address it in edit requests.
+- `text` (string, required) — The transcribed text of the segment.
+- `speaker_id` (string, required) — Identifier of the segment's speaker.
+- `start_s` (double, required) — Start time of the segment, in seconds.
+- `end_s` (double, required) — End time of the segment, in seconds.
+- `external_id` (string, optional, nullable) — The caller-supplied external ID for this segment, if one was provided.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

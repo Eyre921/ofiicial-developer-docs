@@ -12,9 +12,13 @@ path: docs/configure-voice-agent
 
 To configure your Voice Agent, you'll need to send a [Settings](/docs/voice-agent-settings) message immediately after connection. This message configures the agent's behavior, input/output audio formats, and various provider settings.
 
-For more information on the `Settings` message, see the [Voice Agent API Reference](/reference/voice-agent/voice-agent)
+> **Info**
+>
+> For more information on the `Settings` message, see the [Voice Agent API Reference](/reference/voice-agent/voice-agent)
 
-Provider-specific guidance lives on the model pages, not here. For LLM model selection, fallback behavior, and managed-vs-BYO provider rules, see [LLM Models](/docs/voice-agent-llm-models). For TTS provider parameters and codeswitching voices, see [TTS Models](/docs/voice-agent-tts-models). For audio encoding choices, see [Media Inputs & Outputs](/docs/voice-agent-media-inputs-outputs).
+> **Warning**
+>
+> Provider-specific guidance lives on the model pages, not here. For LLM model selection, fallback behavior, and managed-vs-BYO provider rules, see [LLM Models](/docs/voice-agent-llm-models). For TTS provider parameters and codeswitching voices, see [TTS Models](/docs/voice-agent-tts-models). For audio encoding choices, see [Media Inputs & Outputs](/docs/voice-agent-media-inputs-outputs).
 
 ## Settings Overview
 

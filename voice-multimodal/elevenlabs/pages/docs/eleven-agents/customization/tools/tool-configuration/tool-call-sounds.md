@@ -14,7 +14,9 @@ Tool call sounds provide ambient audio feedback during tool execution, creating 
 
 ElevenLabs Agents supports multiple built-in ambient sounds that you can configure at both the tool level and integration level, giving you fine-grained control over when and how sounds are played during your conversations.
 
-Tool call sounds play only during tool execution. For a continuous background sound, see [Audio environment](/docs/eleven-agents/customization/voice/audio-environment).
+> **Note**
+>
+> Tool call sounds play only during tool execution. For a continuous background sound, see [Audio environment](/docs/eleven-agents/customization/voice/audio-environment).
 
 ## Use Cases
 
@@ -25,8 +27,10 @@ Tool call sounds are particularly effective in scenarios where:
 * **Natural conversation flow**: Fill gaps in the conversation to prevent awkward silences
 * **User expectations**: Signal to users that the agent is processing their request rather than experiencing technical issues
 
-Tool call sounds are optional. If you prefer silent tool execution, simply leave the tool call
-sound setting as "None".
+> **Info**
+>
+> Tool call sounds are optional. If you prefer silent tool execution, simply leave the tool call
+> sound setting as "None".
 
 ## Available Sounds
 
@@ -38,8 +42,10 @@ ElevenLabs provides the following ambient audio options:
 | Typing             | Keyboard typing sound effect    | Search queries, text processing    |
 | Elevator Music 1-4 | Light background music (upbeat) | Longer wait times, general use     |
 
-You can preview each sound in the dashboard by clicking the play button next to the dropdown when
-configuring tool call sounds.
+> **Tip**
+>
+> You can preview each sound in the dashboard by clicking the play button next to the dropdown when
+> configuring tool call sounds.
 
 ## Configuration
 
@@ -59,7 +65,7 @@ In the **Agent** section of your agent settings, select the tool you want to con
 
 Scroll to the **Tool Call Sound** section at the bottom of the tool configuration.
 
-![tool call sound dropdown](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/093fd6c380e2d51f0b8dbe152377a35e1e4e0e422638519910016b9f1551233d/assets/images/agents/tool-call-sounds-1.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T100026Z&X-Amz-Expires=604800&X-Amz-Signature=f2ddd8c03e693e0ba998436998feaf9bdae25a796620743df4f1b832c899cb8e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![tool call sound dropdown](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/093fd6c380e2d51f0b8dbe152377a35e1e4e0e422638519910016b9f1551233d/assets/images/agents/tool-call-sounds-1.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T111332Z&X-Amz-Expires=604800&X-Amz-Signature=3a28fe331a7c6a5fd42a2f127b19dbec69f5f85c42e8a9562003cb1066052b2f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Select a sound from the dropdown menu:
 
@@ -71,7 +77,7 @@ Select a sound from the dropdown menu:
 
 If you've selected a sound (not "None"), you'll see an additional **Sound Behavior** option:
 
-![sound behavior dropdown](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/00c7f6ddfb1b0240a900c8d6814c8706e045500d92f6a6c263d4a7c962e24fbe/assets/images/agents/tool-call-sounds-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T100026Z&X-Amz-Expires=604800&X-Amz-Signature=e11baffdfb7a72b6fc99d768c9a9ff9e6f5ef7a2488d69b43335bab9de80d1cd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![sound behavior dropdown](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/00c7f6ddfb1b0240a900c8d6814c8706e045500d92f6a6c263d4a7c962e24fbe/assets/images/agents/tool-call-sounds-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T111332Z&X-Amz-Expires=604800&X-Amz-Signature=a3c5346a4b544418e8dfdd2ee9510e6c34ec4086e8e3ff1ea390cc80783ce463&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Choose when the sound should play:
 
@@ -168,7 +174,7 @@ Go to **Agent Settings > Integrations** and select your integration.
 
 In the integration overview, locate the **Tool Call Sound** settings.
 
-![tool call sound integrations dropdown](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9c4c33501c814c3d124d76060853ee6eb8c59c8b4f0cc494d16267e9fe5cf56b/assets/images/agents/tool-call-sounds-3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T100026Z&X-Amz-Expires=604800&X-Amz-Signature=75fec49570ab8b939014043ae64afec8d61fcdc5a837b40d3d26102bfeb45ef7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![tool call sound integrations dropdown](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9c4c33501c814c3d124d76060853ee6eb8c59c8b4f0cc494d16267e9fe5cf56b/assets/images/agents/tool-call-sounds-3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T111332Z&X-Amz-Expires=604800&X-Amz-Signature=fbef83d8ca396c041d1c3d163626b1b3befd7f3dbccf4bffb3d58bb9455ebf3f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Select a default sound that will apply to all tools from this integration unless overridden at the tool level.
 
@@ -216,9 +222,11 @@ Agent: "Your order #12345 shipped yesterday and will arrive tomorrow."
 * When you want consistent audio feedback for every tool call
 * For background operations that may not require agent acknowledgment
 
-If you select "Always play", the sound will play even when the agent doesn't speak before using
-the tool. This can result in sounds playing immediately after the user finishes speaking, which
-may feel abrupt in some conversational contexts.
+> **Warning**
+>
+> If you select "Always play", the sound will play even when the agent doesn't speak before using
+> the tool. This can result in sounds playing immediately after the user finishes speaking, which
+> may feel abrupt in some conversational contexts.
 
 ## Best Practices
 

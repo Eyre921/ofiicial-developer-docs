@@ -10,8 +10,10 @@ path: docs/fips-compliant-deployment
 
 # FIPS-Compliant Deployment
 
-Deploying Deepgram on Amazon SageMaker? SageMaker supports AWS FIPS 140-3 endpoints without
-deploying these images yourself. See [Use FIPS Endpoints](/docs/fips-endpoints-sagemaker).
+> **Info**
+>
+> Deploying Deepgram on Amazon SageMaker? SageMaker supports AWS FIPS 140-3 endpoints without
+> deploying these images yourself. See [Use FIPS Endpoints](/docs/fips-endpoints-sagemaker).
 
 Deepgram provides FIPS 140-3 self-hosted images for the API, Engine, License Proxy, and Billing containers, plus models encrypted using FIPS-approved algorithms.
 
@@ -62,7 +64,9 @@ Customers must provide their own full-chain PKI certificate for the API's HTTPS 
 
 Your Deepgram account team provides download links for the FIPS-encrypted models compatible with these images. FIPS models use the `.dgv2` encrypted file format.
 
-`.dgv2` and `.dg` models are not interchangeable. The FIPS Engine loads only `.dgv2` models — it will not load `.dg` models.
+> **Warning**
+>
+> `.dgv2` and `.dg` models are not interchangeable. The FIPS Engine loads only `.dgv2` models — it will not load `.dg` models.
 
 ### Model Support
 
@@ -92,7 +96,9 @@ The FIPS API image enforces TLS 1.3 exclusively. It rejects TLS 1.2 connections 
 
 Ensure your entire client stack negotiates TLS 1.3 before cutover.
 
-The `[fips]` configuration flag does not control TLS behavior. TLS 1.3 enforcement is baked into the FIPS image itself, so disabling the `[fips]` flag will not restore TLS 1.2 support.
+> **Note**
+>
+> The `[fips]` configuration flag does not control TLS behavior. TLS 1.3 enforcement is baked into the FIPS image itself, so disabling the `[fips]` flag will not restore TLS 1.2 support.
 
 ## Airgapped (Offline) Deployment
 

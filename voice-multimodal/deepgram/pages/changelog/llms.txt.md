@@ -5,13 +5,14 @@ path: changelog/llms.txt
 ---
 
 > For clean Markdown of any page, append .md to the page URL.
-> For a complete documentation index, see https://developers.deepgram.com/changelog/llms.txt.
+> For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 > For AI client integration (Claude Code, Cursor, etc.), connect to the MCP server at https://developers.deepgram.com/_mcp/server.
 
 # Changelog
 
-## Docs
+## Entries
 
+- [September 22, 2026](https://developers.deepgram.com/changelog/2026/9/22.md)
 - [September 18, 2026](https://developers.deepgram.com/changelog/2026/9/18.md)
 - [September 17, 2026](https://developers.deepgram.com/changelog/2026/9/17.md)
 - [September 15, 2026](https://developers.deepgram.com/changelog/2026/9/15.md): The Deepgram India endpoint (api.in.deepgram.com) is now generally available for Speech-to-Text, Text-to-Speech, Voice Agent, and Text Intelligence APIs.

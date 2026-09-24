@@ -14,7 +14,9 @@ path: docs/deploy-voice-agent
 
 This guide covers deploying Deepgram's Voice Agent API in a self-hosted Kubernetes environment using the Deepgram Helm chart. The Voice Agent API orchestrates Speech-to-Text (STT), a Large Language Model (LLM), and Text-to-Speech (TTS) into a single WebSocket-based conversational pipeline.
 
-The Voice Agent API is served by the same `self-hosted-api` container used for STT and TTS. The `/v1/agent/converse` WebSocket endpoint becomes available when STT and TTS Engine services are running alongside the API.
+> **Info**
+>
+> The Voice Agent API is served by the same `self-hosted-api` container used for STT and TTS. The `/v1/agent/converse` WebSocket endpoint becomes available when STT and TTS Engine services are running alongside the API.
 
 ## Prerequisites
 
@@ -64,7 +66,9 @@ You need a running Kubernetes cluster with GPU-enabled nodes. Choose a platform 
 * [Google Cloud Platform (GKE)](/docs/gcp-k8s)
 * [Self-Managed Kubernetes](/docs/self-managed-kubernetes)
 
-The Voice Agent sample configuration (`05-voice-agent-aws`) provisions dedicated node groups for API, Engine, and License Proxy workloads. If you are starting from an existing cluster, ensure your node groups have the appropriate labels and GPU resources.
+> **Info**
+>
+> The Voice Agent sample configuration (`05-voice-agent-aws`) provisions dedicated node groups for API, Engine, and License Proxy workloads. If you are starting from an existing cluster, ensure your node groups have the appropriate labels and GPU resources.
 
 ### Verify the Deployment
 
@@ -115,7 +119,9 @@ Test the Speech-to-Text service with a sample audio file.
    curl -X POST --data-binary @bueller.wav "http://localhost:8080/v1/listen?model=nova-3"
    ```
 
-If you're using your own file, make sure to replace `bueller.wav` with the name of your audio file.
+> **Info**
+>
+> If you're using your own file, make sure to replace `bueller.wav` with the name of your audio file.
 
 You should receive a JSON response with the transcription and associated metadata.
 

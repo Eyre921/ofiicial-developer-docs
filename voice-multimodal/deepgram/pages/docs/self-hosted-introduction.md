@@ -41,11 +41,15 @@ Before you deploy Deepgram, you’ll need to make effective design decisions abo
 
 Deepgram provides a variety of components available for a self-hosted deployment. Many guides describe how to create a deployment using Deepgram’s required components, API and Engine. Some guides include details on additional components, such as the [License Proxy](/docs/license-proxy) in the diagram below. See [Self-Hosted Add Ons](/docs/self-hosted-add-ons) for more details.
 
-If you aren't certain which components your contract includes, please consult your Deepgram Account Representative.
+> **Info**
+>
+> If you aren't certain which components your contract includes, please consult your Deepgram Account Representative.
 
-The components and architecture below describe Docker/Podman and Kubernetes deployments. [Amazon SageMaker](/docs/amazon-sagemaker) packages the API, Engine, and licensing into a single managed endpoint that scales horizontally as one unit — you don't provision or scale API, Engine, and the License Proxy separately. A SageMaker deployment also runs fully airgapped: the container is network-isolated and makes no connection to the Deepgram Cloud.
+> **Note**
+>
+> The components and architecture below describe Docker/Podman and Kubernetes deployments. [Amazon SageMaker](/docs/amazon-sagemaker) packages the API, Engine, and licensing into a single managed endpoint that scales horizontally as one unit — you don't provision or scale API, Engine, and the License Proxy separately. A SageMaker deployment also runs fully airgapped: the container is network-isolated and makes no connection to the Deepgram Cloud.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/9c8beab8a02fc149c898dcadcbabd1701dbd872d4c105d919164ffa401311f95/images/f551a1e5784007e643d90a54ce3f77ab55da484804240deeb1cf741ff6cdcddc-deepgram_architecture.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113138Z&X-Amz-Expires=604800&X-Amz-Signature=620b11b71d7bc06e31df945d1225d998b078b092a30a438aa8d58b0b2fd92d7e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/9c8beab8a02fc149c898dcadcbabd1701dbd872d4c105d919164ffa401311f95/images/f551a1e5784007e643d90a54ce3f77ab55da484804240deeb1cf741ff6cdcddc-deepgram_architecture.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113220Z&X-Amz-Expires=604800&X-Amz-Signature=61169c1b4a81fd24c5ca125a45f50f3168f827f28bbb3c16c5ea58afaa471bdc&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Deepgram API
 

@@ -40,7 +40,7 @@ You can demonstrate and explain your commitment to users by doing the following:
 - Use the [Climate badge](https://dashboard.stripe.com/climate/commitment) on [Stripe Checkout](https://docs.stripe.com/payments/checkout.md), [Invoices](https://docs.stripe.com/invoicing.md), or [Receipts](https://docs.stripe.com/receipts.md?payment-ui=payment-links).
 - Direct them to your Stripe-hosted custom [webpage](https://dashboard.stripe.com/climate/commitment).
 - Add an [embeddable badge](https://dashboard.stripe.com/climate/commitment) directly on your website.
-- Use reference language from the [Stripe Climate](http://stripe.com/climate) page.
+- Use reference language from the [Stripe Climate](https://stripe.com/climate) page.
 
 All Climate Commitments users can publish a custom climate page in a few clicks, create embeddable badges, or download our badge asset kit to add the Climate logo to your site, directly from your [Stripe Dashboard](https://dashboard.stripe.com/climate/commitment).
 

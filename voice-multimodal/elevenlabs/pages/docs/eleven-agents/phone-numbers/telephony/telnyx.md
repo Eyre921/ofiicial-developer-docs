@@ -8,8 +8,10 @@ path: docs/eleven-agents/phone-numbers/telephony/telnyx
 
 # Telnyx SIP trunking
 
-Before following this guide, consider reading the [SIP trunking guide](/docs/eleven-agents/phone-numbers/sip-trunking) to understand how ElevenLabs supports SIP
-trunks.
+> **Note**
+>
+> Before following this guide, consider reading the [SIP trunking guide](/docs/eleven-agents/phone-numbers/sip-trunking) to understand how ElevenLabs supports SIP
+> trunks.
 
 ## Overview
 
@@ -75,8 +77,12 @@ Click on Create SIP Connection and choose FQDN as the connection type, then save
 1. Select the Numbers tab.
 2. Assign your purchased phone number to this SIP connection.
 
-After setting up your Telnyx SIP trunk, follow the [SIP trunking guide](/docs/eleven-agents/phone-numbers/sip-trunking) to complete the configuration in
-ElevenLabs.
+> **Warning**
+>
+> After setting up your Telnyx SIP trunk, follow the [SIP trunking guide](/docs/eleven-agents/phone-numbers/sip-trunking) to complete the configuration in
+> ElevenLabs.
 
-Telnyx inbound trunks don't use digest authentication, only fill in those credentials for outbound
-calls and if your Telnyx trunk requires it.
+> **Note**
+>
+> Telnyx inbound trunks don't use digest authentication, only fill in those credentials for outbound
+> calls and if your Telnyx trunk requires it.

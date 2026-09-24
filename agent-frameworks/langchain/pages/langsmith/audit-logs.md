@@ -102,7 +102,7 @@ Audit log events are returned in [OCSF v1.7.0 API Activity (Class UID 6003)](htt
 | `resources` | List of UUIDs for the resources affected by the operation (e.g., the role that was updated, the workspace that was created). |
 | `metadata.uid` | Unique identifier for this audit log event. |
 | `unmapped.original_audit_log` | The full LangSmith-native audit log record, including `organization_id` and `workspace_id`. |
-| `unmapped.original_audit_log.enrichments.resource_owner_ls_user_id` | UUID of the member who owns the resource the operation acted on, for the operations that record it, such as revoking or deleting a personal access token. A value different from `actor.user.uid` means an administrator acted on another member's resource. |
+| `unmapped.original_audit_log.enrichments.resource_owner_ls_user_id` | UUID of the member who owns the resource the operation acted on, for the operations that record it, such as deactivating or deleting a personal access token. A value different from `actor.user.uid` means an administrator acted on another member's resource. |
 
 ## Forwarding to external systems
 
@@ -222,7 +222,7 @@ The [Open Cybersecurity Schema Framework (OCSF)](https://schema.ocsf.io/) is an 
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
+    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/audit-logs.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

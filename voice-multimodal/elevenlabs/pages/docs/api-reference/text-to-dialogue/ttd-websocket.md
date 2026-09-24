@@ -163,19 +163,24 @@ channels:
           type: object
           properties:
             model_id:
-              description: Any type
+              type: string
+              default: eleven_v3_conversational
             output_format:
               description: Any type
             language_code:
-              description: Any type
+              type: string
             sync_alignment:
-              description: Any type
+              type: boolean
+              default: false
             apply_text_normalization:
               description: Any type
             seed:
-              description: Any type
+              type: integer
+              minimum: 1
+              maximum: 4294967295
             enable_logging:
-              description: Any type
+              type: boolean
+              default: true
         headers:
           type: object
           properties:

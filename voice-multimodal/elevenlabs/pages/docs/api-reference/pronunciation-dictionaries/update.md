@@ -31,7 +31,7 @@ Reference: https://elevenlabs.io/docs/api-reference/pronunciation-dictionaries/u
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_Update_pronunciation_dictionary_v1_pronunciation_dictionaries__pronunciation_dictionary_id__patch.
 
 - `archived` (boolean, optional) — Whether to archive the pronunciation dictionary.
 - `name` (string, optional) — The name of the pronunciation dictionary, used for identification only.
@@ -59,10 +59,17 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

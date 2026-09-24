@@ -31,7 +31,7 @@ Reference: https://elevenlabs.io/docs/api-reference/knowledge-base/move-document
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_Move_entity_to_folder_v1_convai_knowledge_base__document_id__move_post.
 
 - `move_to` (string, optional, nullable) — The folder to move the entities to. If not set, the entities will be moved to the root folder.
 
@@ -47,10 +47,17 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

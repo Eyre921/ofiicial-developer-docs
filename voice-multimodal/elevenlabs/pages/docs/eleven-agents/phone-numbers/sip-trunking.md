@@ -20,20 +20,24 @@ With SIP trunking, you can:
 * Handle both inbound and outbound calls
 * Leverage encrypted TLS transport and media encryption for enhanced security
 
-New to SIP? See the [SIP reference](/docs/eleven-agents/phone-numbers/sip-reference) for
-plain-language definitions of the terms used throughout this guide, such as SIP, SBC, SDP, RTP,
-and MTU.
+> **Tip**
+>
+> New to SIP? See the [SIP reference](/docs/eleven-agents/phone-numbers/sip-reference) for
+> plain-language definitions of the terms used throughout this guide, such as SIP, SBC, SDP, RTP,
+> and MTU.
 
-**Static IP SIP Servers**
-
-ElevenLabs offers SIP servers with static IP addresses for enterprise clients who require IP allowlisting for their security policies.
-
-Our static IP infrastructure uses a /24 IP address block containing 256 addresses distributed across multiple regions (US, EU, India, and Singapore). You must allowlist the entire /24 block in your firewall configuration.
-
-For the default (US/International) environment, use `sip-static.rtc.elevenlabs.io` as your SIP endpoint.
-For isolated regions, use `sip-static.rtc.<region>.residency.elevenlabs.io`, where `<region>` is your data residency region code (for example `eu`, `in`, or `sg`). When using these endpoints, all traffic will originate exclusively from within that region. Specific allowlisting per-region is not available. See [data residency](/docs/overview/administration/data-residency) for the list of available regions.
-
-This feature is available for Enterprise accounts and can also be enabled during Enterprise trials for testing purposes. To request access, email Support at [team@elevenlabs.io](mailto:team@elevenlabs.io) or contact your account representative. For more information, [contact sales](https://elevenlabs.io/contact-sales?utm_source=docs\&utm_medium=referral\&utm_campaign=static_ip_sip).
+> **Note**
+>
+> **Static IP SIP Servers**
+>
+> ElevenLabs offers SIP servers with static IP addresses for enterprise clients who require IP allowlisting for their security policies.
+>
+> Our static IP infrastructure uses a /24 IP address block containing 256 addresses distributed across multiple regions (US, EU, India, and Singapore). You must allowlist the entire /24 block in your firewall configuration.
+>
+> For the default (US/International) environment, use `sip-static.rtc.elevenlabs.io` as your SIP endpoint.
+> For isolated regions, use `sip-static.rtc.<region>.residency.elevenlabs.io`, where `<region>` is your data residency region code (for example `eu`, `in`, or `sg`). When using these endpoints, all traffic will originate exclusively from within that region. Specific allowlisting per-region is not available. See [data residency](/docs/overview/administration/data-residency) for the list of available regions.
+>
+> This feature is available for Enterprise accounts and can also be enabled during Enterprise trials for testing purposes. To request access, email Support at [team@elevenlabs.io](mailto:team@elevenlabs.io) or contact your account representative. For more information, [contact sales](https://elevenlabs.io/contact-sales?utm_source=docs\&utm_medium=referral\&utm_campaign=static_ip_sip).
 
 ## How SIP trunking works
 
@@ -62,20 +66,20 @@ Some in-dialog requests, such as `BYE` or `REFER`, may require a new TLS connect
 * **Follow-up connections to ElevenLabs**: Your system establishes the connection to the `Contact` header address returned in the response, which resolves to a specific SIP server of the form `<ip>.hosts.rtc.elevenlabs.io`. That server presents a certificate valid for `*.hosts.rtc.elevenlabs.io`, which your system validates as the TLS client.
 * **Follow-up connections from ElevenLabs**: When ElevenLabs initiates a TLS connection for a `BYE` or `REFER`, it connects to the address in the top-most `Via` header, which is often an IP address. Your system typically returns a certificate valid for a fully qualified domain name (FQDN) rather than that IP address. To validate this certificate, configure the **Remote domains** field in your phone number settings. If any domain the received certificate is valid for matches a configured remote domain, validation succeeds; otherwise it fails.
 
-If outbound `BYE` or `REFER` requests over TLS fail certificate validation, add the FQDN your SIP
-server's certificate is issued for to the **Remote domains** field in the phone number settings.
+> **Tip**
+>
+> If outbound `BYE` or `REFER` requests over TLS fail certificate validation, add the FQDN your SIP
+> server's certificate is issued for to the **Remote domains** field in the phone number settings.
 
 ## Making calls to ElevenLabs SIP trunk
 
-When initiating calls to the ElevenLabs platform, you need to use the proper SIP URI format.
+When initiating calls to the ElevenLabs platform, you need to use the proper SIP URI format. The ElevenLabs SIP trunk URI depends on the transport you want to use for signaling:
 
-The ElevenLabs SIP trunk URI is:
+* **TCP**: `sip:sip.rtc.elevenlabs.io:5060;transport=tcp`
+* **TLS**: `sip:sip.rtc.elevenlabs.io:5061;transport=tls`
+* **UDP**: `sip:sip.rtc.elevenlabs.io:5060;transport=udp` (experimental; use this for testing only, not production)
 
-```
-sip:sip.rtc.elevenlabs.io:5060;transport=tcp
-```
-
-To make a call, construct a complete SIP URI that includes an identifier:
+To make a call, construct a complete SIP URI that includes an identifier. For example, to call the phone number `+19991234567` over TCP:
 
 ```
 sip:+19991234567@sip.rtc.elevenlabs.io:5060
@@ -86,12 +90,16 @@ Where:
 * `+19991234567` is the identifier (typically a phone number in E.164 format)
 * The identifier can also be any string value, such as `1000` or `john`
 
-**Common Mistake**: Do not initiate calls directly to `sip@sip.rtc.elevenlabs.io:5060` without an
-identifier. The SIP URI must include a phone number or identifier after the `sip:` prefix and
-before the `@` symbol.
+> **Warning**
+>
+> **Common Mistake**: Do not initiate calls directly to `sip@sip.rtc.elevenlabs.io:5060` without an
+> identifier. The SIP URI must include a phone number or identifier after the `sip:` prefix and
+> before the `@` symbol.
 
-**SIP URI Format**: A [SIP URI](https://en.wikipedia.org/wiki/SIP_URI_scheme) follows the format
-`sip:identifier@domain:port` where the identifier is required to route the call properly.
+> **Info**
+>
+> **SIP URI Format**: A [SIP URI](https://en.wikipedia.org/wiki/SIP_URI_scheme) follows the format
+> `sip:identifier@domain:port` where the identifier is required to route the call properly.
 
 ## Requirements
 
@@ -103,7 +111,7 @@ Before setting up SIP trunking, ensure you have:
 4. Appropriate firewall settings to allow SIP traffic
 5. **TLS Support**: For enhanced security, ensure your SIP trunk provider supports TLS transport
 6. **Audio codec compatibility**:
-   Your system must support either G711 or G722 audio codecs or be capable of resampling audio on your end. ElevenLabs' SIP deployment outputs and receives audio at this sample rate. This is independent of any audio format configured on the agent for direct websocket connections.
+   Your system must support at least one of the G.722 or G.711 (PCMU or PCMA) audio codecs, or be capable of resampling audio on your end. This is independent of any audio format configured on the agent for direct websocket connections.
 
 ## Setting up SIP trunking
 
@@ -113,9 +121,9 @@ Go to the [Phone Numbers section](https://elevenlabs.io/app/agents/phone-numbers
 
 #### Import SIP Trunk
 
-Click on "Import a phone number from SIP trunk" button to open the configuration dialog.
+Click the "Import number" button, then select "From SIP Trunk" to open the configuration dialog.
 
-![Select SIP trunk option](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4c5f0192265d72a601768a6fa6ce6e11ebd8e115dc58e3b28460f5d0cdb7cabe/assets/images/conversational-ai/sip-trunk-select.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T072023Z&X-Amz-Expires=604800&X-Amz-Signature=a761bd58c8b0b786c2af168410f283ed28f6bb9e218945414d5746a0533b10b6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)![SIP trunk configuration dialog](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1f50bf163dee6de654322e84960d9e2f8c126a08aed6e90eba35692789ba2088/assets/images/conversational-ai/sip-trunk.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T072023Z&X-Amz-Expires=604800&X-Amz-Signature=6aaf703c1455f3d9d274568afa4679742c929917a1ca23840fe66e87debab559&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Import number menu with the From SIP Trunk option](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5c6e4969f3ae086d4876674a1399e3f1f2b964d15b955d5f46ad95da655829fb/assets/images/conversational-ai/sip-trunk-import-number.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T104624Z&X-Amz-Expires=604800&X-Amz-Signature=ee63264c4832e984890c1a57478d1b806d4ea2baf7a97c1b834ecb4a86422e49&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Enter basic configuration
 
@@ -124,30 +132,30 @@ Complete the basic configuration with the following information:
 * **Label**: A descriptive name for the phone number
 * **Phone Number**: The E.164 formatted phone number to connect (e.g., +15551234567)
 
-![SIP trunk basic configuration](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6ea0abfdeeafd24d8e4c480b935eacd25d63896a980b156a1420f362afa22650/assets/images/conversational-ai/sip-trunk-inbound.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T072023Z&X-Amz-Expires=604800&X-Amz-Signature=bc16d320c42df354904118f6015f6922b847a4259890c985fe95c97874130e28&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![SIP trunk basic configuration with Label and Phone number fields](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/682cc9b519dc50553e4849c528837ae3f6ff9ebeef005464004474d201cccb95/assets/images/conversational-ai/sip-trunk-basic-config.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T104624Z&X-Amz-Expires=604800&X-Amz-Signature=64fa6c0b70499a30eaf0273cc913763c46e2d1e0903f703cb3b40de1ec22312d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-#### Configure transport and encryption
+#### Configure inbound settings
 
-Configure the transport protocol and media encryption settings for enhanced security:
+Configure how ElevenLabs handles calls arriving at your SIP trunk, including media encryption and access controls:
 
-* **Transport Type**: Select the transport protocol for SIP signaling:
-  * **TCP**: Standard TCP transport
-  * **TLS**: Encrypted TLS transport for enhanced security
-  * **UDP**: Connectionless transport (experimental; use TCP or TLS for production)
 * **Media Encryption**: Configure encryption for RTP media streams:
   * **Disabled**: No media encryption
   * **Allowed**: Permits encrypted media streams
   * **Required**: Enforces encrypted media streams
+* **Allowed Numbers** (Optional): Phone numbers authorized to call this number. Leave empty to allow all numbers.
+* **Allowed Source IP Addresses** (Optional): Works only for TCP/TLS transport, not UDP. IP addresses or CIDR ranges that are allowed to send calls to this trunk. Leave as `0.0.0.0/0` to allow all addresses.
+* **Remote Domains** (Optional): Specify the FQDN domains of your SIP servers from which you originate the calls, for example `example.pstn.twilio.com`. These domains are used for TLS certificate validation. Leave this field empty if you don't use TLS.
+* **Authentication** (Optional): Provide digest authentication credentials that will be used to authenticate inbound calls.
+  * **SIP Trunk Username**: Username for SIP digest authentication
+  * **SIP Trunk Password**: Password for SIP digest authentication
 
-![Select TLS or TCP transport](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bcb8c57349ba49644015853c1ff375e67700c27385034aec2eaf6f4df6fb1385/assets/images/conversational-ai/siptrunktls.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T072023Z&X-Amz-Expires=604800&X-Amz-Signature=0e7be41b45ae2f582c798db1d3ae8f16cfb3d60b51b1737b88168c4bb819120f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)![Select media encryption setting](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b8ab8b378bebe2c72ad3ea4fa84829a8d65a595558c95e2f464b47015d98be92/assets/images/conversational-ai/siptrunkmediaencryption.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T072023Z&X-Amz-Expires=604800&X-Amz-Signature=0e55d09b481bf0e03004e9d05cb0d8ca3ece1d45b2417907b7e4c104520377e7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
-
-**Security Best Practice**: Use TLS transport with Required media encryption for maximum security. This ensures both signaling and media are encrypted end-to-end.
+![Inbound configuration settings, including media encryption, allowed numbers, allowed source IP addresses, remote domains, and authentication](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/83a3ee6dd135f8f0206c08703ade8324d7993d88cc0572eaa1f65246313ccf90/assets/images/conversational-ai/sip-trunk-inbound-config.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T104624Z&X-Amz-Expires=604800&X-Amz-Signature=3e916ee8eaa1b68260d3a1146e7e5bc0abcaab26c1f9ec20db972e339358acb5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Configure outbound settings
 
 Configure where ElevenLabs should send calls for your phone number:
 
-* **Address**: Hostname or IP address where the SIP INVITE is sent (e.g., `sip.telnyx.com`). This should be a hostname or IP address only, not a full SIP URI.
+* **Address**: Hostname or IP address where the SIP INVITE is sent (e.g., `sip.telnyx.com`). This should be a hostname or IP address only, not a full SIP URI. If using TLS, use a hostname with a valid certificate.
 * **Transport Type**: Select the transport protocol for SIP signaling:
   * **TCP**: Standard TCP transport
   * **TLS**: Encrypted TLS transport for enhanced security
@@ -156,42 +164,33 @@ Configure where ElevenLabs should send calls for your phone number:
   * **Disabled**: No media encryption
   * **Allowed**: Permits encrypted media streams
   * **Required**: Enforces encrypted media streams
+* **Enabled Codecs**: Codecs to offer in the SDP for outbound calls (G.722, PCMU, PCMA). Useful when your SIP provider only supports certain codecs.
+* **Custom Headers** (Optional): Add custom SIP headers to be included with outbound calls. Click "Add Header" to enter the header name and value required by your provider; you can add multiple headers as needed. Custom headers can be used for call routing and identification, billing and tracking purposes, and provider-specific requirements.
+* **Authentication** (Optional): Provide digest authentication credentials if required by your SIP trunk provider.
 
-![SIP trunk outbound configuration](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e544448d70847d436ce6071e384f4edd406d9048d4b8bb9d62e76862e55f2571/assets/images/conversational-ai/sip-outbound.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T072023Z&X-Amz-Expires=604800&X-Amz-Signature=6eb1eaca3ed17f70652e4f35983624c0a0e0339d13c4e8a9d70e6cc560ef75be&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+  * **SIP Trunk Username**: Username for SIP digest authentication
+  * **SIP Trunk Password**: Password for SIP digest authentication
 
-**Security Best Practice**: Use TLS transport with Required media encryption for maximum security. This ensures both signaling and media are encrypted end-to-end.
+  If left empty, Access Control List (ACL) authentication will be used, which requires you to allowlist ElevenLabs IP addresses in your provider's settings.
 
-The **Address** field specifies where ElevenLabs will send outbound calls from your AI agents. Enter only the hostname or IP address without the `sip:` protocol prefix.
+![Outbound configuration settings, including address, transport type, media encryption, enabled codecs, custom headers, and authentication](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/91e0283cb11362220b862856c2365c56fb47388f1b618007c1902d4515390253/assets/images/conversational-ai/sip-trunk-outbound-config.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T104624Z&X-Amz-Expires=604800&X-Amz-Signature=ac56cfcf6fed80bceea8b8a4c904e39e2bb4b53255da874c15744ca8732a59e0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-#### Add custom headers (optional)
+> **Tip**
+>
+> **Security Best Practice**: Use TLS transport with Required media encryption for maximum security. This ensures both signaling and media are encrypted end-to-end.
 
-If your SIP trunk provider requires specific headers for call routing or identification:
+> **Info**
+>
+> **Authentication Methods**:
+>
+> * **Digest Authentication**: Uses username/password credentials for secure authentication (recommended)
+> * **ACL Authentication**: Uses IP address allowlisting for access control
+>
+> **Digest Authentication is strongly recommended** as it provides better security without relying on IP allowlisting, which can be complex to manage with dynamic IP addresses.
 
-* Click "Add Header" to add custom SIP headers
-* Enter the header name and value as required by your provider
-* You can add multiple headers as needed
-
-Custom headers are included with all outbound calls and can be used for:
-
-* Call routing and identification
-* Billing and tracking purposes
-* Provider-specific requirements
-
-#### Configure authentication (optional)
-
-Provide digest authentication credentials if required by your SIP trunk provider:
-
-* **SIP Trunk Username**: Username for SIP digest authentication
-* **SIP Trunk Password**: Password for SIP digest authentication
-
-If left empty, Access Control List (ACL) authentication will be used, which requires you to allowlist ElevenLabs IP addresses in your provider's settings.
-
-**Authentication Methods**:
-
-* **Digest Authentication**: Uses username/password credentials for secure authentication (recommended)
-* **ACL Authentication**: Uses IP address allowlisting for access control
-
-**Digest Authentication is strongly recommended** as it provides better security without relying on IP allowlisting, which can be complex to manage with dynamic IP addresses.
+> **Note**
+>
+> The **Address** field specifies where ElevenLabs will send outbound calls from your AI agents. Enter only the hostname or IP address without the `sip:` protocol prefix.
 
 #### Complete Setup
 
@@ -226,8 +225,10 @@ Header names are normalized by removing the `X-` prefix, converting the name to 
 
 Use these variables in agent prompts, first messages, and tools to personalize the conversation with caller-provided context. The values are also visible in the conversation history under the **Phone Call** tab.
 
-Reserved headers such as `X-Call-ID` and `X-Caller-ID` continue to map to `system__call_sid` and
-`system__caller_id`. Custom inbound headers cannot override these system variables.
+> **Note**
+>
+> Reserved headers such as `X-Call-ID` and `X-Caller-ID` continue to map to `system__call_sid` and
+> `system__caller_id`. Custom inbound headers cannot override these system variables.
 
 ### BYE headers from dynamic variables
 
@@ -336,7 +337,9 @@ rather than the specific `Contact` URI returned in the 200 OK response.
 1. When re-establishing a TCP connection for BYE, always target the `Contact` address from the INVITE response so the request reaches the same SIP server that handled the dialog.
 2. Avoid sending BYE to the shared `sip.rtc.elevenlabs.io` address because the request can land on a different SIP node, which rejects it with 481.
 
-See [RFC 3261 Section 8.1.1.8](https://datatracker.ietf.org/doc/html/rfc3261#section-8.1.1.8) for the normative behavior governing Contact headers and dialog routing.
+> **Note**
+>
+> See [RFC 3261 Section 8.1.1.8](https://datatracker.ietf.org/doc/html/rfc3261#section-8.1.1.8) for the normative behavior governing Contact headers and dialog routing.
 
 ## Limitations and Considerations
 
@@ -345,7 +348,7 @@ See [RFC 3261 Section 8.1.1.8](https://datatracker.ietf.org/doc/html/rfc3261#sec
 * Outbound calling capabilities may be limited by your SIP trunk provider
 * **TLS Support**: Ensure your SIP trunk provider supports TLS 1.2 or higher for encrypted transport
 * **Media Encryption**: SRTP support varies by provider; verify compatibility before requiring encryption
-* **Audio format**: ElevenLabs' SIP deployment outputs and receives audio in G711 8kHz or G722 16kHz audio codecs. This is independent of any audio format configured on the agent for direct websocket connections. Your SIP trunk system must either support this format natively or perform resampling to match your system's requirements
+* **Audio format**: ElevenLabs' SIP deployment outputs and receives audio using the PCMU or PCMA (G.711, 8kHz) or G.722 (16kHz) codecs. This is independent of any audio format configured on the agent for direct websocket connections. Your SIP trunk system must either support one of these codecs natively or perform resampling to match your system's requirements
 
 ## FAQ
 
@@ -372,8 +375,10 @@ supports TLS before enabling it.
 * **TCP**: Reliable but unencrypted signaling - **TLS**: Encrypted and reliable signaling
   (recommended for production) - **UDP**: Connectionless signaling, currently experimental
 
-UDP transport is experimental and intended for testing only. For production and
-security-critical applications, always use TLS transport.
+> **Note**
+>
+> UDP transport is experimental and intended for testing only. For production and
+> security-critical applications, always use TLS transport.
 
 #### What are custom headers used for?
 

@@ -20,7 +20,9 @@ For a standalone voice agent without LiveKit or an external LLM, see the [Deepgr
 
 This guide assumes you are familiar with Python or Node.js and have a basic understanding of how voice agents work.
 
-You'll need a [Deepgram account](https://console.deepgram.com/signup?jump=keys) and an API key. Signup is free and includes **\$200** in credit.
+> **Info**
+>
+> You'll need a [Deepgram account](https://console.deepgram.com/signup?jump=keys) and an API key. Signup is free and includes **\$200** in credit.
 
 ### Get OpenAI Credentials
 

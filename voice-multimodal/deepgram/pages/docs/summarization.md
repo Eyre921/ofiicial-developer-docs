@@ -44,7 +44,9 @@ curl \
   --url 'https://api.deepgram.com/v1/listen?summarize=v2'
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
 
 ### Query Parameters
 
@@ -54,7 +56,9 @@ Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.dee
 | `summarize` | `true`  | boolean | Enables summarization. Returns the same V2 response structure as `summarize=v2`.                                                                                               |
 | `summarize` | `false` | boolean | Disables the summarization feature.                                                                                                                                            |
 
-Summarization requires a minimum of greater than 50 words for summarization. For shorter inputs (less than 50 words), the original input will be returned. In this case, no tokens in or out are billed as summarization usage.
+> **Info**
+>
+> Summarization requires a minimum of greater than 50 words for summarization. For shorter inputs (less than 50 words), the original input will be returned. In this case, no tokens in or out are billed as summarization usage.
 
 ## Analyze Response
 

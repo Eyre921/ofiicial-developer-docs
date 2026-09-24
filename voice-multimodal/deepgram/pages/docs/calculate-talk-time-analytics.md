@@ -12,7 +12,9 @@ path: docs/calculate-talk-time-analytics
 
 Analyzing the talk time of participants in a classroom, meeting, or phone call can help you improve participant engagement, sales presentations and support response. Using Deepgram's speech-to-text API with diarization, you can gather the data you need to make informed decisions about your organization's interactions.
 
-The demo code in this guide uses an older version of our Node SDK. A new version of our SDK is now available. .
+> **Info**
+>
+> The demo code in this guide uses an older version of our Node SDK. A new version of our SDK is now available. .
 
 ## Before You Begin
 
@@ -20,7 +22,9 @@ The example provided is written in Node.js, and you can [find the code on GitHub
 
 Before you run the code, you'll need to do a few things:
 
-Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
+> **Info**
+>
+> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
 
 ### Create a Deepgram API Key
 

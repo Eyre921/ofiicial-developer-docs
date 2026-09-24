@@ -31,7 +31,7 @@ Reference: https://elevenlabs.io/docs/api-reference/triage-tickets/create-manual
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a CreateManualTicketRequestModel.
 
 - `qa_comment` (string, required) — What the ticket is about, e.g. a follow-up task for the agent. This is shown as the ticket title.
 
@@ -53,15 +53,8 @@ Successful Response
 - `first_seen_unix_secs` (integer, required, nullable)
 - `last_seen_unix_secs` (integer, required, nullable)
 - `qa_comment` (string, required, nullable)
-- `ticket_comments` (list of object, required)
-  - `comment` (string, required)
-  - `created_at_unix_secs` (integer, required)
-  - `owner_user_id` (string, required, nullable)
-- `turn_comments` (list of object, required)
-  - `turn_index` (integer, required)
-  - `comment` (string, required)
-  - `created_at_unix_secs` (integer, required)
-  - `owner_user_id` (string, required, nullable)
+- `ticket_comments` (list of TicketCommentResponseModel, required)
+- `turn_comments` (list of TurnCommentResponseModel, required)
 - `status` (enum, required)
   - Allowed values: `open`, `in_progress`, `resolved`, `merged`
 - `source` (enum, required)
@@ -76,10 +69,30 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### TicketCommentResponseModel
+
+- `comment` (string, required)
+- `created_at_unix_secs` (integer, required)
+- `owner_user_id` (string, required, nullable)
+
+### TurnCommentResponseModel
+
+- `turn_index` (integer, required)
+- `comment` (string, required)
+- `created_at_unix_secs` (integer, required)
+- `owner_user_id` (string, required, nullable)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

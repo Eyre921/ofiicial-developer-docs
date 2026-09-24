@@ -16,7 +16,9 @@ When you are sending text to our TTS websocket from an LLM, you will need to sen
 
 In other cases in real-time text-to-speech processing, there are scenarios where you may need to force the server to process all (or flush) unprocessed speech-to-text data immediately. Deepgram supports a `Flush` message to handle such situations.
 
-Very frequent flushes can affect audio output quality.
+> **Warning**
+>
+> Very frequent flushes can affect audio output quality.
 
 ## Sending `Flush`
 

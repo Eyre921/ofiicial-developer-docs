@@ -36,38 +36,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/batch-calling/
 
 Successful Response
 
-- `batch_calls` (list of object, required)
-  - `id` (string, required)
-  - `name` (string, required)
-  - `agent_id` (string, required)
-  - `created_at_unix` (integer, required)
-  - `scheduled_time_unix` (integer, required)
-  - `total_calls_dispatched` (integer, required, default: 0)
-  - `total_calls_scheduled` (integer, required, default: 0)
-  - `total_calls_finished` (integer, required, default: 0)
-  - `last_updated_at_unix` (integer, required)
-  - `status` (enum, required)
-    - Allowed values: `pending`, `in_progress`, `completed`, `failed`, `cancelled`
-  - `retry_count` (integer, required, default: 0)
-  - `telephony_call_config` (object, required)
-    - `ringing_timeout_secs` (integer, optional, default: 60) — How long to ring the recipient before giving up, in seconds. Note that this will also be limited by the provider's own constraints.
-    - `twilio_call_recording_enabled` (boolean, optional, default: false) — Whether to record the call using Twilio call recording. Ignored for non-Twilio providers. Recordings are stored in your Twilio account.
-    - `twilio_machine_detection` (object, optional) — Configuration for Twilio's carrier-level answering machine detection (AMD). Omit or set to null to disable it. Ignored for non-Twilio providers and for inbound calls. The resulting verdict is delivered as its own `answering_machine_detection` webhook event, which requires that event to be enabled on the workspace or agent webhook settings; it is not part of the conversation or the post-call webhook. Detection runs asynchronously so it never delays the start of the conversation, and the verdict can arrive at any point during the call -- with `detect_message_end`, even after it has ended. Twilio bills separately for AMD.
-      - `mode` (enum, optional, default: enable) — How thorough the detection should be. `enable` returns a verdict as soon as Twilio can tell a human from a machine. `detect_message_end` also waits for the voicemail greeting to finish, which is what produces the `machine_end_*` verdicts, but returns a result later.
-        - Allowed values: `enable`, `detect_message_end`
-  - `agent_name` (string, required)
-  - `phone_number_id` (string, optional)
-  - `phone_provider` (enum, optional)
-    - Allowed values: `twilio`, `sip_trunk`, `exotel`
-  - `whatsapp_params` (object, optional)
-    - `whatsapp_call_permission_request_template_name` (string, required)
-    - `whatsapp_call_permission_request_template_language_code` (string, required)
-    - `whatsapp_phone_number_id` (string, optional)
-  - `branch_id` (string, optional)
-  - `environment` (string, optional)
-  - `timezone` (string, optional)
-  - `target_concurrency_limit` (integer, optional) — Maximum number of simultaneous calls for this batch. When set, dispatch is governed by this limit rather than workspace/agent capacity percentages.
-  - `branch_name` (string, optional)
+- `batch_calls` (list of BatchCallResponse, required)
 - `next_doc` (string, optional) — The next document, used to paginate through the batch calls
 - `has_more` (boolean, optional, default: false) — Whether there are more batch calls to paginate through
 
@@ -77,10 +46,62 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### BatchCallResponse
+
+- `id` (string, required)
+- `name` (string, required)
+- `agent_id` (string, required)
+- `created_at_unix` (integer, required)
+- `scheduled_time_unix` (integer, required)
+- `total_calls_dispatched` (integer, required, default: 0)
+- `total_calls_scheduled` (integer, required, default: 0)
+- `total_calls_finished` (integer, required, default: 0)
+- `last_updated_at_unix` (integer, required)
+- `status` (enum, required)
+  - Allowed values: `pending`, `in_progress`, `completed`, `failed`, `cancelled`
+- `retry_count` (integer, required, default: 0)
+- `telephony_call_config` (TelephonyCallConfigOutput, required)
+- `agent_name` (string, required)
+- `phone_number_id` (string, optional)
+- `phone_provider` (enum, optional)
+  - Allowed values: `twilio`, `sip_trunk`, `exotel`
+- `whatsapp_params` (BatchCallWhatsAppParams, optional)
+- `branch_id` (string, optional)
+- `environment` (string, optional)
+- `timezone` (string, optional)
+- `target_concurrency_limit` (integer, optional) — Maximum number of simultaneous calls for this batch. When set, dispatch is governed by this limit rather than workspace/agent capacity percentages.
+- `branch_name` (string, optional)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItem, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### TelephonyCallConfigOutput
+
+- `ringing_timeout_secs` (integer, optional, default: 60) — How long to ring the recipient before giving up, in seconds. Note that this will also be limited by the provider's own constraints.
+- `twilio_call_recording_enabled` (boolean, optional, default: false) — Whether to record the call using Twilio call recording. Ignored for non-Twilio providers. Recordings are stored in your Twilio account.
+- `twilio_machine_detection` (TwilioMachineDetectionConfig, optional) — Configuration for Twilio's carrier-level answering machine detection (AMD). Omit or set to null to disable it. Ignored for non-Twilio providers and for inbound calls. The resulting verdict is delivered as its own `answering_machine_detection` webhook event, which requires that event to be enabled on the workspace or agent webhook settings; it is not part of the conversation or the post-call webhook. Detection runs asynchronously so it never delays the start of the conversation, and the verdict can arrive at any point during the call -- with `detect_message_end`, even after it has ended. Twilio bills separately for AMD.
+
+### BatchCallWhatsAppParams
+
+- `whatsapp_call_permission_request_template_name` (string, required)
+- `whatsapp_call_permission_request_template_language_code` (string, required)
+- `whatsapp_phone_number_id` (string, optional)
+
+### ValidationErrorLocItem
+
+### TwilioMachineDetectionConfig
+
+How to run Twilio's carrier-level answering machine detection (AMD) on a call.
+
+- `mode` (enum, optional, default: enable) — How thorough the detection should be. `enable` returns a verdict as soon as Twilio can tell a human from a machine. `detect_message_end` also waits for the voicemail greeting to finish, which is what produces the `machine_end_*` verdicts, but returns a result later.
+  - Allowed values: `enable`, `detect_message_end`
 
 ## Examples
 

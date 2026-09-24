@@ -8,8 +8,10 @@ path: docs/eleven-agents/libraries/react
 
 # React SDK
 
-Refer to the [ElevenAgents overview](/docs/eleven-agents/overview) for an explanation of how
-ElevenAgents works.
+> **Info**
+>
+> Refer to the [ElevenAgents overview](/docs/eleven-agents/overview) for an explanation of how
+> ElevenAgents works.
 
 ## Installation
 
@@ -23,12 +25,16 @@ yarn add @elevenlabs/react
 pnpm install @elevenlabs/react
 ```
 
-Upgrading from an earlier version? Run `npx skills add elevenlabs/packages` to install the
-`elevenlabs:sdk-migration` skill for your AI coding agent, which automates import changes,
-`ConversationProvider` wrapping, and API updates.
+> **Tip**
+>
+> Upgrading from an earlier version? Run `npx skills add elevenlabs/packages` to install the
+> `elevenlabs:sdk-migration` skill for your AI coding agent, which automates import changes,
+> `ConversationProvider` wrapping, and API updates.
 
-`@elevenlabs/react` re-exports everything from `@elevenlabs/client`, so you don't need to install
-both packages.
+> **Note**
+>
+> `@elevenlabs/react` re-exports everything from `@elevenlabs/client`, so you don't need to install
+> both packages.
 
 ## Usage
 
@@ -120,9 +126,11 @@ const [muted, setMuted] = useState(false);
 
 A convenience React hook that combines all granular hooks into a single return value. Requires a `ConversationProvider` ancestor.
 
-For better render performance, consider using the [granular hooks](#granular-hooks) instead.
-`useConversation` triggers a re-render on any state change, while the granular hooks only
-re-render when their specific slice of state changes.
+> **Note**
+>
+> For better render performance, consider using the [granular hooks](#granular-hooks) instead.
+> `useConversation` triggers a re-render on any state change, while the granular hooks only
+> re-render when their specific slice of state changes.
 
 #### Initialize conversation
 
@@ -197,8 +205,10 @@ If the function returns a value, it is passed back to the agent as a response.
 
 The tool must be explicitly set to block the conversation in the ElevenLabs UI for the agent to await and react to the response. Otherwise, the agent assumes success and continues the conversation.
 
-For a more React-idiomatic approach to registering client tools, see
-[useConversationClientTool](#useconversationclienttool).
+> **Note**
+>
+> For a more React-idiomatic approach to registering client tools, see
+> [useConversationClientTool](#useconversationclienttool).
 
 ##### Conversation overrides
 
@@ -274,9 +284,11 @@ The Agent ID can be acquired through [ElevenLabs UI](https://elevenlabs.io/app/a
 
 We also recommended passing in your own end user IDs to map conversations to your users.
 
-The connection type is automatically inferred based on the conversation mode. Voice conversations
-use WebRTC and text-only conversations use WebSocket by default. You can still explicitly specify
-`connectionType` if needed.
+> **Note**
+>
+> The connection type is automatically inferred based on the conversation mode. Voice conversations
+> use WebRTC and text-only conversations use WebSocket by default. You can still explicitly specify
+> `connectionType` if needed.
 
 ```js
 const conversation = useConversation();
@@ -478,10 +490,12 @@ conversation.changeOutputDevice({
 });
 ```
 
-Device switching only works for voice conversations. If no specific `deviceId` is provided, the
-browser will use its default device selection. You can enumerate available devices using the
-[MediaDevices.enumerateDevices()](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/enumerateDevices)
-API.
+> **Note**
+>
+> Device switching only works for voice conversations. If no specific `deviceId` is provided, the
+> browser will use its default device selection. You can enumerate available devices using the
+> [MediaDevices.enumerateDevices()](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/enumerateDevices)
+> API.
 
 ##### getId
 
@@ -513,9 +527,11 @@ const inputFrequencyData = getInputByteFrequencyData();
 const outputFrequencyData = getOutputByteFrequencyData();
 ```
 
-These methods are only available for voice conversations. In WebRTC mode the audio is hardcoded to
-use `pcm_48000`, meaning any visualization using the returned data might show different patterns
-to WebSocket connections.
+> **Note**
+>
+> These methods are only available for voice conversations. In WebRTC mode the audio is hardcoded to
+> use `pcm_48000`, meaning any visualization using the returned data might show different patterns
+> to WebSocket connections.
 
 ##### sendMCPToolApprovalResult
 

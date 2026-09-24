@@ -10,12 +10,16 @@ path: docs/eleven-api/guides/how-to/text-to-speech/streaming
 
 This guide covers three approaches: generating speech as a file, streaming the audio response directly, and optionally uploading generated audio to an AWS S3 bucket to share via a signed URL.
 
-This guide assumes you have [set up your API key and SDK](/docs/eleven-api/quickstart). Complete
-the quickstart first if you haven’t. The optional S3 upload section also requires an AWS account
-with access to S3.
+> **Note**
+>
+> This guide assumes you have [set up your API key and SDK](/docs/eleven-api/quickstart). Complete
+> the quickstart first if you haven’t. The optional S3 upload section also requires an AWS account
+> with access to S3.
 
-Curious why streaming works the way it does? [Understanding audio streaming](/docs/eleven-api/concepts/audio-streaming) explains the protocol, buffering, and
-latency tradeoffs in depth.
+> **Tip**
+>
+> Curious why streaming works the way it does? [Understanding audio streaming](/docs/eleven-api/concepts/audio-streaming) explains the protocol, buffering, and
+> latency tradeoffs in depth.
 
 ## Convert text to speech (file)
 
@@ -256,41 +260,41 @@ To upload the data to S3 you’ll need to add your AWS access key ID, secret acc
 
 1. Log in to your AWS Management Console: Navigate to the AWS home page and sign in with your account.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e9f1f1b1950962c3d67ea25a0593ca989d33c9f49b641e22eb3f861fc72735e3/assets/images/cookbooks/aws_console_login.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113340Z&X-Amz-Expires=604800&X-Amz-Signature=b3536ee0ea5bc7090ac5c2829e247efebcbb0755ff7e70e85f044b0289a33dfc&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e9f1f1b1950962c3d67ea25a0593ca989d33c9f49b641e22eb3f861fc72735e3/assets/images/cookbooks/aws_console_login.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113238Z&X-Amz-Expires=604800&X-Amz-Signature=4282738e6fb38f05396680f649a5780ffd5dee40878a2b60dfb87aa16bf8bb77&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 2. Access the IAM (Identity and Access Management) Dashboard: You can find IAM under "Security, Identity, & Compliance" on the services menu. The IAM dashboard manages access to your AWS services securely.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d6fa7e75879e7537693c4edde16d0ac5face78d72b00de50743a754c0681a5e3/assets/images/cookbooks/aws_iam_dashboard.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113340Z&X-Amz-Expires=604800&X-Amz-Signature=e766a58a03c05393406176073df03cb90807eeeef4c7a6849c8123da1863f7c4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d6fa7e75879e7537693c4edde16d0ac5face78d72b00de50743a754c0681a5e3/assets/images/cookbooks/aws_iam_dashboard.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113238Z&X-Amz-Expires=604800&X-Amz-Signature=2896b0ad33b3afeaac8e3cc7399411c6cd1794d6597cd20866a49029804e8fdc&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 3. Create a New User (if necessary): On the IAM dashboard, select "Users" and then "Add user". Enter a user name.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/47b05ffda6925e4e14147aadc296d7c86cbd3340aaa1025083f1e1464b230f51/assets/images/cookbooks/aws_iam_add_user.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113340Z&X-Amz-Expires=604800&X-Amz-Signature=8bcb1a203bd348a6e5e2f1bb9b12da22069deee87e683c4378378cd496856a8b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/47b05ffda6925e4e14147aadc296d7c86cbd3340aaa1025083f1e1464b230f51/assets/images/cookbooks/aws_iam_add_user.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113238Z&X-Amz-Expires=604800&X-Amz-Signature=0652fd199ccda68e9d3dcb682b5831a7a8660512cc048eb809b0a5a3ce161665&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 4. Set the permissions: attach policies directly to the user according to the access level you wish to grant. For S3 uploads, you can use the AmazonS3FullAccess policy. However, it's best practice to grant least privilege, or the minimal permissions necessary to perform a task. You might want to create a custom policy that specifically allows only the necessary actions on your S3 bucket.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4b88bba4f5bb1509aa087a1ab5cc8068a274b17d8887c563f050b77e8438bb94/assets/images/cookbooks/aws_iam_set_permission.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113340Z&X-Amz-Expires=604800&X-Amz-Signature=3fe09f0d02321c987d2fc343479919aeff81a2264991f1230ac14cdf6caf650f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4b88bba4f5bb1509aa087a1ab5cc8068a274b17d8887c563f050b77e8438bb94/assets/images/cookbooks/aws_iam_set_permission.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113238Z&X-Amz-Expires=604800&X-Amz-Signature=8424e84130967461f07dbcfee5459f2243595f94c4cae5459615b9f9e484c9eb&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 5. Review and create the user: Review your settings and create the user. Upon creation, you'll be presented with an access key ID and a secret access key. Be sure to download and securely save these credentials; the secret access key cannot be retrieved again after this step.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/27dcdff3681522cf936ff6bfb81cf216ada1fe401c7c1dbd10e58cead8a48abc/assets/images/cookbooks/aws_access_secret_key.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113340Z&X-Amz-Expires=604800&X-Amz-Signature=e6e20f94c6ec696995fb153c4ca37aa007f4833eae0e0598e56e5cf441fc2df1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/27dcdff3681522cf936ff6bfb81cf216ada1fe401c7c1dbd10e58cead8a48abc/assets/images/cookbooks/aws_access_secret_key.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113238Z&X-Amz-Expires=604800&X-Amz-Signature=3c3075099b83fbcdc1167e129c156e5b51246f111dcabc961f702d639e880b6f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 6. Get AWS region name: ex. us-east-1
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/016bc11c2f040942b215366c5fc9ac8e01f6261f5ebd44a3456d4b7ba97e9ae8/assets/images/cookbooks/aws_region_name.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113340Z&X-Amz-Expires=604800&X-Amz-Signature=391225b534902eb61610336207b70beb0f858c044a6c8608ab0c922e4f769fbe&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/016bc11c2f040942b215366c5fc9ac8e01f6261f5ebd44a3456d4b7ba97e9ae8/assets/images/cookbooks/aws_region_name.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113238Z&X-Amz-Expires=604800&X-Amz-Signature=7f49d6a585f7c06f3c4d4148d09125dc7f191ab37fba8bc3cc8e6beb0507fea3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 If you do not have an AWS S3 bucket, you will need to create a new one by following these steps:
 
 1. Access the S3 dashboard: You can find S3 under "Storage" on the services menu.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d2455fa92ce6dfa705c3b91144fe22539fae1611848cb8e3cc2dac20e57db4e7/assets/images/cookbooks/aws_s3_dashboard.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113340Z&X-Amz-Expires=604800&X-Amz-Signature=74365b6d3a3c024205a91af8c26e2d8b9eb438c87ddab0a07531163818b02be0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d2455fa92ce6dfa705c3b91144fe22539fae1611848cb8e3cc2dac20e57db4e7/assets/images/cookbooks/aws_s3_dashboard.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113238Z&X-Amz-Expires=604800&X-Amz-Signature=ca3c764cfd38d56961cb8d9756b9075f7fdb0087f09f89fe61ca896e372355b9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 2. Create a new bucket: On the S3 dashboard, click the "Create bucket" button.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3b7d5bdb6559e8511445b41b1bbdeed3f6674791cf23021a30ccb5aa8143be28/assets/images/cookbooks/aws_s3_create_bucket.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113340Z&X-Amz-Expires=604800&X-Amz-Signature=8204f9ee7715ae32b62769080add6f6c7d573d6ca04da55e38a241513e9cd457&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3b7d5bdb6559e8511445b41b1bbdeed3f6674791cf23021a30ccb5aa8143be28/assets/images/cookbooks/aws_s3_create_bucket.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113238Z&X-Amz-Expires=604800&X-Amz-Signature=ff3f3063b94d6434aeef9fa97d1c42dabf9f20bdc84c4957b2628b0fa826fa3b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 3. Enter a bucket name and click on the "Create bucket" button. You can leave the other bucket options as default. The newly added bucket will appear in the list.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/68d23f21bec1e3aa70b18f09c40c9bdace5ff0dd63edc17c6807e7ddac75758d/assets/images/cookbooks/aws_s3_enter_bucket_name.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113340Z&X-Amz-Expires=604800&X-Amz-Signature=923ce15c3baa5bebc6961f785171b8cd54f57ef5633c604be3c1e7de1b0d77d4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/63f7af93d4a73fab3011853c8393c954400d9f344a5811ec90b86d6c69b2ec16/assets/images/cookbooks/aws_s3_bucket_list.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113340Z&X-Amz-Expires=604800&X-Amz-Signature=e2af719f8572a42eafebd5a7d5047852015e3d2e1dc79c92032e3ba3a3f814c3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/68d23f21bec1e3aa70b18f09c40c9bdace5ff0dd63edc17c6807e7ddac75758d/assets/images/cookbooks/aws_s3_enter_bucket_name.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113238Z&X-Amz-Expires=604800&X-Amz-Signature=7b63515aad326c7ab215d278665b845915fff915b92b4c4e9326c27f4732f7fa&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/63f7af93d4a73fab3011853c8393c954400d9f344a5811ec90b86d6c69b2ec16/assets/images/cookbooks/aws_s3_bucket_list.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113238Z&X-Amz-Expires=604800&X-Amz-Signature=aac4ede42aa459e1c99363924a232802f6c1f4905a149bf2b17e96d3f9271220&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Installing the AWS SDK and adding the credentials
 

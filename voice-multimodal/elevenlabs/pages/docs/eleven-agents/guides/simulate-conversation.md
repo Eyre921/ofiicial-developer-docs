@@ -8,9 +8,11 @@ path: docs/eleven-agents/guides/simulate-conversation
 
 # Simulate Conversations
 
-This guide and the endpoints it uses are deprecated. Use the
-[Simulation](/docs/eleven-agents/customization/agent-testing#simulation-testing) agent test type
-instead.
+> **Warning**
+>
+> This guide and the endpoints it uses are deprecated. Use the
+> [Simulation](/docs/eleven-agents/customization/agent-testing#simulation-testing) agent test type
+> instead.
 
 ## Overview
 
@@ -105,9 +107,11 @@ const response = await elevenlabs.conversationalAi.agents.simulateConversation("
 console.log(JSON.stringify(response, null, 4));
 ```
 
-This is a basic example. For a comprehensive list of input parameters, please refer to the API
-reference for [Simulate conversation](/docs/api-reference/agents/simulate-conversation) and
-[Stream simulate conversation](/docs/api-reference/agents/simulate-conversation-stream) endpoints.
+> **Note**
+>
+> This is a basic example. For a comprehensive list of input parameters, please refer to the API
+> reference for [Simulate conversation](/docs/api-reference/agents/simulate-conversation) and
+> [Stream simulate conversation](/docs/api-reference/agents/simulate-conversation-stream) endpoints.
 
 #### Analyze the response
 

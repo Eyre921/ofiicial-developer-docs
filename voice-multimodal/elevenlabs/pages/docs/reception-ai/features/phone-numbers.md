@@ -38,8 +38,10 @@ Move a phone number from one receptionist to another:
 
 Release a number back to the pool when you no longer need it.
 
-Releasing is permanent. You cannot get the same number back. The number returns to the shared pool
-and may be assigned to someone else.
+> **Warning**
+>
+> Releasing is permanent. You cannot get the same number back. The number returns to the shared pool
+> and may be assigned to someone else.
 
 ## Plan limits
 

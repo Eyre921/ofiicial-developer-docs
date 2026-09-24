@@ -107,10 +107,6 @@ curl https://api.stripe.com/v1/checkout/sessions \
 }
 ```
 
-## Returns
-
-Returns a Checkout Session object.
-
 ## Parameters
 
 - [`adaptive_pricing`](https://docs.stripe.com/api/checkout/sessions/create.md?query=adaptive_pricing) (object, optional)
@@ -419,4 +415,8 @@ Possible enum values:
 
 - [`wallet_options`](https://docs.stripe.com/api/checkout/sessions/create.md?query=wallet_options) (object, optional)
   Wallet-specific configuration.
+
+## Returns
+
+Returns a Checkout Session object.
 

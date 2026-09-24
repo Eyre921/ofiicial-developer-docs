@@ -31,7 +31,7 @@ Reference: https://elevenlabs.io/docs/api-reference/voices/replicate-to-isolated
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a ReplicateVoiceToIsolatedEnvironmentRequestModel.
 
 - `target_workspace_id` (string, required) — ID of the workspace to replicate the voice into. It must belong to the same consolidated billing group as the calling workspace; the target's data residency is derived from that link.
 - `preserve_voice_id` (boolean, optional, default: true) — When true (default) the replicated voice keeps the same voice ID in the target residency; set to false to assign a new voice ID.
@@ -50,10 +50,17 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

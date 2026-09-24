@@ -17,15 +17,19 @@ This guide shows you how to enable SMS conversations with your ElevenLabs agent.
 * A [Twilio account](https://twilio.com/) with a purchased phone number that supports SMS.
 * An ElevenLabs agent to handle inbound messages.
 
-Verified caller IDs support outbound calls only. Use a purchased Twilio phone number for inbound
-SMS. See [Twilio native integration](/docs/eleven-agents/phone-numbers/twilio-integration/native-integration#phone-number-types--capabilities).
+> **Note**
+>
+> Verified caller IDs support outbound calls only. Use a purchased Twilio phone number for inbound
+> SMS. See [Twilio native integration](/docs/eleven-agents/phone-numbers/twilio-integration/native-integration#phone-number-types--capabilities).
 
 ## Enable SMS
 
 #### Import your Twilio phone number
 
-Phone numbers you imported before SMS support are not automatically enabled for SMS. To enable
-SMS, re-import your Twilio number.
+> **Warning**
+>
+> Phone numbers you imported before SMS support are not automatically enabled for SMS. To enable
+> SMS, re-import your Twilio number.
 
 Follow the [Twilio native integration](/docs/eleven-agents/phone-numbers/twilio-integration/native-integration) guide to import your number and add your Twilio Account SID and Auth Token.
 
@@ -33,16 +37,18 @@ Follow the [Twilio native integration](/docs/eleven-agents/phone-numbers/twilio-
 
 On the [**Phone Numbers**](https://elevenlabs.io/app/agents/phone-numbers) page, open your imported number and assign the agent that should handle inbound SMS.
 
-![Outbound call button](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/953a870b0ab0c0aa30872b3692260f0879f390d4b4b83c7f82e816385504034f/assets/images/conversational-ai/outbound-button.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113310Z&X-Amz-Expires=604800&X-Amz-Signature=23537ab75dced16a4f0210591d60d080483d4835e55e767d2f57fea89499ae42&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Outbound call button](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/953a870b0ab0c0aa30872b3692260f0879f390d4b4b83c7f82e816385504034f/assets/images/conversational-ai/outbound-button.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113158Z&X-Amz-Expires=604800&X-Amz-Signature=6f6fc48501042b453991f322aad166939b3472f0b1cdfbb6b93166d6e76b34f0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Test the integration
 
 Send a text message to your Twilio number from a mobile device. Your agent should reply over SMS.
 
 ![SMS conversation between a user and an ElevenLabs
-agent](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/759839ae9ab62d9a958f9875580e345194c7a4974783904606f254a9f88722cb/assets/images/conversational-ai/agent-sms-native.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113310Z&X-Amz-Expires=604800&X-Amz-Signature=717fb3923e0b490fd4cc7e8f9ff6bed821400fc264e8fe27be835329f9b715e9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+agent](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/759839ae9ab62d9a958f9875580e345194c7a4974783904606f254a9f88722cb/assets/images/conversational-ai/agent-sms-native.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113158Z&X-Amz-Expires=604800&X-Amz-Signature=f648d58cacf0e5f553fa47cd6e52a0d0bae8e3df2557f629c07cbfabc44c1b0e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-Review conversations in the [Calls History dashboard](https://elevenlabs.io/app/agents/history).
+> **Tip**
+>
+> Review conversations in the [Calls History dashboard](https://elevenlabs.io/app/agents/history).
 
 ## Related guides
 

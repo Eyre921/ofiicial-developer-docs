@@ -20,7 +20,9 @@ path: docs/tts-models-languages-overview
 
 **Start with Flux TTS.** It's our best-sounding, most accurate model and the default recommendation for every use case it serves. Flux TTS is English-only today — for Spanish, German, French, Dutch, Italian, or Japanese, use Aura-2 until Flux TTS's multilingual voices ship.
 
-All models default to `language=en` (via the voice's model string). A `model` is required on every request — Flux TTS on `/v2/speak`, Aura-2 and Aura on `/v1/speak`.
+> **Info**
+>
+> All models default to `language=en` (via the voice's model string). A `model` is required on every request — Flux TTS on `/v2/speak`, Aura-2 and Aura on `/v1/speak`.
 
 ### Example
 
@@ -38,7 +40,9 @@ curl "https://api.deepgram.com/v1/speak?model=aura-2-thalia-en" \
 
 Flux TTS uses `/v2/speak` (streaming WebSocket and batch REST). See [Getting Started with Flux TTS](/docs/flux-tts/quickstart).
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 ## Flux TTS
 

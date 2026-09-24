@@ -14,7 +14,9 @@ API keys are associated with Deepgram [Projects](/guides/deep-dives/managing-pro
 
 When you create an API key, you assign it a Role, which determines which actions it can be used to perform in the associated Project. Deepgram uses a tiered system of access control to provide granular access to its endpoints. To learn more about roles, see [Working with Roles](/guides/deep-dives/working-with-roles).
 
-When you sign up, we automatically create your 1st Project for you.
+> **Info**
+>
+> When you sign up, we automatically create your 1st Project for you.
 
 ### Create an API key using the Deepgram Console
 
@@ -45,7 +47,9 @@ You must create your first API key using the [Deepgram Console](https://console.
 
 Once you created your first API key using the Deepgram Console you can now use the API to create additional keys as needed.
 
-Refer to the API Reference [Create Key](/reference/manage/keys/create) for more information.
+> **Info**
+>
+> Refer to the API Reference [Create Key](/reference/manage/keys/create) for more information.
 
 **Example Request**
 

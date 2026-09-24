@@ -59,9 +59,11 @@ Go to Admin → Integrations in the Genesys Cloud interface.
    | Default (US/International) | `wss://api.elevenlabs.io/v1/convai/conversation/genesys`                    |
    | Data residency             | `wss://api.<region>.residency.elevenlabs.io/v1/convai/conversation/genesys` |
 
-   If your ElevenLabs account is on an isolated residency environment, replace `<region>` with your
-   region code. Using the wrong URL will result in authentication failures. See [data residency](/docs/overview/administration/data-residency) for the list of available regions and
-   their URLs.
+   > **Info**
+   >
+   > If your ElevenLabs account is on an isolated residency environment, replace `<region>` with your
+   > region code. Using the wrong URL will result in authentication failures. See [data residency](/docs/overview/administration/data-residency) for the list of available regions and
+   > their URLs.
 
 3. In Credentials, enter your ElevenLabs API key in the authentication configuration
 
@@ -115,8 +117,10 @@ The Genesys integration supports only the following client events:
 * **Audio events**: For processing voice input from callers
 * **Interruption events**: For handling caller interruptions during agent speech
 
-Other client event types are not supported in the Genesys integration and will be silently ignored
-if configured.
+> **Note**
+>
+> Other client event types are not supported in the Genesys integration and will be silently ignored
+> if configured.
 
 ## Session variables
 

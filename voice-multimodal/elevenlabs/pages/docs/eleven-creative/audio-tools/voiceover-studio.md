@@ -8,10 +8,12 @@ path: docs/eleven-creative/audio-tools/voiceover-studio
 
 # Voiceover studio
 
-Voiceover Studio will be sunset on **May 15, 2026**. For all new projects, use [ElevenCreative Studio](/docs/eleven-creative/products/studio). You can also open Studio directly at
-[elevenlabs.io/app/studio](https://elevenlabs.io/app/studio).
+> **Warning**
+>
+> Voiceover Studio will be sunset on **May 15, 2026**. For all new projects, use [ElevenCreative Studio](/docs/eleven-creative/products/studio). You can also open Studio directly at
+> [elevenlabs.io/app/studio](https://elevenlabs.io/app/studio).
 
-![Voiceover studio](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/051b3139b84d462fcaa5bcf11d7ca2e7be093fa226ac08e7d827c447ee97ae4a/assets/images/product-guides/voiceover-studio/voiceover-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113136Z&X-Amz-Expires=604800&X-Amz-Signature=cd26af7388319e0c73a1c96613c2207e6a264a79ef95234aae7a911ec8d6420c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Voiceover studio](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/051b3139b84d462fcaa5bcf11d7ca2e7be093fa226ac08e7d827c447ee97ae4a/assets/images/product-guides/voiceover-studio/voiceover-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113122Z&X-Amz-Expires=604800&X-Amz-Signature=2df8012dbf3a834605a9cfe54688f18e818fbef533044ea67604e2bc5d87426a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Overview
 
@@ -158,40 +160,40 @@ format you want and either view or download your voiceover.
     <td>
       #### What is Studio?
 
-      Studio is our production workflow for creating professional audio and video content. It brings together text, visuals, and sound to help you produce narrations, audiobooks, video voiceovers, and more.
+      ElevenCreative Studio is a workspace for creating audio and video projects. Studio 4.0 combines a prompt-first workflow with timeline editing, generated media, sharing, and comments.
 
-      ### Creating Audio Content
+      ![ElevenCreative Studio project editor](https://files.buildwithfern.com/visual-editor-images/elevenlabs.io/docs/2026-09-22T09:10:38.702Z/docs/eleven-creative/products/studio/Studio1.webp)
 
-      To generate audio, you can upload a full book, document, or script, or even import an entire webpage via URL. Studio supports a wide range of formats, including:
+      ## Audio projects
 
-      * EPUB
-      * PDF
-      * DOCX
-      * TXT
-      * HTML
-      * URL
+      Use Audio projects to create long-form narration, podcasts, and audiobooks. Upload a script or document, assign voices, and arrange narration, music, and sound effects on the timeline.
 
-      Once imported, you can edit and organize text directly in the interface and apply any voice from our Voice Library to bring your content to life. When your project is complete, you can export as either MP3 or WAV.
+      The Audio project editor includes:
 
-      ### Creating Video and Voiceover Content
+      * A contextual sidebar for voice, model, playback, and generation settings.
+      * A Chapters sidebar for organizing long-form content.
+      * Generation history and paragraph locking.
+      * Actor Mode for guiding speech delivery with a recording.
+      * MP3 and WAV export options.
 
-      Studio also allows you to import videos and images to create voiceovers. The timeline includes a video track and caption layer, giving you precise control over timing and synchronization. You can also import music and sound effects on separate tracks for richer productions.
+      ## Video projects
 
-      When your project is ready for review, you can share it using our built-in collaboration tools, which include feedback and commenting features.
+      Use Video projects to combine video, images, speech, music, sound effects, text, and captions. Start with a prompt, an Inspiration, an upload, or a blank project.
 
-      ### Advanced Features
+      The Video project editor includes:
 
-      Studio includes powerful organization and editing tools that make it easy to manage complex projects:
+      * A **Library** for project and workspace assets.
+      * A **Script** panel for narration and pronunciation rules.
+      * A **Captions** panel for transcript and style controls.
+      * A multi-track timeline for arranging media.
+      * Aspect ratios for widescreen, vertical, portrait, and square video.
+      * Studio Agent for planning and editing video projects.
 
-      * Assign different voices and settings to sections or characters.
-      * Regenerate individual paragraphs or words to fine-tune delivery.
-      * Lock sections once you’re satisfied with the result.
-      * Access Generation History to restore and download previous versions.
-      * Adjust playback speed between 0.8× and 2.0× for efficient review.
+      ## Sharing and export
 
-      These controls make Studio ideal for creating everything from table reads and audio dramas to narrated videos and multimedia productions.
+      Share a project to collect comments from teammates. Select **Export** to render the current chapter or project as audio or video.
 
-      For a full overview and step-by-step guidance, see our [Studio documentation.](/docs/product-guides/products/studio)
+      For detailed instructions, see the [ElevenCreative Studio guide](/docs/product-guides/products/studio).
     </td>
   </tr>
 

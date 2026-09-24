@@ -8,7 +8,9 @@ path: docs/overview/administration/workspaces/model-approvals
 
 # Model approvals
 
-Model approvals is an Enterprise feature available only to workspace admins on Enterprise plans.
+> **Info**
+>
+> Model approvals is an Enterprise feature available only to workspace admins on Enterprise plans.
 
 ## Overview
 
@@ -31,8 +33,12 @@ To update model availability:
 
 Changes take effect immediately for all workspace members.
 
-Models that are disabled cannot be selected by any workspace member when generating images or
-videos in ElevenCreative.
+> **Note**
+>
+> Models that are disabled cannot be selected by any workspace member when generating images or
+> videos in ElevenCreative.
 
-Some models and input upload capabilities may be restricted in certain regions due to regulatory
-or provider requirements. These restrictions apply regardless of workspace approval settings.
+> **Warning**
+>
+> Some models and input upload capabilities may be restricted in certain regions due to regulatory
+> or provider requirements. These restrictions apply regardless of workspace approval settings.

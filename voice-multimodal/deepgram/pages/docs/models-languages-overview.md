@@ -18,7 +18,9 @@ path: docs/models-languages-overview
 | [nova-3](/docs/models-languages-overview#nova-3) | Our highest-performing general-purpose ASR (no turn detection). Recommended for meetings, event captioning, multi-speaker, multilingual, noisy, or far-field audio in batch or streaming.            |
 | [nova-2](/docs/models-languages-overview#nova-2) | Recommended for use cases with languages not yet supported by nova-3, and filler word identification.                                                                                                |
 
-All models default to `language=en` unless otherwise specified via the `language` parameter.
+> **Info**
+>
+> All models default to `language=en` unless otherwise specified via the `language` parameter.
 
 ### Example
 
@@ -34,7 +36,9 @@ curl \  --request POST \
 --url 'https://api.deepgram.com/v1/listen?model=MODEL_OPTION'
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 ## Flux
 

@@ -18,7 +18,9 @@ The `Settings` message is a JSON command that serves as an initialization step, 
 
 The `Settings` message is an initialization command that establishes both the behavior of the voice agent and the audio transmission formats before voice data is exchanged. The client should send a `Settings` message immediately after opening the websocket and before sending any audio.
 
-For a detailed explanation of all the options available for the `Settings` message, see our documentation on how to [Configure the Voice Agent](/docs/configure-voice-agent).
+> **Info**
+>
+> For a detailed explanation of all the options available for the `Settings` message, see our documentation on how to [Configure the Voice Agent](/docs/configure-voice-agent).
 
 ## Example Payloads
 

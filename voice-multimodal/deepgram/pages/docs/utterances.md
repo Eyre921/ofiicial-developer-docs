@@ -37,7 +37,9 @@ curl \
   --url 'https://api.deepgram.com/v1/listen?utterances=true'
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 ## Analyze Response
 
@@ -92,7 +94,9 @@ curl \
   --url 'https://api.deepgram.com/v1/listen?utterances=true&diarize=true&punctuate=true'
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 When the file is finished processing, you’ll receive a JSON response that has the same basic structure as before. Let’s take a closer look at the new `utterances` object:
 
@@ -137,7 +141,9 @@ curl \
 --url "https://api.deepgram.com/v1/listen?utterances=true&diarize=true&punctuate=true" | jq -r '.results.utterances[] | "[Speaker:\(.speaker)] \(.transcript)"'
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 When the file is finished processing, you’ll receive the following response:
 

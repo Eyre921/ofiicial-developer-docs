@@ -14,9 +14,13 @@ In this guide, we'll explain how to talk to a Dialogflow CX agent using Deepgram
 
 ## Before you Begin
 
-Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
+> **Info**
+>
+> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
 
-Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
+> **Info**
+>
+> Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
 
 ## Create a Dialogflow CX Agent
 
@@ -30,7 +34,7 @@ Clone the [Dialogflow Example](https://github.com/deepgram/dialogflow-example) r
 
 Dialogflow agents can accept user input in the form of audio or text. If you send audio to an agent, Google will transcribe it with their own speech-to-text engine. In order to use Deepgram's transcription, we need to transcribe the audio outside of Dialogflow and send the resulting text to our agent. If we also want to use Deepgram's text-to-speech for the bot's voice, we must configure Dialogflow to return agent responses as text. This diagram depicts the full process:
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/2bff12016a25152ac9274d36282420b0395a1f99f876710a76055d7f45be2c04/images/c213cc7-dialogflow-architecture-tts.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113102Z&X-Amz-Expires=604800&X-Amz-Signature=e489ae6dd4c649387b0ec92865a218166683ee919acf04f64482eb77395f4439&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/2bff12016a25152ac9274d36282420b0395a1f99f876710a76055d7f45be2c04/images/c213cc7-dialogflow-architecture-tts.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113131Z&X-Amz-Expires=604800&X-Amz-Signature=0c7dbd6fd69817d1cb5668f6ff87b90265133d46ebd902c5586d1d3d398b16f5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 1. The user speaks into their microphone.
 2. The integration continuously streams the user's speech to Deepgram.

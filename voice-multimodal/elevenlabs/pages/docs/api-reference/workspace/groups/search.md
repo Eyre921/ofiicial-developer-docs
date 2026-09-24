@@ -34,10 +34,7 @@ Reference: https://elevenlabs.io/docs/api-reference/workspace/groups/search
 
 Successful Response
 
-- `list of object`
-  - `name` (string, required) — The name of the workspace group.
-  - `id` (string, required) — The ID of the workspace group.
-  - `members_emails` (list of string, required) — The emails of the members of the workspace group.
+- `list of WorkspaceGroupByNameResponseModel`
 
 ## Errors
 
@@ -45,10 +42,23 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### WorkspaceGroupByNameResponseModel
+
+- `name` (string, required) — The name of the workspace group.
+- `id` (string, required) — The ID of the workspace group.
+- `members_emails` (list of string, required) — The emails of the members of the workspace group.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

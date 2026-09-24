@@ -14,7 +14,9 @@ Deepgram’s Interim Results monitors streaming audio and provides interim trans
 
 Below you will learn more about how to use interim results.
 
-for information refer to the [Interim Results feature page.](/docs/interim-results)
+> **Info**
+>
+> for information refer to the [Interim Results feature page.](/docs/interim-results)
 
 ## Running The Example
 

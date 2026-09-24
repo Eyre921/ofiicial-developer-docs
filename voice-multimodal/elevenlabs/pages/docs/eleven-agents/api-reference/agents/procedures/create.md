@@ -32,7 +32,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedu
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a CreateProcedureRequestModel.
 
 - `name` (string, optional, default: ) — Procedure name
 - `content` (string, optional, default: ) — Initial procedure content
@@ -55,10 +55,17 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItem, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItem
 
 ## Examples
 

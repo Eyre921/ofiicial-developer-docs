@@ -27,359 +27,108 @@ Reference: https://elevenlabs.io/docs/api-reference/flows/video/create
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a VideoGenerationRequest.
 
-- `object`
+- `VideoGenerationRequest`
   - `model_id`: `bytedance-seedance-v2` (BytedanceSeedance2Request)
     - `prompt` (string, required) — A text description of the video to generate.
     - `aspect_ratio` (enum, optional, default: 16:9) — The aspect ratio of the output video. With `auto`, the model picks an aspect ratio based on the inputs.
       - Allowed values: `auto`, `21:9`, `16:9`, `4:3`, `1:1`, `3:4`, `9:16`
-    - `audios` (list of object, optional) — Up to 3 reference audios, e.g. for lipsync. Requires at least one of `images` or `videos`, and cannot be combined with `start_frame`/`end_frame`.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineAudioReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded audio.
-          - Allowed values: `audio/mpeg`, `audio/wav`
+    - `audios` (list of AudioReference, optional) — Up to 3 reference audios, e.g. for lipsync. Requires at least one of `images` or `videos`, and cannot be combined with `start_frame`/`end_frame`.
     - `duration_secs` (integer, optional, default: 5) — The duration of the output video in seconds.
-    - `end_frame` (object, optional, nullable) — The image to use as the video's last frame.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineImageReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded image.
-          - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
+    - `end_frame` (ImageReference, optional, nullable) — The image to use as the video's last frame.
     - `generate_audio` (boolean, optional, default: true) — Whether to generate audio with the video.
-    - `images` (list of object, optional) — Up to 9 reference images to draw subjects from. Cannot be combined with `start_frame`/`end_frame`.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineImageReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded image.
-          - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
+    - `images` (list of ImageReference, optional) — Up to 9 reference images to draw subjects from. Cannot be combined with `start_frame`/`end_frame`.
     - `resolution` (enum, optional, default: 720p) — The resolution of the output video.
       - Allowed values: `480p`, `720p`, `1080p`, `4k`
     - `seed` (integer, optional, nullable) — A seed for reproducible generation: the same seed and inputs give similar output across generations. Omit for random.
-    - `start_frame` (object, optional, nullable) — The image to use as the video's first frame.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineImageReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded image.
-          - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
-    - `videos` (list of object, optional) — Up to 3 reference videos to draw subjects or motion from. Cannot be combined with `start_frame`/`end_frame`.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineVideoReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded video.
-          - Allowed values: `video/mp4`, `video/quicktime`, `video/webm`
-    - `webhook` (object, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
-      - `type`: `all` (WebhookTargetAll)
-      - `type`: `ids` (WebhookTargetIds)
-        - `ids` (list of string, required) — The IDs of the workspace flows webhooks to deliver the result to. Each must be one of the workspace's configured flows webhooks.
+    - `start_frame` (ImageReference, optional, nullable) — The image to use as the video's first frame.
+    - `videos` (list of VideoReference, optional) — Up to 3 reference videos to draw subjects or motion from. Cannot be combined with `start_frame`/`end_frame`.
+    - `webhook` (WebhookTarget, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
   - `model_id`: `bytedance-seedance-v2-fast` (BytedanceSeedance2FastRequest)
     - `prompt` (string, required) — A text description of the video to generate.
     - `aspect_ratio` (enum, optional, default: 16:9) — The aspect ratio of the output video. With `auto`, the model picks an aspect ratio based on the inputs.
       - Allowed values: `auto`, `21:9`, `16:9`, `4:3`, `1:1`, `3:4`, `9:16`
-    - `audios` (list of object, optional) — Up to 3 reference audios, e.g. for lipsync. Requires at least one of `images` or `videos`, and cannot be combined with `start_frame`/`end_frame`.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineAudioReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded audio.
-          - Allowed values: `audio/mpeg`, `audio/wav`
+    - `audios` (list of AudioReference, optional) — Up to 3 reference audios, e.g. for lipsync. Requires at least one of `images` or `videos`, and cannot be combined with `start_frame`/`end_frame`.
     - `duration_secs` (integer, optional, default: 5) — The duration of the output video in seconds.
-    - `end_frame` (object, optional, nullable) — The image to use as the video's last frame.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineImageReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded image.
-          - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
+    - `end_frame` (ImageReference, optional, nullable) — The image to use as the video's last frame.
     - `generate_audio` (boolean, optional, default: true) — Whether to generate audio with the video.
-    - `images` (list of object, optional) — Up to 9 reference images to draw subjects from. Cannot be combined with `start_frame`/`end_frame`.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineImageReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded image.
-          - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
+    - `images` (list of ImageReference, optional) — Up to 9 reference images to draw subjects from. Cannot be combined with `start_frame`/`end_frame`.
     - `resolution` (enum, optional, default: 720p) — The resolution of the output video.
       - Allowed values: `480p`, `720p`
     - `seed` (integer, optional, nullable) — A seed for reproducible generation: the same seed and inputs give similar output across generations. Omit for random.
-    - `start_frame` (object, optional, nullable) — The image to use as the video's first frame.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineImageReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded image.
-          - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
-    - `videos` (list of object, optional) — Up to 3 reference videos to draw subjects or motion from. Cannot be combined with `start_frame`/`end_frame`.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineVideoReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded video.
-          - Allowed values: `video/mp4`, `video/quicktime`, `video/webm`
-    - `webhook` (object, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
-      - `type`: `all` (WebhookTargetAll)
-      - `type`: `ids` (WebhookTargetIds)
-        - `ids` (list of string, required) — The IDs of the workspace flows webhooks to deliver the result to. Each must be one of the workspace's configured flows webhooks.
+    - `start_frame` (ImageReference, optional, nullable) — The image to use as the video's first frame.
+    - `videos` (list of VideoReference, optional) — Up to 3 reference videos to draw subjects or motion from. Cannot be combined with `start_frame`/`end_frame`.
+    - `webhook` (WebhookTarget, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
   - `model_id`: `bytedance-seedance-v2-mini` (BytedanceSeedance2MiniRequest)
     - `prompt` (string, required) — A text description of the video to generate.
     - `aspect_ratio` (enum, optional, default: 16:9) — The aspect ratio of the output video. With `auto`, the model picks an aspect ratio based on the inputs.
       - Allowed values: `auto`, `21:9`, `16:9`, `4:3`, `1:1`, `3:4`, `9:16`
-    - `audios` (list of object, optional) — Up to 3 reference audios, e.g. for lipsync. Requires at least one of `images` or `videos`, and cannot be combined with `start_frame`/`end_frame`.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineAudioReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded audio.
-          - Allowed values: `audio/mpeg`, `audio/wav`
+    - `audios` (list of AudioReference, optional) — Up to 3 reference audios, e.g. for lipsync. Requires at least one of `images` or `videos`, and cannot be combined with `start_frame`/`end_frame`.
     - `duration_secs` (integer, optional, default: 5) — The duration of the output video in seconds.
-    - `end_frame` (object, optional, nullable) — The image to use as the video's last frame.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineImageReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded image.
-          - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
+    - `end_frame` (ImageReference, optional, nullable) — The image to use as the video's last frame.
     - `generate_audio` (boolean, optional, default: true) — Whether to generate audio with the video.
-    - `images` (list of object, optional) — Up to 9 reference images to draw subjects from. Cannot be combined with `start_frame`/`end_frame`.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineImageReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded image.
-          - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
+    - `images` (list of ImageReference, optional) — Up to 9 reference images to draw subjects from. Cannot be combined with `start_frame`/`end_frame`.
     - `resolution` (enum, optional, default: 720p) — The resolution of the output video.
       - Allowed values: `480p`, `720p`
     - `seed` (integer, optional, nullable) — A seed for reproducible generation: the same seed and inputs give similar output across generations. Omit for random.
-    - `start_frame` (object, optional, nullable) — The image to use as the video's first frame.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineImageReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded image.
-          - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
-    - `videos` (list of object, optional) — Up to 3 reference videos to draw subjects or motion from. Cannot be combined with `start_frame`/`end_frame`.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineVideoReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded video.
-          - Allowed values: `video/mp4`, `video/quicktime`, `video/webm`
-    - `webhook` (object, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
-      - `type`: `all` (WebhookTargetAll)
-      - `type`: `ids` (WebhookTargetIds)
-        - `ids` (list of string, required) — The IDs of the workspace flows webhooks to deliver the result to. Each must be one of the workspace's configured flows webhooks.
+    - `start_frame` (ImageReference, optional, nullable) — The image to use as the video's first frame.
+    - `videos` (list of VideoReference, optional) — Up to 3 reference videos to draw subjects or motion from. Cannot be combined with `start_frame`/`end_frame`.
+    - `webhook` (WebhookTarget, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
   - `model_id`: `bytedance-seedance-v2.5` (BytedanceSeedance25Request)
     - `prompt` (string, required) — A text description of the video to generate.
     - `aspect_ratio` (enum, optional, default: 16:9) — The aspect ratio of the output video. With `auto`, the model picks an aspect ratio based on the inputs. First-frame / first-and-last-frame tasks always use `auto`.
       - Allowed values: `auto`, `21:9`, `16:9`, `4:3`, `1:1`, `3:4`, `9:16`
-    - `audios` (list of object, optional) — Up to 10 reference audios, e.g. for lipsync. Cannot be combined with `start_frame`/`end_frame`.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineAudioReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded audio.
-          - Allowed values: `audio/mpeg`, `audio/wav`
+    - `audios` (list of AudioReference, optional) — Up to 10 reference audios, e.g. for lipsync. Cannot be combined with `start_frame`/`end_frame`.
     - `duration_secs` (integer, optional, default: 5) — The duration of the output video in seconds.
-    - `end_frame` (object, optional, nullable) — The image to use as the video's last frame.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineImageReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded image.
-          - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
+    - `end_frame` (ImageReference, optional, nullable) — The image to use as the video's last frame.
     - `generate_audio` (boolean, optional, default: true) — Whether to generate audio with the video.
-    - `images` (list of object, optional) — Up to 30 reference images to draw subjects from. Cannot be combined with `start_frame`/`end_frame`.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineImageReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded image.
-          - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
+    - `images` (list of ImageReference, optional) — Up to 30 reference images to draw subjects from. Cannot be combined with `start_frame`/`end_frame`.
     - `resolution` (enum, optional, default: 720p) — The resolution of the output video.
       - Allowed values: `480p`, `720p`, `1080p`
-    - `start_frame` (object, optional, nullable) — The image to use as the video's first frame.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineImageReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded image.
-          - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
-    - `videos` (list of object, optional) — Up to 10 reference videos to draw subjects or motion from. Cannot be combined with `start_frame`/`end_frame`.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineVideoReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded video.
-          - Allowed values: `video/mp4`, `video/quicktime`, `video/webm`
-    - `webhook` (object, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
-      - `type`: `all` (WebhookTargetAll)
-      - `type`: `ids` (WebhookTargetIds)
-        - `ids` (list of string, required) — The IDs of the workspace flows webhooks to deliver the result to. Each must be one of the workspace's configured flows webhooks.
+    - `start_frame` (ImageReference, optional, nullable) — The image to use as the video's first frame.
+    - `videos` (list of VideoReference, optional) — Up to 10 reference videos to draw subjects or motion from. Cannot be combined with `start_frame`/`end_frame`.
+    - `webhook` (WebhookTarget, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
   - `model_id`: `creatify-aurora` (CreatifyAuroraRequest)
-    - `audio` (object, required) — The speech audio to drive the character's lip movements.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineAudioReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded audio.
-          - Allowed values: `audio/mpeg`, `audio/wav`
-    - `image` (object, required) — The image of the character to animate.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineImageReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded image.
-          - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
+    - `audio` (AudioReference, required) — The speech audio to drive the character's lip movements.
+    - `image` (ImageReference, required) — The image of the character to animate.
     - `audio_guidance_scale` (double, optional, nullable) — How strongly the lip movements adhere to the audio. Omit to use the model's default.
     - `guidance_scale` (double, optional, nullable) — How strongly the generation adheres to the input image. Omit to use the model's default.
     - `resolution` (enum, optional, default: 720p) — The resolution of the output video.
       - Allowed values: `480p`, `720p`
-    - `webhook` (object, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
-      - `type`: `all` (WebhookTargetAll)
-      - `type`: `ids` (WebhookTargetIds)
-        - `ids` (list of string, required) — The IDs of the workspace flows webhooks to deliver the result to. Each must be one of the workspace's configured flows webhooks.
+    - `webhook` (WebhookTarget, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
   - `model_id`: `veo-3.1-fast-generate-001` (Veo3_1FastRequest)
     - `prompt` (string, required) — A text description of the video to generate.
     - `aspect_ratio` (enum, optional, default: 16:9) — The aspect ratio of the output video.
       - Allowed values: `16:9`, `9:16`
     - `duration_secs` (enum, optional, default: 8) — The duration of the output video in seconds.
       - Allowed values: `4`, `6`, `8`
-    - `end_frame` (object, optional, nullable) — The image to use as the video's last frame.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineImageReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded image.
-          - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
+    - `end_frame` (ImageReference, optional, nullable) — The image to use as the video's last frame.
     - `enhance_prompt` (boolean, optional, default: true) — Whether the model may rewrite the prompt to improve results.
     - `generate_audio` (boolean, optional, default: true) — Whether to generate audio with the video.
-    - `images` (list of object, optional) — Up to 3 reference images to draw subjects or style from. Cannot be combined with `start_frame`/`end_frame`, and requires the 8-second duration.
-      - `image` (object, required) — The reference image.
-        - `type`: `asset` (StaticAssetReference)
-          - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-        - `type`: `generation` (GenerationReference)
-          - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-        - `type`: `inline_base64` (InlineImageReference)
-          - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-          - `mime_type` (enum, required) — The MIME type of the encoded image.
-            - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
-      - `role` (enum, required) — How the model uses the image: `subject` places its subject or scene elements into the video; `style` transfers its visual style.
-        - Allowed values: `subject`, `style`
+    - `images` (list of VeoImageReference, optional) — Up to 3 reference images to draw subjects or style from. Cannot be combined with `start_frame`/`end_frame`, and requires the 8-second duration.
     - `negative_prompt` (string, optional, nullable) — A text description of what the video should avoid.
     - `resolution` (enum, optional, default: 720p) — The resolution of the output video.
       - Allowed values: `720p`, `1080p`, `4K`
     - `seed` (integer, optional, nullable) — A seed for reproducible generation: the same seed and inputs give similar output across generations. Omit for random.
-    - `start_frame` (object, optional, nullable) — The image to use as the video's first frame.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineImageReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded image.
-          - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
-    - `webhook` (object, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
-      - `type`: `all` (WebhookTargetAll)
-      - `type`: `ids` (WebhookTargetIds)
-        - `ids` (list of string, required) — The IDs of the workspace flows webhooks to deliver the result to. Each must be one of the workspace's configured flows webhooks.
+    - `start_frame` (ImageReference, optional, nullable) — The image to use as the video's first frame.
+    - `webhook` (WebhookTarget, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
   - `model_id`: `veo-3.1-generate-001` (Veo3_1Request)
     - `prompt` (string, required) — A text description of the video to generate.
     - `aspect_ratio` (enum, optional, default: 16:9) — The aspect ratio of the output video.
       - Allowed values: `16:9`, `9:16`
     - `duration_secs` (enum, optional, default: 8) — The duration of the output video in seconds.
       - Allowed values: `4`, `6`, `8`
-    - `end_frame` (object, optional, nullable) — The image to use as the video's last frame.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineImageReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded image.
-          - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
+    - `end_frame` (ImageReference, optional, nullable) — The image to use as the video's last frame.
     - `enhance_prompt` (boolean, optional, default: true) — Whether the model may rewrite the prompt to improve results.
     - `generate_audio` (boolean, optional, default: true) — Whether to generate audio with the video.
-    - `images` (list of object, optional) — Up to 3 reference images to draw subjects or style from. Cannot be combined with `start_frame`/`end_frame`, and requires the 8-second duration.
-      - `image` (object, required) — The reference image.
-        - `type`: `asset` (StaticAssetReference)
-          - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-        - `type`: `generation` (GenerationReference)
-          - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-        - `type`: `inline_base64` (InlineImageReference)
-          - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-          - `mime_type` (enum, required) — The MIME type of the encoded image.
-            - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
-      - `role` (enum, required) — How the model uses the image: `subject` places its subject or scene elements into the video; `style` transfers its visual style.
-        - Allowed values: `subject`, `style`
+    - `images` (list of VeoImageReference, optional) — Up to 3 reference images to draw subjects or style from. Cannot be combined with `start_frame`/`end_frame`, and requires the 8-second duration.
     - `negative_prompt` (string, optional, nullable) — A text description of what the video should avoid.
     - `resolution` (enum, optional, default: 720p) — The resolution of the output video.
       - Allowed values: `720p`, `1080p`, `4K`
     - `seed` (integer, optional, nullable) — A seed for reproducible generation: the same seed and inputs give similar output across generations. Omit for random.
-    - `start_frame` (object, optional, nullable) — The image to use as the video's first frame.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineImageReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded image.
-          - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
-    - `webhook` (object, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
-      - `type`: `all` (WebhookTargetAll)
-      - `type`: `ids` (WebhookTargetIds)
-        - `ids` (list of string, required) — The IDs of the workspace flows webhooks to deliver the result to. Each must be one of the workspace's configured flows webhooks.
+    - `start_frame` (ImageReference, optional, nullable) — The image to use as the video's first frame.
+    - `webhook` (WebhookTarget, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
 
 ## Response
 
@@ -396,10 +145,64 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### AudioReference
+
+- `type`: `asset` (StaticAssetReference)
+  - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
+- `type`: `generation` (GenerationReference)
+  - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
+- `type`: `inline_base64` (InlineAudioReference)
+  - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
+  - `mime_type` (enum, required) — The MIME type of the encoded audio.
+    - Allowed values: `audio/mpeg`, `audio/wav`
+
+### ImageReference
+
+- `type`: `asset` (StaticAssetReference)
+  - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
+- `type`: `generation` (GenerationReference)
+  - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
+- `type`: `inline_base64` (InlineImageReference)
+  - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
+  - `mime_type` (enum, required) — The MIME type of the encoded image.
+    - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
+
+### VideoReference
+
+- `type`: `asset` (StaticAssetReference)
+  - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
+- `type`: `generation` (GenerationReference)
+  - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
+- `type`: `inline_base64` (InlineVideoReference)
+  - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
+  - `mime_type` (enum, required) — The MIME type of the encoded video.
+    - Allowed values: `video/mp4`, `video/quicktime`, `video/webm`
+
+### WebhookTarget
+
+- `type`: `all` (WebhookTargetAll)
+- `type`: `ids` (WebhookTargetIds)
+  - `ids` (list of string, required) — The IDs of the workspace flows webhooks to deliver the result to. Each must be one of the workspace's configured flows webhooks.
+
+### VeoImageReference
+
+A reference image guiding a Veo generation, with its role.
+
+- `image` (ImageReference, required) — The reference image.
+- `role` (enum, required) — How the model uses the image: `subject` places its subject or scene elements into the video; `style` transfers its visual style.
+  - Allowed values: `subject`, `style`
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

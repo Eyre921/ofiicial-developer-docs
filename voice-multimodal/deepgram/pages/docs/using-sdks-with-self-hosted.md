@@ -26,9 +26,11 @@ Note that for a host that does not have TLS enabled, you will use `http` rather 
 
 To configure the Python SDK for self-hosted deployments, create a custom `DeepgramClientEnvironment` with your self-hosted URLs and pass it to the `DeepgramClient`. This approach configures all endpoint types (REST APIs, WebSocket streaming, Agent WebSocket, and Agent REST).
 
-The `agent_rest` field shown below requires Python SDK **v7.2.0 or newer**. On
-v7.0.0–v7.1.1, `DeepgramClientEnvironment` accepted only `base`, `production`,
-and `agent` — omit `agent_rest` on those versions.
+> **Info**
+>
+> The `agent_rest` field shown below requires Python SDK **v7.2.0 or newer**. On
+> v7.0.0–v7.1.1, `DeepgramClientEnvironment` accepted only `base`, `production`,
+> and `agent` — omit `agent_rest` on those versions.
 
 Below is an example of how to make your first API request to your self-hosted deployment using the Python SDK. Substitute your own host address in place of `localhost` if needed.
 

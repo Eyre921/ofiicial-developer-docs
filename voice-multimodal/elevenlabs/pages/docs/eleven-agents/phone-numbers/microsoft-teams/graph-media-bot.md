@@ -14,13 +14,15 @@ This approach makes the agent a **callable Teams identity**. A user searches for
 
 It uses a **Microsoft Graph real-time media bot** (the Cloud Communications calling platform). The media SDK (`Microsoft.Skype.Bots.Media`) is **.NET on Windows Server only** — there is no Linux or non-.NET path for raw audio in Teams calls.
 
-This is the only approach that's callable **by name** inside Teams. Prefer the [widget tab](/docs/eleven-agents/phone-numbers/microsoft-teams/widget-tab) for a lighter setup, or
-[ACS](/docs/eleven-agents/phone-numbers/microsoft-teams/azure-communication-services) when you
-specifically want a phone number.
+> **Note**
+>
+> This is the only approach that's callable **by name** inside Teams. Prefer the [widget tab](/docs/eleven-agents/phone-numbers/microsoft-teams/widget-tab) for a lighter setup, or
+> [ACS](/docs/eleven-agents/phone-numbers/microsoft-teams/azure-communication-services) when you
+> specifically want a phone number.
 
 ## How it works
 
-![A Teams user calls the bot by name; Teams routes the call to the media bot on a Windows VM, which bridges raw PCM 16k audio to the ElevenLabs agent over a WebSocket](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f411ec0b44d4c5ca1a61598fbd1e6162e46a1c74179eebb4b673ee1428823e84/assets/images/conversational-ai/teams-media-bot-architecture.svg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113251Z&X-Amz-Expires=604800&X-Amz-Signature=046ae15bddcc2d9079e3e0f60e080a569887021c8c976761de3b70d66738f2e5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![A Teams user calls the bot by name; Teams routes the call to the media bot on a Windows VM, which bridges raw PCM 16k audio to the ElevenLabs agent over a WebSocket](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f411ec0b44d4c5ca1a61598fbd1e6162e46a1c74179eebb4b673ee1428823e84/assets/images/conversational-ai/teams-media-bot-architecture.svg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113204Z&X-Amz-Expires=604800&X-Amz-Signature=b23294cfce7af0296c9399aa5dfabfc73ad39c0eb0d99fc4fbf3f8dc9d86e91f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 The bot answers with **application-hosted media**, receives 50 audio frames/sec (20 ms PCM 16 kHz), bridges them to the ElevenLabs agent over a WebSocket, and streams the agent's audio back into the call.
 
@@ -32,8 +34,10 @@ The bot answers with **application-hosted media**, receives 50 audio frames/sec 
 4. A **CA-signed TLS certificate** on a public FQDN for the media/signaling endpoint (the media platform rejects self-signed certs).
 5. An [ElevenLabs agent](/docs/eleven-agents/quickstart) set to **PCM 16000 Hz** on both legs: TTS output format on the **Voice** tab, user input audio format on the **Advanced** tab.
 
-A `D2s_v3` (2 vCPU = **1 physical core**) fails with `MediaPlatform needs a system with at least 2
-  cores`. Use a size with ≥ 2 physical cores (e.g. `D4s_v3`).
+> **Warning**
+>
+> A `D2s_v3` (2 vCPU = **1 physical core**) fails with `MediaPlatform needs a system with at least 2
+>   cores`. Use a size with ≥ 2 physical cores (e.g. `D4s_v3`).
 
 ## Permissions & roles
 
@@ -77,22 +81,24 @@ az rest --method GET \
   --query "value[].appRoleId" -o tsv
 ```
 
-If `admin-consent` returns `Consent validation failed`, grant the app roles directly on the service principal instead:
-
-```bash
-GRAPH_SP=$(az ad sp show --id 00000003-0000-0000-c000-000000000000 --query id -o tsv)
-BOT_SP=$(az ad sp show --id "$APPID" --query id -o tsv)
-for ROLE in a7a681dc-756e-4909-b988-f160edc6655f 284383ee-7f6e-4e40-a2a8-e85dcb029101; do
-  az rest --method POST \
-    --url "https://graph.microsoft.com/v1.0/servicePrincipals/$GRAPH_SP/appRoleAssignedTo" \
-    --body "{\"principalId\": \"$BOT_SP\", \"resourceId\": \"$GRAPH_SP\", \"appRoleId\": \"$ROLE\"}"
-done
-```
+> **Note**
+>
+> If `admin-consent` returns `Consent validation failed`, grant the app roles directly on the service principal instead:
+>
+> ```bash
+> GRAPH_SP=$(az ad sp show --id 00000003-0000-0000-c000-000000000000 --query id -o tsv)
+> BOT_SP=$(az ad sp show --id "$APPID" --query id -o tsv)
+> for ROLE in a7a681dc-756e-4909-b988-f160edc6655f 284383ee-7f6e-4e40-a2a8-e85dcb029101; do
+>   az rest --method POST \
+>     --url "https://graph.microsoft.com/v1.0/servicePrincipals/$GRAPH_SP/appRoleAssignedTo" \
+>     --body "{\"principalId\": \"$BOT_SP\", \"resourceId\": \"$GRAPH_SP\", \"appRoleId\": \"$ROLE\"}"
+> done
+> ```
 
 In the portal, verify in the [Entra admin center](https://entra.microsoft.com/#view/Microsoft_AAD_RegisteredApps/RegisteredAppsListBlade) under **App registrations → your app → API permissions**: both permissions should show **Granted** with green checks.
 
 ![The app registration API permissions blade showing Calls.AccessMedia.All and Calls.Initiate.All
-granted](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4abc1e220d3fc03845594aa4f835656425cc1c39448dae30dace98e672fd8fb1/assets/images/conversational-ai/teams-graph-api-permissions.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113251Z&X-Amz-Expires=604800&X-Amz-Signature=cb6ffea2fbab16f5355be0f121fed4568c33ceaf826714ab6f56e745129e7a30&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+granted](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4abc1e220d3fc03845594aa4f835656425cc1c39448dae30dace98e672fd8fb1/assets/images/conversational-ai/teams-graph-api-permissions.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113204Z&X-Amz-Expires=604800&X-Amz-Signature=de6b062447f715f37db36d2e0ed3ee254a98594af4ba5f395c9a1bc173d7478a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Step 2 — Provision the Windows VM, cert and ports
 
@@ -117,8 +123,10 @@ Install-WindowsFeature Server-Media-Foundation
 
 Open the same ports in the **Windows firewall**, and note the cert **thumbprint** — the bot binds Kestrel (443 + a notifications port) and the media platform (8445) to it.
 
-The VM's own `*.cloudapp.azure.com` FQDN works for a Let's Encrypt cert — no separate domain
-needed.
+> **Tip**
+>
+> The VM's own `*.cloudapp.azure.com` FQDN works for a Let's Encrypt cert — no separate domain
+> needed.
 
 ## Step 3 — Build and run the bot
 
@@ -132,17 +140,21 @@ dotnet build EchoBot.sln -c Release
 
 Configure the `AppSettings` section of `appsettings.json` with your `AadAppId`, `AadAppSecret`, `ServiceDnsName`/`MediaDnsName` (the VM FQDN), `CertificateThumbprint`, and ports (calling `443`, notifications `9441`, media `8445`). Add two settings for the ElevenLabs bridge below: `ElevenLabsAgentId` and `ElevenLabsOrigin` (`wss://api.elevenlabs.io`, or your residency host). Run it as a Windows scheduled task / service so it survives reboots.
 
-Task Scheduler's default **execution time limit (72 hours)** silently kills long-running tasks — a bot started at boot dies three days later and calls fail with "we couldn't connect you". Disable the limit and add restart-on-failure:
+> **Warning**
+>
+> Task Scheduler's default **execution time limit (72 hours)** silently kills long-running tasks — a bot started at boot dies three days later and calls fail with "we couldn't connect you". Disable the limit and add restart-on-failure:
+>
+> ```powershell
+> $s = New-ScheduledTaskSettingsSet -ExecutionTimeLimit (New-TimeSpan -Seconds 0) `
+>   -RestartCount 999 -RestartInterval (New-TimeSpan -Minutes 1) -StartWhenAvailable
+> Set-ScheduledTask -TaskName EchoBot -Settings $s
+> ```
 
-```powershell
-$s = New-ScheduledTaskSettingsSet -ExecutionTimeLimit (New-TimeSpan -Seconds 0) `
-  -RestartCount 999 -RestartInterval (New-TimeSpan -Minutes 1) -StartWhenAvailable
-Set-ScheduledTask -TaskName EchoBot -Settings $s
-```
-
-The stock EchoBot crashes on a call placed to the standard port 443: `HttpHelpers.SetAbsoluteUri`
-calls `req.Host.Port.Value`, which is null when the Host header has no explicit port. Patch it to
-`req.Host.Port ?? (req.IsHttps ? 443 : 80)`.
+> **Warning**
+>
+> The stock EchoBot crashes on a call placed to the standard port 443: `HttpHelpers.SetAbsoluteUri`
+> calls `req.Host.Port.Value`, which is null when the Host header has no explicit port. Patch it to
+> `req.Host.Port ?? (req.IsHttps ? 443 : 80)`.
 
 ### Swap the echo for ElevenLabs
 
@@ -235,11 +247,13 @@ public class SpeechService
 
 Both sides are PCM 16 kHz mono, so it's a base64 passthrough — set the agent to `pcm_16000`. On an ElevenLabs `interruption` (barge-in), the bridge raises `FlushMedia`; wire that to your media stream so it drops any queued `AudioMediaBuffer`s, otherwise the agent keeps talking over the caller. The full message reference is in the [WebSocket docs](/docs/eleven-agents/libraries/web-sockets). End-of-call hangup and warm transfer are covered in the sections below.
 
-The URL in `Connect()` reaches a **public** agent. For a private agent, request a short-lived
-signed URL server-side — `GET /v1/convai/conversation/get-signed-url?agent_id=...` with your API
-key — and connect to the returned URL instead. On [data residency](/docs/overview/administration/data-residency), set `ElevenLabsOrigin` to your residency
-host (`wss://api.eu.residency.elevenlabs.io`, `.in.`, or `.sg.`) — signed-URL requests use the
-matching `https://` host.
+> **Note**
+>
+> The URL in `Connect()` reaches a **public** agent. For a private agent, request a short-lived
+> signed URL server-side — `GET /v1/convai/conversation/get-signed-url?agent_id=...` with your API
+> key — and connect to the returned URL instead. On [data residency](/docs/overview/administration/data-residency), set `ElevenLabsOrigin` to your residency
+> host (`wss://api.eu.residency.elevenlabs.io`, `.in.`, or `.sg.`) — signed-URL requests use the
+> matching `https://` host.
 
 ## Step 4 — Make it callable in Teams
 
@@ -253,27 +267,29 @@ matching `https://` host.
    In the portal this lives at your Azure Bot resource → **Channels** → **Microsoft Teams** → **Calling** tab:
 
    ![The Azure Bot Channels blade listing the Microsoft Teams channel as
-   healthy](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/01115d26ab645dd6ec6569a36a918cd4de0214c79dcb0070d7a3c3a5e544c93b/assets/images/conversational-ai/teams-graph-bot-channels.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113251Z&X-Amz-Expires=604800&X-Amz-Signature=9631d97b702575449742d18c649440a74c1e2076179667e26741e5dfe588d468&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+   healthy](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/01115d26ab645dd6ec6569a36a918cd4de0214c79dcb0070d7a3c3a5e544c93b/assets/images/conversational-ai/teams-graph-bot-channels.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113204Z&X-Amz-Expires=604800&X-Amz-Signature=8baf2752033c8eb8972efb1110fd94eca5a3b42cce601f3891908a061a0f5c94&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
    ![The Teams channel Calling tab with Enable calling checked and the calling webhook
-   set](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7c4819f64878bfb152661adc948c1170f9efd48ba3d68401c4a4d4ba075951b0/assets/images/conversational-ai/teams-graph-calling-channel.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113251Z&X-Amz-Expires=604800&X-Amz-Signature=60671ca3c4d6752754c77eefb45af7743a9d3478a837c0a850f29a5890e2d895&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+   set](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7c4819f64878bfb152661adc948c1170f9efd48ba3d68401c4a4d4ba075951b0/assets/images/conversational-ai/teams-graph-calling-channel.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113204Z&X-Amz-Expires=604800&X-Amz-Signature=aac202dd01d5026cfb7c8d1a11f4bd6b50c56a2e5240c435f7637f60c55e43f7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 2. Build a **Teams app manifest** with `bots[0].supportsCalling: true` and the bot's app ID, then sideload it (**Apps → Manage your apps → Upload a custom app**), or publish it org-wide without the UI: `New-TeamsApp -DistributionMethod organization -Path ./bot-app.zip` (MicrosoftTeams PowerShell module).
 
 Search the app by name in Teams and call it — the bot answers and the ElevenLabs agent speaks.
 
 ![An active Teams call with the ElevenLabs agent
-bot](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0f1fad08a091bcd20ffbbf5c3949b5503f423d8eb6298f464a870b3a0a254726/assets/images/conversational-ai/teams-graph-call-by-name.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113251Z&X-Amz-Expires=604800&X-Amz-Signature=24ab94b747c8277e67da16ef81d857fc0ff500600e33214ff18d772a0a0eb0a9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+bot](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0f1fad08a091bcd20ffbbf5c3949b5503f423d8eb6298f464a870b3a0a254726/assets/images/conversational-ai/teams-graph-call-by-name.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113204Z&X-Amz-Expires=604800&X-Amz-Signature=a91996caa6c114a6361694e14e476e6b536f558b7c55ec096124314838447296&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-No phone number or resource account is needed for 1:1 call-by-name — those are only for PSTN
-dial-in. `Calls.AccessMedia.All` is what enables the raw-audio bridge.
+> **Note**
+>
+> No phone number or resource account is needed for 1:1 call-by-name — those are only for PSTN
+> dial-in. `Calls.AccessMedia.All` is what enables the raw-audio bridge.
 
 ## Text chat (same bot)
 
 The same Azure Bot can also answer **text** in Teams — so users can either call the agent or chat with it. Calling and messaging are independent channels on the bot: the calling webhook handles voice, and a Bot Framework **messaging endpoint** (`/api/messages`) handles chat.
 
 ![A Teams chat with the ElevenLabs agent bot answering text
-messages](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/fb75ae17848916790d29c1c0a703051946902893e46ed62884742db36be453b2/assets/images/conversational-ai/teams-graph-text-chat.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113251Z&X-Amz-Expires=604800&X-Amz-Signature=0c66371d55e6f8cf995fe00f1d9dc84929de665fcae98657c904830ed7f51e1b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+messages](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/fb75ae17848916790d29c1c0a703051946902893e46ed62884742db36be453b2/assets/images/conversational-ai/teams-graph-text-chat.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113204Z&X-Amz-Expires=604800&X-Amz-Signature=ef1b6aa733e9de673011094e58f8798b7b55402ada120d3d2292acc63c62051a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Point the bot's messaging endpoint at whichever host serves it (the media bot, or any other service — it doesn't have to be the Windows VM):
 
@@ -348,17 +364,21 @@ Register it the standard way (a `CloudAdapter`, the bot via `AddTransient<IBot, 
 ]
 ```
 
-The snippet opens a fresh conversation per message, so each turn is independent. For chat
-**memory**, keep one WebSocket open per Teams `conversation.id` (reuse it across turns) and reap
-idle sessions — the agent then remembers earlier messages in that chat. The `first_message`
-override must be enabled under the agent's
-[overrides](/docs/eleven-agents/customization/personalization/overrides) settings — the server
-**closes the conversation** if a disallowed override is sent. If you can't enable it, omit the
-override and instead discard the first `agent_response` of each session (the greeting) and return
-the next one.
+> **Note**
+>
+> The snippet opens a fresh conversation per message, so each turn is independent. For chat
+> **memory**, keep one WebSocket open per Teams `conversation.id` (reuse it across turns) and reap
+> idle sessions — the agent then remembers earlier messages in that chat. The `first_message`
+> override must be enabled under the agent's
+> [overrides](/docs/eleven-agents/customization/personalization/overrides) settings — the server
+> **closes the conversation** if a disallowed override is sent. If you can't enable it, omit the
+> override and instead discard the first `agent_response` of each session (the greeting) and return
+> the next one.
 
-If chat replies never arrive, enable the **`agent_response`** [client event](/docs/eleven-agents/customization/events/client-events) in the agent's **Advanced**
-settings — text responses are delivered through that event.
+> **Tip**
+>
+> If chat replies never arrive, enable the **`agent_response`** [client event](/docs/eleven-agents/customization/events/client-events) in the agent's **Advanced**
+> settings — text responses are delivered through that event.
 
 ## End of call
 
@@ -378,9 +398,11 @@ await this.Call.Participants.InviteAsync(target, replacesCallId: null);
 // suppress the end-call hangup while transferring, and mute the bot
 ```
 
-Consultative transfer (`replacesCallId`) requires both parties be Teams users in the **same
-tenant**; PSTN transfer targets require an application instance. To brief the human first, pass a
-`reason` parameter from the agent and play it to the human before bridging.
+> **Tip**
+>
+> Consultative transfer (`replacesCallId`) requires both parties be Teams users in the **same
+> tenant**; PSTN transfer targets require an application instance. To brief the human first, pass a
+> `reason` parameter from the agent and play it to the human before bridging.
 
 ## Troubleshooting
 

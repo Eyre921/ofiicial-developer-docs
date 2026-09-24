@@ -30,7 +30,9 @@ The streaming WebSocket emits **raw audio** (no container), so it supports raw P
 | `sample_rate` (`linear16`)       | `8000`, `16000`, `24000`, `32000`, `44100`, `48000` |
 | `sample_rate` (`mulaw` / `alaw`) | `8000`, `16000`                                     |
 
-Compressed/containerized encodings (`opus`, `mp3`, `flac`, `aac`) and the `container` / `bit_rate` parameters are reserved for the batch REST transport (see [Transports](#transports)), not the streaming WebSocket. The streaming connection rejects unknown or batch-only parameters.
+> **Info**
+>
+> Compressed/containerized encodings (`opus`, `mp3`, `flac`, `aac`) and the `container` / `bit_rate` parameters are reserved for the batch REST transport (see [Transports](#transports)), not the streaming WebSocket. The streaming connection rejects unknown or batch-only parameters.
 
 ## Conversational Surface
 
@@ -69,6 +71,8 @@ The streaming WebSocket only — the batch REST transport is a single request/re
 
 ## Rate Limits
 
-For information on Deepgram's concurrency rate limits, see the [API Rate Limits documentation](/reference/api-rate-limits).
+> **Info**
+>
+> For information on Deepgram's concurrency rate limits, see the [API Rate Limits documentation](/reference/api-rate-limits).
 
 ---

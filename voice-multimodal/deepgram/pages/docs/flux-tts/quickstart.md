@@ -26,11 +26,15 @@ Flux TTS brings the Flux promise to speech synthesis. Where `/v1/speak` renders 
 
 * **Mid-stream control** — `Configure` adjusts `speed` without reconnecting.
 
-**New endpoint, not a replacement.** `/v2/speak` ships alongside `/v1/speak`. The v1 endpoint and all Aura model strings stay available and unchanged. See [When to use /v2/speak vs /v1/speak](#when-to-use-v2speak-vs-v1speak) and the [Migration guide](/docs/flux-tts/migrating).
+> **Info**
+>
+> **New endpoint, not a replacement.** `/v2/speak` ships alongside `/v1/speak`. The v1 endpoint and all Aura model strings stay available and unchanged. See [When to use /v2/speak vs /v1/speak](#when-to-use-v2speak-vs-v1speak) and the [Migration guide](/docs/flux-tts/migrating).
 
 ## Connection requirements
 
-**Flux TTS requires the `/v2/speak` endpoint.** The `/v1/speak` endpoint does not serve Flux voices. A `model` is **required** on every connection — connections without it are rejected.
+> **Warning**
+>
+> **Flux TTS requires the `/v2/speak` endpoint.** The `/v1/speak` endpoint does not serve Flux voices. A `model` is **required** on every connection — connections without it are rejected.
 
 When connecting to Flux TTS, you must use:
 
@@ -58,9 +62,13 @@ The streaming WebSocket produces **raw audio** (no container), so it accepts onl
 | `mip_opt_out`  | boolean | `false`      | Opt out of the Model Improvement Program.                                                                                                                                                                                                                           |
 | `tag`          | string  | —            | Custom tag(s) for request tracking. Repeatable.                                                                                                                                                                                                                     |
 
-**Compressed and containerized encodings are batch-only.** `opus`, `mp3`, `flac`, and `aac` (and the `container` / `bit_rate` parameters) are available on the [batch REST transport](#streaming-vs-batch), not on the streaming WebSocket, which emits raw `linear16`/`mulaw`/`alaw`.
+> **Info**
+>
+> **Compressed and containerized encodings are batch-only.** `opus`, `mp3`, `flac`, and `aac` (and the `container` / `bit_rate` parameters) are available on the [batch REST transport](#streaming-vs-batch), not on the streaming WebSocket, which emits raw `linear16`/`mulaw`/`alaw`.
 
-**Streaming happens on its own.** You don't chunk text or place flush points — the server starts generating and streaming a turn's audio as soon as it has enough text, and prosody carries across turns automatically. You own turn boundaries (`Flush`); everything else is handled for you.
+> **Info**
+>
+> **Streaming happens on its own.** You don't chunk text or place flush points — the server starts generating and streaming a turn's audio as soon as it has enough text, and prosody carries across turns automatically. You own turn boundaries (`Flush`); everything else is handled for you.
 
 ### Model naming
 
@@ -95,7 +103,9 @@ sequenceDiagram
 
 The core pattern is: stream LLM tokens in as they arrive, then flush at the end of the turn.
 
-**SDK support is live.** The [Python](https://github.com/deepgram/deepgram-python-sdk) (`deepgram-sdk`) and [JavaScript](https://github.com/deepgram/deepgram-js-sdk) (`@deepgram/sdk`) SDKs expose a `speak.v2` client for `/v2/speak`. For a full runnable integration, start from the [template apps](/docs/flux-tts/template-apps). The **Direct WebSocket** path is available for languages without SDK support yet.
+> **Info**
+>
+> **SDK support is live.** The [Python](https://github.com/deepgram/deepgram-python-sdk) (`deepgram-sdk`) and [JavaScript](https://github.com/deepgram/deepgram-js-sdk) (`@deepgram/sdk`) SDKs expose a `speak.v2` client for `/v2/speak`. For a full runnable integration, start from the [template apps](/docs/flux-tts/template-apps). The **Direct WebSocket** path is available for languages without SDK support yet.
 
 **`Python (deepgram-sdk)`**
 
@@ -172,7 +182,9 @@ wscat -H "Authorization: Token YOUR_DEEPGRAM_API_KEY" \
 
 Send **plain text**. The server applies text normalization (e.g. number and date expansion) before synthesis, but it does not reorder your content or insert or strip whitespace between successive `Speak` messages — so you can stream raw LLM tokens without coordinating chunk boundaries.
 
-**Insert a space between distinct generations.** Because text is concatenated verbatim, sending `"Hello world."` immediately followed by `"How are you?"` is synthesized as `"Hello world.How are you?"`, which can trigger sentence-boundary artifacts. When you stitch together separate LLM responses (for example, a reply, then a tool-call result, then another reply), insert a single space — or the appropriate separator for non-whitespace languages — between them.
+> **Warning**
+>
+> **Insert a space between distinct generations.** Because text is concatenated verbatim, sending `"Hello world."` immediately followed by `"How are you?"` is synthesized as `"Hello world.How are you?"`, which can trigger sentence-boundary artifacts. When you stitch together separate LLM responses (for example, a reply, then a tool-call result, then another reply), insert a single space — or the appropriate separator for non-whitespace languages — between them.
 
 ## When to use /v2/speak vs /v1/speak
 

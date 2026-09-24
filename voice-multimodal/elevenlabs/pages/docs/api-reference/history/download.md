@@ -27,7 +27,7 @@ Reference: https://elevenlabs.io/docs/api-reference/history/download
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_Download_history_items_v1_history_download_post.
 
 - `history_item_ids` (list of string, required) — A list of history items to download, you can get IDs of history items and other metadata using the GET https://api.elevenlabs.io/v1/history endpoint.
 - `output_format` (string, optional, nullable) — Output format to transcode the audio file, can be wav or default.
@@ -53,10 +53,17 @@ Invalid request
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

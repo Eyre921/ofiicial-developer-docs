@@ -8,8 +8,10 @@ path: docs/eleven-agents/libraries/kotlin
 
 # Kotlin SDK
 
-Refer to the [ElevenAgents overview](/docs/eleven-agents/overview) for an explanation of how
-ElevenAgents works.
+> **Info**
+>
+> Refer to the [ElevenAgents overview](/docs/eleven-agents/overview) for an explanation of how
+> ElevenAgents works.
 
 ## Installation
 
@@ -26,8 +28,10 @@ dependencies {
 }
 ```
 
-An example Android app using this SDK can be found
-[here](https://github.com/elevenlabs/elevenlabs-android/tree/main/example-app)
+> **Tip**
+>
+> An example Android app using this SDK can be found
+> [here](https://github.com/elevenlabs/elevenlabs-android/tree/main/example-app)
 
 ## Requirements
 
@@ -144,15 +148,19 @@ val session: ConversationSession = ConversationClient.startSession(config, this)
 
 Note that ElevenAgents requires microphone access. Consider explaining and requesting permissions in your app's UI before the conversation starts, especially on Android 6.0+ where runtime permissions are required.
 
-If a tool is configured with `expects_response=false` on the server, return `null` from `execute`
-to skip sending a tool result back to the agent.
+> **Note**
+>
+> If a tool is configured with `expects_response=false` on the server, return `null` from `execute`
+> to skip sending a tool result back to the agent.
 
 ## Public vs Private Agents
 
 * **Public agents** (no auth): Initialize with `agentId` in `ConversationConfig`. The SDK requests a conversation token from ElevenLabs without needing an API key on device.
 * **Private agents** (auth): Initialize with `conversationToken` in `ConversationConfig`. Your server requests a conversation token from ElevenLabs using your ElevenLabs API key.
 
-Never embed API keys in clients. They can be easily extracted and used maliciously.
+> **Error**
+>
+> Never embed API keys in clients. They can be easily extracted and used maliciously.
 
 ## Client Tools
 
@@ -187,9 +195,11 @@ When the agent issues a `client_tool_call`, the SDK executes the matching tool a
 * **onVadScore** - Called when the voice activity detection score changes. Range from 0 to 1 where higher values indicate higher confidence of speech.
 * **onAudioAlignment** - Called when audio alignment data is received, providing character-level timing information for agent speech.
 
-Not all client events are enabled by default for an agent. If you have enabled a callback but
-aren't seeing events come through, ensure that your ElevenLabs agent has the corresponding event
-enabled. You can do this in the "Advanced" tab of the agent settings in the ElevenLabs dashboard.
+> **Warning**
+>
+> Not all client events are enabled by default for an agent. If you have enabled a callback but
+> aren't seeing events come through, ensure that your ElevenLabs agent has the corresponding event
+> enabled. You can do this in the "Advanced" tab of the agent settings in the ElevenLabs dashboard.
 
 ### Methods
 
@@ -214,7 +224,9 @@ val session = ConversationClient.startSession(
 
 For private agents, you must pass in a `conversationToken` obtained from the ElevenLabs API. Generating this token requires an ElevenLabs API key.
 
-The `conversationToken` is valid for 10 minutes.
+> **Tip**
+>
+> The `conversationToken` is valid for 10 minutes.
 
 ```typescript maxLines=0
 // Server-side token generation (Node.js example)

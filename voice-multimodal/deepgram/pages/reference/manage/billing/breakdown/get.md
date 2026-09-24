@@ -46,18 +46,8 @@ Billing breakdown response
 
 - `start` (string, required) — Start date of the billing summmary period
 - `end` (string, required) — End date of the billing summary period
-- `resolution` (object, required)
-  - `units` (string, required) — Time unit for the resolution
-  - `amount` (double, required) — Amount of units
-- `results` (list of object, required)
-  - `dollars` (float, required) — USD cost of the billing for this grouping
-  - `grouping` (object, required)
-    - `start` (string, optional) — Start date for this group
-    - `end` (string, optional) — End date for this group
-    - `accessor` (string, optional, nullable) — Optional accessor identifier, null unless grouped by accessor.
-    - `deployment` (string, optional, nullable) — Optional deployment identifier, null unless grouped by deployment.
-    - `line_item` (string, optional, nullable) — Optional line item identifier, null unless grouped by line item.
-    - `tags` (list of string, optional, nullable) — Optional list of tags, null unless grouped by tags.
+- `resolution` (BillingBreakdownV1ResponseResolution, required)
+- `results` (list of BillingBreakdownV1ResponseResultsItems, required)
 
 ## Errors
 
@@ -65,16 +55,41 @@ Billing breakdown response
 
 Invalid Request
 
-- `string or object or object`
-  - ErrorResponseLegacyError
-    - `err_code` (string, optional) — The error code
-    - `err_msg` (string, optional) — The error message
-    - `request_id` (string, optional) — The request ID
-  - ErrorResponseModernError
-    - `category` (string, optional) — The category of the error
-    - `message` (string, optional) — A message about the error
-    - `details` (string, optional) — A description of the error
-    - `request_id` (string, optional) — The unique identifier of the request
+- `ErrorResponse`
+
+## Types
+
+### BillingBreakdownV1ResponseResolution
+
+- `units` (string, required) — Time unit for the resolution
+- `amount` (double, required) — Amount of units
+
+### BillingBreakdownV1ResponseResultsItems
+
+- `dollars` (float, required) — USD cost of the billing for this grouping
+- `grouping` (BillingBreakdownV1ResponseResultsItemsGrouping, required)
+
+### ErrorResponseLegacyError
+
+- `err_code` (string, optional) — The error code
+- `err_msg` (string, optional) — The error message
+- `request_id` (string, optional) — The request ID
+
+### ErrorResponseModernError
+
+- `category` (string, optional) — The category of the error
+- `message` (string, optional) — A message about the error
+- `details` (string, optional) — A description of the error
+- `request_id` (string, optional) — The unique identifier of the request
+
+### BillingBreakdownV1ResponseResultsItemsGrouping
+
+- `start` (string, optional) — Start date for this group
+- `end` (string, optional) — End date for this group
+- `accessor` (string, optional, nullable) — Optional accessor identifier, null unless grouped by accessor.
+- `deployment` (string, optional, nullable) — Optional deployment identifier, null unless grouped by deployment.
+- `line_item` (string, optional, nullable) — Optional line item identifier, null unless grouped by line item.
+- `tags` (list of string, optional, nullable) — Optional list of tags, null unless grouped by tags.
 
 ## Examples
 

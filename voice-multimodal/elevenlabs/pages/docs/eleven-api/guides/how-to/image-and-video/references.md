@@ -8,7 +8,9 @@ path: docs/eleven-api/guides/how-to/image-and-video/references
 
 # References and assets
 
-**How-to guide** · Assumes you have completed the [Image & Video quickstart](/docs/eleven-api/guides/cookbooks/image-and-video).
+> **Note**
+>
+> **How-to guide** · Assumes you have completed the [Image & Video quickstart](/docs/eleven-api/guides/cookbooks/image-and-video).
 
 ## Overview
 
@@ -177,8 +179,10 @@ The upload response describes the stored asset:
 `content_url` is a signed URL valid for about an hour, and is `null` while the upload is still being
 processed. Fetch the asset again for a fresh URL.
 
-Reaching the assets API with an API key requires a Pro plan or above, the same tier as the
-generation endpoints.
+> **Warning**
+>
+> Reaching the assets API with an API key requires a Pro plan or above, the same tier as the
+> generation endpoints.
 
 ### Storage limits
 
@@ -284,9 +288,11 @@ const generation = await elevenlabs.flows.image.create({
 });
 ```
 
-Inline media is stored as an ephemeral asset with no retention guarantee and may be deleted once
-the generation completes. Upload the file to the assets API instead when you need to reference the
-same input more than once.
+> **Warning**
+>
+> Inline media is stored as an ephemeral asset with no retention guarantee and may be deleted once
+> the generation completes. Upload the file to the assets API instead when you need to reference the
+> same input more than once.
 
 Inline content is capped at 25MB per reference after decoding. Larger files belong on the assets
 API, which accepts much bigger uploads and does not pay the base64 size penalty. Each modality
@@ -334,8 +340,10 @@ reference transfers its visual style. Reference images cannot be combined with `
 
 ### Seedance
 
-ByteDance models are disabled by default and require explicit approval before use. Enterprise
-customers can contact support to request access.
+> **Warning**
+>
+> ByteDance models are disabled by default and require explicit approval before use. Enterprise
+> customers can contact support to request access.
 
 The three Seedance 2.0 tiers accept `start_frame`, `end_frame`, up to 9 `images`, up to 3 `videos`,
 and up to 3 `audios`, subject to these constraints:

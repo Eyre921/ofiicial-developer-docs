@@ -38,14 +38,7 @@ This endpoint expects an object.
 
 Successful Response
 
-- `map from string to object`
-  - `status`: `success`
-    - `data` (object, required)
-      - `id` (string, required)
-  - `status`: `failure`
-    - `error_code` (integer, required)
-    - `error_message` (string, required)
-    - `error_status` (string, required)
+- `map from string to DocumentsBulkDeleteResponseValue`
 
 ## Errors
 
@@ -53,10 +46,30 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### DocumentsBulkDeleteResponseValue
+
+- `status`: `success`
+  - `data` (KnowledgeBaseDeletedResponseModel, required)
+- `status`: `failure`
+  - `error_code` (integer, required)
+  - `error_message` (string, required)
+  - `error_status` (string, required)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItem, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### KnowledgeBaseDeletedResponseModel
+
+- `id` (string, required)
+
+### ValidationErrorLocItem
 
 ## Examples
 

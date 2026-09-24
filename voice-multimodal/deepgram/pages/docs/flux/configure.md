@@ -45,9 +45,9 @@ You can update the following parameters mid-stream:
 
 All parameters are optional in a Configure message. Omitted parameters retain their current values.
 
-#### keyterms are plain strings—no weights
-
-Each entry in the `keyterms` array is a plain term or phrase. Like the query-string [`keyterm`](/docs/keyterm) parameter, Flux keyterms do **not** support the weight/intensifier syntax from the legacy [Keywords](/docs/keywords) feature. Do not append a weight such as `"term:0.15"`; pass a multi-word phrase as a single array element, for example `["customer service"]`.
+> **keyterms are plain strings—no weights**
+>
+> Each entry in the `keyterms` array is a plain term or phrase. Like the query-string [`keyterm`](/docs/keyterm) parameter, Flux keyterms do **not** support the weight/intensifier syntax from the legacy [Keywords](/docs/keywords) feature. Do not append a weight such as `"term:0.15"`; pass a multi-word phrase as a single array element, for example `["customer service"]`.
 
 ## Message Structure
 
@@ -176,7 +176,9 @@ Key timing behaviors:
 
 ### Keyterm Overwrite Behavior
 
-**Critical:** When sending a Configure message with keyterms, the ENTIRE keyterms list is replaced, not merged. If you want to add terms, you must include both existing and new terms.
+> **Warning**
+>
+> **Critical:** When sending a Configure message with keyterms, the ENTIRE keyterms list is replaced, not merged. If you want to add terms, you must include both existing and new terms.
 
 Example:
 

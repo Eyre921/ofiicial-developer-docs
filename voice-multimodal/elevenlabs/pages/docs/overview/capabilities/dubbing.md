@@ -47,12 +47,16 @@ Cloning strength is the configurable setting in Automatic Dubbing on the Dubbing
 * **Keep background audio:** Avoid re-mixing music, effects, or ambient sounds.
 * **Supported file types:** Videos and audio can be dubbed from various sources, including YouTube, TikTok, direct URLs, or file uploads.
 
-Dubbing v2 does not include a watermark toggle. Free-tier dubs are watermarked automatically;
-paid-tier dubs are not. There is no watermark-for-credit-discount option on Dubbing v2. The legacy
-v1 dubbing flow and Dubbing Studio were the only places where the watermark discount existed.
+> **Note**
+>
+> Dubbing v2 does not include a watermark toggle. Free-tier dubs are watermarked automatically;
+> paid-tier dubs are not. There is no watermark-for-credit-discount option on Dubbing v2. The legacy
+> v1 dubbing flow and Dubbing Studio were the only places where the watermark discount existed.
 
-For Dubbing v2, transcript editing and audio regeneration via the API are available on Enterprise
-plans only.
+> **Warning**
+>
+> For Dubbing v2, transcript editing and audio regeneration via the API are available on Enterprise
+> plans only.
 
 ### Cost
 

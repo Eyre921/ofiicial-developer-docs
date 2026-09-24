@@ -28,7 +28,9 @@ Ask AI lives right here in the docs. It answers from the pages you're reading an
 * [Ask AI](/ask-ai)
 * Add the Deepgram Slack bot, then mention @Deepgram in any channel: [https://slack.com/oauth/v2/authorize?client\_id=20688005349.8697747146976\&scope=assistant:write,channels:history,channels:read,chat:write,groups:history,groups:read,im:history,im:read,im:write,mpim:history,mpim:read,users:read\&user\_scope=team:read](https://slack.com/oauth/v2/authorize?client_id=20688005349.8697747146976\&scope=assistant:write,channels:history,channels:read,chat:write,groups:history,groups:read,im:history,im:read,im:write,mpim:history,mpim:read,users:read\&user_scope=team:read)
 
-**Prefer Slack?** The Deepgram bot searches our docs and answers right in the thread, with code and links. Add it above, then mention **@Deepgram** in any channel.
+> **Info**
+>
+> **Prefer Slack?** The Deepgram bot searches our docs and answers right in the thread, with code and links. Add it above, then mention **@Deepgram** in any channel.
 
 ## Ask the community
 

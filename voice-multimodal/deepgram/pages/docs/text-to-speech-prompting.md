@@ -50,7 +50,9 @@ Use comma or a period when you'd like to include a short pause in dense informat
 
 ## Silent Pauses
 
-Silent Pauses are only available as a prompting work around for our current Aura model and may not be available in our future models. If used in extreme cases (eg. too frequently, or with too many dots added), it may not work as intended.
+> **Warning**
+>
+> Silent Pauses are only available as a prompting work around for our current Aura model and may not be available in our future models. If used in extreme cases (eg. too frequently, or with too many dots added), it may not work as intended.
 
 Silent pauses are pauses that have a higher probability of staying silent in the pause duration, with lower chance of having breaths or elongation of words seen in Natural pauses. You can create a silent pause with a series of dots with a space in between `. . .`. (Note that it is not `...` ). To increase pause duration, include more dots with spaces `. . . .`
 
@@ -204,7 +206,9 @@ If you are having trouble with words rooted in different languages in your text,
      --url "https://api.deepgram.com/v1/speak?model=aura-2-thalia-en"
 ```
 
-[Having issues with pronunciation and pauses?](https://deepgram.typeform.com/aura-tts-fixes)
+> **Info**
+>
+> [Having issues with pronunciation and pauses?](https://deepgram.typeform.com/aura-tts-fixes)
 
 ---
 

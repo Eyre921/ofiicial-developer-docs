@@ -31,26 +31,11 @@ Reference: https://elevenlabs.io/docs/api-reference/studio/create-podcast
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_Create_podcast_v1_studio_podcasts_post.
 
 - `model_id` (string, required) — The ID of the model to be used for this Studio project, you can query GET /v1/models to list all available models.
-- `mode` (object or object, required) — The type of podcast to generate. Can be 'conversation', an interaction between two voices, or 'bulletin', a monologue.
-  - PodcastConversationMode
-    - `type` ("conversation", required) — The type of podcast to create.
-    - `conversation` (object, required) — The voice settings for the conversation.
-      - `host_voice_id` (string, required) — The ID of the host voice.
-      - `guest_voice_id` (string, required) — The ID of the guest voice.
-  - PodcastBulletinMode
-    - `type` ("bulletin", required) — The type of podcast to create.
-    - `bulletin` (object, required) — The voice settings for the bulletin.
-      - `host_voice_id` (string, required) — The ID of the host voice.
-- `source` (object or object or list of object or object, required) — The source content for the Podcast.
-  - PodcastTextSource
-    - `type` ("text", required) — The type of source to create.
-    - `text` (string, required) — The text to create the podcast from.
-  - PodcastURLSource
-    - `type` ("url", required) — The type of source to create.
-    - `url` (string, required) — The URL to create the podcast from.
+- `mode` (BodyCreatePodcastV1StudioPodcastsPostMode, required) — The type of podcast to generate. Can be 'conversation', an interaction between two voices, or 'bulletin', a monologue.
+- `source` (BodyCreatePodcastV1StudioPodcastsPostSource, required) — The source content for the Podcast.
 - `quality_preset` (enum, optional, nullable) — Output quality of the generated audio. Must be one of: 'standard' - standard output format, 128kbps with 44.1kHz sample rate. 'high' - high quality output format, 192kbps with 44.1kHz sample rate and major improvements on our side. 'ultra' - ultra quality output format, 192kbps with 44.1kHz sample rate and highest improvements on our side. 'ultra_lossless' - ultra quality output format, 705.6kbps with 44.1kHz sample rate and highest improvements on our side in a fully lossless format. If not provided, defaults to the highest quality preset available on your subscription tier.
   - Allowed values: `standard`, `high`, `ultra`, `ultra_lossless`
 - `duration_scale` (enum, optional, default: default) — Duration of the generated podcast. Must be one of: short - produces podcasts shorter than 3 minutes. default - produces podcasts roughly between 3-7 minutes. long - produces podcasts longer than 7 minutes.
@@ -70,193 +55,7 @@ This endpoint expects an object.
 
 Successful Response
 
-- `project` (object, required) — The project associated with the created podcast.
-  - `project_id` (string, required) — The ID of the project.
-  - `name` (string, required) — The name of the project.
-  - `create_date_unix` (integer, required) — The creation date of the project.
-  - `created_by_user_id` (string, required, nullable) — The user ID who created the project.
-  - `default_title_voice_ref_id` (string, required) — The default title project voice reference ID.
-  - `default_paragraph_voice_ref_id` (string, required) — The default paragraph project voice reference ID.
-  - `default_model_id` (string, required) — The default model ID.
-  - `can_be_downloaded` (boolean, required) — Whether the project can be downloaded.
-  - `volume_normalization` (boolean, required) — Whether the project uses volume normalization.
-  - `state` (enum, required) — The state of the project.
-    - Allowed values: `creating`, `default`, `converting`, `in_queue`
-  - `access_level` (enum, required) — The access level of the project.
-    - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-  - `quality_check_on` (boolean, required, deprecated) — Whether quality check is enabled for this project.
-  - `quality_check_on_when_bulk_convert` (boolean, required, deprecated) — Whether quality check is enabled on the project when bulk converting.
-  - `default_title_voice_id` (string, required, deprecated) — The default title voice ID.
-  - `default_paragraph_voice_id` (string, required, deprecated) — The default paragraph voice ID.
-  - `last_conversion_date_unix` (integer, optional, nullable) — The last conversion date of the project.
-  - `title` (string, optional, nullable) — The title of the project.
-  - `author` (string, optional, nullable) — The author of the project.
-  - `description` (string, optional, nullable) — The description of the project.
-  - `genres` (list of string, optional, nullable) — List of genres of the project.
-  - `cover_image_url` (string, optional, nullable) — The cover image URL of the project.
-  - `target_audience` (enum, optional, nullable) — The target audience of the project.
-    - Allowed values: `children`, `young adult`, `adult`, `all ages`
-  - `language` (string, optional, nullable) — Two-letter language code (ISO 639-1) of the language of the project.
-  - `content_type` (string, optional, nullable) — The content type of the project, e.g. 'Novel' or 'Short Story'
-  - `original_publication_date` (string, optional, nullable) — The original publication date of the project.
-  - `mature_content` (boolean, optional, nullable) — Whether the project contains mature content.
-  - `isbn_number` (string, optional, nullable) — The ISBN number of the project.
-  - `fiction` (enum, optional, nullable) — Whether the project is fiction.
-    - Allowed values: `fiction`, `non-fiction`
-  - `creation_meta` (object, optional, nullable) — The creation meta of the project.
-    - `creation_progress` (double, required) — The progress of the project creation.
-    - `status` (enum, required) — The status of the project creation action.
-      - Allowed values: `draft`, `pending`, `creating`, `finished`, `failed`
-    - `type` (enum, required) — The type of the project creation action.
-      - Allowed values: `blank`, `generate_podcast`, `auto_assign_voices`, `dub_video`, `import_speech`
-  - `source_type` (enum, optional, nullable) — The source type of the project.
-    - Allowed values: `blank`, `book`, `article`, `genfm`, `video`, `screenplay`
-  - `chapters_enabled` (boolean, optional, nullable, default: true) — Whether chapters are enabled for the project.
-  - `captions_enabled` (boolean, optional, nullable, default: true) — Whether captions are enabled for the project.
-  - `caption_style` (object, optional, nullable) — Global styling to be applied to all captions
-    - `template` (object, optional, nullable)
-      - `key` (string, required)
-      - `label` (string, required)
-      - `requires_high_fps` (boolean, optional, default: false)
-    - `text_font` (string, optional, nullable)
-    - `text_scale` (double, optional, nullable)
-    - `text_color` (string, optional, nullable)
-    - `text_align` (enum, optional, nullable)
-      - Allowed values: `start`, `center`, `end`
-    - `text_style` (enum, optional, nullable)
-      - Allowed values: `normal`, `italic`
-    - `text_weight` (enum, optional, nullable)
-      - Allowed values: `normal`, `bold`, `900`
-    - `text_transform` (enum, optional, nullable)
-      - Allowed values: `none`, `uppercase`
-    - `text_blend_mode` (enum, optional, nullable)
-      - Allowed values: `normal`, `difference`, `multiply`
-    - `text_shadow` (object, optional, nullable)
-      - `enabled` (boolean, required)
-      - `color` (string, required)
-      - `opacity` (double, required)
-      - `blur` (double, required)
-      - `offset_x` (double, required)
-      - `offset_y` (double, required)
-    - `text_outline` (object, optional, nullable)
-      - `enabled` (boolean, required)
-      - `color` (string, required)
-      - `opacity` (double, required)
-      - `width` (double, required)
-    - `background_enabled` (boolean, optional, nullable)
-    - `background_color` (string, optional, nullable)
-    - `background_opacity` (double, optional, nullable)
-    - `background_blur` (double, optional, nullable)
-    - `background_border_radius` (double, optional, nullable)
-    - `word_highlights_enabled` (boolean, optional, nullable)
-    - `word_highlights_color` (string, optional, nullable)
-    - `word_highlights_background_color` (string, optional, nullable)
-    - `word_highlights_opacity` (double, optional, nullable)
-    - `word_highlights_border_radius` (double, optional, nullable)
-    - `word_highlights_blur` (double, optional, nullable)
-    - `section_animation` (object, optional, nullable)
-      - `enter_type` (enum, required)
-        - Allowed values: `none`, `fade`, `scale`, `pop`, `slide_up`, `slide_down`, `slam`, `scale_down`, `slide_in`
-      - `exit_type` (enum, required)
-        - Allowed values: `none`, `fade`, `scale`, `pop`, `slide_up`, `slide_down`, `slam`, `scale_down`, `slide_in`
-    - `word_animation` (object, optional, nullable)
-      - `enter_type` (enum, required)
-        - Allowed values: `none`, `fade`, `scale`, `pop`, `slide_up`, `slide_down`, `slam`, `scale_down`, `slide_in`
-      - `exit_type` (enum, required)
-        - Allowed values: `none`, `fade`, `scale`, `pop`, `slide_up`, `slide_down`, `slam`, `scale_down`, `slide_in`
-    - `character_animation` (object, optional, nullable)
-      - `enter_type` (enum, required)
-        - Allowed values: `none`, `fade`, `typewriter`
-      - `exit_type` (enum, required)
-        - Allowed values: `none`, `fade`
-    - `cursor_enabled` (boolean, optional, nullable)
-    - `width_pct` (double, optional, nullable)
-    - `horizontal_placement` (object, optional, nullable)
-      - `align` (enum, required)
-        - Allowed values: `left`, `center`, `right`
-      - `translate_pct` (double, required)
-    - `vertical_placement` (object, optional, nullable)
-      - `align` (enum, required)
-        - Allowed values: `top`, `center`, `bottom`
-      - `translate_pct` (double, required)
-    - `auto_break_enabled` (boolean, optional, nullable)
-    - `max_lines_per_section` (integer, optional, nullable)
-    - `max_words_per_line` (integer, optional, nullable)
-  - `caption_style_template_overrides` (map from string to object, optional, nullable) — Styling changes that have been made to the provided templates
-    - `template` (object, optional, nullable)
-      - `key` (string, required)
-      - `label` (string, required)
-      - `requires_high_fps` (boolean, optional, default: false)
-    - `text_font` (string, optional, nullable)
-    - `text_scale` (double, optional, nullable)
-    - `text_color` (string, optional, nullable)
-    - `text_align` (enum, optional, nullable)
-      - Allowed values: `start`, `center`, `end`
-    - `text_style` (enum, optional, nullable)
-      - Allowed values: `normal`, `italic`
-    - `text_weight` (enum, optional, nullable)
-      - Allowed values: `normal`, `bold`, `900`
-    - `text_transform` (enum, optional, nullable)
-      - Allowed values: `none`, `uppercase`
-    - `text_blend_mode` (enum, optional, nullable)
-      - Allowed values: `normal`, `difference`, `multiply`
-    - `text_shadow` (object, optional, nullable)
-      - `enabled` (boolean, required)
-      - `color` (string, required)
-      - `opacity` (double, required)
-      - `blur` (double, required)
-      - `offset_x` (double, required)
-      - `offset_y` (double, required)
-    - `text_outline` (object, optional, nullable)
-      - `enabled` (boolean, required)
-      - `color` (string, required)
-      - `opacity` (double, required)
-      - `width` (double, required)
-    - `background_enabled` (boolean, optional, nullable)
-    - `background_color` (string, optional, nullable)
-    - `background_opacity` (double, optional, nullable)
-    - `background_blur` (double, optional, nullable)
-    - `background_border_radius` (double, optional, nullable)
-    - `word_highlights_enabled` (boolean, optional, nullable)
-    - `word_highlights_color` (string, optional, nullable)
-    - `word_highlights_background_color` (string, optional, nullable)
-    - `word_highlights_opacity` (double, optional, nullable)
-    - `word_highlights_border_radius` (double, optional, nullable)
-    - `word_highlights_blur` (double, optional, nullable)
-    - `section_animation` (object, optional, nullable)
-      - `enter_type` (enum, required)
-        - Allowed values: `none`, `fade`, `scale`, `pop`, `slide_up`, `slide_down`, `slam`, `scale_down`, `slide_in`
-      - `exit_type` (enum, required)
-        - Allowed values: `none`, `fade`, `scale`, `pop`, `slide_up`, `slide_down`, `slam`, `scale_down`, `slide_in`
-    - `word_animation` (object, optional, nullable)
-      - `enter_type` (enum, required)
-        - Allowed values: `none`, `fade`, `scale`, `pop`, `slide_up`, `slide_down`, `slam`, `scale_down`, `slide_in`
-      - `exit_type` (enum, required)
-        - Allowed values: `none`, `fade`, `scale`, `pop`, `slide_up`, `slide_down`, `slam`, `scale_down`, `slide_in`
-    - `character_animation` (object, optional, nullable)
-      - `enter_type` (enum, required)
-        - Allowed values: `none`, `fade`, `typewriter`
-      - `exit_type` (enum, required)
-        - Allowed values: `none`, `fade`
-    - `cursor_enabled` (boolean, optional, nullable)
-    - `width_pct` (double, optional, nullable)
-    - `horizontal_placement` (object, optional, nullable)
-      - `align` (enum, required)
-        - Allowed values: `left`, `center`, `right`
-      - `translate_pct` (double, required)
-    - `vertical_placement` (object, optional, nullable)
-      - `align` (enum, required)
-        - Allowed values: `top`, `center`, `bottom`
-      - `translate_pct` (double, required)
-    - `auto_break_enabled` (boolean, optional, nullable)
-    - `max_lines_per_section` (integer, optional, nullable)
-    - `max_words_per_line` (integer, optional, nullable)
-  - `public_share_id` (string, optional, nullable) — The public share ID of the project.
-  - `aspect_ratio` (enum, optional, nullable) — The aspect ratio of the project.
-    - Allowed values: `16:9`, `9:16`, `4:5`, `1:1`
-  - `agent_settings` (object, optional, nullable) — Agent-related settings for the project
-    - `tool_settings` (map from string to object, optional)
-      - `skip_confirmation` (boolean, optional, default: false)
+- `project` (ProjectResponseModel, required) — The project associated with the created podcast.
 
 ## Errors
 
@@ -264,10 +63,211 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### BodyCreatePodcastV1StudioPodcastsPostMode
+
+The type of podcast to generate. Can be 'conversation', an interaction between two voices, or 'bulletin', a monologue.
+
+### BodyCreatePodcastV1StudioPodcastsPostSource
+
+The source content for the Podcast.
+
+### ProjectResponseModel
+
+- `project_id` (string, required) — The ID of the project.
+- `name` (string, required) — The name of the project.
+- `create_date_unix` (integer, required) — The creation date of the project.
+- `created_by_user_id` (string, required, nullable) — The user ID who created the project.
+- `default_title_voice_ref_id` (string, required) — The default title project voice reference ID.
+- `default_paragraph_voice_ref_id` (string, required) — The default paragraph project voice reference ID.
+- `default_model_id` (string, required) — The default model ID.
+- `can_be_downloaded` (boolean, required) — Whether the project can be downloaded.
+- `volume_normalization` (boolean, required) — Whether the project uses volume normalization.
+- `state` (enum, required) — The state of the project.
+  - Allowed values: `creating`, `default`, `converting`, `in_queue`
+- `access_level` (enum, required) — The access level of the project.
+  - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+- `quality_check_on` (boolean, required, deprecated) — Whether quality check is enabled for this project.
+- `quality_check_on_when_bulk_convert` (boolean, required, deprecated) — Whether quality check is enabled on the project when bulk converting.
+- `default_title_voice_id` (string, required, deprecated) — The default title voice ID.
+- `default_paragraph_voice_id` (string, required, deprecated) — The default paragraph voice ID.
+- `last_conversion_date_unix` (integer, optional, nullable) — The last conversion date of the project.
+- `title` (string, optional, nullable) — The title of the project.
+- `author` (string, optional, nullable) — The author of the project.
+- `description` (string, optional, nullable) — The description of the project.
+- `genres` (list of string, optional, nullable) — List of genres of the project.
+- `cover_image_url` (string, optional, nullable) — The cover image URL of the project.
+- `target_audience` (enum, optional, nullable) — The target audience of the project.
+  - Allowed values: `children`, `young adult`, `adult`, `all ages`
+- `language` (string, optional, nullable) — Two-letter language code (ISO 639-1) of the language of the project.
+- `content_type` (string, optional, nullable) — The content type of the project, e.g. 'Novel' or 'Short Story'
+- `original_publication_date` (string, optional, nullable) — The original publication date of the project.
+- `mature_content` (boolean, optional, nullable) — Whether the project contains mature content.
+- `isbn_number` (string, optional, nullable) — The ISBN number of the project.
+- `fiction` (enum, optional, nullable) — Whether the project is fiction.
+  - Allowed values: `fiction`, `non-fiction`
+- `creation_meta` (ProjectCreationMetaResponseModel, optional, nullable) — The creation meta of the project.
+- `source_type` (enum, optional, nullable) — The source type of the project.
+  - Allowed values: `blank`, `book`, `article`, `genfm`, `video`, `screenplay`
+- `chapters_enabled` (boolean, optional, nullable, default: true) — Whether chapters are enabled for the project.
+- `captions_enabled` (boolean, optional, nullable, default: true) — Whether captions are enabled for the project.
+- `caption_style` (CaptionStyleModel, optional, nullable) — Global styling to be applied to all captions
+- `caption_style_template_overrides` (map from string to CaptionStyleModel, optional, nullable) — Styling changes that have been made to the provided templates
+- `public_share_id` (string, optional, nullable) — The public share ID of the project.
+- `aspect_ratio` (enum, optional, nullable) — The aspect ratio of the project.
+  - Allowed values: `16:9`, `9:16`, `4:5`, `1:1`
+- `agent_settings` (StudioAgentSettingsModel, optional, nullable) — Agent-related settings for the project
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### PodcastConversationMode
+
+- `type` ("conversation", required) — The type of podcast to create.
+- `conversation` (PodcastConversationModeData, required) — The voice settings for the conversation.
+
+### PodcastBulletinMode
+
+- `type` ("bulletin", required) — The type of podcast to create.
+- `bulletin` (PodcastBulletinModeData, required) — The voice settings for the bulletin.
+
+### PodcastTextSource
+
+- `type` ("text", required) — The type of source to create.
+- `text` (string, required) — The text to create the podcast from.
+
+### PodcastURLSource
+
+- `type` ("url", required) — The type of source to create.
+- `url` (string, required) — The URL to create the podcast from.
+
+### ProjectCreationMetaResponseModel
+
+- `creation_progress` (double, required) — The progress of the project creation.
+- `status` (enum, required) — The status of the project creation action.
+  - Allowed values: `draft`, `pending`, `creating`, `finished`, `failed`
+- `type` (enum, required) — The type of the project creation action.
+  - Allowed values: `blank`, `generate_podcast`, `auto_assign_voices`, `dub_video`, `import_speech`
+
+### CaptionStyleModel
+
+- `template` (CaptionStyleTemplateModel, optional, nullable)
+- `text_font` (string, optional, nullable)
+- `text_scale` (double, optional, nullable)
+- `text_color` (string, optional, nullable)
+- `text_align` (enum, optional, nullable)
+  - Allowed values: `start`, `center`, `end`
+- `text_style` (enum, optional, nullable)
+  - Allowed values: `normal`, `italic`
+- `text_weight` (enum, optional, nullable)
+  - Allowed values: `normal`, `bold`, `900`
+- `text_transform` (enum, optional, nullable)
+  - Allowed values: `none`, `uppercase`
+- `text_blend_mode` (enum, optional, nullable)
+  - Allowed values: `normal`, `difference`, `multiply`
+- `text_shadow` (StudioTextStyleShadowModel, optional, nullable)
+- `text_outline` (StudioTextStyleOutlineModel, optional, nullable)
+- `background_enabled` (boolean, optional, nullable)
+- `background_color` (string, optional, nullable)
+- `background_opacity` (double, optional, nullable)
+- `background_blur` (double, optional, nullable)
+- `background_border_radius` (double, optional, nullable)
+- `word_highlights_enabled` (boolean, optional, nullable)
+- `word_highlights_color` (string, optional, nullable)
+- `word_highlights_background_color` (string, optional, nullable)
+- `word_highlights_opacity` (double, optional, nullable)
+- `word_highlights_border_radius` (double, optional, nullable)
+- `word_highlights_blur` (double, optional, nullable)
+- `section_animation` (CaptionStyleSectionAnimationModel, optional, nullable)
+- `word_animation` (CaptionStyleWordAnimationModel, optional, nullable)
+- `character_animation` (CaptionStyleCharacterAnimationModel, optional, nullable)
+- `cursor_enabled` (boolean, optional, nullable)
+- `width_pct` (double, optional, nullable)
+- `horizontal_placement` (CaptionStyleHorizontalPlacementModel, optional, nullable)
+- `vertical_placement` (CaptionStyleVerticalPlacementModel, optional, nullable)
+- `auto_break_enabled` (boolean, optional, nullable)
+- `max_lines_per_section` (integer, optional, nullable)
+- `max_words_per_line` (integer, optional, nullable)
+
+### StudioAgentSettingsModel
+
+- `tool_settings` (map from string to StudioAgentToolSettingsModel, optional)
+
+### ValidationErrorLocItems
+
+### PodcastConversationModeData
+
+- `host_voice_id` (string, required) — The ID of the host voice.
+- `guest_voice_id` (string, required) — The ID of the guest voice.
+
+### PodcastBulletinModeData
+
+- `host_voice_id` (string, required) — The ID of the host voice.
+
+### CaptionStyleTemplateModel
+
+- `key` (string, required)
+- `label` (string, required)
+- `requires_high_fps` (boolean, optional, default: false)
+
+### StudioTextStyleShadowModel
+
+- `enabled` (boolean, required)
+- `color` (string, required)
+- `opacity` (double, required)
+- `blur` (double, required)
+- `offset_x` (double, required)
+- `offset_y` (double, required)
+
+### StudioTextStyleOutlineModel
+
+- `enabled` (boolean, required)
+- `color` (string, required)
+- `opacity` (double, required)
+- `width` (double, required)
+
+### CaptionStyleSectionAnimationModel
+
+- `enter_type` (enum, required)
+  - Allowed values: `none`, `fade`, `scale`, `pop`, `slide_up`, `slide_down`, `slam`, `scale_down`, `slide_in`
+- `exit_type` (enum, required)
+  - Allowed values: `none`, `fade`, `scale`, `pop`, `slide_up`, `slide_down`, `slam`, `scale_down`, `slide_in`
+
+### CaptionStyleWordAnimationModel
+
+- `enter_type` (enum, required)
+  - Allowed values: `none`, `fade`, `scale`, `pop`, `slide_up`, `slide_down`, `slam`, `scale_down`, `slide_in`
+- `exit_type` (enum, required)
+  - Allowed values: `none`, `fade`, `scale`, `pop`, `slide_up`, `slide_down`, `slam`, `scale_down`, `slide_in`
+
+### CaptionStyleCharacterAnimationModel
+
+- `enter_type` (enum, required)
+  - Allowed values: `none`, `fade`, `typewriter`
+- `exit_type` (enum, required)
+  - Allowed values: `none`, `fade`
+
+### CaptionStyleHorizontalPlacementModel
+
+- `align` (enum, required)
+  - Allowed values: `left`, `center`, `right`
+- `translate_pct` (double, required)
+
+### CaptionStyleVerticalPlacementModel
+
+- `align` (enum, required)
+  - Allowed values: `top`, `center`, `bottom`
+- `translate_pct` (double, required)
+
+### StudioAgentToolSettingsModel
+
+- `skip_confirmation` (boolean, optional, default: false)
 
 ## Examples
 

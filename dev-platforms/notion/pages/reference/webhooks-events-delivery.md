@@ -72,7 +72,7 @@ Below, you’ll find the list of available type values, a short description of w
 | `data_source.undeleted`       | Triggered when a data source is restored from the trash. <br /> <br />**New** in 2025-09-03 API version.                                                    | Yes            |
 | `comment.created`             | Triggered when a new comment or suggested edit is added to a page or block                                                                                  | No             |
 | `comment.deleted`             | Triggered when a comment is deleted.                                                                                                                        | No             |
-| `comment.updated`             | Triggered when a comment is edited.                                                                                                                         | No             |
+| `comment.updated`             | Triggered when a comment is edited, or when a file attached to the comment in the Notion app finishes uploading.                                            | No             |
 
 <Info>
   **What does “aggregated” mean?**

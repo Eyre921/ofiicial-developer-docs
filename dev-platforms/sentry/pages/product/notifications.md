@@ -64,7 +64,7 @@ Learn more in the [Pricing & Billing docs](https://docs.sentry.io/pricing/quotas
 
 ### [Spend Notifications for Your Organization](https://docs.sentry.io/product/notifications.md#spend-notifications-for-your-organization)
 
-Billing or owner members can set up their notification thresholds by going to: **Settings > Subscription > Manage Spend Notifications**.
+Billing or owner members can set up their notification thresholds in [**Settings > Subscription > Manage Spend Notifications**](https://sentry.io/orgredirect/organizations/:orgslug/settings/billing/notifications/).
 
 From here, you can customize the notification thresholds for your organization for when you're close to reaching one or both of the below:
 

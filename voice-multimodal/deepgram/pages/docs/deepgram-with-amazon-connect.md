@@ -16,7 +16,9 @@ This guide explains how to integrate your Deepgram models into Amazon Connect fl
 
 [Amazon Connect](https://docs.aws.amazon.com/connect/) is AWS's cloud-based contact center platform, and [Amazon Lex](https://docs.aws.amazon.com/lexv2/latest/dg/what-is.html) provides tools for quickly building conversational chatbots. With Deepgram integrated into Connect, organizations can seamlessly replace AWS Transcribe and Polly with Deepgram's STT and TTS models—without modifying their existing Connect flows or operational logic.
 
-This integration supports **Deepgram-hosted** customers only. Support for **self-hosted** deployments will be added in a future phase.
+> **Info**
+>
+> This integration supports **Deepgram-hosted** customers only. Support for **self-hosted** deployments will be added in a future phase.
 
 ## Architecture
 
@@ -49,7 +51,9 @@ Before starting:
 * A **Deepgram API key**
 * An **Amazon Connect** instance, and Amazon Lex bot if using Lex
 
-Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
+> **Info**
+>
+> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
 
 ## Get Your Deepgram API Key and Add as AWS Secret
 

@@ -10,13 +10,17 @@ path: docs/eleven-agents/customization/privacy/conversation-history-redaction
 
 Conversation history redaction detects and removes sensitive information from your conversation data before it is stored, thereby minimising exposure of sensitive entities while preserving useful conversation logs for review and analysis.
 
-This feature is currently available to select enterprise clients only. Contact
-[sales](https://elevenlabs.io/contact-sales) for access.
+> **Info**
+>
+> This feature is currently available to select enterprise clients only. Contact
+> [sales](https://elevenlabs.io/contact-sales) for access.
 
-Conversation history redaction significantly reduces sensitive entity exposure, but as with any
-detection service operating on dynamic user data, the detection rate is not 100%. Therefore,
-enabling this feature alone **does not guarantee compliance** with strict regulations such as
-[HIPAA](/docs/eleven-agents/legal/hipaa). For full compliance, enable [Zero Retention Mode](/docs/eleven-api/resources/zero-retention-mode).
+> **Warning**
+>
+> Conversation history redaction significantly reduces sensitive entity exposure, but as with any
+> detection service operating on dynamic user data, the detection rate is not 100%. Therefore,
+> enabling this feature alone **does not guarantee compliance** with strict regulations such as
+> [HIPAA](/docs/eleven-agents/legal/hipaa). For full compliance, enable [Zero Retention Mode](/docs/eleven-api/resources/zero-retention-mode).
 
 ## Overview
 
@@ -26,10 +30,14 @@ When a conversation ends, a post-processing step scans the transcript and audio 
 * **Audio**: Entity instances are replaced with a bleep sound.
 * **Webhooks**: Transcript and audio webhooks also contain redacted data.
 
-To redact caller keypad entries without entity detection, enable [DTMF input](/docs/eleven-agents/customization/multimodal-input#dtmf-input) redaction on the agent.
+> **Note**
+>
+> To redact caller keypad entries without entity detection, enable [DTMF input](/docs/eleven-agents/customization/multimodal-input#dtmf-input) redaction on the agent.
 
-Because post-processing runs after the conversation ends, there will be a short delay before the
-conversation appears in your history.
+> **Note**
+>
+> Because post-processing runs after the conversation ends, there will be a short delay before the
+> conversation appears in your history.
 
 ## Configuration
 

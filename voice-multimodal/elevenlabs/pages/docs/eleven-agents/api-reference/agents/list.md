@@ -44,24 +44,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/list
 
 Successful Response
 
-- `agents` (list of object, required) — A list of agents and their metadata
-  - `agent_id` (string, required) — The ID of the agent
-  - `name` (string, required) — The name of the agent
-  - `voice_id` (string, required) — Voice ID assigned to this agent
-  - `tags` (list of string, required) — Agent tags used to categorize the agent
-  - `created_at_unix_secs` (integer, required) — The creation time of the agent in unix seconds
-  - `access_info` (object, required) — The access information of the agent
-    - `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
-    - `creator_name` (string, required) — Name of the agent's creator
-    - `creator_email` (string, required) — Email of the agent's creator
-    - `role` (enum, required) — The role of the user making the request
-      - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-    - `anonymous_access_level_override` (enum, optional) — The access level for anonymous users. If None, the resource is not shared publicly.
-      - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-    - `access_source` (enum, optional) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
-      - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
-  - `last_call_time_unix_secs` (integer, optional) — The time of the most recent call in unix seconds, null if no calls have been made
-  - `archived` (boolean, optional, default: false) — Whether the agent is archived
+- `agents` (list of AgentSummaryResponseModel, required) — A list of agents and their metadata
 - `has_more` (boolean, required) — Whether there are more agents to paginate through
 - `next_cursor` (string, optional) — The next cursor to paginate through the agents
 
@@ -71,10 +54,40 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### AgentSummaryResponseModel
+
+- `agent_id` (string, required) — The ID of the agent
+- `name` (string, required) — The name of the agent
+- `voice_id` (string, required) — Voice ID assigned to this agent
+- `tags` (list of string, required) — Agent tags used to categorize the agent
+- `created_at_unix_secs` (integer, required) — The creation time of the agent in unix seconds
+- `access_info` (ResourceAccessInfo, required) — The access information of the agent
+- `last_call_time_unix_secs` (integer, optional) — The time of the most recent call in unix seconds, null if no calls have been made
+- `archived` (boolean, optional, default: false) — Whether the agent is archived
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItem, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ResourceAccessInfo
+
+- `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
+- `creator_name` (string, required) — Name of the agent's creator
+- `creator_email` (string, required) — Email of the agent's creator
+- `role` (enum, required) — The role of the user making the request
+  - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+- `anonymous_access_level_override` (enum, optional) — The access level for anonymous users. If None, the resource is not shared publicly.
+  - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+- `access_source` (enum, optional) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
+  - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
+
+### ValidationErrorLocItem
 
 ## Examples
 

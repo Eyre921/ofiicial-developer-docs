@@ -4,6 +4,22 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+<Update label="September 23, 2026">
+  ### Notion icon URLs are validated
+
+  An `external` icon URL that points at Notion's built-in icon set, such as `https://www.notion.so/icons/pizza_blue.svg`, sets a [native icon](/reference/emoji-and-icon#icon) and reads back as `type: "icon"`. A URL that names no real icon or color now returns a `validation_error` instead of saving a broken icon. In Notion MCP, the page `icon` parameter on [`notion-create-pages` and `notion-update-page`](/guides/mcp/mcp-supported-tools) now accepts the `icons/pizza_blue` identifier that `notion-fetch` returns, so an icon can be copied from one page to another.
+</Update>
+
+<Update label="September 22, 2026">
+  ### File uploads accept CAD and 3D model formats
+
+  The [File Upload API](/guides/data-apis/working-with-files-and-media#supported-file-types) now accepts common CAD and 3D model formats, including `.dwg`, `.dxf`, `.dwf`, `.rvt`, `.rfa`, `.3dm`, `.step`, `.stl`, `.obj`, and `.glb`. They attach to pages as `file` blocks.
+
+  ### `application/octet-stream` resolves from the file extension
+
+  Many HTTP clients label files with `application/octet-stream` when they can't infer a MIME type from the extension. [Create a file upload](/reference/create-file) and [Send a file upload](/reference/upload-file) now treat that generic type as unspecified and resolve the real type from the `filename` extension, or from the content type set at creation. Files with unsupported extensions are still rejected.
+</Update>
+
 <Update label="September 17, 2026">
   ### Check tool access with `notion-get-tool-access`
 

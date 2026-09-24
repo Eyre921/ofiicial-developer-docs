@@ -48,8 +48,10 @@ After booking, customers receive a secure management link (unique per booking, n
 
 The AI receptionist can also help callers manage existing bookings by looking up their phone number or confirmation number.
 
-Changing your booking page URL slug breaks existing links. Update any published URLs if you change
-it.
+> **Warning**
+>
+> Changing your booking page URL slug breaks existing links. Update any published URLs if you change
+> it.
 
 ## Group events
 

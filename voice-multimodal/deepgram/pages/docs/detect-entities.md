@@ -22,9 +22,11 @@ When Entity Detection is enabled, the [Punctuation](/docs/punctuation) feature w
 
 Entity Detection is available for both pre-recorded and streaming speech-to-text.
 
-**Streaming:** Entity Detection for streaming is supported on **Nova**, **Nova-2**, **Nova-3**, and **Enhanced** models. It is not available for Base models or Flux.
-
-**Pre-recorded:** Entity Detection for pre-recorded audio is available on all models.
+> **Info**
+>
+> **Streaming:** Entity Detection for streaming is supported on **Nova**, **Nova-2**, **Nova-3**, and **Enhanced** models. It is not available for Base models or Flux.
+>
+> **Pre-recorded:** Entity Detection for pre-recorded audio is available on all models.
 
 ## Enable Feature
 
@@ -32,7 +34,9 @@ To enable Entity Detection, when you call Deepgram's API, add a `detect_entities
 
 `detect_entities=true`
 
-When Entity Detection is enabled, [Punctuation](/docs/punctuation) will also be enabled by default.
+> **Info**
+>
+> When Entity Detection is enabled, [Punctuation](/docs/punctuation) will also be enabled by default.
 
 ### Pre-recorded Audio
 
@@ -49,7 +53,9 @@ curl \
   --url 'https://api.deepgram.com/v1/listen?detect_entities=true'
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
 
 ### Streaming Audio
 
@@ -358,11 +364,13 @@ Here's an example of a streaming response with Entity Detection enabled:
 }
 ```
 
-**Streaming Behavior:**
-
-* The `entities` array is **only present in final results** (`is_final: true`).
-* If `detect_entities` is enabled but no entities are detected, an empty array is returned: `"entities": []`.
-* To ensure complete entities are detected, the system may wait for entity completion before finalizing. See [Streaming Finalization Behavior](#streaming-finalization-behavior) below.
+> **Info**
+>
+> **Streaming Behavior:**
+>
+> * The `entities` array is **only present in final results** (`is_final: true`).
+> * If `detect_entities` is enabled but no entities are detected, an empty array is returned: `"entities": []`.
+> * To ensure complete entities are detected, the system may wait for entity completion before finalizing. See [Streaming Finalization Behavior](#streaming-finalization-behavior) below.
 
 ### Streaming Finalization Behavior
 
@@ -379,7 +387,9 @@ This approach ensures transcripts are returned promptly while maintaining entity
 
 Setting `no_delay=true` forces immediate finalization of streaming transcripts without waiting for entity completion.
 
-This will result in entities being missed or incomplete in many cases. Only use `no_delay=true` if low latency is more important than entity detection accuracy.
+> **Warning**
+>
+> This will result in entities being missed or incomplete in many cases. Only use `no_delay=true` if low latency is more important than entity detection accuracy.
 
 To use `no_delay` with Entity Detection:
 

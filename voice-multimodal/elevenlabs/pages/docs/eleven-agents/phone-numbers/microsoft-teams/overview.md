@@ -51,10 +51,12 @@ voice plus Bot Framework messaging for text.
 * **Customers calling a number that the agent answers (IVR / contact center)** — use [Azure Communication Services](/docs/eleven-agents/phone-numbers/microsoft-teams/azure-communication-services).
 * **Colleagues calling the agent by name inside Teams** — use the [Graph calling bot](/docs/eleven-agents/phone-numbers/microsoft-teams/graph-media-bot).
 
-Each approach has different access requirements — see the **Permissions & roles** section in each
-guide. In short: the widget needs Teams custom-app upload; ACS needs a paid subscription +
-Contributor; the calling bot needs an Azure Bot, Graph `Calls.AccessMedia.All`, and **admin
-consent** (Global Admin / Privileged Role Admin).
+> **Note**
+>
+> Each approach has different access requirements — see the **Permissions & roles** section in each
+> guide. In short: the widget needs Teams custom-app upload; ACS needs a paid subscription +
+> Contributor; the calling bot needs an Azure Bot, Graph `Calls.AccessMedia.All`, and **admin
+> consent** (Global Admin / Privileged Role Admin).
 
 ## Useful links
 

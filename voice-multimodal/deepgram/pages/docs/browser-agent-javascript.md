@@ -12,7 +12,9 @@ path: docs/browser-agent-javascript
 
 > API reference for @deepgram/agents — the core WebSocket session, microphone capture, and audio playback with volume and frequency analysis for browser-based voice agents.
 
-This page covers the core JavaScript SDK, which works with vanilla JS, Vue, Svelte, Angular, and any other framework. If you are using React, see [React Hooks and Provider](/docs/browser-agent-react). For a drop-in embeddable solution, see [Widget](/docs/browser-agent-widget).
+> **Info**
+>
+> This page covers the core JavaScript SDK, which works with vanilla JS, Vue, Svelte, Angular, and any other framework. If you are using React, see [React Hooks and Provider](/docs/browser-agent-react). For a drop-in embeddable solution, see [Widget](/docs/browser-agent-widget).
 
 ## Installation
 
@@ -285,7 +287,9 @@ The first argument is a callback invoked with each captured audio frame as an `A
 | `noiseSuppression` | `boolean` | `true`  | Enable browser noise suppression via `getUserMedia`. |
 | `autoGainControl`  | `boolean` | `true`  | Enable browser auto gain control via `getUserMedia`. |
 
-The microphone streams continuously while it is unmuted. There is no client-side voice activity detection option. Turn-taking and barge-in are handled server-side: the Voice Agent API emits `user-started-speaking`, which you pair with `player.interrupt()` to stop playback. `@deepgram/react` wires this up for you.
+> **Info**
+>
+> The microphone streams continuously while it is unmuted. There is no client-side voice activity detection option. Turn-taking and barge-in are handled server-side: the Voice Agent API emits `user-started-speaking`, which you pair with `player.interrupt()` to stop playback. `@deepgram/react` wires this up for you.
 
 ### Methods
 

@@ -12,7 +12,9 @@ path: docs/browser-agent-react
 
 > API reference for @deepgram/react — AgentProvider, connection state hooks, playback-aware mode tracking, conversation hooks, component-scoped client tools, and standalone useDeepgramAgent for simpler apps.
 
-Looking for pre-built UI components? See [React UI Components](/docs/browser-agent-react-ui). For the core JavaScript SDK, see [JavaScript](/docs/browser-agent-javascript).
+> **Info**
+>
+> Looking for pre-built UI components? See [React UI Components](/docs/browser-agent-react-ui). For the core JavaScript SDK, see [JavaScript](/docs/browser-agent-javascript).
 
 ## Installation
 
@@ -20,7 +22,9 @@ Looking for pre-built UI components? See [React UI Components](/docs/browser-age
 npm install @deepgram/react
 ```
 
-`@deepgram/react` lists `@deepgram/agents` as a dependency and re-exports the SDK types you need (`AgentSessionConfig`, `AgentSettingsObject`, `MicrophoneOptions`, and the rest), so a single `npm install @deepgram/react` is all you need for the React layer. If you want direct access to the SDK classes (`AgentSession`, `AgentMicrophone`, `AgentPlayer`), import them from `@deepgram/agents`.
+> **Note**
+>
+> `@deepgram/react` lists `@deepgram/agents` as a dependency and re-exports the SDK types you need (`AgentSessionConfig`, `AgentSettingsObject`, `MicrophoneOptions`, and the rest), so a single `npm install @deepgram/react` is all you need for the React layer. If you want direct access to the SDK classes (`AgentSession`, `AgentMicrophone`, `AgentPlayer`), import them from `@deepgram/agents`.
 
 ## Usage
 
@@ -166,7 +170,9 @@ const {
 } = useAgentMode();
 ```
 
-The playback-aware transition is automatic. The provider measures `AgentPlayer.getRemainingPlaybackTime()` when the server signals audio-done, then delays the mode switch by that duration. No configuration needed.
+> **Note**
+>
+> The playback-aware transition is automatic. The provider measures `AgentPlayer.getRemainingPlaybackTime()` when the server signals audio-done, then delays the mode switch by that duration. No configuration needed.
 
 ### useAgentMicrophone
 
@@ -183,7 +189,9 @@ const {
 } = useAgentMicrophone();
 ```
 
-`getInputVolume()` reads the current microphone level without triggering a re-render. Call it inside `requestAnimationFrame` or a canvas draw loop for smooth audio visualizations.
+> **Note**
+>
+> `getInputVolume()` reads the current microphone level without triggering a re-render. Call it inside `requestAnimationFrame` or a canvas draw loop for smooth audio visualizations.
 
 ### useAgentPlayer
 
@@ -396,4 +404,6 @@ function VoiceAgent() {
 | `clearConversation` | `() => void`                                                 | Clear the local conversation history and request that the session clears its history.           |
 | `interrupt`         | `() => void`                                                 | Interrupt agent speech immediately.                                                             |
 
-`useDeepgramAgent` does not support `useAgentClientTool`. Use the provider pattern if you need per-component tool registration.
+> **Note**
+>
+> `useDeepgramAgent` does not support `useAgentClientTool`. Use the provider pattern if you need per-component tool registration.

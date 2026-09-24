@@ -39,12 +39,7 @@ Successful Response
 - `sample_id` (string, required) — The ID of the sample.
 - `status` (enum, required) — The status of the speaker separation.
   - Allowed values: `not_started`, `pending`, `completed`, `failed`
-- `speakers` (map from string to object, optional, nullable) — The speakers of the sample.
-  - `speaker_id` (string, required) — The ID of the speaker.
-  - `duration_secs` (double, required) — The duration of the speaker segment in seconds.
-  - `utterances` (list of object, optional, nullable) — The utterances of the speaker.
-    - `start` (double, required) — The start time of the utterance in seconds.
-    - `end` (double, required) — The end time of the utterance in seconds.
+- `speakers` (map from string to SpeakerResponseModel, optional, nullable) — The speakers of the sample.
 - `selected_speaker_ids` (list of string, optional, nullable) — The IDs of the selected speakers.
 
 ## Errors
@@ -53,10 +48,28 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### SpeakerResponseModel
+
+- `speaker_id` (string, required) — The ID of the speaker.
+- `duration_secs` (double, required) — The duration of the speaker segment in seconds.
+- `utterances` (list of UtteranceResponseModel, optional, nullable) — The utterances of the speaker.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### UtteranceResponseModel
+
+- `start` (double, required) — The start time of the utterance in seconds.
+- `end` (double, required) — The end time of the utterance in seconds.
+
+### ValidationErrorLocItems
 
 ## Examples
 

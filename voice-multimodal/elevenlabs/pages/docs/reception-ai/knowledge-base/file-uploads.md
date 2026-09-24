@@ -27,5 +27,7 @@ File uploads work well for:
 * **Product catalogs** — Specifications and availability not on your website
 * **Training materials** — Scripts and talking points for common scenarios
 
-Large files take longer to process. Your plan tier determines how many knowledge sources you can
-add.
+> **Note**
+>
+> Large files take longer to process. Your plan tier determines how many knowledge sources you can
+> add.

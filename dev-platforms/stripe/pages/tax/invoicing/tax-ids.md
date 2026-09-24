@@ -339,7 +339,7 @@ Stripe automatically validates all [Australian Business Numbers (ABNs)](https://
 
 ### European Value Added Tax (EU VAT) numbers
 
-Stripe automatically validates all EU VAT numbers with the [European Commission’s VAT Information Exchange System (VIES)](http://ec.europa.eu/taxation_customs/vies/). This process only verifies the validity of the tax ID, and not whether the customer’s name and address match what’s on the customers page in the Dashboard.
+Stripe automatically validates all EU VAT numbers with the [European Commission’s VAT Information Exchange System (VIES)](https://ec.europa.eu/taxation_customs/vies/). This process only verifies the validity of the tax ID, and not whether the customer’s name and address match what’s on the customers page in the Dashboard.
 
 VIES validation usually takes only a few seconds, but might take longer, depending on the availability of the external tax authority system. Stripe automatically handles VIES downtime and attempts retries for you.
 

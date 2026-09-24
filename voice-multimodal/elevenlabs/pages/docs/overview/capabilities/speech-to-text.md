@@ -28,9 +28,11 @@ Learn how to transcribe audio with ElevenLabs in realtime with WebSockets.
 
 Full API reference for the Speech to Text endpoint.
 
-Companies requiring HIPAA compliance must contact [ElevenLabs Sales](https://elevenlabs.io/contact-sales) to sign a Business Associate Agreement (BAA)
-agreement. Please ensure this step is completed before proceeding with any HIPAA-related
-integrations or deployments.
+> **Info**
+>
+> Companies requiring HIPAA compliance must contact [ElevenLabs Sales](https://elevenlabs.io/contact-sales) to sign a Business Associate Agreement (BAA)
+> agreement. Please ensure this step is completed before proceeding with any HIPAA-related
+> integrations or deployments.
 
 ## Models
 
@@ -70,7 +72,7 @@ Entity detection, 65 entity types
 
 Speech recognition fine-tuned for clinical audio
 
-18% fewer transcription errors on clinical audio than Scribe v2
+35% fewer transcription errors on clinical audio than Scribe v2
 
 Same accuracy on everyday speech as Scribe v2
 
@@ -473,17 +475,23 @@ $$
 
 For example, a 15 minute audio file will be transcribed with a concurrency of 2, while a 120 minute audio file will be transcribed with a concurrency of 4.
 
-The above calculation is only applicable to Scribe v2 and Scribe v2 Medical. For Scribe v2
-Realtime, see the [concurrency limit chart](/docs/overview/models#concurrency-and-priority).
+> **Info**
+>
+> The above calculation is only applicable to Scribe v2 and Scribe v2 Medical. For Scribe v2
+> Realtime, see the [concurrency limit chart](/docs/overview/models#concurrency-and-priority).
 
 ## Advanced features
 
-Keyterm prompting and entity detection come at an additional cost. See the [API pricing page](https://elevenlabs.io/pricing?price.section=speech_to_text\&price.sections=speech_to_text,speech_to_text#pricing-table)
-for detailed pricing information.
+> **Warning**
+>
+> Keyterm prompting and entity detection come at an additional cost. See the [API pricing page](https://elevenlabs.io/pricing?price.section=speech_to_text\&price.sections=speech_to_text,speech_to_text#pricing-table)
+> for detailed pricing information.
 
 ### Keyterm prompting
 
-Keyterm prompting is available with Scribe v2, Scribe v2 Medical (batch), and Scribe v2 Realtime.
+> **Info**
+>
+> Keyterm prompting is available with Scribe v2, Scribe v2 Medical (batch), and Scribe v2 Realtime.
 
 Highlight words or phrases to bias the model towards transcribing them. This is useful for transcribing specific words or sentences that are not common in the audio, such as product names, names, or other specific terms. Keyterms are more powerful than biased keywords or customer vocabularies offered by other models, because it relies on the context to decide whether to transcribe that term or not. Batch supports up to 1000 keyterms (50 characters each), while realtime supports up to 50 keyterms (20 characters each).
 
@@ -491,13 +499,17 @@ To learn more about how to use keyterm prompting, see the [keyterm prompting doc
 
 ### No verbatim mode
 
-No verbatim mode is available with Scribe v2, Scribe v2 Medical (batch), and Scribe v2 Realtime.
+> **Info**
+>
+> No verbatim mode is available with Scribe v2, Scribe v2 Medical (batch), and Scribe v2 Realtime.
 
 When `no_verbatim` is enabled, the model removes filler words, false starts and disfluencies from the transcript. This produces a cleaner output suitable for subtitles, summaries, or any use case where readability is more important than capturing every spoken word.
 
 ### Entity detection
 
-Entity detection is available with all batch models and Scribe v2 Realtime.
+> **Info**
+>
+> Entity detection is available with all batch models and Scribe v2 Realtime.
 
 Batch models and Scribe v2 Realtime can detect several categories of entities in the transcript, providing their exact timestamps. This is useful to highlight credit card numbers, names, medical conditions or SSNs.
 

@@ -31,7 +31,7 @@ Reference: https://elevenlabs.io/docs/api-reference/integrations/whats-app/accou
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects an UpdateWhatsAppAccountRequest.
 
 - `assigned_agent_id` (string, optional, nullable)
 - `enable_messaging` (boolean, optional, nullable)
@@ -52,10 +52,17 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

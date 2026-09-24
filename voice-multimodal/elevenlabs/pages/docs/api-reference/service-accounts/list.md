@@ -28,59 +28,7 @@ Reference: https://elevenlabs.io/docs/api-reference/service-accounts/list
 
 Successful Response
 
-- `service-accounts` (list of object, required)
-  - `service_account_user_id` (string, required)
-  - `name` (string, required)
-  - `api-keys` (list of object, required)
-    - `name` (string, required)
-    - `hint` (string, required)
-    - `key_id` (string, required)
-    - `service_account_user_id` (string, required)
-    - `hashed_xi_api_key` (string, required)
-    - `created_at_unix` (integer, optional, nullable)
-    - `is_disabled` (boolean, optional, default: false)
-    - `permissions` (list of enum, optional, nullable)
-      - Allowed values: `text_to_speech`, `speech_to_speech`, `speech_to_text`, `models_read`, `models_write`, `voices_read`, `voices_write`, `speech_history_read`, `speech_history_write`, `sound_generation`, `audio_isolation`, `voice_generation`, `dubbing_read`, `dubbing_write`, `pronunciation_dictionaries_read`, `pronunciation_dictionaries_write`, `user_read`, `user_write`, `projects_read`, `projects_write`, `audio_native_read`, `audio_native_write`, `workspace_read`, `workspace_write`, `forced_alignment`, `convai_read`, `convai_write`, `music_generation`, `image_video_generation`, `flows`, `templates`, `add_voice_from_voice_library`, `create_instant_voice_clone`, `create_professional_voice_clone`, `publish_voice_to_voice_library`, `share_voice_externally`, `create_user_api_key`, `workspace_analytics_full_read`, `webhooks_write`, `service_account_write`, `group_members_manage`, `workspace_members_read`, `workspace_members_invite`, `workspace_members_remove`, `terms_of_service_accept`, `audit_log_read`, `conversation_privacy_manage`, `copy_resources_cross_workspace`, `synthid_detector`
-    - `disable_reason` (enum, optional, nullable)
-      - Allowed values: `trial_ended`, `subscription_downgrade`, `exposed_publicly`, `self_disabled`
-    - `character_limit` (integer, optional, nullable) — Maximum number of credits allowed in the current billing period.
-    - `character_count` (integer, optional, nullable) — Credits already used in the current billing period.
-    - `allowed_ips` (list of string, optional, nullable)
-    - `third_party_disable_allowed` (boolean, optional, nullable)
-    - `platform_limits` (object, optional, nullable) — Per-API-key concurrency limits (TTS/dubbing/music). Enterprise-only.
-      - `credits` (object, optional) — Credit usage limit (limit=None means unlimited)
-        - `limit` (integer, optional, nullable)
-        - `usage` (integer, optional, default: 0) — Current usage
-      - `pvc` (object, optional) — Professional Voice Clone count limit (limit=None means unlimited)
-        - `limit` (integer, optional, nullable)
-      - `concurrency` (object, optional) — TTS concurrency limit (limit=None means unlimited)
-        - `limit` (integer, optional, nullable)
-      - `dubbing_concurrency` (object, optional) — Dubbing concurrency limit (limit=None means unlimited)
-        - `limit` (integer, optional, nullable)
-      - `music_concurrency` (object, optional) — Music generation concurrency limit (limit=None means unlimited)
-        - `limit` (integer, optional, nullable)
-  - `created_at_unix` (integer, optional, nullable)
-  - `default_sharing_groups` (list of object, optional, default: [])
-    - `group` (object, required) — The group to share with by default
-      - `name` (string, required)
-      - `id` (string, required)
-      - `members` (list of string, required)
-      - `permissions` (list of enum, required, nullable)
-        - Allowed values: `text_to_speech`, `speech_to_speech`, `speech_to_text`, `voice_lab`, `sound_effects`, `projects`, `voiceover_studio`, `dubbing`, `audio_native`, `conversational_ai`, `conversational_ai_read`, `voice_isolator`, `ai_speech_classifier`, `synthid_detector`, `add_voice_from_voice_library`, `create_instant_voice_clone`, `create_professional_voice_clone`, `create_user_api_key`, `publish_studio_project`, `music`, `image_video_generation`, `flows`, `templates`, `share_voice_externally`, `publish_voice_to_voice_library`, `view_fiat_balance`, `workspace_analytics_full_read`, `service_accounts_manage`, `webhooks_manage`, `group_members_manage`, `workspace_members_invite`, `workspace_members_remove`, `terms_of_service_accept`, `audit_log_read`, `conversation_privacy_manage`, `copy_resources_cross_workspace`, `voice_design`
-      - `group_usage_limit` (integer or "unlimited", optional, nullable)
-      - `group_pvc_limit` (integer or "unlimited", optional, nullable)
-      - `character_count` (integer, optional, nullable)
-      - `is_scim_synced` (boolean, optional, default: false)
-      - `scim_group` (object, optional, nullable)
-        - `scim_external_id` (string, required, nullable)
-        - `display_name` (string, required)
-        - `created_at_unix` (integer, optional, nullable)
-        - `updated_at_unix` (integer, optional, nullable)
-        - `seat_type` (enum, optional, nullable) — Seat types for workspace members.
-          - Allowed values: `workspace_admin`, `workspace_member`, `workspace_lite_member`
-      - `scim_frozen` (boolean, optional, default: false)
-    - `permission_level` (enum, required) — The permission level to grant to the group
-      - Allowed values: `admin`, `editor`, `viewer`
+- `service-accounts` (list of WorkspaceServiceAccountResponseModel, required)
 
 ## Errors
 
@@ -88,10 +36,100 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### WorkspaceServiceAccountResponseModel
+
+- `service_account_user_id` (string, required)
+- `name` (string, required)
+- `api-keys` (list of WorkspaceApiKeyResponseModel, required)
+- `created_at_unix` (integer, optional, nullable)
+- `default_sharing_groups` (list of DefaultSharingGroupResponseModel, optional, default: [])
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### WorkspaceApiKeyResponseModel
+
+- `name` (string, required)
+- `hint` (string, required)
+- `key_id` (string, required)
+- `service_account_user_id` (string, required)
+- `hashed_xi_api_key` (string, required)
+- `created_at_unix` (integer, optional, nullable)
+- `is_disabled` (boolean, optional, default: false)
+- `permissions` (list of enum, optional, nullable)
+  - Allowed values: `text_to_speech`, `speech_to_speech`, `speech_to_text`, `models_read`, `models_write`, `voices_read`, `voices_write`, `speech_history_read`, `speech_history_write`, `sound_generation`, `audio_isolation`, `voice_generation`, `dubbing_read`, `dubbing_write`, `pronunciation_dictionaries_read`, `pronunciation_dictionaries_write`, `user_read`, `user_write`, `projects_read`, `projects_write`, `audio_native_read`, `audio_native_write`, `workspace_read`, `workspace_write`, `forced_alignment`, `convai_read`, `convai_write`, `music_generation`, `image_video_generation`, `flows`, `templates`, `add_voice_from_voice_library`, `create_instant_voice_clone`, `create_professional_voice_clone`, `publish_voice_to_voice_library`, `share_voice_externally`, `create_user_api_key`, `workspace_analytics_full_read`, `webhooks_write`, `service_account_write`, `group_members_manage`, `workspace_members_read`, `workspace_members_invite`, `workspace_members_remove`, `terms_of_service_accept`, `audit_log_read`, `conversation_privacy_manage`, `copy_resources_cross_workspace`, `synthid_detector`
+- `disable_reason` (enum, optional, nullable)
+  - Allowed values: `trial_ended`, `subscription_downgrade`, `exposed_publicly`, `self_disabled`
+- `character_limit` (integer, optional, nullable) — Maximum number of credits allowed in the current billing period.
+- `character_count` (integer, optional, nullable) — Credits already used in the current billing period.
+- `allowed_ips` (list of string, optional, nullable)
+- `third_party_disable_allowed` (boolean, optional, nullable)
+- `platform_limits` (PlatformLimits, optional, nullable) — Per-API-key concurrency limits (TTS/dubbing/music). Enterprise-only.
+
+### DefaultSharingGroupResponseModel
+
+- `group` (WorkspaceGroupResponseModel, required) — The group to share with by default
+- `permission_level` (enum, required) — The permission level to grant to the group
+  - Allowed values: `admin`, `editor`, `viewer`
+
+### ValidationErrorLocItems
+
+### PlatformLimits
+
+Unified container for all platform limits. Can be used by: - Billing groups (WorkspaceGroupDBModel.platform_limits) - Child workspaces (SubscriptionDBModel.platform_limits) - API keys (XiApiKeyMetadataDBModel.platform_limits) All fields are required when platform_limits exists. Use limit=None for unlimited.
+
+- `credits` (StoredUsagePlatformLimit, optional) — Credit usage limit (limit=None means unlimited)
+- `pvc` (ComputedUsagePlatformLimit, optional) — Professional Voice Clone count limit (limit=None means unlimited)
+- `concurrency` (ComputedUsagePlatformLimit, optional) — TTS concurrency limit (limit=None means unlimited)
+- `dubbing_concurrency` (ComputedUsagePlatformLimit, optional) — Dubbing concurrency limit (limit=None means unlimited)
+- `music_concurrency` (ComputedUsagePlatformLimit, optional) — Music generation concurrency limit (limit=None means unlimited)
+
+### WorkspaceGroupResponseModel
+
+- `name` (string, required)
+- `id` (string, required)
+- `members` (list of string, required)
+- `permissions` (list of enum, required, nullable)
+  - Allowed values: `text_to_speech`, `speech_to_speech`, `speech_to_text`, `voice_lab`, `sound_effects`, `projects`, `voiceover_studio`, `dubbing`, `audio_native`, `conversational_ai`, `conversational_ai_read`, `voice_isolator`, `ai_speech_classifier`, `synthid_detector`, `add_voice_from_voice_library`, `create_instant_voice_clone`, `create_professional_voice_clone`, `create_user_api_key`, `publish_studio_project`, `music`, `image_video_generation`, `flows`, `templates`, `share_voice_externally`, `publish_voice_to_voice_library`, `view_fiat_balance`, `workspace_analytics_full_read`, `service_accounts_manage`, `webhooks_manage`, `group_members_manage`, `workspace_members_invite`, `workspace_members_remove`, `terms_of_service_accept`, `audit_log_read`, `conversation_privacy_manage`, `copy_resources_cross_workspace`, `voice_design`
+- `group_usage_limit` (WorkspaceGroupResponseModelGroupUsageLimit, optional, nullable)
+- `group_pvc_limit` (WorkspaceGroupResponseModelGroupPvcLimit, optional, nullable)
+- `character_count` (integer, optional, nullable)
+- `is_scim_synced` (boolean, optional, default: false)
+- `scim_group` (ScimGroupResponseModel, optional, nullable)
+- `scim_frozen` (boolean, optional, default: false)
+
+### StoredUsagePlatformLimit
+
+Platform limit with usage stored in Firestore. Example: credit usage tracked in Firestore.
+
+- `limit` (integer, optional, nullable)
+- `usage` (integer, optional, default: 0) — Current usage
+
+### ComputedUsagePlatformLimit
+
+Platform limit with usage computed externally. Example: PVCs use the count_owned_pro_voices_in_billing_group function to compute the usage.
+
+- `limit` (integer, optional, nullable)
+
+### WorkspaceGroupResponseModelGroupUsageLimit
+
+### WorkspaceGroupResponseModelGroupPvcLimit
+
+### ScimGroupResponseModel
+
+- `scim_external_id` (string, required, nullable)
+- `display_name` (string, required)
+- `created_at_unix` (integer, optional, nullable)
+- `updated_at_unix` (integer, optional, nullable)
+- `seat_type` (enum, optional, nullable) — Seat types for workspace members.
+  - Allowed values: `workspace_admin`, `workspace_member`, `workspace_lite_member`
 
 ## Examples
 

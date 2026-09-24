@@ -18,7 +18,9 @@ Flux tackles the most critical challenges for voice agents today: knowing when t
 
 **Flux is Perfect for:** turn-based voice agents, customer service bots, phone assistants, and real-time conversation tools.
 
-**Multilingual support:** Flux Multilingual (`flux-general-multi`) extends Flux to 10 languages with optional `language_hint` biasing. See the [Language Prompting guide](/docs/flux/language-prompting) for details.
+> **Info**
+>
+> **Multilingual support:** Flux Multilingual (`flux-general-multi`) extends Flux to 10 languages with optional `language_hint` biasing. See the [Language Prompting guide](/docs/flux/language-prompting) for details.
 
 **Key Benefits:**
 
@@ -30,11 +32,15 @@ Flux tackles the most critical challenges for voice agents today: knowing when t
 * **Word-level timestamps** — Start and end times for each recognized word
 * **Nova-3 accuracy** — Best-in-class transcription quality
 
-For more information on how Flux manages turns, see the [Flux State Machine Guide](/docs/flux/state) guide.
+> **Info**
+>
+> For more information on how Flux manages turns, see the [Flux State Machine Guide](/docs/flux/state) guide.
 
 ## Important: Flux Connection Requirements
 
-**Flux requires the `/v2/listen` endpoint** — Using `/v1/listen` will not work with Flux.
+> **Warning**
+>
+> **Flux requires the `/v2/listen` endpoint** — Using `/v1/listen` will not work with Flux.
 
 When connecting to Flux, you must use:
 
@@ -83,13 +89,19 @@ Flux provides three key parameters to control end-of-turn detection behavior and
 * **You need more reliable turn detection**: Increase `eot_threshold` to reduce false positives (at the cost of slightly higher latency)
 * **You want more aggressive turn detection**: Lower `eot_threshold` to trigger turns earlier
 
-**Important**: Setting `eager_eot_threshold` enables `EagerEndOfTurn` and `TurnResumed` events. These events allow you to start preparing LLM responses early, reducing end-to-end latency by hundreds of milliseconds. See the [Eager End-of-Turn Optimization Guide](/docs/flux/voice-agent-eager-eot) for implementation strategies.
+> **Info**
+>
+> **Important**: Setting `eager_eot_threshold` enables `EagerEndOfTurn` and `TurnResumed` events. These events allow you to start preparing LLM responses early, reducing end-to-end latency by hundreds of milliseconds. See the [Eager End-of-Turn Optimization Guide](/docs/flux/voice-agent-eager-eot) for implementation strategies.
 
-**Cost Consideration**: Using `EagerEndOfTurn` can increase LLM API calls by 50-70% due to speculative response generation. The `TurnResumed` event signals when to cancel a draft response because the user continued speaking.
+> **Warning**
+>
+> **Cost Consideration**: Using `EagerEndOfTurn` can increase LLM API calls by 50-70% due to speculative response generation. The `TurnResumed` event signals when to cancel a draft response because the user continued speaking.
 
 For comprehensive parameter documentation and tuning guidance, see the [End-of-Turn Configuration](/docs/flux/configuration).
 
-**Dynamic Configuration**: You can update these parameters mid-stream using the [Configure control message](/docs/flux/configure) without disconnecting and reconnecting. This is useful for adapting to changing conversation context or user behavior.
+> **Info**
+>
+> **Dynamic Configuration**: You can update these parameters mid-stream using the [Configure control message](/docs/flux/configure) without disconnecting and reconnecting. This is useful for adapting to changing conversation context or user behavior.
 
 ## Using Flux: SDK vs Direct WebSocket
 
@@ -314,7 +326,9 @@ touch .env
 DEEPGRAM_API_KEY="your_deepgram_api_key"
 ```
 
-Replace `your_deepgram_api_key` with your actual Deepgram API key.
+> **Info**
+>
+> Replace `your_deepgram_api_key` with your actual Deepgram API key.
 
 ### 4. Set Imports and Set Audio Stream Colors
 

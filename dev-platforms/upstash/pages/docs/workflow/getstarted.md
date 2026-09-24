@@ -5,6 +5,9 @@ path: docs/workflow/getstarted
 ---
 
 import { Catalog } from "/snippets/catalog.jsx";
+import { AgentSetup } from "/snippets/agent-setup.jsx";
+
+<AgentSetup product="Workflow" />
 
 Upstash Workflow lets you write **durable, reliable and performant serverless functions**. Get delivery guarantees, automatic retries on failure, scheduling and more without managing any infrastructure.
 

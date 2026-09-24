@@ -39,24 +39,9 @@ Reference: https://elevenlabs.io/docs/api-reference/tools/get-dependent-agents
 
 Successful Response
 
-- `agents` (list of object, required)
-  - `type`: `available` (DependentAvailableAgentIdentifier)
-    - `access_level` (enum, required)
-      - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-    - `created_at_unix_secs` (integer, required)
-    - `id` (string, required)
-    - `name` (string, required)
-    - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
-  - `type`: `unknown` (DependentUnknownAgentIdentifier)
-    - `id` (string, required)
-    - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
+- `agents` (list of GetToolDependentAgentsResponseModelAgentsItems, required)
 - `has_more` (boolean, required)
-- `branches` (list of object, optional)
-  - `agent_id` (string, required)
-  - `agent_name` (string, required)
-  - `branch_id` (string, required)
-  - `branch_name` (string, required)
-  - `is_main` (boolean, required)
+- `branches` (list of DependentBranchInfo, optional)
 - `next_cursor` (string, optional, nullable)
 
 ## Errors
@@ -65,10 +50,38 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### GetToolDependentAgentsResponseModelAgentsItems
+
+- `type`: `available` (DependentAvailableAgentIdentifier)
+  - `access_level` (enum, required)
+    - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+  - `created_at_unix_secs` (integer, required)
+  - `id` (string, required)
+  - `name` (string, required)
+  - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
+- `type`: `unknown` (DependentUnknownAgentIdentifier)
+  - `id` (string, required)
+  - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
+
+### DependentBranchInfo
+
+- `agent_id` (string, required)
+- `agent_name` (string, required)
+- `branch_id` (string, required)
+- `branch_name` (string, required)
+- `is_main` (boolean, required)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

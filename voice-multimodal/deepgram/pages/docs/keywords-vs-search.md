@@ -12,9 +12,11 @@ path: docs/keywords-vs-search
 
 When using Deepgram's API, you have access to our Keywords and Search features, which are named similarly, but work in very different ways.
 
-If you are using one of our [Nova-3 Models](/docs/model#nova-3), you should use [keyterm prompting](/docs/keyterm) instead of keywords.
-
-The syntax differs: `keyterm` takes plain terms with no intensifier or weight syntax, unlike `keywords`, which uses the `KEYWORD:INTENSIFIER` pattern. When migrating, drop the `:INTENSIFIER` weight. Appending one (for example, `keyterm=term:0.15`) is not rejected—the weight is silently ignored and the entire value is treated as a literal keyterm.
+> **Info**
+>
+> If you are using one of our [Nova-3 Models](/docs/model#nova-3), you should use [keyterm prompting](/docs/keyterm) instead of keywords.
+>
+> The syntax differs: `keyterm` takes plain terms with no intensifier or weight syntax, unlike `keywords`, which uses the `KEYWORD:INTENSIFIER` pattern. When migrating, drop the `:INTENSIFIER` weight. Appending one (for example, `keyterm=term:0.15`) is not rejected—the weight is silently ignored and the entire value is treated as a literal keyterm.
 
 ## Comparing Keywords and Search
 

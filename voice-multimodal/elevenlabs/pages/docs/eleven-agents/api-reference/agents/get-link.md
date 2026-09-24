@@ -35,14 +35,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/get-lin
 Successful Response
 
 - `agent_id` (string, required) — The ID of the agent
-- `token` (object, optional) — The token data for the agent
-  - `agent_id` (string, required) — The ID of the agent
-  - `conversation_token` (string, required) — The token for the agent
-  - `purpose` (enum, required) — The purpose of the token
-    - Allowed values: `signed_url`, `shareable_link`
-  - `expiration_time_unix_secs` (integer, optional) — The expiration time of the token in unix seconds
-  - `conversation_id` (string, optional) — The ID of the conversation
-  - `token_requester_user_id` (string, optional) — The user ID of the entity who requested the token
+- `token` (ConversationTokenResponseModel, optional) — The token data for the agent
 
 ## Errors
 
@@ -50,10 +43,27 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ConversationTokenResponseModel
+
+- `agent_id` (string, required) — The ID of the agent
+- `conversation_token` (string, required) — The token for the agent
+- `purpose` (enum, required) — The purpose of the token
+  - Allowed values: `signed_url`, `shareable_link`
+- `expiration_time_unix_secs` (integer, optional) — The expiration time of the token in unix seconds
+- `conversation_id` (string, optional) — The ID of the conversation
+- `token_requester_user_id` (string, optional) — The user ID of the entity who requested the token
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItem, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItem
 
 ## Examples
 

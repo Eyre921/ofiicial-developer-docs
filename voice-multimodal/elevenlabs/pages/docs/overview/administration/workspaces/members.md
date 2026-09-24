@@ -17,9 +17,11 @@ There are two seat types available in ElevenLabs workspaces:
 
 Workspace admins can assign, change, and manage seat types at any time from Settings → [Members](https://elevenlabs.io/app/workspace/members).
 
-Admin is a role within your workspace, which gives enhanced permissions such as adding and
-removing members, setting permissions, and managing the workspace subscription. Admins always
-occupy a Full Seat.
+> **Note**
+>
+> Admin is a role within your workspace, which gives enhanced permissions such as adding and
+> removing members, setting permissions, and managing the workspace subscription. Admins always
+> occupy a Full Seat.
 
 ## Seat types & included allocations by plan
 
@@ -44,13 +46,17 @@ The number of Full Seats and Basic Seats included depends on your subscription:
 | Business (Legacy) | 5                   | 20                     |
 | Enterprise        | 11 (negotiable)     | 1,000 (see note below) |
 
-Pro, Scale, and Business workspaces can purchase additional Full Seats up to a maximum of 11 Full
-Seats per workspace, including seats included with your plan. If you need more than 11 Full Seats,
-[contact sales](https://elevenlabs.io/contact-sales). Enterprise Full Seat counts are defined in
-your contract and are not limited by this cap.
+> **Info**
+>
+> Pro, Scale, and Business workspaces can purchase additional Full Seats up to a maximum of 11 Full
+> Seats per workspace, including seats included with your plan. If you need more than 11 Full Seats,
+> [contact sales](https://elevenlabs.io/contact-sales). Enterprise Full Seat counts are defined in
+> your contract and are not limited by this cap.
 
-Enterprise Basic Seat counts are defined in your contract and may vary — the 1,000 figure is a
-soft cap. Enterprise Basic Seats are effectively unlimited within your contract terms.
+> **Info**
+>
+> Enterprise Basic Seat counts are defined in your contract and may vary — the 1,000 figure is a
+> soft cap. Enterprise Basic Seats are effectively unlimited within your contract terms.
 
 ## Full Seats
 
@@ -96,8 +102,10 @@ For example, if your workspace plan includes 100,000 credits, that is the total 
 * If the shared workspace pool is exhausted, Basic Seat users cannot generate content even if they have not reached their individual 50,000 credit ceiling
 * If a Full Seat user downgrades to a Basic Seat, credits used while they were a Full Seat user are counted towards the 50,000 credit ceiling
 
-50,000 credits can be consumed quickly with regular ElevenCreative use. If a team member needs
-more creative access, consider upgrading them to a Full Seat.
+> **Note**
+>
+> 50,000 credits can be consumed quickly with regular ElevenCreative use. If a team member needs
+> more creative access, consider upgrading them to a Full Seat.
 
 ## Additional Full Seats
 
@@ -230,7 +238,7 @@ Workspace admins can assign and manage seat types from Settings → [Members](ht
 
 When inviting new users to your workspace, you can select their seat type during the invite flow.
 
-![Inviting a new member to workspace](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7f526bee02bc0530073df4473b8319f3ed59c3e284b9ca019799c2b2a8c4c70b/assets/images/product-guides/administration/members-invite-new.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113102Z&X-Amz-Expires=604800&X-Amz-Signature=52afc57ab5b773b0c1f7b69de53bde4370b4877542def074471bc86850fb4f7d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Inviting a new member to workspace](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7f526bee02bc0530073df4473b8319f3ed59c3e284b9ca019799c2b2a8c4c70b/assets/images/product-guides/administration/members-invite-new.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113058Z&X-Amz-Expires=604800&X-Amz-Signature=bd3fc63882b6733ed22ca93c74c65905544861ad86e5808ad37b43cfe0cf2792&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Adding more seats
 
@@ -238,8 +246,10 @@ See [Additional Full Seats](#additional-full-seats) for how Pro, Scale, Business
 
 ## Member roles
 
-Member roles are available for **Enterprise** workspaces. Only Workspace admins can assign and
-remove roles.
+> **Info**
+>
+> Member roles are available for **Enterprise** workspaces. Only Workspace admins can assign and
+> remove roles.
 
 In addition to the Admin role, workspace admins can assign **member roles** to any non-admin workspace member. Roles grant specific permissions without requiring full admin access, and multiple roles can be assigned to the same member simultaneously.
 
@@ -255,8 +265,10 @@ Grants the ability to invite and remove workspace members, and manage group memb
 * Remove members from the workspace
 * Add and remove members from groups
 
-User Manager permissions require the member to be on a **Full Seat**. Assigning this role to a
-Basic Seat member will not grant those permissions. Upgrade the member to a Full Seat first.
+> **Warning**
+>
+> User Manager permissions require the member to be on a **Full Seat**. Assigning this role to a
+> Basic Seat member will not grant those permissions. Upgrade the member to a Full Seat first.
 
 **Resource Manager**
 
@@ -267,8 +279,10 @@ Grants the ability to manage the following workspace resources:
 * Sound effects
 * Dubbing
 
-The Resource Manager role does **not** grant access to manage Agents. Agent access is controlled
-separately through workspace permissions.
+> **Note**
+>
+> The Resource Manager role does **not** grant access to manage Agents. Agent access is controlled
+> separately through workspace permissions.
 
 ### Assigning roles
 
@@ -285,8 +299,10 @@ their row.
 
 Select **User Manager**, **Resource Manager**, or both, then click **Save Changes**.
 
-Roles cannot be assigned to workspace admins — admins already have all permissions. A workspace
-admin cannot modify their own roles.
+> **Note**
+>
+> Roles cannot be assigned to workspace admins — admins already have all permissions. A workspace
+> admin cannot modify their own roles.
 
 ## FAQ
 

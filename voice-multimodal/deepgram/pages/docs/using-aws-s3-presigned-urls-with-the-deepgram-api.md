@@ -22,9 +22,13 @@ A presigned URL is a time-limited URL that provides temporary access to an objec
 
 ## Before you Begin
 
-Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
+> **Info**
+>
+> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
 
-Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
+> **Info**
+>
+> Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
 
 ### Create an AWS Account, an S3 Bucket, and Upload an Audio File
 
@@ -38,7 +42,9 @@ Next, upload an audio file to your bucket. We recommend creating two folders, on
 
 #### Enable Programmatic Access to AWS
 
-If you already have AWS credentials in your `~/.aws/credentials` file, you can skip this step.
+> **Info**
+>
+> If you already have AWS credentials in your `~/.aws/credentials` file, you can skip this step.
 
 You will need to enable programmatic access to AWS to use the AWS SDKs. After logging into the AWS Console, follow the steps below:
 
@@ -70,7 +76,7 @@ To install `boto3`, run `pip install boto3`.
 
 Once you have an audio file uploaded to one of your S3 buckets, you can generate a presigned URL very easily from the AWS S3 website: Click on your audio file, then going to “Object actions” in the top-right corner, and click “Share with a presigned URL”.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/6632c1f9c4d2fbc48535b1b87dfe5ee661212c8096dee9205ad4b51f7b605152/images/855c249-create-presigned-url-ui.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113102Z&X-Amz-Expires=604800&X-Amz-Signature=2ff5d4fe21c982bf212a213052e7750ad0589ebbc0160ec0720d548a60f069a8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/6632c1f9c4d2fbc48535b1b87dfe5ee661212c8096dee9205ad4b51f7b605152/images/855c249-create-presigned-url-ui.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113129Z&X-Amz-Expires=604800&X-Amz-Signature=3b8b7dc5e02118357d8211665a3b7f6ba23e2b4a260fd73fa6a63eef072175bc&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 The presigned URL will be copied to your clipboard, and if you paste it into your browser’s URL bar the file will be downloaded to your computer. If you carefully inspect the URL, you will notice query parameters such as `Amz-Security-Token` and `X-Amz-Expires`. These query parameters contain the credentials for secure access to your files.
 
@@ -126,7 +132,9 @@ String getUrl = presigner.presignGetObject(GetObjectPresignRequest.builder()
     .url().toString();
 ```
 
-You can download the NASA audio file [here](https://dpgr.am/spacewalk.wav).
+> **Info**
+>
+> You can download the NASA audio file [here](https://dpgr.am/spacewalk.wav).
 
 Nice work! Now you can include the `get_url` in your Deepgram API call to send the audio to Deepgram. Since the presigned URL contains the relevant security credentials, your data is safe from prying eyes.
 
@@ -222,7 +230,9 @@ public void transcribeAudio(String getUrl, String putUrl) {
 }
 ```
 
-Presigned URLs that upload files to S3 can use either the `PUT` or `POST` HTTP method. It is critical that the `PUT` HTTP method is used when communicating with Deepgram. Presigned `POST` URLs move the credential information from the URL's query parameters into the request body, and since a `callback`'s request body cannot be set via the Deepgram API the `PUT` method is required.
+> **Warning**
+>
+> Presigned URLs that upload files to S3 can use either the `PUT` or `POST` HTTP method. It is critical that the `PUT` HTTP method is used when communicating with Deepgram. Presigned `POST` URLs move the credential information from the URL's query parameters into the request body, and since a `callback`'s request body cannot be set via the Deepgram API the `PUT` method is required.
 
 ## Putting It All Together
 
@@ -494,7 +504,7 @@ If you are receiving `AccessDenied` messages such as the one below, it's likely 
 </Error>
 ```
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/be123ff2fc9316134ec567bfc0b49112842613f844dd6c21d04f43ce6774da96/images/9f93eca-presigned-url-error-message-1.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113102Z&X-Amz-Expires=604800&X-Amz-Signature=5376a1e938ca1426ba39552cf696d033ddaf95d6742384c9f4c3d19e9a38d2f8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/be123ff2fc9316134ec567bfc0b49112842613f844dd6c21d04f43ce6774da96/images/9f93eca-presigned-url-error-message-1.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113129Z&X-Amz-Expires=604800&X-Amz-Signature=17c89c70a1b955bafbba8f0995d9de25c5fbf985a98cf37c5a05f2451f828674&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ---
 

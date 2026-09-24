@@ -12,10 +12,10 @@ path: docs/eleven-agents/customization/voice
 
 You can customize various aspects of your AI agent's voice to create a more natural and engaging conversation experience. This includes controlling pronunciation, speaking speed, and language-specific voice settings.
 
-#### Manage agents from your AI assistant
-
-You can also make these changes conversationally. The [hosted MCP server](/docs/eleven-agents/operate/hosted-mcp) lets Claude and other MCP clients create,
-configure, and manage your agents through natural language.
+> **Manage agents from your AI assistant**
+>
+> You can also make these changes conversationally. The [hosted MCP server](/docs/eleven-agents/operate/hosted-mcp) lets Claude and other MCP clients create,
+> configure, and manage your agents through natural language.
 
 ## Available customizations
 
@@ -49,7 +49,9 @@ Configure different voices for each supported language to ensure natural pronunc
 
 ## Best practices
 
-Voices with live moderation enabled cannot be used in ElevenAgents.
+> **Warning**
+>
+> Voices with live moderation enabled cannot be used in ElevenAgents.
 
 #### Voice selection
 
@@ -67,5 +69,7 @@ Focus on terms specific to your business or use case that need consistent pronun
 not widely used in everyday conversation. Test pronunciations with your chosen voice and model
 combination.
 
-Some voice customization features may be model-dependent. For example, phoneme-based pronunciation
-control is only available with the Flash v2 model.
+> **Note**
+>
+> Some voice customization features may be model-dependent. For example, phoneme-based pronunciation
+> control is only available with the Flash v2 model.

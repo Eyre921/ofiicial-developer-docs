@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 455 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 462 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -88,6 +88,7 @@
 - `docs/api/api-reference/interns/get-an-intern` — [Get an intern](pages/docs/api/api-reference/interns/get-an-intern.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/get-an-intern.md)
 - `docs/api/api-reference/interns/list-interns` — [List interns](pages/docs/api/api-reference/interns/list-interns.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/list-interns.md)
 - `docs/api/api-reference/interns/provision-an-intern` — [Provision an intern](pages/docs/api/api-reference/interns/provision-an-intern.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/provision-an-intern.md)
+- `docs/api/api-reference/interns/start-an-intern-run-without-waiting-for-it` — [Start an intern run without waiting for it](pages/docs/api/api-reference/interns/start-an-intern-run-without-waiting-for-it.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/start-an-intern-run-without-waiting-for-it.md)
 - `docs/api/api-reference/interns/stream-a-chat-completion-with-an-intern` — [Stream a chat completion with an intern](pages/docs/api/api-reference/interns/stream-a-chat-completion-with-an-intern.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/stream-a-chat-completion-with-an-intern.md)
 - `docs/api/api-reference/interns/suspend-an-intern` — [Suspend an intern](pages/docs/api/api-reference/interns/suspend-an-intern.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/suspend-an-intern.md)
 - `docs/api/api-reference/interns/update-an-intern` — [Update an intern](pages/docs/api/api-reference/interns/update-an-intern.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/update-an-intern.md)
@@ -288,6 +289,7 @@
 - `docs/cookbook/building-agents/hitl-tools` — [Add Human-in-the-Loop Controls to an Agent SDK Agent](pages/docs/cookbook/building-agents/hitl-tools.md) · [原文](https://openrouter.ai/docs/cookbook/building-agents/hitl-tools.md)
 - `docs/cookbook/building-agents/long-horizon-agents` — [Build a Long-Horizon Agent](pages/docs/cookbook/building-agents/long-horizon-agents.md) · [原文](https://openrouter.ai/docs/cookbook/building-agents/long-horizon-agents.md)
 - `docs/cookbook/building-agents/subagent-server-tool` — [Delegate Routine Work to Cheaper Models](pages/docs/cookbook/building-agents/subagent-server-tool.md) · [原文](https://openrouter.ai/docs/cookbook/building-agents/subagent-server-tool.md)
+- `docs/cookbook/coding-agents/auto-approve-permission-prompts-with-jev` — [Auto-Approve Coding Agent Permission Prompts with Jev](pages/docs/cookbook/coding-agents/auto-approve-permission-prompts-with-jev.md) · [原文](https://openrouter.ai/docs/cookbook/coding-agents/auto-approve-permission-prompts-with-jev.md)
 - `docs/cookbook/coding-agents/automatic-code-review` — [Automatic Code Review](pages/docs/cookbook/coding-agents/automatic-code-review.md) · [原文](https://openrouter.ai/docs/cookbook/coding-agents/automatic-code-review.md)
 - `docs/cookbook/coding-agents/claude-code-integration` — [Claude Code](pages/docs/cookbook/coding-agents/claude-code-integration.md) · [原文](https://openrouter.ai/docs/cookbook/coding-agents/claude-code-integration.md)
 - `docs/cookbook/coding-agents/claude-desktop-integration` — [Claude Desktop](pages/docs/cookbook/coding-agents/claude-desktop-integration.md) · [原文](https://openrouter.ai/docs/cookbook/coding-agents/claude-desktop-integration.md)
@@ -299,15 +301,18 @@
 - `docs/cookbook/coding-agents/mcp-servers` — [Using MCP Servers with OpenRouter](pages/docs/cookbook/coding-agents/mcp-servers.md) · [原文](https://openrouter.ai/docs/cookbook/coding-agents/mcp-servers.md)
 - `docs/cookbook/coding-agents/openclaw-integration` — [OpenClaw 🦞](pages/docs/cookbook/coding-agents/openclaw-integration.md) · [原文](https://openrouter.ai/docs/cookbook/coding-agents/openclaw-integration.md)
 - `docs/cookbook/coding-agents/opencode-integration` — [OpenCode](pages/docs/cookbook/coding-agents/opencode-integration.md) · [原文](https://openrouter.ai/docs/cookbook/coding-agents/opencode-integration.md)
+- `docs/cookbook/evaluate-and-optimize/classify-reddit-comments-with-jev` — [Classify Reddit and YouTube Comments with Jev and ScrapeCreators](pages/docs/cookbook/evaluate-and-optimize/classify-reddit-comments-with-jev.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/classify-reddit-comments-with-jev.md)
 - `docs/cookbook/evaluate-and-optimize/distillation` — [Distillation](pages/docs/cookbook/evaluate-and-optimize/distillation.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/distillation.md)
+- `docs/cookbook/evaluate-and-optimize/jev-classification` — [Classify and Tag Text at Scale with Jev](pages/docs/cookbook/evaluate-and-optimize/jev-classification.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/jev-classification.md)
 - `docs/cookbook/evaluate-and-optimize/jev-verified-cascade` — [Cut LLM Cost with a Jev-Verified Cascade](pages/docs/cookbook/evaluate-and-optimize/jev-verified-cascade.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/jev-verified-cascade.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-6` — [Claude 4.6 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-6.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-6.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-7` — [Claude 4.7 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-7.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-7.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/fable-5-1` — [Claude Fable 5.1 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/fable-5-1.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/fable-5-1.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-4` — [GPT-5.4 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-4.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-4.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-6` — [GPT-5.6 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-6.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-6.md)
-- `docs/cookbook/evaluate-and-optimize/model-migrations/gpt-6-astra` — [GPT-6 Astra Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-6-astra.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-6-astra.md)
+- `docs/cookbook/evaluate-and-optimize/model-migrations/gpt-6` — [GPT-6 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-6.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-6.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/opus-5` — [Claude Opus 5 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/opus-5.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/opus-5.md)
+- `docs/cookbook/evaluate-and-optimize/model-migrations/opus-5-5` — [Claude Opus 5.5 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/opus-5-5.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/opus-5-5.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/sonnet-5` — [Claude 5 Sonnet Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/sonnet-5.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/sonnet-5.md)
 - `docs/cookbook/evaluate-and-optimize/rag` — [RAG with Embeddings & Rerank](pages/docs/cookbook/evaluate-and-optimize/rag.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/rag.md)
 - `docs/cookbook/evaluate-and-optimize/red-teaming` — [Red Teaming](pages/docs/cookbook/evaluate-and-optimize/red-teaming.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/red-teaming.md)
@@ -335,6 +340,8 @@
 - `docs/guides/community/for-providers` — [Provider Integration](pages/docs/guides/community/for-providers.md) · [原文](https://openrouter.ai/docs/guides/community/for-providers.md)
 - `docs/guides/community/frameworks-and-integrations-overview` — [Frameworks and Integrations Overview](pages/docs/guides/community/frameworks-and-integrations-overview.md) · [原文](https://openrouter.ai/docs/guides/community/frameworks-and-integrations-overview.md)
 - `docs/guides/community/infisical` — [Infisical](pages/docs/guides/community/infisical.md) · [原文](https://openrouter.ai/docs/guides/community/infisical.md)
+- `docs/guides/community/jev` — [Jev Documentation: Using the TypeSafe Decision Model on OpenRouter](pages/docs/guides/community/jev.md) · [原文](https://openrouter.ai/docs/guides/community/jev.md)
+- `docs/guides/community/jev-tutorial` — [Jev Tutorial: Make Your First Decision Call on OpenRouter](pages/docs/guides/community/jev-tutorial.md) · [原文](https://openrouter.ai/docs/guides/community/jev-tutorial.md)
 - `docs/guides/community/langchain` — [LangChain](pages/docs/guides/community/langchain.md) · [原文](https://openrouter.ai/docs/guides/community/langchain.md)
 - `docs/guides/community/langfuse` — [Langfuse](pages/docs/guides/community/langfuse.md) · [原文](https://openrouter.ai/docs/guides/community/langfuse.md)
 - `docs/guides/community/livekit` — [LiveKit](pages/docs/guides/community/livekit.md) · [原文](https://openrouter.ai/docs/guides/community/livekit.md)
@@ -344,7 +351,7 @@
 - `docs/guides/community/render` — [Render](pages/docs/guides/community/render.md) · [原文](https://openrouter.ai/docs/guides/community/render.md)
 - `docs/guides/community/replit` — [Replit](pages/docs/guides/community/replit.md) · [原文](https://openrouter.ai/docs/guides/community/replit.md)
 - `docs/guides/community/tanstack-ai` — [TanStack AI](pages/docs/guides/community/tanstack-ai.md) · [原文](https://openrouter.ai/docs/guides/community/tanstack-ai.md)
-- `docs/guides/community/typesafe-sdk` — [TypeSafe SDK](pages/docs/guides/community/typesafe-sdk.md) · [原文](https://openrouter.ai/docs/guides/community/typesafe-sdk.md)
+- `docs/guides/community/typesafe-sdk` — [Jev SDK for TypeScript and Python (TypeSafe SDK)](pages/docs/guides/community/typesafe-sdk.md) · [原文](https://openrouter.ai/docs/guides/community/typesafe-sdk.md)
 - `docs/guides/community/vercel-ai-sdk` — [Vercel AI SDK](pages/docs/guides/community/vercel-ai-sdk.md) · [原文](https://openrouter.ai/docs/guides/community/vercel-ai-sdk.md)
 - `docs/guides/community/xcode` — [Xcode](pages/docs/guides/community/xcode.md) · [原文](https://openrouter.ai/docs/guides/community/xcode.md)
 - `docs/guides/community/zapier` — [Zapier](pages/docs/guides/community/zapier.md) · [原文](https://openrouter.ai/docs/guides/community/zapier.md)

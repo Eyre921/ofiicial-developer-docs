@@ -57,7 +57,9 @@ curl \
   --url 'https://api.deepgram.com/v1/listen?intents=true&language=en&custom_intent_mode=strict&custom_intent=Upgrade%20Phone'
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
 
 ### Query Parameters
 

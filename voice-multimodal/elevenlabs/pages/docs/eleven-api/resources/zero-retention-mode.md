@@ -12,9 +12,11 @@ path: docs/eleven-api/resources/zero-retention-mode
 
 By default, ElevenLabs retains data, in accordance with the Privacy Policy, to enhance services, troubleshoot issues, and ensure the security of ElevenLabs'systems. However, for some enterprise customers, ElevenLabs offers a "Zero Retention Mode" option for specific products. In this Zero Retention Mode, most data in requests and responses are immediately deleted once the request is completed.
 
-Zero Retention Mode applies to **API use only**. Traffic through the ElevenLabs web UI or
-playground is not covered by ZRM. For ElevenAgents, you can enable ZRM per agent in the dashboard,
-but that setting applies to the agent's API traffic — UI traffic remains non-ZRM. See [Zero Retention Mode (per-agent)](/docs/eleven-agents/customization/privacy/zrm).
+> **Warning**
+>
+> Zero Retention Mode applies to **API use only**. Traffic through the ElevenLabs web UI or
+> playground is not covered by ZRM. For ElevenAgents, you can enable ZRM per agent in the dashboard,
+> but that setting applies to the agent's API traffic — UI traffic remains non-ZRM. See [Zero Retention Mode (per-agent)](/docs/eleven-agents/customization/privacy/zrm).
 
 ElevenLabs has agreements in place with each third-party LLM provider which expressly prohibit such providers from training their models on customer content, whether or not Zero Retention Mode is enabled.
 
@@ -133,10 +135,12 @@ curl --request POST \
 |                                                                  | Audio Output         | Enabled           | No                          |                                                                               |
 | [Agents Platform](/docs/eleven-agents/customization/privacy/zrm) | All Input and Output | Enabled           | Yes                         | —                                                                             |
 
-For ElevenLabs Agents, Gemini, Claude, and ElevenLabs-hosted Qwen LLMs can be used in Zero
-Retention Mode. Qwen3.5-397b-a17b is available only in US residency workspaces. MCP support is not
-currently available for users on Zero Retention Mode or those requiring HIPAA compliance. See
-[Zero Retention Mode (per-agent)](/docs/eleven-agents/customization/privacy/zrm).
+> **Warning**
+>
+> For ElevenLabs Agents, Gemini, Claude, and ElevenLabs-hosted Qwen LLMs can be used in Zero
+> Retention Mode. Qwen3.5-397b-a17b is available only in US residency workspaces. MCP support is not
+> currently available for users on Zero Retention Mode or those requiring HIPAA compliance. See
+> [Zero Retention Mode (per-agent)](/docs/eleven-agents/customization/privacy/zrm).
 
 ## FAQ
 

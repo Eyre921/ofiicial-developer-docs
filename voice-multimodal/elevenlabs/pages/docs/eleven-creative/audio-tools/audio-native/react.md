@@ -8,8 +8,10 @@ path: docs/eleven-creative/audio-tools/audio-native/react
 
 # Audio Native with React
 
-Follow the steps in the [Audio Native overview](/docs/eleven-creative/audio-tools/audio-native) to
-get started with Audio Native before continuing with this guide.
+> **Info**
+>
+> Follow the steps in the [Audio Native overview](/docs/eleven-creative/audio-tools/audio-native) to
+> get started with Audio Native before continuing with this guide.
 
 This guide will show how to integrate Audio Native into React apps. The focus will be on a Next.js project, but the underlying concepts will work for any React based application.
 

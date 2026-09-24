@@ -22,7 +22,9 @@ This guide walks you through implementing the correct message flow when building
 { "type": "Welcome", "request_id": "uuid" }
 ```
 
-Do not send any messages until you receive the `Welcome` message.
+> **Warning**
+>
+> Do not send any messages until you receive the `Welcome` message.
 
 ## Configure Settings and Wait for Confirmation
 
@@ -58,7 +60,9 @@ Do not send any messages until you receive the `Welcome` message.
 { "type": "SettingsApplied" }
 ```
 
-Do not send audio or inject messages until you receive `SettingsApplied`.
+> **Warning**
+>
+> Do not send audio or inject messages until you receive `SettingsApplied`.
 
 ## Stream Audio and Inject Text
 

@@ -69,7 +69,9 @@ Use a VPC endpoint when you want to:
 * Apply VPC security groups and route tables to control which clients reach the endpoint.
 * Meet compliance requirements that prohibit public internet exposure of inference traffic.
 
-VPC endpoints and FIPS endpoints address different layers: a VPC endpoint controls the network path your traffic takes, and a FIPS endpoint controls the cryptography that protects it. Use both when your compliance program requires both.
+> **Note**
+>
+> VPC endpoints and FIPS endpoints address different layers: a VPC endpoint controls the network path your traffic takes, and a FIPS endpoint controls the cryptography that protects it. Use both when your compliance program requires both.
 
 ## Compliance
 
@@ -84,7 +86,9 @@ Two separate FedRAMP Certifications cover AWS environments:
 | AWS US East-West  | Northern Virginia, Ohio, Oregon, Northern California | Class C (formerly Moderate baseline) |
 | AWS GovCloud (US) | US-East, US-West                                     | Class D (formerly High baseline)     |
 
-Deepgram is not listed on AWS Marketplace in AWS GovCloud (US), so a Marketplace subscription cannot reach the Class D (formerly High baseline) environment. For a GovCloud deployment, contact your [Deepgram representative](https://deepgram.com/contact-us).
+> **Warning**
+>
+> Deepgram is not listed on AWS Marketplace in AWS GovCloud (US), so a Marketplace subscription cannot reach the Class D (formerly High baseline) environment. For a GovCloud deployment, contact your [Deepgram representative](https://deepgram.com/contact-us).
 
 For the services in scope of each certification boundary, see [AWS Services in Scope by Compliance Program](https://aws.amazon.com/compliance/services-in-scope/). For AWS's own answers on regional coverage, package availability, and how to request authorization artifacts, see the [AWS FedRAMP FAQ](https://aws.amazon.com/compliance/fedramp/).
 

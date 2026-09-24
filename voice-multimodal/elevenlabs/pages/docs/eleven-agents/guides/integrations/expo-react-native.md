@@ -8,7 +8,9 @@ path: docs/eleven-agents/guides/integrations/expo-react-native
 
 # Cross-platform Voice Agents with Expo React Native
 
-**Tutorial** · Assumes you have completed the [ElevenAgents quickstart](/docs/eleven-agents/quickstart) and have an Expo development environment set up.
+> **Note**
+>
+> **Tutorial** · Assumes you have completed the [ElevenAgents quickstart](/docs/eleven-agents/quickstart) and have an Expo development environment set up.
 
 ## Introduction
 
@@ -37,8 +39,10 @@ Install the ElevenLabs React Native SDK and its dependencies:
 npx expo install @elevenlabs/react-native @livekit/react-native @livekit/react-native-webrtc @config-plugins/react-native-webrtc @livekit/react-native-expo-plugin @livekit/react-native-expo-plugin livekit-client
 ```
 
-If you're running into an issue with peer dependencies, please add a `.npmrc` file in the root of
-the project with the following content: `legacy-peer-deps=true`.
+> **Note**
+>
+> If you're running into an issue with peer dependencies, please add a `.npmrc` file in the root of
+> the project with the following content: `legacy-peer-deps=true`.
 
 ### Enable microphone permissions and add Expo plugins
 
@@ -83,10 +87,10 @@ In the `app.json` file, add the following permissions:
 
 This will allow the React Native to prompt for microphone permissions when the conversation is started.
 
-#### Note
-
-For Android emulator you will need to enable "Virtual microphone uses host audio input" in the
-emulator microphone settings.
+> **Note**
+>
+> For Android emulator you will need to enable "Virtual microphone uses host audio input" in the
+> emulator microphone settings.
 
 ## Add ElevenLabs Agents to your app
 

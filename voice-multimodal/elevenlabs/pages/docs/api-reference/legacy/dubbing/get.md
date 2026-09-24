@@ -41,9 +41,7 @@ Successful Response
 - `target_languages` (list of string, required) — The ISO-639-1 code of the languages this media has been dubbed into.
 - `created_at` (string, required) — Timestamp this dub was created.
 - `editable` (boolean, optional, default: false) — Whether this dubbing project is editable in Dubbing Studio.
-- `media_metadata` (object, optional, nullable) — Metadata, such as the length in seconds and content type, of the dubbed content.
-  - `content_type` (string, required) — The content type of the media.
-  - `duration` (double, required) — The duration of the media in seconds.
+- `media_metadata` (DubbingMediaMetadata, optional, nullable) — Metadata, such as the length in seconds and content type, of the dubbed content.
 - `error` (string, optional, nullable) — Error message indicate, if this dub has failed, what happened.
 
 ## Errors
@@ -52,10 +50,22 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### DubbingMediaMetadata
+
+- `content_type` (string, required) — The content type of the media.
+- `duration` (double, required) — The duration of the media in seconds.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

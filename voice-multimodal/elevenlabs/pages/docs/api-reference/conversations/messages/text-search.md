@@ -41,9 +41,9 @@ Reference: https://elevenlabs.io/docs/api-reference/conversations/messages/text-
 - `rating_min` (integer, optional, nullable) — Minimum overall rating (1-5).
 - `has_feedback_comment` (boolean, optional, nullable) — Filter conversations with user feedback comments.
 - `user_id` (string, optional, nullable) — Filter conversations by the user ID who initiated them.
-- `evaluation_params` (list of string, optional, nullable) — Evaluation filters. Repeat param. Format: criteria_id:result. Example: eval=value_framing:success
-- `data_collection_params` (list of string, optional, nullable) — Data collection filters. Repeat param. Format: id:op:value where op is one of eq|gt|gte|lt|lte. An empty value matches conversations where the field was not collected.
-- `dynamic_variable_params` (list of string, optional, nullable) — Dynamic variable filters. Repeat param. Format: name:op:value where op is one of eq|gt|gte|lt|lte. Comparison operators require a numeric value. An empty value matches conversations where the variable was not set. Names containing ':' cannot be expressed.
+- `evaluation_params` (list of string, optional, nullable) — Evaluation filters. Repeat param. Format: criteria_id:result where result is one of success|failure|unknown. Example: eval=value_framing:success
+- `data_collection_params` (list of string, optional, nullable) — Data collection filters. Repeat param. Format: id:op:value where op is one of eq|neq|gt|gte|lt|lte|in. For in, pipe-delimit values. An empty value matches conversations where the field was not collected (id:eq:), and neq with an empty value matches where it was (id:neq:). eq is exact equality. gt|gte|lt|lte require a numeric value.
+- `dynamic_variable_params` (list of string, optional, nullable) — Dynamic variable filters. Repeat param. Format: name:op:value where op is one of eq|neq|gt|gte|lt|lte|in. For in, pipe-delimit values. An empty value matches conversations where the variable was not set (name:eq:), and neq with an empty value matches where it was (name:neq:). eq is exact equality. gt|gte|lt|lte require a numeric value. Names containing ':' cannot be expressed.
 - `tool_names` (list of string, optional, nullable) — Filter conversations by tool names used during the call.
 - `tool_names_successful` (list of string, optional, nullable) — Filter conversations by tool names that had successful calls.
 - `tool_names_errored` (list of string, optional, nullable) — Filter conversations by tool names that had errored calls.
@@ -73,22 +73,9 @@ Reference: https://elevenlabs.io/docs/api-reference/conversations/messages/text-
 
 Successful Response
 
-- `results` (list of object, required)
-  - `conversation_id` (string, required)
-  - `agent_id` (string, required)
-  - `transcript_index` (integer, required)
-  - `chunk_text` (string, required)
-  - `score` (double, required)
-  - `conversation_start_time_unix_secs` (integer, required)
-  - `agent_name` (string, optional, nullable)
-  - `chunk_highlights` (list of object, optional, nullable)
-    - `value` (string, required)
-    - `is_hit` (boolean, required)
+- `results` (list of MessagesSearchResult, required)
 - `has_more` (boolean, required) — Whether there are more results available
-- `meta` (object, optional)
-  - `total` (integer, optional, nullable)
-  - `page` (integer, optional, nullable)
-  - `page_size` (integer, optional, nullable)
+- `meta` (ListResponseMeta, optional)
 - `next_cursor` (string, optional, nullable) — Cursor for the next page of results
 
 ## Errors
@@ -97,10 +84,41 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### MessagesSearchResult
+
+transcript_index: index of the message in the conversation transcript chunk_text: text of the transcript; transcript messages if very long could have several chunks. chunk_highlights: chunk_text split into matched/unmatched segments for highlighting. Only populated for keyword/text search, not semantic search. score: similarity score of the message to the search query
+
+- `conversation_id` (string, required)
+- `agent_id` (string, required)
+- `transcript_index` (integer, required)
+- `chunk_text` (string, required)
+- `score` (double, required)
+- `conversation_start_time_unix_secs` (integer, required)
+- `agent_name` (string, optional, nullable)
+- `chunk_highlights` (list of SearchHighlightSegment, optional, nullable)
+
+### ListResponseMeta
+
+- `total` (integer, optional, nullable)
+- `page` (integer, optional, nullable)
+- `page_size` (integer, optional, nullable)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### SearchHighlightSegment
+
+- `value` (string, required)
+- `is_hit` (boolean, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

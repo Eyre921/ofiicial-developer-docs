@@ -37,8 +37,10 @@ ElevenLabs supports two types of Twilio phone numbers with different capabilitie
 
 Learn more about [verifying caller IDs at scale](https://www.twilio.com/docs/voice/api/verifying-caller-ids-scale) in Twilio's documentation.
 
-During phone number import, ElevenLabs automatically detects the capabilities of your number based
-on its configuration in Twilio.
+> **Note**
+>
+> During phone number import, ElevenLabs automatically detects the capabilities of your number based
+> on its configuration in Twilio.
 
 ## Guide
 
@@ -53,7 +55,7 @@ on its configuration in Twilio.
 
 In the ElevenAgents dashboard, go to the [**Phone Numbers**](https://elevenlabs.io/app/agents/phone-numbers) tab.
 
-![ElevenAgents phone numbers page](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7efb681147acd8f04803f84ed7f3289f0e90eb1fb0173e2a825836408cee89d1/assets/images/conversational-ai/phone-numbers-page.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113236Z&X-Amz-Expires=604800&X-Amz-Signature=989c0d5f00c7ff77eb16a0823162e2db4722bff998356ab95df06373f839706c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![ElevenAgents phone numbers page](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7efb681147acd8f04803f84ed7f3289f0e90eb1fb0173e2a825836408cee89d1/assets/images/conversational-ai/phone-numbers-page.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113156Z&X-Amz-Expires=604800&X-Amz-Signature=9491fa76ef6316dc663693eee49629488924c5847b6742918b62857125cb3c21&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Next, fill in the following details:
 
@@ -62,50 +64,64 @@ Next, fill in the following details:
 * **Twilio SID:** Your Twilio Account SID or API Key SID.
 * **Twilio Token:** Your Twilio Auth Token or API Key Secret.
 
-**Recommended: Use API keys for better security.** Instead of using your account-wide credentials, you can [create a Twilio API key](https://www.twilio.com/docs/iam/api-keys) with limited permissions. When you create an API key, Twilio provides a **SID** (starts with `SK`) and a **Secret** — use these in the fields above.
+> **Tip**
+>
+> **Recommended: Use API keys for better security.** Instead of using your account-wide credentials, you can [create a Twilio API key](https://www.twilio.com/docs/iam/api-keys) with limited permissions. When you create an API key, Twilio provides a **SID** (starts with `SK`) and a **Secret** — use these in the fields above.
 
-You can find your account SID and auth token [**in the Twilio admin console**](https://www.twilio.com/console), or create API keys in the [API keys section](https://www.twilio.com/console/project/api-keys).
+> **Note**
+>
+> You can find your account SID and auth token [**in the Twilio admin console**](https://www.twilio.com/console), or create API keys in the [API keys section](https://www.twilio.com/console/project/api-keys).
 
 #### ElevenAgents dashboard
 
-![Phone number configuration](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9501110d58bfeca27cb9983bc44035864504bdc2ed9c78d9decbd04802f64418/assets/images/conversational-ai/phone-numbers-new.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113236Z&X-Amz-Expires=604800&X-Amz-Signature=2c05d612b5cbbde46542d8bdf0b162a96574afcb9c4b9c7d19df42e6731f2e68&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Phone number configuration](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9501110d58bfeca27cb9983bc44035864504bdc2ed9c78d9decbd04802f64418/assets/images/conversational-ai/phone-numbers-new.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113156Z&X-Amz-Expires=604800&X-Amz-Signature=49315954dd7d74af4ab46b4b4f53d1414fa4d3de74a3788b13999a4a7c454eb9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Twilio admin console
 
 Copy the Twilio SID and Auth Token from the [Twilio admin console](https://www.twilio.com/console).
 
-![Phone number details](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/42da512d1cdfb4ca4504c3162fecfed108580d9488236a0cc6a4a1d23a19da14/assets/images/conversational-ai/twilio-settings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113236Z&X-Amz-Expires=604800&X-Amz-Signature=ae7b70cc0029966080ca58e730707f3595f76ef6d58c6281e5b80d99963f5f6c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Phone number details](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/42da512d1cdfb4ca4504c3162fecfed108580d9488236a0cc6a4a1d23a19da14/assets/images/conversational-ai/twilio-settings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113156Z&X-Amz-Expires=604800&X-Amz-Signature=54366e66371c5344047828033c7d93fc5972487b15c73dbc5efa890c08d57702&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-ElevenLabs automatically configures the Twilio phone number with the correct settings.
+> **Note**
+>
+> ElevenLabs automatically configures the Twilio phone number with the correct settings.
 
 #### Applied settings
 
-![Twilio phone number configuration](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b11d57a0aa588964bbd0117d2135c55592569a4bf051f00f17aa3ee632833a47/assets/images/conversational-ai/twilio-configuration.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113236Z&X-Amz-Expires=604800&X-Amz-Signature=156ec7574716fe37cf7701c92181b2fccddc9a1b68997850b80c2e95f0997ea1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Twilio phone number configuration](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b11d57a0aa588964bbd0117d2135c55592569a4bf051f00f17aa3ee632833a47/assets/images/conversational-ai/twilio-configuration.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113156Z&X-Amz-Expires=604800&X-Amz-Signature=52d0d600a0e5d2f87d585b0891a73536827cbff19b5fe91424631b9ed64d0c91&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-**Phone Number Detection**: ElevenLabs will automatically detect whether your number supports:
-
-* **Inbound + Outbound**: Numbers purchased through Twilio
-* **Outbound Only**: Numbers verified as caller IDs in Twilio
-
-If your number is not found in either category, you'll receive an error asking you to verify it exists in your Twilio account.
+> **Info**
+>
+> **Phone Number Detection**: ElevenLabs will automatically detect whether your number supports:
+>
+> * **Inbound + Outbound**: Numbers purchased through Twilio
+> * **Outbound Only**: Numbers verified as caller IDs in Twilio
+>
+> If your number is not found in either category, you'll receive an error asking you to verify it exists in your Twilio account.
 
 #### Assign your agent (Inbound-capable numbers only)
 
 If your phone number supports inbound calls, you can assign an agent to handle incoming calls.
 
-![Select agent for inbound calls](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b85c122ef8607527041516e789b0a19047cbf85a13cd3237ee5a7670683815a7/assets/images/conversational-ai/twilio-assigned-agent.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113236Z&X-Amz-Expires=604800&X-Amz-Signature=4479b36e146537fdfa4c7b70942bfafea7b270958eb6f07eebf38c531a9f48c9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Select agent for inbound calls](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b85c122ef8607527041516e789b0a19047cbf85a13cd3237ee5a7670683815a7/assets/images/conversational-ai/twilio-assigned-agent.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113156Z&X-Amz-Expires=604800&X-Amz-Signature=3d7b7af9bbbbcc5fcbce03eb75b86c0bfa52ab15b5eff7f1814be3d4a05f4910&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-Numbers that only support outbound calls (verified caller IDs) cannot be assigned to agents and
-will show as disabled in the agent dropdown.
+> **Note**
+>
+> Numbers that only support outbound calls (verified caller IDs) cannot be assigned to agents and
+> will show as disabled in the agent dropdown.
 
 Test the agent by giving the phone number a call. Your agent is now ready to handle inbound calls and engage with your customers.
 
-Monitor your first few calls in the [Calls History dashboard](https://elevenlabs.io/app/agents/history) to ensure everything is working as expected.
+> **Tip**
+>
+> Monitor your first few calls in the [Calls History dashboard](https://elevenlabs.io/app/agents/history) to ensure everything is working as expected.
 
 ## Making Outbound Calls
 
-Both purchased Twilio numbers and verified caller IDs can be used for outbound calls. The outbound
-call button will be disabled for numbers that don't support outbound calling.
+> **Info**
+>
+> Both purchased Twilio numbers and verified caller IDs can be used for outbound calls. The outbound
+> call button will be disabled for numbers that don't support outbound calling.
 
 Your imported Twilio phone number can also be used to initiate outbound calls where your agent calls a specified phone number.
 
@@ -113,7 +129,7 @@ Your imported Twilio phone number can also be used to initiate outbound calls wh
 
 From the [**Phone Numbers**](https://elevenlabs.io/app/agents/phone-numbers) tab, locate your imported Twilio number and click the **Outbound call** button.
 
-![Outbound call button](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/953a870b0ab0c0aa30872b3692260f0879f390d4b4b83c7f82e816385504034f/assets/images/conversational-ai/outbound-button.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113236Z&X-Amz-Expires=604800&X-Amz-Signature=d0dd67042764a652862f5fe930fb07ecc59a471e8cd36a11a9926c17b4149d65&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Outbound call button](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/953a870b0ab0c0aa30872b3692260f0879f390d4b4b83c7f82e816385504034f/assets/images/conversational-ai/outbound-button.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113156Z&X-Amz-Expires=604800&X-Amz-Signature=d6e80d3577f28bc4554a4a9dc69f7d9931a6b9f62bb6f1618927c9cf58645a5b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Configure the call
 
@@ -123,12 +139,16 @@ In the Outbound Call modal:
 2. Enter the phone number you want to call
 3. Click **Send Test Call** to initiate the call
 
-![Outbound call configuration](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f6b01412a68217661028e6924ce90089bdd5eaa693c8aeafbc321c632de921b7/assets/images/conversational-ai/outbound-modal.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113236Z&X-Amz-Expires=604800&X-Amz-Signature=40290560fea2235ec5fe1be2231e1ce3c7e39a696457f50cfb8c31346271d752&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Outbound call configuration](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f6b01412a68217661028e6924ce90089bdd5eaa693c8aeafbc321c632de921b7/assets/images/conversational-ai/outbound-modal.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113156Z&X-Amz-Expires=604800&X-Amz-Signature=58105a22709fe9f6ace4f3423e0e6d949e583eb3f08794a20dd4e1eee3ac96c9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Once initiated, the recipient will receive a call from your Twilio number. When they answer, your agent will begin the conversation.
 
-Outbound calls appear in your [Calls History dashboard](https://elevenlabs.io/app/agents/history)
-alongside inbound calls, allowing you to review all conversations.
+> **Tip**
+>
+> Outbound calls appear in your [Calls History dashboard](https://elevenlabs.io/app/agents/history)
+> alongside inbound calls, allowing you to review all conversations.
 
-When making outbound calls, your agent will be the initiator of the conversation, so ensure your
-agent has appropriate initial messages configured to start the conversation effectively.
+> **Note**
+>
+> When making outbound calls, your agent will be the initiator of the conversation, so ensure your
+> agent has appropriate initial messages configured to start the conversation effectively.

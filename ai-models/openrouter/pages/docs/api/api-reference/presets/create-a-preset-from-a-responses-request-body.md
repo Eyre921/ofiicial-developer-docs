@@ -362,6 +362,8 @@ components:
                   $ref: '#/components/schemas/ParetoRouterPlugin'
                 response-healing:
                   $ref: '#/components/schemas/ResponseHealingPlugin'
+                switchyard-router:
+                  $ref: '#/components/schemas/SwitchyardRouterPlugin'
                 web:
                   $ref: '#/components/schemas/WebSearchPlugin'
                 web-fetch:
@@ -378,6 +380,7 @@ components:
               - $ref: '#/components/schemas/ContextCompressionPlugin'
               - $ref: '#/components/schemas/ParetoRouterPlugin'
               - $ref: '#/components/schemas/FusionPlugin'
+              - $ref: '#/components/schemas/SwitchyardRouterPlugin'
           type: array
         presence_penalty:
           format: double
@@ -836,8 +839,6 @@ components:
                     - text: Analyzed the problem and found the optimal solution.
                       type: summary_text
                   type: reasoning
-              - $ref: '#/components/schemas/OutputFunctionCallItem'
-              - $ref: '#/components/schemas/OutputCustomToolCallItem'
               - $ref: '#/components/schemas/OutputWebSearchCallItem'
               - $ref: '#/components/schemas/OutputFileSearchCallItem'
               - $ref: '#/components/schemas/OutputImageGenerationCallItem'
@@ -1338,6 +1339,39 @@ components:
         id:
           enum:
             - response-healing
+          type: string
+      required:
+        - id
+      type: object
+    SwitchyardRouterPlugin:
+      example:
+        algorithm: stage
+        id: switchyard-router
+      properties:
+        algorithm:
+          description: >-
+            Routing algorithm for this request. "capability" calls a small judge
+            model to rate how demanding the task is, then picks the efficient or
+            capable candidate. "stage" reads the tool-result history (errors,
+            repeated failures, edits landing) and calls the judge only when
+            those signals are undecided. "auto" is "stage" without the judge
+            call. "random" picks one candidate at random. "composite" keeps the
+            tier chosen on the last human turn and re-evaluates tool turns with
+            the stage signals. "passthrough" serves the eligible candidates in
+            the order OpenRouter already ranked them, with no routing decision
+            and no judge call. Omit this field to use the platform default,
+            capability.
+          enum:
+            - capability
+            - stage
+            - auto
+            - random
+            - composite
+            - passthrough
+          type: string
+        id:
+          enum:
+            - switchyard-router
           type: string
       required:
         - id
@@ -2956,12 +2990,6 @@ components:
         - role
       type: object
     FunctionCallItem:
-      allOf:
-        - $ref: '#/components/schemas/OpenAIResponseFunctionToolCall'
-        - properties: {}
-          required:
-            - id
-          type: object
       description: A function call initiated by the model
       example:
         arguments: '{"location":"San Francisco"}'
@@ -2970,6 +2998,78 @@ components:
         name: get_weather
         status: completed
         type: function_call
+      properties:
+        arguments:
+          type: string
+        async:
+          description: >-
+            True when the model called a tool declared with `async: true` and
+            may continue its turn before the output is returned. Return the
+            result in a later request as a `function_call_output` with this
+            `call_id`.
+          example: true
+          type:
+            - boolean
+            - 'null'
+        call_id:
+          type: string
+        id:
+          type:
+            - string
+            - 'null'
+        name:
+          type: string
+        namespace:
+          description: >-
+            Namespace qualifier for tools registered as part of a namespace tool
+            group (e.g. an MCP server)
+          type:
+            - string
+            - 'null'
+        status:
+          anyOf:
+            - $ref: '#/components/schemas/ToolCallStatus'
+            - type: 'null'
+        subagent_id:
+          description: >-
+            EXPERIMENTAL — subject to change without notice. String id that
+            matches the `call_id` of the `openrouter:subagent` server tool call
+            that spawned the subagent. Present on every `function_call` item the
+            subagent projects; absent on ordinary function calls.
+          type:
+            - string
+            - 'null'
+        subagent_items:
+          description: >-
+            EXPERIMENTAL — subject to change without notice. The subagent's
+            output items produced on this turn. Treat this as an opaque object;
+            you must replay it in the request so that the subagent can continue
+            execution of the tool with the same context. If a subagent created
+            multiple parallel tool calls, only the first tool call will have
+            this field. The other tool calls will only have `subagent_id`.
+            Present only if the tool call originates from a subagent spawned by
+            the `openrouter:subagent` server tool.
+          items:
+            additionalProperties: {}
+            properties:
+              type:
+                type: string
+            required:
+              - type
+            type: object
+          type:
+            - array
+            - 'null'
+        type:
+          enum:
+            - function_call
+          type: string
+      required:
+        - type
+        - call_id
+        - name
+        - arguments
+      type: object
     FunctionCallOutputItem:
       allOf:
         - $ref: '#/components/schemas/OpenAIResponseFunctionToolCallOutput'
@@ -3213,97 +3313,6 @@ components:
       required:
         - type
         - text
-      type: object
-    OutputFunctionCallItem:
-      allOf:
-        - $ref: '#/components/schemas/OutputItemFunctionCall'
-        - properties:
-            subagent_id:
-              description: >-
-                EXPERIMENTAL — subject to change without notice. String id that
-                matches the `call_id` of the `openrouter:subagent` server tool
-                call that spawned the subagent. Present on every `function_call`
-                item the subagent projects; absent on ordinary function calls.
-              type: string
-            subagent_items:
-              description: >-
-                EXPERIMENTAL — subject to change without notice. The subagent's
-                output items produced on this turn. Treat this as an opaque
-                object; you must replay it in the request so that the subagent
-                can continue execution of the tool with the same context. If a
-                subagent created multiple parallel tool calls, only the first
-                tool call will have this field. The other tool calls will only
-                have `subagent_id`. Present only if the tool call originates
-                from a subagent spawned by the `openrouter:subagent` server
-                tool.
-              items:
-                additionalProperties: {}
-                properties:
-                  type:
-                    type: string
-                required:
-                  - type
-                type: object
-              type: array
-          type: object
-      example:
-        arguments: '{"location":"San Francisco"}'
-        call_id: call-abc123
-        id: fc-abc123
-        name: get_weather
-        status: completed
-        type: function_call
-    OutputCustomToolCallItem:
-      description: >-
-        A call to a custom (freeform-grammar) tool created by the model —
-        distinct from `function_call`. Used for tools like Codex CLI's
-        `apply_patch` whose payload is opaque text rather than JSON arguments.
-      example:
-        call_id: call-abc123
-        id: ctc-abc123
-        input: |-
-          *** Begin Patch
-          *** End Patch
-        name: apply_patch
-        status: completed
-        type: custom_tool_call
-      properties:
-        async:
-          description: >-
-            True when the model called a tool declared with `async: true` and
-            may continue its turn before the output is returned. Return the
-            result in a later request as a `function_call_output` with this
-            `call_id`.
-          example: true
-          type: boolean
-        call_id:
-          type: string
-        id:
-          type: string
-        input:
-          type: string
-        name:
-          type: string
-        namespace:
-          description: >-
-            Namespace qualifier for tools registered as part of a namespace tool
-            group (e.g. an MCP server)
-          type: string
-        status:
-          enum:
-            - in_progress
-            - completed
-            - incomplete
-          type: string
-        type:
-          enum:
-            - custom_tool_call
-          type: string
-      required:
-        - type
-        - name
-        - input
-        - call_id
       type: object
     OutputWebSearchCallItem:
       allOf:
@@ -4624,12 +4633,6 @@ components:
         - server_label
       type: object
     CustomToolCallItem:
-      allOf:
-        - $ref: '#/components/schemas/OpenAIResponseCustomToolCall'
-        - properties:
-            status:
-              $ref: '#/components/schemas/ToolCallStatus'
-          type: object
       description: >-
         A call to a custom (freeform-grammar) tool created by the model —
         distinct from `function_call`. Used for tools like Codex CLI's
@@ -4642,6 +4645,48 @@ components:
           *** End Patch
         name: apply_patch
         type: custom_tool_call
+      properties:
+        async:
+          description: >-
+            True when the model called a tool declared with `async: true` and
+            may continue its turn before the output is returned. Return the
+            result in a later request as a `function_call_output` with this
+            `call_id`.
+          example: true
+          type:
+            - boolean
+            - 'null'
+        call_id:
+          type: string
+        id:
+          type:
+            - string
+            - 'null'
+        input:
+          type: string
+        name:
+          type: string
+        namespace:
+          description: >-
+            Namespace qualifier for tools registered as part of a namespace tool
+            group (e.g. an MCP server)
+          type:
+            - string
+            - 'null'
+        status:
+          anyOf:
+            - $ref: '#/components/schemas/ToolCallStatus'
+            - type: 'null'
+        type:
+          enum:
+            - custom_tool_call
+          type: string
+      required:
+        - type
+        - call_id
+        - name
+        - input
+      type: object
     CustomToolCallOutputItem:
       allOf:
         - $ref: '#/components/schemas/OpenAIResponseCustomToolCallOutput'
@@ -6302,74 +6347,13 @@ components:
         - type
         - video_url
       type: object
-    OpenAIResponseFunctionToolCall:
-      example:
-        arguments: '{"location":"San Francisco"}'
-        call_id: call-abc123
-        id: fc-abc123
-        name: get_weather
-        status: completed
-        type: function_call
-      properties:
-        arguments:
-          type: string
-        async:
-          description: >-
-            True when the model called a tool declared with `async: true` and
-            may continue its turn before the output is returned. Return the
-            result in a later request as a `function_call_output` with this
-            `call_id`.
-          example: true
-          type: boolean
-        call_id:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        namespace:
-          description: >-
-            Namespace qualifier for tools registered as part of a namespace tool
-            group (e.g. an MCP server)
-          type: string
-        status:
-          $ref: '#/components/schemas/ToolCallStatus'
-        subagent_id:
-          description: >-
-            EXPERIMENTAL — subject to change without notice. String id that
-            matches the `call_id` of the `openrouter:subagent` server tool call
-            that spawned the subagent. Present on every `function_call` item the
-            subagent projects; absent on ordinary function calls.
-          type: string
-        subagent_items:
-          description: >-
-            EXPERIMENTAL — subject to change without notice. The subagent's
-            output items produced on this turn. Treat this as an opaque object;
-            you must replay it in the request so that the subagent can continue
-            execution of the tool with the same context. If a subagent created
-            multiple parallel tool calls, only the first tool call will have
-            this field. The other tool calls will only have `subagent_id`.
-            Present only if the tool call originates from a subagent spawned by
-            the `openrouter:subagent` server tool.
-          items:
-            additionalProperties: {}
-            properties:
-              type:
-                type: string
-            required:
-              - type
-            type: object
-          type: array
-        type:
-          enum:
-            - function_call
-          type: string
-      required:
-        - type
-        - call_id
-        - name
-        - arguments
-      type: object
+    ToolCallStatus:
+      enum:
+        - in_progress
+        - completed
+        - incomplete
+      example: completed
+      type: string
     OpenAIResponseFunctionToolCallOutput:
       example:
         call_id: call-abc123
@@ -6513,56 +6497,6 @@ components:
         filename: research_paper.pdf
         index: 0
         type: file_citation
-    OutputItemFunctionCall:
-      example:
-        arguments: '{"location":"San Francisco","unit":"celsius"}'
-        call_id: call-abc123
-        id: call-abc123
-        name: get_weather
-        type: function_call
-      properties:
-        arguments:
-          type: string
-        async:
-          description: >-
-            True when the model called a tool declared with `async: true` and
-            may continue its turn before the output is returned. Return the
-            result in a later request as a `function_call_output` with this
-            `call_id`.
-          example: true
-          type: boolean
-        call_id:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        namespace:
-          description: >-
-            Namespace qualifier for tools registered as part of a namespace tool
-            group (e.g. an MCP server)
-          type: string
-        status:
-          anyOf:
-            - enum:
-                - completed
-              type: string
-            - enum:
-                - incomplete
-              type: string
-            - enum:
-                - in_progress
-              type: string
-        type:
-          enum:
-            - function_call
-          type: string
-      required:
-        - type
-        - name
-        - arguments
-        - call_id
-      type: object
     OutputItemWebSearchCall:
       additionalProperties: {}
       example:
@@ -6702,13 +6636,6 @@ components:
             type: logs
         status: completed
         type: code_interpreter_call
-    ToolCallStatus:
-      enum:
-        - in_progress
-        - completed
-        - incomplete
-      example: completed
-      type: string
     FailableToolCallStatus:
       enum:
         - in_progress
@@ -6879,47 +6806,6 @@ components:
         code: 503
         message: Service Unavailable
         type: http_error
-    OpenAIResponseCustomToolCall:
-      example:
-        call_id: call-abc123
-        id: ctc-abc123
-        input: |-
-          *** Begin Patch
-          *** End Patch
-        name: apply_patch
-        type: custom_tool_call
-      properties:
-        async:
-          description: >-
-            True when the model called a tool declared with `async: true` and
-            may continue its turn before the output is returned. Return the
-            result in a later request as a `function_call_output` with this
-            `call_id`.
-          example: true
-          type: boolean
-        call_id:
-          type: string
-        id:
-          type: string
-        input:
-          type: string
-        name:
-          type: string
-        namespace:
-          description: >-
-            Namespace qualifier for tools registered as part of a namespace tool
-            group (e.g. an MCP server)
-          type: string
-        type:
-          enum:
-            - custom_tool_call
-          type: string
-      required:
-        - type
-        - call_id
-        - name
-        - input
-      type: object
     OpenAIResponseCustomToolCallOutput:
       example:
         call_id: call-abc123

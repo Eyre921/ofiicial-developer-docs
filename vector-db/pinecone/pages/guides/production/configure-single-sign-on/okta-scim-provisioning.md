@@ -16,7 +16,7 @@ When SCIM provisioning is enabled, your IdP manages organization membership and 
 
 * As members are added, updated, or removed in Okta, those changes sync to Pinecone over SCIM in near real time, not just at login.
 * Okta connects to a SCIM endpoint that Pinecone provides, authenticating with a bearer token you generate in the Pinecone console.
-* Pinecone reads each member's roles from the SCIM `roles` attribute and sets their organization and project roles to *exactly* those values. Values that don't match a known role are ignored.
+* Pinecone reads each member's roles from the SCIM `roles` attribute and sets their organization and project roles to *exactly* those values. Values that don't match a known role are ignored. For the other attributes Pinecone reads, see [Supported attributes](#supported-attributes).
 * While SCIM is enabled, SCIM is the source of truth for roles: Pinecone no longer applies the roles in a member's SAML login assertion, even though members still sign in through SAML SSO.
 * Deactivating or removing a member in Okta removes them from the organization, and clearing a member's roles revokes their access.
 * Because membership and roles come entirely from your IdP, while SCIM is enabled you can no longer invite members or edit roles in the Pinecone console or through the Admin API.
@@ -36,6 +36,23 @@ When SCIM provisioning is enabled, your IdP manages organization membership and 
 <Warning>
   SCIM provisioning is not compatible with members who belong to more than one SSO-connected Pinecone organization. If a member is part of multiple SSO-connected organizations, do not provision them through SCIM; manage their roles manually instead.
 </Warning>
+
+## Supported attributes
+
+Pinecone reads the following SCIM user attributes and ignores all others, including `emails`, `phoneNumbers`, `addresses`, `photos`, `title`, and enterprise extension attributes such as `department` and `manager`.
+
+A member needs both required attributes to get access. Okta can't provision a member without `userName`, and a member whose `roles` has no organization role has no access to the organization.
+
+| SCIM attribute    | Required | How Pinecone uses it                                                                                                                                         |
+| :---------------- | :------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `userName`        | Yes      | The member's email address, which must match the one they use to sign in through SAML SSO. See [Step 3](#3-connect-okta-to-the-scim-endpoint).               |
+| `roles`           | Yes      | The member's organization and project roles. See [Role attribute values](#role-attribute-values).                                                            |
+| `active`          | No       | Whether the member is active. Setting it to `false` removes the member from the organization. If Okta doesn't send it, Pinecone treats the member as active. |
+| `displayName`     | No       | The member's name, shown in the Pinecone console.                                                                                                            |
+| `name.givenName`  | No       | The member's first name. Stored on the member's profile, but not shown in the console.                                                                       |
+| `name.familyName` | No       | The member's last name. Stored on the member's profile, but not shown in the console.                                                                        |
+
+The console shows a member's `displayName`, or their email address if Okta doesn't send one. To show members' names in the console, keep the `displayName` mapping.
 
 ## Role attribute values
 
@@ -154,7 +171,7 @@ For example, an organization manager who is also a project owner on one project 
 <Note>
   Send roles in the user's `roles` attribute. SCIM group push isn't supported.
 
-  Limit synced attributes to those that are used by Pinecone, including `userName`, `roles`, and optionally, `name`. Mapping irrelevant profile attributes (like `addresses`) risks producing a payload that doesn't conform to the SCIM spec and will be rejected with an invalid payload error.
+  We recommend removing Okta mappings for any attribute that isn't listed in [Supported attributes](#supported-attributes). Pinecone ignores those attributes, but Okta still sends them, so removing the mappings keeps personal data Pinecone doesn't use, such as phone numbers and home addresses, out of provisioning requests.
 </Note>
 
 ## 5. Provision members and verify

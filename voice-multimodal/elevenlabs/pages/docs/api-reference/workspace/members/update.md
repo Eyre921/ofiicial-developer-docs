@@ -27,7 +27,7 @@ Reference: https://elevenlabs.io/docs/api-reference/workspace/members/update
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_Update_member_v1_workspace_members_post.
 
 - `email` (string, required) — Email of the target user.
 - `is_locked` (boolean, optional, nullable) — Whether to lock or unlock the user account.
@@ -50,10 +50,17 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

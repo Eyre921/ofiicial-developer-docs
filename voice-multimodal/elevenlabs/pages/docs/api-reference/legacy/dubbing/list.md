@@ -50,18 +50,7 @@ Reference: https://elevenlabs.io/docs/api-reference/legacy/dubbing/list
 
 Successful Response
 
-- `dubs` (list of object, required)
-  - `dubbing_id` (string, required) — The ID of the dubbing project.
-  - `name` (string, required) — The name of the dubbing project.
-  - `status` (string, required) — The state this dub is in.
-  - `source_language` (string, required, nullable) — Once dubbing has completed, the ISO-639-1 code of the original media's source language.
-  - `target_languages` (list of string, required) — The ISO-639-1 code of the languages this media has been dubbed into.
-  - `created_at` (string, required) — Timestamp this dub was created.
-  - `editable` (boolean, optional, default: false) — Whether this dubbing project is editable in Dubbing Studio.
-  - `media_metadata` (object, optional, nullable) — Metadata, such as the length in seconds and content type, of the dubbed content.
-    - `content_type` (string, required) — The content type of the media.
-    - `duration` (double, required) — The duration of the media in seconds.
-  - `error` (string, optional, nullable) — Error message indicate, if this dub has failed, what happened.
+- `dubs` (list of DubbingMetadataResponse, required)
 - `next_cursor` (string, required, nullable)
 - `has_more` (boolean, required)
 
@@ -71,10 +60,34 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### DubbingMetadataResponse
+
+- `dubbing_id` (string, required) — The ID of the dubbing project.
+- `name` (string, required) — The name of the dubbing project.
+- `status` (string, required) — The state this dub is in.
+- `source_language` (string, required, nullable) — Once dubbing has completed, the ISO-639-1 code of the original media's source language.
+- `target_languages` (list of string, required) — The ISO-639-1 code of the languages this media has been dubbed into.
+- `created_at` (string, required) — Timestamp this dub was created.
+- `editable` (boolean, optional, default: false) — Whether this dubbing project is editable in Dubbing Studio.
+- `media_metadata` (DubbingMediaMetadata, optional, nullable) — Metadata, such as the length in seconds and content type, of the dubbed content.
+- `error` (string, optional, nullable) — Error message indicate, if this dub has failed, what happened.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### DubbingMediaMetadata
+
+- `content_type` (string, required) — The content type of the media.
+- `duration` (double, required) — The duration of the media in seconds.
+
+### ValidationErrorLocItems
 
 ## Examples
 

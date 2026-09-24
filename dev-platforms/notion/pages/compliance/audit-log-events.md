@@ -86,7 +86,14 @@ Events are split into the following categories:
 * **Ability for managed users to join external workspaces updated**: That the ability for managed users to join external workspaces was updated.
 * **Added allowed email domain**: That a user added an allowed email domain to the workspace.
 * **Admin added themselves as integration owner**: That a workspace admin used admin privileges to add themselves as an integration owner.
+* **Agent chat created**: That a user created an AI agent chat.
+* **Agent chat deleted**: That a user deleted an AI agent chat.
+* **Agent chat permission updated**: That permissions were updated for an AI agent chat.
+* **Agent chat viewed**: That a user viewed an AI agent chat.
 * **Agent creation settings updated**: That the custom agent creation policy was updated.
+* **Agent file downloaded**: That a user downloaded a file from an AI agent chat.
+* **Agent file uploaded**: That a user submitted an uploaded file to an AI agent chat.
+* **Agent file viewed**: That a user viewed a file from an AI agent chat.
 * **Agent viewed web URL**: That an AI agent viewed a web URL.
 * **AI LEAP (Learning & Early Access Program) toggled**: That the AI LEAP (Learning & Early Access Program) setting was toggled.
 * **AI Meeting Notes availability updated**: That the AI meeting notes availability setting was updated.

@@ -35,7 +35,9 @@ curl \
   --url 'https://api.deepgram.com/v1/listen?utterances=true&utt_split=LENGTH-OF-TIME-IN-SECONDS'
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 ## Results
 

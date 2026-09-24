@@ -12,7 +12,9 @@ path: reference/regional-endpoints
 
 Deepgram offers regional endpoints so you can process audio, text, and voice agent traffic within a specific geography. Regional endpoints use the same API keys and SDKs as the default global endpoint — you only need to change the base URL.
 
-This page covers how to configure regional endpoints. For what Deepgram guarantees about where your data is processed, what we store, and how long we keep it, see [Your Data at Deepgram](/trust-security/your-data).
+> **Note**
+>
+> This page covers how to configure regional endpoints. For what Deepgram guarantees about where your data is processed, what we store, and how long we keep it, see [Your Data at Deepgram](/trust-security/your-data).
 
 ## EU Endpoint
 
@@ -404,7 +406,9 @@ Fewer Gemini models are available on the EU GEA endpoint than on global AI Studi
 
 When you connect to `api.au.deepgram.com` and use Deepgram managed models for speech-to-text (`listen`) and text-to-speech (`speak`) — for example, `nova-3` and `aura-2` — Deepgram processes that audio within Australia.
 
-GEA does not offer Australia-specific endpoints today, so the AU endpoint defaults to global AI Studio (`ai-studio-v1beta`). Deepgram will add support when Google makes those endpoints available.
+> **Note**
+>
+> GEA does not offer Australia-specific endpoints today, so the AU endpoint defaults to global AI Studio (`ai-studio-v1beta`). Deepgram will add support when Google makes those endpoints available.
 
 The voice agent LLM (`think`) runs on a third-party provider, where data residency and processing location are distinct. OpenAI, for example, offers Australian data residency — your content is stored at rest in Australia — but performs inference outside Australia. No managed in-region LLM is available today, so the `think` step is processed outside Australia even when residency applies. See [OpenAI's data residency guide](https://developers.openai.com/api/docs/guides/your-data#which-models-and-features-are-eligible-for-data-residency) for provider specifics.
 
@@ -412,7 +416,9 @@ The voice agent LLM (`think`) runs on a third-party provider, where data residen
 
 When you connect to `api.in.deepgram.com` and use Deepgram managed models for speech-to-text (`listen`) and text-to-speech (`speak`) — for example, `nova-3` and `aura-2` — Deepgram processes that audio within India.
 
-Deepgram does not yet route Google traffic through an India-specific GEA endpoint, so the India endpoint defaults to global AI Studio (`ai-studio-v1beta`). Deepgram will add in-region routing as it is validated.
+> **Note**
+>
+> Deepgram does not yet route Google traffic through an India-specific GEA endpoint, so the India endpoint defaults to global AI Studio (`ai-studio-v1beta`). Deepgram will add in-region routing as it is validated.
 
 The voice agent LLM (`think`) runs on a third-party provider, where data residency and processing location are distinct. OpenAI, for example, offers India data residency — your content is stored at rest in India — but performs inference outside India. No managed in-region LLM is available today, so the `think` step is processed outside India even when residency applies. See [OpenAI's data residency guide](https://developers.openai.com/api/docs/guides/your-data#which-models-and-features-are-eligible-for-data-residency) for provider specifics.
 

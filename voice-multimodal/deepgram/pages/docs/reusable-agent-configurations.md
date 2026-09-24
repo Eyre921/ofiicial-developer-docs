@@ -12,7 +12,9 @@ path: docs/reusable-agent-configurations
 
 Reusable Agent Configurations allow you to define and persist the `agent` block of your [Settings](/docs/voice-agent-settings) message using the Deepgram API. Once created, you receive a UUID that can be passed in place of the full `agent` object—simplifying your client code and enabling consistent agent behavior across sessions.
 
-Reusable Agent Configurations are managed via the API. UI support is not yet available.
+> **Info**
+>
+> Reusable Agent Configurations are managed via the API. UI support is not yet available.
 
 ## Overview
 
@@ -185,7 +187,9 @@ DELETE /projects/{project_id}/agents/{agent_id}
 
 Deletes the specified agent configuration.
 
-Deleting an agent configuration can cause a production outage if your service references this agent UUID. Migrate all active sessions to a new configuration before deleting.
+> **Warning**
+>
+> Deleting an agent configuration can cause a production outage if your service references this agent UUID. Migrate all active sessions to a new configuration before deleting.
 
 **Example request:**
 
@@ -256,7 +260,9 @@ POST /projects/{project_id}/agent-variables
 | `is_sensitive` | Boolean | Required. Must be `false`                                                                      |
 | `api_version`  | Integer | Optional. API version. Defaults to `1`                                                         |
 
-The `is_sensitive` field currently only accepts `false`. Support for sensitive variables is on our roadmap and will be available in the future.
+> **Info**
+>
+> The `is_sensitive` field currently only accepts `false`. Support for sensitive variables is on our roadmap and will be available in the future.
 
 **Example request:**
 

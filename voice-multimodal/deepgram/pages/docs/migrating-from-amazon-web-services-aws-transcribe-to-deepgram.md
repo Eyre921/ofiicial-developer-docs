@@ -14,9 +14,13 @@ This guide covers migrating your transcription processes from Amazon Web Service
 
 ## Getting Started
 
-Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
+> **Info**
+>
+> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
 
-Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
+> **Info**
+>
+> Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
 
 ## Migration Process
 
@@ -176,7 +180,9 @@ Additionally, Amazon provides the following values by default:
 
 Deepgram and Amazon provide speech recognition models that are pre-trained or tuned to identify the words and phrases unique to a specific use case or domain. Deepgram creates our speech recognition models through transfer learning from our highly-performant general models. It is important to test multiple models to see which one meets the accuracy, performance, and scalability needs for your use case.
 
-For more details on Deepgram models see [Model Overview](/docs/models-languages-overview).
+> **Info**
+>
+> For more details on Deepgram models see [Model Overview](/docs/models-languages-overview).
 
 Deepgram provides:
 
@@ -311,11 +317,13 @@ In addition, by default, Amazon will provide:
 
 * Type (pronunciation or punctuation)
 
-## Pro Tip
-
-Avoid transferring over a list of keywords that has been used with a previous vendor.
-
-Every system is different. Whereas Keyword Boosting may have been necessary with another vendor, Deepgram's system may already perform well without the aid of keywords. Additional boosting may negatively affect results. Start without any keywords, add them as you see fit, and cautiously increase boosts using decimal values until you find the best fit for your data. To learn more about Keyword Boosting, see our [Keyword Boosting](/docs/keywords/) feature documentation.
+> **Info**
+>
+> ## Pro Tip
+>
+> Avoid transferring over a list of keywords that has been used with a previous vendor.
+>
+> Every system is different. Whereas Keyword Boosting may have been necessary with another vendor, Deepgram's system may already perform well without the aid of keywords. Additional boosting may negatively affect results. Start without any keywords, add them as you see fit, and cautiously increase boosts using decimal values until you find the best fit for your data. To learn more about Keyword Boosting, see our [Keyword Boosting](/docs/keywords/) feature documentation.
 
 #### Batch Transcription
 

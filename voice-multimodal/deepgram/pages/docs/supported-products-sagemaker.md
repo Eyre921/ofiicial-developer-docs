@@ -39,7 +39,9 @@ Every Deepgram SageMaker product requires a GPU-accelerated instance. Choose an 
 | Aura-2 TTS        | `ml.g6.12xlarge` | `ml.g7.12xlarge`, `ml.g7e.12xlarge`, `ml.g5.12xlarge`, `ml.g6e.12xlarge`, `ml.g4dn.12xlarge` | Single-GPU types (Aura-2 needs 2+ GPUs) |
 | Flux TTS (Aura-3) | `ml.g6e.2xlarge` | `ml.g7.2xlarge`, `ml.g7e.2xlarge`, `ml.g6.2xlarge`                                           | `ml.g5.*`, `ml.g4dn.*`                  |
 
-SageMaker rejects an endpoint configuration whose instance type is not listed in the model package's `SupportedRealtimeInferenceInstanceTypes`. The `ml.g7.*` and `ml.g7e.*` families are available in model package versions published after the g7 rollout; if you deploy an older version, choose one of the other supported types. To check what a specific version supports, run `aws sagemaker describe-model-package --model-package-name <model-package-arn>`.
+> **Note**
+>
+> SageMaker rejects an endpoint configuration whose instance type is not listed in the model package's `SupportedRealtimeInferenceInstanceTypes`. The `ml.g7.*` and `ml.g7e.*` families are available in model package versions published after the g7 rollout; if you deploy an older version, choose one of the other supported types. To check what a specific version supports, run `aws sagemaker describe-model-package --model-package-name <model-package-arn>`.
 
 The host driver your instances boot with is set separately from the instance type. Current Deepgram model packages require a recent inference AMI version — see [Inference AMI Versions](/docs/deploy-amazon-sagemaker#inference-ami-versions).
 

@@ -68,7 +68,9 @@ brew install ngrok
 ngrok config add-authtoken <YOUR_NGROK_AUTHTOKEN>
 ```
 
-ngrok suits development and testing, not production. Each restart issues a new URL, so reserve a static domain or deploy behind your own hostname once the agent works. See the [ngrok documentation](https://ngrok.com/docs/getting-started/) for details.
+> **Info**
+>
+> ngrok suits development and testing, not production. Each restart issues a new URL, so reserve a static domain or deploy behind your own hostname once the agent works. See the [ngrok documentation](https://ngrok.com/docs/getting-started/) for details.
 
 ## Step 1: Set up the project
 
@@ -95,7 +97,9 @@ PUBLIC_HOSTNAME=your-host.ngrok-free.app   # the public host Twilio reaches, no 
 
 Speech-to-text, the language model, and text-to-speech all run inside the Voice Agent, which your application reaches through the official Deepgram Python SDK (`deepgram-sdk`).
 
-**Verify:** running `python -c "import app"` with the two environment variables set imports cleanly.
+> **Info**
+>
+> **Verify:** running `python -c "import app"` with the two environment variables set imports cleanly.
 
 ## Step 2: Serve TwiML to open a bidirectional media stream
 
@@ -115,7 +119,9 @@ async def twiml(request: Request) -> Response:
 
 The bidirectional stream makes barge-in possible. Its one-way sibling, `<Start><Stream>`, cannot carry the agent's voice and therefore cannot support interruption. With a two-way channel open, the next step bridges it to Deepgram.
 
-**Verify:** `curl -X POST https://YOUR_HOST/twiml` returns the XML above with your `wss://` URL.
+> **Info**
+>
+> **Verify:** `curl -X POST https://YOUR_HOST/twiml` returns the XML above with your `wss://` URL.
 
 ### Alternative: serve the TwiML from a TwiML Bin
 
@@ -160,7 +166,9 @@ async def media(twilio_ws: WebSocket) -> None:
 
 On `start`, capture `streamSid` (every message you send back to Twilio must reference it) and send the agent its settings, which kicks off the conversation. On `media`, decode the caller's audio and forward the raw mulaw bytes straight into the agent with `send_media`. The agent now needs to know how to behave, and the settings define exactly that.
 
-For EU data processing, connect to `api.eu.deepgram.com` instead of the default host. See [Regional Endpoints](/reference/regional-endpoints) for details.
+> **Info**
+>
+> For EU data processing, connect to `api.eu.deepgram.com` instead of the default host. See [Regional Endpoints](/reference/regional-endpoints) for details.
 
 ## Step 4: Configure the agent
 
@@ -189,7 +197,9 @@ The `speak` provider is **Flux TTS**, Deepgram's streaming text-to-speech model,
 
 The `think` provider is OpenAI's `gpt-4o-mini`, and a focused `prompt` keeps replies short and speakable: one or two sentences, no markdown — exactly what a phone call needs. Note the missing API key in the `think` block — Deepgram manages the LLM connection on your behalf. Once you send these settings, the agent's replies start flowing back as audio.
 
-For the full list of encodings, sample rates, and containers the agent accepts, see [Voice Agent media inputs and outputs](/docs/voice-agent-media-inputs-outputs), and [Settings](/docs/voice-agent-settings) for every configurable field.
+> **Info**
+>
+> For the full list of encodings, sample rates, and containers the agent accepts, see [Voice Agent media inputs and outputs](/docs/voice-agent-media-inputs-outputs), and [Settings](/docs/voice-agent-settings) for every configurable field.
 
 ### Choosing the language model
 
@@ -208,7 +218,9 @@ Switching providers is a two-field change inside `think.provider`. To run Anthro
 
 An optional `temperature` on the provider tunes how deterministic the replies are. See [Voice Agent LLM models](/docs/voice-agent-llm-models) for the full list of supported providers and models.
 
-**Verify:** on a connected call, the agent speaks the greeting, and `ConversationText` events print to the console.
+> **Info**
+>
+> **Verify:** on a connected call, the agent speaks the greeting, and `ConversationText` events print to the console.
 
 ## Step 5: Relay the agent's audio back to Twilio
 

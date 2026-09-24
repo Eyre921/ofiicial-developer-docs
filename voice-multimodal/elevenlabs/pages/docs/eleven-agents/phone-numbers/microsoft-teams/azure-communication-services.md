@@ -14,12 +14,14 @@ This approach gives your agent a **phone number**. A caller dials it, [Azure Com
 
 It also connects to Teams two ways: a Teams user with a Calling Plan can dial the ACS number directly, or you can front the number with **Teams Phone Extensibility** so calls to a Teams resource account route into ACS.
 
-ACS provisions PSTN numbers only in a [limited set of countries](https://learn.microsoft.com/en-us/azure/communication-services/concepts/numbers/sub-eligibility-number-capability).
-If a number isn't available in your region, use a SIP provider with [SIP trunking](/docs/eleven-agents/phone-numbers/sip-trunking) instead, or the [Graph calling bot](/docs/eleven-agents/phone-numbers/microsoft-teams/graph-media-bot).
+> **Note**
+>
+> ACS provisions PSTN numbers only in a [limited set of countries](https://learn.microsoft.com/en-us/azure/communication-services/concepts/numbers/sub-eligibility-number-capability).
+> If a number isn't available in your region, use a SIP provider with [SIP trunking](/docs/eleven-agents/phone-numbers/sip-trunking) instead, or the [Graph calling bot](/docs/eleven-agents/phone-numbers/microsoft-teams/graph-media-bot).
 
 ## How it works
 
-![A caller dials the ACS number; ACS fires IncomingCall via Event Grid to the bridge, which answers with bidirectional PCM 16k media streaming and relays it to the ElevenLabs agent over a WebSocket](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e77a27148e217fc7dc06c25007c1c141913fc831cbfe8a2f57405137646271af/assets/images/conversational-ai/teams-acs-architecture.svg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113250Z&X-Amz-Expires=604800&X-Amz-Signature=6b9710e1220df84ba5f0adf51286b5cde7cde72f6ad2e120c3aae345c3134b79&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![A caller dials the ACS number; ACS fires IncomingCall via Event Grid to the bridge, which answers with bidirectional PCM 16k media streaming and relays it to the ElevenLabs agent over a WebSocket](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e77a27148e217fc7dc06c25007c1c141913fc831cbfe8a2f57405137646271af/assets/images/conversational-ai/teams-acs-architecture.svg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113204Z&X-Amz-Expires=604800&X-Amz-Signature=9d6e0b5a9bd1a3ff5fbda1934ebada730a2b00c4026ff00c31cd7b7605868615&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Audio is **PCM 16 kHz mono** on both legs (the agent's input/output format is `pcm_16000`), so it passes through as base64 with no resampling.
 
@@ -47,8 +49,10 @@ The bridge exposes these routes:
 | Azure subscription | **Owner or Contributor** on the subscription   | purchase phone numbers (the buy option is disabled otherwise)       |
 | Billing            | **MCA / EA / Pay-As-You-Go** subscription type | free, trial, sponsorship, and Dev subscriptions cannot buy numbers  |
 
-Under **Contributor** (not Owner), `az containerapp up` can't create the managed-identity ACR pull
-role assignment. Enable the registry admin user and attach it instead — see the warning in Step 2.
+> **Note**
+>
+> Under **Contributor** (not Owner), `az containerapp up` can't create the managed-identity ACR pull
+> role assignment. Enable the registry admin user and attach it instead — see the warning in Step 2.
 
 ## Step 1 — Provision the ACS resource and number
 
@@ -66,7 +70,7 @@ az communication create --name my-acs --resource-group $RG \
 Buy a number in the resource (Portal → your ACS resource → **Phone numbers → Get**, or the [phone-numbers SDK](https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/telephony/get-phone-number)). For an agent that **answers** calls, a number with **inbound calling** is enough; add **outbound** capability if you also want `/api/outboundCall`.
 
 ![The ACS resource Phone numbers blade listing active numbers with their calling
-capabilities](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9d14034ee9f81e2ebcf64e30371f914ef6f87a8da30ac250e702662f2e5e1cc1/assets/images/conversational-ai/teams-acs-phone-number.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113250Z&X-Amz-Expires=604800&X-Amz-Signature=b0b9747c2cd1fa3cbc8a5b1ea787da450a8e92597dbbb13ce711742564703a1f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+capabilities](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9d14034ee9f81e2ebcf64e30371f914ef6f87a8da30ac250e702662f2e5e1cc1/assets/images/conversational-ai/teams-acs-phone-number.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113204Z&X-Amz-Expires=604800&X-Amz-Signature=f4b3a0ba5b916a220974da378a83ef9ac052c596e956b740f81ebd2f3c6e945f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 To verify from the CLI (requires `az extension add --name communication`), and to fetch the connection string the bridge uses as `ACS_CONNECTION_STRING`:
 
@@ -114,9 +118,11 @@ def incoming_call():
 
 On the `/ws` socket, relay PCM16 both ways: forward ACS `AudioData` frames to ElevenLabs as `{"user_audio_chunk": "<base64>"}`, and send the agent's audio back as `{"Kind":"AudioData","AudioData":{"Data":"<base64>"},"StopAudio":null}`. The first frame ACS sends is `AudioMetadata` (the negotiated format) — log it and ignore it. The ElevenLabs side is the standard [agent WebSocket protocol](/docs/eleven-agents/libraries/web-sockets).
 
-ACS uses different JSON casing per direction: inbound frames it **sends** are camelCase (`kind`,
-`audioData.data`), while outbound frames it **expects** are PascalCase (`Kind`, `AudioData.Data`,
-`StopAudio`). Keep the two cases distinct — the relay below mirrors this.
+> **Note**
+>
+> ACS uses different JSON casing per direction: inbound frames it **sends** are camelCase (`kind`,
+> `audioData.data`), while outbound frames it **expects** are PascalCase (`Kind`, `AudioData.Data`,
+> `StopAudio`). Keep the two cases distinct — the relay below mirrors this.
 
 **`bridge.py — media relay`**
 
@@ -170,14 +176,18 @@ def media_stream(ws):
         pass  # ACS socket closed
 ```
 
-This relay is intentionally minimal. For production, add logging, reconnection, and graceful
-teardown. The full message reference is in the [WebSocket docs](/docs/eleven-agents/libraries/web-sockets).
+> **Note**
+>
+> This relay is intentionally minimal. For production, add logging, reconnection, and graceful
+> teardown. The full message reference is in the [WebSocket docs](/docs/eleven-agents/libraries/web-sockets).
 
-`EL_WS` connects to a **public** agent. For a private agent, have the bridge request a short-lived
-signed URL server-side — `GET /v1/convai/conversation/get-signed-url?agent_id=...` with your API
-key — and connect to the returned URL instead. On [data residency](/docs/overview/administration/data-residency), set `ELEVENLABS_ORIGIN` to your
-residency host (`wss://api.eu.residency.elevenlabs.io`, `.in.`, or `.sg.`) — signed-URL requests
-use the matching `https://` host.
+> **Note**
+>
+> `EL_WS` connects to a **public** agent. For a private agent, have the bridge request a short-lived
+> signed URL server-side — `GET /v1/convai/conversation/get-signed-url?agent_id=...` with your API
+> key — and connect to the returned URL instead. On [data residency](/docs/overview/administration/data-residency), set `ELEVENLABS_ORIGIN` to your
+> residency host (`wss://api.eu.residency.elevenlabs.io`, `.in.`, or `.sg.`) — signed-URL requests
+> use the matching `https://` host.
 
 Deploy to Azure Container Apps and capture the public FQDN:
 
@@ -193,9 +203,11 @@ FQDN=$(az containerapp show -n acs-el-bridge -g $RG \
 
 Then set `BRIDGE_PUBLIC_HOST=$FQDN` and the ACS connection string (as a secret) on the app.
 
-Under **Contributor** (not Owner), `az containerapp up` cannot create the managed-identity ACR
-pull role. Enable the registry admin user (`az acr update --admin-enabled true`) and attach it
-with `az containerapp registry set`, then `az containerapp update --image ...`.
+> **Warning**
+>
+> Under **Contributor** (not Owner), `az containerapp up` cannot create the managed-identity ACR
+> pull role. Enable the registry admin user (`az acr update --admin-enabled true`) and attach it
+> with `az containerapp registry set`, then `az containerapp update --image ...`.
 
 ## Step 3 — Route IncomingCall to the bridge
 
@@ -219,7 +231,7 @@ The subscription appears under the ACS resource's **Events** blade:
 
 ![The Events blade of the ACS resource listing the acs-incomingcall webhook subscription filtered
 to
-Microsoft.Communication.IncomingCall](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f310aed9637e06b81906ca188350e3e721aaa5f4de69af2b3b6e7d157817a1ea/assets/images/conversational-ai/teams-acs-event-grid.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113250Z&X-Amz-Expires=604800&X-Amz-Signature=0d5eeaa4a1a8f0c363c693ab74481c205ed8e2cd836491aff1ccb28ef451b710&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+Microsoft.Communication.IncomingCall](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f310aed9637e06b81906ca188350e3e721aaa5f4de69af2b3b6e7d157817a1ea/assets/images/conversational-ai/teams-acs-event-grid.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113204Z&X-Amz-Expires=604800&X-Amz-Signature=11f2f6814650a16cd2eda4ceb7e6d4e61aa7f6121243f70319f0690482a66d6b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Dial the number — the agent answers.
 
@@ -253,8 +265,10 @@ conn.add_participant(
 
 ACS emits `AddParticipantSucceeded` / `AddParticipantFailed` callbacks to `/api/callbacks`. Return a `client_tool_result` to the agent so it can say its handoff line. See [system tools](/docs/eleven-agents/customization/tools/system-tools/transfer-to-number) for the agent-side configuration.
 
-Set the transfer guard the instant the tool fires (before calling `add_participant`), or a fast EL
-WebSocket close can race the hangup and drop the call before the human joins.
+> **Tip**
+>
+> Set the transfer guard the instant the tool fires (before calling `add_participant`), or a fast EL
+> WebSocket close can race the hangup and drop the call before the human joins.
 
 ## Troubleshooting
 
@@ -266,7 +280,7 @@ calling and is in the same ACS resource the subscription is on. On the subscript
 **Filters** tab, the event types must include **Incoming Call**:
 
 ![The event subscription Filters tab with the event type filtered to Incoming
-Call](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c7026e86d96551d713e4fd7d5753062f643fcd6a67b455866bb8f1bbb6b57eb1/assets/images/conversational-ai/teams-acs-event-grid-filter.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113250Z&X-Amz-Expires=604800&X-Amz-Signature=2e24a84b96037f95d6f2dd88306616af26c7711ceaae76524e04b890740d3e48&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+Call](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c7026e86d96551d713e4fd7d5753062f643fcd6a67b455866bb8f1bbb6b57eb1/assets/images/conversational-ai/teams-acs-event-grid-filter.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113204Z&X-Amz-Expires=604800&X-Amz-Signature=38552a5adfc56688848ba8b3672aa7c6c946304123e2483bdba9ec34e6749233&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### \`CreateCallFailed\` / \`AddParticipantFailed\` for an international number
 

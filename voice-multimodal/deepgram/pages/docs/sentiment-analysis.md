@@ -27,7 +27,9 @@ A `sentiment` of `positive`, `negative`, or `neutral` along with a `sentiment_sc
 
 This sentiment feature produces sentiment analysis at every level of transcription requested, so you'll get sentiment values for every word, sentence, utterance, and paragraph, in addition to the top-level sentiment for the entire transcription.
 
-The break point for a `sentiment_score` becoming positive or negative is `+-0.333333333...`.
+> **Info**
+>
+> The break point for a `sentiment_score` becoming positive or negative is `+-0.333333333...`.
 
 ## Enable Feature
 
@@ -48,7 +50,9 @@ curl \
   --url 'https://api.deepgram.com/v1/listen?sentiment=true'
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
 
 ### Query Parameters
 

@@ -10,6 +10,12 @@ Turso supports point-in-time recovery (PITR) for databases. PITR allows you to r
   Backups are created automatically at `COMMIT`. Free plan users can restore to any point in time within the last 24 hours. Developer, Scaler, and Pro users can restore to any point in time within the last 10, 30, or 90 days, respectively.
 </Info>
 
+<Note>
+  PITR restores an **existing** database — it cannot bring back a database that was
+  deleted. On paid plans, deleted databases can be restored for up to five days: see
+  [Recover Deleted Databases](/features/recover-deleted-databases).
+</Note>
+
 ## How it works
 
 1. You create a new database from the existing database using the CLI or API.

@@ -1670,7 +1670,6 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/concepts/agents/cloud-agent/about-automations
 /en/copilot/concepts/agents/cloud-agent/about-automation-rationale-and-approvals
 /en/copilot/concepts/agents/cloud-agent/mcp-and-cloud-agent
-/en/copilot/concepts/agents/cloud-agent/risks-and-mitigations
 /en/copilot/concepts/agents/copilot-cli
 /en/copilot/concepts/agents/copilot-cli/about-copilot-cli
 /en/copilot/concepts/agents/copilot-cli/comparing-cli-features
@@ -1682,7 +1681,6 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/concepts/agents/copilot-cli/autopilot
 /en/copilot/concepts/agents/copilot-cli/fleet
 /en/copilot/concepts/agents/copilot-cli/research
-/en/copilot/concepts/agents/copilot-cli/chronicle
 /en/copilot/concepts/agents/copilot-cli/rubber-duck
 /en/copilot/concepts/agents/copilot-cli/lsp-servers
 /en/copilot/concepts/agents/copilot-cli/about-cli-extensions
@@ -1700,7 +1698,6 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/concepts/agents/openai-codex
 /en/copilot/concepts/agents/anthropic-claude
 /en/copilot/concepts/agents/about-agent-skills
-/en/copilot/concepts/about-cloud-and-local-sandboxes
 /en/copilot/concepts/prompting
 /en/copilot/concepts/prompting/prompt-engineering
 /en/copilot/concepts/prompting/response-customization
@@ -1708,7 +1705,6 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/concepts/context/mcp
 /en/copilot/concepts/context/spaces
 /en/copilot/concepts/context/repository-indexing
-/en/copilot/concepts/context/content-exclusion
 /en/copilot/concepts/tools
 /en/copilot/concepts/tools/ai-tools
 /en/copilot/concepts/tools/about-copilot-integrations
@@ -1728,7 +1724,12 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/concepts/billing-and-usage/individuals/usage-limits
 /en/copilot/concepts/billing-and-usage/copilot-usage-metrics
 /en/copilot/concepts/billing-and-usage/copilot-usage-metrics/copilot-metrics
-/en/copilot/concepts/network-settings
+/en/copilot/concepts/security-governance-and-network-settings
+/en/copilot/concepts/security-governance-and-network-settings/content-exclusion
+/en/copilot/concepts/security-governance-and-network-settings/session-data
+/en/copilot/concepts/security-governance-and-network-settings/about-cloud-and-local-sandboxes
+/en/copilot/concepts/security-governance-and-network-settings/risks-and-mitigations
+/en/copilot/concepts/security-governance-and-network-settings/network-settings
 /en/copilot/concepts/enterprise
 /en/copilot/concepts/enterprise/policies
 /en/copilot/concepts/enterprise/default-model-availability
@@ -1848,6 +1849,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/github-copilot-app
 /en/copilot/how-tos/github-copilot-app/customize-github-copilot-app
 /en/copilot/how-tos/github-copilot-app/agent-sessions
+/en/copilot/how-tos/github-copilot-app/configure-local-sandboxing
 /en/copilot/how-tos/github-copilot-app/working-with-canvas-extensions
 /en/copilot/how-tos/github-copilot-app/managing-issues-and-pull-requests
 /en/copilot/how-tos/github-copilot-app/using-automations

@@ -146,7 +146,7 @@ url: https://docs.sentry.io/changelog/
 * [ESM (MJS)](https://docs.sentry.io/platforms/javascript/guides/node/install/esm.md)
 * [Installation Methods](https://docs.sentry.io/platforms/javascript/install.md)
 * [Late Initialization (ESM or CJS)](https://docs.sentry.io/platforms/javascript/guides/node/install/late-initialization.md)
-* [Lightweight Mode](https://docs.sentry.io/platforms/javascript/guides/node/install/lightweight.md)
+* [Lightweight Mode](https://docs.sentry.io/platforms/javascript/guides/node/configuration/integrations/opentelemetry.md)
 * [Set Up MCP Monitoring](https://docs.sentry.io/platforms/javascript/guides/node/mcp-monitoring.md)
 * [Configuration](https://docs.sentry.io/platforms/javascript/user-feedback/configuration.md)
 * [Set Up User Feedback](https://docs.sentry.io/platforms/javascript/user-feedback.md)

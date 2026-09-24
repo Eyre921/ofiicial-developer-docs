@@ -46,36 +46,7 @@ Reference: https://elevenlabs.io/docs/api-reference/conversations/topics/get
 
 Successful Response
 
-- `topics` (list of object, required)
-  - `topic_id` (string, required)
-  - `label` (string, required)
-  - `description` (string, required)
-  - `conversation_count` (integer, required)
-  - `parent_topic_id` (string, optional, nullable)
-  - `x_2d` (double, optional, nullable)
-  - `y_2d` (double, optional, nullable)
-  - `metrics` (object, optional, nullable)
-    - `conversation_count` (integer, optional, default: 0)
-    - `sentiment` (object, optional, nullable)
-      - `sentiment` (object, optional)
-        - `count` (integer, optional, default: 0)
-        - `sum` (double, optional, default: 0)
-        - `min` (double, optional, nullable)
-        - `max` (double, optional, nullable)
-      - `frustration` (object, optional)
-        - `count` (integer, optional, default: 0)
-        - `sum` (double, optional, default: 0)
-        - `min` (double, optional, nullable)
-        - `max` (double, optional, nullable)
-      - `positive_count` (integer, optional, default: 0)
-      - `neutral_count` (integer, optional, default: 0)
-      - `negative_count` (integer, optional, default: 0)
-    - `evaluation_criteria` (list of object, optional)
-      - `criteria_id` (string, required)
-      - `success_count` (integer, optional, default: 0)
-      - `failure_count` (integer, optional, default: 0)
-      - `unknown_count` (integer, optional, default: 0)
-  - `success_rate` (double, optional, nullable) — Success rate across the topic's evaluation criteria, weighted by scored conversations. Returned regardless of include_evaluation_criteria.
+- `topics` (list of AgentTopicResponseModel, required)
 - `window_start_unix_secs` (integer, required)
 - `window_end_unix_secs` (integer, required)
 - `aggregated_run_count` (integer, optional, default: 0) — Number of daily topic-discovery runs the returned metrics were summed over.
@@ -88,10 +59,57 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### AgentTopicResponseModel
+
+- `topic_id` (string, required)
+- `label` (string, required)
+- `description` (string, required)
+- `conversation_count` (integer, required)
+- `parent_topic_id` (string, optional, nullable)
+- `x_2d` (double, optional, nullable)
+- `y_2d` (double, optional, nullable)
+- `metrics` (TopicMetricsAggregate, optional, nullable)
+- `success_rate` (double, optional, nullable) — Success rate across the topic's evaluation criteria, weighted by scored conversations. Returned regardless of include_evaluation_criteria.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### TopicMetricsAggregate
+
+- `conversation_count` (integer, optional, default: 0)
+- `sentiment` (TopicSentimentAggregate, optional, nullable)
+- `evaluation_criteria` (list of TopicEvaluationCriteriaAggregate, optional)
+
+### ValidationErrorLocItems
+
+### TopicSentimentAggregate
+
+- `sentiment` (NumericDistributionAggregate, optional)
+- `frustration` (NumericDistributionAggregate, optional)
+- `positive_count` (integer, optional, default: 0)
+- `neutral_count` (integer, optional, default: 0)
+- `negative_count` (integer, optional, default: 0)
+
+### TopicEvaluationCriteriaAggregate
+
+- `criteria_id` (string, required)
+- `success_count` (integer, optional, default: 0)
+- `failure_count` (integer, optional, default: 0)
+- `unknown_count` (integer, optional, default: 0)
+
+### NumericDistributionAggregate
+
+- `count` (integer, optional, default: 0)
+- `sum` (double, optional, default: 0)
+- `min` (double, optional, nullable)
+- `max` (double, optional, nullable)
 
 ## Examples
 

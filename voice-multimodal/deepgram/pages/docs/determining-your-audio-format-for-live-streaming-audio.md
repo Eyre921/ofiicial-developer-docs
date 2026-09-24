@@ -27,7 +27,9 @@ An example of a Deepgram API request to stream raw audio:
 wss://api.deepgram.com/v1/listen?encoding=ENCODING_VALUE&sample_rate=SAMPLE_RATE_VALUE
 ```
 
-To see a list of raw audio encodings that Deepgram supports, [check out our Encoding documentation](/docs/encoding/).
+> **Info**
+>
+> To see a list of raw audio encodings that Deepgram supports, [check out our Encoding documentation](/docs/encoding/).
 
 ## Streaming Containerized Audio
 
@@ -39,7 +41,9 @@ An example of a Deepgram API request to stream containerized audio:
 wss://api.deepgram.com/v1/listen
 ```
 
-Deepgram supports over 100 different audio formats and encodings. You can see some of the most popular ones at [Supported Audio Format](/docs/supported-audio-formats).
+> **Info**
+>
+> Deepgram supports over 100 different audio formats and encodings. You can see some of the most popular ones at [Supported Audio Format](/docs/supported-audio-formats).
 
 ## Determining Your Audio Format
 

@@ -40,53 +40,7 @@ Reference: https://elevenlabs.io/docs/api-reference/workspace/audit-logs/list
 
 Successful Response
 
-- `entries` (list of object, required)
-  - `activity_id` (enum or enum or enum or enum or enum, required) — Activity ID
-  - `activity_name` (string, required) — Activity name
-  - `status_id` (enum, required) — Status of the action
-    - Allowed values: `0`, `1`, `2`, `99`
-  - `actor` (object, required) — Actor performing the action
-    - `user` (object, required) — User who performed the action
-      - `name` (string, optional, nullable) — Username
-      - `uid` (string, optional, nullable) — Unique user identifier
-      - `type_id` (enum, optional) — Account type identifier
-        - Allowed values: `0`, `1`, `2`, `3`, `4`, `99`
-      - `type` (string, optional, nullable) — Account type description
-      - `email_addr` (string, optional, nullable) — User email address
-      - `full_name` (string, optional, nullable) — Full name of the user
-      - `domain` (string, optional, nullable) — User's domain
-    - `app_name` (string, optional, nullable) — Client application or service name
-    - `app_uid` (string, optional, nullable) — Client application unique identifier
-    - `session` (map from string to any, optional, nullable) — Session information
-  - `message` (string, required) — Human-readable event description
-  - `id` (string, required) — Firestore document ID
-  - `time_dt` (string, required) — Event time in human-readable RFC 3339 format, derived from 'time'.
-  - `type_uid` (integer, required) — OCSF type_uid is class_uid * 100 + activity_id.
-  - `type_name` (string, required) — OCSF type_name combines class_name and activity_name.
-  - `metadata` (map from string to any, optional) — Event metadata
-  - `time` (integer, optional) — Event time in milliseconds since epoch
-  - `category_name` (string, optional, default: Identity & Access Management) — Event category
-  - `category_uid` (integer, optional, default: 3) — Category UID for IAM
-  - `class_name` (string, optional, default: ) — Event class name
-  - `class_uid` (integer, optional, default: 0) — Event class UID
-  - `severity_id` (enum, optional) — Severity level
-    - Allowed values: `0`, `1`, `2`, `3`, `4`, `5`, `6`, `99`
-  - `device` (object, optional, nullable) — Device information
-    - `ip` (string, optional, nullable) — IP address
-    - `hostname` (string, optional, nullable) — Device hostname
-    - `type_id` (integer, optional, default: 99) — Device type ID (99 = Unknown)
-  - `http_request` (object, optional, nullable) — HTTP request details
-    - `http_method` (string, required) — HTTP method (GET, POST, etc.)
-    - `url` (object, required) — Request URL object
-      - `url_string` (string, optional, nullable) — Full URL string
-      - `scheme` (string, optional, nullable) — URL scheme (e.g., https)
-      - `hostname` (string, optional, nullable) — URL hostname
-      - `port` (integer, optional, nullable) — URL port
-      - `path` (string, optional, nullable) — URL path
-      - `query_string` (string, optional, nullable) — URL query string
-    - `user_agent` (string, optional, nullable) — User agent string
-    - `x_forwarded_for` (list of string, optional, nullable) — X-Forwarded-For header as a list
-  - `unmapped` (map from string to any, optional) — Attributes not mapped to OCSF
+- `entries` (list of WorkspaceAuditLogEntryResponse, required)
 - `has_more` (boolean, required)
 - `next_cursor` (string, required, nullable)
 
@@ -96,10 +50,97 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### WorkspaceAuditLogEntryResponse
+
+Audit log entry with Firestore document ID for API responses.
+
+- `activity_id` (WorkspaceAuditLogEntryResponseActivityId, required) — Activity ID
+- `activity_name` (string, required) — Activity name
+- `status_id` (enum, required) — Status of the action
+  - Allowed values: `0`, `1`, `2`, `99`
+- `actor` (ActorModel, required) — Actor performing the action
+- `message` (string, required) — Human-readable event description
+- `id` (string, required) — Firestore document ID
+- `time_dt` (string, required) — Event time in human-readable RFC 3339 format, derived from 'time'.
+- `type_uid` (integer, required) — OCSF type_uid is class_uid * 100 + activity_id.
+- `type_name` (string, required) — OCSF type_name combines class_name and activity_name.
+- `metadata` (map from string to any, optional) — Event metadata
+- `time` (integer, optional) — Event time in milliseconds since epoch
+- `category_name` (string, optional, default: Identity & Access Management) — Event category
+- `category_uid` (integer, optional, default: 3) — Category UID for IAM
+- `class_name` (string, optional, default: ) — Event class name
+- `class_uid` (integer, optional, default: 0) — Event class UID
+- `severity_id` (enum, optional) — Severity level
+  - Allowed values: `0`, `1`, `2`, `3`, `4`, `5`, `6`, `99`
+- `device` (DeviceModel, optional, nullable) — Device information
+- `http_request` (HttpRequestModel, optional, nullable) — HTTP request details
+- `unmapped` (map from string to any, optional) — Attributes not mapped to OCSF
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### WorkspaceAuditLogEntryResponseActivityId
+
+Activity ID
+
+### ActorModel
+
+OCSF Actor object - describes the entity that performed the action. Spec: https://schema.ocsf.io/1.6.0/objects/actor
+
+- `user` (UserModel, required) — User who performed the action
+- `app_name` (string, optional, nullable) — Client application or service name
+- `app_uid` (string, optional, nullable) — Client application unique identifier
+- `session` (map from string to any, optional, nullable) — Session information
+
+### DeviceModel
+
+Device information. Spec: https://schema.ocsf.io/1.6.0/objects/device
+
+- `ip` (string, optional, nullable) — IP address
+- `hostname` (string, optional, nullable) — Device hostname
+- `type_id` (integer, optional, default: 99) — Device type ID (99 = Unknown)
+
+### HttpRequestModel
+
+HTTP request details. Spec: https://schema.ocsf.io/1.6.0/objects/http_request
+
+- `http_method` (string, required) — HTTP method (GET, POST, etc.)
+- `url` (UrlModel, required) — Request URL object
+- `user_agent` (string, optional, nullable) — User agent string
+- `x_forwarded_for` (list of string, optional, nullable) — X-Forwarded-For header as a list
+
+### ValidationErrorLocItems
+
+### UserModel
+
+OCSF User object. Spec: https://schema.ocsf.io/1.6.0/objects/user
+
+- `name` (string, optional, nullable) — Username
+- `uid` (string, optional, nullable) — Unique user identifier
+- `type_id` (enum, optional) — Account type identifier
+  - Allowed values: `0`, `1`, `2`, `3`, `4`, `99`
+- `type` (string, optional, nullable) — Account type description
+- `email_addr` (string, optional, nullable) — User email address
+- `full_name` (string, optional, nullable) — Full name of the user
+- `domain` (string, optional, nullable) — User's domain
+
+### UrlModel
+
+OCSF URL object. Spec: https://schema.ocsf.io/1.6.0/objects/url
+
+- `url_string` (string, optional, nullable) — Full URL string
+- `scheme` (string, optional, nullable) — URL scheme (e.g., https)
+- `hostname` (string, optional, nullable) — URL hostname
+- `port` (integer, optional, nullable) — URL port
+- `path` (string, optional, nullable) — URL path
+- `query_string` (string, optional, nullable) — URL query string
 
 ## Examples
 

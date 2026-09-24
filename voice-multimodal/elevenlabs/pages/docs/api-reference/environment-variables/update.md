@@ -31,13 +31,9 @@ Reference: https://elevenlabs.io/docs/api-reference/environment-variables/update
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects an UpdateEnvironmentVariableRequest.
 
-- `values` (map from string to string or object or object, required) — Values to replace. Set to null to remove an environment (except 'production').
-  - EnvironmentVariableSecretValueRequest
-    - `secret_id` (string, required)
-  - EnvironmentVariableAuthConnectionValueRequest
-    - `auth_connection_id` (string, required)
+- `values` (map from string to UpdateEnvironmentVariableRequestValues, required) — Values to replace. Set to null to remove an environment (except 'production').
 
 ## Response
 
@@ -52,7 +48,7 @@ Successful Response
   - Allowed values: `string`, `secret`, `auth_connection`
 - `id` (string, required)
 - `workspace_id` (string, required)
-- `values` (map from string to string or map from string to object or map from string to object, required)
+- `values` (EnvironmentVariableResponseValues, required)
 - `created_by_user_id` (string, optional, nullable)
 
 ## Errors
@@ -73,10 +69,29 @@ Environment variable not found
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### UpdateEnvironmentVariableRequestValues
+
+### EnvironmentVariableResponseValues
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### EnvironmentVariableSecretValueRequest
+
+- `secret_id` (string, required)
+
+### EnvironmentVariableAuthConnectionValueRequest
+
+- `auth_connection_id` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

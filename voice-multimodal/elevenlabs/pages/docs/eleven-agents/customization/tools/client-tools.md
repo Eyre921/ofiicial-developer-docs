@@ -19,7 +19,9 @@ Here are a few examples where client tools can be useful:
 * **Triggering UI events**: Allow an assistant to trigger browser events, such as alerts, modals or notifications.
 * **Interacting with the DOM**: Enable an assistant to manipulate the Document Object Model (DOM) for dynamic content updates or to guide users through complex interfaces.
 
-To call server-side APIs, use [webhook tools](/docs/eleven-agents/customization/tools/webhook-tools) instead.
+> **Info**
+>
+> To call server-side APIs, use [webhook tools](/docs/eleven-agents/customization/tools/webhook-tools) instead.
 
 ## Guide
 
@@ -50,7 +52,7 @@ Then create a new parameter `message` with the following configuration:
 | Required    | true                                                                               |
 | Description | The message to log in the console. Ensure the message is informative and relevant. |
 
-![logMessage client-tool setup](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f7ed25d49a2a814b76112f3e385d471e0dc8444705e11f2f6fad0bd23f1eae12/assets/images/conversational-ai/client-tool-example.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T111925Z&X-Amz-Expires=604800&X-Amz-Signature=5ad87626a720e12a529c9de85ddaed3cdd9fb7328131836d5db92ed1844d28e3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![logMessage client-tool setup](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f7ed25d49a2a814b76112f3e385d471e0dc8444705e11f2f6fad0bd23f1eae12/assets/images/conversational-ai/client-tool-example.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T111234Z&X-Amz-Expires=604800&X-Amz-Signature=53a7de99ed856226dafa783910660d3394d84c6a0efdea08df3ddf90a07a4728&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Add via the CLI
 
@@ -218,7 +220,9 @@ clientTools.register("logMessage") { parameters async throws -> String? in
 }
 ```
 
-The tool and parameter names in the agent configuration are case-sensitive and **must** match those registered in your code.
+> **Note**
+>
+> The tool and parameter names in the agent configuration are case-sensitive and **must** match those registered in your code.
 
 #### Testing
 
@@ -240,7 +244,7 @@ Now that you've set up a basic client-side event, you can:
 
 When you want your agent to receive data back from a client tool, ensure that you tick the **Wait for response** option in the tool configuration.
 
-![Wait for response option in client tool configuration](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0ecc615fc9f25446b67369fd3e010e34b39549a22146a2483ea17251206caf1e/assets/images/conversational-ai/wait-until-tool-result.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T111925Z&X-Amz-Expires=604800&X-Amz-Signature=61a1c7527d0bd3e09c68530d04f04cc63d4174ed73f49095de158db603e25bd2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Wait for response option in client tool configuration](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0ecc615fc9f25446b67369fd3e010e34b39549a22146a2483ea17251206caf1e/assets/images/conversational-ai/wait-until-tool-result.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T111234Z&X-Amz-Expires=604800&X-Amz-Signature=a20cfcd17bb13cd2a44802be41d5d61c8e58c7d0d89347edb293c6dc4f08b2bf&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Once the client tool is added, when the function is called the agent will wait for its response and append the response to the conversation context.
 
@@ -333,7 +337,9 @@ Before scheduling a meeting with `schedule_meeting`, check the user's calendar f
 
 #### LLM selection
 
-When using tools, we recommend picking high intelligence models like GPT 5.2, Gemini-2.5-Flash, or
-Claude Sonnet 4.5 and avoiding Gemini-2.0-Flash.
+> **Warning**
+>
+> When using tools, we recommend picking high intelligence models like GPT 5.2, Gemini-2.5-Flash, or
+> Claude Sonnet 4.5 and avoiding Gemini-2.0-Flash.
 
 It's important to note that the choice of LLM matters to the success of function calls. Some LLMs can struggle with extracting the relevant parameters from the conversation.

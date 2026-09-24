@@ -30,3 +30,7 @@ You will not be able to access the backup code again, so please keep it safe.
 
 After you've added 2FA to your account, you will need to enter the code displayed in your
 authenticator app to log in.
+
+> **Note**
+>
+> Enabling 2FA also removes the monthly cap on Pay As You Go credit purchases. See [Pay As You Go](/docs/overview/administration/pay-as-you-go#monthly-purchase-cap-without-2fa).

@@ -37,8 +37,10 @@ In the ElevenLabs integration setup, paste your Cal.com API key in the **API Key
 
 ## Demo
 
-This demo uses legacy webhook tools. If you're using the native Cal.com integration, the tools are
-configured automatically — no manual webhook setup is needed.
+> **Note**
+>
+> This demo uses legacy webhook tools. If you're using the native Cal.com integration, the tools are
+> configured automatically — no manual webhook setup is needed.
 
 ## How it works
 
@@ -116,8 +118,10 @@ Guardrails:
 
 ## Manual webhook setup
 
-If you use the native Cal.com integration, tools are configured automatically. The steps below
-apply only to manual webhook setup.
+> **Note**
+>
+> If you use the native Cal.com integration, tools are configured automatically. The steps below
+> apply only to manual webhook setup.
 
 #### Store your Cal.com secret
 
@@ -133,9 +137,11 @@ The Cal.com API expects the following authentication header:
 
 Store the key in the agent's secret storage to keep it secure and accessible when making requests.
 
-To match the expected authentication structure of Cal.com, remember to prepend the API key with `Bearer ` when creating the secret.
+> **Warning**
+>
+> To match the expected authentication structure of Cal.com, remember to prepend the API key with `Bearer ` when creating the secret.
 
-![Tool secrets](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5ffae070945a86b74975cd9b56679c2bb76f0ce70d05fe7b10e8e5dff6ddd630/agents-platform/pages/customization/integrations/calcom/tool-secrets.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113218Z&X-Amz-Expires=604800&X-Amz-Signature=fffe629aa1f8b6267d1b281a5726c94ce7db3d0e2405884d9ade8d426af90519&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Tool secrets](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5ffae070945a86b74975cd9b56679c2bb76f0ce70d05fe7b10e8e5dff6ddd630/agents-platform/pages/customization/integrations/calcom/tool-secrets.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113144Z&X-Amz-Expires=604800&X-Amz-Signature=189245b90fa056371062af7a7df53dc03bd9b4a0603b984489b79ce6976742b2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Add tools to the agent
 
@@ -211,10 +217,12 @@ Matches the request body parameters defined [here](https://cal.com/docs/api-refe
 | eventTypeId | Number    | Yes      | The ID of the event type that is booked. If 15 minutes, return abc. If 30 minutes, return def. If 60 minutes, return xyz. |
 | attendee    | Object    | Yes      | The attendee's details. You must collect these fields from the user.                                                      |
 
-The `eventTypeId` must correspond to the event types you have available in Cal. Call
-[this](https://cal.com/docs/api-reference/v1/event-types/find-all-event-types#find-all-event-types)
-endpoint to get a list of your account event types (or create another tool that does this
-automatically).
+> **Note**
+>
+> The `eventTypeId` must correspond to the event types you have available in Cal. Call
+> [this](https://cal.com/docs/api-reference/v1/event-types/find-all-event-types#find-all-event-types)
+> endpoint to get a list of your account event types (or create another tool that does this
+> automatically).
 
 **Attendee object:**
 
@@ -224,7 +232,9 @@ automatically).
 | email      | String    | Yes      | The email address of the person booking the meeting.                                                            |
 | timeZone   | String    | Yes      | The caller's timezone. Should be in the format of 'Continent/City' like 'Europe/London' or 'America/New\_York'. |
 
-Test the agent by pressing the **Test AI agent** button. Adjust the system prompt as needed.
+> **Success**
+>
+> Test the agent by pressing the **Test AI agent** button. Adjust the system prompt as needed.
 
 #### Add date and time awareness
 

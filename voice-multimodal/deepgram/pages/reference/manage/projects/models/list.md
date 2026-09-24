@@ -36,31 +36,8 @@ Reference: https://developers.deepgram.com/reference/manage/projects/models/list
 
 A list of models
 
-- `stt` (list of object, optional)
-  - `name` (string, optional)
-  - `canonical_name` (string, optional)
-  - `architecture` (string, optional)
-  - `languages` (list of string, optional)
-  - `version` (string, optional)
-  - `uuid` (string, optional)
-  - `batch` (boolean, optional)
-  - `streaming` (boolean, optional)
-  - `formatted_output` (boolean, optional)
-- `tts` (list of object, optional)
-  - `name` (string, optional)
-  - `canonical_name` (string, optional)
-  - `architecture` (string, optional)
-  - `languages` (list of string, optional)
-  - `version` (string, optional)
-  - `uuid` (string, optional)
-  - `metadata` (object, optional)
-    - `accent` (string, optional)
-    - `age` (string, optional)
-    - `color` (string, optional)
-    - `image` (string, optional)
-    - `sample` (string, optional)
-    - `tags` (list of string, optional)
-    - `use_cases` (list of string, optional)
+- `stt` (list of ListModelsV1ResponseSttModels, optional)
+- `tts` (list of ListModelsV1ResponseTtsModels, optional)
 
 ## Errors
 
@@ -68,16 +45,54 @@ A list of models
 
 Invalid Request
 
-- `string or object or object`
-  - ErrorResponseLegacyError
-    - `err_code` (string, optional) — The error code
-    - `err_msg` (string, optional) — The error message
-    - `request_id` (string, optional) — The request ID
-  - ErrorResponseModernError
-    - `category` (string, optional) — The category of the error
-    - `message` (string, optional) — A message about the error
-    - `details` (string, optional) — A description of the error
-    - `request_id` (string, optional) — The unique identifier of the request
+- `ErrorResponse`
+
+## Types
+
+### ListModelsV1ResponseSttModels
+
+- `name` (string, optional)
+- `canonical_name` (string, optional)
+- `architecture` (string, optional)
+- `languages` (list of string, optional)
+- `version` (string, optional)
+- `uuid` (string, optional)
+- `batch` (boolean, optional)
+- `streaming` (boolean, optional)
+- `formatted_output` (boolean, optional)
+
+### ListModelsV1ResponseTtsModels
+
+- `name` (string, optional)
+- `canonical_name` (string, optional)
+- `architecture` (string, optional)
+- `languages` (list of string, optional)
+- `version` (string, optional)
+- `uuid` (string, optional)
+- `metadata` (ListModelsV1ResponseTtsModelsMetadata, optional)
+
+### ErrorResponseLegacyError
+
+- `err_code` (string, optional) — The error code
+- `err_msg` (string, optional) — The error message
+- `request_id` (string, optional) — The request ID
+
+### ErrorResponseModernError
+
+- `category` (string, optional) — The category of the error
+- `message` (string, optional) — A message about the error
+- `details` (string, optional) — A description of the error
+- `request_id` (string, optional) — The unique identifier of the request
+
+### ListModelsV1ResponseTtsModelsMetadata
+
+- `accent` (string, optional)
+- `age` (string, optional)
+- `color` (string, optional)
+- `image` (string, optional)
+- `sample` (string, optional)
+- `tags` (list of string, optional)
+- `use_cases` (list of string, optional)
 
 ## Examples
 

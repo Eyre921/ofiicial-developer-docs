@@ -387,6 +387,14 @@
 
 - [Chef Migration Guide](/chef/migration-guide.md): How to continue developing your existing Chef projects after Chef's deprecation.
 
+## config
+
+- [auth.config.ts](/config/auth.config.ts.md): Set up authentication providers in the auth.config.ts file.
+- [convex.config.ts](/config/convex.config.ts.md): Declare typed environment variables and install components in the convex.config.ts file.
+- [crons.ts](/config/crons.ts.md): Schedule recurring functions in the crons.ts file.
+- [http.ts](/config/http.ts.md): Define HTTP actions in the http.ts file.
+- [schema.ts](/config/schema.ts.md): Declare your tables and indexes in the schema.ts file.
+
 ## deployment-api
 
 - [Convex Deployment API](/deployment-api/convex-deployment-api.md): Admin API for interacting with deployments.
@@ -494,6 +502,7 @@
 ## team-management
 
 - [Custom Roles](/team-management/custom-roles.md): Define fine-grained permission policies for your Convex team using custom roles.
+- [Directory Sync (SCIM)](/team-management/directory-sync.md): Provision team members and their roles from your identity provider's user directory.
 - [Team Management](/team-management/overview.md): Administrative features for managing your Convex team, including Single Sign-On and custom roles.
 - [Role Actions](/team-management/role-actions.md): Reference for every action a Convex role can grant, and which built-in roles cover which actions.
 - [Single Sign-On (SSO)](/team-management/sso.md): Set up and manage Single Sign-On (SSO) for your Convex team
@@ -5374,7 +5383,9 @@ Omit `webhookUrl` to use status checks alone. If a completion callback is missed
 
 Model names use the `provider/model` form. Pass the string as `model` to the OpenAI SDK or `convexGateway`, for example `openai/gpt-4o-mini` or `anthropic/claude-sonnet-4.5`.
 
-## OpenAI
+<!-- -->
+
+## OpenAI[​](#openai "Direct link to OpenAI")
 
 * `openai/gpt-3.5-turbo`
 * `openai/gpt-3.5-turbo-0613`
@@ -5383,7 +5394,6 @@ Model names use the `provider/model` form. Pass the string as `model` to the Ope
 * `openai/gpt-3.5-turbo:batch`
 * `openai/gpt-4`
 * `openai/gpt-4-turbo`
-* `openai/gpt-4-turbo-preview`
 * `openai/gpt-4-turbo:batch`
 * `openai/gpt-4.1`
 * `openai/gpt-4.1-mini`
@@ -5400,7 +5410,6 @@ Model names use the `provider/model` form. Pass the string as `model` to the Ope
 * `openai/gpt-4o-mini:batch`
 * `openai/gpt-4o:batch`
 * `openai/gpt-5`
-* `openai/gpt-5-codex:batch`
 * `openai/gpt-5-image`
 * `openai/gpt-5-image-mini`
 * `openai/gpt-5-mini`
@@ -5447,38 +5456,42 @@ Model names use the `provider/model` form. Pass the string as `model` to the Ope
 * `openai/gpt-5.6-terra-pro:batch`
 * `openai/gpt-5.6-terra:batch`
 * `openai/gpt-5:batch`
+* `openai/gpt-6-astra`
+* `openai/gpt-6-astra-pro`
+* `openai/gpt-6-astra-pro:batch`
+* `openai/gpt-6-astra:batch`
 * `openai/gpt-audio`
 * `openai/gpt-audio-mini`
 * `openai/gpt-chat-latest`
 * `openai/gpt-oss-120b`
 * `openai/gpt-oss-20b`
-* `openai/gpt-oss-20b:free`
 * `openai/gpt-oss-safeguard-20b`
 * `openai/o1`
 * `openai/o1-pro`
-* `openai/o1-pro:batch`
-* `openai/o1:batch`
 * `openai/o3`
 * `openai/o3-mini`
 * `openai/o3-mini-high`
-* `openai/o3-mini-high:batch`
 * `openai/o3-mini:batch`
 * `openai/o3-pro`
-* `openai/o3-pro:batch`
 * `openai/o3:batch`
 * `openai/o4-mini`
 * `openai/o4-mini-high`
-* `openai/o4-mini-high:batch`
 * `openai/o4-mini:batch`
+* `~openai/gpt-astra-latest`
+* `~openai/gpt-luna-latest`
+* `~openai/gpt-mini-latest`
+* `~openai/gpt-sol-latest`
+* `~openai/gpt-terra-latest`
 
-## Anthropic
+## Anthropic[​](#anthropic "Direct link to Anthropic")
 
 * `anthropic/claude-3-haiku`
 * `anthropic/claude-fable-5`
+* `anthropic/claude-fable-5.1`
+* `anthropic/claude-fable-5.1:batch`
 * `anthropic/claude-fable-5:batch`
 * `anthropic/claude-haiku-4.5`
 * `anthropic/claude-haiku-4.5:batch`
-* `anthropic/claude-opus-4`
 * `anthropic/claude-opus-4.1`
 * `anthropic/claude-opus-4.1:batch`
 * `anthropic/claude-opus-4.5`
@@ -5486,13 +5499,10 @@ Model names use the `provider/model` form. Pass the string as `model` to the Ope
 * `anthropic/claude-opus-4.6`
 * `anthropic/claude-opus-4.6:batch`
 * `anthropic/claude-opus-4.7`
-* `anthropic/claude-opus-4.7-fast`
 * `anthropic/claude-opus-4.7:batch`
 * `anthropic/claude-opus-4.8`
-* `anthropic/claude-opus-4.8-fast`
 * `anthropic/claude-opus-4.8:batch`
 * `anthropic/claude-opus-5`
-* `anthropic/claude-opus-5-fast`
 * `anthropic/claude-opus-5:batch`
 * `anthropic/claude-sonnet-4`
 * `anthropic/claude-sonnet-4.5`
@@ -5501,8 +5511,12 @@ Model names use the `provider/model` form. Pass the string as `model` to the Ope
 * `anthropic/claude-sonnet-4.6:batch`
 * `anthropic/claude-sonnet-5`
 * `anthropic/claude-sonnet-5:batch`
+* `~anthropic/claude-fable-latest`
+* `~anthropic/claude-haiku-latest`
+* `~anthropic/claude-opus-latest`
+* `~anthropic/claude-sonnet-latest`
 
-## Google
+## Google[​](#google "Direct link to Google")
 
 * `google/gemini-2.5-flash`
 * `google/gemini-2.5-flash-image`
@@ -5511,7 +5525,6 @@ Model names use the `provider/model` form. Pass the string as `model` to the Ope
 * `google/gemini-2.5-flash:batch`
 * `google/gemini-2.5-pro`
 * `google/gemini-2.5-pro-preview`
-* `google/gemini-2.5-pro-preview-05-06`
 * `google/gemini-2.5-pro:batch`
 * `google/gemini-3-flash-preview`
 * `google/gemini-3-flash-preview:batch`
@@ -5534,28 +5547,34 @@ Model names use the `provider/model` form. Pass the string as `model` to the Ope
 * `google/gemini-3.6-flash:batch`
 * `google/gemini-3.7-flash`
 * `google/gemini-3.7-flash:batch`
+* `google/gemini-3.8-flash`
+* `google/gemini-3.8-flash:batch`
 * `google/gemma-2-27b-it`
 * `google/gemma-3-12b-it`
 * `google/gemma-3-27b-it`
 * `google/gemma-3-4b-it`
-* `google/gemma-3n-e4b-it`
 * `google/gemma-4-26b-a4b-it`
 * `google/gemma-4-26b-a4b-it:free`
 * `google/gemma-4-31b-it`
 * `google/gemma-4-31b-it:free`
 * `google/lyria-3-clip-preview`
 * `google/lyria-3-pro-preview`
+* `~google/gemini-flash-latest`
+* `~google/gemini-pro-latest`
 
-## xAI
+## xAI[​](#xai "Direct link to xAI")
 
 * `x-ai/grok-4.20`
 * `x-ai/grok-4.20-multi-agent`
 * `x-ai/grok-4.3`
+* `x-ai/grok-4.3:batch`
 * `x-ai/grok-4.5`
 * `x-ai/grok-4.6`
+* `x-ai/grok-4.7`
 * `x-ai/grok-build-0.1`
+* `~x-ai/grok-latest`
 
-## DeepSeek
+## DeepSeek[​](#deepseek "Direct link to DeepSeek")
 
 * `deepseek/deepseek-chat`
 * `deepseek/deepseek-chat-v3-0324`
@@ -5568,11 +5587,18 @@ Model names use the `provider/model` form. Pass the string as `model` to the Ope
 * `deepseek/deepseek-v3.2-exp`
 * `deepseek/deepseek-v4-flash`
 * `deepseek/deepseek-v4-flash-0731`
+* `deepseek/deepseek-v4-flash-0731:batch`
 * `deepseek/deepseek-v4-flash-vision-exp`
+* `deepseek/deepseek-v4-flash-vision-exp:batch`
 * `deepseek/deepseek-v4-pro`
 * `deepseek/deepseek-v4-pro-0813`
+* `deepseek/deepseek-v4-pro-0813:batch`
+* `deepseek/deepseek-v4.1-flash`
+* `~deepseek/deepseek-flash-latest`
+* `~deepseek/deepseek-pro-latest`
+* `~deepseek/deepseek-v4-flash-latest`
 
-## Meta
+## Meta[​](#meta "Direct link to Meta")
 
 * `meta-llama/llama-3.1-70b-instruct`
 * `meta-llama/llama-3.1-8b-instruct`
@@ -5582,30 +5608,42 @@ Model names use the `provider/model` form. Pass the string as `model` to the Ope
 * `meta-llama/llama-4-maverick`
 * `meta-llama/llama-4-scout`
 * `meta-llama/llama-guard-4-12b`
+* `meta/muse-glimmer-30b`
+* `meta/muse-glimmer-30b:batch`
+* `meta/muse-spark-1.1`
+* `meta/muse-spark-1.2`
+* `meta/muse-spark-1.2-contributor`
+* `meta/muse-spark-1.3`
+* `meta/muse-spark-1.3-contributor`
 
-## Mistral
+## Mistral[​](#mistral "Direct link to Mistral")
 
 * `mistralai/codestral-2508`
+* `mistralai/codestral-2508:batch`
+* `mistralai/devstral-2512`
 * `mistralai/ministral-14b-2512`
 * `mistralai/ministral-3b-2512`
-* `mistralai/ministral-8b`
 * `mistralai/ministral-8b-2512`
+* `mistralai/ministral-8b-2512:batch`
 * `mistralai/mistral-large`
 * `mistralai/mistral-large-2407`
-* `mistralai/mistral-large-2512`
+* `mistralai/mistral-large-2512:batch`
 * `mistralai/mistral-medium-3`
 * `mistralai/mistral-medium-3-5`
+* `mistralai/mistral-medium-3-5:batch`
 * `mistralai/mistral-medium-3.1`
+* `mistralai/mistral-medium-3.1:batch`
 * `mistralai/mistral-nemo`
 * `mistralai/mistral-saba`
 * `mistralai/mistral-small-24b-instruct-2501`
 * `mistralai/mistral-small-2603`
+* `mistralai/mistral-small-2603:batch`
 * `mistralai/mistral-small-3.1-24b-instruct`
 * `mistralai/mistral-small-3.2-24b-instruct`
 * `mistralai/mixtral-8x22b-instruct`
 * `mistralai/voxtral-small-24b-2507`
 
-## Moonshot
+## Moonshot[​](#moonshot "Direct link to Moonshot")
 
 * `moonshotai/kimi-k2`
 * `moonshotai/kimi-k2-0905`
@@ -5613,10 +5651,10 @@ Model names use the `provider/model` form. Pass the string as `model` to the Ope
 * `moonshotai/kimi-k2.5`
 * `moonshotai/kimi-k2.6`
 * `moonshotai/kimi-k2.7-code`
-* `moonshotai/kimi-k2.7-code:batch`
 * `moonshotai/kimi-k3`
+* `~moonshotai/kimi-latest`
 
-## Amazon
+## Amazon[​](#amazon "Direct link to Amazon")
 
 * `amazon/nova-2-lite-v1`
 * `amazon/nova-lite-v1`
@@ -5624,14 +5662,13 @@ Model names use the `provider/model` form. Pass the string as `model` to the Ope
 * `amazon/nova-premier-v1`
 * `amazon/nova-pro-v1`
 
-## Qwen
+## Qwen[​](#qwen "Direct link to Qwen")
 
 * `qwen/qwen-2.5-72b-instruct`
 * `qwen/qwen-2.5-7b-instruct`
 * `qwen/qwen-2.5-coder-32b-instruct`
 * `qwen/qwen-plus`
 * `qwen/qwen-plus-2025-07-28`
-* `qwen/qwen-plus-2025-07-28:thinking`
 * `qwen/qwen2.5-vl-72b-instruct`
 * `qwen/qwen3-14b`
 * `qwen/qwen3-235b-a22b`
@@ -5676,9 +5713,11 @@ Model names use the `provider/model` form. Pass the string as `model` to the Ope
 * `qwen/qwen3.7-plus`
 * `qwen/qwen3.8-2.4t-a95b`
 * `qwen/qwen3.8-27b`
-* `qwen/qwen3.8-max`
+* `qwen/qwen3.8-27b:free`
+* `qwen/qwen3.8-flash`
+* `qwen/qwen3.8-max-0902`
 
-## Z.AI
+## Z.AI[​](#zai "Direct link to Z.AI")
 
 * `z-ai/glm-4.5`
 * `z-ai/glm-4.5-air`
@@ -5694,15 +5733,259 @@ Model names use the `provider/model` form. Pass the string as `model` to the Ope
 * `z-ai/glm-5.2:batch`
 * `z-ai/glm-5.2:free`
 * `z-ai/glm-5.3`
+* `z-ai/glm-5.3-flash`
+* `z-ai/glm-5.3-flash:batch`
+* `z-ai/glm-5.3-flashx`
+* `z-ai/glm-5.3:batch`
 * `z-ai/glm-5v-turbo`
+* `~z-ai/glm-flash-latest`
+* `~z-ai/glm-latest`
 
-## Perplexity
+## Perplexity[​](#perplexity "Direct link to Perplexity")
 
 * `perplexity/sonar`
 * `perplexity/sonar-deep-research`
 * `perplexity/sonar-pro`
 * `perplexity/sonar-pro-search`
 * `perplexity/sonar-reasoning-pro`
+
+## NVIDIA[​](#nvidia "Direct link to NVIDIA")
+
+* `nvidia/nemotron-3-nano-30b-a3b`
+* `nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free`
+* `nvidia/nemotron-3-super-120b-a12b`
+* `nvidia/nemotron-3-super-120b-a12b:free`
+* `nvidia/nemotron-3-ultra-550b-a55b`
+* `nvidia/nemotron-3-ultra-550b-a55b:free`
+* `nvidia/nemotron-3.5-content-safety`
+* `nvidia/nemotron-3.5-content-safety:free`
+* `nvidia/nemotron-3.5-lightning`
+* `nvidia/nemotron-3.5-lightning:free`
+
+## Microsoft[​](#microsoft "Direct link to Microsoft")
+
+* `microsoft/phi-4`
+* `microsoft/wizardlm-2-8x22b`
+
+## Cohere[​](#cohere "Direct link to Cohere")
+
+* `cohere/command-a`
+* `cohere/command-r-08-2024`
+* `cohere/command-r-plus-08-2024`
+* `cohere/command-r7b-12-2024`
+* `cohere/north-mini-code:free`
+
+## MiniMax[​](#minimax "Direct link to MiniMax")
+
+* `minimax/minimax-01`
+* `minimax/minimax-m1`
+* `minimax/minimax-m2`
+* `minimax/minimax-m2-her`
+* `minimax/minimax-m2.1`
+* `minimax/minimax-m2.5`
+* `minimax/minimax-m2.7`
+* `minimax/minimax-m3`
+
+## Tencent[​](#tencent "Direct link to Tencent")
+
+* `tencent/hunyuan-a13b-instruct`
+* `tencent/hy-mt2-1.8b`
+* `tencent/hy-mt2-30b-a3b`
+* `tencent/hy-mt2-7b`
+* `tencent/hy3`
+* `tencent/hy3-preview`
+* `tencent/hy4-preview`
+
+## Baidu[​](#baidu "Direct link to Baidu")
+
+* `baidu/ernie-4.5-vl-424b-a47b`
+
+## Xiaomi[​](#xiaomi "Direct link to Xiaomi")
+
+* `xiaomi/mimo-v2.5`
+* `xiaomi/mimo-v2.5-pro`
+* `xiaomi/mimo-v2.6-flash`
+* `xiaomi/mimo-v2.6-pro`
+* `xiaomi/mimo-v2.6-pro-ultraspeed`
+
+## ByteDance[​](#bytedance "Direct link to ByteDance")
+
+* `bytedance/ui-tars-1.5-7b`
+
+## IBM Granite[​](#ibm-granite "Direct link to IBM Granite")
+
+* `ibm-granite/granite-4.0-h-micro`
+* `ibm-granite/granite-4.2-8b`
+
+## OpenRouter[​](#openrouter "Direct link to OpenRouter")
+
+* `openrouter/auto`
+* `openrouter/auto-beta`
+* `openrouter/bodybuilder`
+* `openrouter/free`
+* `openrouter/fusion`
+* `openrouter/pareto-code`
+
+## Aion Labs[​](#aion-labs "Direct link to Aion Labs")
+
+* `aion-labs/aion-2.0`
+* `aion-labs/aion-3.0`
+* `aion-labs/aion-3.0-mini`
+* `aion-labs/aion-rp-llama-3.1-8b`
+
+## Anthracite[​](#anthracite "Direct link to Anthracite")
+
+* `anthracite-org/magnum-v4-72b`
+
+## Arcee AI[​](#arcee-ai "Direct link to Arcee AI")
+
+* `arcee-ai/trinity-large-thinking`
+
+## ByteDance Seed[​](#bytedance-seed "Direct link to ByteDance Seed")
+
+* `bytedance-seed/seed-1.6`
+* `bytedance-seed/seed-1.6-flash`
+* `bytedance-seed/seed-2-1-turbo`
+* `bytedance-seed/seed-2.0-code`
+* `bytedance-seed/seed-2.0-lite`
+* `bytedance-seed/seed-2.0-mini`
+
+## Cognitive Computations[​](#cognitive-computations "Direct link to Cognitive Computations")
+
+* `cognitivecomputations/dolphin-mistral-24b-venice-edition`
+
+## Dots Studio[​](#dots-studio "Direct link to Dots Studio")
+
+* `dots-studio/dots-3-note-preview:free`
+
+## Gryphe[​](#gryphe "Direct link to Gryphe")
+
+* `gryphe/mythomax-l2-13b`
+
+## Inception[​](#inception "Direct link to Inception")
+
+* `inception/mercury-2`
+* `inception/mercury-2.5`
+
+## Inclusion AI[​](#inclusion-ai "Direct link to Inclusion AI")
+
+* `inclusionai/ling-3.0-flash`
+* `inclusionai/ling-3.0-flash-fin`
+* `inclusionai/ling-3.0-flash-fin:free`
+* `inclusionai/ling-3.0-flash-sante:free`
+* `inclusionai/ling-3.0-flash-vl`
+* `inclusionai/ling-3.0-flash-vl:free`
+
+## Inference.net[​](#inferencenet "Direct link to Inference.net")
+
+* `inference-net/schematron-v2-small`
+* `inference-net/schematron-v2-turbo`
+
+## KwaiPilot[​](#kwaipilot "Direct link to KwaiPilot")
+
+* `kwaipilot/kat-coder-pro-v2`
+* `kwaipilot/kat-coder-pro-v2.5`
+
+## Liquid AI[​](#liquid-ai "Direct link to Liquid AI")
+
+* `liquid/lfm-2.5-2.6b:free`
+
+## Mancer[​](#mancer "Direct link to Mancer")
+
+* `mancer/weaver`
+
+## Meituan[​](#meituan "Direct link to Meituan")
+
+* `meituan/longcat-2.0`
+
+## Morph[​](#morph "Direct link to Morph")
+
+* `morph/morph-v3-fast`
+* `morph/morph-v3-large`
+
+## Nex AGI[​](#nex-agi "Direct link to Nex AGI")
+
+* `nex-agi/nex-n2.5-mini:free`
+* `nex-agi/nex-n2.5-pro:free`
+
+## Nous Research[​](#nous-research "Direct link to Nous Research")
+
+* `nousresearch/hermes-3-llama-3.1-405b`
+* `nousresearch/hermes-3-llama-3.1-70b`
+* `nousresearch/hermes-4-405b`
+
+## Perceptron[​](#perceptron "Direct link to Perceptron")
+
+* `perceptron/perceptron-mk1`
+
+## Poolside[​](#poolside "Direct link to Poolside")
+
+* `poolside/laguna-s-2.1`
+* `poolside/laguna-s-2.1:free`
+* `poolside/laguna-xs-2.1`
+* `poolside/laguna-xs-2.1:free`
+
+## Prism ML[​](#prism-ml "Direct link to Prism ML")
+
+* `prism-ml/ternary-bonsai-2-27b`
+
+## Reka AI[​](#reka-ai "Direct link to Reka AI")
+
+* `rekaai/reka-edge`
+* `rekaai/reka-flash-3`
+
+## Relace[​](#relace "Direct link to Relace")
+
+* `relace/relace-apply-3`
+* `relace/relace-search`
+
+## Sakana AI[​](#sakana-ai "Direct link to Sakana AI")
+
+* `sakana/fugu-max`
+* `sakana/fugu-ultra`
+* `sakana/fugu-ultra-v2`
+* `sakana/sakana-namazu`
+
+## Sao10k[​](#sao10k "Direct link to Sao10k")
+
+* `sao10k/l3-lunaris-8b`
+* `sao10k/l3.1-euryale-70b`
+* `sao10k/l3.3-euryale-70b`
+
+## StepFun[​](#stepfun "Direct link to StepFun")
+
+* `stepfun/step-3.5-flash`
+* `stepfun/step-3.7-flash`
+
+## TheDrummer[​](#thedrummer "Direct link to TheDrummer")
+
+* `thedrummer/cydonia-24b-v4.1`
+* `thedrummer/skyfall-36b-v2`
+* `thedrummer/unslopnemo-12b`
+
+## Thinking Machines[​](#thinking-machines "Direct link to Thinking Machines")
+
+* `thinkingmachines/inkling`
+* `thinkingmachines/inkling-small`
+* `thinkingmachines/inkling-small:free`
+* `thinkingmachines/inkling:free`
+
+## Unbiased[​](#unbiased "Direct link to Unbiased")
+
+* `unbiased/pareto`
+
+## Undi95[​](#undi95 "Direct link to Undi95")
+
+* `undi95/remm-slerp-l2-13b`
+
+## Upstage[​](#upstage "Direct link to Upstage")
+
+* `upstage/solar-pro-3`
+* `upstage/solar-pro4`
+
+## Writer[​](#writer "Direct link to Writer")
+
+* `writer/palmyra-x5`
 
 See [Getting started](/ai-gateway/setup.md) for how to send a request, and [HTTP API](/ai-gateway/api.md#get-v1models) for the list-endpoint response shape.
 
@@ -5872,12 +6155,12 @@ const agent = new Agent(components.agent, {
 
 ## Vercel AI SDK[​](#vercel-ai-sdk "Direct link to Vercel AI SDK")
 
-`convexGateway` works with `generateText`, `streamText`, `embed`, and `embedMany` from the [Vercel AI SDK](https://ai-sdk.dev/). Use `@convex-dev/ai-sdk-provider` 0.2.0 or later with `convex` 1.45 or later and AI SDK 7.0.105 or later. The provider works in the default runtime and [Node.js actions](/functions/runtimes.md).
+`convexGateway` works with `generateText`, `streamText`, `embed`, and `embedMany` from the [Vercel AI SDK](https://ai-sdk.dev/). Use `@convex-dev/ai-sdk-provider` 0.2.1 or later with `convex` 1.45 or later and AI SDK 7.0.105 or later. The provider works in the default runtime and [Node.js actions](/functions/runtimes.md).
 
 For a Node.js action, set [`node.nodeVersion`](/production/project-configuration.md#configuring-the-nodejs-version) to `"22"` or `"24"` in `convex.json`. The default Convex runtime doesn't need this setting.
 
 ```
-npm install @convex-dev/ai-sdk-provider@^0.2.0 ai
+npm install @convex-dev/ai-sdk-provider@^0.2.1 ai
 ```
 
 ```
@@ -22230,6 +22513,18 @@ An [Expression](/api/classes/server.Expression.md) or a constant [Value](/api/mo
 
 ***
 
+### ServiceName[​](#servicename "Direct link to ServiceName")
+
+Ƭ **ServiceName**: `"ai-gateway"`
+
+A Convex-managed service. The backend decides which names it accepts; this type lists the ones the current release knows about.
+
+#### Defined in[​](#defined-in-52 "Direct link to Defined in")
+
+[server/impl/actions\_impl.ts:71](https://github.com/get-convex/convex-js/blob/main/src/server/impl/actions_impl.ts#L71)
+
+***
+
 ### TransactionMetric[​](#transactionmetric "Direct link to TransactionMetric")
 
 Ƭ **TransactionMetric**: `Object`
@@ -22243,7 +22538,7 @@ Used and remaining amounts for a single transaction limit.
 | `used`      | `number` |
 | `remaining` | `number` |
 
-#### Defined in[​](#defined-in-52 "Direct link to Defined in")
+#### Defined in[​](#defined-in-53 "Direct link to Defined in")
 
 [server/meta.ts:9](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L9)
 
@@ -22269,7 +22564,7 @@ See <https://docs.convex.dev/production/state/limits>
 | `functionsScheduled`         | [`TransactionMetric`](/api/modules/server.md#transactionmetric) |
 | `scheduledFunctionArgsBytes` | [`TransactionMetric`](/api/modules/server.md#transactionmetric) |
 
-#### Defined in[​](#defined-in-53 "Direct link to Defined in")
+#### Defined in[​](#defined-in-54 "Direct link to Defined in")
 
 [server/meta.ts:21](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L21)
 
@@ -22290,7 +22585,7 @@ Metadata about the currently executing Convex function.
 | `type`          | [`FunctionType`](/api/modules/server.md#functiontype)             | Whether it's a query, mutation, or action.                                                    |
 | `visibility`    | [`FunctionVisibility`](/api/modules/server.md#functionvisibility) | Whether the function is public or internal.                                                   |
 
-#### Defined in[​](#defined-in-54 "Direct link to Defined in")
+#### Defined in[​](#defined-in-55 "Direct link to Defined in")
 
 [server/meta.ts:53](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L53)
 
@@ -22310,7 +22605,7 @@ Metadata about the deployment this function is running on.
 | `region` | `string` \| `null`                            | The deployment region, e.g. `"aws-us-east-1"`. `null` for local and self-hosted deployments.                                                                          |
 | `class`  | `"s16"` \| `"s256"` \| `"d1024"` \| `"d2048"` | The deployment class, e.g. `"s16"`, `"s256"`, `"d1024"`, or `"d2048"`.                                                                                                |
 
-#### Defined in[​](#defined-in-55 "Direct link to Defined in")
+#### Defined in[​](#defined-in-56 "Direct link to Defined in")
 
 [server/meta.ts:74](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L74)
 
@@ -22336,7 +22631,7 @@ Functions called from within a function (i.e. using `runMutation` or `runAction`
 | `scheduledFunctionId` | `string` \| `null` | The ID of the scheduled function document (in `_scheduled_functions`) that this execution belongs to, or `null` otherwise. This is set for the scheduled function itself and for any functions it calls (e.g. a mutation invoked via `runMutation` by a scheduled action), propagating the top-level scheduled function's ID down the call tree. It is `null` when the function was not scheduled. |
 | `authToken`           | `string` \| `null` | The raw auth token (a JWT) the request was authenticated with, or `null` when the request was unauthenticated or authenticated with an admin key. This is the same token that `ctx.auth.getUserIdentity()` derives its attributes from.                                                                                                                                                            |
 
-#### Defined in[​](#defined-in-56 "Direct link to Defined in")
+#### Defined in[​](#defined-in-57 "Direct link to Defined in")
 
 [server/meta.ts:103](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L103)
 
@@ -22354,7 +22649,7 @@ To continue paginating, pass the cursor back into [paginate](/api/interfaces/ser
 
 Note: Cursors can only be passed to *exactly* the same database query that they were generated from. You may not reuse a cursor between different database queries.
 
-#### Defined in[​](#defined-in-57 "Direct link to Defined in")
+#### Defined in[​](#defined-in-58 "Direct link to Defined in")
 
 [server/pagination.ts:21](https://github.com/get-convex/convex-js/blob/main/src/server/pagination.ts#L21)
 
@@ -22376,7 +22671,7 @@ You should generally use the `MutationCtx` type from `"./_generated/server"`.
 | ----------- | --------------------------------------------------------------------- |
 | `DataModel` | extends [`GenericDataModel`](/api/modules/server.md#genericdatamodel) |
 
-#### Defined in[​](#defined-in-58 "Direct link to Defined in")
+#### Defined in[​](#defined-in-59 "Direct link to Defined in")
 
 [server/registration.ts:179](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L179)
 
@@ -22398,7 +22693,7 @@ This differs from the MutationCtx because all of the services are read-only.
 | ----------- | --------------------------------------------------------------------- |
 | `DataModel` | extends [`GenericDataModel`](/api/modules/server.md#genericdatamodel) |
 
-#### Defined in[​](#defined-in-59 "Direct link to Defined in")
+#### Defined in[​](#defined-in-60 "Direct link to Defined in")
 
 [server/registration.ts:277](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L277)
 
@@ -22412,7 +22707,7 @@ The default arguments type for a Convex query, mutation, or action function.
 
 Convex functions always take an arguments object that maps the argument names to their values.
 
-#### Defined in[​](#defined-in-60 "Direct link to Defined in")
+#### Defined in[​](#defined-in-61 "Direct link to Defined in")
 
 [server/registration.ts:445](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L445)
 
@@ -22426,7 +22721,7 @@ An array of arguments to a Convex function.
 
 Convex functions can take either a single [DefaultFunctionArgs](/api/modules/server.md#defaultfunctionargs) object or no args at all.
 
-#### Defined in[​](#defined-in-61 "Direct link to Defined in")
+#### Defined in[​](#defined-in-62 "Direct link to Defined in")
 
 [server/registration.ts:468](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L468)
 
@@ -22446,7 +22741,7 @@ Empty arguments arrays are converted to EmptyObject.
 | ------ | ------------------------------------------------------- |
 | `Args` | extends [`ArgsArray`](/api/modules/server.md#argsarray) |
 
-#### Defined in[​](#defined-in-62 "Direct link to Defined in")
+#### Defined in[​](#defined-in-63 "Direct link to Defined in")
 
 [server/registration.ts:483](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L483)
 
@@ -22458,7 +22753,7 @@ Empty arguments arrays are converted to EmptyObject.
 
 A type representing the visibility of a Convex function.
 
-#### Defined in[​](#defined-in-63 "Direct link to Defined in")
+#### Defined in[​](#defined-in-64 "Direct link to Defined in")
 
 [server/registration.ts:491](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L491)
 
@@ -22480,7 +22775,7 @@ You can create a mutation by wrapping your function in [mutationGeneric](/api/mo
 | `Args`       | extends [`DefaultFunctionArgs`](/api/modules/server.md#defaultfunctionargs) |
 | `Returns`    | `Returns`                                                                   |
 
-#### Defined in[​](#defined-in-64 "Direct link to Defined in")
+#### Defined in[​](#defined-in-65 "Direct link to Defined in")
 
 [server/registration.ts:516](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L516)
 
@@ -22502,7 +22797,7 @@ You can create a query by wrapping your function in [queryGeneric](/api/modules/
 | `Args`       | extends [`DefaultFunctionArgs`](/api/modules/server.md#defaultfunctionargs) |
 | `Returns`    | `Returns`                                                                   |
 
-#### Defined in[​](#defined-in-65 "Direct link to Defined in")
+#### Defined in[​](#defined-in-66 "Direct link to Defined in")
 
 [server/registration.ts:545](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L545)
 
@@ -22524,7 +22819,7 @@ You can create an action by wrapping your function in [actionGeneric](/api/modul
 | `Args`       | extends [`DefaultFunctionArgs`](/api/modules/server.md#defaultfunctionargs) |
 | `Returns`    | `Returns`                                                                   |
 
-#### Defined in[​](#defined-in-66 "Direct link to Defined in")
+#### Defined in[​](#defined-in-67 "Direct link to Defined in")
 
 [server/registration.ts:574](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L574)
 
@@ -22544,7 +22839,7 @@ You can create public HTTP actions by wrapping your function in [httpActionGener
 | -------- | ------ |
 | `isHttp` | `true` |
 
-#### Defined in[​](#defined-in-67 "Direct link to Defined in")
+#### Defined in[​](#defined-in-68 "Direct link to Defined in")
 
 [server/registration.ts:603](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L603)
 
@@ -22596,7 +22891,7 @@ See [ValidatedFunction](/api/interfaces/server.ValidatedFunction.md) to add argu
 | `Args`    | extends [`ArgsArray`](/api/modules/server.md#argsarray) |
 | `Returns` | `Returns`                                               |
 
-#### Defined in[​](#defined-in-68 "Direct link to Defined in")
+#### Defined in[​](#defined-in-69 "Direct link to Defined in")
 
 [server/registration.ts:641](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L641)
 
@@ -22637,7 +22932,7 @@ Additional tricks:
 | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `ReturnsValidator` | extends [`Validator`](/api/modules/values.md#validator)<`any`, `any`, `any`> \| [`PropertyValidators`](/api/modules/values.md#propertyvalidators) \| `void` |
 
-#### Defined in[​](#defined-in-69 "Direct link to Defined in")
+#### Defined in[​](#defined-in-70 "Direct link to Defined in")
 
 [server/registration.ts:743](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L743)
 
@@ -22653,7 +22948,7 @@ Additional tricks:
 | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `ArgsValidator` | extends [`GenericValidator`](/api/modules/values.md#genericvalidator) \| [`PropertyValidators`](/api/modules/values.md#propertyvalidators) \| `void` |
 
-#### Defined in[​](#defined-in-70 "Direct link to Defined in")
+#### Defined in[​](#defined-in-71 "Direct link to Defined in")
 
 [server/registration.ts:751](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L751)
 
@@ -22669,7 +22964,7 @@ Additional tricks:
 | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `ArgsValidator` | extends [`GenericValidator`](/api/modules/values.md#genericvalidator) \| [`PropertyValidators`](/api/modules/values.md#propertyvalidators) \| `void` |
 
-#### Defined in[​](#defined-in-71 "Direct link to Defined in")
+#### Defined in[​](#defined-in-72 "Direct link to Defined in")
 
 [server/registration.ts:759](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L759)
 
@@ -22713,7 +23008,7 @@ Used to give [mutationGeneric](/api/modules/server.md#mutationgeneric) a type sp
 
 [`RegisteredMutation`](/api/modules/server.md#registeredmutation)<`Visibility`, [`ArgsArrayToObject`](/api/modules/server.md#argsarraytoobject)<`OneOrZeroArgs`>, `ReturnValue`>
 
-#### Defined in[​](#defined-in-72 "Direct link to Defined in")
+#### Defined in[​](#defined-in-73 "Direct link to Defined in")
 
 [server/registration.ts:773](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L773)
 
@@ -22757,7 +23052,7 @@ Used to give [mutationGeneric](/api/modules/server.md#mutationgeneric) a type sp
 
 [`RegisteredMutation`](/api/modules/server.md#registeredmutation)<`Visibility`, [`ArgsArrayToObject`](/api/modules/server.md#argsarraytoobject)<`OneOrZeroArgs`>, `ReturnValue`>
 
-#### Defined in[​](#defined-in-73 "Direct link to Defined in")
+#### Defined in[​](#defined-in-74 "Direct link to Defined in")
 
 [server/registration.ts:866](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L866)
 
@@ -22801,7 +23096,7 @@ Used to give [queryGeneric](/api/modules/server.md#querygeneric) a type specific
 
 [`RegisteredQuery`](/api/modules/server.md#registeredquery)<`Visibility`, [`ArgsArrayToObject`](/api/modules/server.md#argsarraytoobject)<`OneOrZeroArgs`>, `ReturnValue`>
 
-#### Defined in[​](#defined-in-74 "Direct link to Defined in")
+#### Defined in[​](#defined-in-75 "Direct link to Defined in")
 
 [server/registration.ts:959](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L959)
 
@@ -22845,7 +23140,7 @@ Used to give [queryGeneric](/api/modules/server.md#querygeneric) a type specific
 
 [`RegisteredQuery`](/api/modules/server.md#registeredquery)<`Visibility`, [`ArgsArrayToObject`](/api/modules/server.md#argsarraytoobject)<`OneOrZeroArgs`>, `ReturnValue`>
 
-#### Defined in[​](#defined-in-75 "Direct link to Defined in")
+#### Defined in[​](#defined-in-76 "Direct link to Defined in")
 
 [server/registration.ts:1048](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L1048)
 
@@ -22889,7 +23184,7 @@ Used to give [actionGeneric](/api/modules/server.md#actiongeneric) a type specif
 
 [`RegisteredAction`](/api/modules/server.md#registeredaction)<`Visibility`, [`ArgsArrayToObject`](/api/modules/server.md#argsarraytoobject)<`OneOrZeroArgs`>, `ReturnValue`>
 
-#### Defined in[​](#defined-in-76 "Direct link to Defined in")
+#### Defined in[​](#defined-in-77 "Direct link to Defined in")
 
 [server/registration.ts:1137](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L1137)
 
@@ -22917,7 +23212,7 @@ Used to give [httpActionGeneric](/api/modules/server.md#httpactiongeneric) a typ
 
 [`PublicHttpAction`](/api/modules/server.md#publichttpaction)
 
-#### Defined in[​](#defined-in-77 "Direct link to Defined in")
+#### Defined in[​](#defined-in-78 "Direct link to Defined in")
 
 [server/registration.ts:1232](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L1232)
 
@@ -22931,7 +23226,7 @@ A type representing the methods supported by Convex HTTP actions.
 
 HEAD is handled by Convex by running GET and stripping the body. CONNECT is not supported and will not be supported. TRACE is not supported and will not be supported.
 
-#### Defined in[​](#defined-in-78 "Direct link to Defined in")
+#### Defined in[​](#defined-in-79 "Direct link to Defined in")
 
 [server/router.ts:31](https://github.com/get-convex/convex-js/blob/main/src/server/router.ts#L31)
 
@@ -22953,7 +23248,7 @@ Used by [HttpRouter](/api/classes/server.HttpRouter.md) to route requests to HTT
 | `method`  | [`RoutableMethod`](/api/modules/server.md#routablemethod)     | HTTP method ("GET", "POST", ...) to route. |
 | `handler` | [`PublicHttpAction`](/api/modules/server.md#publichttpaction) | The HTTP action to execute.                |
 
-#### Defined in[​](#defined-in-79 "Direct link to Defined in")
+#### Defined in[​](#defined-in-80 "Direct link to Defined in")
 
 [server/router.ts:56](https://github.com/get-convex/convex-js/blob/main/src/server/router.ts#L56)
 
@@ -22975,7 +23270,7 @@ Used by [HttpRouter](/api/classes/server.HttpRouter.md) to route requests to HTT
 | `method`     | [`RoutableMethod`](/api/modules/server.md#routablemethod)     | HTTP method ("GET", "POST", ...) to route.                                                                             |
 | `handler`    | [`PublicHttpAction`](/api/modules/server.md#publichttpaction) | The HTTP action to execute.                                                                                            |
 
-#### Defined in[​](#defined-in-80 "Direct link to Defined in")
+#### Defined in[​](#defined-in-81 "Direct link to Defined in")
 
 [server/router.ts:78](https://github.com/get-convex/convex-js/blob/main/src/server/router.ts#L78)
 
@@ -22989,7 +23284,7 @@ A type representing a route to an HTTP action.
 
 Used by [HttpRouter](/api/classes/server.HttpRouter.md) to route requests to HTTP actions.
 
-#### Defined in[​](#defined-in-81 "Direct link to Defined in")
+#### Defined in[​](#defined-in-82 "Direct link to Defined in")
 
 [server/router.ts:101](https://github.com/get-convex/convex-js/blob/main/src/server/router.ts#L101)
 
@@ -23003,7 +23298,7 @@ A [FunctionReference](/api/modules/server.md#functionreference) that can be sche
 
 Schedulable functions are mutations and actions that are public or internal.
 
-#### Defined in[​](#defined-in-82 "Direct link to Defined in")
+#### Defined in[​](#defined-in-83 "Direct link to Defined in")
 
 [server/scheduler.ts:15](https://github.com/get-convex/convex-js/blob/main/src/server/scheduler.ts#L15)
 
@@ -23028,7 +23323,7 @@ The validators for the system fields Convex adds to every document.
 | `_id`           | [`VId`](/api/classes/values.VId.md)<[`GenericId`](/api/modules/values.md#genericid)<`TableName`>> |
 | `_creationTime` | [`VFloat64`](/api/classes/values.VFloat64.md)<`number`>                                           |
 
-#### Defined in[​](#defined-in-83 "Direct link to Defined in")
+#### Defined in[​](#defined-in-84 "Direct link to Defined in")
 
 [server/schema.ts:725](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L725)
 
@@ -23049,7 +23344,7 @@ For a table defined with a union, the system fields are added to each member of 
 | `TableName`    | extends `string`                                                             |
 | `DocumentType` | extends [`Validator`](/api/modules/values.md#validator)<`any`, `any`, `any`> |
 
-#### Defined in[​](#defined-in-84 "Direct link to Defined in")
+#### Defined in[​](#defined-in-85 "Direct link to Defined in")
 
 [server/schema.ts:754](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L754)
 
@@ -23063,7 +23358,7 @@ A type describing the schema of a Convex project.
 
 This should be constructed using [defineSchema](/api/modules/server.md#defineschema), [defineTable](/api/modules/server.md#definetable), and [v](/api/modules/values.md#v).
 
-#### Defined in[​](#defined-in-85 "Direct link to Defined in")
+#### Defined in[​](#defined-in-86 "Direct link to Defined in")
 
 [server/schema.ts:842](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L842)
 
@@ -23083,7 +23378,7 @@ Convert a [SchemaDefinition](/api/classes/server.SchemaDefinition.md) into a [Ge
 | ----------- | --------------------------------------------------------------------------------------- |
 | `SchemaDef` | extends [`SchemaDefinition`](/api/classes/server.SchemaDefinition.md)<`any`, `boolean`> |
 
-#### Defined in[​](#defined-in-86 "Direct link to Defined in")
+#### Defined in[​](#defined-in-87 "Direct link to Defined in")
 
 [server/schema.ts:1079](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L1079)
 
@@ -23093,7 +23388,7 @@ Convert a [SchemaDefinition](/api/classes/server.SchemaDefinition.md) into a [Ge
 
 Ƭ **SystemTableNames**: [`TableNamesInDataModel`](/api/modules/server.md#tablenamesindatamodel)<[`SystemDataModel`](/api/interfaces/server.SystemDataModel.md)>
 
-#### Defined in[​](#defined-in-87 "Direct link to Defined in")
+#### Defined in[​](#defined-in-88 "Direct link to Defined in")
 
 [server/schema.ts:1138](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L1138)
 
@@ -23111,7 +23406,7 @@ The old ID format used by Convex file storage.
 
 ⚠️ Security warning: Anyone that has knows to this ID can download the underlying file from `https://<deployment>.convex.cloud/api/storage/<storageId>`. (Note that it’s safe to share the new ID format, `Id<"_storage">`, to anyone).
 
-#### Defined in[​](#defined-in-88 "Direct link to Defined in")
+#### Defined in[​](#defined-in-89 "Direct link to Defined in")
 
 [server/storage.ts:14](https://github.com/get-convex/convex-js/blob/main/src/server/storage.ts#L14)
 
@@ -23125,7 +23420,7 @@ The old ID format used by Convex file storage.
 
 This type is only necessary for backwards compatibility with Convex versions that pre-date `convex@1.6.0`. Use `Id<"_storage">` instead.
 
-#### Defined in[​](#defined-in-89 "Direct link to Defined in")
+#### Defined in[​](#defined-in-90 "Direct link to Defined in")
 
 [server/storage.ts:20](https://github.com/get-convex/convex-js/blob/main/src/server/storage.ts#L20)
 
@@ -23150,7 +23445,7 @@ Metadata for a single file as returned by [storage.getMetadata](/api/interfaces/
 | `size`        | `number`                                        | Size of the file in bytes                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | `contentType` | `string` \| `null`                              | ContentType of the file if it was provided on upload                                                                                                                                                                                                                                                                                                                                                                                                                       |
 
-#### Defined in[​](#defined-in-90 "Direct link to Defined in")
+#### Defined in[​](#defined-in-91 "Direct link to Defined in")
 
 [server/storage.ts:30](https://github.com/get-convex/convex-js/blob/main/src/server/storage.ts#L30)
 
@@ -23170,7 +23465,7 @@ This is an object type mapping field name to field type.
 | --------------- | -------- |
 | `_creationTime` | `number` |
 
-#### Defined in[​](#defined-in-91 "Direct link to Defined in")
+#### Defined in[​](#defined-in-92 "Direct link to Defined in")
 
 [server/system\_fields.ts:11](https://github.com/get-convex/convex-js/blob/main/src/server/system_fields.ts#L11)
 
@@ -23194,7 +23489,7 @@ The `_id` field that Convex automatically adds to documents.
 | ----- | ------------------------------------------------------------ |
 | `_id` | [`GenericId`](/api/modules/values.md#genericid)<`TableName`> |
 
-#### Defined in[​](#defined-in-92 "Direct link to Defined in")
+#### Defined in[​](#defined-in-93 "Direct link to Defined in")
 
 [server/system\_fields.ts:19](https://github.com/get-convex/convex-js/blob/main/src/server/system_fields.ts#L19)
 
@@ -23212,7 +23507,7 @@ A Convex document with the system fields like `_id` and `_creationTime` omitted.
 | ---------- | ------------------------------------------------------------------- |
 | `Document` | extends [`GenericDocument`](/api/modules/server.md#genericdocument) |
 
-#### Defined in[​](#defined-in-93 "Direct link to Defined in")
+#### Defined in[​](#defined-in-94 "Direct link to Defined in")
 
 [server/system\_fields.ts:28](https://github.com/get-convex/convex-js/blob/main/src/server/system_fields.ts#L28)
 
@@ -23230,7 +23525,7 @@ A Convex document with the system fields like `_id` and `_creationTime` optional
 | ---------- | ------------------------------------------------------------------- |
 | `Document` | extends [`GenericDocument`](/api/modules/server.md#genericdocument) |
 
-#### Defined in[​](#defined-in-94 "Direct link to Defined in")
+#### Defined in[​](#defined-in-95 "Direct link to Defined in")
 
 [server/system\_fields.ts:37](https://github.com/get-convex/convex-js/blob/main/src/server/system_fields.ts#L37)
 
@@ -23251,7 +23546,7 @@ This is an object mapping index names to index field paths.
 | `by_id`            | \[`"_id"`]           |
 | `by_creation_time` | \[`"_creationTime"`] |
 
-#### Defined in[​](#defined-in-95 "Direct link to Defined in")
+#### Defined in[​](#defined-in-96 "Direct link to Defined in")
 
 [server/system\_fields.ts:48](https://github.com/get-convex/convex-js/blob/main/src/server/system_fields.ts#L48)
 
@@ -23263,7 +23558,7 @@ This is an object mapping index names to index field paths.
 
 Convex automatically appends "\_creationTime" to the end of every index to break ties if all of the other fields are identical.
 
-#### Defined in[​](#defined-in-96 "Direct link to Defined in")
+#### Defined in[​](#defined-in-97 "Direct link to Defined in")
 
 [server/system\_fields.ts:61](https://github.com/get-convex/convex-js/blob/main/src/server/system_fields.ts#L61)
 
@@ -23297,7 +23592,7 @@ Convex automatically appends "\_creationTime" to the end of every index to break
 
 `Promise`<{ `_id`: [`GenericId`](/api/modules/values.md#genericid)<`TableName`> ; `_score`: `number` }\[]>
 
-#### Defined in[​](#defined-in-97 "Direct link to Defined in")
+#### Defined in[​](#defined-in-98 "Direct link to Defined in")
 
 [server/vector\_search.ts:55](https://github.com/get-convex/convex-js/blob/main/src/server/vector_search.ts#L55)
 
@@ -23317,7 +23612,7 @@ It is functionally the identity for object types, but in practice it can simplif
 | ------------ | ------------------------------ |
 | `ObjectType` | extends `Record`<`any`, `any`> |
 
-#### Defined in[​](#defined-in-98 "Direct link to Defined in")
+#### Defined in[​](#defined-in-99 "Direct link to Defined in")
 
 [type\_utils.ts:12](https://github.com/get-convex/convex-js/blob/main/src/type_utils.ts#L12)
 
@@ -23339,7 +23634,7 @@ An `Omit<>` type that:
 | `T`  | `T`               |
 | `K`  | extends keyof `T` |
 
-#### Defined in[​](#defined-in-99 "Direct link to Defined in")
+#### Defined in[​](#defined-in-100 "Direct link to Defined in")
 
 [type\_utils.ts:24](https://github.com/get-convex/convex-js/blob/main/src/type_utils.ts#L24)
 
@@ -23361,7 +23656,7 @@ This supports accessing any path regardless of what directories and modules are 
 
 If you're using code generation, use `api` from `convex/_generated/api` instead. It will be more type-safe and produce better auto-complete in your editor.
 
-#### Defined in[​](#defined-in-100 "Direct link to Defined in")
+#### Defined in[​](#defined-in-101 "Direct link to Defined in")
 
 [server/api.ts:606](https://github.com/get-convex/convex-js/blob/main/src/server/api.ts#L606)
 
@@ -23371,7 +23666,7 @@ If you're using code generation, use `api` from `convex/_generated/api` instead.
 
 • `Const` **log**: `Log`
 
-#### Defined in[​](#defined-in-101 "Direct link to Defined in")
+#### Defined in[​](#defined-in-102 "Direct link to Defined in")
 
 [server/log.ts:31](https://github.com/get-convex/convex-js/blob/main/src/server/log.ts#L31)
 
@@ -23441,7 +23736,7 @@ const { results, status, loadMore } = usePaginatedQuery(
 
 <https://docs.convex.dev/database/pagination>
 
-#### Defined in[​](#defined-in-102 "Direct link to Defined in")
+#### Defined in[​](#defined-in-103 "Direct link to Defined in")
 
 [server/pagination.ts:163](https://github.com/get-convex/convex-js/blob/main/src/server/pagination.ts#L163)
 
@@ -23455,7 +23750,7 @@ A list of the methods supported by Convex HTTP actions.
 
 HEAD is handled by Convex by running GET and stripping the body. CONNECT is not supported and will not be supported. TRACE is not supported and will not be supported.
 
-#### Defined in[​](#defined-in-103 "Direct link to Defined in")
+#### Defined in[​](#defined-in-104 "Direct link to Defined in")
 
 [server/router.ts:14](https://github.com/get-convex/convex-js/blob/main/src/server/router.ts#L14)
 
@@ -23481,7 +23776,7 @@ The name is a string like "myDir/myModule<!-- -->:myFunction<!-- -->". If the ex
 
 A string of the function's name.
 
-#### Defined in[​](#defined-in-104 "Direct link to Defined in")
+#### Defined in[​](#defined-in-105 "Direct link to Defined in")
 
 [server/api.ts:251](https://github.com/get-convex/convex-js/blob/main/src/server/api.ts#L251)
 
@@ -23513,7 +23808,7 @@ Real function references are empty objects at runtime, but the same interface ca
 
 [`FunctionReference`](/api/modules/server.md#functionreference)<`type`, `"public"`, `args`, `ret`>
 
-#### Defined in[​](#defined-in-105 "Direct link to Defined in")
+#### Defined in[​](#defined-in-106 "Direct link to Defined in")
 
 [server/api.ts:297](https://github.com/get-convex/convex-js/blob/main/src/server/api.ts#L297)
 
@@ -23546,7 +23841,7 @@ const q = filterApi<typeof api, FunctionReference<"query">>(api)
 
 [`FilterApi`](/api/modules/server.md#filterapi)<`API`, `Predicate`>
 
-#### Defined in[​](#defined-in-106 "Direct link to Defined in")
+#### Defined in[​](#defined-in-107 "Direct link to Defined in")
 
 [server/api.ts:480](https://github.com/get-convex/convex-js/blob/main/src/server/api.ts#L480)
 
@@ -23580,7 +23875,7 @@ This is a feature of components, which are in beta. This API is unstable and may
 
 `Promise`<[`FunctionHandle`](/api/modules/server.md#functionhandle)<`Type`, `Args`, `ReturnType`>>
 
-#### Defined in[​](#defined-in-107 "Direct link to Defined in")
+#### Defined in[​](#defined-in-108 "Direct link to Defined in")
 
 [server/components/index.ts:65](https://github.com/get-convex/convex-js/blob/main/src/server/components/index.ts#L65)
 
@@ -23613,7 +23908,7 @@ Optionally define typed environment variables that will be available via the `en
 
 [`ComponentDefinition`](/api/modules/server.md#componentdefinition)<`Exports`, `Env`>
 
-#### Defined in[​](#defined-in-108 "Direct link to Defined in")
+#### Defined in[​](#defined-in-109 "Direct link to Defined in")
 
 [server/components/index.ts:674](https://github.com/get-convex/convex-js/blob/main/src/server/components/index.ts#L674)
 
@@ -23671,7 +23966,7 @@ This is a feature of components, which are in beta. This API is unstable and may
 
 [`AppDefinition`](/api/modules/server.md#appdefinition)<`Env`>
 
-#### Defined in[​](#defined-in-109 "Direct link to Defined in")
+#### Defined in[​](#defined-in-110 "Direct link to Defined in")
 
 [server/components/index.ts:737](https://github.com/get-convex/convex-js/blob/main/src/server/components/index.ts#L737)
 
@@ -23685,7 +23980,7 @@ This is a feature of components, which are in beta. This API is unstable and may
 
 [`AnyChildComponents`](/api/modules/server.md#anychildcomponents)
 
-#### Defined in[​](#defined-in-110 "Direct link to Defined in")
+#### Defined in[​](#defined-in-111 "Direct link to Defined in")
 
 [server/components/index.ts:815](https://github.com/get-convex/convex-js/blob/main/src/server/components/index.ts#L815)
 
@@ -23705,7 +24000,7 @@ This is a feature of components, which are in beta. This API is unstable and may
 
 { `functionHandle`: `string` = functionReference; `name?`: `undefined` ; `reference?`: `undefined` = referencePath } | { `functionHandle?`: `undefined` = functionReference; `name`: `any` ; `reference?`: `undefined` = referencePath } | { `functionHandle?`: `undefined` = functionReference; `name?`: `undefined` ; `reference`: `string` = referencePath }
 
-#### Defined in[​](#defined-in-111 "Direct link to Defined in")
+#### Defined in[​](#defined-in-112 "Direct link to Defined in")
 
 [server/components/paths.ts:20](https://github.com/get-convex/convex-js/blob/main/src/server/components/paths.ts#L20)
 
@@ -23751,7 +24046,7 @@ export default crons;
 
 [`Crons`](/api/classes/server.Crons.md)
 
-#### Defined in[​](#defined-in-112 "Direct link to Defined in")
+#### Defined in[​](#defined-in-113 "Direct link to Defined in")
 
 [server/cron.ts:198](https://github.com/get-convex/convex-js/blob/main/src/server/cron.ts#L198)
 
@@ -23777,9 +24072,9 @@ This function can only be called while an action is running. The credential is s
 
 A JWT to send as `Authorization: Bearer <token>`. Keep it inside the action: don't return it to clients or store it in environment variables.
 
-#### Defined in[​](#defined-in-113 "Direct link to Defined in")
+#### Defined in[​](#defined-in-114 "Direct link to Defined in")
 
-[server/impl/actions\_impl.ts:80](https://github.com/get-convex/convex-js/blob/main/src/server/impl/actions_impl.ts#L80)
+[server/impl/actions\_impl.ts:86](https://github.com/get-convex/convex-js/blob/main/src/server/impl/actions_impl.ts#L86)
 
 ***
 
@@ -23856,7 +24151,7 @@ export const createTask = mutation({
 
 The wrapped mutation. Include this as an `export` to name it and make it accessible.
 
-#### Defined in[​](#defined-in-114 "Direct link to Defined in")
+#### Defined in[​](#defined-in-115 "Direct link to Defined in")
 
 [server/registration.ts:777](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L777)
 
@@ -23927,7 +24222,7 @@ export const markTaskCompleted = internalMutation({
 
 The wrapped mutation. Include this as an `export` to name it and make it accessible.
 
-#### Defined in[​](#defined-in-115 "Direct link to Defined in")
+#### Defined in[​](#defined-in-116 "Direct link to Defined in")
 
 [server/registration.ts:777](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L777)
 
@@ -24018,7 +24313,7 @@ export const listTasks = query({
 
 The wrapped query. Include this as an `export` to name it and make it accessible.
 
-#### Defined in[​](#defined-in-116 "Direct link to Defined in")
+#### Defined in[​](#defined-in-117 "Direct link to Defined in")
 
 [server/registration.ts:963](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L963)
 
@@ -24103,7 +24398,7 @@ export const getUser = internalQuery({
 
 The wrapped query. Include this as an `export` to name it and make it accessible.
 
-#### Defined in[​](#defined-in-117 "Direct link to Defined in")
+#### Defined in[​](#defined-in-118 "Direct link to Defined in")
 
 [server/registration.ts:963](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L963)
 
@@ -24206,7 +24501,7 @@ export const generateSummary = action({
 
 The wrapped function. Include this as an `export` to name it and make it accessible.
 
-#### Defined in[​](#defined-in-118 "Direct link to Defined in")
+#### Defined in[​](#defined-in-119 "Direct link to Defined in")
 
 [server/registration.ts:1141](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L1141)
 
@@ -24287,7 +24582,7 @@ export const sendEmail = internalAction({
 
 The wrapped function. Include this as an `export` to name it and make it accessible.
 
-#### Defined in[​](#defined-in-119 "Direct link to Defined in")
+#### Defined in[​](#defined-in-120 "Direct link to Defined in")
 
 [server/registration.ts:1141](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L1141)
 
@@ -24363,7 +24658,7 @@ export default http;
 
 The wrapped function. Route a URL path to this function in `convex/http.ts`.
 
-#### Defined in[​](#defined-in-120 "Direct link to Defined in")
+#### Defined in[​](#defined-in-121 "Direct link to Defined in")
 
 [server/impl/registration\_impl.ts:741](https://github.com/get-convex/convex-js/blob/main/src/server/impl/registration_impl.ts#L741)
 
@@ -24409,7 +24704,7 @@ const paginationResultValidator = paginationResultValidator(v.object({
 
 A validator for the pagination result
 
-#### Defined in[​](#defined-in-121 "Direct link to Defined in")
+#### Defined in[​](#defined-in-122 "Direct link to Defined in")
 
 [server/pagination.ts:192](https://github.com/get-convex/convex-js/blob/main/src/server/pagination.ts#L192)
 
@@ -24425,7 +24720,7 @@ Return a new [HttpRouter](/api/classes/server.HttpRouter.md) object.
 
 [`HttpRouter`](/api/classes/server.HttpRouter.md)
 
-#### Defined in[​](#defined-in-122 "Direct link to Defined in")
+#### Defined in[​](#defined-in-123 "Direct link to Defined in")
 
 [server/router.ts:47](https://github.com/get-convex/convex-js/blob/main/src/server/router.ts#L47)
 
@@ -24481,7 +24776,7 @@ defineTable(
 
 A [TableDefinition](/api/classes/server.TableDefinition.md) for the table.
 
-#### Defined in[​](#defined-in-123 "Direct link to Defined in")
+#### Defined in[​](#defined-in-124 "Direct link to Defined in")
 
 [server/schema.ts:675](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L675)
 
@@ -24533,7 +24828,7 @@ defineTable(
 
 A [TableDefinition](/api/classes/server.TableDefinition.md) for the table.
 
-#### Defined in[​](#defined-in-124 "Direct link to Defined in")
+#### Defined in[​](#defined-in-125 "Direct link to Defined in")
 
 [server/schema.ts:703](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L703)
 
@@ -24585,7 +24880,7 @@ export const get = query({
 
 A validator matching documents of the table.
 
-#### Defined in[​](#defined-in-125 "Direct link to Defined in")
+#### Defined in[​](#defined-in-126 "Direct link to Defined in")
 
 [server/schema.ts:822](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L822)
 
@@ -24692,7 +24987,7 @@ export default defineSchema({
 
 The schema.
 
-#### Defined in[​](#defined-in-126 "Direct link to Defined in")
+#### Defined in[​](#defined-in-127 "Direct link to Defined in")
 
 [server/schema.ts:1062](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L1062)
 
@@ -31548,6 +31843,10 @@ npx convex deploy [options]
 * `--message <message>`
 
   Optional message to attach to this deployment in the audit log.
+
+* `--skip-large-indexes-check`
+
+  Skip the confirmation prompt when this push creates, changes, or deletes an index on a large table. Creating or changing an index blocks the deploy until it is backfilled; consider staging it instead so it backfills in the background.
 
 
 ---
@@ -39338,6 +39637,342 @@ You can use the `data.function.component_path` field in [log streams](/productio
 
 ---
 
+# auth.config.ts
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
+`convex/auth.config.ts` allows you to set up [**authentication providers**](/auth/overview.md), which issue the JWTs your deployment accepts to identify users. Your functions can then [read the authenticated user from `ctx.auth`](/auth/functions-auth.md).
+
+convex/auth.config.ts
+
+```
+import { AuthConfig } from "convex/server";
+
+import { env } from "./_generated/server";
+
+
+
+export default {
+
+  providers: [
+
+    // Setting up Convex Auth
+
+    {
+
+      domain: env.CONVEX_SITE_URL,
+
+      applicationID: "convex",
+
+    },
+
+
+
+    // Setting up an OIDC provider (e.g. Auth0, Clerk, or custom)
+
+    {
+
+      domain: env.CLERK_JWT_ISSUER_DOMAIN,
+
+      applicationID: "convex",
+
+    },
+
+
+
+    // Setting up a custom JWT provider
+
+    {
+
+      type: "customJwt",
+
+      applicationID: "your-application-id",
+
+      issuer: "https://your.issuer.url.com",
+
+      jwks: "https://your.issuer.url.com/.well-known/jwks.json",
+
+      algorithm: "RS256",
+
+    },
+
+  ],
+
+} satisfies AuthConfig;
+```
+
+## Learn More[​](#learn-more "Direct link to Learn More")
+
+Follow the setup guide for your authentication provider:
+
+* [Convex Auth](/auth/convex-auth.md)
+* [Clerk](/auth/clerk.md)
+* [WorkOS](/auth/authkit/.md)
+* [Auth0](/auth/auth0.md)
+* [Custom OIDC](/auth/advanced/custom-auth.md)
+* [Custom JWT](/auth/advanced/custom-jwt.md)
+
+
+---
+
+# convex.config.ts
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
+`convex/convex.config.ts` allows you to [**install components**](/components/using.md) and [**declare environment variables**](/production/environment-variables.md#declaring) for your app. Components add prebuilt features to your backend, and declared environment variables are validated at deploy time and typed in your functions.
+
+convex/convex.config.ts
+
+```
+import { defineApp } from "convex/server";
+
+import { v } from "convex/values";
+
+import resend from "@convex-dev/resend/convex.config.js";
+
+
+
+const app = defineApp({
+
+  env: {
+
+    RESEND_API_KEY: v.string(),
+
+    RESEND_WEBHOOK_SECRET: v.string(),
+
+
+
+    LOG_LEVEL: v.optional(v.union(v.literal("info"), v.literal("error"))),
+
+  },
+
+});
+
+
+
+app.use(resend, {
+
+  // Serve the Resend component’s HTTP routes
+
+  // at `https://<deployment>.convex.site/resend/`
+
+  httpPrefix: "/resend/",
+
+  env: {
+
+    RESEND_API_KEY: app.env.RESEND_API_KEY,
+
+    RESEND_WEBHOOK_SECRET: app.env.RESEND_WEBHOOK_SECRET,
+
+  },
+
+});
+
+
+
+export default app;
+```
+
+## Learn More[​](#learn-more "Direct link to Learn More")
+
+* [Using Components](/components/using.md)
+* [Components Overview](/components/overview.md)
+* [Environment Variables](/production/environment-variables.md)
+
+
+---
+
+# crons.ts
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
+`convex/crons.ts` allows you to define [**cron jobs**](/scheduling/cron-jobs.md), which run your Convex functions on a recurring schedule. They are useful for cleanup tasks, periodic reports, or syncing with external services.
+
+convex/crons.ts
+
+```
+import { cronJobs } from "convex/server";
+
+import { internal } from "./_generated/api";
+
+
+
+const crons = cronJobs();
+
+
+
+// Runs every minute
+
+crons.interval(
+
+  "clear messages table",
+
+  { minutes: 1 },
+
+  internal.messages.clearAll,
+
+);
+
+
+
+// Runs daily at 17:00 UTC. Convex picks the minute to spread
+
+// the load away from the top of the hour.
+
+crons.daily("send reminder", { hourUTC: 17 }, internal.emails.send);
+
+
+
+// Runs on the first day of every month at 16:00 UTC,
+
+// passing an argument to the function
+
+crons.monthly(
+
+  "payment reminder",
+
+  { day: 1, hourUTC: 16 },
+
+  internal.payments.sendPaymentEmail,
+
+  { email: "my_email@gmail.com" },
+
+);
+
+
+
+export default crons;
+```
+
+## Learn More[​](#learn-more "Direct link to Learn More")
+
+* [Cron Jobs](/scheduling/cron-jobs.md)
+* [Scheduled Functions](/scheduling/scheduled-functions.md)
+* [`Crons` API reference](/api/classes/server.Crons.md)
+
+
+---
+
+# http.ts
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
+`convex/http.ts` allows you to define [**HTTP actions**](/functions/http-actions.md), which serve requests on your deployment’s `.convex.site` domain. They are useful for receiving webhooks or exposing a public HTTP API.
+
+convex/http.ts
+
+```
+import { httpRouter } from "convex/server";
+
+import { httpAction } from "./_generated/server";
+
+import { internal } from "./_generated/api";
+
+
+
+const http = httpRouter();
+
+
+
+// Serves `https://<deployment>.convex.site/postMessage`
+
+http.route({
+
+  path: "/postMessage",
+
+  method: "POST",
+
+  handler: httpAction(async (ctx, request) => {
+
+    const { author, body } = await request.json();
+
+    await ctx.runMutation(internal.messages.send, { author, body });
+
+    return new Response(null, { status: 200 });
+
+  }),
+
+});
+
+
+
+// Serves `https://<deployment>.convex.site/getMessages/<author>`
+
+http.route({
+
+  pathPrefix: "/getMessages/",
+
+  method: "GET",
+
+  handler: httpAction(async (ctx, request) => {
+
+    const author = new URL(request.url).pathname.slice("/getMessages/".length);
+
+    const messages = await ctx.runQuery(internal.messages.listByAuthor, {
+
+      author,
+
+    });
+
+    return Response.json(messages);
+
+  }),
+
+});
+
+
+
+export default http;
+```
+
+## Learn More[​](#learn-more "Direct link to Learn More")
+
+* [HTTP Actions](/functions/http-actions.md)
+* [Upload Files via HTTP](/file-storage/upload-files.md#uploading-files-via-an-http-action)
+* [`HttpRouter` API reference](/api/classes/server.HttpRouter.md)
+
+
+---
+
+# schema.ts
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
+`convex/schema.ts` allows you to declare your [**tables**](/database/schemas.md) and their [**indexes**](/database/reading-data/indexes/.md). Convex derives your document types from it, and validates every insert and update in the declared tables — unless you turn that off with [`schemaValidation: false`](/database/schemas.md#schemavalidation-boolean). Documents in tables the schema doesn’t list are never validated.
+
+The file is optional: without it, no schema is enforced on your documents. If you don’t have a schema yet, you can [generate one from the dashboard](/dashboard/deployments/schema.md#viewing-the-schema-file).
+
+convex/schema.ts
+
+```
+import { defineSchema, defineTable } from "convex/server";
+
+import { v } from "convex/values";
+
+
+
+export default defineSchema({
+
+  messages: defineTable({
+
+    body: v.string(),
+
+    author: v.id("users"),
+
+  }).index("by_author", ["author"]),
+
+});
+```
+
+## Learn More[​](#learn-more "Direct link to Learn More")
+
+* [Schemas](/database/schemas.md)
+* [Indexes](/database/reading-data/indexes/.md)
+* [Schema in the Dashboard](/dashboard/deployments/schema.md)
+
+
+---
+
 # Deployments
 
 > For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
@@ -40098,15 +40733,18 @@ Use the [referrals page](https://dashboard.convex.dev/team/settings/referrals) t
 
 Referral benefits only apply while your team is on the free, though your referral link keeps working for the friends you refer. Share the referral link found on this page to get started, and you'll also see who referred you and which teams you've referred.
 
-## Single Sign-On[​](#single-sign-on "Direct link to Single Sign-On")
+## Team Authentication[​](#team-authentication "Direct link to Team Authentication")
 
 info
 
-Single Sign-On is only available on Convex Business and Enterprise.
+Single Sign-On and Directory Sync are only available on Convex Business and Enterprise.
 
-Configure Single Sign-On (SSO) on the [SSO settings page](https://dashboard.convex.dev/team/settings/sso) to allow your team members to authenticate through your organization's identity provider.
+The [team authentication page](https://dashboard.convex.dev/team/settings/team-authentication) is where you verify the email domains your team owns and connect your organization's identity provider:
 
-[Learn more about setting up SSO](/team-management/sso.md).
+* **[Single Sign-On (SSO)](/team-management/sso.md)** lets team members authenticate through your identity provider.
+* **[Directory Sync (SCIM)](/team-management/directory-sync.md)** provisions members and their roles from your identity provider's user directory.
+
+![Team authentication page](/screenshots/storybook/pages_team_authentication_light.webp)
 
 ## Audit Log[​](#audit-log "Direct link to Audit Log")
 
@@ -44332,13 +44970,13 @@ The Convex ESLint plugin provides linter rules that enforce best practices for C
 
 ## Setup[​](#setup "Direct link to Setup")
 
-For ESLint 9 (flat config, using `eslint.config.js`), install the rules with:
+Install the plugin with:
 
 ```
 npm i @convex-dev/eslint-plugin --save-dev
 ```
 
-and add this to your `eslint.config.js` file:
+For **ESLint 9+** (flat config, using `eslint.config.js`), add this to your `eslint.config.js` file:
 
 ```
 import { defineConfig } from "eslint/config";
@@ -44455,6 +45093,42 @@ const nextConfig: NextConfig = {
 
 };
 ```
+
+You can also use the plugin **with Oxlint**. Add this to your `oxlint.config.ts` file:
+
+oxlint.config.ts
+
+```
+import { defineConfig } from "oxlint";
+
+import convexPlugin from "@convex-dev/eslint-plugin";
+
+
+
+export default defineConfig({
+
+  jsPlugins: ["@convex-dev/eslint-plugin"],
+
+  ignorePatterns: ["convex/_generated"],
+
+  overrides: [
+
+    {
+
+      files: ["**/convex/**/*.ts"],
+
+      rules: convexPlugin.configs.recommended[0].rules,
+
+    },
+
+  ],
+
+});
+```
+
+Oxlint limitations
+
+Oxlint does not expose TypeScript type information to JS plugins, so type-aware rules and their autofixes (`explicit-table-ids`, `no-collect-in-query`) are unavailable when running the plugin through Oxlint.
 
 ## Rules[​](#rules "Direct link to Rules")
 
@@ -59240,6 +59914,170 @@ The following [JSON Schema](https://json-schema.org/) represents the shape of va
 
 ---
 
+# Directory Sync (SCIM)
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
+Directory Sync is in beta
+
+Directory Sync is a [beta feature](/production/state/.md#beta-features) available on the Convex Business and Enterprise plans. To have it turned on for your team, contact Convex support.
+
+Directory Sync connects your identity provider's user directory to your Convex team, so that your directory controls who belongs to the team and what team role they have.
+
+Directory Sync is configured on the [Team Authentication page](https://dashboard.convex.dev/team/settings/team-authentication), under **Team Settings → Team Authentication**.
+
+info
+
+Directory Sync and [SSO](/team-management/sso.md) are separate features, and you can use either one without the other. Both use the **Authentication Domains** section of the page.
+
+## Setting up Directory Sync[​](#setting-up-directory-sync "Direct link to Setting up Directory Sync")
+
+### 1. Verify a domain[​](#1-verify-a-domain "Direct link to 1. Verify a domain")
+
+Directory Sync only manages members whose Convex account uses an email on a domain your team has verified, so verify a domain first if you have not already. See [verifying a domain](/team-management/sso.md#1-verify-a-domain).
+
+### 2. Connect your directory[​](#2-connect-your-directory "Direct link to 2. Connect your directory")
+
+Select **Configure** in the **Directory sync** section.
+
+![The Directory Sync section before a directory has been configured](/screenshots/storybook/pages_team_authentication_directory_sync_light.webp)
+
+The dashboard describes what connecting a directory does, then opens a separate configuration page in a new tab. On that page you pick your identity provider and follow its instructions to point the directory at Convex.
+
+![The dialog that explains the identity provider step before configuring a directory](/screenshots/storybook/pages_team_authentication_directory_sync_configure_light.webp)
+
+The dialog shows the connection's progress while you work through that page, and updates once the directory is linked. You can close it and come back later without losing your progress.
+
+### 3. Wait for the initial sync[​](#3-wait-for-the-initial-sync "Direct link to 3. Wait for the initial sync")
+
+After the connection is made, your identity provider sends over the directory's groups and users. This usually takes a few minutes, and can take up to an hour. Groups appear in **Directory group roles** as they arrive.
+
+![The Directory Sync section during the initial sync, with no groups yet](/screenshots/storybook/pages_team_authentication_directory_sync_initial_sync_light.webp)
+
+### 4. Map directory groups to roles[​](#4-map-directory-groups-to-roles "Direct link to 4. Map directory groups to roles")
+
+Each group in your directory maps to a Convex team role. Use the edit button next to a group to change the role its members get.
+
+![Directory group roles, mapping each directory group to a Convex role](/screenshots/storybook/pages_team_authentication_directory_group_roles_light.webp)
+
+A group can map to:
+
+* **Admin**, which grants full access to the team.
+* **Developer**.
+* One or more [custom roles](/team-management/custom-roles.md).
+* **No access**, which is the default for any group you have not mapped. A directory user who is in no group, or only in groups you have not mapped, has no access to the Convex team.
+
+![The dialog for choosing the Convex role a directory group gives](/screenshots/storybook/pages_team_authentication_edit_group_role_light.webp)
+
+Users often belong to more than one group. When they do, Convex picks their role in this order:
+
+1. **Admin**, if any of their groups maps to Admin.
+2. Otherwise, all of the custom roles granted by their groups, if any group grants one.
+3. Otherwise, **Developer**, if any of their groups maps to Developer.
+4. Otherwise, **no access**.
+
+The group name `convex-team-admins` is reserved. It always maps to Admin, and you cannot edit its mapping. See [Emergency lockout recovery](#emergency-lockout-recovery).
+
+### 5. Review the changes and enable[​](#5-review-the-changes-and-enable "Direct link to 5. Review the changes and enable")
+
+Directory Sync does not manage anyone until you turn it on. Select **Review** on the Directory Sync section to see what enabling it would change.
+
+![The Directory Sync section asking you to review role mappings before enabling](/screenshots/storybook/pages_team_authentication_directory_sync_synced_light.webp)
+
+This dialog lists every current team member and every user in the directory, with the role each one has today and the role the directory would give them:
+
+![The review dialog listing each member's current role and the role the directory would give them](/screenshots/storybook/pages_team_authentication_review_directory_changes_light.webp)
+
+* Members who are in the directory take the role their groups grant, which may differ from the role they have today.
+* Members who are not in the directory are marked **Not in directory**. They keep their access and their role until you remove them from the team or add them to the directory.
+* Directory users who are not on the team yet are marked **Not in team**. Once Directory Sync is enabled, they may choose to join the team by selecting the team invitation from the team switcher in the Convex dashboard.
+* Users who are not active in your directory are marked **Suspended in directory**. If such a user is a team member, they are removed from the team. If they are not a member, they are not offered the team.
+* Users who are in no mapped group are marked **Directory does not grant access**, and are treated the same way.
+
+Check the acknowledgement and select **Enable directory sync**. The prompt to review goes away, and the directory starts managing the members it covers.
+
+![The Directory Sync section with directory management enabled](/screenshots/storybook/pages_team_authentication_directory_sync_enabled_light.webp)
+
+## How members join[​](#how-members-join "Direct link to How members join")
+
+Directory Sync offers the team to people instead of adding them to it. A directory user is offered your team once they have a Convex account with a **verified email** that matches their directory entry, on one of your verified domains.
+
+The team shows up as an invitation in their team switcher, which they select to accept it:
+
+![A directory-synced team offered as an invitation in the team switcher](/screenshots/storybook/pages_projects_team_switcher_with_invitation_light.webp)
+
+The team is also listed under **Available Teams** on their [profile page](https://dashboard.convex.dev/profile), even if they dismiss the invitation in the switcher:
+
+![The Available Teams section of the profile page, listing a team to join](/screenshots/storybook/pages_profile_available_teams_light.webp)
+
+To see who has been offered the team but has not joined, use **⋮ → View pending members**.
+
+![The pending members dialog listing directory users who have not joined yet](/screenshots/storybook/pages_team_authentication_pending_members_light.webp)
+
+## Keeping the team in sync[​](#keeping-the-team-in-sync "Direct link to Keeping the team in sync")
+
+Once Directory Sync is enabled, changes in your identity provider are applied to Convex automatically:
+
+* Adding a user to the directory offers them the team, once one of their groups is mapped to a role.
+* Moving a user between groups changes their Convex role, and removes them from the team once they are in no mapped group.
+* Changing a group's mapping updates the role of everyone in that group.
+* Suspending a user in the directory, or removing them from it, removes them from the Convex team. See [Deprovisioning removes members](#deprovisioning-removes-members) for what that means for them.
+
+Changes can take up to an hour to arrive, so your Convex team can lag behind your identity provider.
+
+Your directory also takes over the parts of the members page it covers:
+
+* The team stops accepting manual invitations. Add the person to your directory instead. Invitations sent before the directory was connected can no longer be accepted either.
+* You cannot change the role of a member the directory manages, or remove them from the team, from the Convex dashboard. Move them between groups, or take them out of the directory, in your identity provider instead.
+* Members the directory does not cover are unaffected, and anyone can still remove themselves from the team.
+
+To manage the directory connection, view the current status of the directory, or request a manual sync, use the **⋮ → Manage** button.
+
+## Disabling Directory Sync[​](#disabling-directory-sync "Direct link to Disabling Directory Sync")
+
+Select **⋮ → Disable Directory Sync** to disconnect the directory. Members your identity provider provisioned keep their team membership and the role they have at that moment.
+
+The team stops being managed by the directory right away, but the directory itself can take up to an hour to disappear from this page while Convex finishes tearing the connection down.
+
+Deleting a verified domain has the same effect for the members on that domain: the directory can no longer manage them.
+
+## Emergency lockout recovery[​](#emergency-lockout-recovery "Direct link to Emergency lockout recovery")
+
+If every directory group maps to a non-admin role, if your admins end up in groups that do not grant Admin or in no mapped group at all, or if the directory has no users left, the team can be left without an admin and without anyone who can map one back. The reserved group name `convex-team-admins` exists for this case:
+
+1. In your identity provider, create a directory group named `convex-team-admins` (the match is case-insensitive).
+2. Add the people who should be team admins to it.
+3. Wait for the group to sync. It appears under **Directory group roles** with the role **Admin**, and the edit button next to it is disabled, because this mapping cannot be changed from Convex.
+
+## Things to know[​](#things-to-know "Direct link to Things to know")
+
+### Project roles are managed separately[​](#project-roles-are-managed-separately "Direct link to Project roles are managed separately")
+
+Your directory sets a member's team role. [Project Admin](/dashboard/teams/teams.md#project-admins) is granted per project on the members page.
+
+### Deprovisioning removes members[​](#deprovisioning-removes-members "Direct link to Deprovisioning removes members")
+
+Suspending a user in your directory, or removing them from it, removes them from the Convex team. They lose access immediately, along with their membership. Making them active in the directory again offers them the team, but their project roles have to be set up again.
+
+### Deleting a group deletes its role mapping[​](#deleting-a-group-deletes-its-role-mapping "Direct link to Deleting a group deletes its role mapping")
+
+This includes any custom roles mapped to the group. If you add the group back later it arrives unmapped, which grants no access, so its role and custom roles have to be set again. The same is true for a group you rename, which your identity provider may send as a delete and an add.
+
+A custom role cannot be deleted while a directory group maps to it. Remap those groups first, then delete the role.
+
+### Members are matched by verified email[​](#members-are-matched-by-verified-email "Direct link to Members are matched by verified email")
+
+A directory user only links to a Convex account that has verified the email your directory carries for them. If that email stops being verified on the account, that member is removed from your Convex team.
+
+## Who can configure Directory Sync[​](#who-can-configure-directory-sync "Direct link to Who can configure Directory Sync")
+
+Team Admins can do everything on this page. Team Developers can see the configuration but not change it. With [custom roles](/team-management/custom-roles.md) you can grant the individual [role actions](/team-management/role-actions.md#directory-sync): `directorySync:view`, `directorySync:enable`, `directorySync:disable`, `directorySync:updateGroupMapping`, and `directorySync:deleteGroupMapping`. Reviewing the roster also requires `member:view`, because it lists each team member and their role.
+
+Enabling and disabling Directory Sync, and every change to a group's role mapping, is recorded in the [team audit log](/dashboard/teams/teams.md#audit-log).
+
+
+---
+
 # Team Management
 
 > For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
@@ -59247,6 +60085,7 @@ The following [JSON Schema](https://json-schema.org/) represents the shape of va
 Convex provides administrative features for controlling how members access your team, projects, and deployments:
 
 * **[Single Sign-On (SSO)](/team-management/sso.md)** — authenticate team members through your organization's identity provider.
+* **[Directory Sync (SCIM)](/team-management/directory-sync.md)** — provision members and their roles from your identity provider's user directory.
 * **[Custom Roles](/team-management/custom-roles.md)** — define fine-grained permission policies beyond the built-in Admin and Developer roles.
 * **[Role Actions](/team-management/role-actions.md)** — reference for every action a role can grant, and which built-in roles cover which actions.
 
@@ -59324,6 +60163,27 @@ Resource leaf: `sso:*`.
 | ----------------------------------------- | ----------------------------- | ---------- | -------------- |
 | `sso:enable`, `sso:disable`, `sso:update` | Manage the SSO configuration. | ✓          | ✗              |
 | `sso:view`                                | View the SSO configuration.   | ✓          | ✓              |
+
+## Authentication domains[​](#authentication-domains "Direct link to Authentication domains")
+
+Resource leaf: `team:*`. These cover the **Authentication Domains** section of the [team authentication page](/team-management/sso.md), which both SSO and [Directory Sync](/team-management/directory-sync.md) read.
+
+| Action                                     | Description                  | Team Admin | Team Developer |
+| ------------------------------------------ | ---------------------------- | ---------- | -------------- |
+| `team:domain:create`, `team:domain:delete` | Add and remove team domains. | ✓          | ✗              |
+| `team:domain:view`                         | View the team's domains.     | ✓          | ✓              |
+
+## Directory Sync[​](#directory-sync "Direct link to Directory Sync")
+
+Resource leaf: `directorySync:*`.
+
+| Action                                                                 | Description                              | Team Admin | Team Developer |
+| ---------------------------------------------------------------------- | ---------------------------------------- | ---------- | -------------- |
+| `directorySync:enable`, `directorySync:disable`                        | Turn directory management on and off.    | ✓          | ✗              |
+| `directorySync:updateGroupMapping`, `directorySync:deleteGroupMapping` | Change the role a directory group gives. | ✓          | ✗              |
+| `directorySync:view`                                                   | View the Directory Sync configuration.   | ✓          | ✓              |
+
+Reviewing the staged roster before enabling Directory Sync also requires `member:view`, because it lists each team member and their role.
 
 ## Team integrations[​](#team-integrations "Direct link to Team integrations")
 
@@ -59464,53 +60324,86 @@ Single Sign-On is only available on Convex Business and Enterprise.
 
 Single Sign-On (SSO) allows your team to authenticate with Convex using your organization's identity provider (IdP). Once configured, team members can sign in to Convex through your IdP instead of using individual credentials.
 
-## Finding SSO settings[​](#finding-sso-settings "Direct link to Finding SSO settings")
+## Finding the settings[​](#finding-the-settings "Direct link to Finding the settings")
 
-SSO settings are located in your team settings. To access them:
+SSO is configured on the [Team Authentication page](https://dashboard.convex.dev/team/settings/team-authentication), under **Team Settings → Team Authentication**.
 
-1. Click on "Team Settings" at the top of the project list page
-2. Select the **Single Sign-On** tab
+Two of its sections cover SSO:
 
-Or navigate directly to the [SSO settings page](https://dashboard.convex.dev/team/settings/sso).
+* **Authentication Domains** — the email domains your team owns. SSO only manages members whose account uses one of these domains.
+* **Single sign-on** — your identity provider connection.
+
+![The Authentication Domains and Single sign-on sections before anything is configured](/screenshots/storybook/pages_team_authentication_sso_sections_light.webp)
 
 ## Setting up SSO[​](#setting-up-sso "Direct link to Setting up SSO")
 
-To configure SSO for your team:
+### 1. Verify a domain[​](#1-verify-a-domain "Direct link to 1. Verify a domain")
 
-### 1. Enable SSO[​](#1-enable-sso "Direct link to 1. Enable SSO")
+Each connection is attached to a domain you own, so start by verifying yours. Select **Add a domain** in the **Authentication Domains** section. Convex opens a separate configuration page in a new tab, where you enter the domain and complete the DNS verification.
 
-On the Single Sign-On settings page, click **Enable SSO** to begin the setup process.
+Verification is not instant. A domain shows as **Pending** until your DNS record is picked up, and **Verified** once it is. You can re-open **Add a domain** at any time to check on a pending domain.
 
-### 2. Verify your domain[​](#2-verify-your-domain "Direct link to 2. Verify your domain")
+![The Authentication Domains section listing a verified and a pending domain](/screenshots/storybook/pages_team_authentication_domains_light.webp)
 
-Click **Manage Domains** to verify the domain used for SSO login. Follow the domain verification wizard to confirm ownership of your domain.
+caution
 
-### 3. Configure your identity provider[​](#3-configure-your-identity-provider "Direct link to 3. Configure your identity provider")
+Your own Convex account needs a [verified email](https://dashboard.convex.dev/profile) on one of these domains, otherwise you won't be able to log in through SSO yourself. When none of your verified emails match, the section shows a warning next to its title.
 
-After verifying your domain, click **Manage SSO Configuration** to set up SSO with your identity provider of choice. Follow the instructions in the wizard to complete the configuration.
+### 2. Connect your identity provider[​](#2-connect-your-identity-provider "Direct link to 2. Connect your identity provider")
 
-### Renewing certificates[​](#renewing-certificates "Direct link to Renewing certificates")
+Once a domain is verified, select **Configure** in the **Single sign-on** section. Convex opens a separate configuration page in a new tab, where you pick your identity provider and follow its setup instructions.
 
-The SSO configuration page also allows you to renew your configuration's certificate when it approaches expiration.
+![The Single sign-on section before a connection has been configured](/screenshots/storybook/pages_team_authentication_single_sign_on_light.webp)
+
+When you come back, the connection appears in the section with its status:
+
+* **Active** — team members can log in through this identity provider.
+* **Inactive** — the connection exists but isn't finished. Re-open it with **⋮ → Manage** to complete the remaining steps with your identity provider.
+
+![The Single sign-on section with an active Okta SAML connection](/screenshots/storybook/pages_team_authentication_single_sign_on_configured_light.webp)
+
+### 3. Test the connection[​](#3-test-the-connection "Direct link to 3. Test the connection")
+
+Log out and log back in through your identity provider to confirm the connection works before requiring SSO for the whole team.
+
+## Managing the connection[​](#managing-the-connection "Direct link to Managing the connection")
+
+Use the **⋮** menu next to the connection to manage it:
+
+![The connection menu with Manage, Renew certificate, and Disable Single sign-on](/screenshots/storybook/pages_team_authentication_single_sign_on_menu_light.webp)
+
+* **⋮ → Manage** re-opens the configuration page for this connection.
+* **⋮ → Renew certificate** walks you through replacing a signing certificate before it expires.
+* **⋮ → Disable Single sign-on** removes the connection. Team members can no longer log in through your identity provider. Your verified domains are unaffected.
 
 ## Require Single Sign-On[​](#require-single-sign-on "Direct link to Require Single Sign-On")
 
-Once SSO is enabled, you can optionally choose to **require** SSO for all team members. When this setting is turned on:
+Once a connection is active, you can **require** SSO for the team by checking **Require SSO to access team**. The dashboard asks you to confirm before saving.
 
-* All team members must authenticate through your identity provider to access this team. This applies to both access via the dashboard and CLI.
-* Members will not be able to sign in using other authentication methods to access the team
+![The confirmation dialog for requiring SSO to access the team](/screenshots/storybook/pages_team_authentication_require_sso_light.webp)
 
-This only applies to the specific team that has SSO enabled. Members can still use other login methods to access any other Convex teams they belong to.
+When this setting is on:
 
-To enable this, toggle the **Require SSO** option on the Single Sign-On settings page.
+* All team members must authenticate through your identity provider to access this team. This applies to both the dashboard and the CLI.
+* Members cannot use other authentication methods to access the team.
+
+This only applies to the team that has SSO enabled. Members can still use other login methods to access any other Convex teams they belong to.
+
+caution
+
+Test your SSO configuration before turning this on. If the connection doesn't work, nobody can access the team, including you.
 
 ## Customizing your domain policy[​](#customizing-your-domain-policy "Direct link to Customizing your domain policy")
 
-By default, all Convex users that sign in with your verified SSO domain will be required to log in with SSO to use Convex If they are signing in with an email address that uses your verified domain.
+By default, all Convex users that sign in with your verified SSO domain will be required to log in with SSO to use Convex if they are signing in with an email address that uses your verified domain.
 
 To configure a custom domain policy, such as allowing users to login with other sign-on methods, contact Convex support.
 
 These settings will be available for self-serve configuration in the future.
+
+## Who can configure SSO[​](#who-can-configure-sso "Direct link to Who can configure SSO")
+
+Team Admins can do everything on this page. Team Developers can see the configuration but not change it. With [custom roles](/team-management/custom-roles.md) you can grant the individual [role actions](/team-management/role-actions.md#sso): `sso:view`, `sso:enable`, `sso:update`, `sso:disable`, and the `team:domain:*` actions that cover the **Authentication Domains** section.
 
 
 ---

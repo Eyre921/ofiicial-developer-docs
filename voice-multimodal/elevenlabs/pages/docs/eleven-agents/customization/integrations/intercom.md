@@ -68,9 +68,11 @@ If you only want the agent to handle a specific subset of conversations, route t
 
 With a team inbox configured, the agent ignores any conversation that is not assigned to that team.
 
-Intercom assigns the team via your Workflow at the start of a conversation. If a
-`conversation.user.created` webhook is delivered before the assignment lands, that first message
-may be skipped; the agent picks up on the contact's next reply. Account for this when testing.
+> **Note**
+>
+> Intercom assigns the team via your Workflow at the start of a conversation. If a
+> `conversation.user.created` webhook is delivered before the assignment lands, that first message
+> may be skipped; the agent picks up on the contact's next reply. Account for this when testing.
 
 #### Subscribe to webhook topics in Intercom
 
@@ -95,11 +97,15 @@ If no reply arrives, double-check the webhook URL and topic subscription in Deve
 
 ### CLI
 
-CLI documentation for this integration is coming soon.
+> **Note**
+>
+> CLI documentation for this integration is coming soon.
 
 ### SDK
 
-SDK documentation for this integration is coming soon.
+> **Note**
+>
+> SDK documentation for this integration is coming soon.
 
 ## Useful links
 

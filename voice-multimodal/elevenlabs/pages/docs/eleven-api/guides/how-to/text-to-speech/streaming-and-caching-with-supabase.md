@@ -8,7 +8,9 @@ path: docs/eleven-api/guides/how-to/text-to-speech/streaming-and-caching-with-su
 
 # Streaming and Caching with Supabase
 
-**How-to guide** · Assumes you have completed the [ElevenAPI quickstart](/docs/eleven-api/quickstart) and have a Supabase account.
+> **Note**
+>
+> **How-to guide** · Assumes you have completed the [ElevenAPI quickstart](/docs/eleven-api/quickstart) and have a Supabase account.
 
 ## Introduction
 
@@ -45,9 +47,11 @@ allowed_mime_types = ["audio/mp3"]
 objects_path = "./audio"
 ```
 
-Upon running `supabase start` this will create a new storage bucket in your local Supabase
-project. Should you want to push this to your hosted Supabase project, you can run `supabase seed
-  buckets --linked`.
+> **Note**
+>
+> Upon running `supabase start` this will create a new storage bucket in your local Supabase
+> project. Should you want to push this to your hosted Supabase project, you can run `supabase seed
+>   buckets --linked`.
 
 ### Configure background tasks for Supabase Edge Functions
 
@@ -60,8 +64,10 @@ To use background tasks in Supabase Edge Functions when developing locally, you 
 policy = "per_worker"
 ```
 
-When running with `per_worker` policy, Function won't auto-reload on edits. You will need to
-manually restart it by running `supabase functions serve`.
+> **Note**
+>
+> When running with `per_worker` policy, Function won't auto-reload on edits. You will need to
+> manually restart it by running `supabase functions serve`.
 
 ### Create a Supabase Edge Function for Speech generation
 

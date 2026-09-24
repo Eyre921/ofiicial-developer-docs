@@ -28,6 +28,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/
 
 - `text_query` (string, required) — The search query text for semantic similarity matching
 - `agent_id` (string, optional) — Agent id (agent_…) or speech engine external id (seng_), resolved to the same underlying resource.
+- `branch_id` (string, optional) — Filter conversations by branch ID.
 - `page_size` (integer, optional, default: 20) — Number of results per page. Max 50.
 - `cursor` (string, optional) — Used for fetching next page. Cursor is returned in the response.
 
@@ -37,22 +38,9 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/
 
 Successful Response
 
-- `results` (list of object, required)
-  - `conversation_id` (string, required)
-  - `agent_id` (string, required)
-  - `transcript_index` (integer, required)
-  - `chunk_text` (string, required)
-  - `score` (double, required)
-  - `conversation_start_time_unix_secs` (integer, required)
-  - `agent_name` (string, optional)
-  - `chunk_highlights` (list of object, optional)
-    - `value` (string, required)
-    - `is_hit` (boolean, required)
+- `results` (list of MessagesSearchResult, required)
 - `has_more` (boolean, required) — Whether there are more results available
-- `meta` (object, optional)
-  - `total` (integer, optional)
-  - `page` (integer, optional)
-  - `page_size` (integer, optional)
+- `meta` (ListResponseMeta, optional)
 - `next_cursor` (string, optional) — Cursor for the next page of results
 
 ## Errors
@@ -61,18 +49,43 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### MessagesSearchResult
+
+transcript_index: index of the message in the conversation transcript chunk_text: text of the transcript; transcript messages if very long could have several chunks. chunk_highlights: chunk_text split into matched/unmatched segments for highlighting. Only populated for keyword/text search, not semantic search. score: similarity score of the message to the search query
+
+- `conversation_id` (string, required)
+- `agent_id` (string, required)
+- `transcript_index` (integer, required)
+- `chunk_text` (string, required)
+- `score` (double, required)
+- `conversation_start_time_unix_secs` (integer, required)
+- `agent_name` (string, optional)
+- `chunk_highlights` (list of SearchHighlightSegment, optional)
+
+### ListResponseMeta
+
+- `total` (integer, optional)
+- `page` (integer, optional)
+- `page_size` (integer, optional)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItem, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### SearchHighlightSegment
+
+- `value` (string, required)
+- `is_hit` (boolean, required)
+
+### ValidationErrorLocItem
 
 ## Examples
-
-**Request**
-
-```json
-{}
-```
 
 **Response**
 
@@ -80,23 +93,28 @@ Validation Error
 {
   "results": [
     {
-      "conversation_id": "conv_9f8b7a6c5d4e3f2a1b0c",
-      "agent_id": "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-      "transcript_index": 5,
-      "chunk_text": "I understand you want to cancel your order and request a refund. Let me check the details for you.",
-      "score": 0.92,
-      "conversation_start_time_unix_secs": 1685000000,
-      "agent_name": "Support Agent John",
-      "chunk_highlights": null
+      "conversation_id": "conversation_id",
+      "agent_id": "agent_id",
+      "transcript_index": 1,
+      "chunk_text": "chunk_text",
+      "score": 1.1,
+      "conversation_start_time_unix_secs": 1,
+      "agent_name": "agent_name",
+      "chunk_highlights": [
+        {
+          "value": "value",
+          "is_hit": true
+        }
+      ]
     }
   ],
-  "has_more": false,
+  "has_more": true,
   "meta": {
     "total": 1,
     "page": 1,
-    "page_size": 10
+    "page_size": 1
   },
-  "next_cursor": "cursor_abcdef1234567890"
+  "next_cursor": "next_cursor"
 }
 ```
 
@@ -106,14 +124,13 @@ Validation Error
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
-    const client = new ElevenLabsClient({
-        apiKey: "sk_live_1234567890abcdef",
-    });
+    const client = new ElevenLabsClient();
     await client.conversationalAi.conversations.messages.search({
-        agentId: "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
+        agentId: "agent_id",
+        branchId: "branch_id",
         cursor: "cursor",
-        pageSize: 10,
-        textQuery: "Customer requesting refund for a cancelled order",
+        pageSize: 1,
+        textQuery: "Customer asking to cancel and get money back",
     });
 }
 main();
@@ -123,15 +140,14 @@ main();
 ```python
 from elevenlabs import ElevenLabs
 
-client = ElevenLabs(
-    api_key="sk_live_1234567890abcdef",
-)
+client = ElevenLabs()
 
 client.conversational_ai.conversations.messages.search(
-    agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
+    agent_id="agent_id",
+    branch_id="branch_id",
     cursor="cursor",
-    page_size=10,
-    text_query="Customer requesting refund for a cancelled order",
+    page_size=1,
+    text_query="Customer asking to cancel and get money back",
 )
 
 ```
@@ -141,21 +157,15 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&cursor=cursor&page_size=10&text_query=Customer+requesting+refund+for+a+cancelled+order"
+	url := "https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?agent_id=agent_id&branch_id=branch_id&cursor=cursor&page_size=1&text_query=Customer+asking+to+cancel+and+get+money+back"
 
-	payload := strings.NewReader("{}")
-
-	req, _ := http.NewRequest("GET", url, payload)
-
-	req.Header.Add("xi-api-key", "sk_live_1234567890abcdef")
-	req.Header.Add("Content-Type", "application/json")
+	req, _ := http.NewRequest("GET", url, nil)
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -172,15 +182,12 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&cursor=cursor&page_size=10&text_query=Customer+requesting+refund+for+a+cancelled+order")
+url = URI("https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?agent_id=agent_id&branch_id=branch_id&cursor=cursor&page_size=1&text_query=Customer+asking+to+cancel+and+get+money+back")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["xi-api-key"] = 'sk_live_1234567890abcdef'
-request["Content-Type"] = 'application/json'
-request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -190,10 +197,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&cursor=cursor&page_size=10&text_query=Customer+requesting+refund+for+a+cancelled+order")
-  .header("xi-api-key", "sk_live_1234567890abcdef")
-  .header("Content-Type", "application/json")
-  .body("{}")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?agent_id=agent_id&branch_id=branch_id&cursor=cursor&page_size=1&text_query=Customer+asking+to+cancel+and+get+money+back")
   .asString();
 ```
 
@@ -203,13 +207,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&cursor=cursor&page_size=10&text_query=Customer+requesting+refund+for+a+cancelled+order', [
-  'body' => '{}',
-  'headers' => [
-    'Content-Type' => 'application/json',
-    'xi-api-key' => 'sk_live_1234567890abcdef',
-  ],
-]);
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?agent_id=agent_id&branch_id=branch_id&cursor=cursor&page_size=1&text_query=Customer+asking+to+cancel+and+get+money+back');
 
 echo $response->getBody();
 ```
@@ -217,31 +215,18 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&cursor=cursor&page_size=10&text_query=Customer+requesting+refund+for+a+cancelled+order");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?agent_id=agent_id&branch_id=branch_id&cursor=cursor&page_size=1&text_query=Customer+asking+to+cancel+and+get+money+back");
 var request = new RestRequest(Method.GET);
-request.AddHeader("xi-api-key", "sk_live_1234567890abcdef");
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = [
-  "xi-api-key": "sk_live_1234567890abcdef",
-  "Content-Type": "application/json"
-]
-let parameters = [] as [String : Any]
-
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
-
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&cursor=cursor&page_size=10&text_query=Customer+requesting+refund+for+a+cancelled+order")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?agent_id=agent_id&branch_id=branch_id&cursor=cursor&page_size=1&text_query=Customer+asking+to+cancel+and+get+money+back")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
-request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

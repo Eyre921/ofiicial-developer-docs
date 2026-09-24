@@ -44,5 +44,7 @@ Upload documents and files.
 * **Review knowledge gaps regularly** — Fill gaps to improve accuracy over time
 * **Avoid duplication** — Information from your services, hours, and staff is already available to the receptionist automatically
 
-Your plan tier determines how many knowledge sources you can add. Check your plan details in
-**Settings** → **Billing**.
+> **Info**
+>
+> Your plan tier determines how many knowledge sources you can add. Check your plan details in
+> **Settings** → **Billing**.

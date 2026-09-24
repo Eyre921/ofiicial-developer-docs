@@ -8,7 +8,9 @@ path: docs/eleven-api/guides/how-to/text-to-speech/pronunciation-dictionaries
 
 # Using pronunciation dictionaries
 
-**How-to guide** · Assumes you have completed the [ElevenAPI quickstart](/docs/eleven-api/quickstart).
+> **Note**
+>
+> **How-to guide** · Assumes you have completed the [ElevenAPI quickstart](/docs/eleven-api/quickstart).
 
 ## Overview
 
@@ -20,18 +22,22 @@ Pronunciation dictionaries allow you to customize how your AI agent pronounces s
 
 ElevenLabs supports both [IPA](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet) and [CMU](https://en.wikipedia.org/wiki/CMU_Pronouncing_Dictionary) alphabets.
 
-Pronunciation dictionary phoneme tags only work with eleven\_flash\_v2  and eleven\_v3 models.
-
-Other models skip dictionary phoneme tags and use the default pronunciation. For other models, use
-alias tags instead to substitute spellings or phrases that produce the pronunciation you need.
-
-If you want to use IPA and CMU pronunciations in languages other than English, you will have to
-switch to the eleven\_v3 model.
+> **Info**
+>
+> Pronunciation dictionary phoneme tags only work with eleven\_flash\_v2  and eleven\_v3 models.
+>
+> Other models skip dictionary phoneme tags and use the default pronunciation. For other models, use
+> alias tags instead to substitute spellings or phrases that produce the pronunciation you need.
+>
+> If you want to use IPA and CMU pronunciations in languages other than English, you will have to
+> switch to the eleven\_v3 model.
 
 ## Quickstart
 
-This guide assumes you have [set up your API key and SDK](/docs/eleven-api/quickstart). Complete
-the quickstart first if you haven't.
+> **Note**
+>
+> This guide assumes you have [set up your API key and SDK](/docs/eleven-api/quickstart). Complete
+> the quickstart first if you haven't.
 
 #### Create a pronunciation dictionary file
 
@@ -39,7 +45,9 @@ In this example, we will create a pronunciation dictionary file for the word `to
 
 This rule will use the "IPA" alphabet and update the pronunciation for `tomato` and `Tomato` with a different pronunciation. PLS files are case sensitive which is why we include it both with and without a capital "T".
 
-You can use AI tools like Claude or ChatGPT to help generate IPA or CMU notations for specific words.
+> **Tip**
+>
+> You can use AI tools like Claude or ChatGPT to help generate IPA or CMU notations for specific words.
 
 **`dictionary.pls`**
 

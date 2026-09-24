@@ -21,8 +21,10 @@ RAG is ideal for agents that need to reference large documents, technical manual
 knowledge bases that would exceed the context window limits of traditional prompting.
 RAG adds on slight latency to the response time of your agent, around 250ms.
 
-This video was recorded with an earlier version of the dashboard. The RAG configuration steps are
-unchanged, but some interface elements may look different.
+> **Note**
+>
+> This video was recorded with an earlier version of the dashboard. The RAG configuration steps are
+> unchanged, but some interface elements may look different.
 
 ## How RAG works
 
@@ -49,7 +51,7 @@ This process ensures that relevant information to the user's query is passed to 
 
 In your agent's settings, navigate to the **Knowledge Base** section and toggle on the **Use RAG** option. Configure the embedding model, maximum document chunks, and maximum vector distance under the **Advanced** tab as needed.
 
-![RAG configuration options including embedding model selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6e8a6273d26090d92a2ed237ffbc488f44e5e9a408aca6511afa94461d177c86/assets/images/conversational-ai/rag-config.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T093332Z&X-Amz-Expires=604800&X-Amz-Signature=b2122dfb2c21c97ae01dfa7e4ba649030fbb65c925f521bfd271257a86c3b03e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![RAG configuration options including embedding model selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6e8a6273d26090d92a2ed237ffbc488f44e5e9a408aca6511afa94461d177c86/assets/images/conversational-ai/rag-config.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T103606Z&X-Amz-Expires=604800&X-Amz-Signature=25179c84f719dfaaec09f3c70c2a1676ca0e7a966e6f15fcafc73e5c409b0d7f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Update via the CLI
 
@@ -96,8 +98,10 @@ See the [API implementation](#api-implementation) section below for full code th
 Each document in your knowledge base needs to be indexed before it can be used with RAG. This
 process happens automatically when a document is added to an agent with RAG enabled.
 
-Indexing may take a few minutes for large documents. You can check the indexing status in the
-knowledge base list.
+> **Info**
+>
+> Indexing may take a few minutes for large documents. You can check the indexing status in the
+> knowledge base list.
 
 ### Configure document usage modes (optional)
 
@@ -106,10 +110,12 @@ For each document in your knowledge base, you can choose how it's used:
 * **Auto (default)**: The document is only retrieved when relevant to the query
 * **Prompt**: The document is always included in the system prompt, regardless of relevance
 
-![Document usage mode options in the knowledge base](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/265aa612b4ad2da915b617552312b47c965892559b2a8615ecb42551763de4a5/assets/images/conversational-ai/rag-prompt.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T093332Z&X-Amz-Expires=604800&X-Amz-Signature=a7c0ce05feddfb6267de07a5ea9933dbd16c62bfae923ec0c8522917abc9da31&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Document usage mode options in the knowledge base](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/265aa612b4ad2da915b617552312b47c965892559b2a8615ecb42551763de4a5/assets/images/conversational-ai/rag-prompt.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T103606Z&X-Amz-Expires=604800&X-Amz-Signature=61a674962eec7994e766f3da03d1a3a5439a2913aa9c04a09df865f3406517ab&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-Setting too many documents to "Prompt" mode may exceed context limits. Use this option sparingly
-for critical information.
+> **Warning**
+>
+> Setting too many documents to "Prompt" mode may exceed context limits. Use this option sparingly
+> for critical information.
 
 ### Test your RAG-enabled agent
 

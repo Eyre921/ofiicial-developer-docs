@@ -10,6 +10,10 @@ You can destroy a database by using the following command:
 turso db destroy <database-name> [flags]
 ```
 
+<Note>
+  On paid plans, a destroyed database can be restored for up to five days — see [Recover Deleted Databases](/features/recover-deleted-databases).
+</Note>
+
 ## Flags
 
 | Flag          | Description                            |

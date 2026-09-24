@@ -90,9 +90,11 @@ Open **Interactivity & Shortcuts**, enable interactivity, and paste the **Intera
 
 If Slack prompts you to reinstall the app after changing scopes or events, do so to apply the changes.
 
-A Slack workspace can only be connected once via the shared ElevenLabs OAuth app. Reinstalling
-from a different ElevenLabs workspace returns a `duplicate Slack workspace` error — remove the
-existing connection first. Bring-your-own-app connections are independent and do not conflict.
+> **Note**
+>
+> A Slack workspace can only be connected once via the shared ElevenLabs OAuth app. Reinstalling
+> from a different ElevenLabs workspace returns a `duplicate Slack workspace` error — remove the
+> existing connection first. Bring-your-own-app connections are independent and do not conflict.
 
 ## OAuth scopes
 
@@ -145,11 +147,15 @@ Configure the trigger fields:
 
 Save the trigger. ElevenLabs automatically invites the bot to public channels. Removing the trigger later causes the bot to leave that channel.
 
-Slack does not allow apps to auto-join private channels. For a private channel, run `/invite
-  @Eleven` in that channel after saving the trigger so the bot can see messages.
+> **Info**
+>
+> Slack does not allow apps to auto-join private channels. For a private channel, run `/invite
+>   @Eleven` in that channel after saving the trigger so the bot can see messages.
 
-Only one trigger is allowed per `(Slack workspace, channel)` pair. Edit the existing trigger
-instead of creating a duplicate.
+> **Warning**
+>
+> Only one trigger is allowed per `(Slack workspace, channel)` pair. Edit the existing trigger
+> instead of creating a duplicate.
 
 ## Configure the DM trigger
 
@@ -168,11 +174,15 @@ Select the **Agent** that handles DM conversations.
 Save the trigger. Any Slack user in the workspace can now open a DM with the bot and start a
 conversation.
 
-For BYO apps, make sure you have subscribed to the `message.im` bot event and added the
-`im:history` bot scope. Reinstall the app if prompted after adding these.
+> **Info**
+>
+> For BYO apps, make sure you have subscribed to the `message.im` bot event and added the
+> `im:history` bot scope. Reinstall the app if prompted after adding these.
 
-Only one DM trigger is allowed per Slack connection. To change the agent, edit the existing
-trigger.
+> **Warning**
+>
+> Only one DM trigger is allowed per Slack connection. To change the agent, edit the existing
+> trigger.
 
 ## Talking to the bot in Slack
 
@@ -211,12 +221,16 @@ The **Respond to messages from** setting on the Channel Message trigger controls
 
 The bot always ignores its own messages — using the bot-user and app identity in Slack's signed webhook — under either setting, so it never replies to itself even when self-mentioned. It also continues to ignore edited messages (`message_changed`) and deleted messages (`message_deleted`). It handles `message` and `app_mention` events and works in both public and private channels.
 
-Legacy bot events that contain only a `bot_id` identify the sender but not the receiving app. They
-are treated as messages from another bot; self-loop detection for this Slack app uses the bot-user
-or app identity included in modern Slack event payloads.
+> **Note**
+>
+> Legacy bot events that contain only a `bot_id` identify the sender but not the receiving app. They
+> are treated as messages from another bot; self-loop detection for this Slack app uses the bot-user
+> or app identity included in modern Slack event payloads.
 
-If your Slack app subscribes to both `app_mention` and `message.channels` / `message.groups`, a
-single `@`-mention can trigger two agent responses. Subscribe to one mode or the other.
+> **Warning**
+>
+> If your Slack app subscribes to both `app_mention` and `message.channels` / `message.groups`, a
+> single `@`-mention can trigger two agent responses. Subscribe to one mode or the other.
 
 ## Conversation model
 

@@ -10,7 +10,9 @@ path: docs/license-proxy
 
 # License Proxy
 
-The Deepgram License Proxy is not necessary to test or deploy self-hosted Deepgram services. It is highly recommended to be deployed in production to enable highly available environments.
+> **Info**
+>
+> The Deepgram License Proxy is not necessary to test or deploy self-hosted Deepgram services. It is highly recommended to be deployed in production to enable highly available environments.
 
 ## Use Cases
 

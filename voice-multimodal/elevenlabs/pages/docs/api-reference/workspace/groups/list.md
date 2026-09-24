@@ -28,24 +28,7 @@ Reference: https://elevenlabs.io/docs/api-reference/workspace/groups/list
 
 Successful Response
 
-- `map from string to object`
-  - `name` (string, required)
-  - `id` (string, required)
-  - `members` (list of string, required)
-  - `permissions` (list of enum, required, nullable)
-    - Allowed values: `text_to_speech`, `speech_to_speech`, `speech_to_text`, `voice_lab`, `sound_effects`, `projects`, `voiceover_studio`, `dubbing`, `audio_native`, `conversational_ai`, `conversational_ai_read`, `voice_isolator`, `ai_speech_classifier`, `synthid_detector`, `add_voice_from_voice_library`, `create_instant_voice_clone`, `create_professional_voice_clone`, `create_user_api_key`, `publish_studio_project`, `music`, `image_video_generation`, `flows`, `templates`, `share_voice_externally`, `publish_voice_to_voice_library`, `view_fiat_balance`, `workspace_analytics_full_read`, `service_accounts_manage`, `webhooks_manage`, `group_members_manage`, `workspace_members_invite`, `workspace_members_remove`, `terms_of_service_accept`, `audit_log_read`, `conversation_privacy_manage`, `copy_resources_cross_workspace`, `voice_design`
-  - `group_usage_limit` (integer or "unlimited", optional, nullable)
-  - `group_pvc_limit` (integer or "unlimited", optional, nullable)
-  - `character_count` (integer, optional, nullable)
-  - `is_scim_synced` (boolean, optional, default: false)
-  - `scim_group` (object, optional, nullable)
-    - `scim_external_id` (string, required, nullable)
-    - `display_name` (string, required)
-    - `created_at_unix` (integer, optional, nullable)
-    - `updated_at_unix` (integer, optional, nullable)
-    - `seat_type` (enum, optional, nullable) — Seat types for workspace members.
-      - Allowed values: `workspace_admin`, `workspace_member`, `workspace_lite_member`
-  - `scim_frozen` (boolean, optional, default: false)
+- `map from string to WorkspaceGroupResponseModel`
 
 ## Errors
 
@@ -53,10 +36,44 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### WorkspaceGroupResponseModel
+
+- `name` (string, required)
+- `id` (string, required)
+- `members` (list of string, required)
+- `permissions` (list of enum, required, nullable)
+  - Allowed values: `text_to_speech`, `speech_to_speech`, `speech_to_text`, `voice_lab`, `sound_effects`, `projects`, `voiceover_studio`, `dubbing`, `audio_native`, `conversational_ai`, `conversational_ai_read`, `voice_isolator`, `ai_speech_classifier`, `synthid_detector`, `add_voice_from_voice_library`, `create_instant_voice_clone`, `create_professional_voice_clone`, `create_user_api_key`, `publish_studio_project`, `music`, `image_video_generation`, `flows`, `templates`, `share_voice_externally`, `publish_voice_to_voice_library`, `view_fiat_balance`, `workspace_analytics_full_read`, `service_accounts_manage`, `webhooks_manage`, `group_members_manage`, `workspace_members_invite`, `workspace_members_remove`, `terms_of_service_accept`, `audit_log_read`, `conversation_privacy_manage`, `copy_resources_cross_workspace`, `voice_design`
+- `group_usage_limit` (WorkspaceGroupResponseModelGroupUsageLimit, optional, nullable)
+- `group_pvc_limit` (WorkspaceGroupResponseModelGroupPvcLimit, optional, nullable)
+- `character_count` (integer, optional, nullable)
+- `is_scim_synced` (boolean, optional, default: false)
+- `scim_group` (ScimGroupResponseModel, optional, nullable)
+- `scim_frozen` (boolean, optional, default: false)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### WorkspaceGroupResponseModelGroupUsageLimit
+
+### WorkspaceGroupResponseModelGroupPvcLimit
+
+### ScimGroupResponseModel
+
+- `scim_external_id` (string, required, nullable)
+- `display_name` (string, required)
+- `created_at_unix` (integer, optional, nullable)
+- `updated_at_unix` (integer, optional, nullable)
+- `seat_type` (enum, optional, nullable) — Seat types for workspace members.
+  - Allowed values: `workspace_admin`, `workspace_member`, `workspace_lite_member`
+
+### ValidationErrorLocItems
 
 ## Examples
 

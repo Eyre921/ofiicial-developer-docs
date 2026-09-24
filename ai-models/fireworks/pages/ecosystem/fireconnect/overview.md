@@ -1,181 +1,89 @@
 ---
-title: "Overview"
+title: "FireConnect"
 source: https://docs.fireworks.ai/ecosystem/fireconnect/overview
 path: ecosystem/fireconnect/overview
 ---
 
-Route coding harnesses through Fireworks AI, with Microsoft Foundry support for compatible tools
+Point Claude Code, Cursor IDE, Codex, Copilot, and the rest at Fireworks with one FireConnect command
 
-[FireConnect](https://github.com/fw-ai/fireconnect) is an open-source CLI that routes agentic coding harnesses through Fireworks models. Install once, sign in once, then flip any supported harness on or off — no proxy to run, no wrapper to launch. `on` updates the harness config. `off` restores saved pre-FireConnect settings when a backup is available; otherwise it removes FireConnect-managed settings.
-
-Choose where inference runs:
-
-* **Direct Fireworks routing** (default): the [Fireworks gateway](https://fireworks.ai). Sign in with `fireconnect login` or use a Fireworks API key (`fw_...`) or [Fire Pass](/firepass) key (`fpk_...`).
-* **Fireworks on Microsoft Foundry**: models in your Azure subscription, billed through Azure. See [Microsoft Foundry](/ecosystem/fireconnect/microsoft-foundry).
+[FireConnect](https://github.com/fw-ai/fireconnect) is an open-source CLI that connects your existing coding harness to Fireworks. Install it, sign in once, then run one command for each harness you use. You do not need to host another service.
 
 <Tip>
-  New here? Follow [Quick start](#quick-start) below, then open the [harness guide](#choose-your-harness) for your tool. Try the [side-by-side demo](/ecosystem/fireconnect/demo) to compare models before switching.
+  Start with [Quick start](#quick-start). Then review the setup details for your app in [Coding Harnesses](/ecosystem/fireconnect/harnesses). To choose a router, see [FireRouter](/ecosystem/firerouter/overview).
 </Tip>
 
 ## Quick start
 
-### Install
+**1. Install from Bash** (Node.js 18 or later):
 
-```bash theme={null}
-curl -fsSL https://raw.githubusercontent.com/fw-ai/fireconnect/main/install.sh | bash
+```bash wrap theme={null}
+curl -fsSL https://fireconnect.fireworks.ai/install.sh | bash
 ```
 
-**2. Sign in**
+Alternative installer:
 
-```bash theme={null}
-fireconnect login        # browser sign-in, or paste a fw_… / fpk_… key
+```bash wrap theme={null}
+curl -fsSL \
+  https://raw.githubusercontent.com/fw-ai/fireconnect/main/install.sh \
+  | bash
 ```
 
-**3. Connect a harness**
+**2. Sign in** (browser flow, or paste a Fireworks key):
 
-```bash theme={null}
-fireconnect claude       # first run opens the model mapping wizard
+```bash wrap theme={null}
+fireconnect login
 ```
 
-Use the wizard to choose Claude Code alias slots, or configure them explicitly with `--model`, `--opus`, `--sonnet`, `--haiku`, `--fable`, and `--subagent`. Eligible accounts also get the `fireworks-websearch` MCP (see [WebSearch MCP](/ecosystem/fireconnect/websearch-mcp)).
+**3. Connect** (example: Claude Code):
 
-**4. Restart the tool, then verify**
+```bash wrap theme={null}
+fireconnect claude
+```
 
-```bash theme={null}
+**4. Restart the harness, then check:**
+
+```bash wrap theme={null}
 fireconnect claude status
 ```
 
-Swap `claude` for any harness: `opencode`, `codex`, `chatgpt`, `pi`, `cursor`, `vscode`, `deepseek`. Bare harness names run `on` — `fireconnect claude` is the same as `fireconnect claude on`.
+`status` shows the configured model and which Fireworks models appear in the picker.
 
-## Prerequisites
-
-* A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`) or [Fire Pass](/firepass) key (`fpk_...`) for direct routing
-* For Foundry: Azure resource, API key, and deployment. See [portal setup](/ecosystem/integrations/azure-foundry).
-* Node.js 18+
-* At least one supported harness installed locally
-
-### Install notes
-
-* Requires **bash** and **Node.js 18+**. The installer clones the CLI to `~/.fireconnect/cli`, adds `~/.local/bin/fireconnect` to your `PATH`, and runs the same finalize as `fireconnect upgrade`. It does **not** sign you in or touch harness settings.
-* You can pass `--api-key` or set `FIREWORKS_API_KEY` instead of `login`.
+Replace `claude` with a supported harness name from [Coding Harnesses](/ecosystem/fireconnect/harnesses). `cursor` means **Cursor IDE** only; Cursor CLI is not supported.
 
 <Note>
-  **Windows:** run from Git Bash with the same curl command. Piping through PowerShell corrupts line endings (`set: pipefail\r: invalid option name`).
+  **Windows:** run the install command from Git Bash. PowerShell breaks the install script line endings.
 </Note>
 
-### Upgrade FireConnect
+## In Claude Code
 
-```bash theme={null}
-fireconnect upgrade
+When you select FireRouter in Claude Code, the header shows the active profile:
+
+<Frame>
+  <img alt="Claude Code startup header showing FireRouter and Claude Enterprise" />
+</Frame>
+
+Open `/model` to choose FireRouter, an open-model router, or a Fireworks model:
+
+<Frame>
+  <img alt="Claude Code model picker with FireRouter selected and Auto, DeepSeek, GLM, Kimi, and MiniMax options" />
+</Frame>
+
+## Connect and restore
+
+* **Connect** rewrites the harness config to call Fireworks and saves a snapshot under `~/.fireconnect/`.
+* **`off`** restores file-based harnesses from that snapshot byte-for-byte. For IDE databases, it removes the settings and models FireConnect added.
+* **Sign-in credentials and harness configurations are stored separately.** `fireconnect login` saves your credential through FireConnect's secret store. If a harness requires the key in its own configuration, FireConnect copies it there and restricts the file permissions. Run `fireconnect status` to see the active storage backend without revealing the key.
+
+## Choose a model
+
+Connecting registers coding-ready Fireworks models, including `auto`. Use `--model` only when you want to add or select an explicit model:
+
+```bash wrap theme={null}
+fireconnect claude --model glm-latest
 ```
 
-Or re-run the install curl above. From v0.9.0 onward, harness settings stay connected across upgrade. Check version with `fireconnect --version`. See [CLI reference: Migration](/ecosystem/fireconnect/cli-reference#migration-from-earlier-syntax) for renames.
+See [FireRouter](/ecosystem/firerouter/overview) for router behavior. See [Coding Harnesses](/ecosystem/fireconnect/harnesses) for app-specific restart rules. See [Harness Compatibility](/nexus/harness-compatibility) for credentials and explicit model changes. See [Open Models](/nexus/open-models) for aliases, fast tiers, and pinned versions.
 
-## Sign in
+## Upgrade and uninstall
 
-```bash theme={null}
-fireconnect login     # browser sign-in or paste a key
-fireconnect logout    # clear stored credentials
-fireconnect status    # sign-in state, key storage, and harness state
-```
-
-Fire Pass keys (`fpk_...`) work during `login` or `on`. FireConnect detects the key type and configures supported models.
-
-See [CLI reference: Sign in options](/ecosystem/fireconnect/cli-reference#sign-in-options) for `--with-token`, `--account`, `logout --revoke`, and `configure`.
-
-## Choose your harness
-
-After install and sign-in, open the guide for the tool you use. Each page covers `on` / `off`, models, and harness-specific notes.
-
-<CardGroup>
-  <Card title="Claude Code" icon="terminal" href="/ecosystem/fireconnect/claude-code">
-    Six model slots, usage meter, and session status line
-  </Card>
-
-  <Card title="OpenCode" icon="terminal" href="/ecosystem/fireconnect/opencode">
-    OpenAI-compatible adapter in `opencode.json`
-  </Card>
-
-  <Card title="Codex" icon="terminal" href="/ecosystem/fireconnect/codex">
-    Codex CLI and ChatGPT desktop app via the Responses API
-  </Card>
-
-  <Card title="Pi" icon="terminal" href="/ecosystem/fireconnect/pi">
-    Pi agent settings and auth
-  </Card>
-
-  <Card title="Cursor" icon="laptop-code" href="/ecosystem/fireconnect/cursor">
-    OpenAI BYOK settings for Cursor IDE
-  </Card>
-
-  <Card title="VS Code" icon="code" href="/ecosystem/fireconnect/vscode">
-    GitHub Copilot Chat custom endpoint
-  </Card>
-
-  <Card title="DeepSeek Harness" icon="robot" href="/ecosystem/fireconnect/deepseek">
-    DeepSeek's coding agent (`dsh`)
-  </Card>
-</CardGroup>
-
-## Models
-
-```bash theme={null}
-fireconnect model list --search glm
-fireconnect model list --refresh          # bypass the 1-hour cache
-fireconnect <harness> on --model glm-fast-latest
-# Cursor / VS Code: quit before on; others: restart after
-```
-
-`<harness>` is one of: `claude`, `opencode`, `codex`, `chatgpt`, `pi`, `cursor`, `vscode`, `deepseek`. Full walkthrough: **[Models](/ecosystem/fireconnect/models)**.
-
-## Harness support
-
-| Harness          | Fireworks gateway | Fire Pass | Microsoft Foundry | [FireRouter](/ecosystem/firerouter/overview) | Guide                                               |
-| ---------------- | :---------------: | :-------: | :---------------: | :------------------------------------------: | --------------------------------------------------- |
-| Claude Code      |        Yes        |    Yes    |         No        |                      Yes                     | [Claude Code](/ecosystem/fireconnect/claude-code)   |
-| OpenCode         |        Yes        |    Yes    |        Yes        |                      Yes                     | [OpenCode](/ecosystem/fireconnect/opencode)         |
-| Codex / ChatGPT  |        Yes        |     No    |        Yes        |                      Yes                     | [Codex](/ecosystem/fireconnect/codex)               |
-| Pi               |        Yes        |    Yes    |        Yes        |                      Yes                     | [Pi](/ecosystem/fireconnect/pi)                     |
-| Cursor           |        Yes        |    Yes    |        Yes        |                Workspace BYOK                | [Cursor](/ecosystem/fireconnect/cursor)             |
-| VS Code          |        Yes        |    Yes    |        Yes        |                      Yes                     | [VS Code](/ecosystem/fireconnect/vscode)            |
-| DeepSeek Harness |        Yes        |    Yes    |         No        |                Workspace BYOK                | [DeepSeek Harness](/ecosystem/fireconnect/deepseek) |
-
-**Notes**
-
-* **Foundry**: not on Claude Code or DeepSeek Harness.
-* **FireRouter + Foundry**: FireRouter requires the direct Fireworks gateway; it is not available on the Microsoft Foundry path, even for harnesses that support both independently.
-* **Fire Pass**: not on Codex or Foundry. FireConnect rejects `--model firerouter` with a Fire Pass (`fpk_...`) key on **every** harness; use an `fw_...` account key for FireRouter.
-* **FireRouter**: Cursor and DeepSeek Harness need workspace BYOK for Anthropic pass-through.
-* **Web search MCP**: Claude Code auto-install only (eligible accounts); other harnesses can add the HTTP MCP manually. See [WebSearch MCP](/ecosystem/fireconnect/websearch-mcp).
-* **Cursor / VS Code**: quit the IDE before `on` or `off`. `status` is read-only.
-
-## FireRouter and smart routers
-
-[FireRouter](/ecosystem/firerouter/overview) routes simple requests to cheaper open models and hard requests to Claude Opus 5. The default pair is **GLM 5.3** (redirect) and **Claude Opus 5** (pass-through).
-
-On Claude Code, use `--model firerouter` for Main or a slot flag such as `--opus firerouter` for one alias. Use `--interactive` to choose alias slots, and use `native` to leave a slot unpinned. See [Claude Code — FireRouter](/ecosystem/fireconnect/claude-code#firerouter).
-
-```bash theme={null}
-fireconnect claude on --model firerouter
-fireconnect opencode on --model firerouter
-fireconnect claude on --model firerouter --routing-preference balanced
-```
-
-**Smart router mixes** (preview): pin `auto` for Fireworks' default open-model mix, or `auto-instant` for latency-first routing:
-
-```bash theme={null}
-fireconnect claude on --sonnet auto-instant
-```
-
-Requires a standard Fireworks key (`fw_...`), not Fire Pass. See [Models](/ecosystem/fireconnect/models) and the [FireRouter overview](/ecosystem/firerouter/overview#fireconnect).
-
-## Source
-
-FireConnect is open source: [github.com/fw-ai/fireconnect](https://github.com/fw-ai/fireconnect)
-
-## See also
-
-* [CLI reference](/ecosystem/fireconnect/cli-reference)
-* [Microsoft Foundry](/ecosystem/fireconnect/microsoft-foundry)
-* [WebSearch MCP](/ecosystem/fireconnect/websearch-mcp)
-* [Side-by-side demo](/ecosystem/fireconnect/demo)
+For upgrade and uninstall commands, see the [CLI Reference](/nexus/cli-reference).

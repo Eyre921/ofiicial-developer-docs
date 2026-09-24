@@ -7,45 +7,40 @@
 # README
 Source: https://upstash.com/docs/README
 
-# Mintlify Starter Kit
+# Upstash Documentation
 
-Click on `Use this template` to copy the Mintlify starter kit. The starter kit
-contains examples including
+Source for [upstash.com/docs](https://upstash.com/docs), built and hosted with [Docs7](https://context7.com/docs7).
 
-* Guide pages
-* Navigation
-* Customizations
-* API Reference pages
-* Use of popular components
+## Local preview
 
-### 👩‍💻 Development
+The [Docs7 CLI](https://context7.com/docs/docs7/cli) needs Node.js 20.19 or newer. From the repo root (where `docs.json` is):
 
-Install the [Mintlify CLI](https://www.npmjs.com/package/mintlify) to preview
-the documentation changes locally. To install, use the following command
-
-```
-npm i -g mintlify
+```sh
+npx @upstash/docs7 dev
 ```
 
-Run the following command at the root of your documentation (where `docs.json` is)
+The preview runs at `http://localhost:3333` and reloads when you edit files. The first run downloads the renderer and caches it. Use `--port` to change the port and `--host 0.0.0.0` to reach it from another machine or a container. No login is needed.
 
+To install the CLI globally instead:
+
+```sh
+npm install -g @upstash/docs7
+docs7 dev
 ```
-mintlify dev
+
+## Publishing
+
+The site deploys from `main`. Every pull request gets a Docs7 preview link and a broken-link review from the Docs7 bot.
+
+## llms.txt
+
+`llms.txt` and `llms-full.txt` are generated from `docs.json` and the MDX files. Don't edit them by hand. After changing pages, run:
+
+```sh
+cd llms && npm install && npm run build
 ```
 
-### 😎 Publishing Changes
-
-Changes will be deployed to production automatically after pushing to the
-default branch.
-
-You can also preview changes using PRs, which generates a preview link of the
-docs.
-
-#### Troubleshooting
-
-* Mintlify dev isn't running - Run `mintlify install` it'll re-install
-  dependencies.
-* Page loads as a 404 - Make sure you are running in a folder with `docs.json`
+CI regenerates them on pull requests if they are stale. See [`llms/README.md`](llms/README.md).
 
 # CLI
 Source: https://upstash.com/docs/agent-resources/cli
@@ -301,68 +296,72 @@ with the AWS CLI, rclone, or any S3 SDK. `expiresAt` is the credential's expiry.
 # Install by agent
 Source: https://upstash.com/docs/agent-resources/clients
 
-Each section below covers everything for one agent: the [Upstash Skills](/docs/agent-resources/skills) (docs and the `upstash` [CLI](/docs/agent-resources/cli) reference your agent loads on demand) and the [MCP server](/docs/agent-resources/mcp) (live tools for your account).
+Pick your agent below. The first block in each section is the recommended setup: it connects the remote [MCP server](/docs/agent-resources/mcp) at `https://mcp.upstash.com/mcp` and installs the [Upstash Skills](/docs/agent-resources/skills). Neither needs credentials up front. The MCP server asks you to sign in over OAuth on the first tool call.
 
-Every section sets up the **remote MCP server** (`https://mcp.upstash.com/mcp`), which needs no credentials up front — it authenticates over OAuth on first use, and the Upstash plugin for Claude Code, Claude Desktop, and Codex bundles it, so installing the plugin also connects the MCP.
-
-The **local (stdio) server** is the alternative, folded into each section. It needs your account email and a [Developer API key](/docs/devops/developer-api/introduction#create-an-api-key) (readonly keys work; the server then disables every mutating tool), and it is the only one that carries [Upstash Box](/docs/box/overall/quickstart) tools — the remote server covers Redis, QStash, Workflow, Vector, and Search. The skills need no credentials either way. See the [MCP server page](/docs/agent-resources/mcp) for remote vs. local, authentication, and feature options.
+Everything else, such as editing the config file by hand or running the local (stdio) server with your email and a [Developer API key](/docs/devops/developer-api/introduction#create-an-api-key), is under **Other options** in each section. See the [MCP server page](/docs/agent-resources/mcp) for how the remote and local servers compare.
 
 ## Claude Code
 
-The [`upstash/skills`](https://github.com/upstash/skills) repo is a Claude Code plugin marketplace. From inside Claude Code:
+From inside Claude Code:
 
 ```
 /plugin marketplace add upstash/skills
 /plugin install upstash@upstash
 ```
 
-The plugin bundles the **remote MCP server** (over OAuth), so this one install sets up both the skills and the MCP — approve the consent screen on the first tool call.
+The plugin bundles the skills and the remote MCP server. Approve the consent screen on the first tool call.
 
-To add the remote server on its own, without the plugin:
+<Accordion title="Other options">
+  **MCP server only, without the plugin**
 
-```sh
-claude mcp add --scope user --transport http upstash https://mcp.upstash.com/mcp
-```
+  ```sh
+  claude mcp add --scope user --transport http upstash https://mcp.upstash.com/mcp
+  ```
 
-Then run `/mcp` → **Authenticate**.
+  Then run `/mcp` → **Authenticate**.
 
-<Accordion title="Local (stdio) server instead">
+  **Local (stdio) server**
+
   ```sh
   claude mcp add --transport stdio upstash -- npx -y @upstash/mcp-server@latest --email YOUR_EMAIL --api-key YOUR_API_KEY
   ```
-</Accordion>
 
-See the [Claude Code plugin docs](https://code.claude.com/docs/en/plugins) and [MCP docs](https://docs.anthropic.com/en/docs/claude-code/mcp) for more info.
+  See the [Claude Code plugin docs](https://code.claude.com/docs/en/plugins) and [MCP docs](https://docs.anthropic.com/en/docs/claude-code/mcp) for more info.
+</Accordion>
 
 ## Claude Desktop
 
-Claude Desktop reads the same [`upstash/skills`](https://github.com/upstash/skills) plugin marketplace as Claude Code, and the plugin bundles the skills and the **remote MCP server** (over OAuth) together.
+Go to **Customize → Plugins**, click **Add → Add marketplace**, choose **Add from a repository**, and enter `upstash/skills`. Install the **upstash** plugin from that marketplace.
 
-Go to **Customize → Plugins**, click **Add → Add marketplace**, choose **Add from a repository**, and give it `upstash/skills`. Install the **upstash** plugin from that marketplace, then approve the consent screen on the first tool call.
+The plugin bundles the skills and the remote MCP server. Approve the consent screen on the first tool call.
 
 ## Cursor
 
-Install the skills with the Agent Skills CLI:
+Add the MCP server with one click:
+
+[![Install MCP Server]()](https://cursor.com/en/install-mcp?name=upstash&config=eyJ1cmwiOiJodHRwczovL21jcC51cHN0YXNoLmNvbS9tY3AifQ%3D%3D)
+
+Then install the skills:
 
 ```bash
 npx skills add upstash/skills --agent cursor
 ```
 
-For the MCP server, use the one-click install:
+<Accordion title="Other options">
+  **Add the MCP server by hand**
 
-[![Install MCP Server]()](https://cursor.com/en/install-mcp?name=upstash&config=eyJ1cmwiOiJodHRwczovL21jcC51cHN0YXNoLmNvbS9tY3AifQ%3D%3D)
+  Put this in `~/.cursor/mcp.json`, or in `.cursor/mcp.json` to scope it to one project:
 
-It writes a global server; move the `upstash` entry into `.cursor/mcp.json` in your repo to scope it to one project instead. Or add it to `~/.cursor/mcp.json` by hand — Cursor runs the OAuth flow on the first tool call:
-
-```json
-{
-  "mcpServers": {
-    "upstash": { "url": "https://mcp.upstash.com/mcp" }
+  ```json
+  {
+    "mcpServers": {
+      "upstash": { "url": "https://mcp.upstash.com/mcp" }
+    }
   }
-}
-```
+  ```
 
-<Accordion title="Local (stdio) server instead">
+  **Local (stdio) server**
+
   ```json
   {
     "mcpServers": {
@@ -377,45 +376,35 @@ It writes a global server; move the `upstash` entry into `.cursor/mcp.json` in y
 
 ## OpenAI Codex
 
-The repo is also a Codex plugin. Install it with the Codex CLI:
-
 ```bash
 codex plugin marketplace add upstash/skills
 codex plugin add upstash@upstash
 ```
 
-The plugin bundles the **remote MCP server** (over OAuth), so this also connects the MCP — approve the consent screen on the first tool call.
+The plugin bundles the skills and the remote MCP server. Approve the consent screen on the first tool call.
 
-To add the remote server on its own, put this in `~/.codex/config.toml` (or `.codex/config.toml`):
+<Accordion title="Other options">
+  **MCP server only, without the plugin**
 
-```toml
-[mcp_servers.upstash]
-url = "https://mcp.upstash.com/mcp"
-```
+  Put this in `~/.codex/config.toml`, or in `.codex/config.toml` for one project:
 
-<Accordion title="Local (stdio) server instead">
+  ```toml
+  [mcp_servers.upstash]
+  url = "https://mcp.upstash.com/mcp"
+  ```
+
+  **Local (stdio) server**
+
   ```sh
   codex mcp add upstash -- npx -y @upstash/mcp-server@latest --email YOUR_EMAIL --api-key YOUR_API_KEY
   ```
-</Accordion>
 
-See the [Codex plugin docs](https://developers.openai.com/codex/plugins/build) and [MCP docs](https://developers.openai.com/codex/mcp) for more info.
+  See the [Codex plugin docs](https://developers.openai.com/codex/plugins/build) and [MCP docs](https://developers.openai.com/codex/mcp) for more info.
+</Accordion>
 
 ## OpenCode
 
-OpenCode loads [Agent Skills](https://opencode.ai/docs/skills) from `.agents/skills/` in a project and `~/.config/opencode/skills/` globally, which is where the Agent Skills CLI writes them:
-
-```bash
-# Available in every project
-npx skills add upstash/skills --agent opencode --global
-
-# Or just this project
-npx skills add upstash/skills --agent opencode
-```
-
-OpenCode exposes the installed skills through its native `skill` tool, so only the sub-skill relevant to the task is loaded.
-
-For the MCP server, add this to `~/.config/opencode/opencode.json` or a project-level `opencode.json`. See the [OpenCode MCP docs](https://opencode.ai/docs/mcp-servers) for more info.
+Add the MCP server to `opencode.json`, or `~/.config/opencode/opencode.json` for every project:
 
 ```json
 {
@@ -430,7 +419,15 @@ For the MCP server, add this to `~/.config/opencode/opencode.json` or a project-
 }
 ```
 
-<Accordion title="Local (stdio) server instead">
+Then install the skills (add `--global` to make them available in every project):
+
+```bash
+npx skills add upstash/skills --agent opencode
+```
+
+<Accordion title="Other options">
+  **Local (stdio) server**
+
   ```json
   {
     "$schema": "https://opencode.ai/config.json",
@@ -443,23 +440,13 @@ For the MCP server, add this to `~/.config/opencode/opencode.json` or a project-
     }
   }
   ```
+
+  See the [OpenCode skills](https://opencode.ai/docs/skills) and [MCP docs](https://opencode.ai/docs/mcp-servers) for more info.
 </Accordion>
 
 ## Zed
 
-Zed loads [Agent Skills](https://zed.dev/docs/ai/skills) from `.agents/skills/` in a project and `~/.agents/skills/` globally:
-
-```bash
-# Available in every project
-npx skills add upstash/skills --agent zed --global
-
-# Or just this project
-npx skills add upstash/skills --agent zed
-```
-
-The skills show up in Zed's Agent Panel, and the agent can load them on its own or via `/upstash`. Zed's extension marketplace has no channel for skills, so the CLI is the only way to install them.
-
-For the MCP server, go to **Settings → AI → MCP Servers**, click **Add Server → Add Remote Server**, or put this in `settings.json`. With no `Authorization` header configured, Zed runs the standard MCP OAuth flow:
+Add the MCP server to `settings.json`, or through **Settings → AI → MCP Servers → Add Server → Add Remote Server**:
 
 ```json
 {
@@ -471,42 +458,54 @@ For the MCP server, go to **Settings → AI → MCP Servers**, click **Add Serve
 }
 ```
 
-<Accordion title="Local (stdio) server instead">
-  The repo ships a Zed extension in [`zed-extension/`](https://github.com/upstash/skills/tree/main/zed-extension). Clone the repo, run `zed: install dev extension` from the command palette, and pick the `zed-extension/` directory. Zed then prompts for `upstash_email` and `upstash_api_key` (and an optional `upstash_box_api_key` for [Upstash Box](/docs/box/overall/quickstart) tools).
-</Accordion>
-
-See the [Zed MCP docs](https://zed.dev/docs/ai/mcp) for more info.
-
 <Note>
   Context servers are project-scoped in Zed. Open a folder before testing, otherwise the server never starts.
 </Note>
 
+Then install the skills (add `--global` to make them available in every project):
+
+```bash
+npx skills add upstash/skills --agent zed
+```
+
+<Accordion title="Other options">
+  **Local (stdio) server**
+
+  The repo ships a Zed extension in [`zed-extension/`](https://github.com/upstash/skills/tree/main/zed-extension). Clone the repo, run `zed: install dev extension` from the command palette, and pick the `zed-extension/` directory. Zed then prompts for `upstash_email` and `upstash_api_key`, plus an optional `upstash_box_api_key` to enable Upstash Box tools.
+
+  See the [Zed skills](https://zed.dev/docs/ai/skills) and [MCP docs](https://zed.dev/docs/ai/mcp) for more info.
+</Accordion>
+
 ## GitHub Copilot
 
-Install the skills for Copilot in VS Code with the Agent Skills CLI:
+Add the MCP server to VS Code with one click:
+
+[<img alt="Install in VS Code" />](https://insiders.vscode.dev/redirect?url=vscode%3Amcp%2Finstall%3F%7B%22name%22%3A%22upstash%22%2C%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fmcp.upstash.com%2Fmcp%22%7D)
+
+Then install the skills:
 
 ```bash
 npx skills add upstash/skills --agent github-copilot
 ```
 
-For the MCP server, use the one-click install:
+<Accordion title="Other options">
+  **Add the MCP server by hand**
 
-[<img alt="Install in VS Code" />](https://insiders.vscode.dev/redirect?url=vscode%3Amcp%2Finstall%3F%7B%22name%22%3A%22upstash%22%2C%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fmcp.upstash.com%2Fmcp%22%7D)
+  Put this in `.vscode/mcp.json`:
 
-It writes the server to `.vscode/mcp.json`. See the [VS Code MCP docs](https://code.visualstudio.com/docs/copilot/chat/mcp-servers) for more info.
-
-```json
-{
-  "servers": {
-    "upstash": {
-      "type": "http",
-      "url": "https://mcp.upstash.com/mcp"
+  ```json
+  {
+    "servers": {
+      "upstash": {
+        "type": "http",
+        "url": "https://mcp.upstash.com/mcp"
+      }
     }
   }
-}
-```
+  ```
 
-<Accordion title="Local (stdio) server instead">
+  **Local (stdio) server**
+
   ```json
   {
     "servers": {
@@ -518,17 +517,94 @@ It writes the server to `.vscode/mcp.json`. See the [VS Code MCP docs](https://c
     }
   }
   ```
+
+  See the [VS Code MCP docs](https://code.visualstudio.com/docs/copilot/chat/mcp-servers) for more info.
 </Accordion>
 
 ## Devin Desktop
 
-Devin Desktop is the new name for Windsurf. It keeps the same skill target and settings. Install the skills with the Agent Skills CLI:
+Devin Desktop is the new name for Windsurf and keeps its settings. Add the MCP server to `~/.codeium/windsurf/mcp_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "upstash": {
+      "serverUrl": "https://mcp.upstash.com/mcp"
+    }
+  }
+}
+```
+
+Then install the skills:
 
 ```bash
 npx skills add upstash/skills --agent windsurf
 ```
 
-For the MCP server, add this to `~/.codeium/windsurf/mcp_config.json`. See the [Devin Desktop migration notes](https://devin.ai/desktop) for more info.
+<Accordion title="Other options">
+  **Local (stdio) server**
+
+  ```json
+  {
+    "mcpServers": {
+      "upstash": {
+        "command": "npx",
+        "args": ["-y", "@upstash/mcp-server@latest", "--email", "YOUR_EMAIL", "--api-key", "YOUR_API_KEY"]
+      }
+    }
+  }
+  ```
+
+  See the [Devin Desktop migration notes](https://devin.ai/desktop) for more info.
+</Accordion>
+
+## Gemini CLI
+
+```bash
+gemini extensions install https://github.com/upstash/skills
+```
+
+The extension bundles the skills and the remote MCP server. Approve the consent screen on the first tool call.
+
+<Accordion title="Other options">
+  **MCP server and skills separately**
+
+  ```bash
+  gemini mcp add --transport http upstash https://mcp.upstash.com/mcp
+  npx skills add upstash/skills --agent gemini-cli
+  ```
+
+  Or add the server to `~/.gemini/settings.json` by hand:
+
+  ```json
+  {
+    "mcpServers": {
+      "upstash": {
+        "httpUrl": "https://mcp.upstash.com/mcp"
+      }
+    }
+  }
+  ```
+
+  **Local (stdio) server**
+
+  ```json
+  {
+    "mcpServers": {
+      "upstash": {
+        "command": "npx",
+        "args": ["-y", "@upstash/mcp-server@latest", "--email", "YOUR_EMAIL", "--api-key", "YOUR_API_KEY"]
+      }
+    }
+  }
+  ```
+
+  See the [Gemini CLI extension](https://geminicli.com/docs/extensions/) and [MCP docs](https://google-gemini.github.io/gemini-cli/docs/tools/mcp-server.html) for more info.
+</Accordion>
+
+## Google Antigravity
+
+Add the MCP server to your Antigravity MCP config. Antigravity registers itself as an OAuth client, so no credentials go in the file:
 
 ```json
 {
@@ -540,79 +616,15 @@ For the MCP server, add this to `~/.codeium/windsurf/mcp_config.json`. See the [
 }
 ```
 
-<Accordion title="Local (stdio) server instead">
-  ```json
-  {
-    "mcpServers": {
-      "upstash": {
-        "command": "npx",
-        "args": ["-y", "@upstash/mcp-server@latest", "--email", "YOUR_EMAIL", "--api-key", "YOUR_API_KEY"]
-      }
-    }
-  }
-  ```
-</Accordion>
-
-## Gemini CLI
-
-Install the skills with the Agent Skills CLI:
-
-```bash
-npx skills add upstash/skills --agent gemini-cli
-```
-
-Add the MCP server with the CLI:
-
-```bash
-gemini mcp add --transport http upstash https://mcp.upstash.com/mcp
-```
-
-Or open `~/.gemini/settings.json` and add Upstash to `mcpServers` by hand. See the [Gemini CLI configuration docs](https://google-gemini.github.io/gemini-cli/docs/tools/mcp-server.html) for details.
-
-```json
-{
-  "mcpServers": {
-    "upstash": {
-      "httpUrl": "https://mcp.upstash.com/mcp"
-    }
-  }
-}
-```
-
-<Accordion title="Local (stdio) server instead">
-  ```json
-  {
-    "mcpServers": {
-      "upstash": {
-        "command": "npx",
-        "args": ["-y", "@upstash/mcp-server@latest", "--email", "YOUR_EMAIL", "--api-key", "YOUR_API_KEY"]
-      }
-    }
-  }
-  ```
-</Accordion>
-
-## Google Antigravity
-
-Install the skills with the Agent Skills CLI:
+Then install the skills:
 
 ```bash
 npx skills add upstash/skills --agent antigravity
 ```
 
-For the MCP server, add this to your Antigravity MCP config. Antigravity registers itself as an OAuth client, so no credentials go in the file. See the [Antigravity MCP docs](https://antigravity.google/docs/mcp) for more info.
+<Accordion title="Other options">
+  **Local (stdio) server**
 
-```json
-{
-  "mcpServers": {
-    "upstash": {
-      "serverUrl": "https://mcp.upstash.com/mcp"
-    }
-  }
-}
-```
-
-<Accordion title="Local (stdio) server instead">
   ```json
   {
     "mcpServers": {
@@ -623,72 +635,64 @@ For the MCP server, add this to your Antigravity MCP config. Antigravity registe
     }
   }
   ```
+
+  See the [Antigravity MCP docs](https://antigravity.google/docs/mcp) for more info.
 </Accordion>
 
 ## DeepSeek Harness
 
-The repo is a DeepSeek Harness bundle. Requires `pnpm` on your `PATH`.
+Requires `pnpm` on your `PATH`. Install the bundle into a profile (`web` is the one `dsh web` boots) and start the harness:
 
 ```bash
-# Install into a profile (`web` is the one `dsh web` boots)
 dsh plugin --profile web add github:upstash/skills
-
-# Start the harness
 dsh web
 ```
 
-Installing the bundle mounts the skills as a skill provider right away; no further setup is needed for them.
-
-The same bundle also mounts the **local (stdio)** MCP server (`npx -y @upstash/mcp-server@latest`), the one client here that does not use the remote server. It only starts once your credentials are stored. Run this from inside a session:
+The bundle loads the skills right away. It also mounts the local (stdio) MCP server, which starts once you store your credentials from inside a session:
 
 ```
 /upstash-login YOUR_EMAIL YOUR_API_KEY
 ```
 
-Credentials are saved to `~/.dsh/.credentials.yaml` and the server starts as soon as both are set, and restarts whenever they change.
+Credentials are saved to `~/.dsh/.credentials.yaml`. The server restarts whenever they change.
 
 ## Grok
 
-Install the skills for [Grok Build](https://docs.x.ai/build/overview) with the Agent Skills CLI. They land in `.grok/skills/` (project) or `~/.grok/skills/` (global):
-
 ```bash
+grok mcp add --transport http upstash https://mcp.upstash.com/mcp
 npx skills add upstash/skills --agent grok
 ```
 
+Pass `--scope project` to `grok mcp add` to write the server to `.grok/config.toml` in the current directory. Run `grok mcp doctor upstash` to check the connection.
+
 <Note>
-  Grok Build also reads Claude Code marketplaces and plugins automatically, so if you already installed the [Claude Code plugin](#claude-code), the skills are available without any extra setup.
+  Grok Build also reads Claude Code plugins, so if you already installed the [Claude Code plugin](#claude-code), the skills are available without the second command.
 </Note>
 
-Add the MCP server with the Grok CLI. Pass `--scope project` to write it to `.grok/config.toml` in the current directory instead of your user config.
+<Accordion title="Other options">
+  **Add the MCP server by hand**
 
-```bash
-grok mcp add --transport http upstash https://mcp.upstash.com/mcp
-```
+  Put this in `~/.grok/config.toml`:
 
-Or add it to `~/.grok/config.toml` by hand. Grok opens the OAuth flow on first use and stores the tokens in `~/.grok/mcp_credentials.json`. See the [Grok Build MCP docs](https://docs.x.ai/build/features/mcp-servers) for more info.
+  ```toml
+  [mcp_servers.upstash]
+  url = "https://mcp.upstash.com/mcp"
+  ```
 
-```toml
-[mcp_servers.upstash]
-url = "https://mcp.upstash.com/mcp"
-```
+  **Local (stdio) server**
 
-<Accordion title="Local (stdio) server instead">
   ```toml
   [mcp_servers.upstash]
   command = "npx"
   args = ["-y", "@upstash/mcp-server@latest", "--email", "YOUR_EMAIL", "--api-key", "YOUR_API_KEY"]
   ```
-</Accordion>
 
-Run `grok mcp doctor upstash` to check the connection.
+  See the [Grok Build MCP docs](https://docs.x.ai/build/features/mcp-servers) for more info.
+</Accordion>
 
 ## Kilo Code
 
-```bash
-npx skills add upstash/skills --agent kilo
-```
-
-Add this to `~/.config/kilo/kilo.jsonc` (global) or `kilo.jsonc` in the project root:
+Add the MCP server to `kilo.jsonc` in the project root, or `~/.config/kilo/kilo.jsonc` for every project:
 
 ```json
 {
@@ -702,7 +706,15 @@ Add this to `~/.config/kilo/kilo.jsonc` (global) or `kilo.jsonc` in the project 
 }
 ```
 
-<Accordion title="Local (stdio) server instead">
+Then install the skills:
+
+```bash
+npx skills add upstash/skills --agent kilo
+```
+
+<Accordion title="Other options">
+  **Local (stdio) server**
+
   ```json
   {
     "mcp": {
@@ -719,27 +731,28 @@ Add this to `~/.config/kilo/kilo.jsonc` (global) or `kilo.jsonc` in the project 
 ## Copilot CLI
 
 ```bash
+copilot mcp add --transport http upstash https://mcp.upstash.com/mcp
 npx skills add upstash/skills --agent github-copilot
 ```
 
-```bash
-copilot mcp add --transport http upstash https://mcp.upstash.com/mcp
-```
+<Accordion title="Other options">
+  **Add the MCP server by hand**
 
-Or add it to `~/.copilot/mcp-config.json` by hand:
+  Put this in `~/.copilot/mcp-config.json`:
 
-```json
-{
-  "mcpServers": {
-    "upstash": {
-      "type": "http",
-      "url": "https://mcp.upstash.com/mcp"
+  ```json
+  {
+    "mcpServers": {
+      "upstash": {
+        "type": "http",
+        "url": "https://mcp.upstash.com/mcp"
+      }
     }
   }
-}
-```
+  ```
 
-<Accordion title="Local (stdio) server instead">
+  **Local (stdio) server**
+
   ```json
   {
     "mcpServers": {
@@ -755,10 +768,6 @@ Or add it to `~/.copilot/mcp-config.json` by hand:
 
 ## Warp
 
-```bash
-npx skills add upstash/skills --agent warp
-```
-
 Go to **Settings → Agents → MCP servers → + Add** and paste:
 
 ```json
@@ -770,7 +779,15 @@ Go to **Settings → Agents → MCP servers → + Add** and paste:
 }
 ```
 
-<Accordion title="Local (stdio) server instead">
+Then install the skills:
+
+```bash
+npx skills add upstash/skills --agent warp
+```
+
+<Accordion title="Other options">
+  **Local (stdio) server**
+
   ```json
   {
     "upstash": {
@@ -787,26 +804,27 @@ Go to **Settings → Agents → MCP servers → + Add** and paste:
 ## Qwen Code
 
 ```bash
+qwen mcp add --transport http upstash https://mcp.upstash.com/mcp
 npx skills add upstash/skills --agent qwen-code
 ```
 
-```bash
-qwen mcp add --transport http upstash https://mcp.upstash.com/mcp
-```
+<Accordion title="Other options">
+  **Add the MCP server by hand**
 
-Or add the entry to `~/.qwen/settings.json` or `.qwen/settings.json` by hand:
+  Put this in `~/.qwen/settings.json`, or `.qwen/settings.json` for one project:
 
-```json
-{
-  "mcpServers": {
-    "upstash": {
-      "httpUrl": "https://mcp.upstash.com/mcp"
+  ```json
+  {
+    "mcpServers": {
+      "upstash": {
+        "httpUrl": "https://mcp.upstash.com/mcp"
+      }
     }
   }
-}
-```
+  ```
 
-<Accordion title="Local (stdio) server instead">
+  **Local (stdio) server**
+
   ```bash
   qwen mcp add upstash -- npx -y @upstash/mcp-server@latest --email YOUR_EMAIL --api-key YOUR_API_KEY
   ```
@@ -814,11 +832,7 @@ Or add the entry to `~/.qwen/settings.json` or `.qwen/settings.json` by hand:
 
 ## Hermes
 
-```bash
-npx skills add upstash/skills --agent hermes-agent
-```
-
-Add this to `~/.hermes/config.yaml`:
+Add the MCP server to `~/.hermes/config.yaml`:
 
 ```yaml
 mcp_servers:
@@ -826,7 +840,15 @@ mcp_servers:
     url: "https://mcp.upstash.com/mcp"
 ```
 
-<Accordion title="Local (stdio) server instead">
+Then install the skills:
+
+```bash
+npx skills add upstash/skills --agent hermes-agent
+```
+
+<Accordion title="Other options">
+  **Local (stdio) server**
+
   ```yaml
   mcp_servers:
     upstash:
@@ -838,14 +860,13 @@ mcp_servers:
 ## Factory
 
 ```bash
+droid mcp add upstash https://mcp.upstash.com/mcp --type http
 npx skills add upstash/skills --agent droid
 ```
 
-```bash
-droid mcp add upstash https://mcp.upstash.com/mcp --type http
-```
+<Accordion title="Other options">
+  **Local (stdio) server**
 
-<Accordion title="Local (stdio) server instead">
   ```bash
   droid mcp add upstash "npx -y @upstash/mcp-server@latest --email YOUR_EMAIL --api-key YOUR_API_KEY"
   ```
@@ -853,32 +874,31 @@ droid mcp add upstash https://mcp.upstash.com/mcp --type http
 
 ## fx
 
-fx installs skills straight from a GitHub repo. From inside a session:
-
-```
-/skills install upstash/skills --skill upstash
-```
-
-Add the MCP server the same way:
+From inside an fx session:
 
 ```
 /mcp add --transport http upstash https://mcp.upstash.com/mcp
+/skills install upstash/skills --skill upstash
 ```
 
-Or add it to `~/.fx/mcp.json` by hand. See the [fx MCP docs](https://fx.sh/docs/capabilities/mcp) for more info.
+<Accordion title="Other options">
+  **Add the MCP server by hand**
 
-```json
-{
-  "mcp": {
-    "upstash": {
-      "type": "http",
-      "url": "https://mcp.upstash.com/mcp"
+  Put this in `~/.fx/mcp.json`:
+
+  ```json
+  {
+    "mcp": {
+      "upstash": {
+        "type": "http",
+        "url": "https://mcp.upstash.com/mcp"
+      }
     }
   }
-}
-```
+  ```
 
-<Accordion title="Local (stdio) server instead">
+  **Local (stdio) server**
+
   ```json
   {
     "mcp": {
@@ -889,15 +909,13 @@ Or add it to `~/.fx/mcp.json` by hand. See the [fx MCP docs](https://fx.sh/docs/
     }
   }
   ```
+
+  See the [fx MCP docs](https://fx.sh/docs/capabilities/mcp) for more info.
 </Accordion>
 
 ## Crush
 
-```bash
-npx skills add upstash/skills --agent crush
-```
-
-Add this to your Crush config file:
+Add the MCP server to your Crush config file:
 
 ```json
 {
@@ -911,7 +929,15 @@ Add this to your Crush config file:
 }
 ```
 
-<Accordion title="Local (stdio) server instead">
+Then install the skills:
+
+```bash
+npx skills add upstash/skills --agent crush
+```
+
+<Accordion title="Other options">
+  **Local (stdio) server**
+
   ```json
   {
     "$schema": "https://charm.land/crush.json",
@@ -928,15 +954,7 @@ Add this to your Crush config file:
 
 ## Any other agent
 
-The [Agent Skills CLI](https://github.com/vercel-labs/skills) supports 70+ agents and detects the ones on your machine:
-
-```bash
-npx skills add upstash/skills
-```
-
-Add `--global` (`-g`) to make the skills available in every project, `--agent` (`-a`) to target a specific agent, and `--skill` (`-s`) to install a single SDK skill (for example `--skill upstash-qstash-js`).
-
-For the MCP server, most clients take the standard `mcpServers` shape below. Check your client's documentation for where the config lives, then add:
+Add the MCP server to your client's config. Most clients take this shape:
 
 ```json
 {
@@ -948,9 +966,23 @@ For the MCP server, most clients take the standard `mcpServers` shape below. Che
 }
 ```
 
-Some clients want the transport named alongside the URL — `"type": "http"` for most, `"type": "streamable-http"` for Roo Code, `"type": "remote"` for OpenCode and Kilo Code. An unrecognized key is usually ignored, so when in doubt start with the plain `url` above.
+Then install the skills. The [Agent Skills CLI](https://github.com/vercel-labs/skills) supports 70+ agents and detects the ones on your machine:
 
-<Accordion title="Local (stdio) server instead">
+```bash
+npx skills add upstash/skills
+```
+
+<Accordion title="Other options">
+  **Skills CLI flags**
+
+  Add `--global` (`-g`) to install for every project, `--agent` (`-a`) to target one agent, and `--skill` (`-s`) to install a single SDK skill, for example `--skill upstash-qstash-js`.
+
+  **Transport type**
+
+  Some clients want the transport named next to the URL: `"type": "http"` for most, `"type": "streamable-http"` for Roo Code, `"type": "remote"` for OpenCode and Kilo Code. Unrecognized keys are usually ignored, so start with the plain `url`.
+
+  **Local (stdio) server**
+
   ```json
   {
     "mcpServers": {
@@ -963,7 +995,7 @@ Some clients want the transport named alongside the URL — `"type": "http"` for
   ```
 </Accordion>
 
-Some of the clients that use it, with their Agent Skills CLI `id`:
+Where some other clients take it, with their Agent Skills CLI `id`:
 
 | Client | Skills `id` | MCP server |
 |--------|-------------|------------|
@@ -2672,6 +2704,10 @@ Please check our [pricing page](https://upstash.com/pricing/blob) for the most u
 
 # Quickstart
 Source: https://upstash.com/docs/blob/overall/quickstart
+
+import { AgentSetup } from "/snippets/agent-setup.jsx";
+
+<AgentSetup product="Blob" />
 
 Upstash Blob is S3-compatible object storage. `@upstash/blob` has a `Bucket` client for your server, and an upload handler plus React hooks that upload from the browser straight to storage. This page builds a working file picker on Next.js App Router. Other frameworks work the same way; see [Other frameworks](/docs/blob/uploads/upload-handler#other-frameworks).
 
@@ -5107,9 +5143,9 @@ This gives you an automated gate similar to CodeRabbit or Greptile, running insi
 # Vercel Eve Sandboxes
 Source: https://upstash.com/docs/box/guides/eve-setup
 
-[Eve](https://eve.dev) is Vercel's agent framework. It gives an agent a code-execution sandbox through a single `agent/sandbox.ts` file, and the backend behind that file is swappable.
+[Eve](https://eve.dev) is Vercel's agent framework. It gives an agent a code-execution sandbox through a single `agent/sandbox.ts` file, and the provider behind that file is swappable.
 
-[`@upstash/agentkit-eve`](https://www.npmjs.com/package/@upstash/agentkit-eve) ships an Upstash Box backend for it. It is a drop-in replacement for Eve's `vercel()` backend: change one import and your agent runs its code inside a Box, with deny-all egress by default, snapshot-backed templates, and one box per conversation.
+[`@upstash/agentkit-eve`](https://www.npmjs.com/package/@upstash/agentkit-eve) ships an Upstash Box sandbox provider for it, `UpstashSandbox`. You use it exactly like Eve's built-in `VercelSandbox`, and your agent runs its code inside a Box. Egress is deny-all by default, setup is baked into a snapshot at build time, and each session gets its own box.
 
 ***
 
@@ -5123,49 +5159,50 @@ npx eve@latest init my-agent
 npx eve@latest init my-agent --channel-web-nextjs
 ```
 
-Use eve `0.43.0` or later.
+Use eve `0.65.0` or later.
 
 ***
 
 ## 2. Install the packages
 
 ```bash
-npm install @upstash/agentkit-eve @upstash/redis @upstash/box
+npm install @upstash/agentkit-eve @upstash/box
 ```
 
-`@upstash/box` is an optional peer dependency of the AgentKit package. You only need it because you are importing the sandbox backend.
+`@upstash/box` (`0.7.1` or later) is an optional peer dependency of the AgentKit package. You only need it because you are importing the sandbox provider.
 
 Get a Box API key from the [Upstash Console](https://console.upstash.com/box):
 
 ```bash title=".env"
 UPSTASH_BOX_API_KEY=box_xxxxxxxxxxxxxxxxxxxxxxxx
-UPSTASH_REDIS_REST_URL=https://xxxxx.upstash.io
-UPSTASH_REDIS_REST_TOKEN=xxxxxxxxxxxxxxxxxxxx
 ```
 
-Redis backs the template registry described in [step 5](#5-bake-setup-into-a-template). It is only touched when your sandbox has a template, so a sandbox with no seed files and no `bootstrap` runs on the Box key alone.
+The provider reads the key both when Eve prepares the sandbox environment (at `eve build`, see [step 5](#5-bake-setup-into-the-environment)) and at run time, so set it in both places. No Redis is involved.
 
 ***
 
-## 3. Swap the backend
+## 3. Define the sandbox
 
-Point `defineSandbox` at the `upstash` backend. Everything else in the [sandbox file](https://eve.dev/docs/sandbox) stays as it is.
+A sandbox file exports an **environment** and returns a sandbox from `defineSandbox()`:
 
 ```typescript title="agent/sandbox.ts"
 import { defineSandbox } from "eve/sandbox";
-import { upstash } from "@upstash/agentkit-eve/sandbox"; // was: eve/sandbox/vercel
+import { UpstashSandbox } from "@upstash/agentkit-eve/sandbox";
 
-export default defineSandbox({
-  backend: upstash({ runtime: "node", size: "medium" }),
-  async onSession({ use }) {
-    await use();
-  },
-});
+export const environment = UpstashSandbox.environment({ runtime: "node", size: "medium" });
+
+export default defineSandbox(() => environment.open());
 ```
 
-`upstash(config)` takes the `@upstash/box` `BoxConfig`. Whatever you would pass to `Box.create({ ... })` you pass here: `runtime`, `size`, `apiKey` (defaults to `UPSTASH_BOX_API_KEY`), `keepAlive`, `initCommand`, `env`, `git`, `skills`, `mcpServers`, `timeout`, and so on. There are no renamed knobs to keep in sync.
+The `environment` export is required: Eve prepares it at build time, before any session exists.
 
-Two things differ from a raw `Box.create`. `networkPolicy` is not accepted at all, because egress is governed per session (see the next step). And a few AgentKit-only fields sit alongside the Box config and are stripped before the rest is handed to `Box.create`: `redis` and `templatePrefix` for the template registry, `baseSnapshot` ([step 5](#heavy-slow-changing-setup)), and `enableTelemetry`.
+`UpstashSandbox.environment(options)` takes the `@upstash/box` `BoxConfig`. Whatever you would pass to `Box.create({ ... })` you pass here: `runtime`, `size`, `apiKey` (defaults to `UPSTASH_BOX_API_KEY`), `keepAlive`, `initCommand`, `env`, `git`, `skills`, `mcpServers`, `attachHeaders`, `timeout`, and so on. There are no renamed knobs to keep in sync.
+
+Three things differ from a raw `Box.create`:
+
+* `networkPolicy` is not accepted, because egress is governed per session (see the next step).
+* `name` is not accepted either, because every session gets its own box. Boxes are named `eve-<session hash>-<random>`, so you can trace them back to their session in the console.
+* Two AgentKit fields sit alongside the Box config: `prepare` ([step 5](#5-bake-setup-into-the-environment)) and `baseSnapshot` ([heavy setup](#heavy-slow-changing-setup)).
 
 That is the whole setup. Run your agent and ask it to execute something:
 
@@ -5173,55 +5210,126 @@ That is the whole setup. Run your agent and ask it to execute something:
 npx eve dev
 ```
 
+Eve's built-in `bash`, `read_file`, `write_file`, `glob`, and `grep` tools now run inside the box.
+
 ***
 
 ## 4. Open egress per session
 
-The sandbox runs model-generated code, so egress is [deny-all](/docs/box/overall/network-policy) by default. Open it where you need it, in the `use(...)` call, never as a backend-level setting.
+The sandbox runs model-generated code, so egress is [deny-all](/docs/box/overall/network-policy) by default. Open it where you need it, when the session's box is opened:
 
 ```typescript title="agent/sandbox.ts"
-export default defineSandbox({
-  backend: upstash({ runtime: "node", size: "medium" }),
-  async onSession({ use }) {
-    await use({ networkPolicy: { allow: ["registry.npmjs.org", "api.github.com"] } });
-  },
-});
+export default defineSandbox(() =>
+  environment.open({ networkPolicy: { allow: ["registry.npmjs.org", "api.github.com"] } }),
+);
 ```
 
-Pass `"allow-all"` when the agent genuinely needs the open internet, and nothing at all to inherit the secure default.
+Pass `"allow-all"` when the agent genuinely needs the open internet, and nothing at all to keep the secure default. A tool can also change it mid-session with `sandbox.setNetworkPolicy(...)`. Box enforces the policy on the box itself, so it survives the box being paused and resumed.
 
 <Warning>
-  `env` passed to `upstash({ env })` is readable by code running in the box. Do not put secrets there that the model should not see.
+  `env` passed to `UpstashSandbox.environment({ env })` is readable by code running in the box. Do not put secrets there that the model should not see.
 </Warning>
 
 ### Brokering credentials
 
-Box network policies are plain domain and CIDR allow lists. Eve's per-domain firewall rules (`transform` header injection, `forwardURL`) have no Box equivalent, so passing them to `use({ networkPolicy })` throws instead of quietly sending the request unauthenticated.
+Box network policies are plain domain and CIDR allow lists. Eve's per-domain firewall rules (`transform` header injection, `forwardURL`, `match`) have no Box equivalent, so passing them throws instead of quietly sending the request unauthenticated.
 
 Use Box's [`attachHeaders`](/docs/box/overall/attach-headers) instead. A proxy on the box injects the header at the firewall, so the secret never enters the box:
 
 ```typescript title="agent/sandbox.ts"
-export default defineSandbox({
-  backend: upstash({
-    runtime: "node",
-    attachHeaders: { "api.example.com": { Authorization: "Bearer ..." } },
-  }),
-  async onSession({ use }) {
-    await use({ networkPolicy: { allow: ["api.example.com"] } });
-  },
+export const environment = UpstashSandbox.environment({
+  runtime: "node",
+  attachHeaders: { "api.example.com": { Authorization: "Bearer ..." } },
 });
+
+export default defineSandbox(() =>
+  environment.open({ networkPolicy: { allow: ["api.example.com"] } }),
+);
 ```
 
 ***
 
-## 5. Bake setup into a template
+## 5. Bake setup into the environment
 
-A `bootstrap` hook runs once, and Eve caches the result as a template so later sessions start from it. On Box that template is a [snapshot](/docs/box/overall/snapshots).
+A `prepare` hook holds the setup every session should inherit. Eve runs it once per environment, not once per session, and the provider captures the result as a Box [snapshot](/docs/box/overall/snapshots) that every session's box is restored from.
 
 ```typescript title="agent/sandbox.ts"
+export const environment = UpstashSandbox.environment({
+  runtime: "node",
+  size: "medium",
+  async prepare(sandbox) {
+    await sandbox.setNetworkPolicy("allow-all"); // prepare starts deny-all too
+    const result = await sandbox.run({ command: "sudo -n apt-get install -y jq" });
+    if (result.exitCode !== 0) throw new Error(result.stderr);
+  },
+});
+
+export default defineSandbox(() => environment.open());
+```
+
+A box runs as the non-root `boxuser`, so system-wide installs need `sudo -n`. Without it `apt-get` exits `100` on the dpkg lock and preparation fails. Workspace-local installs such as `npm install` need no sudo. The network policy you set in `prepare` is not inherited by sessions.
+
+The snapshot also carries Eve's managed files:
+
+* Files under `agent/sandbox/workspace/` land in `/workspace`.
+* Your agent's skills land in `$HOME/.agents/skills`.
+
+If there is nothing to bake (no workspace files, no skills, no `prepare`), no temporary box or snapshot is created.
+
+Preparation runs at `eve build`, and under `eve dev` on the first sandbox access. Eve stores the snapshot id in the build output, so sessions in production restore from it directly. Changing `prepare`, the workspace files, the skills, or the environment options produces a new environment for new sessions, while existing sessions keep their box.
+
+<Note>
+  Each build that has something to prepare creates a new snapshot. Box addresses snapshots by id, not by name, so old ones are not reused or removed automatically. Delete stale snapshots in the console or with `Box.deleteSnapshots()`.
+</Note>
+
+### Heavy, slow-changing setup
+
+For things too heavy to rebuild on every build (browser binaries, ffmpeg, a full toolchain), build a Box snapshot yourself out of band and point `baseSnapshot` at it. `prepare` then layers on top of it, and with nothing to prepare, sessions restore from it directly.
+
+```typescript
+UpstashSandbox.environment({
+  runtime: "node",
+  baseSnapshot: async () => (await redis.get<string>("toolchain-snapshot")) ?? undefined,
+});
+```
+
+Pass a snapshot id or a resolver, since Box addresses snapshots by id rather than by name. Returning `undefined` means no base snapshot.
+
+***
+
+## 6. Lifecycle
+
+Each Eve session owns one box, created the first time the session touches its sandbox and reused for the rest of the session: across turns, workflow steps, server restarts and redeploys.
+
+* `sandbox.stop()` pauses the box. The next command resumes it with its files intact.
+* When the server shuts down, open boxes are paused too.
+* `sandbox.delete()` deletes the box. The session's next sandbox access starts a fresh one from the environment's snapshot.
+
+If a session's box no longer exists, for example because it was deleted in the console, the session fails with a clear error instead of silently getting an empty box and losing its files. Call `sandbox.delete()` to start fresh. Likewise, if the prepared snapshot has been deleted, starting a new session fails and asks you to rebuild or redeploy.
+
+Boxes use Box's pause-based idle lifecycle by default (`keepAlive: false`): auto-paused when idle, resumed on the next command. Pass [`keepAlive: true`](/docs/box/overall/keep-alive) only when you want an always-running box that you manage and delete yourself.
+
+Commands run over Box's streaming exec sessions. stdout and stderr are kept separate, and when a turn is cancelled the running command is killed.
+
+<Note>
+  Eve roots its tools at `/workspace`, while a Box session lives at `/workspace/home`. The provider rewrites paths and command text between the two automatically, so tools like glob and grep search the right directory.
+</Note>
+
+***
+
+## Migrating from `upstash()`
+
+Eve 0.64 replaced sandbox backends with providers, so `defineSandbox({ backend: upstash(...) })` from `@upstash/agentkit-eve` 0.12 and earlier no longer exists:
+
+* `bootstrap` becomes the environment's `prepare`.
+* `onSession`'s `use({ networkPolicy })` becomes `environment.open({ networkPolicy })`.
+* `revalidationKey` goes away: Eve now derives when to prepare again from the sandbox source and options.
+* The `redis`, `templatePrefix`, and `enableTelemetry` options are gone, because the snapshot id now lives in Eve's build output.
+
+```typescript title="agent/sandbox.ts"
+// before
 export default defineSandbox({
-  backend: upstash({ runtime: "node", size: "medium" }),
-  revalidationKey: () => "repo-bootstrap-v1",
+  backend: upstash({ runtime: "node" }),
   async bootstrap({ use }) {
     const sandbox = await use({ networkPolicy: "allow-all" });
     await sandbox.run({ command: "sudo -n apt-get install -y jq" });
@@ -5230,38 +5338,18 @@ export default defineSandbox({
     await use();
   },
 });
-```
 
-A box runs as the non-root `boxuser`, so system-wide installs need `sudo -n`. Without it `apt-get` exits `100` on the dpkg lock and the bootstrap fails. Workspace-local installs such as `npm install` need no sudo.
-
-Eve builds the template at build or startup time, while session creation runs per request in a different process. The snapshot id is therefore stored in a durable Redis registry (`redis`, defaulting to `Redis.fromEnv()`, under the `agentkit:sandbox:template` prefix). An in-memory map would orphan the prewarmed box.
-
-Bump `revalidationKey` when the bootstrap should run again.
-
-### Heavy, slow-changing setup
-
-For things too heavy for a per-repo bootstrap (browser binaries, ffmpeg, a full toolchain), build a Box snapshot yourself out of band and point `baseSnapshot` at it. Every fresh session restores from it instead of creating a bare box.
-
-```typescript
-upstash({
+// after
+export const environment = UpstashSandbox.environment({
   runtime: "node",
-  baseSnapshot: async () => (await redis.get<string>("toolchain-snapshot")) ?? undefined,
+  async prepare(sandbox) {
+    await sandbox.setNetworkPolicy("allow-all");
+    await sandbox.run({ command: "sudo -n apt-get install -y jq" });
+  },
 });
+
+export default defineSandbox(() => environment.open());
 ```
-
-Pass a snapshot id or a resolver, since Box addresses snapshots by id rather than by name. Returning `undefined`, or an id that no longer exists, falls back to a fresh box. When a prewarmed template snapshot also applies, the template wins and `baseSnapshot` is the fallback for sessions that have no template.
-
-***
-
-## 6. Lifecycle
-
-Eve re-opens a session several times per turn. The backend reattaches to the same box instead of creating a new one, so you get one box per conversation rather than one per tool call.
-
-Boxes use Box's pause-based idle lifecycle by default (`keepAlive: false`): auto-paused when idle, resumed on reattach, and reaped by Box. Pass [`keepAlive: true`](/docs/box/overall/keep-alive) only when you want an always-running box that you manage and delete yourself.
-
-<Note>
-  Eve roots its tools at `/workspace`, while a Box session lives at `/workspace/home`. The backend rewrites paths and command text between the two automatically, so tools like glob and grep search the right directory.
-</Note>
 
 ***
 
@@ -5271,7 +5359,7 @@ The same package carries the rest of AgentKit for Eve: long-term memory, searcha
 
 * [AgentKit for Vercel Eve](/docs/redis/sdks/agentkit/eve) for the full package reference.
 * [Network policies](/docs/box/overall/network-policy) for what Box's allow lists can express.
-* [Snapshots](/docs/box/overall/snapshots) for building and restoring the boxes behind templates.
+* [Snapshots](/docs/box/overall/snapshots) for building and restoring the boxes behind a sandbox environment.
 
 # Herdr Plugin Setup
 Source: https://upstash.com/docs/box/guides/herdr-setup
@@ -11087,6 +11175,9 @@ Please check our [pricing page](https://upstash.com/pricing/box) for the most up
 Source: https://upstash.com/docs/box/overall/quickstart
 
 import { Catalog } from "/snippets/catalog.jsx";
+import { AgentSetup } from "/snippets/agent-setup.jsx";
+
+<AgentSetup product="Box" />
 
 **Upstash Box lets you give your AI agents a computer.**
 
@@ -11308,7 +11399,7 @@ Great example use cases:
     Fan out to multiple boxes running specialized agents in parallel, then combine their results.
   </Card>
 
-  <Card title="Parallel Testing" icon="flask-vial" href="/box/overall/use-cases#3-parallel-testing--comparison">
+  <Card title="Parallel Testing" icon="flask-vial" href="/box/overall/use-cases#3-parallel-testing-&-comparison">
     Run the same inputs across isolated boxes and compare model output side by side.
   </Card>
 </CardGroup>
@@ -14633,6 +14724,12 @@ Source: https://upstash.com/docs/qstash/api-reference/messages/publish-a-message
 /qstash/openapi.yaml post /v2/publish/{destination}
 Publish a message to the specified destination
 
+# Retry a Message Now
+Source: https://upstash.com/docs/qstash/api-reference/messages/retry-a-message-now
+
+/qstash/openapi.yaml post /v2/messages/{messageId}/retry
+Deliver a message that is waiting for its next retry immediately
+
 # Delete a queue
 Source: https://upstash.com/docs/qstash/api-reference/queues/delete-a-queue
 
@@ -16890,6 +16987,47 @@ each other.
 
 Please refer to the howto [here](/docs/qstash/howto/url-group-endpoint).
 
+# Cancel Messages in Bulk
+Source: https://upstash.com/docs/qstash/howto/bulk-actions
+
+The `Logs` tab of the [Upstash Console](https://console.upstash.com/qstash) lets
+you act on many messages at once. Apply filters to narrow down the list, then
+open the **Bulk actions** menu to cancel or republish everything that matches.
+
+  <img alt="Bulk actions menu in the QStash logs" />
+
+## Cancelling matching messages
+
+Cancelling applies to every active message that satisfies the current filters,
+including messages that are waiting on a retry. Cancelled messages are removed
+without going to the [DLQ](/docs/qstash/features/dlq).
+
+When you cancel a small number of selected messages, the console performs the
+cancellation immediately. When you cancel by filter, or cancel all active
+messages, QStash processes the request in the background and the console shows
+the operation in the bulk action history.
+
+## Bulk action history
+
+The **History** button next to the Bulk actions menu opens a list of every bulk
+cancellation, with its state, the filters that were used and how many messages
+were cancelled. Operations still in progress update as they run, and the `Active`
+filter shows only those.
+
+  <img alt="Bulk action history in the QStash logs" />
+
+Each entry has an action ID. The toast shown after starting a bulk cancellation
+links directly to its entry, and you can paste an action ID into the search box
+to find an operation later.
+
+## From the API
+
+Bulk cancellation is available through the
+[bulk cancel messages](/docs/qstash/api-reference/messages/bulk-cancel-messages) endpoint.
+Pass `"async": true` to run it in the background and receive an `actionId` you
+can look up with the [bulk actions](/docs/qstash/api-reference/bulk-actions/list-bulk-actions)
+endpoints.
+
 # Debug Logs
 Source: https://upstash.com/docs/qstash/howto/debug-logs
 
@@ -17037,6 +17175,10 @@ Failed messages are automatically moved to the dead letter queue upon failure, a
 via the [REST API](/docs/qstash/api-reference/dlq/retry-a-dlq-message).
 
   <img alt="DLQ from console" />
+
+## Retrying Early
+
+A message that is waiting out its retry delay can be retried immediately from the console. See [Run a Delayed Message Now](/docs/qstash/howto/retry-now).
 
 # Local Development
 Source: https://upstash.com/docs/qstash/howto/local-development
@@ -17790,6 +17932,55 @@ the [QStash UI](https://console.upstash.com/qstash) and confirm the dialog.
 ![]()
 
 Afterwards you should immediately update your token in all your applications.
+
+# Run a Delayed Message Now
+Source: https://upstash.com/docs/qstash/howto/retry-now
+
+Messages that are waiting on a delay or on a retry backoff can be released early
+from the console. QStash then delivers the message on its next poll instead of
+waiting for the scheduled time.
+
+This works for two kinds of waiting messages:
+
+* **Delayed messages**, published with `Upstash-Delay` or `Upstash-Not-Before`.
+* **Retrying messages**, whose last delivery attempt failed and which are waiting
+  out the retry delay before the next attempt.
+
+<Note>
+  Releasing a message does not add an attempt. A retrying message uses the
+  attempt it was already scheduled for, so if it was on its last retry and fails
+  again, it goes to the [DLQ](/docs/qstash/features/dlq) as usual.
+</Note>
+
+## From the console
+
+Open the [Upstash Console](https://console.upstash.com/qstash), go to the `Logs`
+tab and select the message. Waiting messages show a **Run now** button (for
+delays) or a **Retry now** button (for retries) at the top of the details panel,
+and next to the step that is holding the message back.
+
+  <img alt="Run now button on a delayed message in the Upstash Console" />
+
+  <img alt="Retry now button on a retrying message in the Upstash Console" />
+
+The button is also available when hovering a row in the logs table. It only
+appears while the message is genuinely waiting: not while a delivery is in
+progress, not for queued messages, and not after a cancel was requested.
+
+## From the API
+
+The console calls the [retry a message now](/docs/qstash/api-reference/messages/retry-a-message-now)
+endpoint. You can call it yourself with the message ID:
+
+```bash
+curl -X POST https://qstash.upstash.io/v2/messages/<MESSAGE_ID>/retry \
+  -H "Authorization: Bearer <QSTASH_TOKEN>"
+```
+
+The endpoint returns `200` when a waiting message was released and `404` when
+the message is not waiting, for example because it is already being delivered.
+Messages in a [queue](/docs/qstash/features/queues) cannot be released this way and
+return `400`.
 
 # Roll Your Signing Keys
 Source: https://upstash.com/docs/qstash/howto/roll-signing-keys
@@ -18740,7 +18931,11 @@ Send the token as `Authorization: Bearer <MONITORING_TOKEN>`.
 
 ![monitoring-token.png]()
 
-## **Step 3: Configure Prometheus (via Grafana Data Source)**
+## **Step 3: Set Up Prometheus Connection**
+
+You can point Grafana directly at the Upstash endpoint, or federate QStash metrics into your own Prometheus server.
+
+### **Grafana Data Source Setup**
 
 1. In Grafana, add a Prometheus data source.
 2. Set the address to `https://api.upstash.com/monitoring/prometheus`.
@@ -18753,6 +18948,49 @@ Send the token as `Authorization: Bearer <MONITORING_TOKEN>`.
 Click <b>Test and Save</b>.
 
 ![datasource-final.png]()
+
+### **Prometheus Federation Setup**
+
+Federation lets your Prometheus pull QStash metrics from the Upstash API and store them in **your own** Prometheus instance, so Grafana can query your Prometheus instead of hitting the Upstash endpoint directly.
+
+#### When to use federation
+
+* You already run Prometheus and want to persist QStash metrics locally.
+* You want to control retention, recording rules, or alerts on QStash metrics.
+
+1. Add a scrape job to your Prometheus configuration file (`prometheus.yml`):
+
+```yaml
+scrape_configs:
+  # Federation job: pull QStash metrics from Upstash API
+  - job_name: "federate_upstash_qstash"
+    honor_labels: true
+    metrics_path: "/monitoring/prometheus/federate"
+    scheme: https
+    params:
+      match[]:
+        - 'qstash_public_metrics{}'
+    static_configs:
+      - targets:
+          - "api.upstash.com"
+    authorization:
+      type: Bearer
+      credentials: "<MONITORING_TOKEN>"
+```
+
+<Warning>
+QStash metrics are exposed as `qstash_public_metrics`. The `upstash_db_metrics` selector in the [Redis Prometheus guide](/docs/redis/integrations/prometheus) only matches Redis metrics, so a QStash scrape job that uses it returns no QStash metrics.
+</Warning>
+
+<Check>
+This configuration pulls all QStash metrics. You can adjust the `match[]` parameter to filter them:
+* `qstash_public_metrics{region="us-east-1"}` pulls metrics for QStash in a specific region
+* `qstash_public_metrics{metric_name="dlq_message_count"}` pulls a specific metric
+</Check>
+
+2. Verify the federation target
+* Reload (or restart) your Prometheus server to apply the new configuration.
+* Visit **Prometheus → Status → Targets** and confirm `federate_upstash_qstash` is **UP**.
 
 ## **Step 4: Import Dashboard**
 
@@ -19931,6 +20169,9 @@ Enterprise customers receive dedicated resources to ensure isolation and consist
 Source: https://upstash.com/docs/qstash/overall/getstarted
 
 import { Catalog } from "/snippets/catalog.jsx";
+import { AgentSetup } from "/snippets/agent-setup.jsx";
+
+<AgentSetup product="QStash" />
 
 QStash is a **serverless messaging and scheduling solution**. It fits easily into your existing workflow and allows you to build reliable systems without managing infrastructure.
 
@@ -83954,6 +84195,9 @@ A Business Associate Agreement (BAA) and HIPAA compliance enablement is availabl
 Source: https://upstash.com/docs/redis/overall/getstarted
 
 import { Catalog } from "/snippets/catalog.jsx";
+import { AgentSetup } from "/snippets/agent-setup.jsx";
+
+<AgentSetup product="Redis" />
 
 Upstash Redis is a **highly available, infinitely scalable** Redis-compatible database:
 
@@ -84767,13 +85011,14 @@ Two packages bring AgentKit to **Eve, the Vercel agent framework**. They work to
 | Package | What it is |
 | --- | --- |
 | `@upstash/agentkit-eve-extension` | An [Eve extension](https://eve.dev/docs/extensions): one mount file adds memory, searchable chat history, and RAG. |
-| `@upstash/agentkit-eve` | Per-file building blocks, plus the two things an extension cannot contribute: rate limiting and a sandbox backend. |
+| `@upstash/agentkit-eve` | Per-file building blocks, plus the two things an extension cannot contribute: rate limiting and a sandbox provider. |
 
 Mount the extension for the bundled setup. Add the package when you need a rate-limit gate, an Upstash
 Box sandbox, or control over an individual tool file.
 
-Start from an eve project (**0.43.0 or later** — the published extension is prebuilt, and its
-compatibility manifest requires eve ≥ 0.43's contribution formats). Scaffold one, which installs `eve`
+Start from an eve project (**0.65.0 or later** — the published extension is prebuilt, and its
+compatibility manifest requires eve ≥ 0.65's contribution formats; both packages declare this as their
+`eve` peer range). Scaffold one, which installs `eve`
 and an AI-SDK provider for you:
 
 ```bash
@@ -85016,7 +85261,7 @@ export default agentkit({
 ## The Eve package: rate limiting, sandboxes, and tool files
 
 Everything in this part comes from `@upstash/agentkit-eve`, written as individual `agent/` files.
-Rate limiting and the sandbox backend live here because an extension cannot contribute a channel or
+Rate limiting and the sandbox provider live here because an extension cannot contribute a channel or
 a sandbox.
 
 ### How to add rate limiting to Vercel Eve
@@ -85070,9 +85315,10 @@ export default eveChannel({
 
 ### How to add a sandbox to Vercel Eve
 
-A drop-in replacement for Eve's `vercel()` backend, powered by
-[Upstash Box](https://github.com/upstash/box). Swap the import and keep the rest of your
-[sandbox file](https://eve.dev/docs/sandbox) the same.
+An [Eve sandbox provider](https://eve.dev/docs/sandbox) powered by
+[Upstash Box](https://github.com/upstash/box). Use it exactly like Eve's built-in `VercelSandbox`:
+export an environment from your sandbox file and open it from `defineSandbox()`. For a step-by-step
+walkthrough, see [Vercel Eve Sandboxes](/docs/box/guides/eve-setup).
 
 ```bash
 npm install @upstash/box
@@ -85081,82 +85327,103 @@ npm install @upstash/box
 ```ts
 // agent/sandbox.ts
 import { defineSandbox } from "eve/sandbox";
-import { upstash } from "@upstash/agentkit-eve/sandbox"; // was: eve/sandbox/vercel
+import { UpstashSandbox } from "@upstash/agentkit-eve/sandbox";
 
-export default defineSandbox({
-  backend: upstash({ runtime: "node", size: "medium" }),
-  revalidationKey: () => "repo-bootstrap-v1",
-  async bootstrap({ use }) {
-    const sandbox = await use({ networkPolicy: "allow-all" }); // open egress to install packages
-    await sandbox.run({ command: "apt-get install -y jq" });
-  },
-  async onSession({ use }) {
-    await use(); // inherits the secure deny-all default
+export const environment = UpstashSandbox.environment({
+  runtime: "node",
+  size: "medium",
+  // Setup every session inherits: runs once per environment (at `eve build`) and is captured as a
+  // Box snapshot, not re-run per session.
+  async prepare(sandbox) {
+    await sandbox.setNetworkPolicy("allow-all"); // egress is denied by default
+    const r = await sandbox.run({ command: "sudo -n apt-get install -y jq" });
+    if (r.exitCode !== 0) throw new Error(r.stderr);
   },
 });
+
+// Runs once per session. Sessions stay deny-all unless you pass a networkPolicy.
+export default defineSandbox(() => environment.open());
 ```
 
 <AccordionGroup>
-  <Accordion title="Config: Box's BoxConfig">
-    `upstash(config)` takes the `@upstash/box` `BoxConfig` verbatim, meaning whatever you'd pass to
-    `Box.create({...})`: `runtime`, `size`, `apiKey` (defaults to `UPSTASH_BOX_API_KEY`), `keepAlive`,
-    `initCommand`, `env`, `skills`, `mcpServers`, `timeout`, and so on. It also takes an optional
-    `redis` (defaults to `Redis.fromEnv()`). `networkPolicy` is **not** a config knob (see below).
-    `@upstash/box` is an optional peer dependency, needed only when you import
-    `@upstash/agentkit-eve/sandbox`.
+  <Accordion title="Options: Box's BoxConfig, plus prepare and baseSnapshot">
+    `UpstashSandbox.environment(options)` takes the `@upstash/box` `BoxConfig` verbatim, meaning
+    whatever you'd pass to `Box.create({...})`: `runtime`, `size`, `apiKey` (defaults to
+    `UPSTASH_BOX_API_KEY`), `keepAlive`, `initCommand`, `env`, `skills`, `mcpServers`, `attachHeaders`,
+    `timeout`, and so on. It also takes `prepare(sandbox)` (setup baked into the environment's
+    snapshot) and `baseSnapshot` (a snapshot id, or a resolver, to build on instead of a bare box).
+    `networkPolicy` is **not** an environment option (see below), and neither is `name`, because every
+    session gets its own box. `environment.open({ networkPolicy })` is the only open option.
+
+    Requires eve ≥ 0.65 and `@upstash/box` ≥ 0.7.1, an optional peer dependency needed only when you
+    import `@upstash/agentkit-eve/sandbox`. The provider reads `UPSTASH_BOX_API_KEY` when Eve prepares
+    the environment (at `eve build`) and at run time.
   </Accordion>
   <Accordion title="Security: network egress is deny-all by default">
     The sandbox runs untrusted, model-generated code, so open egress would mean SSRF / data
-    exfiltration / reaching your own infrastructure from inside the box. Open it per-session, in
-    `bootstrap`'s `use(...)` or the session `use(...)`, and never as a config knob. Note that `env` passed
-    to `upstash({ env })` is readable by code running in the box; don't pass secrets you wouldn't want
-    it to see.
+    exfiltration / reaching your own infrastructure from inside the box. Open it per session with
+    `environment.open({ networkPolicy: "allow-all" })` (or a domain allow-list), or from a tool with
+    `sandbox.setNetworkPolicy(...)`. Box enforces the policy on the box itself, so it survives pause and
+    resume. Note that `env` passed to `UpstashSandbox.environment({ env })` is readable by code running
+    in the box; don't pass secrets you wouldn't want it to see.
   </Accordion>
   <Accordion title="Brokering credentials (injecting headers)">
     Box network policies are plain domain/CIDR allow-lists. Eve's per-domain firewall rules (`transform`
-    header injection, `forwardURL`) have no Box equivalent, so passing them in `use({ networkPolicy })`
-    **throws** rather than silently sending the request unauthenticated:
+    header injection, `forwardURL`, `match`) have no Box equivalent, so passing them **throws** rather
+    than silently sending the request unauthenticated:
 
     ```ts
     // ❌ throws — Box can't inject headers via a per-session policy
-    export default defineSandbox({
-      backend: upstash({ runtime: "node" }),
-      async onSession({ use }) {
-        await use({
-          networkPolicy: {
-            allow: { "api.example.com": [{ transform: [{ headers: { authorization: "Bearer …" } }] }] },
-          },
-        });
-      },
-    });
+    export default defineSandbox(() =>
+      environment.open({
+        networkPolicy: {
+          allow: { "api.example.com": [{ transform: [{ headers: { authorization: "Bearer …" } }] }] },
+        },
+      }),
+    );
     ```
 
-    Broker credentials with Box's `attachHeaders` instead (set at backend creation; a proxy on the box
-    injects them), and open the domain with a plain allow-list:
+    Broker credentials with Box's `attachHeaders` instead (set in the environment options; a proxy on
+    the box injects them), and open the domain with a plain allow-list:
 
     ```ts
     // ✅ headers injected at the firewall; the secret never enters the box
-    export default defineSandbox({
-      backend: upstash({
-        runtime: "node",
-        attachHeaders: { "api.example.com": { Authorization: "Bearer …" } },
-      }),
-      async onSession({ use }) {
-        await use({ networkPolicy: { allow: ["api.example.com"] } });
-      },
+    export const environment = UpstashSandbox.environment({
+      runtime: "node",
+      attachHeaders: { "api.example.com": { Authorization: "Bearer …" } },
     });
+
+    export default defineSandbox(() =>
+      environment.open({ networkPolicy: { allow: ["api.example.com"] } }),
+    );
     ```
   </Accordion>
-  <Accordion title="Lifecycle: one box per conversation">
-    **Reuse.** Eve re-opens a session several times per turn, and the backend reattaches to the same Box
-    instead of creating a new one each time. Boxes default to Box's pause-based idle lifecycle
-    (`keepAlive: false`): auto-paused when idle, resumed on reattach, reaped by Box. Pass
-    `keepAlive: true` only for an always-running box you manage yourself.
+  <Accordion title="Lifecycle: one box per session">
+    **Prepare.** At `eve build` (and on first sandbox access under `eve dev`), a temporary box gets
+    Eve's workspace files (`agent/sandbox/workspace/` → `/workspace`), your skills
+    (`$HOME/.agents/skills`) and your `prepare` hook, then is snapshotted and deleted. Eve stores the
+    snapshot id in the build output, so no Redis or other registry is involved. With nothing to bake,
+    no box is created. Each build that has something to prepare creates a new snapshot; delete stale
+    ones in the console or with `Box.deleteSnapshots()`.
 
-    **Template registry.** Eve builds your template (seed files + `bootstrap`) at build/startup, but
-    session creation runs per request in a different process, so the snapshot id is stored in a durable
-    Redis registry (`redis`, defaulting to `Redis.fromEnv()`). Eve roots its tools at `/workspace` while
-    a Box session lives at `/workspace/home`; the backend bridges the two automatically.
+    **Sessions.** Each session gets one box, restored from that snapshot and reused across turns,
+    restarts and redeploys. `sandbox.stop()` pauses it (the next command resumes it), server shutdown
+    pauses it too, and `sandbox.delete()` deletes it. If a session's box or the prepared snapshot no
+    longer exists, the session fails with a clear error instead of silently getting an empty box.
+    Boxes default to Box's pause-based idle lifecycle (`keepAlive: false`); pass `keepAlive: true` only
+    for an always-running box you manage yourself.
+
+    Eve roots its tools at `/workspace` while a Box session lives at `/workspace/home`; the provider
+    bridges the two automatically. Commands run over Box's streaming exec sessions: stdout and stderr
+    stay separate, and a cancelled turn kills the running command.
+  </Accordion>
+  <Accordion title="Migrating from upstash() (agentkit-eve 0.12 and earlier)">
+    Eve 0.64 replaced sandbox backends with providers, so `defineSandbox({ backend: upstash(...) })`
+    no longer exists. `bootstrap` becomes the environment's `prepare`, `onSession`'s
+    `use({ networkPolicy })` becomes `environment.open({ networkPolicy })`, and `revalidationKey` goes
+    away. The `redis`, `templatePrefix` and `enableTelemetry` options are removed, because the snapshot
+    id now lives in Eve's build output. See the
+    [migration example](/docs/box/guides/eve-setup#migrating-from-upstash).
   </Accordion>
 </AccordionGroup>
 
@@ -85192,7 +85459,7 @@ export default defineCachedTool({
 
 Eve has a native [memory](https://eve.dev/docs/memory) feature: a slot file under `agent/memory/`
 that Eve calls before and after each turn. `@upstash/agentkit-eve/memory` puts Upstash Redis behind
-it, two ways. Needs Eve 0.45.2 or newer.
+it, two ways. Needs Eve 0.65 or newer, like the rest of the package.
 
 `redisMemory()` is a full provider. It recalls the memories relevant to the current turn, stores the
 user's messages afterwards, and contributes `<slot>__save_memory`, `<slot>__search_memory`,
@@ -85371,13 +85638,14 @@ Two packages bring AgentKit to **Eve, the Vercel agent framework**. They work to
 | Package | What it is |
 | --- | --- |
 | `@upstash/agentkit-eve-extension` | An [Eve extension](https://eve.dev/docs/extensions): one mount file adds memory, searchable chat history, and RAG. |
-| `@upstash/agentkit-eve` | Per-file building blocks, plus the two things an extension cannot contribute: rate limiting and a sandbox backend. |
+| `@upstash/agentkit-eve` | Per-file building blocks, plus the two things an extension cannot contribute: rate limiting and a sandbox provider. |
 
 Mount the extension for the bundled setup. Add the package when you need a rate-limit gate, an Upstash
 Box sandbox, or control over an individual tool file.
 
-Start from an eve project (**0.43.0 or later** — the published extension is prebuilt, and its
-compatibility manifest requires eve ≥ 0.43's contribution formats). Scaffold one, which installs `eve`
+Start from an eve project (**0.65.0 or later** — the published extension is prebuilt, and its
+compatibility manifest requires eve ≥ 0.65's contribution formats; both packages declare this as their
+`eve` peer range). Scaffold one, which installs `eve`
 and an AI-SDK provider for you:
 
 ```bash
@@ -85620,7 +85888,7 @@ export default agentkit({
 ## The Eve package: rate limiting, sandboxes, and tool files
 
 Everything in this part comes from `@upstash/agentkit-eve`, written as individual `agent/` files.
-Rate limiting and the sandbox backend live here because an extension cannot contribute a channel or
+Rate limiting and the sandbox provider live here because an extension cannot contribute a channel or
 a sandbox.
 
 ### How to add rate limiting to Vercel Eve
@@ -85674,9 +85942,10 @@ export default eveChannel({
 
 ### How to add a sandbox to Vercel Eve
 
-A drop-in replacement for Eve's `vercel()` backend, powered by
-[Upstash Box](https://github.com/upstash/box). Swap the import and keep the rest of your
-[sandbox file](https://eve.dev/docs/sandbox) the same.
+An [Eve sandbox provider](https://eve.dev/docs/sandbox) powered by
+[Upstash Box](https://github.com/upstash/box). Use it exactly like Eve's built-in `VercelSandbox`:
+export an environment from your sandbox file and open it from `defineSandbox()`. For a step-by-step
+walkthrough, see [Vercel Eve Sandboxes](/docs/box/guides/eve-setup).
 
 ```bash
 npm install @upstash/box
@@ -85685,82 +85954,103 @@ npm install @upstash/box
 ```ts
 // agent/sandbox.ts
 import { defineSandbox } from "eve/sandbox";
-import { upstash } from "@upstash/agentkit-eve/sandbox"; // was: eve/sandbox/vercel
+import { UpstashSandbox } from "@upstash/agentkit-eve/sandbox";
 
-export default defineSandbox({
-  backend: upstash({ runtime: "node", size: "medium" }),
-  revalidationKey: () => "repo-bootstrap-v1",
-  async bootstrap({ use }) {
-    const sandbox = await use({ networkPolicy: "allow-all" }); // open egress to install packages
-    await sandbox.run({ command: "apt-get install -y jq" });
-  },
-  async onSession({ use }) {
-    await use(); // inherits the secure deny-all default
+export const environment = UpstashSandbox.environment({
+  runtime: "node",
+  size: "medium",
+  // Setup every session inherits: runs once per environment (at `eve build`) and is captured as a
+  // Box snapshot, not re-run per session.
+  async prepare(sandbox) {
+    await sandbox.setNetworkPolicy("allow-all"); // egress is denied by default
+    const r = await sandbox.run({ command: "sudo -n apt-get install -y jq" });
+    if (r.exitCode !== 0) throw new Error(r.stderr);
   },
 });
+
+// Runs once per session. Sessions stay deny-all unless you pass a networkPolicy.
+export default defineSandbox(() => environment.open());
 ```
 
 <AccordionGroup>
-  <Accordion title="Config: Box's BoxConfig">
-    `upstash(config)` takes the `@upstash/box` `BoxConfig` verbatim, meaning whatever you'd pass to
-    `Box.create({...})`: `runtime`, `size`, `apiKey` (defaults to `UPSTASH_BOX_API_KEY`), `keepAlive`,
-    `initCommand`, `env`, `skills`, `mcpServers`, `timeout`, and so on. It also takes an optional
-    `redis` (defaults to `Redis.fromEnv()`). `networkPolicy` is **not** a config knob (see below).
-    `@upstash/box` is an optional peer dependency, needed only when you import
-    `@upstash/agentkit-eve/sandbox`.
+  <Accordion title="Options: Box's BoxConfig, plus prepare and baseSnapshot">
+    `UpstashSandbox.environment(options)` takes the `@upstash/box` `BoxConfig` verbatim, meaning
+    whatever you'd pass to `Box.create({...})`: `runtime`, `size`, `apiKey` (defaults to
+    `UPSTASH_BOX_API_KEY`), `keepAlive`, `initCommand`, `env`, `skills`, `mcpServers`, `attachHeaders`,
+    `timeout`, and so on. It also takes `prepare(sandbox)` (setup baked into the environment's
+    snapshot) and `baseSnapshot` (a snapshot id, or a resolver, to build on instead of a bare box).
+    `networkPolicy` is **not** an environment option (see below), and neither is `name`, because every
+    session gets its own box. `environment.open({ networkPolicy })` is the only open option.
+
+    Requires eve ≥ 0.65 and `@upstash/box` ≥ 0.7.1, an optional peer dependency needed only when you
+    import `@upstash/agentkit-eve/sandbox`. The provider reads `UPSTASH_BOX_API_KEY` when Eve prepares
+    the environment (at `eve build`) and at run time.
   </Accordion>
   <Accordion title="Security: network egress is deny-all by default">
     The sandbox runs untrusted, model-generated code, so open egress would mean SSRF / data
-    exfiltration / reaching your own infrastructure from inside the box. Open it per-session, in
-    `bootstrap`'s `use(...)` or the session `use(...)`, and never as a config knob. Note that `env` passed
-    to `upstash({ env })` is readable by code running in the box; don't pass secrets you wouldn't want
-    it to see.
+    exfiltration / reaching your own infrastructure from inside the box. Open it per session with
+    `environment.open({ networkPolicy: "allow-all" })` (or a domain allow-list), or from a tool with
+    `sandbox.setNetworkPolicy(...)`. Box enforces the policy on the box itself, so it survives pause and
+    resume. Note that `env` passed to `UpstashSandbox.environment({ env })` is readable by code running
+    in the box; don't pass secrets you wouldn't want it to see.
   </Accordion>
   <Accordion title="Brokering credentials (injecting headers)">
     Box network policies are plain domain/CIDR allow-lists. Eve's per-domain firewall rules (`transform`
-    header injection, `forwardURL`) have no Box equivalent, so passing them in `use({ networkPolicy })`
-    **throws** rather than silently sending the request unauthenticated:
+    header injection, `forwardURL`, `match`) have no Box equivalent, so passing them **throws** rather
+    than silently sending the request unauthenticated:
 
     ```ts
     // ❌ throws — Box can't inject headers via a per-session policy
-    export default defineSandbox({
-      backend: upstash({ runtime: "node" }),
-      async onSession({ use }) {
-        await use({
-          networkPolicy: {
-            allow: { "api.example.com": [{ transform: [{ headers: { authorization: "Bearer …" } }] }] },
-          },
-        });
-      },
-    });
+    export default defineSandbox(() =>
+      environment.open({
+        networkPolicy: {
+          allow: { "api.example.com": [{ transform: [{ headers: { authorization: "Bearer …" } }] }] },
+        },
+      }),
+    );
     ```
 
-    Broker credentials with Box's `attachHeaders` instead (set at backend creation; a proxy on the box
-    injects them), and open the domain with a plain allow-list:
+    Broker credentials with Box's `attachHeaders` instead (set in the environment options; a proxy on
+    the box injects them), and open the domain with a plain allow-list:
 
     ```ts
     // ✅ headers injected at the firewall; the secret never enters the box
-    export default defineSandbox({
-      backend: upstash({
-        runtime: "node",
-        attachHeaders: { "api.example.com": { Authorization: "Bearer …" } },
-      }),
-      async onSession({ use }) {
-        await use({ networkPolicy: { allow: ["api.example.com"] } });
-      },
+    export const environment = UpstashSandbox.environment({
+      runtime: "node",
+      attachHeaders: { "api.example.com": { Authorization: "Bearer …" } },
     });
+
+    export default defineSandbox(() =>
+      environment.open({ networkPolicy: { allow: ["api.example.com"] } }),
+    );
     ```
   </Accordion>
-  <Accordion title="Lifecycle: one box per conversation">
-    **Reuse.** Eve re-opens a session several times per turn, and the backend reattaches to the same Box
-    instead of creating a new one each time. Boxes default to Box's pause-based idle lifecycle
-    (`keepAlive: false`): auto-paused when idle, resumed on reattach, reaped by Box. Pass
-    `keepAlive: true` only for an always-running box you manage yourself.
+  <Accordion title="Lifecycle: one box per session">
+    **Prepare.** At `eve build` (and on first sandbox access under `eve dev`), a temporary box gets
+    Eve's workspace files (`agent/sandbox/workspace/` → `/workspace`), your skills
+    (`$HOME/.agents/skills`) and your `prepare` hook, then is snapshotted and deleted. Eve stores the
+    snapshot id in the build output, so no Redis or other registry is involved. With nothing to bake,
+    no box is created. Each build that has something to prepare creates a new snapshot; delete stale
+    ones in the console or with `Box.deleteSnapshots()`.
 
-    **Template registry.** Eve builds your template (seed files + `bootstrap`) at build/startup, but
-    session creation runs per request in a different process, so the snapshot id is stored in a durable
-    Redis registry (`redis`, defaulting to `Redis.fromEnv()`). Eve roots its tools at `/workspace` while
-    a Box session lives at `/workspace/home`; the backend bridges the two automatically.
+    **Sessions.** Each session gets one box, restored from that snapshot and reused across turns,
+    restarts and redeploys. `sandbox.stop()` pauses it (the next command resumes it), server shutdown
+    pauses it too, and `sandbox.delete()` deletes it. If a session's box or the prepared snapshot no
+    longer exists, the session fails with a clear error instead of silently getting an empty box.
+    Boxes default to Box's pause-based idle lifecycle (`keepAlive: false`); pass `keepAlive: true` only
+    for an always-running box you manage yourself.
+
+    Eve roots its tools at `/workspace` while a Box session lives at `/workspace/home`; the provider
+    bridges the two automatically. Commands run over Box's streaming exec sessions: stdout and stderr
+    stay separate, and a cancelled turn kills the running command.
+  </Accordion>
+  <Accordion title="Migrating from upstash() (agentkit-eve 0.12 and earlier)">
+    Eve 0.64 replaced sandbox backends with providers, so `defineSandbox({ backend: upstash(...) })`
+    no longer exists. `bootstrap` becomes the environment's `prepare`, `onSession`'s
+    `use({ networkPolicy })` becomes `environment.open({ networkPolicy })`, and `revalidationKey` goes
+    away. The `redis`, `templatePrefix` and `enableTelemetry` options are removed, because the snapshot
+    id now lives in Eve's build output. See the
+    [migration example](/docs/box/guides/eve-setup#migrating-from-upstash).
   </Accordion>
 </AccordionGroup>
 
@@ -85796,7 +86086,7 @@ export default defineCachedTool({
 
 Eve has a native [memory](https://eve.dev/docs/memory) feature: a slot file under `agent/memory/`
 that Eve calls before and after each turn. `@upstash/agentkit-eve/memory` puts Upstash Redis behind
-it, two ways. Needs Eve 0.45.2 or newer.
+it, two ways. Needs Eve 0.65 or newer, like the rest of the package.
 
 `redisMemory()` is a full provider. It recalls the memories relevant to the current turn, stores the
 user's messages afterwards, and contributes `<slot>__save_memory`, `<slot>__search_memory`,
@@ -96984,8 +97274,9 @@ For more details on how this integration works, check out [the official reposito
 Source: https://upstash.com/docs/search/overall/getstarted
 
 import { Catalog } from "/snippets/catalog.jsx";
+import { AgentSetup } from "/snippets/agent-setup.jsx";
 
-***
+<AgentSetup product="Search" />
 
 <iframe
   id="intro-video" width='560' height='315'
@@ -105115,18 +105406,13 @@ Implemented metadata filtering with SQL-like syntax. See [Metadata Filtering](/d
 Source: https://upstash.com/docs/vector/overall/getstarted
 
 import { Catalog } from "/snippets/catalog.jsx";
+import { AgentSetup } from "/snippets/agent-setup.jsx";
 
-<Check >
-**Prerequisite**
-
-You need an Upstash account before creating a vector, create one
-[here](https://console.upstash.com).
-
-</Check>
+<AgentSetup product="Vector" />
 
 ## Create an Index
 
-Once you logged in, you can create a Vector Index by clicking on the `Create Index` button in the Vector tab.
+Log in to the [Upstash Console](https://console.upstash.com), or [sign up](https://console.upstash.com) for a free account. Then create a Vector Index by clicking on the `Create Index` button in the Vector tab.
 
   <img alt="Create a Vector index" />
 
@@ -108374,6 +108660,12 @@ Source: https://upstash.com/docs/workflow/api-reference/runs/cancel-workflow-run
 
 /workflow/openapi.yaml delete /v2/workflows/runs/{workflowRunId}
 Cancel an ongoing workflow run.
+
+# Retry a Step Now
+Source: https://upstash.com/docs/workflow/api-reference/runs/retry-a-step-now
+
+/workflow/openapi.yaml post /v2/messages/{messageId}/retry
+Execute a workflow step that is waiting for its next retry immediately
 
 # Trigger Workflow Run
 Source: https://upstash.com/docs/workflow/api-reference/runs/trigger-workflow-run
@@ -112475,6 +112767,9 @@ Choose webhooks when integrating with external services that support callback UR
 Source: https://upstash.com/docs/workflow/getstarted
 
 import { Catalog } from "/snippets/catalog.jsx";
+import { AgentSetup } from "/snippets/agent-setup.jsx";
+
+<AgentSetup product="Workflow" />
 
 Upstash Workflow lets you write **durable, reliable and performant serverless functions**. Get delivery guarantees, automatic retries on failure, scheduling and more without managing any infrastructure.
 
@@ -112674,6 +112969,21 @@ In your Upstash Workflow console, find the run you'd like to cancel and press th
 
   <img alt="Cancel a workflow run in the Upstash Console" />
 
+## Cancelling in bulk
+
+To cancel many runs at once, filter the `Logs` tab down to the runs you want
+and pick **Cancel** from the **Bulk actions** menu. QStash cancels every running
+workflow that matches the filters in the background.
+
+The **History** button next to the menu lists each bulk cancellation with its
+state, the filters used and the number of runs cancelled, so you can follow an
+operation while it runs or look it up later by its action ID. The same is
+available through the [bulk cancel workflow runs](/docs/workflow/api-reference/runs/bulk-cancel-workflow-runs)
+endpoint with `"async": true`, and the
+[bulk actions](/docs/workflow/api-reference/bulk-actions/list-bulk-actions) endpoints.
+
+  <img alt="Bulk action history panel in the Upstash Console" />
+
 ## Cancelling programatically
 
 <Note>
@@ -112791,6 +113101,8 @@ If, even after all retries, your step does not succeed, we'll move the failed ru
 
 If you want to take an action (a cleanup/log), you can configure either `failureFunction` or a `failureUrl` on the `serve` method of your workflow.
 These options allow you to define custom logic or an external endpoint that will be triggered when a failure occurs.
+
+While a step is waiting for its next retry, you can retry it immediately from the console. See [Run a Step Now](/docs/workflow/howto/retry-now).
 
 ## Using a `failureFunction` (recommended)
 
@@ -114761,6 +115073,45 @@ When `body` is redacted, the step outputs in the dashboard and API will show `RE
 
 If a workflow run fails and moves to the DLQ, the redacted fields remain redacted in the DLQ.
 However, when you retry, resume or restart a workflow run from DLQ, Workflow delivers the original values to your endpoint.
+
+# Run a Step Now
+Source: https://upstash.com/docs/workflow/howto/retry-now
+
+A workflow run can be waiting for two reasons: a step is sleeping because of
+`context.sleep` or `context.sleepUntil`, or a step failed and is waiting out its
+retry delay before the next attempt. Both can be released early from the console,
+so the run continues immediately instead of at the scheduled time.
+
+## From the console
+
+Open the run in the `Logs` tab of the [Upstash Console](https://console.upstash.com/workflow).
+Every waiting step shows a button next to its label: **Run now** on a sleeping
+step and **Retry now** on a step in retry backoff. In a parallel block, each
+branch has its own button.
+
+  <img alt="Run now and Retry now buttons on workflow steps in the Upstash Console" />
+
+The buttons are only offered while the run is still running and the step is
+genuinely waiting. Once QStash picks the step up, the button disappears and the
+run continues as if the sleep or delay had ended on its own.
+
+<Note>
+  Releasing a retrying step does not add an attempt. If the step was on its
+  last retry and fails again, the run fails and the
+  [failure function](/docs/workflow/howto/failures) is called as usual.
+</Note>
+
+## From the API
+
+Under the hood, a sleeping or retrying step is a delayed QStash message. The
+console calls the [retry a step now](/docs/workflow/api-reference/runs/retry-a-step-now)
+endpoint with the step's message ID, which you can find in the run's
+[event logs](/docs/workflow/api-reference/logs/list-workflow-run-logs).
+
+```bash
+curl -X POST https://qstash.upstash.io/v2/messages/<STEP_MESSAGE_ID>/retry \
+  -H "Authorization: Bearer <QSTASH_TOKEN>"
+```
 
 # Schedule a Workflow
 Source: https://upstash.com/docs/workflow/howto/schedule

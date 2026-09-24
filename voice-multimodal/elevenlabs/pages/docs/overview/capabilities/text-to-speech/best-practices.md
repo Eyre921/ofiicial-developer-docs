@@ -12,18 +12,24 @@ This guide provides techniques to enhance text-to-speech outputs using ElevenLab
 
 ## Controls
 
-We are actively working on *Director's Mode* to give you even greater control over outputs.
+> **Info**
+>
+> We are actively working on *Director's Mode* to give you even greater control over outputs.
 
 These techniques provide a practical way to achieve nuanced results until advanced features like *Director's Mode* are rolled out.
 
 ### Pauses
 
-Eleven v3 does not support SSML break tags. Use the techniques described in the [Prompting Eleven v3](#prompting-eleven-v3) section for controlling pauses with v3.
+> **Info**
+>
+> Eleven v3 does not support SSML break tags. Use the techniques described in the [Prompting Eleven v3](#prompting-eleven-v3) section for controlling pauses with v3.
 
 Use `<break time="x.xs" />` for natural pauses up to 3 seconds.
 
-Using too many break tags in a single generation can cause instability. The AI might speed up, or
-introduce additional noises or audio artifacts. We are working on resolving this.
+> **Note**
+>
+> Using too many break tags in a single generation can cause instability. The AI might speed up, or
+> introduce additional noises or audio artifacts. We are working on resolving this.
 
 **`Example`**
 
@@ -163,7 +169,9 @@ multiple generations and select the best result.
 
 Specify pronunciation using [SSML phoneme tags](https://en.wikipedia.org/wiki/Speech_Synthesis_Markup_Language) with v2 models. Supported alphabets include [CMU](https://en.wikipedia.org/wiki/CMU_Pronouncing_Dictionary) Arpabet and the [International Phonetic Alphabet (IPA)](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet).
 
-Phoneme tags are only compatible with the `eleven_flash_v2` [model](/docs/overview/models).
+> **Note**
+>
+> Phoneme tags are only compatible with the `eleven_flash_v2` [model](/docs/overview/models).
 
 **`CMU Arpabet Example`**
 
@@ -367,8 +375,10 @@ Iterate on results by tweaking descriptions, tags, or emotional cues.
 
 When using Text to Speech with complex items like phone numbers, zip codes and emails they might be mispronounced. This is often due to the specific items not being in the training set and smaller models failing to generalize how they should be pronounced. This guide will clarify when those discrepancies happen and how to have them pronounced correctly.
 
-Normalization is enabled by default for all TTS models to help improve pronunciation of numbers,
-dates, and other complex text elements.
+> **Tip**
+>
+> Normalization is enabled by default for all TTS models to help improve pronunciation of numbers,
+> dates, and other complex text elements.
 
 ### Why do models read out inputs differently?
 
@@ -590,8 +600,10 @@ console.log(normalizeText("555-555-5555")); // "five five five, five five five, 
 
 This guide provides the most effective tags and techniques for prompting Eleven v3, including voice selection, changes in capitalization, punctuation, audio tags and multi-speaker dialogue. Experiment with these methods to discover what works best for your specific voice and use case.
 
-Eleven v3 does not support SSML break tags. Use audio tags, punctuation (ellipses), and text
-structure to control pauses and pacing with v3.
+> **Info**
+>
+> Eleven v3 does not support SSML break tags. Use audio tags, punctuation (ellipses), and text
+> structure to control pauses and pacing with v3.
 
 ### Voice selection
 
@@ -616,10 +628,12 @@ dataset.
 Neutral voices tend to be more stable across languages and styles, providing reliable baseline
 performance.
 
-Professional Voice Clones (PVCs) are currently not fully optimized for Eleven v3, resulting in
-potentially lower clone quality compared to earlier models. During this research preview stage it
-would be best to find an Instant Voice Clone (IVC) or designed voice for your project if you need
-to use v3 features.
+> **Info**
+>
+> Professional Voice Clones (PVCs) are currently not fully optimized for Eleven v3, resulting in
+> potentially lower clone quality compared to earlier models. During this research preview stage it
+> would be best to find an Instant Voice Clone (IVC) or designed voice for your project if you need
+> to use v3 features.
 
 ### Settings
 
@@ -628,22 +642,26 @@ to use v3 features.
 The stability slider is the most important setting in v3, controlling how closely the generated voice adheres to the original reference audio.
 
 ![Stability settings in Eleven
-v3](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/291b91ec752d09b8c87004ae7091811eb8b5996c349288c88ed0c7afa1272999/assets/images/product-guides/text-to-speech/text-to-speech-v3-settings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T112056Z&X-Amz-Expires=604800&X-Amz-Signature=38b5a9ba889e044229d4e9b9d4b4455b0e545d212d54d92e37e3d7f78b64855b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+v3](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/291b91ec752d09b8c87004ae7091811eb8b5996c349288c88ed0c7afa1272999/assets/images/product-guides/text-to-speech/text-to-speech-v3-settings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T102622Z&X-Amz-Expires=604800&X-Amz-Signature=622773b8f60840a337b8a91deac515a6068f0d85082c0315e18a6a36674588e8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 * **Creative:** More emotional and expressive, but prone to hallucinations.
 * **Natural:** Closest to the original voice recording—balanced and neutral.
 * **Robust:** Highly stable, but less responsive to directional prompts but consistent, similar to v2.
 
-For maximum expressiveness with audio tags, use Creative or Natural settings. Robust reduces
-responsiveness to directional prompts.
+> **Note**
+>
+> For maximum expressiveness with audio tags, use Creative or Natural settings. Robust reduces
+> responsiveness to directional prompts.
 
 ### Audio tags
 
 Eleven v3 introduces emotional control through audio tags. You can direct voices to laugh, whisper, act sarcastic, or express curiosity among many other styles. Speed is also controlled through audio tags.
 
-The voice you choose and its training samples will affect tag effectiveness. Some tags work well
-with certain voices while others may not. Don't expect a whispering voice to suddenly shout with a
-`[shout]` tag.
+> **Note**
+>
+> The voice you choose and its training samples will affect tag effectiveness. Some tags work well
+> with certain voices while others may not. Don't expect a whispering voice to suddenly shout with a
+> `[shout]` tag.
 
 #### Voice-related
 
@@ -686,8 +704,10 @@ Experimental tags for creative applications:
 [strong French accent] "Zat's life, my friend — you can't control everysing."
 ```
 
-Some experimental tags may be less consistent across different voices. Test thoroughly before
-production use.
+> **Warning**
+>
+> Some experimental tags may be less consistent across different voices. Test thoroughly before
+> production use.
 
 ### Punctuation
 

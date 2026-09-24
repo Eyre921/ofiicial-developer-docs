@@ -90,7 +90,9 @@ async def handle_barge_in(stt_event, speak_conn, playback):
         # On SpeechInterrupted: llm_context.append(assistant=text_spoken)
 ```
 
-This snippet focuses on message flow. For the concrete SDK calls, see [Getting Started](/docs/flux-tts/quickstart) and the [template apps](/docs/flux-tts/template-apps) — the Python (`deepgram-sdk`) and JavaScript (`@deepgram/sdk`) SDKs expose a `speak.v2` client for `/v2/speak`.
+> **Info**
+>
+> This snippet focuses on message flow. For the concrete SDK calls, see [Getting Started](/docs/flux-tts/quickstart) and the [template apps](/docs/flux-tts/template-apps) — the Python (`deepgram-sdk`) and JavaScript (`@deepgram/sdk`) SDKs expose a `speak.v2` client for `/v2/speak`.
 
 ## Related resources
 

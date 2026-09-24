@@ -43,11 +43,13 @@ The bot does **not** need to be an admin of the group, and you do **not** need t
 
 Messages that don't address the bot are ignored by design. The bot also ignores messages from other bots and does not act on edited or deleted messages.
 
-Telegram applies privacy-mode and admin-role changes only to groups the bot joins **after** the
-change. If you previously toggled privacy mode in [@BotFather](https://t.me/BotFather), or made
-the bot a group admin to "fix" mentions, remove the bot from the group and add it back so the new
-setting takes effect — that's typically what makes mentions start working, not the admin role
-itself.
+> **Note**
+>
+> Telegram applies privacy-mode and admin-role changes only to groups the bot joins **after** the
+> change. If you previously toggled privacy mode in [@BotFather](https://t.me/BotFather), or made
+> the bot a group admin to "fix" mentions, remove the bot from the group and add it back so the new
+> setting takes effect — that's typically what makes mentions start working, not the admin role
+> itself.
 
 In group and supergroup chats the agent's reply is sent as a quote-reply to the triggering message, so the response stays visually anchored to the question even when the chat is busy. In private 1:1 chats the quote-reply is suppressed because it would be redundant.
 
@@ -61,8 +63,10 @@ When you add Telegram tools to an agent, the following built-in tools are availa
 | `telegram_send_message`     | Sends a text message to the current chat. `chat_id` is bound; the model controls `text` and the optional `parse_mode` (`HTML`, `Markdown`, or `MarkdownV2`).                                                                                                                                                                                                                                                |
 | `telegram_react_to_message` | Reacts to the triggering message with a single emoji from Telegram's bot-allowed [reaction set](https://core.telegram.org/bots/api#reactiontypeemoji) — useful when a short acknowledgment (`👍`, `🎉`, `❤`) is more natural than a text reply. Both `chat_id` and `message_id` are bound to the originating turn. Setting a new reaction replaces any reaction the bot previously set on the same message. |
 
-Some chats restrict which emoji are allowed via Telegram's **Available reactions** setting. If a
-reaction call is rejected, instruct the agent to fall back to a text reply.
+> **Info**
+>
+> Some chats restrict which emoji are allowed via Telegram's **Available reactions** setting. If a
+> reaction call is rejected, instruct the agent to fall back to a text reply.
 
 ## Dynamic variables
 

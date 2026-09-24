@@ -12,8 +12,10 @@ path: docs/overview/capabilities/private-deployment
 
 ElevenAgents runs full conversational agent workflows inside your own cloud account or your own hardware. Text to Speech and Scribe transcription can also be deployed on their own as standalone inference endpoints on Amazon SageMaker or Vertex AI. In both cases, text, audio and transcripts never leave your network.
 
-Private deployments are available on AWS and GCP. We are working closely with Microsoft to release
-an equivalent Azure offering later in H2 2026.
+> **Info**
+>
+> Private deployments are available on AWS and GCP. We are working closely with Microsoft to release
+> an equivalent Azure offering later in H2 2026.
 
 #### Agents in your own network
 
@@ -35,8 +37,10 @@ Forward-deployed engineers, reference architectures and sizing guidance througho
 
 ## Get access
 
-Full private deployment documentation and technical resources are available to authorized
-customers only. For prospective customers, we require an NDA.
+> **Info**
+>
+> Full private deployment documentation and technical resources are available to authorized
+> customers only. For prospective customers, we require an NDA.
 
 To learn more about private deployment options and get access to the technical documentation, contact your ElevenLabs account team or [reach out to our sales team](https://elevenlabs.io/contact-sales).
 

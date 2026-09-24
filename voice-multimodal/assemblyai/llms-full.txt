@@ -161,6 +161,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Cloud endpoints & data residency](#cloud-endpoints-data-residency-docs-sync-stt-endpoints-and-data-zones-mdx)
 - [Connection pre-warming](#connection-pre-warming-docs-sync-stt-connection-pre-warming-mdx)
 - [Sync STT on Pipecat](#sync-stt-on-pipecat-docs-sync-stt-pipecat-mdx)
+- [Sync STT on OpenRouter](#sync-stt-on-openrouter-docs-sync-stt-openrouter-mdx)
 - [Quickstart](#quickstart-docs-dictation-mdx)
 - [Uploading while recording](#uploading-while-recording-docs-dictation-uploading-while-recording-mdx)
 - [Examples](#examples-docs-dictation-examples-mdx)
@@ -1398,6 +1399,13 @@ AssemblyAI seamlessly integrates with a variety of tools and platforms to enhanc
     href="/voice-agents/pipecat-universal-3-5-pro"
   >
     Use AssemblyAI with Pipecat's voice agent orchestrator.
+  
+
+## Model gateways
+
+  
+    Transcribe with Universal-3.5 Pro through OpenRouter's OpenAI-compatible
+    transcription API.
   
 
 ## No-code tools
@@ -23369,6 +23377,7 @@ new speaker labels to segments that actually belong to an existing speaker.
 | ---------------- | ------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `speaker_labels` | boolean | `false` | Set to `true` to enable real-time speaker diarization.                                                                                                             |
 | `max_speakers`   | integer | —       | Optional. Hard cap on the number of speaker labels (1–10). If more people speak than this value, the additional speakers are merged into the closest existing label. Give the model a little headroom above the number of speakers you expect; setting it too high can cause over-splitting. |
+| `speaker_labels_revision_interval_ms` | integer | `0` | Optional. Interval in milliseconds of **audio** between mid-session [`SpeakerRevision`](#revised-speaker-labels) messages. Set it to `300000` (5 minutes, the recommended value) to receive corrections for earlier turns while the session is still running. The minimum is `120000` (lower values are adjusted up); larger values are supported, and revisions arrive at approximately the requested interval. Leave it unset or set it to `0` to receive only the end-of-session revision. Requires `speaker_labels: true`. |
 
   Diarization is supported on all streaming models: `universal-3-5-pro`,
   `universal-streaming-english`, and `universal-streaming-multilingual`. You do
@@ -23378,13 +23387,15 @@ new speaker labels to segments that actually belong to an existing speaker.
 ### Reading speaker labels
 
 When diarization is enabled, every `Turn` event includes a `speaker_label` field
-reflecting the dominant speaker for that turn.
+reflecting the dominant speaker for that turn, and a `speaker_confidence` field
+scoring how clearly that turn matched the speaker it was assigned to.
 
 ```json
 {
   "type": "Turn",
   "transcript": "Good morning, thanks for joining the call.",
   "speaker_label": "A",
+  "speaker_confidence": 0.972431,
   "end_of_turn": true,
   "turn_is_formatted": true
 }
@@ -23448,6 +23459,7 @@ A few things to keep in mind when consuming `speaker`:
 - **Final words only.** The `speaker` field only appears on words where `word_is_final: true`. Non-final (in-progress) words never carry it.
 - **`speaker` can be absent on individual words.** If the field is missing from a word entirely, treat that word as unattributed and fall back to the turn-level `speaker_label` if you need a label. Absent means the field is omitted from the JSON — it will never be `null`.
 - **`PENDING` at word level** means the model couldn't confidently attribute that word to any specific speaker — common for short backchannels ("uh huh", "yeah") or brief low-quality audio segments. It is not an ambiguity flag between two known speakers; words in a confidently-attributed stretch carry the speaker's letter, not `PENDING`.
+- **Each final word also carries a `speaker_confidence`** scoring how clearly it matched the speaker it was assigned to. See [Speaker confidence](#speaker-confidence).
 
 If a turn contains less than approximately 1 second of audio, the turn-level `speaker_label`
 will be set to `"PENDING"`. This is because the model needs at least ~1 second of
@@ -23479,6 +23491,58 @@ A typical multi-speaker exchange looks like this:
 [C] It's been busy, but manageable. We brought on two new engineers last week.
 ```
 
+#### Speaker confidence
+
+Every final `Turn` also carries a `speaker_confidence`, and so does each of its
+words. The score is between 0 and 1 and reflects how clearly the audio matched
+the speaker it was assigned to compared with the next-closest speaker: higher
+means the two speakers were easy to tell apart, lower means the segment sat
+close to the boundary between them. Nothing extra needs to be enabled —
+`speaker_labels: true` is enough.
+
+```json
+{
+  "type": "Turn",
+  "transcript": "Good morning. Thanks for joining.",
+  "speaker_label": "A",
+  "speaker_confidence": 0.938865,
+  "end_of_turn": true,
+  "words": [
+    { "text": "Good",     "speaker": "A", "speaker_confidence": 0.976504, "word_is_final": true, "start": 120, "end":  280, "confidence": 0.994210 },
+    { "text": "morning.", "speaker": "A", "speaker_confidence": 0.976504, "word_is_final": true, "start": 280, "end":  530, "confidence": 0.998112 },
+    { "text": "Thanks",   "speaker": "A", "speaker_confidence": 0.913772, "word_is_final": true, "start": 690, "end":  880, "confidence": 0.991004 },
+    { "text": "for",      "speaker": "A", "speaker_confidence": 0.913772, "word_is_final": true, "start": 880, "end":  960, "confidence": 0.987663 },
+    { "text": "joining.", "speaker": "A", "speaker_confidence": 0.913772, "word_is_final": true, "start": 960, "end": 1320, "confidence": 0.996518 }
+  ]
+}
+```
+
+| Field                          | Type  | Description                                                                                                                           |
+| ------------------------------ | ----- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `speaker_confidence`           | float | Turn-level score for the emitted `speaker_label`, aggregated from the words attributed to that speaker. Lower on turns that mix speakers. |
+| `words[].speaker_confidence`   | float | Score for the word's `speaker` assignment. The model scores a whole sentence-level segment at once, so every word in the same sentence shares one value. |
+
+  **Experimental field**
+
+  `speaker_confidence` is not calibrated, so it is not the probability that the
+  label is correct. Do not apply absolute thresholds to it. Use it for relative
+  comparison instead — for example, to surface the least-confident regions of a
+  transcript for review. We are improving calibration and welcome your feedback
+  on how the scores behave on your audio.
+
+Keep these details in mind:
+
+- **It can be missing.** Like `speaker`, the field is omitted from the JSON
+  rather than sent as `null`. Expect it to be absent on the first words of a
+  session, before the model has built a speaker profile.
+- **Revisions do not carry it.** `SpeakerRevision` messages contain no
+  confidences. Once a revision changes a turn's labels, any confidence you
+  stored describes the label it replaced — discard it rather than carrying it
+  over to the new one.
+- **Treat a turn-level `0.0` as "not available"**, not as "certainly wrong". It
+  appears in rare cases early in a session when no word in the turn contributed
+  a score.
+
 ### How speaker accuracy improves over time
 
 Streaming Diarization builds a speaker profile incrementally as audio flows in.
@@ -23491,7 +23555,11 @@ In practice this means:
 
 For long-form use cases (call center, clinical scribe, meeting transcription),
 the model will settle into accurate, stable labels well before the end of the
-conversation.
+conversation. The server refines its speaker model periodically on its own, so
+labels on new turns can keep improving during a session without any extra
+configuration — the `speaker_labels_revision_interval_ms` parameter only
+controls whether corrections for turns you already received are sent
+mid-session.
 
 ### Revised speaker labels
 
@@ -23502,24 +23570,31 @@ be reassigned as the model builds a clearer picture of each speaker.
 
 When the session ends, the server performs a final refinement pass with full
 visibility into the entire conversation. Any turns whose speaker labels changed
-are sent back as a single `SpeakerRevision` message. Turns that were already
-correct are omitted.
+are sent back in a `SpeakerRevision` message. Turns that were already correct
+are omitted.
+
+By default that end-of-session message is the only revision you receive. Set
+`speaker_labels_revision_interval_ms` to also receive revisions while the
+session is running, so a long transcript can be corrected as it is built rather
+than only at the end.
 
 Use the revised labels whenever you need the highest-quality speaker attribution
 for the final transcript — for example, when persisting a meeting transcript,
 generating a post-call summary, or feeding text into a downstream LLM that
 benefits from accurate speaker turns.
 
-  The end-of-session refinement adds approximately 400ms of latency. Any
-  `SpeakerRevision` messages arrive before the `Termination` message and do
-  not affect the real-time `speaker_label` values delivered during the session.
+  The end-of-session refinement adds approximately 400ms of latency. Every
+  `SpeakerRevision` message arrives before the `Termination` message, and none
+  of them change the real-time `speaker_label` values already delivered during
+  the session.
 
 #### Message shape
 
-A single `SpeakerRevision` message is sent at the end of the session containing
-a `revisions` array. Each item corrects one turn; only turns whose speaker
-assignments changed are included. The `turn_order` field in each item matches
-the `turn_order` of the original Turn message being revised.
+Every `SpeakerRevision` message carries a `revisions` array. Each item corrects
+one turn; only turns whose speaker assignments changed since the previous
+message are included. The `turn_order` field in each item matches the
+`turn_order` of the original Turn message being revised. The shape is the same
+whether the message arrives mid-session or at the end of the session.
 
 ```json
 {
@@ -23558,7 +23633,14 @@ the `turn_order` of the original Turn message being revised.
 #### How to handle it
 
 Match each `turn_order` in `revisions` against the turn you already received,
-then replace its `speaker_label` and per-word `speaker` values.
+then replace its `speaker_label` and per-word `speaker` values. Keep your turns
+in a map keyed by `turn_order`, as the handlers below do, and the same code
+works whether you receive one revision or many.
+
+Each message is a delta: it carries only the turns whose labels changed since
+the previous message. Apply items in the order they arrive and let the last
+write for a given `turn_order` win. A turn that you skip is not re-sent in a
+later message, so it keeps the label you last stored for it.
 
 ```python
 def on_message(ws, message):
@@ -23601,14 +23683,26 @@ ws.on("message", (data) => {
 
 #### When it is sent
 
-`SpeakerRevision` messages are only sent at the end of a stream, after the
-`Terminate` signal. They are never emitted mid-session. A given session may
-produce zero or many revisions. Only turns whose speaker assignments changed
-are included.
+A session always ends with a final `SpeakerRevision`, sent after the
+`Terminate` signal and before `Termination`. It includes only the turns whose
+speaker assignments changed.
 
-If the session ends unexpectedly (network drop, error closure), revisions may
-not be delivered. Always handle this gracefully and fall back to the live
-labels you received during the session.
+To also receive revisions mid-session, set
+`speaker_labels_revision_interval_ms` to the number of milliseconds of audio
+you want between them. We recommend `300000` (5 minutes):
+
+- With a value greater than `0`, the server sends a revision roughly every
+  interval of audio, and the first one no sooner than about 2 minutes of audio.
+  The interval counts audio time, not wall-clock time, so silence and
+  under-delivered audio push revisions later.
+- Values above the server default of `300000` are clamped to it, so revisions
+  may arrive more often than you requested.
+- With `0` or the parameter unset, you receive only the end-of-session
+  revision.
+
+If the session ends unexpectedly (network drop, error closure), the final
+revision may not be delivered. Always handle this gracefully and fall back to
+the labels you received during the session.
 
 ### Known limitations
 
@@ -25070,7 +25164,7 @@ sequenceDiagram
 | `Begin` | Once, on connect | Session ID, expiration time, and the configuration the server actually applied. |
 | `SpeechStarted` | Per turn (Universal-3.5 Pro only) | Speech detected; precedes the turn's first `Turn` message. |
 | `Turn` | Repeatedly | Partial and final transcripts; see the walkthrough below. |
-| `SpeakerRevision` | If `speaker_labels=true` | Revised speaker labels for earlier turns. |
+| `SpeakerRevision` | At session close if `speaker_labels=true`; also mid-session if `speaker_labels_revision_interval_ms` is set | Revised speaker labels for earlier turns. |
 | `Heartbeat` | Every 5s if `session_heartbeat=true` | Liveness ping with audio-received and real-time-factor stats. |
 | `Termination` | Once, last message | Session totals; nothing follows it. |
 | `Error` | On failure, before close | Error code and detail; the connection then closes. |
@@ -25408,7 +25502,7 @@ After you send `Terminate`, **keep reading from the WebSocket until you receive 
 
 - the final (and formatted) `Turn` for audio you already sent;
 - on Universal Streaming, a closing `Turn` with an empty `transcript` for an unfinished turn;
-- a `SpeakerRevision` if `speaker_labels=true`. The end-of-session refinement adds approximately 400 ms of latency at session close. See [Revised speaker labels](/streaming/label-speakers-and-separate-channels#revised-speaker-labels) for the message schema and consumption guidance.
+- a final `SpeakerRevision` if `speaker_labels=true`. The end-of-session refinement adds approximately 400 ms of latency at session close. This message always arrives, even if you already received mid-session revisions through `speaker_labels_revision_interval_ms`. See [Revised speaker labels](/streaming/label-speakers-and-separate-channels#revised-speaker-labels) for the message schema and consumption guidance.
 
 Closing the socket as soon as you send `Terminate` silently discards your last transcript.
 
@@ -45081,6 +45175,215 @@ For downstream turn timing, the service broadcasts `ttfs_p99_latency` at pipelin
 
 ---
 
+<a id="sync-stt-on-openrouter-docs-sync-stt-openrouter-mdx"></a>
+
+# Sync STT on OpenRouter
+
+URL: https://www.assemblyai.com/docs/sync-stt/openrouter
+Source: docs/sync-stt/openrouter.mdx
+Navigation: Sync STT > Integrations
+Description: Transcribe with Universal-3.5 Pro through OpenRouter's OpenAI-compatible transcription API
+
+## Overview
+
+[OpenRouter](https://openrouter.ai/) is a model gateway: one API key and one bill across many providers, behind an OpenAI-compatible interface. Selecting the model `assemblyai/universal-3-5-pro` on its [transcription endpoint](https://openrouter.ai/docs/guides/overview/multimodal/stt) routes the request to AssemblyAI's [Sync API](/sync-stt/getting-started/quickstart).
+
+You send OpenAI-shaped fields; AssemblyAI's own options travel in a `provider.options.assemblyai` block that OpenRouter forwards untouched.
+
+### Routing through OpenRouter, or calling us directly
+
+**Route through OpenRouter** when you already buy inference through it and want transcription on the same key, bill, and client — or when you're comparing speech models and want to swap providers by changing one string.
+
+**Call the Sync API directly** when you want the things a gateway can't pass through: [live upload](/sync-stt/getting-started/quickstart), which streams audio while the person is still speaking so you only wait on the final stretch; [connection pre-warming](/sync-stt/connection-pre-warming); [data residency](/sync-stt/endpoints-and-data-zones) endpoint selection; and our [SDKs](/sync-stt/getting-started/transcribe-a-short-audio-file).
+
+  
+    OpenRouter's reference for the transcription endpoint.
+  
+  
+    Use the Sync API directly, without the gateway.
+  
+
+## Quickstart
+
+Set your OpenRouter key:
+
+```bash
+export OPENROUTER_API_KEY=<your-key>
+```
+
+Then POST base64-encoded audio. This example transcribes a medical intake call with a prompt, keyterms, and the preceding turns of the conversation:
+
+```bash
+curl https://openrouter.ai/api/v1/audio/transcriptions \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "assemblyai/universal-3-5-pro",
+    "input_audio": { "format": "wav", "data": "<base64 16-bit WAV>" },
+    "response_format": "verbose_json",
+    "timestamp_granularities": ["word"],
+    "provider": {
+      "options": {
+        "assemblyai": {
+          "prompt": "Transcribe this medical intake conversation.",
+          "keyterms_prompt": ["Trazodone", "Tirzepatide", "Semaglutide"],
+          "conversation_context": [
+            "Thanks for calling. How can I help?",
+            "I need to check on a prescription refill.",
+            "Sure — which medication?"
+          ]
+        }
+      }
+    }
+  }'
+```
+
+```python
+import base64, os, requests
+
+with open("intake.wav", "rb") as f:
+    audio = base64.b64encode(f.read()).decode()
+
+response = requests.post(
+    "https://openrouter.ai/api/v1/audio/transcriptions",
+    headers={"Authorization": f"Bearer {os.environ['OPENROUTER_API_KEY']}"},
+    json={
+        "model": "assemblyai/universal-3-5-pro",
+        "input_audio": {"format": "wav", "data": audio},
+        "response_format": "verbose_json",
+        "timestamp_granularities": ["word"],
+        "provider": {
+            "options": {
+                "assemblyai": {
+                    "prompt": "Transcribe this medical intake conversation.",
+                    "keyterms_prompt": ["Trazodone", "Tirzepatide", "Semaglutide"],
+                    "conversation_context": [
+                        "Thanks for calling. How can I help?",
+                        "I need to check on a prescription refill.",
+                        "Sure — which medication?",
+                    ],
+                }
+            }
+        },
+    },
+)
+
+result = response.json()
+print(result["text"])
+for word in result["words"]:
+    print(f"{word['start']} - {word['end']}  {word['word']}")
+```
+
+  OpenRouter also accepts an OpenAI-style `multipart/form-data` upload with a `file` part, which makes the basic case a drop-in for the OpenAI SDK. AssemblyAI's options are a nested object, so reach for the JSON body above whenever you need `provider.options`.
+
+## Parameter mapping
+
+OpenAI-compatible fields sit at the top level of the request:
+
+| OpenRouter field | Sync API equivalent | Notes |
+| --- | --- | --- |
+| `model` | `X-AAI-Model` header | `assemblyai/universal-3-5-pro` |
+| `input_audio.data` | the `audio` part | Base64 of the raw file bytes |
+| `input_audio.format` | the part's content type | Only `wav` — see [Audio](#audio) |
+| `language` | [`config.language_codes`](/sync-stt/language-selection) | ISO 639-1 |
+| `timestamp_granularities` | [`config.timestamps`](/sync-stt/word-timestamps) | `["word"]` needs `response_format: verbose_json` |
+
+`language` is ignored when a custom `prompt` is set — state the language in your prompt if you need both (see [Specifying the language](/sync-stt/prompting-and-keyterms#specifying-the-language)).
+
+### AssemblyAI options
+
+Everything specific to AssemblyAI goes under `provider.options.assemblyai`, keyed by our provider slug. Each maps to the `config` field of the same name on [`POST /v1/transcribe`](/api-reference/sync-api/transcribe).
+
+  A natural-language description of what the audio is about — the domain, the
+  scenario, the participants. Write it as a description of the audio, not as
+  instructions to the model. Maximum **6000 characters**. A managed default is
+  applied when you omit it, so test without one first. See
+  [Contextual prompting](/sync-stt/prompting-and-keyterms#contextual-prompting).
+
+  Terms to bias the decoder toward — drug names, product names, proper nouns.
+  Maximum **100 terms** and **8000 characters** across all of them. See
+  [Keyterms prompting](/sync-stt/prompting-and-keyterms#keyterms-prompting).
+
+  Prior turns of the same conversation in chronological order, oldest first.
+  Gives the model continuity across a multi-turn exchange. Maximum **500 turns**
+  and **16000 characters**; context over either cap is trimmed rather than
+  rejected, oldest turns first. See
+  [Conversation context](/sync-stt/conversation-context).
+
+## Response
+
+The default `response_format` is `json` — `text` plus a `usage` block, nothing else. `verbose_json` adds `task`, `duration`, `confidence`, and `segments`; `words` arrives on top of those when you also pass `timestamp_granularities: ["word"]`.
+
+```json
+{
+  "text": "I need to check on a prescription refill for Tirzepatide.",
+  "usage": { "seconds": 3.119, "cost": 0.000433194791 },
+  "task": "transcribe",
+  "duration": 3.119,
+  "confidence": 0.9941581597006228,
+  "segments": [
+    { "id": 0, "start": 0, "end": 3.119, "text": "I need to check on a prescription refill for Tirzepatide." }
+  ],
+  "words": [
+    { "word": "I", "start": 0.032, "end": 0.049, "confidence": 0.9976914893043927 },
+    { "word": "need", "start": 0.114, "end": 0.361, "confidence": 0.99996769532457 },
+    { "word": "to", "start": 0.361, "end": 0.394, "confidence": 0.9999934435319415 },
+    { "word": "check", "start": 0.508, "end": 0.705, "confidence": 0.9999849798550975 },
+    { "word": "on", "start": 0.771, "end": 0.87, "confidence": 0.9999413524701386 },
+    { "word": "a", "start": 0.935, "end": 0.952, "confidence": 0.9993512074196143 },
+    { "word": "prescription", "start": 1.017, "end": 1.625, "confidence": 0.9999634040871428 },
+    { "word": "refill", "start": 1.674, "end": 2.019, "confidence": 0.9999704369697439 },
+    { "word": "for", "start": 2.084, "end": 2.199, "confidence": 0.9999564905017542 },
+    { "word": "Tirzepatide.", "start": 2.249, "end": 3.037, "confidence": 0.944761097541834 }
+  ]
+}
+```
+
+A few things to expect from that payload:
+
+- **`words` needs both flags.** `timestamp_granularities: ["word"]` on its own does nothing — with `response_format: "json"` you get back `text` and `usage` and no more.
+- **There is no `language` field**, even when you send `language` on the request.
+- **`usage` is OpenRouter's accounting**, not ours. These requests bill through your OpenRouter account, and `cost` is in US dollars.
+
+## Limits
+
+- **Audio duration** — [80 ms to 120 s](/sync-stt/audio-requirements). This is the Sync API's limit; OpenRouter adds none of its own.
+- **Processing timeout** — 60 s at the gateway.
+- **Request size** — 25 MB for a multipart upload. Duration binds long before size does: 120 seconds of 16 kHz mono WAV is under 4 MB, roughly 5 MB once base64-encoded.
+
+### Audio
+
+Send **16-bit WAV**, mono or stereo, at 8000, 16000, 22050, 24000, 32000, 44100, or 48000 Hz. Full constraints are in [Audio requirements](/sync-stt/audio-requirements).
+
+`wav` is the only value of `input_audio.format` this model accepts. The other containers OpenRouter's endpoint supports across its catalog — `mp3`, `flac`, `m4a`, and the rest — are rejected at the gateway before reaching us:
+
+```json
+{
+  "error": {
+    "message": "Unsupported input_audio.format \"mp3\" for AssemblyAI; only wav is supported",
+    "code": 400
+  }
+}
+```
+
+Transcode to WAV before sending.
+
+## Related
+
+  
+    Call the Sync API directly, with live upload.
+  
+  
+    Write prompts and keyterm lists that improve accuracy.
+  
+  
+    Carry prior turns into each request.
+  
+  
+    Duration, size, format, and sample-rate constraints.
+
+---
+
 <a id="quickstart-docs-dictation-mdx"></a>
 
 # Quickstart
@@ -60370,9 +60673,9 @@ Description: Available models on LLM Gateway
 | **GPT-5.1** | `gpt-5.1` | $1.25 | $10 | $0.125 |  |  | +10% |
 | **GPT-5.2** | `gpt-5.2` | $1.75 | $14 | $0.175 |  |  | +10% |
 | **GPT-5.5** | `gpt-5.5` | $5 | $30 | $0.5 |  |  | +10% |
-| **GPT-5.6 Luna** | `gpt-5.6-luna` | $1 | $6 | $0.1 | $1.25 |  | +10% |
+| **GPT-5.6 Luna** | `gpt-5.6-luna` | $0.2 | $1.2 | $0.02 | $0.25 |  | +10% |
 | **GPT-5.6 Sol** | `gpt-5.6-sol` | $4 | $20 | $0.4 | $5 |  | +10% |
-| **GPT-5.6 Terra** | `gpt-5.6-terra` | $2.5 | $15 | $0.25 | $3.125 |  | +10% |
+| **GPT-5.6 Terra** | `gpt-5.6-terra` | $2 | $12 | $0.2 | $2.5 |  | +10% |
 | **GPT-6 Astra** | `gpt-6-astra` | $10 | $50 | $1 | $12.5 |  | +10% |
 | **Qwen3 32B** | `qwen3-32B` | $0.15 | $0.6 |  |  |  |  |
 | **Qwen3 Next 80B A3B** | `qwen3-next-80b-a3b` | $0.15 | $1.2 |  |  |  |  |
@@ -87492,6 +87795,13 @@ channels:
           - "2"
           - "4"
 
+      speaker_labels_revision_interval_ms:
+        description: Interval in milliseconds of audio between mid-session `SpeakerRevision` messages (integer). With a value greater than `0`, the server emits a revision roughly every interval of audio, and the first one no sooner than about 2 minutes of audio; the recommended value is `300000` (5 minutes). The minimum is `120000` (lower values are adjusted up); larger values are supported, and revisions arrive at approximately the requested interval. With `0` or the parameter unset, only the end-of-session revision is sent. The message schema is identical either way, and the final end-of-session revision is always sent. Only used when `speaker_labels` is enabled. See [Revised speaker labels](https://www.assemblyai.com/docs/streaming/label-speakers-and-separate-channels#revised-speaker-labels) for more details.
+        location: $message.payload#/speaker_labels_revision_interval_ms
+        default: "0"
+        examples:
+          - "300000"
+
       voice_focus:
         description: Enable [Voice Focus](https://www.assemblyai.com/docs/streaming/voice-focus) to isolate the primary voice and suppress background noise before transcription. Set to `near-field` for close-talking microphones (for example, headsets or phones) or `far-field` for distant microphones (for example, conference rooms). When unset, Voice Focus is off.
         location: $message.payload#/voice_focus
@@ -87636,7 +87946,7 @@ operations:
       $ref: "#/channels/streaming"
     messages:
       - $ref: "#/channels/streaming/messages/speakerRevision"
-    description: Receive revised speaker labels at the end of a session. Emitted as a single message immediately before `Termination` when `speaker_labels` is enabled. Contains a `revisions` array with only the turns whose labels changed — unchanged turns are omitted. Text and word timestamps are never changed — only speaker assignments. Adds approximately 400ms of latency at session close. See [Revised speaker labels](https://www.assemblyai.com/docs/streaming/label-speakers-and-separate-channels#revised-speaker-labels) for details.
+    description: Receive revised speaker labels for earlier turns. A final message is always emitted immediately before `Termination` when `speaker_labels` is enabled, and additional messages are emitted mid-session when `speaker_labels_revision_interval_ms` is set. Each message contains a `revisions` array with only the turns whose labels changed since the previous message — unchanged turns are omitted and are not re-sent later. Apply revisions in arrival order; for a given `turn_order` the last one wins. Text and word timestamps are never changed — only speaker assignments. The end-of-session refinement adds approximately 400ms of latency at session close. See [Revised speaker labels](https://www.assemblyai.com/docs/streaming/label-speakers-and-separate-channels#revised-speaker-labels) for details.
 
   sessionTermination:
     action: send
@@ -87789,7 +88099,7 @@ components:
     SpeakerRevision:
       name: SpeakerRevision
       title: Revised Speaker Labels
-      summary: Server message containing corrected speaker labels for any turns that changed. Emitted as a single message after the client sends `Terminate`, when `speaker_labels` is enabled. A session may produce zero or one `SpeakerRevision` message; if sent, only changed turns are included in the `revisions` array. See [Revised speaker labels](https://www.assemblyai.com/docs/streaming/label-speakers-and-separate-channels#revised-speaker-labels) for details.
+      summary: Server message containing corrected speaker labels for any turns that changed. When `speaker_labels` is enabled, a final message is emitted after the client sends `Terminate`; setting `speaker_labels_revision_interval_ms` adds further messages during the session. A session may therefore produce one or many `SpeakerRevision` messages, each listing only the turns changed since the previous one. See [Revised speaker labels](https://www.assemblyai.com/docs/streaming/label-speakers-and-separate-channels#revised-speaker-labels) for details.
       contentType: application/json
       payload:
         $ref: "#/components/schemas/SpeakerRevisionPayload"
@@ -88049,6 +88359,12 @@ components:
         speaker:
           type: string
           description: The speaker label for this word (e.g. `A`, `B`, `UNKNOWN`). Only present on final words (`word_is_final` is `true`) when `speaker_labels` is enabled. May be absent on individual words even when diarization is enabled — treat absent as unattributed and fall back to the turn-level `speaker_label` if needed. See [Streaming Diarization](https://www.assemblyai.com/docs/streaming/label-speakers-and-separate-channels) for more details.
+        speaker_confidence:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Experimental. How clearly this word's audio matched the speaker it was assigned to, compared with the next-closest speaker (0.0 to 1.0). Only present on final words when `speaker_labels` is enabled; when unavailable it is omitted from the JSON rather than sent as `null`, which is expected on the first words of a session. The model scores a whole sentence-level segment at once, so every word in the same sentence carries the same value. The score is not calibrated and is not the probability that the label is correct — use it for relative comparison rather than absolute thresholds. `SpeakerRevision` messages carry no confidences. See [Speaker confidence](https://www.assemblyai.com/docs/streaming/label-speakers-and-separate-channels#speaker-confidence) for more details.
       required:
         - text
         - start
@@ -88089,6 +88405,12 @@ components:
         speaker_label:
           type: string
           description: The speaker label for this turn (e.g. `A`, `B`). Only present when `speaker_labels` is enabled. Short turns with less than approximately 1 second of audio will have the label `UNKNOWN`. See [Streaming Diarization](https://www.assemblyai.com/docs/streaming/label-speakers-and-separate-channels) for more details.
+        speaker_confidence:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Experimental. Turn-level score for the emitted `speaker_label` (0.0 to 1.0), aggregated from the words attributed to that speaker, so a turn that mixes speakers scores lower than a clean one. Only present when `speaker_labels` is enabled. A value of `0.0` means no score was available, which happens rarely and early in a session — it does not mean the label is wrong. The score is not calibrated and is not the probability that the label is correct — use it for relative comparison rather than absolute thresholds. See [Speaker confidence](https://www.assemblyai.com/docs/streaming/label-speakers-and-separate-channels#speaker-confidence) for more details.
         end_of_turn_confidence:
           type: number
           format: float
@@ -88111,7 +88433,7 @@ components:
 
     SpeakerRevisionPayload:
       type: object
-      description: Sent at the end of a streaming session when `speaker_labels` is enabled. Contains corrections for any turns whose speaker labels changed. Text content and word timestamps are never changed — only speaker assignments.
+      description: Sent at the end of a streaming session when `speaker_labels` is enabled, and additionally during the session when `speaker_labels_revision_interval_ms` is set. Contains corrections for any turns whose speaker labels changed since the previous message. Text content and word timestamps are never changed — only speaker assignments.
       properties:
         type:
           type: string

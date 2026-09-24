@@ -53,8 +53,10 @@ A companion protocol to RTP that reports statistics such as packet loss and jitt
 
 A fast, connectionless transport that sends packets without guaranteeing delivery or order. RTP audio is carried over UDP because low latency matters more than perfect delivery for live speech.
 
-UDP transport for SIP signaling is experimental at ElevenLabs. Use TCP or TLS for production
-traffic, and choose UDP only for testing.
+> **Note**
+>
+> UDP transport for SIP signaling is experimental at ElevenLabs. Use TCP or TLS for production
+> traffic, and choose UDP only for testing.
 
 **TCP (Transmission Control Protocol)**
 

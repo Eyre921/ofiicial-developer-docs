@@ -24,7 +24,9 @@ After purchasing, you can download and remix the track an unlimited number of ti
 
 Any derivative work (remixes) remain subject to the same usage type and licensing restrictions as the original track.
 
-All licenses are subject to the [Music Marketplace Addendum](https://elevenlabs.io/mma).
+> **Info**
+>
+> All licenses are subject to the [Music Marketplace Addendum](https://elevenlabs.io/mma).
 
 ## Usage types
 

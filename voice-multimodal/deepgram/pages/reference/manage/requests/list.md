@@ -51,16 +51,7 @@ A list of requests for a specific project
 
 - `page` (double, optional) — The page number of the paginated response
 - `limit` (double, optional) — The number of results per page
-- `requests` (list of object, optional)
-  - `request_id` (string, optional) — The unique identifier of the request
-  - `project_uuid` (string, optional) — The unique identifier of the project
-  - `created` (string, optional) — The date and time the request was created
-  - `path` (string, optional) — The API path of the request
-  - `api_key_id` (string, optional) — The unique identifier of the API key
-  - `response` (object, optional) — The response of the request
-  - `code` (double, optional) — The response code of the request
-  - `deployment` (string, optional) — The deployment type
-  - `callback` (string, optional) — The callback URL for the request
+- `requests` (list of ProjectRequestResponse, optional)
 
 ## Errors
 
@@ -68,16 +59,40 @@ A list of requests for a specific project
 
 Invalid Request
 
-- `string or object or object`
-  - ErrorResponseLegacyError
-    - `err_code` (string, optional) — The error code
-    - `err_msg` (string, optional) — The error message
-    - `request_id` (string, optional) — The request ID
-  - ErrorResponseModernError
-    - `category` (string, optional) — The category of the error
-    - `message` (string, optional) — A message about the error
-    - `details` (string, optional) — A description of the error
-    - `request_id` (string, optional) — The unique identifier of the request
+- `ErrorResponse`
+
+## Types
+
+### ProjectRequestResponse
+
+A single request
+
+- `request_id` (string, optional) — The unique identifier of the request
+- `project_uuid` (string, optional) — The unique identifier of the project
+- `created` (string, optional) — The date and time the request was created
+- `path` (string, optional) — The API path of the request
+- `api_key_id` (string, optional) — The unique identifier of the API key
+- `response` (ProjectRequestResponseResponse, optional) — The response of the request
+- `code` (double, optional) — The response code of the request
+- `deployment` (string, optional) — The deployment type
+- `callback` (string, optional) — The callback URL for the request
+
+### ErrorResponseLegacyError
+
+- `err_code` (string, optional) — The error code
+- `err_msg` (string, optional) — The error message
+- `request_id` (string, optional) — The request ID
+
+### ErrorResponseModernError
+
+- `category` (string, optional) — The category of the error
+- `message` (string, optional) — A message about the error
+- `details` (string, optional) — A description of the error
+- `request_id` (string, optional) — The unique identifier of the request
+
+### ProjectRequestResponseResponse
+
+The response of the request
 
 ## Examples
 

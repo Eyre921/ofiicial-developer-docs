@@ -48,10 +48,7 @@ Successful Response
 - `transcript_summary` (string, optional, nullable) — Generated natural-language summary of the call.
 - `call_successful` (enum, optional, nullable)
   - Allowed values: `success`, `failure`, `unknown`
-- `messages` (list of object, optional, nullable) — The plain chat messages (role and text only). Included only when message_count does not exceed the requested max_messages; otherwise null and messages_omitted is true.
-  - `role` (enum, required)
-    - Allowed values: `user`, `agent`
-  - `message` (string, required)
+- `messages` (list of ConversationSummaryMessageModel, optional, nullable) — The plain chat messages (role and text only). Included only when message_count does not exceed the requested max_messages; otherwise null and messages_omitted is true.
 - `messages_omitted` (boolean, optional, default: false) — True when the chat messages were omitted because the conversation was too long. Fetch the full transcript for the messages.
 
 ## Errors
@@ -60,10 +57,23 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ConversationSummaryMessageModel
+
+- `role` (enum, required)
+  - Allowed values: `user`, `agent`
+- `message` (string, required)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

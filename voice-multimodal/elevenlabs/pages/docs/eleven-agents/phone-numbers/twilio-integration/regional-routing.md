@@ -18,9 +18,11 @@ This guide explains what regional routing is, why it matters, and how to configu
 
 Regional routing is Twilio's mechanism for ensuring that call data is processed and stored within a specific geographic region. Think of it as data residency for your telephony infrastructure.
 
-By default, Twilio phone numbers are configured to route through the US region (`us1`), **even if
-the phone number itself is from another country**. For example, an Italian phone number will still
-route through the US unless regional routing is explicitly configured.
+> **Note**
+>
+> By default, Twilio phone numbers are configured to route through the US region (`us1`), **even if
+> the phone number itself is from another country**. For example, an Italian phone number will still
+> route through the US unless regional routing is explicitly configured.
 
 ## Why regional routing matters
 
@@ -38,9 +40,11 @@ When you import a Twilio phone number into ElevenLabs:
 2. **ElevenLabs needs to know the region**: To perform operations on ongoing calls (like transfers), ElevenLabs must send API requests to the same region where Twilio routed the call
 3. **Region specification prevents failures**: By specifying the routing region in the ElevenLabs platform, we ensure all API calls target the correct Twilio region
 
-If the routing region is not specified or is incorrect, operations like call transfers will fail
-because the API requests will be sent to the default `us1` region while the actual call is being
-handled in a different region.
+> **Warning**
+>
+> If the routing region is not specified or is incorrect, operations like call transfers will fail
+> because the API requests will be sent to the default `us1` region while the actual call is being
+> handled in a different region.
 
 ## Configuration
 
@@ -63,8 +67,10 @@ Common Twilio regions:
 * `jp1` - Japan
 * `sg1` - Singapore
 
-If you're using an isolated environment (like EU residency), ensure your Twilio numbers are
-configured to route through the matching region (e.g., `ie1` for EU).
+> **Tip**
+>
+> If you're using an isolated environment (like EU residency), ensure your Twilio numbers are
+> configured to route through the matching region (e.g., `ie1` for EU).
 
 ### Configure regional routing in Twilio
 
@@ -75,9 +81,11 @@ If your phone number is not configured for the correct region:
 3. Set the **Edge Location** to match your desired region
 4. Save the configuration
 
-Regional routing configuration in Twilio may require additional setup or account permissions.
-Contact [Twilio Support](https://support.twilio.com/) if you need assistance enabling regional
-routing for your account.
+> **Note**
+>
+> Regional routing configuration in Twilio may require additional setup or account permissions.
+> Contact [Twilio Support](https://support.twilio.com/) if you need assistance enabling regional
+> routing for your account.
 
 ### Specify the routing region in ElevenLabs
 
@@ -87,10 +95,11 @@ When you import or configure a Twilio phone number in the ElevenLabs [Phone Numb
 2. If you're using an isolated environment, you'll see a warning message that reads: "You are using a phone number in an isolated environment. Double check the routing region for this phone number in your provider."
 3. Verify that the **routing region** matches your Twilio configuration
 4. Ensure the region specified matches the region configured in your Twilio account
-
-   If you're using regional routing, you must use a **regional API key** from Twilio that
-   corresponds to your routing region. Your standard US API key will not work for non-US regions
-   and will result in authentication errors. Generate a region-specific API key in your [Twilio Console](https://console.twilio.com/).
+   > **Warning**
+   >
+   > If you're using regional routing, you must use a **regional API key** from Twilio that
+   > corresponds to your routing region. Your standard US API key will not work for non-US regions
+   > and will result in authentication errors. Generate a region-specific API key in your [Twilio Console](https://console.twilio.com/).
 
 ## Verifying your configuration
 
@@ -100,8 +109,10 @@ To verify that regional routing is configured correctly:
 2. **Check ElevenLabs Platform**: Verify the routing region setting matches your Twilio configuration
 3. **Test call operations**: Make a test call and verify that operations like call transfer work correctly
 
-Monitor your first few calls in the [Calls History dashboard](https://elevenlabs.io/app/agents/history) after configuring regional routing to ensure
-everything works as expected.
+> **Tip**
+>
+> Monitor your first few calls in the [Calls History dashboard](https://elevenlabs.io/app/agents/history) after configuring regional routing to ensure
+> everything works as expected.
 
 ## Common issues
 

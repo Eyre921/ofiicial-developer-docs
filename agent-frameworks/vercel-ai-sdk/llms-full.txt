@@ -34387,7 +34387,7 @@ export const yourLogMiddleware: LanguageModelV2Middleware = {
     const result = await doGenerate();
 
     console.log('doGenerate finished');
-    console.log(`generated text: ${result.text}`);
+    console.log(`generated content: ${JSON.stringify(result.content)}`);
 
     return result;
   },
@@ -34511,23 +34511,99 @@ Guard rails are a way to ensure that the generated text of a language model call
 is safe and appropriate. This example shows how to use guardrails as middleware.
 
 ```ts
-import type { LanguageModelV2Middleware } from '@ai-sdk/provider';
+import type {
+  LanguageModelV2Middleware,
+  LanguageModelV2StreamPart,
+} from '@ai-sdk/provider';
+
+const redactText = (text: string) => text.replace(/badword/g, '<REDACTED>');
 
 export const yourGuardrailMiddleware: LanguageModelV2Middleware = {
   wrapGenerate: async ({ doGenerate }) => {
-    const { text, ...rest } = await doGenerate();
+    const result = await doGenerate();
 
     // filtering approach, e.g. for PII or other sensitive information:
-    const cleanedText = text?.replace(/badword/g, '<REDACTED>');
+    const content = result.content.map(part =>
+      part.type === 'text' ? { ...part, text: redactText(part.text) } : part,
+    );
 
-    return { text: cleanedText, ...rest };
+    return { ...result, content };
   },
 
-  // here you would implement the guardrail logic for streaming
-  // Note: streaming guardrails are difficult to implement, because
-  // you do not know the full content of the stream until it's finished.
+  wrapStream: async ({ doStream }) => {
+    const { stream, ...rest } = await doStream();
+
+    // Keep a separate buffer for each text block in the stream.
+    const buffers = new Map<string, string>();
+
+    const transformStream = new TransformStream<
+      LanguageModelV2StreamPart,
+      LanguageModelV2StreamPart
+    >({
+      transform(chunk, controller) {
+        if (chunk.type === 'text-start') {
+          buffers.set(chunk.id, '');
+          controller.enqueue(chunk);
+          return;
+        }
+
+        if (chunk.type === 'text-delta') {
+          buffers.set(chunk.id, (buffers.get(chunk.id) ?? '') + chunk.delta);
+          return;
+        }
+
+        if (chunk.type === 'text-end') {
+          const bufferedText = buffers.get(chunk.id);
+
+          if (bufferedText != null) {
+            const redactedText = redactText(bufferedText);
+
+            if (redactedText) {
+              controller.enqueue({
+                type: 'text-delta',
+                id: chunk.id,
+                delta: redactedText,
+              });
+            }
+
+            buffers.delete(chunk.id);
+          }
+        }
+
+        controller.enqueue(chunk);
+      },
+
+      flush(controller) {
+        for (const [id, bufferedText] of buffers) {
+          const redactedText = redactText(bufferedText);
+
+          if (redactedText) {
+            controller.enqueue({
+              type: 'text-delta',
+              id,
+              delta: redactedText,
+            });
+          }
+        }
+      },
+    });
+
+    return {
+      stream: stream.pipeThrough(transformStream),
+      ...rest,
+    };
+  },
 };
 ```
+
+<Note>
+  The streaming example buffers each text block until `text-end` so matches
+  split across `text-delta` chunks cannot leak through. This delays output and
+  uses memory proportional to the text block size. Do not redact each delta
+  independently. An incremental implementation must retain every possible
+  incomplete match, and a fixed-size buffer alone is not safe for unbounded
+  variable-length patterns.
+</Note>
 
 ## Configuring Per Request Custom Metadata
 
@@ -42948,9 +43024,9 @@ The following provider options are available:
   Reasoning effort for reasoning models. Defaults to `medium`. If you use `providerOptions` to set the `reasoningEffort` option, this model setting will be ignored.
 
 <Note>
-  Supported reasoning efforts vary by model. GPT-5.6 supports `'none'`, `'low'`,
-  `'medium'`, `'high'`, `'xhigh'`, and `'max'`. GPT-6 and later models support
-  `'low'`, `'medium'`, `'high'`, `'xhigh'`, and `'max'`.
+  Supported reasoning efforts vary by model. GPT-5.6 and GPT-6 support `'none'`,
+  `'low'`, `'medium'`, `'high'`, `'xhigh'`, and `'max'`. GPT-6 Astra does not
+  support `'none'`.
 </Note>
 
 <Note type="warning">
@@ -44243,6 +44319,8 @@ The following optional provider options are available for OpenAI completion mode
 | Model                 | Image Input         | Audio Input         | Object Generation   | Tool Usage          |
 | --------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
 | `gpt-6-astra`         | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `gpt-6-luna`          | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `gpt-6-sol`           | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gpt-5.6`             | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gpt-5.6-luna`        | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gpt-5.6-sol`         | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
@@ -45582,16 +45660,26 @@ const result = streamText({
 
 Without this header, tool inputs and structured outputs may arrive all at once after a delay instead of streaming incrementally.
 
-For `claude-fable-5-1`, the default `"auto"` mode uses native structured
-outputs through `output_config.format`. Fable 5.1 rejects forced tool use, so
-do not use `"jsonTool"` or a required or named tool choice to implement
-structured output with this model.
+For `claude-opus-5-5` and `claude-fable-5-1`, the default mode is `"auto"`,
+which uses native structured outputs through `output_config.format`. These
+models reject forced tool use, so the `"jsonTool"` mode cannot be used with
+them. If you request `"jsonTool"` anyway, the provider falls back to
+`"outputFormat"` and emits a warning. Likewise, a `required` or named
+`toolChoice` is downgraded to `auto` with a warning; instruct the model to use
+the tool in your prompt and verify that a tool call was made.
 
 ### Effort
 
-Anthropic introduced an `effort` option with `claude-opus-4-5` that affects thinking, text responses, and function calls. Effort defaults to `high` and you can set it to `medium` or `low` to save tokens and to lower time-to-last-token latency (TTLT). `claude-opus-4-7`, `claude-opus-4-8`, `claude-opus-5`, `claude-fable-5`, `claude-fable-5-1`, and `claude-sonnet-5` additionally support `xhigh` for maximum reasoning effort.
+Anthropic introduced an `effort` option with `claude-opus-4-5` that affects thinking, text responses, and function calls. Effort defaults to `high` and you can set it to `medium` or `low` to save tokens and to lower time-to-last-token latency (TTLT). `claude-opus-4-7`, `claude-opus-4-8`, `claude-opus-5`, `claude-opus-5-5`, `claude-fable-5`, `claude-fable-5-1`, and `claude-sonnet-5` additionally support `xhigh` for maximum reasoning effort.
 
 On `claude-opus-5`, thinking can only be disabled at effort levels up to and including `high`. When you combine `thinking: { type: 'disabled' }` with `effort: 'xhigh'` or `effort: 'max'`, the AI SDK lowers the effort to `high` and emits a warning instead of sending a request that the API would reject.
+
+On `claude-opus-5-5`, thinking is always adaptive and cannot be disabled, so
+`effort` is the main control for latency and cost. The API default effort for
+`claude-opus-5-5` is `medium`. Start there and test other levels rather than
+carrying over the setting you used on `claude-opus-5`. Set `maxOutputTokens`
+with room for thinking as well as the reply; thinking counts toward the limit
+even when its content is not returned.
 
 ```ts highlight="8-10"
 import { anthropic, AnthropicProviderOptions } from '@ai-sdk/anthropic';
@@ -45810,6 +45898,40 @@ const { text } = await generateText({
 });
 ```
 
+##### Adaptive-Only Models
+
+`claude-opus-5-5`, `claude-fable-5`, and `claude-fable-5-1` always run adaptive
+thinking. The API rejects `thinking: { type: 'disabled' }` and budget-based
+`thinking: { type: 'enabled' }` for these models. To keep existing code working,
+the provider:
+
+- removes `thinking: { type: 'disabled' }` and emits a warning,
+- converts `thinking: { type: 'enabled', budgetTokens }` to `{ type: 'adaptive' }` and emits a warning.
+
+Use `effort` to control how much these models think. On `claude-opus-5-5`, set
+`effort: 'low'` when time to first token matters, and move to `medium` if
+quality drops:
+
+```ts highlight="6-9"
+const { text } = await generateText({
+  model: anthropic('claude-opus-5-5'),
+  prompt: 'Summarize this ticket in one sentence.',
+  providerOptions: {
+    anthropic: {
+      // thinking stays adaptive; effort controls how much the model thinks
+      effort: 'low',
+    } satisfies AnthropicProviderOptions,
+  },
+});
+```
+
+<Note>
+  Responses from adaptive-only models can begin with a thinking block. Read the
+  response by content type (`text`, `reasoning`, `tool-call`) rather than
+  assuming the first part is text. Under the default `display: 'omitted'`
+  setting, thinking blocks are returned with empty text.
+</Note>
+
 ##### Thinking Display (Opus 4.7+)
 
 Starting with `claude-opus-4-7`, thinking content is omitted from the response by default — thinking blocks are present in the stream but their text is empty. To receive reasoning output, set `display: 'summarized'`:
@@ -45837,8 +45959,11 @@ console.log(text);
 
 ##### Thinking Updates
 
-Use `display: 'updates'` with `claude-fable-5-1` to stream thinking summaries
-between tool calls:
+Use `display: 'updates'` with `claude-opus-5-5` or `claude-fable-5-1` to stream
+thinking summaries between tool calls. These models return progress notes
+between tool calls as thinking blocks rather than text, so without this setting
+a long tool-calling turn can look silent. The provider adds the required
+`thinking-display-updates-2026-08-18` beta header automatically:
 
 ```ts highlight="12-16"
 import { anthropic, AnthropicLanguageModelOptions } from '@ai-sdk/anthropic';
@@ -46178,6 +46303,73 @@ Parameters:
 
 These tools can be used in conjunction with the `sonnet-3-5-sonnet-20240620` model to enable more complex interactions and tasks.
 
+#### Computer Toolset
+
+Newer models use the computer toolset instead of a versioned computer tool.
+`claude-opus-5-5` accepts computer use only through the toolset and rejects the
+older `computer_*` tool types with a 400. The toolset does not require a beta
+header and has no display size parameters: coordinates are always in the pixel
+space of the screenshots you return. Zoom is enabled by default, and Claude can
+return several actions in one turn, each as its own tool call.
+
+The API returns each action as a separate `tool_use` block with
+`toolset_name: 'computer'`. The AI SDK maps every action to the toolset tool and
+passes the action name as `action`, so `execute` receives the same input shape
+as the older computer tools. The tool name must be `computer`:
+
+```ts
+const computerTool = anthropic.tools.computerToolset_20260801({
+  // optional: turn individual actions on or off
+  configs: {
+    zoom: { enabled: false },
+  },
+
+  execute: async ({ action, coordinate, text, region }) => {
+    switch (action) {
+      case 'screenshot': {
+        return {
+          type: 'image',
+          data: fs.readFileSync('./data/screenshot.png').toString('base64'),
+        };
+      }
+      default: {
+        console.log('Action:', action, coordinate, text, region);
+        return `executed ${action}`;
+      }
+    }
+  },
+
+  toModelOutput({ output }) {
+    return {
+      type: 'content',
+      value: [
+        typeof output === 'string'
+          ? { type: 'text', text: output }
+          : { type: 'media', data: output.data, mediaType: 'image/png' },
+      ],
+    };
+  },
+});
+```
+
+Parameters:
+
+- `action` ('screenshot' | 'zoom' | 'left_click' | 'right_click' | 'middle_click' | 'double_click' | 'triple_click' | 'left_click_drag' | 'mouse_move' | 'left_mouse_down' | 'left_mouse_up' | 'cursor_position' | 'scroll' | 'type' | 'key' | 'hold_key' | 'wait'): The member tool that Claude invoked.
+- `coordinate` (number[], optional): The (x, y) pixel coordinates for click, move, and scroll actions.
+- `start_coordinate` (number[], optional): Where a `left_click_drag` starts.
+- `region` (number[], optional): `[x1, y1, x2, y2]` for the `zoom` action.
+- `text` (string, optional): Text to type, the key combination for `key` and `hold_key`, or modifier keys to hold during click and scroll actions.
+- `repeat` (number, optional): How many times to press the key for `key`.
+- `duration` (number, optional): Seconds for `hold_key` and `wait`.
+- `scroll_direction` ('up' | 'down' | 'left' | 'right', optional) and `scroll_amount` (number, optional): For the `scroll` action.
+- `configs` (object, optional): Per-action settings keyed by action name. Each entry accepts `enabled` (default `true`) and `deferLoading` (default `false`, for tool search).
+
+Tool calls and results of the toolset are serialized with `toolset_name` when
+you pass the message history back. Keep the toolset tool in `tools` on
+follow-up requests, or the provider falls back to the `toolsetName` provider
+metadata on the tool calls of previous responses. Do not declare the toolset
+together with an older `computer_*` tool.
+
 ### Web Search Tool
 
 Anthropic provides a provider-defined web search tool that gives Claude direct access to real-time web content, allowing it to answer questions with up-to-date information beyond its knowledge cutoff.
@@ -46339,11 +46531,11 @@ for await (const part of result.textStream) {
 
 ### Mid-Conversation System Controls
 
-With `claude-fable-5-1`, a mid-conversation system message can be cleared
-before the next user message with `clearAt: 'next_user_message'`, or set the
-effort for the next turn. The provider adds the required
+With `claude-opus-5-5` and `claude-fable-5-1`, a mid-conversation system message
+can be cleared before the next user message with `clearAt: 'next_user_message'`,
+or set the effort for the next turn without invalidating the prompt cache. The provider adds the required
 `mid-conversation-system-clear-at-2026-08-21` and
-`mid-conversation-effort-2026-08-01` beta headers automatically.
+`mid-conversation-output-config-2026-07-01` beta headers automatically.
 
 ```ts highlight="17-25"
 import { anthropic } from '@ai-sdk/anthropic';
@@ -46754,6 +46946,7 @@ and the `mediaType` should be set to `'application/pdf'`.
 
 | Model                      | Image Input         | Object Generation   | Tool Usage          | Computer Use        | Web Search          | Tool Search         | Compaction          |
 | -------------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `claude-opus-5-5`          | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `claude-opus-5`            | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `claude-sonnet-5`          | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `claude-fable-5-1`         | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
@@ -72916,6 +73109,9 @@ You can implement any of the following three function to modify the behavior of 
 3. `wrapStream`: Wraps the `doStream` method of the [language model](https://github.com/vercel/ai/blob/release-v6.0/packages/provider/src/language-model/v3/language-model-v3.ts).
    You can modify the parameters, call the language model, and modify the result.
 
+Every `LanguageModelV3Middleware` object must set
+`specificationVersion: 'v3'`.
+
 Here are some examples of how to implement language model middleware:
 
 ## Examples
@@ -72936,6 +73132,8 @@ import type {
 } from '@ai-sdk/provider';
 
 export const yourLogMiddleware: LanguageModelV3Middleware = {
+  specificationVersion: 'v3',
+
   wrapGenerate: async ({ doGenerate, params }) => {
     console.log('doGenerate called');
     console.log(`params: ${JSON.stringify(params, null, 2)}`);
@@ -73013,6 +73211,8 @@ import type { LanguageModelV3Middleware } from '@ai-sdk/provider';
 const cache = new Map<string, any>();
 
 export const yourCacheMiddleware: LanguageModelV3Middleware = {
+  specificationVersion: 'v3',
+
   wrapGenerate: async ({ doGenerate, params }) => {
     const cacheKey = JSON.stringify(params);
 
@@ -73045,6 +73245,8 @@ This example shows how to use RAG as middleware.
 import type { LanguageModelV3Middleware } from '@ai-sdk/provider';
 
 export const yourRagMiddleware: LanguageModelV3Middleware = {
+  specificationVersion: 'v3',
+
   transformParams: async ({ params }) => {
     const lastUserMessageText = getLastUserMessageText({
       prompt: params.prompt,
@@ -73071,27 +73273,101 @@ Guard rails are a way to ensure that the generated text of a language model call
 is safe and appropriate. This example shows how to use guardrails as middleware.
 
 ```ts
-import type { LanguageModelV3Middleware } from '@ai-sdk/provider';
+import type {
+  LanguageModelV3Middleware,
+  LanguageModelV3StreamPart,
+} from '@ai-sdk/provider';
+
+const redactText = (text: string) => text.replace(/badword/g, '<REDACTED>');
 
 export const yourGuardrailMiddleware: LanguageModelV3Middleware = {
+  specificationVersion: 'v3',
+
   wrapGenerate: async ({ doGenerate }) => {
     const result = await doGenerate();
 
     // filtering approach, e.g. for PII or other sensitive information:
     const content = result.content.map(part =>
-      part.type === 'text'
-        ? { ...part, text: part.text.replace(/badword/g, '<REDACTED>') }
-        : part,
+      part.type === 'text' ? { ...part, text: redactText(part.text) } : part,
     );
 
     return { ...result, content };
   },
 
-  // here you would implement the guardrail logic for streaming
-  // Note: streaming guardrails are difficult to implement, because
-  // you do not know the full content of the stream until it's finished.
+  wrapStream: async ({ doStream }) => {
+    const { stream, ...rest } = await doStream();
+
+    // Keep a separate buffer for each text block in the stream.
+    const buffers = new Map<string, string>();
+
+    const transformStream = new TransformStream<
+      LanguageModelV3StreamPart,
+      LanguageModelV3StreamPart
+    >({
+      transform(chunk, controller) {
+        if (chunk.type === 'text-start') {
+          buffers.set(chunk.id, '');
+          controller.enqueue(chunk);
+          return;
+        }
+
+        if (chunk.type === 'text-delta') {
+          buffers.set(chunk.id, (buffers.get(chunk.id) ?? '') + chunk.delta);
+          return;
+        }
+
+        if (chunk.type === 'text-end') {
+          const bufferedText = buffers.get(chunk.id);
+
+          if (bufferedText != null) {
+            const redactedText = redactText(bufferedText);
+
+            if (redactedText) {
+              controller.enqueue({
+                type: 'text-delta',
+                id: chunk.id,
+                delta: redactedText,
+              });
+            }
+
+            buffers.delete(chunk.id);
+          }
+        }
+
+        controller.enqueue(chunk);
+      },
+
+      flush(controller) {
+        for (const [id, bufferedText] of buffers) {
+          const redactedText = redactText(bufferedText);
+
+          if (redactedText) {
+            controller.enqueue({
+              type: 'text-delta',
+              id,
+              delta: redactedText,
+            });
+          }
+        }
+      },
+    });
+
+    return {
+      stream: stream.pipeThrough(transformStream),
+      ...rest,
+    };
+  },
 };
 ```
+
+<Note>
+  The streaming example buffers each text block until `text-end` so matches
+  split across `text-delta` chunks cannot leak through. This delays output and
+  uses memory proportional to the text block size. Do not redact each delta
+  independently. An incremental implementation must retain every possible
+  incomplete match, and a fixed-size buffer alone is not safe for unbounded
+  variable-length patterns.
+</Note>
 
 ## Configuring Per Request Custom Metadata
 
@@ -73103,6 +73379,8 @@ __PROVIDER_IMPORT__;
 import type { LanguageModelV3Middleware } from '@ai-sdk/provider';
 
 export const yourLogMiddleware: LanguageModelV3Middleware = {
+  specificationVersion: 'v3',
+
   wrapGenerate: async ({ doGenerate, params }) => {
     console.log('METADATA', params?.providerMetadata?.yourLogMiddleware);
     const result = await doGenerate();
@@ -84423,9 +84701,9 @@ The following provider options are available:
   Reasoning effort for reasoning models. Defaults to `medium`. If you use `providerOptions` to set the `reasoningEffort` option, this model setting will be ignored.
 
 <Note>
-  Supported reasoning efforts vary by model. GPT-5.6 supports `'none'`, `'low'`,
-  `'medium'`, `'high'`, `'xhigh'`, and `'max'`. GPT-6 and later models support
-  `'low'`, `'medium'`, `'high'`, `'xhigh'`, and `'max'`.
+  Supported reasoning efforts vary by model. GPT-5.6 and GPT-6 support `'none'`,
+  `'low'`, `'medium'`, `'high'`, `'xhigh'`, and `'max'`. GPT-6 Astra does not
+  support `'none'`.
 </Note>
 
 <Note>
@@ -86727,6 +87005,8 @@ The following optional provider options are available for OpenAI completion mode
 | Model                 | Image Input         | Audio Input         | Object Generation   | Tool Usage          |
 | --------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
 | `gpt-6-astra`         | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `gpt-6-luna`          | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `gpt-6-sol`           | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gpt-5.6`             | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gpt-5.6-luna`        | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gpt-5.6-sol`         | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
@@ -88514,16 +88794,26 @@ const result = streamText({
 });
 ```
 
-For `claude-fable-5-1`, the default `"auto"` mode uses native structured
-outputs through `output_config.format`. Fable 5.1 rejects forced tool use, so
-do not use `"jsonTool"` or a required or named tool choice to implement
-structured output with this model.
+For `claude-opus-5-5` and `claude-fable-5-1`, the default `"auto"` mode uses
+native structured outputs through `output_config.format`. These models reject
+forced tool use, so the `"jsonTool"` mode cannot be used with them. If you
+request `"jsonTool"` anyway, the provider falls back to `"outputFormat"` and
+emits a warning. Likewise, a `required` or named `toolChoice` is downgraded to
+`auto` with a warning; instruct the model to use the tool in your prompt and
+verify that a tool call was made.
 
 ### Effort
 
-Anthropic introduced an `effort` option with `claude-opus-4-5` that affects thinking, text responses, and function calls. Effort defaults to `high` and you can set it to `medium` or `low` to save tokens and to lower time-to-last-token latency (TTLT). `claude-opus-4-7`, `claude-opus-4-8`, `claude-opus-5`, `claude-fable-5`, `claude-fable-5-1`, and `claude-sonnet-5` additionally support `xhigh` for maximum reasoning effort.
+Anthropic introduced an `effort` option with `claude-opus-4-5` that affects thinking, text responses, and function calls. Effort defaults to `high` and you can set it to `medium` or `low` to save tokens and to lower time-to-last-token latency (TTLT). `claude-opus-4-7`, `claude-opus-4-8`, `claude-opus-5`, `claude-opus-5-5`, `claude-fable-5`, `claude-fable-5-1`, and `claude-sonnet-5` additionally support `xhigh` for maximum reasoning effort.
 
 On `claude-opus-5`, thinking can only be disabled at effort levels up to and including `high`. When you combine `thinking: { type: 'disabled' }` with `effort: 'xhigh'` or `effort: 'max'`, the AI SDK lowers the effort to `high` and emits a warning instead of sending a request that the API would reject.
+
+On `claude-opus-5-5`, thinking is always adaptive and cannot be disabled, so
+`effort` is the main control for latency and cost. The API default effort for
+`claude-opus-5-5` is `medium`. Start there and test other levels rather than
+carrying over the setting you used on `claude-opus-5`. Set `maxOutputTokens`
+with room for thinking as well as the reply; thinking counts toward the limit
+even when its content is not returned.
 
 ```ts highlight="8-10"
 import { anthropic, AnthropicLanguageModelOptions } from '@ai-sdk/anthropic';
@@ -88744,6 +89034,40 @@ const { text } = await generateText({
 });
 ```
 
+##### Adaptive-Only Models
+
+`claude-opus-5-5`, `claude-fable-5`, and `claude-fable-5-1` always run adaptive
+thinking. The API rejects `thinking: { type: 'disabled' }` and budget-based
+`thinking: { type: 'enabled' }` for these models. To keep existing code working,
+the provider:
+
+- removes `thinking: { type: 'disabled' }` and emits a warning,
+- converts `thinking: { type: 'enabled', budgetTokens }` to `{ type: 'adaptive' }` and emits a warning.
+
+Use `effort` to control how much these models think. On `claude-opus-5-5`, set
+`effort: 'low'` when time to first token matters, and move to `medium` if
+quality drops:
+
+```ts highlight="6-9"
+const { text } = await generateText({
+  model: anthropic('claude-opus-5-5'),
+  prompt: 'Summarize this ticket in one sentence.',
+  providerOptions: {
+    anthropic: {
+      // thinking stays adaptive; effort controls how much the model thinks
+      effort: 'low',
+    } satisfies AnthropicLanguageModelOptions,
+  },
+});
+```
+
+<Note>
+  Responses from adaptive-only models can begin with a thinking block. Read the
+  response by content type (`text`, `reasoning`, `tool-call`) rather than
+  assuming the first part is text. Under the default `display: 'omitted'`
+  setting, thinking blocks are returned with empty text.
+</Note>
+
 ##### Thinking Display (Opus 4.7+)
 
 Starting with `claude-opus-4-7`, thinking content is omitted from the response by default — thinking blocks are present in the stream but their text is empty. To receive reasoning output, set `display: 'summarized'`:
@@ -88771,8 +89095,11 @@ console.log(text);
 
 ##### Thinking Updates
 
-Use `display: 'updates'` with `claude-fable-5-1` to stream thinking summaries
-between tool calls:
+Use `display: 'updates'` with `claude-opus-5-5` or `claude-fable-5-1` to stream
+thinking summaries between tool calls. These models return progress notes
+between tool calls as thinking blocks rather than text, so without this setting
+a long tool-calling turn can look silent. The provider adds the required
+`thinking-display-updates-2026-08-18` beta header automatically:
 
 ```ts highlight="12-16"
 import { anthropic, AnthropicLanguageModelOptions } from '@ai-sdk/anthropic';
@@ -89316,10 +89643,73 @@ const computerTool = anthropic.tools.computer_20251124({
 ```
 
 <Note>
-  Use `computer_20251124` for Claude Opus 4.5 which supports the zoom action.
-  Use `computer_20250124` for Claude Sonnet 4.5, Haiku 4.5, Opus 4.1, Sonnet 4,
-  Opus 4, and Sonnet 3.7.
+  Use `computerToolset_20260801` for Claude Opus 5.5 (required), Opus 5, Sonnet
+  5, Fable 5, Fable 5.1, and Opus 4.8. Use `computer_20251124` for Claude Opus
+  4.5 through Opus 4.7, which support the zoom action. Use `computer_20250124`
+  for Claude Sonnet 4.5, Haiku 4.5, Opus 4.1, Sonnet 4, Opus 4, and Sonnet 3.7.
 </Note>
+
+#### Computer Toolset
+
+Newer models use the computer toolset instead of a versioned computer tool.
+`claude-opus-5-5` accepts computer use only through the toolset and rejects the
+older `computer_*` tool types with a 400. The toolset does not require a beta
+header and has no display size parameters: coordinates are always in the pixel
+space of the screenshots you return. Zoom is enabled by default, and Claude can
+return several actions in one turn, each as its own tool call.
+
+The API returns each action as a separate `tool_use` block with
+`toolset_name: 'computer'`. The AI SDK maps every action to the toolset tool and
+passes the action name as `action`, so `execute` receives the same input shape
+as the older computer tools:
+
+```ts
+const computerTool = anthropic.tools.computerToolset_20260801({
+  // optional: turn individual actions on or off
+  configs: {
+    zoom: { enabled: false },
+  },
+
+  execute: async ({ action, coordinate, text, region }) => {
+    switch (action) {
+      case 'screenshot': {
+        return {
+          type: 'image',
+          data: fs.readFileSync('./data/screenshot.png').toString('base64'),
+        };
+      }
+      default: {
+        console.log('Action:', action, coordinate, text, region);
+        return `executed ${action}`;
+      }
+    }
+  },
+
+  toModelOutput({ output }) {
+    return typeof output === 'string'
+      ? [{ type: 'text', text: output }]
+      : [{ type: 'file-data', data: output.data, mediaType: 'image/png' }];
+  },
+});
+```
+
+Parameters:
+
+- `action` ('screenshot' | 'zoom' | 'left_click' | 'right_click' | 'middle_click' | 'double_click' | 'triple_click' | 'left_click_drag' | 'mouse_move' | 'left_mouse_down' | 'left_mouse_up' | 'cursor_position' | 'scroll' | 'type' | 'key' | 'hold_key' | 'wait'): The member tool that Claude invoked.
+- `coordinate` (number[], optional): The (x, y) pixel coordinates for click, move, and scroll actions.
+- `start_coordinate` (number[], optional): Where a `left_click_drag` starts.
+- `region` (number[], optional): `[x1, y1, x2, y2]` for the `zoom` action.
+- `text` (string, optional): Text to type, the key combination for `key` and `hold_key`, or modifier keys to hold during click and scroll actions.
+- `repeat` (number, optional): How many times to press the key for `key`.
+- `duration` (number, optional): Seconds for `hold_key` and `wait`.
+- `scroll_direction` ('up' | 'down' | 'left' | 'right', optional) and `scroll_amount` (number, optional): For the `scroll` action.
+- `configs` (object, optional): Per-action settings keyed by action name. Each entry accepts `enabled` (default `true`) and `deferLoading` (default `false`, for tool search).
+
+Tool calls and results of the toolset are serialized with `toolset_name` when
+you pass the message history back. Keep the toolset tool in `tools` on
+follow-up requests, or the provider falls back to the `toolsetName` provider
+metadata on the tool calls of previous responses. Do not declare the toolset
+together with an older `computer_*` tool.
 
 Parameters:
 
@@ -89591,11 +89981,11 @@ This sends `tool_reference` blocks to Anthropic, which loads the corresponding d
 
 ### Mid-Conversation System Controls
 
-With `claude-fable-5-1`, a mid-conversation system message can be cleared
-before the next user message with `clearAt: 'next_user_message'`, or set the
-effort for the next turn. The provider adds the required
+With `claude-opus-5-5` and `claude-fable-5-1`, a mid-conversation system message
+can be cleared before the next user message with `clearAt: 'next_user_message'`,
+or set the effort for the next turn without invalidating the prompt cache. The provider adds the required
 `mid-conversation-system-clear-at-2026-08-21` and
-`mid-conversation-effort-2026-08-01` beta headers automatically.
+`mid-conversation-output-config-2026-07-01` beta headers automatically.
 
 ```ts highlight="17-25"
 import { anthropic } from '@ai-sdk/anthropic';
@@ -90080,6 +90470,7 @@ and the `mediaType` should be set to `'application/pdf'`.
 | Model               | Image Input         | Object Generation   | Tool Usage          | Computer Use        | Web Search          | Tool Search         | Compaction          |
 | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
 | `claude-fable-5-1`  | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `claude-opus-5-5`   | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `claude-opus-5`     | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `claude-sonnet-5`   | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `claude-fable-5`    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
@@ -115760,7 +116151,7 @@ For example, here’s how you can generate text with various models using the AI
 The AI SDK has these primary surfaces:
 
 - **[AI SDK Core](/docs/ai-sdk-core):** A unified API for generating text, structured objects, tool calls, and building agents with LLMs.
-- **[AI SDK UI](/docs/ai-sdk-ui):** A set of framework-agnostic hooks for quickly building chat and generative user interface.
+- **[AI SDK UI](/docs/ai-sdk-ui):** A set of framework-agnostic hooks for quickly building chat and generative user interfaces.
 - **[AI SDK Harnesses](/docs/ai-sdk-harnesses):** A uniform API for running established agent harnesses with `HarnessAgent`.
 
 ## Model Providers
@@ -125814,7 +126205,7 @@ Use a provider's `evaluationModel` factory:
 | Anthropic   | `anthropic.evaluationModel('claude-haiku-4-5-20251001')` |
 | Google      | `google.evaluationModel('gemini-3.5-flash-lite')`        |
 
-TypeSafe AI supplies native Choice, Score, and Boolean evaluations. OpenAI,
+TypeSafe AI's [Jev](https://vercel.com/i/what-is-jev) supplies native Choice, Score, and Boolean evaluations. OpenAI,
 Anthropic, and Google adapt structured language-model output for all three types.
 Boolean answers contain prompted estimates of P(true), validated to be finite
 and in `[0, 1]`. These estimates are not guaranteed to be calibrated. Choice and
@@ -126031,6 +126422,16 @@ Runnable examples are in
 [`examples/ai-functions/src/evaluate`](https://github.com/vercel/ai/tree/main/examples/ai-functions/src/evaluate),
 including basic examples for TypeSafe, OpenAI, Anthropic, and Google, model
 registries, custom aliases, default-provider strings, and probability-based routing.
+
+## Related resources
+
+Explore use cases, implementation guides, and a deployable template for using
+Jev from TypeSafe AI with the AI SDK:
+
+- [Jev use cases](https://vercel.com/i/jev-use-cases): Explore ideas for applying evaluation in your application.
+- [Classify, route, and score with Jev and AI SDK](https://vercel.com/kb/guide/typesafe-jev-and-ai-sdk): Learn how to ask typed questions, route answers using probabilities, and test routing logic with a mock evaluation model.
+- [Jev and AI SDK form router guide](https://vercel.com/kb/guide/jev-ai-sdk-form-router): Explore form routing with Jev and the AI SDK.
+- [Jev and AI SDK form router template](https://vercel.com/templates/next.js/jev-and-ai-sdk): Deploy a Next.js application that routes form submissions with Jev and uses a language model fallback for uncertain or failed evaluations.
 
 ---
 title: Image Generation
@@ -128393,6 +128794,9 @@ You can implement any of the following three function to modify the behavior of 
 3. `wrapStream`: Wraps the `doStream` method of the [language model](https://github.com/vercel/ai/blob/main/packages/provider/src/language-model/v4/language-model-v4.ts).
    You can modify the parameters, call the language model, and modify the result.
 
+Every `LanguageModelV4Middleware` object must set
+`specificationVersion: 'v4'`.
+
 Here are some examples of how to implement language model middleware:
 
 ## Examples
@@ -128413,6 +128817,8 @@ import type {
 } from '@ai-sdk/provider';
 
 export const yourLogMiddleware: LanguageModelV4Middleware = {
+  specificationVersion: 'v4',
+
   wrapGenerate: async ({ doGenerate, params }) => {
     console.log('doGenerate called');
     console.log(`params: ${JSON.stringify(params, null, 2)}`);
@@ -128490,6 +128896,8 @@ import type { LanguageModelV4Middleware } from '@ai-sdk/provider';
 const cache = new Map<string, any>();
 
 export const yourCacheMiddleware: LanguageModelV4Middleware = {
+  specificationVersion: 'v4',
+
   wrapGenerate: async ({ doGenerate, params }) => {
     const cacheKey = JSON.stringify(params);
 
@@ -128522,6 +128930,8 @@ This example shows how to use RAG as middleware.
 import type { LanguageModelV4Middleware } from '@ai-sdk/provider';
 
 export const yourRagMiddleware: LanguageModelV4Middleware = {
+  specificationVersion: 'v4',
+
   transformParams: async ({ params }) => {
     const lastUserMessageText = getLastUserMessageText({
       prompt: params.prompt,
@@ -128548,27 +128958,101 @@ Guard rails are a way to ensure that the generated text of a language model call
 is safe and appropriate. This example shows how to use guardrails as middleware.
 
 ```ts
-import type { LanguageModelV4Middleware } from '@ai-sdk/provider';
+import type {
+  LanguageModelV4Middleware,
+  LanguageModelV4StreamPart,
+} from '@ai-sdk/provider';
+
+const redactText = (text: string) => text.replace(/badword/g, '<REDACTED>');
 
 export const yourGuardrailMiddleware: LanguageModelV4Middleware = {
+  specificationVersion: 'v4',
+
   wrapGenerate: async ({ doGenerate }) => {
     const result = await doGenerate();
 
     // filtering approach, e.g. for PII or other sensitive information:
     const content = result.content.map(part =>
-      part.type === 'text'
-        ? { ...part, text: part.text.replace(/badword/g, '<REDACTED>') }
-        : part,
+      part.type === 'text' ? { ...part, text: redactText(part.text) } : part,
     );
 
     return { ...result, content };
   },
 
-  // here you would implement the guardrail logic for streaming
-  // Note: streaming guardrails are difficult to implement, because
-  // you do not know the full content of the stream until it's finished.
+  wrapStream: async ({ doStream }) => {
+    const { stream, ...rest } = await doStream();
+
+    // Keep a separate buffer for each text block in the stream.
+    const buffers = new Map<string, string>();
+
+    const transformStream = new TransformStream<
+      LanguageModelV4StreamPart,
+      LanguageModelV4StreamPart
+    >({
+      transform(chunk, controller) {
+        if (chunk.type === 'text-start') {
+          buffers.set(chunk.id, '');
+          controller.enqueue(chunk);
+          return;
+        }
+
+        if (chunk.type === 'text-delta') {
+          buffers.set(chunk.id, (buffers.get(chunk.id) ?? '') + chunk.delta);
+          return;
+        }
+
+        if (chunk.type === 'text-end') {
+          const bufferedText = buffers.get(chunk.id);
+
+          if (bufferedText != null) {
+            const redactedText = redactText(bufferedText);
+
+            if (redactedText) {
+              controller.enqueue({
+                type: 'text-delta',
+                id: chunk.id,
+                delta: redactedText,
+              });
+            }
+
+            buffers.delete(chunk.id);
+          }
+        }
+
+        controller.enqueue(chunk);
+      },
+
+      flush(controller) {
+        for (const [id, bufferedText] of buffers) {
+          const redactedText = redactText(bufferedText);
+
+          if (redactedText) {
+            controller.enqueue({
+              type: 'text-delta',
+              id,
+              delta: redactedText,
+            });
+          }
+        }
+      },
+    });
+
+    return {
+      stream: stream.pipeThrough(transformStream),
+      ...rest,
+    };
+  },
 };
 ```
+
+<Note>
+  The streaming example buffers each text block until `text-end` so matches
+  split across `text-delta` chunks cannot leak through. This delays output and
+  uses memory proportional to the text block size. Do not redact each delta
+  independently. An incremental implementation must retain every possible
+  incomplete match, and a fixed-size buffer alone is not safe for unbounded
+  variable-length patterns.
+</Note>
 
 ## Configuring Per Request Custom Metadata
 
@@ -128580,6 +129064,8 @@ __PROVIDER_IMPORT__;
 import type { LanguageModelV4Middleware } from '@ai-sdk/provider';
 
 export const yourLogMiddleware: LanguageModelV4Middleware = {
+  specificationVersion: 'v4',
+
   wrapGenerate: async ({ doGenerate, params }) => {
     console.log('METADATA', params?.providerMetadata?.yourLogMiddleware);
     const result = await doGenerate();
@@ -130319,7 +130805,7 @@ const result = await generateText({
 });
 ```
 
-In this example, telemetry integrations receive `runtimeContext` as `{ requestId: 'req_abc' }`. Properties set to `false` or omitted are excluded. If `telemetry.includeRuntimeContext` is omitted, no runtime context properties are included. `telemetry.includeRuntimeContext` is supported by `generateText`, `streamText`, `ToolLoopAgent`, `embed`, `embedMany`, and `rerank`.
+In this example, telemetry integrations receive `runtimeContext` as `{ requestId: 'req_abc' }`. Properties set to `false` or omitted are excluded. If `telemetry.includeRuntimeContext` is omitted, no runtime context properties are included. `telemetry.includeRuntimeContext` is supported by `generateText`, `streamText`, `ToolLoopAgent`, `embed`, `embedMany`, `rerank`, and `experimental_evaluate`.
 
 <Note>
   `telemetry.includeRuntimeContext` only filters telemetry integrations,
@@ -130577,6 +131063,29 @@ export function myIntegration(): Telemetry {
       description: 'Called when an individual reranking model call completes.',
     },
     {
+      name: 'experimental_onEvaluateStart',
+      type: '(event: Experimental_EvaluateStartEvent) => void | PromiseLike<void>',
+      description: 'Called when an experimental evaluation operation begins.',
+    },
+    {
+      name: 'experimental_onEvaluationModelCallStart',
+      type: '(event: Experimental_EvaluationModelCallStartEvent) => void | PromiseLike<void>',
+      description:
+        'Called when the logical evaluation model call begins. The call includes any provider retries.',
+    },
+    {
+      name: 'experimental_onEvaluationModelCallEnd',
+      type: '(event: Experimental_EvaluationModelCallEndEvent) => void | PromiseLike<void>',
+      description:
+        'Called when the logical evaluation model call, including any retries, completes.',
+    },
+    {
+      name: 'experimental_onEvaluateEnd',
+      type: '(event: Experimental_EvaluateEndEvent) => void | PromiseLike<void>',
+      description:
+        'Called when an experimental evaluation operation completes.',
+    },
+    {
       name: 'onEnd',
       type: '(event: GenerateTextEndEvent) => void | PromiseLike<void>',
       description:
@@ -130590,6 +131099,9 @@ export function myIntegration(): Telemetry {
     },
   ]}
 />
+
+Experimental evaluation events use the four `experimental_*` callbacks above.
+They are not included in the stable `onStart` and `onEnd` event unions.
 
 The event types for each method are the same as the corresponding [lifecycle callbacks](/docs/ai-sdk-core/lifecycle-callbacks). See the lifecycle callbacks documentation for the full property reference of each event.
 
@@ -130717,6 +131229,31 @@ For `rerank`, the integration records spans with `CLIENT` kind:
   - `gen_ai.provider.name`: the provider
   - `gen_ai.request.model`: the model ID
 
+#### experimental_evaluate
+
+For `experimental_evaluate`, the integration records two spans with `CLIENT`
+kind: an **`evaluate {modelId}`** root span for the whole operation and one
+**`evaluate {modelId}`** child span for evaluation model work, including
+retries. Both include the provider and requested model with
+`gen_ai.operation.name: "evaluate"`. Token
+usage is recorded on the child span. When evaluation attributes are enabled,
+answers are recorded on both spans so the operation span contains its output.
+
+`evaluate` is an AI SDK-defined custom operation name, not a well-known
+OpenTelemetry GenAI operation. OpenTelemetry permits custom operation names
+when no well-known value describes the operation.
+
+OpenTelemetry's `gen_ai.evaluation.result` event describes the result of
+evaluating a GenAI output for quality or other characteristics. In contrast,
+`experimental_evaluate` can evaluate arbitrary JSON state for classification,
+routing, scoring, and similar tasks. The integration therefore does not emit a
+`gen_ai.evaluation.result` event.
+
+Evaluation state, questions, and answers also do not have applicable GenAI
+semantic-convention attributes. Enable the `experimental_evaluation`
+supplemental option to record them under AI SDK-specific
+`ai.evaluation.*` attributes.
+
 #### GenAI span details
 
 ##### GenAI message format
@@ -130772,10 +131309,10 @@ registerTelemetry(
 
 The callback runs when each span is created and receives:
 
-- `spanType`: the type of span being created (`operation`, `step`, `languageModel`, `tool`, `embedding`, or `reranking`).
+- `spanType`: the type of span being created (`operation`, `step`, `languageModel`, `tool`, `embedding`, `reranking`, or `experimental_evaluation`).
 - `operationId`: the AI SDK operation ID for the current call, such as `ai.generateText` or `ai.streamText`.
 - `callId`: the unique ID for the current AI SDK call.
-- `runtimeContext`: the telemetry-filtered runtime context for text generation, embedding, and reranking spans. Text generation spans also reflect updates from `prepareStep`.
+- `runtimeContext`: the telemetry-filtered runtime context for text generation, embedding, reranking, and evaluation spans. Text generation spans also reflect updates from `prepareStep`.
 
 Custom attributes are merged with AI SDK attributes on the span. AI SDK-owned
 attributes take precedence when a custom attribute uses the same key.
@@ -130835,6 +131372,7 @@ registerTelemetry(
     providerMetadata: true,
     embedding: true,
     reranking: true,
+    experimental_evaluation: true,
     runtimeContext: true,
     headers: true,
     toolChoice: true,
@@ -130849,6 +131387,7 @@ The available options are:
 - `providerMetadata`: `ai.response.providerMetadata` on operation, step, and model-call spans.
 - `embedding`: embedding inputs and outputs.
 - `reranking`: rerank input documents and ranking output.
+- `experimental_evaluation`: experimental evaluation state, questions, and answers.
 - `runtimeContext`: `ai.settings.context.*`.
 - `headers`: `ai.request.headers.*`.
 - `toolChoice`: `ai.prompt.toolChoice`.
@@ -131251,13 +131790,13 @@ DevTools stores all AI interactions locally in plain text files, including:
 
 ---
 title: Lifecycle Callbacks
-description: Observe AI SDK lifecycle events in generateText, streamText, embed, embedMany, and rerank calls
+description: Observe AI SDK lifecycle events in generateText, streamText, embed, embedMany, rerank, and experimental_evaluate calls
 ---
 
 # Lifecycle Callbacks
 
 Event callbacks let you run your own code at important points in an AI SDK call.
-You can attach them directly to `generateText`, `streamText`, `embed`, `embedMany`, and `rerank` calls to observe what happened, record usage, debug multi-step generations, and monitor tool execution.
+You can attach them directly to `generateText`, `streamText`, `embed`, `embedMany`, `rerank`, and `experimental_evaluate` calls to observe what happened, record usage, debug multi-step generations, and monitor tool execution.
 
 They are especially useful when you want application-specific logic close to the call site:
 
@@ -131696,6 +132235,25 @@ const result = await generateText({
       type: '(event: RerankEndEvent) => void | Promise<void>',
       description:
         'Called when the reranking operation completes, after the reranking model returns.',
+    },
+  ]}
+/>
+
+### `experimental_evaluate`
+
+<PropertiesTable
+  content={[
+    {
+      name: 'onStart',
+      type: '(event: Experimental_EvaluateStartEvent) => void | Promise<void>',
+      description:
+        'Called when the evaluation operation begins, before the evaluation model is called.',
+    },
+    {
+      name: 'onEnd',
+      type: '(event: Experimental_EvaluateEndEvent) => void | Promise<void>',
+      description:
+        'Called when the evaluation operation completes successfully.',
     },
   ]}
 />
@@ -132403,6 +132961,109 @@ For `embed`, `value` is a single string. For `embedMany`, `value` is an array of
   ]}
 />
 
+### Evaluation Events
+
+Evaluation callbacks are experimental. Their exported types are
+`Experimental_EvaluateStartEvent` and `Experimental_EvaluateEndEvent`.
+
+#### onStart
+
+<PropertiesTable
+  content={[
+    {
+      name: 'callId',
+      type: 'string',
+      description: 'Unique identifier for this evaluation call.',
+    },
+    {
+      name: 'operationId',
+      type: "'ai.evaluate'",
+      description: 'Evaluation operation identifier.',
+    },
+    {
+      name: 'runtimeContext',
+      type: 'RUNTIME_CONTEXT',
+      description: 'Full user-defined runtime context.',
+    },
+    {
+      name: 'provider',
+      type: 'string',
+      description: 'Provider identifier for the evaluation model.',
+    },
+    {
+      name: 'modelId',
+      type: 'string',
+      description: 'Evaluation model identifier.',
+    },
+    {
+      name: 'state',
+      type: 'string | object | array',
+      description: 'Shared state being evaluated.',
+    },
+    {
+      name: 'questions',
+      type: 'Readonly<Record<string, Experimental_EvaluationQuestion>>',
+      description: 'Questions being evaluated against the shared state.',
+    },
+    {
+      name: 'maxRetries',
+      type: 'number',
+      description: 'Maximum number of retries for the model call.',
+    },
+    {
+      name: 'headers',
+      type: 'Record<string, string> | undefined',
+      description: 'Additional HTTP headers sent with the request.',
+    },
+    {
+      name: 'providerOptions',
+      type: 'ProviderOptions',
+      description: 'Provider-specific options.',
+    },
+  ]}
+/>
+
+#### onEnd
+
+Includes every `onStart` field plus:
+
+<PropertiesTable
+  content={[
+    {
+      name: 'answers',
+      type: 'Record<string, Experimental_EvaluationAnswer>',
+      description: 'Exactly one typed answer per question ID.',
+    },
+    {
+      name: 'usage',
+      type: '{ inputTokens: number | undefined; outputTokens: number | undefined; totalTokens: number | undefined }',
+      description: 'Token usage for the evaluation operation.',
+    },
+    {
+      name: 'warnings',
+      type: 'Array<Warning>',
+      description: 'Warnings from the evaluation model.',
+    },
+    {
+      name: 'rounding',
+      type: '{ probabilityDecimals?: number; scoreDecimals?: number } | undefined',
+      description:
+        'Provider-declared decimal precision for probabilities and scores.',
+    },
+    {
+      name: 'providerMetadata',
+      type: 'ProviderMetadata | undefined',
+      description: 'Optional provider-specific metadata.',
+    },
+    {
+      name: 'response',
+      type: '{ id?: string; timestamp: Date; modelId: string; headers?: Record<string, string>; body?: unknown }',
+      description:
+        'Response metadata including the resolved model and timestamp.',
+    },
+  ]}
+/>
+
 ---
 title: Overview
 description: Learn what AI SDK harnesses are and how they fit into the AI SDK.
@@ -132884,6 +133545,8 @@ When you only have raw continuation state from `suspendTurn()`, resume with
 const session = await agent.createSession({
   sessionId: chatId,
   continueFrom: continuationState,
+  // Rebind this when the suspended turn used host-only tool context:
+  toolsContext,
 });
 
 const result = await agent.continueStream({ session });
@@ -132891,6 +133554,11 @@ const result = await agent.continueStream({ session });
 
 Use `continueStream()` for incremental output, or `continueGenerate()` to drain
 the continued turn and return a `GenerateTextResult`.
+
+`toolsContext` is intentionally not stored in continuation state because it can
+contain credentials or non-serializable host objects. When a suspended turn
+used static or `prepareCall`-derived tool context, pass the same per-tool map to
+`createSession` to rebind it in the process that continues the turn.
 
 ## Stop After a Harness Step
 
@@ -133298,6 +133966,52 @@ const agent = new HarnessAgent({
 
 When the harness calls `weather`, `HarnessAgent` executes the tool in your host
 process, then submits the result back to the harness runtime.
+
+Host-executed tools can declare a `contextSchema` and receive turn-scoped
+context through `toolsContext`:
+
+```ts
+const lookupAccount = tool({
+  inputSchema: z.object({}),
+  contextSchema: z.object({ userId: z.string() }),
+  execute: async (_, { context }) => {
+    return loadAccount(context.userId);
+  },
+});
+
+const agent = new HarnessAgent({
+  harness: claudeCode,
+  tools: { lookupAccount },
+  toolsContext: {
+    lookupAccount: { userId: 'user-123' },
+  },
+});
+```
+
+Use `prepareCall` to replace `toolsContext` when the value depends on custom
+call options. The type of `toolsContext` follows the tool set: it is rejected
+when no tool declares a context schema, required when a tool requires a
+context object, and optional when every context object is optional.
+`HarnessAgent` validates each entry against the tool's `contextSchema` before
+execution and exposes the configured map in step results and lifecycle
+callbacks.
+
+Tool context remains host-only and is not serialized into suspended-turn state.
+When recreating a session for an unfinished turn, rebind it explicitly:
+
+```ts
+const session = await agent.createSession({
+  sessionId,
+  continueFrom,
+  toolsContext: {
+    lookupAccount: { userId: 'user-123' },
+  },
+});
+```
+
+Missing or invalid context fails validation before the host tool executes. The
+validation error returned to the harness runtime is intentionally generic so
+host-only context values and schema details are not disclosed to the model.
 
 ## Client-Side Tools
 
@@ -134852,7 +135566,7 @@ It's worth noting that you can abort the processing by throwing an error in the 
 
 ### Custom headers, body, and credentials
 
-By default, the `useChat` hook sends a HTTP POST request to the `/api/chat` endpoint with the message list as the request body. You can customize the request in two ways:
+By default, the `useChat` hook sends an HTTP POST request to the `/api/chat` endpoint with the message list as the request body. You can customize the request in two ways:
 
 #### Hook-Level Configuration (Applied to all requests)
 
@@ -138302,7 +139016,7 @@ const { ... } = useCompletion({
 
 ## Configure Request Options
 
-By default, the `useCompletion` hook sends a HTTP POST request to the `/api/completion` endpoint with the prompt as part of the request body. You can customize the request by passing additional options to the `useCompletion` hook:
+By default, the `useCompletion` hook sends an HTTP POST request to the `/api/completion` endpoint with the prompt as part of the request body. You can customize the request by passing additional options to the `useCompletion` hook:
 
 ```tsx
 const { messages, input, handleInputChange, handleSubmit } = useCompletion({
@@ -143033,7 +143747,7 @@ the failure without inspecting the Gateway's serialized error payload.
 </Note>
 
 AI Gateway supports durable text batches through `experimental_startBatch`,
-`experimental_getBatchStatus`, and `experimental_getBatchResults`. See
+`experimental_getBatchStatus`, `experimental_getBatchResults`, and `experimental_cancelBatch`. See
 [Batch](/docs/ai-sdk-core/batch) for the provider-agnostic workflow,
 and the [AI Gateway batch processing guide](https://vercel.com/docs/ai-gateway/models-and-providers/batch-processing)
 for supported models, limits, and Gateway-specific behavior.
@@ -143226,6 +143940,19 @@ AI Gateway expects a 2xx response within 10 seconds and retries failed deliverie
 Each request specifies its `type` and `model`. AI Gateway currently requires
 every text request in a batch to use the same model and throws before submission
 when the models differ.
+
+### Cancelling a batch
+
+Pass the batch reference returned by `experimental_startBatch` to request cancellation:
+
+```ts
+import { gateway } from '@ai-sdk/gateway';
+import { experimental_cancelBatch as cancelBatch } from 'ai';
+
+await cancelBatch({ provider: gateway, batch });
+```
+
+Cancellation is asynchronous. Continue checking `experimental_getBatchStatus` until the batch is terminal, then read `experimental_getBatchResults` for any partial results. A batch may finish before cancellation takes effect, and successful requests remain billable. Cancellation returns acknowledgement metadata, not confirmation that provider execution has stopped.
 
 ## Reranking Models
 
@@ -146100,9 +146827,9 @@ The following provider options are available:
   Reasoning effort for reasoning models. Defaults to `medium`. If you use `providerOptions` to set the `reasoningEffort` option, this model setting will be ignored.
 
 <Note>
-  Supported reasoning efforts vary by model. GPT-5.6 supports `'none'`, `'low'`,
-  `'medium'`, `'high'`, `'xhigh'`, and `'max'`. GPT-6 and later models support
-  `'low'`, `'medium'`, `'high'`, `'xhigh'`, and `'max'`.
+  Supported reasoning efforts vary by model. GPT-5.6 and GPT-6 support `'none'`,
+  `'low'`, `'medium'`, `'high'`, `'xhigh'`, and `'max'`. GPT-6 Astra does not
+  support `'none'`.
 </Note>
 
 <Note type="warning">
@@ -148719,6 +149446,8 @@ The following optional provider options are available for OpenAI completion mode
 | Model                 | Image Input | Audio Input | Object Generation | Tool Usage |
 | --------------------- | ----------- | ----------- | ----------------- | ---------- |
 | `gpt-6-astra`         | <Check />   | <Cross />   | <Check />         | <Check />  |
+| `gpt-6-luna`          | <Check />   | <Cross />   | <Check />         | <Check />  |
+| `gpt-6-sol`           | <Check />   | <Cross />   | <Check />         | <Check />  |
 | `gpt-5.6`             | <Check />   | <Cross />   | <Check />         | <Check />  |
 | `gpt-5.6-luna`        | <Check />   | <Cross />   | <Check />         | <Check />  |
 | `gpt-5.6-sol`         | <Check />   | <Cross />   | <Check />         | <Check />  |
@@ -150733,16 +151462,26 @@ const result = streamText({
 });
 ```
 
-For `claude-fable-5-1`, the default `"auto"` mode uses native structured
-outputs through `output_config.format`. Fable 5.1 rejects forced tool use, so
-do not use `"jsonTool"` or a required or named tool choice to implement
-structured output with this model.
+For `claude-opus-5-5` and `claude-fable-5-1`, the default `"auto"` mode uses
+native structured outputs through `output_config.format`. These models reject
+forced tool use, so the `"jsonTool"` mode cannot be used with them. If you
+request `"jsonTool"` anyway, the provider falls back to `"outputFormat"` and
+emits a warning. Likewise, a `required` or named `toolChoice` is downgraded to
+`auto` with a warning; instruct the model to use the tool in your prompt and
+verify that a tool call was made.
 
 ### Effort
 
-Anthropic introduced an `effort` option with `claude-opus-4-5` that affects thinking, text responses, and function calls. Effort defaults to `high` and you can set it to `medium` or `low` to save tokens and to lower time-to-last-token latency (TTLT). `claude-opus-4-7`, `claude-opus-4-8`, `claude-opus-5`, `claude-fable-5`, `claude-fable-5-1`, and `claude-sonnet-5` additionally support `xhigh` for maximum reasoning effort.
+Anthropic introduced an `effort` option with `claude-opus-4-5` that affects thinking, text responses, and function calls. Effort defaults to `high` and you can set it to `medium` or `low` to save tokens and to lower time-to-last-token latency (TTLT). `claude-opus-4-7`, `claude-opus-4-8`, `claude-opus-5`, `claude-opus-5-5`, `claude-fable-5`, `claude-fable-5-1`, and `claude-sonnet-5` additionally support `xhigh` for maximum reasoning effort.
 
 On `claude-opus-5`, thinking can only be disabled at effort levels up to and including `high`. When you combine `thinking: { type: 'disabled' }` with `effort: 'xhigh'` or `effort: 'max'`, the AI SDK lowers the effort to `high` and emits a warning instead of sending a request that the API would reject.
+
+On `claude-opus-5-5`, thinking is always adaptive and cannot be disabled, so
+`effort` is the main control for latency and cost. The API default effort for
+`claude-opus-5-5` is `medium`. Start there and test other levels rather than
+carrying over the setting you used on `claude-opus-5`. Set `maxOutputTokens`
+with room for thinking as well as the reply; thinking counts toward the limit
+even when its content is not returned.
 
 ```ts highlight="8-10"
 import { anthropic, AnthropicLanguageModelOptions } from '@ai-sdk/anthropic';
@@ -150921,6 +151660,57 @@ const servedByFallback = iterations?.some(
 console.log('Served by fallback:', servedByFallback);
 ```
 
+### Dangerous Tool Use Safeguard
+
+The `safeguards` option asks the API to run additional server-side checks as part of the request. The `dangerous_tool_use` safeguard classifies every `tool_use` block in the response for dangerous actions, such as destructive shell commands or data exfiltration, and returns a verdict per tool call. This is the check that Claude Code's auto mode relies on. The `dangerous-tool-use-2026-09-03` beta header is added for you.
+
+```ts highlight="9-16"
+import { anthropic, AnthropicLanguageModelOptions } from '@ai-sdk/anthropic';
+import { generateText, tool } from 'ai';
+import { z } from 'zod';
+
+const result = await generateText({
+  model: anthropic('claude-sonnet-4-5'),
+  prompt: 'Use the bash tool to run: echo hello',
+  tools: { bash: tool({ inputSchema: z.object({ command: z.string() }) }) },
+  providerOptions: {
+    anthropic: {
+      safeguards: [
+        {
+          type: 'dangerous_tool_use',
+          classifierContext: { v: 1, permission_mode: 'auto' },
+        },
+      ],
+    } satisfies AnthropicLanguageModelOptions,
+  },
+});
+
+console.log(result.providerMetadata?.anthropic?.safeguardResults);
+```
+
+The verdicts are available on `providerMetadata.anthropic.safeguardResults`, one entry per requested safeguard, in the API's wire shape:
+
+```json
+[
+  {
+    "type": "dangerous_tool_use",
+    "status": {
+      "type": "available",
+      "tool_uses": {
+        "toolu_01Ti4QpUfhLV6QqCTFVY8C7w": {
+          "type": "evaluated",
+          "outcome": "not_flagged"
+        }
+      }
+    }
+  }
+]
+```
+
+`status.type` is `available` when the classifier ran; `unsupported` means the API key is not enabled for the beta. Inside `status.tool_uses`, each tool call id maps to `evaluated` (with an `outcome` of `not_flagged` or `flagged`, the latter with an `explanation` such as `[Data Exfiltration]`), `skipped`, or `unavailable` (a transient classifier failure). When streaming, the verdicts arrive on the final `message_delta` event and are exposed on the `finish` part's provider metadata.
+
+Anthropic's platform reference does not document the beta yet; the feature is described from the client side in the Claude Code [auto mode classifier](https://code.claude.com/docs/en/auto-mode-classifier-billing) and [gateway compatibility](https://code.claude.com/docs/en/llm-gateway-protocol#feature-pass-through) guides.
+
 ### Reasoning
 
 Anthropic models support extended thinking, where Claude shows its reasoning process before providing a final answer.
@@ -150964,6 +151754,41 @@ const { text } = await generateText({
 });
 ```
 
+##### Adaptive-Only Models
+
+`claude-opus-5-5`, `claude-fable-5`, and `claude-fable-5-1` always run adaptive
+thinking. The API rejects `thinking: { type: 'disabled' }` and budget-based
+`thinking: { type: 'enabled' }` for these models. To keep existing code working,
+the provider:
+
+- removes `thinking: { type: 'disabled' }` and emits a warning,
+- converts `thinking: { type: 'enabled', budgetTokens }` to `{ type: 'adaptive' }` and emits a warning,
+- maps the top-level `reasoning: 'none'` option to `effort: 'low'` and emits a warning.
+
+Use `effort` to control how much these models think. On `claude-opus-5-5`, set
+`effort: 'low'` when time to first token matters, and move to `medium` if
+quality drops:
+
+```ts highlight="6-9"
+const { text } = await generateText({
+  model: anthropic('claude-opus-5-5'),
+  prompt: 'Summarize this ticket in one sentence.',
+  providerOptions: {
+    anthropic: {
+      // thinking stays adaptive; effort controls how much the model thinks
+      effort: 'low',
+    } satisfies AnthropicLanguageModelOptions,
+  },
+});
+```
+
+<Note>
+  Responses from adaptive-only models can begin with a thinking block. Read the
+  response by content type (`text`, `reasoning`, `tool-call`) rather than
+  assuming the first part is text. Under the default `display: 'omitted'`
+  setting, thinking blocks are returned with empty text.
+</Note>
+
 ##### Thinking Display (Opus 4.7+)
 
 Starting with `claude-opus-4-7`, thinking content is omitted from the response by default — thinking blocks are present in the stream but their text is empty. To receive reasoning output, set `display: 'summarized'`:
@@ -150991,8 +151816,10 @@ console.log(text);
 
 ##### Thinking Updates
 
-Use `display: 'updates'` with `claude-fable-5-1` to stream thinking summaries
-between tool calls. The provider adds the required
+Use `display: 'updates'` with `claude-opus-5-5` or `claude-fable-5-1` to stream
+thinking summaries between tool calls. These models return progress notes
+between tool calls as thinking blocks rather than text, so without this setting
+a long tool-calling turn can look silent. The provider adds the required
 `thinking-display-updates-2026-08-18` beta header automatically:
 
 ```ts highlight="12-16"
@@ -151562,10 +152389,73 @@ const computerTool = anthropic.tools.computer_20251124({
 ```
 
 <Note>
-  Use `computer_20251124` for Claude Opus 4.5 which supports the zoom action.
-  Use `computer_20250124` for Claude Sonnet 4.5, Haiku 4.5, Opus 4.1, Sonnet 4,
-  Opus 4, and Sonnet 3.7.
+  Use `computerToolset_20260801` for Claude Opus 5.5 (required), Opus 5, Sonnet
+  5, Fable 5, Fable 5.1, and Opus 4.8. Use `computer_20251124` for Claude Opus
+  4.5 through Opus 4.7, which support the zoom action. Use `computer_20250124`
+  for Claude Sonnet 4.5, Haiku 4.5, Opus 4.1, Sonnet 4, Opus 4, and Sonnet 3.7.
 </Note>
+
+#### Computer Toolset
+
+Newer models use the computer toolset instead of a versioned computer tool.
+`claude-opus-5-5` accepts computer use only through the toolset and rejects the
+older `computer_*` tool types with a 400. The toolset does not require a beta
+header and has no display size parameters: coordinates are always in the pixel
+space of the screenshots you return. Zoom is enabled by default, and Claude can
+return several actions in one turn, each as its own tool call.
+
+The API returns each action as a separate `tool_use` block with
+`toolset_name: 'computer'`. The AI SDK maps every action to the toolset tool and
+passes the action name as `action`, so `execute` receives the same input shape
+as the older computer tools:
+
+```ts
+const computerTool = anthropic.tools.computerToolset_20260801({
+  // optional: turn individual actions on or off
+  configs: {
+    zoom: { enabled: false },
+  },
+
+  execute: async ({ action, coordinate, text, region }) => {
+    switch (action) {
+      case 'screenshot': {
+        return {
+          type: 'image',
+          data: fs.readFileSync('./data/screenshot.png').toString('base64'),
+        };
+      }
+      default: {
+        console.log('Action:', action, coordinate, text, region);
+        return `executed ${action}`;
+      }
+    }
+  },
+
+  toModelOutput({ output }) {
+    return typeof output === 'string'
+      ? [{ type: 'text', text: output }]
+      : [{ type: 'file-data', data: output.data, mediaType: 'image/png' }];
+  },
+});
+```
+
+Parameters:
+
+- `action` ('screenshot' | 'zoom' | 'left_click' | 'right_click' | 'middle_click' | 'double_click' | 'triple_click' | 'left_click_drag' | 'mouse_move' | 'left_mouse_down' | 'left_mouse_up' | 'cursor_position' | 'scroll' | 'type' | 'key' | 'hold_key' | 'wait'): The member tool that Claude invoked.
+- `coordinate` (number[], optional): The (x, y) pixel coordinates for click, move, and scroll actions.
+- `start_coordinate` (number[], optional): Where a `left_click_drag` starts.
+- `region` (number[], optional): `[x1, y1, x2, y2]` for the `zoom` action.
+- `text` (string, optional): Text to type, the key combination for `key` and `hold_key`, or modifier keys to hold during click and scroll actions.
+- `repeat` (number, optional): How many times to press the key for `key`.
+- `duration` (number, optional): Seconds for `hold_key` and `wait`.
+- `scroll_direction` ('up' | 'down' | 'left' | 'right', optional) and `scroll_amount` (number, optional): For the `scroll` action.
+- `configs` (object, optional): Per-action settings keyed by action name. Each entry accepts `enabled` (default `true`) and `deferLoading` (default `false`, for tool search).
+
+Tool calls and results of the toolset are serialized with `toolset_name` when
+you pass the message history back. Keep the toolset tool in `tools` on
+follow-up requests, or the provider falls back to the `toolsetName` provider
+metadata on the tool calls of previous responses. Do not declare the toolset
+together with an older `computer_*` tool.
 
 Parameters:
 
@@ -151865,11 +152755,11 @@ This sends `tool_reference` blocks to Anthropic, which loads the corresponding d
 
 ### Mid-Conversation System Controls
 
-With `claude-fable-5-1`, a mid-conversation system message can be cleared
-before the next user message with `clearAt: 'next_user_message'`, or set the
-effort for the next turn. The provider adds the required
+With `claude-opus-5-5` and `claude-fable-5-1`, a mid-conversation system message
+can be cleared before the next user message with `clearAt: 'next_user_message'`,
+or set the effort for the next turn without invalidating the prompt cache. The provider adds the required
 `mid-conversation-system-clear-at-2026-08-21` and
-`mid-conversation-effort-2026-08-01` beta headers automatically.
+`mid-conversation-output-config-2026-07-01` beta headers automatically.
 
 ```ts highlight="17-25"
 import { anthropic } from '@ai-sdk/anthropic';
@@ -152408,6 +153298,7 @@ and the `mediaType` should be set to `'application/pdf'`.
 
 | Model               | Image Input | Object Generation | Tool Usage | Computer Use | Web Search | Tool Search | Compaction |
 | ------------------- | ----------- | ----------------- | ---------- | ------------ | ---------- | ----------- | ---------- |
+| `claude-opus-5-5`   | <Check />   | <Check />         | <Check />  | <Check />    | <Check />  | <Check />   | <Check />  |
 | `claude-opus-5`     | <Check />   | <Check />         | <Check />  | <Check />    | <Check />  | <Check />   | <Check />  |
 | `claude-sonnet-5`   | <Check />   | <Check />         | <Check />  | <Check />    | <Check />  | <Check />   | <Check />  |
 | `claude-fable-5-1`  | <Check />   | <Check />         | <Check />  | <Check />    | <Check />  | <Check />   | <Check />  |
@@ -170970,11 +171861,12 @@ Settings:
 - `port`: bridge port override.
 - `startupTimeoutMs`: maximum time to wait for the bridge to start.
 - `reconnect`: reconnect timing after an established bridge WebSocket
-  connection drops. `maxElapsedMs` controls the total retry window and defaults
-  to 30 seconds. `initialDelayMs` defaults to 50 milliseconds, and
-  `maxDelayMs` defaults to 2 seconds. These retries use exponential backoff and
-  are separate from `startupTimeoutMs`. They cannot recover when the sandbox,
-  bridge process, or port endpoint is permanently unavailable.
+  connection drops. `maxElapsedMs` controls the total retry window, including
+  connection establishment and backoff delays, and defaults to 30 seconds.
+  `initialDelayMs` defaults to 50 milliseconds, and `maxDelayMs` defaults to
+  2 seconds. These retries use exponential backoff and are separate from
+  `startupTimeoutMs`. They cannot recover when the sandbox, bridge process, or
+  bridge endpoint is permanently unavailable.
 - `mintBridgeToken`: synchronous function that receives the sandbox id and
   returns the bridge authentication token. By default, the adapter generates a
   random 32-byte token. Custom implementations must return a suitably secret
@@ -171178,11 +172070,12 @@ Settings:
 - `port`: bridge port override.
 - `startupTimeoutMs`: maximum time to wait for the bridge to start.
 - `reconnect`: reconnect timing after an established bridge WebSocket
-  connection drops. `maxElapsedMs` controls the total retry window and defaults
-  to 30 seconds. `initialDelayMs` defaults to 50 milliseconds, and
-  `maxDelayMs` defaults to 2 seconds. These retries use exponential backoff and
-  are separate from `startupTimeoutMs`. They cannot recover when the sandbox,
-  bridge process, or port endpoint is permanently unavailable.
+  connection drops. `maxElapsedMs` controls the total retry window, including
+  connection establishment and backoff delays, and defaults to 30 seconds.
+  `initialDelayMs` defaults to 50 milliseconds, and `maxDelayMs` defaults to
+  2 seconds. These retries use exponential backoff and are separate from
+  `startupTimeoutMs`. They cannot recover when the sandbox, bridge process, or
+  bridge endpoint is permanently unavailable.
 - `mintBridgeToken`: synchronous function that receives the sandbox id and
   returns the bridge authentication token. By default, the adapter generates a
   random 32-byte token. Custom implementations must return a suitably secret
@@ -171371,10 +172264,15 @@ Settings:
 
 - `auth`: authentication mode (`auto`, `openai`, `anthropic`, `custom`, or
   `ai-gateway`) or an isolated authentication environment.
+- `credentials`: application-owned Pi credential storage. This replaces the
+  file-backed `auth.json` store and supports persistent database-backed
+  credentials.
 - `extensionFactories`: trusted inline Pi extension factories that run in the
   host Node.js process.
 - `mcpServers`: MCP server definitions keyed by server name.
 - `providers`: explicit Pi provider configurations for custom models.
+- `reattachInProcess`: whether a suspended turn can reuse its live Pi session
+  in the current process. Defaults to `true`.
 - `thinkingLevel`: Pi thinking level (`off`, `minimal`, `low`, `medium`,
   `high`, `xhigh`, or `max`).
 
@@ -171404,6 +172302,26 @@ environment, so only pass factories you trust. This setting enables only the
 factories you explicitly provide. Filesystem extension discovery remains
 disabled, including user, project, and settings-based extensions. Themes and
 prompt templates also remain disabled.
+
+## Session Reattachment
+
+By default, Pi keeps a suspended turn alive for an efficient continuation in
+the same process when the incoming request has compatible settings and runtime
+resources. Changed request-scoped settings or sandbox handles cause a cold
+restore from persisted lifecycle state.
+
+For stateless or multi-replica applications, disable in-process reattachment so
+every continuation restores the persisted lifecycle state with the current
+request's settings:
+
+```ts
+const harness = createPi({
+  reattachInProcess: false,
+});
+```
+
+An incoming completed `resume-session` state always takes precedence over an
+older live suspended turn in the process.
 
 ## Authentication
 
@@ -171440,6 +172358,25 @@ const harness = createPi({
 
 The supplied record replaces the host environment for authentication
 discovery. Pi parses provider API keys and base URLs from that record.
+
+For credentials managed outside environment variables or files, inject an
+application-owned credential store. Pi performs credential reads, refreshes,
+and updates through this interface:
+
+```ts
+import { createPi, type PiCredentialStore } from '@ai-sdk/harness-pi';
+
+declare const credentials: PiCredentialStore;
+
+const harness = createPi({
+  credentials,
+  reattachInProcess: false,
+});
+```
+
+`credentials` replaces Pi's `auth.json` storage. In request-scoped or
+multi-replica deployments, pair it with `reattachInProcess: false` so each
+continuation constructs a model runtime from the current request.
 
 With `custom`, standard providers use environment variables such as
 `OPENAI_API_KEY`, `OPENAI_BASE_URL`, `ANTHROPIC_API_KEY`, and
@@ -171631,11 +172568,12 @@ Settings:
 - `port`: bridge port override.
 - `startupTimeoutMs`: maximum time to wait for the bridge to start.
 - `reconnect`: reconnect timing after an established bridge WebSocket
-  connection drops. `maxElapsedMs` controls the total retry window and defaults
-  to 30 seconds. `initialDelayMs` defaults to 50 milliseconds, and
-  `maxDelayMs` defaults to 2 seconds. These retries use exponential backoff and
-  are separate from `startupTimeoutMs`. They cannot recover when the sandbox,
-  bridge process, or port endpoint is permanently unavailable.
+  connection drops. `maxElapsedMs` controls the total retry window, including
+  connection establishment and backoff delays, and defaults to 30 seconds.
+  `initialDelayMs` defaults to 50 milliseconds, and `maxDelayMs` defaults to
+  2 seconds. These retries use exponential backoff and are separate from
+  `startupTimeoutMs`. They cannot recover when the sandbox, bridge process, or
+  bridge endpoint is permanently unavailable.
 - `mintBridgeToken`: synchronous function that receives the sandbox id and
   returns the bridge authentication token. By default, the adapter generates a
   random 32-byte token. Custom implementations must return a suitably secret
@@ -171846,11 +172784,12 @@ Settings:
   Deep Agents default applies.
 - `startupTimeoutMs`: maximum time to wait for the bridge to start.
 - `reconnect`: reconnect timing after an established bridge WebSocket
-  connection drops. `maxElapsedMs` controls the total retry window and defaults
-  to 30 seconds. `initialDelayMs` defaults to 50 milliseconds, and
-  `maxDelayMs` defaults to 2 seconds. These retries use exponential backoff and
-  are separate from `startupTimeoutMs`. They cannot recover when the sandbox,
-  bridge process, or port endpoint is permanently unavailable.
+  connection drops. `maxElapsedMs` controls the total retry window, including
+  connection establishment and backoff delays, and defaults to 30 seconds.
+  `initialDelayMs` defaults to 50 milliseconds, and `maxDelayMs` defaults to
+  2 seconds. These retries use exponential backoff and are separate from
+  `startupTimeoutMs`. They cannot recover when the sandbox, bridge process, or
+  bridge endpoint is permanently unavailable.
 - `mintBridgeToken`: synchronous function that receives the sandbox id and
   returns the bridge authentication token. By default, the adapter generates a
   random 32-byte token. Custom implementations must return a suitably secret
@@ -172101,11 +173040,12 @@ try {
 - `port`: exposed bridge port override.
 - `startupTimeoutMs`: bridge startup timeout. The default is 120 seconds.
 - `reconnect`: reconnect timing after an established bridge WebSocket
-  connection drops. `maxElapsedMs` controls the total retry window and defaults
-  to 30 seconds. `initialDelayMs` defaults to 50 milliseconds, and
-  `maxDelayMs` defaults to 2 seconds. These retries use exponential backoff and
-  are separate from `startupTimeoutMs`. They cannot recover when the sandbox,
-  bridge process, or port endpoint is permanently unavailable.
+  connection drops. `maxElapsedMs` controls the total retry window, including
+  connection establishment and backoff delays, and defaults to 30 seconds.
+  `initialDelayMs` defaults to 50 milliseconds, and `maxDelayMs` defaults to
+  2 seconds. These retries use exponential backoff and are separate from
+  `startupTimeoutMs`. They cannot recover when the sandbox, bridge process, or
+  bridge endpoint is permanently unavailable.
 - `mintBridgeToken`: synchronous function that receives the sandbox id and
   returns the bridge authentication token. By default, the adapter generates a
   random 32-byte token. Custom implementations must return a suitably secret
@@ -172775,10 +173715,13 @@ Settings:
 - `mcpServers`: MCP server definitions keyed by server name.
 - `port`: ACP bridge port override.
 - `startupTimeoutMs`: maximum time to wait for the ACP bridge to start.
-- `reconnect`: optional timing configuration for reconnecting after an
-  established ACP bridge connection drops. Set `maxElapsedMs` for the total
-  reconnect window and `initialDelayMs` and `maxDelayMs` for exponential
-  backoff.
+- `reconnect`: reconnect timing after an established bridge WebSocket
+  connection drops. `maxElapsedMs` controls the total retry window, including
+  connection establishment and backoff delays, and defaults to 30 seconds.
+  `initialDelayMs` defaults to 50 milliseconds, and `maxDelayMs` defaults to
+  2 seconds. These retries use exponential backoff and are separate from
+  `startupTimeoutMs`. They cannot recover when the sandbox, bridge process, or
+  bridge endpoint is permanently unavailable.
 - `mintBridgeToken`: synchronous function that receives the sandbox id and
   returns the ACP bridge authentication token. By default, the adapter generates
   a random 32-byte token. Custom implementations must return a suitably secret
@@ -173211,10 +174154,13 @@ Settings:
 - `mcpServers`: MCP server definitions keyed by server name.
 - `port`: ACP bridge port override.
 - `startupTimeoutMs`: maximum time to wait for the ACP bridge to start.
-- `reconnect`: optional timing configuration for reconnecting after an
-  established ACP bridge connection drops. Set `maxElapsedMs` for the total
-  reconnect window and `initialDelayMs` and `maxDelayMs` for exponential
-  backoff.
+- `reconnect`: reconnect timing after an established bridge WebSocket
+  connection drops. `maxElapsedMs` controls the total retry window, including
+  connection establishment and backoff delays, and defaults to 30 seconds.
+  `initialDelayMs` defaults to 50 milliseconds, and `maxDelayMs` defaults to
+  2 seconds. These retries use exponential backoff and are separate from
+  `startupTimeoutMs`. They cannot recover when the sandbox, bridge process, or
+  bridge endpoint is permanently unavailable.
 - `mintBridgeToken`: synchronous function that receives the sandbox id and
   returns the ACP bridge authentication token. By default, the adapter generates
   a random 32-byte token. Custom implementations must return a suitably secret
@@ -173422,10 +174368,13 @@ Settings:
 - `portEndpoint`: host endpoint for the ACP bridge when the sandbox session
   cannot expose ports directly.
 - `startupTimeoutMs`: maximum time to wait for the ACP bridge to start.
-- `reconnect`: optional timing configuration for reconnecting after an
-  established ACP bridge connection drops. Set `maxElapsedMs` for the total
-  reconnect window and `initialDelayMs` and `maxDelayMs` for exponential
-  backoff.
+- `reconnect`: reconnect timing after an established bridge WebSocket
+  connection drops. `maxElapsedMs` controls the total retry window, including
+  connection establishment and backoff delays, and defaults to 30 seconds.
+  `initialDelayMs` defaults to 50 milliseconds, and `maxDelayMs` defaults to
+  2 seconds. These retries use exponential backoff and are separate from
+  `startupTimeoutMs`. They cannot recover when the sandbox, bridge process, or
+  bridge endpoint is permanently unavailable.
 - `mintBridgeToken`: synchronous function that receives the sandbox id and
   returns the ACP bridge authentication token. By default, the adapter generates
   a random 32-byte token.
@@ -173652,10 +174601,13 @@ Settings:
 - `portEndpoint`: host endpoint for the ACP bridge when the sandbox session
   cannot expose ports directly.
 - `startupTimeoutMs`: maximum time to wait for the ACP bridge to start.
-- `reconnect`: optional timing configuration for reconnecting after an
-  established ACP bridge connection drops. Set `maxElapsedMs` for the total
-  reconnect window and `initialDelayMs` and `maxDelayMs` for exponential
-  backoff.
+- `reconnect`: reconnect timing after an established bridge WebSocket
+  connection drops. `maxElapsedMs` controls the total retry window, including
+  connection establishment and backoff delays, and defaults to 30 seconds.
+  `initialDelayMs` defaults to 50 milliseconds, and `maxDelayMs` defaults to
+  2 seconds. These retries use exponential backoff and are separate from
+  `startupTimeoutMs`. They cannot recover when the sandbox, bridge process, or
+  bridge endpoint is permanently unavailable.
 - `mintBridgeToken`: synchronous function that receives the sandbox id and
   returns the ACP bridge authentication token. By default, the adapter generates
   a random 32-byte token. Custom implementations must return a suitably secret

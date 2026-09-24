@@ -8,7 +8,9 @@ path: docs/help-center/product/dubbing/what-is-the-difference-between-a-track-cl
 
 # What is the difference between a track clone and a clip clone in the Dubbing Studio?
 
-Dubbing Studio is in maintenance mode and receives critical bug fixes only.
+> **Note**
+>
+> Dubbing Studio is in maintenance mode and receives critical bug fixes only.
 
 A track clone refers to a voice clone that is derived from the entire track in a dubbing project. This means that the voice clone will be made from a combination of all of the clips on that track. This is the default behavior and is good for creating voice clones that have a bit of the characteristics of all the clips combined and usually give the AI enough data to create a proper clone. However, if the voice changes quite drastically throughout, it might create a voice that is a bit more unstable.
 

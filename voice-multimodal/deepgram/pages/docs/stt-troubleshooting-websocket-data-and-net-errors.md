@@ -33,7 +33,9 @@ When working with Deepgram's Speech To Text Streaming API, you may encounter Web
 * To close the WebSocket connection from your client, send a [Close Stream](/docs/close-stream) message. The server will then finish processing any remaining data, send a final response and summary metadata, and terminate the connection.
 * After sending a Close message, the endpoint considers the WebSocket connection closed and will close the underlying TCP connection.
 
-Sending an empty byte (e.g., `b''`) will cause unexpected closures. Avoid sending an empty byte accidentally by adding a conditional to check if the length of your audio packet is 0 before sending.
+> **Warning**
+>
+> Sending an empty byte (e.g., `b''`) will cause unexpected closures. Avoid sending an empty byte accidentally by adding a conditional to check if the length of your audio packet is 0 before sending.
 
 ## Using KeepAlive Messages to Prevent Timeouts
 
@@ -49,7 +51,9 @@ If a failure to connect occurs, Deepgram returns custom HTTP headers for debuggi
 * `dg-request-id`: Always present, contains the request ID.
 * `dg-error`: Present on failed upgrades, contains the error message.
 
-Access to these headers will depend on the WebSocket library you are using. For example, browser-based WebSocket libraries like the JavaScript WebSocket library only allow access to HTTP header information for successful WebSocket connections.
+> **Info**
+>
+> Access to these headers will depend on the WebSocket library you are using. For example, browser-based WebSocket libraries like the JavaScript WebSocket library only allow access to HTTP header information for successful WebSocket connections.
 
 ### Debugging Connection Failures
 
@@ -62,7 +66,9 @@ If you're unable to connect the Deepgram API provides custom HTTP headers that c
 
 These code samples demonstrate how to connect to Deepgram’s API using WebSockets, authenticate with your API key, and handle both successful and failed connection attempts by printing relevant request IDs and error messages for troubleshooting.
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 **`Python`**
 

@@ -19,7 +19,9 @@ There are two key latency metrics for streaming, and which one matters depends o
 
 This guide covers how to measure both.
 
-**Batch transcription** processes pre-recorded audio files and returns complete transcripts once processing finishes. For batch, throughput and turnaround time matter more than per-word latency. This guide focuses exclusively on streaming.
+> **Info**
+>
+> **Batch transcription** processes pre-recorded audio files and returns complete transcripts once processing finishes. For batch, throughput and turnaround time matter more than per-word latency. This guide focuses exclusively on streaming.
 
 ## Understanding Latency Components
 
@@ -85,9 +87,13 @@ To calculate total transcript latency:
 
 This approach provides a practical approximation of per-message latency that includes transcription processing, network overhead, and buffer sizes.
 
-Use only interim transcripts for this calculation. Finals are delayed by endpoint detection (waiting for speech to end), which conflates transcript latency with EOT latency.
+> **Warning**
+>
+> Use only interim transcripts for this calculation. Finals are delayed by endpoint detection (waiting for speech to end), which conflates transcript latency with EOT latency.
 
-Deepgram provides `start` and `duration` timestamps with each transcript. It can be tempting to use these to measure latency, but the timestamps are not guaranteed to be accurate at millisecond-level precision and therefore should not be used for precise timing analysis such as latency measurements.
+> **Warning**
+>
+> Deepgram provides `start` and `duration` timestamps with each transcript. It can be tempting to use these to measure latency, but the timestamps are not guaranteed to be accurate at millisecond-level precision and therefore should not be used for precise timing analysis such as latency measurements.
 
 ### Measuring EOT Latency
 

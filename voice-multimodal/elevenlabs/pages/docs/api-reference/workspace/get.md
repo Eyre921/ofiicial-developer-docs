@@ -28,18 +28,8 @@ Reference: https://elevenlabs.io/docs/api-reference/workspace/get
 
 Successful Response
 
-- `conversation_initiation_client_data_webhook` (object, optional, nullable)
-  - `url` (string, required) — The URL to send the webhook to
-  - `request_headers` (map from string to string or object, required) — The headers to send with the webhook request
-    - ConvAISecretLocator
-      - `secret_id` (string, required)
-- `webhooks` (object, optional)
-  - `post_call_webhook_id` (string, optional, nullable)
-  - `events` (list of enum, optional) — List of event types to send via webhook. Options: transcript, audio, call_initiation_failure, answering_machine_detection, unredacted_transcript, unredacted_audio.
-    - Allowed values: `transcript`, `audio`, `call_initiation_failure`, `answering_machine_detection`, `unredacted_transcript`, `unredacted_audio`
-  - `transcript_format` (enum, optional, default: json) — Format for transcript webhooks.
-    - Allowed values: `json`, `opentelemetry`
-  - `send_audio` (boolean, optional, nullable, deprecated) — DEPRECATED: Use 'events' field instead. Whether to send audio data with post-call webhooks for ConvAI conversations
+- `conversation_initiation_client_data_webhook` (ConversationInitiationClientDataWebhook, optional, nullable)
+- `webhooks` (ConvAIWebhooks, optional)
 - `can_use_mcp_servers` (boolean, optional, default: false) — Whether the workspace can use MCP servers
 - `rag_retention_period_days` (integer, optional, default: 10)
 - `conversation_embedding_retention_days` (integer, optional, nullable) — Days to retain conversation embeddings. None means use the system default (30 days).
@@ -52,10 +42,39 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ConversationInitiationClientDataWebhook
+
+- `url` (string, required) — The URL to send the webhook to
+- `request_headers` (map from string to ConversationInitiationClientDataWebhookRequestHeaders, required) — The headers to send with the webhook request
+
+### ConvAIWebhooks
+
+- `post_call_webhook_id` (string, optional, nullable)
+- `events` (list of enum, optional) — List of event types to send via webhook. Options: transcript, audio, call_initiation_failure, answering_machine_detection, unredacted_transcript, unredacted_audio.
+  - Allowed values: `transcript`, `audio`, `call_initiation_failure`, `answering_machine_detection`, `unredacted_transcript`, `unredacted_audio`
+- `transcript_format` (enum, optional, default: json) — Format for transcript webhooks.
+  - Allowed values: `json`, `opentelemetry`
+- `send_audio` (boolean, optional, nullable, deprecated) — DEPRECATED: Use 'events' field instead. Whether to send audio data with post-call webhooks for ConvAI conversations
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ConversationInitiationClientDataWebhookRequestHeaders
+
+### ValidationErrorLocItems
+
+### ConvAISecretLocator
+
+Used to reference a secret from the agent's secret store.
+
+- `secret_id` (string, required)
 
 ## Examples
 

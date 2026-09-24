@@ -10,7 +10,9 @@ path: docs/eleven-agents/customization/tools/code-tools
 
 **Code tools** let your agent run custom JavaScript in a sandboxed server-side environment, without you having to stand up and host your own webhook endpoint. Write the logic once in the built-in code editor, and ElevenLabs executes it whenever the agent calls the tool.
 
-This is an enterprise-only feature.
+> **Note**
+>
+> This is an enterprise-only feature.
 
 ## Overview
 
@@ -22,8 +24,10 @@ A code tool is a JavaScript function that runs when the agent calls it. You writ
 * **Conditional branching**: run different logic depending on the tool-call parameters, without needing a separate tool per branch.
 * **Reshaping data**: return exactly the structure you want the agent to see, rather than a raw upstream response.
 
-For a single external API call with no custom logic, [webhook tools](/docs/eleven-agents/customization/tools/webhook-tools) are usually simpler to set up. To
-trigger actions in a user's browser or app, use [client tools](/docs/eleven-agents/customization/tools/client-tools) instead.
+> **Info**
+>
+> For a single external API call with no custom logic, [webhook tools](/docs/eleven-agents/customization/tools/webhook-tools) are usually simpler to set up. To
+> trigger actions in a user's browser or app, use [client tools](/docs/eleven-agents/customization/tools/client-tools) instead.
 
 ## How it works
 
@@ -51,26 +55,30 @@ The value you return becomes the tool's result. It's passed back to the agent, s
 | `ctx.secrets`          | Workspace secrets you've mapped into this tool's context for use in request headers. The raw secret is never exposed to your code; injection happens on egress and exclusively in the headers.                                                                                                                                                           |
 | `ctx.auth_connections` | References to configured [auth connections](/docs/eleven-agents/customization/tools/webhook-tools#supported-authentication-methods) you've mapped into this tool's context, for use in the `X-With-Auth-Connection` request header. The underlying credential is never exposed to your code; injection happens on egress and exclusively in the headers. |
 
-Only `ctx.args` is visible to the agent when it calls the tool. Secrets, config values, and auth
-connections are never revealed to the agent.
+> **Note**
+>
+> Only `ctx.args` is visible to the agent when it calls the tool. Secrets, config values, and auth
+> connections are never revealed to the agent.
 
 #### Configuring parameters
 
 Parameters are the values the agent supplies when it calls the tool, and they arrive in `ctx.args`. Define them in the **Parameters** section of the tool configuration form, or in the code editor under the **Params** tab, in the **Define Params** sub-tab. Each parameter takes a data type, an identifier, and a description that the agent uses to determine the correct value from the conversation. Your code reads that value under the identifier, such as `ctx.args.appointment_datetime` below.
 
-![Defining a code tool parameter](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d492e864ae15f3a355251faae3b719544e1ab56b703c02740b51be6c6769ccf7/assets/images/conversational-ai/code-tool-parameters.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113236Z&X-Amz-Expires=604800&X-Amz-Signature=66394d6aa5633a7c3861c4ddca22d4609fce090726d2582a5f69df57ca29f4fe&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Defining a code tool parameter](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d492e864ae15f3a355251faae3b719544e1ab56b703c02740b51be6c6769ccf7/assets/images/conversational-ai/code-tool-parameters.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113138Z&X-Amz-Expires=604800&X-Amz-Signature=4485dd366260778f42477662694080ce64d16899deb4aadb8846b559e1fd5ab6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Configuring the context object
 
 Add secrets, config values, and auth connections in the tool's **Context object** section. Each entry takes a type and a name. The panel shows the exact accessor for each entry, such as `ctx.secrets.DEMO_KEY` below.
 
-![Mapping a workspace secret into a code tool's context object](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ad58ee53f3591f447b108191aff760f1134350911933b968b06798fa6d42f438/assets/images/conversational-ai/code-tool-context-object.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113236Z&X-Amz-Expires=604800&X-Amz-Signature=b93c4958c3d2abe5e223c5b341eb9008c2d4d8ff155ec5e8f1f0f6e498712480&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Mapping a workspace secret into a code tool's context object](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ad58ee53f3591f447b108191aff760f1134350911933b968b06798fa6d42f438/assets/images/conversational-ai/code-tool-context-object.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113138Z&X-Amz-Expires=604800&X-Amz-Signature=f2354ea3c0330ee26187d0f5e9e3a1dfe51a2cc93ee2a8260aafb2c0f5a6067f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Network access
 
 Code running in the sandbox can only reach domains your workspace has explicitly allowed. Add the domains your code needs to call in your workspace's **General Settings**, under **Code tool allowed domains**. A request to any other domain fails.
 
-Editing the **Code tool allowed domains** list requires Workspace admin permissions.
+> **Warning**
+>
+> Editing the **Code tool allowed domains** list requires Workspace admin permissions.
 
 ### Execution limits
 
@@ -220,7 +228,9 @@ Before scheduling a meeting with `schedule_meeting`, check the user's calendar f
 
 #### LLM selection
 
-When using tools, we recommend picking high intelligence models like GPT 5.2, Gemini-2.5-Flash, or
-Claude Sonnet 4.5 and avoiding Gemini-2.0-Flash.
+> **Warning**
+>
+> When using tools, we recommend picking high intelligence models like GPT 5.2, Gemini-2.5-Flash, or
+> Claude Sonnet 4.5 and avoiding Gemini-2.0-Flash.
 
 It's important to note that the choice of LLM matters to the success of function calls. Some LLMs can struggle with extracting the relevant parameters from the conversation.

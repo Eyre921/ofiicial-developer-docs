@@ -10,7 +10,9 @@ path: docs/outbound-telephony-agent
 
 # Build an Outbound Telephony Agent
 
-For more information and to use our reference implementation, visit the [Deepgram Outbound Telephony Agent repo](https://github.com/deepgram-devs/deepgram-voice-agent-outbound-telephony).
+> **Info**
+>
+> For more information and to use our reference implementation, visit the [Deepgram Outbound Telephony Agent repo](https://github.com/deepgram-devs/deepgram-voice-agent-outbound-telephony).
 
 # Outbound Telephony Voice Agent
 

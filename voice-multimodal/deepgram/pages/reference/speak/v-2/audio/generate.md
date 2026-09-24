@@ -30,21 +30,21 @@ Reference: https://developers.deepgram.com/reference/speak/v-2/audio/generate
 - `callback_method` (enum, optional, default: POST) — HTTP method by which the callback request will be made
   - Allowed values: `POST`, `PUT`
 - `mip_opt_out` (boolean, optional, default: false) — Opts out requests from the Deepgram Model Improvement Program. Refer to our Docs for pricing impacts before setting this to true. https://dpgr.am/deepgram-mip
-- `tag` (string or list of string, optional) — Label your requests for the purpose of identification during usage reporting
-- `bit_rate` (enum or integer or integer, optional, default: 48000) — The bitrate of the audio in bits per second. Choose from predefined ranges or specific values based on the encoding type.
-- `container` (enum or enum or enum or enum or enum, optional, default: wav) — Container specifies the file format wrapper for the output audio. The available options depend on the encoding type.
-- `encoding` (enum or enum or enum or enum or enum or enum or enum, optional, default: mp3) — Encoding allows you to specify the expected encoding of your audio output
+- `tag` (V2SpeakPostParametersTag, optional) — Label your requests for the purpose of identification during usage reporting
+- `bit_rate` (V2SpeakPostParametersBitRate, optional, default: 48000) — The bitrate of the audio in bits per second. Choose from predefined ranges or specific values based on the encoding type.
+- `container` (V2SpeakPostParametersContainer, optional, default: wav) — Container specifies the file format wrapper for the output audio. The available options depend on the encoding type.
+- `encoding` (V2SpeakPostParametersEncoding, optional, default: mp3) — Encoding allows you to specify the expected encoding of your audio output
 - `expressivity` (enum, optional, default: 0) — Expressive range of the generated speech, on a calm-to-animated axis. Accepted values: `-2`, `-1`, `0`, `1`, `2`. `0` (the default) is the voice's tuned delivery and the production-validated setting, with `-2` the calm end of the range and `2` the animated end. Supported on all Flux voices; applies to the whole request. Beta: behavior may change in future model versions, and non-default values increase the risk of hallucinations and pronunciation errors; audition before shipping. An invalid value is rejected with a `400` — `EXPRESSIVITY_OUT_OF_RANGE` for a value outside the range, `EXPRESSIVITY_INCREMENT_INVALID` for a fractional value. See [Expressivity](/docs/tts-expressivity).
   - Allowed values: `-2`, `-1`, `0`, `1`, `2`
 - `model` (string, required) — Flux TTS model used to synthesize the submitted text, in the form `flux-{voice}-{language}` (for example, `flux-alexis-en`). Required; unlike the v1 (Aura) endpoint there is no default and only flux models are accepted. English-only at launch.
-- `sample_rate` (enum or enum or enum or enum, optional, default: 24000) — Sample Rate specifies the sample rate for the output audio. Based on the encoding, different sample rates are supported. For some encodings, the sample rate is not configurable
+- `sample_rate` (V2SpeakPostParametersSampleRate, optional, default: 24000) — Sample Rate specifies the sample rate for the output audio. Based on the encoding, different sample rates are supported. For some encodings, the sample rate is not configurable
 - `speed` (double, optional, default: 1) — Speaking rate multiplier that adjusts the pace of generated speech while preserving natural prosody and voice quality. Accepted values run `0.5` to `1.5` in `0.05` increments. Not yet supported in all languages.
 - `priority` (enum, optional) — Processing priority for asynchronous (callback) requests. The only supported value is low.
   - Allowed values: `low`
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a SpeakV2Request.
 
 - `text` (string, required) — The text content to be converted to speech. The server normalizes and preprocesses the text before synthesis. Inline pause and pronunciation controls are not yet applied; they are stripped from the text before synthesis.
 
@@ -62,16 +62,32 @@ Returns the synthesized audio in the requested encoding as a binary stream. When
 
 Invalid Request. Inline pause and pronunciation controls are not applied and are stripped rather than rejected.
 
-- `string or object or object`
-  - ErrorResponseLegacyError
-    - `err_code` (string, optional) — The error code
-    - `err_msg` (string, optional) — The error message
-    - `request_id` (string, optional) — The request ID
-  - ErrorResponseModernError
-    - `category` (string, optional) — The category of the error
-    - `message` (string, optional) — A message about the error
-    - `details` (string, optional) — A description of the error
-    - `request_id` (string, optional) — The unique identifier of the request
+- `ErrorResponse`
+
+## Types
+
+### V2SpeakPostParametersTag
+
+### V2SpeakPostParametersBitRate
+
+### V2SpeakPostParametersContainer
+
+### V2SpeakPostParametersEncoding
+
+### V2SpeakPostParametersSampleRate
+
+### ErrorResponseLegacyError
+
+- `err_code` (string, optional) — The error code
+- `err_msg` (string, optional) — The error message
+- `request_id` (string, optional) — The request ID
+
+### ErrorResponseModernError
+
+- `category` (string, optional) — The category of the error
+- `message` (string, optional) — A message about the error
+- `details` (string, optional) — A description of the error
+- `request_id` (string, optional) — The unique identifier of the request
 
 ## Examples
 

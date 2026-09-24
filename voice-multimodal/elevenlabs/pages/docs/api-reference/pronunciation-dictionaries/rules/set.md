@@ -31,22 +31,9 @@ Reference: https://elevenlabs.io/docs/api-reference/pronunciation-dictionaries/r
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_Set_rules_on_the_pronunciation_dictionary_v1_pronunciation_dictionaries__pronunciation_dictionary_id__set_rules_post.
 
-- `rules` (list of object or object, required) — List of pronunciation rules. Rule can be either: an alias rule: \{'string\_to\_replace': 'a', 'type': 'alias', 'alias': 'b', } or a phoneme rule: \{'string\_to\_replace': 'a', 'type': 'phoneme', 'phoneme': 'b', 'alphabet': 'ipa' }
-  - PronunciationDictionaryAliasRuleRequestModel
-    - `string_to_replace` (string, required) — The string to replace. Must be a non-empty string.
-    - `type` ("alias", required) — The type of the rule.
-    - `alias` (string, required) — The alias for the string to be replaced.
-    - `case_sensitive` (boolean, optional, default: true) — Whether the rule should match case-sensitively.
-    - `word_boundaries` (boolean, optional, default: true) — Whether the rule should only match at word boundaries.
-  - PronunciationDictionaryPhonemeRuleRequestModel
-    - `string_to_replace` (string, required) — The string to replace. Must be a non-empty string.
-    - `type` ("phoneme", required) — The type of the rule.
-    - `phoneme` (string, required) — The phoneme rule.
-    - `alphabet` (string, required) — The alphabet to use with the phoneme rule.
-    - `case_sensitive` (boolean, optional, default: true) — Whether the rule should match case-sensitively.
-    - `word_boundaries` (boolean, optional, default: true) — Whether the rule should only match at word boundaries.
+- `rules` (list of BodySetRulesOnThePronunciationDictionaryV1PronunciationDictionariesPronunciationDictionaryIdSetRulesPostRulesItems, required) — List of pronunciation rules. Rule can be either: an alias rule: \{'string\_to\_replace': 'a', 'type': 'alias', 'alias': 'b', } or a phoneme rule: \{'string\_to\_replace': 'a', 'type': 'phoneme', 'phoneme': 'b', 'alphabet': 'ipa' }
 
 ## Response
 
@@ -64,10 +51,36 @@ Successfully set rules on the pronunciation dictionary
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### BodySetRulesOnThePronunciationDictionaryV1PronunciationDictionariesPronunciationDictionaryIdSetRulesPostRulesItems
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### PronunciationDictionaryAliasRuleRequestModel
+
+- `string_to_replace` (string, required) — The string to replace. Must be a non-empty string.
+- `type` ("alias", required) — The type of the rule.
+- `alias` (string, required) — The alias for the string to be replaced.
+- `case_sensitive` (boolean, optional, default: true) — Whether the rule should match case-sensitively.
+- `word_boundaries` (boolean, optional, default: true) — Whether the rule should only match at word boundaries.
+
+### PronunciationDictionaryPhonemeRuleRequestModel
+
+- `string_to_replace` (string, required) — The string to replace. Must be a non-empty string.
+- `type` ("phoneme", required) — The type of the rule.
+- `phoneme` (string, required) — The phoneme rule.
+- `alphabet` (string, required) — The alphabet to use with the phoneme rule.
+- `case_sensitive` (boolean, optional, default: true) — Whether the rule should match case-sensitively.
+- `word_boundaries` (boolean, optional, default: true) — Whether the rule should only match at word boundaries.
+
+### ValidationErrorLocItems
 
 ## Examples
 

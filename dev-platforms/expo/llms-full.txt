@@ -363,17 +363,13 @@ Fetch any page as markdown by adding the `Accept: text/markdown` header or appen
 - [Keyboard handling](https://docs.expo.dev/guides/keyboard-handling.md)
 - [Controlled components](https://docs.expo.dev/guides/controlled-components.md)
 
-### Expo UI
-- [Building SwiftUI apps with Expo UI](https://docs.expo.dev/guides/expo-ui-swift-ui.md)
-- [Extending with SwiftUI](https://docs.expo.dev/guides/expo-ui-swift-ui/extending.md)
-- [Extending with Jetpack Compose](https://docs.expo.dev/guides/expo-ui-jetpack-compose/extending.md)
-
 ### Troubleshooting
 - [Troubleshooting overview](https://docs.expo.dev/troubleshooting/overview.md): An overview of troubleshooting guides for app development with Expo and EAS.
 - ["Application has not been registered" error](https://docs.expo.dev/troubleshooting/application-has-not-been-registered.md)
 - [Clear bundler caches on macOS and Linux](https://docs.expo.dev/troubleshooting/clear-cache-macos-linux.md)
 - [Clear bundler caches on Windows](https://docs.expo.dev/troubleshooting/clear-cache-windows.md)
 - ["Project is incompatible with this version of Expo Go" error](https://docs.expo.dev/troubleshooting/expo-go-version-mismatch.md)
+- ["You need to be signed in to Expo Go and Expo CLI" error](https://docs.expo.dev/troubleshooting/expo-go-sign-in-required.md)
 - ["React Native version mismatch" errors](https://docs.expo.dev/troubleshooting/react-native-version-mismatch.md)
 - [Troubleshooting proxies](https://docs.expo.dev/troubleshooting/proxies.md)
 

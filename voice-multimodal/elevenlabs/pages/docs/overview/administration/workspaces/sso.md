@@ -10,8 +10,10 @@ path: docs/overview/administration/workspaces/sso
 
 ## Overview
 
-SSO is available for **Enterprise** customers only. Only Workspace admins can enable this feature.
-To upgrade, [get in touch with our sales team](https://elevenlabs.io/contact-sales).
+> **Info**
+>
+> SSO is available for **Enterprise** customers only. Only Workspace admins can enable this feature.
+> To upgrade, [get in touch with our sales team](https://elevenlabs.io/contact-sales).
 
 Single Sign-On (SSO) allows your team to sign in to ElevenLabs using your existing identity
 provider (IdP). ElevenLabs supports **SAML 2.0** and **OIDC** for enterprise SSO, and
@@ -51,19 +53,25 @@ Under **SSO Provider**, select your protocol:
 * **SAML** — use with Okta, Microsoft Entra, OneLogin, and other SAML 2.0 identity providers.
 * **OIDC** (OpenID Connect) — use with providers that support OIDC.
 
-Microsoft Entra (formerly Azure AD) is only supported through SAML. Do not use OIDC with
-Entra — it can cause sign-in failures.
+> **Warning**
+>
+> Microsoft Entra (formerly Azure AD) is only supported through SAML. Do not use OIDC with
+> Entra — it can cause sign-in failures.
 
-Only SP-initiated SSO is supported for SAML. To simplify sign-in, create a bookmark app in
-your IdP that links to `https://elevenlabs.io/app/sign-in?use_sso=true`. You can include the
-user email as a query parameter to pre-fill it:
-`https://elevenlabs.io/app/sign-in?use_sso=true&email=user@company.com`
+> **Info**
+>
+> Only SP-initiated SSO is supported for SAML. To simplify sign-in, create a bookmark app in
+> your IdP that links to `https://elevenlabs.io/app/sign-in?use_sso=true`. You can include the
+> user email as a query parameter to pre-fill it:
+> `https://elevenlabs.io/app/sign-in?use_sso=true&email=user@company.com`
 
 Fill in the required fields for your provider (entity ID, sign-in URL, certificate), then
 click **Update SSO**.
 
-Saving a new SSO provider configuration will immediately log out all workspace members
-currently signed in with SSO.
+> **Warning**
+>
+> Saving a new SSO provider configuration will immediately log out all workspace members
+> currently signed in with SSO.
 
 #### Add your verified domain
 
@@ -82,7 +90,9 @@ Step-by-step setup for Okta SAML 2.0.
 
 ## SCIM
 
-SCIM is available for Enterprise workspaces, configurable by Workspace admins.
+> **Info**
+>
+> SCIM is available for Enterprise workspaces, configurable by Workspace admins.
 
 #### [SCIM](/docs/overview/administration/workspaces/sso/scim)
 

@@ -39,7 +39,7 @@ Drag and drop your manuscript into the upload area, or browse your device to sel
 
 ### Choose a narration style
 
-![Audiobooks narration style selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7a260dd3129eed27bde661e753a049b11ff845e7f4f8949f59bdb65048dae5f2/assets/images/product-guides/studio/audiobooks-narration-style.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113142Z&X-Amz-Expires=604800&X-Amz-Signature=a028cad265bf8820535eb61aee8a8c35c3c0c570870f4ae123d2c4a6354e6cb3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Audiobooks narration style selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7a260dd3129eed27bde661e753a049b11ff845e7f4f8949f59bdb65048dae5f2/assets/images/product-guides/studio/audiobooks-narration-style.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113108Z&X-Amz-Expires=604800&X-Amz-Signature=7d16b23c7b06ff0b34102b4d7113eb27134bd583dd1da728dc0d0075ae8064f1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Select how you want your audiobook to be narrated:
 
@@ -87,7 +87,7 @@ Review the detected structure carefully before continuing. Manuscript formatting
 
 In the **Characters** step, you select the voices for your audiobook.
 
-![Audiobooks character casting](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8ada24df5144f84856f1440d93ab85265bf002ece92e297fb0db37ac939588ad/assets/images/product-guides/studio/audiobooks-characters.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113142Z&X-Amz-Expires=604800&X-Amz-Signature=eb5067ea13f7e58758c7b58d8606e118db84a17f36e5aadfa0d6c9f96d0b0d28&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Audiobooks character casting](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8ada24df5144f84856f1440d93ab85265bf002ece92e297fb0db37ac939588ad/assets/images/product-guides/studio/audiobooks-characters.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113108Z&X-Amz-Expires=604800&X-Amz-Signature=dec19793b4f192b46d65e034f040956d6963384d40a612c572728f8d0c2c4f95&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Cast a multi-cast audiobook
 
@@ -99,11 +99,15 @@ If you selected **Multi cast**, ElevenLabs analyzes your manuscript and detects 
 
 Character detection is AI-generated and should be treated as a starting point. The system may not identify every character, especially minor characters, unnamed characters, or speakers who are difficult to distinguish from the surrounding narration.
 
-The current limit is up to 150 detected voices per book.
+> **Note**
+>
+> The current limit is up to 150 detected voices per book.
 
 Review the detected character list and adjust the cast as needed. Add, change, or remove voice assignments so the final cast matches your manuscript.
 
-Previewing a voice with custom audio uses credits.
+> **Note**
+>
+> Previewing a voice with custom audio uses credits.
 
 ### Explore the Voice Library
 
@@ -117,13 +121,15 @@ Browse the available studio-quality voices, or use search and filters to find a 
 
 You can preview voices before assigning them.
 
-Previewing a voice with custom audio uses credits.
+> **Note**
+>
+> Previewing a voice with custom audio uses credits.
 
 #### Review and add pronunciation rules
 
 The **Pronunciations** step helps you control how names, places, invented words, and other unusual terms are spoken.
 
-![Audiobooks pronunciations editor](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/123ec06328152f7464f0cfad028cf1049489a8beb1283338ba30100c2c4308cf/assets/images/product-guides/studio/audiobooks-pronunciations.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113142Z&X-Amz-Expires=604800&X-Amz-Signature=4cfb2ed7ef312753c6253691c26c6b154d5daf0c6c6e471f2e6c33667ab01d40&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Audiobooks pronunciations editor](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/123ec06328152f7464f0cfad028cf1049489a8beb1283338ba30100c2c4308cf/assets/images/product-guides/studio/audiobooks-pronunciations.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113108Z&X-Amz-Expires=604800&X-Amz-Signature=8a159078ad715f4d4a571b3f4efc736a0243a65f40782fca0532b2ffc91882a5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Review automatically detected terms
 
@@ -180,8 +186,10 @@ You can choose how playback and generation behave using the mode selector to the
 * **Until end (generate one at a time)** — plays from the selected paragraph to the end of the chapter, generating one paragraph at a time
 * **Until end (generate clips ahead)** — plays from the selected paragraph to the end of the chapter, generating multiple paragraphs ahead for smoother playback
 
-Playing already generated audio does not consume credits. Credits are only used when generating
-new narration.
+> **Note**
+>
+> Playing already generated audio does not consume credits. Credits are only used when generating
+> new narration.
 
 ### Editing your audiobook
 
@@ -228,7 +236,9 @@ ElevenLabs supports multiple speech models with different strengths:
 
 You can switch models at any time. However:
 
-Changing the model does not update already generated audio — you will need to regenerate affected paragraphs, which will use credits.
+> **Warning**
+>
+> Changing the model does not update already generated audio — you will need to regenerate affected paragraphs, which will use credits.
 
 #### Default settings
 
@@ -386,7 +396,9 @@ This mode is ideal for:
 * Personalization
 * Listener preference
 
-Music, sound effects, and external audio are not included in dynamic narration playback.
+> **Warning**
+>
+> Music, sound effects, and external audio are not included in dynamic narration playback.
 
 ## Export and publishing
 

@@ -8,7 +8,9 @@ path: docs/eleven-agents/libraries/swift
 
 # Swift SDK
 
-Check out our [complete Swift quickstart project](https://github.com/elevenlabs/voice-starterkit-swift) to get started quickly with a full working example.
+> **Info**
+>
+> Check out our [complete Swift quickstart project](https://github.com/elevenlabs/voice-starterkit-swift) to get started quickly with a full working example.
 
 ## Installation
 
@@ -34,8 +36,10 @@ Or using Xcode:
 import ElevenLabs
 ```
 
-Ensure you add `NSMicrophoneUsageDescription` to your Info.plist to explain microphone access to
-users. The SDK requires iOS 14.0+ / macOS 11.0+ and Swift 5.9+.
+> **Warning**
+>
+> Ensure you add `NSMicrophoneUsageDescription` to your Info.plist to explain microphone access to
+> users. The SDK requires iOS 14.0+ / macOS 11.0+ and Swift 5.9+.
 
 ## Quick Start
 
@@ -100,7 +104,9 @@ let conversation = try await ElevenLabs.startConversation(
 )
 ```
 
-Never store your ElevenLabs API key in your mobile app. Always use a backend service to generate conversation tokens.
+> **Warning**
+>
+> Never store your ElevenLabs API key in your mobile app. Always use a backend service to generate conversation tokens.
 
 ## Core Features
 
@@ -233,7 +239,9 @@ func executeClientTool(name: String, parameters: [String: Any]) async -> [String
 }
 ```
 
-Remember to setup your agent with the client-tools in the ElevenLabs UI. See the [Client Tools documentation](/docs/eleven-agents/customization/tools/client-tools) for setup instructions.
+> **Info**
+>
+> Remember to setup your agent with the client-tools in the ElevenLabs UI. See the [Client Tools documentation](/docs/eleven-agents/customization/tools/client-tools) for setup instructions.
 
 ### Connection State Management
 

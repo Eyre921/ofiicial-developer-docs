@@ -24,7 +24,9 @@ AWS uses public-key cryptography to secure login information for your instance. 
 
 If you don’t already have an Amazon EC2 key pair, you will need to create one in order to access the AWS EC2 Virtual Machine. To learn how, read [Create a key pair using Amazon EC2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair) in Amazon’s documentation.
 
-Key pairs must be created in each AWS region in which you will deploy Deepgram self-hosted products.
+> **Info**
+>
+> Key pairs must be created in each AWS region in which you will deploy Deepgram self-hosted products.
 
 At the end of this process, your browser should download a `private-key.pem` file for your key pair. Move this file to a secure and memorable location.
 
@@ -32,7 +34,9 @@ At the end of this process, your browser should download a `private-key.pem` fil
 
 ​To begin your self-hosted installation with AWS as your cloud service provider, you need to create an Amazon EC2 instance.
 
-The steps in this section utilize the new AWS launch experience. You may need to adjust the ordering if you are using the old AWS launch experience.
+> **Info**
+>
+> The steps in this section utilize the new AWS launch experience. You may need to adjust the ordering if you are using the old AWS launch experience.
 
 1. Navigate to the EC2 Dashboard and confirm that the proper AWS Region is configured, then choose **Launch Instance** to open the wizard.
 
@@ -51,7 +55,9 @@ The steps in this section utilize the new AWS launch experience. You may need to
 
 6. For the **Network settings** wizard step, select `Create security group`, check the box `Allow SSH traffic from anywhere`, and ensure `Auto-assign public IP` is enabled. This will allow you to remotely login to your server.
 
-If you want to be able to receive requests from the public internet, make sure to also check the box `Allow HTTPS traffic from the internet`. If you are colocating your Deepgram self-hosted deployment with other services and do not need to expose your server to the public internet, you can find configuration options on the [Amazon networking documentation](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-networking.html).
+> **Info**
+>
+> If you want to be able to receive requests from the public internet, make sure to also check the box `Allow HTTPS traffic from the internet`. If you are colocating your Deepgram self-hosted deployment with other services and do not need to expose your server to the public internet, you can find configuration options on the [Amazon networking documentation](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-networking.html).
 
 7. For the **Configure storage** wizard step, change the root volume size to meet our [minimum required hardware specifications](/docs/self-hosted-deployment-environments#hardware-specifications).
 8. Verify that the summary box contains all the right details for your instance, and click `Launch Instance`.
@@ -71,11 +77,15 @@ To complete the rest of the installation, including configuring your environment
    ssh -i /path/to/private-key.pem ubuntu@AWS_HOSTNAME
    ```
 
-Be sure to replace the `AWS_HOSTNAME` placeholder value with the hostname for your instance. Also check that the path to your `private-key.pem` file is correct.
+> **Info**
+>
+> Be sure to replace the `AWS_HOSTNAME` placeholder value with the hostname for your instance. Also check that the path to your `private-key.pem` file is correct.
+>
+> For AWS Ubuntu instances, the default username is `ubuntu`, not `user` as their documentation would suggest. If you are using a different AMI, the default username will be different - see the `Connect` page on the instance for more details.
 
-For AWS Ubuntu instances, the default username is `ubuntu`, not `user` as their documentation would suggest. If you are using a different AMI, the default username will be different - see the `Connect` page on the instance for more details.
-
-If you are on a Windows machine, alternatives to `ssh` include PuTTY and the AWS EC2 Instance Connect service.
+> **Info**
+>
+> If you are on a Windows machine, alternatives to `ssh` include PuTTY and the AWS EC2 Instance Connect service.
 
 3. If you receive a message that indicates that the authenticity of the host can’t be established, type `yes`, then press the Enter key on your keyboard. This message should only appear the first time you are connected to the instance.
 

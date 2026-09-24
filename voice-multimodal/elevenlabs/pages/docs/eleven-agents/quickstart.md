@@ -10,19 +10,21 @@ path: docs/eleven-agents/quickstart
 
 In this guide, you'll learn how to create your first conversational agent. This will serve as a foundation for building conversational workflows tailored to your business use cases.
 
-Use the [ElevenLabs agents skill](https://github.com/elevenlabs/skills/tree/main/agents) to build and manage voice agents from your AI coding assistant:
-
-```bash
-npx skills add elevenlabs/skills --skill agents
-```
-
-You can also connect the [hosted MCP server](/docs/eleven-agents/operate/hosted-mcp) to Claude or any other MCP client to create and manage agents through natural language.
+> **Tip**
+>
+> Use the [ElevenLabs agents skill](https://github.com/elevenlabs/skills/tree/main/agents) to build and manage voice agents from your AI coding assistant:
+>
+> ```bash
+> npx skills add elevenlabs/skills --skill agents
+> ```
+>
+> You can also connect the [hosted MCP server](/docs/eleven-agents/operate/hosted-mcp) to Claude or any other MCP client to create and manage agents through natural language.
 
 ## Getting started
 
 ElevenLabs Agents are managed either through the [ElevenAgents dashboard](https://elevenlabs.io/app/agents), the [ElevenLabs API](/docs/api-reference/introduction), the [Agents CLI](/docs/eleven-agents/operate/cli) or the [hosted MCP server](/docs/eleven-agents/operate/hosted-mcp).
 
-![ElevenLabs Agents](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/62ad20de44cee44a439b138d56764c801c4eb939cf3b0f167f594d5c6a6895fb/assets/images/conversational-ai/widget.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113148Z&X-Amz-Expires=604800&X-Amz-Signature=581629bf52fdd3dac12a09a0bac158af71a76c6e91ee443d3fc085aec0147b3e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![ElevenLabs Agents](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/62ad20de44cee44a439b138d56764c801c4eb939cf3b0f167f594d5c6a6895fb/assets/images/conversational-ai/widget.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T111318Z&X-Amz-Expires=604800&X-Amz-Signature=0ad1d9569a6637dcea09b80dfb5e6973d035957db00387d8a841d4360bb61a9c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Creating your first agent
 
@@ -32,7 +34,7 @@ In this quickstart guide we'll start by creating an agent via the API or the web
 
 In this guide, we'll create a conversational support assistant capable of answering questions about your product, documentation, or service. This assistant can be embedded into your website or app to provide real-time support to your customers.
 
-![ElevenLabs Agents](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/62ad20de44cee44a439b138d56764c801c4eb939cf3b0f167f594d5c6a6895fb/assets/images/conversational-ai/widget.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113148Z&X-Amz-Expires=604800&X-Amz-Signature=581629bf52fdd3dac12a09a0bac158af71a76c6e91ee443d3fc085aec0147b3e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![ElevenLabs Agents](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/62ad20de44cee44a439b138d56764c801c4eb939cf3b0f167f594d5c6a6895fb/assets/images/conversational-ai/widget.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T111318Z&X-Amz-Expires=604800&X-Amz-Signature=0ad1d9569a6637dcea09b80dfb5e6973d035957db00387d8a841d4360bb61a9c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Sign in to ElevenLabs
 
@@ -42,7 +44,7 @@ Go to [elevenlabs.io](https://elevenlabs.io/app/sign-up) and sign in to or creat
 
 In the **ElevenLabs Dashboard**, create a new assistant by entering a name and selecting the `Blank template` option.
 
-![Dashboard](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/61b0e1df291ea587a8ff3e116579a47f66d48c74b24f44cfcd4804a568eb0a9d/assets/images/conversational-ai/assistant-create-flow.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113148Z&X-Amz-Expires=604800&X-Amz-Signature=0f968058497264e7939458ed5234ea0356cf114cfb8d8e874a536517e26a49a4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Dashboard](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/61b0e1df291ea587a8ff3e116579a47f66d48c74b24f44cfcd4804a568eb0a9d/assets/images/conversational-ai/assistant-create-flow.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T111318Z&X-Amz-Expires=604800&X-Amz-Signature=78aa21b88a952eb06296ac5bec147ea22cd82f35cd9432b228e136a3b9027b7c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Configure the assistant behavior
 
@@ -96,9 +98,11 @@ Next we'll configure the voice for your assistant.
 
 In the **Voice** tab, choose a voice that best matches your assistant from the [voice library](https://elevenlabs.io/voice-library):
 
-![Voice settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/14aad328f468daafa9ec95d3b7a55489a8cb1a34869368020e05b207c9b0360a/assets/images/conversational-ai/voice-settings.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113148Z&X-Amz-Expires=604800&X-Amz-Signature=e15a06042668733b602b76636ee099c6489708af8411700ee64be81a3241009e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Voice settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/14aad328f468daafa9ec95d3b7a55489a8cb1a34869368020e05b207c9b0360a/assets/images/conversational-ai/voice-settings.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T111318Z&X-Amz-Expires=604800&X-Amz-Signature=dc3ba2280b3d9c714423f13005510c2149563a09c12751ea5ff010b885af1c25&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-Using higher quality voices, models, and LLMs may increase response time. For an optimal customer experience, balance quality and latency based on your assistant's expected use case.
+> **Note**
+>
+> Using higher quality voices, models, and LLMs may increase response time. For an optimal customer experience, balance quality and latency based on your assistant's expected use case.
 
 #### Testing your assistant
 
@@ -110,7 +114,7 @@ Configure evaluation criteria and data collection to analyze conversations and i
 
 Navigate to the **Analysis** tab in your assistant's settings to define custom criteria for evaluating conversations.
 
-![Analysis settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/fee8bc444d5436c71eae3829b9ec8d5cdb6a57c4d4efe6483d7bfed2b066e438/assets/images/conversational-ai/analysis-settings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113148Z&X-Amz-Expires=604800&X-Amz-Signature=372cfbf9743d1cfec95b98f8ba8e785f5ebe1ed9281ec52f13795162006eb81e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Analysis settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/fee8bc444d5436c71eae3829b9ec8d5cdb6a57c4d4efe6483d7bfed2b066e438/assets/images/conversational-ai/analysis-settings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T111318Z&X-Amz-Expires=604800&X-Amz-Signature=988f1b9c430817f975737ce07fb783a6ed15b28c0729109fab90acb83b834768&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Every conversation transcript is passed to the LLM to verify if specific goals were met. Results will either be `success`, `failure`, or `unknown`, along with a rationale explaining the chosen result.
 
@@ -142,19 +146,25 @@ Click **Add item** and configure the following:
 Extract the user's questions & inquiries from the conversation.
 ```
 
-Test your assistant by posing as a customer. Ask questions, evaluate its responses, and tweak the prompts until you're happy with how it performs.
+> **Tip**
+>
+> Test your assistant by posing as a customer. Ask questions, evaluate its responses, and tweak the prompts until you're happy with how it performs.
 
 #### View conversation history
 
 View evaluation results and collected data for each conversation in the **Call history** tab.
 
-![Conversation history](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/fd517a080ba2c0d678c1ce34ea79afbd0dad764a19da43ca045a1c29b693ee48/assets/images/conversational-ai/transcript.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113148Z&X-Amz-Expires=604800&X-Amz-Signature=b553cb20ecd5f119d0c9d794fb244664f11c26658fb5192a03a963e9bcf5314f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Conversation history](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/fd517a080ba2c0d678c1ce34ea79afbd0dad764a19da43ca045a1c29b693ee48/assets/images/conversational-ai/transcript.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T111318Z&X-Amz-Expires=604800&X-Amz-Signature=d427b59d86137eee03d9943ed922817ef86c9d36a91e8d03ec3182ceffa566a9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-Regularly review conversation history to identify common issues and patterns.
+> **Tip**
+>
+> Regularly review conversation history to identify common issues and patterns.
 
 The newly created agent can be tested in a variety of ways, but the quickest way is to use the [ElevenLabs dashboard](https://elevenlabs.io/app/agents).
 
-The web dashboard uses our [React SDK](/docs/eleven-agents/libraries/react) under the hood to handle real-time conversations.
+> **Info**
+>
+> The web dashboard uses our [React SDK](/docs/eleven-agents/libraries/react) under the hood to handle real-time conversations.
 
 If instead you want to quickly test the agent in your own website, you can use the Agent widget. Simply paste the following HTML snippet into your website, taking care to replace `agent-id` with the ID of your agent.
 
@@ -192,11 +202,13 @@ npm install -g @elevenlabs/cli
 curl --proto '=https' --tlsv1.2 -LsSf https://github.com/elevenlabs/cli/releases/latest/download/elevenlabs-cli-installer.sh | sh
 ```
 
-Working with an AI coding assistant? Run `elevenlabs generate-skills` in your project to write a
-`SKILL.md` for every command group into `skills/`, so your assistant knows the CLI's full surface
-without you pasting docs. Use `--output-dir` to put them elsewhere. This reads the CLI's own
-embedded API definition, so it needs no API key and works offline — and it stays in step with
-whichever CLI version you have installed.
+> **Tip**
+>
+> Working with an AI coding assistant? Run `elevenlabs generate-skills` in your project to write a
+> `SKILL.md` for every command group into `skills/`, so your assistant knows the CLI's full surface
+> without you pasting docs. Use `--output-dir` to put them elsewhere. This reads the CLI's own
+> embedded API definition, so it needs no API key and works offline — and it stays in step with
+> whichever CLI version you have installed.
 
 #### Initialize a new project
 
@@ -238,7 +250,9 @@ This uploads your local agent configuration to the ElevenLabs platform.
 
 The newly created agent can be tested in a variety of ways, but the quickest way is to use the [ElevenLabs dashboard](https://elevenlabs.io/app/agents). From the dashboard, select your agent and click the **Test AI agent** button.
 
-The web dashboard uses our [React SDK](/docs/eleven-agents/libraries/react) under the hood to handle real-time conversations.
+> **Info**
+>
+> The web dashboard uses our [React SDK](/docs/eleven-agents/libraries/react) under the hood to handle real-time conversations.
 
 If instead you want to quickly test the agent in your own website, you can use the Agent widget. Use the CLI to generate the HTML snippet:
 
@@ -307,11 +321,13 @@ npm install -g @elevenlabs/cli
 curl --proto '=https' --tlsv1.2 -LsSf https://github.com/elevenlabs/cli/releases/latest/download/elevenlabs-cli-installer.sh | sh
 ```
 
-Working with an AI coding assistant? Run `elevenlabs generate-skills` in your project to write a
-`SKILL.md` for every command group into `skills/`, so your assistant knows the CLI's full surface
-without you pasting docs. Use `--output-dir` to put them elsewhere. This reads the CLI's own
-embedded API definition, so it needs no API key and works offline — and it stays in step with
-whichever CLI version you have installed.
+> **Tip**
+>
+> Working with an AI coding assistant? Run `elevenlabs generate-skills` in your project to write a
+> `SKILL.md` for every command group into `skills/`, so your assistant knows the CLI's full surface
+> without you pasting docs. Use `--output-dir` to put them elsewhere. This reads the CLI's own
+> embedded API definition, so it needs no API key and works offline — and it stays in step with
+> whichever CLI version you have installed.
 
 Then authenticate — this opens your browser to authorize the CLI:
 
@@ -413,7 +429,9 @@ const agent = await elevenlabs.conversationalAi.agents.create({
 console.log(`Agent created with ID: ${agent.agentId}`);
 ```
 
-The agent created above will have a `"test"` tag, this is useful to help classify and filter the agent. For example distinguishing between test agents and production agents.
+> **Note**
+>
+> The agent created above will have a `"test"` tag, this is useful to help classify and filter the agent. For example distinguishing between test agents and production agents.
 
 #### Run the code
 
@@ -431,7 +449,9 @@ The above will generate an agent with some baseline settings and print the ID of
 
 The newly created agent can be tested in a variety of ways, but the quickest way is to use the [ElevenLabs dashboard](https://elevenlabs.io/app/agents). From the dashboard, select your agent and click the **Test AI agent** button.
 
-The web dashboard uses our [React SDK](/docs/eleven-agents/libraries/react) under the hood to handle real-time conversations.
+> **Info**
+>
+> The web dashboard uses our [React SDK](/docs/eleven-agents/libraries/react) under the hood to handle real-time conversations.
 
 If instead you want to quickly test the agent in your own website, you can use the Agent widget. Simply paste the following HTML snippet into your website, taking care to replace `agent-id` with the ID of your agent.
 

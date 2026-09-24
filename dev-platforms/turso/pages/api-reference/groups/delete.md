@@ -7,6 +7,12 @@ path: api-reference/groups/delete
 DELETE /v1/organizations/{organizationSlug}/groups/{groupName}
 Delete a group belonging to the organization or user.
 
+<Note>
+  On paid plans, a deleted group and its databases can be restored for up to five
+  days — see
+  [Recover Deleted Databases](/features/recover-deleted-databases).
+</Note>
+
 <RequestExample>
   ```bash cURL theme={null}
   curl -L -X DELETE 'https://api.turso.tech/v1/organizations/{organizationSlug}/groups/{groupName}' \

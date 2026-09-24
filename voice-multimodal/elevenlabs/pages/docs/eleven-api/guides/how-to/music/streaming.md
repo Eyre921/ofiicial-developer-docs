@@ -8,14 +8,20 @@ path: docs/eleven-api/guides/how-to/music/streaming
 
 # Music streaming
 
-**How-to guide** · Assumes you have completed the [Music quickstart](/docs/eleven-api/guides/cookbooks/music).
+> **Note**
+>
+> **How-to guide** · Assumes you have completed the [Music quickstart](/docs/eleven-api/guides/cookbooks/music).
 
-The Music API is only available to paid users.
+> **Info**
+>
+> The Music API is only available to paid users.
 
 ## Using the Music API
 
-This guide assumes you have [set up your API key and SDK](/docs/eleven-api/quickstart). Complete
-the quickstart first if you haven't.
+> **Note**
+>
+> This guide assumes you have [set up your API key and SDK](/docs/eleven-api/quickstart). Complete
+> the quickstart first if you haven't.
 
 #### Make the API request
 

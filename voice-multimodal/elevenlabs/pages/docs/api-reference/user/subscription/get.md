@@ -32,7 +32,7 @@ Successful Response
 - `character_count` (integer, required) — The number of characters used by the user.
 - `character_limit` (integer, required) — The maximum number of characters allowed in the current billing period.
 - `max_character_limit_extension` (integer, required, nullable) — Deprecated: use `max_credit_limit_extension`. Maximum number of characters that the character limit can be exceeded by. Managed by the workspace admin.
-- `max_credit_limit_extension` (integer or "unlimited", required) — Maximum number of credits that the credit limit can be exceeded by. Managed by the workspace admin. `"unlimited"` means no cap, `0` means usage-based billing is disabled.
+- `max_credit_limit_extension` (ExtendedSubscriptionResponseModelMaxCreditLimitExtension, required) — Maximum number of credits that the credit limit can be exceeded by. Managed by the workspace admin. `"unlimited"` means no cap, `0` means usage-based billing is disabled.
 - `can_extend_character_limit` (boolean, required) — Whether the workspace is entitled to enter overages (usage-based billing).
 - `allowed_to_extend_character_limit` (boolean, required) — Deprecated: use `max_credit_limit_extension != 0`. Whether the user is allowed to extend their character limit.
 - `voice_slots_used` (integer, required) — The number of voice slots used by the user.
@@ -44,26 +44,10 @@ Successful Response
 - `can_extend_voice_limit` (boolean, required) — Whether the user can extend their voice limit.
 - `can_use_instant_voice_cloning` (boolean, required) — Whether the user can use instant voice cloning.
 - `can_use_professional_voice_cloning` (boolean, required) — Whether the user can use professional voice cloning.
-- `current_overage` (object, required) — The current usage-based overage cost.
-  - `amount` (string, required)
-  - `currency` (enum, required)
-    - Allowed values: `usd`, `eur`, `inr`, `pln`, `gbp`
+- `current_overage` (Price, required) — The current usage-based overage cost.
 - `status` (enum, required) — The status of the user's subscription.
   - Allowed values: `trialing`, `active`, `incomplete`, `past_due`, `free`, `free_disabled`
-- `open_invoices` (list of object, required) — The open invoices for the user.
-  - `amount_due_cents` (integer, required) — The amount due in cents.
-  - `discounts` (list of object, required) — The discounts applied to the invoice.
-    - `discount_percent_off` (double, optional, nullable) — The discount applied to the invoice. E.g. [20.0f] for 20% off.
-    - `discount_amount_off` (double, optional, nullable) — The discount applied to the invoice. E.g. [20.0f] for 20 cents off.
-  - `next_payment_attempt_unix` (integer, required) — The Unix timestamp of the next payment attempt. -1 when there is no next payment attempt.
-  - `payment_intent_status` (enum, required, nullable) — Deprecated. Use [payment_intent_statusses] instead. The status of this invoice's first payment intent. None when there is no payment intent.
-    - Allowed values: `canceled`, `processing`, `requires_action`, `requires_capture`, `requires_confirmation`, `requires_payment_method`, `succeeded`
-  - `payment_intent_statusses` (list of enum, required) — The statuses of this invoice's payment intents. Empty list when there are no payment intents.
-    - Allowed values: `canceled`, `processing`, `requires_action`, `requires_capture`, `requires_confirmation`, `requires_payment_method`, `succeeded`
-  - `subtotal_cents` (integer, optional, nullable) — The subtotal amount in cents before tax (exclusive of tax and discounts).
-  - `tax_cents` (integer, optional, nullable) — The tax amount in cents.
-  - `discount_percent_off` (double, optional, nullable) — Deprecated. Use [discounts] instead. The discount applied to the invoice. E.g. [20.0f] for 20% off.
-  - `discount_amount_off` (double, optional, nullable) — Deprecated. Use [discounts] instead. The discount applied to the invoice. E.g. [20.0f] for 20 cents off.
+- `open_invoices` (list of InvoiceResponseModel, required) — The open invoices for the user.
 - `has_open_invoices` (boolean, required) — Whether the user has open invoices.
 - `next_character_count_reset_unix` (integer, optional, nullable) — The Unix timestamp of the next character count reset.
 - `max_voice_add_edits` (integer, optional, nullable) — The maximum number of voice add/edits allowed for the user.
@@ -73,31 +57,8 @@ Successful Response
   - Allowed values: `monthly_period`, `3_month_period`, `6_month_period`, `annual_period`
 - `character_refresh_period` (enum, optional, nullable) — The character refresh period of the user's subscription.
   - Allowed values: `monthly_period`, `3_month_period`, `6_month_period`, `annual_period`
-- `next_invoice` (object, optional, nullable) — The next invoice for the user.
-  - `amount_due_cents` (integer, required) — The amount due in cents.
-  - `discounts` (list of object, required) — The discounts applied to the invoice.
-    - `discount_percent_off` (double, optional, nullable) — The discount applied to the invoice. E.g. [20.0f] for 20% off.
-    - `discount_amount_off` (double, optional, nullable) — The discount applied to the invoice. E.g. [20.0f] for 20 cents off.
-  - `next_payment_attempt_unix` (integer, required) — The Unix timestamp of the next payment attempt. -1 when there is no next payment attempt.
-  - `payment_intent_status` (enum, required, nullable) — Deprecated. Use [payment_intent_statusses] instead. The status of this invoice's first payment intent. None when there is no payment intent.
-    - Allowed values: `canceled`, `processing`, `requires_action`, `requires_capture`, `requires_confirmation`, `requires_payment_method`, `succeeded`
-  - `payment_intent_statusses` (list of enum, required) — The statuses of this invoice's payment intents. Empty list when there are no payment intents.
-    - Allowed values: `canceled`, `processing`, `requires_action`, `requires_capture`, `requires_confirmation`, `requires_payment_method`, `succeeded`
-  - `subtotal_cents` (integer, optional, nullable) — The subtotal amount in cents before tax (exclusive of tax and discounts).
-  - `tax_cents` (integer, optional, nullable) — The tax amount in cents.
-  - `discount_percent_off` (double, optional, nullable) — Deprecated. Use [discounts] instead. The discount applied to the invoice. E.g. [20.0f] for 20% off.
-  - `discount_amount_off` (double, optional, nullable) — Deprecated. Use [discounts] instead. The discount applied to the invoice. E.g. [20.0f] for 20 cents off.
-- `pending_change` (object or object, optional, nullable) — The pending change for the user.
-  - PendingSubscriptionSwitchResponseModel
-    - `next_tier` (enum, required) — The tier to change to.
-      - Allowed values: `free`, `starter`, `go`, `creator`, `pro`, `growing_business`, `scale_2024_08_10`, `grant_tier_1_2025_07_23`, `grant_tier_2_2025_07_23`, `grant`, `trial`, `enterprise`
-    - `next_billing_period` (enum, required) — The billing period to change to.
-      - Allowed values: `monthly_period`, `3_month_period`, `6_month_period`, `annual_period`
-    - `timestamp_seconds` (integer, required) — The timestamp of the change.
-    - `kind` ("change", optional, default: change)
-  - PendingCancellationResponseModel
-    - `timestamp_seconds` (integer, required) — The timestamp of the cancellation.
-    - `kind` ("cancellation", optional, default: cancellation)
+- `next_invoice` (InvoiceResponseModel, optional, nullable) — The next invoice for the user.
+- `pending_change` (ExtendedSubscriptionResponseModelPendingChange, optional, nullable) — The pending change for the user.
 - `has_used_starter_coupon_on_account` (boolean, optional, default: false) — True if any workspace owned by this user's auth account has redeemed the starter first-month discount coupon.
 - `has_used_creator_coupon_on_account` (boolean, optional, default: false) — True if any workspace owned by this user's auth account has redeemed the creator first-month discount coupon.
 
@@ -107,10 +68,66 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ExtendedSubscriptionResponseModelMaxCreditLimitExtension
+
+Maximum number of credits that the credit limit can be exceeded by. Managed by the workspace admin. `"unlimited"` means no cap, `0` means usage-based billing is disabled.
+
+### Price
+
+Currency/amount pair.
+
+- `amount` (string, required)
+- `currency` (enum, required)
+  - Allowed values: `usd`, `eur`, `inr`, `pln`, `gbp`
+
+### InvoiceResponseModel
+
+- `amount_due_cents` (integer, required) — The amount due in cents.
+- `discounts` (list of DiscountResponseModel, required) — The discounts applied to the invoice.
+- `next_payment_attempt_unix` (integer, required) — The Unix timestamp of the next payment attempt. -1 when there is no next payment attempt.
+- `payment_intent_status` (enum, required, nullable) — Deprecated. Use [payment_intent_statusses] instead. The status of this invoice's first payment intent. None when there is no payment intent.
+  - Allowed values: `canceled`, `processing`, `requires_action`, `requires_capture`, `requires_confirmation`, `requires_payment_method`, `succeeded`
+- `payment_intent_statusses` (list of enum, required) — The statuses of this invoice's payment intents. Empty list when there are no payment intents.
+  - Allowed values: `canceled`, `processing`, `requires_action`, `requires_capture`, `requires_confirmation`, `requires_payment_method`, `succeeded`
+- `subtotal_cents` (integer, optional, nullable) — The subtotal amount in cents before tax (exclusive of tax and discounts).
+- `tax_cents` (integer, optional, nullable) — The tax amount in cents.
+- `discount_percent_off` (double, optional, nullable) — Deprecated. Use [discounts] instead. The discount applied to the invoice. E.g. [20.0f] for 20% off.
+- `discount_amount_off` (double, optional, nullable) — Deprecated. Use [discounts] instead. The discount applied to the invoice. E.g. [20.0f] for 20 cents off.
+
+### ExtendedSubscriptionResponseModelPendingChange
+
+The pending change for the user.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### DiscountResponseModel
+
+- `discount_percent_off` (double, optional, nullable) — The discount applied to the invoice. E.g. [20.0f] for 20% off.
+- `discount_amount_off` (double, optional, nullable) — The discount applied to the invoice. E.g. [20.0f] for 20 cents off.
+
+### PendingSubscriptionSwitchResponseModel
+
+- `next_tier` (enum, required) — The tier to change to.
+  - Allowed values: `free`, `starter`, `go`, `creator`, `pro`, `growing_business`, `scale_2024_08_10`, `grant_tier_1_2025_07_23`, `grant_tier_2_2025_07_23`, `grant`, `trial`, `enterprise`
+- `next_billing_period` (enum, required) — The billing period to change to.
+  - Allowed values: `monthly_period`, `3_month_period`, `6_month_period`, `annual_period`
+- `timestamp_seconds` (integer, required) — The timestamp of the change.
+- `kind` ("change", optional, default: change)
+
+### PendingCancellationResponseModel
+
+- `timestamp_seconds` (integer, required) — The timestamp of the cancellation.
+- `kind` ("cancellation", optional, default: cancellation)
+
+### ValidationErrorLocItems
 
 ## Examples
 

@@ -277,3 +277,7 @@ If omitted when setting an icon, the color defaults to `"gray"`.
   })
   ```
 </CodeGroup>
+
+### Native icons from `external` URLs
+
+An `external` icon URL that points at Notion's built-in icon set, such as `https://www.notion.so/icons/pizza_blue.svg`, sets a native icon. Reading the page, database, or callout block back returns `type: "icon"` with that `name` and `color`, not `type: "external"`. A URL that names no real icon or color returns a `validation_error`. Prefer an `icon` object with `name` and `color` over building a URL.

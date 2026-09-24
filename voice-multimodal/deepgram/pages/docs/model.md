@@ -46,7 +46,9 @@ https://api.deepgram.com/v1/listen?model=nova-3
 
 Nova-3 represents a significant leap forward in speech AI technology, featuring substantial improvements in accuracy and real-world application capabilities. The model delivers industry-leading performance with a 53.4% reduction in word error rate (WER) for streaming and 47.4% for batch processing compared to competitors. Nova-3 introduces groundbreaking features including real-time multilingual conversation transcription, enhanced comprehension of domain-specific terminology, and optional personal information redaction. Notably, it's the first voice AI model to offer self-serve customization, enabling instant vocabulary adaptation without model retraining. In multilingual testing, Nova-3 demonstrated superior performance across all seven tested languages, with particularly strong results showing up to 8:1 preference ratios in certain languages.
 
-Nova-3 has the following model options which can be called by using the following syntax: `model=nova-3-{option}`
+> **Info**
+>
+> Nova-3 has the following model options which can be called by using the following syntax: `model=nova-3-{option}`
 
 * `general`: Optimized for everyday audio processing.
 * `medical`: Optimized for audio with medical oriented vocabulary.
@@ -70,7 +72,9 @@ https://api.deepgram.com/v1/listen?model=nova-2-phonecall
 
 Nova-2 expands on Nova-1's advancements with speech-specific optimizations to the underlying Transformer architecture, advanced data curation techniques, and a multi-stage training methodology. These changes yield reduced word error rate (WER) and enhancements to entity recognition (i.e. proper nouns, alphanumerics, etc.), punctuation, and capitalization.
 
-Nova-2 has the following model options which can be called by using the following syntax: `model=nova-2-{option}`
+> **Info**
+>
+> Nova-2 has the following model options which can be called by using the following syntax: `model=nova-2-{option}`
 
 * `general`: Optimized for everyday audio processing.
 * `meeting`: Optimized for conference room settings, which include multiple speakers with a single microphone.
@@ -102,7 +106,9 @@ https://api.deepgram.com/v1/listen?model=nova-phonecall
 
 Nova is the predecessor to Nova-2. Training on this model spans over 100 domains and 47 billion tokens, making it the deepest-trained automatic speech recognition (ASR) model to date. Nova doesn't just excel in one specific domain — it is ideal for a wide array of voice applications that require high accuracy in diverse contexts.
 
-Nova has the following model options which can be called by using the following syntax: `model=nova-{option}`
+> **Info**
+>
+> Nova has the following model options which can be called by using the following syntax: `model=nova-{option}`
 
 * `general`: Optimized for everyday audio processing. Likely to be more accurate than any region-specific Base model for the language for which it is enabled. If you aren't sure which model to select, start here.
 
@@ -126,7 +132,9 @@ https://api.deepgram.com/v1/listen?model=enhanced-phonecall
 
 Enhanced models are still some of our most powerful speech-to-text models; they generally have higher accuracy and better word recognition than our base models, and they handle uncommon words significantly better.
 
-Enhanced has the following model options which can be called by using the following syntax: `model=enhanced-{option}`
+> **Info**
+>
+> Enhanced has the following model options which can be called by using the following syntax: `model=enhanced-{option}`
 
 * `general`: Optimized for everyday audio processing. Likely to be more accurate than any region-specific Base model for the language for which it is enabled. If you aren't sure which model to select, start here.
 
@@ -156,7 +164,9 @@ https://api.deepgram.com/v1/listen?model=base-phonecall
 
 Base models are built on our signature end-to-end deep learning speech-to-text model architecture. They offer a solid combination of accuracy and cost effectiveness in some cases.
 
-Base has the following model options which can be called by using the following syntax: `model=base-{option}`
+> **Info**
+>
+> Base has the following model options which can be called by using the following syntax: `model=base-{option}`
 
 * `general`: (Default) Optimized for everyday audio processing.
 * `meeting`: Optimized for conference room settings, which include multiple speakers with a single microphone.
@@ -170,7 +180,9 @@ Base has the following model options which can be called by using the following 
 
 You may also use a custom, trained model associated with your account by including its `custom_id`.
 
-Custom models are only available to Enterprise customers. See [Deepgram Pricing & Plans](https://deepgram.com/pricing/) for more details.
+> **Info**
+>
+> Custom models are only available to Enterprise customers. See [Deepgram Pricing & Plans](https://deepgram.com/pricing/) for more details.
 
 ### Whisper
 
@@ -188,7 +200,9 @@ https://api.deepgram.com/v1/listen?model=whisper
 https://api.deepgram.com/v1/listen?model=whisper-SIZE
 ```
 
-Whisper models are less scalable than all other Deepgram models due to their inherent model architecture. All non-Whisper models will return results faster and scale to higher load.
+> **Warning**
+>
+> Whisper models are less scalable than all other Deepgram models due to their inherent model architecture. All non-Whisper models will return results faster and scale to higher load.
 
 Deepgram's Whisper Cloud is a fully managed API that gives you access to Deepgram's version of OpenAI’s Whisper model. Read our guide [Deepgram Whisper Cloud](/docs/deepgram-whisper-cloud) for a deeper dive into this offering.
 
@@ -200,7 +214,9 @@ Deepgram's Whisper models have the following size options:
 * `medium`: Contains 769 M parameters. The default model if you don't specify a size.
 * `large`: Contains 1550 M parameters. The largest model available. Defaults to OpenAI’s Whisper large-v2.
 
-Additional rate limits apply to Whisper due to poor scalability. Requests to Whisper are limited to 15 concurrent requests with a paid plan and 5 concurrent requests with the pay-as-you-go plan. Long audio files are supported up to a maximum of 20 minutes of processing time (the maximum length of the audio depends on the size of the Whisper model).
+> **Warning**
+>
+> Additional rate limits apply to Whisper due to poor scalability. Requests to Whisper are limited to 15 concurrent requests with a paid plan and 5 concurrent requests with the pay-as-you-go plan. Long audio files are supported up to a maximum of 20 minutes of processing time (the maximum length of the audio depends on the size of the Whisper model).
 
 ## Try it out
 
@@ -217,6 +233,8 @@ curl \
   --url 'https://api.deepgram.com/v1/listen?model=OPTION'
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
+> **Info**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
 
 ---

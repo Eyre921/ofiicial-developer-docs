@@ -12,7 +12,7 @@ url: https://docs.sentry.io/organization/early-adopter-features/
 
 # Early Adopter Features | Sentry Docs
 
-If you're interested in being an Early Adopter, you can turn your organization's Early Adopter status on/off in [**Settings > General Settings**](https://sentry.io/orgredirect/organizations/:orgslug/settings/organization/#isEarlyAdopter). This will affect all users in your organization and can be turned back off just as easily.
+If you're interested in being an Early Adopter, you can turn your organization's Early Adopter status on/off in [**Settings > General Settings**](https://sentry.io/orgredirect/organizations/:orgslug/settings/). This will affect all users in your organization and can be turned back off just as easily.
 
 This page lists the features that you'll have access to when you opt-in as "Early Adopter". Note that features are sometimes released to early adopters in waves, so you may not see a feature immediately upon enabling the "Early Adopter" setting.
 

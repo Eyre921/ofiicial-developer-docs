@@ -28,15 +28,7 @@ Reference: https://elevenlabs.io/docs/api-reference/workspace/dashboard/get
 
 Successful Response
 
-- `charts` (list of object, optional)
-  - `type`: `call_success` (DashboardCallSuccessChartModel)
-    - `name` (string, required)
-  - `type`: `criteria` (DashboardCriteriaChartModel)
-    - `criteria_id` (string, required)
-    - `name` (string, required)
-  - `type`: `data_collection` (DashboardDataCollectionChartModel)
-    - `data_collection_id` (string, required)
-    - `name` (string, required)
+- `charts` (list of GetConvAiDashboardSettingsResponseModelChartsItems, optional)
 
 ## Errors
 
@@ -44,10 +36,28 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### GetConvAiDashboardSettingsResponseModelChartsItems
+
+- `type`: `call_success` (DashboardCallSuccessChartModel)
+  - `name` (string, required)
+- `type`: `criteria` (DashboardCriteriaChartModel)
+  - `criteria_id` (string, required)
+  - `name` (string, required)
+- `type`: `data_collection` (DashboardDataCollectionChartModel)
+  - `data_collection_id` (string, required)
+  - `name` (string, required)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

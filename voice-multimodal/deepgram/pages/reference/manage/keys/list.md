@@ -37,15 +37,7 @@ Reference: https://developers.deepgram.com/reference/manage/keys/list
 
 A list of API keys
 
-- `api_keys` (list of object, optional)
-  - `member` (object, optional)
-    - `member_id` (string, optional)
-    - `email` (string, optional)
-  - `api_key` (object, optional)
-    - `api_key_id` (string, optional)
-    - `comment` (string, optional)
-    - `scopes` (list of string, optional)
-    - `created` (string, optional)
+- `api_keys` (list of ListProjectKeysV1ResponseApiKeysItems, optional)
 
 ## Errors
 
@@ -53,16 +45,39 @@ A list of API keys
 
 Invalid Request
 
-- `string or object or object`
-  - ErrorResponseLegacyError
-    - `err_code` (string, optional) — The error code
-    - `err_msg` (string, optional) — The error message
-    - `request_id` (string, optional) — The request ID
-  - ErrorResponseModernError
-    - `category` (string, optional) — The category of the error
-    - `message` (string, optional) — A message about the error
-    - `details` (string, optional) — A description of the error
-    - `request_id` (string, optional) — The unique identifier of the request
+- `ErrorResponse`
+
+## Types
+
+### ListProjectKeysV1ResponseApiKeysItems
+
+- `member` (ListProjectKeysV1ResponseApiKeysItemsMember, optional)
+- `api_key` (ListProjectKeysV1ResponseApiKeysItemsApiKey, optional)
+
+### ErrorResponseLegacyError
+
+- `err_code` (string, optional) — The error code
+- `err_msg` (string, optional) — The error message
+- `request_id` (string, optional) — The request ID
+
+### ErrorResponseModernError
+
+- `category` (string, optional) — The category of the error
+- `message` (string, optional) — A message about the error
+- `details` (string, optional) — A description of the error
+- `request_id` (string, optional) — The unique identifier of the request
+
+### ListProjectKeysV1ResponseApiKeysItemsMember
+
+- `member_id` (string, optional)
+- `email` (string, optional)
+
+### ListProjectKeysV1ResponseApiKeysItemsApiKey
+
+- `api_key_id` (string, optional)
+- `comment` (string, optional)
+- `scopes` (list of string, optional)
+- `created` (string, optional)
 
 ## Examples
 

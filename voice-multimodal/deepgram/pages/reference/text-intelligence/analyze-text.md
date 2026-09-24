@@ -30,27 +30,23 @@ Reference: https://developers.deepgram.com/reference/text-intelligence/analyze-t
 - `callback_method` (enum, optional, default: POST) — HTTP method by which the callback request will be made
   - Allowed values: `POST`, `PUT`
 - `sentiment` (boolean, optional, default: false) — Recognizes the sentiment throughout a transcript or text
-- `summarize` (enum or boolean, optional) — Summarize content. For Listen API, supports string version option. For Read API, accepts boolean only.
-- `tag` (string or list of string, optional) — Label your requests for the purpose of identification during usage reporting
+- `summarize` (V1ReadPostParametersSummarize, optional) — Summarize content. For Listen API, supports string version option. For Read API, accepts boolean only.
+- `tag` (V1ReadPostParametersTag, optional) — Label your requests for the purpose of identification during usage reporting
 - `topics` (boolean, optional, default: false) — Detect topics throughout a transcript or text
-- `custom_topic` (string or list of string, optional) — Custom topics you want the model to detect within your input audio or text if present Submit up to `100`.
+- `custom_topic` (V1ReadPostParametersCustomTopic, optional) — Custom topics you want the model to detect within your input audio or text if present Submit up to `100`.
 - `custom_topic_mode` (enum, optional, default: extended) — Sets how the model will interpret strings submitted to the `custom_topic` param. When `strict`, the model will only return topics submitted using the `custom_topic` param. When `extended`, the model will return its own detected topics in addition to those submitted using the `custom_topic` param
   - Allowed values: `extended`, `strict`
 - `intents` (boolean, optional, default: false) — Recognizes speaker intent throughout a transcript or text
-- `custom_intent` (string or list of string, optional) — Custom intents you want the model to detect within your input audio if present
+- `custom_intent` (V1ReadPostParametersCustomIntent, optional) — Custom intents you want the model to detect within your input audio if present
 - `custom_intent_mode` (enum, optional, default: extended) — Sets how the model will interpret intents submitted to the `custom_intent` param. When `strict`, the model will only return intents submitted using the `custom_intent` param. When `extended`, the model will return its own detected intents in the `custom_intent` param.
   - Allowed values: `extended`, `strict`
 - `language` (string, optional, default: en) — The [BCP-47 language tag](https://tools.ietf.org/html/bcp47) that hints at the primary spoken language. Depending on the Model and API endpoint you choose only certain languages are available
 
 ### Body (application/json)
 
-This endpoint expects an object or object.
+This endpoint expects a ReadV1Request.
 
-- `object or object`
-  - ReadV1RequestUrl
-    - `url` (string, required) — A URL pointing to the text source
-  - ReadV1RequestText
-    - `text` (string, required) — The plain text to analyze
+- `ReadV1Request`
 
 ## Response
 
@@ -58,62 +54,8 @@ This endpoint expects an object or object.
 
 Successful text analysis
 
-- `metadata` (object, required)
-  - `metadata` (object, optional)
-    - `request_id` (string, optional)
-    - `created` (string, optional)
-    - `language` (string, optional)
-    - `summary_info` (object, optional)
-      - `model_uuid` (string, optional)
-      - `input_tokens` (integer, optional)
-      - `output_tokens` (integer, optional)
-    - `sentiment_info` (object, optional)
-      - `model_uuid` (string, optional)
-      - `input_tokens` (integer, optional)
-      - `output_tokens` (integer, optional)
-    - `topics_info` (object, optional)
-      - `model_uuid` (string, optional)
-      - `input_tokens` (integer, optional)
-      - `output_tokens` (integer, optional)
-    - `intents_info` (object, optional)
-      - `model_uuid` (string, optional)
-      - `input_tokens` (integer, optional)
-      - `output_tokens` (integer, optional)
-- `results` (object, required)
-  - `summary` (object, optional) — Output whenever `summary=true` is used
-    - `results` (object, optional)
-      - `summary` (object, optional)
-        - `text` (string, optional)
-  - `topics` (object, optional) — Output whenever `topics=true` is used
-    - `results` (object, optional)
-      - `topics` (object, optional)
-        - `segments` (list of object, optional)
-          - `text` (string, optional)
-          - `start_word` (double, optional)
-          - `end_word` (double, optional)
-          - `topics` (list of object, optional)
-            - `topic` (string, optional)
-            - `confidence_score` (float, optional)
-  - `intents` (object, optional) — Output whenever `intents=true` is used
-    - `results` (object, optional)
-      - `intents` (object, optional)
-        - `segments` (list of object, optional)
-          - `text` (string, optional)
-          - `start_word` (double, optional)
-          - `end_word` (double, optional)
-          - `intents` (list of object, optional)
-            - `intent` (string, optional)
-            - `confidence_score` (float, optional)
-  - `sentiments` (object, optional) — Output whenever `sentiment=true` is used
-    - `segments` (list of object, optional)
-      - `text` (string, optional)
-      - `start_word` (double, optional)
-      - `end_word` (double, optional)
-      - `sentiment` (string, optional)
-      - `sentiment_score` (double, optional)
-    - `average` (object, optional)
-      - `sentiment` (string, optional)
-      - `sentiment_score` (double, optional)
+- `metadata` (ReadV1ResponseMetadata, required)
+- `results` (ReadV1ResponseResults, required)
 
 ## Errors
 
@@ -121,16 +63,169 @@ Successful text analysis
 
 Invalid Request
 
-- `string or object or object`
-  - ErrorResponseLegacyError
-    - `err_code` (string, optional) — The error code
-    - `err_msg` (string, optional) — The error message
-    - `request_id` (string, optional) — The request ID
-  - ErrorResponseModernError
-    - `category` (string, optional) — The category of the error
-    - `message` (string, optional) — A message about the error
-    - `details` (string, optional) — A description of the error
-    - `request_id` (string, optional) — The unique identifier of the request
+- `ErrorResponse`
+
+## Types
+
+### ReadV1RequestUrl
+
+- `url` (string, required) — A URL pointing to the text source
+
+### ReadV1RequestText
+
+- `text` (string, required) — The plain text to analyze
+
+### V1ReadPostParametersSummarize
+
+### V1ReadPostParametersTag
+
+### V1ReadPostParametersCustomTopic
+
+### V1ReadPostParametersCustomIntent
+
+### ReadV1ResponseMetadata
+
+- `metadata` (ReadV1ResponseMetadataMetadata, optional)
+
+### ReadV1ResponseResults
+
+- `summary` (ReadV1ResponseResultsSummary, optional) — Output whenever `summary=true` is used
+- `topics` (SharedTopics, optional) — Output whenever `topics=true` is used
+- `intents` (SharedIntents, optional) — Output whenever `intents=true` is used
+- `sentiments` (SharedSentiments, optional) — Output whenever `sentiment=true` is used
+
+### ErrorResponseLegacyError
+
+- `err_code` (string, optional) — The error code
+- `err_msg` (string, optional) — The error message
+- `request_id` (string, optional) — The request ID
+
+### ErrorResponseModernError
+
+- `category` (string, optional) — The category of the error
+- `message` (string, optional) — A message about the error
+- `details` (string, optional) — A description of the error
+- `request_id` (string, optional) — The unique identifier of the request
+
+### ReadV1ResponseMetadataMetadata
+
+- `request_id` (string, optional)
+- `created` (string, optional)
+- `language` (string, optional)
+- `summary_info` (ReadV1ResponseMetadataMetadataSummaryInfo, optional)
+- `sentiment_info` (ReadV1ResponseMetadataMetadataSentimentInfo, optional)
+- `topics_info` (ReadV1ResponseMetadataMetadataTopicsInfo, optional)
+- `intents_info` (ReadV1ResponseMetadataMetadataIntentsInfo, optional)
+
+### ReadV1ResponseResultsSummary
+
+Output whenever `summary=true` is used
+
+- `results` (ReadV1ResponseResultsSummaryResults, optional)
+
+### SharedTopics
+
+Output whenever `topics=true` is used
+
+- `results` (SharedTopicsResults, optional)
+
+### SharedIntents
+
+Output whenever `intents=true` is used
+
+- `results` (SharedIntentsResults, optional)
+
+### SharedSentiments
+
+Output whenever `sentiment=true` is used
+
+- `segments` (list of SharedSentimentsSegmentsItems, optional)
+- `average` (SharedSentimentsAverage, optional)
+
+### ReadV1ResponseMetadataMetadataSummaryInfo
+
+- `model_uuid` (string, optional)
+- `input_tokens` (integer, optional)
+- `output_tokens` (integer, optional)
+
+### ReadV1ResponseMetadataMetadataSentimentInfo
+
+- `model_uuid` (string, optional)
+- `input_tokens` (integer, optional)
+- `output_tokens` (integer, optional)
+
+### ReadV1ResponseMetadataMetadataTopicsInfo
+
+- `model_uuid` (string, optional)
+- `input_tokens` (integer, optional)
+- `output_tokens` (integer, optional)
+
+### ReadV1ResponseMetadataMetadataIntentsInfo
+
+- `model_uuid` (string, optional)
+- `input_tokens` (integer, optional)
+- `output_tokens` (integer, optional)
+
+### ReadV1ResponseResultsSummaryResults
+
+- `summary` (ReadV1ResponseResultsSummaryResultsSummary, optional)
+
+### SharedTopicsResults
+
+- `topics` (SharedTopicsResultsTopics, optional)
+
+### SharedIntentsResults
+
+- `intents` (SharedIntentsResultsIntents, optional)
+
+### SharedSentimentsSegmentsItems
+
+- `text` (string, optional)
+- `start_word` (double, optional)
+- `end_word` (double, optional)
+- `sentiment` (string, optional)
+- `sentiment_score` (double, optional)
+
+### SharedSentimentsAverage
+
+- `sentiment` (string, optional)
+- `sentiment_score` (double, optional)
+
+### ReadV1ResponseResultsSummaryResultsSummary
+
+- `text` (string, optional)
+
+### SharedTopicsResultsTopics
+
+- `segments` (list of SharedTopicsResultsTopicsSegmentsItems, optional)
+
+### SharedIntentsResultsIntents
+
+- `segments` (list of SharedIntentsResultsIntentsSegmentsItems, optional)
+
+### SharedTopicsResultsTopicsSegmentsItems
+
+- `text` (string, optional)
+- `start_word` (double, optional)
+- `end_word` (double, optional)
+- `topics` (list of SharedTopicsResultsTopicsSegmentsItemsTopicsItems, optional)
+
+### SharedIntentsResultsIntentsSegmentsItems
+
+- `text` (string, optional)
+- `start_word` (double, optional)
+- `end_word` (double, optional)
+- `intents` (list of SharedIntentsResultsIntentsSegmentsItemsIntentsItems, optional)
+
+### SharedTopicsResultsTopicsSegmentsItemsTopicsItems
+
+- `topic` (string, optional)
+- `confidence_score` (float, optional)
+
+### SharedIntentsResultsIntentsSegmentsItemsIntentsItems
+
+- `intent` (string, optional)
+- `confidence_score` (float, optional)
 
 ## Examples
 

@@ -20,11 +20,13 @@ When HIPAA compliance is required for a workspace, and to the extent a BAA has b
 2. **LLM Provider Restrictions** - Only LLM from providers with whom we have a BAA in place are available as preconfigured options
 3. **Storage Limitations** - Raw audio files and transcripts containing PHI are not retained
 
-If you want to use LLMs that aren't available preconfigured in Zero Retention Mode, you can still use them in ElevenAgents by:
-
-1. Arranging to sign a BAA directly with the LLM provider you'd like to use
-2. Using your API key with our Custom LLM integration
-3. Notify ElevenLabs Support of your intention to use a Custom LLM while Zero Retention Mode is active to have the setting enabled.
+> **Note**
+>
+> If you want to use LLMs that aren't available preconfigured in Zero Retention Mode, you can still use them in ElevenAgents by:
+>
+> 1. Arranging to sign a BAA directly with the LLM provider you'd like to use
+> 2. Using your API key with our Custom LLM integration
+> 3. Notify ElevenLabs Support of your intention to use a Custom LLM while Zero Retention Mode is active to have the setting enabled.
 
 To the extent Zero Retention Mode is engaged, ElevenLabs' platform is designed to ensure that PHI shared as part of a conversation is not stored or logged in any system component, including:
 
@@ -34,20 +36,24 @@ To the extent Zero Retention Mode is engaged, ElevenLabs' platform is designed t
 * Data analytics
 * System logs
 
-For ElevenAgents, your BAA applies only to the extent provided therein. To the extent you wish to
-forego Zero Retention Mode with respect to any ElevenLabs agent, no PHI should be submitted to the
-Service in connection therewith, and such agent is no longer deemed a covered service for purposes
-of the BAA. Notwithstanding anything to the contrary, while ElevenLabs' ElevenAgents Service,
-coupled with Zero Retention Mode, is designed to promote compliance with HIPAA, you are fully
-responsible for ensuring compliance with all obligations applicable to you and for ensuring your
-use of the Services is compliant with all applicable laws.
+> **Warning**
+>
+> For ElevenAgents, your BAA applies only to the extent provided therein. To the extent you wish to
+> forego Zero Retention Mode with respect to any ElevenLabs agent, no PHI should be submitted to the
+> Service in connection therewith, and such agent is no longer deemed a covered service for purposes
+> of the BAA. Notwithstanding anything to the contrary, while ElevenLabs' ElevenAgents Service,
+> coupled with Zero Retention Mode, is designed to promote compliance with HIPAA, you are fully
+> responsible for ensuring compliance with all obligations applicable to you and for ensuring your
+> use of the Services is compliant with all applicable laws.
 
 ## Enterprise customers
 
-Execution of a BAA, as may be required by HIPAA, is only available for Enterprise tier
-subscriptions. Contact your account representative to discuss further. PHI should not be submitted
-to the ElevenLabs Services unless a BAA is in place and only to the extent permitted under such
-BAA.
+> **Note**
+>
+> Execution of a BAA, as may be required by HIPAA, is only available for Enterprise tier
+> subscriptions. Contact your account representative to discuss further. PHI should not be submitted
+> to the ElevenLabs Services unless a BAA is in place and only to the extent permitted under such
+> BAA.
 
 ## Available LLMs
 
@@ -111,7 +117,9 @@ When operating in Zero Retention Mode, only the following LLMs are available:
 * Qwen3.5-397b-a17b
 * GLM-5.2
 
-Qwen3.5-397b-a17b is not currently available in non-US residency workspaces that use ZRM.
+> **Note**
+>
+> Qwen3.5-397b-a17b is not currently available in non-US residency workspaces that use ZRM.
 
 #### Custom LLMs
 
@@ -133,17 +141,17 @@ When working with Zero Retention Mode agents:
 #### LLMs (except the available LLMs as described above) are disabled in the UI
 
 ![Redacted conversation analysis showing Zero Retention Mode in
-action](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/01ba5fbc3d5d4a06a127f488d818428304c3f0d9500fd7931a7e4c05f8f15dab/assets/images/conversational-ai/hipaa-model.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T095711Z&X-Amz-Expires=604800&X-Amz-Signature=7a29879d02aadc2e459a1a1d48db9bc637524f25bc3d262161dbdb49913fde3d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+action](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/01ba5fbc3d5d4a06a127f488d818428304c3f0d9500fd7931a7e4c05f8f15dab/assets/images/conversational-ai/hipaa-model.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113232Z&X-Amz-Expires=604800&X-Amz-Signature=a44f32e9db096002014924215929eff90b0e7cc1ea7c6c4ec364705dd48cdc57&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Content is redacted from content history
 
 ![Redacted conversation history showing Zero Retention Mode in
-action](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/af6abcc7d19b503a11e2daa6f9ca41eaab25be1b06417f448338ca3c4ef0b63f/assets/images/conversational-ai/redacted.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T095711Z&X-Amz-Expires=604800&X-Amz-Signature=544b7abfa6e29c7fb2e2d9c3f31e8f251e17866f1fae8443af7b43eeea79c9b4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+action](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/af6abcc7d19b503a11e2daa6f9ca41eaab25be1b06417f448338ca3c4ef0b63f/assets/images/conversational-ai/redacted.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113232Z&X-Amz-Expires=604800&X-Amz-Signature=f3b893757dcaa86d56aaf1f34ff500d46ada40fd5f4ae6bce0ca1da922f0ed36&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Conversation analysis is limited
 
 ![Redacted conversation analysis showing HIPAA compliance in
-action](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7dd246148456ae24c454a9f55d70f730fc1183b1a0b3270c9191d259af5081bb/assets/images/conversational-ai/redacted-summary.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T095711Z&X-Amz-Expires=604800&X-Amz-Signature=7b38806eaf3894aad7e4c6cb645cf448522321dc83869212986420b3b1cb74de&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+action](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7dd246148456ae24c454a9f55d70f730fc1183b1a0b3270c9191d259af5081bb/assets/images/conversational-ai/redacted-summary.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113232Z&X-Amz-Expires=604800&X-Amz-Signature=b3b8012e7a596a2d545740c30345b1aa1736164209c5c88097440e7774d8e509&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### API restrictions are enforced
 

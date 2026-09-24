@@ -56,4 +56,6 @@ Each Zapier action can be assigned to:
 * **Business assistant** — Used in dashboard chat
 * **Both** — Available everywhere
 
-Zapier integration requires the **Plus** plan or higher.
+> **Note**
+>
+> Zapier integration requires the **Plus** plan or higher.

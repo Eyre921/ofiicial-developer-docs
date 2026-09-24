@@ -32,7 +32,7 @@ Reference: https://elevenlabs.io/docs/api-reference/voices/pvc/samples/update
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_Update_PVC_voice_sample_v1_voices_pvc__voice_id__samples__sample_id__post.
 
 - `remove_background_noise` (boolean, optional, default: false) — If set will remove background noise for voice samples using our audio isolation model. If the samples do not include background noise, it can make the quality worse.
 - `selected_speaker_ids` (list of string, optional, nullable) — Speaker IDs to be used for PVC training. Make sure you send all the speaker IDs you want to use for PVC training in one request because the last request will override the previous ones.
@@ -54,10 +54,17 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

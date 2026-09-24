@@ -19,15 +19,19 @@ While there are many individual techniques, we'll group them into **four princip
 3. [Consider geographic proximity](#consider-geographic-proximity)
 4. [Choose appropriate voices](#choose-appropriate-voices)
 
-Enterprise customers benefit from increased concurrency limits and priority access to our rendering queue. [Contact sales](https://elevenlabs.io/contact-sales) to learn more about our enterprise
-plans.
+> **Success**
+>
+> Enterprise customers benefit from increased concurrency limits and priority access to our rendering queue. [Contact sales](https://elevenlabs.io/contact-sales) to learn more about our enterprise
+> plans.
 
 ## Use Flash models
 
 [Flash models](/docs/overview/models#flash-v25) deliver \~75ms inference speeds, making them ideal for real-time applications. The trade-off is a slight reduction in audio quality compared to [Multilingual v2](/docs/overview/models#multilingual-v2).
 
-75ms refers to model inference time only. Actual end-to-end latency will vary with factors such as
-your location & endpoint type used.
+> **Info**
+>
+> 75ms refers to model inference time only. Actual end-to-end latency will vary with factors such as
+> your location & endpoint type used.
 
 ## Leverage streaming
 
@@ -41,15 +45,19 @@ There are three types of text-to-speech endpoints available in our [API Referenc
 
 Streaming endpoints progressively return audio as it is being generated in real-time, reducing the time-to-first-byte. This endpoint is recommended for cases where the input text is available up-front.
 
-Streaming is supported for the [Text to Speech](/docs/api-reference/text-to-speech/stream) API,
-[Voice Changer](/docs/api-reference/speech-to-speech/stream) API & [Audio Isolation](/docs/api-reference/audio-isolation/stream) API.
+> **Info**
+>
+> Streaming is supported for the [Text to Speech](/docs/api-reference/text-to-speech/stream) API,
+> [Voice Changer](/docs/api-reference/speech-to-speech/stream) API & [Audio Isolation](/docs/api-reference/audio-isolation/stream) API.
 
 ### Websockets
 
 The [text-to-speech websocket endpoint](/docs/api-reference#text-to-speech-websocket) supports bidirectional streaming making it perfect for applications with real-time text input (e.g. LLM outputs).
 
-Setting `auto_mode` to true automatically handles generation triggers, removing the need to
-manually manage chunk strategies.
+> **Tip**
+>
+> Setting `auto_mode` to true automatically handles generation triggers, removing the need to
+> manually manage chunk strategies.
 
 If `auto_mode` is disabled, the model will wait for enough text to match the chunk schedule before starting to generate audio.
 
@@ -66,7 +74,9 @@ We have observed that in some cases, voice selection can impact latency. Here's 
 
 Higher audio quality output formats can increase latency. Be sure to balance your latency requirements with audio fidelity needs.
 
-We are actively working on optimizing PVC latency for Flash v2.5.
+> **Info**
+>
+> We are actively working on optimizing PVC latency for Flash v2.5.
 
 ## Consider geographic proximity
 
@@ -85,9 +95,11 @@ For example, using Flash models with Websockets, you can expect the following TT
 You can check which backend region is serving your request by inspecting the `x-region` header in the API response.
 Currently used regions include: USA, Netherlands and Singapore.
 
-Enterprise customers can use our dedicated EU and India data residency environments for guarantees
-about the server location as well as low latency. Contact your sales representative to get
-onboarded to our data residency infrastructure.
+> **Info**
+>
+> Enterprise customers can use our dedicated EU and India data residency environments for guarantees
+> about the server location as well as low latency. Contact your sales representative to get
+> onboarded to our data residency infrastructure.
 
 To opt-out of the global routing and always use USA servers, use the `api.us.elevenlabs.io` base URL for your API requests:
 
@@ -125,6 +137,8 @@ curl -X POST -v "https://api.us.elevenlabs.io/v1/text-to-speech/{voice_id}" \
   }'
 ```
 
-The global servers were previously opt-in using the `api-global-preview.elevenlabs.io` base URL.
-This is no longer necessary as it is now the default behavior. Please update your applications to
-simply use `api.elevenlabs.io` instead.
+> **Warning**
+>
+> The global servers were previously opt-in using the `api-global-preview.elevenlabs.io` base URL.
+> This is no longer necessary as it is now the default behavior. Please update your applications to
+> simply use `api.elevenlabs.io` instead.

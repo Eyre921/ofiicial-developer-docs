@@ -10,7 +10,9 @@ path: guides/fundamentals/authenticating
 
 # Authenticating
 
-If you need to create and distribute short-lived tokens for API requests, you can use the [token-based Auth API](/reference/auth/tokens/grant).
+> **Info**
+>
+> If you need to create and distribute short-lived tokens for API requests, you can use the [token-based Auth API](/reference/auth/tokens/grant).
 
 Deepgram's API uses API keys to authenticate requests. You can view and manage your API keys in the [Deepgram Console](https://console.deepgram.com) or through the [Deepgram API](/reference/deepgram-api-overview).
 

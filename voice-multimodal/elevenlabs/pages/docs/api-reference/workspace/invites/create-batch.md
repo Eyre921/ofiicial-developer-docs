@@ -27,7 +27,7 @@ Reference: https://elevenlabs.io/docs/api-reference/workspace/invites/create-bat
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_Invite_multiple_users_v1_workspace_invites_add_bulk_post.
 
 - `emails` (list of string, required) — The email of the customer
 - `seat_type` (enum, optional, nullable) — The seat type of the user
@@ -49,10 +49,17 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

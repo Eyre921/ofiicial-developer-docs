@@ -256,6 +256,8 @@ No. Langfuse already ran on ClickHouse. The [announcement](/blog/joining-clickho
 
 Keep your OpenInference instrumentation and point it at Langfuse's OTLP endpoint, then recreate datasets, prompts, and evaluators. See [Switching from Arize](#switching-from-arize).
 
+[Ask another question](/docs/ask-ai)
+
   This comparison is out of date? Please [raise a pull request](https://github.com/langfuse/langfuse-docs/blob/main/content/compare/arize-phoenix.mdx) with up-to-date information.
 
 <!-- agent-instructions -->

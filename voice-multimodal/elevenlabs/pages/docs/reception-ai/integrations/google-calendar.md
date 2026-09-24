@@ -58,5 +58,7 @@ If the sidebar shows a warning indicator next to a staff member:
 
 To fix, go to **Integrations** → **Google Calendar** → click the affected staff member → **Reconnect**.
 
-If a staff member's Google Calendar connection is unhealthy, their availability won't include
-Google Calendar data. This may lead to double-bookings until resolved.
+> **Warning**
+>
+> If a staff member's Google Calendar connection is unhealthy, their availability won't include
+> Google Calendar data. This may lead to double-bookings until resolved.

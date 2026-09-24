@@ -12,9 +12,11 @@ WebSocket streaming is a method of sending and receiving data over a single, lon
 
 If you want to quickly test out the latency (time to first byte) of a WebSocket connection to the ElevenLabs text-to-speech API, you can install `elevenlabs-latency` via `npm` and follow the instructions [here](https://www.npmjs.com/package/elevenlabs-latency?activeTab=readme).
 
-WebSockets are available for Text to Speech and the Agents Platform. This guide covers the **Text
-to Speech** WebSocket (`/v1/text-to-speech/{voice_id}/stream-input`). That endpoint does **not**
-support the `eleven_v3` model. For **Eleven v3** dialogue over a WebSocket, see [Realtime Text to Dialogue](/docs/eleven-api/guides/how-to/websockets/realtime-tdd) and [Text to Speech vs Text to Dialogue WebSockets](/docs/eleven-api/guides/how-to/websockets/tts-vs-ttd-websockets).
+> **Note**
+>
+> WebSockets are available for Text to Speech and the Agents Platform. This guide covers the **Text
+> to Speech** WebSocket (`/v1/text-to-speech/{voice_id}/stream-input`). That endpoint does **not**
+> support the `eleven_v3` model. For **Eleven v3** dialogue over a WebSocket, see [Realtime Text to Dialogue](/docs/eleven-api/guides/how-to/websockets/realtime-tdd) and [Text to Speech vs Text to Dialogue WebSockets](/docs/eleven-api/guides/how-to/websockets/tts-vs-ttd-websockets).
 
 ## Requirements
 
@@ -263,7 +265,7 @@ To manage this, you can use the `chunk_length_schedule` parameter when either in
 
 Here's an example of how this works with the default settings for `chunk_length_schedule`:
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/077efc232570b0f92355aed2d6766b66bba815e335466e81cd64f8dfcce10ada/assets/images/developer-guides/buffering-explainer.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113352Z&X-Amz-Expires=604800&X-Amz-Signature=68980734f1ea3201ff2c171ccffcefb396f5effe37da6ebdf718e8be849691be&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/077efc232570b0f92355aed2d6766b66bba815e335466e81cd64f8dfcce10ada/assets/images/developer-guides/buffering-explainer.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T111306Z&X-Amz-Expires=604800&X-Amz-Signature=ed294c638e0661d2665aae4525ca9b31c83c17dc0da29534c4fa9325c3e8512d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 In the above diagram, audio is only generated after the second message is sent to the server. This is because the first message is below the threshold of 120 characters, while the second message brings the total number of characters above the threshold. The third message is above the threshold of 160 characters, so audio is immediately generated and returned to the client.
 
@@ -293,7 +295,7 @@ websocket.send(
 
 In the case that you want force the immediate return of the audio, you can use `flush: true` to clear out the buffer and force generate any buffered text. This can be useful, for example, when you have reached the end of a document and want to generate audio for the final section.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/84011e01024effe1bba1556f0007c7947165a0101bce3a41f8b955d1a9788a9c/assets/images/developer-guides/buffering-flush-explainer.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113352Z&X-Amz-Expires=604800&X-Amz-Signature=dc203fd99f9695cbaea2db79f5a9300914dd325e899fd2c3dd2307bc2195dbb3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/84011e01024effe1bba1556f0007c7947165a0101bce3a41f8b955d1a9788a9c/assets/images/developer-guides/buffering-flush-explainer.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T111306Z&X-Amz-Expires=604800&X-Amz-Signature=aa7737496b6753fd1f23b3a08228b77e455cf97f4406a23646ef188adf261cf5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 This can be specified on a per-message basis by setting `flush: true` in the message.
 
@@ -335,11 +337,13 @@ You can use pronunciation dictionaries to control the pronunciation of specific 
 
 Unlike `voice_settings` and `generation_config`, pronunciation dictionaries must be specified in the "Initialize Connection" message. See the [API Reference](/docs/api-reference/text-to-speech/v-1-text-to-speech-voice-id-stream-input#send.Initialize%20Connection.pronunciation_dictionary_locators) for more information.
 
-When using phoneme-based pronunciation dictionaries with WebSockets, you must add `enable_ssml_parsing=true` as a query parameter to the WebSocket URI. For example:
-
-```
-wss://api.elevenlabs.io/v1/text-to-speech/{voice_id}/stream-input?model_id={model_id}&enable_ssml_parsing=true
-```
+> **Tip**
+>
+> When using phoneme-based pronunciation dictionaries with WebSockets, you must add `enable_ssml_parsing=true` as a query parameter to the WebSocket URI. For example:
+>
+> ```
+> wss://api.elevenlabs.io/v1/text-to-speech/{voice_id}/stream-input?model_id={model_id}&enable_ssml_parsing=true
+> ```
 
 ## Best practice
 

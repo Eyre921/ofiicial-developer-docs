@@ -110,10 +110,11 @@ Configuration is done via the application `AndroidManifest.xml`. Here's an examp
     android:name="io.sentry.dsn"
     android:value="https://<key>@o<orgId>.ingest.sentry.io/<projectId>"
   />
-  <!-- Add data like request headers, user ip address and device name, see https://docs.sentry.io/platforms/android/data-management/data-collected/ for more info -->
+  <!-- Use Data Collection defaults but don't collect automatic user information. -->
+  <!-- https://docs.sentry.io/platforms/android/data-management/data-collected/ -->
   <meta-data
-    android:name="io.sentry.send-default-pii"
-    android:value="true"
+    android:name="io.sentry.data-collection.user-info"
+    android:value="false"
   />
   <!-- ___PRODUCT_OPTION_START___ performance -->
   <!-- Enable the performance API by setting a sample-rate, adjust in production env -->

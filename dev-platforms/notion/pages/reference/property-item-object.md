@@ -4,679 +4,274 @@ source: https://developers.notion.com/reference/property-item-object
 path: reference/property-item-object
 ---
 
+Reference for single property items, paginated values, and rollup results.
+
 ## Overview
 
-A `property_item` object describes the identifier, type, and value of a page property. It's returned from the [Retrieve a page property item](/reference/retrieve-a-page-property) API.
+[Retrieve a page property item](/reference/retrieve-a-page-property) reads one property on one page. It returns either a `property_item` object or a `list` of property items. The type determines the response shape.
 
-Generally, the details on this page are the same as those in [Page properties](/reference/page-property-values), but with tweaks and additional information specific to the retrieve page property item endpoint, such as [value pagination](#paginated-values) .
+The [page property values reference](/reference/page-property-values) defines each value type. Its examples include a Property item tab. This page defines the response wrapper and pagination rules.
 
 ## Common fields
 
-Each page property item object contains the following keys. In addition, it will contain a key corresponding with the value of `type`. The value is an object containing type-specific data. The type-specific data are described in the sections below.
+| Field               | Type   | Meaning                                                                            |
+| :------------------ | :----- | :--------------------------------------------------------------------------------- |
+| `object`            | String | Always `property_item` for an individual item.                                     |
+| `id`                | String | The property ID, shared by all items in that property. It is not a unique item ID. |
+| `type`              | String | The property type.                                                                 |
+| Key matching `type` | Varies | A single value of that type.                                                       |
 
-| Property | Type              | Description                                                                                                                                                                                                                                                                                                               | Example value     |
-| :------- | :---------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :---------------- |
-| `object` | `"property_item"` | Always `"property_item"`.                                                                                                                                                                                                                                                                                                 | `"property_item"` |
-| `id`     | `string`          | Underlying identifier for the property. This identifier is guaranteed to remain constant when the property name changes. It may be a UUID, but is often a short random string. <br /><br /> The `id` may be used in place of `name` when creating or updating pages.                                                      | `"f%5C%5C%3Ap"`   |
-| `type`   | `string` (enum)   | Type of the property. Possible values are `"rich_text"`, `"number"`, `"select"`, `"multi_select"`, `"date"`, `"formula"`, `"relation"`, `"rollup"`, `"title"`, `"people"`, `"files"`, `"checkbox"`, `"url"`, `"email"`, `"phone_number"`, `"created_time"`, `"created_by"`, `"last_edited_time"`, and `"last_edited_by"`. | `"rich_text"`     |
+A property’s `id` stays the same when its name changes. IDs can be short strings or UUIDs. The Name property always has the ID `title`.
+
+Responses use URL-encoded property IDs, such as `f%5C%5C%3Ap`. Pass the returned ID as-is to the SDK or in an API path. Don’t encode it a second time. You can also use a property ID as a key in a request’s `properties` object.
+
+## Response shape by type
+
+Single-item responses use the same value shape as page responses. Follow a type link for its fields, write rules, and JSON examples.
+
+| Type                                                                           | Response                                                   |
+| :----------------------------------------------------------------------------- | :--------------------------------------------------------- |
+| <span />[`button`](/reference/page-property-values#button)                     | One property item.                                         |
+| <span />[`checkbox`](/reference/page-property-values#checkbox)                 | One property item.                                         |
+| <span />[`created_by`](/reference/page-property-values#created-by)             | One property item.                                         |
+| <span />[`created_time`](/reference/page-property-values#created-time)         | One property item.                                         |
+| <span />[`date`](/reference/page-property-values#date)                         | One property item.                                         |
+| <span />[`email`](/reference/page-property-values#email)                       | One property item.                                         |
+| <span />[`files`](/reference/page-property-values#files)                       | One property item.                                         |
+| [`formula`](/reference/page-property-values#formula)                           | One property item.                                         |
+| <span />[`last_edited_by`](/reference/page-property-values#last-edited-by)     | One property item.                                         |
+| <span />[`last_edited_time`](/reference/page-property-values#last-edited-time) | One property item.                                         |
+| <span />[`multi_select`](/reference/page-property-values#multi-select)         | One property item.                                         |
+| <span />[`number`](/reference/page-property-values#number)                     | One property item.                                         |
+| <span />[`people`](/reference/page-property-values#people)                     | A paginated list; each item contains one user object.      |
+| <span />[`phone_number`](/reference/page-property-values#phone-number)         | One property item.                                         |
+| <span />[`place`](/reference/page-property-values#place)                       | One property item.                                         |
+| <span />[`relation`](/reference/page-property-values#relation)                 | A paginated list; each item contains one page reference.   |
+| <span />[`rich_text`](/reference/page-property-values#rich-text)               | A paginated list; each item contains one rich text object. |
+| [`rollup`](/reference/page-property-values#rollup)                             | A paginated list with metadata in `property_item.rollup`.  |
+| <span />[`select`](/reference/page-property-values#select)                     | One property item.                                         |
+| [`status`](/reference/page-property-values#status)                             | One property item.                                         |
+| <span />[`title`](/reference/page-property-values#title)                       | A paginated list; each item contains one rich text object. |
+| <span />[`unique_id`](/reference/page-property-values#unique-id)               | One property item.                                         |
+| <span />[`url`](/reference/page-property-values#url)                           | One property item.                                         |
+| <span />[`verification`](/reference/page-property-values#verification)         | One property item.                                         |
+
+## Status
+
+Status is a single property item. The response is not wrapped in a property name or a `properties` object.
+
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Status": {
+        "id": "stat",
+        "name": "Status",
+        "description": null,
+        "type": "status",
+        "status": {
+          "options": [
+            {
+              "id": "330aeafb-598c-4e1c-bc13-1148aa5963d3",
+              "name": "In progress",
+              "color": "blue",
+              "description": null
+            }
+          ],
+          "groups": [
+            {
+              "id": "b9d42483-e576-4858-a26f-ed940a5f678f",
+              "name": "To-do",
+              "color": "gray",
+              "option_ids": []
+            },
+            {
+              "id": "cf4952eb-1265-46ec-86ab-4bded4fa2e3b",
+              "name": "In progress",
+              "color": "blue",
+              "option_ids": [
+                "330aeafb-598c-4e1c-bc13-1148aa5963d3"
+              ]
+            },
+            {
+              "id": "4fa7348e-ae74-46d9-9585-e773caca6f40",
+              "name": "Complete",
+              "color": "green",
+              "option_ids": []
+            }
+          ]
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Status": {
+        "id": "stat",
+        "type": "status",
+        "status": {
+          "id": "330aeafb-598c-4e1c-bc13-1148aa5963d3",
+          "name": "In progress",
+          "color": "blue"
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page write">
+    ```json Page write theme={null}
+    {
+      "properties": {
+        "Status": {
+          "status": {
+            "name": "In progress"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "stat",
+      "type": "status",
+      "status": {
+        "id": "330aeafb-598c-4e1c-bc13-1148aa5963d3",
+        "name": "In progress",
+        "color": "blue"
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
 
 ## Paginated values
 
-The [`title`, `rich_text`, `relation` and `people`](/reference/retrieve-a-page-property#paginated-properties) property items of are returned as a paginated `list` object of individual `property_item` objects in the results. An abridged set of the the properties found in the `list` object are found below; see the [Pagination](/reference/pagination) documentation for additional information.
+`title`, `rich_text`, `people`, and `relation` always return a list, even if there is only one item. Empty values return `results: []`. Multi-select and files return a single property item whose value is an array.
 
-| Property        | Type               | Description                                                   | Example value                                                                                                                      |
-| :-------------- | :----------------- | :------------------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------- |
-| `object`        | `"list"`           | Always `"list"`.                                              | `"list"`                                                                                                                           |
-| `type`          | `"property_item"`  | Always `"property_item"`.                                     | `"property_item"`                                                                                                                  |
-| `results`       | `list`             | List of `property_item` objects.                              | `[{"object": "property_item", "id": "vYdV", "type": "relation", "relation": { "id": "535c3fb2-95e6-4b37-a696-036e5eac5cf6"}}... ]` |
-| `property_item` | `object`           | A `property_item` object that describes the property.         | `{"id": "title", "next_url": null, "type": "title", "title": {}}`                                                                  |
-| `next_url`      | `string` or `null` | The URL the user can request to get the next page of results. | `"http://api.notion.com/v1/pages/0e5235bf86aa4efb93aa772cce7eab71/properties/vYdV?start_cursor=LYxaUO&page_size=25"`               |
+| Field                    | Type             | Meaning                                                                             |
+| :----------------------- | :--------------- | :---------------------------------------------------------------------------------- |
+| `object`                 | String           | `list`.                                                                             |
+| `type`                   | String           | `property_item`.                                                                    |
+| `results`                | Array            | The property items in this response.                                                |
+| `has_more`               | Boolean          | Whether another page of results exists.                                             |
+| `next_cursor`            | String or `null` | Pass this as `start_cursor` in the next request.                                    |
+| `property_item`          | Object           | Metadata for the property being retrieved.                                          |
+| `property_item.id`       | String           | The requested property ID.                                                          |
+| `property_item.type`     | String           | The requested property type.                                                        |
+| `property_item.next_url` | String or `null` | The URL for the next request. This field is nested, not top-level.                  |
+| `property_item.{type}`   | Object           | Empty for the four list types above. Rollups include a result or calculation state. |
 
-## Title
+The metadata under `property_item` is not an individual result and has no `object` field. For a relation item, the nested `relation.id` identifies the related page; the item’s own `id` identifies the property.
 
-Title property value objects contain an array of [rich text objects](/reference/rich-text) within the `title` property.
-
-<CodeGroup>
-  ```json Title property value expandable theme={null}
-  {
-    "Name": {
-      "object": "list",
-      "results": [
-        {
-          "object": "property_item",
-          "id": "title",
-          "type": "title",
-          "title": {
-            "type": "text",
-            "text": {
-              "content": "The title",
-              "link": null
-            },
-            "annotations": {
-              "bold": false,
-              "italic": false,
-              "strikethrough": false,
-              "underline": false,
-              "code": false,
-              "color": "default"
-            },
-            "plain_text": "The title",
-            "href": null
-          }
-        }
-      ],
-      "next_cursor": null,
-      "has_more": false,
-      "type": "property_item",
-      "property_item": {
-        "id": "title",
-        "next_url": null,
-        "type": "title",
-        "title": {}
-      }
-    }
-  }
-  ```
-</CodeGroup>
-
-## Rich text
-
-Rich text property value objects contain an array of [rich text objects](/reference/rich-text) within the `rich_text` property.
-
-<CodeGroup>
-  ```json Rich text property value expandable theme={null}
-  {
-    "Details": {
-      "object": "list",
-      "results": [
-        {
-          "object": "property_item",
-          "id": "NVv%5E",
-          "type": "rich_text",
-          "rich_text": {
-            "type": "text",
-            "text": {
-              "content": "Some more text with ",
-              "link": null
-            },
-            "annotations": {
-              "bold": false,
-              "italic": false,
-              "strikethrough": false,
-              "underline": false,
-              "code": false,
-              "color": "default"
-            },
-            "plain_text": "Some more text with ",
-            "href": null
-          }
-        },
-        {
-          "object": "property_item",
-          "id": "NVv%5E",
-          "type": "rich_text",
-          "rich_text": {
-            "type": "text",
-            "text": {
-              "content": "fun formatting",
-              "link": null
-            },
-            "annotations": {
-              "bold": false,
-              "italic": true,
-              "strikethrough": false,
-              "underline": false,
-              "code": false,
-              "color": "default"
-            },
-            "plain_text": "fun formatting",
-            "href": null
-          }
-        }
-      ],
-      "next_cursor": null,
-      "has_more": false,
-      "type": "property_item",
-      "property_item": {
-        "id": "NVv^",
-        "next_url": null,
-        "type": "rich_text",
-        "rich_text": {}
-      }
-    }
-  }
-  ```
-</CodeGroup>
-
-## Number
-
-Number property value objects contain a number within the `number` property.
-
-<CodeGroup>
-  ```json Number property value expandable theme={null}
-  {
-    "Quantity": {
+```json First page of a relation, with page_size=1 theme={null}
+{
+  "object": "list",
+  "results": [
+    {
       "object": "property_item",
-      "id": "XpXf",
-      "type": "number",
-      "number": 1234
+      "id": "proj",
+      "type": "relation",
+      "relation": { "id": "dd456007-6c66-4bba-957e-ea501dcda3a6" }
     }
+  ],
+  "next_cursor": "opaque-cursor",
+  "has_more": true,
+  "type": "property_item",
+  "property_item": {
+    "id": "proj",
+    "next_url": "https://api.notion.com/v1/pages/60bdc8bd-3880-44b8-a9cd-8a145b3ffbd7/properties/proj?start_cursor=opaque-cursor&page_size=1",
+    "type": "relation",
+    "relation": {}
   }
-  ```
-</CodeGroup>
+}
+```
 
-## Select
+Continue with `next_cursor` until `has_more` is `false`. In the final response, `next_cursor` and `property_item.next_url` are `null`. Treat cursors as opaque strings; do not build or interpret them.
 
-Select property value objects contain the following data within the `select` property:
+The [pagination reference](/reference/pagination) defines `start_cursor` and `page_size`. For a complete SDK example, see [Read every item in a page property](/guides/data-apis/read-page-property-values).
 
-| Property | Type              | Description                                                                                                                                                                                                                                                                                                                               | Example value                            |
-| :------- | :---------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------- |
-| `id`     | `string` (UUIDv4) | ID of the option. <br /><br /> When updating a select property, you can use either `name` or `id`.                                                                                                                                                                                                                                        | `"b3d773ca-b2c9-47d8-ae98-3c2ce3b2bffb"` |
-| `name`   | `string`          | Name of the option as it appears in Notion. <br /><br /> If the select [database property](/reference/property-object) does not yet have an option by that name, it will be added to the database schema if the connection also has write access to the parent database. <br /><br /> Note: Commas (",") are not valid for select values. | `"Fruit"`                                |
-| `color`  | `string` (enum)   | Color of the option. Possible values are: `"default"`, `"gray"`, `"brown"`, `"red"`, `"orange"`, `"yellow"`, `"green"`, `"blue"`, `"purple"`, `"pink"`. <br /><br /> Defaults to `"default"`. Not currently editable.                                                                                                                     | `"red"`                                  |
+<span />
 
-<CodeGroup>
-  ```json Select property value theme={null}
-  {
-    "Option": {
-      "object": "property_item",
-      "id": "%7CtzR",
-      "type": "select",
-      "select": {
-        "id": "64190ec9-e963-47cb-bc37-6a71d6b71206",
-        "name": "Option 1",
-        "color": "orange"
-      }
-    }
-  }
-  ```
-</CodeGroup>
-
-## Multi-select
-
-Multi-select property value objects contain an array of multi-select option values within the `multi_select` property.
-
-### Option values
-
-| Property | Type              | Description                                                                                                                                                                                                                                                                                                                                     | Example value                            |
-| :------- | :---------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------- |
-| `id`     | `string` (UUIDv4) | ID of the option. When updating a multi-select property, you can use either `name` or `id`.                                                                                                                                                                                                                                                     | `"b3d773ca-b2c9-47d8-ae98-3c2ce3b2bffb"` |
-| `name`   | `string`          | Name of the option as it appears in Notion. <br /><br /> If the multi-select [database property](/reference/property-object) does not yet have an option by that name, it will be added to the database schema if the connection also has write access to the parent database. <br /><br /> Note: Commas (",") are not valid for select values. | `"Fruit"`                                |
-| `color`  | `string` (enum)   | Color of the option. Possible values are: `"default"`, `"gray"`, `"brown"`, `"red"`, `"orange"`, `"yellow"`, `"green"`, `"blue"`, `"purple"`, `"pink"`.  Defaults to `"default"`. <br /><br /> Not currently editable.                                                                                                                          | `"red"`                                  |
-
-<CodeGroup>
-  ```json Multi-select property value theme={null}
-  {
-    "Tags": {
-      "object": "property_item",
-      "id": "z%7D%5C%3C",
-      "type": "multi_select",
-      "multi_select": [
-        {
-          "id": "91e6959e-7690-4f55-b8dd-d3da9debac45",
-          "name": "A",
-          "color": "orange"
-        },
-        {
-          "id": "2f998e2d-7b1c-485b-ba6b-5e6a815ec8f5",
-          "name": "B",
-          "color": "purple"
-        }
-      ]
-    }
-  }
-  ```
-</CodeGroup>
-
-## Date
-
-Date property value objects contain the following data within the `date` property:
-
-| Property    | Type                                                                                | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | Example value            |
-| :---------- | :---------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------- |
-| `start`     | string ([ISO 8601 date and time](https://en.wikipedia.org/wiki/ISO_8601))           | An ISO 8601 format date, with optional time.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | `"2020-12-08T12:00:00Z"` |
-| `end`       | string (optional, [ISO 8601 date and time](https://en.wikipedia.org/wiki/ISO_8601)) | An ISO 8601 formatted date, with optional time. Represents the end of a date range. <br /> <br />If `null`, this property's date value is not a range.                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `"2020-12-08T12:00:00Z"` |
-| `time_zone` | string (optional, enum)                                                             | Time zone information for `start` and `end`. Possible values are extracted from the [IANA database](https://www.iana.org/time-zones) and they are based on the time zones from [Moment.js](https://momentjs.com/timezone/). <br /><br /> When time zone is provided, `start` and `end` should not have any [UTC offset](https://en.wikipedia.org/wiki/UTC_offset). In addition, when time zone is provided, `start` and `end` cannot be dates without time information. <br /><br /> If `null`, time zone information will be contained in [UTC offset](https://en.wikipedia.org/wiki/UTC_offset)s in `start` and `end`. | `"America/Los_Angeles"`  |
-
-<CodeGroup>
-  ```json Date property value expandable theme={null}
-  {
-    "Shipment Time": {
-      "object": "property_item",
-      "id": "i%3Ahj",
-      "type": "date",
-      "date": {
-        "start": "2021-05-11T11:00:00.000-04:00",
-        "end": null,
-        "time_zone": null
-      }
-    }
-  }
-  ```
-</CodeGroup>
+Select, multi-select, and status [option values](/reference/property-object#select-options) share the same fields.
 
 ## Formula
 
-Formula property value objects represent the result of evaluating a formula described in the [database's properties](/reference/property-object). These objects contain a `type` key and a key corresponding with the value of `type`. The value is an object containing type-specific data. The type-specific data are described in the sections below.
+<span />
 
-| Property | Type            | Description                                                               |
-| :------- | :-------------- | :------------------------------------------------------------------------ |
-| `type`   | `string` (enum) | The result type: `string`, `number`, `boolean`, `date`, or `unsupported`. |
+<span />
 
-### String formula
+<span />
 
-String formula property values contain an optional string within the `string` property.
+<span />
 
-### Number formula
-
-Number formula property values contain an optional number within the `number` property.
-
-### Boolean formula
-
-Boolean formula property values contain a boolean within the `boolean` property.
-
-### Date formula
-
-Date formula property values contain an optional [date property value](#date) within the `date` property.
-
-<CodeGroup>
-  ```json Formula Property Value theme={null}
-  {
-    "Formula": {
-      "object": "property_item",
-      "id": "KpQq",
-      "type": "formula",
-      "formula": {
-        "type": "number",
-        "number": 1234
-      }
-    }
-  }
-  ```
-</CodeGroup>
+A formula returns one property item with a typed `formula` result. It does not return a paginated list. See [Formula result types](/reference/page-property-values#formula-result-types) for string, number, boolean, and date examples.
 
 ### Unsupported formula
 
-If the API can't calculate a formula because it depends on too many related pages or nested formulas and rollups, `formula.type` is set to `"unsupported"` and `formula.unsupported` is an empty object. The response doesn't include a partial value. Treat the property as unavailable. To make the value available, reduce the number of related pages or simplify the nested formulas and rollups.
+A formula or rollup can return `type: "unsupported"` with `unsupported: {}` when it depends on too many related pages or nested calculations. This result has no usable value. Reduce the related pages or simplify the calculation. Requesting the property again does not remove this limit.
 
-If the page came from a data source query, see [Recommendations for performance](/reference/query-a-data-source#recommendations-for-performance) to request fewer properties and fetch details only for the results you need.
-
-<CodeGroup>
-  ```json Unsupported formula property value theme={null}
-  {
-    "Formula": {
-      "object": "property_item",
-      "id": "KpQq",
-      "type": "formula",
-      "formula": {
-        "type": "unsupported",
-        "unsupported": {}
-      }
-    }
-  }
-  ```
-</CodeGroup>
-
-## Relation
-
-Relation property value objects contain an array of `relation` property items with page references within the `relation` property. A page reference is an object with an `id` property which is a string value (UUIDv4) corresponding to a page ID in another database.
-
-<CodeGroup>
-  ```json Relation property value expandable theme={null}
-  {
-    "Project": {
-      "object": "list",
-      "results": [
-        {
-          "object": "property_item",
-          "id": "vYdV",
-          "type": "relation",
-          "relation": {
-            "id": "535c3fb2-95e6-4b37-a696-036e5eac5cf6"
-          }
-        }
-      ],
-      "next_cursor": null,
-      "has_more": true,
-      "type": "property_item",
-      "property_item": {
-        "id": "vYdV",
-        "next_url": null,
-        "type": "relation",
-        "relation": {}
-      }
-    }
-  }
-  ```
-</CodeGroup>
+For data source queries, [filter the returned properties](/guides/data-apis/query-large-data-sources) and retrieve details only when you need them.
 
 ## Rollup
 
-Rollup property value objects represent the result of evaluating a rollup described in the [data source's properties](/reference/property-object). The property is returned as a `list` object of type `property_item` with a list of `relation` items used to computed the rollup under `results`.
+A rollup returns a list with its calculation in `property_item.rollup`. That object always includes `function` and `type`.
 
-A `rollup` property item is also returned under the `property_type` key that describes the rollup aggregation and computed result.
+For `show_original`, `results` contains the target property’s values, flattened into individual property items. The metadata uses `type: "array"` and `array: []`; the values are in `results`, not that empty array.
 
-In order to avoid timeouts, if the rollup has a with a large number of aggregations or properties the endpoint returns a `next_cursor` value that is used to determinate the aggregation value *so far* for the subset of relations that have been paginated through.
+For a supported calculation such as `sum`, `results` contains relation items. The calculation is incomplete until you read the final page. Do not sum partial responses yourself or treat the first response as the final value.
 
-Once `has_more` is `false`, then the final rollup value is returned. See the [Pagination documentation](/reference/pagination) for more information on pagination in the Notion API.
+<span />
 
-Computing the values of following aggregations are *not* supported. Instead the endpoint returns a list of `property_item` objects for the rollup:
+<span />
 
-* `show_unique` (Show unique values)
-* `unique` (Count unique values)
-* `median`(Median)
+<span />
 
-| Property   | Type            | Description                                                                                                                                                                                                                                                                                                                                                                                     |
-| :--------- | :-------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `type`     | `string` (enum) | The type of rollup. Possible values are `"number"`, `"date"`, `"array"`, `"unsupported"` and `"incomplete"`.                                                                                                                                                                                                                                                                                    |
-| `function` | `string` (enum) | Describes the aggregation used. Possible values include: `count`, `count_values`, `empty`, `not_empty`, `unique`, `show_unique`, `percent_empty`, `percent_not_empty`, `sum`, `average`, `median`, `min`, `max`, `range`, `earliest_date`, `latest_date`, `date_range`, `checked`, `unchecked`, `percent_checked`, `percent_unchecked`, `count_per_group`, `percent_per_group`, `show_original` |
-
-### Number rollup
-
-Number rollup property values contain a number within the `number` property.
-
-### Date rollup
-
-Date rollup property values contain a [date property value](#date) within the `date` property.
-
-### Array rollup
-
-Array rollup property values contain an array of `property_item` objects within the `results` property.
+| Rollup `type` | Meaning                                                     |
+| :------------ | :---------------------------------------------------------- |
+| `number`      | A completed number result in `number`, which can be `null`. |
+| `date`        | A completed date result in `date`, which can be `null`.     |
+| `array`       | Individual values are in the response’s `results` array.    |
+| `incomplete`  | Read the next page to continue the calculation.             |
+| `unsupported` | This endpoint has no computed result. See the limits below. |
 
 ### Incomplete rollup
 
-Rollups with an aggregation with more than one page of aggregated results will return a `rollup` object of type `"incomplete"`. To obtain the final value paginate through the next values in the rollup using the `next_cursor` or `next_url` property.
+These examples show the `property_item` metadata from consecutive responses. The first response has `has_more: true`; the final response has `has_more: false`.
 
 <CodeGroup>
-  ```json Rollup Property Value expandable theme={null}
+  ```json More results remain theme={null}
   {
-    "Rollup": {
-      "object": "list",
-      "results": [
-        {
-          "object": "property_item",
-          "id": "vYdV",
-          "type": "relation",
-          "relation": {
-            "id": "535c3fb2-95e6-4b37-a696-036e5eac5cf6"
-          }
-        }...
-      ],
-      "next_cursor": "1QaTunT5",
-      "has_more": true,
-      "type": "property_item",
-      "property_item": {
-        "id": "y}~p",
-        "next_url": "http://api.notion.com/v1/pages/0e5235bf86aa4efb93aa772cce7eab71/properties/y%7D~p?start_cursor=1QaTunT5&page_size=25",
-        "type": "rollup",
-        "rollup": {
-          "function": "sum",
-          "type": "incomplete",
-          "incomplete": {}
-        }
-      }
-    }
+    "id": "roll",
+    "next_url": "https://api.notion.com/v1/pages/60bdc8bd-3880-44b8-a9cd-8a145b3ffbd7/properties/roll?start_cursor=opaque-cursor&page_size=1",
+    "type": "rollup",
+    "rollup": { "type": "incomplete", "incomplete": {}, "function": "sum" }
+  }
+  ```
+
+  ```json Final result theme={null}
+  {
+    "id": "roll",
+    "next_url": null,
+    "type": "rollup",
+    "rollup": { "type": "number", "number": 13, "function": "sum" }
   }
   ```
 </CodeGroup>
 
 ### Unsupported rollup
 
-If the API can't calculate a rollup because it depends on too many related pages or nested formulas and rollups, `rollup.type` is set to `"unsupported"` and `rollup.unsupported` is an empty object. The response includes the `function` field, but it doesn't include a partial value. Treat the property as unavailable. To make the value available, reduce the number of related pages or simplify the nested formulas and rollups.
+This endpoint does not calculate `show_unique`, `unique`, `median`, `count_per_group`, or `percent_per_group`. It returns the underlying property items in `results` and `type: "unsupported"` in `property_item.rollup`. Pagination can still be needed to read all those items.
 
-If the page came from a data source query, see [Recommendations for performance](/reference/query-a-data-source#recommendations-for-performance) to request fewer properties and fetch details only for the results you need.
+A formula or rollup can return `type: "unsupported"` with `unsupported: {}` when it depends on too many related pages or nested calculations. This result has no usable value. Reduce the related pages or simplify the calculation. Requesting the property again does not remove this limit.
 
-<CodeGroup>
-  ```json Unsupported rollup property value theme={null}
-  {
-    "object": "list",
-    "results": [
-      {
-        "object": "property_item",
-        "id": "vYdV",
-        "type": "relation",
-        "relation": {
-          "id": "535c3fb2-95e6-4b37-a696-036e5eac5cf6"
-        }
-      }
-    ],
-    "next_cursor": null,
-    "has_more": false,
-    "type": "property_item",
-    "property_item": {
-      "id": "y}~p",
-      "next_url": null,
-      "type": "rollup",
-      "rollup": {
-        "function": "sum",
-        "type": "unsupported",
-        "unsupported": {}
-      }
-    }
-  }
-  ```
-</CodeGroup>
+For data source queries, [filter the returned properties](/guides/data-apis/query-large-data-sources) and retrieve details only when you need them.
 
-## People
-
-People property value objects contain an array of [user objects](/reference/user) within the `people` property.
-
-<CodeGroup>
-  ```json People property value theme={null}
-  {
-    "Owners": {
-      "object": "property_item",
-      "id": "KpQq",
-      "type": "people",
-      "people": [
-        {
-          "object": "user",
-          "id": "285e5768-3fdc-4742-ab9e-125f9050f3b8",
-          "name": "Example Avo",
-          "avatar_url": null,
-          "type": "person",
-          "person": {
-            "email": "[email protected]"
-          }
-        }
-      ]
-    }
-  }
-  ```
-</CodeGroup>
-
-## Files
-
-File property value objects contain an array of file references within the `files` property. A file reference is an object with a [File Object](/reference/file-object) and `name` property, with a string value corresponding to a filename of the original file upload (e.g. `"Whole_Earth_Catalog.jpg"`).
-
-<CodeGroup>
-  ```json json theme={null}
-  {
-    "Files": {
-      "object": "property_item",
-      "id": "KpQq",
-      "type": "files",
-      "files": [
-        {
-          "type": "external",
-          "name": "Space Wallpaper",
-          "external": "https://website.domain/images/space.png"
-        }
-      ]
-    }
-  }
-  ```
-</CodeGroup>
-
-## Checkbox
-
-Checkbox property value objects contain a boolean within the `checkbox` property.
-
-<CodeGroup>
-  ```json Checkbox property value theme={null}
-  {
-    "Done?": {
-      "object": "property_item",
-      "id": "KpQq",
-      "type": "checkbox",
-      "checkbox": true
-    }
-  }
-  ```
-</CodeGroup>
-
-## URL
-
-URL property value objects contain a non-empty string within the `url` property. The string describes a web address (i.e. `"http://worrydream.com/EarlyHistoryOfSmalltalk/"`).
-
-<CodeGroup>
-  ```json URL property value theme={null}
-  {
-    "Website": {
-      "object": "property_item",
-      "id": "KpQq",
-      "type": "url",
-      "url": "https://notion.com/notiondevs"
-    }
-  }
-  ```
-</CodeGroup>
-
-## Email
-
-Email property value objects contain a string within the `email` property. The string describes an email address (i.e. `"hello@example.org"`).
-
-<CodeGroup>
-  ```json Email property value theme={null}
-  {
-    "Shipper's Contact": {
-      "object": "property_item",
-      "id": "KpQq",
-      "type": "email",
-      "email": "hello@test.com"
-    }
-  }
-  ```
-</CodeGroup>
-
-## Phone number
-
-Phone number property value objects contain a string within the `phone_number` property. No structure is enforced.
-
-<CodeGroup>
-  ```json Phone number property value theme={null}
-  {
-    "Shipper's No.": {
-      "object": "property_item",
-      "id": "KpQq",
-      "type": "phone_number",
-      "phone_number": "415-000-1111"
-    }
-  }
-  ```
-</CodeGroup>
-
-## Created time
-
-Created time property value objects contain a string within the `created_time` property. The string contains the date and time when this page was created. It is formatted as an [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date time string (i.e. `"2020-03-17T19:10:04.968Z"`).
-
-<CodeGroup>
-  ```json Created time property value theme={null}
-  {
-    "Created Time": {
-      "object": "property_item",
-      "id": "KpQq",
-      "type": "create_time",
-    	"created_time": "2020-03-17T19:10:04.968Z"
-    }
-  }
-  ```
-</CodeGroup>
-
-## Created by
-
-Created by property value objects contain a [user object](/reference/user) within the `created_by` property. The user object describes the user who created this page.
-
-<CodeGroup>
-  ```json Created by property value theme={null}
-  {
-    "Created By": {
-      "created_by": {
-        "object": "user",
-        "id": "23345d4f-cf71-4a70-89a5-226c95a6eaae",
-        "name": "Test User",
-        "type": "person",
-        "person": {
-          "email": "avo@example.org"
-        }
-      }
-    }
-  }
-  ```
-
-  ```json Created by property value (using ID) theme={null}
-  {
-    "dsEa": {
-      "created_by": {
-  			"object": "user",
-  			"id": "71e95936-2737-4e11-b03d-f174f6f13087"
-    	}
-    }
-  }
-  ```
-</CodeGroup>
-
-## Last edited time
-
-Last edited time property value objects contain a string within the `last_edited_time` property. The string contains the date and time when this page was last updated. It is formatted as an [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date time string (i.e. `"2020-03-17T19:10:04.968Z"`).
-
-<CodeGroup>
-  ```json Last edited time property value theme={null}
-  {
-    "Last Edited Time": {
-    	"last_edited_time": "2020-03-17T19:10:04.968Z"
-    }
-  }
-  ```
-
-  ```json Last edited time property value (using ID) theme={null}
-  {
-    "as0w": {
-    	"last_edited_time": "2020-03-17T19:10:04.968Z"
-    }
-  }
-  ```
-</CodeGroup>
-
-## Last edited by
-
-Last edited by property value objects contain a [user object](/reference/user) within the `last_edited_by` property. The user object describes the user who last updated this page.
-
-<CodeGroup>
-  ```json Last edited by property value theme={null}
-  {
-    "Last Edited By": {
-      "last_edited_by": {
-        "object": "user",
-        "id": "23345d4f-cf71-4a70-89a5-226c95a6eaae",
-        "name": "Test User",
-        "type": "person",
-        "person": {
-          "email": "avo@example.org"
-        }
-      }
-    }
-  }
-  ```
-
-  ```json Last edited by property value (using ID) theme={null}
-  {
-    "as12": {
-      "last_edited_by": {
-  			"object": "user",
-  			"id": "71e95936-2737-4e11-b03d-f174f6f13087"
-    	}
-    }
-  }
-  ```
-</CodeGroup>
+When a dependency limit prevents a calculation, the rollup also returns `unsupported`. An unsupported result is not zero and is not an incomplete result that will become available through more requests.

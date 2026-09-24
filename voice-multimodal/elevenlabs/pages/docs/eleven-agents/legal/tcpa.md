@@ -8,21 +8,23 @@ path: docs/eleven-agents/legal/tcpa
 
 # TCPA Compliance
 
-#### Legal Disclaimer
-
-This guide is for informational purposes only and is not comprehensive. This guide does not
-constitute legal advice. The TCPA is complex and subject to interpretation. Consult with qualified
-legal counsel to ensure your specific use of ElevenLabs Agents for outbound calling
-complies with all applicable laws and regulations. Visit our [Compliance Portal](https://compliance.elevenlabs.io) for comprehensive information on
-our certifications and practices.
+> **Legal Disclaimer**
+>
+> This guide is for informational purposes only and is not comprehensive. This guide does not
+> constitute legal advice. The TCPA is complex and subject to interpretation. Consult with qualified
+> legal counsel to ensure your specific use of ElevenLabs Agents for outbound calling
+> complies with all applicable laws and regulations. Visit our [Compliance Portal](https://compliance.elevenlabs.io) for comprehensive information on
+> our certifications and practices.
 
 This guide provides a high-level overview of certain key requirements under the Telephone Consumer Protection Act (TCPA) for developers and businesses using ElevenLabs Agents for outbound calls in the United States. Adherence to the TCPA is critical when making automated calls or using AI-generated voices for outbound communications.
 
-The TCPA primarily governs **outbound** calls and texts. It does not generally apply to inbound
-communications initiated by the consumer. In addition to complying with the TCPA, you must also
-comply with all applicable state-level laws that may govern telemarketing, automated calls, or the
-use of AI-generated voices. Many states have enacted their own regulations that may be more
-restrictive than federal requirements.
+> **Note**
+>
+> The TCPA primarily governs **outbound** calls and texts. It does not generally apply to inbound
+> communications initiated by the consumer. In addition to complying with the TCPA, you must also
+> comply with all applicable state-level laws that may govern telemarketing, automated calls, or the
+> use of AI-generated voices. Many states have enacted their own regulations that may be more
+> restrictive than federal requirements.
 
 ## Types of Consent Required
 
@@ -33,8 +35,10 @@ The type of consent needed under the TCPA depends on whether your outbound call 
 | **Marketing Call**                     | **Prior Express Written Consent (PEWC)** | 1. A **signed written agreement** from the recipient (electronic signatures under E-SIGN Act are valid). 2. The agreement must feature a **clear and conspicuous disclosure** stating that:      (A) The recipient authorizes *\[Your Company Name]* to make automated calls using an artificial/prerecorded voice to the specific phone number provided; **AND**      (B) Consent is **not** a condition of purchasing any goods or services. | "By checking this box and providing my phone number, I agree to receive automated marketing calls from \[Your Company Name], including using an AI-generated voice, at the number provided. Consent is not a condition of any purchase." |
 | **Non-Marketing / Informational Call** | **Prior Express Consent (PEC)**          | The consumer must have given permission to be contacted at the number provided for informational purposes (e.g., providing a phone number for appointment reminders or account updates). While not always requiring a written agreement like PEWC, consent must still be express and affirmative.                                                                                                                                              | "Please provide your phone number if you'd like to receive \[e.g., appointment reminders, service updates] from *\[Your Company Name]*, including automated calls using an AI-generated voice."                                          |
 
-\*Signatures for PEWC can comply with the E-SIGN Act (e.g., via website form submission, email
-confirmation, or a recorded telephone keypress after clear disclosure).
+> **Note**
+>
+> \*Signatures for PEWC can comply with the E-SIGN Act (e.g., via website form submission, email
+> confirmation, or a recorded telephone keypress after clear disclosure).
 
 ## Key Compliance Guidelines for Developers
 

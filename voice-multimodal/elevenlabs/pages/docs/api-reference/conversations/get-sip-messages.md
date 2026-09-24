@@ -39,17 +39,7 @@ Reference: https://elevenlabs.io/docs/api-reference/conversations/get-sip-messag
 
 Successful Response
 
-- `sip_messages` (list of object, required)
-  - `call_id` (string, required)
-  - `phone_numbers` (list of string, required)
-  - `local_address` (string, required)
-  - `remote_address` (string, required)
-  - `transport` (string, required)
-  - `raw_message` (string, required)
-  - `error_message` (string, required)
-  - `direction` (enum, required)
-    - Allowed values: `in`, `out`
-  - `created_at_unix_micro` (integer, required)
+- `sip_messages` (list of SIPLogMessage, required)
 - `next_cursor` (string, optional, nullable)
 - `has_more` (boolean, optional, default: false)
 
@@ -59,10 +49,30 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### SIPLogMessage
+
+- `call_id` (string, required)
+- `phone_numbers` (list of string, required)
+- `local_address` (string, required)
+- `remote_address` (string, required)
+- `transport` (string, required)
+- `raw_message` (string, required)
+- `error_message` (string, required)
+- `direction` (enum, required)
+  - Allowed values: `in`, `out`
+- `created_at_unix_micro` (integer, required)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

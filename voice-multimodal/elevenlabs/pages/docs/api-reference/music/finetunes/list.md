@@ -43,22 +43,7 @@ Reference: https://elevenlabs.io/docs/api-reference/music/finetunes/list
 
 Successful Response
 
-- `finetunes` (list of object, required) — The finetunes in this page.
-  - `id` (string, required) — Unique identifier of the finetune.
-  - `name` (string, required) — Name of the finetune.
-  - `tags` (list of string, required) — Tags associated with the finetune.
-  - `model_id` (string, required) — The base music model the finetune was trained on.
-  - `created_at` (string, required) — When the finetune was created (UTC).
-  - `visibility` (enum, required) — Who can access this finetune: `private` (only you), `workspace` (members of your workspace), `public` (ElevenLabs-curated, available to everyone).
-    - Allowed values: `private`, `workspace`, `public`
-  - `created_by` (enum, required) — Who created the finetune: `self`, `workspace`, or `elevenlabs`.
-    - Allowed values: `self`, `workspace`, `elevenlabs`
-  - `status` (enum, required) — Training lifecycle status: pending, in_progress, completed, failed, and blocked.
-    - Allowed values: `pending`, `in_progress`, `completed`, `failed`, `blocked`
-  - `training_progress` (double, required) — Training progress from 0.0 to 1.0.
-  - `primary_genre` (string, optional, nullable) — Primary musical genre of the finetune.
-  - `failure_reason` (enum, optional, nullable) — Reason the finetune failed or was blocked, if applicable.
-    - Allowed values: `audio_processing_failed`, `copyright_violation`, `training_failed`
+- `finetunes` (list of MusicFinetuneResponseModel, required) — The finetunes in this page.
 - `next_cursor` (string, required, nullable) — Cursor to pass as `cursor` to fetch the next page; `null` when there are no more results.
 - `has_more` (boolean, required) — Whether more finetunes are available beyond this page.
 
@@ -68,10 +53,35 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### MusicFinetuneResponseModel
+
+- `id` (string, required) — Unique identifier of the finetune.
+- `name` (string, required) — Name of the finetune.
+- `tags` (list of string, required) — Tags associated with the finetune.
+- `model_id` (string, required) — The base music model the finetune was trained on.
+- `created_at` (string, required) — When the finetune was created (UTC).
+- `visibility` (enum, required) — Who can access this finetune: `private` (only you), `workspace` (members of your workspace), `public` (ElevenLabs-curated, available to everyone).
+  - Allowed values: `private`, `workspace`, `public`
+- `created_by` (enum, required) — Who created the finetune: `self`, `workspace`, or `elevenlabs`.
+  - Allowed values: `self`, `workspace`, `elevenlabs`
+- `status` (enum, required) — Training lifecycle status: pending, in_progress, completed, failed, and blocked.
+  - Allowed values: `pending`, `in_progress`, `completed`, `failed`, `blocked`
+- `training_progress` (double, required) — Training progress from 0.0 to 1.0.
+- `primary_genre` (string, optional, nullable) — Primary musical genre of the finetune.
+- `failure_reason` (enum, optional, nullable) — Reason the finetune failed or was blocked, if applicable.
+  - Allowed values: `audio_processing_failed`, `copyright_violation`, `training_failed`
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

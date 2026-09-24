@@ -20,12 +20,14 @@ For when the webhook fires and the request shape, see [Conversation initiation w
 2. Your webhook returns conversation initiation client data, including dynamic variables and overrides (an example is shown below)
 3. This data is used to initiate the conversation
 
-The system uses Twilio's connection/dialing period to fetch webhook data in parallel, creating a
-seamless experience where:
-
-* Users hear the expected telephone connection sound
-* In parallel, ElevenAgents fetches necessary webhook data
-* The conversation is initiated with the fetched data by the time the audio connection is established
+> **Tip**
+>
+> The system uses Twilio's connection/dialing period to fetch webhook data in parallel, creating a
+> seamless experience where:
+>
+> * Users hear the expected telephone connection sound
+> * In parallel, ElevenAgents fetches necessary webhook data
+> * The conversation is initiated with the fetched data by the time the audio connection is established
 
 ## Configuration
 
@@ -34,17 +36,17 @@ seamless experience where:
 In the [settings page](https://elevenlabs.io/app/agents/settings) of ElevenAgents, configure the webhook URL and add any
 secrets needed for authentication.
 
-![Enable webhook](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/53e98b709e5751bfb6cf6758372a8105c5408b20191523c7e91c2a7625d8b603/assets/images/conversational-ai/convai-settings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T070824Z&X-Amz-Expires=604800&X-Amz-Signature=98800f5a2989fc163cd2cbdca1c83d307f0e382ea4e94441a795465c216ba168&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Enable webhook](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/53e98b709e5751bfb6cf6758372a8105c5408b20191523c7e91c2a7625d8b603/assets/images/conversational-ai/convai-settings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113144Z&X-Amz-Expires=604800&X-Amz-Signature=3c9fb8d51d7ddf6509a9cea0826a939e7dd3c3a7ff53b2f39761a3c4c9009e50&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Click on the webhook to modify which secrets are sent in the headers.
 
-![Add secrets to headers](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/416d30e6906cd209de92820bfc146ac9478fbb6ce61c8fbbc24d62cad54d9f05/assets/images/conversational-ai/convai-initiation-webhook.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T070824Z&X-Amz-Expires=604800&X-Amz-Signature=fa84dbceaa5ef3ac504a05f0b0a9f4b021178e1e413e5dc14484583a143eb03f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Add secrets to headers](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/416d30e6906cd209de92820bfc146ac9478fbb6ce61c8fbbc24d62cad54d9f05/assets/images/conversational-ai/convai-initiation-webhook.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113144Z&X-Amz-Expires=604800&X-Amz-Signature=afcf0b25b80c85e4eb982e6924287e3f411c446b8bd892b55f21ae8edf2f9135&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Enable fetching conversation initiation data
 
 In the "Security" tab of the [agent's page](https://elevenlabs.io/app/agents/agents/), enable fetching conversation initiation data for inbound Twilio calls, and define fields that can be overridden.
 
-![Enable webhook](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6024b7f7541b8f856514b56ebf391cd6ee24206fd89c07327de1b01d81795c20/assets/images/conversational-ai/enable-twilio-webhook.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T070824Z&X-Amz-Expires=604800&X-Amz-Signature=4427edf5837ec6fadc95460ef92a7572c763dacebc302c2eac6c9ecde89d7b20&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Enable webhook](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6024b7f7541b8f856514b56ebf391cd6ee24206fd89c07327de1b01d81795c20/assets/images/conversational-ai/enable-twilio-webhook.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113144Z&X-Amz-Expires=604800&X-Amz-Signature=f0ed7b10a3d6fd5173c70d39a475f1ec28c4ea82217dbb914afc2163e1480598&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Implement the webhook endpoint to receive Twilio data
 
@@ -62,10 +64,12 @@ The webhook will receive a POST request with the following parameters:
 
 Your webhook must return a JSON response containing the initiation data for the agent.
 
-The `dynamic_variables` field must contain all dynamic variables defined for the agent. Overrides
-on the other hand are entirely optional. For more information about dynamic variables and
-overrides see the [dynamic variables](/docs/eleven-agents/customization/personalization/dynamic-variables) and
-[overrides](/docs/eleven-agents/customization/personalization/overrides) docs.
+> **Info**
+>
+> The `dynamic_variables` field must contain all dynamic variables defined for the agent. Overrides
+> on the other hand are entirely optional. For more information about dynamic variables and
+> overrides see the [dynamic variables](/docs/eleven-agents/customization/personalization/dynamic-variables) and
+> [overrides](/docs/eleven-agents/customization/personalization/overrides) docs.
 
 An example response could be:
 
@@ -100,8 +104,10 @@ An example response could be:
 
 ElevenAgents will use the dynamic variables to populate the conversation initiation data, and the conversation will start smoothly.
 
-Ensure your webhook responds within a reasonable timeout period to avoid delaying the call
-handling.
+> **Warning**
+>
+> Ensure your webhook responds within a reasonable timeout period to avoid delaying the call
+> handling.
 
 ## Security
 

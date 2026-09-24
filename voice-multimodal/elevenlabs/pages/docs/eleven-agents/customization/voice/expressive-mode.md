@@ -26,8 +26,10 @@ Eleven v3 Conversational is an ultra-low-latency version of Eleven v3, optimized
 * **70+ language support**: Expanded from \~32 languages in Flash models, with improved expressiveness in languages where nuance previously lagged, including Japanese.
 * **Expressive tags**: The LLM can output tags like `[laughs]`, `[whispers]`, or `[sighs]` to control specific moments of delivery.
 
-Eleven v3 Conversational is priced the same as other ElevenLabs TTS models in Agents, starting at
-\$0.08 per minute.
+> **Note**
+>
+> Eleven v3 Conversational is priced the same as other ElevenLabs TTS models in Agents, starting at
+> \$0.08 per minute.
 
 ## Turn-taking system
 
@@ -49,7 +51,7 @@ Set your agent's TTS model to **V3 Conversational**. Expressive mode is enabled 
 
 Open your agent in the dashboard, navigate to the **Agent Voice** tab, and select **V3 Conversational** as your Text to Speech model. Save your changes.
 
-![Enabling expressive mode](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4ced5ae6cf05746895f431d8b2685e30655ca98911798a029d5c12d0a9b7f055/assets/images/conversational-ai/expressivemode.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T081944Z&X-Amz-Expires=604800&X-Amz-Signature=7281a822d13ddee2a6c60fe87609a1e3282f6e15820a06d674f47d4477157fcc&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Enabling expressive mode](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4ced5ae6cf05746895f431d8b2685e30655ca98911798a029d5c12d0a9b7f055/assets/images/conversational-ai/expressivemode.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T104533Z&X-Amz-Expires=604800&X-Amz-Signature=4fba2653e0da7fbea0c2e9c758d3951250345009df80fe5f4f1e98233434dfd2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Update via the CLI
 
@@ -180,9 +182,11 @@ Use conversation analytics to track how users respond to expressive delivery. Re
 
 ## Limitations
 
-* Eleven v3 Conversational does not preserve the characteristics of Professional Voice Clones (PVCs) — the output may not sound like the original PVC voice.
-* Expressive tag effects last approximately 4-5 words before returning to normal delivery.
-* Expressiveness may vary across voices and languages.
+> **Warning**
+>
+> * Eleven v3 Conversational does not preserve the characteristics of Professional Voice Clones (PVCs) — the output may not sound like the original PVC voice.
+> * Expressive tag effects last approximately 4-5 words before returning to normal delivery.
+> * Expressiveness may vary across voices and languages.
 
 ## FAQ
 

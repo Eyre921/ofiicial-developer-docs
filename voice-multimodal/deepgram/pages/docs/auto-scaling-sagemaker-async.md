@@ -10,15 +10,17 @@ path: docs/auto-scaling-sagemaker-async
 
 # Auto-Scaling Asynchronous SageMaker Endpoints (Temporarily Unavailable)
 
-#### Asynchronous endpoints are temporarily unavailable
-
-Asynchronous SageMaker endpoints (`InvokeEndpointAsync`, files up to 1 GB, scale-to-zero) are temporarily not supported for Marketplace-hosted Deepgram because of an Amazon SageMaker platform limitation. Do not deploy one. The content below is kept for reference until the endpoint type is available again. If your use case needs asynchronous processing, contact your [Deepgram representative](https://deepgram.com/contact-us) or your [AWS sales representative](https://aws.amazon.com/contact-us/sales-support/).
+> **Asynchronous endpoints are temporarily unavailable**
+>
+> Asynchronous SageMaker endpoints (`InvokeEndpointAsync`, files up to 1 GB, scale-to-zero) are temporarily not supported for Marketplace-hosted Deepgram because of an Amazon SageMaker platform limitation. Do not deploy one. The content below is kept for reference until the endpoint type is available again. If your use case needs asynchronous processing, contact your [Deepgram representative](https://deepgram.com/contact-us) or your [AWS sales representative](https://aws.amazon.com/contact-us/sales-support/).
 
 Deepgram's speech-to-text models can be deployed on Amazon SageMaker as **asynchronous inference endpoints**, which queue incoming requests and process them from Amazon S3. Async endpoints handle **pre-recorded files only** (no streaming) — payloads up to **1 GB**, processing times up to **one hour**, and near real-time latency — and, unlike real-time endpoints, they can **autoscale to zero** when there are no requests to process, so you only pay while the endpoint is actively working.
 
 This guide covers how to configure autoscaling — including scale-to-zero — for an asynchronous Deepgram endpoint. For a comparison of endpoint types and when to use each, see [Auto-Scaling SageMaker Endpoints](/docs/auto-scaling-sagemaker).
 
-**Need live streaming instead?** This page covers batch/non-streaming workloads on asynchronous endpoints. For live streaming speech-to-text on real-time endpoints, see [Auto-Scaling Real-Time Endpoints](/docs/auto-scaling-sagemaker-streaming). Real-time endpoints scale between a minimum and maximum instance count (both ≥ 1) and **cannot** scale to zero.
+> **Note**
+>
+> **Need live streaming instead?** This page covers batch/non-streaming workloads on asynchronous endpoints. For live streaming speech-to-text on real-time endpoints, see [Auto-Scaling Real-Time Endpoints](/docs/auto-scaling-sagemaker-streaming). Real-time endpoints scale between a minimum and maximum instance count (both ≥ 1) and **cannot** scale to zero.
 
 Asynchronous endpoints are the right choice when you process pre-recorded audio, work with large files (up to 1 GB), or have spiky or sporadic traffic — they can autoscale to zero when the queue is empty, so you only pay while requests are processing.
 
@@ -28,7 +30,9 @@ SageMaker integrates with AWS Application Auto Scaling to adjust the number of i
 
 A target-tracking scaling policy adds instances when the per-instance backlog rises above your target and removes them as the backlog drains. Because async endpoints allow a minimum capacity of zero, the fleet can scale all the way down to no instances during idle periods. Requests received while at zero instances are **queued**, and the endpoint scales back up to process them.
 
-**Scaling up from zero requires an extra policy.** By default, a scaled-to-zero endpoint will not scale up until the backlog exceeds your target value — which can mean a long wait for the first request after an idle period. Add the optional [scale-up-from-zero policy](#scale-up-from-zero-for-new-requests) so the endpoint wakes on the first queued request.
+> **Warning**
+>
+> **Scaling up from zero requires an extra policy.** By default, a scaled-to-zero endpoint will not scale up until the backlog exceeds your target value — which can mean a long wait for the first request after an idle period. Add the optional [scale-up-from-zero policy](#scale-up-from-zero-for-new-requests) so the endpoint wakes on the first queued request.
 
 ## Prerequisites
 

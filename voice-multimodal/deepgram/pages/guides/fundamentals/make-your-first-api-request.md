@@ -10,7 +10,9 @@ path: guides/fundamentals/make-your-first-api-request
 
 # Make Your First API Request
 
-Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
+> **Info**
+>
+> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
 
 ## Create a Deepgram API Key
 
@@ -55,7 +57,9 @@ We provide sample scripts throughout our documentation in the languages of our S
 * **GO**: Go >= 1.18
 * **Java**: Java >= 11, Maven or Gradle
 
-If you get stuck at any point, help is just a click away! [Contact Support](/support/).
+> **Info**
+>
+> If you get stuck at any point, help is just a click away! [Contact Support](/support/).
 
 #### Install the SDK
 

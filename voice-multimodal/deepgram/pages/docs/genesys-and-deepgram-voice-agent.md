@@ -38,7 +38,9 @@ You will need:
 * A Genesys Cloud CX account with Audio Connector access
 * A public server endpoint connected to Deepgram
 
-Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
+> **Info**
+>
+> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
 
 ---
 
@@ -71,7 +73,9 @@ In the Audio Connector's **Session Variables**, add a variable:
 * **Name:** `config`
 * **Value:** a JSON string containing your agent configuration
 
-For optimal audio quality, include the following in your agent configuration:
+> **Info**
+>
+> For optimal audio quality, include the following in your agent configuration:
 
 ```json
 "audio": {
@@ -87,7 +91,9 @@ For optimal audio quality, include the following in your agent configuration:
 }
 ```
 
-To allow the Voice Agent to end the call, add an `end_conversation` function to the agent configuration. The function's properties are sent back to Genesys and can be mapped as session output variables.
+> **Info**
+>
+> To allow the Voice Agent to end the call, add an `end_conversation` function to the agent configuration. The function's properties are sent back to Genesys and can be mapped as session output variables.
 
 ### Example end conversation function
 

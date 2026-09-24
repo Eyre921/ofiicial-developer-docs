@@ -8,8 +8,10 @@ path: docs/eleven-api/guides/how-to/speech-to-text/realtime/event-reference
 
 # Realtime event reference
 
-**Reference** · Lists all events sent to and received from the Realtime Speech to Text WebSocket
-API.
+> **Note**
+>
+> **Reference** · Lists all events sent to and received from the Realtime Speech to Text WebSocket
+> API.
 
 Review the API reference for the [Realtime Speech to Text API](/docs/api-reference/speech-to-text/v-1-speech-to-text-realtime) for more information on the API and its options.
 

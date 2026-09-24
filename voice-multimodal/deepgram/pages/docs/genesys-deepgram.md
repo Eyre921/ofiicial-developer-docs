@@ -14,9 +14,13 @@ In this guide, we'll explain how to configure Deepgram as your transcription eng
 
 ## Before you begin
 
-Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
+> **Info**
+>
+> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
 
-Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
+> **Info**
+>
+> Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
 
 ### Set Up a Genesys Cloud Org
 
@@ -34,7 +38,9 @@ Once you've installed Transcription Connector, it will appear under **Admin > In
 2. Under **Configuration > Properties**, set **Channel** to `both` and **Connection URI** to `wss://integrations.deepgram.com/genesys`.
 3. Under **Configuration > Credentials**, click **Configure** and paste your Deepgram API key into the **API Key** field. Leave the **Client Secret** field blank. Then click **OK**.
 
-   If you specify an API key and then change it, it can take a long time for the new API key to propagate through the Genesys system. Give it 30 minutes before you assume that Deepgram is receiving the new API key. If you don't want to wait, you can delete Transcription Connector from the **Integrations** page, reinstall it, and provide the new API key to the reinstalled Transcription Connector.
+   > **Info**
+   >
+   > If you specify an API key and then change it, it can take a long time for the new API key to propagate through the Genesys system. Give it 30 minutes before you assume that Deepgram is receiving the new API key. If you don't want to wait, you can delete Transcription Connector from the **Integrations** page, reinstall it, and provide the new API key to the reinstalled Transcription Connector.
 
 ## Set advanced configuration
 

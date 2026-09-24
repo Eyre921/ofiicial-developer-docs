@@ -103,9 +103,11 @@ await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd9
 });
 ```
 
-WhatsApp message conversations have a default 15-minute inactivity timeout, measured from the
-agent's most recent response. This timeout can end a message conversation before the configured
-maximum duration. Enterprise customers whose use case requires a different timeout should [contact support](https://help.elevenlabs.io/hc/en-us/requests/new).
+> **Warning**
+>
+> WhatsApp message conversations have a default 15-minute inactivity timeout, measured from the
+> agent's most recent response. This timeout can end a message conversation before the configured
+> maximum duration. Enterprise customers whose use case requires a different timeout should [contact support](https://help.elevenlabs.io/hc/en-us/requests/new).
 
 ## Take turn after silence
 
@@ -119,7 +121,7 @@ The value is specified in seconds and must be between 1 and 30 seconds. In the C
 
 Open your agent in the dashboard, navigate to the **Advanced** tab, and adjust the **Take turn after silence** value. Save your changes.
 
-![Take turn after silence setting](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9de7653a0940ae3441b3470c2af53f4a72294ad3680946d4c3fa3b91df69c566/assets/images/conversational-ai/timeouts.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T065600Z&X-Amz-Expires=604800&X-Amz-Signature=f268e43a83a7edad58b946b1d31d83b9ca1a824a72e1653db530b10fbd8ea35f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Take turn after silence setting](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9de7653a0940ae3441b3470c2af53f4a72294ad3680946d4c3fa3b91df69c566/assets/images/conversational-ai/timeouts.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T103545Z&X-Amz-Expires=604800&X-Amz-Signature=f47e3327b57b5bb45641896a9c035bf3ffb5f3752b4f1d5a57708b61fb0b6d03&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Update via the CLI
 
@@ -176,9 +178,11 @@ await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd9
 });
 ```
 
-Choose an appropriate timeout duration based on your use case. Shorter timeouts create more
-responsive conversations but may interrupt users who need more time to respond, leading to a less
-natural conversation.
+> **Note**
+>
+> Choose an appropriate timeout duration based on your use case. Shorter timeouts create more
+> responsive conversations but may interrupt users who need more time to respond, leading to a less
+> natural conversation.
 
 ### Best practices
 
@@ -214,7 +218,7 @@ Soft timeout triggers only once per turn to prevent multiple fillers in successi
 
 Open your agent in the dashboard, navigate to the **Advanced** tab, and adjust the **Soft timeout** settings. Save your changes.
 
-![Soft timeout settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7fdaca49ad50e6bc1f09f5eac46e36f0f4b071c5477e061a62791df9e100be75/assets/images/conversational-ai/soft-timeout.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T065600Z&X-Amz-Expires=604800&X-Amz-Signature=1f725610d22150c0923591565298e1bb839b38617e756ec94246b121a2e7ea79&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Soft timeout settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7fdaca49ad50e6bc1f09f5eac46e36f0f4b071c5477e061a62791df9e100be75/assets/images/conversational-ai/soft-timeout.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T103545Z&X-Amz-Expires=604800&X-Amz-Signature=ffff62f1a9ad4a44605f3f732697b5bfaaf18e8d774fd0eacfc3b6756db7c8b6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Update via the CLI
 
@@ -297,8 +301,10 @@ The time in seconds before the filler message is spoken while waiting for the LL
 | **Range**       | `0.5` to `8.0` seconds |
 | **Recommended** | `3.0` seconds          |
 
-Start with 3.0 seconds—long enough to avoid unnecessary fillers on fast responses, short enough to
-prevent awkward silences.
+> **Tip**
+>
+> Start with 3.0 seconds—long enough to avoid unnecessary fillers on fast responses, short enough to
+> prevent awkward silences.
 
 #### Static message
 
@@ -325,7 +331,9 @@ When enabled, generates a contextually-appropriate filler phrase dynamically usi
 
 The system uses recent conversation context (up to 4 messages, 1000 characters) to generate relevant fillers like "Hmm...", "I see...", "Understood...", "Got it...", or "Alright..."
 
-A static fallback message is still required when using LLM-generated messages.
+> **Note**
+>
+> A static fallback message is still required when using LLM-generated messages.
 
 ### Best practices
 
@@ -344,14 +352,16 @@ To enable interruptions, make sure interruption is a selected client event.
 
 #### Interruptions enabled
 
-![Interruption allowed](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1da794be8ea3bfed45d06241ce5db390480cd45d27c0f886943518bd52d76157/assets/images/conversational-ai/interruptions.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T065600Z&X-Amz-Expires=604800&X-Amz-Signature=def0eb0db613072a6ca503d752f3951a8ec572215148c61df9748c5f65ed8330&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Interruption allowed](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1da794be8ea3bfed45d06241ce5db390480cd45d27c0f886943518bd52d76157/assets/images/conversational-ai/interruptions.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T103545Z&X-Amz-Expires=604800&X-Amz-Signature=d90a567d75873814827b21d58a166a1eb09b41760ba97735e08f13feffd911b8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Interruptions disabled
 
-![Interruption ignored](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/847a2ebcdfff9498501502ab4b568fc498b6995f860a5552177a7883942197ff/assets/images/conversational-ai/no-interruption.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T065600Z&X-Amz-Expires=604800&X-Amz-Signature=10490b4152fb5f98fe66623296938efb5ea2d9c65323a49b29321986f8f519ed&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Interruption ignored](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/847a2ebcdfff9498501502ab4b568fc498b6995f860a5552177a7883942197ff/assets/images/conversational-ai/no-interruption.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T103545Z&X-Amz-Expires=604800&X-Amz-Signature=306669afbdc0c127222c88d9728422e11fd9981faff9c03f7569a998e1f42e79&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-Disable interruptions when the complete delivery of information is crucial, such as legal
-disclaimers or safety instructions.
+> **Note**
+>
+> Disable interruptions when the complete delivery of information is crucial, such as legal
+> disclaimers or safety instructions.
 
 ### Best practices for interruptions
 
@@ -438,9 +448,11 @@ await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd9
 });
 ```
 
-Turn eagerness is especially powerful when combined with workflows. You can dynamically adjust the
-assistant's responsiveness based on context—making it jump in faster during casual conversation,
-or wait longer when collecting sensitive information like phone numbers or email addresses.
+> **Note**
+>
+> Turn eagerness is especially powerful when combined with workflows. You can dynamically adjust the
+> assistant's responsiveness based on context—making it jump in faster during casual conversation,
+> or wait longer when collecting sensitive information like phone numbers or email addresses.
 
 ### Best practices for turn eagerness
 

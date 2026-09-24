@@ -67,7 +67,9 @@ billing:
 
 `logFormat` accepts `full`, `compact`, `pretty`, or `json`. Leave it unset to use the container's default (`full`). The chart validates the value and renders the flag in the correct position in each container's arguments; an unrecognized value fails at template time rather than crash-looping the pod. Requires chart version `0.45.0` or later — earlier versions ignore `logFormat` silently, with no error and no change to log output.
 
-The API container also accepts a legacy `--json` flag and `JSON` environment variable that force JSON output. Do not combine either with `--log-format` set to a format other than `json` — the container exits with an error at startup. The Helm chart rejects this combination at template time.
+> **Note**
+>
+> The API container also accepts a legacy `--json` flag and `JSON` environment variable that force JSON output. Do not combine either with `--log-format` set to a format other than `json` — the container exits with an error at startup. The Helm chart rejects this combination at template time.
 
 ## Example Output
 

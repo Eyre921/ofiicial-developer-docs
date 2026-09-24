@@ -10,11 +10,13 @@ path: docs/eleven-api/guides/cookbooks/speech-engine
 
 This guide walks you through building a voice-powered agent with Speech Engine. You set up a server that connects your LLM to ElevenLabs, then wire up a browser client so users can have voice conversations with your agent.
 
-Use the [ElevenLabs Speech Engine skill](https://github.com/elevenlabs/skills/tree/main/speech-engine) to add voice to your chat agent:
-
-```bash
-npx skills add elevenlabs/skills --skill speech-engine
-```
+> **Tip**
+>
+> Use the [ElevenLabs Speech Engine skill](https://github.com/elevenlabs/skills/tree/main/speech-engine) to add voice to your chat agent:
+>
+> ```bash
+> npx skills add elevenlabs/skills --skill speech-engine
+> ```
 
 ## How Speech Engine works
 
@@ -269,7 +271,9 @@ The `onTranscript` / `on_transcript` callback receives the full conversation his
 
 `sendResponse()` / `send_response()` accepts a string, an async iterable, or a stream from OpenAI, Anthropic, or Google Gemini. The SDK extracts the text content automatically.
 
-In the above example, the full transcript from the user is passed to the LLM. In a production environment you should add guardrails to prevent any prompt injection or manipulation attempts.
+> **Warning**
+>
+> In the above example, the full transcript from the user is passed to the LLM. In a production environment you should add guardrails to prevent any prompt injection or manipulation attempts.
 
 #### Start the server
 

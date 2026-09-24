@@ -70,7 +70,9 @@ It breaks latency down across the full STT → LLM → TTS pipeline. All fields 
 
 This lets you attribute latency to the right stage — for example, separating LLM time-to-first-token from TTS time, and isolating tool-call and thinking overhead.
 
-Because the fields are optional, log defensively rather than assuming every field is present on every report.
+> **Note**
+>
+> Because the fields are optional, log defensively rather than assuming every field is present on every report.
 
 ## Recommended Logging Shape
 

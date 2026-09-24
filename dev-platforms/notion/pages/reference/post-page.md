@@ -19,9 +19,9 @@ For internal connections, a page or data source parent is currently required in 
 
 #### Setting up page properties
 
-If the new page is a child of an existing page,`title` is the only valid property in the `properties` body parameter.
+If the new page is a child of another page, `title` is the only valid property in `properties`.
 
-If the new page is a child of an existing [data source](/reference/data-source), the keys of the `properties` object body param must match the parent [data source's properties](/reference/property-object).
+For a page in a [data source](/reference/data-source), property names or IDs must match the parent [data source’s schema](/reference/property-object). See [Page property values](/reference/page-property-values) for input examples and clearing rules.
 
 #### Setting up page content
 
@@ -37,7 +37,7 @@ When omitted, the default is `template[type]=none`, which means no template is a
   * The API bot must have access to the template page, and it must be within the same workspace.
   * Although any valid page ID can be used as the `template[template_id]`, we recommend only using pages that are configured as actual [database templates](https://www.notion.com/help/database-templates) under the same data source as the parent of your new page to make sure that page properties can get merged in correctly.
 
-When using `default` or `template_id`, you can optionally provide `template[timezone]` — an [IANA timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) string (e.g. `America/New_York`) — to control the timezone used when resolving template variables like `@now` and `@today`. If omitted, the associated user's timezone is used for public connections and personal access tokens, or UTC for internal connections. An invalid timezone returns a `validation_error`.
+When using `default` or `template_id`, you can optionally provide `template[timezone]`, an [IANA time zone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) such as `America/New_York`, to control the timezone used when resolving template variables like `@now` and `@today`. If omitted, the associated user's timezone is used for public connections and personal access tokens, or UTC for internal connections. An invalid timezone returns a `validation_error`.
 
 When applying a template, the `children` parameter is **not** allowed. The page is returned as blank initially in the API response, and then Notion's systems apply the template asynchronously after the API request finishes. For more information, see our full guide on [creating pages from templates](/guides/data-apis/creating-pages-from-templates).
 
@@ -52,13 +52,13 @@ If `allow_async` is omitted or `false`, this endpoint keeps its existing synchro
 <Tip>
   **Newlines in markdown content**
 
-  When using the `markdown` body parameter, newlines must be encoded as `\n` in the JSON string — for example, `"# Heading\n\nParagraph"`. The interactive API explorer on this page does not support multiline input, so use cURL, an SDK, or any HTTP client that sends properly encoded JSON. When using cURL, wrap the `--data` body in **single quotes** (`'...'`) so that `\n` is preserved for the JSON parser.
+  When using the `markdown` body parameter, newlines must be encoded as `\n` in the JSON string. For example, `"# Heading\n\nParagraph"`. The interactive API explorer on this page does not support multiline input, so use cURL, an SDK, or any HTTP client that sends properly encoded JSON. When using cURL, wrap the `--data` body in **single quotes** (`'...'`) so that `\n` is preserved for the JSON parser.
 </Tip>
 
 <Warning>
   **Some page `properties` are not supported via the API**
 
-  A request body that includes `rollup`, `created_by`, `created_time`, `last_edited_by`, or `last_edited_time` values in the properties object returns an error. These Notion-generated values cannot be created or updated via the API. If the `parent` contains any of these properties, then the new page’s corresponding values are automatically created.
+  Formula, rollup, ID, creation, and last-edit values are set by Notion. Button actions cannot be set through a page write. Omit these fields from `properties`; see the [read-only property types](/reference/page-property-values#type-objects).
 </Warning>
 
 <Info>

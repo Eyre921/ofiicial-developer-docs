@@ -75,5 +75,7 @@ Real-time insights are for monitoring and triage. They help you decide where to 
 
 Deeper analysis, such as sentiment and topic discovery, depends on completed conversations and post-conversation analysis. If a conversation is still active or has just ended, some analysis fields may not appear immediately.
 
-Use real-time insights to find unusual activity, then review the supporting conversations before
-changing prompts, tools, models, or evaluation criteria.
+> **Tip**
+>
+> Use real-time insights to find unusual activity, then review the supporting conversations before
+> changing prompts, tools, models, or evaluation criteria.

@@ -49,8 +49,10 @@ Before setting up the integration, ensure you have:
 2. A HeyGen LiveAvatar account with API access
 3. An ElevenLabs agent (create one following the [quickstart guide](/docs/eleven-agents/quickstart))
 
-The ElevenLabs Agent needs to have audio input and output formats set to PCM 24000 Hz. This can be
-set in Voice settings > TTS output formats, and Advanced > User input audio format.
+> **Note**
+>
+> The ElevenLabs Agent needs to have audio input and output formats set to PCM 24000 Hz. This can be
+> set in Voice settings > TTS output formats, and Advanced > User input audio format.
 
 ## Setup
 
@@ -62,7 +64,9 @@ You need two items from your ElevenLabs account:
 
 2. **API Key**: Go to [Settings > API Keys](https://elevenlabs.io/app/settings/api-keys) and generate a new API key (or use an existing one)
 
-The API key needs to have `convai_read`, `user_read`, and `voices_read` permissions.
+> **Note**
+>
+> The API key needs to have `convai_read`, `user_read`, and `voices_read` permissions.
 
 #### Register your ElevenLabs API key with LiveAvatar
 

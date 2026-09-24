@@ -57,14 +57,18 @@ Currently, the following models are natively supported and can be configured via
 |                | Claude Sonnet 4.5      |
 |                | Claude Haiku 4.5       |
 
-Pricing is typically denoted in USD per 1 million tokens unless specified otherwise. A token is a
-fundamental unit of text data for LLMs, roughly equivalent to 4 characters on average.
+> **Note**
+>
+> Pricing is typically denoted in USD per 1 million tokens unless specified otherwise. A token is a
+> fundamental unit of text data for LLMs, roughly equivalent to 4 characters on average.
 
 ### Custom LLM
 
 Using your own custom LLM is supported by specifying the endpoint we should make requests to and providing credentials through our secure secret storage. Learn more about [custom LLM integration](/docs/eleven-agents/customization/llm/custom-llm).
 
-Some models are unavailable when EU data residency is enabled. See [GDPR and data residency](/docs/overview/administration/data-residency) for availability details.
+> **Note**
+>
+> Some models are unavailable when EU data residency is enabled. See [GDPR and data residency](/docs/overview/administration/data-residency) for availability details.
 
 ## Choosing a model
 
@@ -76,8 +80,10 @@ Selecting the most suitable LLM for your application involves considering severa
 * **Cost-effectiveness**: Balance the desired performance and features against your budget. LLM prices can vary significantly, so analyze the pricing structure (input, output, and cache tokens) in relation to your expected usage patterns
 * **HIPAA compliance**: If your application involves Protected Health Information (PHI), it is crucial to use an LLM that is designated as HIPAA compliant and ensure your entire data handling process meets regulatory standards
 
-The maximum system prompt size is 2MB, which includes your agent's instructions, knowledge base
-content, and other system-level context.
+> **Note**
+>
+> The maximum system prompt size is 2MB, which includes your agent's instructions, knowledge base
+> content, and other system-level context.
 
 ## Model configuration
 
@@ -99,8 +105,10 @@ Configure backup LLMs to ensure conversation continuity when the primary LLM fai
 * **Custom**: Define your own cascading sequence of backup models
 * **Disabled**: No fallback (strongly discouraged for production)
 
-Disabling backup LLMs means conversations will end abruptly if your primary LLM fails or becomes
-unavailable. This is strongly discouraged for production use.
+> **Warning**
+>
+> Disabling backup LLMs means conversations will end abruptly if your primary LLM fails or becomes
+> unavailable. This is strongly discouraged for production use.
 
 Learn more about [LLM cascading](/docs/eleven-agents/customization/llm/llm-cascading).
 
@@ -116,8 +124,10 @@ Set the maximum number of reasoning tokens with the numeric slider. Larger budge
 
 Reasoning effort controls how much reasoning the model performs before answering. Available levels depend on the selected model.
 
-Start with a lower budget or effort for live voice agents because extra thinking can delay
-turn-taking. Increase it for workflow steps that require more complex decisions.
+> **Tip**
+>
+> Start with a lower budget or effort for live voice agents because extra thinking can delay
+> turn-taking. Increase it for workflow steps that require more complex decisions.
 
 ### Reasoning summary
 
@@ -134,8 +144,10 @@ Reasoning content is subject to retention and PII redaction settings. You can ac
 | [OpenTelemetry](/docs/eleven-agents/customization/opentelemetry-traces) | Included in post-call agent-response spans as `elevenlabs.reasoning_content` |
 | [Client events](/docs/eleven-agents/customization/events/client-events) | Available as `agent_reasoning_response_part` in text conversations only      |
 
-With [Zero Retention Mode](/docs/eleven-agents/customization/privacy/zrm), ElevenLabs **does not
-store reasoning content**. It is delivered only to chat clients and post-call webhooks.
+> **Note**
+>
+> With [Zero Retention Mode](/docs/eleven-agents/customization/privacy/zrm), ElevenLabs **does not
+> store reasoning content**. It is delivered only to chat clients and post-call webhooks.
 
 #### Limitations
 

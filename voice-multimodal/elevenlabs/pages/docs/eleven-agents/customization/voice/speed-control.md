@@ -30,7 +30,7 @@ Speed is controlled through the [`speed` parameter](/docs/api-reference/agents/c
 
 Open your agent in the dashboard, navigate to the **Voice** tab, and adjust the speed control. Save your changes.
 
-![Speed control settings under the Voice tab](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4a1dfe1db33f9f03bb614b56173c7c00596f2d6c36b0f17ce43f151bd4d07f66/assets/images/conversational-ai/speed-control.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T093414Z&X-Amz-Expires=604800&X-Amz-Signature=e6222b812a0373446f2678014f22d936d0e3d1dee63c70cb8a362ea5459fd8c5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Speed control settings under the Voice tab](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4a1dfe1db33f9f03bb614b56173c7c00596f2d6c36b0f17ce43f151bd4d07f66/assets/images/conversational-ai/speed-control.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T111336Z&X-Amz-Expires=604800&X-Amz-Signature=587883d993bb24332427940bee4612d55e7f61b2246edc5e21e41ad7c1b1640c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Update via the CLI
 
@@ -95,7 +95,9 @@ The speed parameter affects the pace of speech generation:
 * Values above 1.0 speed up the speech
 * 1.0 represents normal speaking speed
 
-Extreme values near the minimum or maximum may affect the quality of the generated speech.
+> **Note**
+>
+> Extreme values near the minimum or maximum may affect the quality of the generated speech.
 
 ## Best practices
 
@@ -104,4 +106,6 @@ Extreme values near the minimum or maximum may affect the quality of the generat
 * Consider your target audience when setting the speed
 * Monitor speech quality at extreme values
 
-Values outside the 0.7-1.2 range are not supported.
+> **Warning**
+>
+> Values outside the 0.7-1.2 range are not supported.

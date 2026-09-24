@@ -75,7 +75,9 @@ Deepgram’s profanity filtering feature masks offensive language in transcripts
 * **Urdu**: `ur`
 * **Vietnamese**: `vi`
 
-Profanity filtering is supported for all multilingual models: Nova-2 multi, Nova-3 multi, and Flux multi (`language=multi`).
+> **Info**
+>
+> Profanity filtering is supported for all multilingual models: Nova-2 multi, Nova-3 multi, and Flux multi (`language=multi`).
 
 ## Enable Feature
 
@@ -96,7 +98,9 @@ curl \
   --url 'https://api.deepgram.com/v1/listen?profanity_filter=true'
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
 
 ## Results
 

@@ -10,7 +10,9 @@ path: docs/eleven-agents/operate/versioning
 
 Agent versioning allows you to experiment with different configurations of your agent without risking your production setup. Create isolated branches, test changes, and gradually roll out updates using traffic percentage deployment.
 
-Looking to run A/B tests? See [Experiments](/docs/eleven-agents/operate/experiments) for the recommended workflow for testing agent changes against live traffic.
+> **Note**
+>
+> Looking to run A/B tests? See [Experiments](/docs/eleven-agents/operate/experiments) for the recommended workflow for testing agent changes against live traffic.
 
 ## Overview
 
@@ -22,8 +24,10 @@ The versioning system provides:
 * **Merging** to bring changes from any branch into any other branch
 * **Rebasing** to pull the latest main branch changes into a branch
 
-Once versioning is enabled on an agent, it cannot be disabled. Consider this before enabling
-versioning on existing agents.
+> **Note**
+>
+> Once versioning is enabled on an agent, it cannot be disabled. Consider this before enabling
+> versioning on existing agents.
 
 ## Core concepts
 
@@ -67,7 +71,9 @@ Unsaved changes are stored as drafts, allowing you to work on changes without im
 
 Versioning is opt-in and must be explicitly enabled. You can enable it when creating a new agent or on an existing agent.
 
-Once enabled, versioning cannot be disabled. This is a permanent change to your agent.
+> **Warning**
+>
+> Once enabled, versioning cannot be disabled. This is a permanent change to your agent.
 
 ### Enable when creating an agent
 
@@ -282,7 +288,9 @@ const deployment = await client.conversationalAi.agents.deployments.create('agen
 });
 ```
 
-All percentages must sum to exactly 100%. The deployment will fail if they don't.
+> **Warning**
+>
+> All percentages must sum to exactly 100%. The deployment will fail if they don't.
 
 Traffic routing is deterministic based on the conversation ID, ensuring the same user consistently reaches the same branch across sessions.
 
@@ -314,9 +322,11 @@ Merging:
 * Optionally archives the source branch (default behavior)
 * Automatically transfers traffic from the source branch to the target branch
 
-Merging fails with `no_new_changes_to_merge` if the source branch was created from (and has no
-new commits beyond) the target branch, and with `branch_already_merged` if it was already merged
-into that target.
+> **Note**
+>
+> Merging fails with `no_new_changes_to_merge` if the source branch was created from (and has no
+> new commits beyond) the target branch, and with `branch_already_merged` if it was already merged
+> into that target.
 
 ### Resolving merge conflicts
 
@@ -369,8 +379,10 @@ Rebasing:
 * Preserves the branch's own changes: if a setting was edited on both the branch and main, the branch's value is always kept
 * Fails with `branch_already_up_to_date` if the branch already includes all changes from main
 
-Only non-main branches can be rebased, and only onto main. Rebasing the main branch itself
-returns a `cannot_rebase_main` error.
+> **Note**
+>
+> Only non-main branches can be rebased, and only onto main. Rebasing the main branch itself
+> returns a `cannot_rebase_main` error.
 
 Preview the result of a rebase before committing to it:
 
@@ -407,7 +419,9 @@ await client.conversationalAi.agents.branches.update('agent_7101k5zvyjhmfg983brh
 });
 ```
 
-You cannot archive a branch that has traffic allocated to it. Remove all traffic before archiving.
+> **Warning**
+>
+> You cannot archive a branch that has traffic allocated to it. Remove all traffic before archiving.
 
 Archived branches can be unarchived by setting `archived=False`.
 
@@ -486,7 +500,9 @@ These settings are shared across all versions:
 | `privacy`      | Retention settings and zero-retention mode                        |
 | `ban`          | Ban status (admin only)                                           |
 
-Changes to name and tags on non-main branches don't persist to the agent until merged to main.
+> **Note**
+>
+> Changes to name and tags on non-main branches don't persist to the agent until merged to main.
 
 ## Best practices
 

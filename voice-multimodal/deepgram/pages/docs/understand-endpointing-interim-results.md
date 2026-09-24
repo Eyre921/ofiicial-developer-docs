@@ -152,7 +152,9 @@ The following example shows how `is_final` and `speech_final` interact when a sp
 
 On line 5, `is_final: true` indicates a finalized transcript, but `speech_final: false` means the speaker hasn't paused yet. On line 7, both flags are `true`, signaling the end of an utterance. To get the complete transcript, concatenate lines 5 and 7.
 
-Do not use `speech_final: true` alone to capture full transcripts. Long utterances may have multiple `is_final: true` responses before `speech_final: true` is returned.
+> **Warning**
+>
+> Do not use `speech_final: true` alone to capture full transcripts. Long utterances may have multiple `is_final: true` responses before `speech_final: true` is returned.
 
 ## Implement utterance segmentation
 

@@ -36,7 +36,9 @@ curl \
   --output test_audio.wav
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 ## Filter Requests by Tag
 
@@ -54,7 +56,9 @@ curl \
   --url 'https://api.deepgram.com/v1/projects/PROJECT_ID/usage?tag=TEST'
 ```
 
-Replace the placeholder `PROJECT_ID` with your Deepgram Console Project ID, `VALUE` with your tag, and `YOUR_DEEPGRAM_API_KEY` with your Deepgram API Key.
+> **Warning**
+>
+> Replace the placeholder `PROJECT_ID` with your Deepgram Console Project ID, `VALUE` with your tag, and `YOUR_DEEPGRAM_API_KEY` with your Deepgram API Key.
 
 ## Tag Limits
 

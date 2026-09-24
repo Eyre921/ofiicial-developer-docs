@@ -46,11 +46,11 @@ Dynamic sampling only applies to spans and transactions, not errors.
 
 ## [Dynamic Sampling Priorities](https://docs.sentry.io/organization/dynamic-sampling.md#dynamic-sampling-priorities)
 
-Below is a list of the strategies Dynamic Sampling employs to prioritize and deprioritize data. They are enabled by default, but can be updated on a per-project basis to better fit your organization's needs. To customize this behavior, go to Project Settings > Performance.
+Below is a list of the strategies Dynamic Sampling employs to prioritize and deprioritize data. They are enabled by default, but can be updated on a per-project basis to better fit your organization's needs. To customize this behavior, go to [Project Settings > Performance](https://sentry.io/orgredirect/organizations/:orgslug/settings/projects/:projectId/performance/).
 
 ### [How to Change Dynamic Sampling Priorities](https://docs.sentry.io/organization/dynamic-sampling.md#how-to-change-dynamic-sampling-priorities)
 
-To make changes to a project's dynamic sampling priorities in Sentry, go to **Settings > Projects**, select the project you're interested in, then scroll down to "Performance" in the "PROCESSING" section and make any updates under "DYNAMIC SAMPLING PRIORITIES" using the toggles. Each of your projects can have an individual set of dynamic sampling priorities.
+To make changes to a project's dynamic sampling priorities in Sentry, go to [**Settings > Projects**](https://sentry.io/orgredirect/organizations/:orgslug/settings/projects/), select the project you're interested in, then scroll down to ["Performance"](https://sentry.io/orgredirect/organizations/:orgslug/settings/projects/:projectId/performance/) in the "PROCESSING" section and make any updates under "DYNAMIC SAMPLING PRIORITIES" using the toggles. Each of your projects can have an individual set of dynamic sampling priorities.
 
 ### [Automatic Priorities](https://docs.sentry.io/organization/dynamic-sampling.md#automatic-priorities)
 

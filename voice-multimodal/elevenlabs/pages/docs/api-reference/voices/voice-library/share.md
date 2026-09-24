@@ -32,7 +32,7 @@ Reference: https://elevenlabs.io/docs/api-reference/voices/voice-library/share
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_Add_shared_voice_v1_voices_add__public_user_id___voice_id__post.
 
 - `new_name` (string, required) — The name that identifies this voice. This will be displayed in the dropdown of the website.
 - `bookmarked` (boolean, optional, default: true)
@@ -51,10 +51,17 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

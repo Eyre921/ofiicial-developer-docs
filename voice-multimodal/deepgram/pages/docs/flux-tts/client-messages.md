@@ -49,7 +49,9 @@ You may send `Speak` at any time. Text sent while the current turn is still gene
 
 Send **plain text**. The server applies text normalization (for example, expanding numbers and dates) before synthesis, but it does not reorder your content or insert or strip whitespace between successive `Speak` messages — so you can stream LLM tokens directly without coordinating chunk boundaries.
 
-**Insert whitespace between distinct generations.** Because the server doesn't add whitespace between `Speak` messages, sending `"Hello world."` immediately followed by `"How are you?"` is processed as `"Hello world.How are you?"`, which can trigger sentence-boundary artifacts. When you concatenate separate LLM responses (a reply, a tool-call result, another reply), insert a single space — or the appropriate separator for non-whitespace languages — between them.
+> **Warning**
+>
+> **Insert whitespace between distinct generations.** Because the server doesn't add whitespace between `Speak` messages, sending `"Hello world."` immediately followed by `"How are you?"` is processed as `"Hello world.How are you?"`, which can trigger sentence-boundary artifacts. When you concatenate separate LLM responses (a reply, a tool-call result, another reply), insert a single space — or the appropriate separator for non-whitespace languages — between them.
 
 ### Markup handling
 
@@ -57,7 +59,9 @@ The model synthesizes **plain text** — SSML and competitor audio tags aren't i
 
 For each `Speak` that contains detected markup, the server strips it, synthesizes the cleaned text, and emits one [`Warning`](/docs/flux-tts/server-messages#warning) with code `INPUT_MARKUP_STRIPPED` (one per `Speak`, not per tag).
 
-**Billing and reporting use the cleaned text.** Markup stripping runs before normalization and billing, so `billable_character_count` and an interrupt's `text_spoken` reflect the cleaned text, never the original markup. `Configure` adjusts `speed` only; inline pause and pronunciation controls are coming soon.
+> **Info**
+>
+> **Billing and reporting use the cleaned text.** Markup stripping runs before normalization and billing, so `billable_character_count` and an interrupt's `text_spoken` reflect the cleaned text, never the original markup. `Configure` adjusts `speed` only; inline pause and pronunciation controls are coming soon.
 
 ## Flush
 
@@ -69,7 +73,9 @@ End the active turn. The server drains the buffer, generates the remaining audio
 
 On `Flush`, the server generates any remaining audio for the active turn and emits [`Flushed`](/docs/flux-tts/server-messages#flushed) **when the turn's buffer has actually been flushed** — not on receipt, and it can be held back behind earlier pending turns — followed by [`SpeechMetadata`](/docs/flux-tts/server-messages#speechmetadata) with the turn's billing and timing. The next `Speak` begins a new turn with a new `speech_id`.
 
-**`Flush` is what ends a turn.** The server may already be streaming a turn's audio before you flush, but only `Flush` closes the turn and produces `Flushed` + `SpeechMetadata`. A `Flush` with no active turn is a no-op and produces a `NO_ACTIVE_SPEECH` warning.
+> **Info**
+>
+> **`Flush` is what ends a turn.** The server may already be streaming a turn's audio before you flush, but only `Flush` closes the turn and produces `Flushed` + `SpeechMetadata`. A `Flush` with no active turn is a no-op and produces a `NO_ACTIVE_SPEECH` warning.
 
 ## Interrupt
 
@@ -91,7 +97,9 @@ The user has barged in. Cancel the active turn and report what was actually spok
 
 An `Interrupt` the server cannot act on — no audio generated yet, an earlier interrupt still in flight, or a non-advancing offset — is answered with a `Warning` instead of `SpeechInterrupted`. See the [warning codes](/docs/flux-tts/server-messages#warning-codes).
 
-**Stop playback locally, then `Interrupt`.** The instant you detect barge-in, stop playback client-side; the round-trip is for context reconciliation, not for stopping audio. Any frames that arrive after you send `Interrupt` but before `SpeechInterrupted` were already in flight — discard them. See [Interruption Handling](/docs/flux-tts/interrupt-handling) for the full pattern.
+> **Info**
+>
+> **Stop playback locally, then `Interrupt`.** The instant you detect barge-in, stop playback client-side; the round-trip is for context reconciliation, not for stopping audio. Any frames that arrive after you send `Interrupt` but before `SpeechInterrupted` were already in flight — discard them. See [Interruption Handling](/docs/flux-tts/interrupt-handling) for the full pattern.
 
 ## Configure
 

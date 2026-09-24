@@ -31,7 +31,7 @@ Reference: https://elevenlabs.io/docs/api-reference/knowledge-base/compute-rag-i
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a RAGIndexRequestModel.
 
 - `model` (enum, required, default: e5_mistral_7b_instruct)
   - Allowed values: `e5_mistral_7b_instruct`, `multilingual_e5_large_instruct`
@@ -48,8 +48,7 @@ Successful Response
 - `status` (enum, required)
   - Allowed values: `new`, `created`, `processing`, `failed`, `succeeded`, `rag_limit_exceeded`, `document_too_small`, `cannot_index_folder`
 - `progress_percentage` (double, required)
-- `document_model_index_usage` (object, required)
-  - `used_bytes` (integer, required)
+- `document_model_index_usage` (RAGDocumentIndexUsage, required)
 
 ## Errors
 
@@ -57,10 +56,21 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### RAGDocumentIndexUsage
+
+- `used_bytes` (integer, required)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

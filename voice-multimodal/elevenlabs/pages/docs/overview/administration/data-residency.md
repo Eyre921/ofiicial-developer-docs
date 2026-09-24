@@ -8,8 +8,10 @@ path: docs/overview/administration/data-residency
 
 # Data residency
 
-Data residency is an Enterprise feature. For details on enabling this for your organization,
-please see the "Getting Access" section below.
+> **Info**
+>
+> Data residency is an Enterprise feature. For details on enabling this for your organization,
+> please see the "Getting Access" section below.
 
 ## Overview
 

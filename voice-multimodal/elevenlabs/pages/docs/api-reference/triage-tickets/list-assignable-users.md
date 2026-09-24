@@ -34,12 +34,7 @@ Reference: https://elevenlabs.io/docs/api-reference/triage-tickets/list-assignab
 
 Successful Response
 
-- `list of object`
-  - `user_id` (string, required)
-  - `email` (string, required)
-  - `first_name` (string, required, nullable)
-  - `is_service_account` (boolean, required)
-  - `has_access` (boolean, required) — Whether this workspace member currently has at least viewer access to the agent. Members without access are still returned so they can be surfaced (e.g. grayed out) and granted access before being assigned.
+- `list of AssignableUserResponseModel`
 
 ## Errors
 
@@ -47,10 +42,25 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### AssignableUserResponseModel
+
+- `user_id` (string, required)
+- `email` (string, required)
+- `first_name` (string, required, nullable)
+- `is_service_account` (boolean, required)
+- `has_access` (boolean, required) — Whether this workspace member currently has at least viewer access to the agent. Members without access are still returned so they can be surfaced (e.g. grayed out) and granted access before being assigned.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

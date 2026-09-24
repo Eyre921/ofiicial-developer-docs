@@ -35,7 +35,7 @@ channels:
           type: object
           properties:
             agent_id:
-              description: Any type
+              type: string
     publish:
       operationId: subpackage_v1ConvaiConversation.v1ConvaiConversation-publish
       summary: subscribe
@@ -1422,6 +1422,8 @@ components:
         - gpt-5.6-terra
         - gpt-5.6-luna
         - gpt-6-astra
+        - gpt-6-sol
+        - gpt-6-luna
         - gpt-5-mini
         - gpt-5-nano
         - gpt-3.5-turbo
@@ -1444,6 +1446,8 @@ components:
         - claude-sonnet-4-5
         - claude-opus-4-7
         - claude-opus-4-8
+        - claude-opus-5
+        - claude-opus-5-5
         - claude-sonnet-4-6
         - claude-sonnet-5
         - claude-sonnet-4
@@ -1461,6 +1465,7 @@ components:
         - gpt-oss-20b
         - gpt-oss-120b
         - glm-45-air-fp8
+        - glm-52
         - gemini-2.5-flash-preview-09-2025
         - gemini-2.5-flash-lite-preview-09-2025
         - gemini-2.5-flash-preview-05-20

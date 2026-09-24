@@ -66,10 +66,6 @@ curl https://api.stripe.com/v1/payment_methods \
 }
 ```
 
-## Returns
-
-Returns a PaymentMethod object.
-
 ## Parameters
 
 - `type` (enum, required)
@@ -440,4 +436,8 @@ Possible enum values:
 
 - `zip` (object, optional)
   If this is a `zip` PaymentMethod, this hash contains details about the Zip payment method.
+
+## Returns
+
+Returns a PaymentMethod object.
 

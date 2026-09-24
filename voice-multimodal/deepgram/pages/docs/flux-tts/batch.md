@@ -43,7 +43,9 @@ The response body is the synthesized audio in the requested encoding. Per-reques
 | `tag`             | —                    | Label requests for usage reporting. Repeatable.                                                                                                                                                                                                |
 | `mip_opt_out`     | `false`              | Opt out of the Model Improvement Program.                                                                                                                                                                                                      |
 
-Conversational constructs (`Flush`, `Interrupt`, `speech_id`, lifecycle events) do not apply to batch. `model`, `speed`, `expressivity`, and the media-output settings behave the same as on the [streaming surface](/docs/flux-tts/quickstart), so the contract doesn't fragment across transports. Inline controls — pause and pronunciation — are coming soon on both transports.
+> **Info**
+>
+> Conversational constructs (`Flush`, `Interrupt`, `speech_id`, lifecycle events) do not apply to batch. `model`, `speed`, `expressivity`, and the media-output settings behave the same as on the [streaming surface](/docs/flux-tts/quickstart), so the contract doesn't fragment across transports. Inline controls — pause and pronunciation — are coming soon on both transports.
 
 ## When to use batch vs streaming
 

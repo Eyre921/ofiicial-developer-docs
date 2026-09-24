@@ -27,7 +27,7 @@ Reference: https://elevenlabs.io/docs/api-reference/workspace/invites/create
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_Invite_user_v1_workspace_invites_add_post.
 
 - `email` (string, required) — The email of the customer
 - `seat_type` (enum, optional, nullable) — The seat type of the user
@@ -50,10 +50,17 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

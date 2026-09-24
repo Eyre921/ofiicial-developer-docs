@@ -53,7 +53,9 @@ To analyze text from a file on your computer, run the following curl command in 
 	"https://api.deepgram.com/v1/read?summarize=true&language=en"
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
 
 ### Basic URL Request
 
@@ -69,7 +71,9 @@ curl -vX POST \
  "https://api.deepgram.com/v1/read?summarize=true&language=en"
 ```
 
-Read our [Text Intelligence Getting Started guide](/docs/text-intelligence), which will walk you through making a basic text request and a basic URL request with the Deepgram SDKs.
+> **Info**
+>
+> Read our [Text Intelligence Getting Started guide](/docs/text-intelligence), which will walk you through making a basic text request and a basic URL request with the Deepgram SDKs.
 
 ### Query Parameters
 
@@ -78,7 +82,9 @@ Read our [Text Intelligence Getting Started guide](/docs/text-intelligence), whi
 | `summarize` | `true` | boolean | Enables summarization. The output response will include a `summary` object, and within that object will be a `text`property that contains a short summary of the entire text. |
 | `language`  | `en`   | string  | The language of your input text (Only English is supported at this time)                                                                                                      |
 
-Summarization requires a minimum of greater than 50 words for summarization. For shorter inputs (less than 50 words), the original input will be returned. In this case, no tokens in or out are billed as summarization usage.
+> **Info**
+>
+> Summarization requires a minimum of greater than 50 words for summarization. For shorter inputs (less than 50 words), the original input will be returned. In this case, no tokens in or out are billed as summarization usage.
 
 ## Analyze Response
 

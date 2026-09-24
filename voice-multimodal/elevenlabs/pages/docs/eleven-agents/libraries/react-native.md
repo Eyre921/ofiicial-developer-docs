@@ -8,8 +8,10 @@ path: docs/eleven-agents/libraries/react-native
 
 # React Native SDK
 
-Refer to the [ElevenAgents overview](/docs/eleven-agents/overview) for an explanation of how
-ElevenAgents works.
+> **Info**
+>
+> Refer to the [ElevenAgents overview](/docs/eleven-agents/overview) for an explanation of how
+> ElevenAgents works.
 
 ## Installation
 
@@ -19,12 +21,16 @@ Install the package and its dependencies in your React Native project.
 npm install @elevenlabs/react-native @livekit/react-native @livekit/react-native-webrtc livekit-client
 ```
 
-An example app using this SDK with Expo can be found
-[here](https://github.com/elevenlabs/packages/tree/main/examples/react-native-expo)
+> **Tip**
+>
+> An example app using this SDK with Expo can be found
+> [here](https://github.com/elevenlabs/packages/tree/main/examples/react-native-expo)
 
-Upgrading from an earlier version? Run `npx skills add elevenlabs/packages` to install the
-`elevenlabs:sdk-migration` skill for your AI coding agent, which automates import changes,
-`ConversationProvider` wrapping, and API updates.
+> **Tip**
+>
+> Upgrading from an earlier version? Run `npx skills add elevenlabs/packages` to install the
+> `elevenlabs:sdk-migration` skill for your AI coding agent, which automates import changes,
+> `ConversationProvider` wrapping, and API updates.
 
 ## Requirements
 
@@ -33,23 +39,27 @@ Upgrading from an earlier version? Run `npx skills add elevenlabs/packages` to i
 * Expo compatibility (development builds only)
 * React Native 0.79.0+, or Metro configured to resolve `package.json` `"exports"` on older versions
 
-This SDK was designed and built for use with the Expo framework. Due to its dependency on
-LiveKit's WebRTC implementation, it requires development builds and cannot be used with Expo Go.
+> **Warning**
+>
+> This SDK was designed and built for use with the Expo framework. Due to its dependency on
+> LiveKit's WebRTC implementation, it requires development builds and cannot be used with Expo Go.
 
-`@elevenlabs/react-native` resolves its React Native entry point via the `package.json`
-[`"exports"`](https://nodejs.org/api/packages.html#exports) field. Metro only resolves
-`"exports"` by default starting with Metro 0.82.0, which shipped in [React Native 0.79.0](https://reactnative.dev/blog/2025/04/08/react-native-0.79) (released April 8, 2025). If
-you're on a React Native version older than 0.79, set `resolver.unstable_enablePackageExports =
-  true` in your `metro.config.js` so this package resolves correctly:
-
-```js
-const { getDefaultConfig } = require("metro-config");
-
-const config = getDefaultConfig(__dirname);
-config.resolver.unstable_enablePackageExports = true;
-
-module.exports = config;
-```
+> **Warning**
+>
+> `@elevenlabs/react-native` resolves its React Native entry point via the `package.json`
+> [`"exports"`](https://nodejs.org/api/packages.html#exports) field. Metro only resolves
+> `"exports"` by default starting with Metro 0.82.0, which shipped in [React Native 0.79.0](https://reactnative.dev/blog/2025/04/08/react-native-0.79) (released April 8, 2025). If
+> you're on a React Native version older than 0.79, set `resolver.unstable_enablePackageExports =
+>   true` in your `metro.config.js` so this package resolves correctly:
+>
+> ```js
+> const { getDefaultConfig } = require("metro-config");
+>
+> const config = getDefaultConfig(__dirname);
+> config.resolver.unstable_enablePackageExports = true;
+>
+> module.exports = config;
+> ```
 
 ## Setup
 
@@ -70,8 +80,10 @@ function App() {
 }
 ```
 
-`@elevenlabs/react-native` re-exports `ConversationProvider` and all hooks from
-`@elevenlabs/react`. The API is identical to the web React SDK — see the [React SDK documentation](/docs/eleven-agents/libraries/react) for the full API reference.
+> **Note**
+>
+> `@elevenlabs/react-native` re-exports `ConversationProvider` and all hooks from
+> `@elevenlabs/react`. The API is identical to the web React SDK — see the [React SDK documentation](/docs/eleven-agents/libraries/react) for the full API reference.
 
 ## Usage
 

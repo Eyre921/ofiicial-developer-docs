@@ -10,7 +10,9 @@ path: docs/inbound-telephony-agent
 
 # Build an Inbound Telephony Agent
 
-For more information and to use our reference implementation, visit the [Deepgram Inbound Telephony Agent repo](https://github.com/deepgram-devs/deepgram-voice-agent-inbound-telephony).
+> **Info**
+>
+> For more information and to use our reference implementation, visit the [Deepgram Inbound Telephony Agent repo](https://github.com/deepgram-devs/deepgram-voice-agent-inbound-telephony).
 
 # Inbound Telephony Voice Agent
 

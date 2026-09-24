@@ -69,3 +69,11 @@ Example attachment object in Create Comment response:
 </CodeGroup>
 
 The `file.url` is a temporary download link generated at the time of retrieving a comment. See the guide on [Retrieving existing files](/guides/data-apis/retrieving-files) to learn more about accessing the files you upload.
+
+## Attachments that are still uploading
+
+When someone attaches a file to a comment in the Notion app, Notion saves the comment before the file finishes uploading. Until the upload finishes, the file isn't listed in `attachments`, and the comment's `has_pending_attachments` field is `true`.
+
+When the upload finishes, Notion sends a `comment.updated` [webhook event](/reference/webhooks-events-delivery) for the comment. Retrieve the comment again to get the file. If the upload fails, the file is removed from the comment, and Notion sends `comment.updated`, or `comment.deleted` if the comment has no text.
+
+Comments created with the API aren't affected, because the [Create comment](/reference/create-a-comment) API only accepts files that have finished uploading.

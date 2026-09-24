@@ -82,29 +82,38 @@ channels:
           type: object
           properties:
             authorization:
-              description: Any type
+              type: string
             single_use_token:
-              description: Any type
+              type: string
             model_id:
-              description: Any type
+              type: string
+              default: eleven_multilingual_v2
             language_code:
-              description: Any type
+              type: string
             enable_logging:
-              description: Any type
+              type: boolean
+              default: true
             output_format:
               description: Any type
             inactivity_timeout:
-              description: Any type
+              type: integer
+              maximum: 180
+              default: 20
             sync_alignment:
-              description: Any type
+              type: boolean
+              default: false
             auto_mode:
-              description: Any type
+              type: boolean
+              default: false
             apply_text_normalization:
               description: Any type
             seed:
-              description: Any type
+              type: integer
+              minimum: 0
+              maximum: 4294967295
             enable_ssml_parsing:
-              description: Any type
+              type: boolean
+              default: false
         headers:
           type: object
           properties:

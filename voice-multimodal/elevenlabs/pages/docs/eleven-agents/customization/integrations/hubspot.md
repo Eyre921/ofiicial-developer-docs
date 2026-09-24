@@ -35,13 +35,17 @@ After creating the app, copy the generated access token. It starts with `pat-`.
 
 In the ElevenLabs integration setup, paste your private app token in the **Private App Access Token** field.
 
-This integration currently only supports US-hosted HubSpot accounts (`api.hubapi.com`). EU-hosted
-accounts (tokens starting with `pat-eu1-`) are not yet supported.
+> **Note**
+>
+> This integration currently only supports US-hosted HubSpot accounts (`api.hubapi.com`). EU-hosted
+> accounts (tokens starting with `pat-eu1-`) are not yet supported.
 
 ## Demo video
 
-This demo uses legacy webhook tools. If you're using the native HubSpot integration, the tools are
-configured automatically — no manual webhook setup is needed.
+> **Note**
+>
+> This demo uses legacy webhook tools. If you're using the native HubSpot integration, the tools are
+> configured automatically — no manual webhook setup is needed.
 
 ## How it works
 

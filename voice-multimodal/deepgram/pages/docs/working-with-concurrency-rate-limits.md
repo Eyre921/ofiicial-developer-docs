@@ -14,13 +14,17 @@ path: docs/working-with-concurrency-rate-limits
 
 Deepgram's APIs offer powerful capabilities for [speech-to-text](getting-started-with-pre-recorded-audio) and [text-to-speech](/docs/text-to-speech) as well as [audio intelligence](/docs/audio-intelligence) and [text intelligence](/docs/text-intelligence). To ensure all users receive consistent and predictable service, and to prevent accidental misuse, Deepgram enforces concurrency and rate limits on API usage. This guide will help you understand these limits, how to work within them, and strategies to maximize your usage without hitting your limits.
 
-API concurrency rate limits protect your applications and services built on Deepgram from abuse or failure.
+> **Info**
+>
+> API concurrency rate limits protect your applications and services built on Deepgram from abuse or failure.
 
 ## Working with Concurrency Rate Limits
 
 API Concurrency limits are associated to your Deepgram project, not your API key. They define the maximum number of simultaneous API requests allowed at any given time. Understanding these limits is essential for building high-throughput applications and avoiding request throttling.
 
-For information on Deepgram's Concurrency Rate Limits, refer to our [API Rate Limits Documentation](/reference/api-rate-limits).
+> **Info**
+>
+> For information on Deepgram's Concurrency Rate Limits, refer to our [API Rate Limits Documentation](/reference/api-rate-limits).
 
 ### Managing Concurrency
 
@@ -32,7 +36,9 @@ In this scenario, you must ensure your application doesn't exceed the concurrenc
 
 Concurrency rate limits define the maximum number of API requests you can make in a given time frame. These limits help maintain service quality and prevent abuse. Deepgram doesn't restrict the number of requests you can send in a given time span, only the number of concurrent requests you can make.
 
-For information on Deepgram's Concurrency Rate Limits, refer to our [API Rate Limits Documentation](/reference/api-rate-limits).
+> **Info**
+>
+> For information on Deepgram's Concurrency Rate Limits, refer to our [API Rate Limits Documentation](/reference/api-rate-limits).
 
 ### Handling Rate Limits
 

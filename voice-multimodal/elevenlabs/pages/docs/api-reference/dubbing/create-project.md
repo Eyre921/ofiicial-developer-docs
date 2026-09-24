@@ -39,7 +39,7 @@ This endpoint expects a multipart form with multiple files.
 - `source_url` (string, optional) — Public HTTP(S) URL the source media is fetched from server-side, subject to the same size and format limits as an upload. Provide this or `file`, not both.
 - `reference` (string, optional) — Optional free-form string (at most 500 characters) to identify the project on your end. Stored and echoed back verbatim; it does not affect the dub.
 - `source_language` (string, optional) — BCP-47 language tag of the source media; must be a language the transcription model supports. Any region or script subtag is ignored, since transcription is per-language. Omit to auto-detect.
-- `model_id` (enum or string, optional) — Dubbing model (`dubbing_v1` or `dubbing_v2`) every language target of this project is dubbed with. Defaults to `dubbing_v2`. Fixed at create time — the source is prepared for this model, so neither the project nor an individual target can change it later.
+- `model_id` (V1DubbingProjectPostRequestBodyContentMultipartFormDataSchemaModelId, optional) — Dubbing model (`dubbing_v1` or `dubbing_v2`) every language target of this project is dubbed with. Defaults to `dubbing_v2`. Fixed at create time — the source is prepared for this model, so neither the project nor an individual target can change it later.
 - `keyterms` (list of string, optional) — Key terms to bias transcription and translation toward (for example, product or brand names). At most 1,000 terms; each term at most 50 characters and 5 words; the characters `<>{}[]\` are not allowed. Terms are trimmed and deduplicated. Repeat the field once per term, or pass a single JSON array.
 - `webhook_ids` (list of string, optional) — IDs of workspace webhooks to notify as this project progresses — the alternative to polling, and what we recommend. Each receives a `dubbing_project_ready` or `dubbing_project_failed` event for the project, and a `dubbing_language_completed` or `dubbing_language_failed` event for every language under it; `dubbing_language_completed` carries the output download URLs. At most 3 IDs, each already configured in your workspace — see [Webhooks](https://elevenlabs.io/docs/eleven-api/resources/webhooks) for how to create one and verify its signature. Repeat the field once per ID, or pass a single JSON array or comma-separated string. Delivery is best-effort and can repeat, so we recommend handling events idempotently.
 - `target_language` (string, optional) — Optional shortcut: also create a language target in this BCP-47 language, queued to start once the project is ready — equivalent to creating the project and then creating one language target. Must be one of the [languages the dubbing model supports](https://elevenlabs.io/docs/help-center/product/dubbing/which-languages-are-supported-in-dubbing), and a region-qualified tag must be one of the supported dialects. This is the first language target, so it consumes the project's minimum charge rather than adding to it. Its ID is returned in `language_ids`.
@@ -60,20 +60,11 @@ Successful Response
 - `reference` (string, optional, nullable) — The free-form string you supplied as `reference` when creating the project, or null if you supplied none.
 - `source_language` (string, optional, nullable) — BCP-47 language tag of the source media (null if auto-detected).
 - `model_id` (string, optional, nullable) — Dubbing model every language target of this project is dubbed with. Fixed at create time and not selectable per language.
-- `media` (object, optional, nullable) — Source media metadata, populated once the source has been fetched and decoded (shortly after create, before the project is `ready`); null until then.
-  - `filename` (string, optional, nullable) — Original filename of the uploaded source media (null for URL sources).
-  - `duration_s` (double, optional, nullable) — Duration of the source media, in seconds.
-  - `has_video` (boolean, optional, nullable) — Whether the source media contains a video stream.
-  - `mime_type` (string, optional, nullable) — MIME type of the uploaded source media (null for URL sources).
+- `media` (DubbingSourceMediaInfo, optional, nullable) — Source media metadata, populated once the source has been fetched and decoded (shortly after create, before the project is `ready`); null until then.
 - `language_ids` (list of string, optional, default: []) — Identifiers of the language targets under this project. Populated when a single project is fetched, and on create when `target_language` creates one. Always empty in list responses — list the project's language targets instead.
 - `webhook_ids` (list of string, optional, default: []) — IDs of the workspace webhooks notified as this project and its languages reach `ready`, `completed`, or `failed`.
-- `error` (object, optional, nullable) — Why the project failed; null unless `status` is `failed`. Also null for the few projects that failed before failure reporting was introduced.
-  - `message_type` ("error", required)
-  - `error` (string, required)
-- `warnings` (list of object, optional) — Non-fatal conditions raised while preparing the source, empty when there are none. Reflects the latest preparation. Conditions raised while dubbing a particular language are reported on that language instead.
-  - `type` ("voices_not_permitted", required) — Identifies this warning; branch on it to read the other fields.
-  - `speaker_ids` (list of string, required) — Speakers whose voices were not permitted for cloning. The dub used a replacement voice for each of them; all other speakers are unaffected.
-  - `message` (string, required) — Human-readable description of the warning, for display. The wording may change at any time, so we recommend branching on `type` instead.
+- `error` (DubbingError, optional, nullable) — Why the project failed; null unless `status` is `failed`. Also null for the few projects that failed before failure reporting was introduced.
+- `warnings` (list of VoicesNotPermittedWarning, optional) — Non-fatal conditions raised while preparing the source, empty when there are none. Reflects the latest preparation. Conditions raised while dubbing a particular language are reported on that language instead.
 
 ## Errors
 
@@ -81,10 +72,37 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### DubbingSourceMediaInfo
+
+Metadata about the project's source media.
+
+- `filename` (string, optional, nullable) — Original filename of the uploaded source media (null for URL sources).
+- `duration_s` (double, optional, nullable) — Duration of the source media, in seconds.
+- `has_video` (boolean, optional, nullable) — Whether the source media contains a video stream.
+- `mime_type` (string, optional, nullable) — MIME type of the uploaded source media (null for URL sources).
+
+### DubbingError
+
+- `message_type` ("error", required)
+- `error` (string, required)
+
+### VoicesNotPermittedWarning
+
+- `type` ("voices_not_permitted", required) — Identifies this warning; branch on it to read the other fields.
+- `speaker_ids` (list of string, required) — Speakers whose voices were not permitted for cloning. The dub used a replacement voice for each of them; all other speakers are unaffected.
+- `message` (string, required) — Human-readable description of the warning, for display. The wording may change at any time, so we recommend branching on `type` instead.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

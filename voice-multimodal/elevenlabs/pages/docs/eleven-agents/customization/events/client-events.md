@@ -10,14 +10,18 @@ path: docs/eleven-agents/customization/events/client-events
 
 **Client events** are system-level events sent from the server to the client that facilitate real-time communication. These events deliver audio, transcription, agent responses, and other critical information to the client application.
 
-For information on events you can send from the client to the server, see the [Client-to-server events](/docs/eleven-agents/customization/events/client-to-server-events) documentation.
+> **Note**
+>
+> For information on events you can send from the client to the server, see the [Client-to-server events](/docs/eleven-agents/customization/events/client-to-server-events) documentation.
 
 ## Overview
 
 Client events are essential for maintaining the real-time nature of conversations. They provide everything from initialization metadata to processed audio and agent responses.
 
-These events are part of the WebSocket communication protocol and are automatically handled by our
-SDKs. Understanding them is crucial for advanced implementations and debugging.
+> **Info**
+>
+> These events are part of the WebSocket communication protocol and are automatically handled by our
+> SDKs. Understanding them is crucial for advanced implementations and debugging.
 
 ## Client event types
 
@@ -45,8 +49,10 @@ SDKs. Understanding them is crucial for advanced implementations and debugging.
 * `admitted` or `timed_out` is sent once when the wait ends. `timed_out` is followed by a WebSocket close with code 4300
 * Always sent to queued callers. It does not need to be enabled in the agent's `client_events` configuration
 
-While a caller is queued, hold audio arrives as regular `audio` events. Use this event to show a
-waiting state instead of treating the hold audio as agent speech.
+> **Note**
+>
+> While a caller is queued, hold audio arrives as regular `audio` events. Use this event to show a
+> waiting state instead of treating the hold audio as agent speech.
 
 ```json
 // Example queue status event structure
@@ -103,7 +109,9 @@ websocket.on('queue_status', (event) => {
 * Handles voice output streaming
 * Includes alignment data with character-level timing information
 
-Over WebRTC connections, the `audio` event is not sent as audio is handled directly by LiveKit.
+> **Note**
+>
+> Over WebRTC connections, the `audio` event is not sent as audio is handled directly by LiveKit.
 
 ```json
 // Example audio event structure
@@ -167,8 +175,10 @@ websocket.on('user_transcript', (event) => {
 * Sent once that message is finished, so in voice conversations it usually arrives after the message's audio has already started streaming.
 * Used for display and history
 
-To display the agent's text as it is produced, use the `agent_chat_response_part` event
-described below instead of waiting for this event.
+> **Note**
+>
+> To display the agent's text as it is produced, use the `agent_chat_response_part` event
+> described below instead of waiting for this event.
 
 ```json
 // Example response event structure
@@ -221,8 +231,10 @@ websocket.on('agent_response_correction', (event) => {
 * Only sent when using a [custom LLM](/docs/eleven-agents/customization/llm/custom-llm)
 * Must be explicitly enabled in the agent's `client_events` configuration
 
-This event is specific to custom LLM integrations. It allows your custom LLM server to pass
-additional metadata alongside the response that can be consumed by the client application.
+> **Note**
+>
+> This event is specific to custom LLM integrations. It allows your custom LLM server to pass
+> additional metadata alongside the response that can be consumed by the client application.
 
 ```json
 // Example agent response metadata event structure
@@ -256,7 +268,9 @@ websocket.on('agent_response_metadata', (event) => {
 * Contains tool name, tool call ID, and parameters
 * Requires client-side execution of the function and sending the result back to the server
 
-If you are using the SDK, callbacks are provided to handle sending the result back to the server.
+> **Info**
+>
+> If you are using the SDK, callbacks are provided to handle sending the result back to the server.
 
 ```json
 // Example tool call event structure
@@ -341,7 +355,9 @@ websocket.on('agent_tool_response', (event) => {
 * Surfaces tool output in the client for display or downstream processing.
 * Must be explicitly enabled in the agent's `client_events` configuration.
 
-This event exposes the complete tool result to the client and may contain sensitive data. Only enable it when the client is trusted to handle the payload. Results larger than 64 KB are automatically truncated.
+> **Warning**
+>
+> This event exposes the complete tool result to the client and may contain sensitive data. Only enable it when the client is trusted to handle the payload. Results larger than 64 KB are automatically truncated.
 
 ```json
 // Example agent tool response full payload event structure
@@ -522,8 +538,10 @@ Enable the event in `client_events` and turn on [Reasoning summary](/docs/eleven
 `start`, `delta`, and `stop` messages. It does not send this event during voice conversations or
 while the agent or an active procedure uses blocking guardrails.
 
-This event and the corresponding SDK callback are experimental. Their behavior and shape may
-change in any release.
+> **Note**
+>
+> This event and the corresponding SDK callback are experimental. Their behavior and shape may
+> change in any release.
 
 **`Event payload`**
 
@@ -682,4 +700,6 @@ When an agent is at its concurrency limit and [call queueing](/docs/eleven-agent
 * Implement error boundaries
 * Check event handler registration
 
-For detailed implementation examples, check our [SDK documentation](/docs/eleven-agents/libraries/python).
+> **Info**
+>
+> For detailed implementation examples, check our [SDK documentation](/docs/eleven-agents/libraries/python).

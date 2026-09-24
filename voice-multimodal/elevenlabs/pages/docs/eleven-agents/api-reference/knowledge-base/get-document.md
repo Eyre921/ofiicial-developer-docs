@@ -38,169 +38,64 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base
 
 Successful Response
 
-- `object`
+- `DocumentsGetResponse`
   - `type`: `url`
-    - `access_info` (object, required)
-      - `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
-      - `creator_name` (string, required) — Name of the agent's creator
-      - `creator_email` (string, required) — Email of the agent's creator
-      - `role` (enum, required) — The role of the user making the request
-        - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-      - `anonymous_access_level_override` (enum, optional) — The access level for anonymous users. If None, the resource is not shared publicly.
-        - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-      - `access_source` (enum, optional) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
-        - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
+    - `access_info` (ResourceAccessInfo, required)
     - `extracted_inner_html` (string, required)
     - `id` (string, required)
-    - `metadata` (object, required)
-      - `created_at_unix_secs` (integer, required)
-      - `last_updated_at_unix_secs` (integer, required)
-      - `size_bytes` (integer, required)
+    - `metadata` (KnowledgeBaseDocumentMetadataResponseModel, required)
     - `name` (string, required)
     - `supported_usages` (list of enum, required)
       - Allowed values: `prompt`, `auto`
     - `url` (string, required)
-    - `auto_sync_info` (object, optional)
-      - `minimum_frequency_days` (integer, optional, default: 7) — Minimum frequency (in days) at which the document is refreshed. The actual interval may be shorter, never longer.
-      - `auto_remove` (boolean, optional, default: false) — Whether to remove the document if the URL becomes unavailable
-      - `consec_failures` (integer, optional, default: 0) — Number of consecutive sync failures
-      - `next_refresh_by` (integer, optional) — Unix timestamp for the next scheduled sync or None (in case of folders)
+    - `auto_sync_info` (AutoSyncInfo, optional)
     - `content_format` (enum, optional, default: html) — Canonical representation of a knowledge base document's stored content. HTML is the legacy default; documents created before this field existed are interpreted as HTML.
       - Allowed values: `html`, `markdown`
     - `folder_parent_id` (string, optional) — The ID of the parent folder, or null if the document is at the root level.
-    - `folder_path` (list of object, optional) — The folder path segments leading to this entity, from root to parent folder.
-      - `id` (string, required)
-      - `name` (string, optional)
+    - `folder_path` (list of KnowledgeBaseFolderPathSegmentResponseModel, optional) — The folder path segments leading to this entity, from root to parent folder.
   - `type`: `file`
-    - `access_info` (object, required)
-      - `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
-      - `creator_name` (string, required) — Name of the agent's creator
-      - `creator_email` (string, required) — Email of the agent's creator
-      - `role` (enum, required) — The role of the user making the request
-        - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-      - `anonymous_access_level_override` (enum, optional) — The access level for anonymous users. If None, the resource is not shared publicly.
-        - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-      - `access_source` (enum, optional) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
-        - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
+    - `access_info` (ResourceAccessInfo, required)
     - `extracted_inner_html` (string, required)
     - `filename` (string, required)
     - `id` (string, required)
-    - `metadata` (object, required)
-      - `created_at_unix_secs` (integer, required)
-      - `last_updated_at_unix_secs` (integer, required)
-      - `size_bytes` (integer, required)
+    - `metadata` (KnowledgeBaseDocumentMetadataResponseModel, required)
     - `name` (string, required)
     - `supported_usages` (list of enum, required)
       - Allowed values: `prompt`, `auto`
-    - `auto_sync_info` (object, optional)
-      - `minimum_frequency_days` (integer, optional, default: 7) — Minimum frequency (in days) at which the document is refreshed. The actual interval may be shorter, never longer.
-      - `auto_remove` (boolean, optional, default: false) — Whether to remove the document if the URL becomes unavailable
-      - `consec_failures` (integer, optional, default: 0) — Number of consecutive sync failures
-      - `next_refresh_by` (integer, optional) — Unix timestamp for the next scheduled sync or None (in case of folders)
+    - `auto_sync_info` (AutoSyncInfo, optional)
     - `content_format` (enum, optional, default: html) — Canonical representation of a knowledge base document's stored content. HTML is the legacy default; documents created before this field existed are interpreted as HTML.
       - Allowed values: `html`, `markdown`
-    - `external_sync_info` (object, optional) — Tracks the link back to the original file in an external source.
-      - `type` ("google_drive", required) — Provider identifier
-      - `source_entity_id` (string, required) — Entity ID in the external system
-      - `integration_connection_id` (string, required) — Integration connection instance ID
-      - `source_parent_entity_id` (string, required) — Folder ID in the external system this file was synced from
-      - `source_mime_type` (string, required) — Original MIME type in the external system
-      - `source_modified_time` (datetime, required) — Last modified time from the external system
-      - `root_folder_id` (string, optional) — KB folder ID of the sync root, used to query all entities under a sync tree
+    - `external_sync_info` (ExternalFileSyncInfo, optional) — Tracks the link back to the original file in an external source.
     - `folder_parent_id` (string, optional) — The ID of the parent folder, or null if the document is at the root level.
-    - `folder_path` (list of object, optional) — The folder path segments leading to this entity, from root to parent folder.
-      - `id` (string, required)
-      - `name` (string, optional)
+    - `folder_path` (list of KnowledgeBaseFolderPathSegmentResponseModel, optional) — The folder path segments leading to this entity, from root to parent folder.
     - `is_frozen` (boolean, optional, default: false)
-    - `refresh_status` (object, optional) — In-flight or last refresh state for an externally-synced file. Used by clients to render sync progress and disable re-sync while a refresh is queued or processing.
-      - `status` (enum, optional, default: queued)
-        - Allowed values: `queued`, `processing`, `succeeded`, `failed`, `skipped`, `cancelled`
-      - `enqueued_at` (integer, optional)
-      - `started_at` (integer, optional)
-      - `completed_at` (integer, optional)
-      - `last_synced_at` (integer, optional)
-      - `error_message` (string, optional)
+    - `refresh_status` (FileRefreshStatus, optional) — In-flight or last refresh state for an externally-synced file. Used by clients to render sync progress and disable re-sync while a refresh is queued or processing.
   - `type`: `text`
-    - `access_info` (object, required)
-      - `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
-      - `creator_name` (string, required) — Name of the agent's creator
-      - `creator_email` (string, required) — Email of the agent's creator
-      - `role` (enum, required) — The role of the user making the request
-        - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-      - `anonymous_access_level_override` (enum, optional) — The access level for anonymous users. If None, the resource is not shared publicly.
-        - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-      - `access_source` (enum, optional) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
-        - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
+    - `access_info` (ResourceAccessInfo, required)
     - `extracted_inner_html` (string, required)
     - `id` (string, required)
-    - `metadata` (object, required)
-      - `created_at_unix_secs` (integer, required)
-      - `last_updated_at_unix_secs` (integer, required)
-      - `size_bytes` (integer, required)
+    - `metadata` (KnowledgeBaseDocumentMetadataResponseModel, required)
     - `name` (string, required)
     - `supported_usages` (list of enum, required)
       - Allowed values: `prompt`, `auto`
     - `content_format` (enum, optional, default: html) — Canonical representation of a knowledge base document's stored content. HTML is the legacy default; documents created before this field existed are interpreted as HTML.
       - Allowed values: `html`, `markdown`
     - `folder_parent_id` (string, optional) — The ID of the parent folder, or null if the document is at the root level.
-    - `folder_path` (list of object, optional) — The folder path segments leading to this entity, from root to parent folder.
-      - `id` (string, required)
-      - `name` (string, optional)
+    - `folder_path` (list of KnowledgeBaseFolderPathSegmentResponseModel, optional) — The folder path segments leading to this entity, from root to parent folder.
   - `type`: `folder`
-    - `access_info` (object, required)
-      - `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
-      - `creator_name` (string, required) — Name of the agent's creator
-      - `creator_email` (string, required) — Email of the agent's creator
-      - `role` (enum, required) — The role of the user making the request
-        - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-      - `anonymous_access_level_override` (enum, optional) — The access level for anonymous users. If None, the resource is not shared publicly.
-        - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-      - `access_source` (enum, optional) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
-        - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
+    - `access_info` (ResourceAccessInfo, required)
     - `children_count` (integer, required)
     - `document_count` (integer, required) — Number of non-folder documents anywhere in this folder's subtree (recursive). Counting stops past 1000;
     - `id` (string, required)
-    - `metadata` (object, required)
-      - `created_at_unix_secs` (integer, required)
-      - `last_updated_at_unix_secs` (integer, required)
-      - `size_bytes` (integer, required)
+    - `metadata` (KnowledgeBaseDocumentMetadataResponseModel, required)
     - `name` (string, required)
     - `supported_usages` (list of enum, required)
       - Allowed values: `prompt`, `auto`
-    - `active_sync_job` (object, optional) — Most recent (in-flight or terminal) external sync job for this folder, if any. Used by clients to render sync progress.
-      - `type` ("google_drive", required)
-      - `folder_id` (string, required)
-      - `integration_connection_id` (string, required)
-      - `triggered_by` (enum, required)
-        - Allowed values: `on_demand`, `on_connect`, `auto`
-      - `updated_at` (integer, required)
-      - `id` (string, required)
-      - `created_at` (integer, required)
-      - `status` (enum, optional, default: queued)
-        - Allowed values: `queued`, `processing`, `succeeded`, `failed`, `skipped`, `cancelled`
-      - `sync_type` (enum, optional)
-        - Allowed values: `full`, `incremental`
-      - `items_identified` (integer, optional, default: 0)
-      - `items_processed` (integer, optional, default: 0)
-      - `error_message` (string, optional)
-      - `started_at` (integer, optional)
-      - `completed_at` (integer, optional)
-    - `auto_sync_info` (object, optional)
-      - `minimum_frequency_days` (integer, optional, default: 7) — Minimum frequency (in days) at which the document is refreshed. The actual interval may be shorter, never longer.
-      - `auto_remove` (boolean, optional, default: false) — Whether to remove the document if the URL becomes unavailable
-      - `consec_failures` (integer, optional, default: 0) — Number of consecutive sync failures
-      - `next_refresh_by` (integer, optional) — Unix timestamp for the next scheduled sync or None (in case of folders)
-    - `external_sync_info` (object, optional) — Metadata for a KB folder that mirrors an external source folder.
-      - `type` ("google_drive", required) — Provider identifier
-      - `source_entity_id` (string, required) — Entity ID in the external system
-      - `integration_connection_id` (string, required) — Integration connection instance ID
-      - `root_folder_id` (string, optional) — KB folder ID of the sync root. None means this folder is the root.
-      - `sync_cursor` (string, optional) — Opaque cursor for incremental sync, interpreted by the provider
-      - `last_sync_at` (integer, optional) — Unix timestamp of last completed sync
+    - `active_sync_job` (KbExternalSyncJob, optional) — Most recent (in-flight or terminal) external sync job for this folder, if any. Used by clients to render sync progress.
+    - `auto_sync_info` (AutoSyncInfo, optional)
+    - `external_sync_info` (ExternalFolderSyncInfo, optional) — Metadata for a KB folder that mirrors an external source folder.
     - `folder_parent_id` (string, optional) — The ID of the parent folder, or null if the document is at the root level.
-    - `folder_path` (list of object, optional) — The folder path segments leading to this entity, from root to parent folder.
-      - `id` (string, required)
-      - `name` (string, optional)
+    - `folder_path` (list of KnowledgeBaseFolderPathSegmentResponseModel, optional) — The folder path segments leading to this entity, from root to parent folder.
     - `is_frozen` (boolean, optional, default: false)
 
 ## Errors
@@ -209,10 +104,102 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ResourceAccessInfo
+
+- `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
+- `creator_name` (string, required) — Name of the agent's creator
+- `creator_email` (string, required) — Email of the agent's creator
+- `role` (enum, required) — The role of the user making the request
+  - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+- `anonymous_access_level_override` (enum, optional) — The access level for anonymous users. If None, the resource is not shared publicly.
+  - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+- `access_source` (enum, optional) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
+  - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
+
+### KnowledgeBaseDocumentMetadataResponseModel
+
+- `created_at_unix_secs` (integer, required)
+- `last_updated_at_unix_secs` (integer, required)
+- `size_bytes` (integer, required)
+
+### AutoSyncInfo
+
+- `minimum_frequency_days` (integer, optional, default: 7) — Minimum frequency (in days) at which the document is refreshed. The actual interval may be shorter, never longer.
+- `auto_remove` (boolean, optional, default: false) — Whether to remove the document if the URL becomes unavailable
+- `consec_failures` (integer, optional, default: 0) — Number of consecutive sync failures
+- `next_refresh_by` (integer, optional) — Unix timestamp for the next scheduled sync or None (in case of folders)
+
+### KnowledgeBaseFolderPathSegmentResponseModel
+
+- `id` (string, required)
+- `name` (string, optional)
+
+### ExternalFileSyncInfo
+
+Tracks the link back to the original file in an external source.
+
+- `type` ("google_drive", required) — Provider identifier
+- `source_entity_id` (string, required) — Entity ID in the external system
+- `integration_connection_id` (string, required) — Integration connection instance ID
+- `source_parent_entity_id` (string, required) — Folder ID in the external system this file was synced from
+- `source_mime_type` (string, required) — Original MIME type in the external system
+- `source_modified_time` (datetime, required) — Last modified time from the external system
+- `root_folder_id` (string, optional) — KB folder ID of the sync root, used to query all entities under a sync tree
+
+### FileRefreshStatus
+
+In-flight/last refresh state for an externally-synced KB file.
+
+- `status` (enum, optional, default: queued)
+  - Allowed values: `queued`, `processing`, `succeeded`, `failed`, `skipped`, `cancelled`
+- `enqueued_at` (integer, optional)
+- `started_at` (integer, optional)
+- `completed_at` (integer, optional)
+- `last_synced_at` (integer, optional)
+- `error_message` (string, optional)
+
+### KbExternalSyncJob
+
+- `type` ("google_drive", required)
+- `folder_id` (string, required)
+- `integration_connection_id` (string, required)
+- `triggered_by` (enum, required)
+  - Allowed values: `on_demand`, `on_connect`, `auto`
+- `updated_at` (integer, required)
+- `id` (string, required)
+- `created_at` (integer, required)
+- `status` (enum, optional, default: queued)
+  - Allowed values: `queued`, `processing`, `succeeded`, `failed`, `skipped`, `cancelled`
+- `sync_type` (enum, optional)
+  - Allowed values: `full`, `incremental`
+- `items_identified` (integer, optional, default: 0)
+- `items_processed` (integer, optional, default: 0)
+- `error_message` (string, optional)
+- `started_at` (integer, optional)
+- `completed_at` (integer, optional)
+
+### ExternalFolderSyncInfo
+
+Metadata for a KB folder that mirrors an external source folder.
+
+- `type` ("google_drive", required) — Provider identifier
+- `source_entity_id` (string, required) — Entity ID in the external system
+- `integration_connection_id` (string, required) — Integration connection instance ID
+- `root_folder_id` (string, optional) — KB folder ID of the sync root. None means this folder is the root.
+- `sync_cursor` (string, optional) — Opaque cursor for incremental sync, interpreted by the provider
+- `last_sync_at` (integer, optional) — Unix timestamp of last completed sync
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItem, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItem
 
 ## Examples
 

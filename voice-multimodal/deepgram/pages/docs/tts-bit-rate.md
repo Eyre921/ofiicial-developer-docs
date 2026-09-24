@@ -18,7 +18,9 @@ The Bit Rate feature gives users the ability to specify the desired bitrate of t
 
 When generating audio from text, having control over the bitrate can significantly impact the quality and file size of the output. Bit Rate determines the amount of data processed per unit of time and is typically measured in bits per second (bps).
 
-The bitrate value must adhere to the [Audio Format Combinations table](/docs/tts-media-output-settings#audio-format-combinations). Choose a value based on the `encoding` type and your use case. When applicable `48000` will be used as the default.
+> **Warning**
+>
+> The bitrate value must adhere to the [Audio Format Combinations table](/docs/tts-media-output-settings#audio-format-combinations). Choose a value based on the `encoding` type and your use case. When applicable `48000` will be used as the default.
 
 ## Enable Feature
 
@@ -52,7 +54,9 @@ curl --request POST \
      --silent || echo "Request failed"
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 ### Query Parameters
 
@@ -64,7 +68,9 @@ Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additi
 
 Upon successful processing of the request, you will receive an audio file containing the synthesized text-to-speech output, along with response headers providing additional information.
 
-The audio file is streamed back to you, so you may begin playback as soon as the first byte arrives. Read the guide [Streaming Audio Outputs](/docs/streaming-the-audio-output) to learn how to begin playing the stream immediately versus waiting for the entire file to arrive.
+> **Info**
+>
+> The audio file is streamed back to you, so you may begin playback as soon as the first byte arrives. Read the guide [Streaming Audio Outputs](/docs/streaming-the-audio-output) to learn how to begin playing the stream immediately versus waiting for the entire file to arrive.
 
 ### Response Headers Example
 
@@ -81,7 +87,9 @@ HTTP/1.1 200 OK
 < date: Thu, 29 Feb 2024 19:20:48 GMT
 ```
 
-To see these response headers when making a CURL request, add `-v` or `--verbose` to your request.
+> **Info**
+>
+> To see these response headers when making a CURL request, add `-v` or `--verbose` to your request.
 
 This includes:
 

@@ -50,6 +50,8 @@ Remove the `LANGFUSE_EE_LICENSE_KEY` environment variable from both Langfuse con
 
 Enterprise features stop running after the restart. All core OSS features continue to work without a license key.
 
+[Ask another question](/docs/ask-ai)
+
 ## Questions?
 
 If you have any questions about licensing, please [contact us](/support).

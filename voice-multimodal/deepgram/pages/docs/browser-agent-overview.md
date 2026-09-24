@@ -12,7 +12,9 @@ path: docs/browser-agent-overview
 
 > Four composable packages that connect your web app to Deepgram's Voice Agent API. Works with any JavaScript framework. Ship in minutes, customize for months.
 
-The demo above requires a Deepgram account. [Sign up free](https://console.deepgram.com/signup) to try it, or keep reading to understand the architecture first.
+> **Note**
+>
+> The demo above requires a Deepgram account. [Sign up free](https://console.deepgram.com/signup) to try it, or keep reading to understand the architecture first.
 
 ## Choose Your Approach
 
@@ -60,7 +62,9 @@ Four packages, each building on the one below it. Install only the layer you nee
 
 Every layer shares the same connection logic, audio pipeline, and event model. The difference is how much UI you want handled for you.
 
-Each layer pulls in the layer below as a dependency, and re-exports the parts you need from above. Installing `@deepgram/ui` brings in `@deepgram/react` and `@deepgram/agents` automatically and re-exports the hooks, provider, and SDK types — you import everything you need from `@deepgram/ui` alone. The same pattern applies one layer down: `@deepgram/react` brings in `@deepgram/agents` and re-exports its types.
+> **Info**
+>
+> Each layer pulls in the layer below as a dependency, and re-exports the parts you need from above. Installing `@deepgram/ui` brings in `@deepgram/react` and `@deepgram/agents` automatically and re-exports the hooks, provider, and SDK types — you import everything you need from `@deepgram/ui` alone. The same pattern applies one layer down: `@deepgram/react` brings in `@deepgram/agents` and re-exports its types.
 
 ### What You Get at Every Layer
 
@@ -129,9 +133,13 @@ The browser `WebSocket` constructor does not support custom headers. The SDK wor
 
 The token factory is called before every connection and reconnection attempt. Tokens stay fresh even across network interruptions.
 
-The token only has to be valid at the WebSocket handshake. Once the connection is open it stays open, so the 30-second default comfortably sustains an hour-long call — you rarely need a longer TTL. To request one, pass `ttl_seconds` (the field is named `ttl_seconds`, not `ttl`; an unrecognized field is ignored and you get the 30-second default). The API key you mint tokens with needs **Member** or higher permissions. See [Token-Based Authentication](/guides/fundamentals/token-based-authentication) for details.
+> **Note**
+>
+> The token only has to be valid at the WebSocket handshake. Once the connection is open it stays open, so the 30-second default comfortably sustains an hour-long call — you rarely need a longer TTL. To request one, pass `ttl_seconds` (the field is named `ttl_seconds`, not `ttl`; an unrecognized field is ignored and you get the 30-second default). The API key you mint tokens with needs **Member** or higher permissions. See [Token-Based Authentication](/guides/fundamentals/token-based-authentication) for details.
 
-The `apiKey` option exists for local development only. Never ship it in client-side code.
+> **Warning**
+>
+> The `apiKey` option exists for local development only. Never ship it in client-side code.
 
 ## Agent Configuration
 

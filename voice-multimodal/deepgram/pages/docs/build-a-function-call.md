@@ -237,7 +237,9 @@ You'll create two files:
 
 ## Create `agent_functions.py`
 
-This guide doesn't cover the development of the **business logic** for this application. Please see [business\_logic.py](https://github.com/deepgram-devs/flask-agent-function-calling-demo/blob/main/common/business_logic.py) for more details.
+> **Info**
+>
+> This guide doesn't cover the development of the **business logic** for this application. Please see [business\_logic.py](https://github.com/deepgram-devs/flask-agent-function-calling-demo/blob/main/common/business_logic.py) for more details.
 
 First, create a file called: `agent_functions.py`. Then in `agent_functions.py` set up the dependencies and import the business logic.
 
@@ -1312,7 +1314,9 @@ public class AgentTemplates {
 
 ## Call the functions from `client.py`
 
-This guide doesn't cover the development of the **client** for this application. Please see [client.py](https://github.com/deepgram-devs/flask-agent-function-calling-demo/blob/main/client.py#L66) for more details.
+> **Info**
+>
+> This guide doesn't cover the development of the **client** for this application. Please see [client.py](https://github.com/deepgram-devs/flask-agent-function-calling-demo/blob/main/client.py#L66) for more details.
 
 In the `client.py` file we'll need reference `agent_templates.py` which will define the settings for the Voice Agent.
 

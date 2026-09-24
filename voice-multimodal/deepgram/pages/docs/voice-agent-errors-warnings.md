@@ -65,7 +65,9 @@ The server sends a `Warning` message when something needs your attention but doe
 }
 ```
 
-Warnings are non-fatal. The application continues to function normally.
+> **Info**
+>
+> Warnings are non-fatal. The application continues to function normally.
 
 ### Warning codes
 

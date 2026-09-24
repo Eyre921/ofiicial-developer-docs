@@ -27,7 +27,7 @@ Reference: https://elevenlabs.io/docs/api-reference/knowledge-base/bulk-delete
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_Bulk_delete_knowledge_base_documents_v1_convai_knowledge_base_bulk_delete_post.
 
 - `document_ids` (list of string, required) — The ids of documents or folders from the knowledge base.
 - `force` (boolean, optional, default: false) — If set to true, documents or folders will be deleted regardless of whether they are used by any agents and will be removed from the dependent agents. For non-empty folders, this will also delete all child documents and folders.
@@ -38,14 +38,7 @@ This endpoint expects an object.
 
 Successful Response
 
-- `map from string to object`
-  - `status`: `success` (KnowledgeBaseBulkDeleteSuccessfulResponseModel)
-    - `data` (object, required)
-      - `id` (string, required)
-  - `status`: `failure` (BatchFailureResponseModel)
-    - `error_code` (integer, required)
-    - `error_message` (string, required)
-    - `error_status` (string, required)
+- `map from string to V1ConvaiKnowledgeBaseBulkDeletePostResponsesContentApplicationJsonSchema`
 
 ## Errors
 
@@ -53,10 +46,30 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### V1ConvaiKnowledgeBaseBulkDeletePostResponsesContentApplicationJsonSchema
+
+- `status`: `success` (KnowledgeBaseBulkDeleteSuccessfulResponseModel)
+  - `data` (KnowledgeBaseDeletedResponseModel, required)
+- `status`: `failure` (BatchFailureResponseModel)
+  - `error_code` (integer, required)
+  - `error_message` (string, required)
+  - `error_status` (string, required)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### KnowledgeBaseDeletedResponseModel
+
+- `id` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

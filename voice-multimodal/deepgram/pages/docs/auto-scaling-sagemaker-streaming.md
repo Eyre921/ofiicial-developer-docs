@@ -12,9 +12,13 @@ path: docs/auto-scaling-sagemaker-streaming
 
 A Deepgram **real-time** endpoint serves two kinds of requests: **streaming** over a bidirectional stream (`InvokeEndpointWithBidirectionalStream`, up to 30 minutes each) and **synchronous pre-recorded** requests (`InvokeEndpoint` — a single file up to 25 MB, returned in one immediate response, Deepgram's "batch" API). Both are in-flight invocations that load the instance, so concurrent requests is the right scaling signal — which is why the high-resolution `ConcurrentRequestsPerModel` metric is ideal here.
 
-**Need scale-to-zero?** Real-time endpoints keep a minimum of one instance and cannot scale to zero. Scale-to-zero (via asynchronous endpoints) is temporarily unavailable for Marketplace-hosted Deepgram; if your use case needs it, contact a [Deepgram representative](https://deepgram.com/contact-us).
+> **Note**
+>
+> **Need scale-to-zero?** Real-time endpoints keep a minimum of one instance and cannot scale to zero. Scale-to-zero (via asynchronous endpoints) is temporarily unavailable for Marketplace-hosted Deepgram; if your use case needs it, contact a [Deepgram representative](https://deepgram.com/contact-us).
 
-Before configuring auto scaling, you must have a Deepgram SageMaker Endpoint deployed and running with status `InService`. See [Deploy Deepgram on Amazon SageMaker](/docs/deploy-amazon-sagemaker) for setup instructions.
+> **Info**
+>
+> Before configuring auto scaling, you must have a Deepgram SageMaker Endpoint deployed and running with status `InService`. See [Deploy Deepgram on Amazon SageMaker](/docs/deploy-amazon-sagemaker) for setup instructions.
 
 ## How it works
 
@@ -188,7 +192,7 @@ Amazon CloudWatch automatically creates alarms when you apply a target tracking 
 
 Key metrics to watch in the `AWS/SageMaker` namespace:
 
-![CloudWatch Metrics console showing the ConcurrentRequestsPerModel metric for a SageMaker Endpoint Variant](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/511832b235f0bf021547acd94375c1bb907c5cf7cdbdb6e6b94756b7436af1b6/images/cloudwatch-concurrent-requests-per-model.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113141Z&X-Amz-Expires=604800&X-Amz-Signature=242836e80c687038c33a2542d85fa800cdfcc450cdf726bee3c79984305e15da&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![CloudWatch Metrics console showing the ConcurrentRequestsPerModel metric for a SageMaker Endpoint Variant](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/511832b235f0bf021547acd94375c1bb907c5cf7cdbdb6e6b94756b7436af1b6/images/cloudwatch-concurrent-requests-per-model.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113224Z&X-Amz-Expires=604800&X-Amz-Signature=f65029a90478b85944822512244085e0fbffc96d887e2f601554f8d53485e552&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 | Metric                       | Description                                                                                     |
 | ---------------------------- | ----------------------------------------------------------------------------------------------- |

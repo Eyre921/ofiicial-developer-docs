@@ -29,20 +29,20 @@ Reference: https://developers.deepgram.com/reference/speech-to-text/listen-pre-r
 - `callback` (string, optional) — URL to which we'll make the callback request
 - `callback_method` (enum, optional, default: POST) — HTTP method by which the callback request will be made
   - Allowed values: `POST`, `PUT`
-- `extra` (string or list of string, optional) — Arbitrary key-value pairs that are attached to the API response for usage in downstream processing
+- `extra` (V1ListenPostParametersExtra, optional) — Arbitrary key-value pairs that are attached to the API response for usage in downstream processing
 - `sentiment` (boolean, optional, default: false) — Recognizes the sentiment throughout a transcript or text
-- `summarize` (enum or boolean, optional) — Summarize content. For Listen API, supports string version option. For Read API, accepts boolean only.
-- `tag` (string or list of string, optional) — Label your requests for the purpose of identification during usage reporting
+- `summarize` (V1ListenPostParametersSummarize, optional) — Summarize content. For Listen API, supports string version option. For Read API, accepts boolean only.
+- `tag` (V1ListenPostParametersTag, optional) — Label your requests for the purpose of identification during usage reporting
 - `topics` (boolean, optional, default: false) — Detect topics throughout a transcript or text
-- `custom_topic` (string or list of string, optional) — Custom topics you want the model to detect within your input audio or text if present Submit up to `100`.
+- `custom_topic` (V1ListenPostParametersCustomTopic, optional) — Custom topics you want the model to detect within your input audio or text if present Submit up to `100`.
 - `custom_topic_mode` (enum, optional, default: extended) — Sets how the model will interpret strings submitted to the `custom_topic` param. When `strict`, the model will only return topics submitted using the `custom_topic` param. When `extended`, the model will return its own detected topics in addition to those submitted using the `custom_topic` param
   - Allowed values: `extended`, `strict`
 - `intents` (boolean, optional, default: false) — Recognizes speaker intent throughout a transcript or text
-- `custom_intent` (string or list of string, optional) — Custom intents you want the model to detect within your input audio if present
+- `custom_intent` (V1ListenPostParametersCustomIntent, optional) — Custom intents you want the model to detect within your input audio if present
 - `custom_intent_mode` (enum, optional, default: extended) — Sets how the model will interpret intents submitted to the `custom_intent` param. When `strict`, the model will only return intents submitted using the `custom_intent` param. When `extended`, the model will return its own detected intents in the `custom_intent` param.
   - Allowed values: `extended`, `strict`
 - `detect_entities` (boolean, optional, default: false) — Identifies and extracts key entities from content in submitted audio
-- `detect_language` (boolean or list of string, optional) — Identifies the dominant language spoken in submitted audio
+- `detect_language` (V1ListenPostParametersDetectLanguage, optional) — Identifies the dominant language spoken in submitted audio
 - `diarize` (boolean, optional, default: false, deprecated) — Deprecated: use `diarize_model` instead. Recognize speaker changes. Each word in the transcript will be assigned a speaker number starting at 0.
 - `diarize_model` (enum, optional) — Select and enable a specific diarization model version. Specifying this parameter enables diarization and selects the model — you do not need to also set the deprecated `diarize=true` parameter. For batch, supported values are `latest` (currently v2), `v1`, and `v2`. For streaming, supported values are `latest` (currently v1) and `v1`; `v2` returns a validation error on streaming requests.
   - Allowed values: `latest`, `v1`, `v2`
@@ -51,27 +51,27 @@ Reference: https://developers.deepgram.com/reference/speech-to-text/listen-pre-r
   - Allowed values: `linear16`, `flac`, `mulaw`, `amr-nb`, `amr-wb`, `opus`, `speex`, `g729`
 - `filler_words` (boolean, optional, default: false) — Filler Words can help transcribe interruptions in your audio, like "uh" and "um"
 - `keyterm` (list of string, optional) — Key term prompting improves recognition of specialized terminology and brands. Only compatible with Nova-3. `keyterm` accepts plain terms only. Unlike the legacy `keywords` feature, it does not support weights or intensifiers. Appending one (for example, `keyterm=term:0.15`) is not rejected—the weight is silently ignored and the entire value is treated as a literal keyterm. To boost multiple separate keyterms, repeat the `keyterm` parameter (for example, `keyterm=term1&keyterm=term2`). To boost one multi-word phrase as a single keyterm, join the words with `%20` or `+` (for example, `keyterm=customer%20service`). Do not separate keyterms with commas, semicolons, or line breaks.
-- `keywords` (string or list of string, optional) — Keywords can boost or suppress specialized terminology and brands. `keywords` is not supported with Nova-3 models; use `keyterm` instead.
+- `keywords` (V1ListenPostParametersKeywords, optional) — Keywords can boost or suppress specialized terminology and brands. `keywords` is not supported with Nova-3 models; use `keyterm` instead.
 - `language` (string, optional, default: en) — The [BCP-47 language tag](https://tools.ietf.org/html/bcp47) that hints at the primary spoken language. Depending on the Model and API endpoint you choose only certain languages are available
 - `measurements` (boolean, optional, default: false) — Spoken measurements will be converted to their corresponding abbreviations
-- `model` (enum or string, optional, default: base-general) — AI model used to process submitted audio
+- `model` (V1ListenPostParametersModel, optional, default: base-general) — AI model used to process submitted audio
 - `multichannel` (boolean, optional, default: false) — Transcribe each audio channel independently
 - `numerals` (boolean, optional, default: false) — Numerals converts numbers from written format to numerical format
 - `paragraphs` (boolean, optional, default: false) — Splits audio into paragraphs to improve transcript readability
 - `profanity_filter` (boolean, optional, default: false) — Profanity Filter looks for recognized profanity and converts it to the nearest recognized non-profane word or removes it from the transcript completely
 - `punctuate` (boolean, optional, default: false) — Add punctuation and capitalization to the transcript
-- `redact` (string or list of enum, optional, default: false) — Redaction removes sensitive information from your transcripts
-- `replace` (string or list of string, optional) — Search for terms or phrases in submitted audio and replaces them
-- `search` (string or list of string, optional) — Search for terms or phrases in submitted audio
+- `redact` (V1ListenPostParametersRedact, optional, default: false) — Redaction removes sensitive information from your transcripts
+- `replace` (V1ListenPostParametersReplace, optional) — Search for terms or phrases in submitted audio and replaces them
+- `search` (V1ListenPostParametersSearch, optional) — Search for terms or phrases in submitted audio
 - `smart_format` (boolean, optional, default: false) — Apply formatting to transcript output. When set to true, additional formatting will be applied to transcripts to improve readability
 - `utterances` (boolean, optional, default: false) — Segments speech into meaningful semantic units
 - `utt_split` (double, optional, default: 0.8) — Seconds to wait before detecting a pause between words in submitted audio
-- `version` (enum or string, optional, default: latest) — Version of an AI model to use
+- `version` (V1ListenPostParametersVersion, optional, default: latest) — Version of an AI model to use
 - `mip_opt_out` (boolean, optional, default: false) — Opts out requests from the Deepgram Model Improvement Program. Refer to our Docs for pricing impacts before setting this to true. https://dpgr.am/deepgram-mip
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a ListenV1RequestUrl.
 
 - `url` (string, required)
 
@@ -81,115 +81,7 @@ This endpoint expects an object.
 
 Returns either transcription results, or a request_id when using a callback.
 
-- `object or object`
-  - ListenV1Response
-    - `metadata` (object, required)
-      - `request_id` (string, required)
-      - `sha256` (string, required)
-      - `created` (string, required)
-      - `duration` (double, required)
-      - `channels` (integer, required)
-      - `models` (list of string, required)
-      - `model_info` (object, required)
-      - `diarize_info` (object, optional) — The diarizer that produced the speaker labels. Present only when a diarizer ran.
-        - `model_uuid` (string, required) — The diarizer model UUID
-        - `arch` (string, required) — The diarizer arch, such as `v1` or `v2`
-      - `summary_info` (object, optional)
-        - `model_uuid` (string, optional)
-        - `input_tokens` (integer, optional)
-        - `output_tokens` (integer, optional)
-      - `sentiment_info` (object, optional)
-        - `model_uuid` (string, optional)
-        - `input_tokens` (integer, optional)
-        - `output_tokens` (integer, optional)
-      - `topics_info` (object, optional)
-        - `model_uuid` (string, optional)
-        - `input_tokens` (integer, optional)
-        - `output_tokens` (integer, optional)
-      - `intents_info` (object, optional)
-        - `model_uuid` (string, optional)
-        - `input_tokens` (integer, optional)
-        - `output_tokens` (integer, optional)
-      - `tags` (list of string, optional)
-      - `transaction_key` (string, optional, default: deprecated, deprecated)
-    - `results` (object, required)
-      - `channels` (list of object, required)
-        - `search` (list of object, optional)
-          - `query` (string, optional)
-          - `hits` (list of object, optional)
-            - `confidence` (float, optional)
-            - `start` (float, optional)
-            - `end` (float, optional)
-            - `snippet` (string, optional)
-        - `alternatives` (list of object, optional)
-          - `transcript` (string, optional)
-          - `confidence` (float, optional)
-          - `words` (list of object, optional)
-            - `word` (string, optional)
-            - `start` (float, optional)
-            - `end` (float, optional)
-            - `confidence` (float, optional)
-            - `speaker` (integer, optional) — The speaker of the word, present when diarization is enabled
-            - `speaker_confidence` (float, optional) — Confidence in the speaker assignment. Returned only for pre-recorded diarization; not available for streaming
-          - `paragraphs` (object, optional)
-            - `transcript` (string, optional)
-            - `paragraphs` (list of object, optional)
-          - `entities` (list of object, optional)
-            - `label` (string, optional)
-            - `value` (string, optional)
-            - `raw_value` (string, optional)
-            - `confidence` (float, optional)
-            - `start_word` (float, optional)
-            - `end_word` (float, optional)
-          - `summaries` (list of object, optional)
-            - `summary` (string, optional)
-            - `start_word` (float, optional)
-            - `end_word` (float, optional)
-          - `topics` (list of object, optional)
-            - `text` (string, optional)
-            - `start_word` (float, optional)
-            - `end_word` (float, optional)
-            - `topics` (list of string, optional)
-        - `detected_language` (string, optional)
-      - `utterances` (list of object, optional)
-        - `start` (float, optional)
-        - `end` (float, optional)
-        - `confidence` (float, optional)
-        - `channel` (integer, optional)
-        - `transcript` (string, optional)
-        - `words` (list of object, optional)
-          - `word` (string, optional)
-          - `start` (float, optional)
-          - `end` (float, optional)
-          - `confidence` (float, optional)
-          - `speaker` (integer, optional)
-          - `speaker_confidence` (float, optional)
-          - `punctuated_word` (string, optional)
-        - `speaker` (integer, optional)
-        - `id` (string, optional)
-      - `summary` (object, optional)
-        - `result` (string, optional)
-        - `short` (string, optional)
-      - `topics` (object, optional) — Output whenever `topics=true` is used
-        - `results` (object, optional)
-          - `topics` (object, optional)
-            - `segments` (list of object, optional)
-      - `intents` (object, optional) — Output whenever `intents=true` is used
-        - `results` (object, optional)
-          - `intents` (object, optional)
-            - `segments` (list of object, optional)
-      - `sentiments` (object, optional) — Output whenever `sentiment=true` is used
-        - `segments` (list of object, optional)
-          - `text` (string, optional)
-          - `start_word` (double, optional)
-          - `end_word` (double, optional)
-          - `sentiment` (string, optional)
-          - `sentiment_score` (double, optional)
-        - `average` (object, optional)
-          - `sentiment` (string, optional)
-          - `sentiment_score` (double, optional)
-  - ListenV1AcceptedResponse
-    - `request_id` (string, required) — Unique identifier for tracking the asynchronous request
+- `listen_v1_media_transcribe_Response_200`
 
 ## Errors
 
@@ -197,131 +89,282 @@ Returns either transcription results, or a request_id when using a callback.
 
 Invalid Request
 
-- `metadata` (object, required)
-  - `request_id` (string, required)
-  - `sha256` (string, required)
-  - `created` (string, required)
-  - `duration` (double, required)
-  - `channels` (integer, required)
-  - `models` (list of string, required)
-  - `model_info` (object, required)
-  - `diarize_info` (object, optional) — The diarizer that produced the speaker labels. Present only when a diarizer ran.
-    - `model_uuid` (string, required) — The diarizer model UUID
-    - `arch` (string, required) — The diarizer arch, such as `v1` or `v2`
-  - `summary_info` (object, optional)
-    - `model_uuid` (string, optional)
-    - `input_tokens` (integer, optional)
-    - `output_tokens` (integer, optional)
-  - `sentiment_info` (object, optional)
-    - `model_uuid` (string, optional)
-    - `input_tokens` (integer, optional)
-    - `output_tokens` (integer, optional)
-  - `topics_info` (object, optional)
-    - `model_uuid` (string, optional)
-    - `input_tokens` (integer, optional)
-    - `output_tokens` (integer, optional)
-  - `intents_info` (object, optional)
-    - `model_uuid` (string, optional)
-    - `input_tokens` (integer, optional)
-    - `output_tokens` (integer, optional)
-  - `tags` (list of string, optional)
-  - `transaction_key` (string, optional, default: deprecated, deprecated)
-- `results` (object, required)
-  - `channels` (list of object, required)
-    - `search` (list of object, optional)
-      - `query` (string, optional)
-      - `hits` (list of object, optional)
-        - `confidence` (float, optional)
-        - `start` (float, optional)
-        - `end` (float, optional)
-        - `snippet` (string, optional)
-    - `alternatives` (list of object, optional)
-      - `transcript` (string, optional)
-      - `confidence` (float, optional)
-      - `words` (list of object, optional)
-        - `word` (string, optional)
-        - `start` (float, optional)
-        - `end` (float, optional)
-        - `confidence` (float, optional)
-        - `speaker` (integer, optional) — The speaker of the word, present when diarization is enabled
-        - `speaker_confidence` (float, optional) — Confidence in the speaker assignment. Returned only for pre-recorded diarization; not available for streaming
-      - `paragraphs` (object, optional)
-        - `transcript` (string, optional)
-        - `paragraphs` (list of object, optional)
-          - `sentences` (list of object, optional)
-            - `text` (string, optional)
-            - `start` (float, optional)
-            - `end` (float, optional)
-          - `speaker` (integer, optional)
-          - `num_words` (integer, optional)
-          - `start` (float, optional)
-          - `end` (float, optional)
-      - `entities` (list of object, optional)
-        - `label` (string, optional)
-        - `value` (string, optional)
-        - `raw_value` (string, optional)
-        - `confidence` (float, optional)
-        - `start_word` (float, optional)
-        - `end_word` (float, optional)
-      - `summaries` (list of object, optional)
-        - `summary` (string, optional)
-        - `start_word` (float, optional)
-        - `end_word` (float, optional)
-      - `topics` (list of object, optional)
-        - `text` (string, optional)
-        - `start_word` (float, optional)
-        - `end_word` (float, optional)
-        - `topics` (list of string, optional)
-    - `detected_language` (string, optional)
-  - `utterances` (list of object, optional)
-    - `start` (float, optional)
-    - `end` (float, optional)
-    - `confidence` (float, optional)
-    - `channel` (integer, optional)
-    - `transcript` (string, optional)
-    - `words` (list of object, optional)
-      - `word` (string, optional)
-      - `start` (float, optional)
-      - `end` (float, optional)
-      - `confidence` (float, optional)
-      - `speaker` (integer, optional)
-      - `speaker_confidence` (float, optional)
-      - `punctuated_word` (string, optional)
-    - `speaker` (integer, optional)
-    - `id` (string, optional)
-  - `summary` (object, optional)
-    - `result` (string, optional)
-    - `short` (string, optional)
-  - `topics` (object, optional) — Output whenever `topics=true` is used
-    - `results` (object, optional)
-      - `topics` (object, optional)
-        - `segments` (list of object, optional)
-          - `text` (string, optional)
-          - `start_word` (double, optional)
-          - `end_word` (double, optional)
-          - `topics` (list of object, optional)
-            - `topic` (string, optional)
-            - `confidence_score` (float, optional)
-  - `intents` (object, optional) — Output whenever `intents=true` is used
-    - `results` (object, optional)
-      - `intents` (object, optional)
-        - `segments` (list of object, optional)
-          - `text` (string, optional)
-          - `start_word` (double, optional)
-          - `end_word` (double, optional)
-          - `intents` (list of object, optional)
-            - `intent` (string, optional)
-            - `confidence_score` (float, optional)
-  - `sentiments` (object, optional) — Output whenever `sentiment=true` is used
-    - `segments` (list of object, optional)
-      - `text` (string, optional)
-      - `start_word` (double, optional)
-      - `end_word` (double, optional)
-      - `sentiment` (string, optional)
-      - `sentiment_score` (double, optional)
-    - `average` (object, optional)
-      - `sentiment` (string, optional)
-      - `sentiment_score` (double, optional)
+- `metadata` (ListenV1ResponseMetadata, required)
+- `results` (ListenV1ResponseResults, required)
+
+## Types
+
+### V1ListenPostParametersExtra
+
+### V1ListenPostParametersSummarize
+
+### V1ListenPostParametersTag
+
+### V1ListenPostParametersCustomTopic
+
+### V1ListenPostParametersCustomIntent
+
+### V1ListenPostParametersDetectLanguage
+
+### V1ListenPostParametersKeywords
+
+### V1ListenPostParametersModel
+
+### V1ListenPostParametersRedact
+
+### V1ListenPostParametersReplace
+
+### V1ListenPostParametersSearch
+
+### V1ListenPostParametersVersion
+
+### ListenV1Response
+
+The standard transcription response
+
+- `metadata` (ListenV1ResponseMetadata, required)
+- `results` (ListenV1ResponseResults, required)
+
+### ListenV1AcceptedResponse
+
+Accepted response for asynchronous transcription requests
+
+- `request_id` (string, required) — Unique identifier for tracking the asynchronous request
+
+### ListenV1ResponseMetadata
+
+- `request_id` (string, required)
+- `sha256` (string, required)
+- `created` (string, required)
+- `duration` (double, required)
+- `channels` (integer, required)
+- `models` (list of string, required)
+- `model_info` (ListenV1ResponseMetadataModelInfo, required)
+- `diarize_info` (ListenV1ResponseMetadataDiarizeInfo, optional) — The diarizer that produced the speaker labels. Present only when a diarizer ran.
+- `summary_info` (ListenV1ResponseMetadataSummaryInfo, optional)
+- `sentiment_info` (ListenV1ResponseMetadataSentimentInfo, optional)
+- `topics_info` (ListenV1ResponseMetadataTopicsInfo, optional)
+- `intents_info` (ListenV1ResponseMetadataIntentsInfo, optional)
+- `tags` (list of string, optional)
+- `transaction_key` (string, optional, default: deprecated, deprecated)
+
+### ListenV1ResponseResults
+
+- `channels` (list of ListenV1ResponseResultsChannelsItems, required)
+- `utterances` (list of ListenV1ResponseResultsUtterancesItems, optional)
+- `summary` (ListenV1ResponseResultsSummary, optional)
+- `topics` (SharedTopics, optional) — Output whenever `topics=true` is used
+- `intents` (SharedIntents, optional) — Output whenever `intents=true` is used
+- `sentiments` (SharedSentiments, optional) — Output whenever `sentiment=true` is used
+
+### ListenV1ResponseMetadataModelInfo
+
+### ListenV1ResponseMetadataDiarizeInfo
+
+The diarizer that produced the speaker labels. Present only when a diarizer ran.
+
+- `model_uuid` (string, required) — The diarizer model UUID
+- `arch` (string, required) — The diarizer arch, such as `v1` or `v2`
+
+### ListenV1ResponseMetadataSummaryInfo
+
+- `model_uuid` (string, optional)
+- `input_tokens` (integer, optional)
+- `output_tokens` (integer, optional)
+
+### ListenV1ResponseMetadataSentimentInfo
+
+- `model_uuid` (string, optional)
+- `input_tokens` (integer, optional)
+- `output_tokens` (integer, optional)
+
+### ListenV1ResponseMetadataTopicsInfo
+
+- `model_uuid` (string, optional)
+- `input_tokens` (integer, optional)
+- `output_tokens` (integer, optional)
+
+### ListenV1ResponseMetadataIntentsInfo
+
+- `model_uuid` (string, optional)
+- `input_tokens` (integer, optional)
+- `output_tokens` (integer, optional)
+
+### ListenV1ResponseResultsChannelsItems
+
+- `search` (list of ListenV1ResponseResultsChannelsItemsSearchItems, optional)
+- `alternatives` (list of ListenV1ResponseResultsChannelsItemsAlternativesItems, optional)
+- `detected_language` (string, optional)
+
+### ListenV1ResponseResultsUtterancesItems
+
+- `start` (float, optional)
+- `end` (float, optional)
+- `confidence` (float, optional)
+- `channel` (integer, optional)
+- `transcript` (string, optional)
+- `words` (list of ListenV1ResponseResultsUtterancesItemsWordsItems, optional)
+- `speaker` (integer, optional)
+- `id` (string, optional)
+
+### ListenV1ResponseResultsSummary
+
+- `result` (string, optional)
+- `short` (string, optional)
+
+### SharedTopics
+
+Output whenever `topics=true` is used
+
+- `results` (SharedTopicsResults, optional)
+
+### SharedIntents
+
+Output whenever `intents=true` is used
+
+- `results` (SharedIntentsResults, optional)
+
+### SharedSentiments
+
+Output whenever `sentiment=true` is used
+
+- `segments` (list of SharedSentimentsSegmentsItems, optional)
+- `average` (SharedSentimentsAverage, optional)
+
+### ListenV1ResponseResultsChannelsItemsSearchItems
+
+- `query` (string, optional)
+- `hits` (list of ListenV1ResponseResultsChannelsItemsSearchItemsHitsItems, optional)
+
+### ListenV1ResponseResultsChannelsItemsAlternativesItems
+
+- `transcript` (string, optional)
+- `confidence` (float, optional)
+- `words` (list of ListenV1ResponseResultsChannelsItemsAlternativesItemsWordsItems, optional)
+- `paragraphs` (ListenV1ResponseResultsChannelsItemsAlternativesItemsParagraphs, optional)
+- `entities` (list of ListenV1ResponseResultsChannelsItemsAlternativesItemsEntitiesItems, optional)
+- `summaries` (list of ListenV1ResponseResultsChannelsItemsAlternativesItemsSummariesItems, optional)
+- `topics` (list of ListenV1ResponseResultsChannelsItemsAlternativesItemsTopicsItems, optional)
+
+### ListenV1ResponseResultsUtterancesItemsWordsItems
+
+- `word` (string, optional)
+- `start` (float, optional)
+- `end` (float, optional)
+- `confidence` (float, optional)
+- `speaker` (integer, optional)
+- `speaker_confidence` (float, optional)
+- `punctuated_word` (string, optional)
+
+### SharedTopicsResults
+
+- `topics` (SharedTopicsResultsTopics, optional)
+
+### SharedIntentsResults
+
+- `intents` (SharedIntentsResultsIntents, optional)
+
+### SharedSentimentsSegmentsItems
+
+- `text` (string, optional)
+- `start_word` (double, optional)
+- `end_word` (double, optional)
+- `sentiment` (string, optional)
+- `sentiment_score` (double, optional)
+
+### SharedSentimentsAverage
+
+- `sentiment` (string, optional)
+- `sentiment_score` (double, optional)
+
+### ListenV1ResponseResultsChannelsItemsSearchItemsHitsItems
+
+- `confidence` (float, optional)
+- `start` (float, optional)
+- `end` (float, optional)
+- `snippet` (string, optional)
+
+### ListenV1ResponseResultsChannelsItemsAlternativesItemsWordsItems
+
+- `word` (string, optional)
+- `start` (float, optional)
+- `end` (float, optional)
+- `confidence` (float, optional)
+- `speaker` (integer, optional) — The speaker of the word, present when diarization is enabled
+- `speaker_confidence` (float, optional) — Confidence in the speaker assignment. Returned only for pre-recorded diarization; not available for streaming
+
+### ListenV1ResponseResultsChannelsItemsAlternativesItemsParagraphs
+
+- `transcript` (string, optional)
+- `paragraphs` (list of ListenV1ResponseResultsChannelsItemsAlternativesItemsParagraphsParagraphsItems, optional)
+
+### ListenV1ResponseResultsChannelsItemsAlternativesItemsEntitiesItems
+
+- `label` (string, optional)
+- `value` (string, optional)
+- `raw_value` (string, optional)
+- `confidence` (float, optional)
+- `start_word` (float, optional)
+- `end_word` (float, optional)
+
+### ListenV1ResponseResultsChannelsItemsAlternativesItemsSummariesItems
+
+- `summary` (string, optional)
+- `start_word` (float, optional)
+- `end_word` (float, optional)
+
+### ListenV1ResponseResultsChannelsItemsAlternativesItemsTopicsItems
+
+- `text` (string, optional)
+- `start_word` (float, optional)
+- `end_word` (float, optional)
+- `topics` (list of string, optional)
+
+### SharedTopicsResultsTopics
+
+- `segments` (list of SharedTopicsResultsTopicsSegmentsItems, optional)
+
+### SharedIntentsResultsIntents
+
+- `segments` (list of SharedIntentsResultsIntentsSegmentsItems, optional)
+
+### ListenV1ResponseResultsChannelsItemsAlternativesItemsParagraphsParagraphsItems
+
+- `sentences` (list of ListenV1ResponseResultsChannelsItemsAlternativesItemsParagraphsParagraphsItemsSentencesItems, optional)
+- `speaker` (integer, optional)
+- `num_words` (integer, optional)
+- `start` (float, optional)
+- `end` (float, optional)
+
+### SharedTopicsResultsTopicsSegmentsItems
+
+- `text` (string, optional)
+- `start_word` (double, optional)
+- `end_word` (double, optional)
+- `topics` (list of SharedTopicsResultsTopicsSegmentsItemsTopicsItems, optional)
+
+### SharedIntentsResultsIntentsSegmentsItems
+
+- `text` (string, optional)
+- `start_word` (double, optional)
+- `end_word` (double, optional)
+- `intents` (list of SharedIntentsResultsIntentsSegmentsItemsIntentsItems, optional)
+
+### ListenV1ResponseResultsChannelsItemsAlternativesItemsParagraphsParagraphsItemsSentencesItems
+
+- `text` (string, optional)
+- `start` (float, optional)
+- `end` (float, optional)
+
+### SharedTopicsResultsTopicsSegmentsItemsTopicsItems
+
+- `topic` (string, optional)
+- `confidence_score` (float, optional)
+
+### SharedIntentsResultsIntentsSegmentsItemsIntentsItems
+
+- `intent` (string, optional)
+- `confidence_score` (float, optional)
 
 ## Examples
 

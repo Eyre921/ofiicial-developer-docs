@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1306 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1319 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -111,6 +111,11 @@
 - `docs/api-reference/flows/image/create` — [Create Image Generation](pages/docs/api-reference/flows/image/create.md) · [原文](https://elevenlabs.io/docs/api-reference/flows/image/create.md)
 - `docs/api-reference/flows/image/get` — [Get Image Generation](pages/docs/api-reference/flows/image/get.md) · [原文](https://elevenlabs.io/docs/api-reference/flows/image/get.md)
 - `docs/api-reference/flows/image/list` — [List Image Generations](pages/docs/api-reference/flows/image/list.md) · [原文](https://elevenlabs.io/docs/api-reference/flows/image/list.md)
+- `docs/api-reference/flows/templates/get` — [Get Template](pages/docs/api-reference/flows/templates/get.md) · [原文](https://elevenlabs.io/docs/api-reference/flows/templates/get.md)
+- `docs/api-reference/flows/templates/list` — [List Templates](pages/docs/api-reference/flows/templates/list.md) · [原文](https://elevenlabs.io/docs/api-reference/flows/templates/list.md)
+- `docs/api-reference/flows/templates/runs/create` — [Create Template Run](pages/docs/api-reference/flows/templates/runs/create.md) · [原文](https://elevenlabs.io/docs/api-reference/flows/templates/runs/create.md)
+- `docs/api-reference/flows/templates/runs/get` — [Get Template Run](pages/docs/api-reference/flows/templates/runs/get.md) · [原文](https://elevenlabs.io/docs/api-reference/flows/templates/runs/get.md)
+- `docs/api-reference/flows/templates/runs/list` — [List Template Runs](pages/docs/api-reference/flows/templates/runs/list.md) · [原文](https://elevenlabs.io/docs/api-reference/flows/templates/runs/list.md)
 - `docs/api-reference/flows/text-to-speech/create` — [Create Speech Generation](pages/docs/api-reference/flows/text-to-speech/create.md) · [原文](https://elevenlabs.io/docs/api-reference/flows/text-to-speech/create.md)
 - `docs/api-reference/flows/text-to-speech/get` — [Get Speech Generation](pages/docs/api-reference/flows/text-to-speech/get.md) · [原文](https://elevenlabs.io/docs/api-reference/flows/text-to-speech/get.md)
 - `docs/api-reference/flows/text-to-speech/list` — [List Speech Generations](pages/docs/api-reference/flows/text-to-speech/list.md) · [原文](https://elevenlabs.io/docs/api-reference/flows/text-to-speech/list.md)
@@ -628,6 +633,7 @@
 - `docs/eleven-agents/customization/tools/system-tools` — [System tools](pages/docs/eleven-agents/customization/tools/system-tools.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/tools/system-tools.md)
 - `docs/eleven-agents/customization/tools/system-tools/agent-transfer` — [Agent transfer](pages/docs/eleven-agents/customization/tools/system-tools/agent-transfer.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/tools/system-tools/agent-transfer.md)
 - `docs/eleven-agents/customization/tools/system-tools/end-call` — [End call](pages/docs/eleven-agents/customization/tools/system-tools/end-call.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/tools/system-tools/end-call.md)
+- `docs/eleven-agents/customization/tools/system-tools/flag-issue-for-review` — [Flag issue for review](pages/docs/eleven-agents/customization/tools/system-tools/flag-issue-for-review.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/tools/system-tools/flag-issue-for-review.md)
 - `docs/eleven-agents/customization/tools/system-tools/language-detection` — [Language detection](pages/docs/eleven-agents/customization/tools/system-tools/language-detection.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/tools/system-tools/language-detection.md)
 - `docs/eleven-agents/customization/tools/system-tools/play-keypad-touch-tone` — [Play keypad touch tone](pages/docs/eleven-agents/customization/tools/system-tools/play-keypad-touch-tone.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/tools/system-tools/play-keypad-touch-tone.md)
 - `docs/eleven-agents/customization/tools/system-tools/skip-turn` — [Skip turn](pages/docs/eleven-agents/customization/tools/system-tools/skip-turn.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/tools/system-tools/skip-turn.md)
@@ -681,14 +687,21 @@
 - `docs/eleven-agents/libraries/react-native` — [React Native SDK](pages/docs/eleven-agents/libraries/react-native.md) · [原文](https://elevenlabs.io/docs/eleven-agents/libraries/react-native.md)
 - `docs/eleven-agents/libraries/swift` — [Swift SDK](pages/docs/eleven-agents/libraries/swift.md) · [原文](https://elevenlabs.io/docs/eleven-agents/libraries/swift.md)
 - `docs/eleven-agents/libraries/web-sockets` — [WebSocket](pages/docs/eleven-agents/libraries/web-sockets.md) · [原文](https://elevenlabs.io/docs/eleven-agents/libraries/web-sockets.md)
+- `docs/eleven-agents/operate/architect` — [Architect](pages/docs/eleven-agents/operate/architect.md) · [原文](https://elevenlabs.io/docs/eleven-agents/operate/architect.md)
+- `docs/eleven-agents/operate/architect/authentication` — [Authentication, approvals, and drafts](pages/docs/eleven-agents/operate/architect/authentication.md) · [原文](https://elevenlabs.io/docs/eleven-agents/operate/architect/authentication.md)
+- `docs/eleven-agents/operate/architect/customization` — [Customizing Architect](pages/docs/eleven-agents/operate/architect/customization.md) · [原文](https://elevenlabs.io/docs/eleven-agents/operate/architect/customization.md)
+- `docs/eleven-agents/operate/architect/external-assistants` — [Claude, Cursor, and other AI assistants](pages/docs/eleven-agents/operate/architect/external-assistants.md) · [原文](https://elevenlabs.io/docs/eleven-agents/operate/architect/external-assistants.md)
+- `docs/eleven-agents/operate/architect/how-it-works` — [How Architect works](pages/docs/eleven-agents/operate/architect/how-it-works.md) · [原文](https://elevenlabs.io/docs/eleven-agents/operate/architect/how-it-works.md)
 - `docs/eleven-agents/operate/cli` — [ElevenLabs CLI](pages/docs/eleven-agents/operate/cli.md) · [原文](https://elevenlabs.io/docs/eleven-agents/operate/cli.md)
 - `docs/eleven-agents/operate/experiments` — [Experiments](pages/docs/eleven-agents/operate/experiments.md) · [原文](https://elevenlabs.io/docs/eleven-agents/operate/experiments.md)
 - `docs/eleven-agents/operate/hosted-mcp` — [Hosted MCP server](pages/docs/eleven-agents/operate/hosted-mcp.md) · [原文](https://elevenlabs.io/docs/eleven-agents/operate/hosted-mcp.md)
 - `docs/eleven-agents/operate/overview` — [Operate](pages/docs/eleven-agents/operate/overview.md) · [原文](https://elevenlabs.io/docs/eleven-agents/operate/overview.md)
+- `docs/eleven-agents/operate/triage` — [Triage](pages/docs/eleven-agents/operate/triage.md) · [原文](https://elevenlabs.io/docs/eleven-agents/operate/triage.md)
 - `docs/eleven-agents/operate/users` — [Users](pages/docs/eleven-agents/operate/users.md) · [原文](https://elevenlabs.io/docs/eleven-agents/operate/users.md)
 - `docs/eleven-agents/operate/versioning` — [Agent versioning](pages/docs/eleven-agents/operate/versioning.md) · [原文](https://elevenlabs.io/docs/eleven-agents/operate/versioning.md)
 - `docs/eleven-agents/overview` — [ElevenAgents](pages/docs/eleven-agents/overview.md) · [原文](https://elevenlabs.io/docs/eleven-agents/overview.md)
 - `docs/eleven-agents/phone-numbers/batch-calls` — [Batch calling](pages/docs/eleven-agents/phone-numbers/batch-calls.md) · [原文](https://elevenlabs.io/docs/eleven-agents/phone-numbers/batch-calls.md)
+- `docs/eleven-agents/phone-numbers/c-caa-s-integrations/amazon-connect` — [Amazon Connect](pages/docs/eleven-agents/phone-numbers/c-caa-s-integrations/amazon-connect.md) · [原文](https://elevenlabs.io/docs/eleven-agents/phone-numbers/c-caa-s-integrations/amazon-connect.md)
 - `docs/eleven-agents/phone-numbers/c-caa-s-integrations/five9` — [Five9](pages/docs/eleven-agents/phone-numbers/c-caa-s-integrations/five9.md) · [原文](https://elevenlabs.io/docs/eleven-agents/phone-numbers/c-caa-s-integrations/five9.md)
 - `docs/eleven-agents/phone-numbers/c-caa-s-integrations/genesys` — [Genesys](pages/docs/eleven-agents/phone-numbers/c-caa-s-integrations/genesys.md) · [原文](https://elevenlabs.io/docs/eleven-agents/phone-numbers/c-caa-s-integrations/genesys.md)
 - `docs/eleven-agents/phone-numbers/microsoft-teams/azure-communication-services` — [Azure Communication Services](pages/docs/eleven-agents/phone-numbers/microsoft-teams/azure-communication-services.md) · [原文](https://elevenlabs.io/docs/eleven-agents/phone-numbers/microsoft-teams/azure-communication-services.md)

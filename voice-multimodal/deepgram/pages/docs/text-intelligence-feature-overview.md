@@ -10,7 +10,9 @@ path: docs/text-intelligence-feature-overview
 
 # Feature Overview
 
-To learn how to get up and running with Text-to-Text Intelligence, read the [Text Intelligence](/docs/text-intelligence) getting started guide.
+> **Info**
+>
+> To learn how to get up and running with Text-to-Text Intelligence, read the [Text Intelligence](/docs/text-intelligence) getting started guide.
 
 ## Text To Text Intelligence features
 
@@ -23,8 +25,12 @@ To learn how to get up and running with Text-to-Text Intelligence, read the [Tex
 
 ## Rate Limits
 
-For information on Deepgram's Concurrency Rate Limits, refer to our [API Rate Limits Documentation](/reference/api-rate-limits).
+> **Info**
+>
+> For information on Deepgram's Concurrency Rate Limits, refer to our [API Rate Limits Documentation](/reference/api-rate-limits).
 
 ## Deepgram Self-Hosted
 
-Having challenges with performance and latency? Check out Deepgram's [Self-Hosted Solution](/docs/self-hosted-introduction) to get the benefits of running your own hosted instance of Deepgram.
+> **Info**
+>
+> Having challenges with performance and latency? Check out Deepgram's [Self-Hosted Solution](/docs/self-hosted-introduction) to get the benefits of running your own hosted instance of Deepgram.

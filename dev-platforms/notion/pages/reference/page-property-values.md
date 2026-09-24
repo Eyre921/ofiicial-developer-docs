@@ -1,1072 +1,1615 @@
 ---
-title: "Page properties"
+title: "Page property values"
 source: https://developers.notion.com/reference/page-property-values
 path: reference/page-property-values
 ---
 
+Reference for reading, writing, and clearing each type of page property value.
+
+<span />
+
+<span />
+
 ## Overview
 
-A [page object](/reference/page) is made up of page properties that contain data about the page.
+A page’s `properties` object holds its property values. In a data source, each page is a row and each property is a column in table view. The data source defines the property names and types.
 
-When you send a request to [Create a page](/reference/post-page), set the page properties in the `properties` object body parameter.
+| Object                                                 | What it describes                                              | Endpoint                                                             |
+| :----------------------------------------------------- | :------------------------------------------------------------- | :------------------------------------------------------------------- |
+| [Data source property](/reference/property-object)     | A property’s name, type, and settings, also called its schema. | [Retrieve a data source](/reference/retrieve-a-data-source)          |
+| [Page property value](/reference/page-property-values) | The value of that property on one page.                        | [Retrieve a page](/reference/retrieve-a-page)                        |
+| [Page property item](/reference/property-item-object)  | A single value, or one item in a paginated value.              | [Retrieve a page property item](/reference/retrieve-a-page-property) |
 
-[Retrieve a page](/reference/retrieve-a-page) surfaces the identifier, type, and value of a page’s properties.
+The tabs compare the same property across API objects. Schema and Page value examples each show one entry in a response’s `properties` object. Page write shows an Update page request body; Create page also needs a parent. Read-only types have no Page write tab.
 
-[Retrieve a page property item](/reference/retrieve-a-page-property) returns information about a single property ID. Especially for formulas, rollups, and relations, Notion recommends using this API to ensure you get an accurate, up-to-date property value that isn't truncating any results. Refer to [Page property items](/reference/property-item-object) for specific API shape details when using this endpoint.
-
-An [Update page](/reference/patch-page) query modifies the page property values specified in the `properties` object body param.
-
-<Check>
-  **Pages that live in a data source are easier to query and manage.**
-
-  **Page properties** are most useful when interacting with a page that is an entry in a data source, represented as a row in the Notion app UI.
-
-  If a page is not part of a data source, then its only available property is its `title`.
-</Check>
+For `title`, `rich_text`, `people`, and `relation`, the Property item tab shows one entry in a paginated `results` array. For other types, it shows the endpoint response. Replace example names and IDs with values from your workspace.
 
 ## Attributes
 
-Each page property value object contains the following fields:
+| Field               | Type   | Meaning                                                                   |
+| :------------------ | :----- | :------------------------------------------------------------------------ |
+| `id`                | String | The property’s ID.                                                        |
+| `type`              | String | The API property type, such as `status` or `rich_text`.                   |
+| Key matching `type` | Varies | The value. It can be a string, number, boolean, object, array, or `null`. |
 
-| Field                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Type            | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Example value      |
-| :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------- |
-| `id`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `string`        | An underlying identifier for the property. Historically, this may be a UUID, but newer IDs are a short ID that's always URL-encoded in the API and in [connection webhooks](/reference/webhooks).<br /><br /> `id` may be used in place of name when creating or updating pages.<br /><br /> `id` remains constant when the property name changes.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | `"f%5C%5C%3Ap"`    |
-| `type`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `string` (enum) | The type of the property in the page object. Possible type values are: <br /> <br />- [`checkbox`](#checkbox) <br /> - [`created_by`](#created-by) <br />- [`created_time`](#created-time) <br /> - [`date`](#date) <br /> - [`email`](#email)<br /> - [`files`](#files) <br />- [`formula`](#formula)<br /> - [`last_edited_by`](#last-edited-by) <br />- [`last_edited_time`](#last-edited-time)<br /> - [`multi_select`](#multi-select)<br /> - [`number`](#number)<br /> - [`people`](#people)<br /> - [`phone_number`](#phone-number)<br /> - [`relation`](#relation) - [`rollup`](#rollup)<br /> - [`rich_text`](#rich-text) <br />- [`select`](#select) <br />- [`status`](#status)<br /> - [`title`](#title)<br /> - [`url`](#url) <br />- [`unique_id`](#unique-id)<br /> - [`verification`](#verification)Refer to specific type sections below for details on type-specific values. | `"rich_text"`      |
-| [`checkbox`](#checkbox)<br />[`created_by`](#created-by)<br />[`created_time`](#created-time)<br />[`date`](#date)<br />[`email`](#email)<br />[`files`](#files)<br />[`formula`](#formula)<br />[`last_edited_by`](#last-edited-by)<br />[`last_edited_time`](#last-edited-time)<br />[`multi_select`](#multi-select)<br />[`number`](#number)<br />[`people`](#people)<br />[`phone_number`](#phone-number)<br />[`relation`](#relation)<br />[`rollup`](#rollup)<br />[`rich_text`](#rich-text)<br />[`select`](#select)[`status`](#status)<br />[`title`](#title)<br />[`url`](#url)[`unique_id`](#unique-id)<br />[`verification`](#verification) | `object`        | A type object that contains data specific to the page property type, including the page property value.<br /><br /> Refer to the [type objects section](#type-objects) for descriptions and examples of each type.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | `"checkbox": true` |
+A property’s `id` stays the same when its name changes. IDs can be short strings or UUIDs. The Name property always has the ID `title`.
 
-<Info>
-  **Size limits for page property values**
+Responses use URL-encoded property IDs, such as `f%5C%5C%3Ap`. Pass the returned ID as-is to the SDK or in an API path. Don’t encode it a second time. You can also use a property ID as a key in a request’s `properties` object.
 
-  For information about size limitations for specific page property objects, refer to the [limits for property values documentation](/reference/request-limits#limits-for-property-values).
-</Info>
+Page responses map property names to values. Page writes can use names or IDs. A page whose parent is another page has only a `title` property. For pages in a data source, write keys must match that data source’s schema.
 
-When returned from the [Retrieve page property item](/changelog/retrieve-page-property-values) API, there's an additional field, `object`, which is always the string `"property_item"`, as described in [Page property items](/reference/property-item-object).
+The `object: "property_item"` field appears only in [property-item responses](/reference/property-item-object). It is not part of a page response’s `properties` entries.
+
+## Writing and clearing values
+
+[Create page](/reference/post-page) and [Update page](/reference/patch-page) accept a `properties` object. Each entry contains the key for its type and the value to save. Response-only fields such as `id`, `has_more`, and rich text `plain_text` are not needed in a write.
+
+On update, omitted properties keep their values. An array replaces the entire value of that property; it does not append items. Keep any existing people, files, tags, or related pages you still need in the submitted array.
+
+| To clear                                                            | Send                                                              |
+| :------------------------------------------------------------------ | :---------------------------------------------------------------- |
+| `title`, `rich_text`, `people`, `relation`, `multi_select`, `files` | An empty array: `[]`. An empty Name displays as an untitled page. |
+| `number`, `url`, `email`, `phone_number`, `select`, `date`, `place` | `null` as the type’s value.                                       |
+| `status`                                                            | `null` resets the value to the default option, if one is set.     |
+| `checkbox`                                                          | `false`.                                                          |
+| `verification`                                                      | `{ "state": "unverified" }`.                                      |
+
+For example, `{"properties":{"Due date":{"date":null}}}` clears a page’s date. Setting a whole schema entry to `null` instead [removes the property from the data source](/reference/update-data-source-properties#remove-a-property).
+
+Writes must fit the [request limits](/reference/request-limits). A successful read can contain more items than one write accepts.
 
 ## Type objects
 
+<span />
+
+### Button
+
+A Button property returns `button: {}`. The API does not expose its actions or let you press it by updating a page.
+
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Send update": {
+        "id": "btnA",
+        "name": "Send update",
+        "description": null,
+        "type": "button",
+        "button": {}
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Send update": {
+        "id": "btnA",
+        "type": "button",
+        "button": {}
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "btnA",
+      "type": "button",
+      "button": {}
+    }
+    ```
+  </Tab>
+</Tabs>
+
+<span />
+
+<span />
+
+<span />
+
 ### Checkbox
 
-<Info>Data source property config: [Checkbox](/reference/property-object#checkbox)</Info>
+`checkbox` is `true` when checked and `false` when unchecked.
 
-| Field      | Type      | Description                                                      | Example value |
-| :--------- | :-------- | :--------------------------------------------------------------- | :------------ |
-| `checkbox` | `boolean` | Whether the checkbox is checked (`true`) or unchecked (`false`). | `true`        |
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Done": {
+        "id": "done",
+        "name": "Done",
+        "description": null,
+        "type": "checkbox",
+        "checkbox": {}
+      }
+    }
+    ```
+  </Tab>
 
-#### Example `properties` body param for a POST or PATCH page request that creates or updates a `checkbox` page property value
-
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "properties": {
-      "Task completed": {
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Done": {
+        "id": "done",
+        "type": "checkbox",
         "checkbox": true
       }
     }
-  }
-  ```
-</CodeGroup>
+    ```
+  </Tab>
 
-#### Example `checkbox` page property value as returned in a GET page request
-
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "Task completed": {
-      "id": "ZI%40W",
-      "type": "checkbox",
-      "checkbox": true
-    }
-  }
-  ```
-</CodeGroup>
-
-### Created by
-
-<Info>Data source property config: [Created by](/reference/property-object#created-by)</Info>
-
-| Field        | Type     | Description                                                                                                                             | Example value                                |
-| :----------- | :------- | :-------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------- |
-| `created_by` | `object` | A [user object](/reference/user) containing information about the user who created the page. <br /><br />`created_by` can’t be updated. | Refer to the example response objects below. |
-
-#### Example `created_by` page property value as returned in a GET page request
-
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "created_by": {
-      "object": "user",
-      "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
-    }
-  }
-  ```
-</CodeGroup>
-
-### Created time
-
-<Info>Data source property config: [Created time](/reference/property-object#created-time)</Info>
-
-| Field          | Type                                                                        | Description                                                                                          | Example value                |
-| :------------- | :-------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------- | :--------------------------- |
-| `created_time` | `string` ([ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date and time) | The date and time that the page was created. <br /><br /> The `created_time` value can’t be updated. | `"2022-10-12T16:34:00.000Z"` |
-
-#### Example `created_time` page property value as returned in a GET page request
-
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "Created time": {
-      "id": "eB_%7D",
-      "type": "created_time",
-      "created_time": "2022-10-24T22:54:00.000Z"
-    }
-  }
-  ```
-</CodeGroup>
-
-### Date
-
-<Info>Data source property config: [Date](/reference/property-object#date)</Info>
-
-If the `type` of a page property value is `"date"`, then the property value contains a `"date"` object with the following fields:
-
-| Field   | Type                                                                        | Description                                                                                                                       | Example value            |
-| :------ | :-------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------- | :----------------------- |
-| `end`   | `string` ([ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date and time) | (Optional) A string representing the end of a date range.<br /><br /> If the value is `null`, then the date value is not a range. | `"2020-12-08T12:00:00Z"` |
-| `start` | `string` ([ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date and time) | A date, with an optional time.<br /><br /> If the `date` value is a range, then `start` represents the start of the range.        | `"2020-12-08T12:00:00Z”` |
-
-#### Example `properties` body param for a POST or PATCH page request that creates or updates a date page property value
-
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "properties": {
-      "Due date": {
-        "date": {
-          "start": "2023-02-23"
+  <Tab title="Page write">
+    ```json Page write theme={null}
+    {
+      "properties": {
+        "Done": {
+          "checkbox": true
         }
       }
     }
-  }
-  ```
-</CodeGroup>
+    ```
+  </Tab>
 
-#### Example `date` page property value as returned in a GET page request
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "done",
+      "type": "checkbox",
+      "checkbox": true
+    }
+    ```
+  </Tab>
+</Tabs>
 
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "Due date": {
-      "id": "M%3BBw",
+<span />
+
+<span />
+
+### Created by
+
+`created_by` is a [user object](/reference/user) for the page’s creator. Notion sets this read-only value. The user object may contain only `object` and `id`.
+
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Created by": {
+        "id": "crtB",
+        "name": "Created by",
+        "description": null,
+        "type": "created_by",
+        "created_by": {}
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Created by": {
+        "id": "crtB",
+        "type": "created_by",
+        "created_by": {
+          "object": "user",
+          "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "crtB",
+      "type": "created_by",
+      "created_by": {
+        "object": "user",
+        "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+<span />
+
+<span />
+
+### Created time
+
+`created_time` is the page’s creation time as an ISO 8601 timestamp. Notion sets this read-only value.
+
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Created time": {
+        "id": "crtT",
+        "name": "Created time",
+        "description": null,
+        "type": "created_time",
+        "created_time": {}
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Created time": {
+        "id": "crtT",
+        "type": "created_time",
+        "created_time": "2026-09-01T09:00:00.000Z"
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "crtT",
+      "type": "created_time",
+      "created_time": "2026-09-01T09:00:00.000Z"
+    }
+    ```
+  </Tab>
+</Tabs>
+
+<span />
+
+<span />
+
+<span />
+
+### Date
+
+`date` is a date object or `null`. It can hold a date, a time, or a range.
+
+| Field       | Type             | Meaning                                                 |
+| :---------- | :--------------- | :------------------------------------------------------ |
+| `start`     | String           | Required. An ISO 8601 date or date and time.            |
+| `end`       | String or `null` | The end of a range. `null` means a single date or time. |
+| `time_zone` | String or `null` | An IANA time zone, such as `America/Los_Angeles`.       |
+
+When you provide `time_zone`, include a time in `start` and `end`, without a UTC offset. Otherwise, use an offset in a timestamp or a date such as `2026-09-15`. Omitted `end` and `time_zone` fields return as `null`.
+
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Due date": {
+        "id": "dueD",
+        "name": "Due date",
+        "description": null,
+        "type": "date",
+        "date": {}
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Due date": {
+        "id": "dueD",
+        "type": "date",
+        "date": {
+          "start": "2026-09-15",
+          "end": null,
+          "time_zone": null
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page write">
+    ```json Page write theme={null}
+    {
+      "properties": {
+        "Due date": {
+          "date": {
+            "start": "2026-09-15"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "dueD",
       "type": "date",
       "date": {
-        "start": "2023-02-07",
+        "start": "2026-09-15",
         "end": null,
         "time_zone": null
       }
     }
-  }
+    ```
+  </Tab>
+</Tabs>
+
+<CodeGroup>
+  ```json Date range theme={null}
+  {"date":{"start":"2026-09-15","end":"2026-09-18"}}
+  ```
+
+  ```json Time with an offset theme={null}
+  {"date":{"start":"2026-09-15T09:00:00-07:00"}}
+  ```
+
+  ```json Named time zone theme={null}
+  {"date":{"start":"2026-09-15T09:00:00","time_zone":"America/Los_Angeles"}}
   ```
 </CodeGroup>
+
+<span />
+
+<span />
+
+<span />
 
 ### Email
 
-<Info>Data source property config: [Email](/reference/property-object#email)</Info>
+`email` is an email address string or `null`.
 
-| Field   | Type     | Description                           | Example value          |
-| :------ | :------- | :------------------------------------ | :--------------------- |
-| `email` | `string` | A string describing an email address. | `"ada@makenotion.com"` |
-
-#### Example `properties` body param for a POST or PATCH page request that creates or updates an `email` page property value
-
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "properties": {
-      "Email": {
-        "email": "ada@makenotion.com"
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Contact email": {
+        "id": "emlA",
+        "name": "Contact email",
+        "description": null,
+        "type": "email",
+        "email": {}
       }
     }
-  }
-  ```
-</CodeGroup>
+    ```
+  </Tab>
 
-#### Example `email` page property value as returned in a GET page request
-
-<CodeGroup>
-  ```json json theme={null}
-  {
-    "Email": {
-      "id": "y%5C%5E_",
-      "type": "email",
-      "email": "ada@makenotion.com"
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Contact email": {
+        "id": "emlA",
+        "type": "email",
+        "email": "alex@example.com"
+      }
     }
-  }
-  ```
-</CodeGroup>
+    ```
+  </Tab>
+
+  <Tab title="Page write">
+    ```json Page write theme={null}
+    {
+      "properties": {
+        "Contact email": {
+          "email": "alex@example.com"
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "emlA",
+      "type": "email",
+      "email": "alex@example.com"
+    }
+    ```
+  </Tab>
+</Tabs>
+
+<span />
+
+<span />
+
+<span />
 
 ### Files
 
-<Info>Data source property config: [Files](/reference/property-object#files)</Info>
+The Files & media property uses the API key `files`. Its value is an array of [file objects](/reference/file-object), each with a `name`.
 
-| Field   | Type                                            | Description                                                 | Example value                                |
-| :------ | :---------------------------------------------- | :---------------------------------------------------------- | :------------------------------------------- |
-| `files` | array of [file objects](/reference/file-object) | An array of objects containing information about the files. | Refer to the example response objects below. |
+An external file uses `external: { "url": "https://example.com/file.pdf" }`. A file hosted by Notion returns `type: "file"`, a temporary download URL, and an `expiry_time`. Retrieve the page again to get a fresh URL after it expires.
 
-#### Example creation or update of `files` property
+To attach an uploaded file, use `type: "file_upload"` and `file_upload: { "id": "..." }` with a completed [file upload](/guides/data-apis/uploading-small-files). Reads return the attached file as `type: "file"`, not `file_upload`. A file update replaces the full list, so include files you want to keep.
 
-The following is an example `properties` body parameter for a `POST` or `PATCH` page request that creates or updates a `files` page property value.
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Attachments": {
+        "id": "file",
+        "name": "Attachments",
+        "description": null,
+        "type": "files",
+        "files": {}
+      }
+    }
+    ```
+  </Tab>
 
-When providing an `external` URL, the `name` parameter is required.
-
-When providing a `file_upload`, the `name` is optional and defaults to the `filename` of the original [File Upload](/reference/file-upload).
-
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "properties": {
-      "Blueprint": {
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Attachments": {
+        "id": "file",
+        "type": "files",
         "files": [
           {
-            "name": "Project Alpha blueprint",
+            "name": "Project brief.pdf",
+            "type": "external",
             "external": {
-              "url": "https://www.figma.com/file/g7eazMtXnqON4i280CcMhk/project-alpha-blueprint?node-id=0%3A1&t=nXseWIETQIgv31YH-1"
+              "url": "https://example.com/project-brief.pdf"
             }
           }
         ]
       }
     }
-  }
-  ```
-</CodeGroup>
+    ```
+  </Tab>
 
-#### Example `files` page property value as returned in a GET page request
+  <Tab title="Page write">
+    ```json Page write theme={null}
+    {
+      "properties": {
+        "Attachments": {
+          "files": [
+            {
+              "name": "Project brief.pdf",
+              "type": "external",
+              "external": {
+                "url": "https://example.com/project-brief.pdf"
+              }
+            }
+          ]
+        }
+      }
+    }
+    ```
+  </Tab>
 
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "Blueprint": {
-      "id": "tJPS",
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "file",
       "type": "files",
       "files": [
         {
-          "name": "Project blueprint",
+          "name": "Project brief.pdf",
           "type": "external",
           "external": {
-            "url": "https://www.figma.com/file/g7eazMtXnqON4i280CcMhk/project-alpha-blueprint?node-id=0%3A1&t=nXseWIETQIgv31YH-1"
+            "url": "https://example.com/project-brief.pdf"
           }
         }
       ]
     }
-  }
-  ```
-</CodeGroup>
+    ```
+  </Tab>
+</Tabs>
 
-<Info>
-  **Array parameter overwrites the entire existing value**
+<span />
 
-  When updating a `files` page property value, the value is overwritten by the new array of `files` passed.
+<span />
 
-  If you pass a `file` object containing a file hosted by Notion, it remains one of the files. To remove any file, don't pass it in the update request.
-</Info>
+<span />
+
+<span />
+
+<span />
+
+<span />
 
 ### Formula
 
-<Info>Data source property config: [Formula](/reference/property-object#formula)</Info>
+`formula` holds the result of the expression in the [data source schema](/reference/property-object#formula). The result is read-only; the expression can be changed through [Update a data source](/reference/update-a-data-source).
 
-Formula property value objects represent the result of evaluating a formula described in the [data source's properties](/reference/property-object#formula).
+The result’s `type` is `string`, `number`, `boolean`, `date`, or `unsupported`. Read the field with that name. A supported result can be `null` when it has no value.
 
-If the `type` of a page property value is `"formula"`, then the property value contains a `"formula"` object with the following fields:
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Double estimate": {
+        "id": "calc",
+        "name": "Double estimate",
+        "description": null,
+        "type": "formula",
+        "formula": {
+          "expression": "prop(\"Estimate\") * 2"
+        }
+      }
+    }
+    ```
+  </Tab>
 
-| Field                                                                | Type                                                            | Description                                                               | Example value |
-| :------------------------------------------------------------------- | :-------------------------------------------------------------- | :------------------------------------------------------------------------ | :------------ |
-| `boolean` \|\| `date` \|\| `number` \|\| `string` \|\| `unsupported` | `boolean` \|\| `date` \|\| `number` \|\| `string` \|\| `object` | The formula result. You can't update this value through the API.          | 42            |
-| `type`                                                               | `string` (enum)                                                 | The result type: `boolean`, `date`, `number`, `string`, or `unsupported`. | `"number"`    |
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Double estimate": {
+        "id": "calc",
+        "type": "formula",
+        "formula": {
+          "type": "number",
+          "number": 16
+        }
+      }
+    }
+    ```
+  </Tab>
 
-#### Example `formula` page property value as returned in a GET page request
-
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "Days until launch": {
-      "id": "CSoE",
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "calc",
       "type": "formula",
       "formula": {
         "type": "number",
-        "number": 56
+        "number": 16
       }
     }
-  }
+    ```
+  </Tab>
+</Tabs>
+
+#### Formula result types
+
+These are the objects inside the `formula` field.
+
+<CodeGroup>
+  ```json String theme={null}
+  {"type":"string","string":"Ready"}
+  ```
+
+  ```json Number theme={null}
+  {"type":"number","number":16}
+  ```
+
+  ```json Boolean theme={null}
+  {"type":"boolean","boolean":true}
+  ```
+
+  ```json Date theme={null}
+  {"type":"date","date":{"start":"2026-09-15","end":null,"time_zone":null}}
+  ```
+
+  ```json Empty result theme={null}
+  {"type":"number","number":null}
   ```
 </CodeGroup>
-
-<Info>
-  The [Retrieve a page endpoint](/reference/retrieve-a-page) returns a maximum of 25 inline page or person references for a `formula` property. If a `formula` property includes more than 25 references, then you can use the [Retrieve a page property item endpoint](/reference/retrieve-a-page-property) for the specific `formula` property to get its complete list of references.
-</Info>
 
 #### Unsupported formula
 
-If the API can't calculate a formula because it depends on too many related pages or nested formulas and rollups, `formula.type` is set to `"unsupported"` and `formula.unsupported` is an empty object. The response doesn't include a partial value. Treat the property as unavailable. To make the value available, reduce the number of related pages or simplify the nested formulas and rollups.
+A formula or rollup can return `type: "unsupported"` with `unsupported: {}` when it depends on too many related pages or nested calculations. This result has no usable value. Reduce the related pages or simplify the calculation. Requesting the property again does not remove this limit.
 
-If the page came from a data source query, see [Recommendations for performance](/reference/query-a-data-source#recommendations-for-performance) to request fewer properties and fetch details only for the results you need.
+For data source queries, [filter the returned properties](/guides/data-apis/query-large-data-sources) and retrieve details only when you need them.
 
-<CodeGroup>
-  ```json Unsupported formula page property value theme={null}
-  {
-    "Days until launch": {
-      "id": "CSoE",
-      "type": "formula",
-      "formula": {
-        "type": "unsupported",
-        "unsupported": {}
-      }
-    }
-  }
-  ```
-</CodeGroup>
+```json Formula field theme={null}
+{"type":"unsupported","unsupported":{}}
+```
 
-### Icon
+<span />
 
-<Info>
-  **Page icon and cover are not nested under `properties`**
-
-  The `icon` and `cover` fields in the [Create a page](/reference/post-page) and [Update page](/reference/patch-page) APIs are top-level parameters, not nested under `properties`.
-</Info>
-
-The `icon` field is a discriminated union on the `type` key. Different types are available depending on whether you are reading or writing:
-
-| `type`           | Read | Write | Description                                                                                                               |
-| :--------------- | :--- | :---- | :------------------------------------------------------------------------------------------------------------------------ |
-| `"emoji"`        | Yes  | Yes   | A standard emoji character. See [Emoji](/reference/emoji-and-icon#emoji).                                                 |
-| `"custom_emoji"` | Yes  | Yes   | A workspace custom emoji, referenced by `id`. See [Custom emoji](/reference/emoji-and-icon#custom-emoji).                 |
-| `"icon"`         | Yes  | Yes   | A native Notion icon with `name` and `color`. See [Icon](/reference/emoji-and-icon#icon).                                 |
-| `"external"`     | Yes  | Yes   | An externally hosted image URL. See [File object](/reference/file-object).                                                |
-| `"file"`         | Yes  | No    | A Notion-hosted file (uploaded via the UI). Returned in responses only. See [File object](/reference/file-object).        |
-| `"file_upload"`  | No   | Yes   | A file uploaded via the [File Upload API](/reference/file-upload). Write-only. See [File object](/reference/file-object). |
-
-For full schema details and examples of each type, see the [Emoji and icon](/reference/emoji-and-icon) reference.
-
-#### Example responses
-
-<CodeGroup>
-  ```json Emoji theme={null}
-  {
-    "icon": {
-      "type": "emoji",
-      "emoji": "😀"
-    }
-  }
-  ```
-
-  ```json Native icon theme={null}
-  {
-    "icon": {
-      "type": "icon",
-      "icon": {
-        "name": "pizza",
-        "color": "blue"
-      }
-    }
-  }
-  ```
-
-  ```json Custom emoji theme={null}
-  {
-    "icon": {
-      "type": "custom_emoji",
-      "custom_emoji": {
-        "id": "45ce454c-d427-4f53-9489-e5d0f3d1db6b",
-        "name": "bufo",
-        "url": "https://s3-us-west-2.amazonaws.com/public.notion-static.com/865e85fc-7442-44d3-b323-9b03a2111720/3c6796979c50f4aa.png"
-      }
-    }
-  }
-  ```
-
-  ```json Notion-hosted file theme={null}
-  {
-    "icon": {
-      "type": "file",
-      "file": {
-        "url": "https://local-files-secure.s3.us-west-2.amazonaws.com/...",
-        "expiry_time": "2024-12-03T19:44:56.932Z"
-      }
-    }
-  }
-  ```
-</CodeGroup>
-
-#### Example: setting an icon
-
-<CodeGroup>
-  ```json Emoji theme={null}
-  {
-    "icon": { "type": "emoji", "emoji": "🥑" }
-  }
-  ```
-
-  ```json Native icon theme={null}
-  {
-    "icon": {
-      "type": "icon",
-      "icon": { "name": "pizza", "color": "blue" }
-    }
-  }
-  ```
-
-  ```json Custom emoji (by ID) theme={null}
-  {
-    "icon": {
-      "type": "custom_emoji",
-      "custom_emoji": { "id": "45ce454c-d427-4f53-9489-e5d0f3d1db6b" }
-    }
-  }
-  ```
-
-  ```json File upload theme={null}
-  {
-    "icon": {
-      "type": "file_upload",
-      "file_upload": { "id": "43833259-72ae-404e-8441-b6577f3159b4" }
-    }
-  }
-  ```
-</CodeGroup>
-
-<Tip>
-  To set the **cover** image, use the `cover` parameter with the same file types (`external`, `file_upload`) in the [Create a page](/reference/post-page) or [Update page](/reference/patch-page) request body.
-</Tip>
+<span />
 
 ### Last edited by
 
-<Info>Data source property config: [Last edited by](/reference/property-object#last-edited-by)</Info>
+`last_edited_by` is a [user object](/reference/user) for the page’s last editor. Notion sets this read-only value. The user object may contain only `object` and `id`.
 
-| Field            | Type     | Description                                                                                                                          | Example value                                |
-| :--------------- | :------- | :----------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------- |
-| `last_edited_by` | `object` | A [user object](/reference/user) containing information about the user who last updated the page. `last_edited_by` can’t be updated. | Refer to the example response objects below. |
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Last edited by": {
+        "id": "edtB",
+        "name": "Last edited by",
+        "description": null,
+        "type": "last_edited_by",
+        "last_edited_by": {}
+      }
+    }
+    ```
+  </Tab>
 
-#### Example `last_edited_by` page property value as returned in a GET page request
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Last edited by": {
+        "id": "edtB",
+        "type": "last_edited_by",
+        "last_edited_by": {
+          "object": "user",
+          "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
+        }
+      }
+    }
+    ```
+  </Tab>
 
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "Last edited by column name": {
-      "id": "uGNN",
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "edtB",
       "type": "last_edited_by",
       "last_edited_by": {
         "object": "user",
-        "id": "9188c6a5-7381-452f-b3dc-d4865aa89bdf",
-        "name": "Test Connection",
-        "avatar_url": "https://s3-us-west-2.amazonaws.com/public.notion-static.com/3db373fe-18f6-4a3c-a536-0f061cb9627f/leplane.jpeg",
-        "type": "bot",
-        "bot": {}
+        "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
       }
     }
-  }
-  ```
-</CodeGroup>
+    ```
+  </Tab>
+</Tabs>
+
+<span />
+
+<span />
 
 ### Last edited time
 
-<Info>Data source property config: [Last edited time](/reference/property-object#last-edited-time)</Info>
+`last_edited_time` is the page’s last edit time as an ISO 8601 timestamp. Notion sets this read-only value.
 
-| Field              | Type                                                                        | Description                                                                                     | Example value                |
-| :----------------- | :-------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------- | :--------------------------- |
-| `last_edited_time` | `string` ([ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date and time) | The date and time that the page was last edited. The `last_edited_time` value can’t be updated. | `"2022-10-12T16:34:00.000Z"` |
-
-#### Example `last_edited_time` page property value as returned in a GET page request
-
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "Last edited time": {
-      "id": "%3Defk",
-      "type": "last_edited_time",
-      "last_edited_time": "2023-02-24T21:06:00.000Z"
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Last edited time": {
+        "id": "edtT",
+        "name": "Last edited time",
+        "description": null,
+        "type": "last_edited_time",
+        "last_edited_time": {}
+      }
     }
-  }
-  ```
-</CodeGroup>
+    ```
+  </Tab>
+
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Last edited time": {
+        "id": "edtT",
+        "type": "last_edited_time",
+        "last_edited_time": "2026-09-04T14:30:00.000Z"
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "edtT",
+      "type": "last_edited_time",
+      "last_edited_time": "2026-09-04T14:30:00.000Z"
+    }
+    ```
+  </Tab>
+</Tabs>
+
+<span />
+
+<span />
+
+<span />
+
+<span />
 
 ### Multi-select
 
-<Info>Data source property config: [Multi-select](/reference/property-object#multi-select)</Info>
+`multi_select` is an array of selected options. Each response option has `id`, `name`, and `color`. Write options by `id` or `name`; use `[]` for no selection.
 
-If the `type` of a page property value is `"multi_select"`, then the property value contains a `"multi_select"` array with the following fields:
+A new option name adds an option to the schema if your connection can write to the parent data source. Option names cannot contain commas. To edit the available options, see [Multi-select schemas](/reference/property-object#multi-select).
 
-| Field   | Type            | Description                                                                                                                                                                                                                                                                                                                                                               | Example value                            |
-| :------ | :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :--------------------------------------- |
-| `color` | `string` (enum) | Color of the option. Note: the `color` value can’t be updated via the API. <br /><br /> Possible `"color"` values are: <br /><br /> - `blue`<br /> - `brown`<br /> - `default`(the default value)<br /> - `gray`<br /> - `green`<br /> - `orange`<br /> - `pink`<br /> - `purple`<br /> - `red`<br /> - `yellow`                                                          | `"red"`                                  |
-| `id`    | `string`        | The ID of the option. <br /><br /> You can use `id` or `name` to update a multi-select property.                                                                                                                                                                                                                                                                          | `"b3d773ca-b2c9-47d8-ae98-3c2ce3b2bffb"` |
-| `name`  | `string`        | The name of the option as it appears in Notion. <br /><br /> If the multi-select [data source property](/reference/property-object) does not yet have an option by that name, then the name will be added to the data source schema if the connection also has write access to the parent data source. <br /><br /> Note: Commas (`","`) are not valid for select values. | `"JavaScript"`                           |
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Tags": {
+        "id": "tags",
+        "name": "Tags",
+        "description": null,
+        "type": "multi_select",
+        "multi_select": {
+          "options": [
+            {
+              "id": "ff8e9269-9579-47f7-8f6e-83a84716863c",
+              "name": "High",
+              "color": "red",
+              "description": null
+            }
+          ]
+        }
+      }
+    }
+    ```
+  </Tab>
 
-#### Example `properties` body param for a POST or PATCH page request that creates or updates a `multi_select` page property value
-
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "properties": {
-      "Programming language": {
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Tags": {
+        "id": "tags",
+        "type": "multi_select",
         "multi_select": [
           {
-            "name": "TypeScript"
-          },
-          {
-            "name": "Python"
+            "id": "ff8e9269-9579-47f7-8f6e-83a84716863c",
+            "name": "High",
+            "color": "red"
           }
         ]
       }
     }
-  }
-  ```
-</CodeGroup>
+    ```
+  </Tab>
 
-#### Example `multi_select` page property value as returned in a GET page request
+  <Tab title="Page write">
+    ```json Page write theme={null}
+    {
+      "properties": {
+        "Tags": {
+          "multi_select": [
+            {
+              "name": "High"
+            }
+          ]
+        }
+      }
+    }
+    ```
+  </Tab>
 
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "Programming language": {
-      "id": "QyRn",
-      "name": "Programming language",
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "tags",
       "type": "multi_select",
       "multi_select": [
         {
-          "id": "tC;=",
-          "name": "TypeScript",
-          "color": "purple"
-        },
-        {
-          "id": "e4413a91-9f84-4c4a-a13d-5b4b3ef870bb",
-          "name": "JavaScript",
+          "id": "ff8e9269-9579-47f7-8f6e-83a84716863c",
+          "name": "High",
           "color": "red"
-        },
-        {
-          "id": "fc44b090-2166-40c8-8c58-88f2d8085ec0",
-          "name": "Python",
-          "color": "gray"
         }
       ]
     }
-  }
-  ```
-</CodeGroup>
+    ```
+  </Tab>
+</Tabs>
 
-<Info>
-  If you want to add a new option to a multi-select property via the [Update page](/reference/patch-page) or [Update data source](/reference/update-a-data-source) endpoint, then your connection needs write access to the parent database.
-</Info>
+<span />
+
+<span />
+
+<span />
 
 ### Number
 
-<Info>Data source property config: [Number](/reference/property-object#number)</Info>
+`number` is a JSON number or `null`. The [schema’s number format](/reference/property-object#number) controls its display in Notion. For example, `0.25` displays as 25% with the `percent` format.
 
-| Field    | Type     | Description                       | Example value |
-| :------- | :------- | :-------------------------------- | :------------ |
-| `number` | `number` | A number representing some value. | `1234`        |
-
-#### Example `properties` body param for a POST or PATCH page request that creates or updates a `number` page property value
-
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "properties": {
-      "Number of subscribers": {
-        "number": 42
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Estimate": {
+        "id": "estM",
+        "name": "Estimate",
+        "description": null,
+        "type": "number",
+        "number": {
+          "format": "number"
+        }
       }
     }
-  }
-  ```
-</CodeGroup>
+    ```
+  </Tab>
 
-#### Example `number` page property value as returned in a GET page request
-
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "Number of subscribers": {
-      "id": "WPj%5E",
-      "type": "number",
-      "number": 42
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Estimate": {
+        "id": "estM",
+        "type": "number",
+        "number": 8
+      }
     }
-  }
-  ```
-</CodeGroup>
+    ```
+  </Tab>
+
+  <Tab title="Page write">
+    ```json Page write theme={null}
+    {
+      "properties": {
+        "Estimate": {
+          "number": 8
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "estM",
+      "type": "number",
+      "number": 8
+    }
+    ```
+  </Tab>
+</Tabs>
+
+<span />
+
+<span />
+
+<span />
 
 ### People
 
-<Info>Data source property config: [People](/reference/property-object#people)</Info>
+The Person property uses the API key `people`. A page response contains an array of people or groups. [User objects](/reference/user) can be partial, so do not assume that a name or email is present.
 
-| Field    | Type                                     | Description               | Example value                                |
-| :------- | :--------------------------------------- | :------------------------ | :------------------------------------------- |
-| `people` | array of [user objects](/reference/user) | An array of user objects. | Refer to the example response objects below. |
+Writes accept user IDs, including bots that appear as user objects in the API. Bots used internally by Notion may not be assignable. [Retrieve a page property item](/reference/retrieve-a-page-property) returns a paginated list with one user in each item’s `people` field. Use it when a page response omits people.
 
-#### Example `properties` body param for a POST or PATCH page request that creates or updates a `people` page property value
-
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "properties": {
-      "Stakeholders": {
-        "people": [{
-          "object": "user",
-          "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
-        }]
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Owner": {
+        "id": "ownR",
+        "name": "Owner",
+        "description": null,
+        "type": "people",
+        "people": {}
       }
     }
-  }
-  ```
-</CodeGroup>
+    ```
+  </Tab>
 
-#### Example `people` page property value as returned in a GET page request
-
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "Stakeholders": {
-      "id": "%7BLUX",
-      "type": "people",
-      "people": [
-        {
-          "object": "user",
-          "id": "c2f20311-9e54-4d11-8c79-7398424ae41e",
-          "name": "Kimberlee Johnson",
-          "avatar_url": null,
-          "type": "person",
-          "person": {
-            "email": "[email protected]"
-          }
-        }
-      ]
-    }
-  }
-  ```
-</CodeGroup>
-
-<Info>
-  **Retrieve individual property items to avoid truncation**
-
-  The [Retrieve a page endpoint](/reference/retrieve-a-page) can’t be guaranteed to return more than 25 people per `people` page property. If a `people` page property includes more than 25 people, then you can use the [Retrieve a page property item endpoint](/reference/retrieve-a-page-property) for the specific `people` property to get a complete list of people.
-</Info>
-
-### Phone number
-
-<Info>Data source property config: [Phone number](/reference/property-object#phone-number)</Info>
-
-| Field          | Type     | Description                                                               | Example value    |
-| :------------- | :------- | :------------------------------------------------------------------------ | :--------------- |
-| `phone_number` | `string` | A string representing a phone number. No phone number format is enforced. | `"415-867-5309"` |
-
-#### Example `properties` body param for a POST or PATCH page request that creates or updates a `phone_number` page property value
-
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "properties": {
-      "Contact phone number": {
-        "phone_number": "415-202-4776"
-      }
-    }
-  }
-  ```
-</CodeGroup>
-
-#### Example `phone_number` page property value as returned in a GET page request
-
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "Contact phone number": {
-      "id": "%5DKhQ",
-      "type": "phone_number",
-      "phone_number": "415-202-4776"
-    }
-  }
-  ```
-</CodeGroup>
-
-### Relation
-
-<Info>Data source property config: [Relation](/reference/property-object#relation)</Info>
-
-| Field      | Type                        | Description                                                                                                                                                                                   | Example value                                |
-| :--------- | :-------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------- |
-| `has_more` | `boolean`                   | If a `relation` has more than 25 references, then the `has_more` value for the relation in the response object is `true`. If a relation doesn’t exceed the limit, then `has_more` is `false`. | Refer to the example response objects below. |
-| `relation` | an array of page references | An array of related page references. A page reference is an object with an `id` key and a string value corresponding to a page ID in another data source.                                     | Refer to the example response objects below. |
-
-#### Example `properties` body param for a POST or PATCH page request that creates or updates a `relation` page property value
-
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "properties": {
-      "Related tasks": {
-        "relation": [
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Owner": {
+        "id": "ownR",
+        "type": "people",
+        "people": [
           {
-            "id": "dd456007-6c66-4bba-957e-ea501dcda3a6"
-          },
-          {
-            "id": "0c1f7cb2-8090-4f18-924e-d92965055e32"
+            "object": "user",
+            "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
           }
         ]
       }
     }
-  }
-  ```
-</CodeGroup>
+    ```
+  </Tab>
 
-#### Example `relation` page property value as returned in a GET page request
-
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "Related tasks": {
-      "id": "hgMz",
-      "type": "relation",
-      "relation": [
-        {
-          "id": "dd456007-6c66-4bba-957e-ea501dcda3a6"
-        },
-        {
-          "id": "0c1f7cb2-8090-4f18-924e-d92965055e32"
+  <Tab title="Page write">
+    ```json Page write theme={null}
+    {
+      "properties": {
+        "Owner": {
+          "people": [
+            {
+              "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
+            }
+          ]
         }
-      ],
-      "has_more": false
+      }
     }
-  }
-  ```
-</CodeGroup>
+    ```
+  </Tab>
 
-<Info>
-  **To update a `relation` property value via the API, share the related parent database with the connection.**
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "ownR",
+      "type": "people",
+      "people": {
+        "object": "user",
+        "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
 
-  If a `relation` property value is unexpectedly empty, then make sure that you have shared the original source database for the data source that the `relation` points to with the connection.
+<span />
 
-  Ensuring correct permissions is also important for complete results for `rollup` and `formula` properties.
-</Info>
+<span />
+
+<span />
+
+### Phone number
+
+The Phone property uses the API key `phone_number`. Its value is a string or `null`. The API does not enforce a phone-number format.
+
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Contact phone": {
+        "id": "phon",
+        "name": "Contact phone",
+        "description": null,
+        "type": "phone_number",
+        "phone_number": {}
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Contact phone": {
+        "id": "phon",
+        "type": "phone_number",
+        "phone_number": "+1 415 555 0123"
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page write">
+    ```json Page write theme={null}
+    {
+      "properties": {
+        "Contact phone": {
+          "phone_number": "+1 415 555 0123"
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "phon",
+      "type": "phone_number",
+      "phone_number": "+1 415 555 0123"
+    }
+    ```
+  </Tab>
+</Tabs>
+
+<span />
+
+### Place
+
+`place` is a location object or `null`. It supports reading and writing coordinates, with optional place details. It is the property used by [map views](https://www.notion.com/help/maps).
+
+| Field                             | Type             | Meaning                                                    |
+| :-------------------------------- | :--------------- | :--------------------------------------------------------- |
+| `lat`, `lon`                      | Number           | Required latitude (−90 to 90) and longitude (−180 to 180). |
+| `name`                            | String or `null` | The place’s name.                                          |
+| `address`                         | String or `null` | The address.                                               |
+| `aws_place_id`, `google_place_id` | String or `null` | Optional place IDs from the named provider.                |
+
+The API does not look up coordinates from a name or address. Provide `lat` and `lon` when writing a value.
+
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Office": {
+        "id": "plce",
+        "name": "Office",
+        "description": null,
+        "type": "place",
+        "place": {}
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Office": {
+        "id": "plce",
+        "type": "place",
+        "place": {
+          "lat": 37.7749,
+          "lon": -122.4194,
+          "name": "San Francisco",
+          "address": null,
+          "aws_place_id": null,
+          "google_place_id": null
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page write">
+    ```json Page write theme={null}
+    {
+      "properties": {
+        "Office": {
+          "place": {
+            "lat": 37.7749,
+            "lon": -122.4194,
+            "name": "San Francisco"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "plce",
+      "type": "place",
+      "place": {
+        "lat": 37.7749,
+        "lon": -122.4194,
+        "name": "San Francisco",
+        "address": null,
+        "aws_place_id": null,
+        "google_place_id": null
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+<span />
+
+<span />
+
+<span />
+
+### Relation
+
+`relation` is an array of related page IDs. Each page must belong to the data source named by the [relation schema](/reference/property-object#relation).
+
+In a page response, `has_more: true` means the relation has more than 25 page references. Use [property-item pagination](/reference/property-item-object#paginated-values) to read the rest. A page write replaces the relation, so read all existing references before adding one.
+
+Share the related database with your connection too. Missing access can leave relation values empty or make formula and rollup results incomplete. Check access before treating an empty result as missing data.
+
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Projects": {
+        "id": "proj",
+        "name": "Projects",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "668d797c-76fa-4934-9b05-ad288df2d136",
+          "data_source_id": "6c4240a9-a3ce-413e-9fd0-8a51a4d0a49b",
+          "type": "single_property",
+          "single_property": {}
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Projects": {
+        "id": "proj",
+        "type": "relation",
+        "relation": [
+          {
+            "id": "dd456007-6c66-4bba-957e-ea501dcda3a6"
+          }
+        ],
+        "has_more": false
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page write">
+    ```json Page write theme={null}
+    {
+      "properties": {
+        "Projects": {
+          "relation": [
+            {
+              "id": "dd456007-6c66-4bba-957e-ea501dcda3a6"
+            }
+          ]
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "proj",
+      "type": "relation",
+      "relation": {
+        "id": "dd456007-6c66-4bba-957e-ea501dcda3a6"
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+<span />
+
+<span />
+
+<span />
+
+### Rich text
+
+The Text property uses the API key `rich_text`. Its value is an array of [rich text objects](/reference/rich-text). These can contain formatted text, mentions, and equations.
+
+Writes use the input fields for each rich text type. Responses also include `annotations`, `plain_text`, and `href`. Text in a page property is separate from the page’s [content blocks](/reference/block).
+
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Summary": {
+        "id": "text",
+        "name": "Summary",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Summary": {
+        "id": "text",
+        "type": "rich_text",
+        "rich_text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "Launch checklist",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "Launch checklist",
+            "href": null
+          }
+        ]
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page write">
+    ```json Page write theme={null}
+    {
+      "properties": {
+        "Summary": {
+          "rich_text": [
+            {
+              "type": "text",
+              "text": {
+                "content": "Launch checklist"
+              }
+            }
+          ]
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "text",
+      "type": "rich_text",
+      "rich_text": {
+        "type": "text",
+        "text": {
+          "content": "Launch checklist",
+          "link": null
+        },
+        "annotations": {
+          "bold": false,
+          "italic": false,
+          "strikethrough": false,
+          "underline": false,
+          "code": false,
+          "color": "default"
+        },
+        "plain_text": "Launch checklist",
+        "href": null
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+<span />
+
+<span />
+
+<span />
+
+<span />
+
+<span />
+
+<span />
 
 ### Rollup
 
-<Info>Data source property config: [Rollup](/reference/property-object#rollup)</Info>
+`rollup` holds the result of a calculation over a relation. Its value is read-only. The [schema](/reference/property-object#rollup) defines the relation, target property, and `function`.
 
-If the `type` of a page property value is `"rollup"`, then the property value contains a `"rollup"` object with the following fields:
+| Result `type` | Value field                                                       |
+| :------------ | :---------------------------------------------------------------- |
+| `number`      | `number`: a number or `null`.                                     |
+| `date`        | `date`: a date object or `null`.                                  |
+| `array`       | `array`: an array of typed property values, without property IDs. |
+| `unsupported` | `unsupported`: an empty object. No usable result is available.    |
 
-| Field                                                                  | Type                                                                                                                  | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | Example value |
-| ---------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------- |
-| `array` \|\| `date` \|\| `incomplete` \|\| `number` \|\| `unsupported` | Corresponds to the field. <br /><br /> For example, if the field is `number`, then the type of the value is `number`. | The value of the calculated rollup. The value can't be directly updated via the API.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `1234`        |
-| `function`                                                             | `string` (enum)                                                                                                       | The function that is evaluated for every page in the relation of the rollup. Possible `"function"` values are: <br /><br />- `average` <br />- `checked` <br />- `count` <br />- `count_per_group` <br />- `count_values` <br />- `date_range` <br />- `earliest_date` <br />- `empty` <br />- `latest_date` <br />- `max` <br />- `median` <br />- `min` <br />- `not_empty` <br />- `percent_checked` <br />- `percent_empty` <br />- `percent_not_empty` <br />- `percent_per_group` <br />- `percent_unchecked` <br />- `range` <br />- `show_original` <br />- `show_unique` <br />- `sum` <br />- `unchecked` <br />- `unique` | `"sum"`       |
-| `type`                                                                 | `array` \|\| `date` \|\| `incomplete` \|\| `number` \|\| `unsupported`                                                | The value type of the calculated rollup.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | `number`      |
+A page response puts array values in `rollup.array`. The property-item endpoint puts individual values in `results` and rollup metadata in `property_item.rollup`. It can also return `type: "incomplete"` while [pagination is in progress](/reference/property-item-object#rollup).
 
-#### Example `rollup` page property value as returned in a GET page request
+Share the related database with your connection too. Missing access can leave relation values empty or make formula and rollup results incomplete. Check access before treating an empty result as missing data.
 
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "Number of units": {
-      "id": "hgMz",
-      "type": "rollup",
-      "rollup": {
-        "type": "number",
-        "number": 2,
-        "function": "count"
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Total estimate": {
+        "id": "roll",
+        "name": "Total estimate",
+        "description": null,
+        "type": "rollup",
+        "rollup": {
+          "relation_property_id": "proj",
+          "relation_property_name": "Projects",
+          "rollup_property_id": "estM",
+          "rollup_property_name": "Estimate",
+          "function": "sum"
+        }
       }
     }
-  }
+    ```
+  </Tab>
+
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Total estimate": {
+        "id": "roll",
+        "type": "rollup",
+        "rollup": {
+          "type": "number",
+          "number": 8,
+          "function": "sum"
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "list",
+      "results": [
+        {
+          "object": "property_item",
+          "id": "proj",
+          "type": "relation",
+          "relation": {
+            "id": "dd456007-6c66-4bba-957e-ea501dcda3a6"
+          }
+        }
+      ],
+      "next_cursor": null,
+      "has_more": false,
+      "type": "property_item",
+      "property_item": {
+        "id": "roll",
+        "next_url": null,
+        "type": "rollup",
+        "rollup": {
+          "type": "number",
+          "number": 8,
+          "function": "sum"
+        }
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+<CodeGroup>
+  ```json Date rollup field theme={null}
+  {"type":"date","date":{"start":"2026-09-15","end":null,"time_zone":null},"function":"earliest_date"}
+  ```
+
+  ```json Array rollup field in a page response theme={null}
+  {"type":"array","array":[{"type":"number","number":8},{"type":"number","number":5}],"function":"show_original"}
   ```
 </CodeGroup>
 
 #### Unsupported rollup
 
-If the API can't calculate a rollup because it depends on too many related pages or nested formulas and rollups, `rollup.type` is set to `"unsupported"` and `rollup.unsupported` is an empty object. The response includes the `function` field, but it doesn't include a partial value. Treat the property as unavailable. To make the value available, reduce the number of related pages or simplify the nested formulas and rollups.
+A formula or rollup can return `type: "unsupported"` with `unsupported: {}` when it depends on too many related pages or nested calculations. This result has no usable value. Reduce the related pages or simplify the calculation. Requesting the property again does not remove this limit.
 
-If the page came from a data source query, see [Recommendations for performance](/reference/query-a-data-source#recommendations-for-performance) to request fewer properties and fetch details only for the results you need.
+For data source queries, [filter the returned properties](/guides/data-apis/query-large-data-sources) and retrieve details only when you need them.
 
-<CodeGroup>
-  ```json Unsupported rollup page property value theme={null}
-  {
-    "Number of units": {
-      "id": "hgMz",
-      "type": "rollup",
-      "rollup": {
-        "type": "unsupported",
-        "unsupported": {},
-        "function": "count"
-      }
-    }
-  }
-  ```
-</CodeGroup>
+```json Rollup field theme={null}
+{"type":"unsupported","unsupported":{},"function":"sum"}
+```
 
-<Warning>
-  **For rollup properties with more than 25 references, use the Retrieve a page property endpoint**
+Some rollup functions also have [endpoint-specific limits](/reference/property-item-object#unsupported-rollup).
 
-  Both the [Retrieve a page](/reference/retrieve-a-page) and [Retrieve a page property](/reference/retrieve-a-page-property) endpoints will return information related to the page properties. In cases where a rollup property has more than 25 references, the [Retrieve a page property](/reference/retrieve-a-page-property) endpoint must but used.
+<span />
 
-  Learn more about rollup properties in Notion’s [Help Center](/reference/page-property-values#rollup).
-</Warning>
+<span />
 
-<Warning>
-  **The API does not support updating `rollup` page property values.**
-
-  To change a page's `rollup` property, use the Notion UI.
-</Warning>
-
-### Rich text
-
-<Info>Data source property config: [Rich text](/reference/property-object#rich-text)</Info>
-
-| Field       | Type                                                  | Description                                           | Example value                                |
-| :---------- | :---------------------------------------------------- | :---------------------------------------------------- | :------------------------------------------- |
-| `rich_text` | an array of [rich text objects](/reference/rich-text) | An array of [rich text objects](/reference/rich-text) | Refer to the example response objects below. |
-
-#### Example `properties` body param for a POST or PATCH page request that creates or updates a `rich_text` page property value
-
-<CodeGroup>
-  ```json JSON expandable theme={null}
-  {
-    "properties": {
-      "Description": {
-        "rich_text": [
-          {
-            "type": "text",
-            "text": {
-              "content": "There is some ",
-              "link": null
-            },
-            "annotations": {
-              "bold": false,
-              "italic": false,
-              "strikethrough": false,
-              "underline": false,
-              "code": false,
-              "color": "default"
-            },
-            "plain_text": "There is some ",
-            "href": null
-          },
-          {
-            "type": "text",
-            "text": {
-              "content": "text",
-              "link": null
-            },
-            "annotations": {
-              "bold": true,
-              "italic": false,
-              "strikethrough": false,
-              "underline": false,
-              "code": false,
-              "color": "default"
-            },
-            "plain_text": "text",
-            "href": null
-          },
-          {
-            "type": "text",
-            "text": {
-              "content": " in this property!",
-              "link": null
-            },
-            "annotations": {
-              "bold": false,
-              "italic": false,
-              "strikethrough": false,
-              "underline": false,
-              "code": false,
-              "color": "default"
-            },
-            "plain_text": " in this property!",
-            "href": null
-          }
-        ]
-      }
-    }
-  }
-  ```
-</CodeGroup>
-
-#### Example `rich_text` page property value as returned in a GET page request
-
-<CodeGroup>
-  ```json JSON expandable theme={null}
-  {
-    "Description": {
-      "id": "HbZT",
-      "type": "rich_text",
-      "rich_text": [
-        {
-          "type": "text",
-          "text": {
-            "content": "There is some ",
-            "link": null
-          },
-          "annotations": {
-            "bold": false,
-            "italic": false,
-            "strikethrough": false,
-            "underline": false,
-            "code": false,
-            "color": "default"
-          },
-          "plain_text": "There is some ",
-          "href": null
-        },
-        {
-          "type": "text",
-          "text": {
-            "content": "text",
-            "link": null
-          },
-          "annotations": {
-            "bold": true,
-            "italic": false,
-            "strikethrough": false,
-            "underline": false,
-            "code": false,
-            "color": "default"
-          },
-          "plain_text": "text",
-          "href": null
-        },
-        {
-          "type": "text",
-          "text": {
-            "content": " in this property!",
-            "link": null
-          },
-          "annotations": {
-            "bold": false,
-            "italic": false,
-            "strikethrough": false,
-            "underline": false,
-            "code": false,
-            "color": "default"
-          },
-          "plain_text": " in this property!",
-          "href": null
-        }
-      ]
-    }
-  }
-  ```
-</CodeGroup>
-
-<Info>
-  The [Retrieve a page endpoint](/reference/retrieve-a-page) returns a maximum of 25 populated inline page or person references for a `rich_text` property. If a `rich_text` property includes more than 25 references, then you can use the [Retrieve a page property item endpoint](/reference/retrieve-a-page-property) for the specific `rich_text` property to get its complete list of references.
-</Info>
+<span />
 
 ### Select
 
-<Info>Data source property config: [Select](/reference/property-object#select)</Info>
+`select` is one option object or `null`. A response option has `id`, `name`, and `color`. Write an option by `id` or `name`.
 
-If the type of a page property value is `select`, then the property value contains a `select` object with the following fields:
+A new option name adds an option to the schema if your connection can write to the parent data source. Option names cannot contain commas. Option colors belong to the [schema](/reference/property-object#select), not the page value.
 
-| Property | Type            | Description                                                                                                                                                                                                                                                                                                                                                   | Example value                           |
-| :------- | :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :-------------------------------------- |
-| `color`  | `string` (enum) | The color of the option. Possible `"color"` values are: <br /><br />- `blue`<br /> - `brown`<br /> - `default`<br /> - `gray`<br /> - `green`<br /> - `orange`<br /> - `pink`<br /> - `purple`<br /> - `red`<br /> - `yellow`<br /><br />Defaults to `default`. The `color` value can’t be updated via the API.                                               | `red`                                   |
-| `id`     | `string`        | The ID of the option. <br /><br /> You can use `id` or `name` to [update](/reference/patch-page) a select property.                                                                                                                                                                                                                                           | `"b3d73ca-b2c9-47d8-ae98-3c2ce3b2bffb"` |
-| `name`   | `string`        | The name of the option as it appears in Notion. <br /><br /> If the select [data source property](/reference/property-object) doesn't have an option by that name yet, then the name is added to the data source schema if the connection also has write access to the parent data source. <br /><br /> Note: Commas (`","`) are not valid for select values. | `"jQuery"`                              |
-
-#### Example `properties` body param for a POST or PATCH page request that creates or updates a `select` page property value
-
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "properties": {
-      "Department": {
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Priority": {
+        "id": "prio",
+        "name": "Priority",
+        "description": null,
+        "type": "select",
         "select": {
-          "name": "Marketing"
+          "options": [
+            {
+              "id": "ff8e9269-9579-47f7-8f6e-83a84716863c",
+              "name": "High",
+              "color": "red",
+              "description": null
+            }
+          ]
         }
       }
     }
-  }
-  ```
-</CodeGroup>
+    ```
+  </Tab>
 
-#### Example select page property value as returned in a GET page request
-
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "Department": {
-      "id": "Yc%3FJ",
-      "type": "select",
-      "select": {
-        "id": "ou@_",
-        "name": "jQuery",
-        "color": "purple"
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Priority": {
+        "id": "prio",
+        "type": "select",
+        "select": {
+          "id": "ff8e9269-9579-47f7-8f6e-83a84716863c",
+          "name": "High",
+          "color": "red"
+        }
       }
     }
-  }
-  ```
-</CodeGroup>
+    ```
+  </Tab>
+
+  <Tab title="Page write">
+    ```json Page write theme={null}
+    {
+      "properties": {
+        "Priority": {
+          "select": {
+            "name": "High"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "prio",
+      "type": "select",
+      "select": {
+        "id": "ff8e9269-9579-47f7-8f6e-83a84716863c",
+        "name": "High",
+        "color": "red"
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+<span />
+
+<span />
+
+<span />
 
 ### Status
 
-<Info>Data source property config: [Status](/reference/property-object#status)</Info>
+`status` is one status option or `null`. The response contains `id`, `name`, and `color`, just like a select value. Write an existing status option by `id` or `name`.
 
-If the type of a page property value is `status`, then the property value contains a `status` object with the following fields:
+A page write does not create a new status option or set its group. Use [Update data source properties](/reference/update-data-source-properties#status-configuration-updates) to manage status options.
 
-| Property | Type            | Description                                                                                                                                                                                                                                                                                          | Example value                            |
-| :------- | :-------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------- |
-| `color`  | `string` (enum) | The color of the option. Possible `"color"` values are: <br /><br />- `blue`<br /> - `brown`<br /> - `default`<br /> - `gray`<br /> - `green`<br /> - `orange`<br /> - `pink`<br /> - `purple`<br /> - `red`<br /> - `yellow` Defaults to `default`. The `color` value can’t be updated via the API. | `"red"`                                  |
-| `id`     | `string`        | `string`                                                                                                                                                                                                                                                                                             | `"b3d773ca-b2c9-47d8-ae98-3c2ce3b2bffb"` |
-| `name`   | `string`        | The name of the option as it appears in Notion.                                                                                                                                                                                                                                                      | `"In progress"`                          |
-
-#### Example `properties` body param for a POST or PATCH page request that creates or updates a `status` page property value
-
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "properties": {
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
       "Status": {
+        "id": "stat",
+        "name": "Status",
+        "description": null,
+        "type": "status",
         "status": {
-          "name": "Not started"
+          "options": [
+            {
+              "id": "330aeafb-598c-4e1c-bc13-1148aa5963d3",
+              "name": "In progress",
+              "color": "blue",
+              "description": null
+            }
+          ],
+          "groups": [
+            {
+              "id": "b9d42483-e576-4858-a26f-ed940a5f678f",
+              "name": "To-do",
+              "color": "gray",
+              "option_ids": []
+            },
+            {
+              "id": "cf4952eb-1265-46ec-86ab-4bded4fa2e3b",
+              "name": "In progress",
+              "color": "blue",
+              "option_ids": [
+                "330aeafb-598c-4e1c-bc13-1148aa5963d3"
+              ]
+            },
+            {
+              "id": "4fa7348e-ae74-46d9-9585-e773caca6f40",
+              "name": "Complete",
+              "color": "green",
+              "option_ids": []
+            }
+          ]
         }
       }
     }
-  }
-  ```
-</CodeGroup>
+    ```
+  </Tab>
 
-#### Example `status` page property value as returned in a GET page request
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Status": {
+        "id": "stat",
+        "type": "status",
+        "status": {
+          "id": "330aeafb-598c-4e1c-bc13-1148aa5963d3",
+          "name": "In progress",
+          "color": "blue"
+        }
+      }
+    }
+    ```
+  </Tab>
 
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "Status": {
-      "id": "Z%3ClH",
+  <Tab title="Page write">
+    ```json Page write theme={null}
+    {
+      "properties": {
+        "Status": {
+          "status": {
+            "name": "In progress"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "stat",
       "type": "status",
       "status": {
-        "id": "539f2705-6529-42d8-a215-61a7183a92c0",
+        "id": "330aeafb-598c-4e1c-bc13-1148aa5963d3",
         "name": "In progress",
         "color": "blue"
       }
     }
-  }
-  ```
-</CodeGroup>
+    ```
+  </Tab>
+</Tabs>
+
+<span />
+
+<span />
+
+<span />
 
 ### Title
 
-<Info>Data source property config: [Title](/reference/property-object#title)</Info>
+The Name property uses the API key `title`. Its value is an array of [rich text objects](/reference/rich-text). Each data source has exactly one Name property, which names each page in that data source.
 
-| Field   | Type                                                  | Description                                            | Example value                                |
-| :------ | :---------------------------------------------------- | :----------------------------------------------------- | :------------------------------------------- |
-| `title` | an array of [rich text objects](/reference/rich-text) | An array of [rich text objects](/reference/rich-text). | Refer to the example response objects below. |
+For a page whose parent is another page, use `title` as the property key. This is separate from the name of the data source itself.
 
-#### Example `properties` body param for a POST or PATCH page request that creates or updates a `title` page property value
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Name": {
+        "id": "title",
+        "name": "Name",
+        "description": null,
+        "type": "title",
+        "title": {}
+      }
+    }
+    ```
+  </Tab>
 
-<CodeGroup>
-  ```json JSON expandable theme={null}
-  {
-    "properties": {
-      "Title": {
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Name": {
         "id": "title",
         "type": "title",
         "title": [
           {
             "type": "text",
             "text": {
-              "content": "A better title for the page",
+              "content": "Launch checklist",
               "link": null
             },
             "annotations": {
@@ -1077,277 +1620,302 @@ If the type of a page property value is `status`, then the property value contai
               "code": false,
               "color": "default"
             },
-            "plain_text": "This is also not done",
+            "plain_text": "Launch checklist",
             "href": null
           }
         ]
       }
     }
-  }
-  ```
-</CodeGroup>
+    ```
+  </Tab>
 
-#### Example `title` page property value as returned in a GET page request
-
-<CodeGroup>
-  ```json JSON expandable theme={null}
-  {
-    "Title": {
-      "id": "title",
-      "type": "title",
-      "title": [
-        {
-          "type": "text",
-          "text": {
-            "content": "A better title for the page",
-            "link": null
-          },
-          "annotations": {
-            "bold": false,
-            "italic": false,
-            "strikethrough": false,
-            "underline": false,
-            "code": false,
-            "color": "default"
-          },
-          "plain_text": "This is also not done",
-          "href": null
+  <Tab title="Page write">
+    ```json Page write theme={null}
+    {
+      "properties": {
+        "Name": {
+          "title": [
+            {
+              "type": "text",
+              "text": {
+                "content": "Launch checklist"
+              }
+            }
+          ]
         }
-      ]
-    }
-  }
-  ```
-</CodeGroup>
-
-<Info>
-  The [Retrieve a page endpoint](/reference/retrieve-a-page) returns a maximum of 25 inline page or person references for a `title` property. If a `title` property includes more than 25 references, then you can use the [Retrieve a page property item endpoint](/reference/retrieve-a-page-property) for the specific `title` property to get its complete list of references.
-</Info>
-
-### URL
-
-<Info>Data source property config: [URL](/reference/property-object#url)</Info>
-
-| Field | Type     | Description                            | Example value                      |
-| :---- | :------- | :------------------------------------- | :--------------------------------- |
-| `url` | `string` | A string that describes a web address. | `"https://developers.notion.com/"` |
-
-#### Example `properties` body param for a POST or PATCH page request that creates or updates a `url` page property value
-
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "properties": {
-      "Website": {
-        "url": "https://developers.notion.com/"
       }
     }
-  }
-  ```
-</CodeGroup>
+    ```
+  </Tab>
 
-#### Example `url` page property value as returned in a GET page request
-
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "Website": {
-      "id": "bB%3D%5B",
-      "type": "url",
-      "url": "https://developers.notion.com/"
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "title",
+      "type": "title",
+      "title": {
+        "type": "text",
+        "text": {
+          "content": "Launch checklist",
+          "link": null
+        },
+        "annotations": {
+          "bold": false,
+          "italic": false,
+          "strikethrough": false,
+          "underline": false,
+          "code": false,
+          "color": "default"
+        },
+        "plain_text": "Launch checklist",
+        "href": null
+      }
     }
-  }
-  ```
-</CodeGroup>
+    ```
+  </Tab>
+</Tabs>
+
+<span />
+
+<span />
 
 ### Unique ID
 
-<Info>Data source property config: [Unique ID](/reference/property-object#unique-id)</Info>
+The ID property uses the API key `unique_id`. It contains `number` and `prefix`. Notion assigns the number; you cannot set it in a page write. The number is unique within the data source. Either field can be `null`.
 
-| Field    | Type               | Description                                        | Example value |
-| :------- | :----------------- | :------------------------------------------------- | :------------ |
-| `number` | `number`           | The ID count (auto-incrementing).                  | 3             |
-| `prefix` | `string` or `null` | An optional prefix to be applied to the unique ID. | "RL"          |
+The [schema’s prefix](/reference/property-object#unique-id) controls labels such as `TASK-42`.
 
-<Check>
-  Unique IDs can be read using the API with a [GET page](/reference/retrieve-a-page) request, but they cannot be updated with the API, since they are auto-incrementing.
-</Check>
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Task ID": {
+        "id": "task",
+        "name": "Task ID",
+        "description": null,
+        "type": "unique_id",
+        "unique_id": {
+          "prefix": "TASK"
+        }
+      }
+    }
+    ```
+  </Tab>
 
-#### Example `unique_id` page property value as returned in a GET page request
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Task ID": {
+        "id": "task",
+        "type": "unique_id",
+        "unique_id": {
+          "number": 42,
+          "prefix": "TASK"
+        }
+      }
+    }
+    ```
+  </Tab>
 
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "test-ID": {
-      "id": "tqqd",
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "task",
       "type": "unique_id",
       "unique_id": {
-        "number": 3,
-        "prefix": "RL",
-      },
-    },
-  }
-  ```
-</CodeGroup>
+        "number": 42,
+        "prefix": "TASK"
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+<span />
+
+<span />
+
+<span />
+
+### URL
+
+`url` is a URL string or `null`.
+
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Project link": {
+        "id": "link",
+        "name": "Project link",
+        "description": null,
+        "type": "url",
+        "url": {}
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Project link": {
+        "id": "link",
+        "type": "url",
+        "url": "https://example.com/projects/launch"
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page write">
+    ```json Page write theme={null}
+    {
+      "properties": {
+        "Project link": {
+          "url": "https://example.com/projects/launch"
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "link",
+      "type": "url",
+      "url": "https://example.com/projects/launch"
+    }
+    ```
+  </Tab>
+</Tabs>
+
+<span />
+
+<span />
+
+<span />
 
 ### Verification
 
-The verification status of a page in a wiki database. Pages can be verified, unverified, or expired (when a verification's end date is in the past).
+`verification` is available on pages in a [wiki database](/guides/data-apis/working-with-databases#wiki-databases). It is an object or `null`.
 
-You can set or update the verification status via the [Create page](/reference/post-page) and [Update page](/reference/patch-page) endpoints. The `verified_by` field is read-only and is automatically set to the acting connection.
+| Field         | Type                  | Meaning                                                                                        |
+| :------------ | :-------------------- | :--------------------------------------------------------------------------------------------- |
+| `state`       | String                | `verified`, `unverified`, or `expired`. Writes accept only `verified` and `unverified`.        |
+| `date`        | Date object or `null` | The verification period. `start` and any `end` must include a time. `end` sets the expiration. |
+| `verified_by` | User object or `null` | Who verified the page. Notion sets this field.                                                 |
 
-<Info>
-  The `verification` property is only available for pages that are part of a [wiki database](/guides/data-apis/working-with-databases#wiki-databases). To learn more about wiki databases and verifying pages, see our [Help Center article](https://www.notion.com/help/wikis-and-verified-pages#verifying-pages).
-</Info>
+Verification dates require timestamps, such as `2026-09-15T09:00:00Z`. Date-only values such as `2026-09-15` return a validation error. Omit `date` or set it to `null` to verify without an expiration.
 
-| Field         | Type                                     | Description                                                                                                                                                                                                                                                     | Example value                                |
-| :------------ | :--------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------- |
-| `state`       | `string`                                 | The verification state of the page. Possible values: `"verified"`, `"unverified"`, or `"expired"` (returned when the end date is in the past).                                                                                                                  | `"unverified"`                               |
-| `verified_by` | [User](/reference/user) object or `null` | If the page is verified, a [User](/reference/user) object indicating who verified the page. Read-only — automatically set to the acting connection when writing.                                                                                                | Refer to the example response objects below. |
-| `date`        | Object or `null`                         | If the page is verified, the date object will include the date the verification started (`start`). If an expiration date is set for the verification, an end date (`end`) will be included. ([ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date and time.) | Refer to the example response objects below. |
+An unverified value has `date: null` and `verified_by: null`. A verified page becomes expired when its end date passes.
 
-#### Example `verification` page property values as returned in a GET page request
+You can write verification through [Create page](/reference/post-page) or [Update page](/reference/patch-page). The acting connection is recorded as the verifier. Omit `verified_by` and do not set the wiki’s verification Owner property in the same request.
 
-**Unverified**
-
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "Verification": {
-      "id": "fpVq",
-      "type": "verification",
-      "verification": {
-        "state": "unverified",
-        "verified_by": null,
-        "date": null
-      }
-    }
-  }
-  ```
-</CodeGroup>
-
-**Verified with no expiration date set**
-
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "Verification": {
-      "id": "fpVq",
-      "type": "verification",
-      "verification": {
-        "state": "verified",
-        "verified_by": {
-          "object": "user",
-          "id": "01e46064-d5fb-4444-8ecc-ad47d076f804",
-          "name": "User Name",
-          "avatar_url": null,
-          "type": "person",
-          "person": {}
-        },
-        "date": {
-          "start": "2023-08-01T04:00:00.000Z",
-          "end": null,
-          "time_zone": null
-        }
-      }
-    }
-  }
-  ```
-</CodeGroup>
-
-**Verified with 90-day expiration date**
-
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "Verification": {
-      "id": "fpVq",
-      "type": "verification",
-      "verification": {
-        "state": "verified",
-        "verified_by": {
-          "object": "user",
-          "id": "01e46064-d5fb-4444-8ecc-ad47d076f804"
-        },
-        "date": {
-          "start": "2023-08-01T04:00:00.000Z",
-          "end": "2023-10-30T04:00:00.000Z",
-          "time_zone": null
-        }
-      }
-    }
-  }
-  ```
-</CodeGroup>
-
-#### Example: set verification via [Update page](/reference/patch-page)
-
-<CodeGroup>
-  ```bash cURL theme={null}
-  curl https://api.notion.com/v1/pages/60bdc8bd-3880-44b8-a9cd-8a145b3ffbd7 \
-    -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
-    -H "Content-Type: application/json" \
-    -H "Notion-Version: 2026-03-11" \
-    -X PATCH \
-    --data '{
-    "properties": {
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
       "Verification": {
+        "id": "vrfy",
+        "name": "Verification",
+        "description": null,
+        "type": "verification",
+        "verification": {}
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Verification": {
+        "id": "vrfy",
+        "type": "verification",
         "verification": {
           "state": "verified",
           "date": {
-            "start": "2026-03-25T00:00:00.000Z",
-            "end": "2026-06-25T00:00:00.000Z"
+            "start": "2026-09-01T09:00:00.000Z",
+            "end": "2026-10-01T09:00:00.000Z",
+            "time_zone": null
+          },
+          "verified_by": {
+            "object": "user",
+            "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
           }
         }
       }
     }
-  }'
-  ```
+    ```
+  </Tab>
 
-  ```json Unverify a page theme={null}
-  {
-    "properties": {
-      "Verification": {
-        "verification": {
-          "state": "unverified"
+  <Tab title="Page write">
+    ```json Page write theme={null}
+    {
+      "properties": {
+        "Verification": {
+          "verification": {
+            "state": "verified",
+            "date": {
+              "start": "2026-09-01T09:00:00.000Z",
+              "end": "2026-10-01T09:00:00.000Z"
+            }
+          }
         }
       }
     }
-  }
-  ```
-</CodeGroup>
+    ```
+  </Tab>
 
-<Note>
-  The `verified_by` field is ignored when writing — the acting connection is always recorded as the verifier. Do not set the verification `Owner` property in the same request; it is managed automatically.
-</Note>
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "vrfy",
+      "type": "verification",
+      "verification": {
+        "state": "verified",
+        "date": {
+          "start": "2026-09-01T09:00:00.000Z",
+          "end": "2026-10-01T09:00:00.000Z",
+          "time_zone": null
+        },
+        "verified_by": {
+          "object": "user",
+          "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
+        }
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
 
 ### Unsupported properties
 
-The Public API supports a subset of property types. Unsupported types will be returned with a `null` value. Exclude these unsupported types when you are updating page properties.
+Not every property feature in Notion is writable through the API. Button values are empty objects. Unknown or unavailable values must not be copied into page writes. A `null` value can also mean an empty supported property; it does not by itself mean that the type is unsupported.
 
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-  	"properties": {
-  		"Place": {
-        "id": "%60%40Gq",
-        "type": "place",
-        "place": null
-      }
-  	}
-  }
-  ```
-</CodeGroup>
+<span />
+
+### Icon
+
+A page’s `icon` and `cover` are top-level fields on the [page object](/reference/page). They are not entries in `properties`. See [Emoji and icon](/reference/emoji-and-icon) for icon types and examples.
 
 ## Paginated page properties
 
-The `title`, `rich_text`, `relation` and `people` page properties are returned as a paginated `list` object of individual `property_item` objects.
+A page response can omit values when a property refers to many pages or people:
 
-An abridged set of the the properties found in the `list` object is below. Refer to the [pagination documentation](/reference/intro#pagination) for additional information.
+| Property             | Page response limit                                                                                  |
+| :------------------- | :--------------------------------------------------------------------------------------------------- |
+| `relation`           | Up to 25 page references. `has_more: true` means more references exist.                              |
+| `people`             | More than 25 people may be omitted.                                                                  |
+| `title`, `rich_text` | Up to 25 populated inline page or person mentions. This is a mention limit, not a text-length limit. |
+| `formula`, `rollup`  | Results can depend on references that the page response does not fully load.                         |
 
-| Field           | Type               | Description                                                   | Example value                                                                                                                      |
-| :-------------- | :----------------- | :------------------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------- |
-| `object`        | `"list"`           | Always `"list"`.                                              | `"list"`                                                                                                                           |
-| `type`          | `"property_item"`  | Always `"property_item"`.                                     | `"property_item"`                                                                                                                  |
-| `results`       | `list`             | List of `property_item` objects.                              | `[{"object": "property_item", "id": "vYdV", "type": "relation", "relation": { "id": "535c3fb2-95e6-4b37-a696-036e5eac5cf6"}}... ]` |
-| `property_item` | `object`           | A `property_item` object that describes the property.         | `{"id": "title", "next_url": null, "type": "title", "title": {}}`                                                                  |
-| `next_url`      | `string` or `null` | The URL the user can request to get the next page of results. | `"http://api.notion.com/v1/pages/0e5235bf86aa4efb93aa772cce7eab71/properties/vYdV?start_cursor=LYxaUO&page_size=25"`               |
+Use [Retrieve a page property item](/reference/retrieve-a-page-property) when you need the full value. Read every [page of property items](/reference/property-item-object#paginated-values). Formula and rollup [calculation limits](/reference/page-property-values#unsupported-formula) still apply.
+
+The list response and cursor fields are defined in [Page property items](/reference/property-item-object#paginated-values). For a complete SDK example, see [Read every item in a page property](/guides/data-apis/read-page-property-values).

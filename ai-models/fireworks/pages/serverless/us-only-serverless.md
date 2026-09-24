@@ -8,6 +8,8 @@ Run Serverless inference exclusively in the US
 
 US-only Serverless serves inference exclusively from the US, making it a good fit for compliance needs.
 
+<span />
+
 ## Available models
 
 | Model                    | `model` ID                                             |

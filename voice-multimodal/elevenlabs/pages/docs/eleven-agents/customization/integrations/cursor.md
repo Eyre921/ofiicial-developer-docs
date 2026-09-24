@@ -31,7 +31,9 @@ Go to your [Cursor Dashboard](https://cursor.com/settings), navigate to **Integr
 
 In the ElevenLabs integration setup, paste your Cursor API key in the **API Key** field.
 
-Free Plan API keys do not support Background Agent API usage. A paid Cursor plan is required.
+> **Warning**
+>
+> Free Plan API keys do not support Background Agent API usage. A paid Cursor plan is required.
 
 ## Agent tools
 

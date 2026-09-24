@@ -45,4 +45,6 @@ You can activate or deactivate any receptionist at any time:
 * **Active** — Answering calls on its assigned phone number
 * **Inactive** — Not answering calls; phone number is still reserved
 
-Deactivating your only receptionist means calls to your number will go unanswered.
+> **Warning**
+>
+> Deactivating your only receptionist means calls to your number will go unanswered.

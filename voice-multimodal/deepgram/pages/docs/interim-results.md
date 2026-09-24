@@ -22,7 +22,9 @@ When working with real-time streaming audio, streams flow from your capture sour
 
 When Interim Results is enabled Deepgram guesses about the words being spoken and sends these guesses to you as interim transcripts. As more audio enters the server, Deepgram corrects and improves the transcriptions, increasing its accuracy, until it reaches the end of the stream, at which point it sends one last, cumulative transcript.
 
-Interim Results can be used with Deepgram's [Endpointing](/docs/endpointing/) feature. To compare and contrast these features, and to explore best practices for using them together, see [Using Endpointing and Interim Results with Live Streaming Audio](/docs/understand-endpointing-interim-results).
+> **Info**
+>
+> Interim Results can be used with Deepgram's [Endpointing](/docs/endpointing/) feature. To compare and contrast these features, and to explore best practices for using them together, see [Using Endpointing and Interim Results with Live Streaming Audio](/docs/understand-endpointing-interim-results).
 
 ## Enable Feature
 
@@ -184,6 +186,8 @@ In this response, we see that:
 * `confidence` for the word "problem" is almost 100%, so can likely be trusted.
 * `is_final` is `false`, indicating that Deepgram will continue waiting to see if more data will improve its predictions.
 
-For a more detailed example of using Interim results refer to [Using Interim Results Tips & Tricks](/docs/using-interim-results).
+> **Info**
+>
+> For a more detailed example of using Interim results refer to [Using Interim Results Tips & Tricks](/docs/using-interim-results).
 
 ---

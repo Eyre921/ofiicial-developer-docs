@@ -2744,6 +2744,10 @@ Source: https://docs.turso.tech/api-reference/databases/delete
 DELETE /v1/organizations/{organizationSlug}/databases/{databaseName}
 Delete a database belonging to the organization or user.
 
+<Note>
+  On paid plans, a deleted database can be restored for up to five days — see [Recover Deleted Databases](/features/recover-deleted-databases).
+</Note>
+
 <RequestExample>
   ```bash cURL theme={null}
   curl -L -X DELETE 'https://api.turso.tech/v1/organizations/{organizationSlug}/databases/{databaseName}' \
@@ -2817,6 +2821,26 @@ Returns a list of databases belonging to the organization or user.
 </RequestExample>
 
 
+# List Deleted Databases
+Source: https://docs.turso.tech/api-reference/databases/list-deleted
+
+GET /v3/organizations/{organizationId}/databases
+Returns databases deleted within the last five days, which can still be restored. Requires a paid plan. Available even while recovery is disabled for the organization.
+
+<Note>
+  Unlike the v1 endpoints, this endpoint identifies the organization by its
+  **UUID** — the `id` field from
+  [Retrieve Organization](/api-reference/organizations/retrieve).
+</Note>
+
+<RequestExample>
+  ```bash cURL theme={null}
+  curl -L 'https://api.turso.tech/v3/organizations/{organizationId}/databases?deleted=true' \
+    -H 'Authorization: Bearer TOKEN'
+  ```
+</RequestExample>
+
+
 # List Database Instances
 Source: https://docs.turso.tech/api-reference/databases/list-instances
 
@@ -2838,6 +2862,34 @@ Returns a list of instances of a database. Instances are the individual primary 
   });
 
   const instances = await turso.databases.listInstances("my-db");
+  ```
+</RequestExample>
+
+
+# Restore Database
+Source: https://docs.turso.tech/api-reference/databases/restore
+
+POST /v3/organizations/{organizationId}/databases/{databaseId}/restore
+Restore a database deleted within the last five days, exactly as it was at the moment it was deleted. Requires a paid plan, an admin or owner of the organization, and recovery enabled for the organization.
+
+<Note>
+  Unlike the v1 endpoints, this endpoint identifies the organization and database
+  by **UUID** — use the `id` field from
+  [Retrieve Organization](/api-reference/organizations/retrieve) and the `DbId`
+  field from [List Deleted Databases](/api-reference/databases/list-deleted).
+</Note>
+
+<RequestExample>
+  ```bash cURL theme={null}
+  curl -L -X POST 'https://api.turso.tech/v3/organizations/{organizationId}/databases/{databaseId}/restore' \
+    -H 'Authorization: Bearer TOKEN'
+  ```
+
+  ```bash cURL (new name) theme={null}
+  curl -L -X POST 'https://api.turso.tech/v3/organizations/{organizationId}/databases/{databaseId}/restore' \
+    -H 'Authorization: Bearer TOKEN' \
+    -H 'Content-Type: application/json' \
+    -d '{ "name": "my-restored-database" }'
   ```
 </RequestExample>
 
@@ -3151,6 +3203,12 @@ Source: https://docs.turso.tech/api-reference/groups/delete
 DELETE /v1/organizations/{organizationSlug}/groups/{groupName}
 Delete a group belonging to the organization or user.
 
+<Note>
+  On paid plans, a deleted group and its databases can be restored for up to five
+  days — see
+  [Recover Deleted Databases](/features/recover-deleted-databases).
+</Note>
+
 <RequestExample>
   ```bash cURL theme={null}
   curl -L -X DELETE 'https://api.turso.tech/v1/organizations/{organizationSlug}/groups/{groupName}' \
@@ -3216,6 +3274,47 @@ Returns a list of groups belonging to the organization or user.
   });
 
   const groups = await turso.groups.list();
+  ```
+</RequestExample>
+
+
+# List Deleted Groups
+Source: https://docs.turso.tech/api-reference/groups/list-deleted
+
+GET /v3/organizations/{organizationId}/deleted-groups
+Returns groups deleted within the last five days, including empty groups, which can still be restored. Requires a paid plan and an organization-level token. Available even while recovery is disabled for the organization.
+
+<Note>
+  Unlike the v1 endpoints, this endpoint identifies the organization by its
+  **UUID** — the `id` field from
+  [Retrieve Organization](/api-reference/organizations/retrieve).
+</Note>
+
+<RequestExample>
+  ```bash cURL theme={null}
+  curl -L 'https://api.turso.tech/v3/organizations/{organizationId}/deleted-groups' \
+    -H 'Authorization: Bearer TOKEN'
+  ```
+</RequestExample>
+
+
+# Restore Group
+Source: https://docs.turso.tech/api-reference/groups/restore
+
+POST /v3/organizations/{organizationId}/groups/{groupId}/restore
+Restore a group deleted within the last five days, along with the member databases that were deleted with it. Requires a paid plan, an admin or owner of the organization, and recovery enabled for the organization. If some databases fail to restore, the group still becomes active: retry the failed database UUIDs individually with Restore Database.
+
+<Note>
+  Unlike the v1 endpoints, this endpoint identifies the organization and group by
+  **UUID** — use the `id` field from
+  [Retrieve Organization](/api-reference/organizations/retrieve) and the `uuid`
+  field from [List Deleted Groups](/api-reference/groups/list-deleted).
+</Note>
+
+<RequestExample>
+  ```bash cURL theme={null}
+  curl -L -X POST 'https://api.turso.tech/v3/organizations/{organizationId}/groups/{groupId}/restore' \
+    -H 'Authorization: Bearer TOKEN'
   ```
 </RequestExample>
 
@@ -4710,6 +4809,10 @@ You can destroy a database by using the following command:
 turso db destroy <database-name> [flags]
 ```
 
+<Note>
+  On paid plans, a destroyed database can be restored for up to five days — see [Recover Deleted Databases](/features/recover-deleted-databases).
+</Note>
+
 ## Flags
 
 | Flag          | Description                            |
@@ -5062,6 +5165,12 @@ You can destroy a group and all of its databases using the following command:
 ```bash theme={null}
 turso group destroy <group-name> [flags]
 ```
+
+<Note>
+  On paid plans, a destroyed group and its databases can be restored for up to five
+  days — see
+  [Recover Deleted Databases](/features/recover-deleted-databases).
+</Note>
 
 ## Flags
 
@@ -8287,6 +8396,12 @@ Turso supports point-in-time recovery (PITR) for databases. PITR allows you to r
   Backups are created automatically at `COMMIT`. Free plan users can restore to any point in time within the last 24 hours. Developer, Scaler, and Pro users can restore to any point in time within the last 10, 30, or 90 days, respectively.
 </Info>
 
+<Note>
+  PITR restores an **existing** database — it cannot bring back a database that was
+  deleted. On paid plans, deleted databases can be restored for up to five days: see
+  [Recover Deleted Databases](/features/recover-deleted-databases).
+</Note>
+
 ## How it works
 
 1. You create a new database from the existing database using the CLI or API.
@@ -8331,6 +8446,153 @@ Refer to the following references for more details about all arguments:
 * You will need to [create a new token](/cli/db/tokens/create) (or use a group token) to connect to the new database.
 * You will need to manually delete the old database when you no longer need it.
 * Restores count towards your plan's database quota.
+
+
+# Recover Deleted Databases
+Source: https://docs.turso.tech/features/recover-deleted-databases
+
+Restore databases and groups for up to five days after deletion.
+
+Turso Cloud keeps deleted databases and groups recoverable for up to **five days**
+after deletion. Restoring brings the database back exactly as it was at the moment
+it was deleted — same name, same data. This protects you against accidents, whether
+the delete came from a teammate, a script, or an AI agent with too much enthusiasm.
+
+Recovery is available on all paid plans at no additional cost.
+
+<Info>
+  This is different from [Point-in-Time Recovery](/features/point-in-time-recovery)
+  (PITR). PITR restores an **existing** database to an earlier point in time, but it
+  cannot bring back a database that was deleted. Recovery brings back a **deleted**
+  database at the moment it was deleted.
+</Info>
+
+## Requirements
+
+* A **paid plan**. Databases deleted while the organization was on a paid plan can
+  be restored.
+* **Admin or owner** access to the organization.
+* Recovery enabled for the organization (the **Allow restore** toggle — see
+  [below](#disabling-recovery)).
+
+## Restore from the dashboard
+
+1. Open the **Restore** page in the [Turso dashboard](https://app.turso.tech).
+2. Find the database under **Recently deleted** — you can search by name, ID,
+   hostname, or group.
+3. Click **Restore**.
+
+Deleted groups appear in their own section on the same page. Restoring a group
+also attempts to restore the databases that were deleted along with it.
+
+## Restore with the Platform API
+
+List the databases deleted within the last five days, then restore by the
+database's UUID:
+
+<CodeGroup>
+  ```bash List deleted databases theme={null}
+  curl -L 'https://api.turso.tech/v3/organizations/{organizationId}/databases?deleted=true' \
+    -H 'Authorization: Bearer TOKEN'
+  ```
+
+  ```bash Restore a database theme={null}
+  curl -L -X POST 'https://api.turso.tech/v3/organizations/{organizationId}/databases/{databaseId}/restore' \
+    -H 'Authorization: Bearer TOKEN'
+  ```
+
+  ```bash List deleted groups theme={null}
+  curl -L 'https://api.turso.tech/v3/organizations/{organizationId}/deleted-groups' \
+    -H 'Authorization: Bearer TOKEN'
+  ```
+
+  ```bash Restore a group theme={null}
+  curl -L -X POST 'https://api.turso.tech/v3/organizations/{organizationId}/groups/{groupId}/restore' \
+    -H 'Authorization: Bearer TOKEN'
+  ```
+</CodeGroup>
+
+These endpoints identify everything by **UUID** rather than name:
+`{organizationId}` is the `id` field from
+[Retrieve Organization](/api-reference/organizations/retrieve), and the
+database and group UUIDs come from the deleted listings. To restore under a
+different name (for example, when a new database already uses the old one),
+pass a JSON body: `{ "name": "my-restored-database" }`.
+
+Refer to the API reference for all parameters and response fields:
+
+<CardGroup>
+  <Card title="List Deleted Databases" icon="code" href="/api-reference/databases/list-deleted" />
+
+  <Card title="Restore Database" icon="code" href="/api-reference/databases/restore" />
+
+  <Card title="List Deleted Groups" icon="code" href="/api-reference/groups/list-deleted" />
+
+  <Card title="Restore Group" icon="code" href="/api-reference/groups/restore" />
+</CardGroup>
+
+## Restore with an AI agent
+
+The [Turso MCP server](/integrations/mcp) exposes recovery to AI agents, so an
+agent that deleted a database by mistake can bring it back in the same session:
+
+| Tool                     | Description                                                                           |
+| ------------------------ | ------------------------------------------------------------------------------------- |
+| `list_deleted_databases` | List databases deleted within the last five days. Returns the UUID needed to restore. |
+| `restore_database`       | Restore a deleted database by UUID, optionally under a new name.                      |
+| `list_deleted_groups`    | List groups deleted within the last five days, including empty groups.                |
+| `restore_group`          | Restore a deleted group and the databases that were deleted with it.                  |
+
+## Restoring groups
+
+Destroying a group deletes all of its databases. Restoring the group brings the
+group back and attempts to restore those databases as well. If some databases fail
+to restore, the group still becomes active — you can retry the failed databases
+individually with `restore_database`.
+
+## Disabling recovery
+
+Some organizations need deleted to mean deleted. Admins and owners can turn
+recovery off for the whole organization with the **Allow restore** toggle on the
+dashboard's Restore page, through the API, or through the MCP server
+(`set_organization_restore_enabled`):
+
+```bash theme={null}
+curl -L -X PATCH 'https://api.turso.tech/v1/organizations/{organizationSlug}' \
+  -H 'Authorization: Bearer TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{ "restore_enabled": false }'
+```
+
+The current state is returned as `restore_enabled` by
+[Retrieve Organization](/api-reference/organizations/retrieve).
+
+While recovery is disabled, deleted databases and groups still appear in the
+deleted listings, but restore attempts fail until an admin or owner re-enables
+recovery.
+
+## Things to know
+
+* The recovery window is **five days** from deletion. After that, the database is
+  gone for good.
+* Restores are identified by the database's **UUID**, not its name — names can be
+  reused. If a new database already exists with the old name, restore the deleted
+  one under a new name.
+* The restored database contains everything committed up to the moment of
+  deletion. To rewind further back in time, follow up with
+  [Point-in-Time Recovery](/features/point-in-time-recovery).
+* Recovery requires regional support: appearing in the deleted listing does not
+  guarantee the database can be recovered.
+* To prevent deletion in the first place, enable **delete protection** on the
+  [database](/api-reference/databases/update-configuration) or
+  [group](/api-reference/groups/update-configuration) — a protected database
+  cannot be deleted until protection is turned off.
+
+<CardGroup>
+  <Card title="Point-in-Time Recovery" icon="clock-rotate-left" href="/features/point-in-time-recovery" />
+
+  <Card title="MCP (AI agents)" icon="robot" href="/integrations/mcp" />
+</CardGroup>
 
 
 # SQLite Extensions
@@ -9617,6 +9879,9 @@ Once connected, the agent has tools to:
 * **SQL** — run read-only queries, writes, deletes, and schema changes, each as a
   separate tool so the agent uses the least-powerful one for the task.
 * **Insight** — per-database analytics (top queries by frequency and latency).
+* **Recovery** — list and restore databases and groups deleted within the last
+  five days, so an agent can undo its own mistakes (see
+  [Recover Deleted Databases](/features/recover-deleted-databases)).
 
 Read-only and destructive operations are labeled, so the agent can tell them
 apart and confirm before doing anything that changes data.
@@ -32617,7 +32882,8 @@ Turso Cloud is a fully managed database platform, designed to scale from prototy
     title="Backups and Recovery"
     href="/features/point-in-time-recovery"
   >
-    Restore your database to any point in time
+    Restore your database to any point in time, and recover deleted databases
+    for up to five days.
   </Card>
 </CardGroup>
 

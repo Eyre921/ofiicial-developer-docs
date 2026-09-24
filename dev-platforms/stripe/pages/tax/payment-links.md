@@ -58,6 +58,53 @@ curl https://api.stripe.com/v1/payment_links/{{PAYMENTLINK_ID}} \
   -d "automatic_tax[enabled]=true"
 ```
 
+## Optional: Collect customer tax IDs
+
+Configure whether business customers can provide a tax ID when they pay through your payment link.
+
+#### Dashboard
+
+1. [Create](https://dashboard.stripe.com/payment-links/create) or edit a payment link.
+2. Expand **Advanced options**.
+3. Select **Allow business customers to provide tax IDs** to let customers in supported countries optionally provide a tax ID.
+4. Select **Require tax ID collection for customers in supported countries** to require those customers to provide a tax ID before completing payment. Customers in unsupported countries can complete payment without one.
+
+See the [supported tax ID types and countries](https://docs.stripe.com/tax/checkout/tax-ids.md#supported-types).
+
+#### API
+
+Set [tax_id_collection[enabled]](https://docs.stripe.com/api/payment-link/create.md#create_payment_link-tax_id_collection-enabled) to `true` when you create or update a payment link to let customers in supported countries optionally provide a tax ID.
+
+Set [tax_id_collection[required]](https://docs.stripe.com/api/payment-link/create.md#create_payment_link-tax_id_collection-required) to `if_supported` to require those customers to provide a tax ID before completing payment. The default value is `never`. Customers in unsupported countries can complete payment without one.
+
+```curl
+curl https://api.stripe.com/v1/payment_links \
+  -u "<<YOUR_SECRET_KEY>>:" \
+  -d "line_items[0][price]={{PRICE_ID}}" \
+  -d "line_items[0][quantity]=1" \
+  -d "tax_id_collection[enabled]=true" \
+  -d "tax_id_collection[required]=if_supported"
+```
+
+You can use the same parameters when you [update a payment link](https://docs.stripe.com/api/payment-link/update.md#update_payment_link-tax_id_collection).
+
+See the [supported tax ID types and countries](https://docs.stripe.com/tax/checkout/tax-ids.md#supported-types).
+
+### Check validation status in the Dashboard 
+
+Stripe displays the verification result for a tax ID saved to a Customer:
+
+1. Open the [Customers](https://dashboard.stripe.com/customers) page.
+2. Select the customer who used the payment link.
+3. Find the tax ID in the customer’s **Details**. The status icon shows whether the ID is pending, verified, unverified, or unavailable. Hover over the tax ID to view any registered name and address returned by the government database.
+![Tax ID verification details in the Dashboard](https://b.stripecdn.com/docs-statics-srv/assets/validation-tooltip.de17a6f286a786e5643e39f43c02a42e.png)
+
+The customer details page displays the tax ID verification status and available registration information.
+
+The Dashboard displays this result only when the Payment Link saves the tax ID to an existing customer. Subscription links and links that [save payment details](https://docs.stripe.com/payment-links/customize.md#save-payment-details-for-future-use) create a new customer. A default one-time Payment Link normally uses a [guest customer](https://docs.stripe.com/payments/checkout/guest-customers.md), so its collected tax ID isn’t available on the Customers page.
+
+Learn more about [tax ID validation and verification events](https://docs.stripe.com/tax/checkout/tax-ids.md#validation).
+
 ## Optional: Update your products and prices
 
 Stripe Tax uses information stored on your products and prices to calculate tax, including tax codes and tax behavior. If you don’t explicitly configure these, Stripe Tax uses the defaults from your [Tax Settings](https://dashboard.stripe.com/settings/tax).

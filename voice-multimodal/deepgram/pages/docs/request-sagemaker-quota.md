@@ -27,7 +27,9 @@ Deepgram SageMaker deployments use the following instance types. Each maps to a 
 | `ml.g7.2xlarge`   | NVIDIA RTX PRO 4500 Blackwell | `ml.g7.2xlarge for endpoint usage`   |
 | `ml.g7e.2xlarge`  | NVIDIA RTX PRO 6000 Blackwell | `ml.g7e.2xlarge for endpoint usage`  |
 
-Quota values represent the maximum number of instances of that type you can run simultaneously across all SageMaker endpoints in a single AWS region. A quota of `0` means you cannot deploy that instance type until you request an increase.
+> **Info**
+>
+> Quota values represent the maximum number of instances of that type you can run simultaneously across all SageMaker endpoints in a single AWS region. A quota of `0` means you cannot deploy that instance type until you request an increase.
 
 ## Check your current quota
 
@@ -137,7 +139,9 @@ The quota value determines how many instances of that type you can run simultane
 * **Auto-scaling** — if you configure [auto-scaling](/docs/auto-scaling-sagemaker-streaming), set the quota high enough to accommodate the maximum instance count across all endpoints.
 * **Multi-region deployments** — quotas are per region. Request increases in every region where you plan to deploy.
 
-Do not request more instances than you plan to use. Running SageMaker endpoint instances incurs charges for as long as they remain active.
+> **Warning**
+>
+> Do not request more instances than you plan to use. Running SageMaker endpoint instances incurs charges for as long as they remain active.
 
 ## Troubleshooting
 

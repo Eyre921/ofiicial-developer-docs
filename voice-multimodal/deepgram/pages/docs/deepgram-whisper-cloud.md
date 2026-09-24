@@ -20,7 +20,9 @@ Using Deepgram's fully hosted Whisper Cloud instead of running your own version 
 
 Deepgram hosts and maintains these Whisper models; they aren’t hosted or run by Open AI. Therefore, data sent through API requests for our Whisper models will not be sent to OpenAI.
 
-Live streaming is not available with Deepgram Whisper Cloud. If you would like to transcribe live streamed audio, we recommend using our Nova-3 model. [This guide](/docs/live-streaming-audio) can help you get started.
+> **Warning**
+>
+> Live streaming is not available with Deepgram Whisper Cloud. If you would like to transcribe live streamed audio, we recommend using our Nova-3 model. [This guide](/docs/live-streaming-audio) can help you get started.
 
 ## Getting Started
 
@@ -28,11 +30,15 @@ In this guide, you’ll learn how to transcribe pre-recorded audio using Deepgra
 
 ### Create a Deepgram Account
 
-Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
+> **Info**
+>
+> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
 
 ### Create a Deepgram API Key
 
-Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
+> **Info**
+>
+> Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
 
 ### Transcribe a Remote File
 
@@ -51,7 +57,9 @@ curl \
 
 If you would like to use a Deepgram SDK to make the request, follow the steps in the [Pre-Recorded speech-to-text ](/docs/pre-recorded-audio)guide, but change the model to `whisper`.
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 ### Analyze Response
 
@@ -131,7 +139,9 @@ To enable a specific size of the Whisper model, set the model parameter to `mode
 https://api.deepgram.com/v1/listen?model=whisper-SIZE
 ```
 
-If `model=whisper` is supplied and no model size specified, the model size will default to `model=whisper-medium`.
+> **Info**
+>
+> If `model=whisper` is supplied and no model size specified, the model size will default to `model=whisper-medium`.
 
 These are the Deepgram Whisper Cloud models available:
 

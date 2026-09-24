@@ -28,7 +28,9 @@ redact_usage = true
 
 **Default behavior**: If `redact_usage` is not present, it is treated as `true` (redaction ON).
 
-Only set `redact_usage=false` in non-production environments and for the minimum time necessary for debugging.
+> **Warning**
+>
+> Only set `redact_usage=false` in non-production environments and for the minimum time necessary for debugging.
 
 ## How It Works
 
@@ -43,7 +45,9 @@ When `redact_usage=true`, your self-hosted API container automatically redacts s
 
 Deepgram also provides a fallback redaction step at the server-side usage reporting endpoint to ensure any redaction-eligible values are redacted before ingestion into usage/billing systems, providing defense-in-depth protection.
 
-This feature affects metadata/parameters recorded for observability and usage—not model behavior or audio content processing.
+> **Warning**
+>
+> This feature affects metadata/parameters recorded for observability and usage—not model behavior or audio content processing.
 
 ## Troubleshooting
 

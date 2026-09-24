@@ -34,13 +34,7 @@ Reference: https://elevenlabs.io/docs/api-reference/studio/get-snapshots
 
 Successful Response
 
-- `snapshots` (list of object, required) — List of project snapshots.
-  - `project_snapshot_id` (string, required) — The ID of the project snapshot.
-  - `project_id` (string, required) — The ID of the project.
-  - `created_at_unix` (integer, required) — The creation date of the project snapshot.
-  - `name` (string, required) — The name of the project snapshot.
-  - `audio_upload` (map from string to any, optional, nullable) — (Deprecated)
-  - `zip_upload` (map from string to any, optional, nullable) — (Deprecated)
+- `snapshots` (list of ProjectSnapshotResponseModel, required) — List of project snapshots.
 
 ## Errors
 
@@ -48,10 +42,26 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ProjectSnapshotResponseModel
+
+- `project_snapshot_id` (string, required) — The ID of the project snapshot.
+- `project_id` (string, required) — The ID of the project.
+- `created_at_unix` (integer, required) — The creation date of the project snapshot.
+- `name` (string, required) — The name of the project snapshot.
+- `audio_upload` (map from string to any, optional, nullable) — (Deprecated)
+- `zip_upload` (map from string to any, optional, nullable) — (Deprecated)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

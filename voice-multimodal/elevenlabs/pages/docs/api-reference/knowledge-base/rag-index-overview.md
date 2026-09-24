@@ -30,10 +30,7 @@ Successful Response
 
 - `total_used_bytes` (integer, required)
 - `total_max_bytes` (integer, required)
-- `models` (list of object, required)
-  - `model` (enum, required, default: e5_mistral_7b_instruct)
-    - Allowed values: `e5_mistral_7b_instruct`, `multilingual_e5_large_instruct`
-  - `used_bytes` (integer, required)
+- `models` (list of RAGIndexOverviewEmbeddingModelResponseModel, required)
 
 ## Errors
 
@@ -41,10 +38,23 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### RAGIndexOverviewEmbeddingModelResponseModel
+
+- `model` (enum, required, default: e5_mistral_7b_instruct)
+  - Allowed values: `e5_mistral_7b_instruct`, `multilingual_e5_large_instruct`
+- `used_bytes` (integer, required)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

@@ -49,35 +49,7 @@ Reference: https://elevenlabs.io/docs/api-reference/triage-tickets/list
 
 Successful Response
 
-- `agent_conversation_tickets` (list of object, required)
-  - `agentqa_ticket_id` (string, required)
-  - `workspace_id` (string, required)
-  - `owner_user_id` (string, required)
-  - `agent_id` (string, required)
-  - `needs_clustering` (boolean, required)
-  - `issue_type` (enum, required, nullable)
-    - Allowed values: `knowledge_gap`, `incorrect_information`, `documentation_gap`, `product_feedback`, `platform_bug`, `tool_issue`, `missing_tool`, `unnecessary_escalation`, `wrong_action`
-  - `labels` (list of string, required)
-  - `conversation_ids` (list of string, required)
-  - `first_seen_unix_secs` (integer, required, nullable)
-  - `last_seen_unix_secs` (integer, required, nullable)
-  - `qa_comment` (string, required, nullable)
-  - `ticket_comments` (list of object, required)
-    - `comment` (string, required)
-    - `created_at_unix_secs` (integer, required)
-    - `owner_user_id` (string, required, nullable)
-  - `turn_comments` (list of object, required)
-    - `turn_index` (integer, required)
-    - `comment` (string, required)
-    - `created_at_unix_secs` (integer, required)
-    - `owner_user_id` (string, required, nullable)
-  - `status` (enum, required)
-    - Allowed values: `open`, `in_progress`, `resolved`, `merged`
-  - `source` (enum, required)
-    - Allowed values: `qa`, `agent`, `manual`
-  - `assignee_user_id` (string, required, nullable)
-  - `created_at_unix_secs` (integer, required)
-  - `updated_at_unix_secs` (integer, required)
+- `agent_conversation_tickets` (list of AgentConversationTicketResponseModel, required)
 - `has_more` (boolean, required)
 - `next_cursor` (string, optional, nullable)
 
@@ -87,10 +59,54 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### AgentConversationTicketResponseModel
+
+- `agentqa_ticket_id` (string, required)
+- `workspace_id` (string, required)
+- `owner_user_id` (string, required)
+- `agent_id` (string, required)
+- `needs_clustering` (boolean, required)
+- `issue_type` (enum, required, nullable)
+  - Allowed values: `knowledge_gap`, `incorrect_information`, `documentation_gap`, `product_feedback`, `platform_bug`, `tool_issue`, `missing_tool`, `unnecessary_escalation`, `wrong_action`
+- `labels` (list of string, required)
+- `conversation_ids` (list of string, required)
+- `first_seen_unix_secs` (integer, required, nullable)
+- `last_seen_unix_secs` (integer, required, nullable)
+- `qa_comment` (string, required, nullable)
+- `ticket_comments` (list of TicketCommentResponseModel, required)
+- `turn_comments` (list of TurnCommentResponseModel, required)
+- `status` (enum, required)
+  - Allowed values: `open`, `in_progress`, `resolved`, `merged`
+- `source` (enum, required)
+  - Allowed values: `qa`, `agent`, `manual`
+- `assignee_user_id` (string, required, nullable)
+- `created_at_unix_secs` (integer, required)
+- `updated_at_unix_secs` (integer, required)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### TicketCommentResponseModel
+
+- `comment` (string, required)
+- `created_at_unix_secs` (integer, required)
+- `owner_user_id` (string, required, nullable)
+
+### TurnCommentResponseModel
+
+- `turn_index` (integer, required)
+- `comment` (string, required)
+- `created_at_unix_secs` (integer, required)
+- `owner_user_id` (string, required, nullable)
+
+### ValidationErrorLocItems
 
 ## Examples
 

@@ -17,9 +17,11 @@ By default, audio recordings are enabled. You can modify this setting to:
 * **Enable audio saving**: Save call audio for later review.
 * **Disable audio saving**: Omit audio recordings from your call history.
 
-Disabling audio saving enhances privacy but limits the ability to review calls. However,
-transcripts can still be viewed. To modify transcript retention settings, please refer to the
-[retention](/docs/eleven-agents/customization/privacy/retention) documentation.
+> **Info**
+>
+> Disabling audio saving enhances privacy but limits the ability to review calls. However,
+> transcripts can still be viewed. To modify transcript retention settings, please refer to the
+> [retention](/docs/eleven-agents/customization/privacy/retention) documentation.
 
 ## Modifying Audio Saving Settings
 
@@ -34,7 +36,7 @@ transcripts can still be viewed. To modify transcript retention settings, please
 Find your agent in the ElevenAgents [page](https://elevenlabs.io/app/agents/agents) and select
 the "Advanced" tab. The audio saving control is located in the "Privacy Settings" section.
 
-![Disable audio saving option](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e2f7d92f9128bace5d992e76aa500da7e1bc62d22d423841b774c1e20fcaf891/assets/images/conversational-ai/no-audio-setting.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T063926Z&X-Amz-Expires=604800&X-Amz-Signature=7f21c5cd77751f99db2854d4417156abce4e84e8ed88dc3feb652b8deed0fe3e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Disable audio saving option](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e2f7d92f9128bace5d992e76aa500da7e1bc62d22d423841b774c1e20fcaf891/assets/images/conversational-ai/no-audio-setting.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113215Z&X-Amz-Expires=604800&X-Amz-Signature=0ccd27e9acfd26b07f3da373258a3126f6412b6c5a6ee861f8040e3c6c8a50f1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Choose saving option
 
@@ -44,11 +46,11 @@ Toggle the control to enable or disable audio saving and click save to confirm y
 
 When audio saving is enabled, calls in the call history allow you to review the audio.
 
-![Call with audio saved](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/871a28d699f54774c3e2695091e9af04948e236afded7807c27ea73bc2a8f71f/assets/images/conversational-ai/audio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T063926Z&X-Amz-Expires=604800&X-Amz-Signature=515eec58e406cf0a5089e3c3f9628a272d08cbc1a9c53c46f1bd9e1f87406050&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Call with audio saved](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/871a28d699f54774c3e2695091e9af04948e236afded7807c27ea73bc2a8f71f/assets/images/conversational-ai/audio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113215Z&X-Amz-Expires=604800&X-Amz-Signature=371e904d3ac4f47ac9d04c66801cf5f84c7c406fbbc0309828d38f2283214f3d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 When audio saving is disabled, calls in the call history do not include audio.
 
-![Call without audio saved](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5dffbe46545eda166d48328b21f63ff0a6d3a0a8b05224213307da426ba6e47e/assets/images/conversational-ai/no-audio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T063926Z&X-Amz-Expires=604800&X-Amz-Signature=c550c042b9951e05a0959fa7a6b35f892dd3f2ead0a5ef432bac20b0de8f9eae&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Call without audio saved](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5dffbe46545eda166d48328b21f63ff0a6d3a0a8b05224213307da426ba6e47e/assets/images/conversational-ai/no-audio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113215Z&X-Amz-Expires=604800&X-Amz-Signature=2391c9d0b36f9878119cb8f8ab7aa946b214646d83a00ef3c1d83dd8fc12dd3a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Update via the CLI
 
@@ -105,5 +107,7 @@ await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd9
 });
 ```
 
-Disabling audio saving will prevent new call audio recordings from being stored. Existing
-recordings will remain until deleted via [retention settings](/docs/eleven-agents/customization/privacy/retention).
+> **Warning**
+>
+> Disabling audio saving will prevent new call audio recordings from being stored. Existing
+> recordings will remain until deleted via [retention settings](/docs/eleven-agents/customization/privacy/retention).

@@ -19,7 +19,7 @@ Sentry separates **what you detect** from **what you do about it**:
 
 Using both Monitors and Alerts gives you a path from signal → triageable issue → team workflow, without wiring every integration by hand for every edge case.
 
-For a concise **Issues-centric** explanation (how this shows up in your triage flow), see [Monitors and Alerts](https://docs.sentry.io/product/issues/monitors-and-alerts.md). For **hands-on setup**, see [Creating an Alert](https://docs.sentry.io/product/monitors-and-alerts/alerts.md#creating-an-alert).
+For a concise **Issues-centric** explanation (how this shows up in your triage flow), see [Monitors and Alerts](https://docs.sentry.io/product/issues/monitors-and-alerts.md). For **hands-on setup**, see [Creating an Alert](https://docs.sentry.io/product/monitors-and-alerts/alerts/create-alerts.md).
 
 ## [End-to-End Flow](https://docs.sentry.io/product/monitors-and-alerts.md#end-to-end-flow)
 

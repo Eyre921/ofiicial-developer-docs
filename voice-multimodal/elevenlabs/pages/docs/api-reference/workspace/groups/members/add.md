@@ -31,7 +31,7 @@ Reference: https://elevenlabs.io/docs/api-reference/workspace/groups/members/add
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_Add_member_to_user_group_v1_workspace_groups__group_id__members_post.
 
 - `email` (string, required) — The email of the target workspace member.
 
@@ -49,10 +49,17 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

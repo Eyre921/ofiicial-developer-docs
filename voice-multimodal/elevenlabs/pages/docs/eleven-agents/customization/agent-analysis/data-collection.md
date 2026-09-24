@@ -29,7 +29,7 @@ Data collection supports four data types to handle various information formats:
 
 In the **Analysis** tab of your agent settings, navigate to the **Data collection** section.
 
-![Setting up data collection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1dd7120a0d0236e4b225f1054f17c13956dc5ccc7de275e600eaab9e20604634/assets/images/conversational-ai/collection.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T070813Z&X-Amz-Expires=604800&X-Amz-Signature=580ef2da877e7aa9ffd11594634231ad230f928804a4c348ca70eb7ea1d00c1d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Setting up data collection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1dd7120a0d0236e4b225f1054f17c13956dc5ccc7de275e600eaab9e20604634/assets/images/conversational-ai/collection.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T111334Z&X-Amz-Expires=604800&X-Amz-Signature=0ebbc7783365ceb78ca149e803b755d70c39418c88ff3ee906a639c4ff0ed6ff&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Add data collection items
 
@@ -41,15 +41,19 @@ Configure each item with:
 * **Data type**: Select from string, boolean, integer, or number
 * **Description**: Detailed instructions on how to extract the data from the transcript
 
-The description field is passed to the LLM and should be as specific as possible about what to extract and how to format it.
+> **Info**
+>
+> The description field is passed to the LLM and should be as specific as possible about what to extract and how to format it.
 
-Data collection items are limited to 40 per agent for Trial and Enterprise plans, and 25 per agent for other plans.
+> **Note**
+>
+> Data collection items are limited to 40 per agent for Trial and Enterprise plans, and 25 per agent for other plans.
 
 #### Review extracted data
 
 Extracted data appears in your conversation history, allowing you to review what information was captured from each interaction.
 
-![Data collection results in conversation history](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/beddd4acf7a431f10b6d6ac602d4ef16604e93bc51040325e185df6517ba3021/assets/images/conversational-ai/collection_result.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T070813Z&X-Amz-Expires=604800&X-Amz-Signature=93a4a61accdfa2e015fd0c62cc1d2423bdc20257818c8fa3a4e6e82d86006994&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Data collection results in conversation history](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/beddd4acf7a431f10b6d6ac602d4ef16604e93bc51040325e185df6517ba3021/assets/images/conversational-ai/collection_result.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T111334Z&X-Amz-Expires=604800&X-Amz-Signature=7841576b2eb93e2f879737dcc4d10f4a154abc83afcad38c63babaec23cf0cc0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Best Practices
 
@@ -200,5 +204,7 @@ Extract required disclosures, consents, and regulatory information for audit tra
 * Monitor extraction accuracy vs. speed requirements
 * Optimize prompts for efficiency when possible
 
-Extracted data is available through [Post-call Webhooks](/docs/eleven-agents/workflows/post-call-webhooks) for integration with CRM systems,
-databases, and analytics platforms.
+> **Info**
+>
+> Extracted data is available through [Post-call Webhooks](/docs/eleven-agents/workflows/post-call-webhooks) for integration with CRM systems,
+> databases, and analytics platforms.

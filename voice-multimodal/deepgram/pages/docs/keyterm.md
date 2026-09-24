@@ -16,22 +16,24 @@ Pre-recorded  Streaming:Nova Streaming:Flux
 
 Instantly increase accuracy and recognition of up to 100 important terminology, product and company names, industry jargon, phrases and more.
 
-Keyterm Prompting is available for both monolingual and multilingual transcription using the [Nova-3 Models](/docs/models-languages-overview#nova-3), as well as [Flux](/docs/models-languages-overview#flux). To boost recognition of keywords using another Deepgram model (such as Nova-2), use the [Keywords](/docs/keywords) feature.
+> **Info**
+>
+> Keyterm Prompting is available for both monolingual and multilingual transcription using the [Nova-3 Models](/docs/models-languages-overview#nova-3), as well as [Flux](/docs/models-languages-overview#flux). To boost recognition of keywords using another Deepgram model (such as Nova-2), use the [Keywords](/docs/keywords) feature.
 
-#### Migrating from Keywords? The syntax is different
-
-`keyterm` does **not** use the weight/intensifier syntax from the legacy [Keywords](/docs/keywords) feature. `keyterm` accepts plain terms only—it does not support weights or intensifiers. The `keywords=KEYWORD:INTENSIFIER` pattern is valid for `keywords`, not for `keyterm`.
-
-|                                                  | Example                        |
-| ------------------------------------------------ | ------------------------------ |
-| **Do** — repeat the parameter for separate terms | `?keyterm=term1&keyterm=term2` |
-| **Do** — encode a multi-word phrase with `%20`   | `?keyterm=customer%20service`  |
-| **Do** — encode a multi-word phrase with `+`     | `?keyterm=customer+service`    |
-| **Don't** — add a weight or intensifier          | `?keyterm=term:0.15`           |
-| **Don't** — separate terms with a comma          | `?keyterm=term1,term2`         |
-| **Don't** — separate terms with a semicolon      | `?keyterm=term1;term2`         |
-
-To pass multiple separate keyterms, repeat the `keyterm` parameter. To boost one multi-word phrase, join the words with `%20` or `+`. Do not separate keyterms with commas, semicolons, or line breaks. None of the **Don't** forms return an error—the API accepts the value and treats it as a single literal keyterm, so it silently boosts nothing instead of failing.
+> **Migrating from Keywords? The syntax is different**
+>
+> `keyterm` does **not** use the weight/intensifier syntax from the legacy [Keywords](/docs/keywords) feature. `keyterm` accepts plain terms only—it does not support weights or intensifiers. The `keywords=KEYWORD:INTENSIFIER` pattern is valid for `keywords`, not for `keyterm`.
+>
+> |                                                  | Example                        |
+> | ------------------------------------------------ | ------------------------------ |
+> | **Do** — repeat the parameter for separate terms | `?keyterm=term1&keyterm=term2` |
+> | **Do** — encode a multi-word phrase with `%20`   | `?keyterm=customer%20service`  |
+> | **Do** — encode a multi-word phrase with `+`     | `?keyterm=customer+service`    |
+> | **Don't** — add a weight or intensifier          | `?keyterm=term:0.15`           |
+> | **Don't** — separate terms with a comma          | `?keyterm=term1,term2`         |
+> | **Don't** — separate terms with a semicolon      | `?keyterm=term1;term2`         |
+>
+> To pass multiple separate keyterms, repeat the `keyterm` parameter. To boost one multi-word phrase, join the words with `%20` or `+`. Do not separate keyterms with commas, semicolons, or line breaks. None of the **Don't** forms return an error—the API accepts the value and treats it as a single literal keyterm, so it silently boosts nothing instead of failing.
 
 ## Enable Feature
 
@@ -52,13 +54,17 @@ curl \
   --url 'https://api.deepgram.com/v1/listen?model=nova-3&keyterm=KEYTERM'
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 ## Keyterm Examples & Best Practices
 
 The following examples demonstrate how keyterms can significantly improve recognition accuracy and confidence scores for industry-specific terminology. These examples show typical improvements you might see across Drive-Thru, IVR, call center, and medical transcription use cases.
 
-The confidence scores below are illustrative examples showing typical improvement patterns. Actual results may vary based on audio quality, accent, and context.
+> **Note**
+>
+> The confidence scores below are illustrative examples showing typical improvement patterns. Actual results may vary based on audio quality, accent, and context.
 
 | Source                         | Confidence Score before                               | Confidence Score after                               |
 | ------------------------------ | ----------------------------------------------------- | ---------------------------------------------------- |
@@ -165,6 +171,8 @@ Keyterm limit exceeded. The maximum number of tokens across all keyterms is 500.
 
 ## Dynamic Keyterm Updates (Flux Only)
 
-When using [Flux](/docs/flux/quickstart), you can update keyterms mid-stream using the [Configure control message](/docs/flux/configure). This allows you to adapt keyterm lists as conversation context changes without reconnecting.
-
-For example, update keyterms when transitioning from general conversation to product-specific discussions, or clear keyterms when they're no longer relevant.
+> **Info**
+>
+> When using [Flux](/docs/flux/quickstart), you can update keyterms mid-stream using the [Configure control message](/docs/flux/configure). This allows you to adapt keyterm lists as conversation context changes without reconnecting.
+>
+> For example, update keyterms when transitioning from general conversation to product-specific discussions, or clear keyterms when they're no longer relevant.

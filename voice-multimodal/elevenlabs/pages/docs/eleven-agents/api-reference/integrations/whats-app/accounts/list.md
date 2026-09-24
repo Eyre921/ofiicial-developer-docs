@@ -34,20 +34,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/w
 
 Successful Response
 
-- `items` (list of object, required)
-  - `business_account_id` (string, required)
-  - `phone_number_id` (string, required)
-  - `business_account_name` (string, required)
-  - `phone_number_name` (string, required)
-  - `phone_number` (string, required)
-  - `account_type` (enum, optional, default: cloud_api) — Which Embedded Signup flow produced this account.
-    - Allowed values: `cloud_api`, `coexistence`
-  - `assigned_agent_id` (string, optional)
-  - `enable_messaging` (boolean, optional, default: true)
-  - `enable_audio_message_response` (boolean, optional, default: true)
-  - `enable_typing_indicator` (boolean, optional, default: true)
-  - `assigned_agent_name` (string, optional)
-  - `is_token_expired` (boolean, optional, default: false)
+- `items` (list of GetWhatsAppAccountResponse, required)
 
 ## Errors
 
@@ -55,10 +42,33 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### GetWhatsAppAccountResponse
+
+- `business_account_id` (string, required)
+- `phone_number_id` (string, required)
+- `business_account_name` (string, required)
+- `phone_number_name` (string, required)
+- `phone_number` (string, required)
+- `account_type` (enum, optional, default: cloud_api) — Which Embedded Signup flow produced this account.
+  - Allowed values: `cloud_api`, `coexistence`
+- `assigned_agent_id` (string, optional)
+- `enable_messaging` (boolean, optional, default: true)
+- `enable_audio_message_response` (boolean, optional, default: true)
+- `enable_typing_indicator` (boolean, optional, default: true)
+- `assigned_agent_name` (string, optional)
+- `is_token_expired` (boolean, optional, default: false)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItem, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItem
 
 ## Examples
 

@@ -32,7 +32,7 @@ Sentry also supports a subset of the specification for System for Cross-Domain I
 
 ## [2. Set Up Teams](https://docs.sentry.io/organization/getting-started.md#2-set-up-teams)
 
-Now that SSO is configured and members have created their accounts, add them to their Sentry Teams. Teams are associated with your [Sentry projects](https://docs.sentry.io/organization/getting-started.md#4-create-projects), and their members receive issue notifications in addition to becoming issue assignees. We recommend creating Sentry teams that align with your internal team structure (for example, *#Frontend*, *#Ops*, *#SDK*, and so on). To add a new team, go to **Settings > Teams** and click "Create Team".
+Now that SSO is configured and members have created their accounts, add them to their Sentry Teams. Teams are associated with your [Sentry projects](https://docs.sentry.io/organization/getting-started.md#4-create-projects), and their members receive issue notifications in addition to becoming issue assignees. We recommend creating Sentry teams that align with your internal team structure (for example, *#Frontend*, *#Ops*, *#SDK*, and so on). To add a new team, go to [**Settings > Teams**](https://sentry.io/orgredirect/organizations/:orgslug/settings/teams/) and click "Create Team".
 
 Click on a team name to open the team settings and manage its associated members and projects. Under the "Members" tab, add existing members to your team by clicking on "Add Member > \[Member Name]".
 
@@ -42,7 +42,7 @@ Learn more about different user roles in [Organization Management](https://docs.
 
 ## [3. Configure Integrations](https://docs.sentry.io/organization/getting-started.md#3-configure-integrations)
 
-Sentry integrates into your existing workflows by providing out-of-the-box integrations with widely-used apps and services. To enable and configure integrations, go to **Settings > Integrations**. There are several types of integrations available, but we recommend that you immediately set up integrations for:
+Sentry integrates into your existing workflows by providing out-of-the-box integrations with widely-used apps and services. To enable and configure integrations, go to [**Settings > Integrations**](https://sentry.io/orgredirect/organizations/:orgslug/settings/integrations/). There are several types of integrations available, but we recommend that you immediately set up integrations for:
 
 * [Alerting](https://docs.sentry.io/organization/getting-started.md#31-alert-notifications)
 * [Source code management](https://docs.sentry.io/organization/getting-started.md#32-source-code-management)
@@ -87,7 +87,7 @@ Automatic issue management is available only if your organization is on a Busine
 
 ## [4. Create Projects](https://docs.sentry.io/organization/getting-started.md#4-create-projects)
 
-To start monitoring errors in your app with Sentry, you'll need to initialize the SDK with a DSN key. To obtain a key, add a new Sentry project by going to **Projects** and clicking "Create Project". Give the project a name and assign the responsible [team (or teams)](https://docs.sentry.io/organization/getting-started.md#2-set-up-teams). Then, retrieve the key in your project's [Client Keys (DSN)](https://sentry.io/orgredirect/organizations/:orgslug/settings/projects/:projectId/keys/) settings.
+To start monitoring errors in your app with Sentry, you'll need to initialize the SDK with a DSN key. To obtain a key, add a new Sentry project by going to [**Projects**](https://sentry.io/orgredirect/organizations/:orgslug/settings/projects/) and clicking "Create Project". Give the project a name and assign the responsible [team (or teams)](https://docs.sentry.io/organization/getting-started.md#2-set-up-teams). Then, retrieve the key in your project's [Client Keys (DSN)](https://sentry.io/orgredirect/organizations/:orgslug/settings/projects/:projectId/keys/) settings.
 
 Once the SDK is initialized, any error that occurs in your code, wherever it may be deployed and running, will be associated with that specific project.
 

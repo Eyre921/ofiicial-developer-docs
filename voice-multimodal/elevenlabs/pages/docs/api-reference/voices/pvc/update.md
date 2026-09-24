@@ -31,7 +31,7 @@ Reference: https://elevenlabs.io/docs/api-reference/voices/pvc/update
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_Edit_PVC_voice_v1_voices_pvc__voice_id__post.
 
 - `name` (string, optional) — The name that identifies this voice. This will be displayed in the dropdown of the website.
 - `language` (string, optional) — Language used in the samples.
@@ -52,10 +52,17 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

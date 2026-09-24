@@ -14,19 +14,25 @@ Flux Multilingual (`flux-general-multi`) is a single model supporting 10 languag
 
 Flux Multilingual uses the same production endpoint and API key you already use for Flux. Just set `model=flux-general-multi` — no new credentials or endpoints required. Pricing is the same as `flux-general-en`.
 
-An EU endpoint is also available: `wss://api.eu.deepgram.com/v2/listen?model=flux-general-multi`
+> **Info**
+>
+> An EU endpoint is also available: `wss://api.eu.deepgram.com/v2/listen?model=flux-general-multi`
 
-Flux Multilingual is available on the hosted API, on self-hosted deployments, and in the latest Deepgram SDKs:
+> **Info**
+>
+> Flux Multilingual is available on the hosted API, on self-hosted deployments, and in the latest Deepgram SDKs:
+>
+> * Python `deepgram-sdk` `v7.0.0+`
+> * JavaScript `@deepgram/sdk` `v5.1.0+`
+> * .NET `Deepgram` `v6.9.0+`
+> * Go `github.com/deepgram/deepgram-go-sdk/v3` `v3.6.0+`
+> * Rust `deepgram` `v0.10.0+`
+> * Java `deepgram-java-sdk` `v0.7.0+`
 
-* Python `deepgram-sdk` `v7.0.0+`
-* JavaScript `@deepgram/sdk` `v5.1.0+`
-* .NET `Deepgram` `v6.9.0+`
-* Go `github.com/deepgram/deepgram-go-sdk/v3` `v3.6.0+`
-* Rust `deepgram` `v0.10.0+`
-* Java `deepgram-java-sdk` `v0.7.0+`
-
-Use `language_hint` values when you connect, and use `language_hints` in `Configure` messages to update them
-mid-stream. See the representative SDK examples below.
+> **Info**
+>
+> Use `language_hint` values when you connect, and use `language_hints` in `Configure` messages to update them
+> mid-stream. See the representative SDK examples below.
 
 ## Supported Languages
 
@@ -43,7 +49,9 @@ mid-stream. See the representative SDK examples below.
 | Italian    | `it` |
 | Dutch      | `nl` |
 
-Locale-level subtags (e.g., `en-GB`, `pt-BR`) are accepted. If no exact match exists, Flux treats them as the base language code.
+> **Info**
+>
+> Locale-level subtags (e.g., `en-GB`, `pt-BR`) are accepted. If no exact match exists, Flux treats them as the base language code.
 
 ## The `language_hint` Parameter
 
@@ -57,9 +65,13 @@ Pass one or more `language_hint` values to bias the model toward specific langua
 | **Multiple hints** | Biases toward a set of languages — ideal for multilingual support centers    |
 | **No hint**        | Model auto-detects — use when the language is completely unknown             |
 
-`language_hint` is only supported on `flux-general-multi`. Sending it to any other model (including `flux-general-en`) returns a `400` error.
+> **Warning**
+>
+> `language_hint` is only supported on `flux-general-multi`. Sending it to any other model (including `flux-general-en`) returns a `400` error.
 
-Existing Flux concurrency limits now apply across both `flux-general-en` and `flux-general-multi` (shared pool). See [API Rate Limits](/reference/api-rate-limits) for details.
+> **Info**
+>
+> Existing Flux concurrency limits now apply across both `flux-general-en` and `flux-general-multi` (shared pool). See [API Rate Limits](/reference/api-rate-limits) for details.
 
 ## Usage Scenarios
 
@@ -326,7 +338,9 @@ If a later turn returns a different primary language, update the hint:
 }
 ```
 
-Locking in a single language after detection delivers the best accuracy — comparable to using a dedicated monolingual model. For calls where code-switching is expected throughout, keep multiple hints active instead of locking to one language.
+> **Info**
+>
+> Locking in a single language after detection delivers the best accuracy — comparable to using a dedicated monolingual model. For calls where code-switching is expected throughout, keep multiple hints active instead of locking to one language.
 
 ## Error Handling
 

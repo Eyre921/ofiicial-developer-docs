@@ -16,7 +16,9 @@ Pre-recorded  Streaming:Nova
 
 Deepgram’s Language Detection feature identifies the dominant language spoken in submitted audio, transcribes the audio in the identified language, and returns the detected language code in the JSON response.
 
-If you need to process multiple languages for real-time streaming, we recommend using Deepgram's [Nova-2](./models-languages-overview#nova-2) or [Nova-3](./models-languages-overview#nova-3) multilingual models.
+> **Info**
+>
+> If you need to process multiple languages for real-time streaming, we recommend using Deepgram's [Nova-2](./models-languages-overview#nova-2) or [Nova-3](./models-languages-overview#nova-3) multilingual models.
 
 If you are submitting multichannel audio, Language Detection identifies one language per channel. Language Detection is supported for the following languages:
 
@@ -75,7 +77,9 @@ curl \
   --url 'https://api.deepgram.com/v1/listen?model=nova-3-general&detect_language=true'
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
 
 ## Analyze Response
 
@@ -139,7 +143,9 @@ For example, `detect_language=en&detect_language=es` will choose either English 
 
 ### How to use `language_confidence`
 
-`language_confidence` is not supported when using Whisper models.
+> **Warning**
+>
+> `language_confidence` is not supported when using Whisper models.
 
 Deepgram outputs a `language_confidence` score that ranges between 0 and 1 with higher values indicating more confidence in the selected language.
 

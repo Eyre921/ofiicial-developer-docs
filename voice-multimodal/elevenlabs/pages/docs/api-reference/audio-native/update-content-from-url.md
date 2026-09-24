@@ -27,7 +27,7 @@ Reference: https://elevenlabs.io/docs/api-reference/audio-native/update-content-
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_Update_audio_native_content_from_URL_v1_audio_native_content_post.
 
 - `url` (string, required) — URL of the page to extract content from.
 - `author` (string, optional, nullable) — Author used in the player and inserted at the start of the uploaded article. If not provided, the default author set in the Player settings is used.
@@ -50,10 +50,17 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

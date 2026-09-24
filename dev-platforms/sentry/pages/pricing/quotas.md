@@ -16,7 +16,7 @@ Data and quotas are interconnected in Sentry. When you [subscribe to Sentry](htt
 
 To see which projects are using up your quota, you can review the "Usage" tab of **Stats**. This page can be viewed by any member of your organization. In addition, you can come back to this page to check if the changes you've made are having the desired effect:
 
-You can also download a project breakdown report by clicking the "View all usage" button in **Settings > Subscription** (only accessible to Owner and Billing members of your Sentry organization).
+You can also download a project breakdown report by clicking the "View all usage" button in [**Settings > Subscription**](https://sentry.io/orgredirect/organizations/:orgslug/settings/billing/overview/) (only accessible to Owner and Billing members of your Sentry organization).
 
 Sentry's flexibility means you can exercise fine-grained control over which events and attachments count toward your quota. This page provides you with high-level information about strategies for managing your quota, but you can get more detailed information in:
 
@@ -58,7 +58,7 @@ This list is ordered from easiest or least time-consuming, to most challenging o
 
 Spike Protection protects users from spiking event volume. Typically, spikes are caused by anomalies and have the potential to deplete your available event volume rapidly. Your baseline consumption is used to compute a threshold and spike protection is triggered if event volume exceeds this threshold. When spike protection is triggered, events start getting dropped, ensuring that you don't get charged for the excess volume.
 
-Spike Protection can be enabled on a per-project basis for your organization by any team member with either **Billing or Owner-level permissions**. To select which project to set it up for, go to **Settings > Spike Protection**. You'll be able to toggle it on for individual projects or click “Enable All” to set it up for all your projects at once. Learn more about how spike protection works and how to manage spikes in [Spike Protection](https://docs.sentry.io/pricing/quotas/spike-protection.md).
+Spike Protection can be enabled on a per-project basis for your organization by any team member with either **Billing or Owner-level permissions**. To select which project to set it up for, go to [**Settings > Spike Protection**](https://sentry.io/orgredirect/organizations/:orgslug/settings/spike-protection/). You'll be able to toggle it on for individual projects or click “Enable All” to set it up for all your projects at once. Learn more about how spike protection works and how to manage spikes in [Spike Protection](https://docs.sentry.io/pricing/quotas/spike-protection.md).
 
 ### [Adjusting Your Quota](https://docs.sentry.io/pricing/quotas.md#adjusting-your-quota)
 
@@ -66,7 +66,7 @@ Events and attachments that exceed your quota will not be accepted, so you may w
 
 ### [Rate Limits](https://docs.sentry.io/pricing/quotas.md#rate-limits)
 
-You can add limits for error events on a per-project basis in **\[Project] > Settings > SDK Setup > Client Keys (DSN)**. If the event rate limit for a project has been exceeded, and your subscription allows, the event won't be counted. You can also rate limit attachments on an organization level in **Settings > Security & Privacy**. Learn more in [Manage Your Error Quota](https://docs.sentry.io/pricing/quotas/manage-event-stream-guide.md#rate-limiting) and [Manage Your Attachments Quota](https://docs.sentry.io/pricing/quotas/manage-attachments-quota.md#rate-limiting).
+You can add limits for error events on a per-project basis in **\[Project] > [Settings > SDK Setup > Client Keys (DSN)](https://sentry.io/orgredirect/organizations/:orgslug/settings/projects/:projectId/keys/)**. If the event rate limit for a project has been exceeded, and your subscription allows, the event won't be counted. You can also rate limit attachments on an organization level in [**Settings > Security & Privacy**](https://sentry.io/orgredirect/organizations/:orgslug/settings/security-and-privacy/). Learn more in [Manage Your Error Quota](https://docs.sentry.io/pricing/quotas/manage-event-stream-guide.md#rate-limiting) and [Manage Your Attachments Quota](https://docs.sentry.io/pricing/quotas/manage-attachments-quota.md#rate-limiting).
 
 ### [Event Repetition](https://docs.sentry.io/pricing/quotas.md#event-repetition)
 
@@ -74,7 +74,7 @@ In some cases, repeated events can count against your quota, so it's important t
 
 ### [Inbound Filters](https://docs.sentry.io/pricing/quotas.md#inbound-filters)
 
-If an inbound filter is applied for a type of error, transaction/span, attachment, log, or application metric, and your subscription allows, it won't be counted. You can manage these in **\[Project] > Settings > Inbound Filters**. Learn more in [Manage Your Error Quota](https://docs.sentry.io/pricing/quotas/manage-event-stream-guide.md#inbound-data-filters), [Manage Your Span Quota](https://docs.sentry.io/pricing/quotas/manage-transaction-quota.md#inbound-filters), [Manage your Replay Quota](https://docs.sentry.io/pricing/quotas/manage-replay-quota.md), [Manage Your Attachments Quota](https://docs.sentry.io/pricing/quotas/manage-attachments-quota.md#inbound-data-filters), [Manage Your Logs Quota](https://docs.sentry.io/pricing/quotas/manage-logs-quota.md#logs-filtering), and [Manage Your Application Metrics Quota](https://docs.sentry.io/pricing/quotas/manage-application-metrics-quota.md#application-metrics-filtering).
+If an inbound filter is applied for a type of error, transaction/span, attachment, log, or application metric, and your subscription allows, it won't be counted. You can manage these in **\[Project] > [Settings > Inbound Filters](https://sentry.io/orgredirect/organizations/:orgslug/settings/projects/:projectId/filters/data-filters/)**. Learn more in [Manage Your Error Quota](https://docs.sentry.io/pricing/quotas/manage-event-stream-guide.md#inbound-data-filters), [Manage Your Span Quota](https://docs.sentry.io/pricing/quotas/manage-transaction-quota.md#inbound-filters), [Manage your Replay Quota](https://docs.sentry.io/pricing/quotas/manage-replay-quota.md), [Manage Your Attachments Quota](https://docs.sentry.io/pricing/quotas/manage-attachments-quota.md#inbound-data-filters), [Manage Your Logs Quota](https://docs.sentry.io/pricing/quotas/manage-logs-quota.md#logs-filtering), and [Manage Your Application Metrics Quota](https://docs.sentry.io/pricing/quotas/manage-application-metrics-quota.md#application-metrics-filtering).
 
 ### [SDK Sample Rate](https://docs.sentry.io/pricing/quotas.md#sdk-sample-rate)
 

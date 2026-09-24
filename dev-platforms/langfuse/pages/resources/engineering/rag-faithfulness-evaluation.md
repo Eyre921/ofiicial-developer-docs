@@ -256,6 +256,8 @@ Make the individual judge decisions binary and let the numeric score emerge from
 
 No. Faithfulness is a metric, not a library feature: any LLM judge with a claim-extraction prompt implements it, as the experiment code on this page does with the Langfuse SDK alone. Ragas provides a maintained implementation of that judge along with other RAG metrics, and its scores can be pushed into Langfuse through the integration. Choose based on where you want the judge to live: in your own prompt under version control, or in a library you import.
 
+[Ask another question](/docs/ask-ai)
+
 <!-- agent-instructions -->
 
 ---

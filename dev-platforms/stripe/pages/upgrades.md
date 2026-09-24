@@ -45,11 +45,15 @@ See the [API version used by recent requests](https://docs.stripe.com/workbench/
 
 When performing an API upgrade, make sure that you specify the API version that you’re integrating against in your code instead of relying on your account’s default API version. To test a newer version for API calls, set the `Stripe-Version` header (in live or testing environments). Learn how to manage versioning in our [server-side SDKs](https://docs.stripe.com/sdks.md#server-side-libraries).
 
-### Upgrade and test your webhooks
+### Upgrade and test your event destinations 
 
 > [Thin events](https://docs.stripe.com/event-destinations.md#thin-events) for API v1 resources are available in private preview. You can use them to streamline integration upgrades without changing your webhook configuration. Previously, thin events only supported API v2 resources. [Learn more and request access](https://docs.google.com/forms/d/e/1FAIpQLSeEkqzB02afvlklMkqwA6wsBH90eW8gxmc-hBOvqe2N6TRujQ/viewform?usp=dialog).
 
-Read our guide on [how to handle webhook versioning](https://docs.stripe.com/webhooks/versioning.md).
+Review each event destination that receives snapshot events, including webhook endpoints and cloud destinations for Amazon EventBridge and Azure Event Grid. For snapshot events, the destination’s [snapshot_api_version](https://docs.stripe.com/api/v2/core/event-destinations/object.md#v2_event_destination_object-snapshot_api_version) property controls the API version used to render the event payload. This setting is independent of the API version used by your server-side SDK. Thin event payloads are unversioned.
+
+You can set `snapshot_api_version` only when you create an event destination. To use a different API version, create and test a destination configured with that version before deleting the existing destination. If both destinations are active during the migration, your event handler must be idempotent because Stripe delivers subscribed events to both destinations.
+
+For webhook endpoints, [verify incoming webhook signatures](https://docs.stripe.com/webhooks.md#verify-events) and allow traffic from Stripe [public IP addresses](https://docs.stripe.com/ips.md). Read our guide on [how to handle webhook versioning](https://docs.stripe.com/webhooks/versioning.md).
 
 ### Perform the upgrade
 

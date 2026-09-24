@@ -16,7 +16,9 @@ While some cloud providers will automatically install NVIDIA drivers for use wit
 
 We will also step through installing a containerization platform. We highly recommend Docker, but you may also use Podman if you are using Red Hat Enterprise Linux (RHEL) version 8 or higher, or another similar distribution that does not ship or support Docker.
 
-Other pages in Deepgram's documentation may exclusively list example commands using `docker`. If you are using a different containerization platform, such as `podman`, you may need to adjust the commands accordingly.
+> **Info**
+>
+> Other pages in Deepgram's documentation may exclusively list example commands using `docker`. If you are using a different containerization platform, such as `podman`, you may need to adjust the commands accordingly.
 
 ## Prerequisites
 
@@ -123,40 +125,42 @@ sudo dnf -y install kernel-devel kernel-headers
 
 ### Download and install the official drivers
 
-If you are using Google Cloud Platform and your VM instance has Secure Boot enabled, see the [GCP documentation](https://cloud.google.com/compute/docs/gpus/install-drivers-gpu#secure-boot) for details on how to sign the NVIDIA kernel modules.
+> **Info**
+>
+> If you are using Google Cloud Platform and your VM instance has Secure Boot enabled, see the [GCP documentation](https://cloud.google.com/compute/docs/gpus/install-drivers-gpu#secure-boot) for details on how to sign the NVIDIA kernel modules.
+>
+> If you are using Azure and your Ubuntu VM instance has [Trusted Launch](https://learn.microsoft.com/en-us/azure/virtual-machines/trusted-launch) enabled, which also enables Secure Boot, see the [Azure documentation](https://learn.microsoft.com/en-us/azure/virtual-machines/linux/n-series-driver-setup#ubuntu) for how to add a Machine Owner Key that will sign a key for the driver installation. Otherwise, during VM creation, you may opt for Standard security instead of Trusted Launch, in order to install the drivers through our standard method as documented on this page.
+>
+> If you are using Oracle Cloud Infrastructure and you are using a [Shielded instance](https://docs.oracle.com/en-us/iaas/Content/Compute/References/shielded-instances.htm), see the [Oracle documentation](https://docs.oracle.com/en/operating-systems/oracle-linux/9/secure-boot/sboot-SigningKernelModulesforUseWithSecureBoot.html) for details on how to sign the NVIDIA kernel modules.
 
-If you are using Azure and your Ubuntu VM instance has [Trusted Launch](https://learn.microsoft.com/en-us/azure/virtual-machines/trusted-launch) enabled, which also enables Secure Boot, see the [Azure documentation](https://learn.microsoft.com/en-us/azure/virtual-machines/linux/n-series-driver-setup#ubuntu) for how to add a Machine Owner Key that will sign a key for the driver installation. Otherwise, during VM creation, you may opt for Standard security instead of Trusted Launch, in order to install the drivers through our standard method as documented on this page.
-
-If you are using Oracle Cloud Infrastructure and you are using a [Shielded instance](https://docs.oracle.com/en-us/iaas/Content/Compute/References/shielded-instances.htm), see the [Oracle documentation](https://docs.oracle.com/en/operating-systems/oracle-linux/9/secure-boot/sboot-SigningKernelModulesforUseWithSecureBoot.html) for details on how to sign the NVIDIA kernel modules.
-
-#### Deepgram requires the open kernel modules from the >=580 driver branch
-
-Deepgram's Engine image is built against CUDA 13, whose official NVIDIA support begins with the `580` driver branch (see NVIDIA's [CUDA Compatibility](https://docs.nvidia.com/deploy/cuda-compatibility/minor-version-compatibility.html) documentation), so **driver `>=580` is the minimum for every supported GPU** — this increased from `570.172.08` in the September 2026 release. You must install the **open** kernel modules rather than the proprietary build.
-
-On Blackwell-generation GPUs this is especially consequential: the proprietary `580` build does not include Blackwell support, and the GPU will not be visible to the system at all. NVIDIA states that "NVIDIA Grace Hopper and NVIDIA Blackwell require the open-source GPU kernel modules, while proprietary drivers are unsupported on these platforms" — see the [NVIDIA Driver Installation Guide](https://docs.nvidia.com/datacenter/tesla/driver-installation-guide/kernel-modules.html) and [NVIDIA Transitions Fully Towards Open-Source GPU Kernel Modules](https://developer.nvidia.com/blog/nvidia-transitions-fully-towards-open-source-gpu-kernel-modules/).
-
-The `.run` installer selects the kernel module type with `--kernel-module-type` (short form `-M`). Pass `-M=open` explicitly rather than relying on the installer's default:
-
-```bash
-sudo ./{DOWNLOADED_FILE_NAME} --no-drm --silent -M=open
-```
-
-Verify that the open kernel module is the one loaded — the version string reports `NVIDIA UNIX Open Kernel Module`, and the module license is `Dual MIT/GPL`:
-
-```bash
-cat /proc/driver/nvidia/version
-modinfo nvidia | grep -E '^version|^license'
-```
-
-If a Blackwell GPU is missing after installation, check whether the proprietary module was installed. `nvidia-smi` reports `No devices were found` — which has other causes too, so confirm against the kernel log:
-
-```bash
-dmesg | grep -i nvidia | tail -30
-```
-
-Look for a message similar to `NVRM: The NVIDIA GPU <address> (PCI ID: <id>) installed in this system requires use of the NVIDIA open kernel modules.` Reinstall with `-M=open` to recover.
-
-GPUs from the Turing, Ampere, Ada Lovelace, Hopper, and Blackwell generations all support the open kernel modules. Maxwell, Pascal, and Volta GPUs are incompatible with the open modules — and because they also cannot meet the CUDA 13 driver requirement, they are not supported for Deepgram self-hosted deployments.
+> **Deepgram requires the open kernel modules from the >=580 driver branch**
+>
+> Deepgram's Engine image is built against CUDA 13, whose official NVIDIA support begins with the `580` driver branch (see NVIDIA's [CUDA Compatibility](https://docs.nvidia.com/deploy/cuda-compatibility/minor-version-compatibility.html) documentation), so **driver `>=580` is the minimum for every supported GPU** — this increased from `570.172.08` in the September 2026 release. You must install the **open** kernel modules rather than the proprietary build.
+>
+> On Blackwell-generation GPUs this is especially consequential: the proprietary `580` build does not include Blackwell support, and the GPU will not be visible to the system at all. NVIDIA states that "NVIDIA Grace Hopper and NVIDIA Blackwell require the open-source GPU kernel modules, while proprietary drivers are unsupported on these platforms" — see the [NVIDIA Driver Installation Guide](https://docs.nvidia.com/datacenter/tesla/driver-installation-guide/kernel-modules.html) and [NVIDIA Transitions Fully Towards Open-Source GPU Kernel Modules](https://developer.nvidia.com/blog/nvidia-transitions-fully-towards-open-source-gpu-kernel-modules/).
+>
+> The `.run` installer selects the kernel module type with `--kernel-module-type` (short form `-M`). Pass `-M=open` explicitly rather than relying on the installer's default:
+>
+> ```bash
+> sudo ./{DOWNLOADED_FILE_NAME} --no-drm --silent -M=open
+> ```
+>
+> Verify that the open kernel module is the one loaded — the version string reports `NVIDIA UNIX Open Kernel Module`, and the module license is `Dual MIT/GPL`:
+>
+> ```bash
+> cat /proc/driver/nvidia/version
+> modinfo nvidia | grep -E '^version|^license'
+> ```
+>
+> If a Blackwell GPU is missing after installation, check whether the proprietary module was installed. `nvidia-smi` reports `No devices were found` — which has other causes too, so confirm against the kernel log:
+>
+> ```bash
+> dmesg | grep -i nvidia | tail -30
+> ```
+>
+> Look for a message similar to `NVRM: The NVIDIA GPU <address> (PCI ID: <id>) installed in this system requires use of the NVIDIA open kernel modules.` Reinstall with `-M=open` to recover.
+>
+> GPUs from the Turing, Ampere, Ada Lovelace, Hopper, and Blackwell generations all support the open kernel modules. Maxwell, Pascal, and Volta GPUs are incompatible with the open modules — and because they also cannot meet the CUDA 13 driver requirement, they are not supported for Deepgram self-hosted deployments.
 
 1. We are going to identify the latest compatible driver for the GPU you are using and retrieve its download URL by going to the [NVIDIA Official Drivers](https://www.nvidia.com/download/index.aspx).
 
@@ -168,7 +172,9 @@ GPUs from the Turing, Ampere, Ada Lovelace, Hopper, and Blackwell generations al
 
 4. Select your operating system. For most users, like those on Ubuntu, this will be `Linux 64-bit`. If you are on RHEL or a compatible distribution like Oracle Linux, select the appropriate RHEL version instead.
 
-   For Ubuntu, make sure to select `Linux 64-bit`, which will eventually deliver a `.run` file. Do not select an `Ubuntu` option for the operating system, as this will deliver a `.deb` file that frequently fails to properly install the drivers.
+   > **Warning**
+   >
+   > For Ubuntu, make sure to select `Linux 64-bit`, which will eventually deliver a `.run` file. Do not select an `Ubuntu` option for the operating system, as this will deliver a `.deb` file that frequently fails to properly install the drivers.
 
 5. Finally, choose the Download Type (`Production Branch`), and choose a CUDA toolkit with a version `13.x`. Deepgram's Engine image is built against CUDA 13, and a CUDA 12.x toolkit resolves to the `570` driver branch or older, which is below the minimum.
 
@@ -184,7 +190,9 @@ GPUs from the Turing, Ampere, Ada Lovelace, Hopper, and Blackwell generations al
    wget LINK_TO_LATEST_NVIDIA_GPU_DRIVER
    ```
 
-   Be sure to replace the `LINK_TO_LATEST_NVIDIA_GPU_DRIVER` placeholder value with the URL to the latest driver for the GPU you are using.
+   > **Info**
+   >
+   > Be sure to replace the `LINK_TO_LATEST_NVIDIA_GPU_DRIVER` placeholder value with the URL to the latest driver for the GPU you are using.
 
 9. Install the drivers:
 
@@ -209,13 +217,15 @@ GPUs from the Turing, Ampere, Ada Lovelace, Hopper, and Blackwell generations al
    sudo dnf -y install nvidia-open
    ```
 
-   With the `--silent` install on Ubuntu and other non-RHEL distros, you will see warnings that are similar to the following (they can be ignored):
-
-   WARNING: Ignoring CC version mismatch:
-
-   The kernel was built with gcc (Ubuntu 9.3.0-17ubuntu1\~20.04) 9.3.0, GNU ld (GNU Binutils for Ubuntu) 2.34, but the current compiler version is cc (Ubuntu 9.4.0-1ubuntu1\~20.04) 9.4.0.
-
-   WARNING: nvidia-installer was forced to guess the X library path '/usr/lib64' and X module path '/usr/lib64/xorg/modules'; these paths were not queryable from the system.  If X fails to find the NVIDIA X driver module, please install the \`pkg-config\` utility and the X.Org SDK/development package for your distribution and reinstall the driver
+   > **Info**
+   >
+   > With the `--silent` install on Ubuntu and other non-RHEL distros, you will see warnings that are similar to the following (they can be ignored):
+   >
+   > WARNING: Ignoring CC version mismatch:
+   >
+   > The kernel was built with gcc (Ubuntu 9.3.0-17ubuntu1\~20.04) 9.3.0, GNU ld (GNU Binutils for Ubuntu) 2.34, but the current compiler version is cc (Ubuntu 9.4.0-1ubuntu1\~20.04) 9.4.0.
+   >
+   > WARNING: nvidia-installer was forced to guess the X library path '/usr/lib64' and X module path '/usr/lib64/xorg/modules'; these paths were not queryable from the system.  If X fails to find the NVIDIA X driver module, please install the \`pkg-config\` utility and the X.Org SDK/development package for your distribution and reinstall the driver
 
 10. Test that the NVIDIA drivers are installed. The following command should produce output describing the available GPU:
 
@@ -227,7 +237,9 @@ GPUs from the Turing, Ampere, Ada Lovelace, Hopper, and Blackwell generations al
 
 For ease of use, Deepgram provides its products in container images, so you must make sure that you have installed the latest version of Docker (or an alternative such as Podman) on all hosts.
 
-RHEL and Oracle Linux do not distribute Docker, so you will need to use Podman for your container runtime.
+> **Info**
+>
+> RHEL and Oracle Linux do not distribute Docker, so you will need to use Podman for your container runtime.
 
 1. Install the container runtime.
 
@@ -250,7 +262,9 @@ RHEL and Oracle Linux do not distribute Docker, so you will need to use Podman f
 
    2. For Podman, the process to run commands without elevated privileges is somewhat more involved. See [this tutorial](https://github.com/containers/podman/blob/main/docs/tutorials/rootless_tutorial.md) for basic setup and use of Podman in a rootless environment.
 
-   If you do not follow step 2, you cannot run container runtime commands without elevated privileges. You must run any `docker`, `docker-compose`, `podman`, or `podman-compose` commands with `sudo`.
+   > **Warning**
+   >
+   > If you do not follow step 2, you cannot run container runtime commands without elevated privileges. You must run any `docker`, `docker-compose`, `podman`, or `podman-compose` commands with `sudo`.
 
 ### Install Container Composition Tools
 
@@ -295,9 +309,11 @@ CUDA is NVIDIA's library for interacting with its GPU. CUDA support is made avai
 
 [`nvidia-docker`](https://github.com/NVIDIA/nvidia-docker) exposes the NVIDIA container toolkit for the Docker runtime. Follow the [Docker instructions from NVIDIA](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#setting-up-nvidia-container-toolkit) to setup this runtime.
 
-Make sure to complete the `Installation` specific to your distribution ***and*** the `Configuration` step [specific to Docker](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#configuring-docker).
-
-For the `Configuration` step, follow the standard instructions, *not* the `Rootless mode` instructions.
+> **Warning**
+>
+> Make sure to complete the `Installation` specific to your distribution ***and*** the `Configuration` step [specific to Docker](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#configuring-docker).
+>
+> For the `Configuration` step, follow the standard instructions, *not* the `Rootless mode` instructions.
 
 After you've setup the NVIDIA Docker runtime, you can test it with the following command:
 
@@ -311,7 +327,9 @@ docker run --runtime=nvidia --rm --gpus all ubuntu nvidia-smi
 
 Podman has implemented support for the Container Device Interface (CDI) standard in its container runtime, which allows for direct use of the NVIDIA container toolkit. Follow the [CDI Support instructions from NVIDIA](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#step-1-install-nvidia-container-toolkit) to install and configure the toolkit.
 
-Make sure to complete the `Installation` specific to your distribution ***and*** the `Configuration` step [specific to Podman](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#configuring-podman).
+> **Warning**
+>
+> Make sure to complete the `Installation` specific to your distribution ***and*** the `Configuration` step [specific to Podman](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#configuring-podman).
 
 After you've setup the NVIDIA container toolkit with CDI, you can test it with the following command:
 

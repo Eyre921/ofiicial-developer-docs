@@ -31,14 +31,9 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/deployments/create
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_Create_or_update_deployments_v1_convai_agents__agent_id__deployments_post.
 
-- `deployment_request` (object, required) — Request to create a new deployment
-  - `requests` (list of object, required) — List of deployment requests
-    - `branch_id` (string, required) — ID of the branch to deploy
-    - `deployment_strategy` (object, required)
-      - `traffic_percentage` (double, required) — Traffic percentage to deploy
-      - `type` ("percentage", optional, default: percentage)
+- `deployment_request` (AgentDeploymentRequest, required) — Request to create a new deployment
 
 ## Response
 
@@ -54,10 +49,31 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### AgentDeploymentRequest
+
+- `requests` (list of AgentDeploymentRequestItem, required) — List of deployment requests
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### AgentDeploymentRequestItem
+
+- `branch_id` (string, required) — ID of the branch to deploy
+- `deployment_strategy` (AgentDeploymentPercentageStrategy, required)
+
+### ValidationErrorLocItems
+
+### AgentDeploymentPercentageStrategy
+
+- `traffic_percentage` (double, required) — Traffic percentage to deploy
+- `type` ("percentage", optional, default: percentage)
 
 ## Examples
 

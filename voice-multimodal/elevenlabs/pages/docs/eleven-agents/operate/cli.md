@@ -16,15 +16,15 @@ The ElevenLabs CLI allows you to access your ElevenLabs agents from your termina
 * Set up CI/CD integration to automatically deploy your agents
 * Let your coding agent access and manage your voice agents
 
-#### Prefer to jump straight to the code?
+> **Prefer to jump straight to the code?**
+>
+> Find the [complete source code and contribute on GitHub](https://github.com/elevenlabs/cli).
 
-Find the [complete source code and contribute on GitHub](https://github.com/elevenlabs/cli).
-
-#### No install required
-
-If you work from Claude or another MCP client, the [hosted MCP server](/docs/eleven-agents/operate/hosted-mcp) offers agent management tools with no local
-installation. Use the CLI when you want agents in version control; use the hosted MCP server for
-conversational management.
+> **No install required**
+>
+> If you work from Claude or another MCP client, the [hosted MCP server](/docs/eleven-agents/operate/hosted-mcp) offers agent management tools with no local
+> installation. Use the CLI when you want agents in version control; use the hosted MCP server for
+> conversational management.
 
 ## Installation
 
@@ -55,11 +55,13 @@ npm install -g @elevenlabs/cli
 curl --proto '=https' --tlsv1.2 -LsSf https://github.com/elevenlabs/cli/releases/latest/download/elevenlabs-cli-installer.sh | sh
 ```
 
-Working with an AI coding assistant? Run `elevenlabs generate-skills` in your project to write a
-`SKILL.md` for every command group into `skills/`, so your assistant knows the CLI's full surface
-without you pasting docs. Use `--output-dir` to put them elsewhere. This reads the CLI's own
-embedded API definition, so it needs no API key and works offline — and it stays in step with
-whichever CLI version you have installed.
+> **Tip**
+>
+> Working with an AI coding assistant? Run `elevenlabs generate-skills` in your project to write a
+> `SKILL.md` for every command group into `skills/`, so your assistant knows the CLI's full surface
+> without you pasting docs. Use `--output-dir` to put them elsewhere. This reads the CLI's own
+> embedded API definition, so it needs no API key and works offline — and it stays in step with
+> whichever CLI version you have installed.
 
 After installation, the `elevenlabs` command will be available globally in your terminal.
 
@@ -249,8 +251,10 @@ elevenlabs agents pull --update
 elevenlabs agents list
 ```
 
-By default, `elevenlabs agents pull` skips agents that already exist locally. Use the `--update`
-flag to override local configurations with remote changes made in the browser or via the API.
+> **Note**
+>
+> By default, `elevenlabs agents pull` skips agents that already exist locally. Use the `--update`
+> flag to override local configurations with remote changes made in the browser or via the API.
 
 ## Tool management
 

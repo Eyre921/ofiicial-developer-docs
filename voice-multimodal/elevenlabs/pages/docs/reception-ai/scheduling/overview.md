@@ -45,8 +45,10 @@ For rental businesses, the asset *is* the service — create a rental-type servi
 
 Time-off exceptions block specific dates for the entire business, individual staff members, or specific assets. If time off overlaps with existing appointments, you'll be warned about conflicts and can choose to cancel or keep them.
 
-Add all known holidays at the beginning of the year so your receptionist never accidentally books
-during a closure.
+> **Tip**
+>
+> Add all known holidays at the beginning of the year so your receptionist never accidentally books
+> during a closure.
 
 #### [Services](/docs/reception-ai/scheduling/services)
 

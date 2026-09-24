@@ -44,8 +44,10 @@ Connecting a staff member's Google Calendar enables two-way awareness:
 
 You choose which of their calendars to monitor for conflicts (work, personal, or both).
 
-If a staff member's Google Calendar connection expires or becomes unhealthy, their availability
-won't reflect external events. This may lead to double-bookings until the connection is restored.
+> **Info**
+>
+> If a staff member's Google Calendar connection expires or becomes unhealthy, their availability
+> won't reflect external events. This may lead to double-bookings until the connection is restored.
 
 ## Staff on the booking page
 

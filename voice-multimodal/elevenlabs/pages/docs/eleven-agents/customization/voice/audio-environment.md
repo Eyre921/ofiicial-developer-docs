@@ -127,7 +127,9 @@ await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd9
 To disable, set `source_type` and `source_id` to `null`. Omitting `background_sound` on an
 update does not disable it.
 
-On very poor WebSocket connections, mixing background sound can produce choppy audio.
+> **Warning**
+>
+> On very poor WebSocket connections, mixing background sound can produce choppy audio.
 
 ### Parameters
 
@@ -144,8 +146,10 @@ Valid `source_id` values are `office1`, `office2`, `restaurant`, `city`, `typing
 
 Voice filter reshapes the agent's generated voice. It does not equalize or denoise the background sound. The filter runs first; background sound is mixed under the filtered speech.
 
-Voice filter is dashboard-only. It is not part of the public agent API or CLI schema, and it may
-not be available on all workspaces.
+> **Note**
+>
+> Voice filter is dashboard-only. It is not part of the public agent API or CLI schema, and it may
+> not be available on all workspaces.
 
 In the same **Audio environment** panel, set **Voice filter** to **Off** or a phone preset, then save.
 

@@ -14,7 +14,9 @@ path: docs/browser-agent-widget
 
 Add a voice agent to any website. No framework required, no build step needed. The widget ships as a self-contained bundle with its own Preact runtime (\~160KB gzipped), six layout modes, and full design-token theming. It works from a CDN or as an ES module, and tears down cleanly for single-page apps.
 
-The widget bundles everything internally. No React or build tooling required. For React-native integration, see [React UI Components](/docs/browser-agent-react-ui).
+> **Info**
+>
+> The widget bundles everything internally. No React or build tooling required. For React-native integration, see [React UI Components](/docs/browser-agent-react-ui).
 
 ## Quick Start
 
@@ -70,7 +72,9 @@ The package ships a UMD bundle at `dist/widget.umd.js` for `<script>`-tag usage.
 </script>
 ```
 
-Never include your API key in client-side code. Use `tokenFactory` to fetch short-lived tokens from your server. The `apiKey` option exists only for local development.
+> **Warning**
+>
+> Never include your API key in client-side code. Use `tokenFactory` to fetch short-lived tokens from your server. The `apiKey` option exists only for local development.
 
 ## Layouts
 

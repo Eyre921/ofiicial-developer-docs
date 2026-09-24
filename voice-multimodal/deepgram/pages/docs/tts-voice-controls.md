@@ -10,7 +10,9 @@ path: docs/tts-voice-controls
 
 # Speed, Pause, Pronunciation
 
-**This page covers Aura-2 (`/v1/speak`) controls.** Flux TTS (`/v2/speak`) supports `speed` (`0.5`–`1.5` in `0.05` steps) and beta [Expressivity](/docs/tts-expressivity); pause and pronunciation are coming soon.
+> **Info**
+>
+> **This page covers Aura-2 (`/v1/speak`) controls.** Flux TTS (`/v2/speak`) supports `speed` (`0.5`–`1.5` in `0.05` steps) and beta [Expressivity](/docs/tts-expressivity); pause and pronunciation are coming soon.
 
 Aura-2 Controls enable fine-grained adjustments to speech output, allowing you to modify speaking speed and override pronunciation for specific words. These controls are designed for enterprise use cases requiring precise voice quality for industry-specific terminology, brand names, and complex content.
 
@@ -31,7 +33,9 @@ Adjust the speaking rate of generated audio. Speed control modifies the pace of 
 | --------- | -------- | ----- | ------- | ------------- | ------------------------ |
 | `speed`   | query    | float | `1.0`   | `0.7` - `1.5` | Speaking rate multiplier |
 
-For Spanish voices, the recommended speed range is `0.9` - `1.5`. Values below `0.9` may introduce disfluencies.
+> **Info**
+>
+> For Spanish voices, the recommended speed range is `0.9` - `1.5`. Values below `0.9` may introduce disfluencies.
 
 ### Example request
 
@@ -56,7 +60,9 @@ curl --request POST \
 | `1.2` | 20% faster   | Quick alerts, time-sensitive content               |
 | `1.5` | 50% faster   | Rapid playback, content preview                    |
 
-Speed values outside the 0.7x–1.5x range will return an error.
+> **Info**
+>
+> Speed values outside the 0.7x–1.5x range will return an error.
 
 ## Pronunciation control
 
@@ -86,7 +92,9 @@ curl -X POST "https://api.deepgram.com/v1/speak?model=aura-2-thalia-en&speed=0.8
      -d '{"text": "Take \\{\"word\": \"Azathioprine\", \"pronounce\": \"æzəˈθaɪəpriːn\"\\} twice daily with \\{\"word\": \"dupilumab\", \"pronounce\": \"duːˈpɪljuːmæb\"\\}."}'
 ```
 
-The curly braces must be escaped with `\\{` and `\\}` in the cURL command.
+> **Info**
+>
+> The curly braces must be escaped with `\\{` and `\\}` in the cURL command.
 
 ### Common use cases
 
@@ -194,7 +202,9 @@ curl -X POST "https://api.deepgram.com/v1/speak?model=aura-2-thalia-en&speed=0.8
      -d '{"text": "Take \\{\"word\": \"Azathioprine\", \"pronounce\": \"æzəˈθaɪəpriːn\"\\} twice daily with \\{\"word\": \"dupilumab\", \"pronounce\": \"duːˈpɪljuːmæb\"\\}."}'
 ```
 
-Use raw string (`r'...'`) with escaped braces `\{` and `\}` for pronunciation control in Python.
+> **Info**
+>
+> Use raw string (`r'...'`) with escaped braces `\{` and `\}` for pronunciation control in Python.
 
 ### Brand consistency example
 

@@ -12,7 +12,9 @@ path: docs/self-hosted-add-ons
 
 Deepgram's interconnected self-hosted optional components support advanced features that enhance the Deepgram Engine and API.
 
-If you aren't certain which products your contract includes, please consult your Deepgram account representative.
+> **Info**
+>
+> If you aren't certain which products your contract includes, please consult your Deepgram account representative.
 
 Optional components include:
 

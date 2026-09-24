@@ -27,13 +27,10 @@ Reference: https://elevenlabs.io/docs/api-reference/service-accounts/create
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_create_service_account_v1_service_accounts_post.
 
 - `name` (string, required)
-- `default_sharing_groups` (list of object, optional, nullable) — List of groups with their permission levels to share with by default. Each entry should specify a group_id and a permission_level (admin, editor, or viewer).
-  - `group_id` (string, required) — The ID of the group to share with
-  - `permission_level` (enum, required) — The permission level to grant to the group
-    - Allowed values: `admin`, `editor`, `viewer`
+- `default_sharing_groups` (list of DefaultSharingGroupConfig, optional, nullable) — List of groups with their permission levels to share with by default. Each entry should specify a group_id and a permission_level (admin, editor, or viewer).
 
 ## Response
 
@@ -49,10 +46,23 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### DefaultSharingGroupConfig
+
+- `group_id` (string, required) — The ID of the group to share with
+- `permission_level` (enum, required) — The permission level to grant to the group
+  - Allowed values: `admin`, `editor`, `viewer`
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

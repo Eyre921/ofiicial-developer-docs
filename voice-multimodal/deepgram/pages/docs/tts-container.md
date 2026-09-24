@@ -18,7 +18,9 @@ The Container feature allows users to specify the desired file format wrapper fo
 
 Choosing the appropriate container format for the audio output is essential for compatibility with different playback devices and applications. Container formats wrap the audio data along with metadata, enabling efficient storage and transmission.
 
-The container format value must adhere to the [Audio Format Combinations table](/docs/tts-media-output-settings#audio-format-combinations). Select a value based on the encoding type and your use case. Based on encoding `wav` or `ogg` are possible defaults.
+> **Warning**
+>
+> The container format value must adhere to the [Audio Format Combinations table](/docs/tts-media-output-settings#audio-format-combinations). Select a value based on the encoding type and your use case. Based on encoding `wav` or `ogg` are possible defaults.
 
 ## Enable Feature
 
@@ -30,7 +32,9 @@ To enable the Container feature, include the `container` parameter in the query 
 https://api.deepgram.com/v1/speak?encoding=linear16&container=wav
 ```
 
-If you are using the [TTS Web Socket](/reference/text-to-speech/speak-streaming) `container=none` can be used in your request but no other audio formats are currently supported.
+> **Info**
+>
+> If you are using the [TTS Web Socket](/reference/text-to-speech/speak-streaming) `container=none` can be used in your request but no other audio formats are currently supported.
 
 ### CURL Example
 
@@ -52,7 +56,9 @@ curl --request POST \
      --silent || echo "Request failed"
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 ### Query Parameters
 
@@ -60,13 +66,17 @@ Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additi
 | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ----------------------------------------------------- |
 | `container` | See list of supported audio format combinations in the [Audio Format Combinations table](/docs/tts-media-output-settings#audio-format-combinations). | `string` | The desired file format wrapper for the output audio. |
 
-When using VoIP (Voice over Internet Protocol), we recommend adding `container=none` to your request to prevent request header information being misinterpreted as audio, which can result in static or click sounds.
+> **Info**
+>
+> When using VoIP (Voice over Internet Protocol), we recommend adding `container=none` to your request to prevent request header information being misinterpreted as audio, which can result in static or click sounds.
 
 ## Analyze Response
 
 Upon successful processing of the request, you will receive an audio file containing the synthesized text-to-speech output, along with response headers providing additional information.
 
-The audio file is streamed back to you, so you may begin playback as soon as the first byte arrives. Read the guide [Streaming Audio Outputs](/docs/streaming-the-audio-output) to learn how to begin playing the stream immediately versus waiting for the entire file to arrive.
+> **Info**
+>
+> The audio file is streamed back to you, so you may begin playback as soon as the first byte arrives. Read the guide [Streaming Audio Outputs](/docs/streaming-the-audio-output) to learn how to begin playing the stream immediately versus waiting for the entire file to arrive.
 
 ### Response Headers Example
 
@@ -83,7 +93,9 @@ HTTP/1.1 200 OK
 < date: Thu, 29 Feb 2024 19:20:48 GMT
 ```
 
-To see these response headers when making a CURL request, add `-v` or `--verbose` to your request.
+> **Info**
+>
+> To see these response headers when making a CURL request, add `-v` or `--verbose` to your request.
 
 This includes:
 

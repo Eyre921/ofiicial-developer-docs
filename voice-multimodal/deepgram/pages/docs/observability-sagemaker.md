@@ -16,7 +16,9 @@ Amazon SageMaker publishes endpoint metrics and container logs to Amazon CloudWa
 
 Two companion pages cover additional metric streams: [Prometheus & OpenTelemetry Metrics](/docs/prometheus-otel-sagemaker) for per-GPU, host, and container Prometheus metrics via SageMaker detailed observability, and [Deepgram Enhanced Metrics](/docs/enhanced-metrics-sagemaker) for the usage and billing metrics the Deepgram container publishes to CloudWatch on its own.
 
-Before configuring observability, you must have a Deepgram SageMaker Endpoint deployed and running with status `InService`. See [Deploy Deepgram on Amazon SageMaker](/docs/deploy-amazon-sagemaker) for setup instructions.
+> **Info**
+>
+> Before configuring observability, you must have a Deepgram SageMaker Endpoint deployed and running with status `InService`. See [Deploy Deepgram on Amazon SageMaker](/docs/deploy-amazon-sagemaker) for setup instructions.
 
 ## CloudWatch metrics
 
@@ -80,13 +82,17 @@ aws cloudwatch get-metric-statistics \
   --region YOUR_AWS_REGION
 ```
 
-AWS documents `Min` and `Max` as the valid statistics for `ConcurrentRequestsPerModel` — use `Maximum` for capacity monitoring and alarms. Set `--period 10` to see the full 10-second resolution.
+> **Note**
+>
+> AWS documents `Min` and `Max` as the valid statistics for `ConcurrentRequestsPerModel` — use `Maximum` for capacity monitoring and alarms. Set `--period 10` to see the full 10-second resolution.
 
 ## Monitor latency
 
 Total request latency has three components: network latency (client ↔ SageMaker runtime, not visible in CloudWatch — measure it client-side), `OverheadLatency` (SageMaker routing and platform processing), and `ModelLatency` (processing time inside the Deepgram container).
 
-All SageMaker latency metrics are reported in **microseconds**: a 2-second threshold is `2000000`.
+> **Warning**
+>
+> All SageMaker latency metrics are reported in **microseconds**: a 2-second threshold is `2000000`.
 
 ### Pre-recorded requests
 
@@ -175,7 +181,9 @@ aws cloudwatch list-metrics \
   --region YOUR_AWS_REGION
 ```
 
-Metrics published at intervals below 60 seconds are high-resolution and are retained by CloudWatch for only 3 hours. CloudWatch bills utilization metrics per metric stream, and per-instance and per-GPU dimensions add streams as the endpoint scales out. See [Amazon CloudWatch pricing](https://aws.amazon.com/cloudwatch/pricing/).
+> **Note**
+>
+> Metrics published at intervals below 60 seconds are high-resolution and are retained by CloudWatch for only 3 hours. CloudWatch bills utilization metrics per metric stream, and per-instance and per-GPU dimensions add streams as the endpoint scales out. See [Amazon CloudWatch pricing](https://aws.amazon.com/cloudwatch/pricing/).
 
 ## CloudWatch Logs
 
@@ -413,7 +421,9 @@ cloudwatch.put_metric_alarm(
 )
 ```
 
-`FirstChunkLatency` only receives samples when new sessions start, so keep `--treat-missing-data notBreaching` to avoid alarming during idle periods. For pre-recorded endpoints, create the equivalent alarm on `ModelLatency` with `p95` or `p99`, and remember that its value scales with the duration of the submitted audio.
+> **Note**
+>
+> `FirstChunkLatency` only receives samples when new sessions start, so keep `--treat-missing-data notBreaching` to avoid alarming during idle periods. For pre-recorded endpoints, create the equivalent alarm on `ModelLatency` with `p95` or `p99`, and remember that its value scales with the duration of the submitted audio.
 
 #### GPU utilization alarm
 
@@ -463,7 +473,9 @@ cloudwatch.put_metric_alarm(
 )
 ```
 
-For instances with a single GPU (such as `g5.2xlarge`), `GPUUtilization` ranges from 0–100%. For multi-GPU instances, the range is 0%–(100% × number of GPUs). Adjust the threshold accordingly.
+> **Note**
+>
+> For instances with a single GPU (such as `g5.2xlarge`), `GPUUtilization` ranges from 0–100%. For multi-GPU instances, the range is 0%–(100% × number of GPUs). Adjust the threshold accordingly.
 
 ### Alarm actions
 

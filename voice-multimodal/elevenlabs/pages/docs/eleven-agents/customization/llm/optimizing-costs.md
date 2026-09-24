@@ -12,8 +12,10 @@ path: docs/eleven-agents/customization/llm/optimizing-costs
 
 Managing Large Language Model (LLM) inference costs is essential for developing sustainable AI applications. This guide outlines key strategies to optimize expenditure on the ElevenLabs platform by effectively utilizing its features. For detailed model capabilities and pricing, refer to our main [LLM documentation](/docs/eleven-agents/customization/llm).
 
-ElevenLabs supports reducing costs by reducing inference of the models during periods of silence.
-These periods are billed at 5% of the usual per minute rate. See [the ElevenAgents overview page](/docs/eleven-agents/overview#pricing-during-silent-periods) for more details.
+> **Note**
+>
+> ElevenLabs supports reducing costs by reducing inference of the models during periods of silence.
+> These periods are billed at 5% of the usual per minute rate. See [the ElevenAgents overview page](/docs/eleven-agents/overview#pricing-during-silent-periods) for more details.
 
 ## Understanding inference costs
 
@@ -75,12 +77,14 @@ Consider applying these techniques to reduce cost:
 | Tools (functions) | Avoids LLM calls for specific tasks; reduces tokens      | Delegate deterministic, calculation-heavy, or external API tasks to tools. Design clear tool descriptions for the LLM.                                              |
 | Agent transfer    | Enables use of cheaper models for simpler parts of tasks | Use simpler/cheaper agents for initial triage/FAQs; transfer to capable agents only when needed; decompose large prompts into smaller prompts across various agents |
 
-#### Conversation history management
+> **Conversation history management**
+>
+> For stateful conversations, rather than passing in multiple conversation transcripts as a part of
+> the system prompt, implement history summarization or sliding window techniques to keep context
+> lean. This can be particularly effective when building consumer applications and can often be
+> managed upon receiving a post-call webhook.
 
-For stateful conversations, rather than passing in multiple conversation transcripts as a part of
-the system prompt, implement history summarization or sliding window techniques to keep context
-lean. This can be particularly effective when building consumer applications and can often be
-managed upon receiving a post-call webhook.
-
-Continuously monitor your LLM usage and costs. Regularly review and refine your prompts, RAG
-configurations, and tool integrations to ensure ongoing cost-effectiveness.
+> **Tip**
+>
+> Continuously monitor your LLM usage and costs. Regularly review and refine your prompts, RAG
+> configurations, and tool integrations to ensure ongoing cost-effectiveness.

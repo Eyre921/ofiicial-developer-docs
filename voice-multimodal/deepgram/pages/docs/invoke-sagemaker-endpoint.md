@@ -18,7 +18,9 @@ Once your endpoint is deployed and in service, you invoke it to transcribe audio
 | **Synchronous**  | `InvokeEndpoint`                        | Real-time     | 25 MB per request body | One immediate response                                                                                                         |
 | **Asynchronous** | `InvokeEndpointAsync`                   | Asynchronous  | —                      | Temporarily unsupported for Marketplace-hosted Deepgram. Contact a [Deepgram representative](https://deepgram.com/contact-us). |
 
-**Passing Deepgram parameters.** For synchronous invocations, the Deepgram model and feature parameters are passed in the `CustomAttributes` field (the `X-Amzn-SageMaker-Custom-Attributes` header) as `v1/listen?model=...&language=...`. For streaming, the same values are split across `ModelInvocationPath` (`v1/listen`) and `ModelQueryString`. In all cases an API path such as `v1/listen` is required — without it the container returns a 404. The examples on this page use `v1/listen` (speech-to-text), but other routes are available (for example, `v1/speak` for text-to-speech).
+> **Note**
+>
+> **Passing Deepgram parameters.** For synchronous invocations, the Deepgram model and feature parameters are passed in the `CustomAttributes` field (the `X-Amzn-SageMaker-Custom-Attributes` header) as `v1/listen?model=...&language=...`. For streaming, the same values are split across `ModelInvocationPath` (`v1/listen`) and `ModelQueryString`. In all cases an API path such as `v1/listen` is required — without it the container returns a 404. The examples on this page use `v1/listen` (speech-to-text), but other routes are available (for example, `v1/speak` for text-to-speech).
 
 Complete, runnable examples for both modes — in Python, TypeScript, and Java — are maintained in the [deepgram-devs/dg-sagemaker](https://github.com/deepgram-devs/dg-sagemaker) repository. The sections below explain each mode and link to the corresponding example. See the repository's `README` for setup and prerequisites.
 
@@ -63,7 +65,9 @@ Streaming uses the HTTP/2 bidirectional streaming client (`@aws-sdk/client-sagem
 * **Binary audio** is sent as a `Bytes` payload with `DataType: "BINARY"`.
 * **Control messages** (for example, `KeepAlive` and `CloseStream`) are sent as UTF-8 encoded JSON with `DataType: "UTF8"`.
 
-**Always include `:8443` in the endpoint URL.** The bidirectional streaming runtime listens on port 8443, not 443. A streaming client that hangs with no error and never receives a response is almost always pointed at the endpoint without `:8443`.
+> **Warning**
+>
+> **Always include `:8443` in the endpoint URL.** The bidirectional streaming runtime listens on port 8443, not 443. A streaming client that hangs with no error and never receives a response is almost always pointed at the endpoint without `:8443`.
 
 #### Python
 

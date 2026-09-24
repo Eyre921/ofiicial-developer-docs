@@ -25,7 +25,9 @@ History is particularly useful when:
 * Providing background context about function calls already executed
 * Maintaining continuity in multi-session interactions
 
-History can be disabled by setting `settings.flags.history` to `false` in the agent configuration. History is enabled by default.
+> **Info**
+>
+> History can be disabled by setting `settings.flags.history` to `false` in the agent configuration. History is enabled by default.
 
 ## Conversation Context History
 

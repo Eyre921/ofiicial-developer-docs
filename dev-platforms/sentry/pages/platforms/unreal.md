@@ -78,7 +78,7 @@ The minimum configuration required is the [DSN](https://docs.sentry.io/concepts/
 }
 ```
 
-If you are logged in, you can also go to your project settings and copy its DSN directly from there.
+If you are logged in, you can also go to your [project settings](https://sentry.io/orgredirect/organizations/:orgslug/settings/projects/:projectId/keys/) and copy its DSN directly from there.
 
 Sentry can be configured using the Sentry configuration window. The window can be accessed by going to editor's menu: **Project Settings > Plugins > Sentry**.
 
@@ -117,7 +117,7 @@ All attachment types, including log files, screenshots and minidumps (if you ena
 
 ### [Enabling Minidump Storage](https://docs.sentry.io/platforms/unreal.md#enabling-minidump-storage)
 
-You can enable *Store Minidumps As Attachments* in your organization or project settings under **Security & Privacy**. By default, this setting is disabled. Determine the maximum number of crash reports that will be stored per issue; disabled, unlimited, or maximum per issue:
+You can enable *Store Minidumps As Attachments* in your [organization](https://sentry.io/orgredirect/organizations/:orgslug/settings/security-and-privacy/) or [project settings](https://sentry.io/orgredirect/organizations/:orgslug/settings/projects/:projectId/security-and-privacy/) under **Security & Privacy**. By default, this setting is disabled. Determine the maximum number of crash reports that will be stored per issue; disabled, unlimited, or maximum per issue:
 
 If you set a limit per issue, as in the example above, a limit of 5, Sentry will store the first 5 attachments associated with this issue, but drop any that follow. To make room for additional attachments, delete them. Sentry will then accept attachments until the limit is reached again.
 

@@ -53,11 +53,15 @@ Add `mip_opt_out=true` as a query parameter of all API requests that you want to
 
 Here are some examples of opting out for Speech-to-Text requests.
 
-Depending on the SDK, set `mip_opt_out` either as a first-class parameter (Java, JavaScript, Python) or as a custom add-on parameter (Go, .NET). To learn more about custom add-on parameters, see [Using Custom Parameters with SDKs](/guides/fundamentals/using-custom-parameters-sdks).
+> **Info**
+>
+> Depending on the SDK, set `mip_opt_out` either as a first-class parameter (Java, JavaScript, Python) or as a custom add-on parameter (Go, .NET). To learn more about custom add-on parameters, see [Using Custom Parameters with SDKs](/guides/fundamentals/using-custom-parameters-sdks).
 
 #### Pre-recorded Audio
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 **`cURL`**
 
@@ -288,7 +292,9 @@ public class Main {
 }
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 #### Streaming Audio
 
@@ -633,7 +639,9 @@ public class Main {
 
 Here are some examples of opting out for Text-to-Speech requests.
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 #### Rest API
 

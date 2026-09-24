@@ -4,40 +4,105 @@ source: https://developers.notion.com/reference/property-object
 path: reference/property-object
 ---
 
-Data source property objects define the schema of a data source and are rendered as columns in the Notion UI.
+Reference for property types, settings, and examples in a data source schema.
 
-All [data source objects](/reference/data-source) include a child `properties` object composed of individual data source property objects. These define the data source schema and are rendered as columns in the Notion UI.
+A data source’s `properties` object defines the names, types, and settings of its properties. This is its **schema**. In Notion’s table view, these properties appear as columns.
 
-<Info>
-  **Looking for page property values?**
+| Object                                                 | What it describes                                              | Endpoint                                                             |
+| :----------------------------------------------------- | :------------------------------------------------------------- | :------------------------------------------------------------------- |
+| [Data source property](/reference/property-object)     | A property’s name, type, and settings, also called its schema. | [Retrieve a data source](/reference/retrieve-a-data-source)          |
+| [Page property value](/reference/page-property-values) | The value of that property on one page.                        | [Retrieve a page](/reference/retrieve-a-page)                        |
+| [Page property item](/reference/property-item-object)  | A single value, or one item in a paginated value.              | [Retrieve a page property item](/reference/retrieve-a-page-property) |
 
-  To set or read values on individual rows (pages), see [Page property values](/reference/page-property-values). The API treats data source rows as pages.
-</Info>
+<span />
 
-Every data source property object contains the following fields:
+## Common fields
 
-| Field         | Type            | Description                                                                                                                                                                                                                                                                                                                                                                                | Example value |
-| :------------ | :-------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
-| `id`          | `string`        | An identifier for the property, usually a short string of random letters and symbols. Some automatically generated property types have special human-readable IDs (e.g. all Title properties have an `id` of `"title"`).                                                                                                                                                                   | `"fy:{"`      |
-| `name`        | `string`        | The name of the property as it appears in Notion.                                                                                                                                                                                                                                                                                                                                          |               |
-| `description` | `string`        | The description of a property as it appears in Notion.                                                                                                                                                                                                                                                                                                                                     |               |
-| `type`        | `string` (enum) | The type that controls the behavior of the property. Possible values are: `"checkbox"`, `"created_by"`, `"created_time"`, `"date"`, `"email"`, `"files"`, `"formula"`, `"last_edited_by"`, `"last_edited_time"`, `"multi_select"`, `"number"`, `"people"`, `"phone_number"`, `"place"`, `"relation"`, `"rich_text"`, `"rollup"`, `"select"`, `"status"`, `"title"`, `"unique_id"`, `"url"` | `"rich_text"` |
+| Field               | Type             | Meaning                                                 |
+| :------------------ | :--------------- | :------------------------------------------------------ |
+| `id`                | String           | The property’s stable ID.                               |
+| `name`              | String           | The property’s name in Notion.                          |
+| `description`       | String or `null` | The property’s description.                             |
+| `type`              | String           | The property type, such as `number` or `status`.        |
+| Key matching `type` | Object           | Settings for that type. Many types use an empty object. |
 
-Each data source property object also contains a type object. The key of the object is the `type`, and the value is an object containing type-specific configuration. The following sections detail these type-specific objects.
+A property’s `id` stays the same when its name changes. IDs can be short strings or UUIDs. The Name property always has the ID `title`.
 
-***
+Responses use URL-encoded property IDs, such as `f%5C%5C%3Ap`. Pass the returned ID as-is to the SDK or in an API path. Don’t encode it a second time. You can also use a property ID as a key in a request’s `properties` object.
+
+The tabs compare the same property across API objects. Schema and Page value examples each show one entry in a response’s `properties` object. Page write shows an Update page request body; Create page also needs a parent. Read-only types have no Page write tab.
+
+For `title`, `rich_text`, `people`, and `relation`, the Property item tab shows one entry in a paginated `results` array. For other types, it shows the endpoint response. Replace example names and IDs with values from your workspace.
+
+## Request and response shapes
+
+Schema responses contain the common fields above. For types that support schema writes, create a property by using its name as the key and providing its type’s settings. Button and Verification schemas are response-only; see their limits below. For example, `{"Estimate":{"number":{"format":"number"}}}` is an entry in the request’s `properties` object.
+
+Use [Create a data source](/reference/create-a-data-source) to define an initial schema. Use [Update data source properties](/reference/update-data-source-properties) to add, rename, remove, or change properties. The page-write tabs below change values on a page; they do not change the schema.
+
+<Note>
+  For API versions before `2025-09-03`, schemas belong to [database objects](/reference/retrieve-a-database). Those requests use the legacy database endpoints and `database_id` for relation targets. Current API versions use data sources. See [Upgrade to 2025-09-03](/guides/get-started/upgrade-guide-2025-09-03).
+</Note>
+
+<span />
+
+## Button
+
+A Button property has an empty `button` object in schema responses. Create Button properties and configure their actions in Notion. The API ignores `button` settings in schema writes; it does not create a Button property or change an existing one. It also does not expose button actions or let you press a button.
+
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Send update": {
+        "id": "btnA",
+        "name": "Send update",
+        "description": null,
+        "type": "button",
+        "button": {}
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Send update": {
+        "id": "btnA",
+        "type": "button",
+        "button": {}
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "btnA",
+      "type": "button",
+      "button": {}
+    }
+    ```
+  </Tab>
+</Tabs>
+
+<span />
 
 ## Checkbox
 
-A checkbox property contains checkboxes. The `checkbox` type object is empty; there is no additional configuration.
+The `checkbox` settings object is empty. Page values are booleans.
 
 <Tabs>
-  <Tab title="Property">
-    ```json Example checkbox data source property theme={null}
+  <Tab title="Schema">
+    ```json Schema theme={null}
     {
-      "Task complete": {
-        "id": "BBla",
-        "name": "Task complete",
+      "Done": {
+        "id": "done",
+        "name": "Done",
+        "description": null,
         "type": "checkbox",
         "checkbox": {}
       }
@@ -45,32 +110,56 @@ A checkbox property contains checkboxes. The `checkbox` type object is empty; th
     ```
   </Tab>
 
-  <Tab title="Value">
-    When [setting page property values](/reference/page-property-values#checkbox), pass a boolean:
-
-    ```json Example checkbox page property value theme={null}
+  <Tab title="Page value">
+    ```json Page value theme={null}
     {
-      "Task complete": {
+      "Done": {
+        "id": "done",
+        "type": "checkbox",
         "checkbox": true
       }
     }
     ```
   </Tab>
+
+  <Tab title="Page write">
+    ```json Page write theme={null}
+    {
+      "properties": {
+        "Done": {
+          "checkbox": true
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "done",
+      "type": "checkbox",
+      "checkbox": true
+    }
+    ```
+  </Tab>
 </Tabs>
 
-***
+<span />
 
 ## Created by
 
-Contains people mentions of each row's author. The `created_by` type object is empty. This value is read-only.
+The `created_by` settings object is empty. Notion sets each page’s creator; page values are read-only.
 
 <Tabs>
-  <Tab title="Property">
-    ```json Example created by data source property theme={null}
+  <Tab title="Schema">
+    ```json Schema theme={null}
     {
       "Created by": {
-        "id": "%5BJCR",
+        "id": "crtB",
         "name": "Created by",
+        "description": null,
         "type": "created_by",
         "created_by": {}
       }
@@ -78,13 +167,11 @@ Contains people mentions of each row's author. The `created_by` type object is e
     ```
   </Tab>
 
-  <Tab title="Value">
-    Returns a [user object](/reference/user). See [Created by page property values](/reference/page-property-values#created-by).
-
-    ```json Example created by page property value theme={null}
+  <Tab title="Page value">
+    ```json Page value theme={null}
     {
       "Created by": {
-        "id": "%5BJCR",
+        "id": "crtB",
         "type": "created_by",
         "created_by": {
           "object": "user",
@@ -94,21 +181,36 @@ Contains people mentions of each row's author. The `created_by` type object is e
     }
     ```
   </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "crtB",
+      "type": "created_by",
+      "created_by": {
+        "object": "user",
+        "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
+      }
+    }
+    ```
+  </Tab>
 </Tabs>
 
-***
+<span />
 
 ## Created time
 
-Contains timestamps of when each row was created. The `created_time` type object is empty. This value is read-only.
+The `created_time` settings object is empty. Notion sets each page’s creation time; page values are read-only.
 
 <Tabs>
-  <Tab title="Property">
-    ```json Example created time data source property theme={null}
+  <Tab title="Schema">
+    ```json Schema theme={null}
     {
       "Created time": {
-        "id": "XcAf",
+        "id": "crtT",
         "name": "Created time",
+        "description": null,
         "type": "created_time",
         "created_time": {}
       }
@@ -116,34 +218,44 @@ Contains timestamps of when each row was created. The `created_time` type object
     ```
   </Tab>
 
-  <Tab title="Value">
-    Returns an [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date string. See [Created time page property values](/reference/page-property-values#created-time).
-
-    ```json Example created time page property value theme={null}
+  <Tab title="Page value">
+    ```json Page value theme={null}
     {
       "Created time": {
-        "id": "XcAf",
+        "id": "crtT",
         "type": "created_time",
-        "created_time": "2022-10-24T22:54:00.000Z"
+        "created_time": "2026-09-01T09:00:00.000Z"
       }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "crtT",
+      "type": "created_time",
+      "created_time": "2026-09-01T09:00:00.000Z"
     }
     ```
   </Tab>
 </Tabs>
 
-***
+<span />
 
 ## Date
 
-Contains date values. The `date` type object is empty; there is no additional configuration.
+The `date` settings object is empty. A page value can be a date, a timestamp, or a range.
 
 <Tabs>
-  <Tab title="Property">
-    ```json Example date data source property theme={null}
+  <Tab title="Schema">
+    ```json Schema theme={null}
     {
-      "Task due date": {
-        "id": "AJP%7D",
-        "name": "Task due date",
+      "Due date": {
+        "id": "dueD",
+        "name": "Due date",
+        "description": null,
         "type": "date",
         "date": {}
       }
@@ -151,14 +263,14 @@ Contains date values. The `date` type object is empty; there is no additional co
     ```
   </Tab>
 
-  <Tab title="Value">
-    Pass a date object with `start` and optional `end` and `time_zone`. See [Date page property values](/reference/page-property-values#date).
-
-    ```json Example date page property value theme={null}
+  <Tab title="Page value">
+    ```json Page value theme={null}
     {
-      "Task due date": {
+      "Due date": {
+        "id": "dueD",
+        "type": "date",
         "date": {
-          "start": "2023-02-23",
+          "start": "2026-09-15",
           "end": null,
           "time_zone": null
         }
@@ -166,21 +278,51 @@ Contains date values. The `date` type object is empty; there is no additional co
     }
     ```
   </Tab>
+
+  <Tab title="Page write">
+    ```json Page write theme={null}
+    {
+      "properties": {
+        "Due date": {
+          "date": {
+            "start": "2026-09-15"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "dueD",
+      "type": "date",
+      "date": {
+        "start": "2026-09-15",
+        "end": null,
+        "time_zone": null
+      }
+    }
+    ```
+  </Tab>
 </Tabs>
 
-***
+<span />
 
 ## Email
 
-Contains email address values. The `email` type object is empty.
+The `email` settings object is empty.
 
 <Tabs>
-  <Tab title="Property">
-    ```json Example email data source property theme={null}
+  <Tab title="Schema">
+    ```json Schema theme={null}
     {
       "Contact email": {
-        "id": "oZbC",
+        "id": "emlA",
         "name": "Contact email",
+        "description": null,
         "type": "email",
         "email": {}
       }
@@ -188,32 +330,56 @@ Contains email address values. The `email` type object is empty.
     ```
   </Tab>
 
-  <Tab title="Value">
-    Pass a string with the email address. See [Email page property values](/reference/page-property-values#email).
-
-    ```json Example email page property value theme={null}
+  <Tab title="Page value">
+    ```json Page value theme={null}
     {
       "Contact email": {
-        "email": "ada@makenotion.com"
+        "id": "emlA",
+        "type": "email",
+        "email": "alex@example.com"
       }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page write">
+    ```json Page write theme={null}
+    {
+      "properties": {
+        "Contact email": {
+          "email": "alex@example.com"
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "emlA",
+      "type": "email",
+      "email": "alex@example.com"
     }
     ```
   </Tab>
 </Tabs>
 
-***
+<span />
 
 ## Files
 
-Contains files uploaded to Notion or external links. The `files` type object is empty.
+The Files & media property uses `files: {}`. A page value is an array of named files.
 
 <Tabs>
-  <Tab title="Property">
-    ```json Example files data source property theme={null}
+  <Tab title="Schema">
+    ```json Schema theme={null}
     {
-      "Product image": {
-        "id": "pb%3E%5B",
-        "name": "Product image",
+      "Attachments": {
+        "id": "file",
+        "name": "Attachments",
+        "description": null,
         "type": "files",
         "files": {}
       }
@@ -221,18 +387,18 @@ Contains files uploaded to Notion or external links. The `files` type object is 
     ```
   </Tab>
 
-  <Tab title="Value">
-    Pass an array of [file objects](/reference/file-object). See [Files page property values](/reference/page-property-values#files).
-
-    ```json Example files page property value theme={null}
+  <Tab title="Page value">
+    ```json Page value theme={null}
     {
-      "Product image": {
+      "Attachments": {
+        "id": "file",
+        "type": "files",
         "files": [
           {
+            "name": "Project brief.pdf",
             "type": "external",
-            "name": "Space Wallpaper",
             "external": {
-              "url": "https://website.domain/images/space.png"
+              "url": "https://example.com/project-brief.pdf"
             }
           }
         ]
@@ -240,173 +406,19 @@ Contains files uploaded to Notion or external links. The `files` type object is 
     }
     ```
   </Tab>
-</Tabs>
 
-***
-
-## Formula
-
-Contains values derived from a provided expression. The `formula` type object has:
-
-| Field        | Type     | Description                                                                                                             | Example value           |
-| :----------- | :------- | :---------------------------------------------------------------------------------------------------------------------- | :---------------------- |
-| `expression` | `string` | The formula used to compute values. Refer to the [Notion help center](https://www.notion.com/help/formulas) for syntax. | `"prop(\"Price\") / 2"` |
-
-Example expressions and the values they produce:
-
-| Expression                                | Result type | Example result |
-| :---------------------------------------- | :---------- | :------------- |
-| `prop("Price") * 1.1`                     | Number      | `11`           |
-| `if(prop("In stock"), "yes", "no")`       | String      | `"yes"`        |
-| `format(prop("ID"))`                      | String      | `"TASK-1"`     |
-| `dateBetween(prop("Due"), now(), "days")` | Number      | `6`            |
-
-<Note>
-  * `prop("Name")` matches a property by its current name, but the saved formula references the property by ID, so renaming the property later doesn't break the formula.
-  * Expressions are validated when you save them. An expression that doesn't parse or type check — for example, a `prop()` reference to a property that doesn't exist — returns a [`validation_error`](/reference/errors).
-  * When you read the schema back, formula expressions use the same `prop("Name")` syntax you write. If an expression can't be rendered faithfully in this syntax, the API returns it in the internal reference syntax (`{{notion:block_property:...}}`) instead; both forms are valid in expressions you write.
-</Note>
-
-<Tabs>
-  <Tab title="Property">
-    ```json Example formula data source property theme={null}
+  <Tab title="Page write">
+    ```json Page write theme={null}
     {
-      "Updated price": {
-        "id": "YU%7C%40",
-        "name": "Updated price",
-        "type": "formula",
-        "formula": {
-          "expression": "prop(\"Price\") / 2"
-        }
-      }
-    }
-    ```
-  </Tab>
-
-  <Tab title="Value">
-    Returns a computed result. The value can't be updated directly. See [Formula page property values](/reference/page-property-values#formula).
-
-    ```json Example formula page property value theme={null}
-    {
-      "Updated price": {
-        "id": "YU%7C%40",
-        "type": "formula",
-        "formula": {
-          "type": "number",
-          "number": 56
-        }
-      }
-    }
-    ```
-  </Tab>
-</Tabs>
-
-***
-
-## Last edited by
-
-Contains people mentions of the person who last edited each row. The `last_edited_by` type object is empty. This value is read-only.
-
-<Tabs>
-  <Tab title="Property">
-    ```json Example last edited by data source property theme={null}
-    {
-      "Last edited by": {
-        "id": "eB_}",
-        "name": "Last edited by",
-        "type": "last_edited_by",
-        "last_edited_by": {}
-      }
-    }
-    ```
-  </Tab>
-
-  <Tab title="Value">
-    Returns a [user object](/reference/user). See [Last edited by page property values](/reference/page-property-values#last-edited-by).
-
-    ```json Example last edited by page property value theme={null}
-    {
-      "Last edited by": {
-        "id": "eB_}",
-        "type": "last_edited_by",
-        "last_edited_by": {
-          "object": "user",
-          "id": "9188c6a5-7381-452f-b3dc-d4865aa89bdf"
-        }
-      }
-    }
-    ```
-  </Tab>
-</Tabs>
-
-***
-
-## Last edited time
-
-Contains timestamps of when each row was last edited. The `last_edited_time` type object is empty. This value is read-only.
-
-<Tabs>
-  <Tab title="Property">
-    ```json Example last edited time data source property theme={null}
-    {
-      "Last edited time": {
-        "id": "jGdo",
-        "name": "Last edited time",
-        "type": "last_edited_time",
-        "last_edited_time": {}
-      }
-    }
-    ```
-  </Tab>
-
-  <Tab title="Value">
-    Returns an [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date string. See [Last edited time page property values](/reference/page-property-values#last-edited-time).
-
-    ```json Example last edited time page property value theme={null}
-    {
-      "Last edited time": {
-        "id": "jGdo",
-        "type": "last_edited_time",
-        "last_edited_time": "2023-02-24T21:06:00.000Z"
-      }
-    }
-    ```
-  </Tab>
-</Tabs>
-
-***
-
-## Multi-select
-
-Contains values from a range of options. Each row can have one or more options.
-
-The `multi_select` type object includes an `options` array. Each option has:
-
-| Field   | Type            | Description                                                                                                                        | Example value                            |
-| :------ | :-------------- | :--------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------- |
-| `color` | `string` (enum) | The color of the option. Possible values: `blue`, `brown`, `default`, `gray`, `green`, `orange`, `pink`, `purple`, `red`, `yellow` | `"blue"`                                 |
-| `id`    | `string`        | An identifier for the option. Does not change if the name is changed.                                                              | `"ff8e9269-9579-47f7-8f6e-83a84716863c"` |
-| `name`  | `string`        | The name of the option as it appears in Notion. Commas are not valid. Names must be unique (case-insensitive).                     | `"Fruit"`                                |
-
-<Tabs>
-  <Tab title="Property">
-    ```json Example multi-select data source property expandable theme={null}
-    {
-      "Store availability": {
-        "id": "flsb",
-        "name": "Store availability",
-        "type": "multi_select",
-        "multi_select": {
-          "options": [
+      "properties": {
+        "Attachments": {
+          "files": [
             {
-              "id": "5de29601-9c24-4b04-8629-0bca891c5120",
-              "name": "Duc Loi Market",
-              "color": "blue"
-            },
-            {
-              "id": "385890b8-fe15-421b-b214-b02959b0f8d9",
-              "name": "Rainbow Grocery",
-              "color": "gray"
+              "name": "Project brief.pdf",
+              "type": "external",
+              "external": {
+                "url": "https://example.com/project-brief.pdf"
+              }
             }
           ]
         }
@@ -415,74 +427,351 @@ The `multi_select` type object includes an `options` array. Each option has:
     ```
   </Tab>
 
-  <Tab title="Value">
-    Pass an array of option objects with `name` or `id`. See [Multi-select page property values](/reference/page-property-values#multi-select).
-
-    ```json Example multi-select page property value theme={null}
+  <Tab title="Property item">
+    ```json Property item theme={null}
     {
-      "Store availability": {
-        "multi_select": [
-          { "name": "Duc Loi Market" },
-          { "name": "Rainbow Grocery" }
-        ]
-      }
+      "object": "property_item",
+      "id": "file",
+      "type": "files",
+      "files": [
+        {
+          "name": "Project brief.pdf",
+          "type": "external",
+          "external": {
+            "url": "https://example.com/project-brief.pdf"
+          }
+        }
+      ]
     }
     ```
   </Tab>
 </Tabs>
 
-***
+<span />
 
-## Number
+## Formula
 
-Contains numeric values. The `number` type object has:
+The `formula` object contains an `expression` string. The expression uses [Notion’s formula syntax](https://www.notion.com/help/formulas) and properties from the same data source. The computed page value is read-only.
 
-| Field    | Type            | Description                                                                                                                                                                                                                                                                       | Example value |
-| :------- | :-------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
-| `format` | `string` (enum) | How the number displays in Notion. Values include: `number`, `number_with_commas`, `percent`, `dollar`, `euro`, `pound`, `yen`, `yuan`, `won`, `ruble`, `rupee`, `franc`, `real`, `lira`, `krona`, `ringgit`, and [more](/reference/property-schema-object#number-configuration). | `"percent"`   |
+Example expressions with fixed inputs:
+
+| Expression                                        | Example input                               | Result type | Result     |
+| :------------------------------------------------ | :------------------------------------------ | :---------- | :--------- |
+| `prop("Price") * 1.1`                             | Price is `10`.                              | Number      | `11`       |
+| `if(prop("In stock"), "yes", "no")`               | In stock is checked.                        | String      | `"yes"`    |
+| `format(prop("ID"))`                              | ID is `TASK-1`.                             | String      | `"TASK-1"` |
+| `dateBetween(prop("Due"), prop("Start"), "days")` | Due is `2026-09-15`; Start is `2026-09-09`. | Number      | `6`        |
+
+`prop("Name")` looks up a property by its current name. The saved formula refers to its ID, so a later rename does not break that reference.
+
+An expression that cannot be parsed or checked returns [validation\_error](/reference/status-codes#error-codes). This includes references to properties that do not exist.
+
+Schema responses normally use the same `prop("Name")` syntax as requests. If an expression cannot be represented that way, the response uses `{{notion:block_property:...}}` references. Those references are also valid in requests.
 
 <Tabs>
-  <Tab title="Property">
-    ```json Example number data source property theme={null}
+  <Tab title="Schema">
+    ```json Schema theme={null}
     {
-      "Price": {
-        "id": "%7B%5D_P",
-        "name": "Price",
-        "type": "number",
-        "number": {
-          "format": "dollar"
+      "Double estimate": {
+        "id": "calc",
+        "name": "Double estimate",
+        "description": null,
+        "type": "formula",
+        "formula": {
+          "expression": "prop(\"Estimate\") * 2"
         }
       }
     }
     ```
   </Tab>
 
-  <Tab title="Value">
-    Pass a number. See [Number page property values](/reference/page-property-values#number).
-
-    ```json Example number page property value theme={null}
+  <Tab title="Page value">
+    ```json Page value theme={null}
     {
-      "Price": {
-        "number": 42
+      "Double estimate": {
+        "id": "calc",
+        "type": "formula",
+        "formula": {
+          "type": "number",
+          "number": 16
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "calc",
+      "type": "formula",
+      "formula": {
+        "type": "number",
+        "number": 16
       }
     }
     ```
   </Tab>
 </Tabs>
 
-***
+<span />
+
+## Last edited by
+
+The `last_edited_by` settings object is empty. Notion sets each page’s last editor; page values are read-only.
+
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Last edited by": {
+        "id": "edtB",
+        "name": "Last edited by",
+        "description": null,
+        "type": "last_edited_by",
+        "last_edited_by": {}
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Last edited by": {
+        "id": "edtB",
+        "type": "last_edited_by",
+        "last_edited_by": {
+          "object": "user",
+          "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "edtB",
+      "type": "last_edited_by",
+      "last_edited_by": {
+        "object": "user",
+        "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+<span />
+
+## Last edited time
+
+The `last_edited_time` settings object is empty. Notion sets each page’s last edit time; page values are read-only.
+
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Last edited time": {
+        "id": "edtT",
+        "name": "Last edited time",
+        "description": null,
+        "type": "last_edited_time",
+        "last_edited_time": {}
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Last edited time": {
+        "id": "edtT",
+        "type": "last_edited_time",
+        "last_edited_time": "2026-09-04T14:30:00.000Z"
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "edtT",
+      "type": "last_edited_time",
+      "last_edited_time": "2026-09-04T14:30:00.000Z"
+    }
+    ```
+  </Tab>
+</Tabs>
+
+<span />
+
+<span />
+
+## Multi-select
+
+The `multi_select` object contains an `options` array. Each page can select zero or more options. [Option fields](#select-options) are shared with select and status properties.
+
+To add or remove available options, use [Multi-select configuration updates](/reference/update-data-source-properties#multi-select-configuration-updates).
+
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Tags": {
+        "id": "tags",
+        "name": "Tags",
+        "description": null,
+        "type": "multi_select",
+        "multi_select": {
+          "options": [
+            {
+              "id": "ff8e9269-9579-47f7-8f6e-83a84716863c",
+              "name": "High",
+              "color": "red",
+              "description": null
+            }
+          ]
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Tags": {
+        "id": "tags",
+        "type": "multi_select",
+        "multi_select": [
+          {
+            "id": "ff8e9269-9579-47f7-8f6e-83a84716863c",
+            "name": "High",
+            "color": "red"
+          }
+        ]
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page write">
+    ```json Page write theme={null}
+    {
+      "properties": {
+        "Tags": {
+          "multi_select": [
+            {
+              "name": "High"
+            }
+          ]
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "tags",
+      "type": "multi_select",
+      "multi_select": [
+        {
+          "id": "ff8e9269-9579-47f7-8f6e-83a84716863c",
+          "name": "High",
+          "color": "red"
+        }
+      ]
+    }
+    ```
+  </Tab>
+</Tabs>
+
+<span />
+
+## Number
+
+The `number` object contains `format`, which controls display in Notion. It does not change the stored number. The default is `number`.
+
+Supported formats are `number`, `number_with_commas`, `percent`, `dollar`, `australian_dollar`, `canadian_dollar`, `singapore_dollar`, `euro`, `pound`, `yen`, `ruble`, `rupee`, `won`, `yuan`, `real`, `lira`, `rupiah`, `franc`, `hong_kong_dollar`, `new_zealand_dollar`, `krona`, `norwegian_krone`, `mexican_peso`, `rand`, `new_taiwan_dollar`, `danish_krone`, `zloty`, `baht`, `forint`, `koruna`, `shekel`, `chilean_peso`, `philippine_peso`, `dirham`, `colombian_peso`, `riyal`, `ringgit`, `leu`, `argentine_peso`, `uruguayan_peso`, `peruvian_sol`, `vietnamese_dong`, `pakistani_rupee`, `nigerian_naira`, and `bitcoin`.
+
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Estimate": {
+        "id": "estM",
+        "name": "Estimate",
+        "description": null,
+        "type": "number",
+        "number": {
+          "format": "number"
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Estimate": {
+        "id": "estM",
+        "type": "number",
+        "number": 8
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page write">
+    ```json Page write theme={null}
+    {
+      "properties": {
+        "Estimate": {
+          "number": 8
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "estM",
+      "type": "number",
+      "number": 8
+    }
+    ```
+  </Tab>
+</Tabs>
+
+<span />
 
 ## People
 
-Contains people mentions. The `people` type object is empty.
+The Person property uses `people: {}`. Page values contain people or groups.
 
 <Tabs>
-  <Tab title="Property">
-    ```json Example people data source property theme={null}
+  <Tab title="Schema">
+    ```json Schema theme={null}
     {
-      "Project owner": {
-        "id": "FlgQ",
-        "name": "Project owner",
+      "Owner": {
+        "id": "ownR",
+        "name": "Owner",
+        "description": null,
         "type": "people",
         "people": {}
       }
@@ -490,12 +779,12 @@ Contains people mentions. The `people` type object is empty.
     ```
   </Tab>
 
-  <Tab title="Value">
-    Pass an array of [user objects](/reference/user) with `id`. See [People page property values](/reference/page-property-values#people).
-
-    ```json Example people page property value theme={null}
+  <Tab title="Page value">
+    ```json Page value theme={null}
     {
-      "Project owner": {
+      "Owner": {
+        "id": "ownR",
+        "type": "people",
         "people": [
           {
             "object": "user",
@@ -506,266 +795,15 @@ Contains people mentions. The `people` type object is empty.
     }
     ```
   </Tab>
-</Tabs>
 
-***
-
-## Phone number
-
-Contains phone number values. The `phone_number` type object is empty. No format is enforced.
-
-<Tabs>
-  <Tab title="Property">
-    ```json Example phone number data source property theme={null}
+  <Tab title="Page write">
+    ```json Page write theme={null}
     {
-      "Contact phone number": {
-        "id": "ULHa",
-        "name": "Contact phone number",
-        "type": "phone_number",
-        "phone_number": {}
-      }
-    }
-    ```
-  </Tab>
-
-  <Tab title="Value">
-    Pass a string. See [Phone number page property values](/reference/page-property-values#phone-number).
-
-    ```json Example phone number page property value theme={null}
-    {
-      "Contact phone number": {
-        "phone_number": "415-867-5309"
-      }
-    }
-    ```
-  </Tab>
-</Tabs>
-
-***
-
-## Place
-
-Contains location values. Can be used with the Map view. The `place` type object is empty.
-
-<Warning>
-  Place page property values are not fully supported via the API. Reading a place property returns `null`. See [Unsupported properties](/reference/page-property-values#unsupported-properties).
-</Warning>
-
-<Tabs>
-  <Tab title="Property">
-    ```json Example place data source property theme={null}
-    {
-      "Place": {
-        "id": "Xqz4",
-        "name": "Place",
-        "type": "place",
-        "place": {}
-      }
-    }
-    ```
-  </Tab>
-
-  <Tab title="Value">
-    Place values are currently not fully supported via the API. See [Unsupported properties](/reference/page-property-values#unsupported-properties).
-
-    ```json Example place page property value (read-only) theme={null}
-    {
-      "Place": {
-        "id": "%60%40Gq",
-        "type": "place",
-        "place": null
-      }
-    }
-    ```
-  </Tab>
-</Tabs>
-
-***
-
-## Relation
-
-Contains [relations](https://www.notion.com/help/relations-and-rollups) — references to pages in another data source.
-
-The `relation` type object has:
-
-| Field            | Type            | Description                                                                                                                                                           | Example value                            |
-| :--------------- | :-------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------- |
-| `data_source_id` | `string` (UUID) | The data source that the relation refers to. Linked page values must belong to this data source.                                                                      | `"668d797c-76fa-4934-9b05-ad288df2d136"` |
-| `dual_property`  | `object`        | An object with `synced_property_id` and `synced_property_name` for the corresponding property in the related data source. Present for dual (bidirectional) relations. | See example below.                       |
-
-<Tabs>
-  <Tab title="Property">
-    ```json Example relation data source property theme={null}
-    {
-      "Projects": {
-        "id": "~pex",
-        "name": "Projects",
-        "type": "relation",
-        "relation": {
-          "data_source_id": "6c4240a9-a3ce-413e-9fd0-8a51a4d0a49b",
-          "dual_property": {
-            "synced_property_name": "Tasks",
-            "synced_property_id": "JU]K"
-          }
-        }
-      }
-    }
-    ```
-  </Tab>
-
-  <Tab title="Value">
-    Pass an array of page references with `id`. See [Relation page property values](/reference/page-property-values#relation).
-
-    ```json Example relation page property value theme={null}
-    {
-      "Projects": {
-        "relation": [
-          { "id": "dd456007-6c66-4bba-957e-ea501dcda3a6" },
-          { "id": "0c1f7cb2-8090-4f18-924e-d92965055e32" }
-        ]
-      }
-    }
-    ```
-  </Tab>
-</Tabs>
-
-<Info>
-  **Related databases must be shared with your connection**
-
-  To retrieve or update relation properties, the related database must also be shared with your connection.
-</Info>
-
-***
-
-## Rich text
-
-Contains text values. The `rich_text` type object is empty.
-
-<Tabs>
-  <Tab title="Property">
-    ```json Example rich text data source property theme={null}
-    {
-      "Project description": {
-        "id": "NZZ%3B",
-        "name": "Project description",
-        "type": "rich_text",
-        "rich_text": {}
-      }
-    }
-    ```
-  </Tab>
-
-  <Tab title="Value">
-    Pass an array of [rich text objects](/reference/rich-text). See [Rich text page property values](/reference/page-property-values#rich-text).
-
-    ```json Example rich text page property value theme={null}
-    {
-      "Project description": {
-        "rich_text": [
-          {
-            "type": "text",
-            "text": { "content": "A project description" }
-          }
-        ]
-      }
-    }
-    ```
-  </Tab>
-</Tabs>
-
-***
-
-## Rollup
-
-Contains values pulled from a related data source via a [rollup](https://www.notion.com/help/relations-and-rollups).
-
-The `rollup` type object has:
-
-| Field                    | Type            | Description                                                                                                                                                                                                                                                                                                                                                 | Example value        |
-| :----------------------- | :-------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------- |
-| `function`               | `string` (enum) | The function that computes the rollup value. Values include: `average`, `checked`, `count`, `count_values`, `date_range`, `earliest_date`, `empty`, `latest_date`, `max`, `median`, `min`, `not_empty`, `percent_checked`, `percent_empty`, `percent_not_empty`, `percent_unchecked`, `range`, `show_original`, `show_unique`, `sum`, `unchecked`, `unique` | `"sum"`              |
-| `relation_property_id`   | `string`        | The `id` of the related data source property.                                                                                                                                                                                                                                                                                                               | `"fy:{"`             |
-| `relation_property_name` | `string`        | The `name` of the related data source property.                                                                                                                                                                                                                                                                                                             | `"Tasks"`            |
-| `rollup_property_id`     | `string`        | The `id` of the property being rolled up.                                                                                                                                                                                                                                                                                                                   | `"fy:{"`             |
-| `rollup_property_name`   | `string`        | The `name` of the property being rolled up.                                                                                                                                                                                                                                                                                                                 | `"Days to complete"` |
-
-<Tabs>
-  <Tab title="Property">
-    ```json Example rollup data source property theme={null}
-    {
-      "Estimated total project time": {
-        "id": "%5E%7Cy%3C",
-        "name": "Estimated total project time",
-        "type": "rollup",
-        "rollup": {
-          "rollup_property_name": "Days to complete",
-          "relation_property_name": "Tasks",
-          "rollup_property_id": "\\nyY",
-          "relation_property_id": "Y]<y",
-          "function": "sum"
-        }
-      }
-    }
-    ```
-  </Tab>
-
-  <Tab title="Value">
-    Returns a computed result. The value can't be updated directly. See [Rollup page property values](/reference/page-property-values#rollup).
-
-    ```json Example rollup page property value theme={null}
-    {
-      "Estimated total project time": {
-        "id": "%5E%7Cy%3C",
-        "type": "rollup",
-        "rollup": {
-          "type": "number",
-          "number": 14,
-          "function": "sum"
-        }
-      }
-    }
-    ```
-  </Tab>
-</Tabs>
-
-***
-
-## Select
-
-Contains values from a selection of options. Only one option per row.
-
-The `select` type object includes an `options` array. Each option has:
-
-| Field   | Type            | Description                                                                                                                        | Example value                            |
-| :------ | :-------------- | :--------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------- |
-| `color` | `string` (enum) | The color of the option. Possible values: `blue`, `brown`, `default`, `gray`, `green`, `orange`, `pink`, `purple`, `red`, `yellow` | `"red"`                                  |
-| `id`    | `string`        | An identifier for the option. Does not change if the name is changed.                                                              | `"ff8e9269-9579-47f7-8f6e-83a84716863c"` |
-| `name`  | `string`        | The name of the option as it appears in Notion. Commas are not valid. Names must be unique (case-insensitive).                     | `"Fruit"`                                |
-
-<Tabs>
-  <Tab title="Property">
-    ```json Example select data source property expandable theme={null}
-    {
-      "Food group": {
-        "id": "%40Q%5BM",
-        "name": "Food group",
-        "type": "select",
-        "select": {
-          "options": [
+      "properties": {
+        "Owner": {
+          "people": [
             {
-              "id": "e28f74fc-83a7-4469-8435-27eb18f9f9de",
-              "name": "Vegetable",
-              "color": "purple"
-            },
-            {
-              "id": "6132d771-b283-4cd9-ba44-b1ed30477c7f",
-              "name": "Fruit",
-              "color": "red"
-            },
-            {
-              "id": "fc9ea861-820b-4f2b-bc32-44ed9eca873c",
-              "name": "Protein",
-              "color": "yellow"
+              "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
             }
           ]
         }
@@ -774,64 +812,223 @@ The `select` type object includes an `options` array. Each option has:
     ```
   </Tab>
 
-  <Tab title="Value">
-    Pass an option object with `name` or `id`. See [Select page property values](/reference/page-property-values#select).
-
-    ```json Example select page property value theme={null}
+  <Tab title="Property item">
+    ```json Property item theme={null}
     {
-      "Food group": {
-        "select": {
-          "name": "Fruit"
-        }
+      "object": "property_item",
+      "id": "ownR",
+      "type": "people",
+      "people": {
+        "object": "user",
+        "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
       }
     }
     ```
   </Tab>
 </Tabs>
 
-***
+<span />
 
-## Status
+## Phone number
 
-Contains values from a list of status options, organized into groups.
-
-The `status` type object includes `options` and `groups` arrays.
-
-**Options** — each has:
-
-| Field   | Type            | Description                                                                                                                        | Example value                            |
-| :------ | :-------------- | :--------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------- |
-| `color` | `string` (enum) | The color of the option. Possible values: `blue`, `brown`, `default`, `gray`, `green`, `orange`, `pink`, `purple`, `red`, `yellow` | `"green"`                                |
-| `id`    | `string`        | An identifier for the option.                                                                                                      | `"ff8e9269-9579-47f7-8f6e-83a84716863c"` |
-| `name`  | `string`        | The name of the option as it appears in Notion. Commas are not valid. Names must be unique (case-insensitive).                     | `"In progress"`                          |
-
-**Groups** — each has:
-
-| Field        | Type             | Description                                                                                                                       | Example value                            |
-| :----------- | :--------------- | :-------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------- |
-| `color`      | `string` (enum)  | The color of the group. Possible values: `blue`, `brown`, `default`, `gray`, `green`, `orange`, `pink`, `purple`, `red`, `yellow` | `"purple"`                               |
-| `id`         | `string`         | An identifier for the group.                                                                                                      | `"ff8e9269-9579-47f7-8f6e-83a84716863c"` |
-| `name`       | `string`         | The name of the group as it appears in Notion.                                                                                    | `"To do"`                                |
-| `option_ids` | array of strings | Sorted list of `id`s of options that belong to this group.                                                                        |                                          |
+The Phone property uses `phone_number: {}`.
 
 <Tabs>
-  <Tab title="Property">
-    ```json Example status data source property expandable theme={null}
+  <Tab title="Schema">
+    ```json Schema theme={null}
     {
-      "Status": {
-        "id": "biOx",
-        "name": "Status",
-        "type": "status",
-        "status": {
-          "options": [
-            { "id": "034ece9a-384d-4d1f-97f7-7f685b29ae9b", "name": "Not started", "color": "default" },
-            { "id": "330aeafb-598c-4e1c-bc13-1148aa5963d3", "name": "In progress", "color": "blue" },
-            { "id": "497e64fb-01e2-41ef-ae2d-8a87a3bb51da", "name": "Done", "color": "green" }
-          ],
-          "groups": [
-            { "id": "b9d42483-e576-4858-a26f-ed940a5f678f", "name": "To-do", "color": "gray", "option_ids": ["034ece9a-384d-4d1f-97f7-7f685b29ae9b"] },
-            { "id": "cf4952eb-1265-46ec-86ab-4bded4fa2e3b", "name": "In progress", "color": "blue", "option_ids": ["330aeafb-598c-4e1c-bc13-1148aa5963d3"] },
-            { "id": "4fa7348e-ae74-46d9-9585-e773caca6f40", "name": "Complete", "color": "green", "option_ids": ["497e64fb-01e2-41ef-ae2d-8a87a3bb51da"] }
+      "Contact phone": {
+        "id": "phon",
+        "name": "Contact phone",
+        "description": null,
+        "type": "phone_number",
+        "phone_number": {}
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Contact phone": {
+        "id": "phon",
+        "type": "phone_number",
+        "phone_number": "+1 415 555 0123"
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page write">
+    ```json Page write theme={null}
+    {
+      "properties": {
+        "Contact phone": {
+          "phone_number": "+1 415 555 0123"
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "phon",
+      "type": "phone_number",
+      "phone_number": "+1 415 555 0123"
+    }
+    ```
+  </Tab>
+</Tabs>
+
+<span />
+
+## Place
+
+The Place property uses `place: {}`. Page values contain coordinates and optional place details, or `null` when empty.
+
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Office": {
+        "id": "plce",
+        "name": "Office",
+        "description": null,
+        "type": "place",
+        "place": {}
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Office": {
+        "id": "plce",
+        "type": "place",
+        "place": {
+          "lat": 37.7749,
+          "lon": -122.4194,
+          "name": "San Francisco",
+          "address": null,
+          "aws_place_id": null,
+          "google_place_id": null
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page write">
+    ```json Page write theme={null}
+    {
+      "properties": {
+        "Office": {
+          "place": {
+            "lat": 37.7749,
+            "lon": -122.4194,
+            "name": "San Francisco"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "plce",
+      "type": "place",
+      "place": {
+        "lat": 37.7749,
+        "lon": -122.4194,
+        "name": "San Francisco",
+        "address": null,
+        "aws_place_id": null,
+        "google_place_id": null
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+<span />
+
+<span />
+
+<span />
+
+## Relation
+
+A relation links pages to pages in a target data source.
+
+| Field             | Meaning                                                        |
+| :---------------- | :------------------------------------------------------------- |
+| `data_source_id`  | The target data source’s ID. Use this in current API requests. |
+| `database_id`     | The target’s parent database ID, included in responses.        |
+| `type`            | `single_property` or `dual_property`.                          |
+| `single_property` | An empty object for a one-way relation.                        |
+| `dual_property`   | Settings for the matching relation on the target data source.  |
+
+A one-way relation uses `type: "single_property"` and `single_property: {}`.
+
+A two-way relation uses `type: "dual_property"`. Its response includes `dual_property.synced_property_id` and `dual_property.synced_property_name`. A create request can use `dual_property: {}` to create the matching property.
+
+Share the related database with your connection too. Missing access can leave relation values empty or make formula and rollup results incomplete. Check access before treating an empty result as missing data.
+
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Projects": {
+        "id": "proj",
+        "name": "Projects",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "668d797c-76fa-4934-9b05-ad288df2d136",
+          "data_source_id": "6c4240a9-a3ce-413e-9fd0-8a51a4d0a49b",
+          "type": "single_property",
+          "single_property": {}
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Projects": {
+        "id": "proj",
+        "type": "relation",
+        "relation": [
+          {
+            "id": "dd456007-6c66-4bba-957e-ea501dcda3a6"
+          }
+        ],
+        "has_more": false
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page write">
+    ```json Page write theme={null}
+    {
+      "properties": {
+        "Projects": {
+          "relation": [
+            {
+              "id": "dd456007-6c66-4bba-957e-ea501dcda3a6"
+            }
           ]
         }
       }
@@ -839,14 +1036,200 @@ The `status` type object includes `options` and `groups` arrays.
     ```
   </Tab>
 
-  <Tab title="Value">
-    Pass an option object with `name` or `id`. See [Status page property values](/reference/page-property-values#status).
-
-    ```json Example status page property value theme={null}
+  <Tab title="Property item">
+    ```json Property item theme={null}
     {
-      "Status": {
-        "status": {
-          "name": "In progress"
+      "object": "property_item",
+      "id": "proj",
+      "type": "relation",
+      "relation": {
+        "id": "dd456007-6c66-4bba-957e-ea501dcda3a6"
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+<span />
+
+## Rich text
+
+The Text property uses `rich_text: {}`. Its page values are rich text arrays.
+
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Summary": {
+        "id": "text",
+        "name": "Summary",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Summary": {
+        "id": "text",
+        "type": "rich_text",
+        "rich_text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "Launch checklist",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "Launch checklist",
+            "href": null
+          }
+        ]
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page write">
+    ```json Page write theme={null}
+    {
+      "properties": {
+        "Summary": {
+          "rich_text": [
+            {
+              "type": "text",
+              "text": {
+                "content": "Launch checklist"
+              }
+            }
+          ]
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "text",
+      "type": "rich_text",
+      "rich_text": {
+        "type": "text",
+        "text": {
+          "content": "Launch checklist",
+          "link": null
+        },
+        "annotations": {
+          "bold": false,
+          "italic": false,
+          "strikethrough": false,
+          "underline": false,
+          "code": false,
+          "color": "default"
+        },
+        "plain_text": "Launch checklist",
+        "href": null
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+<span />
+
+## Rollup
+
+A rollup reads a property through a relation and applies a `function`.
+
+| Field                                            | Meaning                                                                                       |
+| :----------------------------------------------- | :-------------------------------------------------------------------------------------------- |
+| `relation_property_name`, `relation_property_id` | The relation in this data source. Supply its name or ID in a request.                         |
+| `rollup_property_name`, `rollup_property_id`     | The property in the target data source to calculate over. Supply its name or ID in a request. |
+| `function`                                       | The calculation to perform. Required in a request.                                            |
+
+Responses include both names and IDs. The target property belongs to the related data source; the relation property belongs to the source where you define the rollup.
+
+Functions are `count`, `count_values`, `empty`, `not_empty`, `unique`, `show_unique`, `percent_empty`, `percent_not_empty`, `sum`, `average`, `median`, `min`, `max`, `range`, `earliest_date`, `latest_date`, `date_range`, `checked`, `unchecked`, `percent_checked`, `percent_unchecked`, `count_per_group`, `percent_per_group`, and `show_original`.
+
+The function can be configured even when [property-item retrieval cannot calculate it](/reference/property-item-object#unsupported-rollup). Page values are read-only.
+
+Share the related database with your connection too. Missing access can leave relation values empty or make formula and rollup results incomplete. Check access before treating an empty result as missing data.
+
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Total estimate": {
+        "id": "roll",
+        "name": "Total estimate",
+        "description": null,
+        "type": "rollup",
+        "rollup": {
+          "relation_property_id": "proj",
+          "relation_property_name": "Projects",
+          "rollup_property_id": "estM",
+          "rollup_property_name": "Estimate",
+          "function": "sum"
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Total estimate": {
+        "id": "roll",
+        "type": "rollup",
+        "rollup": {
+          "type": "number",
+          "number": 8,
+          "function": "sum"
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "list",
+      "results": [
+        {
+          "object": "property_item",
+          "id": "proj",
+          "type": "relation",
+          "relation": {
+            "id": "dd456007-6c66-4bba-957e-ea501dcda3a6"
+          }
+        }
+      ],
+      "next_cursor": null,
+      "has_more": false,
+      "type": "property_item",
+      "property_item": {
+        "id": "roll",
+        "next_url": null,
+        "type": "rollup",
+        "rollup": {
+          "type": "number",
+          "number": 8,
+          "function": "sum"
         }
       }
     }
@@ -854,23 +1237,217 @@ The `status` type object includes `options` and `groups` arrays.
   </Tab>
 </Tabs>
 
-<Note>
-  When creating a status property without specifying options, defaults ("Not started", "In progress", "Done") with groups ("To-do", "In progress", "Complete") are created. When creating or updating custom options, pass `group` on each option to assign it to `To-do`, `In progress`, or `Complete`. If `group` is omitted on update, existing options keep their current group, and new options use `To-do` when present or the first existing group otherwise. To rename, reorder, or otherwise reconfigure groups, use the Notion UI.
-</Note>
+<span />
 
-***
+## Select
+
+The `select` object contains an `options` array. Each page can select one option or no option.
+
+### Select options
+
+Each select, multi-select, or status option has these fields in a schema response:
+
+| Field         | Type             | Meaning                                                                                      |
+| :------------ | :--------------- | :------------------------------------------------------------------------------------------- |
+| `id`          | String           | The option’s ID. It stays the same when its name changes in Notion.                          |
+| `name`        | String           | The option’s label. Names must be unique without regard to case. Commas are not allowed.     |
+| `color`       | String           | `default`, `gray`, `brown`, `orange`, `yellow`, `green`, `blue`, `purple`, `pink`, or `red`. |
+| `description` | String or `null` | The option’s description. This field appears in the schema, not in page values.              |
+
+Page values include `id`, `name`, and `color`. Page writes select an option by `id` or `name`. To change the available options, see [Update data source properties](/reference/update-data-source-properties#select-configuration-updates).
+
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Priority": {
+        "id": "prio",
+        "name": "Priority",
+        "description": null,
+        "type": "select",
+        "select": {
+          "options": [
+            {
+              "id": "ff8e9269-9579-47f7-8f6e-83a84716863c",
+              "name": "High",
+              "color": "red",
+              "description": null
+            }
+          ]
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Priority": {
+        "id": "prio",
+        "type": "select",
+        "select": {
+          "id": "ff8e9269-9579-47f7-8f6e-83a84716863c",
+          "name": "High",
+          "color": "red"
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page write">
+    ```json Page write theme={null}
+    {
+      "properties": {
+        "Priority": {
+          "select": {
+            "name": "High"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "prio",
+      "type": "select",
+      "select": {
+        "id": "ff8e9269-9579-47f7-8f6e-83a84716863c",
+        "name": "High",
+        "color": "red"
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+<span />
+
+<span />
+
+## Status
+
+The `status` object contains `options` and `groups` arrays. Each page selects one option. The schema groups options by progress.
+
+Status options use the same [option fields](#select-options). Each group contains `id`, `name`, `color`, and `option_ids`. The `option_ids` array lists that group’s options in order.
+
+Creating `status: {}` adds default options (`Not started`, `In progress`, `Done`) in the `To-do`, `In progress`, and `Complete` groups. Custom request options accept a `group` with one of those group names.
+
+To change options or their group membership, see [Status configuration updates](/reference/update-data-source-properties#status-configuration-updates). Group definitions themselves are managed in Notion.
+
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Status": {
+        "id": "stat",
+        "name": "Status",
+        "description": null,
+        "type": "status",
+        "status": {
+          "options": [
+            {
+              "id": "330aeafb-598c-4e1c-bc13-1148aa5963d3",
+              "name": "In progress",
+              "color": "blue",
+              "description": null
+            }
+          ],
+          "groups": [
+            {
+              "id": "b9d42483-e576-4858-a26f-ed940a5f678f",
+              "name": "To-do",
+              "color": "gray",
+              "option_ids": []
+            },
+            {
+              "id": "cf4952eb-1265-46ec-86ab-4bded4fa2e3b",
+              "name": "In progress",
+              "color": "blue",
+              "option_ids": [
+                "330aeafb-598c-4e1c-bc13-1148aa5963d3"
+              ]
+            },
+            {
+              "id": "4fa7348e-ae74-46d9-9585-e773caca6f40",
+              "name": "Complete",
+              "color": "green",
+              "option_ids": []
+            }
+          ]
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Status": {
+        "id": "stat",
+        "type": "status",
+        "status": {
+          "id": "330aeafb-598c-4e1c-bc13-1148aa5963d3",
+          "name": "In progress",
+          "color": "blue"
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page write">
+    ```json Page write theme={null}
+    {
+      "properties": {
+        "Status": {
+          "status": {
+            "name": "In progress"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "stat",
+      "type": "status",
+      "status": {
+        "id": "330aeafb-598c-4e1c-bc13-1148aa5963d3",
+        "name": "In progress",
+        "color": "blue"
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+<span />
 
 ## Title
 
-Controls the title that appears at the top of a page when a data source row is opened. The `title` type object is empty.
+The Name property uses `title: {}`. Every data source must have exactly one. Its ID is always `title`, even if you rename it.
+
+You cannot remove it, change it to another type, or change another property to `title`. It names each page in the data source. The data source’s own name is its top-level `title` field.
 
 <Tabs>
-  <Tab title="Property">
-    ```json Example title data source property theme={null}
+  <Tab title="Schema">
+    ```json Schema theme={null}
     {
-      "Project name": {
+      "Name": {
         "id": "title",
-        "name": "Project name",
+        "name": "Name",
+        "description": null,
         "type": "title",
         "title": {}
       }
@@ -878,54 +1455,97 @@ Controls the title that appears at the top of a page when a data source row is o
     ```
   </Tab>
 
-  <Tab title="Value">
-    Pass an array of [rich text objects](/reference/rich-text). See [Title page property values](/reference/page-property-values#title).
-
-    ```json Example title page property value theme={null}
+  <Tab title="Page value">
+    ```json Page value theme={null}
     {
-      "Project name": {
+      "Name": {
+        "id": "title",
+        "type": "title",
         "title": [
           {
             "type": "text",
-            "text": { "content": "My project" }
+            "text": {
+              "content": "Launch checklist",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "Launch checklist",
+            "href": null
           }
         ]
       }
     }
     ```
   </Tab>
+
+  <Tab title="Page write">
+    ```json Page write theme={null}
+    {
+      "properties": {
+        "Name": {
+          "title": [
+            {
+              "type": "text",
+              "text": {
+                "content": "Launch checklist"
+              }
+            }
+          ]
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "title",
+      "type": "title",
+      "title": {
+        "type": "text",
+        "text": {
+          "content": "Launch checklist",
+          "link": null
+        },
+        "annotations": {
+          "bold": false,
+          "italic": false,
+          "strikethrough": false,
+          "underline": false,
+          "code": false,
+          "color": "default"
+        },
+        "plain_text": "Launch checklist",
+        "href": null
+      }
+    }
+    ```
+  </Tab>
 </Tabs>
 
-<Warning>
-  **All data sources require exactly one `title` property.**
-  The API throws errors if you create a data source without a `title` property, or attempt to add or remove a `title` property.
-</Warning>
-
-<Info>
-  **Title data source property vs. data source title**
-
-  A `title` data source property is a type of column in a data source. A data source `title` defines the name of the data source itself, found on the [data source object](/reference/data-source). Every data source requires both.
-</Info>
-
-***
+<span />
 
 ## Unique ID
 
-Automatically incremented, unique across all pages in a data source. Useful for task or bug report IDs (e.g. `TASK-1234`). This value is read-only.
-
-The `unique_id` type object has an optional `prefix`:
-
-| Field    | Type               | Description                                                                                   | Example value |
-| :------- | :----------------- | :-------------------------------------------------------------------------------------------- | :------------ |
-| `prefix` | `string` or `null` | A common prefix assigned to pages. When set, enables lookup URLs like `notion.com/TASK-1234`. | `"TASK"`      |
+The ID property uses `unique_id`. Its `prefix` is a string or `null`, such as `TASK`. Notion assigns each page a unique number within the data source. You can configure the prefix, but you cannot write a page’s number.
 
 <Tabs>
-  <Tab title="Property">
-    ```json Example unique ID data source property theme={null}
+  <Tab title="Schema">
+    ```json Schema theme={null}
     {
       "Task ID": {
-        "id": "tqqd",
+        "id": "task",
         "name": "Task ID",
+        "description": null,
         "type": "unique_id",
         "unique_id": {
           "prefix": "TASK"
@@ -935,37 +1555,50 @@ The `unique_id` type object has an optional `prefix`:
     ```
   </Tab>
 
-  <Tab title="Value">
-    Returns the auto-incremented number and optional prefix. See [Unique ID page property values](/reference/page-property-values#unique-id).
-
-    ```json Example unique ID page property value theme={null}
+  <Tab title="Page value">
+    ```json Page value theme={null}
     {
       "Task ID": {
-        "id": "tqqd",
+        "id": "task",
         "type": "unique_id",
         "unique_id": {
-          "number": 3,
+          "number": 42,
           "prefix": "TASK"
         }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "task",
+      "type": "unique_id",
+      "unique_id": {
+        "number": 42,
+        "prefix": "TASK"
       }
     }
     ```
   </Tab>
 </Tabs>
 
-***
+<span />
 
 ## URL
 
-Contains URL values. The `url` type object is empty.
+The `url` settings object is empty.
 
 <Tabs>
-  <Tab title="Property">
-    ```json Example URL data source property theme={null}
+  <Tab title="Schema">
+    ```json Schema theme={null}
     {
-      "Project URL": {
-        "id": "BZKU",
-        "name": "Project URL",
+      "Project link": {
+        "id": "link",
+        "name": "Project link",
+        "description": null,
         "type": "url",
         "url": {}
       }
@@ -973,13 +1606,121 @@ Contains URL values. The `url` type object is empty.
     ```
   </Tab>
 
-  <Tab title="Value">
-    Pass a string with the URL. See [URL page property values](/reference/page-property-values#url).
-
-    ```json Example URL page property value theme={null}
+  <Tab title="Page value">
+    ```json Page value theme={null}
     {
-      "Project URL": {
-        "url": "https://developers.notion.com/"
+      "Project link": {
+        "id": "link",
+        "type": "url",
+        "url": "https://example.com/projects/launch"
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page write">
+    ```json Page write theme={null}
+    {
+      "properties": {
+        "Project link": {
+          "url": "https://example.com/projects/launch"
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "link",
+      "type": "url",
+      "url": "https://example.com/projects/launch"
+    }
+    ```
+  </Tab>
+</Tabs>
+
+<span />
+
+## Verification
+
+Notion creates the Verification property for a wiki. Its schema response has an empty `verification` object; the API cannot create this property through a schema write. Verification applies to [wiki pages](/guides/data-apis/working-with-databases#wiki-databases). Its page value includes the state, verification period, and verifier.
+
+<Tabs>
+  <Tab title="Schema">
+    ```json Schema theme={null}
+    {
+      "Verification": {
+        "id": "vrfy",
+        "name": "Verification",
+        "description": null,
+        "type": "verification",
+        "verification": {}
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page value">
+    ```json Page value theme={null}
+    {
+      "Verification": {
+        "id": "vrfy",
+        "type": "verification",
+        "verification": {
+          "state": "verified",
+          "date": {
+            "start": "2026-09-01T09:00:00.000Z",
+            "end": "2026-10-01T09:00:00.000Z",
+            "time_zone": null
+          },
+          "verified_by": {
+            "object": "user",
+            "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Page write">
+    ```json Page write theme={null}
+    {
+      "properties": {
+        "Verification": {
+          "verification": {
+            "state": "verified",
+            "date": {
+              "start": "2026-09-01T09:00:00.000Z",
+              "end": "2026-10-01T09:00:00.000Z"
+            }
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Property item">
+    ```json Property item theme={null}
+    {
+      "object": "property_item",
+      "id": "vrfy",
+      "type": "verification",
+      "verification": {
+        "state": "verified",
+        "date": {
+          "start": "2026-09-01T09:00:00.000Z",
+          "end": "2026-10-01T09:00:00.000Z",
+          "time_zone": null
+        },
+        "verified_by": {
+          "object": "user",
+          "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
+        }
       }
     }
     ```

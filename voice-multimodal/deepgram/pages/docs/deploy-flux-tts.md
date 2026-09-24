@@ -28,7 +28,9 @@ A Flux TTS Engine needs considerably more system RAM than an Aura Engine. While 
 
 Provision at least 64 GB of system RAM on every host running a Flux TTS Engine. On AWS, the `g6.4xlarge` instance type (one L4 GPU, 64 GB RAM) meets this requirement.
 
-Size the host against the 60 GB startup peak, not against steady-state usage. An Engine that cannot allocate this memory at startup will fail to load the model and exit.
+> **Warning**
+>
+> Size the host against the 60 GB startup peak, not against steady-state usage. An Engine that cannot allocate this memory at startup will fail to load the model and exit.
 
 This requirement applies to system RAM, not GPU memory.
 
@@ -49,7 +51,9 @@ uuid = "<model UUID provided by Deepgram>"
 max_batch_size = 0 # Placeholder; not a working value. See the warning below.
 ```
 
-`max_batch_size` has no safe default. The correct value differs substantially between GPUs, and a value tuned for one will underperform or exhaust memory on another. Engine will not start until you set it to a non-zero value. Contact your Deepgram account representative for a recommended value for the GPUs in your deployment.
+> **Warning**
+>
+> `max_batch_size` has no safe default. The correct value differs substantially between GPUs, and a value tuned for one will underperform or exhaust memory on another. Engine will not start until you set it to a non-zero value. Contact your Deepgram account representative for a recommended value for the GPUs in your deployment.
 
 ### API
 
@@ -73,7 +77,9 @@ The Helm chart exposes `fluxTts.enabled`, `fluxTts.uuid`, and `fluxTts.maxBatchS
 
 Flux TTS requires a dedicated Engine. Deploy it separately from Aura, and from your speech-to-text models, which contend for the same GPU memory.
 
-Flux TTS and Aura cannot run on the same Engine. Engine refuses to start if both are configured, exiting before it loads any model. To serve both, run separate Engine instances.
+> **Warning**
+>
+> Flux TTS and Aura cannot run on the same Engine. Engine refuses to start if both are configured, exiting before it loads any model. To serve both, run separate Engine instances.
 
 Flux TTS synthesis workers bind to a single GPU. Exposing additional GPUs to a Flux TTS Engine does not increase its capacity. To use more GPUs, run one Engine per GPU.
 

@@ -10,8 +10,10 @@ path: docs/overview/administration/workspaces/sso/scim
 
 ## Overview
 
-SCIM is available for **Enterprise** workspaces. Only **Workspace Admins** can configure these
-settings.
+> **Info**
+>
+> SCIM is available for **Enterprise** workspaces. Only **Workspace Admins** can configure these
+> settings.
 
 ## Prerequisites
 
@@ -30,8 +32,10 @@ Go to **Workspace settings** > **Security & SSO** > **SCIM**.
 
 Click **Generate Token**. Copy the **Base URL** and **Bearer token** immediately.
 
-The token is only shown once. If you lose it, you must generate a new one, which will
-invalidate the previous token and disconnect any currently configured IdP provisioning.
+> **Warning**
+>
+> The token is only shown once. If you lose it, you must generate a new one, which will
+> invalidate the previous token and disconnect any currently configured IdP provisioning.
 
 #### Configure your identity provider
 
@@ -42,8 +46,10 @@ In your IdP SCIM/Provisioning configuration:
 
 For provider-specific instructions, see [Setup by Identity Provider](#setup-by-identity-provider).
 
-When a user is removed or deactivated in your IdP, their ElevenLabs workspace access is revoked.
-Their historical activity in the workspace is retained.
+> **Note**
+>
+> When a user is removed or deactivated in your IdP, their ElevenLabs workspace access is revoked.
+> Their historical activity in the workspace is retained.
 
 ## Capabilities
 
@@ -66,8 +72,10 @@ ElevenLabs supports the SCIM 2.0 protocol with the following capabilities:
 * **Users**: `userName`, `name`, `emails`, `active`, `externalId`
 * **Groups**: `displayName`, `members`, `externalId`
 
-Email address changes are not supported through SCIM. Updating a user's primary email in your IdP
-can cause SCIM sync failures for that user.
+> **Warning**
+>
+> Email address changes are not supported through SCIM. Updating a user's primary email in your IdP
+> can cause SCIM sync failures for that user.
 
 ## Setup by Identity Provider
 

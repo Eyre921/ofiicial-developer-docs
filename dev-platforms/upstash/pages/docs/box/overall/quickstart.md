@@ -5,6 +5,9 @@ path: docs/box/overall/quickstart
 ---
 
 import { Catalog } from "/snippets/catalog.jsx";
+import { AgentSetup } from "/snippets/agent-setup.jsx";
+
+<AgentSetup product="Box" />
 
 **Upstash Box lets you give your AI agents a computer.**
 
@@ -226,7 +229,7 @@ Great example use cases:
     Fan out to multiple boxes running specialized agents in parallel, then combine their results.
   </Card>
 
-  <Card title="Parallel Testing" icon="flask-vial" href="/box/overall/use-cases#3-parallel-testing--comparison">
+  <Card title="Parallel Testing" icon="flask-vial" href="/box/overall/use-cases#3-parallel-testing-&-comparison">
     Run the same inputs across isolated boxes and compare model output side by side.
   </Card>
 </CardGroup>

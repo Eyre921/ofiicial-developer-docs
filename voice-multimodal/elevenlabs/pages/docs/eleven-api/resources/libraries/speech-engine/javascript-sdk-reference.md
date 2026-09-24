@@ -276,9 +276,11 @@ elevenlabs.speechEngine.attach("seng_8k3m9xr4hjnfg983brhmhkd98n6", httpServer, "
 
 When auth is disabled the server accepts any client that can reach it and emits a `console.warn` on startup.
 
-Only use `disableAuth: true` if you have an IP allowlist, custom header values or equivalent
-network-level restriction in front of the server. Without one, anyone on the internet can open a
-session and consume your compute and downstream LLM quota.
+> **Warning**
+>
+> Only use `disableAuth: true` if you have an IP allowlist, custom header values or equivalent
+> network-level restriction in front of the server. Without one, anyone on the internet can open a
+> session and consume your compute and downstream LLM quota.
 
 ## Events
 

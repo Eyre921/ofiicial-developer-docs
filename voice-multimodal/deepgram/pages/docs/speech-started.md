@@ -98,6 +98,8 @@ The JSON message sent when the start of speech is detected looks similar to this
 * The `channel` field is interpreted as `[A,B]`, where `A` is the channel index, and `B` is the total number of channels. The above example is channel 0 of single-channel audio.
 * The `timestamp` field is the time at which speech was first detected.
 
-The timestamp doesn't always match the start time of the first word in the next transcript because the systems for transcribing and timing words work independently of the speech detection system.
+> **Warning**
+>
+> The timestamp doesn't always match the start time of the first word in the next transcript because the systems for transcribing and timing words work independently of the speech detection system.
 
 ---

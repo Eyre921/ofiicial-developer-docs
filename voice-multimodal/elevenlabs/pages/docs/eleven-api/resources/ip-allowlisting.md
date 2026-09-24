@@ -38,8 +38,10 @@ If you are using a [data residency region](/docs/overview/administration/data-re
 | Singapore Residency | 34.87.23.17    |
 | Singapore Residency | 34.126.179.103 |
 
-These static IPs are used across all ElevenLabs services and will remain consistent. If ElevenLabs
-adds new IPs, we will communicate changes in advance through the [changelog](/docs/changelog).
+> **Note**
+>
+> These static IPs are used across all ElevenLabs services and will remain consistent. If ElevenLabs
+> adds new IPs, we will communicate changes in advance through the [changelog](/docs/changelog).
 
 ## When to use IP allowlisting
 
@@ -61,14 +63,18 @@ The static egress IPs apply to all outbound requests from ElevenLabs, including:
 
 ## Security recommendations
 
-Combine IP allowlisting with other authentication mechanisms for defense in depth.
+> **Tip**
+>
+> Combine IP allowlisting with other authentication mechanisms for defense in depth.
 
 For webhook endpoints, use IP allowlisting together with [HMAC signature validation](/docs/eleven-agents/workflows/post-call-webhooks#authentication) to verify that requests originate from ElevenLabs.
 
 For Speech Engine servers, IP allowlisting can replace or supplement JWT verification. If your server sits behind infrastructure that restricts traffic to ElevenLabs' egress IPs, you can disable JWT verification by setting `disableAuth: true` (TypeScript) or `disable_auth=True` (Python). See the [JavaScript SDK reference](/docs/eleven-api/resources/libraries/speech-engine/javascript-sdk-reference#disabling-authentication) or [Python SDK reference](/docs/eleven-api/resources/libraries/speech-engine/python-sdk-reference#disabling-authentication) for details.
 
-Only disable authentication if you have IP allowlisting or equivalent network-level restrictions
-in place. Without one, anyone on the internet can open a session and consume your resources.
+> **Warning**
+>
+> Only disable authentication if you have IP allowlisting or equivalent network-level restrictions
+> in place. Without one, anyone on the internet can open a session and consume your resources.
 
 ## API key IP restrictions
 

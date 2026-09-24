@@ -39,16 +39,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/environment-va
 
 Successful Response
 
-- `environment_variables` (list of object, required)
-  - `label` (string, required)
-  - `created_at_unix_secs` (integer, required)
-  - `updated_at_unix_secs` (integer, required)
-  - `type` (enum, required)
-    - Allowed values: `string`, `secret`, `auth_connection`
-  - `id` (string, required)
-  - `workspace_id` (string, required)
-  - `values` (map from string to string or map from string to object or map from string to object, required)
-  - `created_by_user_id` (string, optional)
+- `environment_variables` (list of EnvironmentVariableResponse, required)
 - `has_more` (boolean, required)
 - `next_cursor` (string, optional)
 
@@ -64,10 +55,31 @@ Invalid environment filter
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### EnvironmentVariableResponse
+
+- `label` (string, required)
+- `created_at_unix_secs` (integer, required)
+- `updated_at_unix_secs` (integer, required)
+- `type` (enum, required)
+  - Allowed values: `string`, `secret`, `auth_connection`
+- `id` (string, required)
+- `workspace_id` (string, required)
+- `values` (EnvironmentVariableResponseValues, required)
+- `created_by_user_id` (string, optional)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItem, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### EnvironmentVariableResponseValues
+
+### ValidationErrorLocItem
 
 ## Examples
 

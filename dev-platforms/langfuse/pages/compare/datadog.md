@@ -225,6 +225,8 @@ No. Langfuse already ran on ClickHouse. The [announcement](/blog/joining-clickho
 
 Point live traffic at Langfuse and recreate datasets, prompts, and evaluators. History usually stays in Datadog. See [Switching from Datadog Agent Observability](#switching-from-datadog).
 
+[Ask another question](/docs/ask-ai)
+
   This comparison is out of date? Please [raise a pull request](https://github.com/langfuse/langfuse-docs/blob/main/content/compare/datadog.mdx) with up-to-date information.
 
 <!-- agent-instructions -->

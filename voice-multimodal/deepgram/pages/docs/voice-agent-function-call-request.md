@@ -26,7 +26,9 @@ A request can arrive before the user's turn is confirmed. See [Turn confirmation
 
 ## Handling the message
 
-The `client_side` property is set by the server to indicate where the function should be executed.
+> **Info**
+>
+> The `client_side` property is set by the server to indicate where the function should be executed.
 
 When your client receives a `FunctionCallRequest`:
 

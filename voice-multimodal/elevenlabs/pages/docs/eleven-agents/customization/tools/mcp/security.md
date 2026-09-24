@@ -8,11 +8,11 @@ path: docs/eleven-agents/customization/tools/mcp/security
 
 # MCP integration security
 
-#### User Responsibility
-
-You are responsible for the security, compliance, and behavior of any third-party MCP server you
-integrate with your ElevenLabs conversational agents. ElevenLabs provides the platform for
-integration but does not manage, endorse, or secure external MCP servers.
+> **User Responsibility**
+>
+> You are responsible for the security, compliance, and behavior of any third-party MCP server you
+> integrate with your ElevenLabs conversational agents. ElevenLabs provides the platform for
+> integration but does not manage, endorse, or secure external MCP servers.
 
 ## Overview
 
@@ -24,7 +24,7 @@ This guide outlines key security practices to consider when using MCP server int
 
 ElevenLabs provides built-in security controls through tool approval modes that help you manage the security risks associated with MCP tool usage. These controls allow you to balance functionality with security based on your specific needs.
 
-![Tool approval mode settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9f4c208459131622478de5010e2234d3af8a03dc9bc5b7ec2fcab48a7be3bde3/assets/images/conversational-ai/mcp-approval.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113205Z&X-Amz-Expires=604800&X-Amz-Signature=0150a42bdefc6596d1a1be2e8ee583272febbbde565ed5494c0e7a8bd2eaa913&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Tool approval mode settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9f4c208459131622478de5010e2234d3af8a03dc9bc5b7ec2fcab48a7be3bde3/assets/images/conversational-ai/mcp-approval.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T111601Z&X-Amz-Expires=604800&X-Amz-Signature=c86bee4023a8ebb074c1ba7cc446350ca20da67a8dcb4fea758a1ac8c3e63628&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Approval mode options
 
@@ -37,14 +37,16 @@ ElevenLabs provides built-in security controls through tool approval modes that 
 Fine-Grained Tool Approval mode provides the most flexible security configuration, allowing you to classify each tool based on its risk profile:
 
 ![Fine-grained tool approval
-settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/041cad753319ed92189ee8d4f70a9d3ed07177303bf71777ce36a90270a5dd24/assets/images/conversational-ai/mcp-finegrained-approvals.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113205Z&X-Amz-Expires=604800&X-Amz-Signature=02d8f58b69a40ba1f47b6d2be37e45f6d6f26f147847dcea09a4441e9929d846&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/041cad753319ed92189ee8d4f70a9d3ed07177303bf71777ce36a90270a5dd24/assets/images/conversational-ai/mcp-finegrained-approvals.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T111601Z&X-Amz-Expires=604800&X-Amz-Signature=b24bbbab34059bf2315f78735acc75a93e52bd9dbe30303e57982c63b2d38664&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 * **Auto-approved tools**: Suitable for low-risk, read-only operations or tools you completely trust
 * **Approval-required tools**: For tools that modify data, access sensitive information, or perform potentially risky operations
 * **Disabled tools**: Completely block tools that are unnecessary or pose security risks
 
-Even with approval controls in place, carefully evaluate the trustworthiness of MCP servers and
-understand what each tool can access or modify before integration.
+> **Warning**
+>
+> Even with approval controls in place, carefully evaluate the trustworthiness of MCP servers and
+> understand what each tool can access or modify before integration.
 
 ## Security tips
 
@@ -88,11 +90,11 @@ For additional security, you can add ElevenLabs' static egress IPs to your allow
 
 ## Disclaimer
 
-#### Important Disclaimer
-
-By enabling MCP server integrations, you acknowledge that this may involve data sharing with
-third-party services not controlled by ElevenLabs. This could incur additional security risks.
-Please ensure you fully understand the implications, vet the security of any MCP server you
-integrate, and adhere to these security guidelines before proceeding.
+> **Important Disclaimer**
+>
+> By enabling MCP server integrations, you acknowledge that this may involve data sharing with
+> third-party services not controlled by ElevenLabs. This could incur additional security risks.
+> Please ensure you fully understand the implications, vet the security of any MCP server you
+> integrate, and adhere to these security guidelines before proceeding.
 
 For general information on the Model Context Protocol, refer to official MCP documentation and community resources.

@@ -136,6 +136,13 @@ When available, applicable events include a top-level `team_ids` array containin
 * **integration.permission.updated**: An integration's capabilities (reading content, inserting a comment, etc.) were changed.
 * **integration.secret\_reset**: An internal integration's installation access token was reset (or "refreshed").
 * **integration.settings.updated**: An integration's basic settings, like its name or icon, were changed.
+* **workspace.agent.created**: A user created an AI agent chat.
+* **workspace.agent.deleted**: A user deleted an AI agent chat.
+* **workspace.agent.file\_downloaded**: A user downloaded a file from an AI agent chat.
+* **workspace.agent.file\_uploaded**: A user submitted an uploaded file to an AI agent chat.
+* **workspace.agent.file\_viewed**: A user viewed a file from an AI agent chat.
+* **workspace.agent.permission.updated**: A user updated permissions for an AI agent chat.
+* **workspace.agent.viewed**: A user viewed an AI agent chat.
 * **workspace.agent.web\_url\_viewed**: An AI agent viewed a web URL.
 * **workspace.audit\_log\_exported**: A workspace owner exported the workspace's audit log.
 * **workspace.content\_analytics\_exported**: The Content Analytics table of [Workspace Analytics](https://www.notion.so/help/workspace-analytics) was exported.

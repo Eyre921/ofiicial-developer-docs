@@ -14,9 +14,13 @@ path: docs/terraform-deploy-sagemaker
 
 This guide provides a complete Terraform configuration for deploying Deepgram on Amazon SageMaker. The configuration creates an IAM execution role, a SageMaker Model from your AWS Marketplace subscription, an Endpoint Configuration, and a live Endpoint. An optional module adds auto-scaling. The configuration deploys a real-time endpoint by default; it also contains an `enable_async_inference` option for asynchronous endpoints, which is currently unsupported (see the warning below).
 
-**Asynchronous endpoints are temporarily not supported.** Asynchronous inference (`enable_async_inference = true`, `async_inference_config`, `InvokeEndpointAsync`, scale-to-zero) is temporarily unavailable for Marketplace-hosted Deepgram. Leave `enable_async_inference` at its default of `false`; the async variables and resources below are documented for reference only. Need asynchronous processing? Contact a [Deepgram representative](https://deepgram.com/contact-us).
+> **Warning**
+>
+> **Asynchronous endpoints are temporarily not supported.** Asynchronous inference (`enable_async_inference = true`, `async_inference_config`, `InvokeEndpointAsync`, scale-to-zero) is temporarily unavailable for Marketplace-hosted Deepgram. Leave `enable_async_inference` at its default of `false`; the async variables and resources below are documented for reference only. Need asynchronous processing? Contact a [Deepgram representative](https://deepgram.com/contact-us).
 
-Before running Terraform, you must subscribe to a Deepgram product on the AWS Marketplace and note the **Model Package ARN**. See [Subscribe on AWS Marketplace](/docs/subscribe-aws-marketplace) for the console and Marketplace API subscription flows and how to [find the Model Package ARN](/docs/subscribe-aws-marketplace#find-the-model-package-arn).
+> **Info**
+>
+> Before running Terraform, you must subscribe to a Deepgram product on the AWS Marketplace and note the **Model Package ARN**. See [Subscribe on AWS Marketplace](/docs/subscribe-aws-marketplace) for the console and Marketplace API subscription flows and how to [find the Model Package ARN](/docs/subscribe-aws-marketplace#find-the-model-package-arn).
 
 ## Prerequisites
 
@@ -494,7 +498,9 @@ autoscaling_target_value = 5.0
 # autoscaling_target_value = 5.0  # target ApproximateBacklogSizePerInstance
 ```
 
-Do not commit `terraform.tfvars` to version control if it contains sensitive values. Add it to `.gitignore` or use environment variables instead.
+> **Warning**
+>
+> Do not commit `terraform.tfvars` to version control if it contains sensitive values. Add it to `.gitignore` or use environment variables instead.
 
 ## Deploy
 
@@ -563,15 +569,21 @@ A SageMaker Endpoint Configuration can pin an **inference AMI version** — the 
 | `al2-ami-sagemaker-inference-gpu-3-1`    | 550           | 12.4 |
 | `al2023-ami-sagemaker-inference-gpu-4-1` | 580           | 13.0 |
 
-Deepgram recommends the latest available version, `al2023-ami-sagemaker-inference-gpu-4-1`, which provides the NVIDIA 580 driver. Deepgram containers select the correct CUDA compatibility layer at startup based on the host driver they detect, so a newer host driver requires no change to your deployment.
+> **Note**
+>
+> Deepgram recommends the latest available version, `al2023-ami-sagemaker-inference-gpu-4-1`, which provides the NVIDIA 580 driver. Deepgram containers select the correct CUDA compatibility layer at startup based on the host driver they detect, so a newer host driver requires no change to your deployment.
 
-Support for older driver versions may be removed in the latest Deepgram Model Package. Pin an up-to-date inference AMI version rather than relying on the SageMaker default for your instance type.
+> **Warning**
+>
+> Support for older driver versions may be removed in the latest Deepgram Model Package. Pin an up-to-date inference AMI version rather than relying on the SageMaker default for your instance type.
 
 For the full list of AMI versions and their driver and CUDA versions, see [`InferenceAmiVersion`](https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_ProductionVariant.html#sagemaker-Type-ProductionVariant-InferenceAmiVersion) in the SageMaker API reference. For the driver each instance family runs by default, see the [SageMaker GPU driver table](https://docs.aws.amazon.com/sagemaker/latest/dg/inference-gpu-drivers.html#inference-gpu-drivers-versions).
 
 Set it through the `inference_ami_version` variable. Set it to an empty string to use the SageMaker default for your instance type instead.
 
-Changing `inference_ami_version` on an existing deployment replaces the endpoint configuration and updates the endpoint. Expect a rolling instance replacement, not an in-place driver upgrade.
+> **Note**
+>
+> Changing `inference_ami_version` on an existing deployment replaces the endpoint configuration and updates the endpoint. Expect a rolling instance replacement, not an in-place driver upgrade.
 
 ### Environment variable overrides
 

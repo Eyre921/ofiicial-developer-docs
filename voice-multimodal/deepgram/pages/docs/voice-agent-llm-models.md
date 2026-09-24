@@ -17,7 +17,9 @@ For example:
 * `open_ai` means the API follows OpenAI's Chat Completions format.
 * This option can be used with OpenAI, Azure OpenAI, or Amazon Bedrock — as long as the endpoint behaves like OpenAI's Chat Completion API.
 
-You can set your Voice Agent's LLM model in the [Settings Message](/docs/configure-voice-agent) See the docs for more information.
+> **Info**
+>
+> You can set your Voice Agent's LLM model in the [Settings Message](/docs/configure-voice-agent) See the docs for more information.
 
 ## Supported LLM providers
 
@@ -32,7 +34,9 @@ The `agent.think.endpoint` is optional or required based on the provider type:
 * For `groq` and `aws_bedrock` provider types, `endpoint` is required because Deepgram does not manage those LLMs.
 * If an `endpoint` is provided the `url` is required but `headers` are optional.
 
-If you don't specify `agent.think.provider.type` the Voice Agent will use Deepgram's default managed LLMs. For managed LLMs, supported model names are predefined in our configuration.
+> **Info**
+>
+> If you don't specify `agent.think.provider.type` the Voice Agent will use Deepgram's default managed LLMs. For managed LLMs, supported model names are predefined in our configuration.
 
 See the [Amazon Bedrock](#amazon-bedrock) section below for credentials and endpoint configuration. To fetch the current list of providers and models programmatically, see [Listing supported models via the API](#listing-supported-models-via-the-api).
 
@@ -194,7 +198,9 @@ For defaults, regional availability, and configuration details, see [Regional En
 When using a custom endpoint, the `model` property is not supported.
 The desired model is specified as part of the endpoint URL instead.
 
-Use [API keys](https://ai.google.dev/gemini-api/docs/api-key) from [Google AI Studio](https://aistudio.google.com/app/api-keys) for Gemini models. Keys from Vertex AI, Workspace Gemini, or Gemini Enterprise will not work with the Agent API.
+> **Info**
+>
+> Use [API keys](https://ai.google.dev/gemini-api/docs/api-key) from [Google AI Studio](https://aistudio.google.com/app/api-keys) for Gemini models. Keys from Vertex AI, Workspace Gemini, or Gemini Enterprise will not work with the Agent API.
 
 **`JSON`**
 
@@ -309,7 +315,9 @@ Use STS credentials when your application assumes a role and rotates tokens. Add
   // ... other settings ...
 ```
 
-AWS credentials must have permission to invoke Bedrock models, and the endpoint URL must match the region the Bedrock model is hosted in.
+> **Warning**
+>
+> AWS credentials must have permission to invoke Bedrock models, and the endpoint URL must match the region the Bedrock model is hosted in.
 
 If you need an OpenAI-compatible proxy in front of Bedrock (for logging, header rewriting, or use of the Bedrock Agents service), see [Passing a custom (BYO) LLM through a Cloud Provider](#passing-a-custom-byo-llm-through-a-cloud-provider) below.
 
@@ -337,7 +345,9 @@ If you need an OpenAI-compatible proxy in front of Bedrock (for logging, header 
 
 ## Passing a custom (BYO) LLM through a Cloud Provider
 
-For Bring Your Own (BYO) LLMs, any model string provided is accepted without restriction.
+> **Info**
+>
+> For Bring Your Own (BYO) LLMs, any model string provided is accepted without restriction.
 
 Deepgram tests against major LLM providers including OpenAI, Anthropic, and Google. When bringing your own LLM, you have two options:
 
@@ -379,7 +389,9 @@ The `think` object accepts both a single provider and an array of providers. Whe
 
 The fallback is per-request — each new conversational turn starts again from the first provider. Provider order matters, so place your preferred provider first and your most reliable fallback last.
 
-Fallback providers do not need to use the same `provider.type`. You can mix providers (for example, `open_ai` primary with an `anthropic` fallback) to maximize availability across independent infrastructure.
+> **Info**
+>
+> Fallback providers do not need to use the same `provider.type`. You can mix providers (for example, `open_ai` primary with an `anthropic` fallback) to maximize availability across independent infrastructure.
 
 ### Example
 

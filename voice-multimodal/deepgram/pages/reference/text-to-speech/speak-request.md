@@ -30,18 +30,18 @@ Reference: https://developers.deepgram.com/reference/text-to-speech/speak-reques
 - `callback_method` (enum, optional, default: POST) — HTTP method by which the callback request will be made
   - Allowed values: `POST`, `PUT`
 - `mip_opt_out` (boolean, optional, default: false) — Opts out requests from the Deepgram Model Improvement Program. Refer to our Docs for pricing impacts before setting this to true. https://dpgr.am/deepgram-mip
-- `tag` (string or list of string, optional) — Label your requests for the purpose of identification during usage reporting
-- `bit_rate` (enum or double or double, optional, default: 48000) — The bitrate of the audio in bits per second. Choose from predefined ranges or specific values based on the encoding type.
-- `container` (enum or enum or enum or enum or enum, optional, default: wav) — Container specifies the file format wrapper for the output audio. The available options depend on the encoding type.
-- `encoding` (enum or enum or enum or enum or enum or enum or enum, optional, default: mp3) — Encoding allows you to specify the expected encoding of your audio output
+- `tag` (V1SpeakPostParametersTag, optional) — Label your requests for the purpose of identification during usage reporting
+- `bit_rate` (V1SpeakPostParametersBitRate, optional, default: 48000) — The bitrate of the audio in bits per second. Choose from predefined ranges or specific values based on the encoding type.
+- `container` (V1SpeakPostParametersContainer, optional, default: wav) — Container specifies the file format wrapper for the output audio. The available options depend on the encoding type.
+- `encoding` (V1SpeakPostParametersEncoding, optional, default: mp3) — Encoding allows you to specify the expected encoding of your audio output
 - `model` (enum, optional, default: aura-asteria-en) — AI model used to process submitted text
   - Allowed values: `aura-angus-en`, `aura-arcas-en`, `aura-asteria-en`, `aura-athena-en`, `aura-helios-en`, `aura-hera-en`, `aura-luna-en`, `aura-orion-en`, `aura-orpheus-en`, `aura-perseus-en`, `aura-stella-en`, `aura-zeus-en`, `aura-2-amalthea-en`, `aura-2-andromeda-en`, `aura-2-apollo-en`, `aura-2-arcas-en`, `aura-2-aries-en`, `aura-2-asteria-en`, `aura-2-athena-en`, `aura-2-atlas-en`, `aura-2-aurora-en`, `aura-2-callista-en`, `aura-2-cora-en`, `aura-2-cordelia-en`, `aura-2-delia-en`, `aura-2-draco-en`, `aura-2-electra-en`, `aura-2-harmonia-en`, `aura-2-helena-en`, `aura-2-hera-en`, `aura-2-hermes-en`, `aura-2-hyperion-en`, `aura-2-iris-en`, `aura-2-janus-en`, `aura-2-juno-en`, `aura-2-jupiter-en`, `aura-2-luna-en`, `aura-2-mars-en`, `aura-2-minerva-en`, `aura-2-neptune-en`, `aura-2-odysseus-en`, `aura-2-ophelia-en`, `aura-2-orion-en`, `aura-2-orpheus-en`, `aura-2-pandora-en`, `aura-2-phoebe-en`, `aura-2-pluto-en`, `aura-2-saturn-en`, `aura-2-selene-en`, `aura-2-thalia-en`, `aura-2-theia-en`, `aura-2-vesta-en`, `aura-2-zeus-en`, `aura-2-agustina-es`, `aura-2-alvaro-es`, `aura-2-antonia-es`, `aura-2-aquila-es`, `aura-2-carina-es`, `aura-2-celeste-es`, `aura-2-diana-es`, `aura-2-estrella-es`, `aura-2-gloria-es`, `aura-2-javier-es`, `aura-2-luciano-es`, `aura-2-nestor-es`, `aura-2-olivia-es`, `aura-2-selena-es`, `aura-2-silvia-es`, `aura-2-sirio-es`, `aura-2-valerio-es`, `aura-2-aurelia-de`, `aura-2-elara-de`, `aura-2-fabian-de`, `aura-2-julius-de`, `aura-2-kara-de`, `aura-2-lara-de`, `aura-2-viktoria-de`, `aura-2-beatrix-nl`, `aura-2-cornelia-nl`, `aura-2-daphne-nl`, `aura-2-hestia-nl`, `aura-2-lars-nl`, `aura-2-leda-nl`, `aura-2-rhea-nl`, `aura-2-roman-nl`, `aura-2-sander-nl`, `aura-2-agathe-fr`, `aura-2-hector-fr`, `aura-2-cesare-it`, `aura-2-cinzia-it`, `aura-2-demetra-it`, `aura-2-dionisio-it`, `aura-2-elio-it`, `aura-2-flavio-it`, `aura-2-livia-it`, `aura-2-maia-it`, `aura-2-melia-it`, `aura-2-ama-ja`, `aura-2-ebisu-ja`, `aura-2-fujin-ja`, `aura-2-izanami-ja`, `aura-2-uzume-ja`
-- `sample_rate` (enum or enum or enum or enum or enum, optional, default: 24000) — Sample Rate specifies the sample rate for the output audio. Based on the encoding, different sample rates are supported. For some encodings, the sample rate is not configurable
+- `sample_rate` (V1SpeakPostParametersSampleRate, optional, default: 24000) — Sample Rate specifies the sample rate for the output audio. Based on the encoding, different sample rates are supported. For some encodings, the sample rate is not configurable
 - `speed` (double, optional, default: 1) — Speaking rate multiplier that adjusts the pace of generated speech while preserving natural prosody and voice quality. Not yet supported in all languages.
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a SpeakV1Request.
 
 - `text` (string, required) — The text content to be converted to speech
 
@@ -57,16 +57,32 @@ Successful text-to-speech transformation
 
 Invalid Request
 
-- `string or object or object`
-  - ErrorResponseLegacyError
-    - `err_code` (string, optional) — The error code
-    - `err_msg` (string, optional) — The error message
-    - `request_id` (string, optional) — The request ID
-  - ErrorResponseModernError
-    - `category` (string, optional) — The category of the error
-    - `message` (string, optional) — A message about the error
-    - `details` (string, optional) — A description of the error
-    - `request_id` (string, optional) — The unique identifier of the request
+- `ErrorResponse`
+
+## Types
+
+### V1SpeakPostParametersTag
+
+### V1SpeakPostParametersBitRate
+
+### V1SpeakPostParametersContainer
+
+### V1SpeakPostParametersEncoding
+
+### V1SpeakPostParametersSampleRate
+
+### ErrorResponseLegacyError
+
+- `err_code` (string, optional) — The error code
+- `err_msg` (string, optional) — The error message
+- `request_id` (string, optional) — The request ID
+
+### ErrorResponseModernError
+
+- `category` (string, optional) — The category of the error
+- `message` (string, optional) — A message about the error
+- `details` (string, optional) — A description of the error
+- `request_id` (string, optional) — The unique identifier of the request
 
 ## Examples
 

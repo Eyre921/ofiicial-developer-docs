@@ -77,39 +77,51 @@ channels:
           type: object
           properties:
             model_id:
-              description: Any type
+              $ref: '#/components/schemas/_v1_speech-to-text_realtime_model_id'
             token:
-              description: Any type
+              type: string
             audio_format:
               description: Any type
             language_code:
-              description: Any type
+              type: string
             secondary_languages:
-              description: Any type
+              type: array
+              items:
+                type: string
             commit_strategy:
-              description: Any type
+              $ref: '#/components/schemas/_v1_speech-to-text_realtime_commit_strategy'
             vad_threshold:
-              description: Any type
+              type: number
+              format: double
             vad_silence_threshold_secs:
-              description: Any type
+              type: number
+              format: double
             min_speech_duration_ms:
-              description: Any type
+              type: integer
             min_silence_duration_ms:
-              description: Any type
+              type: integer
             include_timestamps:
-              description: Any type
+              type: boolean
+              default: false
             include_language_detection:
-              description: Any type
+              type: boolean
+              default: false
             keyterms:
-              description: Any type
+              type: array
+              items:
+                type: string
             no_verbatim:
-              description: Any type
+              type: boolean
+              default: false
             entity_detection:
-              description: Any type
+              $ref: >-
+                #/components/schemas/_v1_speech-to-text_realtime_entity_detection
             filter_background_audio:
-              description: Any type
+              type: boolean
+              default: false
             enable_logging:
-              description: Any type
+              type: boolean
+              default: true
         headers:
           type: object
           properties:
@@ -158,6 +170,35 @@ servers:
     protocol: wss
 components:
   schemas:
+    _v1_speech-to-text_realtime_model_id:
+      type: string
+      enum:
+        - scribe_v2_realtime
+      default: scribe_v2_realtime
+      description: The ID of the model to use for speech-to-text transcription.
+      title: /v1/speech-to-text/realtime_model_id
+    _v1_speech-to-text_realtime_commit_strategy:
+      type: string
+      enum:
+        - manual
+        - vad
+      description: >-
+        Commit strategy for speech segmentation. 'manual' requires explicit
+        commits, 'vad' automatically segments speech using silence detection.
+      title: /v1/speech-to-text/realtime_commit_strategy
+    _v1_speech-to-text_realtime_entity_detection:
+      oneOf:
+        - type: string
+        - type: array
+          items:
+            type: string
+      description: >-
+        Detect entities on committed transcripts. Can be 'all', a single entity
+        type or category, or a list of types/categories ('pii', 'phi', 'pci',
+        'other', 'offensive_language'). When enabled, detected entities are
+        delivered in a separate 'committed_transcript_entities' event with their
+        text, type, and character positions.
+      title: /v1/speech-to-text/realtime_entity_detection
     AudioFormatEnum:
       type: string
       enum:

@@ -32,10 +32,9 @@ Reference: https://elevenlabs.io/docs/api-reference/dubbing/target-transcript/ba
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a DubbingBulkTargetSegmentUpdateRequest.
 
-- `segments` (map from string to object, required) — Map of segment ID to the translation edit to apply to that segment. At least one entry and at most 500.
-  - `translation` (string, optional, nullable) — New translated text, or null to mark the segment for re-translation.
+- `segments` (map from string to DubbingTargetSegmentUpdateRequest, required) — Map of segment ID to the translation edit to apply to that segment. At least one entry and at most 500.
 
 ## Response
 
@@ -43,13 +42,7 @@ This endpoint expects an object.
 
 Successful Response
 
-- `segments` (list of object, required) — The edited target segments in their updated state.
-  - `id` (string, required) — Stable identifier of the segment (from the source).
-  - `speaker_id` (string, required) — Identifier of the segment's speaker.
-  - `start_s` (double, required) — Start time of the segment, in seconds.
-  - `end_s` (double, required) — End time of the segment, in seconds.
-  - `source_text` (string, required) — The source-language text of the segment.
-  - `translation` (string, optional, nullable) — The translated text, or null if not translated yet (needs translation).
+- `segments` (list of DubbingTargetTranscriptSegment, required) — The edited target segments in their updated state.
 - `revision` (integer, required) — The target's revision after the edits.
 
 ## Errors
@@ -58,10 +51,34 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### DubbingTargetSegmentUpdateRequest
+
+A partial edit to a target segment. An omitted field is left unchanged; a provided `null` clears it (see each field for what clearing means).
+
+- `translation` (string, optional, nullable) — New translated text, or null to mark the segment for re-translation.
+
+### DubbingTargetTranscriptSegment
+
+One segment of a target transcript: a source segment plus its translation.
+
+- `id` (string, required) — Stable identifier of the segment (from the source).
+- `speaker_id` (string, required) — Identifier of the segment's speaker.
+- `start_s` (double, required) — Start time of the segment, in seconds.
+- `end_s` (double, required) — End time of the segment, in seconds.
+- `source_text` (string, required) — The source-language text of the segment.
+- `translation` (string, optional, nullable) — The translated text, or null if not translated yet (needs translation).
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

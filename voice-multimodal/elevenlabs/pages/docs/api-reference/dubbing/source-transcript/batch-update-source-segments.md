@@ -31,13 +31,9 @@ Reference: https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/ba
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a DubbingBulkSegmentUpdateRequest.
 
-- `segments` (map from string to object, required) — Map of segment ID to the partial update to apply to that segment. At least one entry and at most 500.
-  - `text` (string, optional, nullable) — New text for the segment.
-  - `speaker_id` (string, optional, nullable) — New speaker ID for the segment.
-  - `start_s` (double, optional, nullable) — New start time, in seconds.
-  - `end_s` (double, optional, nullable) — New end time, in seconds.
+- `segments` (map from string to DubbingSegmentUpdateRequest, required) — Map of segment ID to the partial update to apply to that segment. At least one entry and at most 500.
 
 ## Response
 
@@ -45,13 +41,7 @@ This endpoint expects an object.
 
 Successful Response
 
-- `segments` (list of object, required) — The edited segments in their updated state.
-  - `id` (string, required) — Stable identifier of the segment, used to address it in edit requests.
-  - `text` (string, required) — The transcribed text of the segment.
-  - `speaker_id` (string, required) — Identifier of the segment's speaker.
-  - `start_s` (double, required) — Start time of the segment, in seconds.
-  - `end_s` (double, required) — End time of the segment, in seconds.
-  - `external_id` (string, optional, nullable) — The caller-supplied external ID for this segment, if one was provided.
+- `segments` (list of DubbingTranscriptSegment, required) — The edited segments in their updated state.
 - `revision` (integer, required) — The project's source-transcript revision after the edits.
 
 ## Errors
@@ -60,10 +50,37 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### DubbingSegmentUpdateRequest
+
+A partial update to a source segment; omitted fields are left unchanged.
+
+- `text` (string, optional, nullable) — New text for the segment.
+- `speaker_id` (string, optional, nullable) — New speaker ID for the segment.
+- `start_s` (double, optional, nullable) — New start time, in seconds.
+- `end_s` (double, optional, nullable) — New end time, in seconds.
+
+### DubbingTranscriptSegment
+
+One segment of a source transcript.
+
+- `id` (string, required) — Stable identifier of the segment, used to address it in edit requests.
+- `text` (string, required) — The transcribed text of the segment.
+- `speaker_id` (string, required) — Identifier of the segment's speaker.
+- `start_s` (double, required) — Start time of the segment, in seconds.
+- `end_s` (double, required) — End time of the segment, in seconds.
+- `external_id` (string, optional, nullable) — The caller-supplied external ID for this segment, if one was provided.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

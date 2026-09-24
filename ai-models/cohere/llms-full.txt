@@ -3,7 +3,7 @@
 **URL:** https://docs.cohere.com/v2/llms.txt
 
 > For clean Markdown of any page, append .md to the page URL.
-> For a complete documentation index, see https://docs.cohere.com/v2/llms.txt.
+> For a complete documentation index, see https://docs.cohere.com/llms.txt.
 > For AI client integration (Claude Code, Cursor, etc.), connect to the MCP server at https://docs.cohere.com/_mcp/server.
 
 > Cohere's API documentation helps developers easily integrate natural language processing and generation into their products.
@@ -17,7 +17,7 @@
 **URL:** https://docs.cohere.com/v1/llms.txt
 
 > For clean Markdown of any page, append .md to the page URL.
-> For a complete documentation index, see https://docs.cohere.com/v1/llms.txt.
+> For a complete documentation index, see https://docs.cohere.com/llms.txt.
 > For AI client integration (Claude Code, Cursor, etc.), connect to the MCP server at https://docs.cohere.com/_mcp/server.
 
 # v1 API
@@ -36,7 +36,7 @@
 - [Semantic Search](https://docs.cohere.com/docs/sem-search-quickstart.md): A quickstart guide for performing text semantic search with Cohere's Embed models (v1 API).
 - [Reranking](https://docs.cohere.com/docs/reranking-quickstart.md): A quickstart guide for performing reranking with Cohere's Reranking models (v1 API).
 - [Document Parsing](https://docs.cohere.com/docs/parse-quickstart.md): A quickstart guide for parsing documents with Cohere's Parse model.
-- [Document Parsing - best practices](https://docs.cohere.com/docs/parse-best-practices.md): Best practices for image format, resolution, and throughput when using the Cohere Parse API.
+- [Document Parsing - best practices](https://docs.cohere.com/v1/docs/parse-best-practices.md): Best practices for image format, resolution, and throughput when using the Cohere Parse API.
 - [An Overview of the Developer Playground](https://docs.cohere.com/docs/playground-overview.md): The Cohere Playground is a powerful visual interface for testing Cohere's generation and embedding language models without coding.
 - [Frequently Asked Questions About Cohere](https://docs.cohere.com/docs/cohere-faqs.md): Cohere is a powerful platform for using Large Language Models (LLMs). This page covers FAQs related to functionality, pricing, troubleshooting, and more.
 - [Model Vault Overview](https://docs.cohere.com/docs/model-vault.md): Model Vault is a Cohere-managed, single-tenant environment for deploying and serving Cohere models. Every vault is either Standard or Encrypted.
@@ -130,7 +130,7 @@
 - [AWS Private Deployment Guide (EC2 and EKS)](https://docs.cohere.com/docs/aws-private-deployment.md): Deploying Cohere models in AWS via EC2 or EKS for enhanced security, compliance, and control.
 - [Private Deployment Usage](https://docs.cohere.com/docs/private-deployment-usage.md): This page describes how to use Cohere's SDK to access privately deployed Cohere models.
 - [Cohere on Amazon Web Services (AWS)](https://docs.cohere.com/docs/cohere-on-aws.md): Access Cohere's language models on AWS with customization options through Amazon SageMaker and Amazon Bedrock.
-- [Cohere Models on Amazon Bedrock](https://docs.cohere.com/docs/amazon-bedrock.md): This document provides a guide for using Cohere's models on Amazon Bedrock.
+- [Cohere Models on Amazon Bedrock](https://docs.cohere.com/v1/docs/amazon-bedrock.md): This document provides a guide for using Cohere's models on Amazon Bedrock.
 - [An Amazon SageMaker Setup Guide](https://docs.cohere.com/docs/amazon-sagemaker-setup-guide.md): This document will guide you through enabling development teams to access Cohere’s offerings on Amazon SageMaker.
 - [Deploy Finetuned Command Models from AWS Marketplace](https://docs.cohere.com/docs/bring-your-finetuned-models-to-sagemaker.md): This document provides a guide for bringing your own finetuned models to Amazon SageMaker.
 - [Cohere on the Microsoft Azure Platform](https://docs.cohere.com/docs/cohere-on-microsoft-azure.md): This page describes how to work with Cohere models on Microsoft Azure.
@@ -138,12 +138,12 @@
 - [Cohere Cookbooks: AI Agents, RAG, Search, and More](https://docs.cohere.com/docs/cookbooks.md): Get started with Cohere's cookbooks to build agents, QA bots, perform searches, and more, all organized by category.
 - [Welcome to LLM University!](https://docs.cohere.com/docs/llmu-2.md): LLM University (LLMU) offers in-depth, practical NLP and LLM training. Ideal for all skill levels. Learn, build, and deploy Language AI with Cohere.
 - [Build an Onboarding Assistant with Cohere!](https://docs.cohere.com/docs/build-things-with-cohere.md): This page describes how to build an onboarding assistant with Cohere's large language models.
-- [Cohere Text Generation Tutorial](https://docs.cohere.com/docs/text-generation-tutorial.md): This page walks through how Cohere's generation models work and how to use them.
-- [Building a Chatbot with Cohere](https://docs.cohere.com/docs/building-a-chatbot-with-cohere.md): This page describes building a generative-AI powered chatbot with Cohere.
-- [Semantic Search with Cohere Models](https://docs.cohere.com/docs/semantic-search-with-cohere.md): This is a tutorial describing how to leverage Cohere's models for semantic search.
-- [Master Reranking with Cohere Models](https://docs.cohere.com/docs/reranking-with-cohere.md): This page contains a tutorial on using Cohere's ReRank models.
-- [Building RAG models with Cohere](https://docs.cohere.com/docs/rag-with-cohere.md): This page walks through building a retrieval-augmented generation model with Cohere.
-- [Building a Generative AI Agent with Cohere](https://docs.cohere.com/docs/building-an-agent-with-cohere.md): This page describes building a generative-AI powered agent with Cohere.
+- [Cohere Text Generation Tutorial](https://docs.cohere.com/v1/docs/text-generation-tutorial.md): This page walks through how Cohere's generation models work and how to use them.
+- [Building a Chatbot with Cohere](https://docs.cohere.com/v1/docs/building-a-chatbot-with-cohere.md): This page describes building a generative-AI powered chatbot with Cohere.
+- [Semantic Search with Cohere Models](https://docs.cohere.com/v1/docs/semantic-search-with-cohere.md): This is a tutorial describing how to leverage Cohere's models for semantic search.
+- [Master Reranking with Cohere Models](https://docs.cohere.com/v1/docs/reranking-with-cohere.md): This page contains a tutorial on using Cohere's ReRank models.
+- [Building RAG models with Cohere](https://docs.cohere.com/v1/docs/rag-with-cohere.md): This page walks through building a retrieval-augmented generation model with Cohere.
+- [Building a Generative AI Agent with Cohere](https://docs.cohere.com/v1/docs/building-an-agent-with-cohere.md): This page describes building a generative-AI powered agent with Cohere.
 - [Usage Policy](https://docs.cohere.com/docs/usage-policy.md): Developers must outline and get approval for their use case to access the Cohere API, understanding the models and limitations. They should refer to model cards for detailed information and document potential harms of their application. Certain use cases, such as violence, hate speech, fraud, and privacy violations, are strictly prohibited.
 - [Command R and Command R+ Model Card](https://docs.cohere.com/docs/responsible-use.md): This doc provides guidelines for using Cohere generation models ethically and constructively.
 - [Cohere Web Crawlers](https://docs.cohere.com/docs/cohere-web-crawlers.md): Cohere's policy on web crawlers and robots.txt for generative AI training.
@@ -250,14 +250,14 @@
 ## OpenAPI Specification
 
 The raw OpenAPI 3.1 specification for this API is available at:
-- [OpenAPI JSON](https://docs.cohere.com/v1/openapi.json)
-- [OpenAPI YAML](https://docs.cohere.com/v1/openapi.yaml)
+- [OpenAPI JSON](https://docs.cohere.com/openapi.json)
+- [OpenAPI YAML](https://docs.cohere.com/openapi.yaml)
 
 
 > **Note:** This page contains both a page directory (above) and the landing page content (below). The page directory is generated for agent use and does not appear on the landing page.
 
 > For clean Markdown of any page, append .md to the page URL.
-> For a complete documentation index, see https://docs.cohere.com/v1/llms.txt.
+> For a complete documentation index, see https://docs.cohere.com/llms.txt.
 > For AI client integration (Claude Code, Cursor, etc.), connect to the MCP server at https://docs.cohere.com/_mcp/server.
 
 > Cohere's API documentation helps developers easily integrate natural language processing and generation into their products.

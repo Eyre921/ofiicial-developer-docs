@@ -100,7 +100,7 @@ sentry-cli debug-files upload -o <org> -p <project> /path/to/files...
   PENDING 1ddb3423-950a-3646-b17b-d4360e6acfc9 (MyApp; x86_64 debug companion)
 ```
 
-After the upload, Sentry analyzes the files to symbolicate future events. If you want to send a native crash to Sentry to verify correct operation, ensure that the debug files are listed in *Project Settings > Debug Files*. Alternatively, specify `--wait` in the CLI, which will block until server-side analysis is complete:
+After the upload, Sentry analyzes the files to symbolicate future events. If you want to send a native crash to Sentry to verify correct operation, ensure that the debug files are listed in [*Project Settings > Debug Files*](https://sentry.io/orgredirect/organizations/:orgslug/settings/projects/:projectId/debug-symbols/). Alternatively, specify `--wait` in the CLI, which will block until server-side analysis is complete:
 
 ```bash
 sentry-cli debug-files upload -o <org> -p <project> --wait /path/to/files...
@@ -176,7 +176,7 @@ sentry-cli upload-proguard \
     app/build/outputs/mapping/{BuildVariant}/mapping.txt
 ```
 
-After the upload, Sentry deobfuscates future events. To make sure that it worked, you can check *Project Settings > ProGuard* and see if the upload mapping files are listed.
+After the upload, Sentry deobfuscates future events. To make sure that it worked, you can check [*Project Settings > ProGuard*](https://sentry.io/orgredirect/organizations/:orgslug/settings/projects/:projectId/proguard/) and see if the upload mapping files are listed.
 
 ### [Upload Options](https://docs.sentry.io/cli/dif.md#upload-options-1)
 
@@ -235,5 +235,5 @@ sentry-cli debug-files upload \
 
 After the upload, Sentry will attach Source Context to future events.
 
-To make sure these steps worked, check **Project Settings > Debug Files** in Sentry.io to see if the uploaded source bundle files are listed.
+To make sure these steps worked, check [**Project Settings > Debug Files**](https://sentry.io/orgredirect/organizations/:orgslug/settings/projects/:projectId/debug-symbols/) in Sentry.io to see if the uploaded source bundle files are listed.
 

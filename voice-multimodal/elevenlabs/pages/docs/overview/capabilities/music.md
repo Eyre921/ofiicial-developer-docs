@@ -33,9 +33,11 @@ You can upload a reference track of up to approximately 30 seconds in commonly u
 
 Audio Reference influences characteristics such as the overall sound, production style, instrumentation, tempo, and mood of the generated track. It does not copy or remix the uploaded audio, and the result remains a newly generated composition.
 
-Audio Reference is intended to guide a generation toward a similar style and sound. It is not
-designed for genre transformation — for example, uploading a jazz track and requesting a rap
-version may not produce reliable results.
+> **Note**
+>
+> Audio Reference is intended to guide a generation toward a similar style and sound. It is not
+> designed for genre transformation — for example, uploading a jazz track and requesting a rap
+> version may not produce reliable results.
 
 Audio Reference is available with Music v2 and v2.5 on all paid plans.
 
@@ -59,9 +61,11 @@ By fine-tuning on your tracks, the custom Finetune you create captures stylistic
 * The Finetune is ready for use in approximately 5-10 minutes
 * You generate music using your custom Finetune inside ElevenCreative
 
-Qualifying Enterprise customers may fine-tune on proprietary intellectual property that they fully
-own and control, without third-party copyright screening. This is designed for organizations with
-catalogs they exclusively own. Contact your account manager to enable this capability.
+> **Note**
+>
+> Qualifying Enterprise customers may fine-tune on proprietary intellectual property that they fully
+> own and control, without third-party copyright screening. This is designed for organizations with
+> catalogs they exclusively own. Contact your account manager to enable this capability.
 
 ### Curated Finetunes
 

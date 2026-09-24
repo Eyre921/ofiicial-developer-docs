@@ -46,8 +46,10 @@ For example, the following state update sets `should_escalate` to `true` if the 
 should_escalate = (llm: "User sounds frustrated with the conversation") OR (retry_count > 3)
 ```
 
-If a state update fails to evaluate — for example, a division by zero — the tool call returns an
-error and none of the updates in that call are applied.
+> **Note**
+>
+> If a state update fails to evaluate — for example, a division by zero — the tool call returns an
+> error and none of the updates in that call are applied.
 
 ## Configuration
 

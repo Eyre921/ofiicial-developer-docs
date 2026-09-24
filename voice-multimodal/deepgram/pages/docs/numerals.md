@@ -38,7 +38,9 @@ Supported languages include:
 * Hebrew: `he`
 * Romanian: `ro`
 
-When using Nova-3 Multilingual (`model=nova-3`, `language=multi`), numeral formatting is supported for: English, Spanish, French, German, Russian, Portuguese, Italian, and Dutch. Numeral formatting is not currently supported for Hindi or Japanese.
+> **Info**
+>
+> When using Nova-3 Multilingual (`model=nova-3`, `language=multi`), numeral formatting is supported for: English, Spanish, French, German, Russian, Portuguese, Italian, and Dutch. Numeral formatting is not currently supported for Hindi or Japanese.
 
 ### Flux support
 
@@ -63,7 +65,9 @@ To enable numerals, when you call Deepgram’s API, add a `numerals` parameter s
 
 To transcribe audio from a file on your computer, run the following cURL command in a terminal or your favorite API client.
 
-Be sure to replace the placeholder `YOUR_DEEPGRAM_API_KEY` with your Deepgram API Key. You can [create an API Key](/guides/fundamentals/authenticating#create-an-api-key) in the [Deepgram Console](https://console.deepgram.com).
+> **Info**
+>
+> Be sure to replace the placeholder `YOUR_DEEPGRAM_API_KEY` with your Deepgram API Key. You can [create an API Key](/guides/fundamentals/authenticating#create-an-api-key) in the [Deepgram Console](https://console.deepgram.com).
 
 **`cURL`**
 
@@ -93,7 +97,9 @@ In addition to the query string parameter, if you're sending real-time streaming
 
 Numerals can be turned on and off multiple times during a stream if desired.
 
-Mid-stream toggling applies to the streaming API (`/v1/listen`). On Flux (`/v2/listen`), set `numerals` only as a connection-time query parameter. Including it in a `Configure` message returns an `UNPARSABLE_CLIENT_MESSAGE` error and closes the connection.
+> **Info**
+>
+> Mid-stream toggling applies to the streaming API (`/v1/listen`). On Flux (`/v2/listen`), set `numerals` only as a connection-time query parameter. Including it in a `Configure` message returns an `UNPARSABLE_CLIENT_MESSAGE` error and closes the connection.
 
 ## Results
 
@@ -115,4 +121,6 @@ Once applied, results will appear in the transcript.
 | -------------------------------------- | -------------------------------------- | ----------------------------- |
 | My date of birth is june twenty eighth | My date of birth is june twenty eighth | My date of birth is june 28th |
 
-When punctuation is enabled, converted numbers do not include it. For example, 999,999 will always be transcribed as 999999.
+> **Info**
+>
+> When punctuation is enabled, converted numbers do not include it. For example, 999,999 will always be transcribed as 999999.

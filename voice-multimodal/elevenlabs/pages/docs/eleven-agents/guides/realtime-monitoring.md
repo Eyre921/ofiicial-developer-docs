@@ -10,7 +10,9 @@ path: docs/eleven-agents/guides/realtime-monitoring
 
 Real-time monitoring enables live observation of agent conversations via WebSocket and remote control of active calls. This feature provides real-time visibility into conversation events and allows intervention through control commands.
 
-This is an enterprise-only feature.
+> **Note**
+>
+> This is an enterprise-only feature.
 
 ## Overview
 
@@ -71,16 +73,20 @@ Open your agent's configuration page in the dashboard.
 
 In the Advanced settings panel, toggle the "Monitoring" option.
 
-![Monitoring toggle in agent settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1a4b5507a39ddf6a517772b8c01ede5f7d12429175fdf89e04c8ba910f646f8e/assets/images/agents/realtime-monitoring-toggle.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113305Z&X-Amz-Expires=604800&X-Amz-Signature=c37fdf1747587f2e811d9b173b1a57ccfc978de068d04d582058fc49b4137113&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Monitoring toggle in agent settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1a4b5507a39ddf6a517772b8c01ede5f7d12429175fdf89e04c8ba910f646f8e/assets/images/agents/realtime-monitoring-toggle.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T112633Z&X-Amz-Expires=604800&X-Amz-Signature=acd547a4ecf25fc08941e4e282ea8a8f887b78a6fdc84506d6b8cb869fc8d54e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Select events
 
 Choose which events you want to monitor. See [Client Events](/docs/eleven-agents/customization/events/client-events) for a full list of available events.
 
-The following events cannot be monitored: VAD scores, turn probability metrics, and pings.
+> **Warning**
+>
+> The following events cannot be monitored: VAD scores, turn probability metrics, and pings.
 
-The conversation must be active before you can connect to monitor it. You cannot monitor a
-conversation before it begins.
+> **Info**
+>
+> The conversation must be active before you can connect to monitor it. You cannot monitor a
+> conversation before it begins.
 
 ## Control commands
 
@@ -132,7 +138,9 @@ await websocket.send(json.dumps({
 }))
 ```
 
-The `transfer_to_number` system tool must already be configured in the agent.
+> **Note**
+>
+> The `transfer_to_number` system tool must already be configured in the agent.
 
 #### Realtime contextual update
 

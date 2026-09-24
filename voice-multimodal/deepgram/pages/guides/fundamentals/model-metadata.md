@@ -12,7 +12,9 @@ path: guides/fundamentals/model-metadata
 
 The Models endpoint allows users to efficiently query all available public models or private models and determine which models they have access to.
 
-For additional details on these API endpoints refer to our [API Reference](/reference/deepgram-api-overview)
+> **Info**
+>
+> For additional details on these API endpoints refer to our [API Reference](/reference/deepgram-api-overview)
 
 ## Enable Feature
 
@@ -20,7 +22,9 @@ For additional details on these API endpoints refer to our [API Reference](/refe
 
 Returns metadata on all the latest public models. If multiple versions exist, the latest model version is returned. If you wish to return all models you can use the `include_outdated=true` parameter in your request.\`
 
-If you need to get information on a custom model (non-public) you can use the Get Project Models endpoints.
+> **Info**
+>
+> If you need to get information on a custom model (non-public) you can use the Get Project Models endpoints.
 
 #### Request
 
@@ -30,7 +34,9 @@ If you need to get information on a custom model (non-public) you can use the Ge
 curl --location 'https://api.deepgram.com/v1/models' \
 ```
 
-For this endpoint you **do not** need to provide your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Info**
+>
+> For this endpoint you **do not** need to provide your [Deepgram API Key](/docs/create-additional-api-keys).
 
 #### Result
 
@@ -94,7 +100,9 @@ curl --location 'https://api.deepgram.com/v1/projects/YOUR_PROJECT_ID/models' \
 --header 'Authorization: Token YOUR_DEEPGRAM_API_KEY'
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys) and replace `YOUR_PROJECT_ID`with your [Deepgram Project ID](/guides/deep-dives/managing-projects).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys) and replace `YOUR_PROJECT_ID`with your [Deepgram Project ID](/guides/deep-dives/managing-projects).
 
 #### Result
 
@@ -157,7 +165,9 @@ Returns the metadata for a specific model. If the model is not found a `404` err
 curl --location 'https://api.deepgram.com/v1/models/MODEL_UUID' \
 ```
 
-For this endpoint you **do not** need to provide your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Info**
+>
+> For this endpoint you **do not** need to provide your [Deepgram API Key](/docs/create-additional-api-keys).
 
 #### Results
 
@@ -194,7 +204,9 @@ curl --location 'https://api.deepgram.com/v1/projects/YOUR_PROJECT_ID/models/MOD
 --header 'Authorization: Token YOUR_DEEPGRAM_API_KEY'
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys) and replace `YOUR_PROJECT_ID`with your [Deepgram Project ID](/guides/deep-dives/managing-projects) and replace `MODEL_UUID`with the specific Model UUID.
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys) and replace `YOUR_PROJECT_ID`with your [Deepgram Project ID](/guides/deep-dives/managing-projects) and replace `MODEL_UUID`with the specific Model UUID.
 
 #### Results
 

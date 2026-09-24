@@ -158,4 +158,6 @@ async function main() {
 main();
 ```
 
-For optimal text handling, see our guide on [Text Chunking for TTS](/docs/tts-text-chunking).
+> **Info**
+>
+> For optimal text handling, see our guide on [Text Chunking for TTS](/docs/tts-text-chunking).

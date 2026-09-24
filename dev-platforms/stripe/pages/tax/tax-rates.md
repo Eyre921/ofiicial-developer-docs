@@ -264,7 +264,7 @@ We no longer recommend using the `tax_percent` field for new invoices, and to us
 You can add one or more tax IDs to a customer and display them in the header of invoice and credit note PDFs. The [TaxID](https://docs.stripe.com/api/customer_tax_ids.md) object provides:
 
 - Support for different types of tax IDs, such as EU VAT, NZ GST, and AU ABN.
-- Automatic validation of EU VAT numbers against the [European Commission’s VAT Information Exchange System (VIES)](http://ec.europa.eu/taxation_customs/vies/) database.
+- Automatic validation of EU VAT numbers against the [European Commission’s VAT Information Exchange System (VIES)](https://ec.europa.eu/taxation_customs/vies/) database.
 - Automatic validation of Australian Business Numbers (ABNs) against the [Australian Business Register (ABR)](https://abr.gov.au/).
 - The ability to associate a tax ID with a particular country (for example, a German EU VAT number).
 

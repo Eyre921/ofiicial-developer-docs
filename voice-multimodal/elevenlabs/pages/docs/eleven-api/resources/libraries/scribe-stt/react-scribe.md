@@ -8,7 +8,9 @@ path: docs/eleven-api/resources/libraries/scribe-stt/react-scribe
 
 # React SDK
 
-For an overview of Scribe and its capabilities, see the [Speech to Text overview](/docs/capabilities/speech-to-text). For step-by-step usage guides, see [Client-side streaming](/docs/eleven-api/guides/how-to/speech-to-text/realtime/client-side-streaming).
+> **Info**
+>
+> For an overview of Scribe and its capabilities, see the [Speech to Text overview](/docs/capabilities/speech-to-text). For step-by-step usage guides, see [Client-side streaming](/docs/eleven-api/guides/how-to/speech-to-text/realtime/client-side-streaming).
 
 ## Installation
 
@@ -20,14 +22,18 @@ yarn add @elevenlabs/react
 pnpm install @elevenlabs/react
 ```
 
-Use the [ElevenLabs speech-to-text skill](https://github.com/elevenlabs/skills/tree/main/speech-to-text) to transcribe audio from your AI coding assistant:
+> **Tip**
+>
+> Use the [ElevenLabs speech-to-text skill](https://github.com/elevenlabs/skills/tree/main/speech-to-text) to transcribe audio from your AI coding assistant:
+>
+> ```bash
+> npx skills add elevenlabs/skills --skill speech-to-text
+> ```
 
-```bash
-npx skills add elevenlabs/skills --skill speech-to-text
-```
-
-`@elevenlabs/react` re-exports everything from `@elevenlabs/client`, so you don't need to install
-both packages.
+> **Note**
+>
+> `@elevenlabs/react` re-exports everything from `@elevenlabs/client`, so you don't need to install
+> both packages.
 
 ## Usage
 
@@ -118,8 +124,10 @@ app.get("/scribe-token", yourAuthMiddleware, async (req, res) => {
 });
 ```
 
-Your ElevenLabs API key is sensitive. Never expose it to the client. Always generate the token on
-the server.
+> **Warning**
+>
+> Your ElevenLabs API key is sensitive. Never expose it to the client. Always generate the token on
+> the server.
 
 ```tsx
 // Client
@@ -436,8 +444,10 @@ scribe.sendAudio(base64AudioChunk, {
 });
 ```
 
-The `previousText` field can only be sent in the first audio chunk of a session. Sending it in
-subsequent chunks results in an error.
+> **Warning**
+>
+> The `previousText` field can only be sent in the first audio chunk of a session. Sending it in
+> subsequent chunks results in an error.
 
 #### commit()
 

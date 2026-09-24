@@ -11,5 +11,3 @@ path: docs/help-center/product/studio/studio/what-is-auto-regenerate
 Auto-Regenerate is a feature in Studio that automatically checks your generated audio for any mispronunciations or unwanted audio artefacts. If we detect any, we will automatically regenerate the audio up to two times, at no extra cost.
 
 This feature is enabled automatically, and it is done in the backend when you convert your whole chapter or project in one step from the Export dialog.
-
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b03718f3e7b25a4f6e5fb0a99ef534239483dc54dd64d6f358db7ef04cda8ea8/assets/images/help-center/product/studio/studio-export.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113648Z&X-Amz-Expires=604800&X-Amz-Signature=22cc3d7978908f4eb97914c221b54d81cd0767310f00c9b78ab1cc29485cc188&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)

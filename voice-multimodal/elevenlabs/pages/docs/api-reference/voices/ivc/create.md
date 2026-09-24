@@ -33,7 +33,7 @@ This endpoint expects a multipart form with multiple files.
 - `files` (files, required) — A list of file paths to audio recordings intended for voice cloning.
 - `remove_background_noise` (boolean, optional) — If set will remove background noise for voice samples using our audio isolation model. If the samples do not include background noise, it can make the quality worse.
 - `description` (string, optional) — A description of the voice.
-- `labels` (map from string to string or string, optional) — Labels for the voice. Keys can be language, accent, gender, or age.
+- `labels` (V1VoicesAddPostRequestBodyContentMultipartFormDataSchemaLabels, optional) — Labels for the voice. Keys can be language, accent, gender, or age.
 
 ## Response
 
@@ -50,10 +50,17 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

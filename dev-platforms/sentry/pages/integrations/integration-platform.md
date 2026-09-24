@@ -22,7 +22,7 @@ It's a kanban application that uses many of the features available to Sentry int
 
 ## [Creating an Integration](https://docs.sentry.io/integrations/integration-platform.md#creating-an-integration)
 
-In [sentry.io](https://sentry.io), navigate to **Settings > Developer Settings**. From here, you can choose to create an [internal](https://docs.sentry.io/integrations/integration-platform/internal-integration.md) or [public](https://docs.sentry.io/integrations/integration-platform/public-integration.md) integration. Internal integrations can only be used by your organization, whereas public integrations can be published and are available for all Sentry users.
+In sentry.io, navigate to [**Settings > Developer Settings**](https://sentry.io/orgredirect/organizations/:orgslug/settings/developer-settings/). From here, you can choose to create an [internal](https://docs.sentry.io/integrations/integration-platform/internal-integration.md) or [public](https://docs.sentry.io/integrations/integration-platform/public-integration.md) integration. Internal integrations can only be used by your organization, whereas public integrations can be published and are available for all Sentry users.
 
 There are several configuration options for your integration, which are described briefly below. Each section provides links to more detailed information.
 

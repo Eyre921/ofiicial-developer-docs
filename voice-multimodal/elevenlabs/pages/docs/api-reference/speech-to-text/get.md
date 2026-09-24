@@ -34,137 +34,7 @@ Reference: https://elevenlabs.io/docs/api-reference/speech-to-text/get
 
 The transcript data
 
-- `object or object or object or object`
-  - SpeechToTextChunkResponseModel
-    - `language_code` (string, required) — The detected language code (e.g. 'eng' for English).
-    - `language_probability` (double, required) — The confidence score of the language detection (0 to 1).
-    - `text` (string, required) — The raw text of the transcription.
-    - `words` (list of object, required) — List of words with their timing information.
-      - `text` (string, required) — The word or sound that was transcribed.
-      - `type` (enum, required) — The type of the word or sound. 'audio_event' is used for non-word sounds like laughter or footsteps.
-        - Allowed values: `word`, `spacing`, `audio_event`
-      - `logprob` (double, required) — The log of the probability with which this word was predicted. Logprobs are in range [-infinity, 0], higher logprobs indicate a higher confidence the model has in its predictions.
-      - `start` (double, optional, nullable) — The start time of the word or sound in seconds.
-      - `end` (double, optional, nullable) — The end time of the word or sound in seconds.
-      - `speaker_id` (string, optional, nullable) — Unique identifier for the speaker of this word.
-      - `characters` (list of object, optional, nullable) — The characters that make up the word and their timing information.
-        - `text` (string, required) — The character that was transcribed.
-        - `start` (double, optional, nullable) — The start time of the character in seconds.
-        - `end` (double, optional, nullable) — The end time of the character in seconds.
-      - `channel_index` (integer, optional, nullable) — The channel this word was spoken on (for multichannel audio). Null for single-channel transcriptions.
-    - `channel_index` (integer, optional, nullable) — The channel index this transcript belongs to (for multichannel audio).
-    - `additional_formats` (list of object, optional, nullable) — Requested additional formats of the transcript.
-      - `requested_format` (string, required) — The requested format.
-      - `file_extension` (string, required) — The file extension of the additional format.
-      - `content_type` (string, required) — The content type of the additional format.
-      - `is_base64_encoded` (boolean, required) — Whether the content is base64 encoded.
-      - `content` (string, required) — The content of the additional format.
-    - `transcription_id` (string, optional, nullable) — The transcription ID of the response.
-    - `entities` (list of object, optional, nullable) — List of detected entities with their text, type, and character positions in the transcript.
-      - `text` (string, required) — The text that was identified as an entity.
-      - `entity_type` (string, required) — The type of entity detected (e.g., 'credit_card', 'email_address', 'person_name').
-      - `start_char` (integer, required) — Start character position in the transcript text.
-      - `end_char` (integer, required) — End character position in the transcript text.
-    - `audio_duration_secs` (double, optional, nullable) — The duration of the audio that was transcribed in seconds.
-  - MultichannelSpeechToTextResponseModel
-    - `transcripts` (list of object, required) — List of transcripts, one for each audio channel. Each transcript contains the text and word-level details for its respective channel.
-      - `language_code` (string, required) — The detected language code (e.g. 'eng' for English).
-      - `language_probability` (double, required) — The confidence score of the language detection (0 to 1).
-      - `text` (string, required) — The raw text of the transcription.
-      - `words` (list of object, required) — List of words with their timing information.
-        - `text` (string, required) — The word or sound that was transcribed.
-        - `type` (enum, required) — The type of the word or sound. 'audio_event' is used for non-word sounds like laughter or footsteps.
-          - Allowed values: `word`, `spacing`, `audio_event`
-        - `logprob` (double, required) — The log of the probability with which this word was predicted. Logprobs are in range [-infinity, 0], higher logprobs indicate a higher confidence the model has in its predictions.
-        - `start` (double, optional, nullable) — The start time of the word or sound in seconds.
-        - `end` (double, optional, nullable) — The end time of the word or sound in seconds.
-        - `speaker_id` (string, optional, nullable) — Unique identifier for the speaker of this word.
-        - `characters` (list of object, optional, nullable) — The characters that make up the word and their timing information.
-          - `text` (string, required) — The character that was transcribed.
-          - `start` (double, optional, nullable) — The start time of the character in seconds.
-          - `end` (double, optional, nullable) — The end time of the character in seconds.
-        - `channel_index` (integer, optional, nullable) — The channel this word was spoken on (for multichannel audio). Null for single-channel transcriptions.
-      - `channel_index` (integer, optional, nullable) — The channel index this transcript belongs to (for multichannel audio).
-      - `additional_formats` (list of object, optional, nullable) — Requested additional formats of the transcript.
-        - `requested_format` (string, required) — The requested format.
-        - `file_extension` (string, required) — The file extension of the additional format.
-        - `content_type` (string, required) — The content type of the additional format.
-        - `is_base64_encoded` (boolean, required) — Whether the content is base64 encoded.
-        - `content` (string, required) — The content of the additional format.
-      - `transcription_id` (string, optional, nullable) — The transcription ID of the response.
-      - `entities` (list of object, optional, nullable) — List of detected entities with their text, type, and character positions in the transcript.
-        - `text` (string, required) — The text that was identified as an entity.
-        - `entity_type` (string, required) — The type of entity detected (e.g., 'credit_card', 'email_address', 'person_name').
-        - `start_char` (integer, required) — Start character position in the transcript text.
-        - `end_char` (integer, required) — End character position in the transcript text.
-      - `audio_duration_secs` (double, optional, nullable) — The duration of the audio that was transcribed in seconds.
-    - `transcription_id` (string, optional, nullable) — The transcription ID of the response.
-    - `audio_duration_secs` (double, optional, nullable) — The duration of the audio that was transcribed across all channels in seconds.
-  - SpeechToTextChunkResponseModel
-    - `language_code` (string, required) — The detected language code (e.g. 'eng' for English).
-    - `language_probability` (double, required) — The confidence score of the language detection (0 to 1).
-    - `text` (string, required) — The raw text of the transcription.
-    - `words` (list of object, required) — List of words with their timing information.
-      - `text` (string, required) — The word or sound that was transcribed.
-      - `type` (enum, required) — The type of the word or sound. 'audio_event' is used for non-word sounds like laughter or footsteps.
-        - Allowed values: `word`, `spacing`, `audio_event`
-      - `logprob` (double, required) — The log of the probability with which this word was predicted. Logprobs are in range [-infinity, 0], higher logprobs indicate a higher confidence the model has in its predictions.
-      - `start` (double, optional, nullable) — The start time of the word or sound in seconds.
-      - `end` (double, optional, nullable) — The end time of the word or sound in seconds.
-      - `speaker_id` (string, optional, nullable) — Unique identifier for the speaker of this word.
-      - `characters` (list of object, optional, nullable) — The characters that make up the word and their timing information.
-        - `text` (string, required) — The character that was transcribed.
-        - `start` (double, optional, nullable) — The start time of the character in seconds.
-        - `end` (double, optional, nullable) — The end time of the character in seconds.
-      - `channel_index` (integer, optional, nullable) — The channel this word was spoken on (for multichannel audio). Null for single-channel transcriptions.
-    - `channel_index` (integer, optional, nullable) — The channel index this transcript belongs to (for multichannel audio).
-    - `additional_formats` (list of object, optional, nullable) — Requested additional formats of the transcript.
-      - `requested_format` (string, required) — The requested format.
-      - `file_extension` (string, required) — The file extension of the additional format.
-      - `content_type` (string, required) — The content type of the additional format.
-      - `is_base64_encoded` (boolean, required) — Whether the content is base64 encoded.
-      - `content` (string, required) — The content of the additional format.
-    - `transcription_id` (string, optional, nullable) — The transcription ID of the response.
-    - `entities` (list of object, optional, nullable) — List of detected entities with their text, type, and character positions in the transcript.
-      - `text` (string, required) — The text that was identified as an entity.
-      - `entity_type` (string, required) — The type of entity detected (e.g., 'credit_card', 'email_address', 'person_name').
-      - `start_char` (integer, required) — Start character position in the transcript text.
-      - `end_char` (integer, required) — End character position in the transcript text.
-    - `audio_duration_secs` (double, optional, nullable) — The duration of the audio that was transcribed in seconds.
-  - MultichannelSpeechToTextResponseModel
-    - `transcripts` (list of object, required) — List of transcripts, one for each audio channel. Each transcript contains the text and word-level details for its respective channel.
-      - `language_code` (string, required) — The detected language code (e.g. 'eng' for English).
-      - `language_probability` (double, required) — The confidence score of the language detection (0 to 1).
-      - `text` (string, required) — The raw text of the transcription.
-      - `words` (list of object, required) — List of words with their timing information.
-        - `text` (string, required) — The word or sound that was transcribed.
-        - `type` (enum, required) — The type of the word or sound. 'audio_event' is used for non-word sounds like laughter or footsteps.
-          - Allowed values: `word`, `spacing`, `audio_event`
-        - `logprob` (double, required) — The log of the probability with which this word was predicted. Logprobs are in range [-infinity, 0], higher logprobs indicate a higher confidence the model has in its predictions.
-        - `start` (double, optional, nullable) — The start time of the word or sound in seconds.
-        - `end` (double, optional, nullable) — The end time of the word or sound in seconds.
-        - `speaker_id` (string, optional, nullable) — Unique identifier for the speaker of this word.
-        - `characters` (list of object, optional, nullable) — The characters that make up the word and their timing information.
-          - `text` (string, required) — The character that was transcribed.
-          - `start` (double, optional, nullable) — The start time of the character in seconds.
-          - `end` (double, optional, nullable) — The end time of the character in seconds.
-        - `channel_index` (integer, optional, nullable) — The channel this word was spoken on (for multichannel audio). Null for single-channel transcriptions.
-      - `channel_index` (integer, optional, nullable) — The channel index this transcript belongs to (for multichannel audio).
-      - `additional_formats` (list of object, optional, nullable) — Requested additional formats of the transcript.
-        - `requested_format` (string, required) — The requested format.
-        - `file_extension` (string, required) — The file extension of the additional format.
-        - `content_type` (string, required) — The content type of the additional format.
-        - `is_base64_encoded` (boolean, required) — Whether the content is base64 encoded.
-        - `content` (string, required) — The content of the additional format.
-      - `transcription_id` (string, optional, nullable) — The transcription ID of the response.
-      - `entities` (list of object, optional, nullable) — List of detected entities with their text, type, and character positions in the transcript.
-        - `text` (string, required) — The text that was identified as an entity.
-        - `entity_type` (string, required) — The type of entity detected (e.g., 'credit_card', 'email_address', 'person_name').
-        - `start_char` (integer, required) — Start character position in the transcript text.
-        - `end_char` (integer, required) — End character position in the transcript text.
-      - `audio_duration_secs` (double, optional, nullable) — The duration of the audio that was transcribed in seconds.
-    - `transcription_id` (string, optional, nullable) — The transcription ID of the response.
-    - `audio_duration_secs` (double, optional, nullable) — The duration of the audio that was transcribed across all channels in seconds.
+- `speech_to_text_transcripts_get_Response_200`
 
 ## Errors
 
@@ -172,10 +42,76 @@ The transcript data
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### SpeechToTextChunkResponseModel
+
+Chunk-level detail of the transcription with timing information.
+
+- `language_code` (string, required) — The detected language code (e.g. 'eng' for English).
+- `language_probability` (double, required) — The confidence score of the language detection (0 to 1).
+- `text` (string, required) — The raw text of the transcription.
+- `words` (list of SpeechToTextWordResponseModel, required) — List of words with their timing information.
+- `channel_index` (integer, optional, nullable) — The channel index this transcript belongs to (for multichannel audio).
+- `additional_formats` (list of AdditionalFormatResponseModel, optional, nullable) — Requested additional formats of the transcript.
+- `transcription_id` (string, optional, nullable) — The transcription ID of the response.
+- `entities` (list of DetectedEntity, optional, nullable) — List of detected entities with their text, type, and character positions in the transcript.
+- `audio_duration_secs` (double, optional, nullable) — The duration of the audio that was transcribed in seconds.
+
+### MultichannelSpeechToTextResponseModel
+
+Response model for multichannel speech-to-text transcription.
+
+- `transcripts` (list of SpeechToTextChunkResponseModel, required) — List of transcripts, one for each audio channel. Each transcript contains the text and word-level details for its respective channel.
+- `transcription_id` (string, optional, nullable) — The transcription ID of the response.
+- `audio_duration_secs` (double, optional, nullable) — The duration of the audio that was transcribed across all channels in seconds.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### SpeechToTextWordResponseModel
+
+Word-level detail of the transcription with timing information.
+
+- `text` (string, required) — The word or sound that was transcribed.
+- `type` (enum, required) — The type of the word or sound. 'audio_event' is used for non-word sounds like laughter or footsteps.
+  - Allowed values: `word`, `spacing`, `audio_event`
+- `logprob` (double, required) — The log of the probability with which this word was predicted. Logprobs are in range [-infinity, 0], higher logprobs indicate a higher confidence the model has in its predictions.
+- `start` (double, optional, nullable) — The start time of the word or sound in seconds.
+- `end` (double, optional, nullable) — The end time of the word or sound in seconds.
+- `speaker_id` (string, optional, nullable) — Unique identifier for the speaker of this word.
+- `characters` (list of SpeechToTextCharacterResponseModel, optional, nullable) — The characters that make up the word and their timing information.
+- `channel_index` (integer, optional, nullable) — The channel this word was spoken on (for multichannel audio). Null for single-channel transcriptions.
+
+### AdditionalFormatResponseModel
+
+- `requested_format` (string, required) — The requested format.
+- `file_extension` (string, required) — The file extension of the additional format.
+- `content_type` (string, required) — The content type of the additional format.
+- `is_base64_encoded` (boolean, required) — Whether the content is base64 encoded.
+- `content` (string, required) — The content of the additional format.
+
+### DetectedEntity
+
+An entity detected within transcribed text.
+
+- `text` (string, required) — The text that was identified as an entity.
+- `entity_type` (string, required) — The type of entity detected (e.g., 'credit_card', 'email_address', 'person_name').
+- `start_char` (integer, required) — Start character position in the transcript text.
+- `end_char` (integer, required) — End character position in the transcript text.
+
+### ValidationErrorLocItems
+
+### SpeechToTextCharacterResponseModel
+
+- `text` (string, required) — The character that was transcribed.
+- `start` (double, optional, nullable) — The start time of the character in seconds.
+- `end` (double, optional, nullable) — The end time of the character in seconds.
 
 ## Examples
 

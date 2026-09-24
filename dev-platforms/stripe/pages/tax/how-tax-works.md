@@ -54,6 +54,10 @@ If you sell to other businesses, your transactions might be subject to reverse c
 
 Some individuals or entities might be tax exempt. For example, some US states have a reseller exemption. You can set an exempt status on customers to reflect this. [Read more about reverse charges and exempt customers](https://docs.stripe.com/tax/zero-tax.md).
 
+> #### Existing subscriptions
+> 
+> Stripe Tax applies automatically to transactions you create after setup. To collect tax on existing subscriptions, you must migrate them to enable automatic tax. [Learn how to migrate your subscriptions.](https://docs.stripe.com/billing/taxes/migration.md)
+
 ## File and remit 
 
 If you’re collecting taxes, you must file and remit (transfer) the taxes collected in every location that you’re registered in. Make sure you understand and comply with obligations of each state or country and consult your tax advisor if you need help. You can export your transactions in an itemized format when you need detailed records. [Read more about Stripe Tax reports](https://docs.stripe.com/tax/reports.md).

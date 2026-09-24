@@ -25,8 +25,10 @@ If the generated voice output varies in volume or tone, it is often due to incon
 
 To minimize issues, consider breaking your text into smaller segments. This approach helps maintain consistent volume and reduces degradation over longer audio generations. Utilize our ElevenCreative Studio feature to generate several smaller audio segments simultaneously, ensuring better quality and consistency.
 
-Refer to our guides for optimizing Instant and Professional Voice Clones for best practices and
-advice.
+> **Note**
+>
+> Refer to our guides for optimizing Instant and Professional Voice Clones for best practices and
+> advice.
 
 #### Mispronunciation
 
@@ -82,7 +84,9 @@ The import function attempts to import the file you provide to the website. Give
 * **Paragraph structure**: If text imports as a single long paragraph instead of following the original book's structure, it may not function correctly. Ensure the text maintains its original line breaks. If issues persist, try copying and pasting. If this fails, the text format may need conversion or rewriting.
 * **Preferred format**: EPUB is the recommended file format for creating a project in ElevenCreative Studio. A well-structured EPUB will automatically split each chapter in ElevenCreative Studio, facilitating navigation. Ensure each chapter heading is formatted as "Heading 1" for proper recognition.
 
-Always double-check imported content for accuracy and structure.
+> **Note**
+>
+> Always double-check imported content for accuracy and structure.
 
 #### Glitches between paragraphs
 
@@ -90,5 +94,7 @@ Occasionally, glitches or sharp breaths may occur between paragraphs. This is ra
 from standard Text to Speech issues. If encountered, regenerate the preceding paragraph, as the
 problem often originates there.
 
-If an issue persists after following this troubleshooting guide, please email Support at
-[team@elevenlabs.io](mailto:team@elevenlabs.io).
+> **Note**
+>
+> If an issue persists after following this troubleshooting guide, please email Support at
+> [team@elevenlabs.io](mailto:team@elevenlabs.io).

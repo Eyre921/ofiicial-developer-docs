@@ -23,7 +23,7 @@ Certain events within ElevenLabs can be configured to trigger webhooks, allowing
 
 Webhooks can be created, disabled and deleted from the general settings page. For users within [Workspaces](/docs/overview/administration/workspaces/overview), only the workspace admins can configure the webhooks for the workspace.
 
-![HMAC webhook configuration](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9ea298daac1c64eb43c802a12f7824e83accca44ba2edd1d01a39bcd62c0b9d6/assets/images/product-guides/administration/hmacwebhook.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T065554Z&X-Amz-Expires=604800&X-Amz-Signature=26fba3c22ce6b9ed7e4d55f4c5333bce32b0f58aec9eb811ad61ebb39024f822&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![HMAC webhook configuration](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9ea298daac1c64eb43c802a12f7824e83accca44ba2edd1d01a39bcd62c0b9d6/assets/images/product-guides/administration/hmacwebhook.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113253Z&X-Amz-Expires=604800&X-Amz-Signature=d619fdf25d5ab243c4819d4078d3fcad41bbfb15cb8c010cf067a9cdb6c95dc3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 After creation, the webhook can be selected to listen for events within product settings such as [Agents Platform](/docs/eleven-agents/workflows/post-call-webhooks).
 
@@ -33,7 +33,9 @@ Webhooks can be disabled from the general settings page at any time. Webhooks th
 
 Webhook retries can be enabled per webhook to automatically reattempt delivery when a request fails. Retries are disabled by default. Enable retries when creating or updating a webhook through the [API](/docs/api-reference/webhooks/create) or in the webhook settings.
 
-Retries are currently only supported for `post_call_transcription` webhooks.
+> **Note**
+>
+> Retries are currently only supported for `post_call_transcription` webhooks.
 
 ### Retry schedule
 

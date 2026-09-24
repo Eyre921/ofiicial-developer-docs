@@ -8,7 +8,9 @@ path: docs/eleven-api/guides/how-to/speech-to-text/realtime/server-side-streamin
 
 # Server-side streaming
 
-**How-to guide** · Assumes you have completed the [Speech to Text quickstart](/docs/eleven-api/guides/cookbooks/speech-to-text).
+> **Note**
+>
+> **How-to guide** · Assumes you have completed the [Speech to Text quickstart](/docs/eleven-api/guides/cookbooks/speech-to-text).
 
 ## Overview
 
@@ -25,20 +27,26 @@ For streaming audio directly from the microphone, see the [Client-side streaming
 
 ## Quickstart
 
-This guide assumes you have [set up your API key and SDK](/docs/eleven-api/quickstart). Complete
-the quickstart first if you haven't.
+> **Note**
+>
+> This guide assumes you have [set up your API key and SDK](/docs/eleven-api/quickstart). Complete
+> the quickstart first if you haven't.
 
 #### Configure the SDK
 
 The SDK provides two ways to transcribe audio in realtime: streaming from a URL or manually chunking the audio from either a file or your own audio stream.
 
-For a full list of parameters and options the API supports, please refer to the [API reference](/docs/api-reference/speech-to-text/v-1-speech-to-text-realtime).
+> **Info**
+>
+> For a full list of parameters and options the API supports, please refer to the [API reference](/docs/api-reference/speech-to-text/v-1-speech-to-text-realtime).
 
 #### Stream from URL
 
 This example shows how to stream an audio file from a URL using the official SDK.
 
-The `ffmpeg` tool is required when streaming from an URL. Visit [their website](https://ffmpeg.org/download.html) for installation instructions.
+> **Warning**
+>
+> The `ffmpeg` tool is required when streaming from an URL. Visit [their website](https://ffmpeg.org/download.html) for installation instructions.
 
 Create a new file named `example.py` or `example.mts`, depending on your language of choice and add the following code:
 

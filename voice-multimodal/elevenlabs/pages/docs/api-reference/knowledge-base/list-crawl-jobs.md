@@ -36,23 +36,7 @@ Reference: https://elevenlabs.io/docs/api-reference/knowledge-base/list-crawl-jo
 
 Successful Response
 
-- `crawl_jobs` (list of object, required)
-  - `seed_url` (string, required)
-  - `max_pages` (integer, required)
-  - `root_folder_id` (string, required)
-  - `updated_at` (integer, required)
-  - `id` (string, required)
-  - `created_at` (integer, required)
-  - `type` (enum, optional, default: discovery)
-    - Allowed values: `discovery`, `sitemap`
-  - `pattern` (string, optional, nullable)
-  - `status` (enum, optional, default: queued)
-    - Allowed values: `queued`, `processing`, `succeeded`, `failed`, `skipped`, `cancelled`
-  - `pages_identified` (integer, optional, default: 0)
-  - `pages_scraped` (integer, optional, default: 0)
-  - `pages_skipped` (integer, optional, default: 0)
-  - `pages_failed` (integer, optional, default: 0)
-  - `max_depth` (integer, optional, default: 3, deprecated) — Deprecated - this field is a no-op and will be removed in a future version.
+- `crawl_jobs` (list of GetCrawlJobResponseModel, required)
 - `next_cursor` (string, optional, nullable)
 
 ## Errors
@@ -61,10 +45,37 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### GetCrawlJobResponseModel
+
+- `seed_url` (string, required)
+- `max_pages` (integer, required)
+- `root_folder_id` (string, required)
+- `updated_at` (integer, required)
+- `id` (string, required)
+- `created_at` (integer, required)
+- `type` (enum, optional, default: discovery)
+  - Allowed values: `discovery`, `sitemap`
+- `pattern` (string, optional, nullable)
+- `auto_discover` (boolean, optional, default: false) — Whether to automatically discover and enqueue additional pages found while crawling.
+- `status` (enum, optional, default: queued)
+  - Allowed values: `queued`, `processing`, `succeeded`, `failed`, `skipped`, `cancelled`
+- `pages_identified` (integer, optional, default: 0)
+- `pages_scraped` (integer, optional, default: 0)
+- `pages_skipped` (integer, optional, default: 0)
+- `pages_failed` (integer, optional, default: 0)
+- `max_depth` (integer, optional, default: 3, deprecated) — Deprecated - this field is a no-op and will be removed in a future version.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 
@@ -82,6 +93,7 @@ Validation Error
       "created_at": 1,
       "type": "discovery",
       "pattern": "string",
+      "auto_discover": false,
       "status": "queued",
       "pages_identified": 0,
       "pages_scraped": 0,

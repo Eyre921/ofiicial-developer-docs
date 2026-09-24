@@ -203,7 +203,9 @@ stt: new deepgram.STTv2({ model: "flux-general-en" }),
 turnHandling: { turnDetection: "stt" },
 ```
 
-Even when using Flux for turn detection, a [VAD (Voice Activity Detection)](/docs/understanding-end-of-speech-detection) is required for interruption handling — without it, the agent cannot detect when a user speaks over the agent's response. If you don't specify a VAD, LiveKit auto-provisions one for you. Note that this is not the Silero plugin itself, but a bundled inference VAD that is still based on Silero. You can also add the Silero plugin explicitly if you prefer to manage it yourself.
+> **Warning**
+>
+> Even when using Flux for turn detection, a [VAD (Voice Activity Detection)](/docs/understanding-end-of-speech-detection) is required for interruption handling — without it, the agent cannot detect when a user speaks over the agent's response. If you don't specify a VAD, LiveKit auto-provisions one for you. Note that this is not the Silero plugin itself, but a bundled inference VAD that is still based on Silero. You can also add the Silero plugin explicitly if you prefer to manage it yourself.
 
 ### Choose a different voice
 

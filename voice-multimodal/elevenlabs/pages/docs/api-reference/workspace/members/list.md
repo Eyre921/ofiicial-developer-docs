@@ -28,14 +28,7 @@ Reference: https://elevenlabs.io/docs/api-reference/workspace/members/list
 
 Successful Response
 
-- `list of object`
-  - `user_id` (string, required) — The user ID of the workspace member.
-  - `email` (string, required) — The email address of the workspace member.
-  - `first_name` (string, required, nullable) — The first name of the workspace member, if available.
-  - `seat_type` (enum, required, nullable) — The seat type (role) of the workspace member.
-    - Allowed values: `workspace_admin`, `workspace_member`, `workspace_lite_member`
-  - `is_owner` (boolean, required) — Whether the member is the workspace owner.
-  - `is_locked` (boolean, required) — Whether the member's account is locked in this workspace.
+- `list of WorkspaceMemberResponseModel`
 
 ## Errors
 
@@ -43,10 +36,29 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### WorkspaceMemberResponseModel
+
+Public workspace member fields exposed via GET /v1/workspace/members.
+
+- `user_id` (string, required) — The user ID of the workspace member.
+- `email` (string, required) — The email address of the workspace member.
+- `first_name` (string, required, nullable) — The first name of the workspace member, if available.
+- `seat_type` (enum, required, nullable) — The seat type (role) of the workspace member.
+  - Allowed values: `workspace_admin`, `workspace_member`, `workspace_lite_member`
+- `is_owner` (boolean, required) — Whether the member is the workspace owner.
+- `is_locked` (boolean, required) — Whether the member's account is locked in this workspace.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

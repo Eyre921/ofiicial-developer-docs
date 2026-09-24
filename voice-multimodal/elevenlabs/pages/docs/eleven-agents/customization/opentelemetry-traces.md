@@ -10,8 +10,10 @@ path: docs/eleven-agents/customization/opentelemetry-traces
 
 ElevenLabs Agents can export conversations as **OpenTelemetry traces** encoded as **OTLP JSON** (`resourceSpans`). Forward them to Datadog, Grafana Tempo, Honeycomb, or any backend that ingests OTLP.
 
-ElevenLabs does not push traces directly to your OTLP collector. You receive OTLP-shaped JSON from
-a webhook, API, or monitoring WebSocket and forward it to your backend.
+> **Info**
+>
+> ElevenLabs does not push traces directly to your OTLP collector. You receive OTLP-shaped JSON from
+> a webhook, API, or monitoring WebSocket and forward it to your backend.
 
 ## Overview
 
@@ -71,12 +73,14 @@ In the ElevenAgents Dashboard, create a workspace webhook with your HTTPS URL an
 
 Open [Agents settings](https://elevenlabs.io/app/agents/settings), assign the webhook as the post-call webhook, enable the **Transcript** event, and turn on **OpenTelemetry transcript payloads**.
 
-![Post-call webhook settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/eb5d768612d6461a21bc3127611f60724be3e1a55005af43faf48f2d7bf23807/assets/images/conversational-ai/postcallwebhooksettings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113306Z&X-Amz-Expires=604800&X-Amz-Signature=cf75b655f8e462e1bee6bee89cbfc220d85a154c5a8a7d3bc3f980983be65050&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Post-call webhook settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/eb5d768612d6461a21bc3127611f60724be3e1a55005af43faf48f2d7bf23807/assets/images/conversational-ai/postcallwebhooksettings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113217Z&X-Amz-Expires=604800&X-Amz-Signature=7ac3f1817f6276f08789c511a0d925d4ab5190e25a434da2b495b22f7a7f8539&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Configure via the CLI
 
-Workspace-wide post-call webhooks are configured in the Dashboard or API tab. Use the CLI to
-override webhook settings on a specific agent.
+> **Note**
+>
+> Workspace-wide post-call webhooks are configured in the Dashboard or API tab. Use the CLI to
+> override webhook settings on a specific agent.
 
 ### Pull the agent configuration
 
@@ -150,16 +154,18 @@ await elevenlabs.conversationalAi.settings.update({
 
 For a single agent, pass the same `webhooks` object under `platform_settings.workspace_overrides` in [Update agent](/docs/api-reference/agents/update).
 
-OpenTelemetry transcript webhooks do not include audio. Use `post_call_audio` if you need
-recordings.
-
-Return **2xx** for success. **4xx** and **5xx** count as failures.
-
-Retries apply to transcript webhooks (including OpenTelemetry) only when **Enable retries** is on
-for the workspace webhook. Transient errors (**5xx**, **429**, **408**) retry up to 5 times; **4xx**
-does not. Audio webhooks are never retried. Repeated failures can auto-disable the webhook. See
-[Post-call webhooks](/docs/eleven-agents/workflows/post-call-webhooks) for details and HIPAA
-exceptions.
+> **Warning**
+>
+> OpenTelemetry transcript webhooks do not include audio. Use `post_call_audio` if you need
+> recordings.
+>
+> Return **2xx** for success. **4xx** and **5xx** count as failures.
+>
+> Retries apply to transcript webhooks (including OpenTelemetry) only when **Enable retries** is on
+> for the workspace webhook. Transient errors (**5xx**, **429**, **408**) retry up to 5 times; **4xx**
+> does not. Audio webhooks are never retried. Repeated failures can auto-disable the webhook. See
+> [Post-call webhooks](/docs/eleven-agents/workflows/post-call-webhooks) for details and HIPAA
+> exceptions.
 
 ### Delivery
 
@@ -262,9 +268,11 @@ Expected span names include `elevenlabs.conversation`, `elevenlabs.recv.user_tra
 
 ## Monitoring WebSocket
 
-Real-time monitoring requires an Enterprise workspace or the `realtime-monitoring` feature flag.
-See [Real-time monitoring](/docs/eleven-agents/guides/realtime-monitoring) for configuration,
-control commands, and access requirements.
+> **Note**
+>
+> Real-time monitoring requires an Enterprise workspace or the `realtime-monitoring` feature flag.
+> See [Real-time monitoring](/docs/eleven-agents/guides/realtime-monitoring) for configuration,
+> control commands, and access requirements.
 
 Stream OpenTelemetry trace data as OTLP JSON while a conversation is in progress. Each message is a small `resourceSpans` batch, not one end-of-call trace.
 
@@ -282,8 +290,10 @@ Set `monitoring_enabled: true` and configure `monitoring_events` before the call
 
 Append `events_format=opentelemetry` to the monitoring WebSocket URL.
 
-VAD, turn probability, and ping events are not available when custom `monitoring_events` are
-configured. The stream includes text and metadata only, not raw audio.
+> **Warning**
+>
+> VAD, turn probability, and ping events are not available when custom `monitoring_events` are
+> configured. The stream includes text and metadata only, not raw audio.
 
 ### Session protocol
 
@@ -314,8 +324,10 @@ elevenlabs.conversation
 
 Structured events map to dedicated attributes (for example `elevenlabs.user.text`, `elevenlabs.agent.text`). Unknown events use `elevenlabs.event.data` with truncated JSON.
 
-Do not assume event order matches speaking order. Correlate live spans with post-call data using
-the same `traceId`.
+> **Info**
+>
+> Do not assume event order matches speaking order. Correlate live spans with post-call data using
+> the same `traceId`.
 
 ### Example connection
 

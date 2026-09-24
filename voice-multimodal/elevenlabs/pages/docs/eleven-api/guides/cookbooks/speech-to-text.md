@@ -10,15 +10,19 @@ path: docs/eleven-api/guides/cookbooks/speech-to-text
 
 This guide will show you how to convert spoken audio into text using the Speech to Text API.
 
-Use the [ElevenLabs speech-to-text skill](https://github.com/elevenlabs/skills/tree/main/speech-to-text) to transcribe audio from your AI coding assistant:
+> **Tip**
+>
+> Use the [ElevenLabs speech-to-text skill](https://github.com/elevenlabs/skills/tree/main/speech-to-text) to transcribe audio from your AI coding assistant:
+>
+> ```bash
+> npx skills add elevenlabs/skills --skill speech-to-text
+> ```
 
-```bash
-npx skills add elevenlabs/skills --skill speech-to-text
-```
-
-This tutorial will demonstrate how to use the Batch Speech to Text API. For a guide on how to use
-the Realtime Speech to Text API, see the [Client-side streaming](/docs/eleven-api/guides/how-to/speech-to-text/realtime/client-side-streaming) or
-[Server-side streaming](/docs/eleven-api/guides/how-to/speech-to-text/realtime/server-side-streaming) guides.
+> **Info**
+>
+> This tutorial will demonstrate how to use the Batch Speech to Text API. For a guide on how to use
+> the Realtime Speech to Text API, see the [Client-side streaming](/docs/eleven-api/guides/how-to/speech-to-text/realtime/client-side-streaming) or
+> [Server-side streaming](/docs/eleven-api/guides/how-to/speech-to-text/realtime/server-side-streaming) guides.
 
 ## Using the Speech to Text API
 
@@ -79,11 +83,13 @@ npm install -g @elevenlabs/cli
 curl --proto '=https' --tlsv1.2 -LsSf https://github.com/elevenlabs/cli/releases/latest/download/elevenlabs-cli-installer.sh | sh
 ```
 
-Working with an AI coding assistant? Run `elevenlabs generate-skills` in your project to write a
-`SKILL.md` for every command group into `skills/`, so your assistant knows the CLI's full surface
-without you pasting docs. Use `--output-dir` to put them elsewhere. This reads the CLI's own
-embedded API definition, so it needs no API key and works offline — and it stays in step with
-whichever CLI version you have installed.
+> **Tip**
+>
+> Working with an AI coding assistant? Run `elevenlabs generate-skills` in your project to write a
+> `SKILL.md` for every command group into `skills/`, so your assistant knows the CLI's full surface
+> without you pasting docs. Use `--output-dir` to put them elsewhere. This reads the CLI's own
+> embedded API definition, so it needs no API key and works offline — and it stays in step with
+> whichever CLI version you have installed.
 
 Then authenticate — this opens your browser to authorize the CLI:
 
@@ -163,8 +169,10 @@ npx tsx example.mts
 
 You should see the transcription of the audio file printed to the console.
 
-For medical and clinical audio, set `model_id` to `scribe_v2_medical`. The request shape
-is the same as `scribe_v2` and is billed at the same rate. See [Scribe v2 Medical](/docs/overview/models#scribe-v2-medical).
+> **Note**
+>
+> For medical and clinical audio, set `model_id` to `scribe_v2_medical`. The request shape
+> is the same as `scribe_v2` and is billed at the same rate. See [Scribe v2 Medical](/docs/overview/models#scribe-v2-medical).
 
 #### CLI
 

@@ -18,11 +18,15 @@ Deepgram's [Endpointing](/docs/endpointing) and [Interim Results](/docs/interim-
 
 Deepgram's Endpointing feature uses an audio-based Voice Activity Detector (VAD) to determine when a person is speaking and when there is silence. When the state of the audio goes from speech to a configurable duration of silence (set by the `endpointing` query parameter), Deepgram will chunk the audio and return a transcript with the `speech_final` flag set to `true`.
 
-For more information, see [Understanding Endpointing and Interim Results When Transcribing Live Streaming Audio](/docs/understand-endpointing-interim-results)).
+> **Info**
+>
+> For more information, see [Understanding Endpointing and Interim Results When Transcribing Live Streaming Audio](/docs/understand-endpointing-interim-results)).
 
 In a quiet room with little background noise, Deepgram's Endpointing feature works well. In environments with significant background noise such as playing music, a ringing phone, or at a fast food drive thru, the background noise can cause the VAD to trigger and prevent the detection of silent audio. Since endpointing only fires after a certain amount of silence has been detected, a significant amount of background noise may prevent the `speech_final=true` flag from being sent.
 
-In rare situations, such as when speaking a phone number, Deepgram may purposefully wait for additional audio from the speaker so it can properly format the transcript (this only occurs when using` smart_format=true`).
+> **Info**
+>
+> In rare situations, such as when speaking a phone number, Deepgram may purposefully wait for additional audio from the speaker so it can properly format the transcript (this only occurs when using` smart_format=true`).
 
 ## Using UtteranceEnd
 
@@ -46,7 +50,9 @@ For example, if you set `utterance_end_ms=1000` Deepgram will wait for a 1000 ms
 
 You should set the value of `utterance_end_ms` to be `1000` ms or higher. Deepgram's Interim Results are sent every 1 second, so using a value of less than 1 second will not offer any benefits.
 
-When using `utterance_end_ms`, setting `interim_results=true` is also required.
+> **Info**
+>
+> When using `utterance_end_ms`, setting `interim_results=true` is also required.
 
 ## Using UtteranceEnd and Endpointing
 

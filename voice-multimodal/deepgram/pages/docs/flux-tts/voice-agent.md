@@ -14,7 +14,9 @@ Flux TTS is built to sit downstream of an LLM in a voice agent pipeline. This gu
 
 For the messages used here, see [Client Messages](/docs/flux-tts/client-messages) and [Server Messages](/docs/flux-tts/server-messages).
 
-The snippets below focus on **message flow** rather than a specific SDK. For the concrete `speak.v2` calls, see [Getting Started](/docs/flux-tts/quickstart) and the [template apps](/docs/flux-tts/template-apps) — the Python (`deepgram-sdk`) and JavaScript (`@deepgram/sdk`) SDKs both ship a `speak.v2` client for `/v2/speak`.
+> **Info**
+>
+> The snippets below focus on **message flow** rather than a specific SDK. For the concrete `speak.v2` calls, see [Getting Started](/docs/flux-tts/quickstart) and the [template apps](/docs/flux-tts/template-apps) — the Python (`deepgram-sdk`) and JavaScript (`@deepgram/sdk`) SDKs both ship a `speak.v2` client for `/v2/speak`.
 
 ## Pattern 1: Basic agent loop
 

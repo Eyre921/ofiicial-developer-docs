@@ -44,8 +44,10 @@ This integration uses **Salesforce OAuth 2.0 Client Credentials** for authentica
 
 #### Configure OAuth Client Credentials flow
 
-The Client Credentials Flow is recommended for server-to-server integrations where no user
-interaction is required. Ensure your Salesforce admin has enabled this flow.
+> **Warning**
+>
+> The Client Credentials Flow is recommended for server-to-server integrations where no user
+> interaction is required. Ensure your Salesforce admin has enabled this flow.
 
 1. In your External Client App, click **Edit**
 2. Check **Enable Client Credentials Flow** — a **Run As** field will appear
@@ -80,7 +82,9 @@ Go to **Setup** > **Domain Management** > **My Domain**. Your domain will be sho
 * `https://acme.lightning.force.com` (Lightning)
 * `https://acme.develop.my.salesforce.com` (Sandbox)
 
-Use the full domain without a trailing slash.
+> **Note**
+>
+> Use the full domain without a trailing slash.
 
 #### Connect in ElevenLabs
 
@@ -88,8 +92,10 @@ In the ElevenLabs integration setup, enter your Salesforce **instance hostname**
 
 ## Demo video
 
-This demo uses legacy webhook tools. If you're using the native Salesforce integration, the tools
-are configured automatically — no manual webhook setup is needed.
+> **Note**
+>
+> This demo uses legacy webhook tools. If you're using the native Salesforce integration, the tools
+> are configured automatically — no manual webhook setup is needed.
 
 ## How it works
 
@@ -173,9 +179,11 @@ Thank the customer and explain the next steps in the sales process.
 - Use `salesforce_create_record` to generate Leads, Contacts, or Opportunities after qualification.
 ```
 
-Tool authorization can be managed using Workplace Auth Connections, which handles token refresh
-automatically. The tools return human-readable names and descriptions rather than technical IDs to
-improve conversation quality.
+> **Tip**
+>
+> Tool authorization can be managed using Workplace Auth Connections, which handles token refresh
+> automatically. The tools return human-readable names and descriptions rather than technical IDs to
+> improve conversation quality.
 
 ## Tool configurations
 
@@ -234,8 +242,10 @@ Click **Create auth connection** to add your configuration.
 
 Once the connection is successful, save it and reference it in your webhook tool configurations in the **Authentication** section.
 
-Workplace Auth Connections handles token refresh automatically, so you do not need to manage
-tokens manually.
+> **Tip**
+>
+> Workplace Auth Connections handles token refresh automatically, so you do not need to manage
+> tokens manually.
 
 ### Webhook tool configurations
 

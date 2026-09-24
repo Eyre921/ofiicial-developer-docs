@@ -61,7 +61,9 @@ curl -sSf -w "latency: %{time_connect}\\n" -so /dev/null https://api.deepgram.co
 # latency: 0.203186
 ```
 
-Deepgram’s servers are exclusively in the United States. If you are making API requests from another country, this will incur relatively higher network latency than requests from the USA.
+> **Info**
+>
+> Deepgram’s servers are exclusively in the United States. If you are making API requests from another country, this will incur relatively higher network latency than requests from the USA.
 
 ### Time to First Byte (TTFB)
 
@@ -135,7 +137,9 @@ outputStream.close();
 
 You can begin streaming after receiving the first byte of audio because Deepgram's speed-up factor is high, far greater than the speed-up factor of 1x required to stream the output in real time.
 
-Stream the audio output after receiving the first byte. Read the guide [Streaming Audio Outputs](/docs/streaming-the-audio-output) to learn more.
+> **Info**
+>
+> Stream the audio output after receiving the first byte. Read the guide [Streaming Audio Outputs](/docs/streaming-the-audio-output) to learn more.
 
 ### Audio Synthesis Latency
 
@@ -203,7 +207,9 @@ Latency in text-to-speech (TTS) technology can be influenced by various factors.
 
 ### Self-Host
 
-Having challenges with performance and latency? Check out Deepgram's [Self-Hosted Solution](/docs/self-hosted-introduction) to get the benefits of running your own hosted instance of Deepgram.
+> **Info**
+>
+> Having challenges with performance and latency? Check out Deepgram's [Self-Hosted Solution](/docs/self-hosted-introduction) to get the benefits of running your own hosted instance of Deepgram.
 
 Running self-hosted text-to-speech systems lowers latency by eliminating network delays and leveraging local processing power, which ensures faster and more consistent performance. Local processing avoids the overhead of data transfer to and from remote servers, further reducing response times.
 
@@ -213,7 +219,9 @@ The configuration and location of servers can greatly impact latency. Optimal se
 
 Consider optimizing server deployment by strategically locating them closer to your target audience, investing in high-performance hardware tailored to workload demands, and implementing load balancing mechanisms to evenly distribute incoming requests, thereby minimizing latency and ensuring consistent performance.
 
-Maximize server performance and reduce latency by strategically placing servers near your target audience, investing in high-performance hardware, and implementing efficient load balancing techniques.
+> **Info**
+>
+> Maximize server performance and reduce latency by strategically placing servers near your target audience, investing in high-performance hardware, and implementing efficient load balancing techniques.
 
 ### Length of Text Input
 
@@ -231,7 +239,9 @@ Then consider tripling that to a 900-character input. The latency estimate is `6
 
 Note that while the 900-character request is slower than the 300-character request, it takes 1.33x time to process 3x characters. Keep that in mind for longer-form content: for lowest cumulative latency across multiple requests, include as close to the max of 2000 characters in each request if you are chunking your text to fit Deepgram's input character limit.
 
-For optimal latency across multiple requests, aim to include as close to the maximum of 2000 characters in each request when chunking your text to fit input character limits.
+> **Info**
+>
+> For optimal latency across multiple requests, aim to include as close to the maximum of 2000 characters in each request when chunking your text to fit input character limits.
 
 You can also run timing experiments yourself via CURL by modifying the number of characters in your text input:
 
@@ -292,7 +302,9 @@ curl -H "Authorization: token $DEEPGRAM_API_KEY" -o "out.mp3" -H  -X POST -d   0
 
 You will notice variation in latency; these numbers are an illustration of general trends and concepts, not a fixed result.
 
-On long content, provide the maximum number of characters per request.
+> **Info**
+>
+> On long content, provide the maximum number of characters per request.
 
 ### Audio Output Formats
 
@@ -302,7 +314,9 @@ Consider `linear16` encoded `wav` audio when prioritizing high-fidelity audio qu
 
 Choose compressed formats like `mp3` or `opus` when file size and bandwidth efficiency are critical factors. These formats offer reduced file sizes while maintaining acceptable audio quality, reducing the time to transfer the REST response over constrained networks. Compressed formats are available on the REST endpoint only — the streaming WebSocket emits raw `linear16`, `mulaw`, or `alaw` audio (see [Encoding](/docs/tts-encoding)).
 
-Choose the audio format that best suits your specific use case and requirements, considering factors such as audio quality, compatibility, file size, and efficiency, rather than solely focusing on minimizing latency.
+> **Info**
+>
+> Choose the audio format that best suits your specific use case and requirements, considering factors such as audio quality, compatibility, file size, and efficiency, rather than solely focusing on minimizing latency.
 
 ## More Tips to Minimize Latency
 
@@ -314,7 +328,9 @@ To accelerate generating a several-sentence reply, you may split by punctuation 
 
 Avoid splitting a single sentence into multiple requests, as the output speech will sound choppy due to normal variation in pitch and expression not being cohesive across speech snippets.
 
-Strategies and code examples for text chunking can be found in the guide [Text Chunking for TTS Optimization](/docs/text-chunking-for-tts-optimization).
+> **Info**
+>
+> Strategies and code examples for text chunking can be found in the guide [Text Chunking for TTS Optimization](/docs/text-chunking-for-tts-optimization).
 
 ### LLM Latency
 

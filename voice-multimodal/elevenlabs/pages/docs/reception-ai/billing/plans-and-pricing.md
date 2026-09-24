@@ -81,5 +81,7 @@ If you cancel your subscription:
 * Your phone number is released after a 14-day grace period
 * Data is retained in case you resubscribe
 
-Cancelling releases your phone number after the grace period. You may get a different number if
-you resubscribe.
+> **Warning**
+>
+> Cancelling releases your phone number after the grace period. You may get a different number if
+> you resubscribe.

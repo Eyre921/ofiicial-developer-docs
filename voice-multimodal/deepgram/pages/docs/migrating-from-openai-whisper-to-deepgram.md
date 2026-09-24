@@ -14,9 +14,13 @@ Changing audio transcription services can be a challenging task, even for experi
 
 ## Getting Started
 
-Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
+> **Info**
+>
+> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
 
-Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
+> **Info**
+>
+> Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
 
 ## Migration Process
 
@@ -581,7 +585,9 @@ The OpenAI response will contain the following fields:
 
 Deepgram and OpenAI provide speech recognition models that are pre-trained or tuned to identify the words and phrases unique to a specific use case or domain. Deepgram creates our speech recognition models through transfer learning from our highly-performant general models. It is important to test multiple models to see which one meets the accuracy, performance, and scalability needs for your use case.
 
-For more details on Deepgram models see [Model Overview](/docs/models-languages-overview).
+> **Info**
+>
+> For more details on Deepgram models see [Model Overview](/docs/models-languages-overview).
 
 Deepgram provides:
 

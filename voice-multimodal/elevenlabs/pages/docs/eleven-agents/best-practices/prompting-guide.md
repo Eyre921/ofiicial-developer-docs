@@ -12,22 +12,24 @@ path: docs/eleven-agents/best-practices/prompting-guide
 
 Effective prompting transforms [ElevenLabs Agents](/docs/eleven-agents/overview) from robotic to lifelike.
 
-![ElevenLabs Agents prompting guide](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/255df05f53675feaf54c765c4ee294fda00a7c14de1b02f155922012bf0a5433/assets/images/conversational-ai/prompting-guide.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T082842Z&X-Amz-Expires=604800&X-Amz-Signature=5becd76f739d3f81aed6fd6ef7d8d33852e76c8b0ae2616f9e5bd6065e5eda97&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![ElevenLabs Agents prompting guide](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/255df05f53675feaf54c765c4ee294fda00a7c14de1b02f155922012bf0a5433/assets/images/conversational-ai/prompting-guide.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T104051Z&X-Amz-Expires=604800&X-Amz-Signature=e5105e78b46331d512e0694c16a9e13e9dc879f780ba36733bc826d958300b13&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 A system prompt is the personality and policy blueprint of your AI agent. In enterprise use, it tends to be elaborate—defining the agent's role, goals, allowable tools, step-by-step instructions for certain tasks, and guardrails describing what the agent should not do. The way you structure this prompt directly impacts reliability.
 
-The system prompt controls conversational behavior and response style, but does not control
-conversation flow mechanics like turn-taking, or agent settings like which languages an agent can
-speak. These aspects are handled at the platform level.
+> **Note**
+>
+> The system prompt controls conversational behavior and response style, but does not control
+> conversation flow mechanics like turn-taking, or agent settings like which languages an agent can
+> speak. These aspects are handled at the platform level.
 
-#### Iterate on prompts from your AI assistant
-
-The [hosted MCP server](/docs/eleven-agents/operate/hosted-mcp) lets Claude and other MCP clients
-read and update an agent's system prompt directly, so you can draft, review, and refine prompts
-conversationally.
+> **Iterate on prompts from your AI assistant**
+>
+> The [hosted MCP server](/docs/eleven-agents/operate/hosted-mcp) lets Claude and other MCP clients
+> read and update an agent's system prompt directly, so you can draft, review, and refine prompts
+> conversationally.
 
 ![Enterprise agent reliability
-framework](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/18c7dd3bf58a6715656d588834a278dbc1f368eaed2cbf91aeea3e977c2631ed/assets/images/conversational-ai/system-prompt-principles.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T082842Z&X-Amz-Expires=604800&X-Amz-Signature=616e209835baaaa5096b9331bb4bce0a80fe6172f9845026e4a1bc92276c7e91&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+framework](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/18c7dd3bf58a6715656d588834a278dbc1f368eaed2cbf91aeea3e977c2631ed/assets/images/conversational-ai/system-prompt-principles.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T104051Z&X-Amz-Expires=604800&X-Amz-Signature=1ea14566fc55e6601fca856f9b829b4ee774c68815b106955413ade0846aa506&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Prompt engineering fundamentals
 
@@ -90,8 +92,10 @@ When you're talking to customers, you should try to be really friendly and appro
 Speak in a friendly, conversational manner while maintaining professionalism.
 ```
 
-If you need the agent to maintain a specific tone, define it explicitly and concisely in the `#
-  Personality` or `# Tone` section. Avoid repeating tone guidance throughout the prompt.
+> **Note**
+>
+> If you need the agent to maintain a specific tone, define it explicitly and concisely in the `#
+>   Personality` or `# Tone` section. Avoid repeating tone guidance throughout the prompt.
 
 ### Emphasize critical instructions
 
@@ -139,9 +143,11 @@ We supports two normalization strategies via the [`text_normalisation_type`](/do
 * LLMs may occasionally fail to normalize correctly
 * Transcripts contain everything written out in words (e.g., "one thousand dollars" instead of "\$1,000")
 
-If you do not want to use the TTS normalizer and you notice the LLM still occasionally respond
-with unnormalized text, consider switching to a more intelligent LLM or adding additional
-normalization instructions to the system prompt.
+> **Tip**
+>
+> If you do not want to use the TTS normalizer and you notice the LLM still occasionally respond
+> with unnormalized text, consider switching to a more intelligent LLM or adding additional
+> normalization instructions to the system prompt.
 
 **`elevenlabs`** — Uses our [TTS normalizer](/docs/overview/capabilities/text-to-speech/best-practices#text-normalization) to normalize text after LLM generation, before it reaches the TTS model.
 
@@ -150,9 +156,11 @@ normalization instructions to the system prompt.
 * Transcripts retain natural formatting with symbols and numbers (e.g., "\$1,000")
 * Adds minor latency
 
-If transcript readability matters for your use case consider using the `elevenlabs` normalizer. It
-keeps transcripts clean with natural symbols and numbers while still producing correctly spoken
-audio.
+> **Tip**
+>
+> If transcript readability matters for your use case consider using the `elevenlabs` normalizer. It
+> keeps transcripts clean with natural symbols and numbers while still producing correctly spoken
+> audio.
 
 Find this configuration in our platform under the "Agent" tab by clicking the cog icon in the "Voices" section to open the common voice settings sheet, and configuring it at the bottom.
 
@@ -327,8 +335,10 @@ Overly broad instructions or large context windows increase latency and reduce a
 
 **Why this matters for reliability:** Specialized agents have fewer edge cases to handle, clearer success criteria, and faster response times. They're easier to test, debug, and improve.
 
-A general-purpose "do everything" agent is harder to maintain and more likely to fail in
-production than a network of specialized agents with clear handoffs.
+> **Note**
+>
+> A general-purpose "do everything" agent is harder to maintain and more likely to fail in
+> production than a network of specialized agents with clear handoffs.
 
 ### Use orchestrator and specialist patterns
 
@@ -469,8 +479,10 @@ Update specific sections of your prompt to address identified issues:
 3. **Make one change at a time:** Isolate improvements to understand what works
 4. **Re-evaluate with same test cases:** Verify the change fixed the issue without creating new problems
 
-Avoid making multiple prompt changes simultaneously. This makes it impossible to attribute
-improvements or regressions to specific edits.
+> **Warning**
+>
+> Avoid making multiple prompt changes simultaneously. This makes it impossible to attribute
+> improvements or regressions to specific edits.
 
 ### Configure data collection
 

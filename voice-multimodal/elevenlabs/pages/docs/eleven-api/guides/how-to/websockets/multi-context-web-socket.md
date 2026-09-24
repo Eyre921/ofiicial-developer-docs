@@ -8,10 +8,10 @@ path: docs/eleven-api/guides/how-to/websockets/multi-context-web-socket
 
 # Multi-Context Websocket
 
-#### Advanced
-
-Orchestrating voice agents using this multi-context WebSocket API is a complex task recommended
-for advanced developers. For a more managed solution, consider exploring our [Agents Platform product](/docs/eleven-agents/overview), which simplifies many of these challenges.
+> **Advanced**
+>
+> Orchestrating voice agents using this multi-context WebSocket API is a complex task recommended
+> for advanced developers. For a more managed solution, consider exploring our [Agents Platform product](/docs/eleven-agents/overview), which simplifies many of these challenges.
 
 ## Overview
 
@@ -24,16 +24,20 @@ This API extends our [standard TTS WebSocket functionality](/docs/eleven-api/gui
 * Maintain prosodic consistency for utterances within the same logical context.
 * Optimize resource usage by selectively closing contexts that are no longer needed.
 
-The multi-context WebSocket API is optimized for voice applications and is not intended for
-generating multiple unrelated audio streams simultaneously. Each connection is limited to 5
-concurrent contexts to reflect this.
+> **Warning**
+>
+> The multi-context WebSocket API is optimized for voice applications and is not intended for
+> generating multiple unrelated audio streams simultaneously. Each connection is limited to 5
+> concurrent contexts to reflect this.
 
 This guide will walk you through connecting to the multi-context WebSocket, managing contexts, and applying best practices for building engaging voice agents.
 
 ### Best practices
 
-These best practices are essential for building responsive, efficient voice agents with our
-multi-context WebSocket API.
+> **Note**
+>
+> These best practices are essential for building responsive, efficient voice agents with our
+> multi-context WebSocket API.
 
 #### Use a single WebSocket connection
 
@@ -171,7 +175,9 @@ ELEVENLABS_API_KEY=your_elevenlabs_api_key_here
 
 ### Example voice agent
 
-This code is provided as an example and is not intended for production usage
+> **Note**
+>
+> This code is provided as an example and is not intended for production usage
 
 ```python maxLines=100
 import os

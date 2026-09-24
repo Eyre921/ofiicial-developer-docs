@@ -33,32 +33,7 @@ Reference: https://developers.deepgram.com/reference/manage/projects/models/get
 
 A model object that can be either STT or TTS
 
-- `object or object`
-  - object
-    - `name` (string, optional)
-    - `canonical_name` (string, optional)
-    - `architecture` (string, optional)
-    - `languages` (list of string, optional)
-    - `version` (string, optional)
-    - `uuid` (string, optional)
-    - `batch` (boolean, optional)
-    - `streaming` (boolean, optional)
-    - `formatted_output` (boolean, optional)
-  - object
-    - `name` (string, optional)
-    - `canonical_name` (string, optional)
-    - `architecture` (string, optional)
-    - `languages` (list of string, optional)
-    - `version` (string, optional)
-    - `uuid` (string, optional)
-    - `metadata` (object, optional)
-      - `accent` (string, optional)
-      - `age` (string, optional)
-      - `color` (string, optional)
-      - `image` (string, optional)
-      - `sample` (string, optional)
-      - `tags` (list of string, optional)
-      - `use_cases` (list of string, optional)
+- `GetModelV1Response`
 
 ## Errors
 
@@ -66,16 +41,54 @@ A model object that can be either STT or TTS
 
 Invalid Request
 
-- `string or object or object`
-  - ErrorResponseLegacyError
-    - `err_code` (string, optional) — The error code
-    - `err_msg` (string, optional) — The error message
-    - `request_id` (string, optional) — The request ID
-  - ErrorResponseModernError
-    - `category` (string, optional) — The category of the error
-    - `message` (string, optional) — A message about the error
-    - `details` (string, optional) — A description of the error
-    - `request_id` (string, optional) — The unique identifier of the request
+- `ErrorResponse`
+
+## Types
+
+### GetModelV1Response0
+
+- `name` (string, optional)
+- `canonical_name` (string, optional)
+- `architecture` (string, optional)
+- `languages` (list of string, optional)
+- `version` (string, optional)
+- `uuid` (string, optional)
+- `batch` (boolean, optional)
+- `streaming` (boolean, optional)
+- `formatted_output` (boolean, optional)
+
+### GetModelV1Response1
+
+- `name` (string, optional)
+- `canonical_name` (string, optional)
+- `architecture` (string, optional)
+- `languages` (list of string, optional)
+- `version` (string, optional)
+- `uuid` (string, optional)
+- `metadata` (GetModelV1ResponseOneOf1Metadata, optional)
+
+### ErrorResponseLegacyError
+
+- `err_code` (string, optional) — The error code
+- `err_msg` (string, optional) — The error message
+- `request_id` (string, optional) — The request ID
+
+### ErrorResponseModernError
+
+- `category` (string, optional) — The category of the error
+- `message` (string, optional) — A message about the error
+- `details` (string, optional) — A description of the error
+- `request_id` (string, optional) — The unique identifier of the request
+
+### GetModelV1ResponseOneOf1Metadata
+
+- `accent` (string, optional)
+- `age` (string, optional)
+- `color` (string, optional)
+- `image` (string, optional)
+- `sample` (string, optional)
+- `tags` (list of string, optional)
+- `use_cases` (list of string, optional)
 
 ## Examples
 

@@ -1,6 +1,6 @@
 # dev-platforms/notion 文档索引
 
-> 共 248 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 250 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## cli
@@ -22,10 +22,12 @@
 ## guides
 
 - `guides/agent-skills/overview` — [Agent Skills API](pages/guides/agent-skills/overview.md) · [原文](https://developers.notion.com/guides/agent-skills/overview)
+- `guides/data-apis/create-pages-in-a-data-source` — [Create a page in a data source](pages/guides/data-apis/create-pages-in-a-data-source.md) · [原文](https://developers.notion.com/guides/data-apis/create-pages-in-a-data-source)
 - `guides/data-apis/creating-pages-from-templates` — [Creating pages from templates](pages/guides/data-apis/creating-pages-from-templates.md) · [原文](https://developers.notion.com/guides/data-apis/creating-pages-from-templates)
 - `guides/data-apis/enhanced-markdown` — [Enhanced markdown format](pages/guides/data-apis/enhanced-markdown.md) · [原文](https://developers.notion.com/guides/data-apis/enhanced-markdown)
 - `guides/data-apis/importing-external-files` — [Importing external files](pages/guides/data-apis/importing-external-files.md) · [原文](https://developers.notion.com/guides/data-apis/importing-external-files)
 - `guides/data-apis/query-large-data-sources` — [Query large data sources](pages/guides/data-apis/query-large-data-sources.md) · [原文](https://developers.notion.com/guides/data-apis/query-large-data-sources)
+- `guides/data-apis/read-page-property-values` — [Read every item in a page property](pages/guides/data-apis/read-page-property-values.md) · [原文](https://developers.notion.com/guides/data-apis/read-page-property-values)
 - `guides/data-apis/retrieving-files` — [Retrieving existing files](pages/guides/data-apis/retrieving-files.md) · [原文](https://developers.notion.com/guides/data-apis/retrieving-files)
 - `guides/data-apis/sending-larger-files` — [Uploading larger files](pages/guides/data-apis/sending-larger-files.md) · [原文](https://developers.notion.com/guides/data-apis/sending-larger-files)
 - `guides/data-apis/uploading-small-files` — [Uploading small files](pages/guides/data-apis/uploading-small-files.md) · [原文](https://developers.notion.com/guides/data-apis/uploading-small-files)
@@ -173,7 +175,7 @@
 - `reference/notion-agent-apis/update-agent-status` — [Update agent status](pages/reference/notion-agent-apis/update-agent-status.md) · [原文](https://developers.notion.com/reference/notion-agent-apis/update-agent-status)
 - `reference/notion-agent-apis/update-session` — [Create or update a session](pages/reference/notion-agent-apis/update-session.md) · [原文](https://developers.notion.com/reference/notion-agent-apis/update-session)
 - `reference/page` — [Page](pages/reference/page.md) · [原文](https://developers.notion.com/reference/page)
-- `reference/page-property-values` — [Page properties](pages/reference/page-property-values.md) · [原文](https://developers.notion.com/reference/page-property-values)
+- `reference/page-property-values` — [Page property values](pages/reference/page-property-values.md) · [原文](https://developers.notion.com/reference/page-property-values)
 - `reference/parent-object` — [Parent](pages/reference/parent-object.md) · [原文](https://developers.notion.com/reference/parent-object)
 - `reference/patch-block-children` — [Append block children](pages/reference/patch-block-children.md) · [原文](https://developers.notion.com/reference/patch-block-children)
 - `reference/patch-page` — [Update page](pages/reference/patch-page.md) · [原文](https://developers.notion.com/reference/patch-page)
@@ -214,7 +216,7 @@
 - `reference/update-data-source-properties` — [Update data source properties](pages/reference/update-data-source-properties.md) · [原文](https://developers.notion.com/reference/update-data-source-properties)
 - `reference/update-database` — [Update a database](pages/reference/update-database.md) · [原文](https://developers.notion.com/reference/update-database)
 - `reference/update-page-markdown` — [Update a page's content as markdown](pages/reference/update-page-markdown.md) · [原文](https://developers.notion.com/reference/update-page-markdown)
-- `reference/update-property-schema-object` — [Update database properties](pages/reference/update-property-schema-object.md) · [原文](https://developers.notion.com/reference/update-property-schema-object)
+- `reference/update-property-schema-object` — [Update database properties (legacy)](pages/reference/update-property-schema-object.md) · [原文](https://developers.notion.com/reference/update-property-schema-object)
 - `reference/upload-file` — [Send a file upload](pages/reference/upload-file.md) · [原文](https://developers.notion.com/reference/upload-file)
 - `reference/user` — [User](pages/reference/user.md) · [原文](https://developers.notion.com/reference/user)
 - `reference/versioning` — [Versioning](pages/reference/versioning.md) · [原文](https://developers.notion.com/reference/versioning)

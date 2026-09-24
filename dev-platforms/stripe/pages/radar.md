@@ -38,6 +38,8 @@ Use Radar to evaluate transactions, accounts, and customers in real time, using 
 
 [Bot abuse prevention](https://docs.stripe.com/radar/bot-abuse.md): Evaluate whether a payment was likely made by a bot.
 
+[Account farming prevention](https://docs.stripe.com/radar/account-farming.md): Detect coordinated account farming and block associated card payments.
+
 ## Account fraud prevention
 
 [Reduce buyer and connected account fraud](https://docs.stripe.com/radar/account-fraud-prevention.md): Prevent, detect, and mitigate buyer fraud and financially risky connected accounts.

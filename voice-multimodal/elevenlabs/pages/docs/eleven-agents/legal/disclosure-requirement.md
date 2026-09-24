@@ -24,8 +24,10 @@ This disclosure must be presented immediately prior to any interaction with Elev
 * A persistent banner
 * A verbal or pre-recorded disclosure at the start of a voice call
 
-Users must not be able to access or use the feature without first being presented with this
-notice.
+> **Warning**
+>
+> Users must not be able to access or use the feature without first being presented with this
+> notice.
 
 In addition to satisfying our contractual requirements, this approach promotes transparency and builds trust by ensuring users understand the nature of the interaction.
 
@@ -33,13 +35,13 @@ In addition to satisfying our contractual requirements, this approach promotes t
 
 You should modify this example to reflect your specific use case while maintaining the required disclosures.
 
-#### ElevenLabs Agents
-
-We use ElevenLabs Agents to help power our \[insert purposes, e.g., virtual customer service
-agents]. By clicking "Agree" and each time you interact with this AI agent, you consent to us,
-ElevenLabs, and each of our service providers (including third-party LLM providers) recording,
-viewing, storing, and sharing your communications to provide the service, improve our products and
-services, train machine learning models, and comply with applicable law.
+> **ElevenLabs Agents**
+>
+> We use ElevenLabs Agents to help power our \[insert purposes, e.g., virtual customer service
+> agents]. By clicking "Agree" and each time you interact with this AI agent, you consent to us,
+> ElevenLabs, and each of our service providers (including third-party LLM providers) recording,
+> viewing, storing, and sharing your communications to provide the service, improve our products and
+> services, train machine learning models, and comply with applicable law.
 
 ## Sample verbal disclosure language
 
@@ -48,7 +50,9 @@ For more information, please refer to our privacy policy available at: \[insert 
 
 ## Legal disclaimer
 
-The information provided above is for general informational purposes only. Your organization is
-solely responsible for ensuring that its use of ElevenAgents complies with the [ElevenAgents Platform Terms](https://elevenlabs.io/agents-terms) and all applicable laws and regulations. This
-guidance does not constitute legal advice. You should consult your legal counsel regarding any
-questions about legal or regulatory compliance.
+> **Warning**
+>
+> The information provided above is for general informational purposes only. Your organization is
+> solely responsible for ensuring that its use of ElevenAgents complies with the [ElevenAgents Platform Terms](https://elevenlabs.io/agents-terms) and all applicable laws and regulations. This
+> guidance does not constitute legal advice. You should consult your legal counsel regarding any
+> questions about legal or regulatory compliance.

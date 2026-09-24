@@ -12,14 +12,16 @@ path: docs/eleven-creative/playground/image-video
 
 Image & Video enables you to create high-quality visual content from simple text descriptions or reference images. Generate static images or dynamic videos in any style, then refine them iteratively with additional prompts, upscale for high-resolution output, and even add lip-sync with audio. Export finished assets as standalone files or import them directly into ElevenCreative Studio projects.
 
-This feature is currently in beta.
+> **Warning**
+>
+> Some Image & Video models and input upload capabilities are restricted in the United States due to
+> regulatory or provider requirements. Check individual model descriptions for specific
+> availability.
 
-Some Image & Video models and input upload capabilities are restricted in the United States due to
-regulatory or provider requirements. Check individual model descriptions for specific
-availability.
-
-Free plan users can only generate images and are limited to three image requests per day. Video
-generation requires a paid plan.
+> **Info**
+>
+> Free plan users can only generate images and are limited to three image requests per day. Video
+> generation requires a paid plan.
 
 ## Guide
 
@@ -35,7 +37,7 @@ Describe your desired output using natural language in the prompt box. For more 
 
 ### Choose a model and settings
 
-Select the ideal generative model for your goal (e.g., OpenAI Sora 2 Pro, Google Veo 3.1, Kling 2.5, Flux 1 Kontext Pro). See the [Models](#models) section for detailed information on each model. Adjust settings like aspect ratio, resolution, duration (for video), and the number of variations to generate.
+Select the ideal generative model for your goal (e.g., Google Veo 3.1, Kling 2.5, Flux 1 Kontext Pro). See the [Models](#models) section for detailed information on each model. Adjust settings like aspect ratio, resolution, duration (for video), and the number of variations to generate.
 
 ### Generate your asset
 
@@ -87,7 +89,7 @@ The **Explore** tab displays a gallery of community creations for discovering in
 
 ## Generate
 
-![Video prompt interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bc3b04f7acaf679807cbe014e4e084c3cb6126a7301b8a52bec3333f9674dfa4/assets/images/product-guides/images-videos/video-prompt.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T110903Z&X-Amz-Expires=604800&X-Amz-Signature=2081505bafc39a69a20fd342e93ff97fd9fcc9b937b3d6c40418ff839d034d02&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Video prompt interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f25b7fd594fb471980501063a9554513c4d22a2b3f8d526537054a0797780b8f/assets/images/product-guides/images-videos/video-prompt.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T105433Z&X-Amz-Expires=604800&X-Amz-Signature=0935e87b6798808d4f1fc124815ba9e8b70a9b1a7216715447161f57a05a9837&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 The prompt box is anchored at the bottom of the page and provides all controls for creating visual content.
 
@@ -99,9 +101,9 @@ The prompt box is anchored at the bottom of the page and provides all controls f
 
 ### Choose models and settings
 
-![Video models selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0ec9328b33378ba96df99818d263ae81ece738df8740c8cba257dcfbb8f75f07/assets/images/product-guides/images-videos/video-models.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T110903Z&X-Amz-Expires=604800&X-Amz-Signature=ad0a6392ecde074627c0f18ae7b8a353b21e317e674d0e29bd25d5890fad55d5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Video models selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/422c8078ccb97a8b5f98e521f1c230d3efbad34a128e5905a457e2ed0deeebce/assets/images/product-guides/images-videos/video-models.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T105433Z&X-Amz-Expires=604800&X-Amz-Signature=f41499c662ca1e0babc9ce14501e5a154b7acb49bc4b57a94e79a246efa89a8a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-**Select model:** Open the model menu to browse available options like OpenAI Sora 2 Pro, Google Veo 3.1, Kling 2.5, or Flux 1 Kontext Pro. Each model has unique strengths and capabilities listed for easy comparison. See the [Models](#models) section for detailed information.
+**Select model:** Open the model menu to browse available options like Google Veo 3.1, Kling 2.5, or Flux 1 Kontext Pro. Each model has unique strengths and capabilities listed for easy comparison. See the [Models](#models) section for detailed information.
 
 **Adjust settings:** Fine-tune your generation with settings that appear below the prompt. These vary by model but often include:
 
@@ -115,7 +117,7 @@ The prompt box is anchored at the bottom of the page and provides all controls f
 ### Add references
 
 ![Video references
-interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/cb430f8e80b038841bc42eec541ac42046d4198802d6e9a5c1596e54bae032f1/assets/images/product-guides/images-videos/videos-prompt-references.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T110903Z&X-Amz-Expires=604800&X-Amz-Signature=69e54c6c9d578c07c77fcd82a016cc3e605f83504c6dfc1ba16d2d7e20d28359&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e6591dc845bfa071c81202736d8748827ab8110f0fe76c985cab83b9adcb51ec/assets/images/product-guides/images-videos/videos-prompt-references.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T105433Z&X-Amz-Expires=604800&X-Amz-Signature=26740515d5d4d594435f0f4f9d7ca5811d42b6646599f98b33cfe02efccdffe7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 For greater control over output, add visual references to guide generation. Availability depends on the selected model. We support a wide range of image file formats including JPG, PNG, WEBP, and more.
 
@@ -125,8 +127,10 @@ For greater control over output, add visual references to guide generation. Avai
 
 **Image Refs (Image or Video):** Provide one or more images to guide overall style and look.
 
-Drag and drop items directly from the **Explore** or **History** tabs into reference slots for a
-faster workflow.
+> **Tip**
+>
+> Drag and drop items directly from the **Explore** or **History** tabs into reference slots for a
+> faster workflow.
 
 ### Generate
 
@@ -134,7 +138,7 @@ Before generating, a cost indicator shows the total cost for the number of asset
 
 ## History
 
-![Video history interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c52ecc7d6d19fda705b1058c4b9b60c177b388d60d4e3e22492b2fe1bc35b16a/assets/images/product-guides/images-videos/video-history.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T110903Z&X-Amz-Expires=604800&X-Amz-Signature=c9177032ac574207a15d70ac3b84878ea375fd333d63d8d78133b54612cfec4f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Video history interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c5da61f1025001d12e41e2113a43da63903ea5ae29748085624eb5422b8c2473/assets/images/product-guides/images-videos/video-history.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T105433Z&X-Amz-Expires=604800&X-Amz-Signature=07c37ca667c464f0056637d5bcdbacbaf22949580f71ab6703ca9a497097f81d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 The **History** tab provides a chronological log of everything you've generated and serves as a workspace for refining previous work.
 
@@ -165,7 +169,7 @@ Once you have a generation you're satisfied with, use built-in enhancement tools
 
 ### Exporting your assets
 
-![Video export interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e8a0b60eaa18b8f1f274d5813af93fbe592e7f8dd326d45f5121cc05ebbfa90c/assets/images/product-guides/images-videos/video-export.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T110903Z&X-Amz-Expires=604800&X-Amz-Signature=15d6b9b24dfbaf463be1ddb85eb2c3013f81de0601bc26ec2e2d5ab6d160353a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Video export interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ec37123477c4568ad486fea312925a9a12e11a1bf7f252750db0b91f6d85b822/assets/images/product-guides/images-videos/video-export.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T105433Z&X-Amz-Expires=604800&X-Amz-Signature=2ca51530e0cf658e070e3faece5c5d3b04406c8c4a0f0193ef9f28e12f7e5776&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Export finished assets by downloading them locally or sending them directly to ElevenCreative Studio.
 
@@ -189,16 +193,22 @@ Image & Video provides access to specialized models optimized for different use 
 
 Post-processing models require an existing generated output, though you can also upload your own image or video file.
 
-Enterprise workspace admins can control which image and video generation models are available to
-workspace members. By default, all models are disabled for Enterprise workspaces and must be
-explicitly enabled by admins. Learn more about [Model approvals](/docs/overview/administration/workspaces/model-approvals).
+> **Info**
+>
+> Enterprise workspace admins can control which image and video generation models are available to
+> workspace members. By default, all models are disabled for Enterprise workspaces and must be
+> explicitly enabled by admins. Learn more about [Model approvals](/docs/overview/administration/workspaces/model-approvals).
 
-For API requests, ByteDance models are disabled by default and require explicit approval before
-use. Enterprise customers can contact support to request access.
+> **Warning**
+>
+> For API requests, ByteDance models are disabled by default and require explicit approval before
+> use. Enterprise customers can contact support to request access.
 
-Every model below is available in the Image & Video app. Models that can also be called from the
-[Image & Video API](/docs/eleven-api/guides/cookbooks/image-and-video) list their `model_id` under
-**API**; the rest are app-only.
+> **Info**
+>
+> Every model below is available in the Image & Video app. Models that can also be called from the
+> [Image & Video API](/docs/eleven-api/guides/cookbooks/image-and-video) list their `model_id` under
+> **API**; the rest are app-only.
 
 #### Video generative models
 
@@ -240,9 +250,13 @@ A unified multimodal video model with audio-video joint generation, offering dir
 
 **API:** [`bytedance-seedance-v2`](/docs/api-reference/flows/video/create#request.body.bytedance-seedance-v2)
 
-Settings can be toggled to adjust credit consumption.
+> **Note**
+>
+> Settings can be toggled to adjust credit consumption.
 
-Seedance 2.0 is not available in the United States.
+> **Warning**
+>
+> Seedance 2.0 is not available in the United States.
 
 #### Seedance 2.0 Fast
 
@@ -279,7 +293,9 @@ A faster, lower-cost variant of Seedance 2.0 with the same multimodal reference 
 
 **API:** [`bytedance-seedance-v2-fast`](/docs/api-reference/flows/video/create#request.body.bytedance-seedance-v2-fast)
 
-Seedance 2.0 Fast is not available in the United States.
+> **Warning**
+>
+> Seedance 2.0 Fast is not available in the United States.
 
 #### Seedance 2.0 Mini
 
@@ -316,7 +332,9 @@ The smallest Seedance 2.0 variant: roughly twice as fast as Seedance 2.0 at abou
 
 **API:** [`bytedance-seedance-v2-mini`](/docs/api-reference/flows/video/create#request.body.bytedance-seedance-v2-mini)
 
-Seedance 2.0 Mini is not available in the United States.
+> **Warning**
+>
+> Seedance 2.0 Mini is not available in the United States.
 
 #### Seedance 2.5
 
@@ -354,9 +372,13 @@ The successor to Seedance 2.0 with sharper realism, up to 50 combined image, vid
 
 **API:** [`bytedance-seedance-v2.5`](/docs/api-reference/flows/video/create#request.body.bytedance-seedance-v2.5)
 
-Seedance 2.5 does not expose a seed control.
+> **Note**
+>
+> Seedance 2.5 does not expose a seed control.
 
-Seedance 2.5 is not available in the United States.
+> **Warning**
+>
+> Seedance 2.5 is not available in the United States.
 
 #### Seedance 2.5 Video Edit
 
@@ -388,7 +410,9 @@ Edits an existing video by describing the changes. Output length and aspect rati
 
 **Cost:** Varies based on selected settings and duration
 
-Seedance 2.5 Video Edit is not available in the United States.
+> **Warning**
+>
+> Seedance 2.5 Video Edit is not available in the United States.
 
 #### Seedance 2.5 Video Extend
 
@@ -420,7 +444,9 @@ Continues an existing video from where it ends, guided by a prompt and optional 
 
 **Cost:** Varies based on selected settings and duration
 
-Seedance 2.5 Video Extend is not available in the United States.
+> **Warning**
+>
+> Seedance 2.5 Video Extend is not available in the United States.
 
 #### Kling 3.0
 
@@ -452,9 +478,13 @@ An advanced video model that functions like an AI director, maintaining high con
 
 **Cost:** Varies based on selected settings and duration
 
-Supports negative prompts for granular control. Sound can be enabled or disabled per generation.
+> **Note**
+>
+> Supports negative prompts for granular control. Sound can be enabled or disabled per generation.
 
-Kling 3.0 is not available in the United States.
+> **Warning**
+>
+> Kling 3.0 is not available in the United States.
 
 #### Kling O3
 
@@ -488,9 +518,13 @@ A high-consistency video model that functions like an AI director, preserving th
 
 **Cost:** Varies based on selected settings and duration
 
-Settings can be toggled to adjust credit consumption.
+> **Note**
+>
+> Settings can be toggled to adjust credit consumption.
 
-Kling O3 is not available in the United States.
+> **Warning**
+>
+> Kling O3 is not available in the United States.
 
 #### Kling O3 Edit
 
@@ -523,7 +557,9 @@ A natural language-driven video-to-video editing model based on the O3 architect
 
 **Cost:** Varies based on video duration and selected settings
 
-Kling O3 Edit is not available in the United States.
+> **Warning**
+>
+> Kling O3 Edit is not available in the United States.
 
 #### Google Veo 3.1
 
@@ -558,7 +594,9 @@ A professional-grade model for high-quality, cinematic video generation.
 
 **API:** [`veo-3.1-generate-001`](/docs/api-reference/flows/video/create#request.body.veo-3.1-generate-001)
 
-Enabling and disabling sound will change the generation credits.
+> **Note**
+>
+> Enabling and disabling sound will change the generation credits.
 
 #### Google Veo 3.1 Fast
 
@@ -733,67 +771,11 @@ An upgraded specialized model for creating dynamic, high-fidelity sequences with
 
 **Cost:** Varies based on selected settings and duration
 
-Seedance 1.5 Pro is not available in the United States.
-
-#### OpenAI Sora 2
-
-The standard, high-speed version of OpenAI's advanced video model, tuned for everyday content creation.
-
-**Generation inputs:**
-
-* Text-to-Video
-* Start Frame
-
-**Features:**
-
-* Realistic, physics-aware videos with synced audio
-* Fine scene control
-* Fixed durations: 4s, 8s, and 12s
-* Batch creation with up to 4 generations at a time
-* Strong narrative and character consistency
-
-**Output options:**
-
-* Resolutions: 720p, 1080p
-* Aspect ratios: 16:9, 9:16
-
-**Ideal for:**
-
-* Everyday content creation with realistic physics
-
-**Cost:** Varies based on selected settings and duration
-
-End frame is not currently supported. Cannot provide image references. Sound is enabled by default.
-
-#### OpenAI Sora 2 Pro
-
-The most advanced, high-fidelity video model for cinematic results at your disposal.
-
-**Generation inputs:**
-
-* Text-to-Video
-* Start Frame
-
-**Features:**
-
-* Highest-fidelity, professional-grade output with synced audio
-* Precise multi-shot control
-* Excels at complex motion and prompt adherence
-* Fixed durations: 4s, 8s, and 12s
-* Batch creation with up to 4 generations at a time
-
-**Output options:**
-
-* Resolutions: 720p, 1080p
-* Aspect ratios: 16:9, 9:16
-
-**Ideal for:**
-
-* Cinematic, professional-grade video content
-
-**Cost:** Varies based on selected settings and duration
-
-End frame is not currently supported. Cannot provide image references. Sound is enabled by default.
+> **Warning**
+>
+> Seedance 1.5 Pro is deprecated. ByteDance retires the model on November 11, 2026, and it is
+> no longer offered for new generations. Use a Seedance 2.0 model instead. Seedance 1.5 Pro is
+> not available in the United States.
 
 #### FLUX 3
 
@@ -858,7 +840,9 @@ MiniMax's flagship video model with multimodal references, generated audio, and 
 
 **Cost:** Varies based on selected settings and duration
 
-MiniMax H3 is not available in the United States.
+> **Warning**
+>
+> MiniMax H3 is not available in the United States.
 
 #### MiniMax H3 Max
 
@@ -893,7 +877,9 @@ A near-instant variant of MiniMax H3 with the same inputs and strong aesthetics,
 
 **Cost:** Varies based on selected settings and duration
 
-MiniMax H3 Max is not available in the United States.
+> **Warning**
+>
+> MiniMax H3 Max is not available in the United States.
 
 #### Kling O1
 
@@ -926,7 +912,9 @@ A state-of-the-art reasoning video model designed for superior prompt adherence 
 
 **Cost:** Varies based on selected settings and duration
 
-Kling O1 is not available in the United States.
+> **Warning**
+>
+> Kling O1 is not available in the United States.
 
 #### Kling O1 Edit
 
@@ -959,7 +947,9 @@ A natural language-driven video-to-video editing model that enables complex visu
 
 **Cost:** Varies based on video duration and selected settings
 
-Kling O1 Edit is not available in the United States.
+> **Warning**
+>
+> Kling O1 Edit is not available in the United States.
 
 #### Kling 2.6 Motion Control
 
@@ -992,7 +982,9 @@ A specialized model for precise motion transfer, allowing you to drive a charact
 
 **Cost:** Varies based on selected settings and duration
 
-Kling 2.6 Motion Control is not available in the United States.
+> **Warning**
+>
+> Kling 2.6 Motion Control is not available in the United States.
 
 #### Kling 3.0 Motion Control
 
@@ -1025,7 +1017,9 @@ A specialized model for precise motion transfer built on the Kling 3.0 architect
 
 **Cost:** Varies based on selected settings and duration
 
-Kling 3.0 Motion Control is not available in the United States.
+> **Warning**
+>
+> Kling 3.0 Motion Control is not available in the United States.
 
 #### Kling 2.6
 
@@ -1056,7 +1050,9 @@ An optimized generative model designed for enhanced motion fidelity and smoother
 
 **Cost:** Varies based on selected settings and duration
 
-Kling 2.6 is not available in the United States.
+> **Warning**
+>
+> Kling 2.6 is not available in the United States.
 
 #### Kling 2.5
 
@@ -1085,9 +1081,13 @@ A balanced and versatile model for high-quality, full-HD video generation.
 
 **Cost:** Varies based on selected settings and duration
 
-End frame is not currently supported. Cannot provide image references. Sound control not available.
+> **Note**
+>
+> End frame is not currently supported. Cannot provide image references. Sound control not available.
 
-Kling 2.5 is not available in the United States.
+> **Warning**
+>
+> Kling 2.5 is not available in the United States.
 
 #### Runway Gen-4.5
 
@@ -1262,9 +1262,13 @@ A specialized model for creating dynamic, multi-shot sequences with large moveme
 
 **Cost:** Varies based on selected settings and duration
 
-Aspect ratio and resolution do not affect generation credits, but duration does.
+> **Note**
+>
+> Aspect ratio and resolution do not affect generation credits, but duration does.
 
-Seedance 1 Pro is not available in the United States.
+> **Warning**
+>
+> Seedance 1 Pro is not available in the United States.
 
 #### LTX Audio-to-Video
 
@@ -1426,7 +1430,9 @@ A cinematic video model with image, video, and audio references, generated audio
 
 **Cost:** Varies based on selected settings and duration
 
-Wan 3.0 is not available in the United States.
+> **Warning**
+>
+> Wan 3.0 is not available in the United States.
 
 #### Wan 3.0 Prime
 
@@ -1460,7 +1466,9 @@ A faster variant of Wan 3.0 with the same inputs and output options, suited to i
 
 **Cost:** Varies based on selected settings and duration
 
-Wan 3.0 Prime is not available in the United States.
+> **Warning**
+>
+> Wan 3.0 Prime is not available in the United States.
 
 #### Wan 2.6
 
@@ -1494,7 +1502,9 @@ A next-generation cinematic video platform that utilizes a unified multimodal ar
 
 **Cost:** Varies based on selected settings and duration
 
-Wan 2.6 is not available in the United States.
+> **Warning**
+>
+> Wan 2.6 is not available in the United States.
 
 #### Wan 2.5 Video
 
@@ -1522,9 +1532,13 @@ A versatile model that delivers cinematic motion and high prompt fidelity from t
 
 **Cost:** Varies based on selected settings and duration
 
-Generation cost varies based on selected settings.
+> **Note**
+>
+> Generation cost varies based on selected settings.
 
-Wan 2.5 Video is not available in the United States.
+> **Warning**
+>
+> Wan 2.5 Video is not available in the United States.
 
 #### Image generative models
 
@@ -1788,7 +1802,9 @@ A lightweight, fast-generation image model from ByteDance delivering high-qualit
 
 **API:** [`bytedance-seedream-5-lite`](/docs/api-reference/flows/image/create#request.body.bytedance-seedream-5-lite)
 
-Seedream 5 Lite is not available in the United States.
+> **Warning**
+>
+> Seedream 5 Lite is not available in the United States.
 
 #### Seedream 5 Pro
 
@@ -1819,7 +1835,9 @@ The higher-fidelity Seedream 5 variant for precise editing, multilingual text, a
 
 **API:** [`bytedance-seedream-5-pro`](/docs/api-reference/flows/image/create#request.body.bytedance-seedream-5-pro)
 
-Seedream 5 Pro is not available in the United States.
+> **Warning**
+>
+> Seedream 5 Pro is not available in the United States.
 
 #### GPT Image 1.5
 
@@ -1899,7 +1917,9 @@ A high-performance multimodal foundation model that unifies text-to-image synthe
 
 **Cost:** Varies based on selected settings and number of variations
 
-Seedream 4.5 is not available in the United States.
+> **Warning**
+>
+> Seedream 4.5 is not available in the United States.
 
 #### Kling O1 Image
 
@@ -1924,7 +1944,9 @@ A high-fidelity image generation model with advanced reasoning capabilities, des
 
 **Cost:** Varies based on selected settings and number of variations
 
-Kling O1 Image is not available in the United States.
+> **Warning**
+>
+> Kling O1 Image is not available in the United States.
 
 #### FLUX.2 \[Pro]
 
@@ -2079,7 +2101,9 @@ A specialized image model for generating multi-shot sequences or scenes with lar
 
 **Cost:** Varies based on selected settings and number of variations
 
-Seedream 4 is not available in the United States.
+> **Warning**
+>
+> Seedream 4 is not available in the United States.
 
 #### Wan 2.5 Image
 
@@ -2106,7 +2130,9 @@ The image variant of Wan 2.5, with strong prompt fidelity and support for refere
 
 **Cost:** Varies based on selected settings and number of variations
 
-Wan 2.5 Image is not available in the United States.
+> **Warning**
+>
+> Wan 2.5 Image is not available in the United States.
 
 #### FLUX.1 Kontext \[Pro]
 
@@ -2185,7 +2211,9 @@ A fast, precise image-to-video lip-sync model that animates a still image to mat
 
 **Cost:** Varies based on input, settings and duration
 
-For best results, the image should contain a detectable figure.
+> **Note**
+>
+> For best results, the image should contain a detectable figure.
 
 #### HeyGen Avatar 4
 
@@ -2210,7 +2238,9 @@ HeyGen's latest avatar model for generating highly realistic, expressive talking
 
 **Cost:** Varies based on input, settings and duration
 
-For best results, the image should contain a clearly visible face.
+> **Note**
+>
+> For best results, the image should contain a clearly visible face.
 
 #### Sync 3
 
@@ -2235,7 +2265,9 @@ The latest generation video lip-sync model from Sync, delivering studio-quality 
 
 **Cost:** Varies based on input, settings and duration
 
-For best results, the video should contain a detectable figure.
+> **Note**
+>
+> For best results, the video should contain a detectable figure.
 
 #### Sync Lipsync 2 Pro
 
@@ -2285,9 +2317,13 @@ A dedicated utility model for generating exceptionally realistic, humanlike lip-
 
 **Cost:** Varies based on input, settings and duration
 
-For best results, the image should contain a detectable figure.
+> **Note**
+>
+> For best results, the image should contain a detectable figure.
 
-OmniHuman 1.5 is not available in the United States.
+> **Warning**
+>
+> OmniHuman 1.5 is not available in the United States.
 
 #### Veed Lipsync
 
@@ -2311,7 +2347,9 @@ A fast, affordable, and precise utility model for applying realistic lip-sync to
 
 **Cost:** Varies based on input, settings and duration
 
-For best results, the video should contain a detectable figure.
+> **Note**
+>
+> For best results, the video should contain a detectable figure.
 
 #### Veed Lipsync 2.0
 
@@ -2335,7 +2373,9 @@ The higher-quality successor to Veed Lipsync for applying realistic lip-sync to 
 
 **Cost:** Varies based on input, settings and duration
 
-For best results, the video should contain a detectable figure.
+> **Note**
+>
+> For best results, the video should contain a detectable figure.
 
 #### Utility models
 
@@ -2407,7 +2447,7 @@ Converts standard dynamic range video into HDR.
 
       Image & Video enables you to create high-quality visual content from simple text descriptions and optional reference images.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ec6dc958c221fea880349a9807857e535832d80e0cbd2f3399c0f2ee4328d27e/assets/images/help-center/product/flows-image-video/image-video/video-overview.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T110903Z&X-Amz-Expires=604800&X-Amz-Signature=49a0d124ab37d3fb2f2db32a86d6158be7e99468efe162a86ef4531e3e461e21&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ec6dc958c221fea880349a9807857e535832d80e0cbd2f3399c0f2ee4328d27e/assets/images/help-center/product/flows-image-video/image-video/video-overview.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T105433Z&X-Amz-Expires=604800&X-Amz-Signature=cb46ca6c9166e790be898e73e59686a6c3ee90558cd36758345b1597a2c628cd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       You can choose from a range of different image and video generative models, depending on your use case. Your generated content can either be downloaded, or imported directly into Studio projects.
 
@@ -2415,8 +2455,10 @@ Converts standard dynamic range video into HDR.
 
       For more details, see our [Image & Video documentation](/docs/capabilities/image-video).
 
-      If you're part of the ElevenLabs Grants program, you can use up to 1,000,000 of your grant credits
-      on **Image & Video** and **Flows**.
+      > **Note**
+      >
+      > If you're part of the ElevenLabs Grants program, you can use up to 1,000,000 of your grant credits
+      > on **Image & Video** and **Flows**.
     </td>
   </tr>
 
@@ -2428,7 +2470,7 @@ Converts standard dynamic range video into HDR.
 
       Before you submit your generation, you will be shown the cost based on the model and settings you've chosen.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3fe581ba3136d4bd464ded06a391f449c15658bf3f11f7a0b69feaf61d4a0904/assets/images/help-center/product/flows-image-video/image-video/how-much-does-image-video-cost.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T110903Z&X-Amz-Expires=604800&X-Amz-Signature=08e2085ef6cf784e8a16b413483f4fe6a30da4a3876f39b9072d56343c707164&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3fe581ba3136d4bd464ded06a391f449c15658bf3f11f7a0b69feaf61d4a0904/assets/images/help-center/product/flows-image-video/image-video/how-much-does-image-video-cost.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T105433Z&X-Amz-Expires=604800&X-Amz-Signature=0b835eaeae3a622fab15d377ad3fb9af227dc6bd1c3bc33e4052d947e5429c8f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       For more details, see our [Image & Video documentation.](/docs/product-guides/playground/image-video)
 

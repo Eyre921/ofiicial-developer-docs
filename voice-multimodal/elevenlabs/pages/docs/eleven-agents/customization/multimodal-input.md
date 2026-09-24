@@ -24,8 +24,10 @@ Collect keypad digits from callers during phone conversations
 
 File input lets users send images and PDFs to the agent in chat. The agent can read those files when the selected [model](/docs/eleven-agents/customization/llm) supports image and/or document input.
 
-Attachments are ignored if the model does not support the file type, even when file input is
-enabled.
+> **Note**
+>
+> Attachments are ignored if the model does not support the file type, even when file input is
+> enabled.
 
 ### Configuration
 
@@ -132,10 +134,12 @@ DTMF input lets callers enter digits on their phone keypad during a call. Use it
 
 This is the inverse of the [play keypad touch tone](/docs/eleven-agents/customization/tools/system-tools/play-keypad-touch-tone) system tool, which sends tones from the agent.
 
-Only out-of-band DTMF from
-[Twilio](/docs/eleven-agents/phone-numbers/twilio-integration/native-integration), [SIP trunking](/docs/eleven-agents/phone-numbers/sip-trunking) (Telephony), or
-[Genesys](/docs/eleven-agents/phone-numbers/c-caa-s-integrations/genesys) is supported. In-band
-tones in the audio stream are ignored. The web widget and chat channels cannot send DTMF.
+> **Warning**
+>
+> Only out-of-band DTMF from
+> [Twilio](/docs/eleven-agents/phone-numbers/twilio-integration/native-integration), [SIP trunking](/docs/eleven-agents/phone-numbers/sip-trunking) (Telephony), or
+> [Genesys](/docs/eleven-agents/phone-numbers/c-caa-s-integrations/genesys) is supported. In-band
+> tones in the audio stream are ignored. The web widget and chat channels cannot send DTMF.
 
 Each keypad press is buffered until the sequence is complete. Completing a sequence creates one user turn.
 

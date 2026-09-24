@@ -37,7 +37,7 @@ This endpoint expects a multipart form with multiple files.
 - `files` (files, optional) — Audio files to add to the voice
 - `remove_background_noise` (boolean, optional) — If set will remove background noise for voice samples using our audio isolation model. If the samples do not include background noise, it can make the quality worse.
 - `description` (string, optional) — A description of the voice.
-- `labels` (map from string to string or string, optional) — Labels for the voice. Keys can be language, accent, gender, or age.
+- `labels` (V1VoicesVoiceIdEditPostRequestBodyContentMultipartFormDataSchemaLabels, optional) — Labels for the voice. Keys can be language, accent, gender, or age.
 - `moderate_metadata` (boolean, optional) — Run synchronous LLM moderation over the voice name and description when they change. Has no effect unless the voice_library_metadata_moderation feature flag is enabled for the user.
 
 ## Response
@@ -54,10 +54,17 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

@@ -12,7 +12,9 @@ path: sdks/sdk-features
 
 Below is a list of all the features supported by our SDKs. For more details on any of these SDKs or features please refer to the corresponding documentation.
 
-If an SDK doesn't have support for an API feature please refer to our documentation for how to [use custom add on parameters with our SDKs](/guides/fundamentals/using-custom-parameters-sdks).
+> **Info**
+>
+> If an SDK doesn't have support for an API feature please refer to our documentation for how to [use custom add on parameters with our SDKs](/guides/fundamentals/using-custom-parameters-sdks).
 
 ## Voice Agent
 
@@ -166,9 +168,11 @@ If an SDK doesn't have support for an API feature please refer to our documentat
 
 ## Self-Hosted API
 
-In certain cases, our SDKs can be used with Deepgram's [self-hosted](/docs/self-hosted-introduction)-specific endpoints.
-
-For more details on sending inference requests to a self-hosted deploment, see the [Using SDKs with Self-Hosted](/docs/using-sdks-with-self-hosted) guide.
+> **Info**
+>
+> In certain cases, our SDKs can be used with Deepgram's [self-hosted](/docs/self-hosted-introduction)-specific endpoints.
+>
+> For more details on sending inference requests to a self-hosted deploment, see the [Using SDKs with Self-Hosted](/docs/using-sdks-with-self-hosted) guide.
 
 | API Reference                                                                | Query Options | Status | SDK Availability                    |
 | ---------------------------------------------------------------------------- | ------------- | ------ | ----------------------------------- |

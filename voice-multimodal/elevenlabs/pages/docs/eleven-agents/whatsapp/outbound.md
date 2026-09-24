@@ -22,9 +22,11 @@ When creating a template:
 * Choose a parameter format: positional (`{{1}}`, `{{2}}`) or named (`{{customer_name}}`). Named parameters require a `parameter_name` on each value you send.
 * Submit for approval. Approval usually takes minutes to hours. A template that is pending or rejected cannot be sent — the API accepts the request but Meta never delivers the message.
 
-Meta limits how many [marketing templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/marketing-templates/per-user-limits)
-a single user can receive in a given period. If a marketing template is silently not delivered,
-this limit is a common cause (Meta error 131049).
+> **Note**
+>
+> Meta limits how many [marketing templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/marketing-templates/per-user-limits)
+> a single user can receive in a given period. If a marketing template is silently not delivered,
+> this limit is a common cause (Meta error 131049).
 
 ## Sending an outbound message
 
@@ -34,7 +36,7 @@ Sending a template message starts a new conversation. The agent stays silent unt
 
 Go to the [WhatsApp page](https://elevenlabs.io/app/agents/whatsapp), select your account, and click the ***Outbound -> Message*** button. Select an agent, provide a WhatsApp user ID, and choose the message template and its parameters:
 
-![WhatsApp outbound message dialog](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/13913c2ccc1d92cb59e7332b6fdb4a8c8c64760a334d1a311fa2007831eeb986/assets/images/agents/whatsapp/outbound-message-dialog.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113254Z&X-Amz-Expires=604800&X-Amz-Signature=55790cd75a76f3bb76d9e33807e829264d992aadd82bc372879cfc2e55d8dd56&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![WhatsApp outbound message dialog](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/13913c2ccc1d92cb59e7332b6fdb4a8c8c64760a334d1a311fa2007831eeb986/assets/images/agents/whatsapp/outbound-message-dialog.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113205Z&X-Amz-Expires=604800&X-Amz-Signature=4b778dfa9d4cac6311f701e4df462036c12a837798bb3396e4461b7d9943930f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Python
 
@@ -126,10 +128,12 @@ curl -X POST https://api.elevenlabs.io/v1/convai/whatsapp/outbound-message \
 
 See the [API reference](/docs/api-reference/whats-app/outbound-message) for the full request schema.
 
-An AI assistant can adapt these examples to your template. Point it at the ElevenLabs docs
-[llms.txt](/docs/llms.txt) (or the more detailed [llms-full.txt](/docs/llms-full.txt)), paste your
-template definition from WhatsApp Manager, and ask for the request — it will produce a cURL
-command or SDK call with the correct `template_params` for your template.
+> **Tip**
+>
+> An AI assistant can adapt these examples to your template. Point it at the ElevenLabs docs
+> [llms.txt](/docs/llms.txt) (or the more detailed [llms-full.txt](/docs/llms-full.txt)), paste your
+> template definition from WhatsApp Manager, and ask for the request — it will produce a cURL
+> command or SDK call with the correct `template_params` for your template.
 
 ### Template parameters
 
@@ -145,11 +149,13 @@ Each entry in `parameters` is a value object such as `{"type": "text", "text": "
 
 `whatsapp_user_id` must contain digits only: the country code followed by the number, with no `+`, spaces, or dashes. For example, `14155552671`, not `+1 (415) 555-2671`.
 
-In some countries the ID WhatsApp uses for a person differs from their dialed number — for
-example, Mexican numbers carry an extra `1` after the country code (`521...`), and Brazilian
-numbers may include or omit a ninth digit. If the user has messaged you before, prefer the
-`whatsapp_user_id` from that earlier conversation, which you can copy from the conversation
-history.
+> **Warning**
+>
+> In some countries the ID WhatsApp uses for a person differs from their dialed number — for
+> example, Mexican numbers carry an extra `1` after the country code (`521...`), and Brazilian
+> numbers may include or omit a ninth digit. If the user has messaged you before, prefer the
+> `whatsapp_user_id` from that earlier conversation, which you can copy from the conversation
+> history.
 
 ### Dynamic variables, branches, and environments
 
@@ -167,9 +173,11 @@ These settings persist for the conversation: when the user replies, the agent re
 
 This request field is how outbound conversations receive dynamic variables; inbound conversations receive them from a conversation initiation webhook instead — see [initialization context](/docs/eleven-agents/whatsapp#initialization-context).
 
-Template parameters fill in the template text only — they are not exposed to the agent. If the
-agent needs a value from the template (such as the customer's name), pass it again in
-`dynamic_variables`.
+> **Note**
+>
+> Template parameters fill in the template text only — they are not exposed to the agent. If the
+> agent needs a value from the template (such as the customer's name), pass it again in
+> `dynamic_variables`.
 
 ### After you send
 
@@ -187,7 +195,7 @@ Outbound WhatsApp calls require the user's permission — see [user call permiss
 
 Go to the [WhatsApp page](https://elevenlabs.io/app/agents/whatsapp), select your account, and click the ***Outbound -> Call*** button. Select an agent, provide a WhatsApp user ID, and choose the call permission request template:
 
-![WhatsApp outbound call dialog](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1fcf7968f1651ce8e9474e770aad4dce4e702c69b4522f5bcc65efcd8bf8a3e4/assets/images/agents/whatsapp/outbound-call-dialog.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113254Z&X-Amz-Expires=604800&X-Amz-Signature=3400ac59463c66c80d1ce689d7be43765f349244a6f2ec7450e5a2dddba88c46&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![WhatsApp outbound call dialog](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1fcf7968f1651ce8e9474e770aad4dce4e702c69b4522f5bcc65efcd8bf8a3e4/assets/images/agents/whatsapp/outbound-call-dialog.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113205Z&X-Amz-Expires=604800&X-Amz-Signature=bbeda1e86a9570dd47a7ca8da28e3745a223862c51cab50c466eebaba6f285f1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Python
 
@@ -247,8 +255,10 @@ curl -X POST https://api.elevenlabs.io/v1/convai/whatsapp/outbound-call \
 
 See the [API reference](/docs/api-reference/whats-app/outbound-call) for the full request schema. As with outbound messages, `conversation_initiation_client_data` sets dynamic variables and pins the conversation to a branch and environment, and an unknown branch or environment is rejected before the call is scheduled.
 
-Meta charges for outbound calls and for call permission requests sent outside a [Customer Service Window](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/send-messages#customer-service-windows).
-Add a payment method in WhatsApp Manager before scheduling calls.
+> **Note**
+>
+> Meta charges for outbound calls and for call permission requests sent outside a [Customer Service Window](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/send-messages#customer-service-windows).
+> Add a payment method in WhatsApp Manager before scheduling calls.
 
 ## Campaigns and batching
 

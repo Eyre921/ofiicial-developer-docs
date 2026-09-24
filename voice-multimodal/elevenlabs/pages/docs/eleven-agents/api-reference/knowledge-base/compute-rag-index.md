@@ -48,8 +48,7 @@ Successful Response
 - `status` (enum, required)
   - Allowed values: `new`, `created`, `processing`, `failed`, `succeeded`, `rag_limit_exceeded`, `document_too_small`, `cannot_index_folder`
 - `progress_percentage` (double, required)
-- `document_model_index_usage` (object, required)
-  - `used_bytes` (integer, required)
+- `document_model_index_usage` (RagDocumentIndexUsage, required)
 
 ## Errors
 
@@ -57,10 +56,21 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### RagDocumentIndexUsage
+
+- `used_bytes` (integer, required)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItem, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItem
 
 ## Examples
 

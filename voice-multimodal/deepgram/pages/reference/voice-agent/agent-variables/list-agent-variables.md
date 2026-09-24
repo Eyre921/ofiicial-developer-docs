@@ -32,12 +32,7 @@ Reference: https://developers.deepgram.com/reference/voice-agent/agent-variables
 
 A list of agent variables
 
-- `variables` (list of object, optional) — A list of agent variables for the project
-  - `variable_id` (string, required) — The unique identifier of the variable
-  - `key` (string, required) — The variable name, following the DG\_\<VARIABLE\_NAME> format
-  - `value` (any, required) — The value to substitute. Can be any valid JSON type
-  - `created_at` (string, optional) — Timestamp when the variable was created
-  - `updated_at` (string, optional) — Timestamp when the variable was last updated
+- `variables` (list of AgentVariableV1, optional) — A list of agent variables for the project
 
 ## Errors
 
@@ -45,16 +40,32 @@ A list of agent variables
 
 Invalid Request
 
-- `string or object or object`
-  - ErrorResponseLegacyError
-    - `err_code` (string, optional) — The error code
-    - `err_msg` (string, optional) — The error message
-    - `request_id` (string, optional) — The request ID
-  - ErrorResponseModernError
-    - `category` (string, optional) — The category of the error
-    - `message` (string, optional) — A message about the error
-    - `details` (string, optional) — A description of the error
-    - `request_id` (string, optional) — The unique identifier of the request
+- `ErrorResponse`
+
+## Types
+
+### AgentVariableV1
+
+A template variable for agent configurations
+
+- `variable_id` (string, required) — The unique identifier of the variable
+- `key` (string, required) — The variable name, following the DG\_\<VARIABLE\_NAME> format
+- `value` (any, required) — The value to substitute. Can be any valid JSON type
+- `created_at` (string, optional) — Timestamp when the variable was created
+- `updated_at` (string, optional) — Timestamp when the variable was last updated
+
+### ErrorResponseLegacyError
+
+- `err_code` (string, optional) — The error code
+- `err_msg` (string, optional) — The error message
+- `request_id` (string, optional) — The request ID
+
+### ErrorResponseModernError
+
+- `category` (string, optional) — The category of the error
+- `message` (string, optional) — A message about the error
+- `details` (string, optional) — A description of the error
+- `request_id` (string, optional) — The unique identifier of the request
 
 ## Examples
 

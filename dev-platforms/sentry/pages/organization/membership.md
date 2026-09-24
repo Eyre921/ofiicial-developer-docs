@@ -18,7 +18,7 @@ Permissions in Sentry are broadly handled using [organization-level roles](https
 
 ## [Organization-level Roles](https://docs.sentry.io/organization/membership.md#organization-level-roles)
 
-All users and their organization-level roles are listed in **Settings > Members**. Users can hold any of the following org-level roles:
+All users and their organization-level roles are listed in [**Settings > Members**](https://sentry.io/orgredirect/organizations/:orgslug/settings/members/). Users can hold any of the following org-level roles:
 
 * **Billing** users can manage payment and compliance details.
 * **Org Members** can view most data in the organization and act on issues. They can join and leave teams, and access projects their teams own. For Business and Enterprise plans, members can also create personal projects.
@@ -64,7 +64,7 @@ Organization-level roles enable broad access to the entire organization, as desc
 
 Team-level roles are only available for Business and Enterprise accounts.
 
-All members of a specific team and their team-level roles are listed in **Settings > Teams > \[Team] > Members**. Alternatively, go to **Settings > Members > \[Member]** to see a specific member's teams and team-level roles.
+All members of a specific team and their team-level roles are listed in [**Settings > Teams**](https://sentry.io/orgredirect/organizations/:orgslug/settings/teams/) > **\[Team] > Members**. Alternatively, go to [**Settings > Members**](https://sentry.io/orgredirect/organizations/:orgslug/settings/members/) > **\[Member]** to see a specific member's teams and team-level roles.
 
 Only Org Admins, Managers, and Owners can add new teams to an organization. Users can join a team with one of the following team-level roles:
 
@@ -116,7 +116,7 @@ Let's say a user is a Team Admin for Team 1 and a Contributor for Team 2, and bo
 
 ## [Project Access and Team Membership](https://docs.sentry.io/organization/membership.md#project-access-and-team-membership)
 
-Projects can only be accessed by that project's team(s). Team Admins, Org Managers, and Org Owners can add or remove project teams in **Project Settings > Project Teams**. Alternatively, these roles can also add projects to a team in **Team Settings > Projects**.
+Projects can only be accessed by that project's team(s). Team Admins, Org Managers, and Org Owners can add or remove project teams in [**Project Settings > Project Teams**](https://sentry.io/orgredirect/organizations/:orgslug/settings/projects/:projectId/teams/). Alternatively, these roles can also add projects to a team in [**Team Settings**](https://sentry.io/orgredirect/organizations/:orgslug/settings/teams/) > **Projects**.
 
 Any Org Member can get access to a project by joining the team that's associated with that project. Once you've joined a project you'll also be able to edit [ownership rules](https://docs.sentry.io/product/issues/ownership-rules.md) for that project.
 
@@ -128,13 +128,13 @@ Users with Manager and Owner-level permissions can add, remove, and change membe
 
 Team membership is open by default. All members can join, leave, and add other members to teams.
 
-To restrict access to teams and projects, turn off "Open Membership" for the organization in **Settings > General Settings**.
+To restrict access to teams and projects, turn off "Open Membership" for the organization in [**Settings > General Settings**](https://sentry.io/orgredirect/organizations/:orgslug/settings/).
 
 If "Open Membership" is toggled off, team access is on an invite-only basis. Users can request to join a team and invite others to join their teams, but access requests and invitations must be approved by an Org Manager, Org Owner, or a Team Admin for that team. Org Admins who aren't part of the team also need to follow this process to join. Once they join, they automatically become a Team Admin.
 
 ## [Transfer a Project](https://docs.sentry.io/organization/membership.md#transfer-a-project)
 
-Only Org Owners can transfer a project to another organization. To do so, go to the target project's **Project Settings > General Settings** and click "Transfer Project". Enter the new Org Owner's email. The Owner for the receiving organization then receives an email to approve the transfer.
+Only Org Owners can transfer a project to another organization. To do so, go to the target project's [**Project Settings > General Settings**](https://sentry.io/orgredirect/organizations/:orgslug/settings/projects/:projectId/) and click "Transfer Project". Enter the new Org Owner's email. The Owner for the receiving organization then receives an email to approve the transfer.
 
 When transferring a project to a new organization, we recommend also adding a new team to the project for better visibility.
 
@@ -144,5 +144,5 @@ If you're an Org Owner, you can remove an entire organization and all its associ
 
 A user can be a Member of several organizations, so deleting an organization doesn't delete user accounts.
 
-To remove an organization, go to the **Organization Settings** page and click "Remove Organization", which then prompts you for confirmation. After confirmation, your organization is queued for deletion.
+To remove an organization, go to the [**Organization Settings**](https://sentry.io/orgredirect/organizations/:orgslug/settings/) page and click "Remove Organization", which then prompts you for confirmation. After confirmation, your organization is queued for deletion.
 

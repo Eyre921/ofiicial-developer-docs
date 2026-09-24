@@ -27,13 +27,9 @@ Reference: https://elevenlabs.io/docs/api-reference/knowledge-base/compute-rag-i
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_Compute_RAG_indexes_in_batch_v1_convai_knowledge_base_rag_index_post.
 
-- `items` (list of object, required) — List of requested RAG indexes. Minimum 1, maximum 100 items.
-  - `document_id` (string, required) — ID of the knowledgebase document for which to retrieve the index
-  - `create_if_missing` (boolean, required) — Whether to create the RAG index if it does not exist
-  - `model` (enum, required, default: e5_mistral_7b_instruct) — Embedding model to use for the RAG index
-    - Allowed values: `e5_mistral_7b_instruct`, `multilingual_e5_large_instruct`
+- `items` (list of GetOrCreateRAGIndexRequestModel, required) — List of requested RAG indexes. Minimum 1, maximum 100 items.
 
 ## Response
 
@@ -41,21 +37,7 @@ This endpoint expects an object.
 
 Successful Response
 
-- `map from string to object`
-  - `status`: `success` (RAGIndexBatchSuccessfulResponseModel)
-    - `data` (object, required)
-      - `id` (string, required)
-      - `model` (enum, required, default: e5_mistral_7b_instruct)
-        - Allowed values: `e5_mistral_7b_instruct`, `multilingual_e5_large_instruct`
-      - `status` (enum, required)
-        - Allowed values: `new`, `created`, `processing`, `failed`, `succeeded`, `rag_limit_exceeded`, `document_too_small`, `cannot_index_folder`
-      - `progress_percentage` (double, required)
-      - `document_model_index_usage` (object, required)
-        - `used_bytes` (integer, required)
-  - `status`: `failure` (BatchFailureResponseModel)
-    - `error_code` (integer, required)
-    - `error_message` (string, required)
-    - `error_status` (string, required)
+- `map from string to V1ConvaiKnowledgeBaseRagIndexPostResponsesContentApplicationJsonSchema`
 
 ## Errors
 
@@ -63,10 +45,47 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### GetOrCreateRAGIndexRequestModel
+
+- `document_id` (string, required) — ID of the knowledgebase document for which to retrieve the index
+- `create_if_missing` (boolean, required) — Whether to create the RAG index if it does not exist
+- `model` (enum, required, default: e5_mistral_7b_instruct) — Embedding model to use for the RAG index
+  - Allowed values: `e5_mistral_7b_instruct`, `multilingual_e5_large_instruct`
+
+### V1ConvaiKnowledgeBaseRagIndexPostResponsesContentApplicationJsonSchema
+
+- `status`: `success` (RAGIndexBatchSuccessfulResponseModel)
+  - `data` (RAGDocumentIndexResponseModel, required)
+- `status`: `failure` (BatchFailureResponseModel)
+  - `error_code` (integer, required)
+  - `error_message` (string, required)
+  - `error_status` (string, required)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### RAGDocumentIndexResponseModel
+
+- `id` (string, required)
+- `model` (enum, required, default: e5_mistral_7b_instruct)
+  - Allowed values: `e5_mistral_7b_instruct`, `multilingual_e5_large_instruct`
+- `status` (enum, required)
+  - Allowed values: `new`, `created`, `processing`, `failed`, `succeeded`, `rag_limit_exceeded`, `document_too_small`, `cannot_index_folder`
+- `progress_percentage` (double, required)
+- `document_model_index_usage` (RAGDocumentIndexUsage, required)
+
+### ValidationErrorLocItems
+
+### RAGDocumentIndexUsage
+
+- `used_bytes` (integer, required)
 
 ## Examples
 

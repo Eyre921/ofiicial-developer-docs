@@ -8,12 +8,16 @@ path: docs/eleven-agents/libraries/web-sockets
 
 # WebSocket
 
-This documentation is for developers integrating directly with the ElevenLabs WebSocket API. For
-convenience, consider using [the official SDKs provided by ElevenLabs](/docs/eleven-agents/libraries/python).
+> **Note**
+>
+> This documentation is for developers integrating directly with the ElevenLabs WebSocket API. For
+> convenience, consider using [the official SDKs provided by ElevenLabs](/docs/eleven-agents/libraries/python).
 
 The [ElevenAgents](https://elevenlabs.io/agents) WebSocket API enables real-time, interactive voice conversations with AI agents. By establishing a WebSocket connection, you can send audio input and receive audio responses in real-time, creating life-like conversational experiences.
 
-Endpoint: `wss://api.elevenlabs.io/v1/convai/conversation?agent_id={agent_id}`
+> **Note**
+>
+> Endpoint: `wss://api.elevenlabs.io/v1/convai/conversation?agent_id={agent_id}`
 
 ## Authentication
 
@@ -46,7 +50,9 @@ curl -X GET "https://api.elevenlabs.io/v1/convai/conversation/get-signed-url?age
 }
 ```
 
-Never expose your ElevenLabs API key on the client side.
+> **Warning**
+>
+> Never expose your ElevenLabs API key on the client side.
 
 ## WebSocket events
 
@@ -78,7 +84,9 @@ Send non-interrupting contextual information to update the conversation state. T
 * Updates are incorporated as tool calls in conversation history
 * Helps maintain context without breaking the natural dialogue
 
-Contextual updates are processed asynchronously and do not require a direct response from the server.
+> **Note**
+>
+> Contextual updates are processed asynchronously and do not require a direct response from the server.
 
 #### [WebSocket API Reference](/docs/eleven-agents/api-reference/eleven-agents/websocket)
 
@@ -89,9 +97,11 @@ parameters, and examples.
 
 This example demonstrates how to implement a WebSocket-based conversational agent client in Next.js using the ElevenLabs WebSocket API.
 
-While this example uses the `voice-stream` package for microphone input handling, you can
-implement your own solution for capturing and encoding audio. The focus here is on demonstrating
-the WebSocket connection and event handling with the ElevenLabs API.
+> **Note**
+>
+> While this example uses the `voice-stream` package for microphone input handling, you can
+> implement your own solution for capturing and encoding audio. The focus here is on demonstrating
+> the WebSocket connection and event handling with the ElevenLabs API.
 
 #### Install required dependencies
 
@@ -103,16 +113,18 @@ npm install voice-stream
 
 The `voice-stream` package handles microphone access and audio streaming, automatically encoding the audio in base64 format as required by the ElevenLabs API.
 
-This example uses Tailwind CSS for styling. To add Tailwind to your Next.js project:
-
-```bash
-npm install -D tailwindcss postcss autoprefixer
-npx tailwindcss init -p
-```
-
-Then follow the [official Tailwind CSS setup guide for Next.js](https://tailwindcss.com/docs/guides/nextjs).
-
-Alternatively, you can replace the className attributes with your own CSS styles.
+> **Note**
+>
+> This example uses Tailwind CSS for styling. To add Tailwind to your Next.js project:
+>
+> ```bash
+> npm install -D tailwindcss postcss autoprefixer
+> npx tailwindcss init -p
+> ```
+>
+> Then follow the [official Tailwind CSS setup guide for Next.js](https://tailwindcss.com/docs/guides/nextjs).
+>
+> Alternatively, you can replace the className attributes with your own CSS styles.
 
 #### Create WebSocket types
 

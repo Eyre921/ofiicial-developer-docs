@@ -27,7 +27,7 @@ Reference: https://elevenlabs.io/docs/api-reference/workspace/invites/delete
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_Delete_existing_invitation_v1_workspace_invites_delete.
 
 - `email` (string, required) — The email of the customer
 
@@ -45,10 +45,17 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

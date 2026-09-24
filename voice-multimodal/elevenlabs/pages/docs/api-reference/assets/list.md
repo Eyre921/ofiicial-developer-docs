@@ -36,12 +36,7 @@ Reference: https://elevenlabs.io/docs/api-reference/assets/list
 
 Successful Response
 
-- `assets` (list of object, required) — List of Asset objects.
-  - `asset_id` (string, required) — Unique identifier for the asset.
-  - `name` (string, required) — Display name of the asset.
-  - `mime_type` (string, required) — MIME type of the uploaded file (e.g. `audio/mpeg`).
-  - `created_at_unix` (integer, required) — Unix timestamp (seconds) the asset was created.
-  - `content_url` (string, required, nullable) — Signed URL to fetch the asset's content. May be `null` if the asset has not finished processing. Do not rely on it being valid for more than 1 hour; fetch the asset again for a fresh URL.
+- `assets` (list of AssetResponse, required) — List of Asset objects.
 - `next_cursor` (string, required, nullable) — Pass as `cursor` to fetch the next page. `null` if there are no more results.
 - `has_more` (boolean, required) — Whether there are more results to fetch.
 
@@ -51,10 +46,27 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### AssetResponse
+
+The public Asset object.
+
+- `asset_id` (string, required) — Unique identifier for the asset.
+- `name` (string, required) — Display name of the asset.
+- `mime_type` (string, required) — MIME type of the uploaded file (e.g. `audio/mpeg`).
+- `created_at_unix` (integer, required) — Unix timestamp (seconds) the asset was created.
+- `content_url` (string, required, nullable) — Signed URL to fetch the asset's content. May be `null` if the asset has not finished processing. Do not rely on it being valid for more than 1 hour; fetch the asset again for a fresh URL.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

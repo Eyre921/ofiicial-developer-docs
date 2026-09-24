@@ -31,7 +31,7 @@ Reference: https://elevenlabs.io/docs/api-reference/voices/pvc/train
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_Run_PVC_training_v1_voices_pvc__voice_id__train_post.
 
 - `model_id` (string, optional, nullable) — The model ID to use for the conversion.
 
@@ -49,10 +49,17 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

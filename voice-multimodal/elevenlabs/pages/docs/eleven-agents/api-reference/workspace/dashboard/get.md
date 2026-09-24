@@ -28,15 +28,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/dash
 
 Successful Response
 
-- `charts` (list of object, optional)
-  - `type`: `call_success`
-    - `name` (string, required)
-  - `type`: `criteria`
-    - `criteria_id` (string, required)
-    - `name` (string, required)
-  - `type`: `data_collection`
-    - `data_collection_id` (string, required)
-    - `name` (string, required)
+- `charts` (list of GetConvAiDashboardSettingsResponseModelChartsItem, optional)
 
 ## Errors
 
@@ -44,10 +36,28 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### GetConvAiDashboardSettingsResponseModelChartsItem
+
+- `type`: `call_success`
+  - `name` (string, required)
+- `type`: `criteria`
+  - `criteria_id` (string, required)
+  - `name` (string, required)
+- `type`: `data_collection`
+  - `data_collection_id` (string, required)
+  - `name` (string, required)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItem, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItem
 
 ## Examples
 

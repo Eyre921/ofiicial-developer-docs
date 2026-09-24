@@ -22,7 +22,9 @@ If you are able to connect your websocket to the Agent API successfully, but are
 
 The distorted or static-like sounds you are hearing may result from audio `encoding` and `sample_rate` settings for the output being set incorrectly. You may inadvertently be setting an incorrect value, leading to specific default values being used.
 
-Learn more about [TTS audio encoding](/docs/tts-encoding) and [TTS audio sample rates ](/docs/tts-sample-rate)by checking out our documentation on these topics.
+> **Info**
+>
+> Learn more about [TTS audio encoding](/docs/tts-encoding) and [TTS audio sample rates ](/docs/tts-sample-rate)by checking out our documentation on these topics.
 
 ## Attempting to Play Audio in a Web Browser
 
@@ -206,7 +208,9 @@ System.arraycopy(header, 0, audio, 0, header.length);
 System.arraycopy(audioBuffer, 0, audio, header.length, audioBuffer.length);
 ```
 
-There may be variations in creating this header based on the goals of your application.
+> **Warning**
+>
+> There may be variations in creating this header based on the goals of your application.
 
 ## The Agent Voice Is Triggering Itself
 

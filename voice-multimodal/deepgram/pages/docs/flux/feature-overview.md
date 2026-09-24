@@ -57,7 +57,9 @@ path: docs/flux/feature-overview
 | --------------------------------------------------- | -------------------------------------------------------------------------------------------- |
 | [Configurable Parameters](/docs/flux/configuration) | Tune `eot_threshold`, `eager_eot_threshold`, and `eot_timeout_ms` for optimal turn detection |
 
-Flux's end-of-turn detection is configurable to match your use case. Use `eot_threshold` for standard turn detection, or enable `eager_eot_threshold` for ultra-low latency response generation. See the [End-of-Turn Configuration](/docs/flux/configuration) for detailed configuration guidance.
+> **Info**
+>
+> Flux's end-of-turn detection is configurable to match your use case. Use `eot_threshold` for standard turn detection, or enable `eager_eot_threshold` for ultra-low latency response generation. See the [End-of-Turn Configuration](/docs/flux/configuration) for detailed configuration guidance.
 
 ## Control Messages
 
@@ -69,12 +71,16 @@ Flux's end-of-turn detection is configurable to match your use case. Use `eot_th
 
 ## Rate Limits
 
-For information on Deepgram's Concurrency Rate Limits, refer to our [API Rate Limits Documentation](/reference/api-rate-limits).
+> **Info**
+>
+> For information on Deepgram's Concurrency Rate Limits, refer to our [API Rate Limits Documentation](/reference/api-rate-limits).
 
 ## Deepgram Self-Hosted
 
 Flux is now available for self-hosted deployments!
 
-For setup instructions, see [Using the Flux Model](/docs/flux-self-hosted). For more information about Deepgram's self-hosted solution, visit our [Self-Hosted Introduction](/docs/self-hosted-introduction).
+> **Info**
+>
+> For setup instructions, see [Using the Flux Model](/docs/flux-self-hosted). For more information about Deepgram's self-hosted solution, visit our [Self-Hosted Introduction](/docs/self-hosted-introduction).
 
 ---

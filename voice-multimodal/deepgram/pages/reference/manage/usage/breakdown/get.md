@@ -86,27 +86,8 @@ Usage breakdown response
 
 - `start` (string, required) — Start date of the usage period
 - `end` (string, required) — End date of the usage period
-- `resolution` (object, required)
-  - `units` (string, required) — Time unit for the resolution
-  - `amount` (double, required) — Amount of units
-- `results` (list of object, required)
-  - `hours` (float, required) — Audio hours processed
-  - `total_hours` (float, required) — Total hours including all processing
-  - `agent_hours` (float, required) — Agent hours used
-  - `tokens_in` (double, required) — Number of input tokens
-  - `tokens_out` (double, required) — Number of output tokens
-  - `tts_characters` (double, required) — Number of text-to-speech characters processed
-  - `requests` (double, required) — Number of requests
-  - `grouping` (object, required)
-    - `start` (string, optional) — Start date for this group
-    - `end` (string, optional) — End date for this group
-    - `accessor` (string, optional, nullable) — Optional accessor identifier
-    - `endpoint` (string, optional, nullable) — Optional endpoint identifier
-    - `feature_set` (string, optional, nullable) — Optional feature set identifier
-    - `models` (list of string, optional)
-    - `method` (string, optional, nullable) — Optional method identifier
-    - `tags` (list of string, optional, nullable) — Optional list of tags, null unless grouped by tags.
-    - `deployment` (string, optional, nullable) — Optional deployment identifier
+- `resolution` (UsageBreakdownV1ResponseResolution, required)
+- `results` (list of UsageBreakdownV1ResponseResultsItems, required)
 
 ## Errors
 
@@ -114,16 +95,50 @@ Usage breakdown response
 
 Invalid Request
 
-- `string or object or object`
-  - ErrorResponseLegacyError
-    - `err_code` (string, optional) — The error code
-    - `err_msg` (string, optional) — The error message
-    - `request_id` (string, optional) — The request ID
-  - ErrorResponseModernError
-    - `category` (string, optional) — The category of the error
-    - `message` (string, optional) — A message about the error
-    - `details` (string, optional) — A description of the error
-    - `request_id` (string, optional) — The unique identifier of the request
+- `ErrorResponse`
+
+## Types
+
+### UsageBreakdownV1ResponseResolution
+
+- `units` (string, required) — Time unit for the resolution
+- `amount` (double, required) — Amount of units
+
+### UsageBreakdownV1ResponseResultsItems
+
+- `hours` (float, required) — Audio hours processed
+- `total_hours` (float, required) — Total hours including all processing
+- `agent_hours` (float, required) — Agent hours used
+- `tokens_in` (double, required) — Number of input tokens
+- `tokens_out` (double, required) — Number of output tokens
+- `tts_characters` (double, required) — Number of text-to-speech characters processed
+- `requests` (double, required) — Number of requests
+- `grouping` (UsageBreakdownV1ResponseResultsItemsGrouping, required)
+
+### ErrorResponseLegacyError
+
+- `err_code` (string, optional) — The error code
+- `err_msg` (string, optional) — The error message
+- `request_id` (string, optional) — The request ID
+
+### ErrorResponseModernError
+
+- `category` (string, optional) — The category of the error
+- `message` (string, optional) — A message about the error
+- `details` (string, optional) — A description of the error
+- `request_id` (string, optional) — The unique identifier of the request
+
+### UsageBreakdownV1ResponseResultsItemsGrouping
+
+- `start` (string, optional) — Start date for this group
+- `end` (string, optional) — End date for this group
+- `accessor` (string, optional, nullable) — Optional accessor identifier
+- `endpoint` (string, optional, nullable) — Optional endpoint identifier
+- `feature_set` (string, optional, nullable) — Optional feature set identifier
+- `models` (list of string, optional)
+- `method` (string, optional, nullable) — Optional method identifier
+- `tags` (list of string, optional, nullable) — Optional list of tags, null unless grouped by tags.
+- `deployment` (string, optional, nullable) — Optional deployment identifier
 
 ## Examples
 

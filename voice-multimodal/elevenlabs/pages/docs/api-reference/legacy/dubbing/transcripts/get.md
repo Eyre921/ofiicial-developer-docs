@@ -41,22 +41,7 @@ Successful Response
   - Allowed values: `srt`, `webvtt`, `json`
 - `srt` (string, optional, nullable)
 - `webvtt` (string, optional, nullable)
-- `json` (object, optional, nullable)
-  - `language` (string, required)
-  - `utterances` (list of object, required)
-    - `text` (string, optional, default: )
-    - `speaker_id` (string, optional, default: unknown)
-    - `start_s` (double, optional, default: 0)
-    - `end_s` (double, optional, default: 0)
-    - `words` (list of object, optional)
-      - `text` (string, optional, default: )
-      - `word_type` (string, optional, default: unknown)
-      - `start_s` (double, optional, default: 0)
-      - `end_s` (double, optional, default: 0)
-      - `characters` (list of object, optional)
-        - `text` (string, optional, default: )
-        - `start_s` (double, optional, default: 0)
-        - `end_s` (double, optional, default: 0)
+- `json` (DubbingTranscript, optional, nullable)
 
 ## Errors
 
@@ -64,10 +49,44 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### DubbingTranscript
+
+- `language` (string, required)
+- `utterances` (list of DubbingTranscriptUtterance, required)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### DubbingTranscriptUtterance
+
+- `text` (string, optional, default: )
+- `speaker_id` (string, optional, default: unknown)
+- `start_s` (double, optional, default: 0)
+- `end_s` (double, optional, default: 0)
+- `words` (list of DubbingTranscriptWord, optional)
+
+### ValidationErrorLocItems
+
+### DubbingTranscriptWord
+
+- `text` (string, optional, default: )
+- `word_type` (string, optional, default: unknown)
+- `start_s` (double, optional, default: 0)
+- `end_s` (double, optional, default: 0)
+- `characters` (list of DubbingTranscriptCharacter, optional)
+
+### DubbingTranscriptCharacter
+
+- `text` (string, optional, default: )
+- `start_s` (double, optional, default: 0)
+- `end_s` (double, optional, default: 0)
 
 ## Examples
 

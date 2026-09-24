@@ -18,9 +18,11 @@ ElevenLabs provides models for voice creation & customization. The platform supp
 * **Cloned**: Custom voices created using Instant Voice Cloning or Professional Voice Cloning.
 * **Voice Design**: Generated voices created with the [Voice Design](/docs/eleven-creative/voices/voice-design) tool.
 
-Our Default voices are being replaced with new voices that you will be able to use in perpetuity.
-All our Default voices will expire on December 31, 2026, and they will no longer be accessible
-after this date.
+> **Warning**
+>
+> Our Default voices are being replaced with new voices that you will be able to use in perpetuity.
+> All our Default voices will expire on December 31, 2026, and they will no longer be accessible
+> after this date.
 
 #### Community
 
@@ -30,10 +32,14 @@ The [Voice Library](/docs/eleven-creative/voices/voice-library) contains over 10
 * Add voices to your personal collection.
 * Share your own voice clones for cash rewards when other paid subscribers use it.
 
-Share your voice with the community, set your terms, and earn cash rewards when others use it.
-We've paid out over **\$14M** already.
+> **Success**
+>
+> Share your voice with the community, set your terms, and earn cash rewards when others use it.
+> We've paid out over **\$14M** already.
 
-Voice Library voices are not available via the API to free tier users.
+> **Warning**
+>
+> Voice Library voices are not available via the API to free tier users.
 
 #### [Products](/docs/eleven-creative/voices/voice-library)
 
@@ -48,7 +54,9 @@ Clone your own voice from short audio samples with Instant Voice Cloning, or cre
 
 Voice-captcha technology is used to verify that Professional Voice Clones are created from your own voice samples.
 
-A Creator plan or above is required to create Professional Voice Clones.
+> **Note**
+>
+> A Creator plan or above is required to create Professional Voice Clones.
 
 #### [Products](/docs/eleven-creative/voices/voice-cloning)
 

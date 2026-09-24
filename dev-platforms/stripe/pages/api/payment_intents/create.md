@@ -84,10 +84,6 @@ curl https://api.stripe.com/v1/payment_intents \
 }
 ```
 
-## Returns
-
-Returns a PaymentIntent object.
-
 ## Parameters
 
 - `amount` (integer, required)
@@ -705,4 +701,8 @@ Possible enum values:
 
 - `use_stripe_sdk` (boolean, optional)
   Set to `true` when confirming server-side and using Stripe.js, iOS, or Android client-side SDKs to handle the next actions.
+
+## Returns
+
+Returns a PaymentIntent object.
 

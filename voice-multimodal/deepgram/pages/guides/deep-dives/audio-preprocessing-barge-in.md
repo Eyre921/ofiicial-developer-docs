@@ -25,7 +25,9 @@ When you apply noise suppression before sending audio to Deepgram:
 
 **The result:** enterprise customers consistently report lower transcription accuracy after applying noise suppression, particularly in domain-specific use cases where subtle speech cues matter (healthcare, legal, financial services).
 
-For a deeper dive into the science behind this, read our blog post: [The Noise Reduction Paradox: Why It May Hurt Speech-to-Text Accuracy](https://deepgram.com/learn/the-noise-reduction-paradox-why-it-may-hurt-speech-to-text-accuracy).
+> **Info**
+>
+> For a deeper dive into the science behind this, read our blog post: [The Noise Reduction Paradox: Why It May Hurt Speech-to-Text Accuracy](https://deepgram.com/learn/the-noise-reduction-paradox-why-it-may-hurt-speech-to-text-accuracy).
 
 ## When Preprocessing Helps
 
@@ -47,11 +49,15 @@ Noise suppression doesn't always degrade transcription — but the risk is highe
 
 In all of these cases, the impact depends on the specific audio, environment, and suppression algorithm. The only way to know for certain is to A/B test with and without preprocessing on representative samples from your production audio.
 
-**Sample rate:** Deepgram models are trained across the full range of audio quality. The sweet spot is **16 kHz** — there is no accuracy gain above this. If your telephony audio is band-limited to 8 kHz, upsampling to a higher rate provides no benefit.
+> **Info**
+>
+> **Sample rate:** Deepgram models are trained across the full range of audio quality. The sweet spot is **16 kHz** — there is no accuracy gain above this. If your telephony audio is band-limited to 8 kHz, upsampling to a higher rate provides no benefit.
 
 ## Recommendations
 
-**Always test without preprocessing first.** Deepgram's models are trained on real-world audio and handle noise natively. Many customers who A/B test find that removing noise suppression improves transcription accuracy. Only add preprocessing if you can measure a clear improvement on your own audio.
+> **Tip**
+>
+> **Always test without preprocessing first.** Deepgram's models are trained on real-world audio and handle noise natively. Many customers who A/B test find that removing noise suppression improves transcription accuracy. Only add preprocessing if you can measure a clear improvement on your own audio.
 
 Based on extensive testing across voice agent and transcription deployments, here are our recommendations in priority order:
 
@@ -78,7 +84,9 @@ navigator.mediaDevices.getUserMedia({
 });
 ```
 
-Platform-native echo cancellation isn't perfect, but it's closest to the audio source and essentially free. Start here before adding anything else.
+> **Note**
+>
+> Platform-native echo cancellation isn't perfect, but it's closest to the audio source and essentially free. Start here before adding anything else.
 
 AEC algorithms are dynamic — they "learn" the acoustic environment when audio starts flowing. Having the agent speak an opening greeting helps the AEC calibrate before the customer responds, which reduces echo in the critical first seconds of a conversation.
 
@@ -94,7 +102,9 @@ What matters most is the **signal-to-noise ratio (SNR)** reaching the microphone
 * **Adjust dynamically if possible.** A quiet office needs less suppression than a drive-through. If your deployment spans multiple environments, consider tuning suppression levels per environment rather than using a single global setting.
 * **Test on your own audio.** The impact varies significantly by environment, speaker population, and use case. Always A/B test with and without suppression on representative audio before committing to a setting.
 
-For pure transcription use cases (pre-recorded or streaming), we recommend skipping noise suppression entirely. Send unaltered audio to Deepgram for the best accuracy.
+> **Warning**
+>
+> For pure transcription use cases (pre-recorded or streaming), we recommend skipping noise suppression entirely. Send unaltered audio to Deepgram for the best accuracy.
 
 ### 3. Use Keyterm Boosting to Handle Echo Bleed
 

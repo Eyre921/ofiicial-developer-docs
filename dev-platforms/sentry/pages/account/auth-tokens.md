@@ -52,7 +52,7 @@ Personal token permissions are customizable but cannot be edited later.
 
 They can also be generated on certain pages of Sentry's docs if you're signed in, and by using the Sentry Wizard to configure uploading source maps.
 
-Organization token names are generated for you unless you create the token through the Sentry UI. This name is only used for display purposes - it helps to identify an auth token in case you want to revoke it later. You can change the name for an organization token at [sentry.io](https://sentry.io) on the **Edit Auth Token** page under **Settings > Developer Settings > Organization Tokens**.
+Organization token names are generated for you unless you create the token through the Sentry UI. This name is only used for display purposes - it helps to identify an auth token in case you want to revoke it later. You can change the name for an organization token at [sentry.io](https://sentry.io) on the **Edit Auth Token** page under [**Settings > Developer Settings > Organization Tokens**](https://sentry.io/orgredirect/organizations/:orgslug/settings/auth-tokens/).
 
 For security reasons, organization tokens are only visible *once*, right after you create them. If you lose the auth token, you will have to create a new one. This means you can't see the full token on the overview page or on the token detail page, you can only see the last characters of the token to help identify it.
 

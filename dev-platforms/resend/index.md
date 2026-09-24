@@ -1,6 +1,6 @@
 # dev-platforms/resend 文档索引
 
-> 共 363 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 364 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -213,6 +213,7 @@
 - `docs/guides/building-a-resend-oauth-client` — [Building an OAuth client for Resend](pages/docs/guides/building-a-resend-oauth-client.md) · [原文](https://resend.com/docs/guides/building-a-resend-oauth-client)
 - `docs/guides/devin` — [Send emails with Devin and Resend](pages/docs/guides/devin.md) · [原文](https://resend.com/docs/guides/devin)
 - `docs/guides/paper` — [Turn Paper designs into Resend emails](pages/docs/guides/paper.md) · [原文](https://resend.com/docs/guides/paper)
+- `docs/guides/stripe-projects-integration` — [Stripe Projects Integration](pages/docs/guides/stripe-projects-integration.md) · [原文](https://resend.com/docs/guides/stripe-projects-integration)
 - `docs/guides/vercel-marketplace-integration` — [Vercel Marketplace Integration](pages/docs/guides/vercel-marketplace-integration.md) · [原文](https://resend.com/docs/guides/vercel-marketplace-integration)
 - `docs/integrations` — [Integrations](pages/docs/integrations.md) · [原文](https://resend.com/docs/integrations)
 - `docs/introduction` — [Introduction](pages/docs/introduction.md) · [原文](https://resend.com/docs/introduction)

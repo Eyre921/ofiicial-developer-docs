@@ -58,7 +58,9 @@ Most customers can stand up a ready-to-use endpoint in minutes:
    * **Infrastructure-as-Code.** Deploy the same model package using Terraform for repeatable, version-controlled rollouts. See [Deploy with Terraform](/docs/terraform-deploy-sagemaker).
    * **Agent-assisted (AI coding assistant).** Install the Deepgram SageMaker skill and let your assistant run each step with confirmation. See [Agent-assisted setup](#agent-assisted-setup).
 
-The SageMaker AI console cannot set the inference AMI version, so endpoints created through the console fail to start with current Deepgram model packages. Use the CLI, SDK, or Terraform paths above.
+> **Warning**
+>
+> The SageMaker AI console cannot set the inference AMI version, so endpoints created through the console fail to start with current Deepgram model packages. Use the CLI, SDK, or Terraform paths above.
 
 ## Agent-assisted setup
 

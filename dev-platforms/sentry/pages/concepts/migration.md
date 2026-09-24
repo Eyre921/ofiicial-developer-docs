@@ -85,7 +85,7 @@ Before you begin the relocation process, [sign up](https://sentry.io/signup/relo
 
 ### [2. Choose which organizations to relocate](https://docs.sentry.io/concepts/migration.md#2-choose-which-organizations-to-relocate)
 
-Your self-hosted installation may have multiple organizations, each identified by a unique slug. You'll need to decide which org slugs to keep. You can always change them post-relocation by going to the **Organization Settings** page.
+Your self-hosted installation may have multiple organizations, each identified by a unique slug. You'll need to decide which org slugs to keep. You can always change them post-relocation by going to the [**Organization Settings**](https://sentry.io/orgredirect/organizations/:orgslug/settings/) page.
 
 ### [3. Follow the in-app relocation instructions](https://docs.sentry.io/concepts/migration.md#3-follow-the-in-app-relocation-instructions)
 

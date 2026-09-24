@@ -33,10 +33,12 @@ Go to the [Tools page](https://elevenlabs.io/app/agents/tools), click the ***Add
 tool*** button, select the WhatsApp integration, and add the ***Send Interactive Buttons*** and
 ***Send Interactive List*** tools.
 
-If you have imported more than one WhatsApp account, each has its own WhatsApp integration.
-Make sure you add the tools from the integration connected to the account your agent uses —
-tools added from a different account's integration will not work for this agent's
-conversations.
+> **Warning**
+>
+> If you have imported more than one WhatsApp account, each has its own WhatsApp integration.
+> Make sure you add the tools from the integration connected to the account your agent uses —
+> tools added from a different account's integration will not work for this agent's
+> conversations.
 
 #### Attach the tools to your agent
 
@@ -104,9 +106,11 @@ titles short. Do not use interactive messages for open-ended questions.
 
 Giving the agent the tools is half the work — a [procedure](/docs/eleven-agents/customization/procedures) tells it how to operate them well.
 
-The procedure below is a template, not a drop-in. After copying it, make it yours: adjust the
-trigger to your flows, keep only the tools your agent actually has, and rewrite the option
-examples and rules to match your use case.
+> **Note**
+>
+> The procedure below is a template, not a drop-in. After copying it, make it yours: adjust the
+> trigger to your flows, keep only the tools your agent actually has, and rewrite the option
+> examples and rules to match your use case.
 
 #### Copy the sample procedure
 

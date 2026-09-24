@@ -290,6 +290,8 @@ Follow the [step-by-step migration guide](/resources/engineering/migrate-from-la
 
 SmithDB is LangSmith's proprietary trace database ([launched May 13, 2026](https://www.langchain.com/blog/introducing-smithdb)), written in Rust on Apache DataFusion and Vortex, with trace data on object storage. LangChain reports up to 15× faster core experiences. Langfuse runs on ClickHouse, open source since 2016, with an observations-first data model, so Cloud and self-hosted share the same architecture. See [Storage: ClickHouse vs SmithDB](#storage).
 
+[Ask another question](/docs/ask-ai)
+
   This comparison is out of date? Please [raise a pull request](https://github.com/langfuse/langfuse-docs/blob/main/content/compare/langsmith.mdx) with up-to-date information.
 
 <!-- agent-instructions -->

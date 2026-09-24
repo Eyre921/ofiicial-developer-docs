@@ -65,15 +65,20 @@ Framework integrations usually get this right automatically. If you're instrumen
 **Beware of aggregating LLM calls.** You should see a  `generation` for each model invocation in an agent loop, interleaved with the  `tool` calls it requested. Avoid wrapping the whole loop in one parent generation that only records the final output. This would make it impossible to:
 
 - see what the agent decided after each tool result
+- see the [thinking](#capture-thinking) behind each decision
 - see which tool call has blown up your agent's context window (useful when optimizing cost)
 
 **One generation wrapping the whole loop.** You only see aggregated cost and the final output.
 
 ![Agent loop collapsed into one generation](/images/docs/faq/good-trace-agent-collapsed-generation.png)
 
-**Each model invocation as its own generation.** You can see reasoning, tokens, cost after every step.
+**Each model invocation as its own generation.** You can see thinking, tokens, and cost after every step.
 
 ![Agent loop with interleaved generations](/images/docs/faq/good-trace-agent-interleaved-generations.png)
+
+### Is thinking captured? [#capture-thinking]
+
+Reasoning models produce **thinking** (also called **reasoning**) before they answer or call a tool. You should always capture thinking on each `generation` in the tree. Thinking data is instrumental in debugging why the agent made certain decisions, like calling a specific tool/endpoint/etc.
 
 ### Is there noise you don't need?
 

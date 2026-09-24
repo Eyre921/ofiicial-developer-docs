@@ -38,11 +38,7 @@ Reference: https://developers.deepgram.com/reference/manage/usage/list
 A list of fields for a specific project
 
 - `tags` (list of string, optional) — List of tags associated with the project
-- `models` (list of object, optional) — List of models available for the project.
-  - `name` (string, optional) — Name of the model.
-  - `language` (string, optional) — The language supported by the model (IETF language tag).
-  - `version` (string, optional) — Version identifier of the model, typically with a date and a revision number.
-  - `model_id` (string, optional) — Unique identifier for the model.
+- `models` (list of UsageFieldsV1ResponseModelsItems, optional) — List of models available for the project.
 - `processing_methods` (list of string, optional) — Processing methods supported by the API
 - `features` (list of string, optional) — API features available to the project
 
@@ -52,16 +48,29 @@ A list of fields for a specific project
 
 Invalid Request
 
-- `string or object or object`
-  - ErrorResponseLegacyError
-    - `err_code` (string, optional) — The error code
-    - `err_msg` (string, optional) — The error message
-    - `request_id` (string, optional) — The request ID
-  - ErrorResponseModernError
-    - `category` (string, optional) — The category of the error
-    - `message` (string, optional) — A message about the error
-    - `details` (string, optional) — A description of the error
-    - `request_id` (string, optional) — The unique identifier of the request
+- `ErrorResponse`
+
+## Types
+
+### UsageFieldsV1ResponseModelsItems
+
+- `name` (string, optional) — Name of the model.
+- `language` (string, optional) — The language supported by the model (IETF language tag).
+- `version` (string, optional) — Version identifier of the model, typically with a date and a revision number.
+- `model_id` (string, optional) — Unique identifier for the model.
+
+### ErrorResponseLegacyError
+
+- `err_code` (string, optional) — The error code
+- `err_msg` (string, optional) — The error message
+- `request_id` (string, optional) — The request ID
+
+### ErrorResponseModernError
+
+- `category` (string, optional) — The category of the error
+- `message` (string, optional) — A message about the error
+- `details` (string, optional) — A description of the error
+- `request_id` (string, optional) — The unique identifier of the request
 
 ## Examples
 

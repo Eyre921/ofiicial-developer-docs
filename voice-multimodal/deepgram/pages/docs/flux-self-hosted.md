@@ -21,9 +21,13 @@ Please familiarize yourself with these general requirements before attempting to
 * You must use Deepgram container images from October 2025 or later (`release-251015`)
 * The Flux model file must be added to your `engine` models directory
 
-Flux is not supported on the NVIDIA T4 or similar older GPUs due to their compute capabilities. Run Flux on a newer NVIDIA GPU (Ampere generation or later) such as the NVIDIA A10, L4, L40S, A100, H100, or a Blackwell-generation GPU.
+> **Warning**
+>
+> Flux is not supported on the NVIDIA T4 or similar older GPUs due to their compute capabilities. Run Flux on a newer NVIDIA GPU (Ampere generation or later) such as the NVIDIA A10, L4, L40S, A100, H100, or a Blackwell-generation GPU.
 
-Unlike the Nova family of models, Flux **cannot co-exist with other STT models on the same Engine node**. This means you must provision a dedicated server specifically for handling Flux requests. For optimal streaming performance, we also recommend provisioning a **separate API node** to route Flux requests to your Flux-configured Engine node.
+> **Warn**
+>
+> Unlike the Nova family of models, Flux **cannot co-exist with other STT models on the same Engine node**. This means you must provision a dedicated server specifically for handling Flux requests. For optimal streaming performance, we also recommend provisioning a **separate API node** to route Flux requests to your Flux-configured Engine node.
 
 ## Flux GPU Resource Allocation
 
@@ -64,7 +68,9 @@ max_streams = 0 # Placeholder; required for production. Set explicitly based on 
 model_name = "flux-general-multi" # or "flux-general-en"
 ```
 
-Engine can only load one Flux model at a time. If you need both English and Multilingual, provision separate Engine instances for each.
+> **Warn**
+>
+> Engine can only load one Flux model at a time. If you need both English and Multilingual, provision separate Engine instances for each.
 
 ## Configuring Max Streams
 
@@ -74,7 +80,9 @@ The appropriate value depends on your GPU type and should be set according to De
 
 ### Recommended Values by GPU Type
 
-Contact your Deepgram account representative for the recommended `max_streams` values for the GPUs you plan to use.
+> **Info**
+>
+> Contact your Deepgram account representative for the recommended `max_streams` values for the GPUs you plan to use.
 
 ### Indicators of Excessive Concurrency
 

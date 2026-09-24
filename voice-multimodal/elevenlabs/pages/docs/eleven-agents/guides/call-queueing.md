@@ -14,7 +14,9 @@ When an agent or workspace reaches its concurrency limit, new calls are normally
 
 Call queueing is configured per agent and is turned off by default.
 
-Call queueing applies once all available capacity is in use, including burst capacity when [burst pricing](/docs/eleven-agents/guides/burst-pricing) is enabled for the agent.
+> **Note**
+>
+> Call queueing applies once all available capacity is in use, including burst capacity when [burst pricing](/docs/eleven-agents/guides/burst-pricing) is enabled for the agent.
 
 ## How call queueing works
 
@@ -47,8 +49,10 @@ Time spent in the queue is **not billed**, does not count toward the agent's **M
 | Text-only agents                              | Not supported |
 | Genesys, AudioCodes, Exotel, WhatsApp and SMS | Not supported |
 
-The daily call limit is not queued. A call that exceeds the agent's daily limit is rejected
-immediately, because that limit does not free up until the next day.
+> **Note**
+>
+> The daily call limit is not queued. A call that exceeds the agent's daily limit is rejected
+> immediately, because that limit does not free up until the next day.
 
 ## Configuration
 
@@ -220,9 +224,11 @@ Calls that connect immediately never receive `queue_status` events. The event is
 
 Hold audio is delivered as regular `audio` events in roughly one-second chunks, provided the agent's client events include `audio`. Use `queue_status` to show a waiting state rather than treating the hold audio as agent speech.
 
-The `@elevenlabs/client` and `@elevenlabs/react` SDKs do not expose a dedicated callback for this
-event yet. Use the `onIncomingEvent` callback to observe raw server events, including
-`queue_status`.
+> **Info**
+>
+> The `@elevenlabs/client` and `@elevenlabs/react` SDKs do not expose a dedicated callback for this
+> event yet. Use the `onIncomingEvent` callback to observe raw server events, including
+> `queue_status`.
 
 ## FAQ
 

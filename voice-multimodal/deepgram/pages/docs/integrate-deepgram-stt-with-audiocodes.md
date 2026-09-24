@@ -20,9 +20,13 @@ This guide will focus on LiveHub, as it is accessible to all users. However, if 
 
 ## Before you Begin
 
-Before you start, you'll need to follow the steps in the [Make Your First API Request](/docs/make-your-first-api-request) guide to obtain a Deepgram API key.
+> **Info**
+>
+> Before you start, you'll need to follow the steps in the [Make Your First API Request](/docs/make-your-first-api-request) guide to obtain a Deepgram API key.
 
-You will need an [AudioCodes LiveHub](https://livehub.audiocodes.io/login) account to connect the two services.
+> **Info**
+>
+> You will need an [AudioCodes LiveHub](https://livehub.audiocodes.io/login) account to connect the two services.
 
 ## Add Deepgram as a Speech Service in LiveHub
 
@@ -75,7 +79,9 @@ For example, you might configure the sttGenericData object as such:
 }
 ```
 
-The ONLY way to set the language for your STT service is to use the the `sttLanguage` field. If you try to pass a language code in `sttGenericParams` it will be ignored.
+> **Warning**
+>
+> The ONLY way to set the language for your STT service is to use the the `sttLanguage` field. If you try to pass a language code in `sttGenericParams` it will be ignored.
 
 #### Using Keyterm or Keyword boosting
 
@@ -120,8 +126,12 @@ If you wish to use [Keyterms](https://developers.deepgram.com/docs/keyterm) (nov
 }
 ```
 
-If using AI Works, do not pass query parameters as "top level" key-value pairs, as these will be ignored if the `aiworks` object is present.
+> **Info**
+>
+> If using AI Works, do not pass query parameters as "top level" key-value pairs, as these will be ignored if the `aiworks` object is present.
+>
+> Instead, pass your query parameters in the `aiworks.stt_query_params` object.
 
-Instead, pass your query parameters in the `aiworks.stt_query_params` object.
-
-Always consult the [AudioCodes API documentation](https://techdocs.audiocodes.com/voice-ai-connect/#VAIG_API/Speech-to-Text.htm?TocPath=AudioCodes%2520API%257C_____4) for the most up to date information.
+> **Warning**
+>
+> Always consult the [AudioCodes API documentation](https://techdocs.audiocodes.com/voice-ai-connect/#VAIG_API/Speech-to-Text.htm?TocPath=AudioCodes%2520API%257C_____4) for the most up to date information.

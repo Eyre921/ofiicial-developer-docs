@@ -27,7 +27,9 @@ Deepgram offers versioned diarization models. Use the `diarize_model` parameter 
 | `v2`     | Pins to the v2 diarizer                                 | Not supported — returns a validation error                  |
 | `v1`     | Pins to the v1 diarizer                                 | Pins to the v1 streaming diarizer                           |
 
-Specifying `diarize_model` both enables diarization **and** selects the model version. You do not need to also set `diarize=true`.
+> **Info**
+>
+> Specifying `diarize_model` both enables diarization **and** selects the model version. You do not need to also set `diarize=true`.
 
 ### Choosing a Model
 
@@ -54,7 +56,9 @@ curl \
 
 ### Using `diarize` (deprecated)
 
-The `diarize` parameter is deprecated. Use `diarize_model` instead for both batch and streaming requests.
+> **Warning**
+>
+> The `diarize` parameter is deprecated. Use `diarize_model` instead for both batch and streaming requests.
 
 The boolean `diarize` parameter continues to work and always routes to the v1 diarizer:
 
@@ -71,9 +75,13 @@ curl \
   --url 'https://api.deepgram.com/v1/listen?diarize=true'
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
 
-**Self-hosted deployments:** `diarize=true` is pinned to the v1 batch diarizer. New self-hosted deployments provisioned at the May 2026 release (`release-260514`) or later receive only the v2 batch diarizer model by default — `diarize=true` on those deployments returns a successful response without `speaker` labels, consistent with Deepgram's longstanding behavior when a requested diarizer model is not present. To produce diarized output on a fresh deployment, specify `diarize_model=v2` or `diarize_model=latest`. See the [Self-Hosted May 2026 release notes](/changelog/self-hosted-changelog#deepgram-self-hosted-may-2026-release-260514) for details.
+> **Info**
+>
+> **Self-hosted deployments:** `diarize=true` is pinned to the v1 batch diarizer. New self-hosted deployments provisioned at the May 2026 release (`release-260514`) or later receive only the v2 batch diarizer model by default — `diarize=true` on those deployments returns a successful response without `speaker` labels, consistent with Deepgram's longstanding behavior when a requested diarizer model is not present. To produce diarized output on a fresh deployment, specify `diarize_model=v2` or `diarize_model=latest`. See the [Self-Hosted May 2026 release notes](/changelog/self-hosted-changelog#deepgram-self-hosted-may-2026-release-260514) for details.
 
 ## Versioning Behavior
 
@@ -95,7 +103,9 @@ The deprecated `diarize=true` parameter also continues to work for streaming and
 
 ## Analyze Response
 
-For this example, we use an MP3 audio file that contains the beginning of a customer call with Premier Phone Services. If you would like to follow along, you can [download it](https://res.cloudinary.com/deepgram/video/upload/v1680127025/dg-audio/nasa-spacewalk-interview_ljjahn.wav).
+> **Info**
+>
+> For this example, we use an MP3 audio file that contains the beginning of a customer call with Premier Phone Services. If you would like to follow along, you can [download it](https://res.cloudinary.com/deepgram/video/upload/v1680127025/dg-audio/nasa-spacewalk-interview_ljjahn.wav).
 
 When the file is finished processing, you'll receive a JSON response. Let's look more closely at the `words` object within the `alternatives` object within this response.
 
@@ -185,7 +195,9 @@ When a diarizer runs, the response `metadata` includes a `diarize_info` object t
 | No diarization requested                                                                                     | Absent                                    |
 | Diarization requested but no diarizer model available (for example, self-hosted v2-only with `diarize=true`) | Absent                                    |
 
-`diarize_info` is either present with both fields or absent entirely — it is never `null` or `{}`. An absent block on a request that asked for diarization means the diarizer did not run, which is how you distinguish a missing diarizer from single-speaker audio.
+> **Info**
+>
+> `diarize_info` is either present with both fields or absent entirely — it is never `null` or `{}`. An absent block on a request that asked for diarization means the diarizer did not run, which is how you distinguish a missing diarizer from single-speaker audio.
 
 ## Format Response
 
@@ -202,7 +214,9 @@ curl \
   --data-binary @Premier_broken-phone_numbers.mp3 | jq -r ".results.utterances[] | \"[Speaker:\(.speaker)] \(.transcript)\""
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
 
 When the file is finished processing, you'll receive the following response:
 
@@ -214,7 +228,9 @@ When the file is finished processing, you'll receive the following response:
 [Speaker:1] My name is Blake...
 ```
 
-To learn more about when to use Deepgram's Diarization or Multichannel feature, see [When to Use the Multichannel and Diarization Features](/docs/multichannel-vs-diarization).
+> **Info**
+>
+> To learn more about when to use Deepgram's Diarization or Multichannel feature, see [When to Use the Multichannel and Diarization Features](/docs/multichannel-vs-diarization).
 
 ---
 

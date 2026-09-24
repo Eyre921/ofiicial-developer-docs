@@ -62,7 +62,9 @@ With `eot_threshold=1.0`, three things can still end a turn:
 * **`eot_timeout_ms`** — a safety net. If this much silence passes, Flux force-ends the turn with `"trigger": "timeout"`. Set it high enough that it only fires when your own detection has failed. The maximum is `60000` (60 seconds).
 * **`CloseStream`** — closes the connection without finalizing the active turn. No `EndOfTurn` is emitted for it; treat the most recent `Update` as the last transcript for that turn.
 
-Keep `eot_timeout_ms` as a backstop, not a primary mechanism. If it fires often, your external detection is missing turn endings. Tune your detector rather than lowering the timeout.
+> **Warning**
+>
+> Keep `eot_timeout_ms` as a backstop, not a primary mechanism. If it fires often, your external detection is missing turn endings. Tune your detector rather than lowering the timeout.
 
 ## Example
 

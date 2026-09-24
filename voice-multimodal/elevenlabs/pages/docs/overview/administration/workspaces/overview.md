@@ -8,7 +8,7 @@ path: docs/overview/administration/workspaces/overview
 
 # Workspaces
 
-![Workspaces](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7623fe79ed73fc788b7814694e0f1e27457878b0f34acb8b3b409d5f257bceae/assets/images/product-guides/administration/workspaces.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T100026Z&X-Amz-Expires=604800&X-Amz-Signature=5890b7a6caadf909d12931f2267dc13491e57ba9fb5514c98beca87d6089d0a4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Workspaces](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7623fe79ed73fc788b7814694e0f1e27457878b0f34acb8b3b409d5f257bceae/assets/images/product-guides/administration/workspaces.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T112015Z&X-Amz-Expires=604800&X-Amz-Signature=0aaaa9eb1cb7e038773b19e3faef69ff8e6296c6eee835c81966631b34350d17&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Overview
 
@@ -41,14 +41,16 @@ Users can now accept invitations to multiple workspaces, allowing you to collabo
   * **All at once** — from your [workspace settings](https://elevenlabs.io/app/settings), copy every supported resource to another workspace in a single click. It may take a few minutes to copy over all resources.
   * **One at a time** — from the [workspace resources page](https://elevenlabs.io/app/workspace/resources), select the **Copy Resource to Another Workspace** icon next to a resource, then choose the destination workspace.
 
-  Copying for Enterprise workspaces is limited to workspaces in the same consolidated billing
-  group. Cross-workspace copying is disabled by default, but a workspace owner can enable it in
-  Workspace settings by turning on **Enterprise Copying**. Admins can then grant the
-  **Copy Resources Between Workspaces** permission to user groups.
+  > **Info**
+  >
+  > Copying for Enterprise workspaces is limited to workspaces in the same consolidated billing
+  > group. Cross-workspace copying is disabled by default, but a workspace owner can enable it in
+  > Workspace settings by turning on **Enterprise Copying**. Admins can then grant the
+  > **Copy Resources Between Workspaces** permission to user groups.
 
 * **Switch between workspaces** - Use the workspace switcher in your account menu to quickly navigate between your workspaces.
 
-![Switching between workspaces](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c85e9460b00a07fb6c09c22cb068dc12c60392ee4da139d985ce32e4577a2a2f/assets/images/product-guides/administration/workspaces-switch.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T100026Z&X-Amz-Expires=604800&X-Amz-Signature=64c6e283c775b921dfea4035b3bb61848922cad895fd124a87534418477145d7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Switching between workspaces](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c85e9460b00a07fb6c09c22cb068dc12c60392ee4da139d985ce32e4577a2a2f/assets/images/product-guides/administration/workspaces-switch.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T112015Z&X-Amz-Expires=604800&X-Amz-Signature=f73a8cf2764569cd41787264d0f35d2e57980235cdc44d1dabd8955d9442b467&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Workspace limits
 
@@ -67,9 +69,11 @@ Multi seat workspaces are automatically enabled on all accounts with Scale, Busi
 
 ### Adding a team member to a workspace
 
-Only administrators can add and remove team members.
+> **Info**
+>
+> Only administrators can add and remove team members.
 
-![Workspace domain verification](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5663221cd2bff5a1cd150bdd0a5bdb731ab1c6ee2b82958e4c8c85f33092318b/assets/images/product-guides/workspaces/workspace-product-feature.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T100026Z&X-Amz-Expires=604800&X-Amz-Signature=b84befb25c6e26fa7f4c478f33218338e1466051f5242dfea880169179e242b3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Workspace domain verification](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5663221cd2bff5a1cd150bdd0a5bdb731ab1c6ee2b82958e4c8c85f33092318b/assets/images/product-guides/workspaces/workspace-product-feature.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T112015Z&X-Amz-Expires=604800&X-Amz-Signature=bc3e4c123c90e76fba2731e2c4debce3bd99d4a53910a3793bad13c1c60473ed&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Once you are logged in, select your profile icon in the top right corner of the dashboard, choose **Workspace settings**, then navigate to the **Members** tab. From there you'll be able to add team members, assign roles and remove members from the workspace.
 
@@ -100,7 +104,9 @@ Learn more about [managing members and seat types](/docs/overview/administration
 
 ### Managing Billing
 
-Only admins can manage billing.
+> **Info**
+>
+> Only admins can manage billing.
 
 To manage your billing, select your profile icon in the top right corner of the dashboard and choose **Subscription**. From there, you'll be able to update your payment information and access past invoices.
 
@@ -110,7 +116,9 @@ To manage your billing, select your profile icon in the top right corner of the 
 
 To manage Service Accounts, select your profile icon in the top right corner of the dashboard and choose **Workspace settings**. Navigate to the **Service Accounts** tab and you'll be able to create / delete service accounts as well as issue new API keys for those service accounts.
 
-"Workspace API keys" were formerly a type of Service Account with a single API key.
+> **Note**
+>
+> "Workspace API keys" were formerly a type of Service Account with a single API key.
 
 #### Who is the workspace owner?
 

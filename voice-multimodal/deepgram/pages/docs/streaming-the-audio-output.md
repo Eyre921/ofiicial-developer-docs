@@ -16,7 +16,9 @@ Fortunately, you do not have to wait for the entire audio file to be available b
 
 This guide will give you some tips and provide some examples so you can start streaming the audio as soon as you receive the first byte.
 
-This guide covers playing back the REST endpoint's response as it arrives — not the streaming WebSockets ([Aura](/reference/text-to-speech/speak-streaming) and [Flux](/reference/text-to-speech/speak-flux)), which are separate APIs that emit raw `linear16`, `mulaw`, or `alaw` audio only.
+> **Info**
+>
+> This guide covers playing back the REST endpoint's response as it arrives — not the streaming WebSockets ([Aura](/reference/text-to-speech/speak-streaming) and [Flux](/reference/text-to-speech/speak-flux)), which are separate APIs that emit raw `linear16`, `mulaw`, or `alaw` audio only.
 
 ## Implementation Examples
 
@@ -418,7 +420,9 @@ func main() {
 }
 ```
 
-Read more about text chunking as an optimization strategy in the guide [Text Chunking for TTS REST Optimization](/docs/text-chunking-for-tts-optimization).
+> **Info**
+>
+> Read more about text chunking as an optimization strategy in the guide [Text Chunking for TTS REST Optimization](/docs/text-chunking-for-tts-optimization).
 
 ## Tips
 

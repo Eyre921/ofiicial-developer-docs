@@ -22,7 +22,9 @@ For a CLI-scaffolded approach using `pipecat init`, see the [Pipecat and Deepgra
 
 This guide assumes you are familiar with Python and have a basic understanding of how voice agents work.
 
-You'll need a [Deepgram account](https://console.deepgram.com/signup?jump=keys) and an API key. Signup is free and includes **\$200** in credit.
+> **Info**
+>
+> You'll need a [Deepgram account](https://console.deepgram.com/signup?jump=keys) and an API key. Signup is free and includes **\$200** in credit.
 
 ### Get OpenAI Credentials
 
@@ -210,7 +212,9 @@ Start the agent with the WebRTC transport. The `-t webrtc` flag launches a built
 python bot.py -t webrtc
 ```
 
-The first run takes about 20 seconds to download the Silero VAD model. Subsequent starts are faster.
+> **Note**
+>
+> The first run takes about 20 seconds to download the Silero VAD model. Subsequent starts are faster.
 
 ## Test the Agent
 

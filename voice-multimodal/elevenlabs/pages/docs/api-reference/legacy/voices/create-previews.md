@@ -32,7 +32,7 @@ Reference: https://elevenlabs.io/docs/api-reference/legacy/voices/create-preview
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a VoicePreviewsRequestModel.
 
 - `voice_description` (string, required) — Description to use for the created voice.
 - `text` (string, optional, nullable) — Text to generate, text length has to be between 100 and 1000.
@@ -49,24 +49,40 @@ This endpoint expects an object.
 
 Successful Response
 
-- `previews` (list of object, required) — The previews of the generated voices.
-  - `audio_base_64` (string, required) — The base64 encoded audio of the preview.
-  - `generated_voice_id` (string, required) — The ID of the generated voice. Use it to create a voice from the preview.
-  - `media_type` (string, required) — The media type of the preview.
-  - `duration_secs` (double, required) — The duration of the preview in seconds.
-  - `language` (string, required, nullable) — The language of the preview.
+- `previews` (list of VoicePreviewResponseModel, required) — The previews of the generated voices.
 - `text` (string, required) — The text used to preview the voices.
 
 ## Errors
+
+### 409 Conflict Error
+
+A generation for this preview is already in progress. Retry the request.
+
+- `any`
 
 ### 422 Unprocessable Entity Error
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### VoicePreviewResponseModel
+
+- `audio_base_64` (string, required) — The base64 encoded audio of the preview.
+- `generated_voice_id` (string, required) — The ID of the generated voice. Use it to create a voice from the preview.
+- `media_type` (string, required) — The media type of the preview.
+- `duration_secs` (double, required) — The duration of the preview in seconds.
+- `language` (string, required, nullable) — The language of the preview.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

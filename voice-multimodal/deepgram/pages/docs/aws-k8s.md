@@ -30,11 +30,13 @@ The [AWS CLI](https://aws.amazon.com/cli/) provides programmatic access to manag
 
 2. Once installed, follow the [setup guide](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-quickstart.html) to configure the CLI with access to your AWS account. When configuring, set the default region to `us-west-2`.
 
-   ## Choosing a Region
-
-   The templates and steps in this guide provision resources in the AWS `us-west-2` region.
-
-   If you would like to deploy to a different region, make sure to specify your desired region when running `aws configure`, and adjust templates and steps in this guide accordingly.
+   > **Info**
+   >
+   > ## Choosing a Region
+   >
+   > The templates and steps in this guide provision resources in the AWS `us-west-2` region.
+   >
+   > If you would like to deploy to a different region, make sure to specify your desired region when running `aws configure`, and adjust templates and steps in this guide accordingly.
 
 ## Cluster Management with `eksctl`
 
@@ -42,9 +44,11 @@ The [AWS CLI](https://aws.amazon.com/cli/) provides programmatic access to manag
 
 Certain steps in this guide are enabled by this tool, although many of the same actions can be performed manually in the AWS Console. See the [installation guide](https://eksctl.io/installation) for details on how to install the latest version locally.
 
-Make sure to install the latest version of `eksctl`. Do not use the version available through your package manager (e.g. `apt`, `dnf`), which may be an older release that is missing features used in this guide.
-
-Version `>=0.192.0` is required to create EKS clusters with nodes using EKS accelerated AMIs.
+> **Warning**
+>
+> Make sure to install the latest version of `eksctl`. Do not use the version available through your package manager (e.g. `apt`, `dnf`), which may be an older release that is missing features used in this guide.
+>
+> Version `>=0.192.0` is required to create EKS clusters with nodes using EKS accelerated AMIs.
 
 ## Kubernetes Packages with `helm`
 
@@ -70,7 +74,9 @@ Amazon Elastic Kubernetes Service (Amazon EKS) is a managed Kubernetes service t
    eksctl create cluster -f PATH_TO_CLUSTER_CONFIG_YAML
    ```
 
-   Make sure to replace the `PATH_TO_CLUSTER_CONFIG_YAML` placeholder with the path to the template file you downloaded on your local machine.
+   > **Info**
+   >
+   > Make sure to replace the `PATH_TO_CLUSTER_CONFIG_YAML` placeholder with the path to the template file you downloaded on your local machine.
 
 3. Record metadata from your new cluster in shell variables for use in future steps.
 
@@ -234,7 +240,9 @@ The `deepgram-self-hosted` Helm chart takes two Secret references. One is a set 
           --docker-password='QUAY_DG_PASSWORD'
       ```
 
-      Replace the placeholders `QUAY_DG_USER` and `QUAY_DG_PASSWORD` with the distribution credentials you generated in the [Self Service Licensing & Credentials](/docs/self-hosted-self-service-tutorial) guide.
+      > **Info**
+      >
+      > Replace the placeholders `QUAY_DG_USER` and `QUAY_DG_PASSWORD` with the distribution credentials you generated in the [Self Service Licensing & Credentials](/docs/self-hosted-self-service-tutorial) guide.
 
    2. Create a Kubernetes Secret named `dg-self-hosted-api-key` to store your self-hosted API key.
 
@@ -243,7 +251,9 @@ The `deepgram-self-hosted` Helm chart takes two Secret references. One is a set 
           --from-literal=DEEPGRAM_API_KEY='YOUR_API_KEY_HERE'
       ```
 
-      Replace the placeholder `YOUR_API_KEY_HERE` with the Deepgram API key you generated in the [Self Service Licensing & Credentials](/docs/self-hosted-self-service-tutorial) guide.
+      > **Info**
+      >
+      > Replace the placeholder `YOUR_API_KEY_HERE` with the Deepgram API key you generated in the [Self Service Licensing & Credentials](/docs/self-hosted-self-service-tutorial) guide.
 
 # Deploy Deepgram
 
@@ -262,7 +272,9 @@ Deepgram maintains the official `deepgram-self-hosted` Helm Chart. You can refer
 
 3. In your `values.yaml`, modify the `scaling.replicas.{api,engine}` values to match your set the initial number of replicas when your cluster is created. The capacities were defined previously with `desiredCapacity` in your `cluster-config.yaml` file.
 
-   If you want to enable pod autoscaling in your cluster, reach out to your Deepgram Account Representative to discuss whether soft or hard limits make sense for your use case, and what values to use for scaling your cluster based on traffic demands.
+   > **Info**
+   >
+   > If you want to enable pod autoscaling in your cluster, reach out to your Deepgram Account Representative to discuss whether soft or hard limits make sense for your use case, and what values to use for scaling your cluster based on traffic demands.
 
 4. In your `values.yaml` file, insert your Amazon EFS ID into the `engine.modelManager.volumes.aws.efs.fileSystemId` value. You can get the ID from the shell variable you created previously.
 
@@ -343,7 +355,9 @@ Deepgram maintains the official `deepgram-self-hosted` Helm Chart. You can refer
    watch kubectl get all
    ```
 
-   Resource limits, taints, and other constraints may limit Pod scheduling. If a Pod is not able to be scheduled, you can see its status and a list of associated events with `kubectl describe pod <pod-name>`.
+   > **Warning**
+   >
+   > Resource limits, taints, and other constraints may limit Pod scheduling. If a Pod is not able to be scheduled, you can see its status and a list of associated events with `kubectl describe pod <pod-name>`.
 
 # Test Your Deepgram Setup with a Sample Request
 
@@ -379,11 +393,13 @@ Test your Deepgram deployment on Amazon EKS with an audio file.
        "http://deepgram-api-external.dg-self-hosted.svc.cluster.local:8080/v1/listen?model=nova-3&smart_format=true"
    ```
 
-   If needed, adjust pieces of the above command:
-
-   * the query parameters to match the directions from your Deepgram Account Representative
-   * the service name `deepgram-api-external`
-   * the namespace `dg-self-hosted`
+   > **Info**
+   >
+   > If needed, adjust pieces of the above command:
+   >
+   > * the query parameters to match the directions from your Deepgram Account Representative
+   > * the service name `deepgram-api-external`
+   > * the namespace `dg-self-hosted`
 
 You should receive a JSON response with the transcript and associated metadata. Congratulations - your self-hosted setup is working!
 

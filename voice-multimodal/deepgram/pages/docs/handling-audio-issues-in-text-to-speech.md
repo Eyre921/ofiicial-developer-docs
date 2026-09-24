@@ -183,13 +183,13 @@ DC (Direct Current) offset refers to a mean amplitude displacement from zero in 
 
 **No DC Offset**
 
-![This audio doesn't contain a DC Offset.](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/97a0b8487dc4ef810db281c8c2607c9682ff2f90006a4f8d9316a90aec9a59da/images/af63e2a-no-dc-offset.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113133Z&X-Amz-Expires=604800&X-Amz-Signature=16b3dd689808dd24f157d4295e759837921fc6b24ea679f28a9809efe60bb774&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![This audio doesn't contain a DC Offset.](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/97a0b8487dc4ef810db281c8c2607c9682ff2f90006a4f8d9316a90aec9a59da/images/af63e2a-no-dc-offset.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113215Z&X-Amz-Expires=604800&X-Amz-Signature=5694c72e7ef0dcd6cf6376afb56332aa17d997a7804f77b76d3ff6ff74320b7c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 This audio doesn't contain a DC Offset.
 
 **DC Offset**
 
-![This audio does contain a DC Offset.](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/ba08ac25a978aeef5aa98a4b9b2a0a802d4e3699410d7c175f49e7d622a5bc82/images/b93157b-dc-offset.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113133Z&X-Amz-Expires=604800&X-Amz-Signature=0c0175f17cb15c8a4f72877ff35fedc92f0c1209666e114a40bac875cff0bbb1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![This audio does contain a DC Offset.](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/ba08ac25a978aeef5aa98a4b9b2a0a802d4e3699410d7c175f49e7d622a5bc82/images/b93157b-dc-offset.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113215Z&X-Amz-Expires=604800&X-Amz-Signature=1d2efb5aa7e0d859137fc6a1092c4516d5353416416c7663fc7bf2af0b1cc5fc&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 This audio does contain a DC Offset.
 
@@ -199,7 +199,9 @@ This audio does contain a DC Offset.
 * **High-pass Filtering:** Applying a high-pass filter with a very low cutoff frequency can also remove DC offset.
 * Correcting DC offset is important to ensure the audio signal's integrity and to prevent unwanted noise and distortion.
 
-To learn more about how to use Audacity see to the [Audacity Docs](https://manual.audacityteam.org/).
+> **Info**
+>
+> To learn more about how to use Audacity see to the [Audacity Docs](https://manual.audacityteam.org/).
 
 ## Audio clicking noises
 
@@ -209,7 +211,9 @@ When attempting to play generated audio direct to an output device (like using P
 
 Depending on your use case, you may require containerized audio. To understand the differences when to use one of the other, check out the [Getting Started Guide](/docs/text-chunking-for-tts-optimization#code-examples-for-tts-websockets).
 
-To Learn more about the the different text-to-speech encoding option see [this guide.](/docs/tts-encoding)
+> **Info**
+>
+> To Learn more about the the different text-to-speech encoding option see [this guide.](/docs/tts-encoding)
 
 ### Analyzing audio with FFMPEG
 
@@ -225,7 +229,9 @@ ffmpeg -f mulaw -codec:a pcm_mulaw -ar 8000 -ac 1 -i your_audio_file -f s16le -c
 
 Then, import the raw audio into [Audacity ](https://www.audacityteam.org/)for further analysis.
 
-To learn more about how to use FFmpeg see the [FFmpeg Docs.](https://ffmpeg.org/documentation.html)
+> **Info**
+>
+> To learn more about how to use FFmpeg see the [FFmpeg Docs.](https://ffmpeg.org/documentation.html)
 
 ## Audio header issues
 
@@ -249,7 +255,9 @@ This is the source of the clicking.
 00000000 52 49 46 46 56 1d 00 00 57 41 56 45 66 6d 74 20 |RIFFV...WAVEfmt | 00000010 10 00 00 00 01 00 01 00 40 1f 00 00 80 3e 00 00 |........@....>..| 00000020 02 00 10 00 64 61 74 61 32 1d 00 00 52 49 46 46 |....data2...RIFF| 00000030 24 00 ff 7f 57 41 56 45 66 6d 74 20 10 00 00 00 |$...WAVEfmt ....| 00000040 01 00 01 00 40 1f 00 00 80 3e 00 00 02 00 10 00 |....@....>......| 00000050 64 61 74 61 00 00 ff 7f 0e f9 69 fb a6 ff 28 02 |data......i...(.| 00000060 15 04 3e 05 fd 02 81 00 9f fa 90 f5 d9 ee 02 eb |..>.............| 00000070 7d fb 1d 03 16 0b f8 15 c4 17 05 15 3b 0f a3 ff |}...........;...| 00000080 e9 f4 2f f1 42 ef 9f f4 59 fa cd fe 2d 08 7b 0f |../.B...Y...-.{.| 00000090 ae 10 cc 0d 18 07 f1 ff d0 fa ea f4 d4 f0 89 f3 |................|
 ```
 
-Hexdump in available on macOS and Linux. if you use Windows try [HxD](https://hxd.en.lo4d.com/windows).
+> **Info**
+>
+> Hexdump in available on macOS and Linux. if you use Windows try [HxD](https://hxd.en.lo4d.com/windows).
 
 ## Audio includes other type of data
 

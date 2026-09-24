@@ -8,8 +8,10 @@ path: docs/eleven-api/guides/how-to/dubbing/manage-projects
 
 # Manage dubbing projects
 
-**How-to guide** · Assumes you are familiar with creating dubbing projects, as shown in the
-[Dubbing quickstart](/docs/eleven-api/guides/cookbooks/dubbing).
+> **Note**
+>
+> **How-to guide** · Assumes you are familiar with creating dubbing projects, as shown in the
+> [Dubbing quickstart](/docs/eleven-api/guides/cookbooks/dubbing).
 
 This guide covers the operations you need to manage existing projects: listing them with pagination, retrieving a single project or language, refreshing an expired download URL, and deleting projects and languages you no longer need.
 

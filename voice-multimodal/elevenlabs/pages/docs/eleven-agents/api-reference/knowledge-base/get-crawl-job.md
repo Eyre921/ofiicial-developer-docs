@@ -43,6 +43,7 @@ Successful Response
 - `type` (enum, optional, default: discovery)
   - Allowed values: `discovery`, `sitemap`
 - `pattern` (string, optional)
+- `auto_discover` (boolean, optional, default: false) — Whether to automatically discover and enqueue additional pages found while crawling.
 - `status` (enum, optional, default: queued)
   - Allowed values: `queued`, `processing`, `succeeded`, `failed`, `skipped`, `cancelled`
 - `pages_identified` (integer, optional, default: 0)
@@ -57,10 +58,17 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItem, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItem
 
 ## Examples
 
@@ -76,6 +84,7 @@ Validation Error
   "created_at": 1,
   "type": "discovery",
   "pattern": "pattern",
+  "auto_discover": true,
   "status": "queued",
   "pages_identified": 1,
   "pages_scraped": 1,

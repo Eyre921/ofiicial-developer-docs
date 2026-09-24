@@ -34,15 +34,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base
 
 Successful Response
 
-- `indexes` (list of object, required)
-  - `id` (string, required)
-  - `model` (enum, required, default: e5_mistral_7b_instruct)
-    - Allowed values: `e5_mistral_7b_instruct`, `multilingual_e5_large_instruct`
-  - `status` (enum, required)
-    - Allowed values: `new`, `created`, `processing`, `failed`, `succeeded`, `rag_limit_exceeded`, `document_too_small`, `cannot_index_folder`
-  - `progress_percentage` (double, required)
-  - `document_model_index_usage` (object, required)
-    - `used_bytes` (integer, required)
+- `indexes` (list of RagDocumentIndexResponseModel, required)
 
 ## Errors
 
@@ -50,10 +42,31 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### RagDocumentIndexResponseModel
+
+- `id` (string, required)
+- `model` (enum, required, default: e5_mistral_7b_instruct)
+  - Allowed values: `e5_mistral_7b_instruct`, `multilingual_e5_large_instruct`
+- `status` (enum, required)
+  - Allowed values: `new`, `created`, `processing`, `failed`, `succeeded`, `rag_limit_exceeded`, `document_too_small`, `cannot_index_folder`
+- `progress_percentage` (double, required)
+- `document_model_index_usage` (RagDocumentIndexUsage, required)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItem, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### RagDocumentIndexUsage
+
+- `used_bytes` (integer, required)
+
+### ValidationErrorLocItem
 
 ## Examples
 

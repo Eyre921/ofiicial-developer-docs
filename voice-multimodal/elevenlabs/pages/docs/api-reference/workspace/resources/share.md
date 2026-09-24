@@ -31,7 +31,7 @@ Reference: https://elevenlabs.io/docs/api-reference/workspace/resources/share
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_Share_workspace_resource_v1_workspace_resources__resource_id__share_post.
 
 - `role` (enum, required) — Role to grant to the target: one of 'admin', 'editor', 'commenter', or 'viewer'.
   - Allowed values: `admin`, `editor`, `commenter`, `viewer`
@@ -55,10 +55,17 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

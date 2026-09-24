@@ -8,9 +8,11 @@ path: docs/eleven-api/guides/how-to/speech-to-text/realtime/transcripts-and-comm
 
 # Transcripts and commit strategies
 
-**How-to guide** · Assumes you have completed the
-[client-side](/docs/eleven-api/guides/how-to/speech-to-text/realtime/client-side-streaming) or
-[server-side streaming](/docs/eleven-api/guides/how-to/speech-to-text/realtime/server-side-streaming) guide.
+> **Note**
+>
+> **How-to guide** · Assumes you have completed the
+> [client-side](/docs/eleven-api/guides/how-to/speech-to-text/realtime/client-side-streaming) or
+> [server-side streaming](/docs/eleven-api/guides/how-to/speech-to-text/realtime/server-side-streaming) guide.
 
 ## Overview
 
@@ -69,7 +71,9 @@ With the manual commit strategy, you control when to commit transcript segments.
 
 For best results, commit during silence periods or another logical point like a turn model.
 
-Transcript processing starts after the first 2 seconds of audio are sent.
+> **Info**
+>
+> Transcript processing starts after the first 2 seconds of audio are sent.
 
 ```python
 await connection.send({
@@ -91,7 +95,9 @@ connection.send({
 connection.commit();
 ```
 
-Committing manually several times in a short sequence can degrade model performance.
+> **Warning**
+>
+> Committing manually several times in a short sequence can degrade model performance.
 
 #### Sending previous text context
 
@@ -101,9 +107,11 @@ When sending audio for transcription, you can send previous text context alongsi
 * Reconnection after a network error - This allows the model to continue transcribing, using the previous text as guidance.
 * General contextual information - A short description of what the transcription will be about helps the model understand the context.
 
-Sending `previous_text` context is only possible when sending the first audio chunk via
-`connection.send()`. Sending it in subsequent chunks will result in an error. Previous text works
-best when it's under *50* characters long.
+> **Warning**
+>
+> Sending `previous_text` context is only possible when sending the first audio chunk via
+> `connection.send()`. Sending it in subsequent chunks will result in an error. Previous text works
+> best when it's under *50* characters long.
 
 ```python
 await connection.send({

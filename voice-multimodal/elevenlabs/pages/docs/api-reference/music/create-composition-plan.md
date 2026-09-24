@@ -25,51 +25,17 @@ Reference: https://elevenlabs.io/docs/api-reference/music/create-composition-pla
 
 ## Request
 
+### Query parameters
+
+- `enable_logging` (string, optional) — When enable_logging is set to false zero retention mode will be used for the request. Zero retention mode may only be used by enterprise customers.
+
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_Generate_composition_plan_v1_music_plan_post.
 
 - `prompt` (string, required) — A simple text prompt to compose a plan from.
 - `music_length_ms` (integer, optional, nullable) — The length of the composition plan to generate in milliseconds. Must be between 3000ms and 600000ms. Optional - if not provided, the model will choose a length based on the prompt.
-- `source_composition_plan` (object or object, optional, nullable) — An optional composition plan to use as a source for the new composition plan.
-  - MusicPrompt
-    - `positive_global_styles` (list of string, required) — The styles and musical directions that should be present in the entire song. Use English language for best result.
-    - `negative_global_styles` (list of string, required) — The styles and musical directions that should not be present in the entire song. Use English language for best result.
-    - `sections` (list of object, required) — The sections of the song.
-      - `section_name` (string, required) — The name of the section. Must be between 1 and 100 characters.
-      - `positive_local_styles` (list of string, required) — The styles and musical directions that should be present in this section. Use English language for best result.
-      - `negative_local_styles` (list of string, required) — The styles and musical directions that should not be present in this section. Use English language for best result.
-      - `duration_ms` (integer, required) — The duration of the section in milliseconds. Must be between 3000ms and 120000ms.
-      - `lines` (list of string, required) — The lyrics of the section. Max 30 lines per section and max 200 characters per line.
-      - `source_from` (object, optional, nullable) — Optional source to extract the section from. Used for inpainting.
-        - `song_id` (string, required) — The ID of the song to source the section from. You can find the song ID in the response headers when you generate a song.
-        - `range` (object, required) — The range to extract from the source song.
-          - `start_ms` (integer, required)
-          - `end_ms` (integer, required)
-        - `negative_ranges` (list of object, optional) — The ranges to exclude from the 'range'.
-          - `start_ms` (integer, required)
-          - `end_ms` (integer, required)
-  - CompositionPlan
-    - `chunks` (list of object or object, required) — The chunks that make up the generation.
-      - GenerationChunk
-        - `text` (string, required) — The text config to be generated for this chunk. Can contain an optional section name in square brackets at the beginning, e.g. \[Verse 1], lyrics lines, and inline directions in curly braces, e.g. \{scratching}. Section names must be between 1 and 100 characters. At most 30 lines are allowed, each at most 200 characters.
-        - `duration_ms` (integer, required) — The duration of the chunk in milliseconds. Must be between 3000ms and 120000ms.
-        - `positive_styles` (list of string, required) — The styles and musical directions that should be present in this chunk. Use English language for best results. The styles for the first chunk are the most important as they set the overall tone and genre. Styles for subsequent chunks can be used to add nuance, progression, emphasis, or change the direction of the song. Aim to have at least 6-7 styles in early chunks until the direction is established. Generic styles like 'great production quality' are good default styles to append to the list.
-        - `negative_styles` (list of string, optional) — The styles and musical directions that should not be present in this chunk. Use English language for best results. Leaving empty is a good default, only use this field if you want to explicitly avoid a particular style or direction.
-        - `context_adherence` (enum, optional, default: high) — How much the model adheres to the context of its surrounding chunks. Low adherence means the model can deviate from the context and be more creative. High adherence means the model will be more consistent with the context.
-          - Allowed values: `low`, `medium`, `high`
-        - `conditioning_ref` (object, optional, nullable) — The audio reference to condition the generation on. The first chunk is the most important as it will influence the generation of all subsequent chunks. Thus, if you want to apply conditioning to the entire song, start conditioning from the first chunk.
-          - `song_id` (string, required) — The ID of the song to source the chunk from. You can find the song ID in the response headers when you generate a song.
-          - `range` (object, required) — The time range to extract from the song.
-            - `start_ms` (integer, required)
-            - `end_ms` (integer, required)
-        - `condition_strength` (enum, optional, nullable) — How strongly the model adheres to the conditioning reference. Low strength means the model will be more creative and deviate from the reference. High strength means the model will be more consistent with the reference.
-          - Allowed values: `low`, `medium`, `high`, `xhigh`
-      - AudioRefChunk
-        - `song_id` (string, required) — The ID of the song to source the chunk from. You can find the song ID in the response headers when you generate a song.
-        - `range` (object, required) — The time range to extract from the song.
-          - `start_ms` (integer, required)
-          - `end_ms` (integer, required)
+- `source_composition_plan` (BodyGenerateCompositionPlanV1MusicPlanPostSourceCompositionPlan, optional, nullable) — An optional composition plan to use as a source for the new composition plan.
 - `model_id` (enum, optional, default: music_v1) — The model to use for the generation.
   - Allowed values: `music_v1`, `music_v2`, `music_v2_5`
 
@@ -79,45 +45,7 @@ This endpoint expects an object.
 
 Successful Response
 
-- `object or object`
-  - MusicPrompt
-    - `positive_global_styles` (list of string, required) — The styles and musical directions that should be present in the entire song. Use English language for best result.
-    - `negative_global_styles` (list of string, required) — The styles and musical directions that should not be present in the entire song. Use English language for best result.
-    - `sections` (list of object, required) — The sections of the song.
-      - `section_name` (string, required) — The name of the section. Must be between 1 and 100 characters.
-      - `positive_local_styles` (list of string, required) — The styles and musical directions that should be present in this section. Use English language for best result.
-      - `negative_local_styles` (list of string, required) — The styles and musical directions that should not be present in this section. Use English language for best result.
-      - `duration_ms` (integer, required) — The duration of the section in milliseconds. Must be between 3000ms and 120000ms.
-      - `lines` (list of string, required) — The lyrics of the section. Max 30 lines per section and max 200 characters per line.
-      - `source_from` (object, optional, nullable) — Optional source to extract the section from. Used for inpainting.
-        - `song_id` (string, required) — The ID of the song to source the section from. You can find the song ID in the response headers when you generate a song.
-        - `range` (object, required) — The range to extract from the source song.
-          - `start_ms` (integer, required)
-          - `end_ms` (integer, required)
-        - `negative_ranges` (list of object, optional) — The ranges to exclude from the 'range'.
-          - `start_ms` (integer, required)
-          - `end_ms` (integer, required)
-  - CompositionPlan
-    - `chunks` (list of object or object, required) — The chunks that make up the generation.
-      - GenerationChunk
-        - `text` (string, required) — The text config to be generated for this chunk. Can contain an optional section name in square brackets at the beginning, e.g. \[Verse 1], lyrics lines, and inline directions in curly braces, e.g. \{scratching}. Section names must be between 1 and 100 characters. At most 30 lines are allowed, each at most 200 characters.
-        - `duration_ms` (integer, required) — The duration of the chunk in milliseconds. Must be between 3000ms and 120000ms.
-        - `positive_styles` (list of string, required) — The styles and musical directions that should be present in this chunk. Use English language for best results. The styles for the first chunk are the most important as they set the overall tone and genre. Styles for subsequent chunks can be used to add nuance, progression, emphasis, or change the direction of the song. Aim to have at least 6-7 styles in early chunks until the direction is established. Generic styles like 'great production quality' are good default styles to append to the list.
-        - `negative_styles` (list of string, optional) — The styles and musical directions that should not be present in this chunk. Use English language for best results. Leaving empty is a good default, only use this field if you want to explicitly avoid a particular style or direction.
-        - `context_adherence` (enum, optional, default: high) — How much the model adheres to the context of its surrounding chunks. Low adherence means the model can deviate from the context and be more creative. High adherence means the model will be more consistent with the context.
-          - Allowed values: `low`, `medium`, `high`
-        - `conditioning_ref` (object, optional, nullable) — The audio reference to condition the generation on. The first chunk is the most important as it will influence the generation of all subsequent chunks. Thus, if you want to apply conditioning to the entire song, start conditioning from the first chunk.
-          - `song_id` (string, required) — The ID of the song to source the chunk from. You can find the song ID in the response headers when you generate a song.
-          - `range` (object, required) — The time range to extract from the song.
-            - `start_ms` (integer, required)
-            - `end_ms` (integer, required)
-        - `condition_strength` (enum, optional, nullable) — How strongly the model adheres to the conditioning reference. Low strength means the model will be more creative and deviate from the reference. High strength means the model will be more consistent with the reference.
-          - Allowed values: `low`, `medium`, `high`, `xhigh`
-      - AudioRefChunk
-        - `song_id` (string, required) — The ID of the song to source the chunk from. You can find the song ID in the response headers when you generate a song.
-        - `range` (object, required) — The time range to extract from the song.
-          - `start_ms` (integer, required)
-          - `end_ms` (integer, required)
+- `music_composition_plan_create_Response_200`
 
 ## Errors
 
@@ -125,10 +53,74 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### BodyGenerateCompositionPlanV1MusicPlanPostSourceCompositionPlan
+
+An optional composition plan to use as a source for the new composition plan.
+
+### MusicPrompt
+
+Composition plan for the `music_v1` model. Using this field with any other model will result in an error.
+
+- `positive_global_styles` (list of string, required) — The styles and musical directions that should be present in the entire song. Use English language for best result.
+- `negative_global_styles` (list of string, required) — The styles and musical directions that should not be present in the entire song. Use English language for best result.
+- `sections` (list of SongSection, required) — The sections of the song.
+
+### CompositionPlan
+
+Composition plan for the `music_v2` and `music_v2_5` models. Using this field with any other model will result in an error.
+
+- `chunks` (list of CompositionPlanChunksItems, required) — The chunks that make up the generation.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### SongSection
+
+- `section_name` (string, required) — The name of the section. Must be between 1 and 100 characters.
+- `positive_local_styles` (list of string, required) — The styles and musical directions that should be present in this section. Use English language for best result.
+- `negative_local_styles` (list of string, required) — The styles and musical directions that should not be present in this section. Use English language for best result.
+- `duration_ms` (integer, required) — The duration of the section in milliseconds. Must be between 3000ms and 120000ms.
+- `lines` (list of string, required) — The lyrics of the section. Max 30 lines per section and max 200 characters per line.
+- `source_from` (SectionSource, optional, nullable) — Optional source to extract the section from. Used for inpainting.
+
+### CompositionPlanChunksItems
+
+### ValidationErrorLocItems
+
+### SectionSource
+
+- `song_id` (string, required) — The ID of the song to source the section from. You can find the song ID in the response headers when you generate a song.
+- `range` (TimeRange, required) — The range to extract from the source song.
+- `negative_ranges` (list of TimeRange, optional) — The ranges to exclude from the 'range'.
+
+### GenerationChunk-Input
+
+- `text` (string, required) — The text config to be generated for this chunk. Can contain an optional section name in square brackets at the beginning, e.g. \[Verse 1], lyrics lines, and inline directions in curly braces, e.g. \{scratching}. Section names must be between 1 and 100 characters. At most 30 lines are allowed, each at most 200 characters.
+- `duration_ms` (integer, required) — The duration of the chunk in milliseconds. Must be between 3000ms and 120000ms.
+- `positive_styles` (list of string, required) — The styles and musical directions that should be present in this chunk. Use English language for best results. The styles for the first chunk are the most important as they set the overall tone and genre. Styles for subsequent chunks can be used to add nuance, progression, emphasis, or change the direction of the song. Aim to have at least 6-7 styles in early chunks until the direction is established. Generic styles like 'great production quality' are good default styles to append to the list.
+- `negative_styles` (list of string, optional) — The styles and musical directions that should not be present in this chunk. Use English language for best results. Leaving empty is a good default, only use this field if you want to explicitly avoid a particular style or direction.
+- `context_adherence` (enum, optional, default: high) — How much the model adheres to the context of its surrounding chunks. Low adherence means the model can deviate from the context and be more creative. High adherence means the model will be more consistent with the context.
+  - Allowed values: `low`, `medium`, `high`
+- `conditioning_ref` (AudioRefChunk, optional, nullable) — The audio reference to condition the generation on. The first chunk is the most important as it will influence the generation of all subsequent chunks. Thus, if you want to apply conditioning to the entire song, start conditioning from the first chunk.
+- `condition_strength` (enum, optional, nullable) — How strongly the model adheres to the conditioning reference. Low strength means the model will be more creative and deviate from the reference. High strength means the model will be more consistent with the reference.
+  - Allowed values: `low`, `medium`, `high`, `xhigh`
+
+### AudioRefChunk
+
+- `song_id` (string, required) — The ID of the song to source the chunk from. You can find the song ID in the response headers when you generate a song.
+- `range` (TimeRange, required) — The time range to extract from the song.
+
+### TimeRange
+
+- `start_ms` (integer, required)
+- `end_ms` (integer, required)
 
 ## Examples
 

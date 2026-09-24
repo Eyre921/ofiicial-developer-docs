@@ -74,7 +74,9 @@ Before setting up your private registry, you need to pull the necessary Deepgram
    docker pull quay.io/deepgram/self-hosted-api:$RELEASE_TAG
    ```
 
-   Replace `<LATEST_RELEASE_TAG>` with the tag of the latest release from the Changelog.
+   > **Info**
+   >
+   > Replace `<LATEST_RELEASE_TAG>` with the tag of the latest release from the Changelog.
 
 ## Platform-Specific Registry Setup
 
@@ -96,7 +98,9 @@ Complete one of the following subsections, depending on your cloud platform of c
    export API_REPO_URI=<YOUR_API_REPO_URI>
    ```
 
-   Replace `<YOUR_API_REPO_URI>` with the URI from the AWS Console.
+   > **Info**
+   >
+   > Replace `<YOUR_API_REPO_URI>` with the URI from the AWS Console.
 
 #### Using the AWS CLI
 
@@ -163,7 +167,9 @@ The following steps are a summary of [this official GCP documentation](https://c
        --project="$GCP_PROJECT"
    ```
 
-   Replace `<YOUR_GCP_PROJECT_ID>` with your Google Cloud project ID.
+   > **Info**
+   >
+   > Replace `<YOUR_GCP_PROJECT_ID>` with your Google Cloud project ID.
 
 3. Authenticate your local Docker agent with your new GCP container registry:
 
@@ -220,7 +226,9 @@ Complete one of the following subsections, depending on your cloud platform of c
    }
    ```
 
-   You do *not* need to import additional AWS credentials, such as outlined in the [AWS credentials section of the README](https://github.com/awslabs/amazon-ecr-credential-helper?tab=readme-ov-file#aws-credentials). The credentials will be automatically pulled from the Role you configured on the EC2 instance.
+   > **Info**
+   >
+   > You do *not* need to import additional AWS credentials, such as outlined in the [AWS credentials section of the README](https://github.com/awslabs/amazon-ecr-credential-helper?tab=readme-ov-file#aws-credentials). The credentials will be automatically pulled from the Role you configured on the EC2 instance.
 
 #### GCP
 
@@ -261,13 +269,13 @@ GKE clusters with default IAM settings should have access to pull images from yo
        image: YOUR_PRIVATE_CONTAINER_PATH
    ```
 
-   Replace `YOUR_PRIVATE_CONTAINER_PATH` with the output of:
-
-   **`Shell`**
-
-   ```shell Shell
-   echo "$API_REPO_URI:$RELEASE_TAG"
-   ```
+   > **Info**
+   >
+   > Replace `YOUR_PRIVATE_CONTAINER_PATH` with the output of:
+   >
+   > ```shell Shell
+   > echo "$API_REPO_URI:$RELEASE_TAG"
+   > ```
 
 2. Restart your containers to use the new container image:
 
@@ -293,14 +301,14 @@ GKE clusters with default IAM settings should have access to pull images from yo
        tag: IMAGE_TAG
    ```
 
-   Replace `IMAGE_PATH` and `IMAGE_TAG` with the output of:
-
-   **`Shell`**
-
-   ```shell Shell
-   echo "$API_REPO_URI"
-   echo "$RELEASE_TAG"
-   ```
+   > **Info**
+   >
+   > Replace `IMAGE_PATH` and `IMAGE_TAG` with the output of:
+   >
+   > ```shell Shell
+   > echo "$API_REPO_URI"
+   > echo "$RELEASE_TAG"
+   > ```
 
 2. Upgrade your Helm installation to use the new container images:
 

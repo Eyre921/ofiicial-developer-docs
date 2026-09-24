@@ -67,7 +67,7 @@ While complying with the Data Security Standards is important, it shouldn’t be
 
 - [OWASP](https://owasp.org/)
 - [SANS](https://www.sans.org/reading-room/)
-- [NIST](http://csrc.nist.gov/)
+- [NIST](https://csrc.nist.gov/)
 
 ### Content Security Policy 
 

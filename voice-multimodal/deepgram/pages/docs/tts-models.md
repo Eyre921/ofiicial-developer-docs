@@ -32,7 +32,9 @@ curl "https://api.deepgram.com/v1/speak?model=aura-2-thalia-en" \
 > --silent || echo "Request failed"
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 ## Language Support
 
@@ -46,7 +48,9 @@ Deepgram's Aura text-to-speech supports the following languages:
 * **Italian (it)**
 * **Japanese (ja)**
 
-We're constantly adding additional language support and making improvements to our voice models. Check back regularly for updates.
+> **Info**
+>
+> We're constantly adding additional language support and making improvements to our voice models. Check back regularly for updates.
 
 ---
 
@@ -147,7 +151,9 @@ These are our featured Spanish voices, selected for their versatility and qualit
 | `aura-2-silvia-es`   | silvia   |        | feminine         | Adult       | es-es    | Peninsular     | Charismatic, Clear, Expressive, Natural, Warm               | Customer Service, Casual Chat            |
 | `aura-2-valerio-es`  | valerio  |        | masculine        | Adult       | es-mx    | Mexican        | Deep, Knowledgeable, Natural, Polite, Professional          | Customer Service, Informative            |
 
-**Codeswitching Voices**: The following Spanish voices can seamlessly switch between English and Spanish: Aquila, Carina, Diana, Javier, and Selena.
+> **Info**
+>
+> **Codeswitching Voices**: The following Spanish voices can seamlessly switch between English and Spanish: Aquila, Carina, Diana, Javier, and Selena.
 
 ---
 

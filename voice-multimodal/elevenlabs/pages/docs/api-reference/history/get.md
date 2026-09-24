@@ -51,19 +51,8 @@ Successful Response
 - `share_link_id` (string, optional, nullable) — The ID of the share link.
 - `source` (enum, optional, nullable) — The source of the history item. Either TTS (text to speech), STS (speech to text), AN (audio native), Projects, Dubbing, PlayAPI, PD (pronunciation dictionary) or ConvAI (Agents Platform).
   - Allowed values: `TTS`, `STS`, `Projects`, `PD`, `AN`, `Dubbing`, `PlayAPI`, `ConvAI`, `VoiceGeneration`, `InVPC`, `Flows`
-- `alignments` (object, optional, nullable) — The alignments of the history item.
-  - `alignment` (object, required) — The alignment of the text.
-    - `characters` (list of string, required) — The characters in the alignment.
-    - `character_start_times_seconds` (list of double, required) — The start times of the characters in seconds.
-    - `character_end_times_seconds` (list of double, required) — The end times of the characters in seconds.
-  - `normalized_alignment` (object, required) — The normalized alignment of the text.
-    - `characters` (list of string, required) — The characters in the alignment.
-    - `character_start_times_seconds` (list of double, required) — The start times of the characters in seconds.
-    - `character_end_times_seconds` (list of double, required) — The end times of the characters in seconds.
-- `dialogue` (list of object, optional, nullable) — The dialogue (voice and text pairs) used to generate the audio item. If this is set then the top level `text` and `voice_id` fields will be empty.
-  - `text` (string, required) — The text of the dialogue input line.
-  - `voice_id` (string, required) — The ID of the voice used for this dialogue input line.
-  - `voice_name` (string, required) — The name of the voice used for this dialogue input line.
+- `alignments` (HistoryAlignmentsResponseModel, optional, nullable) — The alignments of the history item.
+- `dialogue` (list of DialogueInputResponseModel, optional, nullable) — The dialogue (voice and text pairs) used to generate the audio item. If this is set then the top level `text` and `voice_id` fields will be empty.
 - `output_format` (string, optional, nullable) — The output format the audio was originally generated in.
 
 ## Errors
@@ -72,10 +61,34 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### HistoryAlignmentsResponseModel
+
+- `alignment` (HistoryAlignmentResponseModel, required) — The alignment of the text.
+- `normalized_alignment` (HistoryAlignmentResponseModel, required) — The normalized alignment of the text.
+
+### DialogueInputResponseModel
+
+- `text` (string, required) — The text of the dialogue input line.
+- `voice_id` (string, required) — The ID of the voice used for this dialogue input line.
+- `voice_name` (string, required) — The name of the voice used for this dialogue input line.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### HistoryAlignmentResponseModel
+
+- `characters` (list of string, required) — The characters in the alignment.
+- `character_start_times_seconds` (list of double, required) — The start times of the characters in seconds.
+- `character_end_times_seconds` (list of double, required) — The end times of the characters in seconds.
+
+### ValidationErrorLocItems
 
 ## Examples
 

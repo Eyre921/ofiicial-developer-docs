@@ -53,7 +53,7 @@ let _guard = sentry::init(
 );
 ```
 
-**Important:** Remember your DSN. The DSN (Data Source Name) tells the SDK where to send events. If you forget it, you can find it by going to: Settings -> Projects -> Client Keys (DSN) in sentry.io.
+**Important:** Remember your DSN. The DSN (Data Source Name) tells the SDK where to send events. If you forget it, you can find it by going to: Settings -> Projects -> [Client Keys (DSN)](https://sentry.io/orgredirect/organizations/:orgslug/settings/projects/:projectId/keys/) in sentry.io.
 
 ### [Async Main Function](https://docs.sentry.io/platforms/rust.md#async-main-function)
 

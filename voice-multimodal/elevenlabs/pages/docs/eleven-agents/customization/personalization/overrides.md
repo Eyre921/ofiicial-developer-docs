@@ -8,10 +8,12 @@ path: docs/eleven-agents/customization/personalization/overrides
 
 # Overrides
 
-While overrides are still supported for completely replacing system prompts or first messages, we
-recommend using [Dynamic Variables](/docs/eleven-agents/customization/personalization/dynamic-variables) as the preferred
-way to customize your agent's responses and inject real-time data. Dynamic Variables offer better
-maintainability and a more structured approach to personalization.
+> **Warning**
+>
+> While overrides are still supported for completely replacing system prompts or first messages, we
+> recommend using [Dynamic Variables](/docs/eleven-agents/customization/personalization/dynamic-variables) as the preferred
+> way to customize your agent's responses and inject real-time data. Dynamic Variables offer better
+> maintainability and a more structured approach to personalization.
 
 **Overrides** enable your assistant to adapt its behavior for each user interaction. You can pass custom data and settings at the start of each conversation, allowing the assistant to personalize its responses and knowledge with real-time context. Overrides completely override the agent's default values defined in the agent's [dashboard](https://elevenlabs.io/app/agents/agents).
 
@@ -36,10 +38,12 @@ Overrides can be enabled for the following fields in the agent's security settin
 
 When overrides are enabled for a field, providing an override is still optional. If not provided, the agent will use the default values defined in the agent's [dashboard](https://elevenlabs.io/app/agents/agents). For most fields, an error will be thrown if an override is provided when that field does not have overrides enabled.
 
-**ASR keywords** use soft disallow: if the Security toggle is off and the client still sends
-`asr.keywords`, the conversation continues and the keywords are ignored (no error). Enable the
-**ASR keywords** override in Security settings when you want per-conversation keyword boosting to
-apply. Up to 50 keywords are supported per conversation.
+> **Warning**
+>
+> **ASR keywords** use soft disallow: if the Security toggle is off and the client still sends
+> `asr.keywords`, the conversation continues and the keywords are ignored (no error). Enable the
+> **ASR keywords** override in Security settings when you want per-conversation keyword boosting to
+> apply. Up to 50 keywords are supported per conversation.
 
 Here are a few examples where overrides can be useful:
 
@@ -49,8 +53,10 @@ Here are a few examples where overrides can be useful:
 * **Pass real-time data** like account balances or order status
 * **Boost transcription** of per-call names or terms (for example CRM company names) via ASR keywords
 
-Overrides are particularly useful for applications requiring personalized interactions or handling
-sensitive user data that shouldn't be stored in the agent's base configuration.
+> **Info**
+>
+> Overrides are particularly useful for applications requiring personalized interactions or handling
+> sensitive user data that shouldn't be stored in the agent's base configuration.
 
 ## Guide
 
@@ -69,7 +75,7 @@ For security reasons, overrides are disabled by default. Enable the fields you w
 
 Navigate to your agent's settings and select the **Security** tab. Enable the `First message`, `System prompt`, `Tools`, `Knowledge base`, `ASR keywords`, and any other overrides you need, such as `LLM`.
 
-![Enable overrides](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/496f20380ffe29fc46275bbfe5c6eaabdb5e211c780188243a018b38715ea779/assets/images/conversational-ai/enable-overrides.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113216Z&X-Amz-Expires=604800&X-Amz-Signature=c49b5deea3341d594b72b7138dc0363ea006dd1d0e29af53c392d2387113a3a0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Enable overrides](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/496f20380ffe29fc46275bbfe5c6eaabdb5e211c780188243a018b38715ea779/assets/images/conversational-ai/enable-overrides.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T103307Z&X-Amz-Expires=604800&X-Amz-Signature=db972d90264c4b01baeeb6de0b49a486e076fbc59a504e93e03445414978ad08&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Update via the CLI
 
@@ -195,7 +201,9 @@ In your code, where the conversation is started, pass the overrides as a paramet
 }
 ```
 
-Ensure you have the latest [SDK](/docs/eleven-agents/libraries/python) installed.
+> **Tip**
+>
+> Ensure you have the latest [SDK](/docs/eleven-agents/libraries/python) installed.
 
 **`Python`**
 
@@ -342,6 +350,10 @@ let conversation = try await ElevenLabsSDK.Conversation.startSession(
   ></elevenlabs-convai>
 ```
 
-When using overrides, omit any fields you don't want to override rather than setting them to empty strings or null values. Only include the fields you specifically want to customize.
+> **Note**
+>
+> When using overrides, omit any fields you don't want to override rather than setting them to empty strings or null values. Only include the fields you specifically want to customize.
 
-To find the correct LLM model string, refer to the [Agent API reference](/docs/api-reference/agents/create#request.body.conversation_config.agent.prompt.llm) which lists all supported LLM models and their exact string identifiers.
+> **Tip**
+>
+> To find the correct LLM model string, refer to the [Agent API reference](/docs/api-reference/agents/create#request.body.conversation_config.agent.prompt.llm) which lists all supported LLM models and their exact string identifiers.

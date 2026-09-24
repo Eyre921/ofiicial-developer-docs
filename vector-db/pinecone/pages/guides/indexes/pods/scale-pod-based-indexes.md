@@ -16,7 +16,9 @@ This page explains how you can scale your [pod-based indexes](/guides/index-data
 
 ## Vertical vs. horizontal scaling
 
-If you need to scale your environment to accommodate more vectors, you can modify your existing index to scale it vertically or create a new index and scale horizontally. This article will describe both methods and how to scale your index effectively.
+If you need to scale your environment to accommodate more vectors, you can either scale your existing index vertically or create additional indexes to scale horizontally.
+Horizontal scaling can also improve resilience and is an important part of a highly available (HA) setup.
+This article explains both approaches and how to choose the right scaling strategy for your index.
 
 ## Vertical scaling
 
@@ -258,13 +260,15 @@ Throughput in terms of queries per second (QPS) scales linearly with the number 
 
 #### When to add replicas
 
-There are two primary scenarios where adding replicas is beneficial:
+<Warning>
+  Running a single replica does not provide a highly available setup and is therefore not covered by the uptime guarantees included in Enterprise SLAs.
+</Warning>
+
+**Provide data redundancy and availability**: When you add a replica to your index, the Pinecone controller will choose a zone in the same region that doesn't currently have a replica, up to a maximum of three zones (your fourth and subsequent replicas will be hosted in zones with existing replicas). If your application requires multizone redundancy, this is our recommended approach to achieve that.
 
 **Increase QPS**: The primary reason to add replicas is to increase your index's queries per second (QPS). Each new replica adds another pod for reading from your index and, generally speaking, will increase your QPS by an equal amount as a single pod. For example, if you consistently get 25 QPS for a single pod, each replica will result in 25 more QPS.
 
 If you don't see an increase in QPS after adding replicas, add multiprocessing to your application to ensure you are running parallel operations. You can use the [Pinecone gRPC SDK](/guides/index-data/upsert-data#grpc-python-sdk), or your multiprocessing library of choice.
-
-**Provide data redundancy**: When you add a replica to your index, the Pinecone controller will choose a zone in the same region that doesn't currently have a replica, up to a maximum of three zones (your fourth and subsequent replicas will be hosted in zones with existing replicas). If your application requires multizone redundancy, this is our recommended approach to achieve that.
 
 #### How to add replicas
 

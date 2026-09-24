@@ -48,5 +48,7 @@ gracefully (takes a message, offers to connect you with someone, etc.).
 
 Trigger a transfer rule and verify the call routes to the correct number.
 
-After each test, check your **Conversations** page to review the full transcript and see how the
-receptionist handled the call.
+> **Tip**
+>
+> After each test, check your **Conversations** page to review the full transcript and see how the
+> receptionist handled the call.

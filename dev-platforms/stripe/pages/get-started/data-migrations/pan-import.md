@@ -343,7 +343,7 @@ Migrations that involve subscriptions typically involve these stages:
 
 ## Migration PGP key
 
-If you’re unfamiliar with PGP, see [GPG](http://gnupg.org/) and start by [importing a public key](http://www.gnupg.org/gph/en/manual.html#AEN84). After you familiarize yourself with the basics of PGP, use the following PGP key to encrypt sensitive data (such as credit card information) for PCI-compliant migration.
+If you’re unfamiliar with PGP, see [GPG](https://gnupg.org/) and start by [importing a public key](https://www.gnupg.org/gph/en/manual.html#AEN84). After you familiarize yourself with the basics of PGP, use the following PGP key to encrypt sensitive data (such as credit card information) for PCI-compliant migration.
 
 ### PGP migration key
 

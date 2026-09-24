@@ -12,9 +12,13 @@ path: docs/deploy-stt-services
 
 This guide covers deploying Deepgram's Speech-to-Text (STT) services for transcription and real-time speech recognition capabilities.
 
-Looking to deploy Text-to-Speech (TTS) services? See the [Deploy TTS Services](/docs/deploy-tts-services) guide instead.
+> **Info**
+>
+> Looking to deploy Text-to-Speech (TTS) services? See the [Deploy TTS Services](/docs/deploy-tts-services) guide instead.
 
-**Deploying the Flux Model?** The Flux conversational speech-to-text model has unique deployment requirements and must be hosted on a separate instance from other STT/TTS models. See the [Deploy Flux Model (STT)](/docs/flux-self-hosted) guide for Flux-specific instructions.
+> **Warning**
+>
+> **Deploying the Flux Model?** The Flux conversational speech-to-text model has unique deployment requirements and must be hosted on a separate instance from other STT/TTS models. See the [Deploy Flux Model (STT)](/docs/flux-self-hosted) guide for Flux-specific instructions.
 
 Deepgram STT services use the same container images (`quay.io/deepgram/self-hosted-api` and `quay.io/deepgram/self-hosted-engine`) as TTS deployments, as described in the [Deployment Environments](/docs/self-hosted-deployment-environments#container-orchestration) overview. However, **Deepgram strongly recommends configuring each node for a specific use case—either STT or TTS—for optimal performance and resource utilization**.
 
@@ -139,7 +143,9 @@ Once you have downloaded all provided files to your deployment machine, you need
 
 You will need to have an environment variable `DEEPGRAM_API_KEY` exported with your self-hosted API key secret. See our [Self Service Licensing & Credentials](/docs/self-hosted-self-service-tutorial#create-an-on-prem-api-key) guide for instructions on generating a self-hosted API key for use in this section.
 
-Per the link above, you will create you self-hosted API key in the `API Key` tab of Deepgram Console. These are *not* created in the "Self-Hosted" tab, which is reserved for creating distribution credentials.
+> **Warning**
+>
+> Per the link above, you will create you self-hosted API key in the `API Key` tab of Deepgram Console. These are *not* created in the "Self-Hosted" tab, which is reserved for creating distribution credentials.
 
 ### Configuration Files
 
@@ -187,7 +193,9 @@ sudo --preserve-env=DEEPGRAM_API_KEY docker compose -f docker-compose.aura-2.yml
 # or `sudo --preserve-env=DEEPGRAM_API_KEY podman-compose -f docker-compose.aura-2.yml up -d`
 ```
 
-If you get an error similar to the following, you may not have the minimum NVIDIA driver version required for Deepgram services to run properly. Please see [Drivers and Containerization Platforms](/docs/drivers-and-containerization-platforms#download-and-install-the-official-drivers) for instructions on installing/upgrading to the latest driver version.
+> **Info**
+>
+> If you get an error similar to the following, you may not have the minimum NVIDIA driver version required for Deepgram services to run properly. Please see [Drivers and Containerization Platforms](/docs/drivers-and-containerization-platforms#download-and-install-the-official-drivers) for instructions on installing/upgrading to the latest driver version.
 
 You can then view the running containers with the container process status command, and optionally view the logs of each container to verify their status.
 
@@ -199,7 +207,9 @@ docker ps
 docker logs CONTAINER_ID
 ```
 
-Replace the placeholder `CONTAINER_ID` with the Container ID of each container whose logs you would like to inspect more completely.
+> **Info**
+>
+> Replace the placeholder `CONTAINER_ID` with the Container ID of each container whose logs you would like to inspect more completely.
 
 ### Networking Considerations
 
@@ -227,7 +237,9 @@ Test your environment and container setup with a local file.
    curl -X POST --data-binary @bueller.wav "http://localhost:8080/v1/listen?model=nova-3&smart_format=true"
    ```
 
-If you're using your own file, make sure to replace `bueller.wav` with the name of your audio file.
+> **Info**
+>
+> If you're using your own file, make sure to replace `bueller.wav` with the name of your audio file.
 
 You should receive a JSON response with the transcription and associated metadata. Congratulations - your self-hosted setup is working!
 

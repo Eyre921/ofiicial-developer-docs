@@ -18,13 +18,15 @@ Pronunciation dictionaries allow you to customize how your AI agent pronounces s
 
 ## Configuration
 
-Pronunciation dictionary phoneme tags only work with eleven\_flash\_v2  and eleven\_v3 models.
-
-Other models skip dictionary phoneme tags and use the default pronunciation. For other models, use
-alias tags instead to substitute spellings or phrases that produce the pronunciation you need.
-
-If you want to use IPA and CMU pronunciations in languages other than English, you will have to
-switch to the eleven\_v3 model.
+> **Note**
+>
+> Pronunciation dictionary phoneme tags only work with eleven\_flash\_v2  and eleven\_v3 models.
+>
+> Other models skip dictionary phoneme tags and use the default pronunciation. For other models, use
+> alias tags instead to substitute spellings or phrases that produce the pronunciation you need.
+>
+> If you want to use IPA and CMU pronunciations in languages other than English, you will have to
+> switch to the eleven\_v3 model.
 
 ### Attach a dictionary to your agent
 
@@ -32,7 +34,7 @@ switch to the eleven\_v3 model.
 
 Open your agent in the dashboard, navigate to **Voice Settings**, and add a pronunciation dictionary. Save your changes.
 
-![Add a pronunciation dictionary from the agent's voice settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1e7c851096776b9b8cb39cc95b54d394cc02ec7e4771d13958a259accf0ad757/assets/images/conversational-ai/pd-agents.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113159Z&X-Amz-Expires=604800&X-Amz-Signature=6e0b3da28fdc97f698efc58656176028a08bd1b439179ebc332d92d4c096c988&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Add a pronunciation dictionary from the agent's voice settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1e7c851096776b9b8cb39cc95b54d394cc02ec7e4771d13958a259accf0ad757/assets/images/conversational-ai/pd-agents.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T104619Z&X-Amz-Expires=604800&X-Amz-Signature=d12fde26e5a200e6bcc1267bade0154426597aa5239b57f9c67f1fa0fc3737c8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Update via the CLI
 
@@ -146,8 +148,10 @@ Pronunciation dictionaries support two types of pronunciation notation:
    * More accessible for English pronunciations
    * Example: "tomato" as "T AH M EY T OW"
 
-You can use AI tools like Claude or ChatGPT to help generate IPA or CMU notations for specific
-words.
+> **Tip**
+>
+> You can use AI tools like Claude or ChatGPT to help generate IPA or CMU notations for specific
+> words.
 
 ## Best practices
 

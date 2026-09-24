@@ -39,8 +39,10 @@ In the ElevenLabs integration setup, enter:
 * **API Token** - the token you generated in step 1
 * **Jira Subdomain** - your subdomain from step 2
 
-API tokens expire after one year by default. If your agent stops being able to access Jira,
-generate a new token and update the connection.
+> **Note**
+>
+> API tokens expire after one year by default. If your agent stops being able to access Jira,
+> generate a new token and update the connection.
 
 ## Identifying callers
 
@@ -48,9 +50,11 @@ The `jira_search_issues` tool requires a `labels` parameter to scope searches to
 
 To automate this, configure the `labels` field as a [dynamic variable](/docs/eleven-agents/customization/personalization/dynamic-variables) that receives the caller's identifier from your application. This way the agent does not need to ask the caller for their email on every call.
 
-Jira labels cannot contain spaces. A common convention is to replace `@` with `-at-` and `.` with
-`-` (e.g., `jane-smith-at-example-com`). The `jira_search_issues` tool matches the label exactly,
-so the value provided must match the label on the issue.
+> **Note**
+>
+> Jira labels cannot contain spaces. A common convention is to replace `@` with `-at-` and `.` with
+> `-` (e.g., `jane-smith-at-example-com`). The `jira_search_issues` tool matches the label exactly,
+> so the value provided must match the label on the issue.
 
 ## How it works
 
@@ -149,8 +153,10 @@ For existing issues:
 | `jira_get_issue_types`  | List available issue types (e.g., Bug, Task, Story).                                        |
 | `jira_get_priorities`   | List available priority levels.                                                             |
 
-Issue descriptions and comments are plain text only. The integration converts them into Jira's
-Atlassian Document Format (ADF) automatically. Markdown and HTML are not supported.
+> **Note**
+>
+> Issue descriptions and comments are plain text only. The integration converts them into Jira's
+> Atlassian Document Format (ADF) automatically. Markdown and HTML are not supported.
 
 ## Useful links
 

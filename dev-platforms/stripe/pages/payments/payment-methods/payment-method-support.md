@@ -130,7 +130,7 @@ To determine which payment methods each Stripe product supports, refer to the fo
 | [Afterpay/Clearpay](https://docs.stripe.com/payments/afterpay-clearpay.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | - Unsupported | (Private preview) | - Unsupported | - Unsupported |
 | [Alma](https://docs.stripe.com/payments/alma.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | - Unsupported |
 | [Billie](https://docs.stripe.com/payments/billie.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | - Unsupported |
-| [Klarna](https://docs.stripe.com/payments/klarna.md) | ✓ Supported | ✓ Supported 1 | ✓ Supported | ✓ Supported | ✓ Supported3 | ✓ Supported | ✓ Supported | ✓ Supported 4 | - Unsupported | (Private preview) |
+| [Klarna](https://docs.stripe.com/payments/klarna.md) | ✓ Supported | ✓ Supported 5 | ✓ Supported | ✓ Supported | ✓ Supported3 | ✓ Supported | ✓ Supported | ✓ Supported 4 | - Unsupported | (Private preview) |
 | [Kriya](https://docs.stripe.com/payments/kriya.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | - Unsupported | - Unsupported | - Unsupported |
 | [Mondu](https://docs.stripe.com/payments/mondu.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | - Unsupported | - Unsupported | - Unsupported |
 | [Scalapay](https://docs.stripe.com/payments/scalapay.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | - Unsupported | - Unsupported | - Unsupported |
@@ -138,7 +138,7 @@ To determine which payment methods each Stripe product supports, refer to the fo
 | [Sunbit](https://docs.stripe.com/payments/sunbit.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | - Unsupported |
 | [Zip](https://docs.stripe.com/payments/zip.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | - Unsupported |
 
-1 Not supported when using Checkout in subscription mode.2 Not supported when using Checkout in setup mode.3 Not supported when saving payment details during payment (`setup_future_usage`).4 Only supports the [send_invoice](https://docs.stripe.com/api/invoices/object.md#invoice_object-collection_method) collection method.
+1 Not supported when using Checkout in subscription mode.2 Not supported when using Checkout in setup mode.3 Not supported when saving payment details during payment (`setup_future_usage`).4 Only supports the [send_invoice](https://docs.stripe.com/api/invoices/object.md#invoice_object-collection_method) collection method.5 Availability varies by buyer country and Klarna payment option. Review the [Klarna payment options page](https://docs.stripe.com/payments/klarna.md#payment-options).
 
 ### Cards product support 
 

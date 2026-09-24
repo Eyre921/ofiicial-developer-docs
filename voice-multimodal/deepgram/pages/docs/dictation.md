@@ -20,7 +20,9 @@ This feature enhances the readability of transcriptions by accurately representi
 
 To enable Dictation, set the `dictation` parameter to `true` in your API request. Note that the `punctuate` parameter must also be enabled for Dictation to work.
 
-The Punctuation feature must be enabled for Dictation to work. Be sure to add `dictation=true&punctuate=true` to your request.
+> **Warning**
+>
+> The Punctuation feature must be enabled for Dictation to work. Be sure to add `dictation=true&punctuate=true` to your request.
 
 ### cURL Example
 

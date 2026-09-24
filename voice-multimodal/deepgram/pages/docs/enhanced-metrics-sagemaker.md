@@ -103,7 +103,9 @@ The usage stream is on by default. To disable it, set an environment variable ov
 
 The billing stream (`Deepgram/SageMakerInference`) cannot be disabled — it is part of the metering pipeline.
 
-Because EMF metrics are extracted from the endpoint's CloudWatch log group, they stop if the log group is deleted or the container's logging permissions are removed. Standard CloudWatch metric pricing applies per unique metric/dimension combination; both streams keep dimension cardinality small by design.
+> **Note**
+>
+> Because EMF metrics are extracted from the endpoint's CloudWatch log group, they stop if the log group is deleted or the container's logging permissions are removed. Standard CloudWatch metric pricing applies per unique metric/dimension combination; both streams keep dimension cardinality small by design.
 
 ## Related resources
 

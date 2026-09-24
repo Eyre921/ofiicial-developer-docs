@@ -85,7 +85,9 @@ Where Deepgram processes your data depends on the endpoint you call.
 
 Data residency guarantees come from regional endpoints. If your data must stay in a specific geography, call that region's endpoint.
 
-A full in-region guarantee requires both a regional endpoint and `mip_opt_out=true`. See the summary at the top of this page.
+> **Note**
+>
+> A full in-region guarantee requires both a regional endpoint and `mip_opt_out=true`. See the summary at the top of this page.
 
 ### Regional endpoints are the residency boundary
 

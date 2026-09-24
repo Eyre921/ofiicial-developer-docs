@@ -27,7 +27,7 @@ Reference: https://elevenlabs.io/docs/api-reference/knowledge-base/create-from-u
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_Create_URL_document_v1_convai_knowledge_base_url_post.
 
 - `url` (string, required) — URL to a page of documentation that the agent will have access to in order to interact with users.
 - `name` (string, optional, nullable) — A custom, human-readable name for the document.
@@ -44,8 +44,7 @@ Successful Response
 
 - `id` (string, required)
 - `name` (string, required)
-- `folder_path` (list of object, optional) — The folder path segments leading to this entity, from root to parent folder.
-  - `id` (string, required)
+- `folder_path` (list of KnowledgeBaseFolderPathSegmentSummaryResponseModel, optional) — The folder path segments leading to this entity, from root to parent folder.
 
 ## Errors
 
@@ -53,10 +52,21 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### KnowledgeBaseFolderPathSegmentSummaryResponseModel
+
+- `id` (string, required)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

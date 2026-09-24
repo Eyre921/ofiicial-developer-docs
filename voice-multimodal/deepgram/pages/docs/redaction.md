@@ -77,7 +77,9 @@ curl \
   --url 'https://api.deepgram.com/v1/listen?redact=pci&redact=pii'
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 ## How redacted output looks
 
@@ -87,7 +89,9 @@ Numerals that match an entity type in the `numbers` group are tagged with the sp
 
 On Nova streaming (`/v1/listen`), Deepgram follows a two-phase approach. During interim results, the system returns a generic `[REDACTED]` placeholder while it continues evaluating the spoken content. Once a segment is complete and Deepgram has high confidence in the detected entity, the placeholder is replaced with a specific entity tag. This replacement may occur in a later interim result or in the final result.
 
-For the highest streaming redaction accuracy, set `no_delay=false` or omit `no_delay` entirely. Setting `no_delay=true` opts for low latency at the risk of redaction performance.
+> **Info**
+>
+> For the highest streaming redaction accuracy, set `no_delay=false` or omit `no_delay` entirely. Setting `no_delay=true` opts for low latency at the risk of redaction performance.
 
 Flux (`/v2/listen`) uses a different output format — see [Redaction on Flux](#redaction-on-flux).
 
@@ -114,7 +118,9 @@ Danish, Dutch, English, French, German, German (Swiss), Italian, Norwegian, Poli
 
 On multilingual models (`language=multi`), each word is redacted using its detected language's number rules, so a single transcript can mix languages. In streaming, detected languages outside the set above fall back to English number rules.
 
-For non-English audio, only numbers are redacted. Entity redaction — names, addresses, PHI, and other `pii`/`phi` entities — is applied for English only, even when you request `true`.
+> **Info**
+>
+> For non-English audio, only numbers are redacted. Entity redaction — names, addresses, PHI, and other `pii`/`phi` entities — is applied for English only, even when you request `true`.
 
 ## Redaction on Flux
 

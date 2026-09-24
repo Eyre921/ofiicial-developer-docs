@@ -10,7 +10,9 @@ path: docs/eleven-api/guides/how-to/music/composition-plans
 
 Composition plans provide fine-grained control over music generation. A `music_v2` or `music_v2_5` plan is an ordered list of chunks, where each chunk defines a section of the song with its own styles, lyrics, and duration. Use text prompts for quick prototyping and composition plans when you need specific chunk structure, precise lyrics timing, or complex arrangements.
 
-Composition plans and text prompts are mutually exclusive. Use one or the other, not both.
+> **Warning**
+>
+> Composition plans and text prompts are mutually exclusive. Use one or the other, not both.
 
 ```json
 {
@@ -85,8 +87,10 @@ Composition plans and text prompts are mutually exclusive. Use one or the other,
 
 <elevenlabs-audio-player audio-title="Pop Song" audio-src="https://storage.googleapis.com/eleven-public-cdn/documentation_assets/audio/example-pop-song.mp3" />
 
-Chunk-based composition plans require `music_v2` or `music_v2_5`. Pass `model_id="music_v2_5"`
-when composing.
+> **Note**
+>
+> Chunk-based composition plans require `music_v2` or `music_v2_5`. Pass `model_id="music_v2_5"`
+> when composing.
 
 ## Quickstart
 
@@ -212,9 +216,11 @@ A composition plan is an ordered list of up to 30 chunks. Each chunk generates o
 
 A song can have up to 30 chunks. Total duration must be between 3 seconds and 10 minutes, with each chunk between 3 and 120 seconds.
 
-The styles for the first chunk are the most important as they set the overall tone and genre. Aim
-for at least 6-7 styles in early chunks until the direction is established. Generic styles like
-"great production quality" are good defaults to append to the list.
+> **Tip**
+>
+> The styles for the first chunk are the most important as they set the overall tone and genre. Aim
+> for at least 6-7 styles in early chunks until the direction is established. Generic styles like
+> "great production quality" are good defaults to append to the list.
 
 Chunks can also reference audio from a stored song to keep existing sections unchanged or condition new audio on them. See [music inpainting](/docs/eleven-api/guides/how-to/music/inpainting) for editing and combining existing songs.
 

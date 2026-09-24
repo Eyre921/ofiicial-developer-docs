@@ -1,6 +1,6 @@
 # dev-platforms/turso 文档索引
 
-> 共 278 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 283 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -37,7 +37,9 @@
 - `api-reference/databases/delete` — [Delete Database](pages/api-reference/databases/delete.md) · [原文](https://docs.turso.tech/api-reference/databases/delete)
 - `api-reference/databases/invalidate-tokens` — [Invalidate All Database Auth Tokens](pages/api-reference/databases/invalidate-tokens.md) · [原文](https://docs.turso.tech/api-reference/databases/invalidate-tokens)
 - `api-reference/databases/list` — [List Databases](pages/api-reference/databases/list.md) · [原文](https://docs.turso.tech/api-reference/databases/list)
+- `api-reference/databases/list-deleted` — [List Deleted Databases](pages/api-reference/databases/list-deleted.md) · [原文](https://docs.turso.tech/api-reference/databases/list-deleted)
 - `api-reference/databases/list-instances` — [List Database Instances](pages/api-reference/databases/list-instances.md) · [原文](https://docs.turso.tech/api-reference/databases/list-instances)
+- `api-reference/databases/restore` — [Restore Database](pages/api-reference/databases/restore.md) · [原文](https://docs.turso.tech/api-reference/databases/restore)
 - `api-reference/databases/retrieve` — [Retrieve Database](pages/api-reference/databases/retrieve.md) · [原文](https://docs.turso.tech/api-reference/databases/retrieve)
 - `api-reference/databases/retrieve-instance` — [Retrieve Database Instance](pages/api-reference/databases/retrieve-instance.md) · [原文](https://docs.turso.tech/api-reference/databases/retrieve-instance)
 - `api-reference/databases/stats` — [Retrieve Database Stats](pages/api-reference/databases/stats.md) · [原文](https://docs.turso.tech/api-reference/databases/stats)
@@ -50,6 +52,8 @@
 - `api-reference/groups/delete` — [Delete Group](pages/api-reference/groups/delete.md) · [原文](https://docs.turso.tech/api-reference/groups/delete)
 - `api-reference/groups/invalidate-tokens` — [Invalidate All Group Auth Tokens](pages/api-reference/groups/invalidate-tokens.md) · [原文](https://docs.turso.tech/api-reference/groups/invalidate-tokens)
 - `api-reference/groups/list` — [List Groups](pages/api-reference/groups/list.md) · [原文](https://docs.turso.tech/api-reference/groups/list)
+- `api-reference/groups/list-deleted` — [List Deleted Groups](pages/api-reference/groups/list-deleted.md) · [原文](https://docs.turso.tech/api-reference/groups/list-deleted)
+- `api-reference/groups/restore` — [Restore Group](pages/api-reference/groups/restore.md) · [原文](https://docs.turso.tech/api-reference/groups/restore)
 - `api-reference/groups/retrieve` — [Retrieve Group](pages/api-reference/groups/retrieve.md) · [原文](https://docs.turso.tech/api-reference/groups/retrieve)
 - `api-reference/groups/transfer` — [Transfer Group](pages/api-reference/groups/transfer.md) · [原文](https://docs.turso.tech/api-reference/groups/transfer)
 - `api-reference/groups/unarchive` — [Unarchive Group](pages/api-reference/groups/unarchive.md) · [原文](https://docs.turso.tech/api-reference/groups/unarchive)
@@ -173,6 +177,7 @@
 - `features/embedded-replicas/with-render` — [Turso + Render](pages/features/embedded-replicas/with-render.md) · [原文](https://docs.turso.tech/features/embedded-replicas/with-render)
 - `features/multi-db-schemas` — [Multi-DB Schemas (Deprecated)](pages/features/multi-db-schemas.md) · [原文](https://docs.turso.tech/features/multi-db-schemas)
 - `features/point-in-time-recovery` — [Point-in-Time Recovery](pages/features/point-in-time-recovery.md) · [原文](https://docs.turso.tech/features/point-in-time-recovery)
+- `features/recover-deleted-databases` — [Recover Deleted Databases](pages/features/recover-deleted-databases.md) · [原文](https://docs.turso.tech/features/recover-deleted-databases)
 - `features/sqlite-extensions` — [SQLite Extensions](pages/features/sqlite-extensions.md) · [原文](https://docs.turso.tech/features/sqlite-extensions)
 
 ## guides

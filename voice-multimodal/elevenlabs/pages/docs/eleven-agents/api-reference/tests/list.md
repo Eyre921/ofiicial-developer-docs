@@ -44,32 +44,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/list
 
 Successful Response
 
-- `tests` (list of object, required)
-  - `id` (string, required) — The ID of the test
-  - `name` (string, required) — Name of the test
-  - `created_at_unix_secs` (integer, required) — Creation time of the test in unix seconds
-  - `last_updated_at_unix_secs` (integer, required) — Last update time of the test in unix seconds
-  - `type` (enum, required) — Type of the test or entity
-    - Allowed values: `llm`, `tool`, `simulation`, `folder`
-  - `access_info` (object, optional) — The access information of the test
-    - `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
-    - `creator_name` (string, required) — Name of the agent's creator
-    - `creator_email` (string, required) — Email of the agent's creator
-    - `role` (enum, required) — The role of the user making the request
-      - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-    - `anonymous_access_level_override` (enum, optional) — The access level for anonymous users. If None, the resource is not shared publicly.
-      - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-    - `access_source` (enum, optional) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
-      - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
-  - `entity_type` (enum, optional, default: test) — The type of entity (test or folder)
-    - Allowed values: `test`, `folder`
-  - `folder_parent_id` (string, optional) — The ID of the parent folder
-  - `folder_path` (list of object, optional) — The folder path segments from root to this entity
-    - `id` (string, required)
-    - `name` (string, optional, default: )
-  - `children_count` (integer, optional) — Number of direct children (tests and subfolders) for folders only
-  - `conversation_initiation_source` (enum, optional, default: unknown) — Channel the test simulates the conversation as. Null for folders or default behavior.
-    - Allowed values: `unknown`, `android_sdk`, `node_js_sdk`, `react_native_sdk`, `react_sdk`, `js_sdk`, `python_sdk`, `widget`, `sip_trunk`, `twilio`, `exotel`, `genesys`, `avaya`, `audiocodes`, `swift_sdk`, `whatsapp`, `twilio_sms`, `flutter_sdk`, `zendesk_integration`, `slack_integration`, `telegram_integration`, `intercom_integration`, `freshdesk_integration`, `salesforce_integration`, `template_preview`, `genesys_bot_connector`, `subagent_tool`
+- `tests` (list of UnitTestSummaryResponseModel, required)
 - `has_more` (boolean, required)
 - `next_cursor` (string, optional)
 
@@ -79,10 +54,51 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### UnitTestSummaryResponseModel
+
+- `id` (string, required) — The ID of the test
+- `name` (string, required) — Name of the test
+- `created_at_unix_secs` (integer, required) — Creation time of the test in unix seconds
+- `last_updated_at_unix_secs` (integer, required) — Last update time of the test in unix seconds
+- `type` (enum, required) — Type of the test or entity
+  - Allowed values: `llm`, `tool`, `simulation`, `folder`
+- `access_info` (ResourceAccessInfo, optional) — The access information of the test
+- `entity_type` (enum, optional, default: test) — The type of entity (test or folder)
+  - Allowed values: `test`, `folder`
+- `folder_parent_id` (string, optional) — The ID of the parent folder
+- `folder_path` (list of AgentTestFolderPathSegmentResponseModel, optional) — The folder path segments from root to this entity
+- `children_count` (integer, optional) — Number of direct children (tests and subfolders) for folders only
+- `conversation_initiation_source` (enum, optional, default: unknown) — Channel the test simulates the conversation as. Null for folders or default behavior.
+  - Allowed values: `unknown`, `android_sdk`, `node_js_sdk`, `react_native_sdk`, `react_sdk`, `js_sdk`, `python_sdk`, `widget`, `sip_trunk`, `twilio`, `exotel`, `genesys`, `avaya`, `audiocodes`, `swift_sdk`, `whatsapp`, `twilio_sms`, `flutter_sdk`, `zendesk_integration`, `slack_integration`, `telegram_integration`, `intercom_integration`, `freshdesk_integration`, `salesforce_integration`, `template_preview`, `genesys_bot_connector`, `subagent_tool`
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItem, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ResourceAccessInfo
+
+- `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
+- `creator_name` (string, required) — Name of the agent's creator
+- `creator_email` (string, required) — Email of the agent's creator
+- `role` (enum, required) — The role of the user making the request
+  - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+- `anonymous_access_level_override` (enum, optional) — The access level for anonymous users. If None, the resource is not shared publicly.
+  - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+- `access_source` (enum, optional) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
+  - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
+
+### AgentTestFolderPathSegmentResponseModel
+
+- `id` (string, required)
+- `name` (string, optional, default: )
+
+### ValidationErrorLocItem
 
 ## Examples
 

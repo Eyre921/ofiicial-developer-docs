@@ -8,8 +8,10 @@ path: docs/eleven-agents/phone-numbers/telephony/plivo
 
 # Plivo
 
-Before following this guide, consider reading the [SIP trunking guide](/docs/eleven-agents/phone-numbers/sip-trunking) to understand how ElevenLabs supports SIP
-trunks.
+> **Note**
+>
+> Before following this guide, consider reading the [SIP trunking guide](/docs/eleven-agents/phone-numbers/sip-trunking) to understand how ElevenLabs supports SIP
+> trunks.
 
 ## Overview
 
@@ -84,4 +86,6 @@ After creating the outbound trunk, note the termination URI (typically in the fo
 `sip:yourusername@yourplivotrunk.sip.plivo.com`). You'll need this information when configuring
 the SIP trunk in ElevenLabs.
 
-Once you've set up your Plivo SIP trunk, follow the [SIP trunking guide](/docs/eleven-agents/phone-numbers/sip-trunking) to finish the setup ElevenLabs as well.
+> **Warning**
+>
+> Once you've set up your Plivo SIP trunk, follow the [SIP trunking guide](/docs/eleven-agents/phone-numbers/sip-trunking) to finish the setup ElevenLabs as well.

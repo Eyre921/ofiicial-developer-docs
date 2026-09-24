@@ -12,7 +12,7 @@ path: docs/guides/features/message-transforms
 
 > Transform prompt messages
 
-export const anthropicMaxMessagesCount = 1000;
+export const anthropicMaxMessagesCount = 100000;
 
 To help with prompts that exceed the maximum context size of a model, OpenRouter supports a context compression [plugin](/docs/guides/features/plugins) that can be enabled per-request:
 

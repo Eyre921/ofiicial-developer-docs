@@ -77,7 +77,9 @@ Emitted once per turn, after we've sent **all** of the turn's audio — our sign
 | `billable_character_count` | integer | Billable character count for this turn — the input minus stripped inline-control characters; always ≤ `input_character_count`.                                                                                                                                                                                                                                                                                                      |
 | `controls_applied`         | object  | Counts of the inline controls the server acted on this turn: `pronunciations_applied` (pronunciation overrides that took effect), `breaks_applied` (pauses that took effect), and `pronunciation_warnings` (entries that failed validation). A control that was rejected or dropped is reported through a `Warning` and not counted here. Inline controls are coming soon on Flux TTS; all three counts report `0` until they ship. |
 
-**Per-turn vs. cumulative.** Per-turn counts are reported here, once per turn (at `Flush`). Cumulative totals are reported once, at session end, in [`SessionMetadata`](#sessionmetadata) as `total_*`.
+> **Info**
+>
+> **Per-turn vs. cumulative.** Per-turn counts are reported here, once per turn (at `Flush`). Cumulative totals are reported once, at session end, in [`SessionMetadata`](#sessionmetadata) as `total_*`.
 
 ## SpeechInterrupted
 
@@ -110,7 +112,9 @@ Sent in response to an [`Interrupt`](/docs/flux-tts/client-messages#interrupt). 
 | `text_remaining`  | string (optional) | The portion the user did not hear. Omitted under the same condition.                                                                                                                                                                                                                                                                           |
 | `metadata`        | object            | Per-turn billing/timing for the interrupted turn — the same body as a standalone [`SpeechMetadata`](#speechmetadata).                                                                                                                                                                                                                          |
 
-**One event per interrupted turn.** On `Interrupt`, only `SpeechInterrupted` fires — the server does not also emit a standalone `SpeechMetadata`. Read `SpeechMetadata.<field>` for completed turns and `SpeechInterrupted.metadata.<field>` for interrupted ones. Feed `text_spoken` back into your LLM context so the next turn doesn't repeat what the user already heard.
+> **Info**
+>
+> **One event per interrupted turn.** On `Interrupt`, only `SpeechInterrupted` fires — the server does not also emit a standalone `SpeechMetadata`. Read `SpeechMetadata.<field>` for completed turns and `SpeechInterrupted.metadata.<field>` for interrupted ones. Feed `text_spoken` back into your LLM context so the next turn doesn't repeat what the user already heard.
 
 ## Flushed
 

@@ -34,7 +34,9 @@ To enable Filler Words you can use the`filler_words` query parameter and set the
 
 When `filler_words=false` or the parameter is not set, the two most common fillers, "uh" and "um", are stripped out of the transcript to improve readability.
 
-Currently, Filler Words are only available for Deepgram's Nova, Nova-2 and Nova-3 general models.
+> **Info**
+>
+> Currently, Filler Words are only available for Deepgram's Nova, Nova-2 and Nova-3 general models.
 
 **Example**
 
@@ -49,7 +51,9 @@ curl \
   --url 'https://api.deepgram.com/v1/listen?model=nova-3&filler_words=true'
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
 
 ## Results
 

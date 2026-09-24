@@ -166,10 +166,6 @@ curl https://api.stripe.com/v1/subscriptions \
 }
 ```
 
-## Returns
-
-The newly created `Subscription` object, if the call succeeded. If the attempted charge fails, the subscription is created in an `incomplete` status.
-
 ## Parameters
 
 - [`add_invoice_items`](https://docs.stripe.com/api/subscriptions/create.md?query=add_invoice_items) (array of objects, optional)
@@ -311,4 +307,8 @@ Possible enum values:
 
 - [`trial_settings`](https://docs.stripe.com/api/subscriptions/create.md?query=trial_settings) (object, optional)
   Settings related to subscription trials.
+
+## Returns
+
+The newly created `Subscription` object, if the call succeeded. If the attempted charge fails, the subscription is created in an `incomplete` status.
 

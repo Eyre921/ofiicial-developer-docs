@@ -10,7 +10,9 @@ path: docs/eleven-agents/guides/quickstarts/java-script
 
 This tutorial will guide you through creating a web client that can interact with a ElevenLabs agent. You'll learn how to implement real-time voice conversations, allowing users to speak with an AI agent that can listen, understand, and respond naturally using voice synthesis.
 
-Looking to build with React/Next.js? Check out our [Next.js guide](/docs/eleven-agents/guides/quickstarts/next-js)
+> **Note**
+>
+> Looking to build with React/Next.js? Check out our [Next.js guide](/docs/eleven-agents/guides/quickstarts/next-js)
 
 ## What You'll Need
 
@@ -70,7 +72,7 @@ elevenlabs-conversational-ai/
 
 In `index.html`, set up a simple user interface:
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5ad9dea65eddc50beaf444e5d319dc5094df0f4183e50f7ed01900394b3ff9d2/assets/images/conversational-ai/vite-guide.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113322Z&X-Amz-Expires=604800&X-Amz-Signature=6fe883bc345fbddc0716fdf8ab288f4976bb5d7d78249f15dd646f74b7dea1e0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5ad9dea65eddc50beaf444e5d319dc5094df0f4183e50f7ed01900394b3ff9d2/assets/images/conversational-ai/vite-guide.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113226Z&X-Amz-Expires=604800&X-Amz-Signature=4bb264acc38daba7d1d4e5ba202d2c8a94d5e0680e2e0050202857a97eea36f9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 **`index.html`**
 
@@ -160,11 +162,15 @@ stopButton.addEventListener('click', stopConversation);
 npm run dev:frontend
 ```
 
-Make sure to replace `'YOUR_AGENT_ID'` with your actual agent ID from ElevenLabs.
+> **Note**
+>
+> Make sure to replace `'YOUR_AGENT_ID'` with your actual agent ID from ElevenLabs.
 
 #### (Optional) Authenticate with a Signed URL
 
-This authentication step is only required for private agents. If you're using a public agent, you can skip this section and directly use the `agentId` in the `startSession` call.
+> **Note**
+>
+> This authentication step is only required for private agents. If you're using a public agent, you can skip this section and directly use the `agentId` in the `startSession` call.
 
 #### Create Environment Variables
 
@@ -177,7 +183,9 @@ ELEVENLABS_API_KEY=your-api-key-here
 AGENT_ID=your-agent-id-here
 ```
 
-Make sure to add `.env` to your `.gitignore` file to prevent accidentally committing sensitive credentials.
+> **Warning**
+>
+> Make sure to add `.env` to your `.gitignore` file to prevent accidentally committing sensitive credentials.
 
 #### Setup the Backend
 
@@ -291,7 +299,9 @@ async function startConversation() {
 // ... rest of the code ...
 ```
 
-Signed URLs expire after a short period. However, any conversations initiated before expiration will continue uninterrupted. In a production environment, implement proper error handling and URL refresh logic for starting new conversations.
+> **Warning**
+>
+> Signed URLs expire after a short period. However, any conversations initiated before expiration will continue uninterrupted. In a production environment, implement proper error handling and URL refresh logic for starting new conversations.
 
 #### Update the package.json
 
@@ -324,5 +334,7 @@ Now that you have a basic implementation, you can:
 3. Add a chat history display
 4. Customize the UI to match your brand
 
-For more advanced features and customization options, check out the
-[@elevenlabs/client](https://www.npmjs.com/package/@elevenlabs/client) package.
+> **Info**
+>
+> For more advanced features and customization options, check out the
+> [@elevenlabs/client](https://www.npmjs.com/package/@elevenlabs/client) package.

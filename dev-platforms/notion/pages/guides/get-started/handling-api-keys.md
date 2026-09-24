@@ -40,6 +40,16 @@ NOTION_API_KEY=ntn_abc123def456ghi789jkl012mno345pqr
 
 Use a secret manager for deployed applications. Limit who can read production secrets and keep an inventory of each token's owner and purpose.
 
+## Calling the API from a browser
+
+The Notion API sends cross-origin resource sharing (CORS) headers, so browser code can call the API directly.
+
+Never ship an internal connection token or a client secret in page source that strangers can load. Anyone who can view the source can use that secret to act as the connection.
+
+For apps that other people use, create a [public connection](/guides/get-started/public-connections), which uses OAuth. Exchange the OAuth code for a token on a server you control. For a personal or local tool, putting a token in a page that only you can open is a risk you must choose whether to accept.
+
+OAuth token endpoints under `/v1/oauth/*` do not send CORS headers on purpose. OAuth code exchange requires a client secret and must run on a server.
+
 ## Scan for exposed tokens
 
 Enable secret scanning in your repository and CI system. Block commits that contain tokens, and alert the token owner if a token is detected.

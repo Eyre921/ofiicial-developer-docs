@@ -14,9 +14,13 @@ Once your SageMaker endpoint reaches `InService`, run a client script against it
 
 The repository is organized by product and by language. Pick the script that matches the model you deployed (Flux, Nova-3, or Aura) and the language you want to work in (Python, Node.js, or Java). The scripts are load-testing clients first and functional smoke tests second — running any of them with a single connection is the fastest way to prove that your endpoint accepts traffic and returns results.
 
-Prefer to have an AI coding assistant run the smoke test for you? Install the Deepgram SageMaker skill — see [Agent-assisted setup](/docs/amazon-sagemaker#agent-assisted-setup).
+> **Tip**
+>
+> Prefer to have an AI coding assistant run the smoke test for you? Install the Deepgram SageMaker skill — see [Agent-assisted setup](/docs/amazon-sagemaker#agent-assisted-setup).
 
-The scripts evolve independently. Flags, defaults, and input formats differ between products and between languages. Always read the `README.md` inside the subdirectory you intend to run before invoking a script.
+> **Info**
+>
+> The scripts evolve independently. Flags, defaults, and input formats differ between products and between languages. Always read the `README.md` inside the subdirectory you intend to run before invoking a script.
 
 ## High-level process
 
@@ -66,7 +70,9 @@ Each Deepgram product has a dedicated script because the SageMaker payload shape
 | Nova-3 (streaming STT)    | Java     | `java/stt/aws-sdk/`, `java/stt/deepgram-sdk/` | Gradle projects; see each project's README                                                                                                                                                                             |
 | Aura (text-to-speech)     | Python   | `python-tts/`                                 | `tts_stress.py`                                                                                                                                                                                                        |
 
-Invocation flags, defaults, and required inputs vary per script. Consult the `README.md` in each subdirectory for the full command reference. For example, the Flux client uses the `/v2/listen` endpoint and a turn-based protocol, while the Nova-3 client uses `/v1/listen` with channel-based alternatives.
+> **Note**
+>
+> Invocation flags, defaults, and required inputs vary per script. Consult the `README.md` in each subdirectory for the full command reference. For example, the Flux client uses the `/v2/listen` endpoint and a turn-based protocol, while the Nova-3 client uses `/v1/listen` with channel-based alternatives.
 
 ## Required tooling
 

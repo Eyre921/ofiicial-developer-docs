@@ -8,11 +8,15 @@ path: docs/eleven-api/guides/how-to/dubbing/bring-your-own-transcript
 
 # Bring your own transcript
 
-**How-to guide** · Assumes you are familiar with creating dubbing projects, as shown in the
-[Dubbing quickstart](/docs/eleven-api/guides/cookbooks/dubbing).
+> **Note**
+>
+> **How-to guide** · Assumes you are familiar with creating dubbing projects, as shown in the
+> [Dubbing quickstart](/docs/eleven-api/guides/cookbooks/dubbing).
 
-Providing your own transcript and translations is only available to enterprise workspaces. Contact
-[sales](https://elevenlabs.io/contact-sales) for access.
+> **Warning**
+>
+> Providing your own transcript and translations is only available to enterprise workspaces. Contact
+> [sales](https://elevenlabs.io/contact-sales) for access.
 
 By default, the Dubbing API transcribes your source media and machine-translates the transcript into each target language. If you already have an accurate transcript — subtitles, a script, or professionally translated text — you can supply it instead. This guide covers the transcript file format, how to create a project from a transcript, and how to provide your own translations when adding a language.
 

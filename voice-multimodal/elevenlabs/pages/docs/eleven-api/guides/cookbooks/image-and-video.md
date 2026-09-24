@@ -12,9 +12,11 @@ The Image & Video API is asynchronous. You submit a generation, and once it fini
 
 There are two ways to collect the result. [Webhook delivery](/docs/eleven-api/guides/how-to/image-and-video/webhooks) is the recommended one, and what the examples below use: ElevenLabs calls your endpoint the moment a generation reaches a terminal status, so nothing is spent waiting. Polling is the fallback for when you have no endpoint to receive a callback, and each example shows how to drop back to it.
 
-The Image & Video API requires a Pro plan or above. Calls from a workspace below that tier are
-rejected with a `402 paid_plan_required` error. Your API key must also carry the Image & Video or
-Flows permission for the workspace.
+> **Warning**
+>
+> The Image & Video API requires a Pro plan or above. Calls from a workspace below that tier are
+> rejected with a `402 paid_plan_required` error. Your API key must also carry the Image & Video or
+> Flows permission for the workspace.
 
 ## Generate an image
 
@@ -75,11 +77,13 @@ npm install -g @elevenlabs/cli
 curl --proto '=https' --tlsv1.2 -LsSf https://github.com/elevenlabs/cli/releases/latest/download/elevenlabs-cli-installer.sh | sh
 ```
 
-Working with an AI coding assistant? Run `elevenlabs generate-skills` in your project to write a
-`SKILL.md` for every command group into `skills/`, so your assistant knows the CLI's full surface
-without you pasting docs. Use `--output-dir` to put them elsewhere. This reads the CLI's own
-embedded API definition, so it needs no API key and works offline — and it stays in step with
-whichever CLI version you have installed.
+> **Tip**
+>
+> Working with an AI coding assistant? Run `elevenlabs generate-skills` in your project to write a
+> `SKILL.md` for every command group into `skills/`, so your assistant knows the CLI's full surface
+> without you pasting docs. Use `--output-dir` to put them elsewhere. This reads the CLI's own
+> embedded API definition, so it needs no API key and works offline — and it stays in step with
+> whichever CLI version you have installed.
 
 Then authenticate — this opens your browser to authorize the CLI:
 
@@ -290,10 +294,12 @@ webhook in your workspace subscribed to generation events. Video output is MP4, 
 [Image & Video webhooks](/docs/eleven-api/guides/how-to/image-and-video/webhooks) for configuring a
 webhook and writing the handler that receives this.
 
-`webhook` requires at least one workspace webhook subscribed to generation events. Without one,
-the create call is rejected rather than starting a generation whose result has nowhere to go. Drop
-the field to fall back to polling with `flows.video.get`, and poll no more than once every 10
-seconds.
+> **Warning**
+>
+> `webhook` requires at least one workspace webhook subscribed to generation events. Without one,
+> the create call is rejected rather than starting a generation whose result has nowhere to go. Drop
+> the field to fall back to polling with `flows.video.get`, and poll no more than once every 10
+> seconds.
 
 ## Collecting results
 
@@ -362,8 +368,10 @@ branch on `status` before reading the rest of the response.
 | `completed`  | The output is ready. The response carries `content_url` and `content_mime_type`.    |
 | `failed`     | The generation did not produce an output. The response carries the failure details. |
 
-`content_url` is a signed URL that expires roughly an hour after the response is returned. Fetch
-the generation again for a fresh URL rather than storing the signed URL itself.
+> **Warning**
+>
+> `content_url` is a signed URL that expires roughly an hour after the response is returned. Fetch
+> the generation again for a fresh URL rather than storing the signed URL itself.
 
 ## Handling failures
 
@@ -445,9 +453,11 @@ opaque: pass the exact value back and stop when `has_more` is `false`.
 The API exposes a subset of the models available in the ElevenLabs app. Each model accepts only the
 parameters listed for it — sending a field another model supports returns a validation error.
 
-ByteDance models are disabled by default and require explicit approval before use. Until access is
-granted, a request naming one of them is rejected with a `model_access_denied` error. Enterprise
-customers can contact support to request access.
+> **Warning**
+>
+> ByteDance models are disabled by default and require explicit approval before use. Until access is
+> granted, a request naming one of them is rejected with a `model_access_denied` error. Enterprise
+> customers can contact support to request access.
 
 ### Image models
 

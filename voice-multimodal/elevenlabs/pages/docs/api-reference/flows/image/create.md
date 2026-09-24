@@ -27,272 +27,111 @@ Reference: https://elevenlabs.io/docs/api-reference/flows/image/create
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects an ImageGenerationRequest.
 
-- `object`
+- `ImageGenerationRequest`
   - `model_id`: `bytedance-seedream-5-lite` (BytedanceSeedream5LiteRequest)
     - `prompt` (string, required) — A text description of the image to generate.
     - `aspect_ratio` (enum, optional, default: 16:9) — The aspect ratio of the output image. With `auto`, the model picks an aspect ratio based on the inputs.
       - Allowed values: `auto`, `1:1`, `3:4`, `16:9`, `4:3`, `9:16`
-    - `images` (list of object, optional) — Up to 10 reference images to edit or draw from.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineImageReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded image.
-          - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
+    - `images` (list of ImageReference, optional) — Up to 10 reference images to edit or draw from.
     - `resolution` (enum, optional, default: 2K) — The resolution of the output image.
       - Allowed values: `2K`, `3K`
     - `seed` (integer, optional, nullable) — A seed for reproducible generation: the same seed and inputs give similar output across generations. Omit for random.
-    - `webhook` (object, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
-      - `type`: `all` (WebhookTargetAll)
-      - `type`: `ids` (WebhookTargetIds)
-        - `ids` (list of string, required) — The IDs of the workspace flows webhooks to deliver the result to. Each must be one of the workspace's configured flows webhooks.
+    - `webhook` (WebhookTarget, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
   - `model_id`: `bytedance-seedream-5-pro` (BytedanceSeedream5ProRequest)
     - `prompt` (string, required) — A text description of the image to generate.
     - `aspect_ratio` (enum, optional, default: 16:9) — The aspect ratio of the output image. With `auto`, the model picks an aspect ratio based on the inputs.
       - Allowed values: `auto`, `1:1`, `3:4`, `16:9`, `4:3`, `9:16`
-    - `images` (list of object, optional) — Up to 10 reference images to edit or draw from.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineImageReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded image.
-          - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
+    - `images` (list of ImageReference, optional) — Up to 10 reference images to edit or draw from.
     - `resolution` (enum, optional, default: 2K) — The resolution of the output image.
       - Allowed values: `1K`, `2K`
     - `seed` (integer, optional, nullable) — A seed for reproducible generation: the same seed and inputs give similar output across generations. Omit for random.
-    - `webhook` (object, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
-      - `type`: `all` (WebhookTargetAll)
-      - `type`: `ids` (WebhookTargetIds)
-        - `ids` (list of string, required) — The IDs of the workspace flows webhooks to deliver the result to. Each must be one of the workspace's configured flows webhooks.
+    - `webhook` (WebhookTarget, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
   - `model_id`: `gemini-2.5-flash-image` (Gemini25FlashImageRequest)
     - `prompt` (string, required) — A text description of the image to generate.
     - `aspect_ratio` (enum, optional, default: 16:9) — The aspect ratio of the output image. With `auto`, the model picks an aspect ratio based on the inputs.
       - Allowed values: `auto`, `1:1`, `2:3`, `3:2`, `3:4`, `4:3`, `4:5`, `5:4`, `9:16`, `16:9`, `21:9`
-    - `images` (list of object, optional) — Up to 5 reference images to edit or draw from.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineImageReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded image.
-          - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
-    - `webhook` (object, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
-      - `type`: `all` (WebhookTargetAll)
-      - `type`: `ids` (WebhookTargetIds)
-        - `ids` (list of string, required) — The IDs of the workspace flows webhooks to deliver the result to. Each must be one of the workspace's configured flows webhooks.
+    - `images` (list of ImageReference, optional) — Up to 5 reference images to edit or draw from.
+    - `webhook` (WebhookTarget, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
   - `model_id`: `gemini-3-pro-image` (Gemini3ProImageRequest)
     - `prompt` (string, required) — A text description of the image to generate.
     - `aspect_ratio` (enum, optional, default: 16:9) — The aspect ratio of the output image. With `auto`, the model picks an aspect ratio based on the inputs.
       - Allowed values: `auto`, `1:1`, `2:3`, `3:2`, `3:4`, `4:3`, `4:5`, `5:4`, `9:16`, `16:9`, `21:9`
-    - `images` (list of object, optional) — Up to 10 reference images to edit or draw from.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineImageReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded image.
-          - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
+    - `images` (list of ImageReference, optional) — Up to 10 reference images to edit or draw from.
     - `resolution` (enum, optional, default: 1K) — The resolution of the output image.
       - Allowed values: `1K`, `2K`, `4K`
-    - `webhook` (object, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
-      - `type`: `all` (WebhookTargetAll)
-      - `type`: `ids` (WebhookTargetIds)
-        - `ids` (list of string, required) — The IDs of the workspace flows webhooks to deliver the result to. Each must be one of the workspace's configured flows webhooks.
+    - `webhook` (WebhookTarget, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
   - `model_id`: `gemini-3.1-flash-image` (Gemini31FlashImageRequest)
     - `prompt` (string, required) — A text description of the image to generate.
     - `aspect_ratio` (enum, optional, default: 16:9) — The aspect ratio of the output image. With `auto`, the model picks an aspect ratio based on the inputs.
       - Allowed values: `auto`, `1:1`, `2:3`, `3:2`, `3:4`, `4:3`, `4:5`, `5:4`, `9:16`, `16:9`, `21:9`, `1:4`, `4:1`, `1:8`, `8:1`
-    - `images` (list of object, optional) — Up to 14 reference images to edit or draw from.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineImageReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded image.
-          - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
+    - `images` (list of ImageReference, optional) — Up to 14 reference images to edit or draw from.
     - `resolution` (enum, optional, default: 1K) — The resolution of the output image.
       - Allowed values: `512`, `1K`, `2K`, `4K`
-    - `webhook` (object, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
-      - `type`: `all` (WebhookTargetAll)
-      - `type`: `ids` (WebhookTargetIds)
-        - `ids` (list of string, required) — The IDs of the workspace flows webhooks to deliver the result to. Each must be one of the workspace's configured flows webhooks.
+    - `webhook` (WebhookTarget, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
   - `model_id`: `gemini-3.1-flash-lite-image` (Gemini31FlashLiteImageRequest)
     - `prompt` (string, required) — A text description of the image to generate.
     - `aspect_ratio` (enum, optional, default: 16:9) — The aspect ratio of the output image. With `auto`, the model picks an aspect ratio based on the inputs.
       - Allowed values: `auto`, `1:1`, `2:3`, `3:2`, `3:4`, `4:3`, `4:5`, `5:4`, `9:16`, `16:9`, `21:9`
-    - `images` (list of object, optional) — Up to 14 reference images to edit or draw from.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineImageReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded image.
-          - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
+    - `images` (list of ImageReference, optional) — Up to 14 reference images to edit or draw from.
     - `resolution` ("1K", optional, default: 1K) — The resolution of the output image.
-    - `webhook` (object, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
-      - `type`: `all` (WebhookTargetAll)
-      - `type`: `ids` (WebhookTargetIds)
-        - `ids` (list of string, required) — The IDs of the workspace flows webhooks to deliver the result to. Each must be one of the workspace's configured flows webhooks.
+    - `webhook` (WebhookTarget, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
   - `model_id`: `gpt-image-1` (GPTImage1Request)
     - `prompt` (string, required) — A text description of the image to generate.
     - `aspect_ratio` (enum, optional, default: 1:1) — The aspect ratio of the output image.
       - Allowed values: `1:1`, `3:2`, `2:3`
     - `background` (enum, optional, default: auto) — The background of the output image. With `auto`, the model picks the background that suits the image.
       - Allowed values: `transparent`, `opaque`, `auto`
-    - `images` (list of object, optional) — Up to 5 reference images to edit or draw from.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineImageReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded image.
-          - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
-    - `mask` (object, optional, nullable) — An image whose fully transparent areas mark where the first reference image may be edited; requires `images`.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineImageReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded image.
-          - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
+    - `images` (list of ImageReference, optional) — Up to 5 reference images to edit or draw from.
+    - `mask` (ImageReference, optional, nullable) — An image whose fully transparent areas mark where the first reference image may be edited; requires `images`.
     - `quality` (enum, optional, default: medium) — The quality of the output image.
       - Allowed values: `low`, `medium`, `high`
-    - `webhook` (object, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
-      - `type`: `all` (WebhookTargetAll)
-      - `type`: `ids` (WebhookTargetIds)
-        - `ids` (list of string, required) — The IDs of the workspace flows webhooks to deliver the result to. Each must be one of the workspace's configured flows webhooks.
+    - `webhook` (WebhookTarget, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
   - `model_id`: `gpt-image-1.5` (GPTImage1_5Request)
     - `prompt` (string, required) — A text description of the image to generate.
     - `aspect_ratio` (enum, optional, default: 1:1) — The aspect ratio of the output image.
       - Allowed values: `1:1`, `3:2`, `2:3`
     - `background` (enum, optional, default: auto) — The background of the output image. With `auto`, the model picks the background that suits the image.
       - Allowed values: `transparent`, `opaque`, `auto`
-    - `images` (list of object, optional) — Up to 5 reference images to edit or draw from.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineImageReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded image.
-          - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
-    - `mask` (object, optional, nullable) — An image whose fully transparent areas mark where the first reference image may be edited; requires `images`.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineImageReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded image.
-          - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
+    - `images` (list of ImageReference, optional) — Up to 5 reference images to edit or draw from.
+    - `mask` (ImageReference, optional, nullable) — An image whose fully transparent areas mark where the first reference image may be edited; requires `images`.
     - `quality` (enum, optional, default: medium) — The quality of the output image.
       - Allowed values: `low`, `medium`, `high`
-    - `webhook` (object, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
-      - `type`: `all` (WebhookTargetAll)
-      - `type`: `ids` (WebhookTargetIds)
-        - `ids` (list of string, required) — The IDs of the workspace flows webhooks to deliver the result to. Each must be one of the workspace's configured flows webhooks.
+    - `webhook` (WebhookTarget, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
   - `model_id`: `gpt-image-2` (GPTImage2Request)
     - `prompt` (string, required) — A text description of the image to generate.
     - `aspect_ratio` (enum, optional, default: 16:9) — The aspect ratio of the output image. With `auto`, the model picks an aspect ratio based on the inputs.
       - Allowed values: `auto`, `1:1`, `4:5`, `5:4`, `3:4`, `4:3`, `2:3`, `3:2`, `1:2`, `2:1`, `9:16`, `16:9`, `21:9`, `1:3`, `3:1`
-    - `images` (list of object, optional) — Up to 10 reference images to edit or draw from.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineImageReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded image.
-          - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
-    - `mask` (object, optional, nullable) — An image whose fully transparent areas mark where the first reference image may be edited; requires `images`.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineImageReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded image.
-          - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
+    - `images` (list of ImageReference, optional) — Up to 10 reference images to edit or draw from.
+    - `mask` (ImageReference, optional, nullable) — An image whose fully transparent areas mark where the first reference image may be edited; requires `images`.
     - `quality` (enum, optional, default: medium) — The quality of the output image.
       - Allowed values: `low`, `medium`, `high`
     - `resolution` (enum, optional, default: 1K) — The resolution of the output image.
       - Allowed values: `1K`, `2K`, `4K`
-    - `webhook` (object, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
-      - `type`: `all` (WebhookTargetAll)
-      - `type`: `ids` (WebhookTargetIds)
-        - `ids` (list of string, required) — The IDs of the workspace flows webhooks to deliver the result to. Each must be one of the workspace's configured flows webhooks.
+    - `webhook` (WebhookTarget, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
   - `model_id`: `gpt-image-2.5-flare` (GPTImage25FlareRequest)
     - `prompt` (string, required) — A text description of the image to generate.
     - `aspect_ratio` (enum, optional, default: 16:9) — The aspect ratio of the output image. With `auto`, the model picks an aspect ratio based on the inputs.
       - Allowed values: `auto`, `1:1`, `4:5`, `5:4`, `3:4`, `4:3`, `2:3`, `3:2`, `1:2`, `2:1`, `9:16`, `16:9`, `21:9`, `1:3`, `3:1`
-    - `images` (list of object, optional) — Up to 10 reference images to edit or draw from.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineImageReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded image.
-          - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
-    - `mask` (object, optional, nullable) — An image whose fully transparent areas mark where the first reference image may be edited; requires `images`.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineImageReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded image.
-          - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
+    - `images` (list of ImageReference, optional) — Up to 10 reference images to edit or draw from.
+    - `mask` (ImageReference, optional, nullable) — An image whose fully transparent areas mark where the first reference image may be edited; requires `images`.
     - `quality` (enum, optional, default: high) — The quality of the output image.
       - Allowed values: `low`, `medium`, `high`, `xhigh`, `max`
     - `resolution` (enum, optional, default: 1K) — The resolution of the output image.
       - Allowed values: `1K`, `2K`, `4K`
-    - `webhook` (object, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
-      - `type`: `all` (WebhookTargetAll)
-      - `type`: `ids` (WebhookTargetIds)
-        - `ids` (list of string, required) — The IDs of the workspace flows webhooks to deliver the result to. Each must be one of the workspace's configured flows webhooks.
+    - `webhook` (WebhookTarget, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
   - `model_id`: `gpt-image-2.5-sunburst` (GPTImage25SunburstRequest)
     - `prompt` (string, required) — A text description of the image to generate.
     - `aspect_ratio` (enum, optional, default: 16:9) — The aspect ratio of the output image. With `auto`, the model picks an aspect ratio based on the inputs.
       - Allowed values: `auto`, `1:1`, `4:5`, `5:4`, `3:4`, `4:3`, `2:3`, `3:2`, `1:2`, `2:1`, `9:16`, `16:9`, `21:9`, `1:3`, `3:1`
-    - `images` (list of object, optional) — Up to 10 reference images to edit or draw from.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineImageReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded image.
-          - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
-    - `mask` (object, optional, nullable) — An image whose fully transparent areas mark where the first reference image may be edited; requires `images`.
-      - `type`: `asset` (StaticAssetReference)
-        - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
-      - `type`: `generation` (GenerationReference)
-        - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
-      - `type`: `inline_base64` (InlineImageReference)
-        - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
-        - `mime_type` (enum, required) — The MIME type of the encoded image.
-          - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
+    - `images` (list of ImageReference, optional) — Up to 10 reference images to edit or draw from.
+    - `mask` (ImageReference, optional, nullable) — An image whose fully transparent areas mark where the first reference image may be edited; requires `images`.
     - `quality` (enum, optional, default: high) — The quality of the output image.
       - Allowed values: `low`, `medium`, `high`, `xhigh`, `max`
     - `resolution` (enum, optional, default: 1K) — The resolution of the output image.
       - Allowed values: `1K`, `2K`, `4K`
-    - `webhook` (object, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
-      - `type`: `all` (WebhookTargetAll)
-      - `type`: `ids` (WebhookTargetIds)
-        - `ids` (list of string, required) — The IDs of the workspace flows webhooks to deliver the result to. Each must be one of the workspace's configured flows webhooks.
+    - `webhook` (WebhookTarget, optional, nullable) — Include to send the generation's result to the workspace's configured flows webhooks once it completes or fails. The webhook payload matches the terminal response of the corresponding GET endpoint.
 
 ## Response
 
@@ -309,10 +148,34 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ImageReference
+
+- `type`: `asset` (StaticAssetReference)
+  - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
+- `type`: `generation` (GenerationReference)
+  - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
+- `type`: `inline_base64` (InlineImageReference)
+  - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
+  - `mime_type` (enum, required) — The MIME type of the encoded image.
+    - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
+
+### WebhookTarget
+
+- `type`: `all` (WebhookTargetAll)
+- `type`: `ids` (WebhookTargetIds)
+  - `ids` (list of string, required) — The IDs of the workspace flows webhooks to deliver the result to. Each must be one of the workspace's configured flows webhooks.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

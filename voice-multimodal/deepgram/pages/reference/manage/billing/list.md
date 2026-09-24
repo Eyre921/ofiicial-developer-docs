@@ -32,11 +32,7 @@ Reference: https://developers.deepgram.com/reference/manage/billing/list
 
 A list of outstanding balances
 
-- `balances` (list of object, optional)
-  - `balance_id` (string, optional) — The unique identifier of the balance
-  - `amount` (double, optional, default: 0) — The amount of the balance
-  - `units` (string, optional) — The units of the balance, such as "USD"
-  - `purchase_order_id` (string, optional) — Description or reference of the purchase
+- `balances` (list of ListProjectBalancesV1ResponseBalancesItems, optional)
 
 ## Errors
 
@@ -44,16 +40,29 @@ A list of outstanding balances
 
 Invalid Request
 
-- `string or object or object`
-  - ErrorResponseLegacyError
-    - `err_code` (string, optional) — The error code
-    - `err_msg` (string, optional) — The error message
-    - `request_id` (string, optional) — The request ID
-  - ErrorResponseModernError
-    - `category` (string, optional) — The category of the error
-    - `message` (string, optional) — A message about the error
-    - `details` (string, optional) — A description of the error
-    - `request_id` (string, optional) — The unique identifier of the request
+- `ErrorResponse`
+
+## Types
+
+### ListProjectBalancesV1ResponseBalancesItems
+
+- `balance_id` (string, optional) — The unique identifier of the balance
+- `amount` (double, optional, default: 0) — The amount of the balance
+- `units` (string, optional) — The units of the balance, such as "USD"
+- `purchase_order_id` (string, optional) — Description or reference of the purchase
+
+### ErrorResponseLegacyError
+
+- `err_code` (string, optional) — The error code
+- `err_msg` (string, optional) — The error message
+- `request_id` (string, optional) — The request ID
+
+### ErrorResponseModernError
+
+- `category` (string, optional) — The category of the error
+- `message` (string, optional) — A message about the error
+- `details` (string, optional) — A description of the error
+- `request_id` (string, optional) — The unique identifier of the request
 
 ## Examples
 

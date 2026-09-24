@@ -32,7 +32,7 @@ Reference: https://elevenlabs.io/docs/api-reference/text-to-sound-effects/conver
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_Sound_Generation_v1_sound_generation_post.
 
 - `text` (string, required) — The text that will get converted into a sound effect.
 - `loop` (boolean, optional, default: false) — Whether to create a sound effect that loops smoothly. Only available for the 'eleven_text_to_sound_v2 model'.
@@ -55,10 +55,17 @@ The generated sound effect as an MP3 file
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

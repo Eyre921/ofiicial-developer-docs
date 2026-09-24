@@ -17,7 +17,7 @@ Use a structured procedure when specific steps must happen the same way on every
 Like every procedure, a structured procedure has a trigger that describes when it applies. When a conversation matches the trigger, the agent runs the procedure's steps in order, then returns to the rest of the conversation.
 
 ![Structured procedure
-editor](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bc996f67b2afad8f1de5abe8febcf8af3766b4f098627b0ae60e0456b3c2703b/assets/images/conversational-ai/procedures/structured-procedure-example.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113153Z&X-Amz-Expires=604800&X-Amz-Signature=c6e4d772cc619077ff5ba850d469e790fc8402598c15f5006a53205aa237cc77&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+editor](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bc996f67b2afad8f1de5abe8febcf8af3766b4f098627b0ae60e0456b3c2703b/assets/images/conversational-ai/procedures/structured-procedure-example.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113132Z&X-Amz-Expires=604800&X-Amz-Signature=1c370a8ab91eb64d845ea6989356570b94ce1ec154728eab534ae53a3ff7a2d5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## When to use a structured procedure
 
@@ -51,7 +51,7 @@ The procedure body is an ordered list of typed steps. There are multiple step ty
 | **Retry**         | Reattempts a failed tool call. Available only inside tool failure handling.      |
 
 ![Structured procedure step type
-menu](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/14976a6b9979d21fd7c77541a49e7475f8aa0764af4940746d3390804e7c4598/assets/images/conversational-ai/procedures/step_type_menu.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113153Z&X-Amz-Expires=604800&X-Amz-Signature=217b36c1622e706778c5bd5883ea32730ff074da6aa749afb1c052da82cd6b5b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+menu](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/14976a6b9979d21fd7c77541a49e7475f8aa0764af4940746d3390804e7c4598/assets/images/conversational-ai/procedures/step_type_menu.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113132Z&X-Amz-Expires=604800&X-Amz-Signature=4a0651f0c12c4b60f73a4be8ccba5d8fef65f6b2a6ae62e8d4629024f2dd5410&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## API step reference
 
@@ -427,10 +427,12 @@ curl -X PATCH "https://api.elevenlabs.io/v1/convai/agents/agent_7101k5zvyjhmfg98
   }'
 ```
 
-Saving a structured draft does not validate or regenerate its workflow. Before publishing
-changes or after merging agent branches, call `/procedures/compile` and publish the exact
-workflow it returns. Otherwise, the workflow can contain stale, missing, duplicated, or
-orphaned procedure nodes. The dashboard handles this automatically.
+> **Warning**
+>
+> Saving a structured draft does not validate or regenerate its workflow. Before publishing
+> changes or after merging agent branches, call `/procedures/compile` and publish the exact
+> workflow it returns. Otherwise, the workflow can contain stale, missing, duplicated, or
+> orphaned procedure nodes. The dashboard handles this automatically.
 
 ### Generate and publish the workflow
 
@@ -507,9 +509,11 @@ schemas.
 
 ## Best practices
 
-Each step type already enforces its own behavior, so you rarely need to spell it out. Write the
-intent of each step and let the step type do the rest. The guidance below covers the cases worth
-getting right.
+> **Tip**
+>
+> Each step type already enforces its own behavior, so you rarely need to spell it out. Write the
+> intent of each step and let the step type do the rest. The guidance below covers the cases worth
+> getting right.
 
 ### Writing steps
 

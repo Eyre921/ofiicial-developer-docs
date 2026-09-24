@@ -57,8 +57,10 @@ To enable out-of-band DTMF:
 2. Select the **Play keypad touch tone** tool
 3. Check the **Use out-of-band DTMF (RFC 4733)** checkbox
 
-Out-of-band DTMF is only available for SIP trunking calls. This setting will be ignored for Twilio
-Native integration calls.
+> **Note**
+>
+> Out-of-band DTMF is only available for SIP trunking calls. This setting will be ignored for Twilio
+> Native integration calls.
 
 ## Supported characters
 
@@ -129,5 +131,7 @@ await elevenlabs.conversationalAi.agents.create({
 });
 ```
 
-The tool only works during active phone calls powered by Twilio or SIP trunking. It will return an
-error if called outside of a phone conversation context.
+> **Note**
+>
+> The tool only works during active phone calls powered by Twilio or SIP trunking. It will return an
+> error if called outside of a phone conversation context.

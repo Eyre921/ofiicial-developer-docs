@@ -136,7 +136,9 @@ While the Deepgram Engine can make use of multiple NVIDIA GPUs, in most cases, d
 
 Deepgram Engine has been implemented and is optimized to take advantage of NVIDIA GPUs, but it does support handling inference tasks in CPU-only environments. CPU-only instances should only be provisioned in use-cases and scenarios where NVIDIA GPU-accelerated instances are unavailable.
 
-For production environments, set `gpuRequired = true` in your `engine.toml` configuration. This ensures the Engine will fail fast if no GPU is detected, rather than silently falling back to CPU-only mode, which can result in significantly degraded performance.
+> **Warning**
+>
+> For production environments, set `gpuRequired = true` in your `engine.toml` configuration. This ensures the Engine will fail fast if no GPU is detected, rather than silently falling back to CPU-only mode, which can result in significantly degraded performance.
 
 ### Container Image Cache
 

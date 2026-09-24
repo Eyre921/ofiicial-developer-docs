@@ -18,7 +18,9 @@ Use the `CloseStream` message to close the WebSocket stream. Flux decodes the au
 
 In conversational audio processing, there are scenarios where you need to stop a stream and close the connection. The `CloseStream` message instructs the server to finish decoding the audio it has already received, emit the corresponding `Update` messages, and then terminate the WebSocket connection.
 
-`CloseStream` does not finalize the active turn. No `EndOfTurn` event is emitted, so the last message you receive is an interim `Update`, not a confirmed final transcript — treat the most recent `Update` as the final transcript for the stream. Flux does not emit a summary metadata object, and the server closes the connection without sending a WebSocket close status code.
+> **Warning**
+>
+> `CloseStream` does not finalize the active turn. No `EndOfTurn` event is emitted, so the last message you receive is an interim `Update`, not a confirmed final transcript — treat the most recent `Update` as the final transcript for the stream. Flux does not emit a summary metadata object, and the server closes the connection without sending a WebSocket close status code.
 
 ## Example Payloads
 

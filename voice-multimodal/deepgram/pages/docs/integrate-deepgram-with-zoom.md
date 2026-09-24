@@ -18,9 +18,13 @@ In a real implementation, you will likely want to modify the script to provide a
 
 ## Before you Begin
 
-Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
+> **Info**
+>
+> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
 
-Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
+> **Info**
+>
+> Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
 
 ### Create a Zoom Pro Account
 
@@ -52,11 +56,11 @@ To install and start the Node Media Server, run the following command:
 
 That should result in output like:
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/b80f8614496090fa2e53fda6fada410e4b3ee983a7297de2830a2a44f29cacd0/images/3014887-image.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113104Z&X-Amz-Expires=604800&X-Amz-Signature=07587a0417741ce80201a9e0d6ca07326ce0fe5cc009f8d371e3639338eaef6a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/b80f8614496090fa2e53fda6fada410e4b3ee983a7297de2830a2a44f29cacd0/images/3014887-image.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113133Z&X-Amz-Expires=604800&X-Amz-Signature=b69f26f19cafd4af167129fbdf16d5da35818c26f5a4dbea0666e7d186fcf3a2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 To visit your new server and verify everything is working, navigate to [http://localhost:8000/admin](http://localhost:8000/admin) and log in with the username `admin` and the password `admin`. You should see the following interface if everything is set up correctly:
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/0fc292b7c9e9ed3eed9919aa72a19b09e0ddefb037137d09cdd7067efa28dbbc/images/e0da771-image.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113104Z&X-Amz-Expires=604800&X-Amz-Signature=cb5865c9cc7e799c6277a3b7e9fde22baa96009ec2586e885bb43e5367d70d94&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/0fc292b7c9e9ed3eed9919aa72a19b09e0ddefb037137d09cdd7067efa28dbbc/images/e0da771-image.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113133Z&X-Amz-Expires=604800&X-Amz-Signature=bc73a962c2c0de1aa7109b85d03866154ea92c8ebcfead41603401558f862f98&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Make the Server Publicly Available
 
@@ -68,11 +72,13 @@ We’ll tell Ngrok to forward TCP traffic for port 1935 (the default port Node M
 
 The output should look like this:
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/89f8c55b58da6eb69aa455b0042bc0d28f4b28678449506e851c9e3ab33a8d2c/images/3d6e5ee-image.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113104Z&X-Amz-Expires=604800&X-Amz-Signature=22baaec96d7bb4c91998f5ec79707d9183219d17c541b621f80d23c8deee1e24&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/89f8c55b58da6eb69aa455b0042bc0d28f4b28678449506e851c9e3ab33a8d2c/images/3d6e5ee-image.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113133Z&X-Amz-Expires=604800&X-Amz-Signature=7f8c132dc220372c55aeab7c2c685e2785bebefc05d16901fb942a6eb9c3a9cc&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Make sure to save the forwarding URL which in this case is `tcp://2.tcp.ngrok.io:12024`. We'll need to enter this URL in the next step.
 
-This environment is designed for development, not production. Using ngrok will impact the latency and bandwidth of your stream. Do not use ngrok when conducting performance or latency testing.
+> **Warning**
+>
+> This environment is designed for development, not production. Using ngrok will impact the latency and bandwidth of your stream. Do not use ngrok when conducting performance or latency testing.
 
 ### Download and Configure the Streaming Script
 
@@ -104,15 +110,15 @@ Next, you will need to start your Zoom meeting and configure your Zoom live-stre
 
 1. Start your Zoom meeting and join the meeting with computer audio.
 
-   ![Join Zoom with Computer Audio](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/ec9b89fcac412d0f67c09668ce34b79738a3c77076b3e4a9cf27aaefe4a50953/images/2d38ff0-integrate-zoom_join-computer-audio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113104Z&X-Amz-Expires=604800&X-Amz-Signature=cad0e687b4baf56de247fb9e44de8bd5ccaecd4f99bd8fa355786551c1a87345&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+   ![Join Zoom with Computer Audio](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/ec9b89fcac412d0f67c09668ce34b79738a3c77076b3e4a9cf27aaefe4a50953/images/2d38ff0-integrate-zoom_join-computer-audio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113133Z&X-Amz-Expires=604800&X-Amz-Signature=e6cf643c09bcad54557fe22b447e41a8b92b5c57963a7512a84c4cc8f392243c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 2. Select **More…** and then **Live on Custom Live Streaming Service**.
 
-   ![Zoom More menu](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/761e3ecb5fbe4180eb7dd9c23d7bd6e342ea8e263798c66b5690442cea5a6e29/images/e9f93f4-integrate-zoom_more-livestream.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113104Z&X-Amz-Expires=604800&X-Amz-Signature=65708c7ed3029aefd157bc15bc6ff75e7848a4309856694f0ce5633dd269da4f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+   ![Zoom More menu](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/761e3ecb5fbe4180eb7dd9c23d7bd6e342ea8e263798c66b5690442cea5a6e29/images/e9f93f4-integrate-zoom_more-livestream.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113133Z&X-Amz-Expires=604800&X-Amz-Signature=d3027508b3cd42b5889a8f71280bb73bc0083a7cee341a00a555c63b8077f3dd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 3. Configure streaming, and select **Go Live!**.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/8dda6d7650d4690293f5cbb0880a14feef0a6d398dd154629a6eb446b533ab0c/images/27cd0af-image.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113104Z&X-Amz-Expires=604800&X-Amz-Signature=6098fe7d42b0ccdcfd52e635daaf20f2f73a5e10f15dbf737ada52a9328c9fa4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/8dda6d7650d4690293f5cbb0880a14feef0a6d398dd154629a6eb446b533ab0c/images/27cd0af-image.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113133Z&X-Amz-Expires=604800&X-Amz-Signature=674b2194be5cd1eec9dddd10a241c1dc41b5910471885cdfe878ec76e91bc64d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 | Field                       | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -162,15 +168,19 @@ Replace `url` with the the **Streaming URL** you entered in Zoom. This will be t
 
 Replace `keyname` with the **Streaming key** you entered in Zoom.
 
-Depending on your environment, you may need to modify the shell script to use `python` instead of `python3`.
+> **Warning**
+>
+> Depending on your environment, you may need to modify the shell script to use `python` instead of `python3`.
 
 ### See Results
 
 Start speaking into your microphone. After a brief delay, you should see results of the audio transcription of your livestreaming Zoom call start to appear on your screen.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/d8aaa167806266d7a1b094f7a4f9b3c11a689fece091c84da5d08d57522aa0be/images/7f67ed9-image.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113104Z&X-Amz-Expires=604800&X-Amz-Signature=4419884f4ffff2cdd7902664b94570cfecf604979295f7ced3c06a33cb76e747&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/d8aaa167806266d7a1b094f7a4f9b3c11a689fece091c84da5d08d57522aa0be/images/7f67ed9-image.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113133Z&X-Amz-Expires=604800&X-Amz-Signature=637ccda8ca070a98af2932d42e6f8e87cfd6a4b29ef4ac87452cfa447589fb66&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-The speed of returned results depends on both Deepgram and Zoom availability, and the setup of your hosting environment. As mentioned above, using ngrok may introduce additional latency.
+> **Info**
+>
+> The speed of returned results depends on both Deepgram and Zoom availability, and the setup of your hosting environment. As mentioned above, using ngrok may introduce additional latency.
 
 By default, this script does not return interim results, only finalized transcripts. If you require the fastest possible transcripts (with the potential for less accurate transcriptions), modify line 20 in `stream.py` to add the parameter `interim_results=true`.
 

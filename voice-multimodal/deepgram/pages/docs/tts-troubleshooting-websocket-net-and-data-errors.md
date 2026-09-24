@@ -42,7 +42,9 @@ If a failure to connect occurs, Deepgram returns custom HTTP headers for debuggi
 * `dg-request-id`: Always present, contains the request ID.
 * `dg-error`: Present on failed upgrades, contains the error message.
 
-Access to these headers will depend on the WebSocket library you are using. For example, browser-based WebSocket libraries like the JavaScript WebSocket library only allow access to HTTP header information for successful WebSocket connections.
+> **Info**
+>
+> Access to these headers will depend on the WebSocket library you are using. For example, browser-based WebSocket libraries like the JavaScript WebSocket library only allow access to HTTP header information for successful WebSocket connections.
 
 ### Debugging Connection Failures
 

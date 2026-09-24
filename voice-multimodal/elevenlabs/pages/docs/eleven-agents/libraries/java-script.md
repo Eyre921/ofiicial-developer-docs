@@ -8,7 +8,9 @@ path: docs/eleven-agents/libraries/java-script
 
 # JavaScript SDK
 
-Also see the [ElevenAgents overview](/docs/eleven-agents/overview)
+> **Info**
+>
+> Also see the [ElevenAgents overview](/docs/eleven-agents/overview)
 
 ## Installation
 
@@ -22,9 +24,11 @@ yarn add @elevenlabs/client
 pnpm install @elevenlabs/client
 ```
 
-Upgrading from an earlier version? Run `npx skills add elevenlabs/packages` to install the
-`elevenlabs:sdk-migration` skill for your AI coding agent, which automates import changes and API
-updates.
+> **Tip**
+>
+> Upgrading from an earlier version? Run `npx skills add elevenlabs/packages` to install the
+> `elevenlabs:sdk-migration` skill for your AI coding agent, which automates import changes and API
+> updates.
 
 ## Usage
 
@@ -63,9 +67,11 @@ const conversation = await Conversation.startSession({
 });
 ```
 
-The connection type is automatically inferred based on the conversation mode. Voice conversations
-use WebRTC and text-only conversations use WebSocket by default. You can still explicitly specify
-`connectionType: 'webrtc'` or `connectionType: 'websocket'` if needed.
+> **Note**
+>
+> The connection type is automatically inferred based on the conversation mode. Voice conversations
+> use WebRTC and text-only conversations use WebSocket by default. You can still explicitly specify
+> `connectionType: 'webrtc'` or `connectionType: 'websocket'` if needed.
 
 ##### Private agents
 
@@ -161,9 +167,11 @@ The options passed to `startSession` can also be used to register optional callb
 * **onCanSendFeedbackChange** - handler called when sending feedback becomes available or unavailable.
 * **onAudioAlignment** - handler called when audio alignment data is received, providing character-level timing information for agent speech.
 
-Not all client events are enabled by default for an agent. If you have enabled a callback but
-aren't seeing events come through, ensure that your ElevenLabs agent has the corresponding event
-enabled. You can do this in the "Advanced" tab of the agent settings in the ElevenLabs dashboard.
+> **Warning**
+>
+> Not all client events are enabled by default for an agent. If you have enabled a callback but
+> aren't seeing events come through, ensure that your ElevenLabs agent has the corresponding event
+> enabled. You can do this in the "Advanced" tab of the agent settings in the ElevenLabs dashboard.
 
 #### Return value
 
@@ -269,8 +277,10 @@ conversation.setMicMuted(false);
 
 Allows you to change the audio input device during an active voice conversation. This method is only available for voice conversations.
 
-In WebRTC mode the input format and sample rate are hardcoded to `pcm` and `48000` respectively.
-Changing those values when changing the input device is a no-op.
+> **Note**
+>
+> In WebRTC mode the input format and sample rate are hardcoded to `pcm` and `48000` respectively.
+> Changing those values when changing the input device is a no-op.
 
 ```js
 const conversation = await Conversation.startSession({
@@ -295,8 +305,10 @@ If the device ID is invalid, the default device will be used instead.
 
 Allows you to change the audio output device during an active voice conversation. This method is only available for voice conversations.
 
-In WebRTC mode the output format and sample rate are hardcoded to `pcm` and `48000` respectively.
-Changing those values when changing the output device is a no-op.
+> **Note**
+>
+> In WebRTC mode the output format and sample rate are hardcoded to `pcm` and `48000` respectively.
+> Changing those values when changing the output device is a no-op.
 
 ```js
 const conversation = await Conversation.startSession({
@@ -314,15 +326,19 @@ await conversation.changeOutputDevice({
 });
 ```
 
-Device switching only works for voice conversations. If no specific `deviceId` is provided, the
-browser will use its default device selection. You can enumerate available devices using the
-[MediaDevices.enumerateDevices()](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/enumerateDevices)
-API.
+> **Note**
+>
+> Device switching only works for voice conversations. If no specific `deviceId` is provided, the
+> browser will use its default device selection. You can enumerate available devices using the
+> [MediaDevices.enumerateDevices()](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/enumerateDevices)
+> API.
 
 **getInputByteFrequencyData / getOutputByteFrequencyData**
 
 Methods that return `Uint8Array`s containing the current input/output frequency data. See [AnalyserNode.getByteFrequencyData](https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode/getByteFrequencyData) for more information.
 
-These methods are only available for voice conversations. In WebRTC mode the audio is hardcoded to
-use `pcm_48000`, meaning any visualization using the returned data might show different patterns
-to WebSocket connections.
+> **Note**
+>
+> These methods are only available for voice conversations. In WebRTC mode the audio is hardcoded to
+> use `pcm_48000`, meaning any visualization using the returned data might show different patterns
+> to WebSocket connections.

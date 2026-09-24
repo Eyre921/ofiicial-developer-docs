@@ -93,16 +93,20 @@ In this scenario, utterance end fires after detecting the 2-second gap (between 
 | Maximum   | 5,000 ms                       |
 | Step size | Any integer value within range |
 
-**Note for Self-Hosted and Deepgram Dedicated Users:** If your endpoint has a modified step size configuration, the minimum value becomes that step size instead of 1,000 ms. For example:
-
-* Step size configured for 0.2 (200 ms) → minimum `utterance_end_ms` value is 200
-* Step size configured for 1.5 (1500 ms) → minimum `utterance_end_ms` value is 1500
-
-To learn more about [Deepgram Dedicated](https://deepgram.com/dedicated) or Self-Hosted offerings, reach out to your Deepgram account representative or [contact our sales team](https://deepgram.com/contact-us). For technical details on configuring custom endpoints, see our [Custom Endpoints documentation](https://developers.deepgram.com/reference/custom-endpoints).
+> **Info**
+>
+> **Note for Self-Hosted and Deepgram Dedicated Users:** If your endpoint has a modified step size configuration, the minimum value becomes that step size instead of 1,000 ms. For example:
+>
+> * Step size configured for 0.2 (200 ms) → minimum `utterance_end_ms` value is 200
+> * Step size configured for 1.5 (1500 ms) → minimum `utterance_end_ms` value is 1500
+>
+> To learn more about [Deepgram Dedicated](https://deepgram.com/dedicated) or Self-Hosted offerings, reach out to your Deepgram account representative or [contact our sales team](https://deepgram.com/contact-us). For technical details on configuring custom endpoints, see our [Custom Endpoints documentation](https://developers.deepgram.com/reference/custom-endpoints).
 
 UtteranceEnd relies on Deepgram's `interim_results` feature and Deepgram's Interim Results are typically sent every second, so using a value of less 1000ms for `utterance_end_ms` will not offer you any benefits.
 
-When using `utterance_end_ms`, setting `interim_results=true` is also required.
+> **Info**
+>
+> When using `utterance_end_ms`, setting `interim_results=true` is also required.
 
 **`Python`**
 
@@ -178,9 +182,11 @@ The UtteranceEnd JSON message will look similar to this:
 * The `channel` field is interpreted as `[A,B]`, where `A` is the channel index, and `B` is the total number of channels. The above example is channel 0 of single-channel audio.
 * The `last_word_end` field is the time at which end of speech was detected.
 
-**Special Case: `last_word_end: -1`**
-
-If you receive `last_word_end: -1`, this indicates that the result was already finalized before the `utterance_end_ms` condition was met. In this case, you should ignore the UtteranceEnd message to avoid processing duplicate or stale utterance end notifications.
+> **Warning**
+>
+> **Special Case: `last_word_end: -1`**
+>
+> If you receive `last_word_end: -1`, this indicates that the result was already finalized before the `utterance_end_ms` condition was met. In this case, you should ignore the UtteranceEnd message to avoid processing duplicate or stale utterance end notifications.
 
 If you compare this to the Results response below, you will see that the `last_word_end` from the UtteranceEnd response matches the data in the `alternatives[0].words[1].end` field of the Results response. This is due to the gap identified after the final word.
 

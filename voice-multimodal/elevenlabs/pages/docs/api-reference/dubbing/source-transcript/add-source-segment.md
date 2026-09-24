@@ -31,7 +31,7 @@ Reference: https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/ad
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a DubbingSegmentCreateRequest.
 
 - `text` (string, required) — The text of the new segment.
 - `speaker_id` (string, required) — Identifier of the segment's speaker.
@@ -44,13 +44,7 @@ This endpoint expects an object.
 
 Successful Response
 
-- `segment` (object, required) — The segment in its updated state.
-  - `id` (string, required) — Stable identifier of the segment, used to address it in edit requests.
-  - `text` (string, required) — The transcribed text of the segment.
-  - `speaker_id` (string, required) — Identifier of the segment's speaker.
-  - `start_s` (double, required) — Start time of the segment, in seconds.
-  - `end_s` (double, required) — End time of the segment, in seconds.
-  - `external_id` (string, optional, nullable) — The caller-supplied external ID for this segment, if one was provided.
+- `segment` (DubbingTranscriptSegment, required) — The segment in its updated state.
 - `revision` (integer, required) — The project's source-transcript revision after this edit.
 
 ## Errors
@@ -59,10 +53,28 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### DubbingTranscriptSegment
+
+One segment of a source transcript.
+
+- `id` (string, required) — Stable identifier of the segment, used to address it in edit requests.
+- `text` (string, required) — The transcribed text of the segment.
+- `speaker_id` (string, required) — Identifier of the segment's speaker.
+- `start_s` (double, required) — Start time of the segment, in seconds.
+- `end_s` (double, required) — End time of the segment, in seconds.
+- `external_id` (string, optional, nullable) — The caller-supplied external ID for this segment, if one was provided.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

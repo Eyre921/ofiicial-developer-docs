@@ -44,35 +44,7 @@ Reference: https://elevenlabs.io/docs/api-reference/users/list
 
 Successful Response
 
-- `users` (list of object, required)
-  - `user_id` (string, required)
-  - `last_contact_unix_secs` (integer, required)
-  - `first_contact_unix_secs` (integer, required)
-  - `conversation_count` (integer, required)
-  - `last_contact_conversation_id` (string, required)
-  - `sentiment` (object, required)
-    - `scored_conversation_count` (integer, required)
-    - `positive_count` (integer, required)
-    - `neutral_count` (integer, required)
-    - `negative_count` (integer, required)
-    - `average_sentiment_score` (double, required, nullable)
-    - `average_frustration_score` (double, required, nullable)
-    - `recent_scored_conversation_count` (integer, required)
-    - `recent_positive_count` (integer, required)
-    - `recent_neutral_count` (integer, required)
-    - `recent_negative_count` (integer, required)
-    - `recent_average_sentiment_score` (double, required, nullable)
-    - `recent_average_frustration_score` (double, required, nullable)
-  - `last_contact_agent_id` (string, optional, nullable)
-  - `last_contact_agent_name` (string, optional, nullable)
-  - `most_frustrated_conversations` (list of object, optional)
-    - `conversation_id` (string, required)
-    - `agent_id` (string, required)
-    - `start_time_unix_secs` (integer, required)
-    - `overall_label` (enum, required)
-      - Allowed values: `positive`, `neutral`, `negative`
-    - `overall_sentiment_score` (double, required)
-    - `overall_frustration_score` (double, required)
+- `users` (list of ConversationUserResponseModel, required)
 - `has_more` (boolean, required)
 - `next_cursor` (string, optional, nullable)
 
@@ -82,10 +54,54 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ConversationUserResponseModel
+
+- `user_id` (string, required)
+- `last_contact_unix_secs` (integer, required)
+- `first_contact_unix_secs` (integer, required)
+- `conversation_count` (integer, required)
+- `last_contact_conversation_id` (string, required)
+- `sentiment` (SentimentAggregate, required)
+- `last_contact_agent_id` (string, optional, nullable)
+- `last_contact_agent_name` (string, optional, nullable)
+- `most_frustrated_conversations` (list of FrustratedConversationRef, optional)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### SentimentAggregate
+
+- `scored_conversation_count` (integer, required)
+- `positive_count` (integer, required)
+- `neutral_count` (integer, required)
+- `negative_count` (integer, required)
+- `average_sentiment_score` (double, required, nullable)
+- `average_frustration_score` (double, required, nullable)
+- `recent_scored_conversation_count` (integer, required)
+- `recent_positive_count` (integer, required)
+- `recent_neutral_count` (integer, required)
+- `recent_negative_count` (integer, required)
+- `recent_average_sentiment_score` (double, required, nullable)
+- `recent_average_frustration_score` (double, required, nullable)
+
+### FrustratedConversationRef
+
+- `conversation_id` (string, required)
+- `agent_id` (string, required)
+- `start_time_unix_secs` (integer, required)
+- `overall_label` (enum, required)
+  - Allowed values: `positive`, `neutral`, `negative`
+- `overall_sentiment_score` (double, required)
+- `overall_frustration_score` (double, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

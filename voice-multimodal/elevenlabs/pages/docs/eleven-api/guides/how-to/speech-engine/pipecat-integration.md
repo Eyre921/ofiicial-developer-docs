@@ -10,9 +10,11 @@ path: docs/eleven-api/guides/how-to/speech-engine/pipecat-integration
 
 This guide shows how to use [Pipecat](https://www.pipecat.ai/) as the LLM pipeline inside a Speech Engine brain server. Speech Engine handles the voice loop — speech-to-text, turn-taking, and text-to-speech — while Pipecat handles text generation through a composable pipeline of processors (LLM calls, RAG, function calls, guardrails, content filters).
 
-This guide is Python only because Pipecat is a Python framework on the server side. There is no
-Node equivalent for the pipeline processors; a `pipecat-client-js` package exists, but it is a
-browser client that talks to a Pipecat server, not a way to build pipelines in TypeScript.
+> **Note**
+>
+> This guide is Python only because Pipecat is a Python framework on the server side. There is no
+> Node equivalent for the pipeline processors; a `pipecat-client-js` package exists, but it is a
+> browser client that talks to a Pipecat server, not a way to build pipelines in TypeScript.
 
 ## Architecture
 

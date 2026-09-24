@@ -19,7 +19,9 @@ This page explains the two endpoint types and helps you choose between them. For
 
 ## Real-time vs. asynchronous endpoints
 
-**Asynchronous endpoints are temporarily unavailable** for Marketplace-hosted Deepgram, so deploy a real-time endpoint. The comparison below is kept for reference. If your use case needs asynchronous inference or scale-to-zero, contact a [Deepgram representative](https://deepgram.com/contact-us).
+> **Note**
+>
+> **Asynchronous endpoints are temporarily unavailable** for Marketplace-hosted Deepgram, so deploy a real-time endpoint. The comparison below is kept for reference. If your use case needs asynchronous inference or scale-to-zero, contact a [Deepgram representative](https://deepgram.com/contact-us).
 
 Both endpoint types can transcribe pre-recorded audio — the difference is *how* the request is processed and returned, and that determines which signal each scales on.
 

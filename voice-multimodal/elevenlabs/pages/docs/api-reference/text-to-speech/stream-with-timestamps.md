@@ -38,20 +38,13 @@ Reference: https://elevenlabs.io/docs/api-reference/text-to-speech/stream-with-t
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_text_to_speech_stream_with_timestamps.
 
 - `text` (string, required) — The text that will get converted into speech.
 - `model_id` (string, optional, default: eleven_multilingual_v2) — Identifier of the model that will be used, you can query them using GET /v1/models. The model needs to have support for text to speech, you can check this using the can_do_text_to_speech property.
 - `language_code` (string, optional, nullable) — Language code (ISO 639-1) used to enforce a language for the model and text normalization. If the model does not support the provided language code, it will be ignored. This parameter is not supported for multilingual_v2 models.
-- `voice_settings` (object, optional, nullable) — Voice settings overriding stored settings for the given voice. They are applied only on the given request.
-  - `stability` (double, optional, nullable, default: 0.5) — Determines how stable the voice is and the randomness between each generation. Lower values introduce broader emotional range for the voice. Higher values can result in a monotonous voice with limited emotion.
-  - `use_speaker_boost` (boolean, optional, nullable, default: true) — This setting boosts the similarity to the original speaker. Using this setting requires a slightly higher computational load, which in turn increases latency.
-  - `similarity_boost` (double, optional, nullable, default: 0.75) — Determines how closely the AI should adhere to the original voice when attempting to replicate it.
-  - `style` (double, optional, nullable, default: 0) — Determines the style exaggeration of the voice. This setting attempts to amplify the style of the original speaker. It does consume additional computational resources and might increase latency if set to anything other than 0.
-  - `speed` (double, optional, nullable, default: 1) — Adjusts the speed of the voice. A value of 1.0 is the default speed, while values less than 1.0 slow down the speech, and values greater than 1.0 speed it up.
-- `pronunciation_dictionary_locators` (list of object, optional, nullable) — A list of pronunciation dictionary locators (id, version_id) to be applied to the text. They will be applied in order. You may have up to 3 locators per request
-  - `pronunciation_dictionary_id` (string, required) — The ID of the pronunciation dictionary.
-  - `version_id` (string, optional, nullable) — The ID of the version of the pronunciation dictionary. If not provided, the latest version will be used.
+- `voice_settings` (VoiceSettingsResponseModel, optional, nullable) — Voice settings overriding stored settings for the given voice. They are applied only on the given request.
+- `pronunciation_dictionary_locators` (list of PronunciationDictionaryVersionLocatorRequestModel, optional, nullable) — A list of pronunciation dictionary locators (id, version_id) to be applied to the text. They will be applied in order. You may have up to 3 locators per request
 - `seed` (integer, optional, nullable) — If specified, our system will make a best effort to sample deterministically, such that repeated requests with the same seed and parameters should return the same result. Determinism is not guaranteed. Must be integer between 0 and 4294967295.
 - `previous_text` (string, optional, nullable) — The text that came before the text of the current request. Can be used to improve the speech's continuity when concatenating together multiple generations or to influence the speech's continuity in the current generation.
 - `next_text` (string, optional, nullable) — The text that comes after the text of the current request. Can be used to improve the speech's continuity when concatenating together multiple generations or to influence the speech's continuity in the current generation.
@@ -68,16 +61,10 @@ This endpoint expects an object.
 
 Stream of transcription chunks
 
-- Streaming response of `object`.
+- Streaming response of `StreamingAudioChunkWithTimestampsResponseModel`.
 - `audio_base64` (string, required) — Base64 encoded audio data
-- `alignment` (object, optional, nullable) — Timestamp information for each character in the original text
-  - `characters` (list of string, required)
-  - `character_start_times_seconds` (list of double, required)
-  - `character_end_times_seconds` (list of double, required)
-- `normalized_alignment` (object, optional, nullable) — Timestamp information for each character in the normalized text
-  - `characters` (list of string, required)
-  - `character_start_times_seconds` (list of double, required)
-  - `character_end_times_seconds` (list of double, required)
+- `alignment` (CharacterAlignmentResponseModel, optional, nullable) — Timestamp information for each character in the original text
+- `normalized_alignment` (CharacterAlignmentResponseModel, optional, nullable) — Timestamp information for each character in the normalized text
 
 ## Errors
 
@@ -85,10 +72,36 @@ Stream of transcription chunks
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### VoiceSettingsResponseModel
+
+- `stability` (double, optional, nullable, default: 0.5) — Determines how stable the voice is and the randomness between each generation. Lower values introduce broader emotional range for the voice. Higher values can result in a monotonous voice with limited emotion.
+- `use_speaker_boost` (boolean, optional, nullable, default: true) — This setting boosts the similarity to the original speaker. Using this setting requires a slightly higher computational load, which in turn increases latency.
+- `similarity_boost` (double, optional, nullable, default: 0.75) — Determines how closely the AI should adhere to the original voice when attempting to replicate it.
+- `style` (double, optional, nullable, default: 0) — Determines the style exaggeration of the voice. This setting attempts to amplify the style of the original speaker. It does consume additional computational resources and might increase latency if set to anything other than 0.
+- `speed` (double, optional, nullable, default: 1) — Adjusts the speed of the voice. A value of 1.0 is the default speed, while values less than 1.0 slow down the speech, and values greater than 1.0 speed it up.
+
+### PronunciationDictionaryVersionLocatorRequestModel
+
+- `pronunciation_dictionary_id` (string, required) — The ID of the pronunciation dictionary.
+- `version_id` (string, optional, nullable) — The ID of the version of the pronunciation dictionary. If not provided, the latest version will be used.
+
+### CharacterAlignmentResponseModel
+
+- `characters` (list of string, required)
+- `character_start_times_seconds` (list of double, required)
+- `character_end_times_seconds` (list of double, required)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

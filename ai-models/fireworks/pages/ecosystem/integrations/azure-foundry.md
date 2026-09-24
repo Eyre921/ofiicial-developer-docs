@@ -116,11 +116,11 @@ All Fireworks on Foundry usage is billed through Azure. You do not need a separa
 
 Use FireConnect to route local coding harnesses through your Foundry deployments without hand-editing config files.
 
-<Card title="FireConnect + Microsoft Foundry" icon="terminal" href="/ecosystem/fireconnect/microsoft-foundry">
-  Configure `--provider azure`, then run `fireconnect opencode on`, `fireconnect codex on`, `fireconnect cursor on`, `fireconnect vscode on`, or `fireconnect pi on --model FW-GLM-5.2`
+<Card title="Microsoft Foundry" icon="terminal" href="/nexus/microsoft-foundry">
+  Configure `--provider azure`, then run `fireconnect opencode`, `fireconnect codex`, `fireconnect cursor`, `fireconnect vscode`, or `fireconnect pi --model FW-GLM-5.2`
 </Card>
 
-FireConnect implements Azure routing for **OpenCode**, **Codex**, **Pi**, **Cursor**, and **VS Code** in v0.9.0+. **Claude Code** and **DeepSeek Harness** do not. Running `fireconnect claude on` or `fireconnect deepseek on` always wires direct Fireworks, regardless of global `--provider azure`.
+FireConnect implements Azure routing for **OpenCode**, **Codex**, **Pi**, **Cursor**, and **VS Code** in v0.9.0+. **Claude Code** and **DeepSeek Harness** do not. Running `fireconnect claude` or `fireconnect deepseek` always wires direct Fireworks, regardless of global `--provider azure`.
 
 ```bash theme={null}
 export AZURE_API_KEY=<your-azure-api-key>
@@ -130,10 +130,10 @@ fireconnect configure \
   --base-url https://<resource>.services.ai.azure.com \
   --api-key $AZURE_API_KEY
 
-fireconnect opencode on --model FW-GLM-5.2
+fireconnect opencode --model FW-GLM-5.2
 ```
 
-See [FireConnect + Microsoft Foundry](/ecosystem/fireconnect/microsoft-foundry) for Foundry models, per-harness config details, one-off `--azure` routing, [turning Foundry off](/ecosystem/fireconnect/microsoft-foundry#turn-off-foundry-routing), and switching back to direct Fireworks.
+See [Microsoft Foundry](/nexus/microsoft-foundry) for Foundry models, per-harness config details, one-off `--azure` routing, [switching or disconnecting](/nexus/microsoft-foundry#switch-or-disconnect), and returning to direct Fireworks.
 
 ## Additional resources
 

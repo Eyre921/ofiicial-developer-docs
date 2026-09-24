@@ -12,9 +12,13 @@ path: docs/eleven-agents/customization/integrations/custom_channel
 
 Custom Channel connects an external messaging system to an ElevenLabs agent. Send user messages to an ElevenLabs webhook, then receive agent replies on your own HTTPS endpoint.
 
-Custom Channel is in alpha.
+> **Warning**
+>
+> Custom Channel is in alpha.
 
-Custom Channel is unavailable for agents or workspaces using zero-retention mode.
+> **Warning**
+>
+> Custom Channel is unavailable for agents or workspaces using zero-retention mode.
 
 ## Capabilities
 

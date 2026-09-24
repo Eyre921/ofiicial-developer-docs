@@ -52,7 +52,7 @@ npm install @sentry/browser --save
 
 #### [Option 2: Loader Script](https://docs.sentry.io/platforms/javascript.md#option-2-loader-script)
 
-In Sentry, go to **Settings > Projects > (select project) > SDK Setup > Loader Script**. Enable the features you want (for example, Tracing or Session Replay), copy the script tag, and place it before all other scripts in your app.
+In Sentry, go to **Settings > Projects > (select project) > SDK Setup > [Loader Script](https://sentry.io/orgredirect/organizations/:orgslug/settings/projects/:projectId/loader-script/)**. Enable the features you want (for example, Tracing or Session Replay), copy the script tag, and place it before all other scripts in your app.
 
 #### [Option 3: CDN Bundle](https://docs.sentry.io/platforms/javascript.md#option-3-cdn-bundle)
 
@@ -178,8 +178,8 @@ Sentry.init({
 
 ```html
 <script
-  src="https://browser.sentry-cdn.com/10.75.1/bundle.tracing.min.js"
-  integrity="sha384-+FQwCJaO7LT+0mrjNnkklmAYAjg8kf2ygfjNKWGJEtdd+rgxQG+1VH/cGug3lrlt"
+  src="https://browser.sentry-cdn.com/11.0.0/bundle.tracing.min.js"
+  integrity="sha384-TcpSGbL8WtdpR8lXDGGaurUtinn44aaUcN/5iratedpnLQZYJpnJlzK4pdS8sBn5"
   crossorigin="anonymous"
 ></script>
 
@@ -389,7 +389,6 @@ Are you having problems setting up the SDK?
 - [Capacitor](https://docs.sentry.io/platforms/javascript/guides/capacitor.md)
 - [Cloud Functions for Firebase](https://docs.sentry.io/platforms/javascript/guides/firebase.md)
 - [Cloudflare](https://docs.sentry.io/platforms/javascript/guides/cloudflare.md)
-- [Connect](https://docs.sentry.io/platforms/javascript/guides/connect.md)
 - [Cordova](https://docs.sentry.io/platforms/javascript/guides/cordova.md)
 - [Deno](https://docs.sentry.io/platforms/javascript/guides/deno.md)
 - [Effect](https://docs.sentry.io/platforms/javascript/guides/effect.md)

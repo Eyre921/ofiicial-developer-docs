@@ -27,7 +27,7 @@ Reference: https://elevenlabs.io/docs/api-reference/knowledge-base/create-folder
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_Create_folder_v1_convai_knowledge_base_folder_post.
 
 - `name` (string, required) — A custom, human-readable name for the document.
 - `parent_folder_id` (string, optional, nullable) — If set, the created document or folder will be placed inside the given folder.
@@ -43,8 +43,7 @@ Successful Response
 
 - `id` (string, required)
 - `name` (string, required)
-- `folder_path` (list of object, optional) — The folder path segments leading to this entity, from root to parent folder.
-  - `id` (string, required)
+- `folder_path` (list of KnowledgeBaseFolderPathSegmentSummaryResponseModel, optional) — The folder path segments leading to this entity, from root to parent folder.
 
 ## Errors
 
@@ -52,10 +51,21 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### KnowledgeBaseFolderPathSegmentSummaryResponseModel
+
+- `id` (string, required)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

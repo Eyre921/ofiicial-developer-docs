@@ -36,7 +36,7 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/branches/merge
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_Merge_a_branch_into_a_target_branch_v1_convai_agents__agent_id__branches__source_branch_id__merge_post.
 
 - `archive_source_branch` (boolean, optional, default: true) — Whether to archive the source branch after merging
 - `force` (boolean, optional, default: false) — Force source branch changes onto the target, overriding timestamp-based conflict resolution
@@ -55,10 +55,17 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

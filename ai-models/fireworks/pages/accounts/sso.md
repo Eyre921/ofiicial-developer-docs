@@ -144,7 +144,7 @@ Directory groups assigned to Fireworks are synced alongside your users. Creating
 
 Synced groups appear on the **Groups** tab of the [Users page](https://app.fireworks.ai/account/users), marked `SCIM-synced`, with their member count and the time of the last sync. Directory sync is the only way to create a Fireworks group, and groups are read-only in Fireworks — your directory is the source of truth for both the group and its membership.
 
-Synced groups have one use in Fireworks today: assigning them a [group limit](/fireworks-nexus/usage-limits#group-limits), which caps serverless spend for each of the group's members. That is a **Fireworks Nexus** feature and is enabled separately — syncing groups does not by itself give your account spend limits.
+Synced groups have one use in Fireworks today: assigning them a [group limit](/nexus/usage-limits-reference#group-limits), which caps serverless spend for each of the group's members. That is a **Fireworks Nexus** feature and is enabled separately — syncing groups does not by itself give your account spend limits.
 
 <Warning>
   Group-to-role mappings are not currently supported: a group's members do not

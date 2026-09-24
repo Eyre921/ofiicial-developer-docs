@@ -31,7 +31,7 @@ Reference: https://elevenlabs.io/docs/api-reference/pronunciation-dictionaries/r
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_Remove_rules_from_the_pronunciation_dictionary_v1_pronunciation_dictionaries__pronunciation_dictionary_id__remove_rules_post.
 
 - `rule_strings` (list of string, required) — List of strings to remove from the pronunciation dictionary.
 
@@ -51,10 +51,17 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

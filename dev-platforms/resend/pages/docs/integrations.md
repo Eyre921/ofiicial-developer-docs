@@ -38,7 +38,7 @@ Integrate Resend with the tools you already use.
   </Card>
 
   <Card title="GitHub Copilot" href="https://www.resend.com/github-copilot" icon={<GitHubCopilotIcon />}>
-    Build email automations with GitHub Copilot and Resend
+    Send emails from GitHub Copilot with the Resend MCP server
   </Card>
 
   <Card title="OpenCode" href="https://www.resend.com/opencode" icon={<OpenCodeIcon />}>
@@ -51,6 +51,18 @@ Integrate Resend with the tools you already use.
 
   <Card title="Warp" href="https://www.resend.com/warp" icon={<WarpIcon />}>
     Send emails from Warp with the Resend MCP server
+  </Card>
+
+  <Card title="Hermes" href="https://www.resend.com/hermes" icon={<HermesIcon />}>
+    Install the Resend plugin in Hermes, MCP server and skills included
+  </Card>
+
+  <Card title="OpenClaw" href="https://www.resend.com/openclaw" icon={<OpenClawIcon />}>
+    Send emails from OpenClaw with the Resend MCP server
+  </Card>
+
+  <Card title="Grok Bot" href="https://www.resend.com/grokbot" icon={<GrokBotIcon />}>
+    Install the Resend plugin in Grok Bot
   </Card>
 </CardGroup>
 

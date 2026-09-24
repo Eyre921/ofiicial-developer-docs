@@ -62,9 +62,11 @@ If you only need a browser-to-Speech-Engine voice loop with no other participant
 * An ElevenLabs Speech Engine. Follow the [Speech Engine quickstart](/docs/eleven-api/guides/cookbooks/speech-engine) to create one and run the brain server.
 * Python 3.9+ or Node.js 18+.
 
-The Node bridge worker uses
-[`@livekit/rtc-node`](https://www.npmjs.com/package/@livekit/rtc-node), which is currently in
-Developer Preview. For production deployments, prefer the Python worker.
+> **Note**
+>
+> The Node bridge worker uses
+> [`@livekit/rtc-node`](https://www.npmjs.com/package/@livekit/rtc-node), which is currently in
+> Developer Preview. For production deployments, prefer the Python worker.
 
 ## Configure Speech Engine audio formats
 

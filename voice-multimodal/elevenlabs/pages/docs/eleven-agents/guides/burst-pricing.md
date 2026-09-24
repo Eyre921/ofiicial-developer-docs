@@ -31,7 +31,9 @@ When burst pricing is enabled for an agent:
 | 100 calls          | 300 calls      | 300 calls                |
 | 200 calls          | 300 calls      | 300 calls (capped)       |
 
-For non-enterprise customers, the maximum burst currency can not go above 300.
+> **Note**
+>
+> For non-enterprise customers, the maximum burst currency can not go above 300.
 
 ## Cost implications
 
@@ -49,8 +51,10 @@ For a workspace with a 20-call subscription limit:
 * Calls 21-60: Double rate (e.g., \$0.16/minute)
 * Calls 61+: Rejected
 
-Burst calls are deprioritized and may experience higher latency for speech processing, similar to
-anonymous-tier requests.
+> **Warning**
+>
+> Burst calls are deprioritized and may experience higher latency for speech processing, similar to
+> anonymous-tier requests.
 
 ## Configuration
 

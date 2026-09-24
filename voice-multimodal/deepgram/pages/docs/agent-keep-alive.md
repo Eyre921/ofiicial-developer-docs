@@ -14,7 +14,9 @@ Voice Agent
 
 `KeepAlive` is a JSON message you send to the server to keep an idle WebSocket open. The server closes connections that go silent, so when you stop streaming audio for an extended period, send `KeepAlive` to hold the session.
 
-Most agent conversations do not need `KeepAlive`. You will normally stream microphone audio continuously so the user can speak at any moment.
+> **Info**
+>
+> Most agent conversations do not need `KeepAlive`. You will normally stream microphone audio continuously so the user can speak at any moment.
 
 ## When to use it
 
@@ -32,4 +34,6 @@ Send `KeepAlive` only during a period when the client is not sending audio. Whil
 
 The server does not respond to `KeepAlive`.
 
-`KeepAlive` does not extend the [maximum session length](/docs/voice-agent-errors-warnings#maximum-session-length) of 2 hours. The server closes every session at the 2-hour mark, however much traffic it has seen.
+> **Warning**
+>
+> `KeepAlive` does not extend the [maximum session length](/docs/voice-agent-errors-warnings#maximum-session-length) of 2 hours. The server closes every session at the 2-hour mark, however much traffic it has seen.

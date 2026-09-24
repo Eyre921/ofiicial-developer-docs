@@ -33,7 +33,7 @@ Reference: https://elevenlabs.io/docs/api-reference/studio/stream-chapter-snapsh
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_Stream_chapter_audio_v1_studio_projects__project_id__chapters__chapter_id__snapshots__chapter_snapshot_id__stream_post.
 
 - `convert_to_mpeg` (boolean, optional, default: false) — Whether to convert the audio to mpeg format.
 
@@ -51,10 +51,17 @@ Streaming audio data
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

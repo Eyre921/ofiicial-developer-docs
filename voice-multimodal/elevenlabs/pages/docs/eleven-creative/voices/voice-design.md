@@ -8,7 +8,7 @@ path: docs/eleven-creative/voices/voice-design
 
 # Voice Design
 
-![Voice design](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1125280670aac11f82425cb9e04ccba451fb85ac046cff42203b867a82340f43/assets/images/product-guides/voices/voices-voice-design.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113119Z&X-Amz-Expires=604800&X-Amz-Signature=ae20213647c1cb028602330cb597b4b37c27cee72c2a1826e39f5c7abd8acb6f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Voice design](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1125280670aac11f82425cb9e04ccba451fb85ac046cff42203b867a82340f43/assets/images/product-guides/voices/voices-voice-design.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T104157Z&X-Amz-Expires=604800&X-Amz-Signature=f3814781efacec27bd8d493cf596f4cbd37dae3cd6dacee4e0875223423e730e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Overview
 
@@ -67,8 +67,10 @@ You can also use specific quality descriptors that provide consistent results:
 
 These descriptors help achieve the highest audio quality when included in your prompt.
 
-Including these types of phrases can sometimes reduce the accuracy of the prompt in general if the
-voice is very specific or niche.
+> **Warning**
+>
+> Including these types of phrases can sometimes reduce the accuracy of the prompt in general if the
+> voice is very specific or niche.
 
 There may also be creative cases where lower audio quality is intentional, such as when simulating a phone call, old radio broadcast, or found footage. In those situations, either leave out quality descriptors entirely or explicitly include phrases like:
 
@@ -126,9 +128,11 @@ Accent plays a critical role in defining a voice’s regional, cultural, and emo
 
 Phrase choice matters - certain terms tend to produce more consistent results. For example, “thick” often yields better results than “strong” when describing how prominent an accent should be. There is lots of trial and error to be had, and we encourage you to experiment with the wording and to be as creative and descriptive as possible.
 
-Be careful when using the word "accent" — if you mean intonation or emphasis patterns rather than
-a regional dialect, use those terms instead. Using "accent" when you mean intonation can trigger
-unwanted dialect shifts.
+> **Warning**
+>
+> Be careful when using the word "accent" — if you mean intonation or emphasis patterns rather than
+> a regional dialect, use those terms instead. Using "accent" when you mean intonation can trigger
+> unwanted dialect shifts.
 
 * **Examples of clear accent prompts:**
   * “A middle-aged man with a thick French accent”
@@ -190,9 +194,11 @@ Dictates how closely the Prompt is adhered to. Higher values will stick to the p
 
 ### Attributes and Examples
 
-Experiment with the way in which these descriptors are written. For example, “Perfect audio
-quality” can also be written as “the audio quality is perfect”. These can sometimes produce
-different results!
+> **Note**
+>
+> Experiment with the way in which these descriptors are written. For example, “Perfect audio
+> quality” can also be written as “the audio quality is perfect”. These can sometimes produce
+> different results!
 
 | Attribute              | Examples                                                                                         |
 | ---------------------- | ------------------------------------------------------------------------------------------------ |

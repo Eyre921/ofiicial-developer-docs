@@ -129,7 +129,9 @@ By default, Flux only emits `Update`, `StartOfTurn`, and `EndOfTurn`.
 
 ### Simple Approach: Enabling End of Turn
 
-For more information on using Flux with EndOfTurn only see the [Flux Getting Started Guide](/docs/flux/quickstart)
+> **Info**
+>
+> For more information on using Flux with EndOfTurn only see the [Flux Getting Started Guide](/docs/flux/quickstart)
 
 This is a simple approach using only `EndOfTurn` (lower latency, less complex, less LLM calls).
 

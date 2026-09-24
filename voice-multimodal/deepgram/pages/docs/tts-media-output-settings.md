@@ -23,11 +23,13 @@ Upon successful processing of a Deepgram text-to-speech request, you will receiv
 
 ## Supported Audio Formats
 
-If you don't provide any values for encoding, container or sample rate in your request Deepgram will provide the following defaults depending on which API / Protocol you use.
-
-**Streaming Defaults** encoding: `Linear16`container: `n/a` sample\_rate: `24000`
-
-**REST Defaults** encoding: `Linear16` container: `wav` sample\_rate: `24000`
+> **Info**
+>
+> If you don't provide any values for encoding, container or sample rate in your request Deepgram will provide the following defaults depending on which API / Protocol you use.
+>
+> **Streaming Defaults** encoding: `Linear16`container: `n/a` sample\_rate: `24000`
+>
+> **REST Defaults** encoding: `Linear16` container: `wav` sample\_rate: `24000`
 
 | Audio Format | Description                                                                                                                            | Use Cases                                                                                                                | API / Protocol      |
 | ------------ | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | ------------------- |
@@ -43,7 +45,9 @@ If you don't provide any values for encoding, container or sample rate in your r
 
 While Deepgram offers flexibility in choosing encoding options, **there are predefined combinations of audio formats with specific configurations** that you must adhere to. These combinations determine the encoding parameters, container format, sample rate, bitrate, and content-type header attached to the response.
 
-Refer to the above Table for which formats are supported for REST and Streaming.
+> **Info**
+>
+> Refer to the above Table for which formats are supported for REST and Streaming.
 
 | Encoding       | Container               | Sample Rate (Hz)                                   | Bitrate (bps)                                     |
 | -------------- | ----------------------- | -------------------------------------------------- | ------------------------------------------------- |
@@ -86,7 +90,9 @@ These clicks can occur when integrating with telephony providers, i.e. services 
 
 Be sure to ask Deepgram to provide raw audio by setting `container=none`; otherwise, you will likely hear static or clicking at the beginning of the audio playback as your speaker tries to interpret the accidentally-included container as actual audio.
 
-When using VoIP (Voice over Internet Protocol), we recommend adding `container=none` to your request to prevent request header information being misinterpreted as audio, which can result in static or click sounds.
+> **Warning**
+>
+> When using VoIP (Voice over Internet Protocol), we recommend adding `container=none` to your request to prevent request header information being misinterpreted as audio, which can result in static or click sounds.
 
 ### Why do certain audio formats have a default container and some don't?
 

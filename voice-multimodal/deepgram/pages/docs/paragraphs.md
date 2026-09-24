@@ -39,7 +39,9 @@ curl \
   --url 'https://api.deepgram.com/v1/listen?paragraphs=true&punctuate=true'
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 ## Analyze Response
 
@@ -56,7 +58,9 @@ curl \
   --url 'https://api.deepgram.com/v1/listen?paragraphs=true&punctuate=true'
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 When the file is finished processing, you’ll receive a JSON response.
 

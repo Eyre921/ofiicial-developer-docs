@@ -127,7 +127,9 @@ else
 fi
 ```
 
-Exit codes are enforced as of CLI `0.3.0`. Earlier versions exited `0` regardless of outcome, so a pipeline that ignored the exit code may begin surfacing failures it previously swallowed. `dg listen --mic` and `dg mcp` currently handle Ctrl-C themselves and exit `0`; do not rely on an interrupt exit code for those commands.
+> **Note**
+>
+> Exit codes are enforced as of CLI `0.3.0`. Earlier versions exited `0` regardless of outcome, so a pipeline that ignored the exit code may begin surfacing failures it previously swallowed. `dg listen --mic` and `dg mcp` currently handle Ctrl-C themselves and exit `0`; do not rely on an interrupt exit code for those commands.
 
 ## Agent-Friendly Mode
 

@@ -8,7 +8,9 @@ path: docs/eleven-agents/best-practices/guardrails
 
 # Guardrails
 
-Guardrails is currently in Alpha. See details in [Release status](#release-status).
+> **Tip**
+>
+> Guardrails is currently in Alpha. See details in [Release status](#release-status).
 
 ## Overview
 
@@ -107,8 +109,10 @@ Exit strategies let you define what your agent does when a guardrail fires. You 
 * **`end_call`** *(default)*: ends the call immediately
 * **`retry`**: regenerates the response using your feedback instead of dropping the conversation. The agent response is retried up to three times and if every attempt still violates the guardrail, the call ends.
 
-Retry only works when blocking mode. In streaming mode, ending the call is the only available exit
-strategy.
+> **Warning**
+>
+> Retry only works when blocking mode. In streaming mode, ending the call is the only available exit
+> strategy.
 
 #### Retry feedback
 
@@ -123,8 +127,10 @@ strategy.
 * **Transfer to a person**\
   &#x20;*Your response was blocked by a guardrail that blocks content that matches this condition/category: '\{\{trigger\_reason}}'. During your next turn you MUST transfer the call to a human operator using the transfer\_to\_number tool.*
 
-To use **system tools** in retry feedback, enable and configure the corresponding tools in the
-agent's settings. Only tools that are set up on the agent can be invoked.
+> **Tip**
+>
+> To use **system tools** in retry feedback, enable and configure the corresponding tools in the
+> agent's settings. Only tools that are set up on the agent can be invoked.
 
 You can use these placeholders in the feedback text:
 
@@ -133,12 +139,16 @@ You can use these placeholders in the feedback text:
 | `{{trigger_reason}}` | The guardrail's **prompt** when defined in custom guardrails. The **category** that was triggered when defined in content guardrails. |
 | `{{agent_message}}`  | The agent output that was blocked (useful for steering the retry).                                                                    |
 
-**Streaming** execution mode is recommended for **voice** agents; **blocking** execution mode is
-recommended for **text** agents.
+> **Tip**
+>
+> **Streaming** execution mode is recommended for **voice** agents; **blocking** execution mode is
+> recommended for **text** agents.
 
-**Blocking** (especially with **retry**) can behave less predictably on voice. If you use blocking
-on voice, validate thoroughly or choose **end call** instead of **retry** until you are confident
-in the behavior.
+> **Warning**
+>
+> **Blocking** (especially with **retry**) can behave less predictably on voice. If you use blocking
+> on voice, validate thoroughly or choose **end call** instead of **retry** until you are confident
+> in the behavior.
 
 ## Pricing
 
@@ -148,11 +158,13 @@ in the behavior.
 
 You can see an estimated cost (under the prompt) when creating or editing a custom guardrail.
 
-![Custom guardrail cost estimation](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a829a7451a1bb209dcbbe718dc75c3f6a28191f4de8ad6be44da6e0b7d4466ec/assets/images/agents/agents-custom-guardail-prompt-estimated-cost.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113156Z&X-Amz-Expires=604800&X-Amz-Signature=091c22ce9a1bfa85b0546e55bb5d412c2a8465fac1848aaa897dbc2d85c20373&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Custom guardrail cost estimation](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a829a7451a1bb209dcbbe718dc75c3f6a28191f4de8ad6be44da6e0b7d4466ec/assets/images/agents/agents-custom-guardail-prompt-estimated-cost.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T110738Z&X-Amz-Expires=604800&X-Amz-Signature=1d68e9312fe256194e4394d3cfaa3214498dd355ada3a2c1b26ce19f01c37d91&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-**Retry and cost:** Each attempt is an extra agent generation plus another guardrail evaluation,
-so **retry** increases usage-based billing compared to **end\_call** (up to three attempts per
-blocked turn).
+> **Note**
+>
+> **Retry and cost:** Each attempt is an extra agent generation plus another guardrail evaluation,
+> so **retry** increases usage-based billing compared to **end\_call** (up to three attempts per
+> blocked turn).
 
 ## Configuration
 
@@ -297,11 +309,15 @@ When a guardrail triggers, behavior depends on type and configuration:
 * **End call:** The session ends immediately (call dropped for voice, chat ended for text). The trigger is logged in conversation history.
 * **Retry (blocking custom or content guardrails):** The violating assistant turn is removed, system feedback is injected, and the model tries again - up to three times - before the session ends if the guardrail still fires.
 
-For **end call**, end users experience a dropped call or ended chat. Violation details are
-available to you in the conversation logs and are not shown verbatim to the end user.
+> **Note**
+>
+> For **end call**, end users experience a dropped call or ended chat. Violation details are
+> available to you in the conversation logs and are not shown verbatim to the end user.
 
-After **end call**, users can start a new conversation. The guardrail does not permanently block
-the user - it blocks the specific response (or session) that violated the policy.
+> **Note**
+>
+> After **end call**, users can start a new conversation. The guardrail does not permanently block
+> the user - it blocks the specific response (or session) that violated the policy.
 
 ## Best practices
 

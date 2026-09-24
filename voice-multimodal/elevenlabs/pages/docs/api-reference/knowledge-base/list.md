@@ -47,184 +47,7 @@ Reference: https://elevenlabs.io/docs/api-reference/knowledge-base/list
 
 Successful Response
 
-- `documents` (list of object, required)
-  - `type`: `file` (GetKnowledgeBaseSummaryFileResponseModel)
-    - `access_info` (object, required)
-      - `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
-      - `creator_name` (string, required) — Name of the agent's creator
-      - `creator_email` (string, required) — Email of the agent's creator
-      - `role` (enum, required) — The role of the user making the request
-        - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-      - `anonymous_access_level_override` (enum, optional, nullable) — The access level for anonymous users. If None, the resource is not shared publicly.
-        - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-      - `access_source` (enum, optional, nullable) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
-        - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
-    - `id` (string, required)
-    - `metadata` (object, required)
-      - `created_at_unix_secs` (integer, required)
-      - `last_updated_at_unix_secs` (integer, required)
-      - `size_bytes` (integer, required)
-    - `name` (string, required)
-    - `supported_usages` (list of enum, required)
-      - Allowed values: `prompt`, `auto`
-    - `dependent_agents` (list of object, required, deprecated) — This field is deprecated and will be removed in the future, use the separate endpoint to get dependent agents instead.
-      - `type`: `available` (DependentAvailableAgentIdentifier)
-        - `access_level` (enum, required)
-          - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-        - `created_at_unix_secs` (integer, required)
-        - `id` (string, required)
-        - `name` (string, required)
-        - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
-      - `type`: `unknown` (DependentUnknownAgentIdentifier)
-        - `id` (string, required)
-        - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
-    - `auto_sync_info` (object, optional, nullable)
-      - `minimum_frequency_days` (integer, optional, default: 7) — Minimum frequency (in days) at which the document is refreshed. The actual interval may be shorter, never longer.
-      - `auto_remove` (boolean, optional, default: false) — Whether to remove the document if the URL becomes unavailable
-      - `consec_failures` (integer, optional, default: 0) — Number of consecutive sync failures
-      - `next_refresh_by` (integer, optional, nullable) — Unix timestamp for the next scheduled sync or None (in case of folders)
-    - `external_sync_info` (object, optional, nullable) — Tracks the link back to the original file in an external source.
-      - `type` (enum, required) — Provider identifier
-        - Allowed values: `google_drive`
-      - `source_entity_id` (string, required) — Entity ID in the external system
-      - `integration_connection_id` (string, required) — Integration connection instance ID
-      - `source_parent_entity_id` (string, required) — Folder ID in the external system this file was synced from
-      - `source_mime_type` (string, required) — Original MIME type in the external system
-      - `source_modified_time` (string, required) — Last modified time from the external system
-      - `root_folder_id` (string, optional, nullable) — KB folder ID of the sync root, used to query all entities under a sync tree
-    - `folder_parent_id` (string, optional, nullable) — The ID of the parent folder, or null if the document is at the root level.
-    - `folder_path` (list of object, optional) — The folder path segments leading to this entity, from root to parent folder.
-      - `id` (string, required)
-    - `is_frozen` (boolean, optional, default: false)
-    - `refresh_status` (object, optional, nullable) — In-flight/last refresh state for an externally-synced KB file.
-      - `status` (enum, optional, default: queued)
-        - Allowed values: `queued`, `processing`, `succeeded`, `failed`, `skipped`, `cancelled`
-      - `enqueued_at` (integer, optional, nullable)
-      - `started_at` (integer, optional, nullable)
-      - `completed_at` (integer, optional, nullable)
-      - `last_synced_at` (integer, optional, nullable)
-      - `error_message` (string, optional, nullable)
-  - `type`: `folder` (GetKnowledgeBaseSummaryFolderResponseModel)
-    - `access_info` (object, required)
-      - `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
-      - `creator_name` (string, required) — Name of the agent's creator
-      - `creator_email` (string, required) — Email of the agent's creator
-      - `role` (enum, required) — The role of the user making the request
-        - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-      - `anonymous_access_level_override` (enum, optional, nullable) — The access level for anonymous users. If None, the resource is not shared publicly.
-        - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-      - `access_source` (enum, optional, nullable) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
-        - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
-    - `children_count` (integer, required)
-    - `document_count` (integer, required) — Number of non-folder documents anywhere in this folder's subtree (recursive). Counting stops past 1000;
-    - `id` (string, required)
-    - `metadata` (object, required)
-      - `created_at_unix_secs` (integer, required)
-      - `last_updated_at_unix_secs` (integer, required)
-      - `size_bytes` (integer, required)
-    - `name` (string, required)
-    - `supported_usages` (list of enum, required)
-      - Allowed values: `prompt`, `auto`
-    - `dependent_agents` (list of object, required, deprecated) — This field is deprecated and will be removed in the future, use the separate endpoint to get dependent agents instead.
-      - `type`: `available` (DependentAvailableAgentIdentifier)
-        - `access_level` (enum, required)
-          - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-        - `created_at_unix_secs` (integer, required)
-        - `id` (string, required)
-        - `name` (string, required)
-        - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
-      - `type`: `unknown` (DependentUnknownAgentIdentifier)
-        - `id` (string, required)
-        - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
-    - `auto_sync_info` (object, optional, nullable)
-      - `minimum_frequency_days` (integer, optional, default: 7) — Minimum frequency (in days) at which the document is refreshed. The actual interval may be shorter, never longer.
-      - `auto_remove` (boolean, optional, default: false) — Whether to remove the document if the URL becomes unavailable
-      - `consec_failures` (integer, optional, default: 0) — Number of consecutive sync failures
-      - `next_refresh_by` (integer, optional, nullable) — Unix timestamp for the next scheduled sync or None (in case of folders)
-    - `external_sync_info` (object, optional, nullable) — Metadata for a KB folder that mirrors an external source folder.
-      - `type` (enum, required) — Provider identifier
-        - Allowed values: `google_drive`
-      - `source_entity_id` (string, required) — Entity ID in the external system
-      - `integration_connection_id` (string, required) — Integration connection instance ID
-      - `root_folder_id` (string, optional, nullable) — KB folder ID of the sync root. None means this folder is the root.
-      - `sync_cursor` (string, optional, nullable) — Opaque cursor for incremental sync, interpreted by the provider
-      - `last_sync_at` (integer, optional, nullable) — Unix timestamp of last completed sync
-    - `folder_parent_id` (string, optional, nullable) — The ID of the parent folder, or null if the document is at the root level.
-    - `folder_path` (list of object, optional) — The folder path segments leading to this entity, from root to parent folder.
-      - `id` (string, required)
-    - `is_frozen` (boolean, optional, default: false)
-  - `type`: `text` (GetKnowledgeBaseSummaryTextResponseModel)
-    - `access_info` (object, required)
-      - `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
-      - `creator_name` (string, required) — Name of the agent's creator
-      - `creator_email` (string, required) — Email of the agent's creator
-      - `role` (enum, required) — The role of the user making the request
-        - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-      - `anonymous_access_level_override` (enum, optional, nullable) — The access level for anonymous users. If None, the resource is not shared publicly.
-        - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-      - `access_source` (enum, optional, nullable) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
-        - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
-    - `id` (string, required)
-    - `metadata` (object, required)
-      - `created_at_unix_secs` (integer, required)
-      - `last_updated_at_unix_secs` (integer, required)
-      - `size_bytes` (integer, required)
-    - `name` (string, required)
-    - `supported_usages` (list of enum, required)
-      - Allowed values: `prompt`, `auto`
-    - `dependent_agents` (list of object, required, deprecated) — This field is deprecated and will be removed in the future, use the separate endpoint to get dependent agents instead.
-      - `type`: `available` (DependentAvailableAgentIdentifier)
-        - `access_level` (enum, required)
-          - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-        - `created_at_unix_secs` (integer, required)
-        - `id` (string, required)
-        - `name` (string, required)
-        - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
-      - `type`: `unknown` (DependentUnknownAgentIdentifier)
-        - `id` (string, required)
-        - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
-    - `folder_parent_id` (string, optional, nullable) — The ID of the parent folder, or null if the document is at the root level.
-    - `folder_path` (list of object, optional) — The folder path segments leading to this entity, from root to parent folder.
-      - `id` (string, required)
-  - `type`: `url` (GetKnowledgeBaseSummaryURLResponseModel)
-    - `access_info` (object, required)
-      - `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
-      - `creator_name` (string, required) — Name of the agent's creator
-      - `creator_email` (string, required) — Email of the agent's creator
-      - `role` (enum, required) — The role of the user making the request
-        - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-      - `anonymous_access_level_override` (enum, optional, nullable) — The access level for anonymous users. If None, the resource is not shared publicly.
-        - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-      - `access_source` (enum, optional, nullable) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
-        - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
-    - `id` (string, required)
-    - `metadata` (object, required)
-      - `created_at_unix_secs` (integer, required)
-      - `last_updated_at_unix_secs` (integer, required)
-      - `size_bytes` (integer, required)
-    - `name` (string, required)
-    - `supported_usages` (list of enum, required)
-      - Allowed values: `prompt`, `auto`
-    - `url` (string, required)
-    - `dependent_agents` (list of object, required, deprecated) — This field is deprecated and will be removed in the future, use the separate endpoint to get dependent agents instead.
-      - `type`: `available` (DependentAvailableAgentIdentifier)
-        - `access_level` (enum, required)
-          - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-        - `created_at_unix_secs` (integer, required)
-        - `id` (string, required)
-        - `name` (string, required)
-        - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
-      - `type`: `unknown` (DependentUnknownAgentIdentifier)
-        - `id` (string, required)
-        - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
-    - `auto_sync_info` (object, optional, nullable)
-      - `minimum_frequency_days` (integer, optional, default: 7) — Minimum frequency (in days) at which the document is refreshed. The actual interval may be shorter, never longer.
-      - `auto_remove` (boolean, optional, default: false) — Whether to remove the document if the URL becomes unavailable
-      - `consec_failures` (integer, optional, default: 0) — Number of consecutive sync failures
-      - `next_refresh_by` (integer, optional, nullable) — Unix timestamp for the next scheduled sync or None (in case of folders)
-    - `folder_parent_id` (string, optional, nullable) — The ID of the parent folder, or null if the document is at the root level.
-    - `folder_path` (list of object, optional) — The folder path segments leading to this entity, from root to parent folder.
-      - `id` (string, required)
+- `documents` (list of GetKnowledgeBaseListResponseModelDocumentsItems, required)
 - `has_more` (boolean, required)
 - `next_cursor` (string, optional, nullable)
 
@@ -234,10 +57,189 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### GetKnowledgeBaseListResponseModelDocumentsItems
+
+- `type`: `file` (GetKnowledgeBaseSummaryFileResponseModel)
+  - `access_info` (ResourceAccessInfo, required)
+  - `id` (string, required)
+  - `metadata` (KnowledgeBaseDocumentMetadataResponseModel, required)
+  - `name` (string, required)
+  - `supported_usages` (list of enum, required)
+    - Allowed values: `prompt`, `auto`
+  - `dependent_agents` (list of V1ConvaiKnowledgeBaseSummariesGetResponsesContentApplicationJsonSchemaDiscriminatorMappingSuccessDataDiscriminatorMappingFileDependentAgentsItems, required, deprecated) — This field is deprecated and will be removed in the future, use the separate endpoint to get dependent agents instead.
+  - `auto_sync_info` (AutoSyncInfo, optional, nullable)
+  - `external_sync_info` (ExternalFileSyncInfo, optional, nullable) — Tracks the link back to the original file in an external source.
+  - `folder_parent_id` (string, optional, nullable) — The ID of the parent folder, or null if the document is at the root level.
+  - `folder_path` (list of KnowledgeBaseFolderPathSegmentSummaryResponseModel, optional) — The folder path segments leading to this entity, from root to parent folder.
+  - `is_frozen` (boolean, optional, default: false)
+  - `refresh_status` (FileRefreshStatus, optional, nullable) — In-flight/last refresh state for an externally-synced KB file.
+- `type`: `folder` (GetKnowledgeBaseSummaryFolderResponseModel)
+  - `access_info` (ResourceAccessInfo, required)
+  - `children_count` (integer, required)
+  - `document_count` (integer, required) — Number of non-folder documents anywhere in this folder's subtree (recursive). Counting stops past 1000;
+  - `id` (string, required)
+  - `metadata` (KnowledgeBaseDocumentMetadataResponseModel, required)
+  - `name` (string, required)
+  - `supported_usages` (list of enum, required)
+    - Allowed values: `prompt`, `auto`
+  - `dependent_agents` (list of V1ConvaiKnowledgeBaseSummariesGetResponsesContentApplicationJsonSchemaDiscriminatorMappingSuccessDataDiscriminatorMappingFolderDependentAgentsItems, required, deprecated) — This field is deprecated and will be removed in the future, use the separate endpoint to get dependent agents instead.
+  - `auto_sync_info` (AutoSyncInfo, optional, nullable)
+  - `external_sync_info` (ExternalFolderSyncInfo, optional, nullable) — Metadata for a KB folder that mirrors an external source folder.
+  - `folder_parent_id` (string, optional, nullable) — The ID of the parent folder, or null if the document is at the root level.
+  - `folder_path` (list of KnowledgeBaseFolderPathSegmentSummaryResponseModel, optional) — The folder path segments leading to this entity, from root to parent folder.
+  - `is_frozen` (boolean, optional, default: false)
+- `type`: `text` (GetKnowledgeBaseSummaryTextResponseModel)
+  - `access_info` (ResourceAccessInfo, required)
+  - `id` (string, required)
+  - `metadata` (KnowledgeBaseDocumentMetadataResponseModel, required)
+  - `name` (string, required)
+  - `supported_usages` (list of enum, required)
+    - Allowed values: `prompt`, `auto`
+  - `dependent_agents` (list of V1ConvaiKnowledgeBaseSummariesGetResponsesContentApplicationJsonSchemaDiscriminatorMappingSuccessDataDiscriminatorMappingTextDependentAgentsItems, required, deprecated) — This field is deprecated and will be removed in the future, use the separate endpoint to get dependent agents instead.
+  - `folder_parent_id` (string, optional, nullable) — The ID of the parent folder, or null if the document is at the root level.
+  - `folder_path` (list of KnowledgeBaseFolderPathSegmentSummaryResponseModel, optional) — The folder path segments leading to this entity, from root to parent folder.
+- `type`: `url` (GetKnowledgeBaseSummaryURLResponseModel)
+  - `access_info` (ResourceAccessInfo, required)
+  - `id` (string, required)
+  - `metadata` (KnowledgeBaseDocumentMetadataResponseModel, required)
+  - `name` (string, required)
+  - `supported_usages` (list of enum, required)
+    - Allowed values: `prompt`, `auto`
+  - `url` (string, required)
+  - `dependent_agents` (list of V1ConvaiKnowledgeBaseSummariesGetResponsesContentApplicationJsonSchemaDiscriminatorMappingSuccessDataDiscriminatorMappingUrlDependentAgentsItems, required, deprecated) — This field is deprecated and will be removed in the future, use the separate endpoint to get dependent agents instead.
+  - `auto_sync_info` (AutoSyncInfo, optional, nullable)
+  - `folder_parent_id` (string, optional, nullable) — The ID of the parent folder, or null if the document is at the root level.
+  - `folder_path` (list of KnowledgeBaseFolderPathSegmentSummaryResponseModel, optional) — The folder path segments leading to this entity, from root to parent folder.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ResourceAccessInfo
+
+- `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
+- `creator_name` (string, required) — Name of the agent's creator
+- `creator_email` (string, required) — Email of the agent's creator
+- `role` (enum, required) — The role of the user making the request
+  - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+- `anonymous_access_level_override` (enum, optional, nullable) — The access level for anonymous users. If None, the resource is not shared publicly.
+  - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+- `access_source` (enum, optional, nullable) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
+  - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
+
+### KnowledgeBaseDocumentMetadataResponseModel
+
+- `created_at_unix_secs` (integer, required)
+- `last_updated_at_unix_secs` (integer, required)
+- `size_bytes` (integer, required)
+
+### V1ConvaiKnowledgeBaseSummariesGetResponsesContentApplicationJsonSchemaDiscriminatorMappingSuccessDataDiscriminatorMappingFileDependentAgentsItems
+
+- `type`: `available` (DependentAvailableAgentIdentifier)
+  - `access_level` (enum, required)
+    - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+  - `created_at_unix_secs` (integer, required)
+  - `id` (string, required)
+  - `name` (string, required)
+  - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
+- `type`: `unknown` (DependentUnknownAgentIdentifier)
+  - `id` (string, required)
+  - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
+
+### AutoSyncInfo
+
+- `minimum_frequency_days` (integer, optional, default: 7) — Minimum frequency (in days) at which the document is refreshed. The actual interval may be shorter, never longer.
+- `auto_remove` (boolean, optional, default: false) — Whether to remove the document if the URL becomes unavailable
+- `consec_failures` (integer, optional, default: 0) — Number of consecutive sync failures
+- `next_refresh_by` (integer, optional, nullable) — Unix timestamp for the next scheduled sync or None (in case of folders)
+
+### ExternalFileSyncInfo
+
+Tracks the link back to the original file in an external source.
+
+- `type` (enum, required) — Provider identifier
+  - Allowed values: `google_drive`
+- `source_entity_id` (string, required) — Entity ID in the external system
+- `integration_connection_id` (string, required) — Integration connection instance ID
+- `source_parent_entity_id` (string, required) — Folder ID in the external system this file was synced from
+- `source_mime_type` (string, required) — Original MIME type in the external system
+- `source_modified_time` (string, required) — Last modified time from the external system
+- `root_folder_id` (string, optional, nullable) — KB folder ID of the sync root, used to query all entities under a sync tree
+
+### KnowledgeBaseFolderPathSegmentSummaryResponseModel
+
+- `id` (string, required)
+
+### FileRefreshStatus
+
+In-flight/last refresh state for an externally-synced KB file.
+
+- `status` (enum, optional, default: queued)
+  - Allowed values: `queued`, `processing`, `succeeded`, `failed`, `skipped`, `cancelled`
+- `enqueued_at` (integer, optional, nullable)
+- `started_at` (integer, optional, nullable)
+- `completed_at` (integer, optional, nullable)
+- `last_synced_at` (integer, optional, nullable)
+- `error_message` (string, optional, nullable)
+
+### V1ConvaiKnowledgeBaseSummariesGetResponsesContentApplicationJsonSchemaDiscriminatorMappingSuccessDataDiscriminatorMappingFolderDependentAgentsItems
+
+- `type`: `available` (DependentAvailableAgentIdentifier)
+  - `access_level` (enum, required)
+    - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+  - `created_at_unix_secs` (integer, required)
+  - `id` (string, required)
+  - `name` (string, required)
+  - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
+- `type`: `unknown` (DependentUnknownAgentIdentifier)
+  - `id` (string, required)
+  - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
+
+### ExternalFolderSyncInfo
+
+Metadata for a KB folder that mirrors an external source folder.
+
+- `type` (enum, required) — Provider identifier
+  - Allowed values: `google_drive`
+- `source_entity_id` (string, required) — Entity ID in the external system
+- `integration_connection_id` (string, required) — Integration connection instance ID
+- `root_folder_id` (string, optional, nullable) — KB folder ID of the sync root. None means this folder is the root.
+- `sync_cursor` (string, optional, nullable) — Opaque cursor for incremental sync, interpreted by the provider
+- `last_sync_at` (integer, optional, nullable) — Unix timestamp of last completed sync
+
+### V1ConvaiKnowledgeBaseSummariesGetResponsesContentApplicationJsonSchemaDiscriminatorMappingSuccessDataDiscriminatorMappingTextDependentAgentsItems
+
+- `type`: `available` (DependentAvailableAgentIdentifier)
+  - `access_level` (enum, required)
+    - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+  - `created_at_unix_secs` (integer, required)
+  - `id` (string, required)
+  - `name` (string, required)
+  - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
+- `type`: `unknown` (DependentUnknownAgentIdentifier)
+  - `id` (string, required)
+  - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
+
+### V1ConvaiKnowledgeBaseSummariesGetResponsesContentApplicationJsonSchemaDiscriminatorMappingSuccessDataDiscriminatorMappingUrlDependentAgentsItems
+
+- `type`: `available` (DependentAvailableAgentIdentifier)
+  - `access_level` (enum, required)
+    - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+  - `created_at_unix_secs` (integer, required)
+  - `id` (string, required)
+  - `name` (string, required)
+  - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
+- `type`: `unknown` (DependentUnknownAgentIdentifier)
+  - `id` (string, required)
+  - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
+
+### ValidationErrorLocItems
 
 ## Examples
 

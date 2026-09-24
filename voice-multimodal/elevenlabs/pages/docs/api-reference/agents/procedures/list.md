@@ -39,19 +39,7 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/procedures/list
 
 Successful Response
 
-- `procedures` (list of object, required) — Procedures on the branch with their draft-aware metadata.
-  - `procedure_id` (string, required) — Procedure ID
-  - `has_draft` (boolean, required) — True when the procedure has unpublished draft changes on this branch (a newly created or edited procedure not yet published). When true, the name, type, and trigger reflect that draft.
-  - `version_id` (string, optional, nullable) — Version ID of a version of the procedure. None for a procedure never versioned.
-  - `name` (string, optional, default: ) — Procedure name
-  - `type` (enum, optional, default: free_form) — Procedure type
-    - Allowed values: `free_form`, `deterministic`, `folder`
-  - `trigger` (string, optional, default: ) — When the agent should use this procedure. Empty string means this is a sub-procedure that should only start when another procedure references it.
-  - `referenced_tool_ids` (list of string, optional) — Tool IDs referenced in the procedure content
-  - `referenced_kb_ids` (list of string, optional) — Knowledge base IDs referenced in the procedure content
-  - `referenced_procedure_ids` (list of string, optional) — Procedure IDs referenced in the procedure content
-  - `referenced_dynamic_variables` (list of string, optional) — Dynamic variable names used in the procedure content
-  - `folder_parent_id` (string, optional, nullable) — Procedure ID of the folder this procedure is placed in. None means root.
+- `procedures` (list of ProcedureListItemResponseModel, required) — Procedures on the branch with their draft-aware metadata.
 
 ## Errors
 
@@ -59,10 +47,32 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ProcedureListItemResponseModel
+
+- `procedure_id` (string, required) — Procedure ID
+- `has_draft` (boolean, required) — True when the procedure has unpublished draft changes on this branch (a newly created or edited procedure not yet published). When true, the name, type, and trigger reflect that draft.
+- `version_id` (string, optional, nullable) — Version ID of a version of the procedure. None for a procedure never versioned.
+- `name` (string, optional, default: ) — Procedure name
+- `type` (enum, optional, default: free_form) — Procedure type
+  - Allowed values: `free_form`, `deterministic`, `folder`
+- `trigger` (string, optional, default: ) — When the agent should use this procedure. Empty string means this is a sub-procedure that should only start when another procedure references it.
+- `referenced_tool_ids` (list of string, optional) — Tool IDs referenced in the procedure content
+- `referenced_kb_ids` (list of string, optional) — Knowledge base IDs referenced in the procedure content
+- `referenced_procedure_ids` (list of string, optional) — Procedure IDs referenced in the procedure content
+- `referenced_dynamic_variables` (list of string, optional) — Dynamic variable names used in the procedure content
+- `folder_parent_id` (string, optional, nullable) — Procedure ID of the folder this procedure is placed in. None means root.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

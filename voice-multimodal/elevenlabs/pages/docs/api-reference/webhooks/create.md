@@ -27,13 +27,9 @@ Reference: https://elevenlabs.io/docs/api-reference/webhooks/create
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_Create_workspace_webhook_v1_workspace_webhooks_post.
 
-- `settings` (object, required) — Webhook settings object containing auth_type and corresponding configuration
-  - `auth_type` ("hmac", required) — The authentication type for this webhook
-  - `name` (string, required) — The display name for this webhook
-  - `webhook_url` (string, required) — The HTTPS callback URL that will be called when this webhook is triggered
-  - `request_headers` (map from string to string, optional, nullable) — Optional custom request headers to include with each webhook delivery
+- `settings` (WebhookHMACSettings, required) — Webhook settings object containing auth_type and corresponding configuration
 
 ## Response
 
@@ -50,10 +46,26 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### WebhookHMACSettings
+
+Settings for creating an HMAC-authenticated webhook
+
+- `auth_type` ("hmac", required) — The authentication type for this webhook
+- `name` (string, required) — The display name for this webhook
+- `webhook_url` (string, required) — The HTTPS callback URL that will be called when this webhook is triggered
+- `request_headers` (map from string to string, optional, nullable) — Optional custom request headers to include with each webhook delivery
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

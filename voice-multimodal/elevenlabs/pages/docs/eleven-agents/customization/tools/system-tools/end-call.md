@@ -8,11 +8,13 @@ path: docs/eleven-agents/customization/tools/system-tools/end-call
 
 # End call
 
-The **End Call** tool is added to agents created in the ElevenLabs dashboard by default. For
-agents created via API or SDK, if you would like to enable the End Call tool, you must add it
-manually as a system tool in your agent configuration. [See API Implementation below](#api-implementation) for details.
+> **Warning**
+>
+> The **End Call** tool is added to agents created in the ElevenLabs dashboard by default. For
+> agents created via API or SDK, if you would like to enable the End Call tool, you must add it
+> manually as a system tool in your agent configuration. [See API Implementation below](#api-implementation) for details.
 
-![End call](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f260bfd4e43f7fb0374ce12d2ed984efb946a8ca9ebaa1c2d4b3e6d5f52a7851/assets/images/conversational-ai/end-call-tool.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113208Z&X-Amz-Expires=604800&X-Amz-Signature=64875337c141f88fdcc56ee7ae0af4ccd9689c8ebdf6d2b34b50c3915b3d422f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![End call](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f260bfd4e43f7fb0374ce12d2ed984efb946a8ca9ebaa1c2d4b3e6d5f52a7851/assets/images/conversational-ai/end-call-tool.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T105851Z&X-Amz-Expires=604800&X-Amz-Signature=6e3f897eff392e109a84e3687a2f4fba84cc8f9bc22bf6fba0a26e0d65fd73df&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Overview
 
@@ -127,7 +129,9 @@ curl -X POST https://api.elevenlabs.io/v1/convai/agents/create \
 }'
 ```
 
-Leave the description blank to use the default end call prompt.
+> **Tip**
+>
+> Leave the description blank to use the default end call prompt.
 
 ## Example prompts
 

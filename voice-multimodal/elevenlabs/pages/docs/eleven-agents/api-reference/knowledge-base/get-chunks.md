@@ -41,10 +41,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base
 
 Successful Response
 
-- `chunks` (list of object, required)
-  - `id` (string, required)
-  - `name` (string, required)
-  - `content` (string, required)
+- `chunks` (list of KnowledgeBaseDocumentChunkResponseModel, required)
 - `next_cursor` (string, optional)
 
 ## Errors
@@ -53,10 +50,23 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### KnowledgeBaseDocumentChunkResponseModel
+
+- `id` (string, required)
+- `name` (string, required)
+- `content` (string, required)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItem, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItem
 
 ## Examples
 

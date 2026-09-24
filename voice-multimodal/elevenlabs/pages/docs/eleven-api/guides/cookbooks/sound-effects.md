@@ -10,11 +10,13 @@ path: docs/eleven-api/guides/cookbooks/sound-effects
 
 This guide will show you how to generate sound effects using the Sound Effects API.
 
-Use the [ElevenLabs sound-effects skill](https://github.com/elevenlabs/skills/tree/main/sound-effects) to generate sound effects from your AI coding assistant:
-
-```bash
-npx skills add elevenlabs/skills --skill sound-effects
-```
+> **Tip**
+>
+> Use the [ElevenLabs sound-effects skill](https://github.com/elevenlabs/skills/tree/main/sound-effects) to generate sound effects from your AI coding assistant:
+>
+> ```bash
+> npx skills add elevenlabs/skills --skill sound-effects
+> ```
 
 ## Using the Sound Effects API
 
@@ -75,11 +77,13 @@ npm install -g @elevenlabs/cli
 curl --proto '=https' --tlsv1.2 -LsSf https://github.com/elevenlabs/cli/releases/latest/download/elevenlabs-cli-installer.sh | sh
 ```
 
-Working with an AI coding assistant? Run `elevenlabs generate-skills` in your project to write a
-`SKILL.md` for every command group into `skills/`, so your assistant knows the CLI's full surface
-without you pasting docs. Use `--output-dir` to put them elsewhere. This reads the CLI's own
-embedded API definition, so it needs no API key and works offline — and it stays in step with
-whichever CLI version you have installed.
+> **Tip**
+>
+> Working with an AI coding assistant? Run `elevenlabs generate-skills` in your project to write a
+> `SKILL.md` for every command group into `skills/`, so your assistant knows the CLI's full surface
+> without you pasting docs. Use `--output-dir` to put them elsewhere. This reads the CLI's own
+> embedded API definition, so it needs no API key and works offline — and it stays in step with
+> whichever CLI version you have installed.
 
 Then authenticate — this opens your browser to authorize the CLI:
 
@@ -87,8 +91,10 @@ Then authenticate — this opens your browser to authorize the CLI:
 elevenlabs auth login
 ```
 
-To play the audio through your speakers, you may be prompted to install [MPV](https://mpv.io/)
-and/or [ffmpeg](https://ffmpeg.org/).
+> **Note**
+>
+> To play the audio through your speakers, you may be prompted to install [MPV](https://mpv.io/)
+> and/or [ffmpeg](https://ffmpeg.org/).
 
 #### Make the API request
 

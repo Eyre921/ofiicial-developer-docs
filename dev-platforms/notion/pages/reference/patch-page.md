@@ -13,7 +13,7 @@ Use this API to modify attributes of a Notion page, such as its properties, icon
 
 To change the `properties` of a page in a data source, use the `properties` body parameter. This parameter can only be used if the page's parent is a [data source](/reference/data-source), aside from updating the `title` of a page outside of a data source.
 
-The page’s `properties` schema must match the parent [data source's properties](/reference/property-object).
+Property names or IDs must match the parent [data source’s schema](/reference/property-object). See [Page property values](/reference/page-property-values) for each type’s input, read-only fields, and clearing rules. Omitted properties keep their values; array values replace the full array.
 
 #### Setting the icon, cover, or "in trash" status
 
@@ -21,13 +21,13 @@ This endpoint can be used to update any page `icon` or `cover`, and can be used 
 
 #### Locking and unlocking a page
 
-Use the `is_locked` boolean parameter to lock or unlock the page from being further edited in the Notion app UI. Note that this setting doesn't affect the ability to update the page using the API.
+The `is_locked` boolean controls whether the page can be edited in Notion. It does not affect updates through the API.
 
 #### Applying a page template
 
 Use the `template` body parameter object to apply a [template](/guides/data-apis/creating-pages-from-templates) to an existing page. This can either be the parent data source's default template (`type=default`), or a specific template (`type=template_id`).
 
-You can optionally provide `template[timezone]` — an [IANA timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) string (e.g. `America/New_York`) — to control the timezone used when resolving template variables like `@now` and `@today`. If omitted, the associated user's timezone is used for public connections and personal access tokens, or UTC for internal connections.
+You can optionally provide `template[timezone]`, an [IANA time zone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) such as `America/New_York`, to control the timezone used when resolving template variables like `@now` and `@today`. If omitted, the associated user's timezone is used for public connections and personal access tokens, or UTC for internal connections.
 
 After the API request finishes, Notion's systems merge the content and properties from your chosen template into the current page.
 

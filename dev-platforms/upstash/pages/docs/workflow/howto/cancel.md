@@ -12,6 +12,21 @@ In your Upstash Workflow console, find the run you'd like to cancel and press th
 
   <img alt="Cancel a workflow run in the Upstash Console" />
 
+## Cancelling in bulk
+
+To cancel many runs at once, filter the `Logs` tab down to the runs you want
+and pick **Cancel** from the **Bulk actions** menu. QStash cancels every running
+workflow that matches the filters in the background.
+
+The **History** button next to the menu lists each bulk cancellation with its
+state, the filters used and the number of runs cancelled, so you can follow an
+operation while it runs or look it up later by its action ID. The same is
+available through the [bulk cancel workflow runs](/docs/workflow/api-reference/runs/bulk-cancel-workflow-runs)
+endpoint with `"async": true`, and the
+[bulk actions](/docs/workflow/api-reference/bulk-actions/list-bulk-actions) endpoints.
+
+  <img alt="Bulk action history panel in the Upstash Console" />
+
 ## Cancelling programatically
 
 <Note>

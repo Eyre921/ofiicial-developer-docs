@@ -27,7 +27,7 @@ Reference: https://elevenlabs.io/docs/api-reference/api-keys/set-third-party-dis
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_Set_workspace_Third_Party_Disabling_policy_v1_workspaces_api_keys_third_party_disabling_post.
 
 - `third_party_disable_allowed` (boolean, optional, nullable) — `true` forces every key in the workspace to be disable-able by its holder; `false` forbids it for every key; `null` clears the override (per-key values and the plan default apply).
 
@@ -45,10 +45,17 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

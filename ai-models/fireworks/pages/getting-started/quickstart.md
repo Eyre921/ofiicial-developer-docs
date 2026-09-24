@@ -60,7 +60,7 @@ Once you have your API key, export it as an environment variable in your termina
     client = Fireworks()
 
     response = client.chat.completions.create(
-      model="accounts/fireworks/models/deepseek-v3p1",
+      model="accounts/fireworks/models/glm-5p3-flash",
       messages=[{
         "role": "user",
         "content": "Say hello in Spanish",
@@ -90,7 +90,7 @@ Once you have your API key, export it as an environment variable in your termina
     )
 
     response = client.chat.completions.create(
-        model="accounts/fireworks/models/deepseek-v3p1",
+        model="accounts/fireworks/models/glm-5p3-flash",
         messages=[{
             "role": "user",
             "content": "Say hello in Spanish",
@@ -120,7 +120,7 @@ Once you have your API key, export it as an environment variable in your termina
     )
 
     response = client.messages.create(
-        model="accounts/fireworks/models/deepseek-v3p1",
+        model="accounts/fireworks/models/glm-5p3-flash",
         max_tokens=1024,
         messages=[{
             "role": "user",
@@ -150,7 +150,7 @@ Once you have your API key, export it as an environment variable in your termina
     });
 
     const response = await client.chat.completions.create({
-      model: "accounts/fireworks/models/deepseek-v3p1",
+      model: "accounts/fireworks/models/glm-5p3-flash",
       messages: [
         {
           role: "user",
@@ -181,7 +181,7 @@ Once you have your API key, export it as an environment variable in your termina
     });
 
     const response = await client.messages.create({
-      model: "accounts/fireworks/models/deepseek-v3p1",
+      model: "accounts/fireworks/models/glm-5p3-flash",
       max_tokens: 1024,
       messages: [
         {
@@ -201,7 +201,7 @@ Once you have your API key, export it as an environment variable in your termina
       -H "Content-Type: application/json" \
       -H "Authorization: Bearer $FIREWORKS_API_KEY" \
       -d '{
-        "model": "accounts/fireworks/models/deepseek-v3p1",
+        "model": "accounts/fireworks/models/glm-5p3-flash",
         "messages": [
           {
             "role": "user",
@@ -233,7 +233,7 @@ Stream responses token-by-token for a better user experience:
     client = Fireworks()
 
     stream = client.chat.completions.create(
-      model="accounts/fireworks/models/deepseek-v3p1",
+      model="accounts/fireworks/models/glm-5p3-flash",
       messages=[{"role": "user", "content": "Tell me a short story"}],
       stream=True
     )
@@ -255,7 +255,7 @@ Stream responses token-by-token for a better user experience:
     )
 
     stream = client.chat.completions.create(
-        model="accounts/fireworks/models/deepseek-v3p1",
+        model="accounts/fireworks/models/glm-5p3-flash",
         messages=[{"role": "user", "content": "Tell me a short story"}],
         stream=True
     )
@@ -277,7 +277,7 @@ Stream responses token-by-token for a better user experience:
     )
 
     with client.messages.stream(
-        model="accounts/fireworks/models/deepseek-v3p1",
+        model="accounts/fireworks/models/glm-5p3-flash",
         max_tokens=1024,
         messages=[{"role": "user", "content": "Tell me a short story"}],
     ) as stream:
@@ -296,7 +296,7 @@ Stream responses token-by-token for a better user experience:
     });
 
     const stream = await client.chat.completions.create({
-      model: "accounts/fireworks/models/deepseek-v3p1",
+      model: "accounts/fireworks/models/glm-5p3-flash",
       messages: [{ role: "user", content: "Tell me a short story" }],
       stream: true,
     });
@@ -317,7 +317,7 @@ Stream responses token-by-token for a better user experience:
     });
 
     const stream = client.messages.stream({
-      model: "accounts/fireworks/models/deepseek-v3p1",
+      model: "accounts/fireworks/models/glm-5p3-flash",
       max_tokens: 1024,
       messages: [{ role: "user", content: "Tell me a short story" }],
     });
@@ -336,7 +336,7 @@ Stream responses token-by-token for a better user experience:
         -H "Content-Type: application/json" \
         -H "Authorization: Bearer $FIREWORKS_API_KEY" \
         -d '{
-        "model": "accounts/fireworks/models/deepseek-v3p1",
+        "model": "accounts/fireworks/models/glm-5p3-flash",
         "messages": [
             {
             "role": "user",
@@ -361,7 +361,7 @@ Connect your models to external tools and APIs:
     client = Fireworks()
 
     response = client.chat.completions.create(
-        model="accounts/fireworks/models/kimi-k2-instruct-0905",
+        model="accounts/fireworks/models/kimi-k3",
         messages=[
             {"role": "user", "content": "What's the weather in Paris?"}
         ],
@@ -401,7 +401,7 @@ Connect your models to external tools and APIs:
     )
 
     response = client.chat.completions.create(
-        model="accounts/fireworks/models/kimi-k2-instruct-0905",
+        model="accounts/fireworks/models/kimi-k3",
         messages=[
             {"role": "user", "content": "What's the weather in Paris?"}
         ],
@@ -441,7 +441,7 @@ Connect your models to external tools and APIs:
     )
 
     response = client.messages.create(
-        model="accounts/fireworks/models/kimi-k2-instruct-0905",
+        model="accounts/fireworks/models/kimi-k3",
         max_tokens=1024,
         messages=[
             {"role": "user", "content": "What's the weather in Paris?"}
@@ -500,7 +500,7 @@ Connect your models to external tools and APIs:
     ];
 
     const response = await client.chat.completions.create({
-      model: "accounts/fireworks/models/kimi-k2-instruct-0905",
+      model: "accounts/fireworks/models/kimi-k3",
       messages: [{ role: "user", content: "What's the weather in Paris?" }],
       tools: tools,
     });
@@ -519,7 +519,7 @@ Connect your models to external tools and APIs:
     });
 
     const response = await client.messages.create({
-      model: "accounts/fireworks/models/kimi-k2-instruct-0905",
+      model: "accounts/fireworks/models/kimi-k3",
       max_tokens: 1024,
       messages: [{ role: "user", content: "What's the weather in Paris?" }],
       tools: [
@@ -554,7 +554,7 @@ Connect your models to external tools and APIs:
       -H "Content-Type: application/json" \
       -H "Authorization: Bearer $FIREWORKS_API_KEY" \
       -d '{
-        "model": "accounts/fireworks/models/kimi-k2-instruct-0905",
+        "model": "accounts/fireworks/models/kimi-k3",
         "messages": [
           {
             "role": "user",
@@ -823,7 +823,7 @@ Some models support reasoning, where the model shows its thought process before 
     client = Fireworks()
 
     response = client.chat.completions.create(
-        model="accounts/fireworks/models/glm-5p2",
+        model="accounts/fireworks/models/glm-5p3",
         messages=[
             {"role": "user", "content": "What is 25 * 37? Show your work."}
         ],
@@ -848,7 +848,7 @@ Some models support reasoning, where the model shows its thought process before 
     )
 
     response = client.chat.completions.create(
-        model="accounts/fireworks/models/glm-5p2",
+        model="accounts/fireworks/models/glm-5p3",
         messages=[
             {"role": "user", "content": "What is 25 * 37? Show your work."}
         ],
@@ -880,7 +880,7 @@ Some models support reasoning, where the model shows its thought process before 
     )
 
     response = client.messages.create(
-        model="accounts/fireworks/models/glm-5p2",
+        model="accounts/fireworks/models/glm-5p3",
         max_tokens=16000,
         thinking={"type": "enabled", "budget_tokens": 4096},
         messages=[
@@ -906,7 +906,7 @@ Some models support reasoning, where the model shows its thought process before 
     });
 
     const response = await client.chat.completions.create({
-      model: "accounts/fireworks/models/glm-5p2",
+      model: "accounts/fireworks/models/glm-5p3",
       messages: [
         { role: "user", content: "What is 25 * 37? Show your work." },
       ],
@@ -933,7 +933,7 @@ Some models support reasoning, where the model shows its thought process before 
     });
 
     const response = await client.messages.create({
-      model: "accounts/fireworks/models/glm-5p2",
+      model: "accounts/fireworks/models/glm-5p3",
       max_tokens: 16000,
       thinking: { type: "enabled", budget_tokens: 4096 },
       messages: [
@@ -957,7 +957,7 @@ Some models support reasoning, where the model shows its thought process before 
       -H "Content-Type: application/json" \
       -H "Authorization: Bearer $FIREWORKS_API_KEY" \
       -d '{
-        "model": "accounts/fireworks/models/glm-5p2",
+        "model": "accounts/fireworks/models/glm-5p3",
         "messages": [
           {
             "role": "user",
@@ -984,7 +984,7 @@ Analyze images with vision-language models:
     client = Fireworks()
 
     response = client.chat.completions.create(
-      model="accounts/fireworks/models/kimi-k2p6",
+      model="accounts/fireworks/models/kimi-k3",
       messages=[
         {
           "role": "user",
@@ -1016,7 +1016,7 @@ Analyze images with vision-language models:
     )
 
     response = client.chat.completions.create(
-        model="accounts/fireworks/models/kimi-k2p6",
+        model="accounts/fireworks/models/kimi-k3",
         messages=[
             {
                 "role": "user",
@@ -1050,7 +1050,7 @@ Analyze images with vision-language models:
     )
 
     response = client.messages.create(
-        model="accounts/fireworks/models/kimi-k2p6",
+        model="accounts/fireworks/models/kimi-k3",
         max_tokens=1024,
         messages=[
             {
@@ -1085,7 +1085,7 @@ Analyze images with vision-language models:
     });
 
     const response = await client.chat.completions.create({
-      model: "accounts/fireworks/models/kimi-k2p6",
+      model: "accounts/fireworks/models/kimi-k3",
       messages: [
         {
           role: "user",
@@ -1116,7 +1116,7 @@ Analyze images with vision-language models:
     });
 
     const response = await client.messages.create({
-      model: "accounts/fireworks/models/kimi-k2p6",
+      model: "accounts/fireworks/models/kimi-k3",
       max_tokens: 1024,
       messages: [
         {
@@ -1149,7 +1149,7 @@ Analyze images with vision-language models:
       -H "Content-Type: application/json" \
       -H "Authorization: Bearer $FIREWORKS_API_KEY" \
       -d '{
-        "model": "accounts/fireworks/models/kimi-k2p6",
+        "model": "accounts/fireworks/models/kimi-k3",
         "messages": [
           {
             "role": "user",

@@ -84,9 +84,7 @@ A specific request for a specific project
 
 - `start` (string, optional)
 - `end` (string, optional)
-- `resolution` (object, optional)
-  - `units` (string, optional)
-  - `amount` (double, optional)
+- `resolution` (UsageV1ResponseResolution, optional)
 
 ## Errors
 
@@ -94,16 +92,27 @@ A specific request for a specific project
 
 Invalid Request
 
-- `string or object or object`
-  - ErrorResponseLegacyError
-    - `err_code` (string, optional) — The error code
-    - `err_msg` (string, optional) — The error message
-    - `request_id` (string, optional) — The request ID
-  - ErrorResponseModernError
-    - `category` (string, optional) — The category of the error
-    - `message` (string, optional) — A message about the error
-    - `details` (string, optional) — A description of the error
-    - `request_id` (string, optional) — The unique identifier of the request
+- `ErrorResponse`
+
+## Types
+
+### UsageV1ResponseResolution
+
+- `units` (string, optional)
+- `amount` (double, optional)
+
+### ErrorResponseLegacyError
+
+- `err_code` (string, optional) — The error code
+- `err_msg` (string, optional) — The error message
+- `request_id` (string, optional) — The request ID
+
+### ErrorResponseModernError
+
+- `category` (string, optional) — The category of the error
+- `message` (string, optional) — A message about the error
+- `details` (string, optional) — A description of the error
+- `request_id` (string, optional) — The unique identifier of the request
 
 ## Examples
 

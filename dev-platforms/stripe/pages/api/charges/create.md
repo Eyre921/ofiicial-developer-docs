@@ -106,10 +106,6 @@ curl https://api.stripe.com/v1/charges \
 }
 ```
 
-## Returns
-
-Returns the charge object if the charge succeeded. This call raises [an error](https://docs.stripe.com/api/charges/create.md#errors) if something goes wrong. A common source of error is an invalid or expired card, or a valid card with insufficient available balance.
-
 ## Parameters
 
 - `amount` (integer, required)
@@ -165,4 +161,8 @@ Returns the charge object if the charge succeeded. This call raises [an error](h
 
 - `transfer_group` (string, optional)
   A string that identifies this transaction as part of a group. For details, see [Grouping transactions](https://docs.stripe.com/connect/separate-charges-and-transfers.md#transfer-options).
+
+## Returns
+
+Returns the charge object if the charge succeeded. This call raises [an error](https://docs.stripe.com/api/charges/create.md#errors) if something goes wrong. A common source of error is an invalid or expired card, or a valid card with insufficient available balance.
 

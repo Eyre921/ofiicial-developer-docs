@@ -8,9 +8,11 @@ path: docs/eleven-agents/guides/chat-mode
 
 # Chat Mode
 
-Chat mode allows your agents to act as chat agents, ie to have text-only conversations without
-audio input/output. This is useful for building chat interfaces, testing agents, or when audio is
-not required.
+> **Info**
+>
+> Chat mode allows your agents to act as chat agents, ie to have text-only conversations without
+> audio input/output. This is useful for building chat interfaces, testing agents, or when audio is
+> not required.
 
 ## Overview
 
@@ -84,7 +86,9 @@ await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd9
 });
 ```
 
-For complete API reference and all available configuration options, see the [text only field in Create Agent API documentation](/docs/api-reference/agents/create#request.body.conversation_config.conversation.text_only).
+> **Info**
+>
+> For complete API reference and all available configuration options, see the [text only field in Create Agent API documentation](/docs/api-reference/agents/create#request.body.conversation_config.conversation.text_only).
 
 ## Runtime Overrides for Text-Only Mode
 
@@ -137,13 +141,17 @@ This configuration ensures that:
 
 ## Important Notes
 
-**Critical**: When using chat mode, you must ensure the `agent_response` event/callback is
-activated and properly configured. Without this, the agent's text responses will not be sent or
-displayed to the user.
+> **Warning**
+>
+> **Critical**: When using chat mode, you must ensure the `agent_response` event/callback is
+> activated and properly configured. Without this, the agent's text responses will not be sent or
+> displayed to the user.
 
-**Security Overrides**: When using runtime overrides (not agent-level configuration), you must
-enable the conversation overrides in your agent's security settings. Navigate to your agent's
-**Security** tab and enable the appropriate overrides. For more details, see the [Overrides documentation](/docs/eleven-agents/customization/personalization/overrides).
+> **Info**
+>
+> **Security Overrides**: When using runtime overrides (not agent-level configuration), you must
+> enable the conversation overrides in your agent's security settings. Navigate to your agent's
+> **Security** tab and enable the appropriate overrides. For more details, see the [Overrides documentation](/docs/eleven-agents/customization/personalization/overrides).
 
 ### Key Requirements
 
@@ -228,9 +236,11 @@ Chat mode provides significant concurrency advantages over voice conversations:
 | Business   | 30                | 750                   |
 | Enterprise | Elevated          | Elevated (25x)        |
 
-During connection initiation, chat-only conversations are initially checked against your total
-concurrency limit during the handshake process, then transferred to the separate chat-only
-concurrency pool once the connection is established.
+> **Note**
+>
+> During connection initiation, chat-only conversations are initially checked against your total
+> concurrency limit during the handshake process, then transferred to the separate chat-only
+> concurrency pool once the connection is established.
 
 ## Use Cases
 

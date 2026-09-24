@@ -27,70 +27,9 @@ Reference: https://elevenlabs.io/docs/api-reference/phone-numbers/create
 
 ### Body (application/json)
 
-This endpoint expects an object or object or object.
+This endpoint expects a conversational_ai_phone_numbers_create_Request.
 
-- `object or object or object`
-  - CreateTwilioPhoneNumberRequest
-    - `phone_number` (string, required) — Phone number
-    - `label` (string, required) — Label for the phone number
-    - `sid` (string, required) — Twilio Account SID (starts with `AC`) or API Key SID (starts with `SK`)
-    - `token` (string, required) — Secret paired with `sid`: the Account Auth Token for an Account SID, or the API Key Secret for an API Key SID
-    - `provider` ("twilio", optional, default: twilio)
-    - `agent_id` (string, optional, nullable) — Agent ID to assign the phone number to
-    - `account_auth_token` (string, optional, nullable) — Twilio Account Auth Token, required for API Key imports to validate inbound webhook signatures
-    - `region_config` (object, optional, nullable) — Twilio Additional Region Configuration
-      - `region_id` (enum, required) — Region ID
-        - Allowed values: `us1`, `ie1`, `au1`
-      - `token` (string, required) — Auth Token for this region
-      - `edge_location` (enum, required) — Edge location for this region
-        - Allowed values: `ashburn`, `dublin`, `frankfurt`, `sao-paulo`, `singapore`, `sydney`, `tokyo`, `umatilla`, `roaming`
-    - `enable_sms` (boolean, optional, default: true) — Route inbound SMS to ElevenLabs. On by default; set to false to skip SMS configuration for numbers that don't support it.
-    - `supports_inbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports inbound calls
-    - `supports_outbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports outbound calls
-  - CreateExotelPhoneNumberRequest
-    - `phone_number` (string, required) — Phone number
-    - `label` (string, required) — Label for the phone number
-    - `account_sid` (string, required) — Exotel Account SID
-    - `api_key` (string, required) — Exotel API Key
-    - `api_token` (string, required) — Exotel API Token
-    - `api_subdomain` (enum, required) — Exotel region-specific API host
-      - Allowed values: `api.in.exotel.com`, `api.exotel.com`
-    - `app_id` (string, required) — Exotel applet identifier used in Calls/connect
-    - `provider` ("exotel", optional, default: exotel)
-    - `agent_id` (string, optional, nullable) — Agent ID to assign the phone number to
-    - `applet_url` (string, optional, nullable) — Optional full applet URL override. Defaults to Exotel start_voice URL derived from account SID and app ID.
-    - `supports_inbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports inbound calls
-    - `supports_outbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports outbound calls
-  - CreateSIPTrunkPhoneNumberRequestV2
-    - `phone_number` (string, required) — Phone number
-    - `label` (string, required) — Label for the phone number
-    - `provider` ("sip_trunk", optional, default: sip_trunk)
-    - `agent_id` (string, optional, nullable) — Agent ID to assign the phone number to
-    - `inbound_trunk_config` (object, optional, nullable)
-      - `allowed_addresses` (list of string, optional, nullable) — List of IP addresses that are allowed to use the trunk. Each item in the list can be an individual IP address or a Classless Inter-Domain Routing notation representing a CIDR block.
-      - `allowed_numbers` (list of string, optional, nullable) — List of phone numbers that are allowed to use the trunk.
-      - `media_encryption` (enum, optional, default: allowed) — Whether or not to encrypt media (data layer).
-        - Allowed values: `disabled`, `allowed`, `required`
-      - `credentials` (object, optional, nullable) — Optional digest authentication credentials (username/password).
-        - `username` (string, required) — SIP trunk username
-        - `password` (string, optional, nullable) — SIP trunk password - if not specified, then remain unchanged
-      - `remote_domains` (list of string, optional, nullable) — Domains of remote SIP servers used to validate TLS certificates.
-      - `attributes_to_headers` (map from string to string, optional) — Map of dynamic variable name to header name for attributes_to_headers
-    - `outbound_trunk_config` (object, optional, nullable)
-      - `address` (string, required) — Hostname or IP the SIP INVITE is sent to.
-      - `transport` (enum, optional, default: auto) — Protocol to use for SIP transport (signalling layer).
-        - Allowed values: `auto`, `udp`, `tcp`, `tls`
-      - `media_encryption` (enum, optional, default: allowed) — Whether or not to encrypt media (data layer).
-        - Allowed values: `disabled`, `allowed`, `required`
-      - `headers` (map from string to string, optional) — SIP X-* headers for INVITE request. These headers are sent as-is and may help identify this call.
-      - `attributes_to_headers` (map from string to string, optional) — Map of dynamic variable name to header name for attributes_to_headers
-      - `credentials` (object, optional, nullable) — Optional digest authentication credentials (username/password). If not provided, ACL authentication is assumed.
-        - `username` (string, required) — SIP trunk username
-        - `password` (string, optional, nullable) — SIP trunk password - if not specified, then remain unchanged
-      - `enabled_codecs` (list of enum, optional) — Media codecs that should be offered in the SDP for outbound calls. If empty, all supported codecs are offered.
-        - Allowed values: `G722/8000`, `PCMU/8000`, `PCMA/8000`
-    - `supports_inbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports inbound calls
-    - `supports_outbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports outbound calls
+- `conversational_ai_phone_numbers_create_Request`
 
 ## Response
 
@@ -106,10 +45,94 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### CreateTwilioPhoneNumberRequest
+
+- `phone_number` (string, required) — Phone number
+- `label` (string, required) — Label for the phone number
+- `sid` (string, required) — Twilio Account SID (starts with `AC`) or API Key SID (starts with `SK`)
+- `token` (string, required) — Secret paired with `sid`: the Account Auth Token for an Account SID, or the API Key Secret for an API Key SID
+- `provider` ("twilio", optional, default: twilio)
+- `agent_id` (string, optional, nullable) — Agent ID to assign the phone number to
+- `account_auth_token` (string, optional, nullable) — Twilio Account Auth Token, required for API Key imports to validate inbound webhook signatures
+- `region_config` (RegionConfigRequest, optional, nullable) — Twilio Additional Region Configuration
+- `enable_sms` (boolean, optional, default: true) — Route inbound SMS to ElevenLabs. On by default; set to false to skip SMS configuration for numbers that don't support it.
+- `supports_inbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports inbound calls
+- `supports_outbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports outbound calls
+
+### CreateExotelPhoneNumberRequest
+
+- `phone_number` (string, required) — Phone number
+- `label` (string, required) — Label for the phone number
+- `account_sid` (string, required) — Exotel Account SID
+- `api_key` (string, required) — Exotel API Key
+- `api_token` (string, required) — Exotel API Token
+- `api_subdomain` (enum, required) — Exotel region-specific API host
+  - Allowed values: `api.in.exotel.com`, `api.exotel.com`
+- `app_id` (string, required) — Exotel applet identifier used in Calls/connect
+- `provider` ("exotel", optional, default: exotel)
+- `agent_id` (string, optional, nullable) — Agent ID to assign the phone number to
+- `applet_url` (string, optional, nullable) — Optional full applet URL override. Defaults to Exotel start_voice URL derived from account SID and app ID.
+- `supports_inbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports inbound calls
+- `supports_outbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports outbound calls
+
+### CreateSIPTrunkPhoneNumberRequestV2
+
+- `phone_number` (string, required) — Phone number
+- `label` (string, required) — Label for the phone number
+- `provider` ("sip_trunk", optional, default: sip_trunk)
+- `agent_id` (string, optional, nullable) — Agent ID to assign the phone number to
+- `inbound_trunk_config` (InboundSIPTrunkConfigRequestModel, optional, nullable)
+- `outbound_trunk_config` (OutboundSIPTrunkConfigRequestModel, optional, nullable)
+- `supports_inbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports inbound calls
+- `supports_outbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports outbound calls
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### RegionConfigRequest
+
+- `region_id` (enum, required) — Region ID
+  - Allowed values: `us1`, `ie1`, `au1`
+- `token` (string, required) — Auth Token for this region
+- `edge_location` (enum, required) — Edge location for this region
+  - Allowed values: `ashburn`, `dublin`, `frankfurt`, `sao-paulo`, `singapore`, `sydney`, `tokyo`, `umatilla`, `roaming`
+
+### InboundSIPTrunkConfigRequestModel
+
+- `allowed_addresses` (list of string, optional, nullable) — List of IP addresses that are allowed to use the trunk. Each item in the list can be an individual IP address or a Classless Inter-Domain Routing notation representing a CIDR block.
+- `allowed_numbers` (list of string, optional, nullable) — List of phone numbers that are allowed to use the trunk.
+- `media_encryption` (enum, optional, default: allowed) — Whether or not to encrypt media (data layer).
+  - Allowed values: `disabled`, `allowed`, `required`
+- `credentials` (SIPTrunkCredentialsRequestModel, optional, nullable) — Optional digest authentication credentials (username/password).
+- `remote_domains` (list of string, optional, nullable) — Domains of remote SIP servers used to validate TLS certificates.
+- `attributes_to_headers` (map from string to string, optional) — Map of dynamic variable name to header name for attributes_to_headers
+
+### OutboundSIPTrunkConfigRequestModel
+
+- `address` (string, required) — Hostname or IP the SIP INVITE is sent to.
+- `transport` (enum, optional, default: auto) — Protocol to use for SIP transport (signalling layer).
+  - Allowed values: `auto`, `udp`, `tcp`, `tls`
+- `media_encryption` (enum, optional, default: allowed) — Whether or not to encrypt media (data layer).
+  - Allowed values: `disabled`, `allowed`, `required`
+- `headers` (map from string to string, optional) — SIP X-* headers for INVITE request. These headers are sent as-is and may help identify this call.
+- `attributes_to_headers` (map from string to string, optional) — Map of dynamic variable name to header name for attributes_to_headers
+- `credentials` (SIPTrunkCredentialsRequestModel, optional, nullable) — Optional digest authentication credentials (username/password). If not provided, ACL authentication is assumed.
+- `enabled_codecs` (list of enum, optional) — Media codecs that should be offered in the SDP for outbound calls. If empty, all supported codecs are offered.
+  - Allowed values: `G722/8000`, `PCMU/8000`, `PCMA/8000`
+
+### ValidationErrorLocItems
+
+### SIPTrunkCredentialsRequestModel
+
+- `username` (string, required) — SIP trunk username
+- `password` (string, optional, nullable) — SIP trunk password - if not specified, then remain unchanged
 
 ## Examples
 

@@ -31,11 +31,13 @@ The [`gcloud` CLI](https://cloud.google.com/sdk/gcloud) provides programmatic ac
 1. Follow the [installation guide](https://cloud.google.com/sdk/docs/install) to install the CLI locally.
 2. Once installed, run `gcloud init` to configure the CLI with access to your GCP account and project.
 
-## Choosing a Region
-
-The templates and steps in this guide provision resources in the GCP `us-west1` region.
-
-If you would like to deploy to a different region, make sure to adjust templates and steps in this guide accordingly.
+> **Info**
+>
+> ## Choosing a Region
+>
+> The templates and steps in this guide provision resources in the GCP `us-west1` region.
+>
+> If you would like to deploy to a different region, make sure to adjust templates and steps in this guide accordingly.
 
 ## Cluster Management with `gcloud container clusters`
 
@@ -77,11 +79,15 @@ Google Kubernetes Engine (GKE) is a managed Kubernetes service to run Kubernetes
 
 2. Create separate node pools for each Deepgram component (API, Engine, License Proxy). Adjust the machine types and node counts according to your needs. You may wish to consult your Deepgram Account Representative in planning your cluster's capacity.
 
-   ## `num-nodes` Default Behavior
+   > **Info**
+   >
+   > ## `num-nodes` Default Behavior
+   >
+   > `num-nodes` configures the number of nodes in the node pool ***in each of the cluster's zones***. If your cluster is configured in 3 zones, setting`num-nodes` to 1 will result in 1 node per zone, or 3 nodes across the entire cluster.
 
-   `num-nodes` configures the number of nodes in the node pool ***in each of the cluster's zones***. If your cluster is configured in 3 zones, setting`num-nodes` to 1 will result in 1 node per zone, or 3 nodes across the entire cluster.
-
-   We restrict the `engine-pool` to one cluster zone because [you can't use regional persistent disks on VMs that use G2 standard machine types](https://cloud.google.com/compute/docs/accelerator-optimized-machines#g2_standard_limitations). This guide uses a zonal persistent disk as a workaround, which means we must limit the nodes in `engine-pool` to a single zone in order to mount the disk.
+   > **Info**
+   >
+   > We restrict the `engine-pool` to one cluster zone because [you can't use regional persistent disks on VMs that use G2 standard machine types](https://cloud.google.com/compute/docs/accelerator-optimized-machines#g2_standard_limitations). This guide uses a zonal persistent disk as a workaround, which means we must limit the nodes in `engine-pool` to a single zone in order to mount the disk.
 
    **`Shell`**
 
@@ -153,13 +159,17 @@ spec:
       values: ["system-node-critical", "system-cluster-critical"]
 ```
 
-Without this quota, pods that require these priority classes may remain unscheduled.
+> **Info**
+>
+> Without this quota, pods that require these priority classes may remain unscheduled.
 
 # Configure Persistent Storage
 
 Next, create a Google Cloud Persistent Disk to hold the Deepgram model files. Populate the disk from inside the cluster with a one-shot Kubernetes Job, then delete the Job. The disk remains, and will later be mounted read-only into the Deepgram Engine pods when the Helm chart is installed.
 
-The `deepgram-self-hosted` Helm chart mounts the Persistent Disk through a `ReadOnlyMany` PV/PVC, so it cannot be used to write the initial model files. Bind a separate, temporary `ReadWriteOnce` PV/PVC to the same underlying disk for the download, then delete it before installing the chart.
+> **Info**
+>
+> The `deepgram-self-hosted` Helm chart mounts the Persistent Disk through a `ReadOnlyMany` PV/PVC, so it cannot be used to write the initial model files. Bind a separate, temporary `ReadWriteOnce` PV/PVC to the same underlying disk for the download, then delete it before installing the chart.
 
 1. Create a Google Persistent Disk to store Deepgram model files and share them across multiple Deepgram Engine pods.
 
@@ -226,7 +236,9 @@ The `deepgram-self-hosted` Helm chart mounts the Persistent Disk through a `Read
 
 3. Run a one-shot `Job` that mounts the writable PVC and downloads the model files provided by your Deepgram Account Representative. The CSI driver creates the `ext4` filesystem on the disk the first time the volume is attached.
 
-   Replace the `wget` lines below with the model URLs supplied by your Deepgram Account Representative.
+   > **Info**
+   >
+   > Replace the `wget` lines below with the model URLs supplied by your Deepgram Account Representative.
 
    **`Shell`**
 
@@ -305,7 +317,9 @@ The `deepgram-self-hosted` Helm chart takes two Secret references. One is a set 
           --docker-password='QUAY_DG_PASSWORD'
       ```
 
-      Replace the placeholders `QUAY_DG_USER` and `QUAY_DG_PASSWORD` with the distribution credentials you generated in the [Self Service Licensing & Credentials](/docs/self-hosted-self-service-tutorial) guide.
+      > **Info**
+      >
+      > Replace the placeholders `QUAY_DG_USER` and `QUAY_DG_PASSWORD` with the distribution credentials you generated in the [Self Service Licensing & Credentials](/docs/self-hosted-self-service-tutorial) guide.
 
    2. Create a Kubernetes Secret named `dg-self-hosted-api-key` to store your self-hosted API key.
 
@@ -314,7 +328,9 @@ The `deepgram-self-hosted` Helm chart takes two Secret references. One is a set 
           --from-literal=DEEPGRAM_API_KEY='YOUR_API_KEY_HERE'
       ```
 
-      Replace the placeholder `YOUR_API_KEY_HERE` with the Deepgram API key you generated in the [Self Service Licensing & Credentials](/docs/self-hosted-self-service-tutorial) guide.
+      > **Info**
+      >
+      > Replace the placeholder `YOUR_API_KEY_HERE` with the Deepgram API key you generated in the [Self Service Licensing & Credentials](/docs/self-hosted-self-service-tutorial) guide.
 
 # Deploy Deepgram
 
@@ -366,11 +382,13 @@ Deepgram maintains the official `deepgram-self-hosted` Helm Chart. You can refer
    watch kubectl get all
    ```
 
-   ## Resource Limits
-
-   It may take some time for GKE to resize the number of nodes in your cluster to accommodate your deployment.
-
-   If you want to monitor the status, or your pods aren't being scheduled as you expect, you can see a pod's scheduling status with `kubectl describe pod <pod-name>`, which may contain details on what is preventing scheduling.
+   > **Warning**
+   >
+   > ## Resource Limits
+   >
+   > It may take some time for GKE to resize the number of nodes in your cluster to accommodate your deployment.
+   >
+   > If you want to monitor the status, or your pods aren't being scheduled as you expect, you can see a pod's scheduling status with `kubectl describe pod <pod-name>`, which may contain details on what is preventing scheduling.
 
 # Test Your Deepgram Setup with a Sample Request
 
@@ -419,11 +437,13 @@ Test your environment and container setup with a local file.
        "http://localhost:8080/v1/listen?model=nova-3&smart_format=true"
    ```
 
-   If needed, adjust pieces of the above command:
-
-   * the query parameters to match the directions from your Deepgram Account Representative
-   * the service name `deepgram-api-external`
-   * the namespace `dg-self-hosted`
+   > **Info**
+   >
+   > If needed, adjust pieces of the above command:
+   >
+   > * the query parameters to match the directions from your Deepgram Account Representative
+   > * the service name `deepgram-api-external`
+   > * the namespace `dg-self-hosted`
 
 You should receive a JSON response with the transcript and associated metadata. Congratulations - your self-hosted setup is working!
 

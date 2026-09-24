@@ -77,4 +77,6 @@ A plumbing business creates a webhook tool:
 
 During a call, when someone asks about availability in their area, the receptionist collects their zip code, calls the webhook, and tells them the result.
 
-Webhook integrations require the **Basic** plan or higher.
+> **Note**
+>
+> Webhook integrations require the **Basic** plan or higher.

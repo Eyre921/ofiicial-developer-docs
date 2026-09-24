@@ -8,7 +8,9 @@ path: docs/eleven-api/guides/how-to/image-and-video/webhooks
 
 # Image & Video webhooks
 
-**How-to guide** · Assumes you have completed the [Image & Video quickstart](/docs/eleven-api/guides/cookbooks/image-and-video).
+> **Note**
+>
+> **How-to guide** · Assumes you have completed the [Image & Video quickstart](/docs/eleven-api/guides/cookbooks/image-and-video).
 
 ## Overview
 
@@ -137,8 +139,10 @@ A failed generation delivers the failure category and message instead:
 Branch on `data.status` to decide which fields are present. The two terminal statuses are the only
 ones a webhook can carry, since delivery happens only when a generation finishes.
 
-`content_url` is a signed URL that expires roughly an hour after the event is sent. Download the
-media promptly, or fetch the generation again for a fresh URL.
+> **Warning**
+>
+> `content_url` is a signed URL that expires roughly an hour after the event is sent. Download the
+> media promptly, or fetch the generation again for a fresh URL.
 
 ## Handle the event
 
@@ -241,8 +245,10 @@ Both examples download inside the request for brevity. A large video takes long 
 outlast the delivery timeout, so in production hand the generation ID to a queue and return 2xx
 immediately. The signed URL is valid for about an hour, which is ample for a background worker.
 
-To receive events on a local server during development, expose it with a tunnel such as
-[ngrok](https://ngrok.com/) and use the HTTPS URL it gives you as the webhook's callback URL.
+> **Tip**
+>
+> To receive events on a local server during development, expose it with a tunnel such as
+> [ngrok](https://ngrok.com/) and use the HTTPS URL it gives you as the webhook's callback URL.
 
 ## Verify the signature
 

@@ -16,7 +16,9 @@ Pre-recorded  Streaming:Nova Streaming:Flux  All available languages
 
 ## Enable Feature
 
-Sample Rate is required when using the [Encoding](/docs/encoding) feature for non-containerized/raw audio. For containerized audio formats, both `sample_rate` and `encoding` should be omitted.
+> **Info**
+>
+> Sample Rate is required when using the [Encoding](/docs/encoding) feature for non-containerized/raw audio. For containerized audio formats, both `sample_rate` and `encoding` should be omitted.
 
 To enable Sample Rate, when you call Deepgram's API, add a `sample_rate` parameter in the query string and set it to the sample rate of your submitted audio.
 
@@ -33,7 +35,9 @@ curl \
   --url 'https://api.deepgram.com/v1/listen?sample_rate=8000&encoding=linear16'
 ```
 
-When submitting audio encoded with the Adaptive Multi-Rate (AMR) codec, you must submit specific Sample Rate values:
-
-* `amr-nb`: AMR narrowband codec. When using this option, you must specify `sample_rate=8000` (encoding=amr-nb\&sample\_rate=8000).
-* `amr-wb`: AMR wideband codec. When using this option, you must also specify `sample_rate=16000` (encoding=amr-wb\&sample\_rate=16000).
+> **Warning**
+>
+> When submitting audio encoded with the Adaptive Multi-Rate (AMR) codec, you must submit specific Sample Rate values:
+>
+> * `amr-nb`: AMR narrowband codec. When using this option, you must specify `sample_rate=8000` (encoding=amr-nb\&sample\_rate=8000).
+> * `amr-wb`: AMR wideband codec. When using this option, you must also specify `sample_rate=16000` (encoding=amr-wb\&sample\_rate=16000).

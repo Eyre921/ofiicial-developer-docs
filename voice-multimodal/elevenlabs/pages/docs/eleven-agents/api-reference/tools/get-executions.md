@@ -44,51 +44,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tools/get-exec
 
 Successful Response
 
-- `executions` (list of object, required)
-  - `tool_id` (string, required) — The ID of the tool that was executed
-  - `tool_request_id` (string, required) — The request/call ID associated with this tool execution
-  - `conversation_id` (string, required) — The ID of the conversation where the tool was executed
-  - `agent_id` (string, required) — The ID of the agent that ran the tool
-  - `timestamp` (double, required) — Unix timestamp when the tool was executed
-  - `latency_secs` (double, required) — How long the tool execution took
-  - `id` (string, required)
-  - `branch_id` (string, optional) — The branch ID if the agent has branches
-  - `is_error` (boolean, optional, default: false) — Whether the tool execution failed
-  - `request_payload` (string, optional) — LLM-extracted parameters sent to the tool (JSON string)
-  - `response_payload` (string, optional) — Response returned by the tool
-  - `error_message` (string, optional) — Error message if the tool execution failed
-  - `error_type` (string, optional) — Error category (internal, customer_config, customer_auth, external_server, external_client, client_timeout, unknown)
-  - `tool_call_details` (object, optional)
-    - `type`: `api_integration_webhook`
-      - `credential_id` (string, required, default: )
-      - `integration_connection_id` (string, required, default: )
-      - `integration_id` (string, required, default: )
-      - `webhook_details` (object, required)
-        - `method` (string, required)
-        - `url` (string, required)
-        - `type` ("webhook", optional)
-        - `headers` (map from string to string, optional)
-        - `path_params` (map from string to string, optional)
-        - `query_params` (map from string to string, optional)
-        - `body` (string, optional)
-    - `type`: `client`
-      - `parameters` (string, required)
-    - `type`: `mcp`
-      - `approval_policy` (string, required)
-      - `integration_type` (string, required)
-      - `mcp_server_id` (string, required)
-      - `mcp_server_name` (string, required)
-      - `mcp_tool_description` (string, optional, default: )
-      - `mcp_tool_name` (string, optional, default: )
-      - `parameters` (map from string to string, optional)
-      - `requires_approval` (boolean, optional, default: false)
-    - `type`: `webhook`
-      - `method` (string, required)
-      - `url` (string, required)
-      - `body` (string, optional)
-      - `headers` (map from string to string, optional)
-      - `path_params` (map from string to string, optional)
-      - `query_params` (map from string to string, optional)
+- `executions` (list of ToolExecutionResponseModel, required)
 - `has_more` (boolean, required)
 - `next_cursor` (string, optional)
 
@@ -98,10 +54,70 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ToolExecutionResponseModel
+
+- `tool_id` (string, required) — The ID of the tool that was executed
+- `tool_request_id` (string, required) — The request/call ID associated with this tool execution
+- `conversation_id` (string, required) — The ID of the conversation where the tool was executed
+- `agent_id` (string, required) — The ID of the agent that ran the tool
+- `timestamp` (double, required) — Unix timestamp when the tool was executed
+- `latency_secs` (double, required) — How long the tool execution took
+- `id` (string, required)
+- `branch_id` (string, optional) — The branch ID if the agent has branches
+- `is_error` (boolean, optional, default: false) — Whether the tool execution failed
+- `request_payload` (string, optional) — LLM-extracted parameters sent to the tool (JSON string)
+- `response_payload` (string, optional) — Response returned by the tool
+- `error_message` (string, optional) — Error message if the tool execution failed
+- `error_type` (string, optional) — Error category (internal, customer_config, customer_auth, external_server, external_client, client_timeout, unknown)
+- `tool_call_details` (ToolExecutionResponseModelToolCallDetails, optional)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItem, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ToolExecutionResponseModelToolCallDetails
+
+- `type`: `api_integration_webhook`
+  - `credential_id` (string, required, default: )
+  - `integration_connection_id` (string, required, default: )
+  - `integration_id` (string, required, default: )
+  - `webhook_details` (ConversationHistoryTranscriptToolCallWebhookDetails, required)
+- `type`: `client`
+  - `parameters` (string, required)
+- `type`: `mcp`
+  - `approval_policy` (string, required)
+  - `integration_type` (string, required)
+  - `mcp_server_id` (string, required)
+  - `mcp_server_name` (string, required)
+  - `mcp_tool_description` (string, optional, default: )
+  - `mcp_tool_name` (string, optional, default: )
+  - `parameters` (map from string to string, optional)
+  - `requires_approval` (boolean, optional, default: false)
+- `type`: `webhook`
+  - `method` (string, required)
+  - `url` (string, required)
+  - `body` (string, optional)
+  - `headers` (map from string to string, optional)
+  - `path_params` (map from string to string, optional)
+  - `query_params` (map from string to string, optional)
+
+### ValidationErrorLocItem
+
+### ConversationHistoryTranscriptToolCallWebhookDetails
+
+- `method` (string, required)
+- `url` (string, required)
+- `type` ("webhook", optional)
+- `headers` (map from string to string, optional)
+- `path_params` (map from string to string, optional)
+- `query_params` (map from string to string, optional)
+- `body` (string, optional)
 
 ## Examples
 

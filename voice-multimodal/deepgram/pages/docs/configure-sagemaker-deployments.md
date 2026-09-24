@@ -14,7 +14,9 @@ Deepgram on Amazon SageMaker supports runtime configuration through environment 
 
 Use environment variables to tune settings for a specific SageMaker deployment, such as specifying the maximum number of streams for Flux or adjusting the step parameter for interim results (Nova-3).
 
-In most cases, you don't need to set these variables. Overriding these settings can prevent the application from starting correctly. The most common use case is setting the maximum number of requests per instance to prevent overloading.
+> **Warning**
+>
+> In most cases, you don't need to set these variables. Overriding these settings can prevent the application from starting correctly. The most common use case is setting the maximum number of requests per instance to prevent overloading.
 
 ## Environment variable format
 
@@ -68,7 +70,9 @@ DEEPGRAM_ENGINE_01=chunking.streaming.step=0.5
 
 ### Require GPU on startup
 
-Do not set this option to `false`.
+> **Warning**
+>
+> Do not set this option to `false`.
 
 ```
 DEEPGRAM_ENGINE_01=health.gpu_required=true
@@ -105,7 +109,7 @@ Under **Container Definition**, expand **Environment variables**
 
 Add each `DEEPGRAM_API_*` or `DEEPGRAM_ENGINE_*` variable with its TOML expression as the value
 
-![SageMaker console showing environment variable configuration for a Deepgram model package](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/94e40e0e39e9999639df5dddc08cb6675db32f8abd5518bdb94b26b3dda8cf55/images/sagemaker-env-vars-console.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113141Z&X-Amz-Expires=604800&X-Amz-Signature=4c6fcabd21ebf1c3a979c078f23408960d45c0dbcff0bf1f3461d9688e2c4e8e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![SageMaker console showing environment variable configuration for a Deepgram model package](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/94e40e0e39e9999639df5dddc08cb6675db32f8abd5518bdb94b26b3dda8cf55/images/sagemaker-env-vars-console.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113223Z&X-Amz-Expires=604800&X-Amz-Signature=b69aeab385d3d1e2a6280ad920c71687e90935ce8082fafe76b545ba7dc41802&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### AWS CLI
 

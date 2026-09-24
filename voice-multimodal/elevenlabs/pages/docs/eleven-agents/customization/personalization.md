@@ -74,9 +74,11 @@ The `conversation_initiation_client_data` object defines what can be customized 
 }
 ```
 
-System dynamic variables (those prefixed with `system__`) cannot be sent or overridden in the
-client initiation payload. Only custom dynamic variables can be set via the `dynamic_variables`
-field.
+> **Warning**
+>
+> System dynamic variables (those prefixed with `system__`) cannot be sent or overridden in the
+> client initiation payload. Only custom dynamic variables can be set via the `dynamic_variables`
+> field.
 
 ## Conversation initiation webhooks
 
@@ -90,9 +92,11 @@ Outbound Twilio voice, Exotel, SIP, and WhatsApp calls trigger it only if the ou
 
 It does not run for widget or SDK conversations, other messaging integrations, or resumed WhatsApp and SMS threads.
 
-Preview conversations started from the agent settings page do not trigger conversation initiation
-webhooks. Use the **Dynamic Variables** placeholders in the agent editor while testing in Preview.
-Those placeholders are not used in production inbound conversations.
+> **Warning**
+>
+> Preview conversations started from the agent settings page do not trigger conversation initiation
+> webhooks. Use the **Dynamic Variables** placeholders in the agent editor while testing in Preview.
+> Those placeholders are not used in production inbound conversations.
 
 ElevenAgents sends caller context in the request body:
 

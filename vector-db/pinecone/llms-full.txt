@@ -11837,7 +11837,9 @@ This page explains how you can scale your [pod-based indexes](/guides/index-data
 
 ## Vertical vs. horizontal scaling
 
-If you need to scale your environment to accommodate more vectors, you can modify your existing index to scale it vertically or create a new index and scale horizontally. This article will describe both methods and how to scale your index effectively.
+If you need to scale your environment to accommodate more vectors, you can either scale your existing index vertically or create additional indexes to scale horizontally.
+Horizontal scaling can also improve resilience and is an important part of a highly available (HA) setup.
+This article explains both approaches and how to choose the right scaling strategy for your index.
 
 ## Vertical scaling
 
@@ -12079,13 +12081,15 @@ Throughput in terms of queries per second (QPS) scales linearly with the number 
 
 #### When to add replicas
 
-There are two primary scenarios where adding replicas is beneficial:
+<Warning>
+  Running a single replica does not provide a highly available setup and is therefore not covered by the uptime guarantees included in Enterprise SLAs.
+</Warning>
+
+**Provide data redundancy and availability**: When you add a replica to your index, the Pinecone controller will choose a zone in the same region that doesn't currently have a replica, up to a maximum of three zones (your fourth and subsequent replicas will be hosted in zones with existing replicas). If your application requires multizone redundancy, this is our recommended approach to achieve that.
 
 **Increase QPS**: The primary reason to add replicas is to increase your index's queries per second (QPS). Each new replica adds another pod for reading from your index and, generally speaking, will increase your QPS by an equal amount as a single pod. For example, if you consistently get 25 QPS for a single pod, each replica will result in 25 more QPS.
 
 If you don't see an increase in QPS after adding replicas, add multiprocessing to your application to ensure you are running parallel operations. You can use the [Pinecone gRPC SDK](/guides/index-data/upsert-data#grpc-python-sdk), or your multiprocessing library of choice.
-
-**Provide data redundancy**: When you add a replica to your index, the Pinecone controller will choose a zone in the same region that doesn't currently have a replica, up to a maximum of three zones (your fourth and subsequent replicas will be hosted in zones with existing replicas). If your application requires multizone redundancy, this is our recommended approach to achieve that.
 
 #### How to add replicas
 
@@ -27314,7 +27318,7 @@ When SCIM provisioning is enabled, your IdP manages organization membership and 
 
 * As members are added, updated, or removed in Okta, those changes sync to Pinecone over SCIM in near real time, not just at login.
 * Okta connects to a SCIM endpoint that Pinecone provides, authenticating with a bearer token you generate in the Pinecone console.
-* Pinecone reads each member's roles from the SCIM `roles` attribute and sets their organization and project roles to *exactly* those values. Values that don't match a known role are ignored.
+* Pinecone reads each member's roles from the SCIM `roles` attribute and sets their organization and project roles to *exactly* those values. Values that don't match a known role are ignored. For the other attributes Pinecone reads, see [Supported attributes](#supported-attributes).
 * While SCIM is enabled, SCIM is the source of truth for roles: Pinecone no longer applies the roles in a member's SAML login assertion, even though members still sign in through SAML SSO.
 * Deactivating or removing a member in Okta removes them from the organization, and clearing a member's roles revokes their access.
 * Because membership and roles come entirely from your IdP, while SCIM is enabled you can no longer invite members or edit roles in the Pinecone console or through the Admin API.
@@ -27334,6 +27338,23 @@ When SCIM provisioning is enabled, your IdP manages organization membership and 
 <Warning>
   SCIM provisioning is not compatible with members who belong to more than one SSO-connected Pinecone organization. If a member is part of multiple SSO-connected organizations, do not provision them through SCIM; manage their roles manually instead.
 </Warning>
+
+## Supported attributes
+
+Pinecone reads the following SCIM user attributes and ignores all others, including `emails`, `phoneNumbers`, `addresses`, `photos`, `title`, and enterprise extension attributes such as `department` and `manager`.
+
+A member needs both required attributes to get access. Okta can't provision a member without `userName`, and a member whose `roles` has no organization role has no access to the organization.
+
+| SCIM attribute    | Required | How Pinecone uses it                                                                                                                                         |
+| :---------------- | :------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `userName`        | Yes      | The member's email address, which must match the one they use to sign in through SAML SSO. See [Step 3](#3-connect-okta-to-the-scim-endpoint).               |
+| `roles`           | Yes      | The member's organization and project roles. See [Role attribute values](#role-attribute-values).                                                            |
+| `active`          | No       | Whether the member is active. Setting it to `false` removes the member from the organization. If Okta doesn't send it, Pinecone treats the member as active. |
+| `displayName`     | No       | The member's name, shown in the Pinecone console.                                                                                                            |
+| `name.givenName`  | No       | The member's first name. Stored on the member's profile, but not shown in the console.                                                                       |
+| `name.familyName` | No       | The member's last name. Stored on the member's profile, but not shown in the console.                                                                        |
+
+The console shows a member's `displayName`, or their email address if Okta doesn't send one. To show members' names in the console, keep the `displayName` mapping.
 
 ## Role attribute values
 
@@ -27452,7 +27473,7 @@ For example, an organization manager who is also a project owner on one project 
 <Note>
   Send roles in the user's `roles` attribute. SCIM group push isn't supported.
 
-  Limit synced attributes to those that are used by Pinecone, including `userName`, `roles`, and optionally, `name`. Mapping irrelevant profile attributes (like `addresses`) risks producing a payload that doesn't conform to the SCIM spec and will be rejected with an invalid payload error.
+  We recommend removing Okta mappings for any attribute that isn't listed in [Supported attributes](#supported-attributes). Pinecone ignores those attributes, but Okta still sends them, so removing the mappings keeps personal data Pinecone doesn't use, such as phone numbers and home addresses, out of provisioning requests.
 </Note>
 
 ## 5. Provision members and verify
@@ -62484,6 +62505,8 @@ Sample apps and tools built with Pinecone, including semantic search, multi-tena
 
   <div>
     <UtilityExampleCard title="Combine full-text search with dense vector ranking" />
+
+    <UtilityExampleCard title="Rerank search results with natural language criteria" />
 
     <UtilityExampleCard title="Use the Python SDK with FastAPI" />
 

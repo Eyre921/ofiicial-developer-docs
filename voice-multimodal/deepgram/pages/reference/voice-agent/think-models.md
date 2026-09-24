@@ -22,31 +22,7 @@ Reference: https://developers.deepgram.com/reference/voice-agent/think-models
 
 List of available think models
 
-- `models` (list of object or object or object or object or object, required)
-  - object
-    - `id` (enum, required) — The unique identifier of the OpenAI model
-      - Allowed values: `gpt-5`, `gpt-5-mini`, `gpt-5-nano`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `gpt-4o`, `gpt-4o-mini`
-    - `name` (string, required) — The display name of the model
-    - `provider` (any, required) — The provider of the model
-  - object
-    - `id` (enum, required) — The unique identifier of the Anthropic model
-      - Allowed values: `claude-3-5-haiku-latest`, `claude-sonnet-4-20250514`
-    - `name` (string, required) — The display name of the model
-    - `provider` (any, required) — The provider of the model
-  - object
-    - `id` (enum, required) — The unique identifier of the Google model
-      - Allowed values: `gemini-2.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`
-    - `name` (string, required) — The display name of the model
-    - `provider` (any, required) — The provider of the model
-  - object
-    - `id` (enum, required) — The unique identifier of the Groq model
-      - Allowed values: `openai/gpt-oss-20b`
-    - `name` (string, required) — The display name of the model
-    - `provider` (any, required) — The provider of the model
-  - object
-    - `id` (string, required) — The unique identifier of the AWS Bedrock model (any model string accepted for BYO LLMs)
-    - `name` (string, required) — The display name of the model
-    - `provider` (any, required) — The provider of the model
+- `models` (list of AgentThinkModelsV1ResponseModelsItems, required)
 
 ## Errors
 
@@ -54,16 +30,68 @@ List of available think models
 
 Invalid Request
 
-- `string or object or object`
-  - ErrorResponseLegacyError
-    - `err_code` (string, optional) — The error code
-    - `err_msg` (string, optional) — The error message
-    - `request_id` (string, optional) — The request ID
-  - ErrorResponseModernError
-    - `category` (string, optional) — The category of the error
-    - `message` (string, optional) — A message about the error
-    - `details` (string, optional) — A description of the error
-    - `request_id` (string, optional) — The unique identifier of the request
+- `ErrorResponse`
+
+## Types
+
+### AgentThinkModelsV1ResponseModelsItems
+
+### ErrorResponseLegacyError
+
+- `err_code` (string, optional) — The error code
+- `err_msg` (string, optional) — The error message
+- `request_id` (string, optional) — The request ID
+
+### ErrorResponseModernError
+
+- `category` (string, optional) — The category of the error
+- `message` (string, optional) — A message about the error
+- `details` (string, optional) — A description of the error
+- `request_id` (string, optional) — The unique identifier of the request
+
+### AgentThinkModelsV1ResponseModelsItems0
+
+OpenAI models
+
+- `id` (enum, required) — The unique identifier of the OpenAI model
+  - Allowed values: `gpt-5`, `gpt-5-mini`, `gpt-5-nano`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `gpt-4o`, `gpt-4o-mini`
+- `name` (string, required) — The display name of the model
+- `provider` (any, required) — The provider of the model
+
+### AgentThinkModelsV1ResponseModelsItems1
+
+Anthropic models
+
+- `id` (enum, required) — The unique identifier of the Anthropic model
+  - Allowed values: `claude-3-5-haiku-latest`, `claude-sonnet-4-20250514`
+- `name` (string, required) — The display name of the model
+- `provider` (any, required) — The provider of the model
+
+### AgentThinkModelsV1ResponseModelsItems2
+
+Google models
+
+- `id` (enum, required) — The unique identifier of the Google model
+  - Allowed values: `gemini-2.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`
+- `name` (string, required) — The display name of the model
+- `provider` (any, required) — The provider of the model
+
+### AgentThinkModelsV1ResponseModelsItems3
+
+Groq models
+
+- `id` (enum, required) — The unique identifier of the Groq model
+  - Allowed values: `openai/gpt-oss-20b`
+- `name` (string, required) — The display name of the model
+- `provider` (any, required) — The provider of the model
+
+### AgentThinkModelsV1ResponseModelsItems4
+
+AWS Bedrock models (custom models accepted)
+
+- `id` (string, required) — The unique identifier of the AWS Bedrock model (any model string accepted for BYO LLMs)
+- `name` (string, required) — The display name of the model
+- `provider` (any, required) — The provider of the model
 
 ## Examples
 

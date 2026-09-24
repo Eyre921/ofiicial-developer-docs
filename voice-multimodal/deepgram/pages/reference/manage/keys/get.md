@@ -33,19 +33,7 @@ Reference: https://developers.deepgram.com/reference/manage/keys/get
 
 A specific API key
 
-- `item` (object, optional)
-  - `member` (object, optional)
-    - `member_id` (string, optional)
-    - `email` (string, optional)
-    - `first_name` (string, optional)
-    - `last_name` (string, optional)
-    - `api_key` (object, optional)
-      - `api_key_id` (string, optional)
-      - `comment` (string, optional)
-      - `scopes` (list of string, optional)
-      - `tags` (list of string, optional)
-      - `expiration_date` (string, optional)
-      - `created` (string, optional)
+- `item` (GetProjectKeyV1ResponseItem, optional)
 
 ## Errors
 
@@ -53,16 +41,43 @@ A specific API key
 
 Invalid Request
 
-- `string or object or object`
-  - ErrorResponseLegacyError
-    - `err_code` (string, optional) — The error code
-    - `err_msg` (string, optional) — The error message
-    - `request_id` (string, optional) — The request ID
-  - ErrorResponseModernError
-    - `category` (string, optional) — The category of the error
-    - `message` (string, optional) — A message about the error
-    - `details` (string, optional) — A description of the error
-    - `request_id` (string, optional) — The unique identifier of the request
+- `ErrorResponse`
+
+## Types
+
+### GetProjectKeyV1ResponseItem
+
+- `member` (GetProjectKeyV1ResponseItemMember, optional)
+
+### ErrorResponseLegacyError
+
+- `err_code` (string, optional) — The error code
+- `err_msg` (string, optional) — The error message
+- `request_id` (string, optional) — The request ID
+
+### ErrorResponseModernError
+
+- `category` (string, optional) — The category of the error
+- `message` (string, optional) — A message about the error
+- `details` (string, optional) — A description of the error
+- `request_id` (string, optional) — The unique identifier of the request
+
+### GetProjectKeyV1ResponseItemMember
+
+- `member_id` (string, optional)
+- `email` (string, optional)
+- `first_name` (string, optional)
+- `last_name` (string, optional)
+- `api_key` (GetProjectKeyV1ResponseItemMemberApiKey, optional)
+
+### GetProjectKeyV1ResponseItemMemberApiKey
+
+- `api_key_id` (string, optional)
+- `comment` (string, optional)
+- `scopes` (list of string, optional)
+- `tags` (list of string, optional)
+- `expiration_date` (string, optional)
+- `created` (string, optional)
 
 ## Examples
 

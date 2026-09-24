@@ -12,7 +12,9 @@ path: docs/automatically-generating-webvtt-and-srt-captions
 
 One use for the Deepgram API includes providing captions for audio and video, which is critical for accessibility. In this guide, you'll learn how to automatically generate WebVTT and SRT captions for an audio file. We will provide two sets of code samples--one without using the Deepgram SDK so you can see the technique, and one using Deepgram's SDKs to make it even easier.
 
-If you'd like to learn more about inclusive design and accessibility, we recommend checking out [Microsoft's Inclusive Toolkit](https://www.microsoft.com/design/inclusive/).
+> **Info**
+>
+> If you'd like to learn more about inclusive design and accessibility, we recommend checking out [Microsoft's Inclusive Toolkit](https://www.microsoft.com/design/inclusive/).
 
 ## Before You Begin
 
@@ -20,17 +22,23 @@ Before you run the code, you'll need to do a few things.
 
 ### Create a Deepgram Account
 
-Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
+> **Info**
+>
+> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
 
 ### Create a Deepgram API Key
 
-Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
+> **Info**
+>
+> Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
 
 ### Configure the Environment
 
 We assume you have already configured a Node.js or Python development environment on your machine. [Download Node.js](https://nodejs.org/en/).
 
-If you get stuck at any point, you can find help in our [Github community discussions](https://github.com/orgs/deepgram/discussions)!
+> **Info**
+>
+> If you get stuck at any point, you can find help in our [Github community discussions](https://github.com/orgs/deepgram/discussions)!
 
 ## Getting Familiar with Captioning Formats
 
@@ -127,13 +135,17 @@ were skilled and qualified, and didn't get the
 same opportunities that we have today.
 ```
 
-Note that both WebVTT and SRT are similar in their basic forms--the difference is that the millisecond separator is `.` in WebVTT and `,` in SRT.
+> **Info**
+>
+> Note that both WebVTT and SRT are similar in their basic forms--the difference is that the millisecond separator is `.` in WebVTT and `,` in SRT.
 
 ## Transcribing Captions
 
 Now that you understand the basics of the WebVTT and SRT captioning formats, you can start transcribing your captions.
 
-This article covers creating subtitle files from files submitted to the Deepgram pre-recorded audio API. For an example of creating subtitle files with the Deepgram live streaming API, check out the [streaming test suite](https://github.com/deepgram/streaming-test-suite).
+> **Info**
+>
+> This article covers creating subtitle files from files submitted to the Deepgram pre-recorded audio API. For an example of creating subtitle files with the Deepgram live streaming API, check out the [streaming test suite](https://github.com/deepgram/streaming-test-suite).
 
 ### Choose an Audio File
 
@@ -186,7 +198,9 @@ from deepgram import DeepgramClient
 deepgram: DeepgramClient = DeepgramClient()
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 #### Get the Transcript
 
@@ -212,7 +226,9 @@ response = deepgram.listen.v1.media.transcribe_url(
 )
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 #### Create a Write Stream
 
@@ -280,10 +296,12 @@ transcription = DeepgramConverter(response)
 captions = srt(transcription)
 ```
 
-The differences between the non-SDK WebVTT and SRT code include:
-
-* The WebVTT code has a `WEBVTT` line at the top, whereas the SRT code does not.
-* The millisecond separator is `.` for WebVTT whereas it is `,` for SRT.
-* In the WebVTT file, there is a `-` before the utterance, whereas in the SRT code, there is not.
+> **Warning**
+>
+> The differences between the non-SDK WebVTT and SRT code include:
+>
+> * The WebVTT code has a `WEBVTT` line at the top, whereas the SRT code does not.
+> * The millisecond separator is `.` for WebVTT whereas it is `,` for SRT.
+> * In the WebVTT file, there is a `-` before the utterance, whereas in the SRT code, there is not.
 
 ---

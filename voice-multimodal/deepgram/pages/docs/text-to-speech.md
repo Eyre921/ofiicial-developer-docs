@@ -19,7 +19,9 @@ Try this feature out in our API Playground.
 
 This guide will walk you through how to turn text into speech with Deepgram's text-to-speech REST API.
 
-Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
+> **Info**
+>
+> Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
 
 ## CURL
 
@@ -41,7 +43,9 @@ This will result in an MP3 audio file being streamed back to you by Deepgram. Yo
 
 The audio file will contain the voice of the selected model saying the words that you sent in your request.
 
-If you do not specify a `model`, the default voice model `aura-asteria-en` will be used. You can find all of our available voices [here](/docs/tts-models).
+> **Info**
+>
+> If you do not specify a `model`, the default voice model `aura-asteria-en` will be used. You can find all of our available voices [here](/docs/tts-models).
 
 ### Send Error Messages to Terminal
 
@@ -400,7 +404,9 @@ public class Main {
 }
 ```
 
-To learn more about how you can customize the audio file to meet the needs of your use case, take a look at this [Audio Format Combinations](/docs/tts-media-output-settings#audio-format-combinations) table.
+> **Info**
+>
+> To learn more about how you can customize the audio file to meet the needs of your use case, take a look at this [Audio Format Combinations](/docs/tts-media-output-settings#audio-format-combinations) table.
 
 ## Non-SDK Code Examples
 
@@ -410,7 +416,9 @@ If you would like to try out making a Deepgram speech-to-text request in a speci
 
 Upon successful processing of the request, you will receive an audio file containing the synthesized text-to-speech output, along with response headers providing additional information.
 
-The audio file is streamed back to you, so you may begin playback as soon as the first byte arrives. Read the guide [Streaming Audio Outputs](/docs/streaming-the-audio-output) to learn how to begin playing the stream immediately versus waiting for the entire file to arrive.
+> **Info**
+>
+> The audio file is streamed back to you, so you may begin playback as soon as the first byte arrives. Read the guide [Streaming Audio Outputs](/docs/streaming-the-audio-output) to learn how to begin playing the stream immediately versus waiting for the entire file to arrive.
 
 ### Example Response Headers
 
@@ -427,7 +435,9 @@ HTTP/1.1 200 OK
 < date: Thu, 29 Feb 2024 19:20:48 GMT
 ```
 
-To see these response headers when making a CURL request, add `-v` or `--verbose` to your request.
+> **Info**
+>
+> To see these response headers when making a CURL request, add `-v` or `--verbose` to your request.
 
 This includes:
 
@@ -457,13 +467,17 @@ A [**422: Unprocessable Content**](/docs/errors#422-unprocessable-content) error
 
 ### Rate Limits
 
-For information on Deepgram's Concurrency Rate Limits, refer to our [API Rate Limits Documentation](/reference/api-rate-limits).
+> **Info**
+>
+> For information on Deepgram's Concurrency Rate Limits, refer to our [API Rate Limits Documentation](/reference/api-rate-limits).
 
 #### Handling Rate Limits
 
 If the number of in-progress requests for a project meets or exceeds the rate limit, new requests will receive a **429: Too Many Requests** error.
 
-For suggestions on handling Concurrency Rate Limits, refer to our [Working with Concurrency Rate Limits Documentation](/docs/working-with-concurrency-rate-limits) guide.
+> **Info**
+>
+> For suggestions on handling Concurrency Rate Limits, refer to our [Working with Concurrency Rate Limits Documentation](/docs/working-with-concurrency-rate-limits) guide.
 
 ## What's Next?
 

@@ -50,10 +50,12 @@ Caps the wall-clock time the agent can spend on a single turn, including reasoni
 
 Each channel ships with built-in defaults tuned for it. For example, Slack defaults to thorough, Markdown-formatted replies with a longer turn budget, while the web widget defaults to plain text replies with a realtime budget. The dashboard shows the effective defaults for each channel; a channel uses its defaults for any setting you leave unset.
 
-WhatsApp channel behavior applies to text messages only. WhatsApp calls are voice conversations
-and use voice behavior. WhatsApp text conversations default to a **realtime** turn budget — if
-your agent runs long tool chains or a slower reasoning model on WhatsApp, raise the
-`interaction_budget` for the channel.
+> **Note**
+>
+> WhatsApp channel behavior applies to text messages only. WhatsApp calls are voice conversations
+> and use voice behavior. WhatsApp text conversations default to a **realtime** turn budget — if
+> your agent runs long tool chains or a slower reasoning model on WhatsApp, raise the
+> `interaction_budget` for the channel.
 
 ## Configuration
 
@@ -64,7 +66,7 @@ Configure channel behavior with the `conversation_config.agent.text_behavior_ove
 Open your agent in the dashboard, select the **Agent** tab, and open **Agent behavior**. Expand a channel under **Text channels** and adjust its verbosity, output format, or response time. Save your changes.
 
 ![Agent behavior panel with per-channel text
-settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/372e6260e210a832be68a693b003abd63f2ae9b0f9f297d7b7049d1d0c978fec/assets/images/agents-agent-behavior-panel.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113157Z&X-Amz-Expires=604800&X-Amz-Signature=e34016b984678840f66c5041fb00bcaa8264c4f95307b62ff0fb5d5f6818fce9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/372e6260e210a832be68a693b003abd63f2ae9b0f9f297d7b7049d1d0c978fec/assets/images/agents-agent-behavior-panel.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T111029Z&X-Amz-Expires=604800&X-Amz-Signature=1fa1e2db59455ae3698fc4c87f45891246e8f26e2a22aac38024bbb1f8b69d9f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Update via the CLI
 

@@ -33,21 +33,20 @@ Reference: https://elevenlabs.io/docs/api-reference/text-to-dialogue/convert-wit
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_text_to_dialogue_full_with_timestamps.
 
-- `inputs` (list of object, required) — A list of dialogue inputs, each containing text and a voice ID which will be converted into speech. The maximum number of unique voice IDs is 10. For reliable generation, keep the total character count across all `inputs[].text` values at or below 2,000 characters per request. Longer requests can terminate early in streaming responses or return a validation error.
-  - `text` (string, required) — The text to be converted into speech.
-  - `voice_id` (string, required) — The ID of the voice to be used for the generation.
+- `inputs` (list of DialogueInput, required) — A list of dialogue inputs, each containing text and a voice ID which will be converted into speech. The maximum number of unique voice IDs is 10. For reliable generation, keep the total character count across all `inputs[].text` values at or below 2,000 characters per request. Longer requests can terminate early in streaming responses or return a validation error.
 - `model_id` (string, optional, default: eleven_v3) — Identifier of the model that will be used, you can query them using GET /v1/models. The model needs to have support for text to speech, you can check this using the can_do_text_to_speech property.
 - `language_code` (string, optional, nullable) — Language code (ISO 639-1) used to enforce a language for the model and text normalization. If the model does not support the provided language code, it will be ignored. This parameter is not supported for multilingual_v2 models.
-- `settings` (object, optional, nullable) — Settings controlling the dialogue generation.
-  - `stability` (double, optional, nullable, default: 0.5) — Determines how stable the voice is and the randomness between each generation. Lower values introduce broader emotional range for the voice. Higher values can result in a monotonous voice with limited emotion.
-- `pronunciation_dictionary_locators` (list of object, optional, nullable) — A list of pronunciation dictionary locators (id, version_id) to be applied to the text. They will be applied in order. You may have up to 3 locators per request
-  - `pronunciation_dictionary_id` (string, required) — The ID of the pronunciation dictionary.
-  - `version_id` (string, optional, nullable) — The ID of the version of the pronunciation dictionary. If not provided, the latest version will be used.
+- `settings` (ToDialogueSettingsResponseModel, optional, nullable) — Settings controlling the dialogue generation.
+- `pronunciation_dictionary_locators` (list of PronunciationDictionaryVersionLocatorRequestModel, optional, nullable) — A list of pronunciation dictionary locators (id, version_id) to be applied to the text. They will be applied in order. You may have up to 3 locators per request
 - `seed` (integer, optional, nullable) — If specified, our system will make a best effort to sample deterministically, such that repeated requests with the same seed and parameters should return the same result. Determinism is not guaranteed. Must be integer between 0 and 4294967295.
 - `apply_text_normalization` (enum, optional, default: auto) — This parameter controls text normalization with three modes: 'auto', 'on', and 'off'. When set to 'auto', the system will automatically decide whether to apply text normalization (e.g., spelling out numbers). With 'on', text normalization will always be applied, while with 'off', it will be skipped.
   - Allowed values: `auto`, `on`, `off`
+- `previous_request_ids` (list of string, optional, nullable) — A list of request_ids of dialogue generations that came before this one. Used to condition the model for continuity when splitting a large task into multiple requests. A maximum of 3 request_ids can be sent. The last request_id is the audio which is closest to the current request. Not supported by every model.
+- `next_request_ids` (list of string, optional, nullable) — A list of request_ids of dialogue generations that come after this one. Useful for maintaining continuity when regenerating a clip in the middle of a sequence. A maximum of 3 request_ids can be sent. The first request_id is the audio which is closest to the current request. Not supported by every model.
+- `previous_text` (string, optional, nullable) — The text that comes immediately before this generation, used to condition the model for prosodic continuity. A maximum of 100 characters can be sent. Not supported by every model.
+- `future_text` (string, optional, nullable) — The text that comes immediately after this generation, used to condition the model for prosodic continuity. A maximum of 100 characters can be sent. Not supported by every model.
 
 ## Response
 
@@ -56,21 +55,9 @@ This endpoint expects an object.
 Successful Response
 
 - `audio_base64` (string, required) — Base64 encoded audio data
-- `voice_segments` (list of object, required) — Voice segments for the audio
-  - `voice_id` (string, required) — The voice ID used for this segment
-  - `start_time_seconds` (double, required) — Start time of this voice segment
-  - `end_time_seconds` (double, required) — End time of this voice segment
-  - `character_start_index` (integer, required) — Start index in the characters array
-  - `character_end_index` (integer, required) — End index in the characters array (exclusive)
-  - `dialogue_input_index` (integer, required) — Line of the dialogue (script) that this segment is a part of.
-- `alignment` (object, optional, nullable) — Timestamp information for each character in the original text
-  - `characters` (list of string, required)
-  - `character_start_times_seconds` (list of double, required)
-  - `character_end_times_seconds` (list of double, required)
-- `normalized_alignment` (object, optional, nullable) — Timestamp information for each character in the normalized text
-  - `characters` (list of string, required)
-  - `character_start_times_seconds` (list of double, required)
-  - `character_end_times_seconds` (list of double, required)
+- `voice_segments` (list of VoiceSegment, required) — Voice segments for the audio
+- `alignment` (CharacterAlignmentResponseModel, optional, nullable) — Timestamp information for each character in the original text
+- `normalized_alignment` (CharacterAlignmentResponseModel, optional, nullable) — Timestamp information for each character in the normalized text
 
 ## Errors
 
@@ -78,10 +65,47 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### DialogueInput
+
+- `text` (string, required) — The text to be converted into speech.
+- `voice_id` (string, required) — The ID of the voice to be used for the generation.
+
+### ToDialogueSettingsResponseModel
+
+- `stability` (double, optional, nullable, default: 0.5) — Determines how stable the voice is and the randomness between each generation. Lower values introduce broader emotional range for the voice. Higher values can result in a monotonous voice with limited emotion.
+- `similarity` (double, optional, nullable, default: 0.75) — Determines how strongly the model is guided while generating. Higher values make the model adhere more closely to the voice, at the cost of variation. Not supported by every model.
+
+### PronunciationDictionaryVersionLocatorRequestModel
+
+- `pronunciation_dictionary_id` (string, required) — The ID of the pronunciation dictionary.
+- `version_id` (string, optional, nullable) — The ID of the version of the pronunciation dictionary. If not provided, the latest version will be used.
+
+### VoiceSegment
+
+- `voice_id` (string, required) — The voice ID used for this segment
+- `start_time_seconds` (double, required) — Start time of this voice segment
+- `end_time_seconds` (double, required) — End time of this voice segment
+- `character_start_index` (integer, required) — Start index in the characters array
+- `character_end_index` (integer, required) — End index in the characters array (exclusive)
+- `dialogue_input_index` (integer, required) — Line of the dialogue (script) that this segment is a part of.
+
+### CharacterAlignmentResponseModel
+
+- `characters` (list of string, required)
+- `character_start_times_seconds` (list of double, required)
+- `character_end_times_seconds` (list of double, required)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

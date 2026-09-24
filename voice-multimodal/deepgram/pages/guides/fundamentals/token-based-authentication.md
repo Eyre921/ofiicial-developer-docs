@@ -56,7 +56,9 @@ curl -X POST https://api.deepgram.com/v1/auth/grant \
    -H "Authorization: Token YOUR_DEEPGRAM_API_KEY"
 ```
 
-Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
+> **Warning**
+>
+> Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
 ## Response
 
@@ -80,7 +82,9 @@ To use the JWT token, you can then pass it in the `Authorization` header of your
     -H "Authorization: Bearer YOUR_JWT_TOKEN"
 ```
 
-Replace `YOUR_JWT_TOKEN` with the JWT token you received from the `/auth/grant` endpoint.
+> **Warning**
+>
+> Replace `YOUR_JWT_TOKEN` with the JWT token you received from the `/auth/grant` endpoint.
 
 ## FAQ
 

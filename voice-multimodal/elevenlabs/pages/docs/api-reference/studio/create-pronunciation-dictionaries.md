@@ -31,11 +31,9 @@ Reference: https://elevenlabs.io/docs/api-reference/studio/create-pronunciation-
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_Create_Pronunciation_Dictionaries_v1_studio_projects__project_id__pronunciation_dictionaries_post.
 
-- `pronunciation_dictionary_locators` (list of object, required) — A list of pronunciation dictionary locators (pronunciation\_dictionary\_id, version\_id) encoded as a list of JSON strings for pronunciation dictionaries to be applied to the text. A list of json encoded strings is required as adding projects may occur through formData as opposed to jsonBody. To specify multiple dictionaries use multiple --form lines in your curl, such as --form 'pronunciation\_dictionary\_locators="\{"pronunciation\_dictionary\_id":"Vmd4Zor6fplcA7WrINey","version\_id":"hRPaxjlTdR7wFMhV4w0b"}"' --form 'pronunciation\_dictionary\_locators="\{"pronunciation\_dictionary\_id":"JzWtcGQMJ6bnlWwyMo7e","version\_id":"lbmwxiLu4q6txYxgdZqn"}"'.
-  - `pronunciation_dictionary_id` (string, required)
-  - `version_id` (string, required, nullable)
+- `pronunciation_dictionary_locators` (list of PronunciationDictionaryVersionLocatorDBModel, required) — A list of pronunciation dictionary locators (pronunciation\_dictionary\_id, version\_id) encoded as a list of JSON strings for pronunciation dictionaries to be applied to the text. A list of json encoded strings is required as adding projects may occur through formData as opposed to jsonBody. To specify multiple dictionaries use multiple --form lines in your curl, such as --form 'pronunciation\_dictionary\_locators="\{"pronunciation\_dictionary\_id":"Vmd4Zor6fplcA7WrINey","version\_id":"hRPaxjlTdR7wFMhV4w0b"}"' --form 'pronunciation\_dictionary\_locators="\{"pronunciation\_dictionary\_id":"JzWtcGQMJ6bnlWwyMo7e","version\_id":"lbmwxiLu4q6txYxgdZqn"}"'.
 - `invalidate_affected_text` (boolean, optional, default: true) — This will automatically mark text in this project for reconversion when the new dictionary applies or the old one no longer does.
 
 ## Response
@@ -52,10 +50,22 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### PronunciationDictionaryVersionLocatorDBModel
+
+- `pronunciation_dictionary_id` (string, required)
+- `version_id` (string, required, nullable)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

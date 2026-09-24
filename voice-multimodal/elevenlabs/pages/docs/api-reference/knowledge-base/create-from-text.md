@@ -27,7 +27,7 @@ Reference: https://elevenlabs.io/docs/api-reference/knowledge-base/create-from-t
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_Create_text_document_v1_convai_knowledge_base_text_post.
 
 - `text` (string, required) — Text content to be added to the knowledge base.
 - `name` (string, optional, nullable) — A custom, human-readable name for the document.
@@ -41,8 +41,7 @@ Successful Response
 
 - `id` (string, required)
 - `name` (string, required)
-- `folder_path` (list of object, optional) — The folder path segments leading to this entity, from root to parent folder.
-  - `id` (string, required)
+- `folder_path` (list of KnowledgeBaseFolderPathSegmentSummaryResponseModel, optional) — The folder path segments leading to this entity, from root to parent folder.
 
 ## Errors
 
@@ -50,10 +49,21 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### KnowledgeBaseFolderPathSegmentSummaryResponseModel
+
+- `id` (string, required)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

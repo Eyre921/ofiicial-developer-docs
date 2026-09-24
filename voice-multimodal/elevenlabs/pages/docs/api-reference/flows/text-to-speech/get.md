@@ -34,7 +34,7 @@ Reference: https://elevenlabs.io/docs/api-reference/flows/text-to-speech/get
 
 Successful Response
 
-- `object`
+- `MediaGenerationResponse`
   - `status`: `completed` (MediaGenerationCompletedResponse)
     - `content_mime_type` (string, required) — The MIME type of the generated media.
     - `content_url` (string, required) — A signed URL to download the generated media from. It expires about an hour after this response is returned; fetch the generation again for a fresh URL.
@@ -55,10 +55,17 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

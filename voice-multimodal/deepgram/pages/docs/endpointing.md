@@ -22,7 +22,9 @@ The transcript results are then finalized for the process time range and the JSO
 
 You can customize the length of time used to detect whether a speaker has finished speaking by setting the `endpointing` parameter to an integer value.
 
-Endpointing can be used with Deepgram's [Interim Results](/docs/interim-results/) feature. To compare and contrast these features, and to explore best practices for using them together, see [Using Endpointing and Interim Results with Live Streaming Audio](/docs/understand-endpointing-interim-results/).
+> **Info**
+>
+> Endpointing can be used with Deepgram's [Interim Results](/docs/interim-results/) feature. To compare and contrast these features, and to explore best practices for using them together, see [Using Endpointing and Interim Results with Live Streaming Audio](/docs/understand-endpointing-interim-results/).
 
 ## Enable Feature
 

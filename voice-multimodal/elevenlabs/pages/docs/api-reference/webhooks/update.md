@@ -31,7 +31,7 @@ Reference: https://elevenlabs.io/docs/api-reference/webhooks/update
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_Update_workspace_webhook_v1_workspace_webhooks__webhook_id__patch.
 
 - `is_disabled` (boolean, required) — Whether to disable or enable the webhook
 - `name` (string, required) — The display name of the webhook (used for display purposes only).
@@ -54,10 +54,17 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

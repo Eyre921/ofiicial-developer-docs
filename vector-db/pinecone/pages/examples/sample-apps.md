@@ -42,6 +42,8 @@ Sample apps and tools built with Pinecone, including semantic search, multi-tena
   <div>
     <UtilityExampleCard title="Combine full-text search with dense vector ranking" />
 
+    <UtilityExampleCard title="Rerank search results with natural language criteria" />
+
     <UtilityExampleCard title="Use the Python SDK with FastAPI" />
 
     <UtilityExampleCard title="Implement semantic search with TypeScript" />

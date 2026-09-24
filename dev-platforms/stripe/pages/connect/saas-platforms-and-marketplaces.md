@@ -39,7 +39,7 @@ Direct Charges (See full diagram at https://docs.stripe.com/connect/saas-platfor
 
 ### Example SaaS platform Connect integration
 
-For an example of a Connect integration that implements a SaaS platform, see [Furever](http://furever.dev/), a demo SaaS platform that provides payment software for pet grooming businesses.
+For an example of a Connect integration that implements a SaaS platform, see [Furever](https://furever.dev/), a demo SaaS platform that provides payment software for pet grooming businesses.
 
 ## Marketplaces
 

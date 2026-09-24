@@ -14,9 +14,13 @@ path: docs/deploy-tts-services
 
 This guide covers deploying Deepgram's Text-to-Speech (TTS) services for conversational AI voice synthesis with ultra-low latency and high-quality natural speech generation.
 
-Looking to deploy Speech-to-Text (STT) services instead? See the [Deploy STT Services](/docs/deploy-stt-services) guide.
+> **Info**
+>
+> Looking to deploy Speech-to-Text (STT) services instead? See the [Deploy STT Services](/docs/deploy-stt-services) guide.
 
-**Deploying Flux TTS?** Flux TTS has unique deployment requirements and must be hosted on a separate Engine from Aura models. See the [Deploying Flux TTS](/docs/deploy-flux-tts) guide for Flux TTS-specific instructions.
+> **Warning**
+>
+> **Deploying Flux TTS?** Flux TTS has unique deployment requirements and must be hosted on a separate Engine from Aura models. See the [Deploying Flux TTS](/docs/deploy-flux-tts) guide for Flux TTS-specific instructions.
 
 As with other Deepgram self-hosted services, Deepgram TTS services use the same container images (`quay.io/deepgram/self-hosted-api` and `quay.io/deepgram/self-hosted-engine`) as STT deployments. However, **Deepgram strongly recommends configuring each node for a specific service type—either STT or TTS—for optimal performance and resource utilization**.
 
@@ -63,7 +67,9 @@ TTS self-hosted deployments have specific resource requirements:
 * **NVIDIA Driver**: `>=580` with the **open** kernel modules. See [Drivers and Containerization Platforms](/docs/drivers-and-containerization-platforms) for installation and verification steps.
 * **Container Runtime**: Docker with nvidia-container-runtime or Podman with GPU support
 
-TTS hardware requirements are higher than standard STT deployments due to the computational complexity of high-quality speech synthesis. Consult your Deepgram Account Representative for hardware recommendations optimized for TTS latency vs. throughput based on your specific use case.
+> **Info**
+>
+> TTS hardware requirements are higher than standard STT deployments due to the computational complexity of high-quality speech synthesis. Consult your Deepgram Account Representative for hardware recommendations optimized for TTS latency vs. throughput based on your specific use case.
 
 ## TTS Models and Language Support
 
@@ -162,7 +168,9 @@ Once you have downloaded all provided files to your deployment machine, you need
 
 You will need to have an environment variable `DEEPGRAM_API_KEY` exported with your self-hosted API key secret. See our [Self Service Licensing & Credentials](/docs/self-hosted-self-service-tutorial#create-a-self-hosted-api-key) guide for instructions on generating a self-hosted API key for use in this section.
 
-Per the link above, you will create you self-hosted API key in the `API Key` tab of Deepgram Console. These are *not* created in the "Self-Hosted" tab, which is reserved for creating distribution credentials.
+> **Warning**
+>
+> Per the link above, you will create you self-hosted API key in the `API Key` tab of Deepgram Console. These are *not* created in the "Self-Hosted" tab, which is reserved for creating distribution credentials.
 
 ### Configuration Files
 
@@ -173,7 +181,9 @@ The Docker Compose configuration files use the standard Deepgram self-hosted con
 * `quay.io/deepgram/self-hosted-api:release-250814`
 * `quay.io/deepgram/self-hosted-engine:release-250814`
 
-While these are the same container images used for STT deployments, **Deepgram strongly recommends dedicating each node to either STT or TTS workloads**. Running mixed workloads on the same node can lead to suboptimal performance, resource contention, and unpredictable latency.
+> **Warning**
+>
+> While these are the same container images used for STT deployments, **Deepgram strongly recommends dedicating each node to either STT or TTS workloads**. Running mixed workloads on the same node can lead to suboptimal performance, resource contention, and unpredictable latency.
 
 TTS functionality is enabled through specific configuration files, environment variables, and GPU assignments detailed below.
 
@@ -232,7 +242,9 @@ CUDA_VISIBLE_DEVICES=2,3  # Adjust GPU assignment as needed
 * For multiple instances of the same language, use the same UUIDs but different GPU assignments
 * Batch size should be configured for your specific GPU and performance requirements
 
-For legacy Aura models or other TTS configurations, consult your Deepgram Account Representative for the appropriate configuration files and environment variables.
+> **Info**
+>
+> For legacy Aura models or other TTS configurations, consult your Deepgram Account Representative for the appropriate configuration files and environment variables.
 
 ## Testing Your Containers
 
@@ -257,7 +269,9 @@ podman-compose -f podman-compose.aura-2.yml up -d
 sudo --preserve-env=DEEPGRAM_API_KEY docker compose -f docker-compose.aura-2.yml up -d
 ```
 
-If you get an error similar to the following, you may not have the minimum NVIDIA driver version required for Deepgram services to run properly. Please see [Drivers and Containerization Platforms](/docs/drivers-and-containerization-platforms#download-and-install-the-official-drivers) for instructions on installing/upgrading to the latest driver version.
+> **Info**
+>
+> If you get an error similar to the following, you may not have the minimum NVIDIA driver version required for Deepgram services to run properly. Please see [Drivers and Containerization Platforms](/docs/drivers-and-containerization-platforms#download-and-install-the-official-drivers) for instructions on installing/upgrading to the latest driver version.
 
 You can then view the running containers with the container process status command, and optionally view the logs of each container to verify their status.
 
@@ -269,7 +283,9 @@ docker ps
 docker logs CONTAINER_ID
 ```
 
-Replace the placeholder `CONTAINER_ID` with the Container ID of each container whose logs you would like to inspect more completely.
+> **Info**
+>
+> Replace the placeholder `CONTAINER_ID` with the Container ID of each container whose logs you would like to inspect more completely.
 
 ### Networking Considerations
 
@@ -344,7 +360,9 @@ Test your environment and container setup with sample TTS requests.
       --url "http://localhost:8081/v1/speak?model=aura-2-thalia-en"
    ```
 
-If you do not specify a `model`, the default voice model `aura-asteria-en` will be used. You can find all of our available voices [here](/docs/tts-models).
+> **Info**
+>
+> If you do not specify a `model`, the default voice model `aura-asteria-en` will be used. You can find all of our available voices [here](/docs/tts-models).
 
 You should receive a response with the audio output. You can copy this file locally to manually evaluate the synthesized speech. Congratulations - your self-hosted TTS setup is working!
 

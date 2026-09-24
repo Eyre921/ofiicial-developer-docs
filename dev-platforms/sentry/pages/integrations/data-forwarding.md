@@ -32,7 +32,7 @@ Sentry owner or manager permissions are required to setup/modify a global data f
 
 With a global data forwarding configuration, you can setup a single forwarder for your organization and apply it to how ever many projects you'd like, with the additional ability to automatically begin forwarding events from new projects as soon as they're created.
 
-To setup a global forwarder, navigate to **Settings » Data Forwarding**, and start the setup for a new provider. Note that we only allow one forwarder per provider per organization.
+To setup a global forwarder, navigate to [**Settings » Data Forwarding**](https://sentry.io/orgredirect/organizations/:orgslug/settings/data-forwarding/), and start the setup for a new provider. Note that we only allow one forwarder per provider per organization.
 
 When creating a new forwarder, select the provider you'd like to forward events to and fill in the required fields. Each provider requires different configuration and permissions on that service, so please refer to the documentation below for more details on your specific provider. After a forwarder is created, you will not be able to switch providers, but you can modify the forwarding details at any time.
 
@@ -46,7 +46,7 @@ Owner, manager, or admin permissions are required to create/modify project-level
 
 Users with Team Admin permissions can create/modify overrides as well, but only for their respective teams' projects.
 
-You can manage your project overrides by navigating to **Settings » Data Forwarding » \[Provider] » Edit** and scrolling to **Manage your overrides**.
+You can manage your project overrides by navigating to [**Settings » Data Forwarding**](https://sentry.io/orgredirect/organizations/:orgslug/settings/data-forwarding/) » **\[Provider] » Edit** and scrolling to **Manage your overrides**.
 
 A project override will allow you to replace specified fields in the global configuration with custom values for a particular project. All the previously required fields on the provider are marked as optional, and only the specified fields will be overridden. If no value is provided for a field, the global configuration will be used.
 

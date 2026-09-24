@@ -34,34 +34,7 @@ Reference: https://elevenlabs.io/docs/api-reference/service-accounts/api-keys/li
 
 Successful Response
 
-- `api-keys` (list of object, required)
-  - `name` (string, required)
-  - `hint` (string, required)
-  - `key_id` (string, required)
-  - `service_account_user_id` (string, required)
-  - `hashed_xi_api_key` (string, required)
-  - `created_at_unix` (integer, optional, nullable)
-  - `is_disabled` (boolean, optional, default: false)
-  - `permissions` (list of enum, optional, nullable)
-    - Allowed values: `text_to_speech`, `speech_to_speech`, `speech_to_text`, `models_read`, `models_write`, `voices_read`, `voices_write`, `speech_history_read`, `speech_history_write`, `sound_generation`, `audio_isolation`, `voice_generation`, `dubbing_read`, `dubbing_write`, `pronunciation_dictionaries_read`, `pronunciation_dictionaries_write`, `user_read`, `user_write`, `projects_read`, `projects_write`, `audio_native_read`, `audio_native_write`, `workspace_read`, `workspace_write`, `forced_alignment`, `convai_read`, `convai_write`, `music_generation`, `image_video_generation`, `flows`, `templates`, `add_voice_from_voice_library`, `create_instant_voice_clone`, `create_professional_voice_clone`, `publish_voice_to_voice_library`, `share_voice_externally`, `create_user_api_key`, `workspace_analytics_full_read`, `webhooks_write`, `service_account_write`, `group_members_manage`, `workspace_members_read`, `workspace_members_invite`, `workspace_members_remove`, `terms_of_service_accept`, `audit_log_read`, `conversation_privacy_manage`, `copy_resources_cross_workspace`, `synthid_detector`
-  - `disable_reason` (enum, optional, nullable)
-    - Allowed values: `trial_ended`, `subscription_downgrade`, `exposed_publicly`, `self_disabled`
-  - `character_limit` (integer, optional, nullable) — Maximum number of credits allowed in the current billing period.
-  - `character_count` (integer, optional, nullable) — Credits already used in the current billing period.
-  - `allowed_ips` (list of string, optional, nullable)
-  - `third_party_disable_allowed` (boolean, optional, nullable)
-  - `platform_limits` (object, optional, nullable) — Per-API-key concurrency limits (TTS/dubbing/music). Enterprise-only.
-    - `credits` (object, optional) — Credit usage limit (limit=None means unlimited)
-      - `limit` (integer, optional, nullable)
-      - `usage` (integer, optional, default: 0) — Current usage
-    - `pvc` (object, optional) — Professional Voice Clone count limit (limit=None means unlimited)
-      - `limit` (integer, optional, nullable)
-    - `concurrency` (object, optional) — TTS concurrency limit (limit=None means unlimited)
-      - `limit` (integer, optional, nullable)
-    - `dubbing_concurrency` (object, optional) — Dubbing concurrency limit (limit=None means unlimited)
-      - `limit` (integer, optional, nullable)
-    - `music_concurrency` (object, optional) — Music generation concurrency limit (limit=None means unlimited)
-      - `limit` (integer, optional, nullable)
+- `api-keys` (list of WorkspaceApiKeyResponseModel, required)
 
 ## Errors
 
@@ -69,10 +42,59 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### WorkspaceApiKeyResponseModel
+
+- `name` (string, required)
+- `hint` (string, required)
+- `key_id` (string, required)
+- `service_account_user_id` (string, required)
+- `hashed_xi_api_key` (string, required)
+- `created_at_unix` (integer, optional, nullable)
+- `is_disabled` (boolean, optional, default: false)
+- `permissions` (list of enum, optional, nullable)
+  - Allowed values: `text_to_speech`, `speech_to_speech`, `speech_to_text`, `models_read`, `models_write`, `voices_read`, `voices_write`, `speech_history_read`, `speech_history_write`, `sound_generation`, `audio_isolation`, `voice_generation`, `dubbing_read`, `dubbing_write`, `pronunciation_dictionaries_read`, `pronunciation_dictionaries_write`, `user_read`, `user_write`, `projects_read`, `projects_write`, `audio_native_read`, `audio_native_write`, `workspace_read`, `workspace_write`, `forced_alignment`, `convai_read`, `convai_write`, `music_generation`, `image_video_generation`, `flows`, `templates`, `add_voice_from_voice_library`, `create_instant_voice_clone`, `create_professional_voice_clone`, `publish_voice_to_voice_library`, `share_voice_externally`, `create_user_api_key`, `workspace_analytics_full_read`, `webhooks_write`, `service_account_write`, `group_members_manage`, `workspace_members_read`, `workspace_members_invite`, `workspace_members_remove`, `terms_of_service_accept`, `audit_log_read`, `conversation_privacy_manage`, `copy_resources_cross_workspace`, `synthid_detector`
+- `disable_reason` (enum, optional, nullable)
+  - Allowed values: `trial_ended`, `subscription_downgrade`, `exposed_publicly`, `self_disabled`
+- `character_limit` (integer, optional, nullable) — Maximum number of credits allowed in the current billing period.
+- `character_count` (integer, optional, nullable) — Credits already used in the current billing period.
+- `allowed_ips` (list of string, optional, nullable)
+- `third_party_disable_allowed` (boolean, optional, nullable)
+- `platform_limits` (PlatformLimits, optional, nullable) — Per-API-key concurrency limits (TTS/dubbing/music). Enterprise-only.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### PlatformLimits
+
+Unified container for all platform limits. Can be used by: - Billing groups (WorkspaceGroupDBModel.platform_limits) - Child workspaces (SubscriptionDBModel.platform_limits) - API keys (XiApiKeyMetadataDBModel.platform_limits) All fields are required when platform_limits exists. Use limit=None for unlimited.
+
+- `credits` (StoredUsagePlatformLimit, optional) — Credit usage limit (limit=None means unlimited)
+- `pvc` (ComputedUsagePlatformLimit, optional) — Professional Voice Clone count limit (limit=None means unlimited)
+- `concurrency` (ComputedUsagePlatformLimit, optional) — TTS concurrency limit (limit=None means unlimited)
+- `dubbing_concurrency` (ComputedUsagePlatformLimit, optional) — Dubbing concurrency limit (limit=None means unlimited)
+- `music_concurrency` (ComputedUsagePlatformLimit, optional) — Music generation concurrency limit (limit=None means unlimited)
+
+### ValidationErrorLocItems
+
+### StoredUsagePlatformLimit
+
+Platform limit with usage stored in Firestore. Example: credit usage tracked in Firestore.
+
+- `limit` (integer, optional, nullable)
+- `usage` (integer, optional, default: 0) — Current usage
+
+### ComputedUsagePlatformLimit
+
+Platform limit with usage computed externally. Example: PVCs use the count_owned_pro_voices_in_billing_group function to compute the usage.
+
+- `limit` (integer, optional, nullable)
 
 ## Examples
 

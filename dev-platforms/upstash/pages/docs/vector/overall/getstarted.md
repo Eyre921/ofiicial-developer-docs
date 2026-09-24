@@ -5,18 +5,13 @@ path: docs/vector/overall/getstarted
 ---
 
 import { Catalog } from "/snippets/catalog.jsx";
+import { AgentSetup } from "/snippets/agent-setup.jsx";
 
-<Check >
-**Prerequisite**
-
-You need an Upstash account before creating a vector, create one
-[here](https://console.upstash.com).
-
-</Check>
+<AgentSetup product="Vector" />
 
 ## Create an Index
 
-Once you logged in, you can create a Vector Index by clicking on the `Create Index` button in the Vector tab.
+Log in to the [Upstash Console](https://console.upstash.com), or [sign up](https://console.upstash.com) for a free account. Then create a Vector Index by clicking on the `Create Index` button in the Vector tab.
 
   <img alt="Create a Vector index" />
 

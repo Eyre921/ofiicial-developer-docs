@@ -12,9 +12,13 @@ path: docs/deploy-amazon-sagemaker
 
 This guide deploys a Deepgram AWS Marketplace Model Package as a [SageMaker AI Endpoint](https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html) using the AWS CLI or the AWS SDK for Python (Boto3). The SageMaker Endpoint resource represents the compute instances that run the Deepgram Voice AI services. For an overview of running Deepgram on SageMaker, including benefits, tradeoffs, and pricing, see [Amazon SageMaker](/docs/amazon-sagemaker).
 
-Prefer to have an AI coding assistant run these steps for you? Install the Deepgram SageMaker skill — see [Agent-assisted setup](/docs/amazon-sagemaker#agent-assisted-setup).
+> **Tip**
+>
+> Prefer to have an AI coding assistant run these steps for you? Install the Deepgram SageMaker skill — see [Agent-assisted setup](/docs/amazon-sagemaker#agent-assisted-setup).
 
-You need a **Model Package ARN** before you start. Subscribe to a Deepgram product on the AWS Marketplace and copy the ARN for your product version and AWS Region — see [Find the Model Package ARN](/docs/subscribe-aws-marketplace#find-the-model-package-arn).
+> **Info**
+>
+> You need a **Model Package ARN** before you start. Subscribe to a Deepgram product on the AWS Marketplace and copy the ARN for your product version and AWS Region — see [Find the Model Package ARN](/docs/subscribe-aws-marketplace#find-the-model-package-arn).
 
 ## Prerequisites
 
@@ -26,13 +30,17 @@ You need a **Model Package ARN** before you start. Subscribe to a Deepgram produ
 * An active AWS Marketplace subscription to a [Deepgram SageMaker product](/docs/supported-products-sagemaker) and its **Model Package ARN**. See [Subscribe on AWS Marketplace](/docs/subscribe-aws-marketplace).
 * Service quota for the GPU instance type you plan to use. See [Requesting SageMaker Quota](/docs/request-sagemaker-quota).
 
-**AWS field employees:** you can access Deepgram models through the [AWS Marketplace Field Demonstration Program](https://docs.aws.amazon.com/marketplace/latest/userguide/field-demonstration-program.html). Deepgram is an eligible provider. Refer to your internal AWS documentation for enrollment details, and reach out to a [Deepgram representative](https://deepgram.com/contact-us) if you need assistance activating the program.
+> **Note**
+>
+> **AWS field employees:** you can access Deepgram models through the [AWS Marketplace Field Demonstration Program](https://docs.aws.amazon.com/marketplace/latest/userguide/field-demonstration-program.html). Deepgram is an eligible provider. Refer to your internal AWS documentation for enrollment details, and reach out to a [Deepgram representative](https://deepgram.com/contact-us) if you need assistance activating the program.
 
 ## Choose an endpoint type
 
 Deploy a **real-time** endpoint. It serves both live streaming (`InvokeEndpointWithBidirectionalStream`) and synchronous single-file transcription (`InvokeEndpoint`, up to 25 MB per request).
 
-**Asynchronous endpoints are temporarily not supported.** Asynchronous inference (`AsyncInferenceConfig` / `InvokeEndpointAsync`) is temporarily unavailable for Marketplace-hosted Deepgram, so this page covers real-time endpoints only. Need asynchronous processing? Contact a [Deepgram representative](https://deepgram.com/contact-us).
+> **Warning**
+>
+> **Asynchronous endpoints are temporarily not supported.** Asynchronous inference (`AsyncInferenceConfig` / `InvokeEndpointAsync`) is temporarily unavailable for Marketplace-hosted Deepgram, so this page covers real-time endpoints only. Need asynchronous processing? Contact a [Deepgram representative](https://deepgram.com/contact-us).
 
 ## Choose instance types
 
@@ -48,7 +56,9 @@ Order the pool as follows:
 
 `VariantInstanceProvisionTimeoutInSeconds` is the per-type wait: SageMaker tries each type for that long before moving to the next. `300` is recommended (AWS allows `60`–`3600`), so a three-type pool can stay in `Creating` for up to about 15 minutes before it fails.
 
-**Quota does not fall back — capacity does.** SageMaker validates the quota of every type in the pool when the endpoint is created. Every type in the pool needs a quota of at least `1` in the region, otherwise `CreateEndpoint` fails with `ResourceLimitExceeded` regardless of which type would have been used. Check and request quota for each type first; see [Requesting SageMaker Quota](/docs/request-sagemaker-quota).
+> **Warning**
+>
+> **Quota does not fall back — capacity does.** SageMaker validates the quota of every type in the pool when the endpoint is created. Every type in the pool needs a quota of at least `1` in the region, otherwise `CreateEndpoint` fails with `ResourceLimitExceeded` regardless of which type would have been used. Check and request quota for each type first; see [Requesting SageMaker Quota](/docs/request-sagemaker-quota).
 
 Prefer a single instance type only for a stated reason: a [Machine Learning Savings Plan](https://aws.amazon.com/savingsplans/ml-pricing/) or reservation on that type, or an auto-scaling concurrency target you measured on a specific GPU.
 
@@ -94,7 +104,9 @@ iam.attach_role_policy(
 execution_role_arn = role["Role"]["Arn"]
 ```
 
-A newly created IAM role can take around 10 seconds to become assumable. If `CreateModel` fails with `Could not assume role` immediately after `create-role`, the error is transient — wait a few seconds and retry.
+> **Note**
+>
+> A newly created IAM role can take around 10 seconds to become assumable. If `CreateModel` fails with `Could not assume role` immediately after `create-role`, the error is transient — wait a few seconds and retry.
 
 ## Deploy with the AWS CLI or Boto3
 
@@ -166,7 +178,9 @@ To pass `DEEPGRAM_API_*` or `DEEPGRAM_ENGINE_*` configuration overrides, add an 
 
 The Endpoint Configuration sets the instance pool, instance count, and — critically — the host inference AMI version the instances boot with.
 
-**`InferenceAmiVersion` is required.** Current Deepgram model packages run a CUDA 13 runtime that needs NVIDIA driver 580 or later. Without `InferenceAmiVersion=al2023-ami-sagemaker-inference-gpu-4-1`, SageMaker boots the default AMI for the instance family (an older driver on `g4dn` and `g5`) and the container fails its CUDA preflight check. See [Inference AMI Versions](#inference-ami-versions).
+> **Warning**
+>
+> **`InferenceAmiVersion` is required.** Current Deepgram model packages run a CUDA 13 runtime that needs NVIDIA driver 580 or later. Without `InferenceAmiVersion=al2023-ami-sagemaker-inference-gpu-4-1`, SageMaker boots the default AMI for the instance family (an older driver on `g4dn` and `g5`) and the container fails its CUDA preflight check. See [Inference AMI Versions](#inference-ami-versions).
 
 The examples use an ordered instance pool, as recommended in [Choose instance types](#choose-instance-types). Adjust the types and order for your product.
 
@@ -306,9 +320,13 @@ A SageMaker Endpoint Configuration can pin an **inference AMI version** — the 
 | `al2-ami-sagemaker-inference-gpu-3-1`    | 550           | 12.4 |
 | `al2023-ami-sagemaker-inference-gpu-4-1` | 580           | 13.0 |
 
-Deepgram recommends the latest available version, `al2023-ami-sagemaker-inference-gpu-4-1`, which provides the NVIDIA 580 driver. Deepgram containers select the correct CUDA compatibility layer at startup based on the host driver they detect, so a newer host driver requires no change to your deployment.
+> **Note**
+>
+> Deepgram recommends the latest available version, `al2023-ami-sagemaker-inference-gpu-4-1`, which provides the NVIDIA 580 driver. Deepgram containers select the correct CUDA compatibility layer at startup based on the host driver they detect, so a newer host driver requires no change to your deployment.
 
-Support for older driver versions may be removed in the latest Deepgram Model Package. Pin an up-to-date inference AMI version rather than relying on the SageMaker default for your instance type.
+> **Warning**
+>
+> Support for older driver versions may be removed in the latest Deepgram Model Package. Pin an up-to-date inference AMI version rather than relying on the SageMaker default for your instance type.
 
 For the full list of AMI versions and their driver and CUDA versions, see [`InferenceAmiVersion`](https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_ProductionVariant.html#sagemaker-Type-ProductionVariant-InferenceAmiVersion) in the SageMaker API reference. For the driver each instance family runs by default, see the [SageMaker GPU driver table](https://docs.aws.amazon.com/sagemaker/latest/dg/inference-gpu-drivers.html#inference-gpu-drivers-versions).
 
@@ -316,7 +334,9 @@ The [CLI and Boto3 steps above](#deploy-with-the-aws-cli-or-boto3) already pin `
 
 ## Deploy with the SageMaker AI console (not recommended)
 
-The SageMaker AI console cannot set `InferenceAmiVersion`. Endpoints created through the console boot the instance family's default AMI, and current Deepgram model packages fail to start on the older NVIDIA driver it provides. Use the [AWS CLI or Boto3 steps](#deploy-with-the-aws-cli-or-boto3) or [Terraform](/docs/terraform-deploy-sagemaker) instead. If you have already created an endpoint through the console, fix it by creating a new Endpoint Configuration with the CLI and [updating the endpoint](/docs/update-amazon-sagemaker-endpoint).
+> **Warning**
+>
+> The SageMaker AI console cannot set `InferenceAmiVersion`. Endpoints created through the console boot the instance family's default AMI, and current Deepgram model packages fail to start on the older NVIDIA driver it provides. Use the [AWS CLI or Boto3 steps](#deploy-with-the-aws-cli-or-boto3) or [Terraform](/docs/terraform-deploy-sagemaker) instead. If you have already created an endpoint through the console, fix it by creating a new Endpoint Configuration with the CLI and [updating the endpoint](/docs/update-amazon-sagemaker-endpoint).
 
 #### Console steps
 

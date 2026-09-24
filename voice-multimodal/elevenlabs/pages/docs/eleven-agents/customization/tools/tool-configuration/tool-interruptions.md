@@ -27,9 +27,11 @@ tools, system tools, and MCP servers.
 
 When several tools run in parallel, the strictest mode among them applies for that turn.
 
-The boolean `disable_interruptions` field is deprecated. Use `interruption_mode` instead. The two
-fields are kept in sync, so `disable_interruptions: true` is equivalent to `interruption_mode:
-  "disable_during_tool_and_turn"` and existing integrations continue to work unchanged.
+> **Note**
+>
+> The boolean `disable_interruptions` field is deprecated. Use `interruption_mode` instead. The two
+> fields are kept in sync, so `disable_interruptions: true` is equivalent to `interruption_mode:
+>   "disable_during_tool_and_turn"` and existing integrations continue to work unchanged.
 
 ## Configuration
 

@@ -26,9 +26,11 @@ Additionally this guide refers frequently to `kubectl`, the [command line tool](
 
 ## Installing Kubernetes
 
-## Managed Kubernetes
-
-If you are operating in a VPC, you should use a managed Kubernetes service instead of installing your own. For example, you can use [EKS in AWS](/docs/aws-k8s) as an alternative to the following manual installation.
+> **Info**
+>
+> ## Managed Kubernetes
+>
+> If you are operating in a VPC, you should use a managed Kubernetes service instead of installing your own. For example, you can use [EKS in AWS](/docs/aws-k8s) as an alternative to the following manual installation.
 
 ​Kubernetes consists of several components distributed as binaries or container images including an API server for cluster management, proxy server, scheduler, controllers, etc. These components are served from registry.k8s.io, and you will require several helper tools to get up and running including the aforementioned `kubectl`, `kubeadm`, and `kubelet`. ​ Prior to installing Kubernetes you **must** disable Linux swap permanently. While `sudo swapoff -a` will temporarily disable swap, you will need to make the change permenent in `/etc/fstab` or `systemd.swap`. ​
 
@@ -71,11 +73,13 @@ sudo apt-mark hold kubelet kubeadm kubectl
 
 ​
 
-## Kubernetes Versions
-
-When updating tooling you must use a kubectl version that is within one minor version difference of your cluster. For example, a v1.27 client can communicate with v1.26, v1.27, and v1.28 control planes. You must keep all tooling versions in sync manually. If you wish to pin the versions you can do so with `apt-mark` as follows:
-
-`sudo apt-mark hold kubelet kubeadm kubectl`​
+> **Warning**
+>
+> ## Kubernetes Versions
+>
+> When updating tooling you must use a kubectl version that is within one minor version difference of your cluster. For example, a v1.27 client can communicate with v1.26, v1.27, and v1.28 control planes. You must keep all tooling versions in sync manually. If you wish to pin the versions you can do so with `apt-mark` as follows:
+>
+> `sudo apt-mark hold kubelet kubeadm kubectl`​
 
 ### Initializing a Cluster
 
@@ -193,7 +197,9 @@ The `deepgram-self-hosted` Helm chart takes two Secret references. One is a set 
           --from-literal=DEEPGRAM_API_KEY='YOUR_API_KEY_HERE'
       ```
 
-      Replace the placeholder `YOUR_API_KEY_HERE` with the Deepgram API key you generated in the [Self Service Licensing & Credentials](/docs/self-hosted-self-service-tutorial) guide.
+      > **Info**
+      >
+      > Replace the placeholder `YOUR_API_KEY_HERE` with the Deepgram API key you generated in the [Self Service Licensing & Credentials](/docs/self-hosted-self-service-tutorial) guide.
 
 ## Download Models to your K8s Node
 
@@ -254,9 +260,11 @@ Deepgram maintains the official `deepgram-self-hosted` Helm Chart. You can refer
    watch kubectl get all
    ```
 
-   ## Pod Scheduling Failures Limits
-
-   Resource limits, taints, and other constraints may limit Pod scheduling. If a Pod is not able to be scheduled, you can see its status and a list of associated events with `kubectl describe pod <pod-name>`.
+   > **Warning**
+   >
+   > ## Pod Scheduling Failures Limits
+   >
+   > Resource limits, taints, and other constraints may limit Pod scheduling. If a Pod is not able to be scheduled, you can see its status and a list of associated events with `kubectl describe pod <pod-name>`.
 
 ## Test Your Deepgram Setup with a Sample Request
 
@@ -305,11 +313,13 @@ Test your environment and container setup with a local file.
        "http://deepgram-api-external.dg-self-hosted.svc.cluster.local:8080/v1/listen?model=nova-3&smart_format=true"
    ```
 
-   If needed, adjust pieces of the above command:
-
-   * the query parameters to match the directions from your Deepgram Account Representative
-   * the service name `deepgram-api-external`
-   * the namespace `dg-self-hosted`
+   > **Info**
+   >
+   > If needed, adjust pieces of the above command:
+   >
+   > * the query parameters to match the directions from your Deepgram Account Representative
+   > * the service name `deepgram-api-external`
+   > * the namespace `dg-self-hosted`
 
 You should receive a JSON response with the transcript and associated metadata. Congratulations - your self-hosted setup is working!
 

@@ -23,7 +23,9 @@ Create your free [ElevenLabs account](https://elevenlabs.io/app/sign-up) to get 
 
 Browse our [Voice Library](https://elevenlabs.io/app/voice-library) to find the perfect voice for your project. You can:
 
-The voice library is not available via the API to free tier users.
+> **Warning**
+>
+> The voice library is not available via the API to free tier users.
 
 * Search by language, accent, age, and use case
 * Preview voices by clicking the orb next to the voice name for a short preview

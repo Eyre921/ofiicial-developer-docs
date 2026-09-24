@@ -33,7 +33,7 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/procedures/update
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects an UpdateProcedureDraftRequestModel.
 
 - `name` (string, required) — Procedure name
 - `content` (string, required) — Procedure content
@@ -61,10 +61,17 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

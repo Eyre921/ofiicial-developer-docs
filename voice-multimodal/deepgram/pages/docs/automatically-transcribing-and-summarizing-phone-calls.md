@@ -22,11 +22,15 @@ Before you run the code, you'll need to do a few things.
 
 ### Create a Deepgram Account
 
-Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
+> **Info**
+>
+> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
 
 ### Create a Deepgram API Key
 
-Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
+> **Info**
+>
+> Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
 
 ### Create a Twilio Account
 
@@ -89,7 +93,9 @@ Create a Twilio function that receives incoming call data and forwards it to you
    };
    ```
 
-When the call is completed, call data will be sent to `/recordings`, which you will create later in this guide.
+> **Info**
+>
+> When the call is completed, call data will be sent to `/recordings`, which you will create later in this guide.
 
 3. Save the function, and select **Deploy All**. Once deployed, this function is ready to be used.
 
@@ -102,7 +108,7 @@ Now that you have created a function to receive incoming calls, apply it to your
 3. Under **Service**, select your service.
 4. Under **Function Path**, select `/inbound`.
 
-![When a call comes in, use a Function. Default service with the /inbound function path.](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/a5bb4a59be80060e756877b9fa500702e4695029ec2c7bb02d56dcacb8ddc94c/images/set-inbound-endpoint.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260922%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260922T113115Z&X-Amz-Expires=604800&X-Amz-Signature=05845b2c762d36b34c73f4bfd04d9448212989e71aecab259af3471c613a0785&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![When a call comes in, use a Function. Default service with the /inbound function path.](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/a5bb4a59be80060e756877b9fa500702e4695029ec2c7bb02d56dcacb8ddc94c/images/set-inbound-endpoint.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T113152Z&X-Amz-Expires=604800&X-Amz-Signature=fbb230075dbc73fcdf57b125f10d1467cf6ef02ab94eeb42aa55ef3c6c07d042&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Transcribing and Summarizing Calls
 
@@ -133,7 +139,9 @@ When a call is received, use Deepgram to transcribe it:
    };
    ```
 
-This code uses the `CallSid` to look up the call to find additional call information. Once done, the caller’s phone number will be available in a variable called `caller`, and the number they placed the call to will be available in a variable called `twilioNumber`.
+> **Info**
+>
+> This code uses the `CallSid` to look up the call to find additional call information. Once done, the caller’s phone number will be available in a variable called `caller`, and the number they placed the call to will be available in a variable called `twilioNumber`.
 
 3. Generate a transcription of the call using Deepgram’s Node.js SDK:
 

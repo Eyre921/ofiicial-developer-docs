@@ -50,5 +50,7 @@ When enabled, your receptionist detects when a caller speaks a different languag
 
 For example, a business in a multilingual area might default to English but auto-switch to Spanish when a caller begins speaking it.
 
-For best results, choose a voice that sounds natural in your primary language. Voices optimized
-for English may sound less natural when speaking French or German.
+> **Note**
+>
+> For best results, choose a voice that sounds natural in your primary language. Voices optimized
+> for English may sound less natural when speaking French or German.

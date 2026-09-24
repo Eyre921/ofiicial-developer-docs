@@ -22,7 +22,9 @@ Listen to a sample:
 
 Explore our [voice library](https://elevenlabs.io/app/voice-library) to find the perfect voice for your project.
 
-The voice library is not available via the API to free tier users.
+> **Warning**
+>
+> The voice library is not available via the API to free tier users.
 
 #### [Products](/docs/eleven-creative/playground/text-to-speech)
 
@@ -128,7 +130,9 @@ The default response format is `mp3`, but other formats like `pcm` and `ulaw` ar
   * Sample rate: 48kHz
   * Bitrates: 32kbps - 192kbps
 
-Higher quality audio options are only available on paid tiers - see our [pricing page](https://elevenlabs.io/pricing/api) for details.
+> **Success**
+>
+> Higher quality audio options are only available on paid tiers - see our [pricing page](https://elevenlabs.io/pricing/api) for details.
 
 ### Supported languages
 
@@ -151,8 +155,10 @@ underlying emotion comes from textual cues.
 
 Read the [prompting guide](/docs/overview/capabilities/text-to-speech/best-practices) for more details.
 
-Descriptive text will be spoken out by the model and must be manually trimmed or removed from the
-audio if desired.
+> **Note**
+>
+> Descriptive text will be spoken out by the model and must be manually trimmed or removed from the
+> audio if desired.
 
 ## FAQ
 

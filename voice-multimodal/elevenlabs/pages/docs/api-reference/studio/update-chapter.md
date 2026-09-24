@@ -32,18 +32,10 @@ Reference: https://elevenlabs.io/docs/api-reference/studio/update-chapter
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_Update_chapter_v1_studio_projects__project_id__chapters__chapter_id__post.
 
 - `name` (string, optional, nullable) — The name of the chapter, used for identification only.
-- `content` (object, optional, nullable) — The chapter content to use.
-  - `blocks` (list of object, required)
-    - `nodes` (list of object, required)
-      - `type` ("tts_node", required)
-      - `text` (string, required)
-      - `voice_id` (string, required)
-    - `sub_type` (enum, optional, nullable)
-      - Allowed values: `p`, `h1`, `h2`, `h3`
-    - `block_id` (string, optional, nullable)
+- `content` (ChapterContentInputModel, optional, nullable) — The chapter content to use.
 
 ## Response
 
@@ -51,41 +43,7 @@ This endpoint expects an object.
 
 Successful Response
 
-- `chapter` (object, required)
-  - `chapter_id` (string, required) — The ID of the chapter.
-  - `name` (string, required) — The name of the chapter.
-  - `can_be_downloaded` (boolean, required) — Whether the chapter can be downloaded.
-  - `state` (enum, required) — The state of the chapter.
-    - Allowed values: `default`, `converting`
-  - `content` (object, required)
-    - `blocks` (list of object, required)
-      - `block_id` (string, required)
-      - `nodes` (list of object or object, required)
-        - ChapterContentBlockTtsNodeResponseModel
-          - `type` ("tts_node", required)
-          - `project_voice_ref_id` (string, required)
-          - `text` (string, required)
-          - `voice_id` (string, required, deprecated)
-        - ChapterContentBlockExtendableNodeResponseModel
-          - `type` ("_other", required)
-  - `last_conversion_date_unix` (integer, optional, nullable) — The last conversion date of the chapter.
-  - `conversion_progress` (double, optional, nullable) — The conversion progress of the chapter.
-  - `has_video` (boolean, optional, nullable) — Whether the chapter has a video.
-  - `has_visual_content` (boolean, optional, nullable) — Whether the chapter has any visual content (video, image, or text clips).
-  - `voice_ids` (list of string, optional, nullable) — List of voice ids used by the chapter
-  - `statistics` (object, optional, nullable) — The statistics of the chapter.
-    - `characters_unconverted` (integer, required) — The number of unconverted characters.
-    - `characters_converted` (integer, required) — The number of converted characters.
-    - `paragraphs_converted` (integer, required) — The number of converted paragraphs.
-    - `paragraphs_unconverted` (integer, required) — The number of unconverted paragraphs.
-    - `credits_needed_to_convert` (integer, optional, nullable) — The number of credits needed to convert the remaining paragraphs.
-    - `voice_statistics` (list of object, optional, nullable) — Per-voice breakdown of character counts.
-      - `project_voice_ref_id` (string, required) — The project voice reference ID.
-      - `characters_unconverted` (integer, required) — The number of unconverted characters for this voice.
-      - `characters_converted` (integer, required) — The number of converted characters for this voice.
-      - `voice_id` (string, required, deprecated) — The voice ID.
-      - `credits_needed_to_convert` (integer, optional, nullable) — The number of credits needed to convert the remaining audio for this voice.
-  - `last_conversion_error` (string, optional, nullable) — The last conversion error of the chapter.
+- `chapter` (ChapterWithContentResponseModel, required)
 
 ## Errors
 
@@ -93,10 +51,91 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ChapterContentInputModel
+
+- `blocks` (list of ChapterContentBlockInputModel, required)
+
+### ChapterWithContentResponseModel
+
+- `chapter_id` (string, required) — The ID of the chapter.
+- `name` (string, required) — The name of the chapter.
+- `can_be_downloaded` (boolean, required) — Whether the chapter can be downloaded.
+- `state` (enum, required) — The state of the chapter.
+  - Allowed values: `default`, `converting`
+- `content` (ChapterContentResponseModel, required)
+- `last_conversion_date_unix` (integer, optional, nullable) — The last conversion date of the chapter.
+- `conversion_progress` (double, optional, nullable) — The conversion progress of the chapter.
+- `has_video` (boolean, optional, nullable) — Whether the chapter has a video.
+- `has_visual_content` (boolean, optional, nullable) — Whether the chapter has any visual content (video, image, or text clips).
+- `voice_ids` (list of string, optional, nullable) — List of voice ids used by the chapter
+- `statistics` (ChapterStatisticsResponseModel, optional, nullable) — The statistics of the chapter.
+- `last_conversion_error` (string, optional, nullable) — The last conversion error of the chapter.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ChapterContentBlockInputModel
+
+- `nodes` (list of ChapterContentParagraphTtsNodeInputModel, required)
+- `sub_type` (enum, optional, nullable)
+  - Allowed values: `p`, `h1`, `h2`, `h3`
+- `block_id` (string, optional, nullable)
+
+### ChapterContentResponseModel
+
+- `blocks` (list of ChapterContentBlockResponseModel, required)
+
+### ChapterStatisticsResponseModel
+
+- `characters_unconverted` (integer, required) — The number of unconverted characters.
+- `characters_converted` (integer, required) — The number of converted characters.
+- `paragraphs_converted` (integer, required) — The number of converted paragraphs.
+- `paragraphs_unconverted` (integer, required) — The number of unconverted paragraphs.
+- `credits_needed_to_convert` (integer, optional, nullable) — The number of credits needed to convert the remaining paragraphs.
+- `voice_statistics` (list of VoiceStatisticsResponseModel, optional, nullable) — Per-voice breakdown of character counts.
+
+### ValidationErrorLocItems
+
+### ChapterContentParagraphTtsNodeInputModel
+
+- `type` ("tts_node", required)
+- `text` (string, required)
+- `voice_id` (string, required)
+
+### ChapterContentBlockResponseModel
+
+- `block_id` (string, required)
+- `nodes` (list of ChapterContentBlockResponseModelNodesItems, required)
+
+### VoiceStatisticsResponseModel
+
+- `project_voice_ref_id` (string, required) — The project voice reference ID.
+- `characters_unconverted` (integer, required) — The number of unconverted characters for this voice.
+- `characters_converted` (integer, required) — The number of converted characters for this voice.
+- `voice_id` (string, required, deprecated) — The voice ID.
+- `credits_needed_to_convert` (integer, optional, nullable) — The number of credits needed to convert the remaining audio for this voice.
+
+### ChapterContentBlockResponseModelNodesItems
+
+### ChapterContentBlockTtsNodeResponseModel
+
+- `type` ("tts_node", required)
+- `project_voice_ref_id` (string, required)
+- `text` (string, required)
+- `voice_id` (string, required, deprecated)
+
+### ChapterContentBlockExtendableNodeResponseModel
+
+Not used. Make sure you anticipate new types in the future.
+
+- `type` ("_other", required)
 
 ## Examples
 

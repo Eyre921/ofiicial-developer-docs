@@ -53,23 +53,29 @@ Make sure you have completed the requirements in the [Self-Hosted Introduction](
       1. Pick an image from our list of [recommended Linux distributions](/docs/self-hosted-deployment-environments#operating-system).
       2. Click **Change Image**, then search for and select your desired image.
 
-         Some images on OCI, such as Oracle Linux 8, have NVIDIA drivers built in. In the selected imaged drop-down, choose an `Image Build` that contains `GPU` in the name.
-
-         If you choose an image with NVIDIA drivers built in, you can skip the `Install NVIDIA Drivers` step in [Drivers and Containerization Platforms](/docs/drivers-and-containerization-platforms#install-nvidia-drivers).
+         > **Info**
+         >
+         > Some images on OCI, such as Oracle Linux 8, have NVIDIA drivers built in. In the selected imaged drop-down, choose an `Image Build` that contains `GPU` in the name.
+         >
+         > If you choose an image with NVIDIA drivers built in, you can skip the `Install NVIDIA Drivers` step in [Drivers and Containerization Platforms](/docs/drivers-and-containerization-platforms#install-nvidia-drivers).
 
 7. For the **Primary VNIC information** wizard step, edit the options according to your needs.
 
    1. Under **Primary VNIC IP addresses** ensure that `Automatically assign public IPv4 address` is enabled. This will allow you to remotely login to your server.
 
-   If you want to be able to receive requests from the public internet, make sure to configure your Oracle subnet and internet gateway appropriately.
-
-   See Oracle's documentation on [creating a VCN](https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/create_vcn.htm), [creating a subnet](https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/create_subnet.htm) , and [creating an internet gateway](https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/create-ig.htm) for more details.
+   > **Info**
+   >
+   > If you want to be able to receive requests from the public internet, make sure to configure your Oracle subnet and internet gateway appropriately.
+   >
+   > See Oracle's documentation on [creating a VCN](https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/create_vcn.htm), [creating a subnet](https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/create_subnet.htm) , and [creating an internet gateway](https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/create-ig.htm) for more details.
 
 8. For the **Add SSH keys** wizard step, decide whether to generate a new key pair or use an existing SSH key. If you have Oracle generate a new key pair for you, download the `.key` file and take note of the location.
 
 9. For the **Boot volume** wizard step, change the boot volume size if necessary to meet our [minimum required hardware specifications](/docs/self-hosted-deployment-environments#hardware-specifications) . Edit the other available options according to your needs.
 
-   If you increase the Boot volume size on instance creation or by editing a running instance, make sure to expand the root partition of the instance to use this additional allocated storage. See the [Oracle documentation on `oci-growfs`](https://docs.oracle.com/en-us/iaas/oracle-linux/oci-utils/index.htm#oci-growfs) for guidance on how to do this.
+   > **Warning**
+   >
+   > If you increase the Boot volume size on instance creation or by editing a running instance, make sure to expand the root partition of the instance to use this additional allocated storage. See the [Oracle documentation on `oci-growfs`](https://docs.oracle.com/en-us/iaas/oracle-linux/oci-utils/index.htm#oci-growfs) for guidance on how to do this.
 
 10. For the **Block volume** wizard step, attach block volumes according to your needs.
 
@@ -97,11 +103,15 @@ To complete the rest of the installation, including configuring your environment
    ssh -i /path/to/private-key.key USERNAME@IP_ADDR
    ```
 
-   Be sure to replace the `IP_ADDR` and `USERNAME` placeholder values. The `IP_ADDR` is the public IP for your instance. If you used an Oracle Linux or CentOS platform image, the `USERNAME` is `opc`. If you used an Ubuntu platform image to create the instance, the username is `ubuntu`.
+   > **Info**
+   >
+   > Be sure to replace the `IP_ADDR` and `USERNAME` placeholder values. The `IP_ADDR` is the public IP for your instance. If you used an Oracle Linux or CentOS platform image, the `USERNAME` is `opc`. If you used an Ubuntu platform image to create the instance, the username is `ubuntu`.
+   >
+   > Also check that the path to your `private-key.key` file is correct.
 
-   Also check that the path to your `private-key.key` file is correct.
-
-   If you are on a Windows machine, PuTTY is an alternative to `ssh`.
+   > **Info**
+   >
+   > If you are on a Windows machine, PuTTY is an alternative to `ssh`.
 
 5. If you receive a message that indicates that the authenticity of the host can’t be established, type `yes`, then press the `Enter` key on your keyboard. This message should only appear the first time you are connected to the instance.
 

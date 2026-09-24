@@ -33,9 +33,11 @@ The cascading process follows a defined sequence:
 
 5. **Lazy Initialization:** Backup LLM connections are initialized only when needed, optimizing resource usage.
 
-The specific list and order of backup LLMs are managed internally by ElevenLabs and optimized for
-performance and availability. The sequence listed above represents the current default but may be
-updated without notice.
+> **Info**
+>
+> The specific list and order of backup LLMs are managed internally by ElevenLabs and optimized for
+> performance and availability. The sequence listed above represents the current default but may be
+> updated without notice.
 
 ## Custom LLMs
 

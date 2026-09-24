@@ -29,8 +29,10 @@ Restrict access to specific domains or hostnames that can connect to your agent.
 
 Signed URLs are the recommended approach for client-side applications. This method allows you to authenticate users without exposing your API key.
 
-The guides below uses the [JS client](https://www.npmjs.com/package/@elevenlabs/client) and
-[Python SDK](https://github.com/elevenlabs/elevenlabs-python/).
+> **Note**
+>
+> The guides below uses the [JS client](https://www.npmjs.com/package/@elevenlabs/client) and
+> [Python SDK](https://github.com/elevenlabs/elevenlabs-python/).
 
 ### How signed URLs work
 
@@ -39,7 +41,9 @@ The guides below uses the [JS client](https://www.npmjs.com/package/@elevenlabs/
 3. Your client application uses this signed URL to establish a WebSocket connection.
 4. The signed URL expires after 15 minutes.
 
-Never expose your ElevenLabs API key client-side.
+> **Warning**
+>
+> Never expose your ElevenLabs API key client-side.
 
 ### Generate a signed URL via the API
 

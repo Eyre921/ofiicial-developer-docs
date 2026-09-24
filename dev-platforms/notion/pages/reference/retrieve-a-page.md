@@ -6,45 +6,29 @@ path: reference/retrieve-a-page
 
 get /v1/pages/{page_id}
 
-<Warning>
-  **This endpoint will not accurately return properties that exceed 25 references**
+Retrieves a [page object](/reference/page) by ID. The response includes [page property values](/reference/page-property-values). To read the page’s content, use [Retrieve block children](/reference/get-block-children).
 
-  Do **not** use this endpoint if a page property includes more than 25 references to receive the full list of references. Instead, use the [Retrieve a page property endpoint](/reference/retrieve-a-page-property) for the specific property to get its complete reference list.
-</Warning>
+<span />
 
-Retrieves a [Page object](/reference/page) using the ID specified.
+## Parent and properties
 
-Responses contains page **properties**, not page content. To fetch page content, use the [Retrieve block children](/reference/get-block-children) endpoint.
+For a page in a data source, the property values follow that [data source’s schema](/reference/property-object). For a page whose parent is another page, the only property is `title`.
 
-Page properties are limited to up to **25 references** per page property. To retrieve data related to properties that have more than 25 references, use the [Retrieve a page property](/reference/retrieve-a-page-property#rollup-properties) endpoint. (See [Limits](/reference/retrieve-a-page#limits) below for additional information.)
+## Limits
 
-### Parent objects: Pages vs. databases
+A page response can omit values when a property refers to many pages or people:
 
-If a page’s [Parent object](/reference/parent-object) is a database, then the property values will conform to the [database property schema](/reference/property-object).
+| Property             | Page response limit                                                                                  |
+| :------------------- | :--------------------------------------------------------------------------------------------------- |
+| `relation`           | Up to 25 page references. `has_more: true` means more references exist.                              |
+| `people`             | More than 25 people may be omitted.                                                                  |
+| `title`, `rich_text` | Up to 25 populated inline page or person mentions. This is a mention limit, not a text-length limit. |
+| `formula`, `rollup`  | Results can depend on references that the page response does not fully load.                         |
 
-If a page object is not part of a database, then the only property value available for that page is its `title`.
+Use [Retrieve a page property item](/reference/retrieve-a-page-property) when you need the full value. Read every [page of property items](/reference/property-item-object#paginated-values). Formula and rollup [calculation limits](/reference/page-property-values#unsupported-formula) still apply.
 
-### Limits
+## Errors
 
-The endpoint returns a maximum of 25 page or person references per [page property](/reference/page-property-values). If a page property includes more than 25 references, then the 26th reference and beyond might be returned as `Untitled`, `Anonymous`, or not be returned at all.
+The connection needs [read content capabilities](/reference/capabilities). Missing capabilities return `403`. A missing page or missing access returns `404`.
 
-This limit affects the following properties:
-
-* [`people`](/reference/page-property-values#people): response object can’t be guaranteed to return more than 25 people.
-* [`relation`](/reference/page-property-values#relation): the `has_more` value of the `relation` in the response object is `true` if a `relation` contains more than 25 related pages. Otherwise, `has_more` is false.
-* [`rich_text`](/reference/page-property-values#rich-text): response object includes a maximum of 25 populated inline page or person mentions.
-* [`title`](/reference/page-property-values#title): response object includes a maximum of 25 inline page or person mentions.
-
-<Info>
-  **Connection capabilities**
-
-  This endpoint requires a connection to have read content capabilities. Attempting to call this API without read content capabilities will return an HTTP response with a 403 status code. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).
-</Info>
-
-### Errors
-
-Returns a 404 HTTP response if the page doesn't exist, or if the connection doesn't have access to the page.
-
-Returns a 400 or 429 HTTP response if the request exceeds the [request limits](/reference/request-limits).
-
-*Note: Each Public API endpoint can return several possible error codes. See the [Error codes section](/reference/status-codes#error-codes) of the Status codes documentation for more information.*
+Requests can also fail with a [validation or rate-limit error](/reference/status-codes#error-codes). See [Request limits](/reference/request-limits).

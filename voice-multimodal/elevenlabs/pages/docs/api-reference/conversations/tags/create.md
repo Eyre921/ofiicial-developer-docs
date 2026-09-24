@@ -27,7 +27,7 @@ Reference: https://elevenlabs.io/docs/api-reference/conversations/tags/create
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a CreateConversationTagRequestModel.
 
 - `title` (string, required) — Display title of the tag.
 - `description` (string, optional, nullable) — Optional free-text description.
@@ -51,10 +51,17 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 

@@ -31,7 +31,7 @@ Reference: https://elevenlabs.io/docs/api-reference/workspace/resources/unshare
 
 ### Body (application/json)
 
-This endpoint expects an object.
+This endpoint expects a Body_Unshare_workspace_resource_v1_workspace_resources__resource_id__unshare_post.
 
 - `resource_type` (enum, required) — Resource type of the target resource.
   - Allowed values: `voice`, `voice_collection`, `pronunciation_dictionary`, `dubbing`, `dubbing_project`, `project`, `convai_agents`, `convai_knowledge_base_documents`, `convai_tools`, `convai_settings`, `convai_secrets`, `workspace_auth_connections`, `convai_phone_numbers`, `convai_mcp_servers`, `convai_api_integration_connections`, `convai_api_integration_trigger_connections`, `convai_batch_calls`, `convai_agent_response_tests`, `convai_test_suite_invocations`, `convai_crawl_jobs`, `convai_crawl_tasks`, `convai_kb_external_sync_jobs`, `convai_whatsapp_accounts`, `convai_agent_versions`, `convai_agent_branches`, `convai_agent_versions_deployments`, `convai_agent_experiments`, `convai_memory_entries`, `convai_templates`, `dashboard`, `dashboard_configuration`, `convai_agent_drafts`, `resource_locators`, `assets`, `content_generations`, `content_templates`, `content_skills`, `songs`, `transcription_tasks`, `avatars`, `avatar_video_generations`, `resource_collection`, `studio_projects`, `convai_analysis_items`
@@ -53,10 +53,17 @@ Successful Response
 
 Validation Error
 
-- `detail` (list of object, optional)
-  - `loc` (list of string or integer, required)
-  - `msg` (string, required)
-  - `type` (string, required)
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItems
 
 ## Examples
 
