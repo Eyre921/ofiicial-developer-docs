@@ -1634,6 +1634,10 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   See how agents can boost productivity across your enterprise.
 
+* [Driving team adoption of agentic GitHub Copilot](/en/copilot/tutorials/roll-out-at-scale/enable-developers/drive-team-agentic-adoption)
+
+  Help established teams build sustained habits with GitHub Copilot app and Copilot CLI, then measure adoption and business impact.
+
 * [Achieving your company's engineering goals with GitHub Copilot](/en/copilot/tutorials/roll-out-at-scale/drive-downstream-impact/achieve-company-goals)
 
   Plan your rollout based on GitHub's recommended approach for driving and measuring improvements.

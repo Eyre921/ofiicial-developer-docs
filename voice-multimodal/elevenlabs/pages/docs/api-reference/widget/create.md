@@ -68,7 +68,7 @@ Validation Error
 
 ```json
 {
-  "avatar_file": "<file: string>"
+  "avatar_file": "<file: [object Object]>"
 }
 ```
 
@@ -88,7 +88,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.conversationalAi.agents.widget.avatar.create("agent_id", {});
+    await client.conversationalAi.agents.widget.avatar.create("agent_3701k3ttaq12ewp8b7qv5rfyszkz", {});
 }
 main();
 
@@ -100,7 +100,7 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.conversational_ai.agents.widget.avatar.create(
-    agent_id="agent_id",
+    agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
     avatar_file="example_avatar_file",
 )
 
@@ -118,9 +118,9 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/agents/agent_id/avatar"
+	url := "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/avatar"
 
-	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"avatar_file\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
+	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"avatar_file\"; filename=\"[object Object]\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -141,14 +141,14 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_id/avatar")
+url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/avatar")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'multipart/form-data; boundary=---011000010111000001101001'
-request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"avatar_file\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n"
+request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"avatar_file\"; filename=\"[object Object]\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n"
 
 response = http.request(request)
 puts response.read_body
@@ -158,9 +158,9 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/agents/agent_id/avatar")
+HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/avatar")
   .header("Content-Type", "multipart/form-data; boundary=---011000010111000001101001")
-  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"avatar_file\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
+  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"avatar_file\"; filename=\"[object Object]\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
   .asString();
 ```
 
@@ -170,11 +170,11 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/agents/agent_id/avatar', [
+$response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/avatar', [
   'multipart' => [
     [
         'name' => 'avatar_file',
-        'filename' => 'string',
+        'filename' => '[object Object]',
         'contents' => null
     ]
   ]
@@ -186,9 +186,9 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_id/avatar");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/avatar");
 var request = new RestRequest(Method.POST);
-request.AddParameter("multipart/form-data; boundary=---011000010111000001101001", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"avatar_file\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
+request.AddParameter("multipart/form-data; boundary=---011000010111000001101001", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"avatar_file\"; filename=\"[object Object]\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -199,7 +199,7 @@ let headers = ["Content-Type": "multipart/form-data; boundary=---011000010111000
 let parameters = [
   [
     "name": "avatar_file",
-    "fileName": "string"
+    "fileName": "[object Object]"
   ]
 ]
 
@@ -225,7 +225,7 @@ for param in parameters {
   }
 }
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_id/avatar")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/avatar")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "POST"

@@ -64,29 +64,19 @@ Validation Error
 
 ## Examples
 
-**Request**
-
-```json
-{}
-```
-
 **Response**
 
 ```json
 {
-  "id": "tfld_7301khxdkycse5f88fzjdtrterzm",
-  "name": "Customer Support Tests",
+  "id": "string",
+  "name": "string",
   "folder_path": [
     {
-      "id": "tfld_1a2b3c4d5e6f7g8h9i0j",
-      "name": "Root"
-    },
-    {
-      "id": "tfld_2b3c4d5e6f7g8h9i0j1k",
-      "name": "Support Agents"
+      "id": "string",
+      "name": ""
     }
   ],
-  "children_count": 12
+  "children_count": 0
 }
 ```
 
@@ -97,7 +87,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.conversationalAi.tests.folders.get("folder_id");
+    await client.conversationalAi.tests.folders.get("tfld_7301khxdkycse5f88fzjdtrterzm");
 }
 main();
 
@@ -109,7 +99,7 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.conversational_ai.tests.folders.get(
-    folder_id="folder_id",
+    folder_id="tfld_7301khxdkycse5f88fzjdtrterzm",
 )
 
 ```
@@ -119,20 +109,15 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/agent-testing/folders/folder_id"
+	url := "https://api.elevenlabs.io/v1/convai/agent-testing/folders/tfld_7301khxdkycse5f88fzjdtrterzm"
 
-	payload := strings.NewReader("{}")
-
-	req, _ := http.NewRequest("GET", url, payload)
-
-	req.Header.Add("Content-Type", "application/json")
+	req, _ := http.NewRequest("GET", url, nil)
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -149,14 +134,12 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/agent-testing/folders/folder_id")
+url = URI("https://api.elevenlabs.io/v1/convai/agent-testing/folders/tfld_7301khxdkycse5f88fzjdtrterzm")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["Content-Type"] = 'application/json'
-request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -166,9 +149,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agent-testing/folders/folder_id")
-  .header("Content-Type", "application/json")
-  .body("{}")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agent-testing/folders/tfld_7301khxdkycse5f88fzjdtrterzm")
   .asString();
 ```
 
@@ -178,12 +159,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agent-testing/folders/folder_id', [
-  'body' => '{}',
-  'headers' => [
-    'Content-Type' => 'application/json',
-  ],
-]);
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agent-testing/folders/tfld_7301khxdkycse5f88fzjdtrterzm');
 
 echo $response->getBody();
 ```
@@ -191,27 +167,18 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/agent-testing/folders/folder_id");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/agent-testing/folders/tfld_7301khxdkycse5f88fzjdtrterzm");
 var request = new RestRequest(Method.GET);
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = ["Content-Type": "application/json"]
-let parameters = [] as [String : Any]
-
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
-
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agent-testing/folders/folder_id")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agent-testing/folders/tfld_7301khxdkycse5f88fzjdtrterzm")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
-request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

@@ -90,7 +90,10 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.usage.get({});
+    await client.usage.get({
+        endUnix: 1688165999,
+        startUnix: 1685574000,
+    });
 }
 main();
 
@@ -101,7 +104,10 @@ from elevenlabs import ElevenLabs
 
 client = ElevenLabs()
 
-client.usage.get()
+client.usage.get(
+    end_unix=1688165999,
+    start_unix=1685574000,
+)
 
 ```
 

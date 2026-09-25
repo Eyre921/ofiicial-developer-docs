@@ -1183,8 +1183,11 @@ Events are split into the following categories:
 * **Content Analytics exported**: That a user exported the Content Analytics table of [Workspace Analytics](https://www.notion.so/help/workspace-analytics).
 * **Content search queried**: That a workspace owner has used the [content search](https://www.notion.so/help/admin-content-search) functionality to find workspace content.
 * **Content search results exported**: That a workspace owner has exported the results from a [content search](https://www.notion.so/help/admin-content-search) query.
+* **Credit overage group access updated**: That AI credit overage access for a workspace group was updated.
+* **Credit overage policy updated**: That the AI credit overage policy was updated.
 * **Custom agent created**: That a custom agent was created.
 * **Custom agent creation setting updated**: That a group's custom agent creation setting was updated.
+* **Custom Agent default model updated**: That the default model for new Custom Agents was updated for the workspace.
 * **Custom agent performed action in setup mode**: That an action was performed in setup mode for a custom agent in the workspace.
 * **Custom agent published**: That a custom agent was published.
 * **Custom emoji created**: That a custom emoji was created.
@@ -1631,6 +1634,7 @@ When available, applicable events include a top-level `team_ids` array containin
 * **workspace.ekm.wek.revoked**: A workspace encryption key (WEK) was revoked.
 * **workspace.external\_account\_connected**: A public/external integration was connected to the workspace.
 * **workspace.external\_account\_disconnected**: A public/external integration was disconnected from the workspace, or a workspace owner removed access to a public integration for all users in the workspace.
+* **workspace.group.ai\_credit\_overage\_updated**: AI credit overage access for a group was updated.
 * **workspace.group.created**: A new group was created. A group is a defined collection of workspace members.
 * **workspace.group.custom\_agent\_creation\_updated**: The custom agent creation permission for a group was enabled or disabled.
 * **workspace.group.deleted**: A group was deleted from the workspace.
@@ -1685,6 +1689,7 @@ When available, applicable events include a top-level `team_ids` array containin
 * **workspace.search\_performed**: A search was performed in the workspace.
 * **workspace.settings.agent\_creation\_policy\_updated**: The agent creation policy setting was updated.
 * **workspace.settings.agent\_model\_policy\_updated**: The list of AI models an agent is allowed to use was updated. `agent_type` names which allowed model list changed, and the model and provider lists are sent both before and after the change. `allowed_restricted_access_models` runs the other way from the restricted lists: a restricted-access model is off until an admin names it there, so a model entering that list was allowed and a model leaving it was restricted.
+* **workspace.settings.ai\_credit\_overage\_policy\_updated**: The AI credit overage policy setting was updated.
 * **workspace.settings.ai\_leap\_toggled**: A workspace owner enabled or disabled the Notion AI LEAP (Learning & Early Access Program) setting.
 * **workspace.settings.ai\_legal\_terms\_setting\_updated**: A user enabled or disabled Notion AI in the workspace by accepting or revoking AI legal terms.
 * **workspace.settings.ai\_meeting\_notes\_availability\_updated**: The AI meeting notes availability setting was updated.
@@ -1696,6 +1701,7 @@ When available, applicable events include a top-level `team_ids` array containin
 * **workspace.settings.allow\_teamspace\_creation\_setting\_updated**: A user enabled or disabled the ability for everyone in the workspace to create a teamspace.
 * **workspace.settings.allow\_workspace\_creation\_setting\_updated**: A workspace owner restricted creation of new workspaces by users with the claimed enterprise email domain.
 * **workspace.settings.analytics\_tracking\_setting\_updated**: A user enabled or disabled workspace analytics tracking within the workspace.
+* **workspace.settings.custom\_agent\_default\_model\_updated**: The default model for new Custom Agents was updated. `previous_model` and `model` contain the prior and current model, or `Auto` when no workspace default is set.
 * **workspace.settings.delete\_from\_trash\_delay**: The [custom data retention](https://www.notion.com/help/custom-data-retention-settings) delete from trash delay setting was updated.
 * **workspace.settings.disallow\_webhook\_automation\_action\_toggled**: A workspace owner enabled or disabled the use of webhook automation actions in the workspace.
 * **workspace.settings.duplicate\_pages\_to\_workspaces\_setting\_updated**: A workspace owner enabled or disabled moving pages to other workspaces.
@@ -4427,6 +4433,7 @@ Use `POST /v1/pages` with the `markdown` parameter instead of `children` to crea
 * If `properties.title` is omitted, the first `# h1` heading is extracted as the page title.
 * Available to all connection types (public, internal, and personal access tokens).
 * Requires `insert_content` and `insert_property` capabilities.
+* Markdown that is too large or too heavily formatted to parse in one request returns a `validation_error`. With `allow_async: true`, the request still returns an `async_task`, and the task ends as `failed` with that `validation_error` when you poll it. Retrying the same body fails the same way. Create the page with part of the content and add the rest with further requests, or split the content into child pages.
 
 The response is a standard [page object](/reference/page).
 
@@ -12124,6 +12131,8 @@ An MCP client can call several tools in one task. For example, it can search for
 
     The tool description recommends `allow_async: true` for most page creates. This is guidance to assistants, not a request default. See [Async page create and update](#async-page-create-and-update).
 
+    Markdown in `content` that is too large or too heavily formatted to parse in one call returns a `validation_error`, and the call creates no pages. All pages in one call share the same parse limit, so a call that creates several pages can reach it even when no single page would. With `allow_async: true`, the call still returns an `async_task`, and the task ends as `failed` with that error. Retrying the same call fails the same way. Create the pages with part of the content and add the rest with further calls, or split the content into child pages.
+
     **Example prompts:**
 
     * "Create a project kickoff page under our Projects folder with agenda and team info"
@@ -12516,6 +12525,8 @@ Some MCP tools have additional, tool-specific rate limits that are stricter. The
 ### What to do if you're rate-limited
 
 If you encounter rate limit errors, prompt your LLM tool to reduce the amount of parallel searches or operations performed using Notion MCP, and/or try again later. AI search calls take longer than keyword workspace search calls, but only `notion-search` has the additional 30-requests-per-minute limit. A client that runs many fast searches in a row is the most likely to hit the `notion-search` rate limit.
+
+Rate limit errors usually include the wait in seconds as `additional_data.retry_after`, and the limit that was hit as `additional_data.rate_limit_reason`. See [Request limits](/reference/request-limits#rate-limit-responses).
 
 
 # Use Notion Skills with MCP
@@ -17354,6 +17365,12 @@ Source: https://developers.notion.com/guides/resources/notion-s-api-workspace
 Source: https://developers.notion.com/page/changelog
 
 
+
+<Update label="September 24, 2026">
+  ### Rate limit waits in the response body
+
+  Any 429 or 529 response that includes a `Retry-After` header now repeats the wait in the body as `additional_data.retry_after`, so clients that can't read headers, such as MCP clients, can still see how long to wait. Two new `rate_limit_reason` values identify an endpoint's own limit (`public_api_endpoint_rate_limit`) and a connection whose API access has been restricted (`public_api_request_blocked`). A workspace-limit 429 now says that the limit is shared by all of the workspace's connections. See [Request limits](/reference/request-limits#rate-limit-responses).
+</Update>
 
 <Update label="September 23, 2026">
   ### Notion icon URLs are validated
@@ -28920,7 +28937,7 @@ Workspace plan limits are separate from request limits. See [Workspace block lim
 
 ## Rate limits
 
-The Notion API enforces two rate limits: a per-connection limit and a per-workspace limit.
+The Notion API enforces two rate limits: a per-connection limit and a per-workspace limit. Some endpoints also have their own limit.
 
 ### Per-connection limit
 
@@ -28939,9 +28956,18 @@ A separate limit is shared across all of the workspace's connections and scaled 
 
 ### Rate limit responses
 
-Requests that exceed either limit return a `"rate_limited"` error code and an HTTP 429 response, with `additional_data.rate_limit_reason` indicating which limit was exceeded (for example, `public_api_request_rate_limit` or `public_api_space_request_rate_limit`). Per-connection 429 responses also repeat the wait in the body as `additional_data.retry_after` (an integer number of seconds, as a string), for clients that can't read response headers.
+Requests that exceed a limit return a `"rate_limited"` error code and an HTTP 429 response. `additional_data.rate_limit_reason` says which limit was exceeded:
 
-Connections should handle HTTP 429 and 529 responses and respect the `Retry-After` response header. The header value is an integer number of seconds. Use the returned value rather than assuming a fixed wait. A 529 response carries the `"service_overload"` code and means Notion is temporarily overloaded; retry it the same way as a 429.
+| `rate_limit_reason`                   | What to do                                                                                     |
+| :------------------------------------ | :--------------------------------------------------------------------------------------------- |
+| `public_api_request_rate_limit`       | This connection is sending requests too fast. Wait for `Retry-After`.                          |
+| `public_api_space_request_rate_limit` | The workspace's shared budget is used up. Wait for `Retry-After`.                              |
+| `public_api_endpoint_rate_limit`      | This endpoint has its own limit. Wait for `Retry-After`.                                       |
+| `public_api_request_blocked`          | This connection's API access has been restricted. Retrying won't help. Contact Notion support. |
+
+Other `rate_limit_reason` values can appear. Handle them like any other 429 and wait for `Retry-After`.
+
+Connections should handle HTTP 429 and 529 responses and respect the `Retry-After` response header. The header value is an integer number of seconds. Use the returned value rather than assuming a fixed wait. A 529 response carries the `"service_overload"` code and means Notion is temporarily overloaded; retry it the same way as a 429. Whenever a response includes `Retry-After`, the body repeats the wait as `additional_data.retry_after`, a string of whole seconds, for clients that can't read response headers.
 
 ### Retry rate-limited requests
 
@@ -28952,7 +28978,7 @@ Put outgoing requests through a queue so a burst from one job does not consume t
 3. If another 429 or 529 arrives, increase the delay with exponential backoff and jitter.
 4. Set a retry limit. Log or surface the final error when the limit is reached.
 
-Do not retry every error. Retry 429 and 529 responses. Retry 500, 502, 503, and 504 responses only when the request is idempotent, such as GET or DELETE, unless your application has its own idempotency protection. A write that returns 503 needs an extra check first; see [Retry a write that returns 503](#retry-a-write-that-returns-503). Fix the request before retrying most 400 responses. A 401 means authentication failed. A 403 can mean a permission failure or a [workspace block limit](/reference/workspace-block-limits); check the error message before retrying.
+Do not retry every error. Retry 429 and 529 responses, except a 429 with `public_api_request_blocked`. Retry 500, 502, 503, and 504 responses only when the request is idempotent, such as GET or DELETE, unless your application has its own idempotency protection. A write that returns 503 needs an extra check first; see [Retry a write that returns 503](#retry-a-write-that-returns-503). Fix the request before retrying most 400 responses. A 401 means authentication failed. A 403 can mean a permission failure or a [workspace block limit](/reference/workspace-block-limits); check the error message before retrying.
 
 The JavaScript SDK retries 429 responses for every method. It also retries 500 and 503 responses for GET and DELETE requests. It respects `Retry-After`, uses exponential backoff with jitter, and limits retries. If you call the REST API directly, use the same safeguards and add explicit handling for 529 responses. These examples show the same policy in several common HTTP clients:
 
@@ -35207,7 +35233,7 @@ The `execute` function receives an array of `WebhookEvent` objects. The array cu
 Webhook URLs include a unique ID that acts as a shared secret:
 
 ```text theme={null}
-https://www.notion.com/webhooks/worker/{spaceId}/{workerId}/{uniqueWebhookId}/{webhookName}
+https://{spaceShortId}.webhook.notionusercontent.com/webhooks/worker/{spaceId}/{workerId}/{uniqueWebhookId}/{webhookName}
 ```
 
 Use the CLI to print the URLs for a deployed worker:
@@ -35228,7 +35254,7 @@ ntn workers webhooks list --plain
   webhook endpoint unless you add provider-specific signature verification inside your worker.
 </Warning>
 
-## Verify requests
+## Verify requests in execute
 
 Most webhook providers can sign requests with a shared [secret](/workers/guides/secrets). Store the signing secret as a worker secret, verify each request using `event.rawBody` and `event.headers`, and throw `WebhookVerificationError` when verification fails:
 
@@ -35299,9 +35325,112 @@ See [Secrets](/workers/guides/secrets) for more ways to manage worker environmen
   counter.
 </Warning>
 
+This check runs after Notion has already answered the provider with `202 Accepted`, so the provider never sees the result. Use it when all you need is to drop unsigned events. If the provider expects verification in the HTTP response itself, add a `verify` handler instead.
+
+## Verify requests synchronously
+
+<Note>
+  Synchronous webhook verification requires `@notionhq/workers >= 0.9.0`
+  and `ntn` CLI version `0.23.1`.
+</Note>
+
+Some providers will not accept a webhook until the endpoint answers completes a synchronous challenge flow. You can add a `verify` handler for these. It runs synchronously before Notion answers the provider, and allows you to control some elements of the webhook HTTP response such as the body and status code.
+
+`verify` runs in the same sandbox as `execute`, with the full Node.js standard library. Read signing secrets from `process.env` and use `node:crypto` for signature checks.
+
+```typescript theme={null}
+import * as crypto from "node:crypto";
+import { Worker } from "@notionhq/workers";
+
+const worker = new Worker();
+export default worker;
+
+worker.webhook("onProviderEvent", {
+  title: "Provider Events",
+  description: "Handles events from an external provider",
+  verify: (request) => {
+    const secret = process.env.PROVIDER_WEBHOOK_SECRET;
+    if (!secret) {
+      return { status: 400, body: "PROVIDER_WEBHOOK_SECRET not configured" };
+    }
+
+    const signature = request.headers["x-signature-256"] ?? "";
+    const expected = crypto
+      .createHmac("sha256", secret)
+      .update(request.rawBody)
+      .digest("hex");
+
+    // Compare lengths first: timingSafeEqual throws on buffers of
+    // different lengths.
+    if (
+      signature.length !== expected.length ||
+      !crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected))
+    ) {
+      return { status: 401, body: "Invalid signature" };
+    }
+
+    return { status: 200 };
+  },
+  execute: async (events) => {
+    for (const event of events) {
+      console.log("Verified event:", event.body);
+    }
+  },
+});
+```
+
+### The request object
+
+`verify` receives the inbound HTTP request, not the array of `WebhookEvent` objects that `execute` receives.
+
+| Property  | Type                        | Description                                                                          |
+| :-------- | :-------------------------- | :----------------------------------------------------------------------------------- |
+| `method`  | `"GET" \| "HEAD" \| "POST"` | Uppercase HTTP method. Deliveries are `POST`; `GET` and `HEAD` are handshake probes. |
+| `url`     | `string`                    | The full webhook URL as received, including the query string.                        |
+| `query`   | `Record<string, string>`    | Query string parameters. A repeated parameter keeps its last value.                  |
+| `headers` | `Record<string, string>`    | Request headers. Header names are lowercased.                                        |
+| `rawBody` | `string`                    | Original request body as a string. Empty for `GET` and `HEAD`.                       |
+
+Like `execute`, `verify` receives the capability context as its second argument.
+
+### The response object
+
+| Property      | Type                                 | Description                                                 |
+| :------------ | :----------------------------------- | :---------------------------------------------------------- |
+| `status`      | `number`                             | Response status code. Only 2xx and 4xx are allowed.         |
+| `body`        | `string`                             | Optional response body, at most 8KB.                        |
+| `contentType` | `"application/json" \| "text/plain"` | Optional response content type. Defaults to `"text/plain"`. |
+
+The returned status dictates whether or not the Webhook actually executes:
+
+* **2xx** — Notion returns your status, body, and content type to the provider, then queues the request for `execute`.
+* **4xx** — Notion returns your response and queues nothing. `execute` never runs.
+
+### Timing and failures
+
+`verify` answers the provider inline, so the run has a wall-clock budget of about 5 seconds that includes starting your worker's sandbox. Keep it to local computation. Avoid network calls, including `context.notion` requests, which usually will not fit the budget.
+
+| Outcome                                                             | Provider sees            | Queued for `execute` |
+| :------------------------------------------------------------------ | :----------------------- | :------------------- |
+| Returns 2xx                                                         | Your status and body     | Yes                  |
+| Returns 4xx                                                         | Your status and body     | No                   |
+| Throws, or returns a status outside 2xx and 4xx, or a body over 8KB | `400`                    | No                   |
+| Exceeds the time budget                                             | `503` with `Retry-After` | No                   |
+
+<Warning>
+  A handler that throws or returns an invalid response counts toward the same
+  five-consecutive-failure limit as `WebhookVerificationError`, after which
+  Notion blocks the webhook until you redeploy. Deliberately returning a 4xx is
+  not a failure and resets the counter.
+</Warning>
+
+Exceeding the budget is usually a cold sandbox start. The provider can retry, and will generally land on a warm sandbox.
+
 ## Execution and retries
 
 When a webhook request reaches Notion, Notion validates the URL, enqueues the event, and responds with `202 Accepted`. Your worker runs asynchronously after the HTTP response is sent.
+
+A webhook with a `verify` handler answers with whatever `verify` returned instead of `202`, and enqueues the event only on a 2xx.
 
 If your handler throws `WebhookVerificationError`, Notion records a verification failure and does not retry that event. If your handler throws another error, Notion retries the worker run up to 3 times.
 

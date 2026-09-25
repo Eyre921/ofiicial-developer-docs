@@ -92,7 +92,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.voices.update("voice_id", {});
+    await client.voices.update("21m00Tcm4TlvDq8ikWAM", {});
 }
 main();
 
@@ -104,7 +104,7 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.voices.update(
-    voice_id="voice_id",
+    voice_id="21m00Tcm4TlvDq8ikWAM",
     files=["example_files"],
 )
 
@@ -122,7 +122,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/voices/voice_id/edit"
+	url := "https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/edit"
 
 	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"description\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"labels\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"moderate_metadata\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"name\"\r\n\r\nJohn Smith\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"remove_background_noise\"\r\n\r\n\r\n-----011000010111000001101001--\r\n")
 
@@ -145,7 +145,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/voices/voice_id/edit")
+url = URI("https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/edit")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -162,7 +162,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/voices/voice_id/edit")
+HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/edit")
   .header("Content-Type", "multipart/form-data; boundary=---011000010111000001101001")
   .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"description\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"labels\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"moderate_metadata\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"name\"\r\n\r\nJohn Smith\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"remove_background_noise\"\r\n\r\n\r\n-----011000010111000001101001--\r\n")
   .asString();
@@ -174,7 +174,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://api.elevenlabs.io/v1/voices/voice_id/edit', [
+$response = $client->request('POST', 'https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/edit', [
   'multipart' => [
     [
         'name' => 'name',
@@ -189,7 +189,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/voices/voice_id/edit");
+var client = new RestClient("https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/edit");
 var request = new RestRequest(Method.POST);
 request.AddParameter("multipart/form-data; boundary=---011000010111000001101001", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"description\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"labels\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"moderate_metadata\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"name\"\r\n\r\nJohn Smith\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"remove_background_noise\"\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
@@ -244,7 +244,7 @@ for param in parameters {
   }
 }
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/voices/voice_id/edit")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/edit")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "POST"

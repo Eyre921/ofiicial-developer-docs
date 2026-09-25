@@ -6,15 +6,17 @@ path: api/versioning
 
 # Versioning
 
-Each major release, such as [Acacia](https://docs.stripe.com/changelog/acacia.md), includes changes that aren’t [backward-compatible](https://docs.stripe.com/upgrades.md#what-changes-does-stripe-consider-to-be-backward-compatible) with previous releases. Upgrading to a new major release can require updates to existing code. Each monthly release includes only backward-compatible changes, and uses the same name as the last major release. You can safely upgrade to a new monthly release without breaking any existing code. The current version is 2026-08-26.dahlia. For information on all API versions, view our [API changelog](https://docs.stripe.com/changelog.md).
+Starting with the 2024-09-30.acacia release, Stripe follows a [new API release process](https://stripe.com/blog/introducing-stripes-new-api-release-process) where we release new API versions monthly with no breaking changes. Twice a year, we issue a new major release (for example, [Basil](https://docs.stripe.com/changelog/basil.md)) that starts with an API version containing breaking changes. You can safely upgrade to any monthly release without updating your code. Upgrading to a new major release can require changes to your existing integration.
 
-By default, requests made with curl use your Stripe account’s default API version (controlled in [Workbench](https://dashboard.stripe.com/workbench)) unless you override it by setting the `Stripe-Version` header.
+The current version is 2026-08-26.dahlia. For information on all API updates, view our [API changelog](https://docs.stripe.com/changelog.md). To upgrade your API version, see [API upgrades](https://docs.stripe.com/upgrades.md).
 
-Webhook events also use your account’s API version by default, unless you set an API version during [endpoint creation](https://docs.stripe.com/api/webhook_endpoints/create.md).
+Requests made with curl use your Stripe account’s default API version (controlled in [Workbench](https://dashboard.stripe.com/workbench)) unless you override it by setting the `Stripe-Version` header.
+
+Webhook events also use your account’s default API version unless you set an API version during [endpoint creation](https://docs.stripe.com/api/webhook_endpoints/create.md).
 
 By default, requests made with the Stripe CLI use your account’s default API version (controlled in [Workbench](https://dashboard.stripe.com/workbench)) unless you override it with the `stripe-version` argument.
 
-Webhook events also use your account’s API version by default unless you set an API version when [creating the endpoint](https://docs.stripe.com/api/webhook_endpoints/create.md).
+Webhook events also use your account’s default API version unless you set an API version when [creating the endpoint](https://docs.stripe.com/api/webhook_endpoints/create.md).
 
 - Starting from `stripe-ruby v9`, the requests you send using `stripe-ruby` align with the API version that was current when your version of `stripe-ruby` was released.
 - On `stripe-ruby v8` or lower, requests made with `stripe-ruby` use your Stripe account’s default API version, controlled in [Workbench](https://dashboard.stripe.com/workbench).

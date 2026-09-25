@@ -149,7 +149,14 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.history.list({});
+    await client.history.list({
+        dateAfterUnix: 1640995200,
+        dateBeforeUnix: 1640995200,
+        modelId: "eleven_turbo_v2",
+        search: "In the land far far away",
+        sortDirection: "desc",
+        source: "TTS",
+    });
 }
 main();
 
@@ -160,7 +167,14 @@ from elevenlabs import ElevenLabs
 
 client = ElevenLabs()
 
-client.history.list()
+client.history.list(
+    date_after_unix=1640995200,
+    date_before_unix=1640995200,
+    model_id="eleven_turbo_v2",
+    search="In the land far far away",
+    sort_direction="desc",
+    source="TTS",
+)
 
 ```
 
@@ -175,7 +189,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/history"
+	url := "https://api.elevenlabs.io/v1/history?date_after_unix=1640995200&date_before_unix=1640995200&model_id=eleven_turbo_v2&search=In+the+land+far+far+away&sort_direction=desc&source=TTS"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -194,7 +208,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/history")
+url = URI("https://api.elevenlabs.io/v1/history?date_after_unix=1640995200&date_before_unix=1640995200&model_id=eleven_turbo_v2&search=In+the+land+far+far+away&sort_direction=desc&source=TTS")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -209,7 +223,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/history")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/history?date_after_unix=1640995200&date_before_unix=1640995200&model_id=eleven_turbo_v2&search=In+the+land+far+far+away&sort_direction=desc&source=TTS")
   .asString();
 ```
 
@@ -219,7 +233,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/history');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/history?date_after_unix=1640995200&date_before_unix=1640995200&model_id=eleven_turbo_v2&search=In+the+land+far+far+away&sort_direction=desc&source=TTS');
 
 echo $response->getBody();
 ```
@@ -227,7 +241,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/history");
+var client = new RestClient("https://api.elevenlabs.io/v1/history?date_after_unix=1640995200&date_before_unix=1640995200&model_id=eleven_turbo_v2&search=In+the+land+far+far+away&sort_direction=desc&source=TTS");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -235,7 +249,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/history")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/history?date_after_unix=1640995200&date_before_unix=1640995200&model_id=eleven_turbo_v2&search=In+the+land+far+far+away&sort_direction=desc&source=TTS")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

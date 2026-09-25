@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1185 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1191 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -209,11 +209,11 @@
 - `langsmith/endpoint-deprecation` — [API and SDK deprecation policy](pages/langsmith/endpoint-deprecation.md) · [原文](https://docs.langchain.com/langsmith/endpoint-deprecation)
 - `langsmith/engine` — [Find and fix your agent's issues with LangSmith Engine](pages/langsmith/engine.md) · [原文](https://docs.langchain.com/langsmith/engine)
 - `langsmith/engine-github` — [Connect LangSmith Engine to GitHub](pages/langsmith/engine-github.md) · [原文](https://docs.langchain.com/langsmith/engine-github)
+- `langsmith/engine-notifications` — [LangSmith Engine notifications](pages/langsmith/engine-notifications.md) · [原文](https://docs.langchain.com/langsmith/engine-notifications)
 - `langsmith/engine-overview` — [LangSmith Engine](pages/langsmith/engine-overview.md) · [原文](https://docs.langchain.com/langsmith/engine-overview)
 - `langsmith/engine-security` — [LangSmith Engine security](pages/langsmith/engine-security.md) · [原文](https://docs.langchain.com/langsmith/engine-security)
 - `langsmith/engine-self-hosted` — [LangSmith Engine on Self-hosted](pages/langsmith/engine-self-hosted.md) · [原文](https://docs.langchain.com/langsmith/engine-self-hosted)
 - `langsmith/engine-self-hosted-link` — [Enable Engine](pages/langsmith/engine-self-hosted-link.md) · [原文](https://docs.langchain.com/langsmith/engine-self-hosted-link)
-- `langsmith/engine-webhooks` — [LangSmith Engine webhook events](pages/langsmith/engine-webhooks.md) · [原文](https://docs.langchain.com/langsmith/engine-webhooks)
 - `langsmith/enqueue-concurrent` — [Enqueue concurrent](pages/langsmith/enqueue-concurrent.md) · [原文](https://docs.langchain.com/langsmith/enqueue-concurrent)
 - `langsmith/enterprise` — [LangSmith for Enterprise](pages/langsmith/enterprise.md) · [原文](https://docs.langchain.com/langsmith/enterprise)
 - `langsmith/env-var-cloud` — [Cloud Agent Server environment variables](pages/langsmith/env-var-cloud.md) · [原文](https://docs.langchain.com/langsmith/env-var-cloud)
@@ -291,8 +291,10 @@
 - `langsmith/interrupt-concurrent` — [Interrupt concurrent](pages/langsmith/interrupt-concurrent.md) · [原文](https://docs.langchain.com/langsmith/interrupt-concurrent)
 - `langsmith/javascript/managed-deep-agents` — [Managed Deep Agents](pages/langsmith/javascript/managed-deep-agents.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents)
 - `langsmith/javascript/managed-deep-agents-agent-definition` — [Define a Managed Deep Agent](pages/langsmith/javascript/managed-deep-agents-agent-definition.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-agent-definition)
+- `langsmith/javascript/managed-deep-agents-agent-owned-interrupts` — [Prompt Slack users with agent-owned interrupts](pages/langsmith/javascript/managed-deep-agents-agent-owned-interrupts.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-agent-owned-interrupts)
 - `langsmith/javascript/managed-deep-agents-changelog` — [Changelog](pages/langsmith/javascript/managed-deep-agents-changelog.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-changelog)
 - `langsmith/javascript/managed-deep-agents-channels` — [Connect Managed Deep Agents to channels](pages/langsmith/javascript/managed-deep-agents-channels.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-channels)
+- `langsmith/javascript/managed-deep-agents-channels-http` — [Connect a Managed Deep Agent over HTTP](pages/langsmith/javascript/managed-deep-agents-channels-http.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-channels-http)
 - `langsmith/javascript/managed-deep-agents-channels-slack` — [Connect a Managed Deep Agent to Slack](pages/langsmith/javascript/managed-deep-agents-channels-slack.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-channels-slack)
 - `langsmith/javascript/managed-deep-agents-cli` — [Managed Deep Agents CLI reference](pages/langsmith/javascript/managed-deep-agents-cli.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-cli)
 - `langsmith/javascript/managed-deep-agents-connections` — [Manage connections](pages/langsmith/javascript/managed-deep-agents-connections.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-connections)
@@ -311,6 +313,7 @@
 - `langsmith/javascript/managed-deep-agents-quickstart` — [Managed Deep Agents quickstart](pages/langsmith/javascript/managed-deep-agents-quickstart.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-quickstart)
 - `langsmith/javascript/managed-deep-agents-sandboxes` — [Add a sandbox to Managed Deep Agents](pages/langsmith/javascript/managed-deep-agents-sandboxes.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-sandboxes)
 - `langsmith/javascript/managed-deep-agents-schedules` — [Add schedules to Managed Deep Agents](pages/langsmith/javascript/managed-deep-agents-schedules.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-schedules)
+- `langsmith/javascript/managed-deep-agents-search` — [Built-in search powered by Parallel](pages/langsmith/javascript/managed-deep-agents-search.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-search)
 - `langsmith/javascript/managed-deep-agents-skills` — [Add skills to Managed Deep Agents](pages/langsmith/javascript/managed-deep-agents-skills.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-skills)
 - `langsmith/javascript/managed-deep-agents-tools` — [Add custom tools to Managed Deep Agents](pages/langsmith/javascript/managed-deep-agents-tools.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-tools)
 - `langsmith/javascript/managed-deep-agents-tutorial` — [Add a custom search tool, memory, and a schedule](pages/langsmith/javascript/managed-deep-agents-tutorial.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-tutorial)
@@ -404,8 +407,10 @@
 - `langsmith/pytest` — [How to run evaluations with pytest](pages/langsmith/pytest.md) · [原文](https://docs.langchain.com/langsmith/pytest)
 - `langsmith/python/managed-deep-agents` — [Managed Deep Agents](pages/langsmith/python/managed-deep-agents.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents)
 - `langsmith/python/managed-deep-agents-agent-definition` — [Define a Managed Deep Agent](pages/langsmith/python/managed-deep-agents-agent-definition.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-agent-definition)
+- `langsmith/python/managed-deep-agents-agent-owned-interrupts` — [Prompt Slack users with agent-owned interrupts](pages/langsmith/python/managed-deep-agents-agent-owned-interrupts.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-agent-owned-interrupts)
 - `langsmith/python/managed-deep-agents-changelog` — [Changelog](pages/langsmith/python/managed-deep-agents-changelog.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-changelog)
 - `langsmith/python/managed-deep-agents-channels` — [Connect Managed Deep Agents to channels](pages/langsmith/python/managed-deep-agents-channels.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-channels)
+- `langsmith/python/managed-deep-agents-channels-http` — [Connect a Managed Deep Agent over HTTP](pages/langsmith/python/managed-deep-agents-channels-http.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-channels-http)
 - `langsmith/python/managed-deep-agents-channels-slack` — [Connect a Managed Deep Agent to Slack](pages/langsmith/python/managed-deep-agents-channels-slack.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-channels-slack)
 - `langsmith/python/managed-deep-agents-cli` — [Managed Deep Agents CLI reference](pages/langsmith/python/managed-deep-agents-cli.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-cli)
 - `langsmith/python/managed-deep-agents-connections` — [Manage connections](pages/langsmith/python/managed-deep-agents-connections.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-connections)
@@ -424,6 +429,7 @@
 - `langsmith/python/managed-deep-agents-quickstart` — [Managed Deep Agents quickstart](pages/langsmith/python/managed-deep-agents-quickstart.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-quickstart)
 - `langsmith/python/managed-deep-agents-sandboxes` — [Add a sandbox to Managed Deep Agents](pages/langsmith/python/managed-deep-agents-sandboxes.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-sandboxes)
 - `langsmith/python/managed-deep-agents-schedules` — [Add schedules to Managed Deep Agents](pages/langsmith/python/managed-deep-agents-schedules.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-schedules)
+- `langsmith/python/managed-deep-agents-search` — [Built-in search powered by Parallel](pages/langsmith/python/managed-deep-agents-search.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-search)
 - `langsmith/python/managed-deep-agents-skills` — [Add skills to Managed Deep Agents](pages/langsmith/python/managed-deep-agents-skills.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-skills)
 - `langsmith/python/managed-deep-agents-tools` — [Add custom tools to Managed Deep Agents](pages/langsmith/python/managed-deep-agents-tools.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-tools)
 - `langsmith/python/managed-deep-agents-tutorial` — [Add a custom search tool, memory, and a schedule](pages/langsmith/python/managed-deep-agents-tutorial.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-tutorial)

@@ -155,7 +155,7 @@ You can configure how to handle the period between subscription creation and the
 Use the [Subscriptions API](https://docs.stripe.com/api/subscriptions/update.md) or [Dashboard](https://dashboard.stripe.com/subscriptions) to change the billing date of an existing subscription through one of the following options:
 
 - Reset the billing cycle anchor to the current time.
-- Add a [free trial](https://docs.stripe.com/billing/subscriptions/trials.md) to automatically set the anchor date to the end of the trial. Trials typically start when you create a subscription, but you can also apply them to existing subscriptions, allowing you to credit the customer for the days left in the previous cycle that they already paid.
+- Add a [free trial](https://docs.stripe.com/billing/subscriptions/trials/free-trials.md) to automatically set the anchor date to the end of the trial. Trials typically start when you create a subscription, but you can also apply them to existing subscriptions, allowing you to credit the customer for the days left in the previous cycle that they already paid.
 
 Your billing cycle date changes in these scenarios. However, if you create or update a subscription with `billing_mode[type]=flexible`, the billing cycle anchor remains unchanged. Learn more about [configuring flexible billing mode](https://docs.stripe.com/billing/subscriptions/billing-mode.md).
 
@@ -192,7 +192,7 @@ curl https://api.stripe.com/v1/subscriptions/{{SUBSCRIPTION_ID}} \
 
 ### Change the billing period using a trial period
 
-You can change the billing cycle anchor by using a [free trial](https://docs.stripe.com/billing/subscriptions/trials.md) to automatically set the billing cycle anchor date to the `trial_end` date.
+You can change the billing cycle anchor by using a [free trial](https://docs.stripe.com/billing/subscriptions/trials/free-trials.md) to automatically set the billing cycle anchor date to the `trial_end` date.
 
 For example, if a customer has an active subscription originally set to bill next on July 23, and on July 15 you introduce a trial period ending on August 1:
 
@@ -233,7 +233,7 @@ If you have a subscription configured to invoice this way, you can set it up to 
 
 ## See also
 
-- [Using trial periods](https://docs.stripe.com/billing/subscriptions/trials.md)
+- [Using trial periods](https://docs.stripe.com/billing/subscriptions/trials/free-trials.md)
 - [Update Subscription](https://docs.stripe.com/api.md#update_subscription)
 - [Use test clocks to preview invoices](https://docs.stripe.com/billing/testing/test-clocks.md)
 

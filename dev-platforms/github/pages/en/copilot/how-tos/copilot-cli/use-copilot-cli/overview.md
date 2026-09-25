@@ -27,7 +27,7 @@ Install Copilot CLI. See [Installing GitHub Copilot CLI](/en/copilot/how-tos/cop
 
 3. Choose one of the options:
 
-   **1. Yes, proceed**:
+   **1. Yes**:
 
    Copilot can work with the files in this location for this session only.
 
@@ -35,7 +35,7 @@ Install Copilot CLI. See [Installing GitHub Copilot CLI](/en/copilot/how-tos/cop
 
    You trust the files in this folder for this and future sessions. You won't be asked again when you start Copilot CLI from this folder. Only choose this option if you are sure that it will always be safe for Copilot to work with files in this location.
 
-   **3. No, exit (Esc)**:
+   **3. No (Esc)**:
 
    End your Copilot CLI session.
 

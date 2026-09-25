@@ -90,7 +90,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.conversationalAi.agents.procedures.create("agent_id", "branch_id", {});
+    await client.conversationalAi.agents.procedures.create("agent_3701k3ttaq12ewp8b7qv5rfyszkz", "agtbranch_0901k4aafjxxfxt93gd841r7tv5t", {});
 }
 main();
 
@@ -102,8 +102,8 @@ from elevenlabs import ElevenLabs, CreateProcedureRequestModel
 client = ElevenLabs()
 
 client.conversational_ai.agents.procedures.create(
-    agent_id="agent_id",
-    branch_id="branch_id",
+    agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
+    branch_id="agtbranch_0901k4aafjxxfxt93gd841r7tv5t",
     request=CreateProcedureRequestModel(),
 )
 
@@ -121,7 +121,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id/procedures"
+	url := "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t/procedures"
 
 	payload := strings.NewReader("{}")
 
@@ -144,7 +144,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id/procedures")
+url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t/procedures")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -161,7 +161,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id/procedures")
+HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t/procedures")
   .header("Content-Type", "application/json")
   .body("{}")
   .asString();
@@ -173,7 +173,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id/procedures', [
+$response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t/procedures', [
   'body' => '{}',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -186,7 +186,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id/procedures");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t/procedures");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
 request.AddParameter("application/json", "{}", ParameterType.RequestBody);
@@ -201,7 +201,7 @@ let parameters = [] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id/procedures")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t/procedures")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "POST"

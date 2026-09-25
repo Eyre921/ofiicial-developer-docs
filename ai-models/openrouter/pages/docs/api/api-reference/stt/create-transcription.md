@@ -44,6 +44,10 @@ tags:
     name: Anthropic Messages
   - description: BYOK endpoints
     name: BYOK
+  - description: >-
+      Submit, list, poll, and delete asynchronous batches of inference requests.
+      See https://openrouter.ai/docs/batch-quickstart.
+    name: Batch
   - description: Benchmarks endpoints
     name: Benchmarks
   - description: Chat completion endpoints
@@ -1165,6 +1169,9 @@ components:
           additionalProperties: {}
           type: object
         sambanova-cloaked:
+          additionalProperties: {}
+          type: object
+        scaledown:
           additionalProperties: {}
           type: object
         seed:

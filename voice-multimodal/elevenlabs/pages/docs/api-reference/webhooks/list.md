@@ -109,7 +109,9 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.webhooks.list({});
+    await client.webhooks.list({
+        includeUsages: false,
+    });
 }
 main();
 
@@ -120,7 +122,9 @@ from elevenlabs import ElevenLabs
 
 client = ElevenLabs()
 
-client.webhooks.list()
+client.webhooks.list(
+    include_usages=False,
+)
 
 ```
 
@@ -135,7 +139,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/workspace/webhooks"
+	url := "https://api.elevenlabs.io/v1/workspace/webhooks?include_usages=false"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -154,7 +158,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/workspace/webhooks")
+url = URI("https://api.elevenlabs.io/v1/workspace/webhooks?include_usages=false")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -169,7 +173,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/workspace/webhooks")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/workspace/webhooks?include_usages=false")
   .asString();
 ```
 
@@ -179,7 +183,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/workspace/webhooks');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/workspace/webhooks?include_usages=false');
 
 echo $response->getBody();
 ```
@@ -187,7 +191,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/workspace/webhooks");
+var client = new RestClient("https://api.elevenlabs.io/v1/workspace/webhooks?include_usages=false");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -195,7 +199,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/workspace/webhooks")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/workspace/webhooks?include_usages=false")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

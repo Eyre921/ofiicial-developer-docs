@@ -1616,7 +1616,17 @@ However, [downloading a deploy](/deploy/manage-deploys/manage-deploys-overview#d
 
 ### Regions
 
-Netlify Blobs supports the following regions: `us-east-1`, `us-east-2`, `eu-central-1`, `ap-southeast-1` and `ap-southeast-2`. This is a smaller set than the [regions available to functions](/build/functions/configuration#region).
+Netlify Blobs supports a smaller set of regions than the [regions available to functions](/build/functions/configuration#region). The `region` option takes an AWS region code rather than the airport code used for the functions region:
+
+| Region code | Region |
+|---|---|
+| `ap-southeast-1` | Asia Pacific (Singapore) |
+| `ap-southeast-2` | Asia Pacific (Sydney) |
+| `eu-central-1` | EU (Frankfurt) |
+| `us-east-1` | US East (N. Virginia) |
+| `us-east-2` | US East (Ohio) |
+
+Any other value throws `InvalidBlobsRegionError` before the request is made.
 
 **How different blob stores choose a region:**
 
@@ -1759,7 +1769,7 @@ Keep the following limitations in mind when working with Netlify Blobs:
 - Functions written in Go cannot access Netlify Blobs. 
 - Local development with Netlify Dev uses a sandboxed local store that does not support [file-based uploads](#file-based-uploads). You cannot read production data during local development. 
 - [Deploy deletion](/deploy/manage-deploys/manage-deploys-overview#automatic-deploy-deletion) deletes deploy-specific stores only. For other stores, you can create [custom expiration logic](#expiration-logic) or [delete objects manually](#delete) as needed. 
-- Netlify Blobs is not currently supported as part of our HIPAA-compliant hosting offering. For more information, visit our [Trust Center](https://trust-center.netlify-corp.com) and download our reference architecture for HIPAA-compliant composable sites on Netlify.
+- Netlify Blobs is not currently supported as part of our HIPAA-compliant hosting offering. Learn more about our [Trust Center](https://www.netlify.com/trust-center/), where you can download the reference architecture for HIPAA-compliant sites on Netlify. Anyone with a Netlify account can download it.
 
 ## Troubleshooting tips
 

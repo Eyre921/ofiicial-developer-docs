@@ -111,8 +111,11 @@ Events are split into the following categories:
 * **Content Analytics exported**: That a user exported the Content Analytics table of [Workspace Analytics](https://www.notion.so/help/workspace-analytics).
 * **Content search queried**: That a workspace owner has used the [content search](https://www.notion.so/help/admin-content-search) functionality to find workspace content.
 * **Content search results exported**: That a workspace owner has exported the results from a [content search](https://www.notion.so/help/admin-content-search) query.
+* **Credit overage group access updated**: That AI credit overage access for a workspace group was updated.
+* **Credit overage policy updated**: That the AI credit overage policy was updated.
 * **Custom agent created**: That a custom agent was created.
 * **Custom agent creation setting updated**: That a group's custom agent creation setting was updated.
+* **Custom Agent default model updated**: That the default model for new Custom Agents was updated for the workspace.
 * **Custom agent performed action in setup mode**: That an action was performed in setup mode for a custom agent in the workspace.
 * **Custom agent published**: That a custom agent was published.
 * **Custom emoji created**: That a custom emoji was created.

@@ -115,7 +115,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.pronunciationDictionaries.rules.add("pronunciation_dictionary_id", {
+    await client.pronunciationDictionaries.rules.add("21m00Tcm4TlvDq8ikWAM", {
         rules: [],
     });
 }
@@ -129,7 +129,7 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.pronunciation_dictionaries.rules.add(
-    pronunciation_dictionary_id="pronunciation_dictionary_id",
+    pronunciation_dictionary_id="21m00Tcm4TlvDq8ikWAM",
     rules=[],
 )
 
@@ -147,7 +147,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/pronunciation-dictionaries/pronunciation_dictionary_id/add-rules"
+	url := "https://api.elevenlabs.io/v1/pronunciation-dictionaries/21m00Tcm4TlvDq8ikWAM/add-rules"
 
 	payload := strings.NewReader("{\n  \"rules\": [\n    {\n      \"alias\": \"string\",\n      \"string_to_replace\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}")
 
@@ -170,7 +170,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/pronunciation-dictionaries/pronunciation_dictionary_id/add-rules")
+url = URI("https://api.elevenlabs.io/v1/pronunciation-dictionaries/21m00Tcm4TlvDq8ikWAM/add-rules")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -187,7 +187,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/pronunciation-dictionaries/pronunciation_dictionary_id/add-rules")
+HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/pronunciation-dictionaries/21m00Tcm4TlvDq8ikWAM/add-rules")
   .header("Content-Type", "application/json")
   .body("{\n  \"rules\": [\n    {\n      \"alias\": \"string\",\n      \"string_to_replace\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}")
   .asString();
@@ -199,7 +199,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://api.elevenlabs.io/v1/pronunciation-dictionaries/pronunciation_dictionary_id/add-rules', [
+$response = $client->request('POST', 'https://api.elevenlabs.io/v1/pronunciation-dictionaries/21m00Tcm4TlvDq8ikWAM/add-rules', [
   'body' => '{
   "rules": [
     {
@@ -220,7 +220,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/pronunciation-dictionaries/pronunciation_dictionary_id/add-rules");
+var client = new RestClient("https://api.elevenlabs.io/v1/pronunciation-dictionaries/21m00Tcm4TlvDq8ikWAM/add-rules");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
 request.AddParameter("application/json", "{\n  \"rules\": [\n    {\n      \"alias\": \"string\",\n      \"string_to_replace\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}", ParameterType.RequestBody);
@@ -241,7 +241,7 @@ let parameters = ["rules": [
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/pronunciation-dictionaries/pronunciation_dictionary_id/add-rules")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/pronunciation-dictionaries/21m00Tcm4TlvDq8ikWAM/add-rules")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "POST"

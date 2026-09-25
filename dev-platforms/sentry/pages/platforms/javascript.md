@@ -398,6 +398,7 @@ Are you having problems setting up the SDK?
 - [Eve](https://docs.sentry.io/platforms/javascript/guides/eve.md)
 - [Express](https://docs.sentry.io/platforms/javascript/guides/express.md)
 - [Fastify](https://docs.sentry.io/platforms/javascript/guides/fastify.md)
+- [Flue](https://docs.sentry.io/platforms/javascript/guides/flue.md)
 - [Gatsby](https://docs.sentry.io/platforms/javascript/guides/gatsby.md)
 - [Google Cloud Functions](https://docs.sentry.io/platforms/javascript/guides/gcp-functions.md)
 - [Hapi](https://docs.sentry.io/platforms/javascript/guides/hapi.md)

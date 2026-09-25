@@ -1,6 +1,6 @@
 # dev-platforms/langfuse 文档索引
 
-> 共 19 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 21 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -24,7 +24,12 @@
 - `docs/evaluation/experiments/compare-experiments` — [Compare versions and inspect failures](pages/docs/evaluation/experiments/compare-experiments.md) · [原文](https://langfuse.com/docs/evaluation/experiments/compare-experiments.md)
 - `docs/evaluation/experiments/experiments-ci-cd` — [Block regressions in CI](pages/docs/evaluation/experiments/experiments-ci-cd.md) · [原文](https://langfuse.com/docs/evaluation/experiments/experiments-ci-cd.md)
 - `docs/evaluation/overview` — [Choose where evaluations run](pages/docs/evaluation/overview.md) · [原文](https://langfuse.com/docs/evaluation/overview.md)
+- `docs/evaluation/scores/score-analytics` — [agreement metrics](pages/docs/evaluation/scores/score-analytics.md) · [原文](https://langfuse.com/docs/evaluation/scores/score-analytics.md)
 - `docs/observability/best-practices` — [What does a good trace look like?](pages/docs/observability/best-practices.md) · [原文](https://langfuse.com/docs/observability/best-practices.md)
+
+## guides
+
+- `guides/llm-as-a-judge-calibration-skill` — [Check an LLM judge against human labels](pages/guides/llm-as-a-judge-calibration-skill.md) · [原文](https://langfuse.com/guides/llm-as-a-judge-calibration-skill.md)
 
 ## resources
 

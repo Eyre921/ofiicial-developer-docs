@@ -133,7 +133,7 @@ To handle multiple products in a subscription that might have different billing 
 
 ### Discounts, taxes, and trial periods 
 
-When using multiple products, you can also create [discounts](https://docs.stripe.com/billing/subscriptions/coupons.md), charge [taxes](https://docs.stripe.com/billing/taxes/collect-taxes.md), and use [trial periods](https://docs.stripe.com/billing/subscriptions/trials.md) the same way you would with a single-product subscription.
+When using multiple products, you can also create [discounts](https://docs.stripe.com/billing/subscriptions/coupons.md), charge [taxes](https://docs.stripe.com/billing/taxes/collect-taxes.md), and use [trial periods](https://docs.stripe.com/billing/subscriptions/trials/free-trials.md) the same way you would with a single-product subscription.
 
 Provide these arguments when you [create](https://docs.stripe.com/api/subscriptions/create.md) or [update](https://docs.stripe.com/api/subscriptions/update.md) a subscription to apply them to the whole subscription, or provide them at the item level to only discount a specific item.
 
@@ -296,6 +296,6 @@ When a customer has multiple subscriptions, the `Customer` object’s `subscript
 ## See also
 
 - [Change subscriptions](https://docs.stripe.com/billing/subscriptions/change.md)
-- [Use trial periods](https://docs.stripe.com/billing/subscriptions/trials.md)
+- [Use trial periods](https://docs.stripe.com/billing/subscriptions/trials/free-trials.md)
 - [Subscriptions API](https://docs.stripe.com/api.md#subscriptions)
 

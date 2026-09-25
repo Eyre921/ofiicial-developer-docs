@@ -68,7 +68,7 @@ Validation Error
 
 ```json
 {
-  "target_workspace_id": "ws_8f3b2c9d7a1e4f6b"
+  "target_workspace_id": "string"
 }
 ```
 
@@ -87,8 +87,8 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.voices.replicateToIsolatedEnvironment("voice_id", {
-        targetWorkspaceId: "ws_8f3b2c9d7a1e4f6b",
+    await client.voices.replicateToIsolatedEnvironment("21m00Tcm4TlvDq8ikWAM", {
+        targetWorkspaceId: "string",
     });
 }
 main();
@@ -101,8 +101,8 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.voices.replicate_to_isolated_environment(
-    voice_id="voice_id",
-    target_workspace_id="ws_8f3b2c9d7a1e4f6b",
+    voice_id="21m00Tcm4TlvDq8ikWAM",
+    target_workspace_id="string",
 )
 
 ```
@@ -119,9 +119,9 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/voices/voice_id/replicate-to-isolated-environment"
+	url := "https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/replicate-to-isolated-environment"
 
-	payload := strings.NewReader("{\n  \"target_workspace_id\": \"ws_8f3b2c9d7a1e4f6b\"\n}")
+	payload := strings.NewReader("{\n  \"target_workspace_id\": \"string\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -142,14 +142,14 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/voices/voice_id/replicate-to-isolated-environment")
+url = URI("https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/replicate-to-isolated-environment")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"target_workspace_id\": \"ws_8f3b2c9d7a1e4f6b\"\n}"
+request.body = "{\n  \"target_workspace_id\": \"string\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -159,9 +159,9 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/voices/voice_id/replicate-to-isolated-environment")
+HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/replicate-to-isolated-environment")
   .header("Content-Type", "application/json")
-  .body("{\n  \"target_workspace_id\": \"ws_8f3b2c9d7a1e4f6b\"\n}")
+  .body("{\n  \"target_workspace_id\": \"string\"\n}")
   .asString();
 ```
 
@@ -171,9 +171,9 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://api.elevenlabs.io/v1/voices/voice_id/replicate-to-isolated-environment', [
+$response = $client->request('POST', 'https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/replicate-to-isolated-environment', [
   'body' => '{
-  "target_workspace_id": "ws_8f3b2c9d7a1e4f6b"
+  "target_workspace_id": "string"
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -186,10 +186,10 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/voices/voice_id/replicate-to-isolated-environment");
+var client = new RestClient("https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/replicate-to-isolated-environment");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"target_workspace_id\": \"ws_8f3b2c9d7a1e4f6b\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"target_workspace_id\": \"string\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -197,11 +197,11 @@ IRestResponse response = client.Execute(request);
 import Foundation
 
 let headers = ["Content-Type": "application/json"]
-let parameters = ["target_workspace_id": "ws_8f3b2c9d7a1e4f6b"] as [String : Any]
+let parameters = ["target_workspace_id": "string"] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/voices/voice_id/replicate-to-isolated-environment")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/replicate-to-isolated-environment")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "POST"

@@ -75,7 +75,7 @@ Validation Error
 
 ```json
 {
-  "name": "Customer Support Tests"
+  "name": "string"
 }
 ```
 
@@ -83,19 +83,15 @@ Validation Error
 
 ```json
 {
-  "id": "tfld_7301khxdkycse5f88fzjdtrterzm",
-  "name": "Customer Support Tests",
+  "id": "string",
+  "name": "string",
   "folder_path": [
     {
-      "id": "tfld_1a2b3c4d5e6f7g8h9i0j",
-      "name": "Root Folder"
-    },
-    {
-      "id": "tfld_2b3c4d5e6f7g8h9i0j1k",
-      "name": "Support Team"
+      "id": "string",
+      "name": ""
     }
   ],
-  "children_count": 12
+  "children_count": 0
 }
 ```
 
@@ -106,8 +102,8 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.conversationalAi.tests.folders.update("folder_id", {
-        name: "Customer Support Tests",
+    await client.conversationalAi.tests.folders.update("tfld_7301khxdkycse5f88fzjdtrterzm", {
+        name: "string",
     });
 }
 main();
@@ -120,8 +116,8 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.conversational_ai.tests.folders.update(
-    folder_id="folder_id",
-    name="Customer Support Tests",
+    folder_id="tfld_7301khxdkycse5f88fzjdtrterzm",
+    name="string",
 )
 
 ```
@@ -138,9 +134,9 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/agent-testing/folders/folder_id"
+	url := "https://api.elevenlabs.io/v1/convai/agent-testing/folders/tfld_7301khxdkycse5f88fzjdtrterzm"
 
-	payload := strings.NewReader("{\n  \"name\": \"Customer Support Tests\"\n}")
+	payload := strings.NewReader("{\n  \"name\": \"string\"\n}")
 
 	req, _ := http.NewRequest("PATCH", url, payload)
 
@@ -161,14 +157,14 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/agent-testing/folders/folder_id")
+url = URI("https://api.elevenlabs.io/v1/convai/agent-testing/folders/tfld_7301khxdkycse5f88fzjdtrterzm")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Patch.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"name\": \"Customer Support Tests\"\n}"
+request.body = "{\n  \"name\": \"string\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -178,9 +174,9 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.patch("https://api.elevenlabs.io/v1/convai/agent-testing/folders/folder_id")
+HttpResponse<String> response = Unirest.patch("https://api.elevenlabs.io/v1/convai/agent-testing/folders/tfld_7301khxdkycse5f88fzjdtrterzm")
   .header("Content-Type", "application/json")
-  .body("{\n  \"name\": \"Customer Support Tests\"\n}")
+  .body("{\n  \"name\": \"string\"\n}")
   .asString();
 ```
 
@@ -190,9 +186,9 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('PATCH', 'https://api.elevenlabs.io/v1/convai/agent-testing/folders/folder_id', [
+$response = $client->request('PATCH', 'https://api.elevenlabs.io/v1/convai/agent-testing/folders/tfld_7301khxdkycse5f88fzjdtrterzm', [
   'body' => '{
-  "name": "Customer Support Tests"
+  "name": "string"
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -205,10 +201,10 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/agent-testing/folders/folder_id");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/agent-testing/folders/tfld_7301khxdkycse5f88fzjdtrterzm");
 var request = new RestRequest(Method.PATCH);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"name\": \"Customer Support Tests\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"name\": \"string\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -216,11 +212,11 @@ IRestResponse response = client.Execute(request);
 import Foundation
 
 let headers = ["Content-Type": "application/json"]
-let parameters = ["name": "Customer Support Tests"] as [String : Any]
+let parameters = ["name": "string"] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agent-testing/folders/folder_id")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agent-testing/folders/tfld_7301khxdkycse5f88fzjdtrterzm")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "PATCH"

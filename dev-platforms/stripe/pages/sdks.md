@@ -10,7 +10,7 @@ Libraries and tools for interacting with your Stripe integration.
 
 Stripe provides several SDKs and libraries to help you integrate with Stripe’s APIs across different platforms and languages. Whether you’re building a [server-side](https://docs.stripe.com/sdks/server-side.md) application, a [web frontend](https://docs.stripe.com/payments/elements.md), or a mobile app, you can use our official libraries to securely interact with Stripe, reduce boilerplate code, and access the latest features.
 
-We use the [semantic versioning standard](https://docs.stripe.com/sdks/versioning.md#stripe-sdk-versions) for SDKs, and [version APIs](https://docs.stripe.com/sdks/versioning.md#stripe-api-versions) by release date. Breaking API changes increase the SDK’s major version.
+We use the [semantic versioning standard](https://docs.stripe.com/sdks/versioning.md) for SDKs, and [version APIs](https://docs.stripe.com/api-versions.md) by release date. Breaking API changes increase the SDK’s major version.
 
 ## Server-side SDKs 
 

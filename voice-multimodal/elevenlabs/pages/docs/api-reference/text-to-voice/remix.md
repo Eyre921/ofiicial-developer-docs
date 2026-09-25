@@ -124,7 +124,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.textToVoice.remix("voice_id", {
+    await client.textToVoice.remix("21m00Tcm4TlvDq8ikWAM", {
         voiceDescription: "Make the voice have a higher pitch.",
     });
 }
@@ -138,7 +138,7 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.text_to_voice.remix(
-    voice_id="voice_id",
+    voice_id="21m00Tcm4TlvDq8ikWAM",
     voice_description="Make the voice have a higher pitch.",
 )
 
@@ -156,7 +156,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/text-to-voice/voice_id/remix"
+	url := "https://api.elevenlabs.io/v1/text-to-voice/21m00Tcm4TlvDq8ikWAM/remix"
 
 	payload := strings.NewReader("{\n  \"voice_description\": \"Make the voice have a higher pitch.\"\n}")
 
@@ -179,7 +179,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/text-to-voice/voice_id/remix")
+url = URI("https://api.elevenlabs.io/v1/text-to-voice/21m00Tcm4TlvDq8ikWAM/remix")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -196,7 +196,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/text-to-voice/voice_id/remix")
+HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/text-to-voice/21m00Tcm4TlvDq8ikWAM/remix")
   .header("Content-Type", "application/json")
   .body("{\n  \"voice_description\": \"Make the voice have a higher pitch.\"\n}")
   .asString();
@@ -208,7 +208,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://api.elevenlabs.io/v1/text-to-voice/voice_id/remix', [
+$response = $client->request('POST', 'https://api.elevenlabs.io/v1/text-to-voice/21m00Tcm4TlvDq8ikWAM/remix', [
   'body' => '{
   "voice_description": "Make the voice have a higher pitch."
 }',
@@ -223,7 +223,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/text-to-voice/voice_id/remix");
+var client = new RestClient("https://api.elevenlabs.io/v1/text-to-voice/21m00Tcm4TlvDq8ikWAM/remix");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
 request.AddParameter("application/json", "{\n  \"voice_description\": \"Make the voice have a higher pitch.\"\n}", ParameterType.RequestBody);
@@ -238,7 +238,7 @@ let parameters = ["voice_description": "Make the voice have a higher pitch."] as
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/text-to-voice/voice_id/remix")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/text-to-voice/21m00Tcm4TlvDq8ikWAM/remix")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "POST"

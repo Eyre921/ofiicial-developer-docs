@@ -10,7 +10,6 @@ Access an account's transactions with your user's permission.
 
 The Financial Connections API allows you to retrieve transactions on a [Financial Connections Account](https://docs.stripe.com/api/financial_connections/accounts/object.md). Use transaction data to build a variety of products and solutions, such as:
 
-- Expedite the underwriting process and improve access to credit and other financial services for your users.
 - Mitigate fraud and reduce risk during user onboarding by evaluating a user’s transaction history, and understanding cash inflows and outflows from their financial accounts.
 - Help your users track expenses, handle bills, and manage their finances.
 

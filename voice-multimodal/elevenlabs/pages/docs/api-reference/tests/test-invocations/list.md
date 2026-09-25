@@ -27,6 +27,7 @@ Reference: https://elevenlabs.io/docs/api-reference/tests/test-invocations/list
 ### Query parameters
 
 - `agent_id` (string, optional, nullable) — Filter by agent ID
+- `branch_id` (string, optional, nullable) — Filter by branch ID
 - `page_size` (integer, optional, default: 30) — How many Tests to return at maximum. Can not exceed 100, defaults to 30.
 - `search` (string, optional, nullable) — Search query to filter tests and folders by name.
 - `cursor` (string, optional, nullable) — Used for fetching next page. Cursor is returned in the response.

@@ -1022,7 +1022,7 @@ Stripe creates event types marked as **Selection required** only when at least o
 - `setup_intent.succeeded`
   `data.object` is one of: [`setup_intent`](https://docs.stripe.com/api#setup_intent_object)
 
-  Occurs when an SetupIntent has successfully setup a payment method.
+  Occurs when a SetupIntent has successfully setup a payment method.
 
 - `sigma.scheduled_query_run.created`
   `data.object` is one of: [`scheduled_query_run`](https://docs.stripe.com/api#scheduled_query_run_object)

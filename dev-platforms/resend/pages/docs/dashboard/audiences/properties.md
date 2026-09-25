@@ -332,7 +332,7 @@ You can also add properties to a Contact when you [create a Contact](/docs/api-r
           FirstName = "Steve",
           LastName = "Wozniak",
           IsUnsubscribed = false,
-          Properties = new Dictionary<string, string> {
+          Properties = new Dictionary<string, object?> {
             { "company_name", "Acme Corp" }
           }
       }
@@ -538,7 +538,7 @@ Or you can update a Contact to add or change a property value [using the update 
       {
           FirstName = "Stevie",
           LastName = "Wozniaks",
-          Properties = new Dictionary<string, string> {
+          Properties = new Dictionary<string, object?> {
             { "company_name", "Acme Corp" }
           }
       }
@@ -551,7 +551,7 @@ Or you can update a Contact to add or change a property value [using the update 
       {
           FirstName = "Stevie",
           LastName = "Wozniaks",
-          Properties = new Dictionary<string, string> {
+          Properties = new Dictionary<string, object?> {
             { "company_name", "Acme Corp" }
           }
       }

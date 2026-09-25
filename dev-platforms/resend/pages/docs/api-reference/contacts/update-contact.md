@@ -42,8 +42,8 @@ Either `id` or `email` must be provided.
       The property key.
     </ParamField>
 
-    <ParamField type="string">
-      The property value.
+    <ParamField type="string | number | boolean | null">
+      The property value. Use `null` to clear the property value.
     </ParamField>
   </Expandable>
 </ParamField>

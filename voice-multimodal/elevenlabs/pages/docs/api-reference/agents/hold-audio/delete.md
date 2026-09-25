@@ -71,7 +71,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.conversationalAi.agents.holdAudio.delete("agent_id");
+    await client.conversationalAi.agents.holdAudio.delete("agent_3701k3ttaq12ewp8b7qv5rfyszkz");
 }
 main();
 
@@ -83,7 +83,7 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.conversational_ai.agents.hold_audio.delete(
-    agent_id="agent_id",
+    agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
 )
 
 ```
@@ -99,7 +99,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/agents/agent_id/hold-audio"
+	url := "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/hold-audio"
 
 	req, _ := http.NewRequest("DELETE", url, nil)
 
@@ -118,7 +118,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_id/hold-audio")
+url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/hold-audio")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -133,7 +133,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.delete("https://api.elevenlabs.io/v1/convai/agents/agent_id/hold-audio")
+HttpResponse<String> response = Unirest.delete("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/hold-audio")
   .asString();
 ```
 
@@ -143,7 +143,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('DELETE', 'https://api.elevenlabs.io/v1/convai/agents/agent_id/hold-audio');
+$response = $client->request('DELETE', 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/hold-audio');
 
 echo $response->getBody();
 ```
@@ -151,7 +151,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_id/hold-audio");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/hold-audio");
 var request = new RestRequest(Method.DELETE);
 IRestResponse response = client.Execute(request);
 ```
@@ -159,7 +159,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_id/hold-audio")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/hold-audio")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "DELETE"

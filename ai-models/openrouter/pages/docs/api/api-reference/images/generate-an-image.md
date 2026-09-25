@@ -44,6 +44,10 @@ tags:
     name: Anthropic Messages
   - description: BYOK endpoints
     name: BYOK
+  - description: >-
+      Submit, list, poll, and delete asynchronous batches of inference requests.
+      See https://openrouter.ai/docs/batch-quickstart.
+    name: Batch
   - description: Benchmarks endpoints
     name: Benchmarks
   - description: Chat completion endpoints
@@ -310,6 +314,8 @@ components:
             - '4:5'
             - '5:2'
             - '5:4'
+            - '5:7'
+            - '7:5'
             - '8:1'
             - '9:16'
             - '16:9'
@@ -394,6 +400,7 @@ components:
             dimensions are derived per-provider.
           enum:
             - '512'
+            - '768'
             - 1K
             - 2K
             - 4K
@@ -1430,6 +1437,7 @@ components:
         - Sail Research
         - Sakana AI
         - SambaNova
+        - ScaleDown
         - Seed
         - SiliconFlow
         - Sourceful
@@ -1813,6 +1821,9 @@ components:
           additionalProperties: {}
           type: object
         sambanova-cloaked:
+          additionalProperties: {}
+          type: object
+        scaledown:
           additionalProperties: {}
           type: object
         seed:

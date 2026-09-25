@@ -126,6 +126,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 async function main() {
     const client = new ElevenLabsClient();
     await client.conversationalAi.conversations.messages.search({
+        agentId: "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
         textQuery: "Customer asking to cancel and get money back",
     });
 }
@@ -139,6 +140,7 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.conversational_ai.conversations.messages.search(
+    agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
     text_query="Customer asking to cancel and get money back",
 )
 
@@ -155,7 +157,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?text_query=Customer+asking+to+cancel+and+get+money+back"
+	url := "https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&text_query=Customer+asking+to+cancel+and+get+money+back"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -174,7 +176,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?text_query=Customer+asking+to+cancel+and+get+money+back")
+url = URI("https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&text_query=Customer+asking+to+cancel+and+get+money+back")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -189,7 +191,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?text_query=Customer+asking+to+cancel+and+get+money+back")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&text_query=Customer+asking+to+cancel+and+get+money+back")
   .asString();
 ```
 
@@ -199,7 +201,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?text_query=Customer+asking+to+cancel+and+get+money+back');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&text_query=Customer+asking+to+cancel+and+get+money+back');
 
 echo $response->getBody();
 ```
@@ -207,7 +209,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?text_query=Customer+asking+to+cancel+and+get+money+back");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&text_query=Customer+asking+to+cancel+and+get+money+back");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -215,7 +217,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?text_query=Customer+asking+to+cancel+and+get+money+back")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&text_query=Customer+asking+to+cancel+and+get+money+back")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

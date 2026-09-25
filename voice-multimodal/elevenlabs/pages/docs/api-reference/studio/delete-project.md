@@ -71,7 +71,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.studio.projects.delete("project_id");
+    await client.studio.projects.delete("21m00Tcm4TlvDq8ikWAM");
 }
 main();
 
@@ -83,7 +83,7 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.studio.projects.delete(
-    project_id="project_id",
+    project_id="21m00Tcm4TlvDq8ikWAM",
 )
 
 ```
@@ -99,7 +99,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/studio/projects/project_id"
+	url := "https://api.elevenlabs.io/v1/studio/projects/21m00Tcm4TlvDq8ikWAM"
 
 	req, _ := http.NewRequest("DELETE", url, nil)
 
@@ -118,7 +118,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/studio/projects/project_id")
+url = URI("https://api.elevenlabs.io/v1/studio/projects/21m00Tcm4TlvDq8ikWAM")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -133,7 +133,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.delete("https://api.elevenlabs.io/v1/studio/projects/project_id")
+HttpResponse<String> response = Unirest.delete("https://api.elevenlabs.io/v1/studio/projects/21m00Tcm4TlvDq8ikWAM")
   .asString();
 ```
 
@@ -143,7 +143,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('DELETE', 'https://api.elevenlabs.io/v1/studio/projects/project_id');
+$response = $client->request('DELETE', 'https://api.elevenlabs.io/v1/studio/projects/21m00Tcm4TlvDq8ikWAM');
 
 echo $response->getBody();
 ```
@@ -151,7 +151,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/studio/projects/project_id");
+var client = new RestClient("https://api.elevenlabs.io/v1/studio/projects/21m00Tcm4TlvDq8ikWAM");
 var request = new RestRequest(Method.DELETE);
 IRestResponse response = client.Execute(request);
 ```
@@ -159,7 +159,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/studio/projects/project_id")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/studio/projects/21m00Tcm4TlvDq8ikWAM")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "DELETE"

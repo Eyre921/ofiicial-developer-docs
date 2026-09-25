@@ -104,7 +104,11 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.pronunciationDictionaries.list({});
+    await client.pronunciationDictionaries.list({
+        includeArchived: false,
+        sort: "creation_time_unix",
+        sortDirection: "descending",
+    });
 }
 main();
 
@@ -115,7 +119,11 @@ from elevenlabs import ElevenLabs
 
 client = ElevenLabs()
 
-client.pronunciation_dictionaries.list()
+client.pronunciation_dictionaries.list(
+    include_archived=False,
+    sort="creation_time_unix",
+    sort_direction="descending",
+)
 
 ```
 
@@ -130,7 +138,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/pronunciation-dictionaries"
+	url := "https://api.elevenlabs.io/v1/pronunciation-dictionaries?include_archived=false&sort=creation_time_unix&sort_direction=descending"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -149,7 +157,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/pronunciation-dictionaries")
+url = URI("https://api.elevenlabs.io/v1/pronunciation-dictionaries?include_archived=false&sort=creation_time_unix&sort_direction=descending")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -164,7 +172,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/pronunciation-dictionaries")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/pronunciation-dictionaries?include_archived=false&sort=creation_time_unix&sort_direction=descending")
   .asString();
 ```
 
@@ -174,7 +182,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/pronunciation-dictionaries');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/pronunciation-dictionaries?include_archived=false&sort=creation_time_unix&sort_direction=descending');
 
 echo $response->getBody();
 ```
@@ -182,7 +190,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/pronunciation-dictionaries");
+var client = new RestClient("https://api.elevenlabs.io/v1/pronunciation-dictionaries?include_archived=false&sort=creation_time_unix&sort_direction=descending");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -190,7 +198,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/pronunciation-dictionaries")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/pronunciation-dictionaries?include_archived=false&sort=creation_time_unix&sort_direction=descending")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

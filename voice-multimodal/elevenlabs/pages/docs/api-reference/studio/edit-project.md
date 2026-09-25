@@ -289,7 +289,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.studio.projects.update("project_id", {
+    await client.studio.projects.update("21m00Tcm4TlvDq8ikWAM", {
         name: "Project 1",
         defaultTitleVoiceId: "21m00Tcm4TlvDq8ikWAM",
         defaultParagraphVoiceId: "21m00Tcm4TlvDq8ikWAM",
@@ -305,7 +305,7 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.studio.projects.update(
-    project_id="project_id",
+    project_id="21m00Tcm4TlvDq8ikWAM",
     name="Project 1",
     default_title_voice_id="21m00Tcm4TlvDq8ikWAM",
     default_paragraph_voice_id="21m00Tcm4TlvDq8ikWAM",
@@ -325,7 +325,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/studio/projects/project_id"
+	url := "https://api.elevenlabs.io/v1/studio/projects/21m00Tcm4TlvDq8ikWAM"
 
 	payload := strings.NewReader("{\n  \"name\": \"Project 1\",\n  \"default_title_voice_id\": \"21m00Tcm4TlvDq8ikWAM\",\n  \"default_paragraph_voice_id\": \"21m00Tcm4TlvDq8ikWAM\"\n}")
 
@@ -348,7 +348,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/studio/projects/project_id")
+url = URI("https://api.elevenlabs.io/v1/studio/projects/21m00Tcm4TlvDq8ikWAM")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -365,7 +365,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/studio/projects/project_id")
+HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/studio/projects/21m00Tcm4TlvDq8ikWAM")
   .header("Content-Type", "application/json")
   .body("{\n  \"name\": \"Project 1\",\n  \"default_title_voice_id\": \"21m00Tcm4TlvDq8ikWAM\",\n  \"default_paragraph_voice_id\": \"21m00Tcm4TlvDq8ikWAM\"\n}")
   .asString();
@@ -377,7 +377,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://api.elevenlabs.io/v1/studio/projects/project_id', [
+$response = $client->request('POST', 'https://api.elevenlabs.io/v1/studio/projects/21m00Tcm4TlvDq8ikWAM', [
   'body' => '{
   "name": "Project 1",
   "default_title_voice_id": "21m00Tcm4TlvDq8ikWAM",
@@ -394,7 +394,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/studio/projects/project_id");
+var client = new RestClient("https://api.elevenlabs.io/v1/studio/projects/21m00Tcm4TlvDq8ikWAM");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
 request.AddParameter("application/json", "{\n  \"name\": \"Project 1\",\n  \"default_title_voice_id\": \"21m00Tcm4TlvDq8ikWAM\",\n  \"default_paragraph_voice_id\": \"21m00Tcm4TlvDq8ikWAM\"\n}", ParameterType.RequestBody);
@@ -413,7 +413,7 @@ let parameters = [
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/studio/projects/project_id")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/studio/projects/21m00Tcm4TlvDq8ikWAM")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "POST"

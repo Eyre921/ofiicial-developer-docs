@@ -103,7 +103,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.conversationalAi.knowledgeBase.document.computeRagIndex("documentation_id", {
+    await client.conversationalAi.knowledgeBase.document.computeRagIndex("21m00Tcm4TlvDq8ikWAM", {
         model: "e5_mistral_7b_instruct",
     });
 }
@@ -117,7 +117,7 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.conversational_ai.knowledge_base.document.compute_rag_index(
-    documentation_id="documentation_id",
+    documentation_id="21m00Tcm4TlvDq8ikWAM",
     model="e5_mistral_7b_instruct",
 )
 
@@ -135,7 +135,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/knowledge-base/documentation_id/rag-index"
+	url := "https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/rag-index"
 
 	payload := strings.NewReader("{\n  \"model\": \"e5_mistral_7b_instruct\"\n}")
 
@@ -158,7 +158,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/knowledge-base/documentation_id/rag-index")
+url = URI("https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/rag-index")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -175,7 +175,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/knowledge-base/documentation_id/rag-index")
+HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/rag-index")
   .header("Content-Type", "application/json")
   .body("{\n  \"model\": \"e5_mistral_7b_instruct\"\n}")
   .asString();
@@ -187,7 +187,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/knowledge-base/documentation_id/rag-index', [
+$response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/rag-index', [
   'body' => '{
   "model": "e5_mistral_7b_instruct"
 }',
@@ -202,7 +202,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/knowledge-base/documentation_id/rag-index");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/rag-index");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
 request.AddParameter("application/json", "{\n  \"model\": \"e5_mistral_7b_instruct\"\n}", ParameterType.RequestBody);
@@ -217,7 +217,7 @@ let parameters = ["model": "e5_mistral_7b_instruct"] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/knowledge-base/documentation_id/rag-index")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/rag-index")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "POST"

@@ -86,8 +86,6 @@ Validation Error
 - `suggested_audio_tags` (list of SuggestedAudioTag, optional) — Suggested audio tags to boost expressive speech (for eleven_v3 and eleven_v3_conversational models). The agent can still use other tags not listed here.
 - `agent_output_audio_format` (enum, optional, default: pcm_16000) — The audio format to use for TTS
   - Allowed values: `pcm_8000`, `pcm_16000`, `pcm_22050`, `pcm_24000`, `pcm_44100`, `pcm_48000`, `ulaw_8000`
-- `optimize_streaming_latency` (enum, optional) — Deprecated: this field is a no-op and is ignored.
-  - Allowed values: `0`, `1`, `2`, `3`, `4`
 - `stability` (double, optional, default: 0.5) — The stability of generated speech
 - `speed` (double, optional, default: 1) — The speed of generated speech
 - `similarity_boost` (double, optional, default: 0.8) — The similarity boost for generated speech
@@ -96,6 +94,8 @@ Validation Error
 - `pronunciation_dictionary_locators` (list of PydanticPronunciationDictionaryVersionLocator, optional) — The pronunciation dictionary locators
 - `enable_phoneme_tags` (boolean, optional, default: true) — Opt-in to SSML phoneme tag handling for V3 models. When enabled, phoneme tags (inline and from pronunciation dictionaries) are parsed into inline IPA before being sent to the model.
 - `audio_effects` (EffectsSpec-Output, optional, nullable) — Optional TTS effects spec: filter preset, distance (proximity EQ), and environment (convolution reverb).
+- `optimize_streaming_latency` (enum, optional, deprecated) — Deprecated: this field is a no-op and is ignored.
+  - Allowed values: `0`, `1`, `2`, `3`, `4`
 
 ### BaseTurnConfig
 
@@ -282,10 +282,10 @@ Used to reference a dynamic variable.
     "model_id": "eleven_flash_v2",
     "voice_id": "cjVigY5qzO86Huf0OWal",
     "agent_output_audio_format": "pcm_16000",
-    "optimize_streaming_latency": 3,
     "stability": 0.5,
     "speed": 1,
-    "similarity_boost": 0.8
+    "similarity_boost": 0.8,
+    "optimize_streaming_latency": 3
   },
   "turn": {
     "turn_timeout": 7,
@@ -343,7 +343,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.speechEngine.get("speech_engine_id");
+    await client.speechEngine.get("seng_3701k3ttaq12ewp8b7qv5rfyszkz");
 }
 main();
 
@@ -355,7 +355,7 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.speech_engine.get(
-    speech_engine_id="speech_engine_id",
+    speech_engine_id="seng_3701k3ttaq12ewp8b7qv5rfyszkz",
 )
 
 ```
@@ -371,7 +371,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/speech-engine/speech_engine_id"
+	url := "https://api.elevenlabs.io/v1/speech-engine/seng_3701k3ttaq12ewp8b7qv5rfyszkz"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -390,7 +390,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/speech-engine/speech_engine_id")
+url = URI("https://api.elevenlabs.io/v1/speech-engine/seng_3701k3ttaq12ewp8b7qv5rfyszkz")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -405,7 +405,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/speech-engine/speech_engine_id")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/speech-engine/seng_3701k3ttaq12ewp8b7qv5rfyszkz")
   .asString();
 ```
 
@@ -415,7 +415,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/speech-engine/speech_engine_id');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/speech-engine/seng_3701k3ttaq12ewp8b7qv5rfyszkz');
 
 echo $response->getBody();
 ```
@@ -423,7 +423,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/speech-engine/speech_engine_id");
+var client = new RestClient("https://api.elevenlabs.io/v1/speech-engine/seng_3701k3ttaq12ewp8b7qv5rfyszkz");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -431,7 +431,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/speech-engine/speech_engine_id")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/speech-engine/seng_3701k3ttaq12ewp8b7qv5rfyszkz")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

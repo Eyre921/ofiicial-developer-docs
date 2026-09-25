@@ -101,7 +101,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.pronunciationDictionaries.update("pronunciation_dictionary_id", {});
+    await client.pronunciationDictionaries.update("21m00Tcm4TlvDq8ikWAM", {});
 }
 main();
 
@@ -113,7 +113,7 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.pronunciation_dictionaries.update(
-    pronunciation_dictionary_id="pronunciation_dictionary_id",
+    pronunciation_dictionary_id="21m00Tcm4TlvDq8ikWAM",
 )
 
 ```
@@ -130,7 +130,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/pronunciation-dictionaries/pronunciation_dictionary_id"
+	url := "https://api.elevenlabs.io/v1/pronunciation-dictionaries/21m00Tcm4TlvDq8ikWAM"
 
 	payload := strings.NewReader("{}")
 
@@ -153,7 +153,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/pronunciation-dictionaries/pronunciation_dictionary_id")
+url = URI("https://api.elevenlabs.io/v1/pronunciation-dictionaries/21m00Tcm4TlvDq8ikWAM")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -170,7 +170,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.patch("https://api.elevenlabs.io/v1/pronunciation-dictionaries/pronunciation_dictionary_id")
+HttpResponse<String> response = Unirest.patch("https://api.elevenlabs.io/v1/pronunciation-dictionaries/21m00Tcm4TlvDq8ikWAM")
   .header("Content-Type", "application/json")
   .body("{}")
   .asString();
@@ -182,7 +182,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('PATCH', 'https://api.elevenlabs.io/v1/pronunciation-dictionaries/pronunciation_dictionary_id', [
+$response = $client->request('PATCH', 'https://api.elevenlabs.io/v1/pronunciation-dictionaries/21m00Tcm4TlvDq8ikWAM', [
   'body' => '{}',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -195,7 +195,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/pronunciation-dictionaries/pronunciation_dictionary_id");
+var client = new RestClient("https://api.elevenlabs.io/v1/pronunciation-dictionaries/21m00Tcm4TlvDq8ikWAM");
 var request = new RestRequest(Method.PATCH);
 request.AddHeader("Content-Type", "application/json");
 request.AddParameter("application/json", "{}", ParameterType.RequestBody);
@@ -210,7 +210,7 @@ let parameters = [] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/pronunciation-dictionaries/pronunciation_dictionary_id")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/pronunciation-dictionaries/21m00Tcm4TlvDq8ikWAM")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "PATCH"

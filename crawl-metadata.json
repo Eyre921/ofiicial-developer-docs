@@ -1,19 +1,19 @@
 {
   "ai-models/xai-grok": {
-    "status": "error: curl failed (7) for https://docs.x.ai/llms.txt: curl: (7) Failed to connect to docs.x.ai port 443 after 12 ms: Could not connect to server\n"
+    "status": "error: curl failed (28) for https://docs.x.ai/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/mistral": {
-    "status": "error: curl failed (28) for https://docs.mistral.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15007 milliseconds\n"
+    "status": "error: curl failed (28) for https://docs.mistral.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/cohere": {
     "pages": 2,
     "status": "ok"
   },
   "ai-models/perplexity": {
-    "status": "error: curl failed (35) for https://docs.perplexity.ai/llms-full.txt: curl: (35) Recv failure: Connection reset by peer\n"
+    "status": "error: curl failed (28) for https://docs.perplexity.ai/llms-full.txt: curl: (28) Connection timed out after 15003 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/anthropic-claude-code": {
-    "pages": 197,
+    "pages": 210,
     "status": "ok"
   },
   "ai-models/groq": {
@@ -46,7 +46,7 @@
     "status": "ok"
   },
   "agent-frameworks/langchain": {
-    "pages": 1185,
+    "pages": 1191,
     "status": "ok"
   },
   "voice-multimodal/assemblyai": {
@@ -101,7 +101,7 @@
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
@@ -128,7 +128,7 @@
     "status": "ok"
   },
   "dev-platforms/langfuse": {
-    "pages": 19,
+    "pages": 21,
     "status": "ok"
   },
   "ai-models/replicate": {
@@ -194,7 +194,7 @@
     "status": "ok"
   },
   "ai-models/openrouter": {
-    "pages": 463,
+    "pages": 470,
     "status": "ok"
   },
   "voice-multimodal/deepgram": {
@@ -205,5 +205,5 @@
     "pages": 1322,
     "status": "ok"
   },
-  "_last_crawl": "2026-09-24T23:30:30Z"
+  "_last_crawl": "2026-09-25T23:30:26Z"
 }

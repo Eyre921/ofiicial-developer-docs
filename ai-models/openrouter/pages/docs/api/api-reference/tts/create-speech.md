@@ -44,6 +44,10 @@ tags:
     name: Anthropic Messages
   - description: BYOK endpoints
     name: BYOK
+  - description: >-
+      Submit, list, poll, and delete asynchronous batches of inference requests.
+      See https://openrouter.ai/docs/batch-quickstart.
+    name: Batch
   - description: Benchmarks endpoints
     name: Benchmarks
   - description: Chat completion endpoints
@@ -303,10 +307,15 @@ components:
           type: string
         input_references:
           description: >-
-            Reference content for stateless voice cloning: one `input_audio`
-            part carrying the voice sample, optionally accompanied by one `text`
-            part with its transcript. Only routed to endpoints that support
-            voice cloning.
+            Reference content for stateless voice cloning or voice design. Audio
+            mode: one to three `input_audio` parts, each optionally paired with
+            a `text` part carrying its transcript (a single clip accepts its
+            transcript before or after it; with multiple clips each transcript
+            immediately follows its clip); only routed to endpoints that support
+            voice cloning (and multiple references when more than one part is
+            sent). Image mode: exactly one `image_url` part; only routed to
+            endpoints that support image references. The two modes cannot be
+            mixed. An empty array is treated as no reference.
           example:
             - input_audio:
                 data: data:audio/wav;base64,UklGRuQXDABXQVZF...
@@ -623,9 +632,11 @@ components:
         - error
       type: object
     SpeechInputReference:
-      description: Reference content part for stateless voice cloning
+      description: Reference content part for stateless voice cloning or voice design
       discriminator:
         mapping:
+          image_url:
+            $ref: '#/components/schemas/SpeechInputReferenceImage'
           input_audio:
             $ref: '#/components/schemas/SpeechInputReferenceAudio'
           text:
@@ -634,6 +645,7 @@ components:
       oneOf:
         - $ref: '#/components/schemas/SpeechInputReferenceAudio'
         - $ref: '#/components/schemas/SpeechInputReferenceText'
+        - $ref: '#/components/schemas/SpeechInputReferenceImage'
     ProviderOptions:
       description: >-
         Provider-specific options keyed by provider slug. Only options for the
@@ -994,6 +1006,9 @@ components:
         sambanova-cloaked:
           additionalProperties: {}
           type: object
+        scaledown:
+          additionalProperties: {}
+          type: object
         seed:
           additionalProperties: {}
           type: object
@@ -1323,8 +1338,31 @@ components:
         - code
         - message
       type: object
+    SpeechInputReferenceImage:
+      description: >-
+        Reference image describing the desired voice. Cannot be combined with
+        `input_audio` parts. Only routed to endpoints that support image
+        references.
+      example:
+        image_url:
+          url: data:image/png;base64,iVBORw0KGgo...
+        type: image_url
+      properties:
+        image_url:
+          $ref: '#/components/schemas/SpeechInputReferenceImageInput'
+        type:
+          enum:
+            - image_url
+          type: string
+      required:
+        - type
+        - image_url
+      type: object
     SpeechInputReferenceAudio:
-      description: Reference audio input for stateless voice cloning
+      description: >-
+        Reference audio input for stateless voice cloning. Up to three parts per
+        request; the Nth audio part is addressable from `input` as `@AudioN` on
+        providers that support multiple references.
       example:
         input_audio:
           data: data:audio/wav;base64,UklGRuQXDABXQVZF...
@@ -1341,13 +1379,16 @@ components:
         - input_audio
       type: object
     SpeechInputReferenceText:
-      description: Transcript of the accompanying reference audio
+      description: Transcript of an `input_audio` part
       example:
         text: I used to rule the world.
         type: text
       properties:
         text:
-          description: Transcript of the accompanying reference audio.
+          description: >-
+            Transcript of an `input_audio` part. With a single clip it may
+            appear before or after the clip; with multiple clips it must
+            immediately follow the clip it transcribes.
           example: I used to rule the world.
           maxLength: 10000
           type: string
@@ -1359,6 +1400,21 @@ components:
         - type
         - text
       type: object
+    SpeechInputReferenceImageInput:
+      description: Reference image input object
+      properties:
+        url:
+          description: >-
+            JPEG, PNG, or WebP reference image as a base64 data URI or a public
+            http(s) URL. Remote images are downloaded (15 MiB max) and forwarded
+            as bytes, never as the URL.
+          example: data:image/png;base64,iVBORw0KGgo...
+          maxLength: 20971520
+          minLength: 1
+          type: string
+      required:
+        - url
+      type: object
     SpeechInputReferenceAudioInput:
       description: Reference audio input object
       properties:
@@ -1366,7 +1422,7 @@ components:
           description: >-
             Base64-encoded reference audio (optionally a data URI). Supported
             audio formats are provider-specific. Limited to 20 MiB of base64 (15
-            MiB of decoded audio).
+            MiB of decoded audio). Exactly one of `data` or `url` is required.
           example: data:audio/wav;base64,UklGRuQXDABXQVZF...
           maxLength: 20971520
           minLength: 1
@@ -1377,8 +1433,15 @@ components:
             providers detect the format from the audio bytes.
           example: wav
           type: string
-      required:
-        - data
+        url:
+          description: >-
+            Public http(s) URL of the reference audio. OpenRouter downloads it
+            (15 MiB max) and forwards the bytes, never the URL. Exactly one of
+            `data` or `url` is required.
+          example: https://example.com/reference.wav
+          format: uri
+          maxLength: 2048
+          type: string
       type: object
   securitySchemes:
     apiKey:

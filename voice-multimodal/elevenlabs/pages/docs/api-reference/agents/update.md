@@ -292,8 +292,6 @@ Validation Error
 - `suggested_audio_tags` (list of SuggestedAudioTag, optional) — Suggested audio tags to boost expressive speech (for eleven_v3 and eleven_v3_conversational models). The agent can still use other tags not listed here.
 - `agent_output_audio_format` (enum, optional, default: pcm_16000) — The audio format to use for TTS
   - Allowed values: `pcm_8000`, `pcm_16000`, `pcm_22050`, `pcm_24000`, `pcm_44100`, `pcm_48000`, `ulaw_8000`
-- `optimize_streaming_latency` (enum, optional) — Deprecated: this field is a no-op and is ignored.
-  - Allowed values: `0`, `1`, `2`, `3`, `4`
 - `stability` (double, optional, default: 0.5) — The stability of generated speech
 - `speed` (double, optional, default: 1) — The speed of generated speech
 - `similarity_boost` (double, optional, default: 0.8) — The similarity boost for generated speech
@@ -302,6 +300,8 @@ Validation Error
 - `pronunciation_dictionary_locators` (list of PydanticPronunciationDictionaryVersionLocator, optional) — The pronunciation dictionary locators
 - `enable_phoneme_tags` (boolean, optional, default: true) — Opt-in to SSML phoneme tag handling for V3 models. When enabled, phoneme tags (inline and from pronunciation dictionaries) are parsed into inline IPA before being sent to the model.
 - `audio_effects` (EffectsSpec-Input, optional, nullable) — Optional TTS effects spec: filter preset, distance (proximity EQ), and environment (convolution reverb).
+- `optimize_streaming_latency` (enum, optional, deprecated) — Deprecated: this field is a no-op and is ignored.
+  - Allowed values: `0`, `1`, `2`, `3`, `4`
 
 ### ConversationConfig-Input
 
@@ -551,8 +551,6 @@ Alerting configuration used at both per-agent and per-workspace level. Cascade o
 - `suggested_audio_tags` (list of SuggestedAudioTag, optional) — Suggested audio tags to boost expressive speech (for eleven_v3 and eleven_v3_conversational models). The agent can still use other tags not listed here.
 - `agent_output_audio_format` (enum, optional, default: pcm_16000) — The audio format to use for TTS
   - Allowed values: `pcm_8000`, `pcm_16000`, `pcm_22050`, `pcm_24000`, `pcm_44100`, `pcm_48000`, `ulaw_8000`
-- `optimize_streaming_latency` (enum, optional) — Deprecated: this field is a no-op and is ignored.
-  - Allowed values: `0`, `1`, `2`, `3`, `4`
 - `stability` (double, optional, default: 0.5) — The stability of generated speech
 - `speed` (double, optional, default: 1) — The speed of generated speech
 - `similarity_boost` (double, optional, default: 0.8) — The similarity boost for generated speech
@@ -561,6 +559,8 @@ Alerting configuration used at both per-agent and per-workspace level. Cascade o
 - `pronunciation_dictionary_locators` (list of PydanticPronunciationDictionaryVersionLocator, optional) — The pronunciation dictionary locators
 - `enable_phoneme_tags` (boolean, optional, default: true) — Opt-in to SSML phoneme tag handling for V3 models. When enabled, phoneme tags (inline and from pronunciation dictionaries) are parsed into inline IPA before being sent to the model.
 - `audio_effects` (EffectsSpec-Output, optional, nullable) — Optional TTS effects spec: filter preset, distance (proximity EQ), and environment (convolution reverb).
+- `optimize_streaming_latency` (enum, optional, deprecated) — Deprecated: this field is a no-op and is ignored.
+  - Allowed values: `0`, `1`, `2`, `3`, `4`
 
 ### ConversationConfig-Output
 
@@ -2923,11 +2923,11 @@ Schema for array elements.
       "model_id": "eleven_turbo_v2",
       "voice_id": "cjVigY5qzO86Huf0OWal",
       "agent_output_audio_format": "pcm_16000",
-      "optimize_streaming_latency": 3,
       "stability": 0.5,
       "speed": 1,
       "similarity_boost": 0.8,
-      "pronunciation_dictionary_locators": []
+      "pronunciation_dictionary_locators": [],
+      "optimize_streaming_latency": 3
     },
     "conversation": {
       "max_duration_seconds": 600,
@@ -3187,7 +3187,9 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.conversationalAi.agents.update("agent_id", {});
+    await client.conversationalAi.agents.update("agent_3701k3ttaq12ewp8b7qv5rfyszkz", {
+        branchId: "agtbranch_0901k4aafjxxfxt93gd841r7tv5t",
+    });
 }
 main();
 
@@ -3199,7 +3201,8 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.conversational_ai.agents.update(
-    agent_id="agent_id",
+    agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
+    branch_id="agtbranch_0901k4aafjxxfxt93gd841r7tv5t",
 )
 
 ```
@@ -3216,7 +3219,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/agents/agent_id"
+	url := "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz?branch_id=agtbranch_0901k4aafjxxfxt93gd841r7tv5t"
 
 	payload := strings.NewReader("{}")
 
@@ -3239,7 +3242,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_id")
+url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz?branch_id=agtbranch_0901k4aafjxxfxt93gd841r7tv5t")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -3256,7 +3259,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.patch("https://api.elevenlabs.io/v1/convai/agents/agent_id")
+HttpResponse<String> response = Unirest.patch("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz?branch_id=agtbranch_0901k4aafjxxfxt93gd841r7tv5t")
   .header("Content-Type", "application/json")
   .body("{}")
   .asString();
@@ -3268,7 +3271,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('PATCH', 'https://api.elevenlabs.io/v1/convai/agents/agent_id', [
+$response = $client->request('PATCH', 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz?branch_id=agtbranch_0901k4aafjxxfxt93gd841r7tv5t', [
   'body' => '{}',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -3281,7 +3284,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_id");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz?branch_id=agtbranch_0901k4aafjxxfxt93gd841r7tv5t");
 var request = new RestRequest(Method.PATCH);
 request.AddHeader("Content-Type", "application/json");
 request.AddParameter("application/json", "{}", ParameterType.RequestBody);
@@ -3296,7 +3299,7 @@ let parameters = [] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_id")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz?branch_id=agtbranch_0901k4aafjxxfxt93gd841r7tv5t")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "PATCH"

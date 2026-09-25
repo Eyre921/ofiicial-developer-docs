@@ -94,7 +94,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.voices.settings.update("voice_id", {
+    await client.voices.settings.update("21m00Tcm4TlvDq8ikWAM", {
         stability: 1,
         useSpeakerBoost: true,
         similarityBoost: 1,
@@ -112,7 +112,7 @@ from elevenlabs import ElevenLabs, VoiceSettings
 client = ElevenLabs()
 
 client.voices.settings.update(
-    voice_id="voice_id",
+    voice_id="21m00Tcm4TlvDq8ikWAM",
     request=VoiceSettings(
         stability=1,
         use_speaker_boost=True,
@@ -136,7 +136,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/voices/voice_id/settings/edit"
+	url := "https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/settings/edit"
 
 	payload := strings.NewReader("{\n  \"stability\": 1,\n  \"use_speaker_boost\": true,\n  \"similarity_boost\": 1,\n  \"style\": 0,\n  \"speed\": 1\n}")
 
@@ -159,7 +159,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/voices/voice_id/settings/edit")
+url = URI("https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/settings/edit")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -176,7 +176,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/voices/voice_id/settings/edit")
+HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/settings/edit")
   .header("Content-Type", "application/json")
   .body("{\n  \"stability\": 1,\n  \"use_speaker_boost\": true,\n  \"similarity_boost\": 1,\n  \"style\": 0,\n  \"speed\": 1\n}")
   .asString();
@@ -188,7 +188,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://api.elevenlabs.io/v1/voices/voice_id/settings/edit', [
+$response = $client->request('POST', 'https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/settings/edit', [
   'body' => '{
   "stability": 1,
   "use_speaker_boost": true,
@@ -207,7 +207,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/voices/voice_id/settings/edit");
+var client = new RestClient("https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/settings/edit");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
 request.AddParameter("application/json", "{\n  \"stability\": 1,\n  \"use_speaker_boost\": true,\n  \"similarity_boost\": 1,\n  \"style\": 0,\n  \"speed\": 1\n}", ParameterType.RequestBody);
@@ -228,7 +228,7 @@ let parameters = [
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/voices/voice_id/settings/edit")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/settings/edit")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "POST"

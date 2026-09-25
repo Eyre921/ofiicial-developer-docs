@@ -65,7 +65,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.conversationalAi.agents.procedures.remove("agent_id", "branch_id", "procedure_id");
+    await client.conversationalAi.agents.procedures.remove("agent_3701k3ttaq12ewp8b7qv5rfyszkz", "agtbranch_0901k4aafjxxfxt93gd841r7tv5t", "agtprc_6qbpwdq8n01bxhk44bgjy6f10ck3");
 }
 main();
 
@@ -77,9 +77,9 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.conversational_ai.agents.procedures.remove(
-    agent_id="agent_id",
-    branch_id="branch_id",
-    procedure_id="procedure_id",
+    agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
+    branch_id="agtbranch_0901k4aafjxxfxt93gd841r7tv5t",
+    procedure_id="agtprc_6qbpwdq8n01bxhk44bgjy6f10ck3",
 )
 
 ```
@@ -95,7 +95,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id/procedures/procedure_id"
+	url := "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t/procedures/agtprc_6qbpwdq8n01bxhk44bgjy6f10ck3"
 
 	req, _ := http.NewRequest("DELETE", url, nil)
 
@@ -114,7 +114,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id/procedures/procedure_id")
+url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t/procedures/agtprc_6qbpwdq8n01bxhk44bgjy6f10ck3")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -129,7 +129,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.delete("https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id/procedures/procedure_id")
+HttpResponse<String> response = Unirest.delete("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t/procedures/agtprc_6qbpwdq8n01bxhk44bgjy6f10ck3")
   .asString();
 ```
 
@@ -139,7 +139,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('DELETE', 'https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id/procedures/procedure_id');
+$response = $client->request('DELETE', 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t/procedures/agtprc_6qbpwdq8n01bxhk44bgjy6f10ck3');
 
 echo $response->getBody();
 ```
@@ -147,7 +147,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id/procedures/procedure_id");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t/procedures/agtprc_6qbpwdq8n01bxhk44bgjy6f10ck3");
 var request = new RestRequest(Method.DELETE);
 IRestResponse response = client.Execute(request);
 ```
@@ -155,7 +155,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id/procedures/procedure_id")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t/procedures/agtprc_6qbpwdq8n01bxhk44bgjy6f10ck3")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "DELETE"

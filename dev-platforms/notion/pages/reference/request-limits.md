@@ -10,7 +10,7 @@ Workspace plan limits are separate from request limits. See [Workspace block lim
 
 ## Rate limits
 
-The Notion API enforces two rate limits: a per-connection limit and a per-workspace limit.
+The Notion API enforces two rate limits: a per-connection limit and a per-workspace limit. Some endpoints also have their own limit.
 
 ### Per-connection limit
 
@@ -29,9 +29,18 @@ A separate limit is shared across all of the workspace's connections and scaled 
 
 ### Rate limit responses
 
-Requests that exceed either limit return a `"rate_limited"` error code and an HTTP 429 response, with `additional_data.rate_limit_reason` indicating which limit was exceeded (for example, `public_api_request_rate_limit` or `public_api_space_request_rate_limit`). Per-connection 429 responses also repeat the wait in the body as `additional_data.retry_after` (an integer number of seconds, as a string), for clients that can't read response headers.
+Requests that exceed a limit return a `"rate_limited"` error code and an HTTP 429 response. `additional_data.rate_limit_reason` says which limit was exceeded:
 
-Connections should handle HTTP 429 and 529 responses and respect the `Retry-After` response header. The header value is an integer number of seconds. Use the returned value rather than assuming a fixed wait. A 529 response carries the `"service_overload"` code and means Notion is temporarily overloaded; retry it the same way as a 429.
+| `rate_limit_reason`                   | What to do                                                                                     |
+| :------------------------------------ | :--------------------------------------------------------------------------------------------- |
+| `public_api_request_rate_limit`       | This connection is sending requests too fast. Wait for `Retry-After`.                          |
+| `public_api_space_request_rate_limit` | The workspace's shared budget is used up. Wait for `Retry-After`.                              |
+| `public_api_endpoint_rate_limit`      | This endpoint has its own limit. Wait for `Retry-After`.                                       |
+| `public_api_request_blocked`          | This connection's API access has been restricted. Retrying won't help. Contact Notion support. |
+
+Other `rate_limit_reason` values can appear. Handle them like any other 429 and wait for `Retry-After`.
+
+Connections should handle HTTP 429 and 529 responses and respect the `Retry-After` response header. The header value is an integer number of seconds. Use the returned value rather than assuming a fixed wait. A 529 response carries the `"service_overload"` code and means Notion is temporarily overloaded; retry it the same way as a 429. Whenever a response includes `Retry-After`, the body repeats the wait as `additional_data.retry_after`, a string of whole seconds, for clients that can't read response headers.
 
 ### Retry rate-limited requests
 
@@ -42,7 +51,7 @@ Put outgoing requests through a queue so a burst from one job does not consume t
 3. If another 429 or 529 arrives, increase the delay with exponential backoff and jitter.
 4. Set a retry limit. Log or surface the final error when the limit is reached.
 
-Do not retry every error. Retry 429 and 529 responses. Retry 500, 502, 503, and 504 responses only when the request is idempotent, such as GET or DELETE, unless your application has its own idempotency protection. A write that returns 503 needs an extra check first; see [Retry a write that returns 503](#retry-a-write-that-returns-503). Fix the request before retrying most 400 responses. A 401 means authentication failed. A 403 can mean a permission failure or a [workspace block limit](/reference/workspace-block-limits); check the error message before retrying.
+Do not retry every error. Retry 429 and 529 responses, except a 429 with `public_api_request_blocked`. Retry 500, 502, 503, and 504 responses only when the request is idempotent, such as GET or DELETE, unless your application has its own idempotency protection. A write that returns 503 needs an extra check first; see [Retry a write that returns 503](#retry-a-write-that-returns-503). Fix the request before retrying most 400 responses. A 401 means authentication failed. A 403 can mean a permission failure or a [workspace block limit](/reference/workspace-block-limits); check the error message before retrying.
 
 The JavaScript SDK retries 429 responses for every method. It also retries 500 and 503 responses for GET and DELETE requests. It respects `Retry-After`, uses exponential backoff with jitter, and limits retries. If you call the REST API directly, use the same safeguards and add explicit handling for 529 responses. These examples show the same policy in several common HTTP clients:
 

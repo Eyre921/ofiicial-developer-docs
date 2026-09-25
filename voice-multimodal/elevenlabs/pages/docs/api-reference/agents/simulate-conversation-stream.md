@@ -991,7 +991,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.conversationalAi.agents.simulateConversationStream("agent_id", {
+    await client.conversationalAi.agents.simulateConversationStream("agent_3701k3ttaq12ewp8b7qv5rfyszkz", {
         simulationSpecification: {
             simulatedUserConfig: {
                 firstMessage: "Hello, how can I help you today?",
@@ -1011,7 +1011,7 @@ from elevenlabs import ElevenLabs, ConversationSimulationSpecification, AgentCon
 client = ElevenLabs()
 
 client.conversational_ai.agents.simulate_conversation_stream(
-    agent_id="agent_id",
+    agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
     simulation_specification=ConversationSimulationSpecification(
         simulated_user_config=AgentConfig(
             first_message="Hello, how can I help you today?",
@@ -1035,7 +1035,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/agents/agent_id/simulate-conversation/stream"
+	url := "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/simulate-conversation/stream"
 
 	payload := strings.NewReader("{\n  \"simulation_specification\": {\n    \"simulated_user_config\": {\n      \"first_message\": \"Hello, how can I help you today?\",\n      \"language\": \"en\",\n      \"disable_first_message_interruptions\": false\n    }\n  }\n}")
 
@@ -1058,7 +1058,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_id/simulate-conversation/stream")
+url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/simulate-conversation/stream")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -1075,7 +1075,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/agents/agent_id/simulate-conversation/stream")
+HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/simulate-conversation/stream")
   .header("Content-Type", "application/json")
   .body("{\n  \"simulation_specification\": {\n    \"simulated_user_config\": {\n      \"first_message\": \"Hello, how can I help you today?\",\n      \"language\": \"en\",\n      \"disable_first_message_interruptions\": false\n    }\n  }\n}")
   .asString();
@@ -1087,7 +1087,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/agents/agent_id/simulate-conversation/stream', [
+$response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/simulate-conversation/stream', [
   'body' => '{
   "simulation_specification": {
     "simulated_user_config": {
@@ -1108,7 +1108,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_id/simulate-conversation/stream");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/simulate-conversation/stream");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
 request.AddParameter("application/json", "{\n  \"simulation_specification\": {\n    \"simulated_user_config\": {\n      \"first_message\": \"Hello, how can I help you today?\",\n      \"language\": \"en\",\n      \"disable_first_message_interruptions\": false\n    }\n  }\n}", ParameterType.RequestBody);
@@ -1127,7 +1127,7 @@ let parameters = ["simulation_specification": ["simulated_user_config": [
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_id/simulate-conversation/stream")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/simulate-conversation/stream")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "POST"

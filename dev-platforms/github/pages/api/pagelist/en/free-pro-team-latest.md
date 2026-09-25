@@ -1732,7 +1732,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/concepts/security-governance-and-network-settings/network-settings
 /en/copilot/concepts/enterprise
 /en/copilot/concepts/enterprise/policies
-/en/copilot/concepts/enterprise/default-model-availability
+/en/copilot/concepts/enterprise/default-availability
 /en/copilot/concepts/enterprise/fedramp-models
 /en/copilot/concepts/enterprise/learning-about-new-features-and-models
 /en/copilot/concepts/enterprise/agent-management
@@ -1863,6 +1863,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/copilot-sdk/features
 /en/copilot/how-tos/copilot-sdk/features/agent-loop
 /en/copilot/how-tos/copilot-sdk/features/citations
+/en/copilot/how-tos/copilot-sdk/features/client-info
 /en/copilot/how-tos/copilot-sdk/features/cloud-sessions
 /en/copilot/how-tos/copilot-sdk/features/context-management
 /en/copilot/how-tos/copilot-sdk/features/custom-agents
@@ -1896,6 +1897,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/copilot-sdk/setup/bundled-cli
 /en/copilot/how-tos/copilot-sdk/setup/choosing-a-setup-path
 /en/copilot/how-tos/copilot-sdk/setup/github-oauth
+/en/copilot/how-tos/copilot-sdk/setup/in-process-runtime
 /en/copilot/how-tos/copilot-sdk/setup/local-cli
 /en/copilot/how-tos/copilot-sdk/setup/multi-tenancy
 /en/copilot/how-tos/copilot-sdk/setup/scaling
@@ -2162,6 +2164,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/tutorials/roll-out-at-scale/enable-developers/drive-adoption
 /en/copilot/tutorials/roll-out-at-scale/enable-developers/copilot-app-for-teams
 /en/copilot/tutorials/roll-out-at-scale/enable-developers/integrate-ai-agents
+/en/copilot/tutorials/roll-out-at-scale/enable-developers/drive-team-agentic-adoption
 /en/copilot/tutorials/roll-out-at-scale/drive-downstream-impact
 /en/copilot/tutorials/roll-out-at-scale/drive-downstream-impact/achieve-company-goals
 /en/copilot/tutorials/roll-out-at-scale/drive-downstream-impact/increase-test-coverage
@@ -2702,10 +2705,6 @@ path: api/pagelist/en/free-pro-team-latest
 /en/rest/deployments/statuses
 /en/rest/emojis
 /en/rest/emojis/emojis
-/en/rest/enterprise-teams
-/en/rest/enterprise-teams/enterprise-team-members
-/en/rest/enterprise-teams/enterprise-team-organizations
-/en/rest/enterprise-teams/enterprise-teams
 /en/rest/gists
 /en/rest/gists/gists
 /en/rest/gists/comments

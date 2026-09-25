@@ -133,7 +133,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.dubbing.transcripts.get("dubbing_id", "language_code", "srt");
+    await client.dubbing.transcripts.get("dubbing_id", "source", "srt");
 }
 main();
 
@@ -146,7 +146,7 @@ client = ElevenLabs()
 
 client.dubbing.transcripts.get(
     dubbing_id="dubbing_id",
-    language_code="language_code",
+    language_code="source",
     format_type="srt",
 )
 
@@ -163,7 +163,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/dubbing/dubbing_id/transcripts/language_code/format/srt"
+	url := "https://api.elevenlabs.io/v1/dubbing/dubbing_id/transcripts/source/format/srt"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -182,7 +182,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/dubbing/dubbing_id/transcripts/language_code/format/srt")
+url = URI("https://api.elevenlabs.io/v1/dubbing/dubbing_id/transcripts/source/format/srt")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -197,7 +197,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/dubbing/dubbing_id/transcripts/language_code/format/srt")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/dubbing/dubbing_id/transcripts/source/format/srt")
   .asString();
 ```
 
@@ -207,7 +207,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/dubbing/dubbing_id/transcripts/language_code/format/srt');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/dubbing/dubbing_id/transcripts/source/format/srt');
 
 echo $response->getBody();
 ```
@@ -215,7 +215,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/dubbing/dubbing_id/transcripts/language_code/format/srt");
+var client = new RestClient("https://api.elevenlabs.io/v1/dubbing/dubbing_id/transcripts/source/format/srt");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -223,7 +223,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/dubbing/dubbing_id/transcripts/language_code/format/srt")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/dubbing/dubbing_id/transcripts/source/format/srt")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

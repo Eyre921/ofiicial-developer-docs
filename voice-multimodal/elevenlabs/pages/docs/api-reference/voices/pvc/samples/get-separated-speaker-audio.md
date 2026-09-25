@@ -77,7 +77,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.voices.pvc.samples.speakers.audio.get("voice_id", "sample_id", "speaker_id");
+    await client.voices.pvc.samples.speakers.audio.get("21m00Tcm4TlvDq8ikWAM", "VW7YKqPnjY4h39yTbx2L", "VW7YKqPnjY4h39yTbx2L");
 }
 main();
 
@@ -89,9 +89,9 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.voices.pvc.samples.speakers.audio.get(
-    voice_id="voice_id",
-    sample_id="sample_id",
-    speaker_id="speaker_id",
+    voice_id="21m00Tcm4TlvDq8ikWAM",
+    sample_id="VW7YKqPnjY4h39yTbx2L",
+    speaker_id="VW7YKqPnjY4h39yTbx2L",
 )
 
 ```
@@ -107,7 +107,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/voices/pvc/voice_id/samples/sample_id/speakers/speaker_id/audio"
+	url := "https://api.elevenlabs.io/v1/voices/pvc/21m00Tcm4TlvDq8ikWAM/samples/VW7YKqPnjY4h39yTbx2L/speakers/VW7YKqPnjY4h39yTbx2L/audio"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -126,7 +126,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/voices/pvc/voice_id/samples/sample_id/speakers/speaker_id/audio")
+url = URI("https://api.elevenlabs.io/v1/voices/pvc/21m00Tcm4TlvDq8ikWAM/samples/VW7YKqPnjY4h39yTbx2L/speakers/VW7YKqPnjY4h39yTbx2L/audio")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -141,7 +141,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/voices/pvc/voice_id/samples/sample_id/speakers/speaker_id/audio")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/voices/pvc/21m00Tcm4TlvDq8ikWAM/samples/VW7YKqPnjY4h39yTbx2L/speakers/VW7YKqPnjY4h39yTbx2L/audio")
   .asString();
 ```
 
@@ -151,7 +151,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/voices/pvc/voice_id/samples/sample_id/speakers/speaker_id/audio');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/voices/pvc/21m00Tcm4TlvDq8ikWAM/samples/VW7YKqPnjY4h39yTbx2L/speakers/VW7YKqPnjY4h39yTbx2L/audio');
 
 echo $response->getBody();
 ```
@@ -159,7 +159,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/voices/pvc/voice_id/samples/sample_id/speakers/speaker_id/audio");
+var client = new RestClient("https://api.elevenlabs.io/v1/voices/pvc/21m00Tcm4TlvDq8ikWAM/samples/VW7YKqPnjY4h39yTbx2L/speakers/VW7YKqPnjY4h39yTbx2L/audio");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -167,7 +167,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/voices/pvc/voice_id/samples/sample_id/speakers/speaker_id/audio")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/voices/pvc/21m00Tcm4TlvDq8ikWAM/samples/VW7YKqPnjY4h39yTbx2L/speakers/VW7YKqPnjY4h39yTbx2L/audio")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

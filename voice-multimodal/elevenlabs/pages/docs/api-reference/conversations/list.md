@@ -206,7 +206,10 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.conversationalAi.conversations.list({});
+    await client.conversationalAi.conversations.list({
+        agentId: "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
+        callSuccessful: "success",
+    });
 }
 main();
 
@@ -217,7 +220,10 @@ from elevenlabs import ElevenLabs
 
 client = ElevenLabs()
 
-client.conversational_ai.conversations.list()
+client.conversational_ai.conversations.list(
+    agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
+    call_successful="success",
+)
 
 ```
 
@@ -232,7 +238,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/conversations"
+	url := "https://api.elevenlabs.io/v1/convai/conversations?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&call_successful=success"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -251,7 +257,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/conversations")
+url = URI("https://api.elevenlabs.io/v1/convai/conversations?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&call_successful=success")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -266,7 +272,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/conversations")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/conversations?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&call_successful=success")
   .asString();
 ```
 
@@ -276,7 +282,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/conversations');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/conversations?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&call_successful=success');
 
 echo $response->getBody();
 ```
@@ -284,7 +290,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/conversations");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/conversations?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&call_successful=success");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -292,7 +298,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/conversations")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/conversations?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&call_successful=success")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

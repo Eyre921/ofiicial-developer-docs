@@ -42,6 +42,10 @@ tags:
     name: Anthropic Messages
   - description: BYOK endpoints
     name: BYOK
+  - description: >-
+      Submit, list, poll, and delete asynchronous batches of inference requests.
+      See https://openrouter.ai/docs/batch-quickstart.
+    name: Batch
   - description: Benchmarks endpoints
     name: Benchmarks
   - description: Chat completion endpoints
@@ -163,7 +167,9 @@ paths:
                       - temperature
                       - top_p
                       - max_tokens
+                    supports_image_reference: false
                     supports_implicit_caching: true
+                    supports_multiple_audio_references: false
                     supports_voice_cloning: false
                     tag: openai
                     throughput_last_30m:
@@ -200,7 +206,9 @@ paths:
                         - temperature
                         - top_p
                         - max_tokens
+                      supports_image_reference: false
                       supports_implicit_caching: true
+                      supports_multiple_audio_references: false
                       supports_voice_cloning: false
                       tag: openai
                       throughput_last_30m:
@@ -281,7 +289,9 @@ components:
           - temperature
           - top_p
           - max_tokens
+        supports_image_reference: false
         supports_implicit_caching: true
+        supports_multiple_audio_references: false
         supports_tool_choice:
           auto: true
           function: true
@@ -670,7 +680,21 @@ components:
           items:
             $ref: '#/components/schemas/Parameter'
           type: array
+        supports_image_reference:
+          default: false
+          description: >-
+            Whether this TTS endpoint accepts an `image_url` reference
+            describing the desired voice. Requests carrying an image reference
+            are only routed to endpoints where this is true.
+          type: boolean
         supports_implicit_caching:
+          type: boolean
+        supports_multiple_audio_references:
+          default: false
+          description: >-
+            Whether this TTS endpoint accepts more than one `input_audio`
+            reference clip per request. Requests carrying several clips are only
+            routed to endpoints where this is true.
           type: boolean
         supports_tool_choice:
           $ref: '#/components/schemas/ToolChoiceSupport'
@@ -978,6 +1002,7 @@ components:
         - Sail Research
         - Sakana AI
         - SambaNova
+        - ScaleDown
         - Seed
         - SiliconFlow
         - Sourceful

@@ -126,13 +126,13 @@ Validation Error
 
 ```json
 {
-  "id": "branch_8f7a6d4c2b9e4f1a",
-  "name": "Feature Update - Chat Enhancements",
-  "agent_id": "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-  "description": "Branch for implementing chat UI improvements and bug fixes",
-  "created_at": 1685606400,
-  "last_committed_at": 1688294400,
-  "is_archived": false,
+  "id": "string",
+  "name": "string",
+  "agent_id": "string",
+  "description": "string",
+  "created_at": 1,
+  "last_committed_at": 1,
+  "is_archived": true,
   "protection_status": "writer_perms_required",
   "access_info": {
     "is_creator": true,
@@ -141,26 +141,26 @@ Validation Error
     "role": "admin",
     "access_source": "creator"
   },
-  "current_live_percentage": 75,
+  "current_live_percentage": 0,
   "parent_branch": {
-    "id": "branch_main_001",
-    "name": "Main"
+    "id": "string",
+    "name": "string"
   },
   "most_recent_versions": [
     {
-      "id": "version_20230630_01",
-      "agent_id": "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-      "branch_id": "branch_8f7a6d4c2b9e4f1a",
-      "version_description": "Added new chat bubble styles and fixed message ordering bug",
-      "seq_no_in_branch": 5,
-      "time_committed_secs": 1688294400,
+      "id": "string",
+      "agent_id": "string",
+      "branch_id": "string",
+      "version_description": "string",
+      "seq_no_in_branch": 1,
+      "time_committed_secs": 1,
       "parents": {
-        "in_branch_parent_id": "version_20230629_04",
-        "out_of_branch_parent_id": "version_20230628_03",
-        "merged_into_branch_id": "branch_main_001",
-        "merged_from_branch_id": "branch_feature_ui_002",
-        "merged_from_version_id": "version_20230627_02",
-        "rebased_from_version_id": "version_20230626_01"
+        "in_branch_parent_id": "string",
+        "out_of_branch_parent_id": "string",
+        "merged_into_branch_id": "string",
+        "merged_from_branch_id": "string",
+        "merged_from_version_id": "string",
+        "rebased_from_version_id": "string"
       },
       "access_info": {
         "is_creator": true,
@@ -181,7 +181,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.conversationalAi.agents.branches.update("agent_id", "branch_id", {});
+    await client.conversationalAi.agents.branches.update("agent_3701k3ttaq12ewp8b7qv5rfyszkz", "agtbranch_0901k4aafjxxfxt93gd841r7tv5t", {});
 }
 main();
 
@@ -193,8 +193,8 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.conversational_ai.agents.branches.update(
-    agent_id="agent_id",
-    branch_id="branch_id",
+    agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
+    branch_id="agtbranch_0901k4aafjxxfxt93gd841r7tv5t",
 )
 
 ```
@@ -211,7 +211,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id"
+	url := "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t"
 
 	payload := strings.NewReader("{}")
 
@@ -234,7 +234,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id")
+url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -251,7 +251,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.patch("https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id")
+HttpResponse<String> response = Unirest.patch("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t")
   .header("Content-Type", "application/json")
   .body("{}")
   .asString();
@@ -263,7 +263,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('PATCH', 'https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id', [
+$response = $client->request('PATCH', 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t', [
   'body' => '{}',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -276,7 +276,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t");
 var request = new RestRequest(Method.PATCH);
 request.AddHeader("Content-Type", "application/json");
 request.AddParameter("application/json", "{}", ParameterType.RequestBody);
@@ -291,7 +291,7 @@ let parameters = [] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "PATCH"

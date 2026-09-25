@@ -37139,6 +37139,8 @@ The transaction mode connection string connects to your Postgres instance throug
 
 Caution: Transaction mode does not support [prepared statements](https://postgresql.org/docs/current/sql-prepare.html). To avoid errors, turn them off in your connection library. See [Transaction mode limitations](#transaction-mode-limitations) for the setting your driver uses and for the other session-state features this affects.
 
+Caution: Transaction mode does not support [query pipelining](https://www.postgresql.org/docs/current/libpq-pipeline-mode.html). See [Transaction mode limitations](#transaction-mode-limitations) for mode details.
+
 ```txt
 postgresql://postgres.[PROJECT-REF]:[YOUR-PASSWORD]@[POOLER-HOST]:6543/postgres
 ```
@@ -37223,7 +37225,7 @@ For more on sizing an application-side pool, see the [Supavisor FAQ](https://sup
 
 ### Transaction mode limitations
 
-[Transaction mode](#pooler-transaction-mode) returns your connection to the pool after each transaction, so anything that depends on session state doesn't survive between transactions. Three things are affected.
+[Transaction mode](#pooler-transaction-mode) returns your connection to the pool after each transaction, so anything that depends on session state doesn't survive between transactions. Four things are affected.
 
 **Prepared statements** aren't supported, so turn them off. Each driver does this differently:
 
@@ -37240,7 +37242,11 @@ For node-postgres, Psycopg, and Rust drivers, see [Disabling prepared statements
 
 **Session-level state** is lost between transactions. This covers `set` and `reset`, session-level advisory locks, `listen` and `notify`, and temporary tables. Run them inside the transaction that needs them, or use session mode or a direct connection instead.
 
-Direct connections and session mode support all three, so none of this applies to either.
+**Query pipelining** isn't supported: transaction mode returns a connection to the pool as soon as it sees one reply finish, even if the client already queued more queries on it.
+
+Direct connections and session mode support all four, so none of this applies to either.
+
+Caution: `postgres.js` pipelines queries by default, so this combination can hang queries or return mismatched rows — see the [Postgres.js guide](https://supabase.com/docs/guides/database/postgres-js) for how to avoid it.
 
 ### SSL \[#connecting-with-ssl]
 
@@ -61651,12 +61657,16 @@ Create a `db.js` file with the connection details.
 
 To get your connection details, go to the [**Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true). Choose [**Transaction pooler**](https://supabase.com/dashboard/project/_?showConnect=true\&method=transaction) if you're on a platform with transient connections, such as a serverless function, and [**Session pooler**](https://supabase.com/dashboard/project/_?showConnect=true\&method=session) if you have a long-lived connection. Copy the URI and save it as the environment variable `DATABASE_URL`.
 
+Caution: `postgres.js` pipelines queries by default. Combined with the [shared pooler transaction mode](https://supabase.com/docs/guides/database/connecting-to-postgres#pooler-transaction-mode), this can hang queries or return mismatched rows. `postgres.js` has no working option to turn pipelining off directly: `max_pipeline: 0` breaks `sql.begin()` transactions instead, a known upstream [bug](https://github.com/porsager/postgres/issues/1189).
+
+For more about pipelining with `postgres.js`, [contact support](https://supabase.com/dashboard/support/new).
+
 ```ts
 // db.js
 import postgres from 'postgres'
 
 const connectionString = process.env.DATABASE_URL
-const sql = postgres(connectionString)
+const sql = postgres(connectionString, { prepare: false })
 
 export default sql
 ```
@@ -119462,9 +119472,17 @@ Realtime uses the `messages` table in your database's `realtime` schema to gener
 
 By creating RLS policies on the `realtime.messages` table you can control the access users have to a Channel topic, and features within a Channel topic.
 
-Caution: Realtime locks down the `realtime` schema to protect it against unexpected changes to guarantee the healthy operation of the Realtime service and avoid conflicts that could be caused by future migrations. Creating a table or function in `realtime` is expected to fail with `permission denied for schema realtime`, whether you run the SQL yourself or through the dashboard. Managing RLS policies on `realtime.messages` is allowed.
+Caution: Realtime locks down the `realtime` schema to protect it against unexpected changes to guarantee the healthy operation of the Realtime service and avoid conflicts that could be caused by future migrations. Creating a table or function in `realtime` is expected to fail with `permission denied for schema realtime`, whether you run the SQL yourself or through the dashboard. Managing RLS policies on `realtime.messages` is allowed: [`supautils`](https://github.com/supabase/supautils) lets the `postgres` role run policy statements on that table without owning it.
 
-Row level security (RLS) is enabled by default on table `realtime.messages`, you don't need to execute `ALTER TABLE realtime.messages ENABLE ROW LEVEL SECURITY`.
+Row Level Security is already enabled on `realtime.messages`, so don't add `ALTER TABLE realtime.messages ENABLE ROW LEVEL SECURITY` to a migration. Postgres checks table ownership before it checks whether the setting would change, so the statement fails with `42501 must be owner of table messages`. That aborts the transaction, and every statement after it is skipped, including any `create policy` statements that follow.
+
+Remove the `ALTER TABLE` line and the rest of the migration passes. If a migration needs to check that RLS is on, read the catalog:
+
+```sql
+select relrowsecurity from pg_class where oid = 'realtime.messages'::regclass;
+```
+
+If you hit that error, see [must be owner of table messages](https://supabase.com/docs/guides/troubleshooting/realtime-must-be-owner-of-table-messages).
 
 The validation is done when the user connects. When their WebSocket connection is established and a Channel topic is joined, their permissions are calculated based on:
 
@@ -119815,6 +119833,8 @@ Realtime updates the access policy cache for a client based on your RLS policies
 
 - A client connects to Realtime and subscribes to a Channel
 - A new JWT is sent to Realtime from a client via the [`access_token` message](https://supabase.com/docs/guides/realtime/protocol#access-token)
+
+This means that if you revoke a user's access (for example, by removing a row an RLS policy uses to grant it) while they're still connected, they'll keep receiving messages until their JWT expires or a new one is sent.
 
 If a new JWT is never received on the Channel, the client will be disconnected when the JWT expires.
 
@@ -120432,7 +120452,7 @@ select
     jsonb_build_object('hello', 'world'), -- JSONB Payload
     'event', -- Event name
     'topic', -- Topic
-    false -- Public / Private flag
+    false    -- Private flag - true: Private (default), false: Public
   );
 ```
 
@@ -120448,7 +120468,7 @@ select
     '\x012345'::bytea, -- bytea payload
     'event',           -- Event name
     'topic',           -- Topic
-    true               -- Private / Public flag (defaults to true)
+    true               -- Private flag - true: Private (default), false: Public
   );
 ```
 
@@ -120845,6 +120865,8 @@ Unsupported in Python yet.
 Broadcast Changes allows you to trigger messages from your database. To achieve it, Realtime directly reads your Write-Ahead Log (WAL) file using a publication against the `realtime.messages` table. Whenever a new insert occurs, a message is sent to connected users.
 
 It uses partitioned tables per day, which allows performant deletion of your previous messages by dropping the physical tables of this partitioned table. Tables older than 3 days are deleted.
+
+A client connecting over WebSocket creates those daily partitions. `realtime.send` does not. With no partition for today, the insert fails and Postgres logs a `WarnSendingBroadcastMessage` warning, so connect a client before you broadcast from the database. See [Realtime: `WarnSendingBroadcastMessage`](https://supabase.com/docs/guides/troubleshooting/realtime-warn-sending-broadcast-message) if you hit that warning.
 
 Broadcasting from the database works like a client-side broadcast, using WebSockets to send JSON payloads. [Realtime Authorization](https://supabase.com/docs/guides/realtime/authorization) is required and enabled by default to protect your data.
 
@@ -139325,6 +139347,7 @@ results = index.query(
 - [Understanding and Monitoring Realtime Heartbeats](https://supabase.com/docs/guides/troubleshooting/realtime-heartbeat-messages)
 - [Realtime: Isolating Server-Side vs. Client-Side Issues with Inspector and DevTools](https://supabase.com/docs/guides/troubleshooting/realtime-isolating-server-side-vs-client-side-issues-with-inspector-and-devtools)
 - [Realtime: Messages Not Arriving Troubleshooting](https://supabase.com/docs/guides/troubleshooting/realtime-messages-not-arriving)
+- [Realtime: "must be owner of table messages" when setting up Authorization](https://supabase.com/docs/guides/troubleshooting/realtime-must-be-owner-of-table-messages)
 - [Realtime: Postgres Changes Troubleshooting](https://supabase.com/docs/guides/troubleshooting/realtime-postgres-changes-troubleshooting)
 - [Realtime: Project suspended for exceeding quotas](https://supabase.com/docs/guides/troubleshooting/realtime-project-suspended-for-exceeding-quotas)
 - [Fixing the TooManyChannels Error](https://supabase.com/docs/guides/troubleshooting/realtime-too-many-channels-error)
@@ -148081,6 +148104,86 @@ The [Realtime troubleshooting entries](https://supabase.com/docs/guides/troubles
 
 ---
 
+# Realtime: "must be owner of table messages" when setting up Authorization
+
+A migration that adds an RLS policy to `realtime.messages` fails:
+
+```
+ERROR:  42501: must be owner of table messages
+```
+
+## Cause
+
+`realtime.messages` is owned by an internal role, `supabase_realtime_admin`. The `postgres` role is not a member of it and is not a superuser.
+
+Policies still work because of [`supautils`](https://github.com/supabase/supautils), the extension that gives the `postgres` role its elevated permissions on a Supabase project. It lets `postgres` run `create policy`, `alter policy`, and `drop policy` on a fixed list of tables it does not own, and `realtime.messages` is on that list. The list covers policy statements only, so `ALTER TABLE` is still refused.
+
+The failing statement is usually not the `create policy`. It's an `ALTER TABLE` earlier in the same migration:
+
+```sql
+alter table realtime.messages enable row level security;
+alter table realtime.messages add column ...;
+alter table realtime.messages owner to postgres;
+```
+
+The first one is the common case. RLS is already enabled on `realtime.messages`, and Postgres checks ownership before it checks whether the setting would change, so the statement fails on every project.
+
+A failed statement aborts the transaction, so Postgres skips everything after it, including the `create policy`. `supabase db push` runs each migration file in one transaction, so the file rolls back and nothing is written to `supabase_migrations.schema_migrations`.
+
+## Fix
+
+Remove the `ALTER TABLE` line. Keep the policy:
+
+```sql
+create policy "authenticated can read messages on room-1"
+on "realtime"."messages"
+for select
+to authenticated
+using (
+  (select realtime.topic()) = 'room-1'
+);
+```
+
+Run it from the SQL editor or with `supabase db push`. Both connect as `postgres`.
+
+To check that RLS is on, read the catalog instead of setting it:
+
+```sql
+select relrowsecurity from pg_class where oid = 'realtime.messages'::regclass;
+```
+
+## What doesn't work
+
+Granting the owning role fails, and support can't grant it either:
+
+```sql
+grant supabase_realtime_admin to postgres;
+-- ERROR:  42501: "supabase_realtime_admin" role memberships are reserved, only superusers can grant them
+```
+
+Restarting the project changes nothing.
+
+Wrapping the `ALTER TABLE` in a function or a `do` block changes nothing either. The ownership check still runs, and a `security definer` function owned by `postgres` is still not the table owner.
+
+## What postgres can do on realtime.messages
+
+The `Yes` rows are what `supautils` delegates, plus the privileges granted to `postgres` directly.
+
+| Statement                                             | Allowed |
+| ----------------------------------------------------- | ------- |
+| `create policy`, `alter policy`, `drop policy`        | Yes     |
+| `comment on policy`                                   | Yes     |
+| `select`, `insert`                                    | Yes     |
+| `grant select`, `grant insert` to your own roles      | Yes     |
+| `alter table` in any form                             | No      |
+| `drop table`                                          | No      |
+| Creating tables or functions in the `realtime` schema | No      |
+
+See [Realtime Authorization](https://supabase.com/docs/guides/realtime/authorization) for writing the policies.
+
+
+---
+
 # Realtime: Postgres Changes Troubleshooting
 
 A Realtime subscription connects, a row changes in the database, and nothing arrives on the client. No error, no event — silence. This is one of the more common issues developers run into with Supabase Realtime, and the cause is almost always one of a handful of things.
@@ -148639,6 +148742,24 @@ These occasions depend on a client connecting: the connection creates the partit
 Note: A project that has never had a WebSocket client connect has no partition to insert into, so broadcasting from the database before that point produces the warning.
 
 Calling `realtime.send` or `realtime.send_binary`, the broadcast REST endpoint, and subscribe or replication operations do not create partitions. The tenant health check endpoint does not create them either, so opening the Realtime section in the Supabase Dashboard has no effect on them.
+
+## Check which partitions you have
+
+```sql
+select c.relname
+from pg_inherits i
+  join pg_class c on c.oid = i.inhrelid
+where i.inhparent = 'realtime.messages'::regclass
+order by c.relname;
+```
+
+The names are dates, so the result tells you which case you are in:
+
+- One covers today. The missing partition is not the cause, so go to [When it is a real problem](#when-it-is-a-real-problem).
+- They all end on a past date. Your window lapsed. The newest name is three days after the last time partitions were created, because each creation covers yesterday through three days ahead.
+- No rows. No client has ever connected, so no partition was ever created.
+
+Zero rows does not mean the Realtime migrations are missing. Those would fail this query with `42P01 relation "realtime.messages" does not exist`. If you see `42P01`, open a support ticket.
 
 ## How to avoid it
 

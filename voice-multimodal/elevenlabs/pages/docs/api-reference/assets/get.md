@@ -79,7 +79,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.assets.get("asset_id");
+    await client.assets.get("5xM2KqOnZyce22SPZ9d4");
 }
 main();
 
@@ -91,7 +91,7 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.assets.get(
-    asset_id="asset_id",
+    asset_id="5xM2KqOnZyce22SPZ9d4",
 )
 
 ```
@@ -107,7 +107,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/assets/asset_id"
+	url := "https://api.elevenlabs.io/v1/assets/5xM2KqOnZyce22SPZ9d4"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -126,7 +126,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/assets/asset_id")
+url = URI("https://api.elevenlabs.io/v1/assets/5xM2KqOnZyce22SPZ9d4")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -141,7 +141,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/assets/asset_id")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/assets/5xM2KqOnZyce22SPZ9d4")
   .asString();
 ```
 
@@ -151,7 +151,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/assets/asset_id');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/assets/5xM2KqOnZyce22SPZ9d4');
 
 echo $response->getBody();
 ```
@@ -159,7 +159,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/assets/asset_id");
+var client = new RestClient("https://api.elevenlabs.io/v1/assets/5xM2KqOnZyce22SPZ9d4");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -167,7 +167,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/assets/asset_id")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/assets/5xM2KqOnZyce22SPZ9d4")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

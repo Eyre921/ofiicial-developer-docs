@@ -127,7 +127,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.dubbing.transcript.getTranscriptForDub("dubbing_id", "language_code", {});
+    await client.dubbing.transcript.getTranscriptForDub("dubbing_id", "source", {});
 }
 main();
 
@@ -140,7 +140,7 @@ client = ElevenLabs()
 
 client.dubbing.transcript.get_transcript_for_dub(
     dubbing_id="dubbing_id",
-    language_code="language_code",
+    language_code="source",
 )
 
 ```
@@ -156,7 +156,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/dubbing/dubbing_id/transcript/language_code"
+	url := "https://api.elevenlabs.io/v1/dubbing/dubbing_id/transcript/source"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -175,7 +175,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/dubbing/dubbing_id/transcript/language_code")
+url = URI("https://api.elevenlabs.io/v1/dubbing/dubbing_id/transcript/source")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -190,7 +190,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/dubbing/dubbing_id/transcript/language_code")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/dubbing/dubbing_id/transcript/source")
   .asString();
 ```
 
@@ -200,7 +200,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/dubbing/dubbing_id/transcript/language_code');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/dubbing/dubbing_id/transcript/source');
 
 echo $response->getBody();
 ```
@@ -208,7 +208,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/dubbing/dubbing_id/transcript/language_code");
+var client = new RestClient("https://api.elevenlabs.io/v1/dubbing/dubbing_id/transcript/source");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -216,7 +216,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/dubbing/dubbing_id/transcript/language_code")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/dubbing/dubbing_id/transcript/source")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

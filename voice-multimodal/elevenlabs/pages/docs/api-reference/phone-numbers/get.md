@@ -136,7 +136,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.conversationalAi.phoneNumbers.get("phone_number_id");
+    await client.conversationalAi.phoneNumbers.get("TeaqRRdTcIfIu2i7BYfT");
 }
 main();
 
@@ -148,7 +148,7 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.conversational_ai.phone_numbers.get(
-    phone_number_id="phone_number_id",
+    phone_number_id="TeaqRRdTcIfIu2i7BYfT",
 )
 
 ```
@@ -164,7 +164,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/phone-numbers/phone_number_id"
+	url := "https://api.elevenlabs.io/v1/convai/phone-numbers/TeaqRRdTcIfIu2i7BYfT"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -183,7 +183,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/phone-numbers/phone_number_id")
+url = URI("https://api.elevenlabs.io/v1/convai/phone-numbers/TeaqRRdTcIfIu2i7BYfT")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -198,7 +198,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/phone-numbers/phone_number_id")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/phone-numbers/TeaqRRdTcIfIu2i7BYfT")
   .asString();
 ```
 
@@ -208,7 +208,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/phone-numbers/phone_number_id');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/phone-numbers/TeaqRRdTcIfIu2i7BYfT');
 
 echo $response->getBody();
 ```
@@ -216,7 +216,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/phone-numbers/phone_number_id");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/phone-numbers/TeaqRRdTcIfIu2i7BYfT");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -224,7 +224,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/phone-numbers/phone_number_id")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/phone-numbers/TeaqRRdTcIfIu2i7BYfT")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

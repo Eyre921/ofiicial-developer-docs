@@ -76,34 +76,27 @@ Validation Error
 
 ## Examples
 
-**Request**
-
-```json
-{}
-```
-
 **Response**
 
 ```json
 {
   "sip_messages": [
     {
-      "call_id": "abc123def456ghi789",
+      "call_id": "string",
       "phone_numbers": [
-        "+14155552671",
-        "+14155559876"
+        "string"
       ],
-      "local_address": "192.168.1.10:5060",
-      "remote_address": "203.0.113.5:5060",
-      "transport": "UDP",
-      "raw_message": "INVITE sip:+14155559876@voip.example.com SIP/2.0\r\nVia: SIP/2.0/UDP 192.168.1.10:5060;branch=z9hG4bK776asdhds\r\nFrom: <sip:+14155552671@voip.example.com>;tag=1928301774\r\nTo: <sip:+14155559876@voip.example.com>\r\nCall-ID: abc123def456ghi789@192.168.1.10\r\nCSeq: 1 INVITE\r\nContact: <sip:+14155552671@192.168.1.10:5060>\r\nContent-Type: application/sdp\r\nContent-Length: 142\r\n\r\nv=0\r\no=- 2890844526 2890844526 IN IP4 192.168.1.10\r\ns=-\r\nc=IN IP4 192.168.1.10\r\nt=0 0\r\nm=audio 49170 RTP/AVP 0\r\na=rtpmap:0 PCMU/8000",
-      "error_message": "",
+      "local_address": "string",
+      "remote_address": "string",
+      "transport": "string",
+      "raw_message": "string",
+      "error_message": "string",
       "direction": "in",
-      "created_at_unix_micro": 1687501234567890
+      "created_at_unix_micro": 1
     }
   ],
-  "next_cursor": "eyJwYWdlIjoxLCJpZCI6IjEyMzQ1NiJ9",
-  "has_more": true
+  "next_cursor": "string",
+  "has_more": false
 }
 ```
 
@@ -114,7 +107,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.conversationalAi.conversations.getSipMessages("conversation_id", {});
+    await client.conversationalAi.conversations.getSipMessages("21m00Tcm4TlvDq8ikWAM", {});
 }
 main();
 
@@ -126,7 +119,7 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.conversational_ai.conversations.get_sip_messages(
-    conversation_id="conversation_id",
+    conversation_id="21m00Tcm4TlvDq8ikWAM",
 )
 
 ```
@@ -136,20 +129,15 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/conversations/conversation_id/sip-messages"
+	url := "https://api.elevenlabs.io/v1/convai/conversations/21m00Tcm4TlvDq8ikWAM/sip-messages"
 
-	payload := strings.NewReader("{}")
-
-	req, _ := http.NewRequest("GET", url, payload)
-
-	req.Header.Add("Content-Type", "application/json")
+	req, _ := http.NewRequest("GET", url, nil)
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -166,14 +154,12 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/conversations/conversation_id/sip-messages")
+url = URI("https://api.elevenlabs.io/v1/convai/conversations/21m00Tcm4TlvDq8ikWAM/sip-messages")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["Content-Type"] = 'application/json'
-request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -183,9 +169,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/conversations/conversation_id/sip-messages")
-  .header("Content-Type", "application/json")
-  .body("{}")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/conversations/21m00Tcm4TlvDq8ikWAM/sip-messages")
   .asString();
 ```
 
@@ -195,12 +179,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/conversations/conversation_id/sip-messages', [
-  'body' => '{}',
-  'headers' => [
-    'Content-Type' => 'application/json',
-  ],
-]);
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/conversations/21m00Tcm4TlvDq8ikWAM/sip-messages');
 
 echo $response->getBody();
 ```
@@ -208,27 +187,18 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/conversations/conversation_id/sip-messages");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/conversations/21m00Tcm4TlvDq8ikWAM/sip-messages");
 var request = new RestRequest(Method.GET);
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = ["Content-Type": "application/json"]
-let parameters = [] as [String : Any]
-
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
-
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/conversations/conversation_id/sip-messages")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/conversations/21m00Tcm4TlvDq8ikWAM/sip-messages")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
-request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

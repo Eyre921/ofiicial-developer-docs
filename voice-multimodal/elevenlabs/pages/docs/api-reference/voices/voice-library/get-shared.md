@@ -172,7 +172,28 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.voices.getShared({});
+    await client.voices.getShared({
+        accent: "american",
+        age: "young",
+        category: "professional",
+        descriptives: [
+            "tiktok",
+        ],
+        featured: true,
+        gender: "male",
+        includeCustomRates: true,
+        includeLiveModerated: true,
+        language: "en",
+        locale: "en-US",
+        minNoticePeriodDays: 30,
+        ownerId: "7c9fab611d9a0e1fb2e7448a0c294a8804efc2bcc324b0a366a5d5232b7d1532",
+        readerAppEnabled: true,
+        search: "tiktok",
+        sort: "created_date",
+        useCases: [
+            "audiobook",
+        ],
+    });
 }
 main();
 
@@ -183,7 +204,28 @@ from elevenlabs import ElevenLabs
 
 client = ElevenLabs()
 
-client.voices.get_shared()
+client.voices.get_shared(
+    accent="american",
+    age="young",
+    category="professional",
+    descriptives=[
+        "tiktok"
+    ],
+    featured=True,
+    gender="male",
+    include_custom_rates=True,
+    include_live_moderated=True,
+    language="en",
+    locale="en-US",
+    min_notice_period_days=30,
+    owner_id="7c9fab611d9a0e1fb2e7448a0c294a8804efc2bcc324b0a366a5d5232b7d1532",
+    reader_app_enabled=True,
+    search="tiktok",
+    sort="created_date",
+    use_cases=[
+        "audiobook"
+    ],
+)
 
 ```
 
@@ -198,7 +240,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/shared-voices"
+	url := "https://api.elevenlabs.io/v1/shared-voices?accent=american&age=young&category=professional&descriptives=%5B%22tiktok%22%5D&featured=true&gender=male&include_custom_rates=true&include_live_moderated=true&language=en&locale=en-US&min_notice_period_days=30&owner_id=7c9fab611d9a0e1fb2e7448a0c294a8804efc2bcc324b0a366a5d5232b7d1532&reader_app_enabled=true&search=tiktok&sort=created_date&use_cases=%5B%22audiobook%22%5D"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -217,7 +259,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/shared-voices")
+url = URI("https://api.elevenlabs.io/v1/shared-voices?accent=american&age=young&category=professional&descriptives=%5B%22tiktok%22%5D&featured=true&gender=male&include_custom_rates=true&include_live_moderated=true&language=en&locale=en-US&min_notice_period_days=30&owner_id=7c9fab611d9a0e1fb2e7448a0c294a8804efc2bcc324b0a366a5d5232b7d1532&reader_app_enabled=true&search=tiktok&sort=created_date&use_cases=%5B%22audiobook%22%5D")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -232,7 +274,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/shared-voices")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/shared-voices?accent=american&age=young&category=professional&descriptives=%5B%22tiktok%22%5D&featured=true&gender=male&include_custom_rates=true&include_live_moderated=true&language=en&locale=en-US&min_notice_period_days=30&owner_id=7c9fab611d9a0e1fb2e7448a0c294a8804efc2bcc324b0a366a5d5232b7d1532&reader_app_enabled=true&search=tiktok&sort=created_date&use_cases=%5B%22audiobook%22%5D")
   .asString();
 ```
 
@@ -242,7 +284,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/shared-voices');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/shared-voices?accent=american&age=young&category=professional&descriptives=%5B%22tiktok%22%5D&featured=true&gender=male&include_custom_rates=true&include_live_moderated=true&language=en&locale=en-US&min_notice_period_days=30&owner_id=7c9fab611d9a0e1fb2e7448a0c294a8804efc2bcc324b0a366a5d5232b7d1532&reader_app_enabled=true&search=tiktok&sort=created_date&use_cases=%5B%22audiobook%22%5D');
 
 echo $response->getBody();
 ```
@@ -250,7 +292,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/shared-voices");
+var client = new RestClient("https://api.elevenlabs.io/v1/shared-voices?accent=american&age=young&category=professional&descriptives=%5B%22tiktok%22%5D&featured=true&gender=male&include_custom_rates=true&include_live_moderated=true&language=en&locale=en-US&min_notice_period_days=30&owner_id=7c9fab611d9a0e1fb2e7448a0c294a8804efc2bcc324b0a366a5d5232b7d1532&reader_app_enabled=true&search=tiktok&sort=created_date&use_cases=%5B%22audiobook%22%5D");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -258,7 +300,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/shared-voices")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/shared-voices?accent=american&age=young&category=professional&descriptives=%5B%22tiktok%22%5D&featured=true&gender=male&include_custom_rates=true&include_live_moderated=true&language=en&locale=en-US&min_notice_period_days=30&owner_id=7c9fab611d9a0e1fb2e7448a0c294a8804efc2bcc324b0a366a5d5232b7d1532&reader_app_enabled=true&search=tiktok&sort=created_date&use_cases=%5B%22audiobook%22%5D")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

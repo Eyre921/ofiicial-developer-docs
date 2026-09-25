@@ -97,7 +97,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.studio.projects.pronunciationDictionaries.create("project_id", {
+    await client.studio.projects.pronunciationDictionaries.create("21m00Tcm4TlvDq8ikWAM", {
         pronunciationDictionaryLocators: [
             {
                 pronunciationDictionaryId: "string",
@@ -116,7 +116,7 @@ from elevenlabs import ElevenLabs, PronunciationDictionaryVersionLocator
 client = ElevenLabs()
 
 client.studio.projects.pronunciation_dictionaries.create(
-    project_id="project_id",
+    project_id="21m00Tcm4TlvDq8ikWAM",
     pronunciation_dictionary_locators=[
         PronunciationDictionaryVersionLocator(
             pronunciation_dictionary_id="string",
@@ -139,7 +139,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/studio/projects/project_id/pronunciation-dictionaries"
+	url := "https://api.elevenlabs.io/v1/studio/projects/21m00Tcm4TlvDq8ikWAM/pronunciation-dictionaries"
 
 	payload := strings.NewReader("{\n  \"pronunciation_dictionary_locators\": [\n    {\n      \"pronunciation_dictionary_id\": \"string\",\n      \"version_id\": \"string\"\n    }\n  ]\n}")
 
@@ -162,7 +162,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/studio/projects/project_id/pronunciation-dictionaries")
+url = URI("https://api.elevenlabs.io/v1/studio/projects/21m00Tcm4TlvDq8ikWAM/pronunciation-dictionaries")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -179,7 +179,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/studio/projects/project_id/pronunciation-dictionaries")
+HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/studio/projects/21m00Tcm4TlvDq8ikWAM/pronunciation-dictionaries")
   .header("Content-Type", "application/json")
   .body("{\n  \"pronunciation_dictionary_locators\": [\n    {\n      \"pronunciation_dictionary_id\": \"string\",\n      \"version_id\": \"string\"\n    }\n  ]\n}")
   .asString();
@@ -191,7 +191,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://api.elevenlabs.io/v1/studio/projects/project_id/pronunciation-dictionaries', [
+$response = $client->request('POST', 'https://api.elevenlabs.io/v1/studio/projects/21m00Tcm4TlvDq8ikWAM/pronunciation-dictionaries', [
   'body' => '{
   "pronunciation_dictionary_locators": [
     {
@@ -211,7 +211,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/studio/projects/project_id/pronunciation-dictionaries");
+var client = new RestClient("https://api.elevenlabs.io/v1/studio/projects/21m00Tcm4TlvDq8ikWAM/pronunciation-dictionaries");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
 request.AddParameter("application/json", "{\n  \"pronunciation_dictionary_locators\": [\n    {\n      \"pronunciation_dictionary_id\": \"string\",\n      \"version_id\": \"string\"\n    }\n  ]\n}", ParameterType.RequestBody);
@@ -231,7 +231,7 @@ let parameters = ["pronunciation_dictionary_locators": [
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/studio/projects/project_id/pronunciation-dictionaries")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/studio/projects/21m00Tcm4TlvDq8ikWAM/pronunciation-dictionaries")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "POST"

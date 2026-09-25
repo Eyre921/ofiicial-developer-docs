@@ -12,7 +12,7 @@ Coding agents should install the Stripe CLI (`npm i -g @stripe/cli`) and run the
 
 # Build a checkout page with the Checkout Sessions API 
 
-Build a checkout page on your website using Stripe Elements and the Checkout Sessions API, a front-end SDK that manages tax, discounts, shipping rates, and more.
+Build a checkout page on your website using Stripe Elements and the Checkout Sessions API to manage tax, discounts, shipping rates, and more.
 
 ### Install the Stripe Node library
 

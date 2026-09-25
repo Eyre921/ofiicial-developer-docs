@@ -111,6 +111,7 @@ Use `POST /v1/pages` with the `markdown` parameter instead of `children` to crea
 * If `properties.title` is omitted, the first `# h1` heading is extracted as the page title.
 * Available to all connection types (public, internal, and personal access tokens).
 * Requires `insert_content` and `insert_property` capabilities.
+* Markdown that is too large or too heavily formatted to parse in one request returns a `validation_error`. With `allow_async: true`, the request still returns an `async_task`, and the task ends as `failed` with that `validation_error` when you poll it. Retrying the same body fails the same way. Create the page with part of the content and add the rest with further requests, or split the content into child pages.
 
 The response is a standard [page object](/reference/page).
 

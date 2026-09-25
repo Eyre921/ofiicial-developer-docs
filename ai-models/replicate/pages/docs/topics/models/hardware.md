@@ -23,7 +23,7 @@ To change the hardware for a public or private model on the web, do the followin
 
 There is not currently an API to change the hardware for public or private models.
 
-If this feature is important to you, please let us know by contacting [replicate.com/support](https://replicate.com/support).
+If this feature is important to you, please let us know by contacting [support@replicate.com](mailto:support@replicate.com).
 
 [](#edit-deployment-hardware-on-the-web)Edit deployment hardware on the web
 ---------------------------------------------------------------------------

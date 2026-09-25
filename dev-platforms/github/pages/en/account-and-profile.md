@@ -24,7 +24,7 @@ Make GitHub work best for you by customizing your personal account settings and 
 
 * [Personalize your profile](/en/account-and-profile/tutorials/personalize-your-profile)
 
-  You can share information about yourself with other users by setting a profile picture and adding a bio to your profile.
+  <p>You can share information about yourself with other users by setting a profile picture and adding a bio to your profile.</p>
 
 * [Using your GitHub profile to enhance your resume](/en/account-and-profile/tutorials/using-your-github-profile-to-enhance-your-resume)
 
@@ -36,7 +36,7 @@ Make GitHub work best for you by customizing your personal account settings and 
 
 * [Managing your profile README](/en/account-and-profile/how-tos/profile-customization/managing-your-profile-readme)
 
-  You can add a README to your GitHub profile to tell other people about yourself.
+  <p>You can add a README to your GitHub profile to tell other people about yourself.</p>
 
 * [Managing multiple accounts](/en/account-and-profile/how-tos/account-management/managing-multiple-accounts)
 

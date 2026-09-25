@@ -165,6 +165,7 @@ When available, applicable events include a top-level `team_ids` array containin
 * **workspace.ekm.wek.revoked**: A workspace encryption key (WEK) was revoked.
 * **workspace.external\_account\_connected**: A public/external integration was connected to the workspace.
 * **workspace.external\_account\_disconnected**: A public/external integration was disconnected from the workspace, or a workspace owner removed access to a public integration for all users in the workspace.
+* **workspace.group.ai\_credit\_overage\_updated**: AI credit overage access for a group was updated.
 * **workspace.group.created**: A new group was created. A group is a defined collection of workspace members.
 * **workspace.group.custom\_agent\_creation\_updated**: The custom agent creation permission for a group was enabled or disabled.
 * **workspace.group.deleted**: A group was deleted from the workspace.
@@ -219,6 +220,7 @@ When available, applicable events include a top-level `team_ids` array containin
 * **workspace.search\_performed**: A search was performed in the workspace.
 * **workspace.settings.agent\_creation\_policy\_updated**: The agent creation policy setting was updated.
 * **workspace.settings.agent\_model\_policy\_updated**: The list of AI models an agent is allowed to use was updated. `agent_type` names which allowed model list changed, and the model and provider lists are sent both before and after the change. `allowed_restricted_access_models` runs the other way from the restricted lists: a restricted-access model is off until an admin names it there, so a model entering that list was allowed and a model leaving it was restricted.
+* **workspace.settings.ai\_credit\_overage\_policy\_updated**: The AI credit overage policy setting was updated.
 * **workspace.settings.ai\_leap\_toggled**: A workspace owner enabled or disabled the Notion AI LEAP (Learning & Early Access Program) setting.
 * **workspace.settings.ai\_legal\_terms\_setting\_updated**: A user enabled or disabled Notion AI in the workspace by accepting or revoking AI legal terms.
 * **workspace.settings.ai\_meeting\_notes\_availability\_updated**: The AI meeting notes availability setting was updated.
@@ -230,6 +232,7 @@ When available, applicable events include a top-level `team_ids` array containin
 * **workspace.settings.allow\_teamspace\_creation\_setting\_updated**: A user enabled or disabled the ability for everyone in the workspace to create a teamspace.
 * **workspace.settings.allow\_workspace\_creation\_setting\_updated**: A workspace owner restricted creation of new workspaces by users with the claimed enterprise email domain.
 * **workspace.settings.analytics\_tracking\_setting\_updated**: A user enabled or disabled workspace analytics tracking within the workspace.
+* **workspace.settings.custom\_agent\_default\_model\_updated**: The default model for new Custom Agents was updated. `previous_model` and `model` contain the prior and current model, or `Auto` when no workspace default is set.
 * **workspace.settings.delete\_from\_trash\_delay**: The [custom data retention](https://www.notion.com/help/custom-data-retention-settings) delete from trash delay setting was updated.
 * **workspace.settings.disallow\_webhook\_automation\_action\_toggled**: A workspace owner enabled or disabled the use of webhook automation actions in the workspace.
 * **workspace.settings.duplicate\_pages\_to\_workspaces\_setting\_updated**: A workspace owner enabled or disabled moving pages to other workspaces.

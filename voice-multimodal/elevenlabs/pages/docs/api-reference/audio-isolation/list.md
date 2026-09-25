@@ -111,7 +111,9 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.audioIsolation.list({});
+    await client.audioIsolation.list({
+        search: "podcast",
+    });
 }
 main();
 
@@ -122,7 +124,9 @@ from elevenlabs import ElevenLabs
 
 client = ElevenLabs()
 
-client.audio_isolation.list()
+client.audio_isolation.list(
+    search="podcast",
+)
 
 ```
 
@@ -138,7 +142,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/audio-isolation/history"
+	url := "https://api.elevenlabs.io/v1/audio-isolation/history?search=podcast"
 
 	payload := strings.NewReader("{}")
 
@@ -161,7 +165,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/audio-isolation/history")
+url = URI("https://api.elevenlabs.io/v1/audio-isolation/history?search=podcast")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -178,7 +182,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/audio-isolation/history")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/audio-isolation/history?search=podcast")
   .header("Content-Type", "application/json")
   .body("{}")
   .asString();
@@ -190,7 +194,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/audio-isolation/history', [
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/audio-isolation/history?search=podcast', [
   'body' => '{}',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -203,7 +207,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/audio-isolation/history");
+var client = new RestClient("https://api.elevenlabs.io/v1/audio-isolation/history?search=podcast");
 var request = new RestRequest(Method.GET);
 request.AddHeader("Content-Type", "application/json");
 request.AddParameter("application/json", "{}", ParameterType.RequestBody);
@@ -218,7 +222,7 @@ let parameters = [] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/audio-isolation/history")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/audio-isolation/history?search=podcast")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

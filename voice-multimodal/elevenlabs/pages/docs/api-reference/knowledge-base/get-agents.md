@@ -124,7 +124,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.conversationalAi.knowledgeBase.documents.getAgents("documentation_id", {});
+    await client.conversationalAi.knowledgeBase.documents.getAgents("21m00Tcm4TlvDq8ikWAM", {});
 }
 main();
 
@@ -136,7 +136,7 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.conversational_ai.knowledge_base.documents.get_agents(
-    documentation_id="documentation_id",
+    documentation_id="21m00Tcm4TlvDq8ikWAM",
 )
 
 ```
@@ -152,7 +152,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/knowledge-base/documentation_id/dependent-agents"
+	url := "https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/dependent-agents"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -171,7 +171,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/knowledge-base/documentation_id/dependent-agents")
+url = URI("https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/dependent-agents")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -186,7 +186,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/knowledge-base/documentation_id/dependent-agents")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/dependent-agents")
   .asString();
 ```
 
@@ -196,7 +196,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/knowledge-base/documentation_id/dependent-agents');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/dependent-agents');
 
 echo $response->getBody();
 ```
@@ -204,7 +204,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/knowledge-base/documentation_id/dependent-agents");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/dependent-agents");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -212,7 +212,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/knowledge-base/documentation_id/dependent-agents")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/dependent-agents")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

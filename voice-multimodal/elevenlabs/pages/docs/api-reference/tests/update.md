@@ -1147,7 +1147,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.conversationalAi.tests.update("test_id");
+    await client.conversationalAi.tests.update("TeaqRRdTcIfIu2i7BYfT");
 }
 main();
 
@@ -1159,7 +1159,7 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.conversational_ai.tests.update(
-    test_id="test_id",
+    test_id="TeaqRRdTcIfIu2i7BYfT",
 )
 
 ```
@@ -1176,7 +1176,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/agent-testing/test_id"
+	url := "https://api.elevenlabs.io/v1/convai/agent-testing/TeaqRRdTcIfIu2i7BYfT"
 
 	payload := strings.NewReader("{\n  \"name\": \"string\"\n}")
 
@@ -1199,7 +1199,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/agent-testing/test_id")
+url = URI("https://api.elevenlabs.io/v1/convai/agent-testing/TeaqRRdTcIfIu2i7BYfT")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -1216,7 +1216,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.put("https://api.elevenlabs.io/v1/convai/agent-testing/test_id")
+HttpResponse<String> response = Unirest.put("https://api.elevenlabs.io/v1/convai/agent-testing/TeaqRRdTcIfIu2i7BYfT")
   .header("Content-Type", "application/json")
   .body("{\n  \"name\": \"string\"\n}")
   .asString();
@@ -1228,7 +1228,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('PUT', 'https://api.elevenlabs.io/v1/convai/agent-testing/test_id', [
+$response = $client->request('PUT', 'https://api.elevenlabs.io/v1/convai/agent-testing/TeaqRRdTcIfIu2i7BYfT', [
   'body' => '{
   "name": "string"
 }',
@@ -1243,7 +1243,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/agent-testing/test_id");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/agent-testing/TeaqRRdTcIfIu2i7BYfT");
 var request = new RestRequest(Method.PUT);
 request.AddHeader("Content-Type", "application/json");
 request.AddParameter("application/json", "{\n  \"name\": \"string\"\n}", ParameterType.RequestBody);
@@ -1258,7 +1258,7 @@ let parameters = ["name": "string"] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agent-testing/test_id")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agent-testing/TeaqRRdTcIfIu2i7BYfT")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "PUT"

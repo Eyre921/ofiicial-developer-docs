@@ -15,9 +15,9 @@ Use the [Billing migration toolkit](https://dashboard.stripe.com/billing/migrati
 1. If you haven’t already, review the [migration stages](https://docs.stripe.com/billing/subscriptions/migrate-subscriptions.md#migration-stages).
 2. [Set up a Stripe Billing integration](https://docs.stripe.com/billing/subscriptions/build-subscriptions.md) before you begin migration. This is a one-time setup that you don’t need to repeat for future migrations.
 3. [Request a payments data import](https://docs.stripe.com/get-started/data-migrations/pan-import.md) from your current processor. This step is only required if you’re migrating to Stripe from another processor. If you’re migrating from Stripe to Stripe, you can skip this prerequisite.
-4. Make sure customers that you want to charge automatically have a default payment source (a [payment method](https://docs.stripe.com/api/payment_methods.md) or legacy [source](https://docs.stripe.com/api/sources.md)) attached. Without a default payment source, subscription invoices can’t collect payment. See the [CSV prerequisites](https://docs.stripe.com/billing/subscriptions/import-subscriptions-toolkit.md#csv-prerequisites) for details.
+4. Make sure customers that you want to charge automatically have a default payment source (a [payment method](https://docs.stripe.com/api/payment_methods.md)), or [add a default](https://docs.stripe.com/billing/subscriptions/import-subscriptions-toolkit.md#add-missing-payment-source). Without a default payment source, subscription invoices can’t collect payment. For more details, see the [CSV prerequisites](https://docs.stripe.com/billing/subscriptions/import-subscriptions-toolkit.md#csv-prerequisites).
 5. If you’re migrating from a third-party or home-grown system:
-   - Create new subscriptions in Stripe first.
+   - First, create new subscriptions in Stripe.
    - After creating new subscriptions, cancel old subscriptions before they charge so you don’t double-bill.
    - If a subscription’s billing date is close to migration, schedule the new Stripe subscription to start after the last charge from the old subscription to make sure the migration has time to complete. Then cancel the old subscription.
 
@@ -264,7 +264,7 @@ If validation fails because a customer is missing a default payment source, you 
 
 1. [Create](https://docs.stripe.com/api/payment_methods/create.md) or [retrieve](https://docs.stripe.com/api/payment_methods/retrieve.md) an existing `PaymentMethod`.
 2. [Attach](https://docs.stripe.com/api/payment_methods/attach.md) it to the customer if it isn’t already attached.
-3. Update the customer to set it as the default:
+3. Set the payment method as the default for the applicable customer:
 
 ```curl
 curl https://api.stripe.com/v1/customers/CUSTOMER_ID \

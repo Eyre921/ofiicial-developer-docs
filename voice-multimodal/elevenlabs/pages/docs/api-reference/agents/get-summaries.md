@@ -103,7 +103,7 @@ async function main() {
     const client = new ElevenLabsClient();
     await client.conversationalAi.agents.summaries.get({
         agentIds: [
-            "string",
+            "J3Pbu5gP6NNKBscdCdwB",
         ],
     });
 }
@@ -118,7 +118,7 @@ client = ElevenLabs()
 
 client.conversational_ai.agents.summaries.get(
     agent_ids=[
-        "string"
+        "J3Pbu5gP6NNKBscdCdwB"
     ],
 )
 
@@ -135,7 +135,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22string%22%5D"
+	url := "https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%5D"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -154,7 +154,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22string%22%5D")
+url = URI("https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%5D")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -169,7 +169,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22string%22%5D")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%5D")
   .asString();
 ```
 
@@ -179,7 +179,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22string%22%5D');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%5D');
 
 echo $response->getBody();
 ```
@@ -187,7 +187,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22string%22%5D");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%5D");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -195,7 +195,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22string%22%5D")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%5D")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

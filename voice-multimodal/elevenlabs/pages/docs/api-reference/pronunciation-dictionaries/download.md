@@ -64,7 +64,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.pronunciationDictionaries.download("dictionary_id", "version_id");
+    await client.pronunciationDictionaries.download("21m00Tcm4TlvDq8ikWAM", "BdF0s0aZ3oFoKnDYdTox");
 }
 main();
 
@@ -76,8 +76,8 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.pronunciation_dictionaries.download(
-    dictionary_id="dictionary_id",
-    version_id="version_id",
+    dictionary_id="21m00Tcm4TlvDq8ikWAM",
+    version_id="BdF0s0aZ3oFoKnDYdTox",
 )
 
 ```
@@ -93,7 +93,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/pronunciation-dictionaries/dictionary_id/version_id/download"
+	url := "https://api.elevenlabs.io/v1/pronunciation-dictionaries/21m00Tcm4TlvDq8ikWAM/BdF0s0aZ3oFoKnDYdTox/download"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -112,7 +112,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/pronunciation-dictionaries/dictionary_id/version_id/download")
+url = URI("https://api.elevenlabs.io/v1/pronunciation-dictionaries/21m00Tcm4TlvDq8ikWAM/BdF0s0aZ3oFoKnDYdTox/download")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -127,7 +127,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/pronunciation-dictionaries/dictionary_id/version_id/download")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/pronunciation-dictionaries/21m00Tcm4TlvDq8ikWAM/BdF0s0aZ3oFoKnDYdTox/download")
   .asString();
 ```
 
@@ -137,7 +137,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/pronunciation-dictionaries/dictionary_id/version_id/download');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/pronunciation-dictionaries/21m00Tcm4TlvDq8ikWAM/BdF0s0aZ3oFoKnDYdTox/download');
 
 echo $response->getBody();
 ```
@@ -145,7 +145,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/pronunciation-dictionaries/dictionary_id/version_id/download");
+var client = new RestClient("https://api.elevenlabs.io/v1/pronunciation-dictionaries/21m00Tcm4TlvDq8ikWAM/BdF0s0aZ3oFoKnDYdTox/download");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -153,7 +153,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/pronunciation-dictionaries/dictionary_id/version_id/download")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/pronunciation-dictionaries/21m00Tcm4TlvDq8ikWAM/BdF0s0aZ3oFoKnDYdTox/download")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

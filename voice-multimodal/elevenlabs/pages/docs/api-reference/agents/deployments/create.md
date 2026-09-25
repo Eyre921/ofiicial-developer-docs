@@ -112,7 +112,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.conversationalAi.agents.deployments.create("agent_id", {
+    await client.conversationalAi.agents.deployments.create("agent_3701k3ttaq12ewp8b7qv5rfyszkz", {
         deploymentRequest: {
             requests: [
                 {
@@ -136,7 +136,7 @@ from elevenlabs import ElevenLabs, AgentDeploymentRequest, AgentDeploymentReques
 client = ElevenLabs()
 
 client.conversational_ai.agents.deployments.create(
-    agent_id="agent_id",
+    agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
     deployment_request=AgentDeploymentRequest(
         requests=[
             AgentDeploymentRequestItem(
@@ -164,7 +164,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/agents/agent_id/deployments"
+	url := "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/deployments"
 
 	payload := strings.NewReader("{\n  \"deployment_request\": {\n    \"requests\": [\n      {\n        \"branch_id\": \"agtbrch_8901k4t9z5defmb8vh3e9361y7nj\",\n        \"deployment_strategy\": {\n          \"traffic_percentage\": 0.5,\n          \"type\": \"percentage\"\n        }\n      }\n    ]\n  }\n}")
 
@@ -187,7 +187,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_id/deployments")
+url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/deployments")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -204,7 +204,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/agents/agent_id/deployments")
+HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/deployments")
   .header("Content-Type", "application/json")
   .body("{\n  \"deployment_request\": {\n    \"requests\": [\n      {\n        \"branch_id\": \"agtbrch_8901k4t9z5defmb8vh3e9361y7nj\",\n        \"deployment_strategy\": {\n          \"traffic_percentage\": 0.5,\n          \"type\": \"percentage\"\n        }\n      }\n    ]\n  }\n}")
   .asString();
@@ -216,7 +216,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/agents/agent_id/deployments', [
+$response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/deployments', [
   'body' => '{
   "deployment_request": {
     "requests": [
@@ -241,7 +241,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_id/deployments");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/deployments");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
 request.AddParameter("application/json", "{\n  \"deployment_request\": {\n    \"requests\": [\n      {\n        \"branch_id\": \"agtbrch_8901k4t9z5defmb8vh3e9361y7nj\",\n        \"deployment_strategy\": {\n          \"traffic_percentage\": 0.5,\n          \"type\": \"percentage\"\n        }\n      }\n    ]\n  }\n}", ParameterType.RequestBody);
@@ -264,7 +264,7 @@ let parameters = ["deployment_request": ["requests": [
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_id/deployments")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/deployments")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "POST"

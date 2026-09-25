@@ -183,7 +183,6 @@
 - [Networking](/production/networking.md): IP addresses used by Convex for outbound requests
 - [Deploying Your App to Production](/production/overview.md): Tips for building safe and reliable production apps
 - [Pausing a Deployment](/production/pause-deployment.md): Temporarily disable a deployment without deleting data
-- [Project Configuration](/production/project-configuration.md): Configure your Convex project for development and production deployment using convex.json, environment variables, and deployment settings.
 - [Regions](/production/regions.md): Learn how to select a region for your Convex deployments
 - [Status and Guarantees](/production/state.md): Learn about Convex's production guarantees, availability targets, data durability, security features, and upcoming platform enhancements.
 - [Limits](/production/state/limits.md): We’d love for you to have unlimited joy building on Convex but engineering
@@ -391,6 +390,7 @@
 
 - [auth.config.ts](/config/auth.config.ts.md): Set up authentication providers in the auth.config.ts file.
 - [convex.config.ts](/config/convex.config.ts.md): Declare typed environment variables and install components in the convex.config.ts file.
+- [convex.json](/config/convex.json.md): Configure your Convex deployment with the convex.json file: functions directory, Node.js version, codegen, bundler and AuthKit options.
 - [crons.ts](/config/crons.ts.md): Schedule recurring functions in the crons.ts file.
 - [http.ts](/config/http.ts.md): Define HTTP actions in the http.ts file.
 - [schema.ts](/config/schema.ts.md): Declare your tables and indexes in the schema.ts file.
@@ -6157,7 +6157,7 @@ const agent = new Agent(components.agent, {
 
 `convexGateway` works with `generateText`, `streamText`, `embed`, and `embedMany` from the [Vercel AI SDK](https://ai-sdk.dev/). Use `@convex-dev/ai-sdk-provider` 0.2.1 or later with `convex` 1.45 or later and AI SDK 7.0.105 or later. The provider works in the default runtime and [Node.js actions](/functions/runtimes.md).
 
-For a Node.js action, set [`node.nodeVersion`](/production/project-configuration.md#configuring-the-nodejs-version) to `"22"` or `"24"` in `convex.json`. The default Convex runtime doesn't need this setting.
+For a Node.js action, set [`node.nodeVersion`](/config/convex.json.md#configuring-the-nodejs-version) to `"22"` or `"24"` in `convex.json`. The default Convex runtime doesn't need this setting.
 
 ```
 npm install @convex-dev/ai-sdk-provider@^0.2.1 ai
@@ -6453,41 +6453,41 @@ Skills are installed into `.agents/skills/` in your project and are automaticall
 
 ## Available Skills[​](#available-skills "Direct link to Available Skills")
 
-| Skill                                                                                                                                | Description                                                                                                                                                                                                                                                                                      |
-| ------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [`/convex`](https://github.com/get-convex/agent-skills/blob/main/skills/convex/SKILL.md)                                             | Convex is the backend agents get right on the first try: an all-TypeScript reactive platform where the database, server functions, scheduling, file storage, auth, and realtime sync are one type-safe system, every function is a transaction, and \`tsc\` catches most mistakes before deploy. |
-| [`/convex-add`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-add/SKILL.md)                                     | Add a capability to the CURRENT Convex app — consults the served Convex capability catalog for always-current procedures (billing, crons, auth, agent, search, …); falls back to built-in hosting or @convex-dev component search.                                                               |
-| [`/convex-advisor`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-advisor/SKILL.md)                             | Read the Convex deployment's 72h insights (read limits, OCC contention), root-cause each event in code, report evidence-backed perf/cost findings with fixes.                                                                                                                                    |
-| [`/convex-agent`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-agent/SKILL.md)                                 | Add an AI agent / RAG backend (@convex-dev/agent) to the Convex app.                                                                                                                                                                                                                             |
-| [`/convex-auth`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-auth/SKILL.md)                                   | Add authentication (passkeys/OAuth) to the current Convex app, including the auth.config.ts wiring.                                                                                                                                                                                              |
-| [`/convex-authz`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-authz/SKILL.md)                                 | Audit and harden a Convex app's authorization: identity-from-arg impersonation, missing per-document ownership checks, public queries leaking data by a client-supplied id, and writes into a parent/container the caller doesn't own.                                                           |
-| [`/convex-backup`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-backup/SKILL.md)                               | Set up Convex backups and run a restore DRILL that proves recovery — snapshot, restore into a throwaway preview, assert the data came back — plus a schedule matched to your RPO and a gated recovery runbook.                                                                                   |
-| [`/convex-billing`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-billing/SKILL.md)                             | Add Stripe billing/payments to the Convex app via @convex-dev/stripe (checkout + webhook + gating).                                                                                                                                                                                              |
-| [`/convex-cost`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-cost/SKILL.md)                                   | Preview Convex spend — rank functions by bytes/documents-read × call-volume from insights, project each cost driver's growth curve, name the cheapest fix; confirm-cost for paid actions.                                                                                                        |
-| [`/convex-create-component`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-create-component/SKILL.md)           | Builds reusable Convex components with isolated tables and app-facing APIs.                                                                                                                                                                                                                      |
-| [`/convex-crons`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-crons/SKILL.md)                                 | Add recurring scheduled jobs (crons) to the Convex app.                                                                                                                                                                                                                                          |
-| [`/convex-deploy-guard`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-deploy-guard/SKILL.md)                   | Classify + announce the target Convex deployment before any deployment-affecting command; fresh explicit consent for prod actions; session read-only mode.                                                                                                                                       |
-| [`/convex-design`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-design/SKILL.md)                               | Design and build reactive, type-safe, production-grade backends on Convex.                                                                                                                                                                                                                       |
-| [`/convex-docs`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-docs/SKILL.md)                                   | Pull version-current Convex docs for the version this project uses — pin the installed version, fetch page-as-markdown or check node\_modules types, freshness hierarchy — instead of writing a possibly-stale API from memory.                                                                  |
-| [`/convex-domains`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-domains/SKILL.md)                             | Point a domain you already own at your Convex app (DNS records, custom-domain attach, auth-origin rebind).                                                                                                                                                                                       |
-| [`/convex-env`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-env/SKILL.md)                                     | Set and wire Convex deployment env vars / secrets for the app.                                                                                                                                                                                                                                   |
-| [`/convex-expert`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-expert/SKILL.md)                               | Convex backend specialist.                                                                                                                                                                                                                                                                       |
-| [`/convex-explain-app`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-explain-app/SKILL.md)                     | Explain an existing Convex app — data model + relationships, public vs internal functions, auth/ownership model, components, a request→data flow — read from the schema and function surface.                                                                                                    |
-| [`/convex-improve-convex-plugin`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-improve-convex-plugin/SKILL.md) | Send this coding session's transcript to the Convex team for an AI post-mortem that improves the quickstart system.                                                                                                                                                                              |
-| [`/convex-insights`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-insights/SKILL.md)                           | Query a running Convex app's logs + health in natural language (official MCP): failures, slow/expensive functions, deploy causality — scoped, evidence-backed, with a dashboard deep link.                                                                                                       |
-| [`/convex-launch-readiness`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-launch-readiness/SKILL.md)           | Run every Convex audit (authz, reviewer, advisor, insights) into one scored, deduped readiness report with an ordered fix plan — Lighthouse for your backend.                                                                                                                                    |
-| [`/convex-migrate`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-migrate/SKILL.md)                             | Migrate schema + backfill data on a deployed Convex app using @convex-dev/migrations.                                                                                                                                                                                                            |
-| [`/convex-migrate-rehearse`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-migrate-rehearse/SKILL.md)           | Rehearse a live-app schema change + backfill on a snapshot-seeded preview deployment, verify, then promote the proven change to prod with the snapshot as rollback.                                                                                                                              |
-| [`/convex-monitor`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-monitor/SKILL.md)                             | Watch for the next dev/prod error or request in a Convex app and react to it.                                                                                                                                                                                                                    |
-| [`/convex-optimize`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-optimize/SKILL.md)                           | Audit and optimize an existing Convex app: security, scale, upgrades, observability.                                                                                                                                                                                                             |
-| [`/convex-quickstart`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-quickstart/SKILL.md)                       | Get a barebones Convex + web template running from a one-sentence idea.                                                                                                                                                                                                                          |
-| [`/convex-reviewer`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-reviewer/SKILL.md)                           | Convex code reviewer — security, auth, validators, performance, and pattern checks for code in a convex/ directory.                                                                                                                                                                              |
-| [`/convex-seed`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-seed/SKILL.md)                                   | Seed or import data into the Convex database.                                                                                                                                                                                                                                                    |
-| [`/convex-self-heal`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-self-heal/SKILL.md)                         | Production error → triaged, root-caused, repaired, and certified (tsc + rehearsal + reproduce-then-gone) fix PR for a human to merge — then confirm the error stops recurring.                                                                                                                   |
-| [`/convex-sentinel`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-sentinel/SKILL.md)                           | Set up Sentinel production error capture in your own Convex deployment.                                                                                                                                                                                                                          |
-| [`/convex-suggest`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-suggest/SKILL.md)                             | Suggest the matching Convex component when the user hand-rolls a pattern it already solves (crons, sharded-counter, rate-limiter, storage, search, presence, workflow, RAG, prosemirror-sync).                                                                                                   |
-| [`/convex-test`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-test/SKILL.md)                                   | Generate convex-test tests for the app's Convex functions.                                                                                                                                                                                                                                       |
-| [`/convex-verify`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-verify/SKILL.md)                               | Prove a Convex feature works — seed, drive as multiple mocked users via convex-test, assert behavior including the negative authz cases (wrong user refused, data-scope enforced).                                                                                                               |
+| Skill                                                                                                                                | Description                                                                                                                                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`/convex`](https://github.com/get-convex/agent-skills/blob/main/skills/convex/SKILL.md)                                             | Convex is the backend agents get right on the first try: an all-TypeScript reactive platform where the database, server functions, scheduling, file storage, auth, and realtime sync are one type-safe system, every function is a transaction, and `tsc` catches most mistakes before deploy. |
+| [`/convex-add`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-add/SKILL.md)                                     | Add a capability to the CURRENT Convex app — consults the served Convex capability catalog for always-current procedures (billing, crons, auth, agent, search, …); falls back to built-in hosting or @convex-dev component search.                                                             |
+| [`/convex-advisor`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-advisor/SKILL.md)                             | Read the Convex deployment's 72h insights (read limits, OCC contention), root-cause each event in code, report evidence-backed perf/cost findings with fixes.                                                                                                                                  |
+| [`/convex-agent`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-agent/SKILL.md)                                 | Add an AI agent / RAG backend (@convex-dev/agent) to the Convex app.                                                                                                                                                                                                                           |
+| [`/convex-auth`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-auth/SKILL.md)                                   | Add authentication (passkeys/OAuth) to the current Convex app, including the auth.config.ts wiring.                                                                                                                                                                                            |
+| [`/convex-authz`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-authz/SKILL.md)                                 | Audit and harden a Convex app's authorization: identity-from-arg impersonation, missing per-document ownership checks, public queries leaking data by a client-supplied id, and writes into a parent/container the caller doesn't own.                                                         |
+| [`/convex-backup`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-backup/SKILL.md)                               | Set up Convex backups and run a restore DRILL that proves recovery — snapshot, restore into a throwaway preview, assert the data came back — plus a schedule matched to your RPO and a gated recovery runbook.                                                                                 |
+| [`/convex-billing`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-billing/SKILL.md)                             | Add Stripe billing/payments to the Convex app via @convex-dev/stripe (checkout + webhook + gating).                                                                                                                                                                                            |
+| [`/convex-cost`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-cost/SKILL.md)                                   | Preview Convex spend — rank functions by bytes/documents-read × call-volume from insights, project each cost driver's growth curve, name the cheapest fix; confirm-cost for paid actions.                                                                                                      |
+| [`/convex-create-component`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-create-component/SKILL.md)           | Builds reusable Convex components with isolated tables and app-facing APIs.                                                                                                                                                                                                                    |
+| [`/convex-crons`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-crons/SKILL.md)                                 | Add recurring scheduled jobs (crons) to the Convex app.                                                                                                                                                                                                                                        |
+| [`/convex-deploy-guard`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-deploy-guard/SKILL.md)                   | Classify + announce the target Convex deployment before any deployment-affecting command; fresh explicit consent for prod actions; session read-only mode.                                                                                                                                     |
+| [`/convex-design`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-design/SKILL.md)                               | Design and build reactive, type-safe, production-grade backends on Convex.                                                                                                                                                                                                                     |
+| [`/convex-docs`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-docs/SKILL.md)                                   | Pull version-current Convex docs for the version this project uses — pin the installed version, fetch page-as-markdown or check node\_modules types, freshness hierarchy — instead of writing a possibly-stale API from memory.                                                                |
+| [`/convex-domains`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-domains/SKILL.md)                             | Point a domain you already own at your Convex app (DNS records, custom-domain attach, auth-origin rebind).                                                                                                                                                                                     |
+| [`/convex-env`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-env/SKILL.md)                                     | Set and wire Convex deployment env vars / secrets for the app.                                                                                                                                                                                                                                 |
+| [`/convex-expert`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-expert/SKILL.md)                               | Convex backend specialist.                                                                                                                                                                                                                                                                     |
+| [`/convex-explain-app`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-explain-app/SKILL.md)                     | Explain an existing Convex app — data model + relationships, public vs internal functions, auth/ownership model, components, a request→data flow — read from the schema and function surface.                                                                                                  |
+| [`/convex-improve-convex-plugin`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-improve-convex-plugin/SKILL.md) | Send this coding session's transcript to the Convex team for an AI post-mortem that improves the quickstart system.                                                                                                                                                                            |
+| [`/convex-insights`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-insights/SKILL.md)                           | Query a running Convex app's logs + health in natural language (official MCP): failures, slow/expensive functions, deploy causality — scoped, evidence-backed, with a dashboard deep link.                                                                                                     |
+| [`/convex-launch-readiness`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-launch-readiness/SKILL.md)           | Run every Convex audit (authz, reviewer, advisor, insights) into one scored, deduped readiness report with an ordered fix plan — Lighthouse for your backend.                                                                                                                                  |
+| [`/convex-migrate`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-migrate/SKILL.md)                             | Migrate schema + backfill data on a deployed Convex app using @convex-dev/migrations.                                                                                                                                                                                                          |
+| [`/convex-migrate-rehearse`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-migrate-rehearse/SKILL.md)           | Rehearse a live-app schema change + backfill on a snapshot-seeded preview deployment, verify, then promote the proven change to prod with the snapshot as rollback.                                                                                                                            |
+| [`/convex-monitor`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-monitor/SKILL.md)                             | Watch for the next dev/prod error or request in a Convex app and react to it.                                                                                                                                                                                                                  |
+| [`/convex-optimize`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-optimize/SKILL.md)                           | Audit and optimize an existing Convex app: security, scale, upgrades, observability.                                                                                                                                                                                                           |
+| [`/convex-quickstart`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-quickstart/SKILL.md)                       | Get a barebones Convex + web template running from a one-sentence idea.                                                                                                                                                                                                                        |
+| [`/convex-reviewer`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-reviewer/SKILL.md)                           | Convex code reviewer — security, auth, validators, performance, and pattern checks for code in a convex/ directory.                                                                                                                                                                            |
+| [`/convex-seed`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-seed/SKILL.md)                                   | Seed or import data into the Convex database.                                                                                                                                                                                                                                                  |
+| [`/convex-self-heal`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-self-heal/SKILL.md)                         | Production error → triaged, root-caused, repaired, and certified (tsc + rehearsal + reproduce-then-gone) fix PR for a human to merge — then confirm the error stops recurring.                                                                                                                 |
+| [`/convex-sentinel`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-sentinel/SKILL.md)                           | Set up Sentinel production error capture in your own Convex deployment.                                                                                                                                                                                                                        |
+| [`/convex-suggest`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-suggest/SKILL.md)                             | Suggest the matching Convex component when the user hand-rolls a pattern it already solves (crons, sharded-counter, rate-limiter, storage, search, presence, workflow, RAG, prosemirror-sync).                                                                                                 |
+| [`/convex-test`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-test/SKILL.md)                                   | Generate convex-test tests for the app's Convex functions.                                                                                                                                                                                                                                     |
+| [`/convex-verify`](https://github.com/get-convex/agent-skills/blob/main/skills/convex-verify/SKILL.md)                               | Prove a Convex feature works — seed, drive as multiple mocked users via convex-test, assert behavior including the negative authz cases (wrong user refused, data-scope enforced).                                                                                                             |
 
 ## Using Skills[​](#using-skills "Direct link to Using Skills")
 
@@ -18045,7 +18045,7 @@ A Blob containing the file contents, or `null` if the file doesn't exist.
 
 #### Defined in[​](#defined-in-7 "Direct link to Defined in")
 
-[server/storage.ts:225](https://github.com/get-convex/convex-js/blob/main/src/server/storage.ts#L225)
+[server/storage.ts:235](https://github.com/get-convex/convex-js/blob/main/src/server/storage.ts#L235)
 
 ▸ **get**<`T`>(`storageId`): `Promise`<`null` | `Blob`>
 
@@ -18073,7 +18073,7 @@ Get a Blob containing the file associated with the provided [StorageId](/api/mod
 
 #### Defined in[​](#defined-in-8 "Direct link to Defined in")
 
-[server/storage.ts:232](https://github.com/get-convex/convex-js/blob/main/src/server/storage.ts#L232)
+[server/storage.ts:242](https://github.com/get-convex/convex-js/blob/main/src/server/storage.ts#L242)
 
 ***
 
@@ -18107,9 +18107,13 @@ const storageId = await ctx.storage.store(blob);
 
 The `Id<"_storage">` of the newly stored file.
 
+#### Overrides[​](#overrides "Direct link to Overrides")
+
+StorageWriter.store
+
 #### Defined in[​](#defined-in-9 "Direct link to Defined in")
 
-[server/storage.ts:251](https://github.com/get-convex/convex-js/blob/main/src/server/storage.ts#L251)
+[server/storage.ts:261](https://github.com/get-convex/convex-js/blob/main/src/server/storage.ts#L261)
 
 
 ---
@@ -31118,7 +31122,7 @@ Alternatively, you can self-host a production deployment using the [open source 
 
 * **No Public URL** - Cloud deployments have public URL to receive incoming HTTP requests from services like Twilio, but local deployments listen for HTTP requests on your own computer. Similarly, you can't power websites with Convex WebSocket connections unless your users browsers know how to reach your computer. Set up a proxy like ngrok or use a cloud deployment for these uses cases.
 
-* **Node actions require specific Node.js versions** - Running Node.js actions (actions defined in files with `"use node;"`) requires having the same version of Node.js as your project is [configured for](/production/project-configuration.md#configuring-the-nodejs-version). By default this is Node.js 20 today, though this may change in the future. To resolve this you can install and set up [nvm](https://github.com/nvm-sh/nvm) and then install the required Node.js version. You don't need to use this version for the rest of your project.
+* **Node actions require specific Node.js versions** - Running Node.js actions (actions defined in files with `"use node;"`) requires having the same version of Node.js as your project is [configured for](/config/convex.json.md#configuring-the-nodejs-version). By default this is Node.js 20 today, though this may change in the future. To resolve this you can install and set up [nvm](https://github.com/nvm-sh/nvm) and then install the required Node.js version. You don't need to use this version for the rest of your project.
 
 * **Node.js actions run directly on your computer** - Like a normal Node.js server, code running in Node.js actions has unrestricted filesystem access. Queries, mutations, and Convex runtime actions still run in isolated environments.
 
@@ -33142,7 +33146,7 @@ Static codegen is in beta
 
 Static codegen<!-- --> <!-- -->is<!-- --> currently a [beta feature](/production/state/.md#beta-features). If you have feedback or feature requests, [let us know on Discord](https://convex.dev/community)!
 
-[Using static codegen](/production/project-configuration.md#using-static-code-generation-beta) can improve typechecking performance, but currently comes with [some caveats](/production/project-configuration.md#using-static-code-generation-beta).
+[Using static codegen](/config/convex.json.md#using-static-code-generation-beta) can improve typechecking performance, but currently comes with [some caveats](/config/convex.json.md#using-static-code-generation-beta).
 
 ## Disable typechecking[​](#disable-typechecking "Direct link to Disable typechecking")
 
@@ -33667,7 +33671,7 @@ If you want to run your TypeScript script directly without a compile step, insta
 
 If you don't use `"type": "module"` in the `package.json` of your project you'll need to use `require()` syntax and Node.js will not be able to import the `convex/_generated/api.js` file directly.
 
-In the same directory as your `package.json`, create or edit [`convex.json`](/production/project-configuration.md#convexjson):
+In the same directory as your `package.json`, create or edit [`convex.json`](/config/convex.json.md):
 
 ```
 {
@@ -39833,6 +39837,271 @@ export default app;
 
 ---
 
+# convex.json
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
+`convex.json` allows you to configure **deployment-specific settings** such as the location of your `convex/` folder, the Node.js version, code generation, and the WorkOS AuthKit integration.
+
+To modify these settings:
+
+1. Modify the `convex.json` file (or create it if it doesn’t already exist). This file must be located at the root of your project (in the same directory as your `package.json`).
+2. Apply these settings by running [`npx convex dev`](/cli/reference/dev.md) in development or [`npx convex deploy`](/cli/reference/deploy.md) in production.
+
+To ensure the contents of your `convex.json` file are valid, you can set the `$schema` property: code editors that support [JSON Schema](https://json-schema.org) will use it to validate the contents of the file and provide relevant documentation for each field.
+
+convex.json
+
+```
+{
+
+  "$schema": "./node_modules/convex/schemas/convex.schema.json"
+
+}
+```
+
+The file supports the following configuration options:
+
+## Changing the `convex/` folder name or location[​](#changing-the-convex-folder-name-or-location "Direct link to changing-the-convex-folder-name-or-location")
+
+You can choose a different name or location for the `convex/` folder via the `functions` field. For example, Create React App doesn't allow importing from outside the `src/` directory, so if you're using Create React App you should have the following config:
+
+convex.json
+
+```
+{
+
+  "$schema": "./node_modules/convex/schemas/convex.schema.json",
+
+  "functions": "src/convex/"
+
+}
+```
+
+## Configuring AI files messages[​](#configuring-ai-files-messages "Direct link to Configuring AI files messages")
+
+Convex can install AI helper files (for tools like Cursor and Claude Code) and show install or update suggestions during `npx convex dev`.
+
+caution
+
+This setting is supported in Convex CLI `1.34.1` and later.
+
+To suppress those suggestions, set `aiFiles.enabled` to `false` in `convex.json`:
+
+convex.json
+
+```
+{
+
+  "$schema": "./node_modules/convex/schemas/convex.schema.json",
+
+  "aiFiles": {
+
+    "enabled": false
+
+  }
+
+}
+```
+
+When this is `false`, `npx convex dev` will not show the AI files install or staleness messages.
+
+You can also configure which agents the Convex skills are installed for (defaults to `["claude-code", "codex"]`):
+
+convex.json
+
+```
+{
+
+  "$schema": "./node_modules/convex/schemas/convex.schema.json",
+
+  "aiFiles": {
+
+    "skills": {
+
+      "agents": ["claude-code", "codex", "cursor"]
+
+    }
+
+  }
+
+}
+```
+
+## Installing packages on the server[​](#installing-packages-on-the-server "Direct link to Installing packages on the server")
+
+You can specify which packages used by Node actions should be installed on the server, instead of being bundled, via the `node.externalPackages` field. [Read more](/functions/bundling.md#external-packages).
+
+## Importing the generated functions API via `require()` syntax[​](#importing-the-generated-functions-api-via-require-syntax "Direct link to importing-the-generated-functions-api-via-require-syntax")
+
+The Convex code generation can be configured to generate a CommonJS-version of the `_generated/api.js` file via the `generateCommonJSApi` field. [Read more](/client/javascript/node.md#javascript-with-commonjs-require-syntax).
+
+## Configuring the Node.js version[​](#configuring-the-nodejs-version "Direct link to Configuring the Node.js version")
+
+You can specify which Node.js version is used by Node actions via the `node.nodeVersion` field. The currently supported values are `"20"`, `"22"`, and `"24"`. [Read more](/functions/runtimes.md#nodejs-version-configuration).
+
+Convex version requirement
+
+To change the Node.js version used by your project, you must use the `convex` NPM package version 1.27.0 or later.
+
+convex.json
+
+```
+{
+
+  "$schema": "./node_modules/convex/schemas/convex.schema.json",
+
+  "node": {
+
+    "nodeVersion": "22"
+
+  }
+
+}
+```
+
+Note: This configuration is not supported when running the self-hosted Convex backend. The Node version that is specified in the [.nvmrc](https://github.com/get-convex/convex-backend/blob/main/.nvmrc) will be used instead.
+
+When pushing a new Node.js version to the server, the new code for your functions may be executed in the old Node.js version for up a few minutes.
+
+## Using static code generation (beta)[​](#using-static-code-generation-beta "Direct link to Using static code generation (beta)")
+
+Convex's code generation heavily relies on TypeScript's type inference. This makes updates snappy and jump-to-definition work for the `api` and `internal` objects, but it often slows down with large codebases.
+
+If you're running into language server performance issues, you can instruct the Convex CLI to generate static versions of the `_generated/api.d.ts` and `_generated/dataModel.d.ts`:
+
+convex.json
+
+```
+{
+
+  "$schema": "./node_modules/convex/schemas/convex.schema.json",
+
+  "codegen": {
+
+    "staticApi": true,
+
+    "staticDataModel": true
+
+  }
+
+}
+```
+
+This will greatly improve autocomplete and incremental typechecking performance, but it does have some tradeoffs:
+
+* These types only update when `convex dev` is running.
+* Jump-to-definition no longer works. To find `api.example.f`, you'll need to manually open `convex/example.ts` and find `f`.
+* Functions no longer have return type inference and will default to `v.any()` if they don't have a returns validator.
+* [TypeScript enums](https://www.typescriptlang.org/docs/handbook/enums.html) no longer work in schema or API definitions. Use unions of string literal types instead.
+
+This feature is currently in beta, and we'd love to improve these limitations. Let us know if you run into any issues or have any feedback!
+
+## Configuring the TypeScript compiler[​](#configuring-the-typescript-compiler "Direct link to Configuring the TypeScript compiler")
+
+By default, Convex uses the `tsc` binary installed in your project for typechecking. This works with TypeScript 6 and TypeScript 7 without any additional `convex.json` configuration.
+
+To use TypeScript 7, install it as your project's TypeScript version:
+
+```
+npm install --save-dev typescript@^7
+```
+
+TypeScript 7.0 does not include a JavaScript API, so if other tools in your project import it, follow TypeScript's [side-by-side installation](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/#running-side-by-side-with-typescript-6.0) instructions. Convex picks up TypeScript 7 in that setup too.
+
+Migrating from the TypeScript 7 preview
+
+If you previously installed `@typescript/native-preview` and set `"typescriptCompiler": "tsgo"`, replace the preview package with stable TypeScript 7 and remove the `typescriptCompiler` setting. Stable TypeScript 7 uses Convex's default `tsc` selection.
+
+## Configuring WorkOS AuthKit integration[​](#configuring-workos-authkit-integration "Direct link to Configuring WorkOS AuthKit integration")
+
+If you're using [WorkOS AuthKit](/auth/authkit/.md) for authentication, you can configure automatic provisioning (development only) and configuration of WorkOS environments via the `authKit` field.
+
+Convex version requirement
+
+This configuration option is only available in version 1.31.6 or later of the `convex` NPM package.
+
+convex.json
+
+```
+{
+
+  "$schema": "./node_modules/convex/schemas/convex.schema.json",
+
+  "authKit": {
+
+    "dev": {
+
+      "configure": {
+
+        "redirectUris": ["http://localhost:3000/callback"],
+
+        "appHomepageUrl": "http://localhost:3000",
+
+        "corsOrigins": ["http://localhost:3000"]
+
+      },
+
+      "localEnvVars": {
+
+        "WORKOS_CLIENT_ID": "${authEnv.WORKOS_CLIENT_ID}",
+
+        "WORKOS_API_KEY": "${authEnv.WORKOS_API_KEY}",
+
+        "NEXT_PUBLIC_WORKOS_REDIRECT_URI": "http://localhost:3000/callback"
+
+      }
+
+    },
+
+    "preview": {
+
+      "configure": {
+
+        "redirectUris": ["https://${buildEnv.VERCEL_BRANCH_URL}/callback"],
+
+        "appHomepageUrl": "https://${buildEnv.VERCEL_PROJECT_PRODUCTION_URL}",
+
+        "corsOrigins": ["https://${buildEnv.VERCEL_BRANCH_URL}"]
+
+      }
+
+    },
+
+    "prod": {
+
+      "environmentType": "production",
+
+      "configure": {
+
+        "redirectUris": [
+
+          "https://${buildEnv.VERCEL_PROJECT_PRODUCTION_URL}/callback"
+
+        ],
+
+        "appHomepageUrl": "https://${buildEnv.VERCEL_PROJECT_PRODUCTION_URL}",
+
+        "corsOrigins": ["https://${buildEnv.VERCEL_PROJECT_PRODUCTION_URL}"]
+
+      }
+
+    }
+
+  }
+
+}
+```
+
+This configuration controls how WorkOS environments are provisioned and configured for each deployment type (dev, preview, prod). See the [Automatic AuthKit Configuration](/auth/authkit/auto-provision.md) guide for complete details.
+
+info
+
+Provisioning the Convex-managed WorkOS team and disconnecting it require the you to be an admin of the team. Provisioning a per-deployment WorkOS environment uses the deployment's own management permission, any team member can self-serve one for their dev/preview deployment via `npx convex dev`, but production deployments require you to be a team or project admin.
+
+
+---
+
 # crons.ts
 
 > For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
@@ -45081,7 +45350,7 @@ If your Convex functions are in a directory other than `convex`
 
 By default, the Convex ESLint plugin will only apply rules in the `convex` directory.
 
-If you’re [customizing the Convex directory location](/production/project-configuration.md#changing-the-convex-folder-name-or-location), here’s how to adapt your ESLint configuration:
+If you’re [customizing the Convex directory location](/config/convex.json.md#changing-the-convex-folder-name-or-location), here’s how to adapt your ESLint configuration:
 
 ```
 // eslint.config.js
@@ -47277,7 +47546,7 @@ While this comes with a latency penalty the first time you push external package
 
 ### Specifying external packages[​](#specifying-external-packages "Direct link to Specifying external packages")
 
-Create a [`convex.json`](/production/project-configuration.md#convexjson) file in the same directory as your `package.json` if it does not exist already. Set the `node.externalPackages` field to `["*"]` to mark all dependencies used within your Node actions as external:
+Create a [`convex.json`](/config/convex.json.md) file in the same directory as your `package.json` if it does not exist already. Set the `node.externalPackages` field to `["*"]` to mark all dependencies used within your Node actions as external:
 
 convex.json
 
@@ -49197,7 +49466,7 @@ Note that argument size limits are lower (5MiB instead of 16MiB).
 
 ### Node.js version configuration[​](#nodejs-version-configuration "Direct link to Node.js version configuration")
 
-By default, all actions ran in the Node.js environment are executed in Node.js 20. This version is configurable in the [convex.json](/production/project-configuration.md#configuring-the-nodejs-version) file. We currently support Node.js 20, 22, and 24.
+By default, all actions ran in the Node.js environment are executed in Node.js 20. This version is configurable in the [convex.json](/config/convex.json.md#configuring-the-nodejs-version) file. We currently support Node.js 20, 22, and 24.
 
 When pushing a new Node.js version to the server, the new code for your functions may be executed in the old Node.js version for up a few minutes.
 
@@ -53965,7 +54234,7 @@ Usually all deployments belonging to a single project run the same code base (or
 
 Your Convex deployments run your backend logic and in most cases you will also develop a client that uses the backend. If your client is a web app, follow the [Hosting and Deployment](/production/hosting/.md) guide, to learn how to deploy your client and your Convex backend together.
 
-You can also deploy your backend on its own. Check out the [Project Configuration](/production/project-configuration.md) page to learn more.
+You can also deploy your backend on its own, with [`npx convex deploy`](/cli/reference/deploy.md).
 
 ## Staging environment[​](#staging-environment "Direct link to Staging environment")
 
@@ -54053,283 +54322,6 @@ When a deployment is paused:
 A deployment can be resumed with this button on the same page:
 
 ![Resume Deployment Button](/screenshots/storybook/components_pause_deployment_paused_light.webp)
-
-
----
-
-# Project Configuration
-
-> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
-
-## Local development[​](#local-development "Direct link to Local development")
-
-When you're developing locally you need two pieces of information:
-
-1. The name of your dev deployment. This is where your functions are pushed to and served from. It is stored in the `CONVEX_DEPLOYMENT` environment variable. `npx convex dev` writes it to the `.env.local` file.
-2. The URL of your dev deployment, for your client to connect to. The name of the variable and which file it can be read from varies between client frameworks. `npx convex dev` writes the URL to the `.env.local` or `.env` file.
-
-## Production deployment[​](#production-deployment "Direct link to Production deployment")
-
-You should only be deploying to your production deployment once you have tested your changes on your local deployment. When you're ready, you can deploy either via a hosting/CI provider or from your local machine.
-
-For a CI environment you can follow the [hosting](/production/hosting/.md) docs. `npx convex deploy` run by the CI pipeline will use the `CONVEX_DEPLOY_KEY`, and the frontend build command will use the deployment URL variable, both configured in your CI environment.
-
-You can also deploy your backend from your local machine. `npx convex deploy` will ask for a confirmation and then deploy to the production deployment in the same project as your configured development `CONVEX_DEPLOYMENT`.
-
-## `convex.json`[​](#convexjson "Direct link to convexjson")
-
-Additional project configuration can be specified in the `convex.json` file in the root of your project (in the same directory as your `package.json`).
-
-You can use the JSON schema for editor validation by adding a `$schema` property:
-
-convex.json
-
-```
-{
-
-  "$schema": "./node_modules/convex/schemas/convex.schema.json"
-
-}
-```
-
-The file supports the following configuration options:
-
-### Changing the `convex/` folder name or location[​](#changing-the-convex-folder-name-or-location "Direct link to changing-the-convex-folder-name-or-location")
-
-You can choose a different name or location for the `convex/` folder via the `functions` field. For example, Create React App doesn't allow importing from outside the `src/` directory, so if you're using Create React App you should have the following config:
-
-convex.json
-
-```
-{
-
-  "$schema": "./node_modules/convex/schemas/convex.schema.json",
-
-  "functions": "src/convex/"
-
-}
-```
-
-### Configuring AI files messages[​](#configuring-ai-files-messages "Direct link to Configuring AI files messages")
-
-Convex can install AI helper files (for tools like Cursor and Claude Code) and show install or update suggestions during `npx convex dev`.
-
-caution
-
-This setting is supported in Convex CLI `1.34.1` and later.
-
-To suppress those suggestions, set `aiFiles.enabled` to `false` in `convex.json`:
-
-convex.json
-
-```
-{
-
-  "$schema": "./node_modules/convex/schemas/convex.schema.json",
-
-  "aiFiles": {
-
-    "enabled": false
-
-  }
-
-}
-```
-
-When this is `false`, `npx convex dev` will not show the AI files install or staleness messages.
-
-You can also configure which agents the Convex skills are installed for (defaults to `["claude-code", "codex"]`):
-
-convex.json
-
-```
-{
-
-  "$schema": "./node_modules/convex/schemas/convex.schema.json",
-
-  "aiFiles": {
-
-    "skills": {
-
-      "agents": ["claude-code", "codex", "cursor"]
-
-    }
-
-  }
-
-}
-```
-
-### Installing packages on the server[​](#installing-packages-on-the-server "Direct link to Installing packages on the server")
-
-You can specify which packages used by Node actions should be installed on the server, instead of being bundled, via the `node.externalPackages` field. [Read more](/functions/bundling.md#external-packages).
-
-### Importing the generated functions API via `require()` syntax[​](#importing-the-generated-functions-api-via-require-syntax "Direct link to importing-the-generated-functions-api-via-require-syntax")
-
-The Convex code generation can be configured to generate a CommonJS-version of the `_generated/api.js` file via the `generateCommonJSApi` field. [Read more](/client/javascript/node.md#javascript-with-commonjs-require-syntax).
-
-### Configuring the Node.js version[​](#configuring-the-nodejs-version "Direct link to Configuring the Node.js version")
-
-You can specify which Node.js version is used by Node actions via the `node.nodeVersion` field. The currently supported values are `"20"`, `"22"`, and `"24"`. [Read more](/functions/runtimes.md#nodejs-version-configuration).
-
-Convex version requirement
-
-To change the Node.js version used by your project, you must use the `convex` NPM package version 1.27.0 or later.
-
-convex.json
-
-```
-{
-
-  "$schema": "./node_modules/convex/schemas/convex.schema.json",
-
-  "node": {
-
-    "nodeVersion": "22"
-
-  }
-
-}
-```
-
-Note: This configuration is not supported when running the self-hosted Convex backend. The Node version that is specified in the [.nvmrc](https://github.com/get-convex/convex-backend/blob/main/.nvmrc) will be used instead.
-
-When pushing a new Node.js version to the server, the new code for your functions may be executed in the old Node.js version for up a few minutes.
-
-### Using static code generation (beta)[​](#using-static-code-generation-beta "Direct link to Using static code generation (beta)")
-
-Convex's code generation heavily relies on TypeScript's type inference. This makes updates snappy and jump-to-definition work for the `api` and `internal` objects, but it often slows down with large codebases.
-
-If you're running into language server performance issues, you can instruct the Convex CLI to generate static versions of the `_generated/api.d.ts` and `_generated/dataModel.d.ts`:
-
-convex.json
-
-```
-{
-
-  "$schema": "./node_modules/convex/schemas/convex.schema.json",
-
-  "codegen": {
-
-    "staticApi": true,
-
-    "staticDataModel": true
-
-  }
-
-}
-```
-
-This will greatly improve autocomplete and incremental typechecking performance, but it does have some tradeoffs:
-
-* These types only update when `convex dev` is running.
-* Jump-to-definition no longer works. To find `api.example.f`, you'll need to manually open `convex/example.ts` and find `f`.
-* Functions no longer have return type inference and will default to `v.any()` if they don't have a returns validator.
-* [TypeScript enums](https://www.typescriptlang.org/docs/handbook/enums.html) no longer work in schema or API definitions. Use unions of string literal types instead.
-
-This feature is currently in beta, and we'd love to improve these limitations. Let us know if you run into any issues or have any feedback!
-
-### Configuring the TypeScript compiler[​](#configuring-the-typescript-compiler "Direct link to Configuring the TypeScript compiler")
-
-By default, Convex uses the `tsc` binary installed in your project for typechecking. This works with TypeScript 6 and TypeScript 7 without any additional `convex.json` configuration.
-
-To use TypeScript 7, install it as your project's TypeScript version:
-
-```
-npm install --save-dev typescript@^7
-```
-
-TypeScript 7.0 does not include a JavaScript API, so if other tools in your project import it, follow TypeScript's [side-by-side installation](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/#running-side-by-side-with-typescript-6.0) instructions. Convex picks up TypeScript 7 in that setup too.
-
-Migrating from the TypeScript 7 preview
-
-If you previously installed `@typescript/native-preview` and set `"typescriptCompiler": "tsgo"`, replace the preview package with stable TypeScript 7 and remove the `typescriptCompiler` setting. Stable TypeScript 7 uses Convex's default `tsc` selection.
-
-### Configuring WorkOS AuthKit integration[​](#configuring-workos-authkit-integration "Direct link to Configuring WorkOS AuthKit integration")
-
-If you're using [WorkOS AuthKit](/auth/authkit/.md) for authentication, you can configure automatic provisioning (development only) and configuration of WorkOS environments via the `authKit` field.
-
-Convex version requirement
-
-This configuration option is only available in version 1.31.6 or later of the `convex` NPM package.
-
-convex.json
-
-```
-{
-
-  "$schema": "./node_modules/convex/schemas/convex.schema.json",
-
-  "authKit": {
-
-    "dev": {
-
-      "configure": {
-
-        "redirectUris": ["http://localhost:3000/callback"],
-
-        "appHomepageUrl": "http://localhost:3000",
-
-        "corsOrigins": ["http://localhost:3000"]
-
-      },
-
-      "localEnvVars": {
-
-        "WORKOS_CLIENT_ID": "${authEnv.WORKOS_CLIENT_ID}",
-
-        "WORKOS_API_KEY": "${authEnv.WORKOS_API_KEY}",
-
-        "NEXT_PUBLIC_WORKOS_REDIRECT_URI": "http://localhost:3000/callback"
-
-      }
-
-    },
-
-    "preview": {
-
-      "configure": {
-
-        "redirectUris": ["https://${buildEnv.VERCEL_BRANCH_URL}/callback"],
-
-        "appHomepageUrl": "https://${buildEnv.VERCEL_PROJECT_PRODUCTION_URL}",
-
-        "corsOrigins": ["https://${buildEnv.VERCEL_BRANCH_URL}"]
-
-      }
-
-    },
-
-    "prod": {
-
-      "environmentType": "production",
-
-      "configure": {
-
-        "redirectUris": [
-
-          "https://${buildEnv.VERCEL_PROJECT_PRODUCTION_URL}/callback"
-
-        ],
-
-        "appHomepageUrl": "https://${buildEnv.VERCEL_PROJECT_PRODUCTION_URL}",
-
-        "corsOrigins": ["https://${buildEnv.VERCEL_PROJECT_PRODUCTION_URL}"]
-
-      }
-
-    }
-
-  }
-
-}
-```
-
-This configuration controls how WorkOS environments are provisioned and configured for each deployment type (dev, preview, prod). See the [Automatic AuthKit Configuration](/auth/authkit/auto-provision.md) guide for complete details.
-
-info
-
-Provisioning the Convex-managed WorkOS team and disconnecting it require the you to be an admin of the team. Provisioning a per-deployment WorkOS environment uses the deployment's own management permission, any team member can self-serve one for their dev/preview deployment via `npx convex dev`, but production deployments require you to be a team or project admin.
 
 
 ---
@@ -60666,7 +60658,7 @@ You can see more examples in the [test suite](https://github.com/get-convex/conv
 
    If your Convex functions are in a directory other than `convex`
 
-   If your project has a [different name or location configured](/production/project-configuration.md#changing-the-convex-folder-name-or-location) for the `convex/` folder in `convex.json`, you need to call [`import.meta.glob`](https://vitejs.dev/guide/features#glob-import) and pass the result as the second argument to `convexTest`.
+   If your project has a [different name or location configured](/config/convex.json.md#changing-the-convex-folder-name-or-location) for the `convex/` folder in `convex.json`, you need to call [`import.meta.glob`](https://vitejs.dev/guide/features#glob-import) and pass the result as the second argument to `convexTest`.
 
    The argument to `import.meta.glob` must be a glob pattern matching all the files containing your Convex functions. The paths are relative to the test file in which `import.meta.glob` is called. It's best to do this in one place in your custom functions folder:
 

@@ -10,7 +10,7 @@ path: docs/api/api-reference/interns/get-an-interns-daemon-access
 
 # Get an intern's daemon access
 
-> Returns the origin and daemon token that attach `ori tui --host` to one visible, running intern. The token is a credential: the response is sent with `Cache-Control: no-store`, each reveal is logged by caller and intern, and a caller may make 10 reveals per minute. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
+> Returns the origin and daemon token that attach `ori tui --host` to one visible, running intern. The token is a credential: the response is sent with `Cache-Control: no-store`, and each reveal is logged by caller and intern. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
 
 
 
@@ -44,6 +44,10 @@ tags:
     name: Anthropic Messages
   - description: BYOK endpoints
     name: BYOK
+  - description: >-
+      Submit, list, poll, and delete asynchronous batches of inference requests.
+      See https://openrouter.ai/docs/batch-quickstart.
+    name: Batch
   - description: Benchmarks endpoints
     name: Benchmarks
   - description: Chat completion endpoints
@@ -138,11 +142,11 @@ paths:
       description: >-
         Returns the origin and daemon token that attach `ori tui --host` to one
         visible, running intern. The token is a credential: the response is sent
-        with `Cache-Control: no-store`, each reveal is logged by caller and
-        intern, and a caller may make 10 reveals per minute. The API key selects
-        the caller, workspace and visible interns. There is no default workspace
-        fallback. Requests on regional hostnames such as `eu.openrouter.ai` are
-        refused. [API key](/docs/api-reference/authentication) required.
+        with `Cache-Control: no-store`, and each reveal is logged by caller and
+        intern. The API key selects the caller, workspace and visible interns.
+        There is no default workspace fallback. Requests on regional hostnames
+        such as `eu.openrouter.ai` are refused. [API
+        key](/docs/api-reference/authentication) required.
       operationId: getInternDaemonAccess
       parameters:
         - description: ID of an intern visible to the authenticated API key.
@@ -230,21 +234,6 @@ paths:
             `intern_not_running`, `intern_unreachable` when it has no usable
             address yet, or `intern_needs_restart` when it was provisioned
             before daemon access was available.
-        '429':
-          content:
-            application/json:
-              example:
-                error:
-                  code: 429
-                  message: Too many token reveals. Please wait a moment.
-                  metadata:
-                    reason: rate_limited
-                    retryable: true
-              schema:
-                $ref: '#/components/schemas/InternLifecycleError'
-          description: >-
-            The caller made more than 10 reveals in the last minute. Wait for
-            `Retry-After` seconds.
         '500':
           content:
             application/json:

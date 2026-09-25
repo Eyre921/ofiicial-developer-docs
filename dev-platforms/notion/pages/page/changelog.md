@@ -4,6 +4,12 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+<Update label="September 24, 2026">
+  ### Rate limit waits in the response body
+
+  Any 429 or 529 response that includes a `Retry-After` header now repeats the wait in the body as `additional_data.retry_after`, so clients that can't read headers, such as MCP clients, can still see how long to wait. Two new `rate_limit_reason` values identify an endpoint's own limit (`public_api_endpoint_rate_limit`) and a connection whose API access has been restricted (`public_api_request_blocked`). A workspace-limit 429 now says that the limit is shared by all of the workspace's connections. See [Request limits](/reference/request-limits#rate-limit-responses).
+</Update>
+
 <Update label="September 23, 2026">
   ### Notion icon URLs are validated
 

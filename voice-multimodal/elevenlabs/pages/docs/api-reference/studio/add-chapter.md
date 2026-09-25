@@ -160,7 +160,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.studio.projects.chapters.create("project_id", {
+    await client.studio.projects.chapters.create("21m00Tcm4TlvDq8ikWAM", {
         name: "Chapter 1",
     });
 }
@@ -174,7 +174,7 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.studio.projects.chapters.create(
-    project_id="project_id",
+    project_id="21m00Tcm4TlvDq8ikWAM",
     name="Chapter 1",
 )
 
@@ -192,7 +192,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/studio/projects/project_id/chapters"
+	url := "https://api.elevenlabs.io/v1/studio/projects/21m00Tcm4TlvDq8ikWAM/chapters"
 
 	payload := strings.NewReader("{\n  \"name\": \"Chapter 1\"\n}")
 
@@ -215,7 +215,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/studio/projects/project_id/chapters")
+url = URI("https://api.elevenlabs.io/v1/studio/projects/21m00Tcm4TlvDq8ikWAM/chapters")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -232,7 +232,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/studio/projects/project_id/chapters")
+HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/studio/projects/21m00Tcm4TlvDq8ikWAM/chapters")
   .header("Content-Type", "application/json")
   .body("{\n  \"name\": \"Chapter 1\"\n}")
   .asString();
@@ -244,7 +244,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://api.elevenlabs.io/v1/studio/projects/project_id/chapters', [
+$response = $client->request('POST', 'https://api.elevenlabs.io/v1/studio/projects/21m00Tcm4TlvDq8ikWAM/chapters', [
   'body' => '{
   "name": "Chapter 1"
 }',
@@ -259,7 +259,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/studio/projects/project_id/chapters");
+var client = new RestClient("https://api.elevenlabs.io/v1/studio/projects/21m00Tcm4TlvDq8ikWAM/chapters");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
 request.AddParameter("application/json", "{\n  \"name\": \"Chapter 1\"\n}", ParameterType.RequestBody);
@@ -274,7 +274,7 @@ let parameters = ["name": "Chapter 1"] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/studio/projects/project_id/chapters")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/studio/projects/21m00Tcm4TlvDq8ikWAM/chapters")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "POST"

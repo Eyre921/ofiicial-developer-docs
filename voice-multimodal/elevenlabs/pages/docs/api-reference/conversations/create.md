@@ -79,7 +79,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.conversationalAi.conversations.feedback.create("conversation_id", {
+    await client.conversationalAi.conversations.feedback.create("21m00Tcm4TlvDq8ikWAM", {
         feedback: "like",
     });
 }
@@ -93,7 +93,7 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.conversational_ai.conversations.feedback.create(
-    conversation_id="conversation_id",
+    conversation_id="21m00Tcm4TlvDq8ikWAM",
     feedback="like",
 )
 
@@ -111,7 +111,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/conversations/conversation_id/feedback"
+	url := "https://api.elevenlabs.io/v1/convai/conversations/21m00Tcm4TlvDq8ikWAM/feedback"
 
 	payload := strings.NewReader("{\n  \"feedback\": \"like\"\n}")
 
@@ -134,7 +134,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/conversations/conversation_id/feedback")
+url = URI("https://api.elevenlabs.io/v1/convai/conversations/21m00Tcm4TlvDq8ikWAM/feedback")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -151,7 +151,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/conversations/conversation_id/feedback")
+HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/conversations/21m00Tcm4TlvDq8ikWAM/feedback")
   .header("Content-Type", "application/json")
   .body("{\n  \"feedback\": \"like\"\n}")
   .asString();
@@ -163,7 +163,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/conversations/conversation_id/feedback', [
+$response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/conversations/21m00Tcm4TlvDq8ikWAM/feedback', [
   'body' => '{
   "feedback": "like"
 }',
@@ -178,7 +178,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/conversations/conversation_id/feedback");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/conversations/21m00Tcm4TlvDq8ikWAM/feedback");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
 request.AddParameter("application/json", "{\n  \"feedback\": \"like\"\n}", ParameterType.RequestBody);
@@ -193,7 +193,7 @@ let parameters = ["feedback": "like"] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/conversations/conversation_id/feedback")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/conversations/21m00Tcm4TlvDq8ikWAM/feedback")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "POST"

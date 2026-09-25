@@ -40,13 +40,9 @@ The migration process varies slightly depending on a few factors. Use the follow
 
 |  |
 |  | **My customer and payment data is in an external system** | **My customer and payment data is already in Stripe** |
-| **Migrate subscription data from a third party** | - [Set up a Stripe Billing integration](https://docs.stripe.com/billing/subscriptions/build-subscriptions.md)
-- [Request a payments data import from your current processor](https://docs.stripe.com/get-started/data-migrations/pan-import.md)
-- [Use the Billing toolkit to migrate subscriptions data to Stripe Billing](https://docs.stripe.com/billing/subscriptions/import-subscriptions-toolkit.md) | - [Set up a Stripe Billing integration](https://docs.stripe.com/billing/subscriptions/build-subscriptions.md)
-- [Use the Billing toolkit to migrate subscriptions data to Stripe Billing](https://docs.stripe.com/billing/subscriptions/import-subscriptions-toolkit.md) |
-| **Migrate subscription data between Stripe accounts** | - [Set up a Stripe Billing integration](https://docs.stripe.com/billing/subscriptions/build-subscriptions.md)
-- [Copy PAN data across Stripe accounts](https://docs.stripe.com/get-started/data-migrations/pan-copy-self-serve.md)
-- [Billing migration within Stripe accounts](https://docs.stripe.com/billing/subscriptions/import-subscriptions-toolkit.md#within-Stripe-accounts) | - [Set up a Stripe Billing integration](https://docs.stripe.com/billing/subscriptions/build-subscriptions.md)
-- [Copy PAN data across Stripe accounts](https://docs.stripe.com/get-started/data-migrations/pan-copy-self-serve.md)
+| **Migrate subscription data from a third party** | - [Request a payments data import from your current processor](https://docs.stripe.com/get-started/data-migrations/pan-import.md)
+- [Use the Billing toolkit to migrate subscriptions data to Stripe Billing](https://docs.stripe.com/billing/subscriptions/import-subscriptions-toolkit.md) | - [Use the Billing toolkit to migrate subscriptions data to Stripe Billing](https://docs.stripe.com/billing/subscriptions/import-subscriptions-toolkit.md) |
+| **Migrate subscription data between Stripe accounts** | - [Copy PAN data across Stripe accounts](https://docs.stripe.com/get-started/data-migrations/pan-copy-self-serve.md)
+- [Billing migration within Stripe accounts](https://docs.stripe.com/billing/subscriptions/import-subscriptions-toolkit.md#within-Stripe-accounts) | - [Copy PAN data across Stripe accounts](https://docs.stripe.com/get-started/data-migrations/pan-copy-self-serve.md)
 - [Billing migration within Stripe accounts](https://docs.stripe.com/billing/subscriptions/import-subscriptions-toolkit.md#within-Stripe-accounts) |
 

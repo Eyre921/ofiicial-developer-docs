@@ -88,7 +88,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.voices.share("public_user_id", "voice_id", {
+    await client.voices.share("63e06b7e7cafdc46be4d2e0b3f045940231ae058d508589653d74d1265a574ca", "21m00Tcm4TlvDq8ikWAM", {
         newName: "John Smith",
     });
 }
@@ -102,8 +102,8 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.voices.share(
-    public_user_id="public_user_id",
-    voice_id="voice_id",
+    public_user_id="63e06b7e7cafdc46be4d2e0b3f045940231ae058d508589653d74d1265a574ca",
+    voice_id="21m00Tcm4TlvDq8ikWAM",
     new_name="John Smith",
 )
 
@@ -121,7 +121,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/voices/add/public_user_id/voice_id"
+	url := "https://api.elevenlabs.io/v1/voices/add/63e06b7e7cafdc46be4d2e0b3f045940231ae058d508589653d74d1265a574ca/21m00Tcm4TlvDq8ikWAM"
 
 	payload := strings.NewReader("{\n  \"new_name\": \"John Smith\"\n}")
 
@@ -144,7 +144,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/voices/add/public_user_id/voice_id")
+url = URI("https://api.elevenlabs.io/v1/voices/add/63e06b7e7cafdc46be4d2e0b3f045940231ae058d508589653d74d1265a574ca/21m00Tcm4TlvDq8ikWAM")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -161,7 +161,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/voices/add/public_user_id/voice_id")
+HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/voices/add/63e06b7e7cafdc46be4d2e0b3f045940231ae058d508589653d74d1265a574ca/21m00Tcm4TlvDq8ikWAM")
   .header("Content-Type", "application/json")
   .body("{\n  \"new_name\": \"John Smith\"\n}")
   .asString();
@@ -173,7 +173,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://api.elevenlabs.io/v1/voices/add/public_user_id/voice_id', [
+$response = $client->request('POST', 'https://api.elevenlabs.io/v1/voices/add/63e06b7e7cafdc46be4d2e0b3f045940231ae058d508589653d74d1265a574ca/21m00Tcm4TlvDq8ikWAM', [
   'body' => '{
   "new_name": "John Smith"
 }',
@@ -188,7 +188,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/voices/add/public_user_id/voice_id");
+var client = new RestClient("https://api.elevenlabs.io/v1/voices/add/63e06b7e7cafdc46be4d2e0b3f045940231ae058d508589653d74d1265a574ca/21m00Tcm4TlvDq8ikWAM");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
 request.AddParameter("application/json", "{\n  \"new_name\": \"John Smith\"\n}", ParameterType.RequestBody);
@@ -203,7 +203,7 @@ let parameters = ["new_name": "John Smith"] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/voices/add/public_user_id/voice_id")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/voices/add/63e06b7e7cafdc46be4d2e0b3f045940231ae058d508589653d74d1265a574ca/21m00Tcm4TlvDq8ikWAM")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "POST"

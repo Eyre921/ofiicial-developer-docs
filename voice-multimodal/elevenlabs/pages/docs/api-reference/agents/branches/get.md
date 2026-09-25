@@ -106,23 +106,17 @@ Validation Error
 
 ## Examples
 
-**Request**
-
-```json
-{}
-```
-
 **Response**
 
 ```json
 {
-  "id": "agtbranch_0901k4aafjxxfxt93gd841r7tv5t",
-  "name": "Feature Update Branch",
-  "agent_id": "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-  "description": "Branch for testing new conversational features before release.",
-  "created_at": 1685600000,
-  "last_committed_at": 1685686400,
-  "is_archived": false,
+  "id": "string",
+  "name": "string",
+  "agent_id": "string",
+  "description": "string",
+  "created_at": 1,
+  "last_committed_at": 1,
+  "is_archived": true,
   "protection_status": "writer_perms_required",
   "access_info": {
     "is_creator": true,
@@ -131,26 +125,26 @@ Validation Error
     "role": "admin",
     "access_source": "creator"
   },
-  "current_live_percentage": 25.5,
+  "current_live_percentage": 0,
   "parent_branch": {
-    "id": "agtbranch_0801j3aafjxxfxt93gd841r7tv5s",
-    "name": "Main Branch"
+    "id": "string",
+    "name": "string"
   },
   "most_recent_versions": [
     {
-      "id": "ver_20230427_001",
-      "agent_id": "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-      "branch_id": "agtbranch_0901k4aafjxxfxt93gd841r7tv5t",
-      "version_description": "Added support for multi-turn dialogue context.",
-      "seq_no_in_branch": 5,
-      "time_committed_secs": 1685686400,
+      "id": "string",
+      "agent_id": "string",
+      "branch_id": "string",
+      "version_description": "string",
+      "seq_no_in_branch": 1,
+      "time_committed_secs": 1,
       "parents": {
-        "in_branch_parent_id": "ver_20230426_004",
-        "out_of_branch_parent_id": null,
-        "merged_into_branch_id": null,
-        "merged_from_branch_id": null,
-        "merged_from_version_id": null,
-        "rebased_from_version_id": null
+        "in_branch_parent_id": "string",
+        "out_of_branch_parent_id": "string",
+        "merged_into_branch_id": "string",
+        "merged_from_branch_id": "string",
+        "merged_from_version_id": "string",
+        "rebased_from_version_id": "string"
       },
       "access_info": {
         "is_creator": true,
@@ -171,7 +165,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.conversationalAi.agents.branches.get("agent_id", "branch_id");
+    await client.conversationalAi.agents.branches.get("agent_3701k3ttaq12ewp8b7qv5rfyszkz", "agtbranch_0901k4aafjxxfxt93gd841r7tv5t");
 }
 main();
 
@@ -183,8 +177,8 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.conversational_ai.agents.branches.get(
-    agent_id="agent_id",
-    branch_id="branch_id",
+    agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
+    branch_id="agtbranch_0901k4aafjxxfxt93gd841r7tv5t",
 )
 
 ```
@@ -194,20 +188,15 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id"
+	url := "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t"
 
-	payload := strings.NewReader("{}")
-
-	req, _ := http.NewRequest("GET", url, payload)
-
-	req.Header.Add("Content-Type", "application/json")
+	req, _ := http.NewRequest("GET", url, nil)
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -224,14 +213,12 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id")
+url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["Content-Type"] = 'application/json'
-request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -241,9 +228,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id")
-  .header("Content-Type", "application/json")
-  .body("{}")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t")
   .asString();
 ```
 
@@ -253,12 +238,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id', [
-  'body' => '{}',
-  'headers' => [
-    'Content-Type' => 'application/json',
-  ],
-]);
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t');
 
 echo $response->getBody();
 ```
@@ -266,27 +246,18 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t");
 var request = new RestRequest(Method.GET);
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = ["Content-Type": "application/json"]
-let parameters = [] as [String : Any]
-
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
-
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
-request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

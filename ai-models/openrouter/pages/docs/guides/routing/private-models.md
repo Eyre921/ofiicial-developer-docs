@@ -16,7 +16,7 @@ path: docs/guides/routing/private-models
   Private Models are available for Enterprise Plan customers. Talk to your OpenRouter account representative, or visit [openrouter.ai/enterprise/form](https://openrouter.ai/enterprise/form) to learn about upgrading to Enterprise.
 </Note>
 
-Private Models let you route to your own custom, fine-tuned, or dedicated model endpoints through OpenRouter, alongside the public models you already use. Think of it as "bring your own model" to OpenRouter, with the same API surface your team already uses.
+Private Models let you route to your own dedicated or fine-tuned deployment of a catalog model through OpenRouter, alongside the public models you already use. OpenRouter adds your deployment to that model's provider list instead of creating a new model, so your team calls it with the same slug and API.
 
 Your private models and endpoints are only visible to the users and organizations you approve, and they will never show up in public model lists, rankings, search, charts, and benchmarks.
 
@@ -56,14 +56,14 @@ If you think you will need more than 10 private endpoints, talk to your OpenRout
 
 Private Models is a good fit if:
 
-* You already have a hosted model endpoint, a fine-tuned model, or a dedicated deployment of a public model that you want to route through OpenRouter.
+* You have a dedicated or fine-tuned deployment of a model in the OpenRouter catalog that you want to route through OpenRouter.
 * Your endpoint is OpenAI-compatible, or close enough that we can integrate it quickly.
 * You want your team or organization to access these models through OpenRouter without exposing them publicly.
 * You're on the Enterprise Plan.
 
 ## In-Region Routing
 
-A private endpoint may be eligible for in-region routing when OpenRouter is able to derive a region from its base URL. Endpoints without a derived region are routed on the global `openrouter.ai` domain. See the [In-Region Routing guide](/docs/guides/features/in-region-routing#byok-with-in-region-routing) for supported providers.
+A private endpoint may be eligible for in-region routing when OpenRouter is able to derive a region from its base URL, or when you declare a data region during private-endpoint setup. Endpoints with neither are routed on the global `openrouter.ai` domain. See the [In-Region Routing guide](/docs/guides/features/in-region-routing#byok-with-in-region-routing) for supported providers.
 
 ## Requesting access
 

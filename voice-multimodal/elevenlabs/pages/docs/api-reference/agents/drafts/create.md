@@ -1129,8 +1129,8 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.conversationalAi.agents.drafts.create("agent_id", {
-        branchId: "branch_id",
+    await client.conversationalAi.agents.drafts.create("agent_3701k3ttaq12ewp8b7qv5rfyszkz", {
+        branchId: "agtbrch_8901k4t9z5defmb8vh3e9361y7nj",
         workflow: {
             edges: {
                 entry_to_tool_a: {
@@ -1181,8 +1181,8 @@ from elevenlabs import ElevenLabs, AgentWorkflowRequestModel, WorkflowEdgeModelI
 client = ElevenLabs()
 
 client.conversational_ai.agents.drafts.create(
-    agent_id="agent_id",
-    branch_id="branch_id",
+    agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
+    branch_id="agtbrch_8901k4t9z5defmb8vh3e9361y7nj",
     workflow=AgentWorkflowRequestModel(
         edges={
             "entry_to_tool_a": WorkflowEdgeModelInput(
@@ -1237,7 +1237,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/agents/agent_id/drafts?branch_id=branch_id"
+	url := "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/drafts?branch_id=agtbrch_8901k4t9z5defmb8vh3e9361y7nj"
 
 	payload := strings.NewReader("{\n  \"workflow\": {\n    \"edges\": {\n      \"entry_to_tool_a\": {\n        \"source\": \"entry_node\",\n        \"target\": \"tool_node_a\",\n        \"forward_condition\": {\n          \"condition\": \"Tool A condition\"\n        }\n      },\n      \"start_to_entry\": {\n        \"source\": \"start_node\",\n        \"target\": \"entry_node\",\n        \"forward_condition\": {}\n      },\n      \"tool_a_to_failure\": {\n        \"source\": \"tool_node_a\",\n        \"target\": \"failure_node\",\n        \"forward_condition\": {\n          \"successful\": false\n        }\n      },\n      \"tool_a_to_tool_b\": {\n        \"source\": \"tool_node_a\",\n        \"target\": \"tool_node_b\",\n        \"forward_condition\": {\n          \"successful\": true\n        }\n      },\n      \"tool_b_to_agent_transfer\": {\n        \"source\": \"tool_node_b\",\n        \"target\": \"success_transfer\",\n        \"forward_condition\": {}\n      },\n      \"tool_b_to_conversation\": {\n        \"source\": \"tool_node_b\",\n        \"target\": \"success_conversation\",\n        \"forward_condition\": {\n          \"condition\": \"Conversation condition\"\n        }\n      },\n      \"tool_b_to_end\": {\n        \"source\": \"tool_node_b\",\n        \"target\": \"success_end\",\n        \"forward_condition\": {\n          \"condition\": \"End condition\"\n        }\n      },\n      \"tool_b_to_phone\": {\n        \"source\": \"tool_node_b\",\n        \"target\": \"success_phone\",\n        \"forward_condition\": {\n          \"expression\": {\n            \"children\": [\n              {\n                \"name\": \"force_phone_transfer\"\n              },\n              {\n                \"prompt\": \"Phone condition\",\n                \"value_schema\": {\n                  \"description\": \"Phone condition\",\n                  \"type\": \"boolean\"\n                }\n              },\n              {\n                \"left\": {\n                  \"name\": \"mode\"\n                },\n                \"right\": {\n                  \"value\": \"dev\"\n                }\n              }\n            ]\n          }\n        }\n      }\n    },\n    \"nodes\": {\n      \"entry_node\": {\n        \"conversation_config\": {},\n        \"edge_order\": [\n          \"entry_to_tool_a\"\n        ],\n        \"label\": \"Entry\"\n      },\n      \"failure_node\": {\n        \"conversation_config\": {},\n        \"label\": \"Failure\"\n      },\n      \"start_node\": {\n        \"edge_order\": [\n          \"start_to_entry\"\n        ]\n      },\n      \"success_conversation\": {\n        \"conversation_config\": {},\n        \"label\": \"Success A\"\n      },\n      \"success_end\": {},\n      \"success_phone\": {\n        \"transfer_destination\": {\n          \"phone_number\": \"+1234567890\"\n        }\n      },\n      \"success_transfer\": {\n        \"agent_id\": \"success_transfer_agent\"\n      },\n      \"tool_node_a\": {\n        \"edge_order\": [\n          \"tool_a_to_failure\",\n          \"tool_a_to_tool_b\"\n        ],\n        \"tools\": [\n          {\n            \"tool_id\": \"tool_a\"\n          },\n          {\n            \"tool_id\": \"tool_b\"\n          }\n        ]\n      },\n      \"tool_node_b\": {\n        \"edge_order\": [\n          \"tool_b_to_conversation\",\n          \"tool_b_to_end\",\n          \"tool_b_to_phone\",\n          \"tool_b_to_agent_transfer\"\n        ],\n        \"tools\": [\n          {\n            \"tool_id\": \"tool_a\"\n          }\n        ]\n      }\n    }\n  },\n  \"name\": \"string\"\n}")
 
@@ -1260,7 +1260,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_id/drafts?branch_id=branch_id")
+url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/drafts?branch_id=agtbrch_8901k4t9z5defmb8vh3e9361y7nj")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -1277,7 +1277,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/agents/agent_id/drafts?branch_id=branch_id")
+HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/drafts?branch_id=agtbrch_8901k4t9z5defmb8vh3e9361y7nj")
   .header("Content-Type", "application/json")
   .body("{\n  \"workflow\": {\n    \"edges\": {\n      \"entry_to_tool_a\": {\n        \"source\": \"entry_node\",\n        \"target\": \"tool_node_a\",\n        \"forward_condition\": {\n          \"condition\": \"Tool A condition\"\n        }\n      },\n      \"start_to_entry\": {\n        \"source\": \"start_node\",\n        \"target\": \"entry_node\",\n        \"forward_condition\": {}\n      },\n      \"tool_a_to_failure\": {\n        \"source\": \"tool_node_a\",\n        \"target\": \"failure_node\",\n        \"forward_condition\": {\n          \"successful\": false\n        }\n      },\n      \"tool_a_to_tool_b\": {\n        \"source\": \"tool_node_a\",\n        \"target\": \"tool_node_b\",\n        \"forward_condition\": {\n          \"successful\": true\n        }\n      },\n      \"tool_b_to_agent_transfer\": {\n        \"source\": \"tool_node_b\",\n        \"target\": \"success_transfer\",\n        \"forward_condition\": {}\n      },\n      \"tool_b_to_conversation\": {\n        \"source\": \"tool_node_b\",\n        \"target\": \"success_conversation\",\n        \"forward_condition\": {\n          \"condition\": \"Conversation condition\"\n        }\n      },\n      \"tool_b_to_end\": {\n        \"source\": \"tool_node_b\",\n        \"target\": \"success_end\",\n        \"forward_condition\": {\n          \"condition\": \"End condition\"\n        }\n      },\n      \"tool_b_to_phone\": {\n        \"source\": \"tool_node_b\",\n        \"target\": \"success_phone\",\n        \"forward_condition\": {\n          \"expression\": {\n            \"children\": [\n              {\n                \"name\": \"force_phone_transfer\"\n              },\n              {\n                \"prompt\": \"Phone condition\",\n                \"value_schema\": {\n                  \"description\": \"Phone condition\",\n                  \"type\": \"boolean\"\n                }\n              },\n              {\n                \"left\": {\n                  \"name\": \"mode\"\n                },\n                \"right\": {\n                  \"value\": \"dev\"\n                }\n              }\n            ]\n          }\n        }\n      }\n    },\n    \"nodes\": {\n      \"entry_node\": {\n        \"conversation_config\": {},\n        \"edge_order\": [\n          \"entry_to_tool_a\"\n        ],\n        \"label\": \"Entry\"\n      },\n      \"failure_node\": {\n        \"conversation_config\": {},\n        \"label\": \"Failure\"\n      },\n      \"start_node\": {\n        \"edge_order\": [\n          \"start_to_entry\"\n        ]\n      },\n      \"success_conversation\": {\n        \"conversation_config\": {},\n        \"label\": \"Success A\"\n      },\n      \"success_end\": {},\n      \"success_phone\": {\n        \"transfer_destination\": {\n          \"phone_number\": \"+1234567890\"\n        }\n      },\n      \"success_transfer\": {\n        \"agent_id\": \"success_transfer_agent\"\n      },\n      \"tool_node_a\": {\n        \"edge_order\": [\n          \"tool_a_to_failure\",\n          \"tool_a_to_tool_b\"\n        ],\n        \"tools\": [\n          {\n            \"tool_id\": \"tool_a\"\n          },\n          {\n            \"tool_id\": \"tool_b\"\n          }\n        ]\n      },\n      \"tool_node_b\": {\n        \"edge_order\": [\n          \"tool_b_to_conversation\",\n          \"tool_b_to_end\",\n          \"tool_b_to_phone\",\n          \"tool_b_to_agent_transfer\"\n        ],\n        \"tools\": [\n          {\n            \"tool_id\": \"tool_a\"\n          }\n        ]\n      }\n    }\n  },\n  \"name\": \"string\"\n}")
   .asString();
@@ -1289,7 +1289,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/agents/agent_id/drafts?branch_id=branch_id', [
+$response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/drafts?branch_id=agtbrch_8901k4t9z5defmb8vh3e9361y7nj', [
   'body' => '{
   "workflow": {
     "edges": {
@@ -1439,7 +1439,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_id/drafts?branch_id=branch_id");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/drafts?branch_id=agtbrch_8901k4t9z5defmb8vh3e9361y7nj");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
 request.AddParameter("application/json", "{\n  \"workflow\": {\n    \"edges\": {\n      \"entry_to_tool_a\": {\n        \"source\": \"entry_node\",\n        \"target\": \"tool_node_a\",\n        \"forward_condition\": {\n          \"condition\": \"Tool A condition\"\n        }\n      },\n      \"start_to_entry\": {\n        \"source\": \"start_node\",\n        \"target\": \"entry_node\",\n        \"forward_condition\": {}\n      },\n      \"tool_a_to_failure\": {\n        \"source\": \"tool_node_a\",\n        \"target\": \"failure_node\",\n        \"forward_condition\": {\n          \"successful\": false\n        }\n      },\n      \"tool_a_to_tool_b\": {\n        \"source\": \"tool_node_a\",\n        \"target\": \"tool_node_b\",\n        \"forward_condition\": {\n          \"successful\": true\n        }\n      },\n      \"tool_b_to_agent_transfer\": {\n        \"source\": \"tool_node_b\",\n        \"target\": \"success_transfer\",\n        \"forward_condition\": {}\n      },\n      \"tool_b_to_conversation\": {\n        \"source\": \"tool_node_b\",\n        \"target\": \"success_conversation\",\n        \"forward_condition\": {\n          \"condition\": \"Conversation condition\"\n        }\n      },\n      \"tool_b_to_end\": {\n        \"source\": \"tool_node_b\",\n        \"target\": \"success_end\",\n        \"forward_condition\": {\n          \"condition\": \"End condition\"\n        }\n      },\n      \"tool_b_to_phone\": {\n        \"source\": \"tool_node_b\",\n        \"target\": \"success_phone\",\n        \"forward_condition\": {\n          \"expression\": {\n            \"children\": [\n              {\n                \"name\": \"force_phone_transfer\"\n              },\n              {\n                \"prompt\": \"Phone condition\",\n                \"value_schema\": {\n                  \"description\": \"Phone condition\",\n                  \"type\": \"boolean\"\n                }\n              },\n              {\n                \"left\": {\n                  \"name\": \"mode\"\n                },\n                \"right\": {\n                  \"value\": \"dev\"\n                }\n              }\n            ]\n          }\n        }\n      }\n    },\n    \"nodes\": {\n      \"entry_node\": {\n        \"conversation_config\": {},\n        \"edge_order\": [\n          \"entry_to_tool_a\"\n        ],\n        \"label\": \"Entry\"\n      },\n      \"failure_node\": {\n        \"conversation_config\": {},\n        \"label\": \"Failure\"\n      },\n      \"start_node\": {\n        \"edge_order\": [\n          \"start_to_entry\"\n        ]\n      },\n      \"success_conversation\": {\n        \"conversation_config\": {},\n        \"label\": \"Success A\"\n      },\n      \"success_end\": {},\n      \"success_phone\": {\n        \"transfer_destination\": {\n          \"phone_number\": \"+1234567890\"\n        }\n      },\n      \"success_transfer\": {\n        \"agent_id\": \"success_transfer_agent\"\n      },\n      \"tool_node_a\": {\n        \"edge_order\": [\n          \"tool_a_to_failure\",\n          \"tool_a_to_tool_b\"\n        ],\n        \"tools\": [\n          {\n            \"tool_id\": \"tool_a\"\n          },\n          {\n            \"tool_id\": \"tool_b\"\n          }\n        ]\n      },\n      \"tool_node_b\": {\n        \"edge_order\": [\n          \"tool_b_to_conversation\",\n          \"tool_b_to_end\",\n          \"tool_b_to_phone\",\n          \"tool_b_to_agent_transfer\"\n        ],\n        \"tools\": [\n          {\n            \"tool_id\": \"tool_a\"\n          }\n        ]\n      }\n    }\n  },\n  \"name\": \"string\"\n}", ParameterType.RequestBody);
@@ -1540,7 +1540,7 @@ let parameters = [
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_id/drafts?branch_id=branch_id")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/drafts?branch_id=agtbrch_8901k4t9z5defmb8vh3e9361y7nj")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "POST"

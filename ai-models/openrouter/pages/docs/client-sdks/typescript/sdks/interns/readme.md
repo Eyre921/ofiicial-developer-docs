@@ -449,7 +449,7 @@ run();
 
 ## getInternDaemonAccess
 
-Returns the origin and daemon token that attach `ori tui --host` to one visible, running intern. The token is a credential: the response is sent with `Cache-Control: no-store`, each reveal is logged by caller and intern, and a caller may make 10 reveals per minute. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/client-sdks/typescript/docs/api-reference/authentication) required.
+Returns the origin and daemon token that attach `ori tui --host` to one visible, running intern. The token is a credential: the response is sent with `Cache-Control: no-store`, and each reveal is logged by caller and intern. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/client-sdks/typescript/docs/api-reference/authentication) required.
 
 ### Example Usage
 
@@ -521,11 +521,11 @@ run();
 
 ### Errors
 
-| Error Type                    | Status Code                  | Content Type     |
-| ----------------------------- | ---------------------------- | ---------------- |
-| errors.InternLifecycleError   | 401, 403, 404, 408, 409, 429 | application/json |
-| errors.InternLifecycleError   | 500                          | application/json |
-| errors.OpenRouterDefaultError | 4XX, 5XX                     | \*/\*            |
+| Error Type                    | Status Code             | Content Type     |
+| ----------------------------- | ----------------------- | ---------------- |
+| errors.InternLifecycleError   | 401, 403, 404, 408, 409 | application/json |
+| errors.InternLifecycleError   | 500                     | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX                | \*/\*            |
 
 ## provisionIntern
 

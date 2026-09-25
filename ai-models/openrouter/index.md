@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 463 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 470 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -37,6 +37,10 @@
 - `docs/api/api-reference/api-keys/get-current-api-key` — [Get current API key](pages/docs/api/api-reference/api-keys/get-current-api-key.md) · [原文](https://openrouter.ai/docs/api/api-reference/api-keys/get-current-api-key.md)
 - `docs/api/api-reference/api-keys/list-api-keys` — [List API keys](pages/docs/api/api-reference/api-keys/list-api-keys.md) · [原文](https://openrouter.ai/docs/api/api-reference/api-keys/list-api-keys.md)
 - `docs/api/api-reference/api-keys/update-an-api-key` — [Update an API key](pages/docs/api/api-reference/api-keys/update-an-api-key.md) · [原文](https://openrouter.ai/docs/api/api-reference/api-keys/update-an-api-key.md)
+- `docs/api/api-reference/batch/create-a-batch` — [Create a batch](pages/docs/api/api-reference/batch/create-a-batch.md) · [原文](https://openrouter.ai/docs/api/api-reference/batch/create-a-batch.md)
+- `docs/api/api-reference/batch/delete-a-batch` — [Delete a batch](pages/docs/api/api-reference/batch/delete-a-batch.md) · [原文](https://openrouter.ai/docs/api/api-reference/batch/delete-a-batch.md)
+- `docs/api/api-reference/batch/get-a-batch` — [Get a batch](pages/docs/api/api-reference/batch/get-a-batch.md) · [原文](https://openrouter.ai/docs/api/api-reference/batch/get-a-batch.md)
+- `docs/api/api-reference/batch/list-batches` — [List batches](pages/docs/api/api-reference/batch/list-batches.md) · [原文](https://openrouter.ai/docs/api/api-reference/batch/list-batches.md)
 - `docs/api/api-reference/benchmarks/list-benchmarks` — [List Benchmarks](pages/docs/api/api-reference/benchmarks/list-benchmarks.md) · [原文](https://openrouter.ai/docs/api/api-reference/benchmarks/list-benchmarks.md)
 - `docs/api/api-reference/byok/create-a-byok-provider-credential` — [Create a BYOK provider credential](pages/docs/api/api-reference/byok/create-a-byok-provider-credential.md) · [原文](https://openrouter.ai/docs/api/api-reference/byok/create-a-byok-provider-credential.md)
 - `docs/api/api-reference/byok/delete-a-byok-provider-credential` — [Delete a BYOK provider credential](pages/docs/api/api-reference/byok/delete-a-byok-provider-credential.md) · [原文](https://openrouter.ai/docs/api/api-reference/byok/delete-a-byok-provider-credential.md)
@@ -167,6 +171,7 @@
 - `docs/api_reference/versioning` — [API Versioning](pages/docs/api_reference/versioning.md) · [原文](https://openrouter.ai/docs/api_reference/versioning.md)
 - `docs/app-attribution` — [App Attribution](pages/docs/app-attribution.md) · [原文](https://openrouter.ai/docs/app-attribution.md)
 - `docs/batch-quickstart` — [Batch API Quickstart](pages/docs/batch-quickstart.md) · [原文](https://openrouter.ai/docs/batch-quickstart.md)
+- `docs/batch-quickstart` — [Batch API Quickstart](pages/docs/batch-quickstart-2.md) · [原文](https://openrouter.ai/docs/batch-quickstart.md)
 - `docs/changelog` — [API Changelog](pages/docs/changelog.md) · [原文](https://openrouter.ai/docs/changelog.md)
 - `docs/client-sdks/agent-migration` — [Migrating to @openrouter/agent](pages/docs/client-sdks/agent-migration.md) · [原文](https://openrouter.ai/docs/client-sdks/agent-migration.md)
 - `docs/client-sdks/dev-tools/devtools` — [DevTools](pages/docs/client-sdks/dev-tools/devtools.md) · [原文](https://openrouter.ai/docs/client-sdks/dev-tools/devtools.md)
@@ -208,6 +213,7 @@
 - `docs/client-sdks/python/overview` — [OpenRouter Python SDK](pages/docs/client-sdks/python/overview.md) · [原文](https://openrouter.ai/docs/client-sdks/python/overview.md)
 - `docs/client-sdks/python/sdks/analytics/readme` — [Analytics](pages/docs/client-sdks/python/sdks/analytics/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/analytics/README.md)
 - `docs/client-sdks/python/sdks/apikeys/readme` — [APIKeys](pages/docs/client-sdks/python/sdks/apikeys/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/apikeys/README.md)
+- `docs/client-sdks/python/sdks/batch/readme` — [Batch](pages/docs/client-sdks/python/sdks/batch/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/batch/README.md)
 - `docs/client-sdks/python/sdks/benchmarks/readme` — [Benchmarks](pages/docs/client-sdks/python/sdks/benchmarks/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/benchmarks/README.md)
 - `docs/client-sdks/python/sdks/betaresponses/readme` — [Beta.Responses](pages/docs/client-sdks/python/sdks/betaresponses/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/betaresponses/README.md)
 - `docs/client-sdks/python/sdks/byok/readme` — [BYOK](pages/docs/client-sdks/python/sdks/byok/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/byok/README.md)
@@ -242,6 +248,7 @@
 - `docs/client-sdks/typescript/overview` — [OpenRouter TypeScript SDK](pages/docs/client-sdks/typescript/overview.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/overview.md)
 - `docs/client-sdks/typescript/sdks/analytics/readme` — [Analytics](pages/docs/client-sdks/typescript/sdks/analytics/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/analytics/README.md)
 - `docs/client-sdks/typescript/sdks/apikeys/readme` — [APIKeys](pages/docs/client-sdks/typescript/sdks/apikeys/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/apikeys/README.md)
+- `docs/client-sdks/typescript/sdks/batch/readme` — [Batch](pages/docs/client-sdks/typescript/sdks/batch/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/batch/README.md)
 - `docs/client-sdks/typescript/sdks/benchmarks/readme` — [Benchmarks](pages/docs/client-sdks/typescript/sdks/benchmarks/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/benchmarks/README.md)
 - `docs/client-sdks/typescript/sdks/betaresponses/readme` — [Beta.Responses](pages/docs/client-sdks/typescript/sdks/betaresponses/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/betaresponses/README.md)
 - `docs/client-sdks/typescript/sdks/byok/readme` — [BYOK](pages/docs/client-sdks/typescript/sdks/byok/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/byok/README.md)

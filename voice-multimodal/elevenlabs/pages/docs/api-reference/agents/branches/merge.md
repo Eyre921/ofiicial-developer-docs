@@ -72,15 +72,6 @@ Validation Error
 **Request**
 
 ```json
-{
-  "archive_source_branch": true,
-  "force": false
-}
-```
-
-**Response**
-
-```json
 {}
 ```
 
@@ -91,10 +82,8 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.conversationalAi.agents.branches.merge("agent_id", "source_branch_id", {
-        targetBranchId: "target_branch_id",
-        archiveSourceBranch: true,
-        force: false,
+    await client.conversationalAi.agents.branches.merge("agent_3701k3ttaq12ewp8b7qv5rfyszkz", "agtbrch_8901k4t9z5defmb8vh3e9361y7nj", {
+        targetBranchId: "agtbrch_8901k4t9z5defmb8vh3e9361y7nj",
     });
 }
 main();
@@ -107,11 +96,9 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.conversational_ai.agents.branches.merge(
-    agent_id="agent_id",
-    source_branch_id="source_branch_id",
-    target_branch_id="target_branch_id",
-    archive_source_branch=True,
-    force=False,
+    agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
+    source_branch_id="agtbrch_8901k4t9z5defmb8vh3e9361y7nj",
+    target_branch_id="agtbrch_8901k4t9z5defmb8vh3e9361y7nj",
 )
 
 ```
@@ -128,9 +115,9 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/source_branch_id/merge?target_branch_id=target_branch_id"
+	url := "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/merge?target_branch_id=agtbrch_8901k4t9z5defmb8vh3e9361y7nj"
 
-	payload := strings.NewReader("{\n  \"archive_source_branch\": true,\n  \"force\": false\n}")
+	payload := strings.NewReader("{}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -151,14 +138,14 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/source_branch_id/merge?target_branch_id=target_branch_id")
+url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/merge?target_branch_id=agtbrch_8901k4t9z5defmb8vh3e9361y7nj")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"archive_source_branch\": true,\n  \"force\": false\n}"
+request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -168,9 +155,9 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/source_branch_id/merge?target_branch_id=target_branch_id")
+HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/merge?target_branch_id=agtbrch_8901k4t9z5defmb8vh3e9361y7nj")
   .header("Content-Type", "application/json")
-  .body("{\n  \"archive_source_branch\": true,\n  \"force\": false\n}")
+  .body("{}")
   .asString();
 ```
 
@@ -180,11 +167,8 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/source_branch_id/merge?target_branch_id=target_branch_id', [
-  'body' => '{
-  "archive_source_branch": true,
-  "force": false
-}',
+$response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/merge?target_branch_id=agtbrch_8901k4t9z5defmb8vh3e9361y7nj', [
+  'body' => '{}',
   'headers' => [
     'Content-Type' => 'application/json',
   ],
@@ -196,10 +180,10 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/source_branch_id/merge?target_branch_id=target_branch_id");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/merge?target_branch_id=agtbrch_8901k4t9z5defmb8vh3e9361y7nj");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"archive_source_branch\": true,\n  \"force\": false\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -207,14 +191,11 @@ IRestResponse response = client.Execute(request);
 import Foundation
 
 let headers = ["Content-Type": "application/json"]
-let parameters = [
-  "archive_source_branch": true,
-  "force": false
-] as [String : Any]
+let parameters = [] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/source_branch_id/merge?target_branch_id=target_branch_id")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/merge?target_branch_id=agtbrch_8901k4t9z5defmb8vh3e9361y7nj")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "POST"

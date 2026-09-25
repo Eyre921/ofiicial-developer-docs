@@ -185,7 +185,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.conversationalAi.phoneNumbers.update("phone_number_id", {});
+    await client.conversationalAi.phoneNumbers.update("TeaqRRdTcIfIu2i7BYfT", {});
 }
 main();
 
@@ -197,7 +197,7 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.conversational_ai.phone_numbers.update(
-    phone_number_id="phone_number_id",
+    phone_number_id="TeaqRRdTcIfIu2i7BYfT",
 )
 
 ```
@@ -214,7 +214,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/phone-numbers/phone_number_id"
+	url := "https://api.elevenlabs.io/v1/convai/phone-numbers/TeaqRRdTcIfIu2i7BYfT"
 
 	payload := strings.NewReader("{}")
 
@@ -237,7 +237,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/phone-numbers/phone_number_id")
+url = URI("https://api.elevenlabs.io/v1/convai/phone-numbers/TeaqRRdTcIfIu2i7BYfT")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -254,7 +254,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.patch("https://api.elevenlabs.io/v1/convai/phone-numbers/phone_number_id")
+HttpResponse<String> response = Unirest.patch("https://api.elevenlabs.io/v1/convai/phone-numbers/TeaqRRdTcIfIu2i7BYfT")
   .header("Content-Type", "application/json")
   .body("{}")
   .asString();
@@ -266,7 +266,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('PATCH', 'https://api.elevenlabs.io/v1/convai/phone-numbers/phone_number_id', [
+$response = $client->request('PATCH', 'https://api.elevenlabs.io/v1/convai/phone-numbers/TeaqRRdTcIfIu2i7BYfT', [
   'body' => '{}',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -279,7 +279,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/phone-numbers/phone_number_id");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/phone-numbers/TeaqRRdTcIfIu2i7BYfT");
 var request = new RestRequest(Method.PATCH);
 request.AddHeader("Content-Type", "application/json");
 request.AddParameter("application/json", "{}", ParameterType.RequestBody);
@@ -294,7 +294,7 @@ let parameters = [] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/phone-numbers/phone_number_id")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/phone-numbers/TeaqRRdTcIfIu2i7BYfT")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "PATCH"

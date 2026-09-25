@@ -300,6 +300,6 @@ The following frameworks offer built-in image optimization tools that we support
 Keep the following limitation in mind when working with Netlify Image CDN:
 
 - [Split Testing](/manage/monitoring/split-testing/) is not supported. You may get inconsistent image results between your split test branches. 
-- Netlify Image CDN is not currently supported as part of our HIPAA-compliant hosting offering. For more information, visit our [Trust Center](https://trust-center.netlify-corp.com) and download our reference architecture for HIPAA-compliant composable sites on Netlify.
+- Netlify Image CDN is not currently supported as part of our HIPAA-compliant hosting offering. Learn more about our [Trust Center](https://www.netlify.com/trust-center/), where you can download the reference architecture for HIPAA-compliant sites on Netlify. Anyone with a Netlify account can download it.
 
 

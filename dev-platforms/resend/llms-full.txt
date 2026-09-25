@@ -7343,8 +7343,8 @@ Either `id` or `email` must be provided.
       The property key.
     </ParamField>
 
-    <ParamField type="string">
-      The property value.
+    <ParamField type="string | number | boolean | null">
+      The property value. Use `null` to clear the property value.
     </ParamField>
   </Expandable>
 </ParamField>
@@ -11228,7 +11228,7 @@ Instead of sending one email per HTTP request, Resend provides a batching endpoi
 <ParamField type="object">
   Template variables object with key/value pairs.
 
-  ```ts theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  ```ts theme={"theme":{"light":"github-light","dark":"vesper"}}
   variables: {
   	CTA: 'Sign up now',
   	CTA_LINK: 'https://example.com/signup'
@@ -11682,7 +11682,7 @@ Start sending emails through the Resend Email API.
 <ParamField type="object">
   Template variables object with key/value pairs.
 
-  ```ts theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  ```ts theme={"theme":{"light":"github-light","dark":"vesper"}}
   variables: {
   	CTA: 'Sign up now',
   	CTA_LINK: 'https://example.com/signup'
@@ -26340,7 +26340,7 @@ You can also add properties to a Contact when you [create a Contact](/docs/api-r
           FirstName = "Steve",
           LastName = "Wozniak",
           IsUnsubscribed = false,
-          Properties = new Dictionary<string, string> {
+          Properties = new Dictionary<string, object?> {
             { "company_name", "Acme Corp" }
           }
       }
@@ -26546,7 +26546,7 @@ Or you can update a Contact to add or change a property value [using the update 
       {
           FirstName = "Stevie",
           LastName = "Wozniaks",
-          Properties = new Dictionary<string, string> {
+          Properties = new Dictionary<string, object?> {
             { "company_name", "Acme Corp" }
           }
       }
@@ -26559,7 +26559,7 @@ Or you can update a Contact to add or change a property value [using the update 
       {
           FirstName = "Stevie",
           LastName = "Wozniaks",
-          Properties = new Dictionary<string, string> {
+          Properties = new Dictionary<string, object?> {
             { "company_name", "Acme Corp" }
           }
       }
@@ -26914,7 +26914,7 @@ Common use cases:
   The ID of the segment to add the contact to.
 </ParamField>
 
-```json Example theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+```json Example theme={"theme":{"light":"github-light","dark":"vesper"}}
 {
   "key": "add_to_vip",
   "type": "add_to_segment",
@@ -27439,7 +27439,7 @@ For `and` / `or` types:
 
 Single rule example:
 
-```json theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+```json theme={"theme":{"light":"github-light","dark":"vesper"}}
 {
   "key": "check_plan",
   "type": "condition",
@@ -27454,7 +27454,7 @@ Single rule example:
 
 Use `and` or `or` to combine multiple rules into a single branch:
 
-```json {5-19} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+```json {5-19} theme={"theme":{"light":"github-light","dark":"vesper"}}
 {
   "key": "check_plan_and_amount",
   "type": "condition",
@@ -27833,7 +27833,7 @@ Connections define the links between steps in the automation graph.
   * `event_received`
 </ParamField>
 
-```json Example theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+```json Example theme={"theme":{"light":"github-light","dark":"vesper"}}
 {
   "from": "start",
   "to": "welcome",
@@ -28131,7 +28131,7 @@ Common use cases:
 
 ## Configuration
 
-```json Example theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+```json Example theme={"theme":{"light":"github-light","dark":"vesper"}}
 {
   "key": "remove_contact",
   "type": "contact_delete",
@@ -28525,7 +28525,7 @@ For more help working with variables in templates, see the [Send Email](/docs/da
   hardcoded value (string, number, boolean) or a variable reference.
 </ParamField>
 
-```json Example theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+```json Example theme={"theme":{"light":"github-light","dark":"vesper"}}
 {
   "key": "update_contact",
   "type": "contact_update",
@@ -29767,7 +29767,7 @@ View the [Create Event API reference](/docs/api-reference/events/create-event) f
   flat key/type pairs. Supported types: `string`, `number`, `boolean`, `date`.
 </ParamField>
 
-```json Example theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+```json Example theme={"theme":{"light":"github-light","dark":"vesper"}}
 {
   "schema": {
     "plan": "string",
@@ -30072,7 +30072,7 @@ Common use cases:
   30 days.
 </ParamField>
 
-```json Example theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+```json Example theme={"theme":{"light":"github-light","dark":"vesper"}}
 {
   "key": "wait_1_hour",
   "type": "delay",
@@ -31333,7 +31333,7 @@ See [when to use an unsubscribe link](/docs/knowledge-base/should-i-add-an-unsub
   If provided, this value will override the template's default value.
 </ParamField>
 
-```json theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+```json theme={"theme":{"light":"github-light","dark":"vesper"}}
 {
   "key": "welcome",
   "type": "send_email",
@@ -32437,7 +32437,7 @@ View the [Send Event API reference](/docs/api-reference/events/send-event) for t
   The name of the event that triggers the automation.
 </ParamField>
 
-```json theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+```json theme={"theme":{"light":"github-light","dark":"vesper"}}
 {
   "key": "start",
   "type": "trigger",
@@ -32819,7 +32819,7 @@ The filter rule supports the same [operators](/docs/dashboard/automations/condit
   An optional rule object to filter incoming events.
 </ParamField>
 
-```json Example theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+```json Example theme={"theme":{"light":"github-light","dark":"vesper"}}
 {
   "key": "wait_for_purchase",
   "type": "wait_for_event",

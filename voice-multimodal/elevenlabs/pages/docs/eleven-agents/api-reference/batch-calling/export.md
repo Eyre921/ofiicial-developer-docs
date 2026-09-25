@@ -56,18 +56,6 @@ Validation Error
 
 ## Examples
 
-**Request**
-
-```json
-{}
-```
-
-**Response**
-
-```json
-{}
-```
-
 **SDK Code**
 
 ```typescript
@@ -75,9 +63,9 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient({
-        apiKey: "123e4567-e89b-12d3-a456-426614174000",
+        apiKey: "string",
     });
-    await client.conversationalAi.batchCalls.export("b7f3c9d2-4a1e-4f8a-9c3d-2e5f7a1b8c9d");
+    await client.conversationalAi.batchCalls.export(":batch_id");
 }
 main();
 
@@ -87,11 +75,11 @@ main();
 from elevenlabs import ElevenLabs
 
 client = ElevenLabs(
-    api_key="123e4567-e89b-12d3-a456-426614174000",
+    api_key="string",
 )
 
 client.conversational_ai.batch_calls.export(
-    batch_id="b7f3c9d2-4a1e-4f8a-9c3d-2e5f7a1b8c9d",
+    batch_id=":batch_id",
 )
 
 ```
@@ -101,21 +89,17 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/batch-calling/b7f3c9d2-4a1e-4f8a-9c3d-2e5f7a1b8c9d/export"
+	url := "https://api.elevenlabs.io/v1/convai/batch-calling/%3Abatch_id/export"
 
-	payload := strings.NewReader("{}")
+	req, _ := http.NewRequest("GET", url, nil)
 
-	req, _ := http.NewRequest("GET", url, payload)
-
-	req.Header.Add("xi-api-key", "123e4567-e89b-12d3-a456-426614174000")
-	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("xi-api-key", "string")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -132,15 +116,13 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/batch-calling/b7f3c9d2-4a1e-4f8a-9c3d-2e5f7a1b8c9d/export")
+url = URI("https://api.elevenlabs.io/v1/convai/batch-calling/%3Abatch_id/export")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["xi-api-key"] = '123e4567-e89b-12d3-a456-426614174000'
-request["Content-Type"] = 'application/json'
-request.body = "{}"
+request["xi-api-key"] = 'string'
 
 response = http.request(request)
 puts response.read_body
@@ -150,10 +132,8 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/batch-calling/b7f3c9d2-4a1e-4f8a-9c3d-2e5f7a1b8c9d/export")
-  .header("xi-api-key", "123e4567-e89b-12d3-a456-426614174000")
-  .header("Content-Type", "application/json")
-  .body("{}")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/batch-calling/%3Abatch_id/export")
+  .header("xi-api-key", "string")
   .asString();
 ```
 
@@ -163,11 +143,9 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/batch-calling/b7f3c9d2-4a1e-4f8a-9c3d-2e5f7a1b8c9d/export', [
-  'body' => '{}',
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/batch-calling/%3Abatch_id/export', [
   'headers' => [
-    'Content-Type' => 'application/json',
-    'xi-api-key' => '123e4567-e89b-12d3-a456-426614174000',
+    'xi-api-key' => 'string',
   ],
 ]);
 
@@ -177,31 +155,22 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/batch-calling/b7f3c9d2-4a1e-4f8a-9c3d-2e5f7a1b8c9d/export");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/batch-calling/%3Abatch_id/export");
 var request = new RestRequest(Method.GET);
-request.AddHeader("xi-api-key", "123e4567-e89b-12d3-a456-426614174000");
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
+request.AddHeader("xi-api-key", "string");
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = [
-  "xi-api-key": "123e4567-e89b-12d3-a456-426614174000",
-  "Content-Type": "application/json"
-]
-let parameters = [] as [String : Any]
+let headers = ["xi-api-key": "string"]
 
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
-
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/batch-calling/b7f3c9d2-4a1e-4f8a-9c3d-2e5f7a1b8c9d/export")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/batch-calling/%3Abatch_id/export")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
 request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

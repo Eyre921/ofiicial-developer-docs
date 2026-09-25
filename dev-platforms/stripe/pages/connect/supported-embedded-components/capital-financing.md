@@ -125,7 +125,7 @@ container.appendChild(capitalFinancing);
 To render the single-financing view, call `setDefaultFinancingOffer(...)` and `setShowFinancingSelector(false)` (using HTML + JS), or set `defaultFinancingOffer` and `showFinancingSelector={false}` (using React).
 
 - For most financing states, this configuration displays only the **Activity** tab and scopes its transaction list to the selected financing.
-- For connected accounts with dual-merchant financing, the component displays that financing instead of the financing specified by `defaultFinancingOffer`.
+- For connected accounts with dual-merchant financing, if the `defaultFinancingOffer` is omitted or unavailable, the component displays the dual-merchant financing.
 - For rejected or revoked financing, the component displays only the **Past** tab.
 
 ## Style and customize the component

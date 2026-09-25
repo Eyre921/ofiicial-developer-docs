@@ -94,7 +94,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.audioNative.update("project_id", {});
+    await client.audioNative.update("21m00Tcm4TlvDq8ikWAM", {});
 }
 main();
 
@@ -106,7 +106,7 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.audio_native.update(
-    project_id="project_id",
+    project_id="21m00Tcm4TlvDq8ikWAM",
     file="example_file",
 )
 
@@ -124,7 +124,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/audio-native/project_id/content"
+	url := "https://api.elevenlabs.io/v1/audio-native/21m00Tcm4TlvDq8ikWAM/content"
 
 	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"auto_convert\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"auto_publish\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"<file1>\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
 
@@ -147,7 +147,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/audio-native/project_id/content")
+url = URI("https://api.elevenlabs.io/v1/audio-native/21m00Tcm4TlvDq8ikWAM/content")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -164,7 +164,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/audio-native/project_id/content")
+HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/audio-native/21m00Tcm4TlvDq8ikWAM/content")
   .header("Content-Type", "multipart/form-data; boundary=---011000010111000001101001")
   .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"auto_convert\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"auto_publish\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"<file1>\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
   .asString();
@@ -176,7 +176,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://api.elevenlabs.io/v1/audio-native/project_id/content', [
+$response = $client->request('POST', 'https://api.elevenlabs.io/v1/audio-native/21m00Tcm4TlvDq8ikWAM/content', [
   'multipart' => [
     [
         'name' => 'file',
@@ -192,7 +192,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/audio-native/project_id/content");
+var client = new RestClient("https://api.elevenlabs.io/v1/audio-native/21m00Tcm4TlvDq8ikWAM/content");
 var request = new RestRequest(Method.POST);
 request.AddParameter("multipart/form-data; boundary=---011000010111000001101001", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"auto_convert\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"auto_publish\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"<file1>\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
@@ -239,7 +239,7 @@ for param in parameters {
   }
 }
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/audio-native/project_id/content")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/audio-native/21m00Tcm4TlvDq8ikWAM/content")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "POST"

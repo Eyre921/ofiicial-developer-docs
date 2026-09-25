@@ -41,7 +41,7 @@ Cached responses from edge functions [configured for caching](/build/edge-functi
 - Edge functions can only [rewrite requests](/build/edge-functions/api#return-a-rewrite) to same-site URLs. To fetch content hosted on another Netlify site or an external site, use the [`fetch` Web API](/build/edge-functions/api#supported-web-apis).
 - Edge functions [configured for caching](/build/edge-functions/optional-configuration#response-caching) always shadow static files that actually exist within the site. If an edge function configured for caching is declared to run on `/*` and there's a `cat.png` static file, a request to `/cat.png` serves the edge function rather than the static file.
 - There is no local caching for edge functions. Any HTTP headers for cache configuration in an edge function are ignored in local testing.
-- Netlify Edge Functions is not currently supported as part of our HIPAA-compliant hosting offering. For more information, visit our [Trust Center](https://trust-center.netlify-corp.com) and download our reference architecture for HIPAA-compliant composable sites on Netlify.
+- Netlify Edge Functions is not currently supported as part of our HIPAA-compliant hosting offering. Learn more about our [Trust Center](https://www.netlify.com/trust-center/), where you can download the reference architecture for HIPAA-compliant sites on Netlify. Anyone with a Netlify account can download it.
 
 ### Tip - Learn more about the edge function processing order and caveats
 

@@ -452,7 +452,27 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.voices.search({});
+    await client.voices.search({
+        accent: "american",
+        age: "young",
+        gender: "male",
+        highQuality: true,
+        includeCustomRates: true,
+        includeLiveModerated: true,
+        includeTotalCount: true,
+        language: [
+            "en",
+            "es",
+        ],
+        minNoticePeriodDays: 30,
+        nextPageToken: "0",
+        sort: "created_at_unix",
+        sortDirection: "desc",
+        useCases: [
+            "conversational",
+            "narrative_story",
+        ],
+    });
 }
 main();
 
@@ -463,7 +483,27 @@ from elevenlabs import ElevenLabs
 
 client = ElevenLabs()
 
-client.voices.search()
+client.voices.search(
+    accent="american",
+    age="young",
+    gender="male",
+    high_quality=True,
+    include_custom_rates=True,
+    include_live_moderated=True,
+    include_total_count=True,
+    language=[
+        "en",
+        "es"
+    ],
+    min_notice_period_days=30,
+    next_page_token="0",
+    sort="created_at_unix",
+    sort_direction="desc",
+    use_cases=[
+        "conversational",
+        "narrative_story"
+    ],
+)
 
 ```
 
@@ -478,7 +518,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v2/voices"
+	url := "https://api.elevenlabs.io/v2/voices?accent=american&age=young&gender=male&high_quality=true&include_custom_rates=true&include_live_moderated=true&include_total_count=true&language=%5B%22en%22%2C%22es%22%5D&min_notice_period_days=30&next_page_token=0&sort=created_at_unix&sort_direction=desc&use_cases=%5B%22conversational%22%2C%22narrative_story%22%5D"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -497,7 +537,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v2/voices")
+url = URI("https://api.elevenlabs.io/v2/voices?accent=american&age=young&gender=male&high_quality=true&include_custom_rates=true&include_live_moderated=true&include_total_count=true&language=%5B%22en%22%2C%22es%22%5D&min_notice_period_days=30&next_page_token=0&sort=created_at_unix&sort_direction=desc&use_cases=%5B%22conversational%22%2C%22narrative_story%22%5D")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -512,7 +552,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v2/voices")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v2/voices?accent=american&age=young&gender=male&high_quality=true&include_custom_rates=true&include_live_moderated=true&include_total_count=true&language=%5B%22en%22%2C%22es%22%5D&min_notice_period_days=30&next_page_token=0&sort=created_at_unix&sort_direction=desc&use_cases=%5B%22conversational%22%2C%22narrative_story%22%5D")
   .asString();
 ```
 
@@ -522,7 +562,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v2/voices');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v2/voices?accent=american&age=young&gender=male&high_quality=true&include_custom_rates=true&include_live_moderated=true&include_total_count=true&language=%5B%22en%22%2C%22es%22%5D&min_notice_period_days=30&next_page_token=0&sort=created_at_unix&sort_direction=desc&use_cases=%5B%22conversational%22%2C%22narrative_story%22%5D');
 
 echo $response->getBody();
 ```
@@ -530,7 +570,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v2/voices");
+var client = new RestClient("https://api.elevenlabs.io/v2/voices?accent=american&age=young&gender=male&high_quality=true&include_custom_rates=true&include_live_moderated=true&include_total_count=true&language=%5B%22en%22%2C%22es%22%5D&min_notice_period_days=30&next_page_token=0&sort=created_at_unix&sort_direction=desc&use_cases=%5B%22conversational%22%2C%22narrative_story%22%5D");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -538,7 +578,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v2/voices")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v2/voices?accent=american&age=young&gender=male&high_quality=true&include_custom_rates=true&include_live_moderated=true&include_total_count=true&language=%5B%22en%22%2C%22es%22%5D&min_notice_period_days=30&next_page_token=0&sort=created_at_unix&sort_direction=desc&use_cases=%5B%22conversational%22%2C%22narrative_story%22%5D")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

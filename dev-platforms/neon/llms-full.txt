@@ -253,11 +253,9 @@ The `api_token` is printed once; set it as `NEON_AI_GATEWAY_TOKEN`. Run it in a 
 
 **Console**
 
-In the Neon Console, select your branch and click **Credentials** under **Branch** in the sidebar. Click **Create credential**, give it a name, and check **ai_gateway:invoke**.
+In the Neon Console, click **Connect** at the top of the sidebar and open the **AI Gateway** tab. The snippet includes both gateway env vars (see [Environment variables](https://neon.com/docs/ai-gateway/authentication#environment-variables) below). Click **Reveal credential** to show the token, or **Copy snippet** to copy the full `.env`. Use **Rotate credential** to replace the token in place.
 
-After creation, the credential is shown once. Copy the snippet or click **Download .env** before closing. The snippet includes both gateway env vars (see [Environment variables](https://neon.com/docs/ai-gateway/authentication#environment-variables) below).
-
-To view or revoke credentials later, return to the **Credentials** page and use the action menu (⋮) next to the credential.
+The Connect dialog reveals and rotates the current credential. To list all credentials for the branch or revoke one, use the [Neon CLI](https://neon.com/docs/cli/credentials) or the API (below).
 
 **API**
 
@@ -417,7 +415,7 @@ This design lets you use a single credential across your entire development work
 
 To rotate a credential in place with the [Neon CLI](https://neon.com/docs/cli/credentials), run `neon credentials rotate <token_id>` (find the id with `neon credentials list`). The `token_id` stays the same and a new `api_token` is minted, so update `NEON_AI_GATEWAY_TOKEN` with it. Otherwise, create a new credential, update your environment variables, then revoke the old one.
 
-To revoke from the Console, open the **Credentials** page and use the action menu (⋮) next to the credential. To revoke via the API:
+The Console's **Connect** dialog can rotate a credential (**AI Gateway** tab > **Rotate credential**) but not revoke one. To revoke, use the [Neon CLI](https://neon.com/docs/cli/credentials) (`neon credentials revoke <token_id>`) or the API:
 
 ```bash
 curl -X DELETE "https://console.neon.tech/api/v2/projects/{project_id}/branches/{branch_id}/credentials/{token_id}" \
@@ -821,7 +819,7 @@ Without the Neon CLI, run `npx skills add neondatabase/agent-skills -s neon -s n
 
 ## Get access
 
-You need a project in AWS US East (Ohio) (`aws-us-east-2`), AWS US East (N. Virginia) (`aws-us-east-1`), AWS Europe (Frankfurt) (`aws-eu-central-1`), or AWS Asia Pacific (Singapore) (`aws-ap-southeast-1`). Support is expanding toward [all regions](https://neon.com/docs/introduction/regions). Using the AI Gateway requires a paid Neon plan with prepaid credits, which gives you the open-weight models. To request access to the full foundation model catalog, see [Model access](https://neon.com/docs/ai-gateway/overview#model-access).
+You need a project in AWS US East (Ohio) (`aws-us-east-2`), AWS US East (N. Virginia) (`aws-us-east-1`), AWS Europe (Frankfurt) (`aws-eu-central-1`), or AWS Asia Pacific (Singapore) (`aws-ap-southeast-1`). Support is expanding toward [all regions](https://neon.com/docs/introduction/regions). Using the AI Gateway requires a paid Neon plan with prepaid credits, which gives you the open-weight models. To request access to foundation models, see [Model access](https://neon.com/docs/ai-gateway/overview#model-access).
 
 ## Create a credential
 
@@ -831,7 +829,7 @@ With the [Neon CLI](https://neon.com/docs/cli/credentials), run:
 neon credentials create --scope ai_gateway:invoke
 ```
 
-Or, in the Neon Console, select your branch, click **Credentials** under **Branch**, then click **Create credential** and check **ai_gateway:invoke**. Copy the credential before closing, it's shown only once.
+Or, in the Neon Console, click **Connect** at the top of the sidebar and open the **AI Gateway** tab. Click **Reveal credential** to show `NEON_AI_GATEWAY_TOKEN`, or **Copy snippet** to copy it together with `NEON_AI_GATEWAY_BASE_URL`. Use **Rotate credential** to issue a new token.
 
 Or use the API:
 
@@ -854,7 +852,7 @@ export NEON_AI_GATEWAY_TOKEN=nt_live_...
 
 ## Find your branch host
 
-Your branch's AI Gateway host is available in the Neon Console on the AI Gateway page, or via the Neon API. It follows this format:
+Your branch's AI Gateway host is available in the Neon Console from the **Connect** dialog's **AI Gateway** tab, or via the Neon API. It follows this format:
 
 ```
 br-<name>-api.ai.<cell>.<region>.aws.neon.tech
@@ -1062,11 +1060,11 @@ The full catalog is served as JSON at [`neon.com/models.json`](https://neon.com/
 
 Neon AI Gateway gives you one credential for both open-weight and foundation models. The catalog grows continuously as new models roll out, so the [table below](https://neon.com/docs/ai-gateway/models#available-models) is always the source of truth for what you can call today.
 
-Using the AI Gateway requires a paid plan with prepaid credits, which gives you the open-weight models. Foundation models are rolled out gradually. See [Model access](https://neon.com/docs/ai-gateway/overview#model-access) for what's included and how to request access to the full catalog.
+Using the AI Gateway requires a paid plan with prepaid credits, which gives you the open-weight models. Foundation models are rolled out gradually. See [Model access](https://neon.com/docs/ai-gateway/overview#model-access) for what's included and how to request access to foundation models.
 
 ## Available models
 
-Browse the full catalog below. Switch between the **Text** and **Image** tabs, filter by provider or open weights, sort any column, and click a model for a copy-paste quickstart (AI SDK, Mastra, Python, TypeScript, or cURL). The endpoint each snippet targets is baked into its base URL: `/v1` for chat completions, `/openai/v1` for the Responses API (image generation).
+Browse the full catalog below. Switch between the **Text**, **Image**, and **Embeddings** tabs, filter by provider or open weights, sort any column, and click a model for a copy-paste quickstart. Chat and image models get AI SDK, Mastra, Python, TypeScript, and cURL; embedding models get Python, TypeScript, and cURL. The endpoint each snippet targets is baked into its base URL: `/v1` for chat completions and embeddings, `/openai/v1` for the Responses API (image generation).
 
 ### Text models
 
@@ -1172,6 +1170,17 @@ These models support image generation through the Responses API (base URL `/open
 
 Select a linked model for image-generation examples matched to that model.
 
+### Embedding models
+
+These models return a fixed-length vector on `POST /v1/embeddings` rather than generating text — a different endpoint from every model above:
+
+| Model                                                                                   | Model ID               | Dimensions | Released | Input /M | Endpoints  | License      |
+| --------------------------------------------------------------------------------------- | ---------------------- | ---------- | -------- | -------- | ---------- | ------------ |
+| [Qwen3 Embedding 0.6B](https://neon.com/docs/ai-gateway/models/qwen3-embedding-0-6b.md) | `qwen3-embedding-0-6b` | 1024       | Jun 2025 | $0.02    | embeddings | Open weights |
+| [GTE Large EN](https://neon.com/docs/ai-gateway/models/gte-large-en.md)                 | `gte-large-en`         | 1024       | Jul 2023 | $0.13    | embeddings | Open weights |
+
+Select a linked model for embeddings-specific code examples.
+
 Prices are provider list prices per million tokens. Inference is free during the private preview. Click a model for a copy-paste quickstart.
 
 For full request paths and when to prefer each endpoint, see [Which endpoint to use](https://neon.com/docs/ai-gateway/models#which-endpoint-to-use).
@@ -1204,13 +1213,15 @@ Most models work with the [Chat completions](https://neon.com/docs/ai-gateway/ch
 
 All paths below are appended to your branch's bare AI Gateway host (`NEON_AI_GATEWAY_BASE_URL`).
 
-| Provider                                                | Recommended endpoint   | Notes                                                                         |
-| ------------------------------------------------------- | ---------------------- | ----------------------------------------------------------------------------- |
-| OpenAI (most models)                                    | `/v1/chat/completions` | Use `/openai/v1/responses` for Responses API features                         |
-| OpenAI (`gpt-5-3-codex`, `gpt-5-5-pro`)                 | `/openai/v1/responses` | These models require the Responses API and don't work with chat/completions   |
-| Google Gemini                                           | `/v1/chat/completions` | Use `/gemini/v1beta/models/{model}:generateContent` with the google-genai SDK |
-| Google Gemma 3 12B                                      | `/v1/chat/completions` | Chat completions only. Doesn't support the Gemini SDK endpoint                |
-| Meta, Alibaba, Zhipu AI, Thinking Machines, Moonshot AI | `/v1/chat/completions` | Chat completions only                                                         |
+| Provider                                       | Recommended endpoint   | Notes                                                                         |
+| ---------------------------------------------- | ---------------------- | ----------------------------------------------------------------------------- |
+| OpenAI (most models)                           | `/v1/chat/completions` | Use `/openai/v1/responses` for Responses API features                         |
+| OpenAI (`gpt-5-3-codex`, `gpt-5-5-pro`)        | `/openai/v1/responses` | These models require the Responses API and don't work with chat/completions   |
+| Google Gemini                                  | `/v1/chat/completions` | Use `/gemini/v1beta/models/{model}:generateContent` with the google-genai SDK |
+| Google Gemma 3 12B                             | `/v1/chat/completions` | Chat completions only. Doesn't support the Gemini SDK endpoint                |
+| Meta, Zhipu AI, Thinking Machines, Moonshot AI | `/v1/chat/completions` | Chat completions only                                                         |
+| Alibaba (chat models)                          | `/v1/chat/completions` | Chat completions only                                                         |
+| Alibaba (embedding models)                     | `/v1/embeddings`       | No chat completions — returns a vector, not text                              |
 
 ## Shorter paths
 
@@ -1416,7 +1427,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
 #
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        - unified Chat Completions
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
@@ -1573,7 +1584,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
 #
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        - unified Chat Completions
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
@@ -1730,7 +1741,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
 #
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        - unified Chat Completions
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
@@ -1887,7 +1898,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
 #
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        - unified Chat Completions
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
@@ -2044,7 +2055,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
 #
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        - unified Chat Completions
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
@@ -2201,7 +2212,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
 #
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        - unified Chat Completions
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
@@ -2358,7 +2369,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
 #
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        - unified Chat Completions
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
@@ -2515,7 +2526,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
 #
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        - unified Chat Completions
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
@@ -2672,7 +2683,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
 #
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        - unified Chat Completions
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
@@ -2947,7 +2958,7 @@ print(sizes)
 # apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
 #
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        - unified Chat Completions
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
@@ -3222,7 +3233,7 @@ print(sizes)
 # apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
 #
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        - unified Chat Completions
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
@@ -3498,7 +3509,7 @@ print(sizes)
 # apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
 #
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        - unified Chat Completions
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
@@ -3773,7 +3784,7 @@ print(sizes)
 # apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
 #
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        - unified Chat Completions
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
@@ -4048,7 +4059,7 @@ print(sizes)
 # apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
 #
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        - unified Chat Completions
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
@@ -4323,7 +4334,7 @@ print(sizes)
 # apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
 #
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        - unified Chat Completions
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
@@ -4599,7 +4610,7 @@ print(sizes)
 # apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
 #
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        - unified Chat Completions
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
@@ -4874,7 +4885,7 @@ print(sizes)
 # apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
 #
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        - unified Chat Completions
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
@@ -5149,7 +5160,7 @@ print(sizes)
 # apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
 #
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        - unified Chat Completions
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
@@ -5424,7 +5435,7 @@ print(sizes)
 # apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
 #
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        - unified Chat Completions
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
@@ -5699,7 +5710,7 @@ print(sizes)
 # apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
 #
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        - unified Chat Completions
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
@@ -5974,7 +5985,7 @@ print(sizes)
 # apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
 #
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        - unified Chat Completions
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
@@ -6249,7 +6260,7 @@ print(sizes)
 # apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
 #
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        - unified Chat Completions
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
@@ -6524,7 +6535,7 @@ print(sizes)
 # apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
 #
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        - unified Chat Completions
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
@@ -6799,7 +6810,7 @@ print(sizes)
 # apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
 #
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        - unified Chat Completions
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
@@ -6956,7 +6967,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
 #
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        - unified Chat Completions
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
@@ -7113,7 +7124,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
 #
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        - unified Chat Completions
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
@@ -7270,7 +7281,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
 #
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        - unified Chat Completions
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
@@ -7305,6 +7316,116 @@ $2
 ## Output /M
 
 $6
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/gte-large-en.md) ---
+
+# GTE Large EN
+
+## About
+
+Neon AI Gateway provides GTE Large EN by Alibaba. It returns 1024-dimensional embeddings on `POST /v1/embeddings`.
+
+## Command
+
+### Embeddings
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.embeddings.create({
+  model: "gte-large-en",
+  input: ["Explain Serverless Postgres."],
+  encoding_format: "float",
+});
+console.log(resp.data[0].embedding.length, resp.usage);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.embeddings.create(
+    model="gte-large-en",
+    input=["Explain Serverless Postgres."],
+    encoding_format="float",
+)
+print(len(resp.data[0].embedding), resp.usage)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/embeddings" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gte-large-en",
+    "input": ["Explain Serverless Postgres."],
+    "encoding_format": "float"
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+gte-large-en
+
+## Provider
+
+Alibaba provides GTE Large EN. Access it through the Neon AI Gateway's `POST /v1/embeddings` endpoint.
+
+## Dimensions
+
+1024
+
+## Released
+
+Jul 2023
+
+## Input /M
+
+$0.13
 
 --- [Document source](https://neon.com/docs/ai-gateway/models/inkling.md) ---
 
@@ -7427,7 +7548,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
 #
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        - unified Chat Completions
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
@@ -7584,7 +7705,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
 #
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        - unified Chat Completions
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
@@ -7741,7 +7862,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
 #
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        - unified Chat Completions
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
@@ -7898,7 +8019,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
 #
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        - unified Chat Completions
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
@@ -8055,7 +8176,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
 #
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        - unified Chat Completions
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
@@ -8090,6 +8211,116 @@ $0.50
 ## Output /M
 
 $1.50
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/qwen3-embedding-0-6b.md) ---
+
+# Qwen3 Embedding 0.6B
+
+## About
+
+Neon AI Gateway provides Qwen3 Embedding 0.6B by Alibaba. It returns 1024-dimensional embeddings on `POST /v1/embeddings`.
+
+## Command
+
+### Embeddings
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.embeddings.create({
+  model: "qwen3-embedding-0-6b",
+  input: ["Explain Serverless Postgres."],
+  encoding_format: "float",
+});
+console.log(resp.data[0].embedding.length, resp.usage);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.embeddings.create(
+    model="qwen3-embedding-0-6b",
+    input=["Explain Serverless Postgres."],
+    encoding_format="float",
+)
+print(len(resp.data[0].embedding), resp.usage)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/embeddings" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "qwen3-embedding-0-6b",
+    "input": ["Explain Serverless Postgres."],
+    "encoding_format": "float"
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+qwen3-embedding-0-6b
+
+## Provider
+
+Alibaba provides Qwen3 Embedding 0.6B. Access it through the Neon AI Gateway's `POST /v1/embeddings` endpoint.
+
+## Dimensions
+
+1024
+
+## Released
+
+Jun 2025
+
+## Input /M
+
+$0.02
 
 --- [Document source](https://neon.com/docs/ai-gateway/models/qwen3-next-80b-a3b-instruct.md) ---
 
@@ -8212,7 +8443,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
 #
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        - unified Chat Completions
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
@@ -8369,7 +8600,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
 #
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        - unified Chat Completions
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
@@ -8612,7 +8843,7 @@ Neon AI Gateway is an LLM gateway built into your Postgres branch. Point your ex
 
 Neon AI Gateway serves open-weight and foundation models. Any paid project with prepaid credits can use the open-weight models right away. Foundation models are rolled out gradually, so the full catalog opens up over time.
 
-To request access to the full foundation model catalog, open the **AI Gateway** page in the [Neon Console](https://console.neon.tech) and select **Request access**. We'll reach out as access opens up.
+To request access to foundation models that aren't enabled for your project yet, drop your email below and we'll reach out as access opens up.
 
 **See every supported model in the [model catalog](https://neon.com/docs/ai-gateway/models#available-models).** See [AI Gateway prepaid credits](https://neon.com/docs/ai-gateway/prepaid-credits) to add credits.
 
@@ -8803,7 +9034,7 @@ usable again when you upgrade to a paid plan.
 
 ### Who can use AI Gateway?
 
-AI Gateway is available on Neon's paid plans (Launch and Scale). Any paid Neon customer with prepaid credits can use the open-weight models. Foundation models are rolled out gradually; see [Model access](https://neon.com/docs/ai-gateway/overview#model-access) to request access to the full catalog.
+AI Gateway is available on Neon's paid plans (Launch and Scale). Any paid Neon customer with prepaid credits can use the open-weight models. Foundation models are rolled out gradually; see [Model access](https://neon.com/docs/ai-gateway/overview#model-access) to request access to foundation models.
 
 ### How much do AI Gateway credits cost?
 
@@ -31496,7 +31727,7 @@ Every deployed function streams its logs to the Neon Console: standard output an
 
 ## View logs
 
-Function logs live on the branch's [Monitoring page, in the Logs tab](https://neon.com/docs/introduction/monitor-logs), the same shared viewer used for every service on the branch. To jump straight to one function's logs, open the **Functions** list, open that function's menu, and select **View logs**. Or go to **Monitoring** > **Logs** and click the **Functions** chip to see every function's logs together.
+Function logs live on the branch's [Monitoring page, in the **Functions** tab](https://neon.com/docs/introduction/monitor-logs). To jump straight to one function's logs, open the **Functions** list, open that function's menu, and select **View logs**. Or go to **Monitoring** and open the **Functions** tab to see every function's logs together.
 
 Expand a row to see its full context: `timestamp`, `severity`, `entity_type`, `scope_name`, and `service_name`.
 
@@ -31534,7 +31765,7 @@ It's a `pg` (node-postgres) deprecation warning, not a connection problem: the i
 
 **Requests not showing up in your logs at all? Check the invocation URL and branch, not the logs.** A wrong branch, a typo'd slug, or a momentary control-plane hiccup returns a 404 or 503 straight to the caller and never reaches your function's log stream, because the platform hasn't resolved which function to attribute logs to yet. If you expect traffic and see nothing, the request likely never reached your function.
 
-**Function not starting after a deploy? Read the response body, not the logs.** A missing entry point, an import that throws at load time, or a default export of the wrong shape returns a `function_load_failed` error with your actual error message in the response body of the failed request, not as a log line. Check the response you got back from calling the function, not the Logs tab.
+**Function not starting after a deploy? Read the response body, not the logs.** A missing entry point, an import that throws at load time, or a default export of the wrong shape returns a `function_load_failed` error with your actual error message in the response body of the failed request, not as a log line. Check the response you got back from calling the function, not the Functions tab.
 
 ## Application instrumentation
 
@@ -32431,7 +32662,7 @@ In the platform logs, an object-created invocation looks like any other HTTP cal
 console.log(`object created: ${bucket}/${key}`);
 ```
 
-Your output appears under the `neon.function.app` scope, in the Console's Logs tab and in `neon logs query --source function` (not the `functions` command group). Standard Node instrumentation such as Sentry or OpenTelemetry also works, and the incoming `traceparent` header ties a run into an existing trace.
+Your output appears under the `neon.function.app` scope, in the Console's Functions tab and in `neon logs query --source function` (not the `functions` command group). Standard Node instrumentation such as Sentry or OpenTelemetry also works, and the incoming `traceparent` header ties a run into an existing trace.
 
 ## Common errors
 
@@ -32905,7 +33136,7 @@ In the platform logs, a scheduled invocation looks like any other HTTP call: the
 console.log(`check ${scheduledAt}: ${res.status} in ${latencyMs}ms`);
 ```
 
-Your output appears under the `neon.function.app` scope, in the Console's Logs tab and in:
+Your output appears under the `neon.function.app` scope, in the Console's Functions tab and in:
 
 ```bash
 neon logs query --source function
@@ -48314,7 +48545,7 @@ Neon supports the Postgres extensions shown below. Extension versions may differ
 | [intarray](https://neon.com/docs/extensions/intarray)                                                          |     1.5 |     1.5 |     1.5 |     1.5 |    1.5 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | [ip4r](https://github.com/RhodiumToad/ip4r)                                                                    |     2.4 |     2.4 |     2.4 |     2.4 |    2.4 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | [isn](https://www.postgresql.org/docs/16/isn.html)                                                             |     1.2 |     1.2 |     1.2 |     1.2 |    1.3 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| [lakebase\_text](https://neon.com/docs/extensions/lakebase-text)                                               |       - |       - |   0.1.2 |   0.1.2 |  0.1.2 | See [Lakebase Search](https://neon.com/docs/ai/lakebase-search).                                                                                                                                                                                                                                                                                                                                                                                               |
+| [lakebase\_text](https://neon.com/docs/extensions/lakebase-text)                                               |       - |       - |   0.1.3 |   0.1.3 |  0.1.3 | See [Lakebase Search](https://neon.com/docs/ai/lakebase-search).                                                                                                                                                                                                                                                                                                                                                                                               |
 | [lakebase\_tokenizer](https://neon.com/docs/ai/lakebase-search)                                                |       - |       - |   0.1.1 |   0.1.1 |  0.1.1 | See [Lakebase Search](https://neon.com/docs/ai/lakebase-search).                                                                                                                                                                                                                                                                                                                                                                                               |
 | [lakebase\_vector](https://neon.com/docs/extensions/lakebase-vector)                                           |       - |       - |   1.1.1 |   1.1.1 |  1.1.1 | See [Lakebase Search](https://neon.com/docs/ai/lakebase-search).                                                                                                                                                                                                                                                                                                                                                                                               |
 | [lo](https://www.postgresql.org/docs/16/lo.html)                                                               |     1.1 |     1.1 |     1.1 |     1.1 |    1.2 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
@@ -65076,7 +65307,7 @@ Neon includes **managed authentication**, so your app's users live in your Postg
 From the Neon Console sidebar, open the **Auth** page and toggle Managed Better Auth on for your project. You'll get:
 
 - A sign-up / sign-in flow ready to wire up to any framework
-- Users and sessions stored in your own Postgres database — query the `neon_auth.users_sync` table directly alongside your application data
+- Users and sessions stored in your own Postgres database — query the `neon_auth.user` table directly alongside your application data
 - Branch-aware auth: every preview or development branch you create gets its own isolated copy of users and sessions
 - OAuth providers, email and password, magic links, and more, all configurable from the console
 
@@ -65088,7 +65319,7 @@ Let's create a `development` branch and learn how to use the Neon CLI to manage 
 
 1. **Create a development branch**
 
-   From the Neon Console, navigate to the **Branches** page (under **Project**) and click **New Branch**. Name it `development`, select `production` as the parent branch, and click **Create new branch**. This creates an isolated copy of your production data that you can safely modify.
+   From the Neon Console, navigate to the **Branches** page and click **New Branch**. Name it `development`, select `production` as the parent branch, and click **Create new branch**. This creates an isolated copy of your production data that you can safely modify.
 
 2. **Install CLI with Brew or NPM**
 
@@ -68317,7 +68548,7 @@ You can edit an individual compute to alter the compute configuration, which inc
 
 To edit a compute:
 
-1. In the Neon Console, select your branch from the **BRANCH** selector.
+1. In the Neon Console, select your branch from the project/branch menu at the top of the sidebar.
 
 2. Under **Postgres database**, select **Computes**.
 
@@ -71986,7 +72217,7 @@ Branch expiration is supported with [Managed Better Auth](https://neon.com/docs/
 
 **Console**
 
-1. Navigate to the **Branches** page (under **Project**) in the Console
+1. Navigate to the **Branches** page in the Console
 2. Click **New branch**
 3. Enter branch name and select parent branch
 4. By default, **Automatically delete branch after** is checked with 1 day selected. You can choose 1 hour, 1 day, or 7 days, or uncheck to disable.
@@ -72049,7 +72280,7 @@ curl --request POST \
 
 **Console**
 
-1. Navigate to the **Branches** page (under **Project**) in the Console
+1. Navigate to the **Branches** page in the Console
 2. Choose the **Update expiration** option for your branch
 
 ![Update branch expiration](https://neon.com/docs/guides/branch-update-set-expiration.png)
@@ -72116,7 +72347,7 @@ Check expiration status of your branches:
 
 **Console**
 
-1. Navigate to the **Branches** page (under **Project**) in the Console
+1. Navigate to the **Branches** page in the Console
 2. Click on the desired branch to open the **Branch Overview**
 3. See information similar to the following if branch expiration is set:
 
@@ -73118,7 +73349,7 @@ You can create schema-only branches in the Neon Console or using the Neon API, i
 To create a schema-only branch from the Neon Console:
 
 1. Select your project.
-2. Select **Branches** under **Project**.
+2. Select **Branches** in the sidebar.
 3. Click **New branch** to open the branch creation dialog.
    ![Create branch dialog](https://neon.com/docs/guides/create_schema_only_branch.png)
 4. Select a **Parent branch**. The schema from this branch will be copied to your new schema-only branch. By default, your project's default branch is selected, but you can choose any existing branch in your project.
@@ -73296,7 +73527,7 @@ VALUES
 ## Create a test branch
 
 1. In the Neon Console, select your project.
-2. Select **Branches** under **Project**.
+2. Select **Branches** in the sidebar.
 3. Click **Create branch** to open the branch creation dialog.
    ![Create branch dialog](https://neon.com/docs/manage/create_branch.png)
 4. Enter a name for the branch. This guide uses the name `my_test_branch`.
@@ -73353,9 +73584,9 @@ Before the `DELETE` query, there were 5 records. If the query ran correctly, thi
 When you finish testing your query, you can delete the test branch:
 
 1. In the Neon Console, select a project.
-2. Select **Branches** under **Project**.
+2. Select **Branches** in the sidebar.
 3. Select the test branch from the table.
-4. From the **Actions** menu on the branch overview page, select **Delete**.
+4. From the three-dot menu (⋮) on the branch overview page, select **Delete**.
 
 You can also delete a branch using the [Neon CLI](https://neon.com/docs/cli/branches#delete) or [Neon API](https://neon.com/docs/manage/branches#delete-a-branch-with-the-api).
 
@@ -74626,7 +74857,7 @@ Log in to the Neon Console and navigate to the [Projects](https://console.neon.t
 To use Hyperdrive with Neon, you'll need to create a dedicated database role for Hyperdrive to use:
 
 1. In the Neon Console, navigate to your project.
-2. In the sidebar, select your branch from the **BRANCH** selector.
+2. Select your branch from the project/branch menu at the top of the sidebar.
 3. Under **Postgres database**, select **Roles**.
 4. Click **New Role** and enter `hyperdrive-user` as the name (or your preferred name).
 5. **Copy the password** that is generated. You'll use this password in the connection string in the next step.
@@ -81059,7 +81290,7 @@ Perform these steps twice, once for your _development_ branch and once for your 
 **Console**
 
 1. In the Neon Console, select your project.
-2. Select **Branches** under **Project**.
+2. Select **Branches** in the sidebar.
 3. Click **New Branch** to open the branch creation dialog.
 4. Enter a name for the branch. For example, name the branch for the environment (_development_ or _staging_).
 5. Select a parent branch. This should be the branch where you created the `person` table.
@@ -86739,7 +86970,7 @@ Now, let's prepare a development database in Neon by creating a development bran
 
 To create a branch:
 
-1. In the Neon Console, select **Branches** under **Project**. You will see your `production` branch, where you just created your `blog` database and tables.
+1. In the Neon Console, select **Branches** in the sidebar. You will see your `production` branch, where you just created your `blog` database and tables.
 2. Click **New Branch** to open the branch creation dialog.
 3. Enter a name for the branch. Let's call it `feature/blog-schema`.
 4. Leave `production` selected as the parent branch. This is where you created the `blog` database.
@@ -87518,7 +87749,7 @@ To create a role in the Neon Console:
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
-3. In the sidebar, select your branch from the **BRANCH** selector.
+3. Select your branch from the project/branch menu at the top of the sidebar.
 4. Under **Postgres database**, select **Roles**.
 5. Click **Add Role**.
 6. In the role creation dialog, specify a role name.
@@ -87840,7 +88071,7 @@ To create a role in the Neon Console:
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
-3. In the sidebar, select your branch from the **BRANCH** selector.
+3. Select your branch from the project/branch menu at the top of the sidebar.
 4. Under **Postgres database**, select **Roles**.
 5. Click **Add Role**.
 6. In the role creation dialog, specify a role name.
@@ -88302,7 +88533,7 @@ To create a role in the Neon Console:
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
-3. In the sidebar, select your branch from the **BRANCH** selector.
+3. Select your branch from the project/branch menu at the top of the sidebar.
 4. Under **Postgres database**, select **Roles**.
 5. Click **Add Role**.
 6. In the role creation dialog, specify a role name (`replication_user`).
@@ -89161,7 +89392,7 @@ Databricks recommends a dedicated database user for ingestion. Create a role in 
 **Console**
 
 1. In the [Neon Console](https://console.neon.tech), select your project.
-2. In the sidebar, select your branch from the **BRANCH** selector, then under **Postgres database** select **Roles**.
+2. Select your branch from the project/branch menu at the top of the sidebar, then under **Postgres database** select **Roles**.
 3. Click **Add Role**, enter the role name (e.g. `databricks_replication`), and click **Create**. Save the password.
 
 **CLI**
@@ -89437,7 +89668,7 @@ To create a role in the Neon Console:
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
-3. In the sidebar, select your branch from the **BRANCH** selector.
+3. Select your branch from the project/branch menu at the top of the sidebar.
 4. Under **Postgres database**, select **Roles**.
 5. Click **Add Role**.
 6. In the role creation dialog, specify a role name.
@@ -89621,7 +89852,7 @@ To create a role in the Neon Console:
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
-3. In the sidebar, select your branch from the **BRANCH** selector.
+3. Select your branch from the project/branch menu at the top of the sidebar.
 4. Under **Postgres database**, select **Roles**.
 5. Click **Add Role**.
 6. In the role creation dialog, specify a role name (for example, `cdc_role`).
@@ -89778,7 +90009,7 @@ To create a role in the Neon Console:
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
-3. In the sidebar, select your branch from the **BRANCH** selector.
+3. Select your branch from the project/branch menu at the top of the sidebar.
 4. Under **Postgres database**, select **Roles**.
 5. Click **Add Role**.
 6. In the role creation dialog, specify a role name.
@@ -90161,7 +90392,7 @@ To create a role in the Neon Console:
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
-3. In the sidebar, select your branch from the **BRANCH** selector.
+3. Select your branch from the project/branch menu at the top of the sidebar.
 4. Under **Postgres database**, select **Roles**.
 5. Click **Add Role**.
 6. In the role creation dialog, specify a role name.
@@ -90660,7 +90891,7 @@ To create a role in the Neon Console:
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
-3. In the sidebar, select your branch from the **BRANCH** selector.
+3. Select your branch from the project/branch menu at the top of the sidebar.
 4. Under **Postgres database**, select **Roles**.
 5. Click **Add Role**.
 6. In the role creation dialog, specify a role name.
@@ -91493,7 +91724,7 @@ To create a role in the Neon Console:
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
-3. In the sidebar, select your branch from the **BRANCH** selector.
+3. Select your branch from the project/branch menu at the top of the sidebar.
 4. Under **Postgres database**, select **Roles**.
 5. Click **Add Role**.
 6. In the role creation dialog, specify a role name.
@@ -92109,7 +92340,7 @@ To create a role in the Neon Console:
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
-3. In the sidebar, select your branch from the **BRANCH** selector.
+3. Select your branch from the project/branch menu at the top of the sidebar.
 4. Under **Postgres database**, select **Roles**.
 5. Click **Add Role**.
 6. In the role creation dialog, specify a role name, such as `replication_user`.
@@ -98108,7 +98339,7 @@ To set a branch as protected:
 
 1. In the Neon Console, select a project.
 
-2. Select **Branches** under **Project** to view the branches for the project.
+2. Select **Branches** in the sidebar to view the branches for the project.
 
    ![Branch page](https://neon.com/docs/guides/ip_allow_branch_page.png)
 
@@ -98232,7 +98463,7 @@ After you've selected the protected branches option, click **Save changes** to a
 
 ## Remove branch protection
 
-Removing a protected branch designation can be performed by selecting **Set as unprotected** from the **More** drop-down menu on the branch page.
+Removing a protected branch designation can be performed by selecting **Set as unprotected** from the three-dot menu (⋮) on the branch page.
 
 --- [Document source](https://neon.com/docs/guides/python.md) ---
 
@@ -100039,7 +100270,7 @@ Running ad-hoc queries on a read replica can help you:
 
 You can add a read replica compute to any branch in your Neon project by following these steps:
 
-1. In the Neon Console, select your branch from the **BRANCH** selector.
+1. In the Neon Console, select your branch from the project/branch menu at the top of the sidebar.
 2. Under **Postgres database**, select **Computes**.
 3. Click **Add Read Replica**.
 4. On the **Add new compute** dialog, select **Read replica** as the **Compute type**.
@@ -100172,7 +100403,7 @@ Creating a read replica involves adding a read replica compute to a branch.
 
 You can add a read replica compute to any branch in your Neon project by following these steps:
 
-1. In the Neon Console, select your branch from the **BRANCH** selector.
+1. In the Neon Console, select your branch from the project/branch menu at the top of the sidebar.
 2. Under **Postgres database**, select **Computes**.
 3. Click **Add Read Replica**.
 4. On the **Add new compute** dialog, select **Read replica** as the **Compute type**.
@@ -100265,7 +100496,7 @@ When you are finished running analytics queries, you can delete the read replica
 
 To delete a read replica:
 
-1. In the Neon Console, select your branch from the **BRANCH** selector.
+1. In the Neon Console, select your branch from the project/branch menu at the top of the sidebar.
 2. Under **Postgres database**, select **Computes**.
 3. Find the read replica you want to delete.
 4. Click **Edit** → **Delete compute**.
@@ -100303,7 +100534,7 @@ Creating a read replica involves adding a read replica compute to a branch. You 
 
 To create a read replica from the Neon Console:
 
-1. In the Neon Console, select your branch from the **BRANCH** selector.
+1. In the Neon Console, select your branch from the project/branch menu at the top of the sidebar.
 2. Under **Postgres database**, select **Computes**.
 3. Click **Add Read Replica**.
 4. On the **Add new compute** dialog, select **Read replica** as the **Compute type**.
@@ -100366,7 +100597,7 @@ You can view read replicas using the Neon Console or [Neon API](https://neon.com
 
 **Console**
 
-To view read replicas for a branch, in the Neon Console select your branch from the **BRANCH** selector, then select **Postgres database** > **Computes**. Read replicas are listed on the **Computes** tab.
+To view read replicas for a branch, in the Neon Console select your branch from the project/branch menu at the top of the sidebar, then select **Postgres database** > **Computes**. Read replicas are listed on the **Computes** tab.
 
 ![View read replicas](https://neon.com/docs/guides/view_read_replica.png)
 
@@ -100393,7 +100624,7 @@ You can edit a read replica using the Neon Console or [Neon API](https://neon.co
 
 To edit a read replica compute using the Neon Console:
 
-1. In the Neon Console, select your branch from the **BRANCH** selector.
+1. In the Neon Console, select your branch from the project/branch menu at the top of the sidebar.
 2. Under **Postgres database**, select **Computes**.
 3. Identify the read replica compute you want to modify, and click **Edit**.
 4. Make the changes to your compute settings, and click **Save**.
@@ -100430,7 +100661,7 @@ You can delete a read replica using the Neon Console or [Neon API](https://neon.
 
 To delete a read replica using the Neon Console:
 
-1. In the Neon Console, select your branch from the **BRANCH** selector.
+1. In the Neon Console, select your branch from the project/branch menu at the top of the sidebar.
 2. Under **Postgres database**, select **Computes**.
 3. Find the read replica you want to delete.
 4. Click **Edit** → **Delete**.
@@ -100714,7 +100945,7 @@ You can create read replicas for any branch in your Neon project.
 
 You can add a read replica by following these steps:
 
-1. In the Neon Console, select your branch from the **BRANCH** selector.
+1. In the Neon Console, select your branch from the project/branch menu at the top of the sidebar.
 2. Under **Postgres database**, select **Computes**.
 3. Click **Add Read Replica**.
 4. On the **Add new compute** dialog, select **Read replica** as the **Compute type**.
@@ -101844,11 +102075,11 @@ You can reset any branch to its parent using any of our tools.
 
 **Console**
 
-On the **Branches** page (under **Project**) in the Neon Console, select the branch that you want to reset.
+On the **Branches** page in the Neon Console, select the branch that you want to reset.
 
 The console opens to the details page for your branch, giving you key information about the branch and its child status: its parent, the last time it was reset, and other relevant detail.
 
-To reset the branch, select **Reset from parent** from the **Actions** menu or the **Last data reset** panel.
+To reset the branch, select **Reset from parent** from the three-dot menu (⋮), or click the **Reset from parent** button in the **Branch** panel.
 
 ![Reset from parent](https://neon.com/docs/manage/reset_from_parent.png)
 
@@ -103838,7 +104069,7 @@ Paid plans permit disabling scale to zero. On the Scale plan, you can configure 
 
 To enable or disable scale to zero:
 
-1. In the Neon Console, select your branch from the **BRANCH** selector.
+1. In the Neon Console, select your branch from the project/branch menu at the top of the sidebar.
 2. Under **Postgres database**, select **Computes**.
 3. Click **Edit**.
 4. Enable or disable the scale to zero setting, and save your selection.
@@ -104081,7 +104312,7 @@ For the purposes of this tutorial, name the branch `feature/address`, which coul
 
 1. Create the development branch
 
-   On the **Branches** page (under **Project**), click **Create Branch**, making sure of the following:
+   On the **Branches** page, click **Create Branch**, making sure of the following:
 
    - Select `production` as the parent branch.
    - Name the branch `feature/address`.
@@ -107896,7 +108127,7 @@ This shows all branches with their names, states, and creation dates. Look for b
 
 To remove stale branches:
 
-- **Neon Console**: Go to the **Branches** page (under **Project**) and delete branches individually
+- **Neon Console**: Go to the **Branches** page and delete branches individually
 - **Neon CLI**: Use `neon branches delete <branch-id-or-name>` to remove specific branches. See [CLI branches reference](https://neon.com/docs/cli/branches#delete).
 - **Neon API**: Use `DELETE /projects/{project_id}/branches/{branch_id}`. See [Delete a branch with the API](https://neon.com/docs/manage/branches#delete-a-branch-with-the-api).
 
@@ -114358,26 +114589,28 @@ In Neon, the `pg_stat_activity` system view only holds data on currently running
 
 --- [Document source](https://neon.com/docs/introduction/monitor-logs.md) ---
 
-> Summary: The Logs tab on the Monitoring page shows logs from every service on a branch (Functions, Object Storage, or both) in one view. Filter by level (DEBUG, INFO, NOTICE, WARN, ERROR, FATAL) or service name, search log bodies, poll for new lines with Go live, and download the current view as a .log file. Logs are retained for 3 days.
+> Summary: Logs for Functions and Object Storage live on the Monitoring page, split across the Functions and Storage tabs (one viewer per service, no combined view). Filter by level (DEBUG, INFO, NOTICE, WARN, ERROR, FATAL) or service name, search log bodies, poll for new lines with Go live, and download the current view as a .log file. Logs are retained for 3 days.
 
 # Monitor logs
 
-View, search, and download logs across your Neon services
+View, search, and download logs for Functions and Object Storage
 
-The **Logs** tab on the Monitoring page shows logs from every service on a branch in one place. It's the same view whether you land on it directly or jump to it from a specific function or storage bucket.
+The Monitoring page shows service logs in two tabs, **Functions** and **Storage**. Each tab is a log viewer for that service on the current branch; there is no combined, all-services view. The two tabs share the same controls, described below.
 
 ## View logs
 
 1. In the Neon Console, select a project and branch.
 2. Go to **Monitoring**.
-3. Select the **Logs** tab.
+3. Open the **Functions** or **Storage** tab.
 
-By default, the view shows logs from every service on the branch. Use the entity chips, **All**, **Functions**, and **Storage**, to scope the view to one kind of service, or narrow further with the service name field (see [Scope by service](https://neon.com/docs/introduction/monitor-logs#scope-by-service)).
+Each tab shows logs from every function or bucket on the branch. Narrow to a single service with the service name field (see [Scope by service](https://neon.com/docs/introduction/monitor-logs#scope-by-service)).
 
-You can also jump straight to a scoped view without visiting Monitoring first:
+You can also jump straight to a service's tab without visiting Monitoring first:
 
 - From the **Functions** list, open a function's menu and select **View logs**.
 - From the Object Storage **bucket** list, open a bucket's menu and select **View logs**.
+
+Both land you on the matching tab.
 
 Each row shows a timestamp, a level, and the log message. Expand a row to see its full context: `timestamp`, `severity`, `entity_type`, `scope_name`, and `service_name`. `entity_type` identifies the kind of service a line came from (`function` or `storage`); `service_name` identifies the specific one (`neon-function/<slug>` or `neon-storage/<bucket>`).
 
@@ -114604,7 +114837,9 @@ For strategies to reduce your Neon costs across compute, storage, branches, and 
 
 # Monitoring dashboard
 
-The **Monitoring** dashboard in the Neon console provides several graphs for monitoring system and database metrics. You can access the **Monitoring** dashboard from the sidebar in the Neon Console. Observable metrics include:
+The **Monitoring** dashboard in the Neon console provides several graphs for monitoring system and database metrics. You can access the **Monitoring** dashboard from the sidebar in the Neon Console.
+
+The Monitoring page is organized into **Postgres**, **Storage**, and **Functions** tabs. This page describes the **Postgres** tab, which holds the metrics graphs below along with the **Active queries**, **Query performance**, **Data API Advisors**, and **System operations** views. The **Storage** and **Functions** tabs show [logs](https://neon.com/docs/introduction/monitor-logs) for Object Storage and Functions.
 
 Your Neon plan defines the range of data you can view.
 
@@ -114616,7 +114851,7 @@ Your Neon plan defines the range of data you can view.
 
 You can select different periods or a custom period within the permitted range from the menu on the dashboard.
 
-The dashboard displays metrics for the selected **Branch** and **Compute**. Use the drop-down menus to view metrics for a different branch or compute. Use the **Refresh** button to update the displayed metrics.
+The dashboard displays metrics for the selected branch and compute. Choose the branch from the project/branch menu at the top of the sidebar, and use the **Compute** drop-down on the page to switch computes. Use the **Refresh** button to update the displayed metrics.
 
 If your compute was idle or there has not been much activity, graphs may display this message: `There is no data to display at the moment`. In this case, try selecting a different time period or returning later after more usage data has been collected.
 
@@ -118601,7 +118836,7 @@ If you do specify a custom branch name when creating or renaming a branch, it mu
 To create a branch:
 
 1. In the Neon Console, select a project.
-2. Select **Branches** under **Project**.
+2. Select **Branches** in the sidebar.
 3. Click **New branch** to open the branch creation dialog.
    ![Create branch dialog](https://neon.com/docs/manage/create_branch.png)
 4. Select a **Parent branch**. This determines the origin of the schema and data for your new branch. By default, your project's default branch (named `main` if the project was created with the CLI or API, or `production` if created in the Console) is selected, but you can choose any existing branch in your project.
@@ -118779,7 +119014,7 @@ To view the branches in a Neon project:
 
 1. In the Neon Console, select a project.
 
-2. Select **Branches** under **Project** to view all current branches in the project.
+2. Select **Branches** in the sidebar to view all current branches in the project.
 
    ![all branches](https://neon.com/docs/manage/branches_all_list.png)
 
@@ -118924,9 +119159,9 @@ Neon permits renaming a branch, including your project's default branch.
 To rename a branch:
 
 1. In the Neon Console, select a project.
-2. Select **Branches** under **Project** to view the branches for the project.
+2. Select **Branches** in the sidebar to view the branches for the project.
 3. Select a branch from the table.
-4. On the branch overview page, click the **More** drop-down menu and select **Rename**.
+4. On the branch overview page, open the three-dot menu (⋮) and select **Rename**.
 5. Specify a new name for the branch and click **Save**.
 
 **CLI**
@@ -118961,9 +119196,9 @@ For more information, see [Default branch](https://neon.com/docs/manage/branches
 To set a branch as the default branch:
 
 1. In the Neon Console, select a project.
-2. Select **Branches** under **Project** to view the branches for the project.
+2. Select **Branches** in the sidebar to view the branches for the project.
 3. Select a branch from the table.
-4. On the branch overview page, click the **More** drop-down menu and select **Set as default**.
+4. On the branch overview page, open the three-dot menu (⋮) and select **Set as default**.
 5. In the **Set as default** confirmation dialog, click **Set as default** to confirm your selection.
 
 **CLI**
@@ -118993,9 +119228,9 @@ This feature is available on all Neon's paid plans, which supports up to five pr
 To set a branch as protected:
 
 1. In the Neon Console, select a project.
-2. Select **Branches** under **Project** to view the branches for the project.
+2. Select **Branches** in the sidebar to view the branches for the project.
 3. Select a branch from the table.
-4. On the branch overview page, click the **More** drop-down menu and select **Set as protected**.
+4. On the branch overview page, open the three-dot menu (⋮) and select **Set as protected**.
 5. In the **Set as protected** confirmation dialog, click **Set as protected** to confirm your selection.
 
 **CLI**
@@ -119027,9 +119262,9 @@ To set or update a branch's expiration (auto-deletion TTL):
 **Console**
 
 1. In the Neon Console, select a project.
-2. Select **Branches** under **Project** to view the branches for the project.
+2. Select **Branches** in the sidebar to view the branches for the project.
 3. Select a branch from the table.
-4. On the branch overview page, click the **Actions** drop-down menu and select **Edit expiration**.
+4. On the branch overview page, open the three-dot menu (⋮) and select **Set expiration**.
 5. Set a new expiration date and time, or toggle off "Automatically delete branch after" to remove expiration.
 6. Click **Save**.
 
@@ -119121,9 +119356,9 @@ Deleting a branch is a permanent action. Deleting a branch also deletes the data
 To delete a branch:
 
 1. In the Neon Console, select a project.
-2. Select **Branches** under **Project**.
+2. Select **Branches** in the sidebar.
 3. Select a branch from the table.
-4. On the branch overview page, click the **More** drop-down menu and select **Delete**.
+4. On the branch overview page, open the three-dot menu (⋮) and select **Delete**.
 5. On the confirmation dialog, click **Delete**.
 
 **CLI**
@@ -119342,7 +119577,7 @@ A compute is associated with a branch.
 
 **Console**
 
-In the Neon Console, select your branch from the **BRANCH** selector, then select **Postgres database** > **Computes**. If the branch has a compute, it is shown on the **Computes** tab of the branch overview.
+In the Neon Console, select your branch from the project/branch menu at the top of the sidebar, then select **Postgres database** > **Computes**. If the branch has a compute, it is shown on the **Computes** tab of the branch overview.
 
 Compute details shown on the **Computes** tab include:
 
@@ -119475,7 +119710,7 @@ You can only create a single primary read-write compute for a branch that does n
 
 **Console**
 
-1. In the Neon Console, select your branch from the **BRANCH** selector.
+1. In the Neon Console, select your branch from the project/branch menu at the top of the sidebar.
 2. Under **Postgres database**, select **Computes**.
 3. Click **Add a compute** or **Add Read Replica** if you already have a primary read-write compute.
 4. On the **Add new compute** drawer or **Add read replica** drawer, specify your compute settings, and click **Add**. Selecting the **Read replica** compute type creates a [read replica](https://neon.com/docs/introduction/read-replicas).
@@ -119562,7 +119797,7 @@ You can edit a compute to change the [compute size](https://neon.com/docs/manage
 
 **Console**
 
-1. In the Neon Console, select your branch from the **BRANCH** selector.
+1. In the Neon Console, select your branch from the project/branch menu at the top of the sidebar.
 
 2. Under **Postgres database**, select **Computes**.
 
@@ -119804,7 +120039,7 @@ Restarting ensures your compute is running with the latest configurations and im
 
 **Console**
 
-Use the **Restart compute** option in the Neon Console. Select your branch from the **BRANCH** selector, then select **Postgres database** > **Computes** and choose **Restart compute** from the compute's menu.
+Use the **Restart compute** option in the Neon Console. Select your branch from the project/branch menu at the top of the sidebar, then select **Postgres database** > **Computes** and choose **Restart compute** from the compute's menu.
 
 ![Restart a compute in the console](https://neon.com/docs/manage/restart_compute.png)
 
@@ -119837,7 +120072,7 @@ A branch can have a single read-write compute and multiple read replica computes
 
 **Console**
 
-1. In the Neon Console, select your branch from the **BRANCH** selector.
+1. In the Neon Console, select your branch from the project/branch menu at the top of the sidebar.
 2. Under **Postgres database**, select **Computes**.
 3. Click **Edit** for the compute you want to delete.
 4. At the bottom of the **Edit compute** drawer, click **Delete compute**.
@@ -120304,7 +120539,7 @@ The role that creates a database is automatically made the owner of that databas
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
-3. In the sidebar, select your branch from the **BRANCH** selector.
+3. Select your branch from the project/branch menu at the top of the sidebar.
 4. Under **Postgres database**, select **Databases**.
 5. Click **Add database**.
 6. Enter a database name, and select a database owner.
@@ -120378,7 +120613,7 @@ For attribute definitions, find the [Create database](https://neon.com/docs/refe
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
-3. In the sidebar, select your branch from the **BRANCH** selector.
+3. Select your branch from the project/branch menu at the top of the sidebar.
 4. Under **Postgres database**, select **Databases**.
 
 **CLI**
@@ -120499,7 +120734,7 @@ Deleting a database is a permanent action. All database objects belonging to the
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
-3. In the sidebar, select your branch from the **BRANCH** selector.
+3. Select your branch from the project/branch menu at the top of the sidebar.
 4. Under **Postgres database**, select **Databases**.
 5. For the database you want to delete, click the delete icon.
 6. In the confirmation dialog, click **Delete**.
@@ -123382,7 +123617,7 @@ You can create, list, delete, and reset passwords for roles using the Neon Conso
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
-3. In the sidebar, select your branch from the **BRANCH** selector.
+3. Select your branch from the project/branch menu at the top of the sidebar.
 4. Under **Postgres database**, select **Roles**.
 5. Click **Add role**.
 6. In the role creation modal, specify a role name. The branch is pre-selected.
@@ -123453,7 +123688,7 @@ For attribute definitions, find the [Create role](https://neon.com/docs/referenc
 
 **Console**
 
-In the Neon Console, select your branch from the **BRANCH** selector, then under **Postgres database** select **Roles** to see the roles on the branch.
+In the Neon Console, select your branch from the project/branch menu at the top of the sidebar, then under **Postgres database** select **Roles** to see the roles on the branch.
 
 **CLI**
 
@@ -123520,7 +123755,7 @@ Deleting a role is a permanent action that cannot be undone, and you cannot dele
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
-3. In the sidebar, select your branch from the **BRANCH** selector.
+3. Select your branch from the project/branch menu at the top of the sidebar.
 4. Under **Postgres database**, select **Roles**.
 5. Select **Delete role** from the role menu.
 6. On the confirmation modal, click **Delete**.
@@ -123586,7 +123821,7 @@ You can reset a role's password from the Neon Console or API. There's no CLI com
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
-3. In the sidebar, select your branch from the **BRANCH** selector.
+3. Select your branch from the project/branch menu at the top of the sidebar.
 4. Under **Postgres database**, select **Roles**.
 5. Select **Reset password** from the role menu.
 6. On the **Reset password** modal, click **Reset**. A reset password modal is displayed with your new password.
@@ -124422,7 +124657,7 @@ Backup branches are deletable except in two cases:
 
 To delete a backup branch:
 
-1. Navigate to the **Branches** page (under **Project**).
+1. Navigate to the **Branches** page.
 
 2. Find the backup branch you want to delete. It will have a name with the following format:
 
@@ -128330,7 +128565,7 @@ A Neon Control Plane operation that deletes stored data when a Neon project is d
 
 ## Endpoint ID
 
-A string that identifies a Neon compute endpoint. Neon Endpoint IDs are generated Heroku-like memorable random names, similar to `ep-calm-flower-a5b75h79`. These names are always prefixed by `ep` for "endpoint". You can find your Endpoint ID by navigating to your project in the Neon Console, selecting **Branches** under **Project** in the sidebar, and clicking on a branch. The **Endpoint ID** is shown in the table under the **Computes** heading.
+A string that identifies a Neon compute endpoint. Neon Endpoint IDs are generated Heroku-like memorable random names, similar to `ep-calm-flower-a5b75h79`. These names are always prefixed by `ep` for "endpoint". You can find your Endpoint ID by navigating to your project in the Neon Console, selecting **Branches** in the sidebar, and clicking on a branch. The **Endpoint ID** is shown in the table under the **Computes** heading.
 
 ## Egress
 
@@ -133314,9 +133549,7 @@ The `api_token` and `s3_secret_access_key` are printed once, so store them right
 
 **Console**
 
-In the Neon Console, select your branch and click **Credentials** under **Branch** in the sidebar. Click **Create credential**, give it a name, and check the storage scopes you need.
-
-After creation, the credentials are shown once. Copy the snippet or click **Download .env** before closing:
+In the Neon Console, click **Connect** at the top of the sidebar and open the **Storage** tab. Use the client selector to pick **S3 client**, **Files SDK**, or **Python** for a ready-to-run snippet, or **Parameters only** for the raw `.env`. Click **Reveal credential** to show `AWS_SECRET_ACCESS_KEY`, **Copy credentials** to copy it, or **Rotate credentials** to issue new keys.
 
 ```text
 AWS_ENDPOINT_URL_S3=https://br-cool-darkness-a1b2c3d4.storage.c-1.us-east-2.aws.neon.tech
@@ -133325,7 +133558,7 @@ AWS_SECRET_ACCESS_KEY=nsk_live_...
 AWS_REGION=us-east-2
 ```
 
-To view or revoke credentials later, return to the **Credentials** page and use the action menu (⋮) next to the credential.
+The Connect dialog reveals and rotates the current credential. To list all credentials for the branch or revoke one, use the [Neon CLI](https://neon.com/docs/cli/credentials) or the API (below).
 
 **API**
 
@@ -133482,7 +133715,7 @@ staging  ──── credential NOT valid here (different lineage)
 
 ## Listing credentials
 
-The **Credentials** page in the Console shows all credentials for the current branch: name, key ID, creation date, and last used time. To list via the API:
+To list all credentials for the current branch (name, key ID, creation date, and last used time), use the [Neon CLI](https://neon.com/docs/cli/credentials) (`neon credentials list`) or the API:
 
 ```bash
 curl "https://console.neon.tech/api/v2/projects/{project_id}/branches/{branch_id}/credentials" \
@@ -133493,7 +133726,7 @@ This returns credential metadata. Secrets are never returned after creation.
 
 ## Revoking credentials
 
-To revoke from the Console, open the **Credentials** page and use the action menu (⋮) next to the credential. To revoke via the API:
+To revoke, use the [Neon CLI](https://neon.com/docs/cli/credentials) (`neon credentials revoke <token_id>`) or the API:
 
 ```bash
 curl -X DELETE "https://console.neon.tech/api/v2/projects/{project_id}/branches/{branch_id}/credentials/{token_id}" \
@@ -134046,7 +134279,7 @@ body: {
 
 ## View logs
 
-Bucket logs live on the branch's [Monitoring page, in the Logs tab](https://neon.com/docs/introduction/monitor-logs), the same shared viewer used for every service on the branch. To jump straight to one bucket's logs, open the bucket list, open that bucket's menu, and select **View logs**. Or go to **Monitoring** > **Logs** and click the **Storage** chip to see every bucket's logs together.
+Bucket logs live on the branch's [Monitoring page, in the **Storage** tab](https://neon.com/docs/introduction/monitor-logs). To jump straight to one bucket's logs, open the bucket list, open that bucket's menu, and select **View logs**. Or go to **Monitoring** and open the **Storage** tab to see every bucket's logs together.
 
 Expand a row to see its full context: `timestamp`, `severity`, `entity_type` (`storage`), `scope_name`, and `service_name` (`neon-storage/<bucket>`). The message body carries per-request detail: `operation` (the HTTP method), `object_key`, `http_status`, `bytes`, `duration_ms`, `request_id`, and `remote_ip`. `access_key_id` is included for authenticated requests and omitted entirely for anonymous reads against a `public_read` bucket, which is expected, not a sign of broken auth.
 
@@ -135644,7 +135877,7 @@ This feature uses **static masking**, which permanently transforms data in the b
 To create a branch with anonymized data from the Neon Console:
 
 1. Select your project.
-2. Select **Branches** under **Project**.
+2. Select **Branches** in the sidebar.
 3. Click **New branch** to open the branch creation dialog.
    ![Neon Console 'Create new branch' dialog with 'Anonymized data' selected](https://neon.com/docs/workflows/anon-create-a-new-branch.png)
 4. Select a **Parent branch**. This determines the origin of the schema and data for your new branch. By default, your project's default branch (named `main` if the project was created with the CLI or API, or `production` if created in the Console) is selected, but you can choose any existing branch in your project.

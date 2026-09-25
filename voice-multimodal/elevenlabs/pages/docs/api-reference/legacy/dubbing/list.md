@@ -125,7 +125,9 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.dubbing.list({});
+    await client.dubbing.list({
+        filterByCreator: "all",
+    });
 }
 main();
 
@@ -136,7 +138,9 @@ from elevenlabs import ElevenLabs
 
 client = ElevenLabs()
 
-client.dubbing.list()
+client.dubbing.list(
+    filter_by_creator="all",
+)
 
 ```
 
@@ -151,7 +155,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/dubbing"
+	url := "https://api.elevenlabs.io/v1/dubbing?filter_by_creator=all"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -170,7 +174,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/dubbing")
+url = URI("https://api.elevenlabs.io/v1/dubbing?filter_by_creator=all")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -185,7 +189,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/dubbing")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/dubbing?filter_by_creator=all")
   .asString();
 ```
 
@@ -195,7 +199,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/dubbing');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/dubbing?filter_by_creator=all');
 
 echo $response->getBody();
 ```
@@ -203,7 +207,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/dubbing");
+var client = new RestClient("https://api.elevenlabs.io/v1/dubbing?filter_by_creator=all");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -211,7 +215,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/dubbing")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/dubbing?filter_by_creator=all")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

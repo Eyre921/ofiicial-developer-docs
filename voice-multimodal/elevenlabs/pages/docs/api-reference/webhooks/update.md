@@ -92,7 +92,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.webhooks.update("webhook_id", {
+    await client.webhooks.update("G007vmtq9uWYl7SUW9zGS8GZZa1K", {
         isDisabled: true,
         name: "My Callback Webhook",
     });
@@ -107,7 +107,7 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.webhooks.update(
-    webhook_id="webhook_id",
+    webhook_id="G007vmtq9uWYl7SUW9zGS8GZZa1K",
     is_disabled=True,
     name="My Callback Webhook",
 )
@@ -126,7 +126,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/workspace/webhooks/webhook_id"
+	url := "https://api.elevenlabs.io/v1/workspace/webhooks/G007vmtq9uWYl7SUW9zGS8GZZa1K"
 
 	payload := strings.NewReader("{\n  \"is_disabled\": true,\n  \"name\": \"My Callback Webhook\"\n}")
 
@@ -149,7 +149,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/workspace/webhooks/webhook_id")
+url = URI("https://api.elevenlabs.io/v1/workspace/webhooks/G007vmtq9uWYl7SUW9zGS8GZZa1K")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -166,7 +166,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.patch("https://api.elevenlabs.io/v1/workspace/webhooks/webhook_id")
+HttpResponse<String> response = Unirest.patch("https://api.elevenlabs.io/v1/workspace/webhooks/G007vmtq9uWYl7SUW9zGS8GZZa1K")
   .header("Content-Type", "application/json")
   .body("{\n  \"is_disabled\": true,\n  \"name\": \"My Callback Webhook\"\n}")
   .asString();
@@ -178,7 +178,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('PATCH', 'https://api.elevenlabs.io/v1/workspace/webhooks/webhook_id', [
+$response = $client->request('PATCH', 'https://api.elevenlabs.io/v1/workspace/webhooks/G007vmtq9uWYl7SUW9zGS8GZZa1K', [
   'body' => '{
   "is_disabled": true,
   "name": "My Callback Webhook"
@@ -194,7 +194,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/workspace/webhooks/webhook_id");
+var client = new RestClient("https://api.elevenlabs.io/v1/workspace/webhooks/G007vmtq9uWYl7SUW9zGS8GZZa1K");
 var request = new RestRequest(Method.PATCH);
 request.AddHeader("Content-Type", "application/json");
 request.AddParameter("application/json", "{\n  \"is_disabled\": true,\n  \"name\": \"My Callback Webhook\"\n}", ParameterType.RequestBody);
@@ -212,7 +212,7 @@ let parameters = [
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/workspace/webhooks/webhook_id")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/workspace/webhooks/G007vmtq9uWYl7SUW9zGS8GZZa1K")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "PATCH"

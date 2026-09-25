@@ -1,6 +1,6 @@
 # ai-models/anthropic-claude-code 文档索引
 
-> 共 197 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 210 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -56,7 +56,6 @@
 - `desktop-scheduled-tasks` — [Schedule recurring tasks in Claude Code Desktop](pages/desktop-scheduled-tasks.md) · [原文](https://code.claude.com/docs/en/desktop-scheduled-tasks)
 - `desktop-wsl` — [Claude Code Desktop in WSL](pages/desktop-wsl.md) · [原文](https://code.claude.com/docs/en/desktop-wsl)
 - `devcontainer` — [Development containers](pages/devcontainer.md) · [原文](https://code.claude.com/docs/en/devcontainer)
-- `discover-plugins` — [Discover and install prebuilt plugins through marketplaces](pages/discover-plugins.md) · [原文](https://code.claude.com/docs/en/discover-plugins)
 - `env-vars` — [Environment variables](pages/env-vars.md) · [原文](https://code.claude.com/docs/en/env-vars)
 - `errors` — [Error reference](pages/errors.md) · [原文](https://code.claude.com/docs/en/errors)
 - `fast-mode` — [Speed up responses with fast mode](pages/fast-mode.md) · [原文](https://code.claude.com/docs/en/fast-mode)
@@ -99,13 +98,7 @@
 - `permission-modes` — [Choose a permission mode](pages/permission-modes.md) · [原文](https://code.claude.com/docs/en/permission-modes)
 - `permissions` — [Configure permissions](pages/permissions.md) · [原文](https://code.claude.com/docs/en/permissions)
 - `platforms` — [Platforms and integrations](pages/platforms.md) · [原文](https://code.claude.com/docs/en/platforms)
-- `plugin-dependencies` — [Constrain plugin dependency versions](pages/plugin-dependencies.md) · [原文](https://code.claude.com/docs/en/plugin-dependencies)
 - `plugin-evals` — [Test plugins with evals](pages/plugin-evals.md) · [原文](https://code.claude.com/docs/en/plugin-evals)
-- `plugin-hints` — [Recommend your plugin from your CLI](pages/plugin-hints.md) · [原文](https://code.claude.com/docs/en/plugin-hints)
-- `plugin-marketplaces` — [Create and distribute a plugin marketplace](pages/plugin-marketplaces.md) · [原文](https://code.claude.com/docs/en/plugin-marketplaces)
-- `plugin-relevance` — [Recommend plugins for your org](pages/plugin-relevance.md) · [原文](https://code.claude.com/docs/en/plugin-relevance)
-- `plugins` — [Create plugins](pages/plugins.md) · [原文](https://code.claude.com/docs/en/plugins)
-- `plugins-reference` — [Plugins reference](pages/plugins-reference.md) · [原文](https://code.claude.com/docs/en/plugins-reference)
 - `prompt-caching` — [How Claude Code uses prompt caching](pages/prompt-caching.md) · [原文](https://code.claude.com/docs/en/prompt-caching)
 - `prompt-library` — [Prompt library](pages/prompt-library.md) · [原文](https://code.claude.com/docs/en/prompt-library)
 - `quickstart` — [Quickstart](pages/quickstart.md) · [原文](https://code.claude.com/docs/en/quickstart)
@@ -180,6 +173,29 @@
 - `agent-sdk/typescript` — [Agent SDK reference - TypeScript](pages/agent-sdk/typescript.md) · [原文](https://code.claude.com/docs/en/agent-sdk/typescript)
 - `agent-sdk/typescript-v2-preview` — [TypeScript SDK V2 session API (removed)](pages/agent-sdk/typescript-v2-preview.md) · [原文](https://code.claude.com/docs/en/agent-sdk/typescript-v2-preview)
 - `agent-sdk/user-input` — [Handle approvals and user input](pages/agent-sdk/user-input.md) · [原文](https://code.claude.com/docs/en/agent-sdk/user-input)
+
+## plugins
+
+- `plugins/anthropic-marketplaces` — [Anthropic's marketplaces](pages/plugins/anthropic-marketplaces.md) · [原文](https://code.claude.com/docs/en/plugins/anthropic-marketplaces)
+- `plugins/cli-hints` — [Recommend your plugin from your CLI](pages/plugins/cli-hints.md) · [原文](https://code.claude.com/docs/en/plugins/cli-hints)
+- `plugins/cli-reference` — [Plugin commands reference](pages/plugins/cli-reference.md) · [原文](https://code.claude.com/docs/en/plugins/cli-reference)
+- `plugins/code-intelligence` — [Code intelligence plugins](pages/plugins/code-intelligence.md) · [原文](https://code.claude.com/docs/en/plugins/code-intelligence)
+- `plugins/components` — [Add components to a plugin](pages/plugins/components.md) · [原文](https://code.claude.com/docs/en/plugins/components)
+- `plugins/create` — [Create a Claude Code plugin](pages/plugins/create.md) · [原文](https://code.claude.com/docs/en/plugins/create)
+- `plugins/create-marketplace` — [Create a marketplace](pages/plugins/create-marketplace.md) · [原文](https://code.claude.com/docs/en/plugins/create-marketplace)
+- `plugins/dependencies` — [Plugin dependencies](pages/plugins/dependencies.md) · [原文](https://code.claude.com/docs/en/plugins/dependencies)
+- `plugins/host-marketplace` — [Host and maintain a marketplace](pages/plugins/host-marketplace.md) · [原文](https://code.claude.com/docs/en/plugins/host-marketplace)
+- `plugins/install` — [Install and manage plugins](pages/plugins/install.md) · [原文](https://code.claude.com/docs/en/plugins/install)
+- `plugins/loading` — [Plugin loading reference](pages/plugins/loading.md) · [原文](https://code.claude.com/docs/en/plugins/loading)
+- `plugins/manifest-reference` — [Plugin manifest reference](pages/plugins/manifest-reference.md) · [原文](https://code.claude.com/docs/en/plugins/manifest-reference)
+- `plugins/marketplace-reference` — [Marketplace reference](pages/plugins/marketplace-reference.md) · [原文](https://code.claude.com/docs/en/plugins/marketplace-reference)
+- `plugins/measure` — [Measure plugin cost and usage](pages/plugins/measure.md) · [原文](https://code.claude.com/docs/en/plugins/measure)
+- `plugins/org` — [Manage Claude Code plugins for your organization](pages/plugins/org.md) · [原文](https://code.claude.com/docs/en/plugins/org)
+- `plugins/overview` — [Plugins overview](pages/plugins/overview.md) · [原文](https://code.claude.com/docs/en/plugins/overview)
+- `plugins/publish` — [Publish and distribute a plugin](pages/plugins/publish.md) · [原文](https://code.claude.com/docs/en/plugins/publish)
+- `plugins/relevance` — [Recommend plugins for your org](pages/plugins/relevance.md) · [原文](https://code.claude.com/docs/en/plugins/relevance)
+- `plugins/security` — [Plugin security and trust](pages/plugins/security.md) · [原文](https://code.claude.com/docs/en/plugins/security)
+- `plugins/troubleshooting` — [Troubleshoot plugins](pages/plugins/troubleshooting.md) · [原文](https://code.claude.com/docs/en/plugins/troubleshooting)
 
 ## whats-new
 

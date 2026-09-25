@@ -29,12 +29,14 @@ This table describes the different ways Stripe logs an API request for your acco
 
 ## View your default API version
 
-When you send requests to Stripe, you can specify an API version with the `Stripe-Version` header. If you don’t specify an API version, Stripe uses your account’s default API version. Use these steps to find all of the API versions used by your account within the last week. If you’re using the latest API version, the version is labeled `Latest`.
+> We recommend using [Workbench](https://docs.stripe.com/workbench/guides.md#view-api-versions) to view your API versions. Workbench provides more detail about the API versions used by recent requests.
+
+When you send requests to Stripe, you can specify an API version with the `Stripe-Version` header. If you don’t specify an API version, Stripe uses your account’s [default API version](https://docs.stripe.com/api-versions.md#default-api-version-behavior).
 
 1. Open the [Developers Dashboard](https://dashboard.stripe.com/developers).
 2. Your account’s default **API version** is labeled `Default`.
 
-To view a list of versions, see the [API changelog](https://docs.stripe.com/upgrades.md#api-versions).
+To view a list of versions, see the [API changelog](https://docs.stripe.com/changelog.md).
 
 ## View API requests by source
 

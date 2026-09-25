@@ -18,7 +18,8 @@ Pricing: https://stripe.com/en-us/pricing/local-payment-methods#affirm
 ## Eligibility and availability 
 
 ### Account eligibility
-Business location: CA, US; Private preview: GB
+Business location: CA, US
+Private preview business location: GB
 Account type: ✓ Merchant, ✓ Platform or marketplace (Connect)
 Business model: ✗ B2B, ✓ B2C
 Business category: View list of prohibited and restricted business categories
@@ -176,9 +177,10 @@ AMER: CA, US
 EMEA: [Preview] GB
 
 ### Payment support
-Buyer location: CA, US; Preview: GB
+Customer location: CA, US
+Private preview customer location: GB
 Presentment currency: USD, CAD
-Preview currencies: GBP
+Private preview presentment currency: GBP
 Geographic coverage: ✓ Domestic, ✗ Crossborder
 Transaction limits: Minimum amount: 35.00 USD
 

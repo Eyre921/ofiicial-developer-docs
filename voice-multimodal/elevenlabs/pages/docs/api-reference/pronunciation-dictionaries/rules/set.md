@@ -90,14 +90,9 @@ Validation Error
 {
   "rules": [
     {
-      "alias": "color",
-      "string_to_replace": "colour",
-      "type": "alias"
-    },
-    {
       "alias": "string",
-      "string_to_replace": "route",
-      "type": "phoneme"
+      "string_to_replace": "string",
+      "type": "string"
     }
   ]
 }
@@ -109,7 +104,7 @@ Validation Error
 {
   "id": "5xM3yVvZQKV0EfqQpLrJ",
   "version_id": "5xM3yVvZQKV0EfqQpLr2",
-  "version_rules_num": 2
+  "version_rules_num": 5
 }
 ```
 
@@ -120,18 +115,8 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.pronunciationDictionaries.rules.set("pronunciation_dictionary_id", {
-        rules: [
-            {
-                type: "alias",
-                stringToReplace: "colour",
-                alias: "color",
-            },
-            {
-                type: "phoneme",
-                stringToReplace: "route",
-            },
-        ],
+    await client.pronunciationDictionaries.rules.set("21m00Tcm4TlvDq8ikWAM", {
+        rules: [],
     });
 }
 main();
@@ -140,23 +125,12 @@ main();
 
 ```python
 from elevenlabs import ElevenLabs
-from elevenlabs.pronunciation_dictionaries.rules import BodySetRulesOnThePronunciationDictionaryV1PronunciationDictionariesPronunciationDictionaryIdSetRulesPostRulesItem_Alias, BodySetRulesOnThePronunciationDictionaryV1PronunciationDictionariesPronunciationDictionaryIdSetRulesPostRulesItem_Phoneme
 
 client = ElevenLabs()
 
 client.pronunciation_dictionaries.rules.set(
-    pronunciation_dictionary_id="pronunciation_dictionary_id",
-    rules=[
-        BodySetRulesOnThePronunciationDictionaryV1PronunciationDictionariesPronunciationDictionaryIdSetRulesPostRulesItem_Alias(
-            string_to_replace="colour",
-            alias="color",
-        ),
-        BodySetRulesOnThePronunciationDictionaryV1PronunciationDictionariesPronunciationDictionaryIdSetRulesPostRulesItem_Phoneme(
-            string_to_replace="route",
-            phoneme="string",
-            alphabet="string",
-        )
-    ],
+    pronunciation_dictionary_id="21m00Tcm4TlvDq8ikWAM",
+    rules=[],
 )
 
 ```
@@ -173,9 +147,9 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/pronunciation-dictionaries/pronunciation_dictionary_id/set-rules"
+	url := "https://api.elevenlabs.io/v1/pronunciation-dictionaries/21m00Tcm4TlvDq8ikWAM/set-rules"
 
-	payload := strings.NewReader("{\n  \"rules\": [\n    {\n      \"alias\": \"color\",\n      \"string_to_replace\": \"colour\",\n      \"type\": \"alias\"\n    },\n    {\n      \"alias\": \"string\",\n      \"string_to_replace\": \"route\",\n      \"type\": \"phoneme\"\n    }\n  ]\n}")
+	payload := strings.NewReader("{\n  \"rules\": [\n    {\n      \"alias\": \"string\",\n      \"string_to_replace\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -196,14 +170,14 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/pronunciation-dictionaries/pronunciation_dictionary_id/set-rules")
+url = URI("https://api.elevenlabs.io/v1/pronunciation-dictionaries/21m00Tcm4TlvDq8ikWAM/set-rules")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"rules\": [\n    {\n      \"alias\": \"color\",\n      \"string_to_replace\": \"colour\",\n      \"type\": \"alias\"\n    },\n    {\n      \"alias\": \"string\",\n      \"string_to_replace\": \"route\",\n      \"type\": \"phoneme\"\n    }\n  ]\n}"
+request.body = "{\n  \"rules\": [\n    {\n      \"alias\": \"string\",\n      \"string_to_replace\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -213,9 +187,9 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/pronunciation-dictionaries/pronunciation_dictionary_id/set-rules")
+HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/pronunciation-dictionaries/21m00Tcm4TlvDq8ikWAM/set-rules")
   .header("Content-Type", "application/json")
-  .body("{\n  \"rules\": [\n    {\n      \"alias\": \"color\",\n      \"string_to_replace\": \"colour\",\n      \"type\": \"alias\"\n    },\n    {\n      \"alias\": \"string\",\n      \"string_to_replace\": \"route\",\n      \"type\": \"phoneme\"\n    }\n  ]\n}")
+  .body("{\n  \"rules\": [\n    {\n      \"alias\": \"string\",\n      \"string_to_replace\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}")
   .asString();
 ```
 
@@ -225,18 +199,13 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://api.elevenlabs.io/v1/pronunciation-dictionaries/pronunciation_dictionary_id/set-rules', [
+$response = $client->request('POST', 'https://api.elevenlabs.io/v1/pronunciation-dictionaries/21m00Tcm4TlvDq8ikWAM/set-rules', [
   'body' => '{
   "rules": [
     {
-      "alias": "color",
-      "string_to_replace": "colour",
-      "type": "alias"
-    },
-    {
       "alias": "string",
-      "string_to_replace": "route",
-      "type": "phoneme"
+      "string_to_replace": "string",
+      "type": "string"
     }
   ]
 }',
@@ -251,10 +220,10 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/pronunciation-dictionaries/pronunciation_dictionary_id/set-rules");
+var client = new RestClient("https://api.elevenlabs.io/v1/pronunciation-dictionaries/21m00Tcm4TlvDq8ikWAM/set-rules");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"rules\": [\n    {\n      \"alias\": \"color\",\n      \"string_to_replace\": \"colour\",\n      \"type\": \"alias\"\n    },\n    {\n      \"alias\": \"string\",\n      \"string_to_replace\": \"route\",\n      \"type\": \"phoneme\"\n    }\n  ]\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"rules\": [\n    {\n      \"alias\": \"string\",\n      \"string_to_replace\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -264,20 +233,15 @@ import Foundation
 let headers = ["Content-Type": "application/json"]
 let parameters = ["rules": [
     [
-      "alias": "color",
-      "string_to_replace": "colour",
-      "type": "alias"
-    ],
-    [
       "alias": "string",
-      "string_to_replace": "route",
-      "type": "phoneme"
+      "string_to_replace": "string",
+      "type": "string"
     ]
   ]] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/pronunciation-dictionaries/pronunciation_dictionary_id/set-rules")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/pronunciation-dictionaries/21m00Tcm4TlvDq8ikWAM/set-rules")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "POST"

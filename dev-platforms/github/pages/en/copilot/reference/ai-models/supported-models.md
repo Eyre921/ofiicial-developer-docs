@@ -422,7 +422,7 @@ The following models are currently used as utility models:
 
 ## Models eligible for default enablement
 
-For enterprises on a Copilot Business or Copilot Enterprise plan, a policy controls whether unconfigured generally available (GA) models are enabled or disabled by default. See [About default availability of Copilot models](/en/copilot/concepts/enterprise/default-model-availability).
+For enterprises on a Copilot Business or Copilot Enterprise plan, a policy controls whether unconfigured generally available (GA) models are enabled or disabled by default. See [About default availability of Copilot features and models](/en/copilot/concepts/enterprise/default-model-availability).
 
 The default policy applies to models that you have not explicitly configured. These models are indicated in your enterprise or organization's model settings with the **Delegate to Default Policy** label. When a new model is released, it inherits the default until you explicitly configure it.
 

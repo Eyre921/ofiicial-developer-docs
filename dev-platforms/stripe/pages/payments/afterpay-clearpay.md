@@ -111,7 +111,7 @@ EMEA: GB
 APAC: AU, NZ
 
 ### Payment support
-Buyer location: AU, CA, GB, NZ, US
+Customer location: AU, CA, GB, NZ, US
 Presentment currency: AUD, NZD, GBP, USD, CAD
 Geographic coverage: ✓ Domestic, ✓ Crossborder
 Transaction limits: Minimum amount: 1.00 USD

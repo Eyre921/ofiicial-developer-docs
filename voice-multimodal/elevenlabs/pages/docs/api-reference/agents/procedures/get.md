@@ -90,7 +90,10 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.conversationalAi.agents.procedures.get("agent_id", "branch_id", "procedure_id", {});
+    await client.conversationalAi.agents.procedures.get("agent_3701k3ttaq12ewp8b7qv5rfyszkz", "agtbranch_0901k4aafjxxfxt93gd841r7tv5t", "agtprc_6qbpwdq8n01bxhk44bgjy6f10ck3", {
+        agentVersionId: "agtvrsn_8901k4t9z5defmb8vh3e9361y7nj",
+        versionId: "agtprcv_7rbqxer9o12cyxi55ckw6sgz1dl4",
+    });
 }
 main();
 
@@ -102,9 +105,11 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.conversational_ai.agents.procedures.get(
-    agent_id="agent_id",
-    branch_id="branch_id",
-    procedure_id="procedure_id",
+    agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
+    branch_id="agtbranch_0901k4aafjxxfxt93gd841r7tv5t",
+    procedure_id="agtprc_6qbpwdq8n01bxhk44bgjy6f10ck3",
+    agent_version_id="agtvrsn_8901k4t9z5defmb8vh3e9361y7nj",
+    version_id="agtprcv_7rbqxer9o12cyxi55ckw6sgz1dl4",
 )
 
 ```
@@ -120,7 +125,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id/procedures/procedure_id"
+	url := "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t/procedures/agtprc_6qbpwdq8n01bxhk44bgjy6f10ck3?agent_version_id=agtvrsn_8901k4t9z5defmb8vh3e9361y7nj&version_id=agtprcv_7rbqxer9o12cyxi55ckw6sgz1dl4"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -139,7 +144,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id/procedures/procedure_id")
+url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t/procedures/agtprc_6qbpwdq8n01bxhk44bgjy6f10ck3?agent_version_id=agtvrsn_8901k4t9z5defmb8vh3e9361y7nj&version_id=agtprcv_7rbqxer9o12cyxi55ckw6sgz1dl4")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -154,7 +159,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id/procedures/procedure_id")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t/procedures/agtprc_6qbpwdq8n01bxhk44bgjy6f10ck3?agent_version_id=agtvrsn_8901k4t9z5defmb8vh3e9361y7nj&version_id=agtprcv_7rbqxer9o12cyxi55ckw6sgz1dl4")
   .asString();
 ```
 
@@ -164,7 +169,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id/procedures/procedure_id');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t/procedures/agtprc_6qbpwdq8n01bxhk44bgjy6f10ck3?agent_version_id=agtvrsn_8901k4t9z5defmb8vh3e9361y7nj&version_id=agtprcv_7rbqxer9o12cyxi55ckw6sgz1dl4');
 
 echo $response->getBody();
 ```
@@ -172,7 +177,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id/procedures/procedure_id");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t/procedures/agtprc_6qbpwdq8n01bxhk44bgjy6f10ck3?agent_version_id=agtvrsn_8901k4t9z5defmb8vh3e9361y7nj&version_id=agtprcv_7rbqxer9o12cyxi55ckw6sgz1dl4");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -180,7 +185,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_id/branches/branch_id/procedures/procedure_id")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t/procedures/agtprc_6qbpwdq8n01bxhk44bgjy6f10ck3?agent_version_id=agtvrsn_8901k4t9z5defmb8vh3e9361y7nj&version_id=agtprcv_7rbqxer9o12cyxi55ckw6sgz1dl4")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

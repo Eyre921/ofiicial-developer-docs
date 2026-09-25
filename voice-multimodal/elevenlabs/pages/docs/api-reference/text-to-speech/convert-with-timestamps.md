@@ -173,7 +173,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.textToSpeech.convertWithTimestamps("voice_id", {
+    await client.textToSpeech.convertWithTimestamps("21m00Tcm4TlvDq8ikWAM", {
         text: "This is a test for the API of ElevenLabs.",
     });
 }
@@ -187,7 +187,7 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.text_to_speech.convert_with_timestamps(
-    voice_id="voice_id",
+    voice_id="21m00Tcm4TlvDq8ikWAM",
     text="This is a test for the API of ElevenLabs.",
 )
 
@@ -205,7 +205,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/text-to-speech/voice_id/with-timestamps"
+	url := "https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM/with-timestamps"
 
 	payload := strings.NewReader("{\n  \"text\": \"This is a test for the API of ElevenLabs.\"\n}")
 
@@ -228,7 +228,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/text-to-speech/voice_id/with-timestamps")
+url = URI("https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM/with-timestamps")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -245,7 +245,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/text-to-speech/voice_id/with-timestamps")
+HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM/with-timestamps")
   .header("Content-Type", "application/json")
   .body("{\n  \"text\": \"This is a test for the API of ElevenLabs.\"\n}")
   .asString();
@@ -257,7 +257,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://api.elevenlabs.io/v1/text-to-speech/voice_id/with-timestamps', [
+$response = $client->request('POST', 'https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM/with-timestamps', [
   'body' => '{
   "text": "This is a test for the API of ElevenLabs."
 }',
@@ -272,7 +272,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/text-to-speech/voice_id/with-timestamps");
+var client = new RestClient("https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM/with-timestamps");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
 request.AddParameter("application/json", "{\n  \"text\": \"This is a test for the API of ElevenLabs.\"\n}", ParameterType.RequestBody);
@@ -287,7 +287,7 @@ let parameters = ["text": "This is a test for the API of ElevenLabs."] as [Strin
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/text-to-speech/voice_id/with-timestamps")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM/with-timestamps")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "POST"

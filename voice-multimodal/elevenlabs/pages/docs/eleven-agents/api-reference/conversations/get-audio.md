@@ -56,18 +56,6 @@ Validation Error
 
 ## Examples
 
-**Request**
-
-```json
-{}
-```
-
-**Response**
-
-```json
-{}
-```
-
 **SDK Code**
 
 ```typescript
@@ -75,9 +63,9 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient({
-        apiKey: "a1b2c3d4e5f67890123456789abcdef0",
+        apiKey: "string",
     });
-    await client.conversationalAi.conversations.audio.get("21m00Tcm4TlvDq8ikWAM");
+    await client.conversationalAi.conversations.audio.get(":conversation_id");
 }
 main();
 
@@ -87,11 +75,11 @@ main();
 from elevenlabs import ElevenLabs
 
 client = ElevenLabs(
-    api_key="a1b2c3d4e5f67890123456789abcdef0",
+    api_key="string",
 )
 
 client.conversational_ai.conversations.audio.get(
-    conversation_id="21m00Tcm4TlvDq8ikWAM",
+    conversation_id=":conversation_id",
 )
 
 ```
@@ -101,21 +89,17 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/conversations/21m00Tcm4TlvDq8ikWAM/audio"
+	url := "https://api.elevenlabs.io/v1/convai/conversations/%3Aconversation_id/audio"
 
-	payload := strings.NewReader("{}")
+	req, _ := http.NewRequest("GET", url, nil)
 
-	req, _ := http.NewRequest("GET", url, payload)
-
-	req.Header.Add("xi-api-key", "a1b2c3d4e5f67890123456789abcdef0")
-	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("xi-api-key", "string")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -132,15 +116,13 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/conversations/21m00Tcm4TlvDq8ikWAM/audio")
+url = URI("https://api.elevenlabs.io/v1/convai/conversations/%3Aconversation_id/audio")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["xi-api-key"] = 'a1b2c3d4e5f67890123456789abcdef0'
-request["Content-Type"] = 'application/json'
-request.body = "{}"
+request["xi-api-key"] = 'string'
 
 response = http.request(request)
 puts response.read_body
@@ -150,10 +132,8 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/conversations/21m00Tcm4TlvDq8ikWAM/audio")
-  .header("xi-api-key", "a1b2c3d4e5f67890123456789abcdef0")
-  .header("Content-Type", "application/json")
-  .body("{}")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/conversations/%3Aconversation_id/audio")
+  .header("xi-api-key", "string")
   .asString();
 ```
 
@@ -163,11 +143,9 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/conversations/21m00Tcm4TlvDq8ikWAM/audio', [
-  'body' => '{}',
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/conversations/%3Aconversation_id/audio', [
   'headers' => [
-    'Content-Type' => 'application/json',
-    'xi-api-key' => 'a1b2c3d4e5f67890123456789abcdef0',
+    'xi-api-key' => 'string',
   ],
 ]);
 
@@ -177,31 +155,22 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/conversations/21m00Tcm4TlvDq8ikWAM/audio");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/conversations/%3Aconversation_id/audio");
 var request = new RestRequest(Method.GET);
-request.AddHeader("xi-api-key", "a1b2c3d4e5f67890123456789abcdef0");
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
+request.AddHeader("xi-api-key", "string");
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = [
-  "xi-api-key": "a1b2c3d4e5f67890123456789abcdef0",
-  "Content-Type": "application/json"
-]
-let parameters = [] as [String : Any]
+let headers = ["xi-api-key": "string"]
 
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
-
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/conversations/21m00Tcm4TlvDq8ikWAM/audio")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/conversations/%3Aconversation_id/audio")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
 request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

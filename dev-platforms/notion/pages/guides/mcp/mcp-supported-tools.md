@@ -192,6 +192,8 @@ An MCP client can call several tools in one task. For example, it can search for
 
     The tool description recommends `allow_async: true` for most page creates. This is guidance to assistants, not a request default. See [Async page create and update](#async-page-create-and-update).
 
+    Markdown in `content` that is too large or too heavily formatted to parse in one call returns a `validation_error`, and the call creates no pages. All pages in one call share the same parse limit, so a call that creates several pages can reach it even when no single page would. With `allow_async: true`, the call still returns an `async_task`, and the task ends as `failed` with that error. Retrying the same call fails the same way. Create the pages with part of the content and add the rest with further calls, or split the content into child pages.
+
     **Example prompts:**
 
     * "Create a project kickoff page under our Projects folder with agenda and team info"
@@ -584,3 +586,5 @@ Some MCP tools have additional, tool-specific rate limits that are stricter. The
 ### What to do if you're rate-limited
 
 If you encounter rate limit errors, prompt your LLM tool to reduce the amount of parallel searches or operations performed using Notion MCP, and/or try again later. AI search calls take longer than keyword workspace search calls, but only `notion-search` has the additional 30-requests-per-minute limit. A client that runs many fast searches in a row is the most likely to hit the `notion-search` rate limit.
+
+Rate limit errors usually include the wait in seconds as `additional_data.retry_after`, and the limit that was hit as `additional_data.rate_limit_reason`. See [Request limits](/reference/request-limits#rate-limit-responses).

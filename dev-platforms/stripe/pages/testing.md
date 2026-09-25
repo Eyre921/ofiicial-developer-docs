@@ -16,7 +16,7 @@ Test cards act as “fake” credit cards, and allow you to simulate the followi
 
 - Successful payments by [card brand](https://docs.stripe.com/testing.md#cards) or [country](https://docs.stripe.com/testing.md#international-cards)
 - Card errors due to [declines](https://docs.stripe.com/testing.md#declined-payments), [fraud](https://docs.stripe.com/testing.md#fraud-prevention), or [invalid data](https://docs.stripe.com/testing.md#trigger-an-error-with-invalid-data)
-- [Disputes](https://docs.stripe.com/testing.md#disputes) and [refunds](https://docs.stripe.com/testing.md#refunds)
+- [Disputes](https://docs.stripe.com/testing.md#disputes), including early fraud warnings, and [refunds](https://docs.stripe.com/testing.md#refunds)
 - Authentication with [3D Secure](https://docs.stripe.com/testing.md#regulatory-cards) and [PINs](https://docs.stripe.com/testing.md#terminal)
 
 You can also test non-card payments in a sandbox. Non-card payments are payment methods that aren’t credit or debit cards. Stripe supports various non-card payment options, such as digital wallets and bank transfers. [Each payment method](https://docs.stripe.com/testing.md#non-card-payments) has its own special values.
