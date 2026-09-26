@@ -115,6 +115,8 @@ Events are split into the following categories:
 * **Credit overage policy updated**: That the AI credit overage policy was updated.
 * **Custom agent created**: That a custom agent was created.
 * **Custom agent creation setting updated**: That a group's custom agent creation setting was updated.
+* **Custom Agent credit limit increase request approved**: That a Custom Agent credit limit increase request was approved.
+* **Custom Agent credit limit increase request rejected**: That a Custom Agent credit limit increase request was rejected.
 * **Custom Agent default model updated**: That the default model for new Custom Agents was updated for the workspace.
 * **Custom agent performed action in setup mode**: That an action was performed in setup mode for a custom agent in the workspace.
 * **Custom agent published**: That a custom agent was published.

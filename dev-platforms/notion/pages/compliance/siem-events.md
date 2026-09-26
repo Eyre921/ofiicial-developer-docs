@@ -150,6 +150,8 @@ When available, applicable events include a top-level `team_ids` array containin
 * **workspace.content\_search\_exported**: The results of a [content search](https://www.notion.so/help/admin-content-search) for a workspace was exported by a workspace owner.
 * **workspace.content\_search\_queried**: A workspace owner used the [admin content search](https://www.notion.so/help/admin-content-search) functionality to find workspace content. Content searches can retrieve content from public and private pages.
 * **workspace.custom\_agent.created**: A custom agent was created in the workspace.
+* **workspace.custom\_agent.credit\_limit\_increase\_request.approved**: A request to increase a Custom Agent's credit limit was approved.
+* **workspace.custom\_agent.credit\_limit\_increase\_request.rejected**: A request to increase a Custom Agent's credit limit was rejected.
 * **workspace.custom\_agent.published**: A custom agent was published in the workspace.
 * **workspace.custom\_agent.setup\_mode\_used**: An action was performed in setup mode for a custom agent in the workspace.
 * **workspace.custom\_emoji.created**: A custom emoji was created in the workspace.

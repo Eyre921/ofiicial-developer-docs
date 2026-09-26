@@ -1153,6 +1153,9 @@ components:
         replicate:
           additionalProperties: {}
           type: object
+        respan:
+          additionalProperties: {}
+          type: object
         runway:
           additionalProperties: {}
           type: object

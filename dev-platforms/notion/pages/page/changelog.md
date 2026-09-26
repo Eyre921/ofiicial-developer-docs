@@ -4,6 +4,12 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+<Update label="September 25, 2026">
+  ### Custom emoji icons are validated
+
+  A `custom_emoji` icon on a page, database, data source, or callout must now name a custom emoji in the integration's workspace. Otherwise the request returns a `validation_error` instead of saving an icon that reads back as `null`. See [Emoji and icon](/reference/emoji-and-icon). Notion MCP applies the same check to `custom_emoji:<id>` page icons in [`notion-create-pages` and `notion-update-page`](/guides/mcp/mcp-supported-tools).
+</Update>
+
 <Update label="September 24, 2026">
   ### Rate limit waits in the response body
 

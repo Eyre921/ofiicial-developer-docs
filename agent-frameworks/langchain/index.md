@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1191 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1196 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -181,6 +181,7 @@
 - `langsmith/data-storage-and-privacy` — [Data storage and privacy](pages/langsmith/data-storage-and-privacy.md) · [原文](https://docs.langchain.com/langsmith/data-storage-and-privacy)
 - `langsmith/dataset-json-types` — [Dataset prebuilt JSON schema types](pages/langsmith/dataset-json-types.md) · [原文](https://docs.langchain.com/langsmith/dataset-json-types)
 - `langsmith/dataset-transformations` — [Dataset transformations](pages/langsmith/dataset-transformations.md) · [原文](https://docs.langchain.com/langsmith/dataset-transformations)
+- `langsmith/decision-model-evaluator` — [How to define a decision model evaluator](pages/langsmith/decision-model-evaluator.md) · [原文](https://docs.langchain.com/langsmith/decision-model-evaluator)
 - `langsmith/define-target-function` — [How to define a target function to evaluate](pages/langsmith/define-target-function.md) · [原文](https://docs.langchain.com/langsmith/define-target-function)
 - `langsmith/deploy-cloudflare-workers` — [Deploy with Cloudflare Workers](pages/langsmith/deploy-cloudflare-workers.md) · [原文](https://docs.langchain.com/langsmith/deploy-cloudflare-workers)
 - `langsmith/deploy-deno` — [Deploy with Deno Deploy](pages/langsmith/deploy-deno.md) · [原文](https://docs.langchain.com/langsmith/deploy-deno)
@@ -385,6 +386,7 @@
 - `langsmith/observability-studio` — [Observability in Studio](pages/langsmith/observability-studio.md) · [原文](https://docs.langchain.com/langsmith/observability-studio)
 - `langsmith/online-evaluations-code` — [Set up online code evaluators](pages/langsmith/online-evaluations-code.md) · [原文](https://docs.langchain.com/langsmith/online-evaluations-code)
 - `langsmith/online-evaluations-composite` — [Set up composite online evaluators](pages/langsmith/online-evaluations-composite.md) · [原文](https://docs.langchain.com/langsmith/online-evaluations-composite)
+- `langsmith/online-evaluations-decision-models` — [Set up decision model online evaluators](pages/langsmith/online-evaluations-decision-models.md) · [原文](https://docs.langchain.com/langsmith/online-evaluations-decision-models)
 - `langsmith/online-evaluations-llm-as-judge` — [Set up LLM-as-a-judge online evaluators](pages/langsmith/online-evaluations-llm-as-judge.md) · [原文](https://docs.langchain.com/langsmith/online-evaluations-llm-as-judge)
 - `langsmith/online-evaluations-multi-turn` — [Set up multi-turn online evaluators](pages/langsmith/online-evaluations-multi-turn.md) · [原文](https://docs.langchain.com/langsmith/online-evaluations-multi-turn)
 - `langsmith/openapi-security` — [Document API authentication in OpenAPI](pages/langsmith/openapi-security.md) · [原文](https://docs.langchain.com/langsmith/openapi-security)
@@ -595,6 +597,7 @@
 - `langsmith/smith-api/bulk-exports/cancel-bulk-export` — [Cancel bulk export](pages/langsmith/smith-api/bulk-exports/cancel-bulk-export.md) · [原文](https://docs.langchain.com/langsmith/smith-api/bulk-exports/cancel-bulk-export)
 - `langsmith/smith-api/bulk-exports/create-bulk-export` — [Create bulk export](pages/langsmith/smith-api/bulk-exports/create-bulk-export.md) · [原文](https://docs.langchain.com/langsmith/smith-api/bulk-exports/create-bulk-export)
 - `langsmith/smith-api/bulk-exports/create-bulk-export-destination` — [Create bulk export destination](pages/langsmith/smith-api/bulk-exports/create-bulk-export-destination.md) · [原文](https://docs.langchain.com/langsmith/smith-api/bulk-exports/create-bulk-export-destination)
+- `langsmith/smith-api/bulk-exports/delete-bulk-export-destination` — [Delete bulk export destination](pages/langsmith/smith-api/bulk-exports/delete-bulk-export-destination.md) · [原文](https://docs.langchain.com/langsmith/smith-api/bulk-exports/delete-bulk-export-destination)
 - `langsmith/smith-api/bulk-exports/get-bulk-export` — [Get bulk export](pages/langsmith/smith-api/bulk-exports/get-bulk-export.md) · [原文](https://docs.langchain.com/langsmith/smith-api/bulk-exports/get-bulk-export)
 - `langsmith/smith-api/bulk-exports/get-bulk-export-destination` — [Get bulk export destination](pages/langsmith/smith-api/bulk-exports/get-bulk-export-destination.md) · [原文](https://docs.langchain.com/langsmith/smith-api/bulk-exports/get-bulk-export-destination)
 - `langsmith/smith-api/bulk-exports/get-bulk-export-destinations` — [Get bulk export destinations](pages/langsmith/smith-api/bulk-exports/get-bulk-export-destinations.md) · [原文](https://docs.langchain.com/langsmith/smith-api/bulk-exports/get-bulk-export-destinations)
@@ -637,6 +640,7 @@
 - `langsmith/smith-api/commits/list-commits` — [List commits](pages/langsmith/smith-api/commits/list-commits.md) · [原文](https://docs.langchain.com/langsmith/smith-api/commits/list-commits)
 - `langsmith/smith-api/data_planes/create-a-new-data-plane` — [Create a new data plane](pages/langsmith/smith-api/data_planes/create-a-new-data-plane.md) · [原文](https://docs.langchain.com/langsmith/smith-api/data_planes/create-a-new-data-plane)
 - `langsmith/smith-api/data_planes/delete-a-data-plane` — [Delete a data plane](pages/langsmith/smith-api/data_planes/delete-a-data-plane.md) · [原文](https://docs.langchain.com/langsmith/smith-api/data_planes/delete-a-data-plane)
+- `langsmith/smith-api/data_planes/get-a-data-plane` — [Get a data plane](pages/langsmith/smith-api/data_planes/get-a-data-plane.md) · [原文](https://docs.langchain.com/langsmith/smith-api/data_planes/get-a-data-plane)
 - `langsmith/smith-api/data_planes/list-data-planes-for-the-current-organization` — [List data planes for the current organization](pages/langsmith/smith-api/data_planes/list-data-planes-for-the-current-organization.md) · [原文](https://docs.langchain.com/langsmith/smith-api/data_planes/list-data-planes-for-the-current-organization)
 - `langsmith/smith-api/data_planes/update-data-plane-settings` — [Update data plane settings](pages/langsmith/smith-api/data_planes/update-data-plane-settings.md) · [原文](https://docs.langchain.com/langsmith/smith-api/data_planes/update-data-plane-settings)
 - `langsmith/smith-api/datasets/clone-dataset` — [Clone dataset](pages/langsmith/smith-api/datasets/clone-dataset.md) · [原文](https://docs.langchain.com/langsmith/smith-api/datasets/clone-dataset)
@@ -1155,6 +1159,7 @@
 - `langsmith/troubleshooting-studio` — [Studio troubleshooting](pages/langsmith/troubleshooting-studio.md) · [原文](https://docs.langchain.com/langsmith/troubleshooting-studio)
 - `langsmith/troubleshooting-variable-caching` — [Troubleshoot variable caching](pages/langsmith/troubleshooting-variable-caching.md) · [原文](https://docs.langchain.com/langsmith/troubleshooting-variable-caching)
 - `langsmith/tuned-evaluators` — [Set up LangChain Tuned Evaluators](pages/langsmith/tuned-evaluators.md) · [原文](https://docs.langchain.com/langsmith/tuned-evaluators)
+- `langsmith/typesafe-compatible-model` — [Connect to a TypeSafe-compatible model provider](pages/langsmith/typesafe-compatible-model.md) · [原文](https://docs.langchain.com/langsmith/typesafe-compatible-model)
 - `langsmith/upload-existing-experiments` — [How to upload experiments run outside of LangSmith with the REST API](pages/langsmith/upload-existing-experiments.md) · [原文](https://docs.langchain.com/langsmith/upload-existing-experiments)
 - `langsmith/upload-files-with-traces` — [Upload files with traces](pages/langsmith/upload-files-with-traces.md) · [原文](https://docs.langchain.com/langsmith/upload-files-with-traces)
 - `langsmith/usage-and-billing` — [Usage and billing](pages/langsmith/usage-and-billing.md) · [原文](https://docs.langchain.com/langsmith/usage-and-billing)

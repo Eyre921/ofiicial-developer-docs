@@ -1,6 +1,6 @@
 # dev-platforms/notion 文档索引
 
-> 共 250 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 251 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## cli
@@ -69,6 +69,10 @@
 
 - `page/changelog` — [Changelog](pages/page/changelog.md) · [原文](https://developers.notion.com/page/changelog)
 - `page/examples` — [Examples](pages/page/examples.md) · [原文](https://developers.notion.com/page/examples)
+
+## prompts
+
+- `prompts/setup` — [Set up Notion for your agent](pages/prompts/setup.md) · [原文](https://developers.notion.com/prompts/setup)
 
 ## reference
 

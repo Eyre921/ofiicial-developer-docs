@@ -587,4 +587,4 @@ Some MCP tools have additional, tool-specific rate limits that are stricter. The
 
 If you encounter rate limit errors, prompt your LLM tool to reduce the amount of parallel searches or operations performed using Notion MCP, and/or try again later. AI search calls take longer than keyword workspace search calls, but only `notion-search` has the additional 30-requests-per-minute limit. A client that runs many fast searches in a row is the most likely to hit the `notion-search` rate limit.
 
-Rate limit errors usually include the wait in seconds as `additional_data.retry_after`, and the limit that was hit as `additional_data.rate_limit_reason`. See [Request limits](/reference/request-limits#rate-limit-responses).
+Notion MCP retries a rate limit once when the wait is 2 seconds or less. Otherwise it returns the rate limit as a tool error right away instead of waiting it out. The error's `structuredContent.error` has `code: "rate_limited"`, the wait in seconds as `retry_after_seconds` when known, and the limit that was hit as `rate_limit_reason`. See [Request limits](/reference/request-limits#rate-limit-responses).

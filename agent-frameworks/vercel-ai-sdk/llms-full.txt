@@ -41787,7 +41787,7 @@ The following gateway provider options are available:
 
   The unique identifier for the entity against which quota is tracked. Used for quota management and enforcement purposes.
 
-- **has** _Array&lt;'implicit-caching' | 'reasoning' | 'tool-use' | 'vision' | `quantization:${string}` | `!quantization:${string}`&gt;_
+- **has** _Array&lt;'implicit-caching' | 'reasoning' | 'structured-output' | 'tool-use' | 'vision' | `quantization:${string}` | `!quantization:${string}`&gt;_
 
   Restricts routing to provider models that have all of the specified capabilities. Applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. If no provider model for the requested model satisfies the capabilities, the request fails. Unsupported values are rejected.
 
@@ -41795,6 +41795,7 @@ The following gateway provider options are available:
 
   - `'implicit-caching'` — models that perform automatic (implicit) prompt caching.
   - `'reasoning'` — models that support reasoning.
+  - `'structured-output'` — models that support schema-constrained output.
   - `'tool-use'` — models that support tool calling.
   - `'vision'` — models that accept image input.
 
@@ -41912,7 +41913,7 @@ const { text } = await generateText({
 
 #### Filtering by Model Capability
 
-Set `has` to restrict routing to provider models that have the specified capabilities. This applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. `'implicit-caching'` limits routing to models that perform automatic prompt caching, `'vision'` limits routing to models that accept image input, `'reasoning'` limits routing to models that support reasoning, and `'tool-use'` limits routing to models that support tool calling. Weight-format conditions (`'quantization:fp8'` to require, `'!quantization:fp8'` to exclude) limit routing by the serving provider's recorded weight format. If no provider model for the requested model satisfies the capabilities, the request fails.
+Set `has` to restrict routing to provider models that have the specified capabilities. This applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. `'implicit-caching'` limits routing to models that perform automatic prompt caching, `'vision'` limits routing to models that accept image input, `'reasoning'` limits routing to models that support reasoning, `'structured-output'` limits routing to models that support schema-constrained output, and `'tool-use'` limits routing to models that support tool calling. Weight-format conditions (`'quantization:fp8'` to require, `'!quantization:fp8'` to exclude) limit routing by the serving provider's recorded weight format. If no provider model for the requested model satisfies the capabilities, the request fails.
 
 ```ts
 import type { GatewayProviderOptions } from "@ai-sdk/gateway";
@@ -43123,50 +43124,99 @@ The following OpenAI-specific metadata is returned:
 
 #### Changing Reasoning Effort Mid-Conversation
 
-GPT-6 and later models can change reasoning effort between responses without
-changing the request-level `reasoningEffort` setting. The provider sends
-`reasoningEffortUpdate` as an OpenAI `configuration_update` input item before
-the next user message. Keeping the request-level effort unchanged preserves the
-original prompt prefix for prompt caching.
+You can increase reasoning effort for difficult work or reduce it for routine
+follow-ups while preserving the conversation prefix for prompt caching:
 
-```ts highlight="8-10,26,32"
-import { openai, type OpenAIResponsesProviderOptions } from '@ai-sdk/openai';
-import { generateText } from 'ai';
+- Set the initial effort with request-level `providerOptions.openai.reasoningEffort` and keep that setting
+  unchanged throughout the conversation.
+- For later changes, add a message-level `reasoningEffortUpdate` before the next
+  user message, following
+  [OpenAI's configuration update guidance](https://developers.openai.com/api/docs/guides/reasoning#change-reasoning-mid-conversation).
+
+The new effort applies until another update changes it. When sending conversation
+history in `messages`, include earlier effort updates along with the other messages.
+
+Represent an update as an empty system message with
+`providerOptions.openai.reasoningEffortUpdate`.
+
+Set `allowSystemInMessages: true` to explicitly allow these trusted system messages
+and suppress the warning for system messages in `messages`.
+
+In this example, the conversation starts at low effort and switches to high
+effort for the follow-up. Both requests keep `providerOptions.openai.reasoningEffort: 'low'`.
+
+```ts
+import {
+  openai,
+  type OpenAIResponsesSystemMessageOptions,
+} from '@ai-sdk/openai';
+import { generateText, type ModelMessage } from 'ai';
+
+const messages: ModelMessage[] = [
+  { role: 'user', content: 'Draft a migration plan.' },
+];
 
 const first = await generateText({
   model: openai.responses('gpt-6-astra'),
-  prompt: 'Draft a database migration plan.',
-  providerOptions: {
-    openai: {
-      reasoningEffort: 'low',
-    } satisfies OpenAIResponsesProviderOptions,
-  },
+  providerOptions: { openai: { reasoningEffort: 'low' } },
+  messages,
 });
 
-const previousResponseId = first.providerMetadata?.openai.responseId as
-  | string
-  | undefined;
-
-if (!previousResponseId) {
-  throw new Error('OpenAI did not return a response ID.');
-}
+messages.push(...first.response.messages);
+messages.push(
+  {
+    role: 'system',
+    content: '',
+    providerOptions: {
+      openai: {
+        reasoningEffortUpdate: 'high',
+      } satisfies OpenAIResponsesSystemMessageOptions,
+    },
+  },
+  { role: 'user', content: 'Analyze the failure modes.' },
+);
 
 const second = await generateText({
   model: openai.responses('gpt-6-astra'),
-  prompt: 'Analyze the failure modes and propose rollback steps.',
-  providerOptions: {
-    openai: {
-      previousResponseId,
-      reasoningEffort: 'low',
-      reasoningEffortUpdate: 'high',
-    } satisfies OpenAIResponsesProviderOptions,
-  },
+  providerOptions: { openai: { reasoningEffort: 'low' } },
+  allowSystemInMessages: true,
+  messages,
 });
+
+messages.push(...second.response.messages);
 ```
 
-The response metadata continues to report the request-level reasoning effort,
-not the effective effort selected by `reasoningEffortUpdate`. Configuration
-updates are not supported with `reasoningMode: 'pro'` or `truncation: 'auto'`.
+<Note>
+  The OpenAI Responses provider sends each message-level effort update as a
+  `configuration_update` input item.
+</Note>
+
+Message-level updates also work with `streamText` and `previousResponseId`.
+
+##### Restrictions
+
+Effort updates are supported on GPT-6-family models with these settings:
+
+| Setting             | Required value         |
+| ------------------- | ---------------------- |
+| `reasoningMode`     | `'standard'` (default) |
+| `truncation`        | `'disabled'` (default) |
+
+- Each update **must** use exactly `content: ''`.
+- Updates cannot be consecutive, even with the same effort. This also applies
+  across the boundary with history referenced by previousResponseId or
+  conversation.
+
+Requests that violate these restrictions are rejected.
+
+##### Request-Level Update Option
+
+The request-level `providerOptions.openai.reasoningEffortUpdate` option is a
+convenience that prepends a configuration update to the input. When using
+message-level updates, omit this option.
+
+The request-level option continues to warn and omit updates for unsupported
+models or configurations.
 
 #### Reasoning Output
 
@@ -44994,6 +45044,53 @@ The following OpenAI-specific metadata is returned:
   not supported when using 'azure.chat' or 'azure.completion'
 </Note>
 
+#### Changing Reasoning Effort Mid-Conversation
+
+Azure Responses models support message-level reasoning effort updates through
+`providerOptions.azure.reasoningEffortUpdate`. The `openai` namespace is also
+accepted when the message has no `azure` options. Use the
+`OpenAIResponsesSystemMessageOptions` type exported from `@ai-sdk/azure` to
+validate these options:
+
+```ts
+import { azure, type OpenAIResponsesSystemMessageOptions } from '@ai-sdk/azure';
+import { generateText } from 'ai';
+
+const result = await generateText({
+  // Use the name of your GPT-6 deployment.
+  model: azure.responses('gpt-6-astra'),
+  providerOptions: { openai: { reasoningEffort: 'low' } },
+  allowSystemInMessages: true,
+  messages: [
+    {
+      role: 'system',
+      content: '',
+      providerOptions: {
+        azure: {
+          reasoningEffortUpdate: 'high',
+        } satisfies OpenAIResponsesSystemMessageOptions,
+      },
+    },
+    { role: 'user', content: 'Analyze the failure modes of this migration.' },
+  ],
+});
+```
+
+Keep the request-level `providerOptions.openai.reasoningEffort` unchanged throughout the conversation and
+retain earlier effort updates when resending message history. These updates
+also work with `streamText`. See the [OpenAI reasoning effort
+guide](/providers/ai-sdk-providers/openai#changing-reasoning-effort-mid-conversation)
+for continuation and configuration restrictions.
+
+<Note>
+  The SDK infers support for effort updates from the deployment name passed to
+  `azure.responses()`. The name must identify a supported GPT-6-or-later model
+  family, such as `gpt-6-astra`. A custom name such as `production` is not
+  recognized, even when the underlying deployment runs GPT-6. In that case,
+  message-level updates throw, and request-level updates are omitted with a
+  warning.
+</Note>
+
 #### Web Search Tool
 
 The Azure OpenAI responses API supports web search through the `azure.tools.webSearch` tool.
@@ -46533,13 +46630,16 @@ for await (const part of result.textStream) {
 
 ### Mid-Conversation System Controls
 
-With `claude-opus-5-5` and `claude-fable-5-1`, a mid-conversation system message
-can be cleared before the next user message with `clearAt: 'next_user_message'`,
-or set the effort for the next turn without invalidating the prompt cache. The provider adds the required
+With `claude-opus-5-5` and `claude-fable-5-1`, use an empty system message to
+change effort from the next user turn. A separate system message containing text
+can provide a turn-scoped reminder with `clearAt: 'next_user_message'`: its text
+applies until the next user message. Keep the reminder after a user turn and
+before an assistant turn, or at the end of the messages array.
+The provider adds the required
 `mid-conversation-system-clear-at-2026-08-21` and
 `mid-conversation-output-config-2026-07-01` beta headers automatically.
 
-```ts highlight="17-25"
+```ts highlight="16-24,29-37"
 import { anthropic } from '@ai-sdk/anthropic';
 import { generateText } from 'ai';
 
@@ -46557,10 +46657,9 @@ const result = await generateText({
     },
     {
       role: 'system',
-      content: 'For the next turn, verify every compatibility claim.',
+      content: '',
       providerOptions: {
         anthropic: {
-          clearAt: 'next_user_message',
           effort: 'high',
         },
       },
@@ -46569,19 +46668,39 @@ const result = await generateText({
       role: 'user',
       content: 'Complete the plan.',
     },
+    {
+      role: 'system',
+      content: 'For this turn, verify every compatibility claim.',
+      providerOptions: {
+        anthropic: {
+          clearAt: 'next_user_message',
+        },
+      },
+    },
   ],
 });
 ```
 
 An effort-only system message can use an empty content array at the API level;
 in an AI SDK prompt, set `content: ''`. The provider serializes it as
-`content: []`.
+`content: []`. These effort-only messages can appear first or later in the
+conversation, including consecutively. The provider preserves their order. The new
+level applies from the next user turn until a later message changes it.
+Initial instruction text is sent in the top-level `system` field.
+
+Consecutive inline system messages are evaluated as a group. If an effort-only
+message is adjacent to a system message containing text, the whole group must
+follow Anthropic's [content placement rules](https://platform.claude.com/docs/en/build-with-claude/mid-conversation-system-messages#limitations).
+
+Turn-scoped messages with `clearAt` support text only. Put effort updates in a
+separate message, as in the example above.
 
 <Note>
-  `clearAt` and per-message `effort` apply only to mid-conversation system
-  messages. When used on the initial system message, the provider ignores them
-  and emits a warning. Use the top-level `effort` provider option to configure
-  effort for the full request.
+  `clearAt` applies only to mid-conversation system messages. On initial system
+  messages, the provider ignores `clearAt` and effort attached to non-empty
+  content and emits a warning. Use an empty system message for an initial
+  per-message effort setting, or the top-level `effort` provider option to
+  configure effort for the full request.
 </Note>
 
 ### Mid-Conversation Tool Changes
@@ -70157,8 +70276,11 @@ const { text } = await generateText({
 </Note>
 
 For Google, use base64 media parts (`image-data` / `file-data`) or base64
-`data:` URLs in URL-style parts. Remote HTTP(S) URLs in tool-result URL parts
-are not supported.
+`data:` URLs in URL-style parts. HTTP(S) tool-result files are downloaded and
+sent as inline data. With Google Vertex and Gemini 3 or later, `file-url` parts
+can also reference `gs://` URLs directly when a supported full `mediaType` is
+provided. See [Google Vertex tool result files](/providers/ai-sdk-providers/google-vertex#tool-result-files)
+for supported MIME types and an example.
 
 In order to send multi-modal tool results, e.g. screenshots, back to the model,
 they need to be converted into a specific format.
@@ -82342,6 +82464,132 @@ token-efficient content controls. Deep synthesis modes and generated summaries
 are intentionally not exposed yet because they have separate pricing from
 standard Search.
 
+#### Browserbase Search
+
+The Browserbase Search tool enables models to search the web using [Browserbase's Search API](https://docs.browserbase.com/reference/api/web-search). It is executed by AI Gateway and returns fast, structured search results without opening a browser session.
+
+```ts
+import { gateway, generateText } from 'ai';
+
+const result = await generateText({
+  model: 'openai/gpt-5.6-luna',
+  prompt:
+    'Find official guidance on traveling with power banks on U.S. flights. Return the most relevant page titles and URLs.',
+  tools: {
+    browserbase_search: gateway.tools.browserbaseSearch(),
+  },
+});
+
+console.log(result.text);
+console.log('Tool calls:', JSON.stringify(result.toolCalls, null, 2));
+console.log('Tool results:', JSON.stringify(result.toolResults, null, 2));
+```
+
+You can configure the maximum number of results returned by each search:
+
+```ts
+import { gateway, generateText } from 'ai';
+
+const result = await generateText({
+  model: 'openai/gpt-5.6-luna',
+  prompt:
+    'Find three recent reviews comparing e-readers for outdoor reading. Return their titles and URLs.',
+  tools: {
+    browserbase_search: gateway.tools.browserbaseSearch({
+      numResults: 3,
+    }),
+  },
+});
+
+console.log(result.text);
+```
+
+The Browserbase Search tool supports this optional configuration option:
+
+- **numResults** _number_
+
+  Maximum number of search results to return (1-25, default: 10).
+
+The tool works with both `generateText` and `streamText`.
+
+#### Browserbase Fetch
+
+The Browserbase Fetch tool enables models to retrieve page content using [Browserbase's Fetch API](https://docs.browserbase.com/platform/fetch/overview). It is a lightweight option for pages that do not require JavaScript execution or browser interaction, and it supports raw, Markdown, and schema-driven JSON output.
+
+```ts
+import { gateway, generateText } from 'ai';
+
+const result = await generateText({
+  model: 'openai/gpt-5.6-luna',
+  prompt:
+    'Fetch https://www.nps.gov/yose/planyourvisit/halfdome.htm and summarize the permit requirements and main safety warnings.',
+  tools: {
+    browserbase_fetch: gateway.tools.browserbaseFetch(),
+  },
+});
+
+console.log(result.text);
+console.log('Tool calls:', JSON.stringify(result.toolCalls, null, 2));
+console.log('Tool results:', JSON.stringify(result.toolResults, null, 2));
+```
+
+You can configure the output format and request behavior. For example, use JSON extraction to return content matching a JSON Schema:
+
+```ts
+import { gateway, generateText } from 'ai';
+
+const result = await generateText({
+  model: 'openai/gpt-5.6-luna',
+  prompt:
+    'Fetch https://www.nps.gov/yose/planyourvisit/halfdome.htm and extract its page title, whether a permit is required, and three safety tips.',
+  tools: {
+    browserbase_fetch: gateway.tools.browserbaseFetch({
+      allowRedirects: true,
+      format: 'json',
+      schema: {
+        type: 'object',
+        properties: {
+          pageTitle: { type: 'string' },
+          permitRequired: { type: 'boolean' },
+          safetyTips: {
+            type: 'array',
+            items: { type: 'string' },
+            maxItems: 3,
+          },
+        },
+        required: ['pageTitle', 'permitRequired', 'safetyTips'],
+      },
+    }),
+  },
+});
+
+console.log(result.text);
+```
+
+The Browserbase Fetch tool supports these optional configuration options:
+
+- **format** _'raw' | 'markdown' | 'json'_
+
+  Output format for the fetched content. `raw` returns the upstream response body unchanged and is the default. `markdown` converts the page to Markdown. `json` performs structured extraction and requires `schema`.
+
+- **schema** _object_
+
+  JSON Schema describing the desired structured content. Only used when `format` is `json`.
+
+- **allowRedirects** _boolean_
+
+  Follow HTTP redirects. Defaults to `false`.
+
+- **proxies** _boolean_
+
+  Route the request through Browserbase's proxy network. Defaults to `false`.
+
+- **allowInsecureSsl** _boolean_
+
+  Bypass TLS certificate verification. Defaults to `false`; only enable it for trusted hosts.
+
+The Fetch API does not execute JavaScript. Use a browser session for interactive or JavaScript-rendered pages. The tool works with both `generateText` and `streamText`.
+
 #### Tako Search
 
 The Tako Search tool enables models to search the web and Tako's curated knowledge graph in a single call using [Tako's Search API](https://docs.tako.com/documentation/integrating-tako/search/overview). This tool is executed by the AI Gateway and returns token-efficient web excerpts, plus knowledge-graph results that carry structured data, premium source attribution, and an embed-ready visualization.
@@ -82751,7 +82999,7 @@ The following gateway provider options are available:
 
   The unique identifier for the entity against which quota is tracked. Used for quota management and enforcement purposes.
 
-- **has** _Array&lt;'implicit-caching' | 'reasoning' | 'tool-use' | 'vision' | `quantization:${string}` | `!quantization:${string}`&gt;_
+- **has** _Array&lt;'implicit-caching' | 'reasoning' | 'structured-output' | 'tool-use' | 'vision' | `quantization:${string}` | `!quantization:${string}`&gt;_
 
   Restricts routing to provider models that have all of the specified capabilities. Applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. If no provider model for the requested model satisfies the capabilities, the request fails. Unsupported values are rejected.
 
@@ -82759,6 +83007,7 @@ The following gateway provider options are available:
 
   - `'implicit-caching'` — models that perform automatic (implicit) prompt caching.
   - `'reasoning'` — models that support reasoning.
+  - `'structured-output'` — models that support schema-constrained output.
   - `'tool-use'` — models that support tool calling.
   - `'vision'` — models that accept image input.
 
@@ -82902,7 +83151,7 @@ const { text } = await generateText({
 
 #### Filtering by Model Capability
 
-Set `has` to restrict routing to provider models that have the specified capabilities. This applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. `'implicit-caching'` limits routing to models that perform automatic prompt caching, `'vision'` limits routing to models that accept image input, `'reasoning'` limits routing to models that support reasoning, and `'tool-use'` limits routing to models that support tool calling. Weight-format conditions (`'quantization:fp8'` to require, `'!quantization:fp8'` to exclude) limit routing by the serving provider's recorded weight format. If no provider model for the requested model satisfies the capabilities, the request fails.
+Set `has` to restrict routing to provider models that have the specified capabilities. This applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. `'implicit-caching'` limits routing to models that perform automatic prompt caching, `'vision'` limits routing to models that accept image input, `'reasoning'` limits routing to models that support reasoning, `'structured-output'` limits routing to models that support schema-constrained output, and `'tool-use'` limits routing to models that support tool calling. Weight-format conditions (`'quantization:fp8'` to require, `'!quantization:fp8'` to exclude) limit routing by the serving provider's recorded weight format. If no provider model for the requested model satisfies the capabilities, the request fails.
 
 ```ts
 import type { GatewayProviderOptions } from "@ai-sdk/gateway";
@@ -90146,13 +90395,16 @@ This sends `tool_reference` blocks to Anthropic, which loads the corresponding d
 
 ### Mid-Conversation System Controls
 
-With `claude-opus-5-5` and `claude-fable-5-1`, a mid-conversation system message
-can be cleared before the next user message with `clearAt: 'next_user_message'`,
-or set the effort for the next turn without invalidating the prompt cache. The provider adds the required
+With `claude-opus-5-5` and `claude-fable-5-1`, use an empty system message to
+change effort from the next user turn. A separate system message containing text
+can provide a turn-scoped reminder with `clearAt: 'next_user_message'`: its text
+applies until the next user message. Keep the reminder after a user turn and
+before an assistant turn, or at the end of the messages array.
+The provider adds the required
 `mid-conversation-system-clear-at-2026-08-21` and
 `mid-conversation-output-config-2026-07-01` beta headers automatically.
 
-```ts highlight="17-25"
+```ts highlight="16-24,29-37"
 import { anthropic } from '@ai-sdk/anthropic';
 import { generateText } from 'ai';
 
@@ -90170,10 +90422,9 @@ const result = await generateText({
     },
     {
       role: 'system',
-      content: 'For the next turn, verify every compatibility claim.',
+      content: '',
       providerOptions: {
         anthropic: {
-          clearAt: 'next_user_message',
           effort: 'high',
         },
       },
@@ -90182,19 +90433,39 @@ const result = await generateText({
       role: 'user',
       content: 'Complete the plan.',
     },
+    {
+      role: 'system',
+      content: 'For this turn, verify every compatibility claim.',
+      providerOptions: {
+        anthropic: {
+          clearAt: 'next_user_message',
+        },
+      },
+    },
   ],
 });
 ```
 
 An effort-only system message can use an empty content array at the API level;
 in an AI SDK prompt, set `content: ''`. The provider serializes it as
-`content: []`.
+`content: []`. These effort-only messages can appear first or later in the
+conversation, including consecutively. The provider preserves their order. The new
+level applies from the next user turn until a later message changes it.
+Initial instruction text is sent in the top-level `system` field.
+
+Consecutive inline system messages are evaluated as a group. If an effort-only
+message is adjacent to a system message containing text, the whole group must
+follow Anthropic's [content placement rules](https://platform.claude.com/docs/en/build-with-claude/mid-conversation-system-messages#limitations).
+
+Turn-scoped messages with `clearAt` support text only. Put effort updates in a
+separate message, as in the example above.
 
 <Note>
-  `clearAt` and per-message `effort` apply only to mid-conversation system
-  messages. When used on the initial system message, the provider ignores them
-  and emits a warning. Use the top-level `effort` provider option to configure
-  effort for the full request.
+  `clearAt` applies only to mid-conversation system messages. On initial system
+  messages, the provider ignores `clearAt` and effort attached to non-empty
+  content and emits a warning. Use an empty system message for an initial
+  per-message effort setting, or the top-level `effort` provider option to
+  configure effort for the full request.
 </Note>
 
 ### Mid-Conversation Tool Changes
@@ -98359,6 +98630,36 @@ const { text } = await generateText({
 </Note>
 
 See [File Parts](/docs/foundations/prompts#file-parts) for details on how to use files in prompts.
+
+### Tool Result Files
+
+For Gemini 3 and later models, tool results can include Google Cloud Storage
+(`gs://`) file URLs. Vertex receives these references directly as
+`functionResponse.parts[].fileData`, without downloading the files into the SDK
+process. The supported MIME types are `image/png`, `image/jpeg`, `image/webp`,
+`application/pdf`, and `text/plain`.
+
+Use a `file-url` part with a full `mediaType` in the tool's `toModelOutput` result:
+
+```ts
+toModelOutput: ({ output }) => ({
+  type: 'content',
+  value: [
+    {
+      type: 'file-url',
+      url: output.gcsUri,
+      mediaType: 'image/png',
+    },
+  ],
+}),
+```
+
+The Vertex caller must have access to the referenced object. Direct GCS
+tool-result forwarding is not supported for older Gemini models, missing or
+wildcard MIME types, or MIME types outside the list above.
+
+HTTP(S) tool-result files are downloaded and sent as inline data, including when
+the file part specifies a `mediaType`.
 
 ### Cached Content
 
@@ -120614,17 +120915,21 @@ Pass a sandbox session with the `sandbox` option when your agent tools need an
 execution environment:
 
 ```ts
-import { createJustBashSandbox } from '@ai-sdk/sandbox-just-bash';
+import { createJustBashNetworkSandboxSession } from '@ai-sdk/sandbox-just-bash';
 
-const sandboxSession = await createJustBashSandbox({
+const sandboxSession = await createJustBashNetworkSandboxSession({
   cwd: '/home/user',
-}).createSession();
-
-await runAgentTUI({
-  title: 'Sandbox Agent',
-  agent,
-  sandbox: sandboxSession.restricted(),
 });
+
+try {
+  await runAgentTUI({
+    title: 'Sandbox Agent',
+    agent,
+    sandbox: sandboxSession.restricted(),
+  });
+} finally {
+  await sandboxSession.destroy();
+}
 ```
 
 The terminal UI forwards the sandbox to every agent call as
@@ -123538,11 +123843,16 @@ orders the remaining tools.
   and Google (Gemini 3 models).
 </Note>
 
-For Google, use base64 inline-data file parts
+For Google Generative AI, use base64 inline-data file parts
 (`{ type: 'file', mediaType, data: { type: 'data', data } }`) or base64
 `data:` URLs in URL-style file parts
 (`{ type: 'file', mediaType, data: { type: 'url', url: new URL('data:...') } }`).
 Remote HTTP(S) URLs in tool-result URL parts are not supported.
+
+The [Google Vertex provider](/providers/ai-sdk-providers/google-vertex#tool-result-files)
+also supports direct `gs://` tool-result file references for Gemini 3 and later
+models with supported image and document MIME types. It downloads HTTP(S)
+tool-result URLs and sends their contents as inline data.
 
 In order to send multi-modal tool results, e.g. screenshots, back to the model,
 they need to be converted into a specific format.
@@ -125777,9 +126087,9 @@ This design lets you use the portable `reasoning` parameter by default and fall 
 
 ## Provider Support
 
-The `reasoning` parameter is supported by the following providers: OpenAI, Anthropic, Google, xAI, Groq, DeepSeek, Fireworks, and Amazon Bedrock. Each provider translates the value to its native reasoning API. Some providers support all six levels natively, while others coerce to fewer levels (a warning is emitted when coercion occurs). Some providers use a numeric token budget instead of an enum for reasoning control; in those cases the top-level `reasoning` value is mapped to a budget calculated as a percentage of the model's maximum output tokens.
+The `reasoning` parameter is supported by the following providers: OpenAI, Anthropic, Google, xAI, Groq, DeepSeek, Fireworks, Amazon Bedrock, and Perplexity. Each provider translates the value to its native reasoning API. Some providers support all six levels natively, while others coerce to fewer levels (a warning is emitted when coercion occurs). Some providers use a numeric token budget instead of an enum for reasoning control; in those cases the top-level `reasoning` value is mapped to a budget calculated as a percentage of the model's maximum output tokens.
 
-Providers that do not support reasoning (e.g. Mistral, Perplexity, Cohere) emit an `unsupported` warning and ignore the parameter.
+Providers that do not support reasoning (e.g. Mistral and Cohere) emit an `unsupported` warning and ignore the parameter.
 
 ## Migrating from `providerOptions`
 
@@ -133399,7 +133709,7 @@ results while a preconfigured harness powers these results.
 
 ## Installation
 
-Install the core harness package, a harness adapter, and a sandbox provider:
+Install the core harness package, a harness adapter, and a sandbox adapter:
 
 <InstallPackages packages="@ai-sdk/harness @ai-sdk/harness-claude-code @ai-sdk/sandbox-vercel" />
 
@@ -133412,15 +133722,10 @@ like `@ai-sdk/sandbox-vercel`. Host-runtime harnesses such as Pi can also run wi
 ```ts
 import { HarnessAgent } from '@ai-sdk/harness/agent';
 import { claudeCode } from '@ai-sdk/harness-claude-code';
-import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
 
 export const agent = new HarnessAgent({
   harness: claudeCode,
   model: 'claude-sonnet-4-6',
-  sandbox: createVercelSandbox({
-    runtime: 'node24',
-    ports: [4000],
-  }),
   instructions:
     'You are a careful coding assistant. Prefer small changes and explain tradeoffs.',
 });
@@ -133428,6 +133733,17 @@ export const agent = new HarnessAgent({
 
 Construct the agent at module scope. It holds configuration, not a live session.
 Live state belongs to `HarnessAgentSession`.
+Create a sandbox session separately and pass it to `agent.createSession()`:
+
+```ts
+import { createVercelNetworkSandboxSession } from '@ai-sdk/sandbox-vercel';
+
+const sandboxSession = await createVercelNetworkSandboxSession({
+  runtime: 'node24',
+  ports: [4000],
+  template: await agent.getSandboxTemplate(),
+});
+```
 
 Set `model` to select the model that the harness runtime uses. Model identifiers
 are specific to each harness. When omitted, the harness uses its default model.
@@ -133439,7 +133755,7 @@ are set.
 ## Run a Turn
 
 ```ts
-const session = await agent.createSession();
+const session = await agent.createSession({ sandboxSession });
 
 let exitCode = 0;
 try {
@@ -133454,6 +133770,7 @@ try {
   console.error(err);
 } finally {
   await session.destroy();
+  await sandboxSession.destroy();
   process.exit(exitCode);
 }
 ```
@@ -133463,7 +133780,7 @@ try {
 Use `stream()` for incremental output:
 
 ```ts
-const session = await agent.createSession();
+const session = await agent.createSession({ sandboxSession });
 
 let exitCode = 0;
 try {
@@ -133482,6 +133799,7 @@ try {
   console.error(err);
 } finally {
   await session.destroy();
+  await sandboxSession.destroy();
   process.exit(exitCode);
 }
 ```
@@ -133494,7 +133812,6 @@ steps, and tool executions:
 ```ts
 const agent = new HarnessAgent({
   harness: claudeCode,
-  sandbox,
   tools: { weather },
   onStart: event => console.log('call started', event.callId),
   onStepStart: event => console.log('step started', event.stepNumber),
@@ -133533,7 +133850,6 @@ import { z } from 'zod';
 
 const agent = new HarnessAgent({
   harness: claudeCode,
-  sandbox,
   output: Output.object({
     schema: z.object({
       recipe: z.object({
@@ -133551,7 +133867,7 @@ const agent = new HarnessAgent({
   }),
 });
 
-const session = await agent.createSession();
+const session = await agent.createSession({ sandboxSession });
 try {
   const result = await agent.generate({
     session,
@@ -133593,10 +133909,10 @@ of relying on message replay.
 End every session explicitly:
 
 - `session.destroy()` stops the runtime and discards resumability.
-- `session.detach()` parks the runtime and sandbox, returns resume state, and
-  keeps the sandbox warm for a later attach. If the turn is unfinished, the
+- `session.detach()` parks the runtime, returns resume state, and leaves a
+  supplied sandbox running for a later attach. If the turn is unfinished, the
   resume state includes the continuation state.
-- `session.stop()` saves resume state, then stops the runtime and sandbox. If
+- `session.stop()` saves resume state, then stops the runtime. If
   the turn is unfinished, the resume state includes the continuation state.
 - `session.suspendTurn()` is for advanced active-turn continuation across a
   process boundary.
@@ -133625,7 +133941,6 @@ const getPolicy = tool({
 
 const agent = new HarnessAgent({
   harness: claudeCode,
-  sandbox,
   tools: { getPolicy },
   callOptionsSchema: z.object({
     area: z.enum(['frontend', 'backend']),
@@ -133641,7 +133956,7 @@ const agent = new HarnessAgent({
   }),
 });
 
-const session = await agent.createSession();
+const session = await agent.createSession({ sandboxSession });
 try {
   await agent.generate({
     session,
@@ -133693,7 +134008,10 @@ the harness runtime but do not stop or destroy the supplied sandbox session.
 In this case, the agent does not need a `sandbox` provider in its constructor.
 
 ```ts
-const session = await agent.createSession({ sessionId: chatId });
+const session = await agent.createSession({
+  sessionId: chatId,
+  sandboxSession,
+});
 
 try {
   const result = await agent.stream({ session, messages });
@@ -133714,22 +134032,39 @@ try {
 
 ## Resuming
 
-Persist the opaque resume state and pass it back with the original `sessionId`:
+Persist the opaque resume state. In this example, the harness `sessionId` is
+`chatId`, and the sandbox ID is derived from the same known ID. If your
+application cannot derive the sandbox ID, persist `sandboxSession.id` alongside
+the harness `sessionId` and resume state instead. Reattach the sandbox before
+asking the agent to resume. When you choose `sandboxId` on creation, it names a **new**
+live sandbox and never looks one up. Reusing that ID with the creator fails
+if the named sandbox exists; only the resume function performs a lookup.
 
 ```ts
 const resumeState = await loadResumeState({ chatId });
+const sandboxId = `chat-${chatId}`;
+
+const sandboxSession = resumeState
+  ? await resumeVercelNetworkSandboxSession({ sandboxId })
+  : await createVercelNetworkSandboxSession({
+      sandboxId,
+      ports: [4000],
+      template: await agent.getSandboxTemplate(),
+    });
 
 const session = await agent.createSession(
   resumeState
-    ? { sessionId: chatId, resumeFrom: resumeState }
-    : { sessionId: chatId },
+    ? { sessionId: chatId, resumeFrom: resumeState, sandboxSession }
+    : { sessionId: chatId, sandboxSession },
 );
 ```
 
 `HarnessAgent` validates that the resume state was produced by the same harness
 adapter before handing it to the runtime. If the resume state includes an
 unfinished turn, call `continueStream()` or `continueGenerate()` before sending a
-new prompt.
+new prompt. The Vercel resume function reattaches whether the sandbox is still
+running after `detach()` or stopped with a restorable snapshot. After
+`sandboxSession.destroy()` deletes it, that ID cannot be resumed.
 
 ## Continue a Suspended Turn
 
@@ -133750,6 +134085,7 @@ When you only have raw continuation state from `suspendTurn()`, resume with
 const session = await agent.createSession({
   sessionId: chatId,
   continueFrom: continuationState,
+  sandboxSession,
   // Rebind this when the suspended turn used host-only tool context:
   toolsContext,
 });
@@ -133779,14 +134115,10 @@ import { isStepCount } from 'ai';
 
 const steppedAgent = new HarnessAgent({
   harness: claudeCode,
-  sandbox: createVercelSandbox({
-    runtime: 'node24',
-    ports: [4000],
-  }),
   stopWhen: isStepCount(1),
 });
 
-const session = await steppedAgent.createSession();
+const session = await steppedAgent.createSession({ sandboxSession });
 const result = await steppedAgent.generate({
   session,
   prompt: 'Create a short TODO.md for this repository.',
@@ -133822,10 +134154,6 @@ files or lightweight configuration.
 ```ts
 const agent = new HarnessAgent({
   harness: claudeCode,
-  sandbox: createVercelSandbox({
-    runtime: 'node24',
-    ports: [4000],
-  }),
   sandboxConfig: {
     workDir: 'repo',
     bootstrapHash: 'ripgrep-v1',
@@ -133857,75 +134185,54 @@ while `onBootstrap` receives the sandbox's default working directory.
 
 ## Prepare Reusable Sandboxes
 
-Use `prepareHarnessSandboxTemplate()` when you want the sandbox provider to
-create or refresh its reusable template for one harness ahead of time:
+Use `agent.getSandboxTemplate()` to resolve one harness's bootstrap recipe and
+`sandboxConfig.onBootstrap` before creating a sandbox. The template's identity
+is known before sandbox creation. Vercel persists the prepared snapshot and
+creates a live sandbox from it; identical calls reuse that snapshot:
 
 ```ts
-import { prepareHarnessSandboxTemplate } from '@ai-sdk/harness/agent';
-
-await prepareHarnessSandboxTemplate({
-  harness: claudeCode,
-  sandboxProvider: createVercelSandbox({
-    runtime: 'node24',
-    ports: [4000],
-  }),
-  sandboxConfig: {
-    bootstrapHash: 'ripgrep-v1',
-    onBootstrap: async ({ session, abortSignal }) => {
-      await session.run({
-        command:
-          'command -v rg >/dev/null || (apt-get update && apt-get install -y ripgrep)',
-        abortSignal,
-      });
-    },
-  },
-});
-```
-
-Use `prepareSandboxForHarness()` when you own the native sandbox lifecycle and
-want to snapshot the prepared sandbox yourself. It applies the selected harness
-bootstrap recipes and `sandboxConfig.onBootstrap`, then returns preparation
-metadata. It does not stop or snapshot the sandbox.
-
-```ts
-import { HarnessAgent, prepareSandboxForHarness } from '@ai-sdk/harness/agent';
-import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
-import { Sandbox } from '@vercel/sandbox';
-
-const nativeSandbox = await Sandbox.create({
+const sandboxSession = await createVercelNetworkSandboxSession({
   runtime: 'node24',
   ports: [4000],
+  template: await agent.getSandboxTemplate(),
 });
-const sandboxProvider = createVercelSandbox({ sandbox: nativeSandbox });
-const session = await sandboxProvider.createSession();
 
-const preparation = await prepareSandboxForHarness({
-  session: session.restricted(),
+const session = await agent.createSession({ sandboxSession });
+try {
+  await agent.generate({ session, prompt: 'Inspect this repository.' });
+} finally {
+  await session.destroy();
+  await sandboxSession.destroy();
+}
+```
+
+For multiple harnesses sharing a caller bootstrap hook, build one template from
+all adapters. The last adapter wins for duplicate `harnessId` values, and the
+recipe identities are sorted before hashing. `onSession` is not part of the
+template and runs separately on every acquired session.
+
+```ts
+import { createHarnessSandboxTemplate } from '@ai-sdk/harness/agent';
+
+const template = await createHarnessSandboxTemplate({
   harnesses: [claudeCode, codex],
   sandboxConfig,
 });
+console.log(template?.identity);
 
-const { snapshot } = await nativeSandbox.stop();
-if (snapshot == null) {
-  throw new Error('Prepared sandbox did not create a snapshot.');
-}
-
-const sandboxFromSnapshot = await Sandbox.create({
-  source: {
-    type: 'snapshot',
-    snapshotId: snapshot.id,
-  },
+const sandboxSession = await createVercelNetworkSandboxSession({
+  source: { type: 'snapshot', snapshotId: baseSnapshotId },
   ports: [4000],
+  template,
 });
-
-const agent = new HarnessAgent({
-  harness: claudeCode,
-  sandbox: createVercelSandbox({ sandbox: sandboxFromSnapshot }),
-  sandboxConfig,
-});
-
-console.log(preparation.identity);
 ```
+
+The derived template includes the source snapshot ID in its cache key, so
+repeated calls with the same source and template reuse the prepared snapshot.
+Pin mutable Git revisions, image tags, and source URLs when relying on cached
+templates. `sandboxId` names the live sandbox, not its reusable template.
+The existing native `name` option still names the live sandbox; if both are
+supplied, their values must match.
 
 ## Settings
 
@@ -133934,7 +134241,6 @@ console.log(preparation.identity);
 - `harness`: the adapter instance.
 - `model`: optional harness-specific model identifier. When omitted, the
   harness uses its default model.
-- `sandbox`: a `HarnessV1SandboxProvider`.
 - `id`: optional stable agent identifier.
 - `instructions`: instructions appended to the runtime's system or developer
   prompt when supported, or prepended to the user prompt otherwise.
@@ -133968,26 +134274,21 @@ Adapter-specific settings belong on the adapter factory, for example
 
 When your application creates and manages sandboxes itself, prepare the network
 sandbox session first and then pass that same session to `agent.createSession()`.
-The agent does not need a sandbox provider and does not stop or destroy the
+The agent does not create the sandbox and does not stop or destroy the
 caller-owned sandbox.
 
 ```ts
-import { HarnessAgent, prepareSandboxForHarness } from '@ai-sdk/harness/agent';
+import { HarnessAgent } from '@ai-sdk/harness/agent';
 import { claudeCode } from '@ai-sdk/harness-claude-code';
-import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
+import { createVercelNetworkSandboxSessionFromNativeSandbox } from '@ai-sdk/sandbox-vercel';
 import { Sandbox } from '@vercel/sandbox';
 
 const sandbox = await Sandbox.create({
   runtime: 'node24',
   ports: [4000],
 });
-const sandboxProvider = createVercelSandbox({ sandbox });
-const sandboxSession = await sandboxProvider.createSession();
-
-await prepareSandboxForHarness({
-  session: sandboxSession.restricted(),
-  harnesses: [claudeCode],
-});
+const sandboxSession =
+  createVercelNetworkSandboxSessionFromNativeSandbox(sandbox);
 
 const agent = new HarnessAgent({ harness: claudeCode });
 const session = await agent.createSession({ sandboxSession });
@@ -134005,7 +134306,7 @@ try {
   }
 } finally {
   await session.destroy();
-  await sandbox.stop();
+  await sandboxSession.destroy();
 }
 ```
 
@@ -134022,28 +134323,27 @@ configure the bridge port and its externally reachable endpoint on the adapter
 because the basic session cannot resolve them.
 
 ```ts
-import { HarnessAgent, prepareSandboxForHarness } from '@ai-sdk/harness/agent';
+import { HarnessAgent } from '@ai-sdk/harness/agent';
 import { createClaudeCode } from '@ai-sdk/harness-claude-code';
-import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
+import {
+  createVercelNetworkSandboxSessionFromNativeSandbox,
+  createVercelSandboxSessionFromNativeSandbox,
+} from '@ai-sdk/sandbox-vercel';
 import { Sandbox } from '@vercel/sandbox';
 
 const sandbox = await Sandbox.create({
   runtime: 'node24',
   ports: [4000],
 });
-const sandboxProvider = createVercelSandbox({ sandbox });
-const sandboxSession = await sandboxProvider.createSession();
+const sandboxSession =
+  createVercelNetworkSandboxSessionFromNativeSandbox(sandbox);
 const portEndpoint = await sandboxSession.getPortEndpoint({
   port: 4000,
   protocol: 'ws',
 });
-const restrictedSandboxSession = sandboxSession.restricted();
+const restrictedSandboxSession =
+  createVercelSandboxSessionFromNativeSandbox(sandbox);
 const claudeCode = createClaudeCode({ port: 4000, portEndpoint });
-
-await prepareSandboxForHarness({
-  session: restrictedSandboxSession,
-  harnesses: [claudeCode],
-});
 
 const agent = new HarnessAgent({ harness: claudeCode });
 const session = await agent.createSession({
@@ -134063,7 +134363,7 @@ try {
   }
 } finally {
   await session.destroy();
-  await sandbox.stop();
+  await sandboxSession.destroy();
 }
 ```
 
@@ -134104,10 +134404,6 @@ the combined tool set through `agent.tools`.
 ```ts
 const agent = new HarnessAgent({
   harness: claudeCode,
-  sandbox: createVercelSandbox({
-    runtime: 'node24',
-    ports: [4000],
-  }),
 });
 
 agent.tools.bash;
@@ -134139,7 +134435,6 @@ Pass AI SDK tools to `HarnessAgent` the same way you do for a `ToolLoopAgent`:
 ```ts
 import { HarnessAgent } from '@ai-sdk/harness/agent';
 import { claudeCode } from '@ai-sdk/harness-claude-code';
-import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
 import { tool } from 'ai';
 import { z } from 'zod';
 
@@ -134161,10 +134456,6 @@ const weather = tool({
 
 const agent = new HarnessAgent({
   harness: claudeCode,
-  sandbox: createVercelSandbox({
-    runtime: 'node24',
-    ports: [4000],
-  }),
   tools: { weather },
 });
 ```
@@ -134208,6 +134499,7 @@ When recreating a session for an unfinished turn, rebind it explicitly:
 const session = await agent.createSession({
   sessionId,
   continueFrom,
+  sandboxSession,
   toolsContext: {
     lookupAccount: { userId: 'user-123' },
   },
@@ -134270,10 +134562,6 @@ with `tools`.
 ```ts
 const agent = new HarnessAgent({
   harness: claudeCode,
-  sandbox: createVercelSandbox({
-    runtime: 'node24',
-    ports: [4000],
-  }),
   tools: { weather },
   activeTools: ['weather'],
 });
@@ -134284,10 +134572,6 @@ const agent = new HarnessAgent({
 ```ts
 const agent = new HarnessAgent({
   harness: claudeCode,
-  sandbox: createVercelSandbox({
-    runtime: 'node24',
-    ports: [4000],
-  }),
   tools: { weather },
   inactiveTools: ['bash', 'write'],
 });
@@ -134339,7 +134623,6 @@ Use `permissionMode` for adapter-native built-ins:
 ```ts
 const agent = new HarnessAgent({
   harness: pi,
-  sandbox: createVercelSandbox({ runtime: 'node24' }),
   permissionMode: 'allow-edits',
 });
 ```
@@ -134358,10 +134641,6 @@ Use `toolApproval` for host-executed tools:
 ```ts
 const agent = new HarnessAgent({
   harness: claudeCode,
-  sandbox: createVercelSandbox({
-    runtime: 'node24',
-    ports: [4000],
-  }),
   tools: { weather },
   toolApproval: {
     weather: 'user-approval',
@@ -134416,10 +134695,6 @@ Pass skills to `HarnessAgent` with the `skills` setting:
 ```ts
 const agent = new HarnessAgent({
   harness: claudeCode,
-  sandbox: createVercelSandbox({
-    runtime: 'node24',
-    ports: [4000],
-  }),
   skills: [
     {
       name: 'careful-refactors',
@@ -134539,7 +134814,7 @@ before following the examples.
 <InstallPackages packages="@ai-sdk/workflow-harness workflow" />
 
 In addition to the workflow specific packages, install the core harness package,
-a harness adapter, and a sandbox provider as shown in
+a harness adapter, and a sandbox adapter as shown in
 [HarnessAgent](/docs/ai-sdk-harnesses/harness-agent).
 
 ## Configuring the Harness Agent
@@ -134551,15 +134826,10 @@ semantic agent steps, set `stopWhen` to `isStepCount(1)` so one call to
 ```ts filename='harness-workflow/agent.ts' highlight="13-17"
 import { HarnessAgent } from '@ai-sdk/harness/agent';
 import { claudeCode } from '@ai-sdk/harness-claude-code';
-import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
 import { isStepCount } from 'ai';
 
 export const agent = new HarnessAgent({
   harness: claudeCode,
-  sandbox: createVercelSandbox({
-    runtime: 'node24',
-    ports: [4000],
-  }),
   instructions: 'You are a helpful coding assistant.',
   /*
    * Only needed for semantic agent-step workflows.
@@ -134578,7 +134848,7 @@ the shared agent with the highlighted `stopWhen` option shown above, then call
 ### Defining the Agent Step
 
 Keep the Workflow step in its own module and import the agent dynamically inside
-the step body. This keeps the agent, sandbox provider, and other Node.js
+the step body. This keeps the agent, sandbox adapter, and other Node.js
 dependencies out of the workflow bundle.
 
 ```ts filename='harness-workflow/agent-step.ts'
@@ -134593,10 +134863,25 @@ export async function agentStep(
   'use step';
 
   const { agent } = await import('./agent');
+  const {
+    createVercelNetworkSandboxSession,
+    resumeVercelNetworkSandboxSession,
+  } = await import('@ai-sdk/sandbox-vercel');
+  const sandboxId = `harness-${state.sessionId}`;
+  const isFirstStep = state.resumeFrom == null && state.continueFrom == null;
+  const sandboxSession = isFirstStep
+    ? await createVercelNetworkSandboxSession({
+        sandboxId,
+        runtime: 'node24',
+        ports: [4000],
+        template: await agent.getSandboxTemplate(),
+      })
+    : await resumeVercelNetworkSandboxSession({ sandboxId });
 
   return runHarnessAgentStep({
     agent,
     state,
+    sandboxSession,
   });
 }
 ```
@@ -134681,7 +134966,9 @@ export async function POST(request: Request) {
 }
 ```
 
-The `sessionId` gives the sandbox a stable identity across workflow runs. Keep
+The workflow state `sessionId` identifies the harness session. The step derives
+`sandboxId` from it before first creating the sandbox and uses that same ID to
+reattach on later steps. The state does not serialize a live sandbox. Keep
 `agent.ts`, `agent-step.ts`, `workflow.ts`, and the route in separate modules so
 the workflow bundle does not include Node-heavy agent, sandbox, or framework
 dependencies.
@@ -134710,10 +134997,25 @@ export async function timeSliceStep(
   'use step';
 
   const { agent } = await import('./agent');
+  const {
+    createVercelNetworkSandboxSession,
+    resumeVercelNetworkSandboxSession,
+  } = await import('@ai-sdk/sandbox-vercel');
+  const sandboxId = `harness-${state.sessionId}`;
+  const isFirstStep = state.resumeFrom == null && state.continueFrom == null;
+  const sandboxSession = isFirstStep
+    ? await createVercelNetworkSandboxSession({
+        sandboxId,
+        runtime: 'node24',
+        ports: [4000],
+        template: await agent.getSandboxTemplate(),
+      })
+    : await resumeVercelNetworkSandboxSession({ sandboxId });
 
   return runHarnessAgentTimeSlice({
     agent,
     state,
+    sandboxSession,
   });
 }
 ```
@@ -134797,10 +135099,17 @@ export async function POST(request: Request) {
 }
 ```
 
-The `sessionId` gives the sandbox a stable identity across workflow runs. Keep
+The workflow state `sessionId` identifies the harness session. The step derives
+`sandboxId` from it; otherwise, you must persist `sandboxSession.id` separately
+to reattach across steps. Keep
 `agent.ts`, `time-slice-step.ts`, `workflow.ts`, and the route in separate
 modules so the workflow bundle does not include Node-heavy agent, sandbox, or
 framework dependencies.
+
+`destroyOnFinish` destroys the harness session, but never the supplied sandbox.
+The caller can explicitly call `sandboxSession.destroy()` on the network
+session when no later step needs to reattach. Never destroy it at a
+time-slice boundary where a subsequent step must resume it.
 
 ## Resume Persistence
 
@@ -135029,53 +135338,53 @@ Define the `HarnessAgent` on the server:
 ```ts filename='app/api/chat/agent.ts'
 import { HarnessAgent } from '@ai-sdk/harness/agent';
 import { claudeCode } from '@ai-sdk/harness-claude-code';
-import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
 
 export const agent = new HarnessAgent({
   harness: claudeCode,
-  sandbox: createVercelSandbox({
-    runtime: 'node24',
-    ports: [4000],
-  }),
   instructions: 'You are a helpful coding assistant.',
 });
 ```
 
 ## Session Store
 
-Persist only the opaque resume state returned by `session.detach()`. If the
+Persist the opaque resume state returned by `session.detach()`. If the
 turn paused for approval or was otherwise interrupted, that resume state carries
 the continuation state internally. The chat id can also be the harness
-`sessionId`, which gives the sandbox a stable identity across requests and
-processes.
+`sessionId`. Here we derive a stable `sandboxId` from that known chat id. If
+you do not derive one, persist the returned `sandboxSession.id` separately.
 
 ```ts filename='app/api/chat/session-store.ts'
-import type {
-  HarnessAgentResumeSessionState,
-  HarnessAgentSession,
-} from '@ai-sdk/harness/agent';
+import type { HarnessAgentResumeSessionState } from '@ai-sdk/harness/agent';
+import {
+  createVercelNetworkSandboxSession,
+  resumeVercelNetworkSandboxSession,
+} from '@ai-sdk/sandbox-vercel';
 
 const states: Record<string, HarnessAgentResumeSessionState | undefined> = {};
-
-type SessionFactory = {
-  createSession(options?: {
-    sessionId?: string;
-    resumeFrom?: HarnessAgentResumeSessionState;
-  }): Promise<HarnessAgentSession>;
-};
 
 export async function resumeOrCreateSession({
   agent,
   chatId,
 }: {
-  agent: SessionFactory;
+  agent: typeof import('./agent').agent;
   chatId: string;
 }) {
   const resumeFrom = states[chatId];
-
-  return agent.createSession(
-    resumeFrom ? { sessionId: chatId, resumeFrom } : { sessionId: chatId },
-  );
+  const sandboxId = `harness-${chatId}`;
+  const sandboxSession = resumeFrom
+    ? await resumeVercelNetworkSandboxSession({ sandboxId })
+    : await createVercelNetworkSandboxSession({
+        sandboxId,
+        runtime: 'node24',
+        ports: [4000],
+        template: await agent.getSandboxTemplate(),
+      });
+  const session = await agent.createSession({
+    sessionId: chatId,
+    resumeFrom,
+    sandboxSession,
+  });
+  return { session, sandboxSession };
 }
 
 export async function detachAndPersist({
@@ -135083,13 +135392,15 @@ export async function detachAndPersist({
   session,
 }: {
   chatId: string;
-  session: HarnessAgentSession;
+  session: Awaited<ReturnType<typeof resumeOrCreateSession>>['session'];
 }) {
   states[chatId] = await session.detach();
 }
 ```
 
-Use durable storage instead of an in-memory map in production.
+Use durable storage instead of an in-memory map in production. The creator
+always creates a new sandbox and fails on a conflicting `sandboxId`; only the
+resume function reattaches an existing one.
 
 ## Route
 
@@ -135124,7 +135435,7 @@ export async function POST(request: Request) {
   return createUIMessageStreamResponse({
     stream: createUIMessageStream({
       execute: async ({ writer }) => {
-        const session = await resumeOrCreateSession({ agent, chatId });
+        const { session } = await resumeOrCreateSession({ agent, chatId });
         const result = await agent.stream({ session, messages });
 
         writer.merge(
@@ -135159,9 +135470,10 @@ sandbox warm for the next request. Bridge-backed adapters can usually reattach
 or replay efficiently. If the turn is unfinished, `detach()` includes the turn
 continuation state in the returned resume state.
 
-Use `session.stop()` when you want to save resume state and stop the runtime and
-sandbox after each turn. The next request resumes from persisted state and
-continues any unfinished turn before accepting a new prompt.
+`session.stop()` saves resume state and stops the harness runtime, but does not
+stop a supplied sandbox. The caller owns that network session and should call
+its `destroy()` method when the chat ends, not while a later request needs to
+reattach. Preserve the chosen `sandboxId` across processes.
 
 ## Rendering Harness Parts
 
@@ -135217,15 +135529,11 @@ session for the lifetime of the terminal UI.
 ```ts filename='tui.ts'
 import { HarnessAgent, type HarnessAgentSession } from '@ai-sdk/harness/agent';
 import { codex } from '@ai-sdk/harness-codex';
-import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
+import { createVercelNetworkSandboxSession } from '@ai-sdk/sandbox-vercel';
 import { runAgentTUI, type AgentTUIAgent } from '@ai-sdk/tui';
 
 const agent = new HarnessAgent({
   harness: codex,
-  sandbox: createVercelSandbox({
-    runtime: 'node24',
-    ports: [4000],
-  }),
 });
 
 function createTUIAgent({
@@ -135254,7 +135562,12 @@ function createTUIAgent({
   } as AgentTUIAgent;
 }
 
-const session = await agent.createSession();
+const sandboxSession = await createVercelNetworkSandboxSession({
+  runtime: 'node24',
+  ports: [4000],
+  template: await agent.getSandboxTemplate(),
+});
+const session = await agent.createSession({ sandboxSession });
 
 try {
   await runAgentTUI({
@@ -135265,6 +135578,7 @@ try {
   });
 } finally {
   await session.destroy();
+  await sandboxSession.destroy();
 }
 ```
 
@@ -143675,17 +143989,21 @@ await runAgentTUI({
 ## Example with Sandbox
 
 ```ts
-import { createJustBashSandbox } from '@ai-sdk/sandbox-just-bash';
+import { createJustBashNetworkSandboxSession } from '@ai-sdk/sandbox-just-bash';
 
-const sandboxSession = await createJustBashSandbox({
+const sandboxSession = await createJustBashNetworkSandboxSession({
   cwd: '/home/user',
-}).createSession();
-
-await runAgentTUI({
-  title: 'Sandbox Assistant',
-  agent,
-  sandbox: sandboxSession.restricted(),
 });
+
+try {
+  await runAgentTUI({
+    title: 'Sandbox Assistant',
+    agent,
+    sandbox: sandboxSession.restricted(),
+  });
+} finally {
+  await sandboxSession.destroy();
+}
 ```
 
 The sandbox is forwarded to every `agent.stream()` call as
@@ -144717,6 +145035,132 @@ token-efficient content controls. Deep synthesis modes and generated summaries
 are intentionally not exposed yet because they have separate pricing from
 standard Search.
 
+#### Browserbase Search
+
+The Browserbase Search tool enables models to search the web using [Browserbase's Search API](https://docs.browserbase.com/reference/api/web-search). It is executed by AI Gateway and returns fast, structured search results without opening a browser session.
+
+```ts
+import { gateway, generateText } from 'ai';
+
+const result = await generateText({
+  model: 'openai/gpt-5.6-luna',
+  prompt:
+    'Find official guidance on traveling with power banks on U.S. flights. Return the most relevant page titles and URLs.',
+  tools: {
+    browserbase_search: gateway.tools.browserbaseSearch(),
+  },
+});
+
+console.log(result.text);
+console.log('Tool calls:', JSON.stringify(result.toolCalls, null, 2));
+console.log('Tool results:', JSON.stringify(result.toolResults, null, 2));
+```
+
+You can configure the maximum number of results returned by each search:
+
+```ts
+import { gateway, generateText } from 'ai';
+
+const result = await generateText({
+  model: 'openai/gpt-5.6-luna',
+  prompt:
+    'Find three recent reviews comparing e-readers for outdoor reading. Return their titles and URLs.',
+  tools: {
+    browserbase_search: gateway.tools.browserbaseSearch({
+      numResults: 3,
+    }),
+  },
+});
+
+console.log(result.text);
+```
+
+The Browserbase Search tool supports this optional configuration option:
+
+- **numResults** _number_
+
+  Maximum number of search results to return (1-25, default: 10).
+
+The tool works with both `generateText` and `streamText`.
+
+#### Browserbase Fetch
+
+The Browserbase Fetch tool enables models to retrieve page content using [Browserbase's Fetch API](https://docs.browserbase.com/platform/fetch/overview). It is a lightweight option for pages that do not require JavaScript execution or browser interaction, and it supports raw, Markdown, and schema-driven JSON output.
+
+```ts
+import { gateway, generateText } from 'ai';
+
+const result = await generateText({
+  model: 'openai/gpt-5.6-luna',
+  prompt:
+    'Fetch https://www.nps.gov/yose/planyourvisit/halfdome.htm and summarize the permit requirements and main safety warnings.',
+  tools: {
+    browserbase_fetch: gateway.tools.browserbaseFetch(),
+  },
+});
+
+console.log(result.text);
+console.log('Tool calls:', JSON.stringify(result.toolCalls, null, 2));
+console.log('Tool results:', JSON.stringify(result.toolResults, null, 2));
+```
+
+You can configure the output format and request behavior. For example, use JSON extraction to return content matching a JSON Schema:
+
+```ts
+import { gateway, generateText } from 'ai';
+
+const result = await generateText({
+  model: 'openai/gpt-5.6-luna',
+  prompt:
+    'Fetch https://www.nps.gov/yose/planyourvisit/halfdome.htm and extract its page title, whether a permit is required, and three safety tips.',
+  tools: {
+    browserbase_fetch: gateway.tools.browserbaseFetch({
+      allowRedirects: true,
+      format: 'json',
+      schema: {
+        type: 'object',
+        properties: {
+          pageTitle: { type: 'string' },
+          permitRequired: { type: 'boolean' },
+          safetyTips: {
+            type: 'array',
+            items: { type: 'string' },
+            maxItems: 3,
+          },
+        },
+        required: ['pageTitle', 'permitRequired', 'safetyTips'],
+      },
+    }),
+  },
+});
+
+console.log(result.text);
+```
+
+The Browserbase Fetch tool supports these optional configuration options:
+
+- **format** _'raw' | 'markdown' | 'json'_
+
+  Output format for the fetched content. `raw` returns the upstream response body unchanged and is the default. `markdown` converts the page to Markdown. `json` performs structured extraction and requires `schema`.
+
+- **schema** _object_
+
+  JSON Schema describing the desired structured content. Only used when `format` is `json`.
+
+- **allowRedirects** _boolean_
+
+  Follow HTTP redirects. Defaults to `false`.
+
+- **proxies** _boolean_
+
+  Route the request through Browserbase's proxy network. Defaults to `false`.
+
+- **allowInsecureSsl** _boolean_
+
+  Bypass TLS certificate verification. Defaults to `false`; only enable it for trusted hosts.
+
+The Fetch API does not execute JavaScript. Use a browser session for interactive or JavaScript-rendered pages. The tool works with both `generateText` and `streamText`.
+
 #### Tako Search
 
 The Tako Search tool enables models to search the web and Tako's curated knowledge graph in a single call using [Tako's Search API](https://docs.tako.com/documentation/integrating-tako/search/overview). This tool is executed by the AI Gateway and returns token-efficient web excerpts, plus knowledge-graph results that carry structured data, premium source attribution, and an embed-ready visualization.
@@ -145122,13 +145566,14 @@ The following gateway provider options are available:
 
   The unique identifier for the entity against which quota is tracked. Used for quota management and enforcement purposes.
 
-- **has** _Array&lt;'implicit-caching' | 'reasoning' | 'tool-use' | 'vision' | `quantization:${string}` | `!quantization:${string}`&gt;_
+- **has** _Array&lt;'implicit-caching' | 'reasoning' | 'structured-output' | 'tool-use' | 'vision' | `quantization:${string}` | `!quantization:${string}`&gt;_
 
   Restricts routing to provider models that have all of the specified capabilities. Applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. If no provider model for the requested model satisfies the capabilities, the request fails. Unsupported values are rejected.
 
   Supported capabilities:
   - `'implicit-caching'` — models that perform automatic (implicit) prompt caching.
   - `'reasoning'` — models that support reasoning.
+  - `'structured-output'` — models that support schema-constrained output.
   - `'tool-use'` — models that support tool calling.
   - `'vision'` — models that accept image input.
 
@@ -145272,7 +145717,7 @@ const { text } = await generateText({
 
 #### Filtering by Model Capability
 
-Set `has` to restrict routing to provider models that have the specified capabilities. This applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. `'implicit-caching'` limits routing to models that perform automatic prompt caching, `'vision'` limits routing to models that accept image input, `'reasoning'` limits routing to models that support reasoning, and `'tool-use'` limits routing to models that support tool calling. Weight-format conditions (`'quantization:fp8'` to require, `'!quantization:fp8'` to exclude) limit routing by the serving provider's recorded weight format. If no provider model for the requested model satisfies the capabilities, the request fails.
+Set `has` to restrict routing to provider models that have the specified capabilities. This applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. `'implicit-caching'` limits routing to models that perform automatic prompt caching, `'vision'` limits routing to models that accept image input, `'reasoning'` limits routing to models that support reasoning, `'structured-output'` limits routing to models that support schema-constrained output, and `'tool-use'` limits routing to models that support tool calling. Weight-format conditions (`'quantization:fp8'` to require, `'!quantization:fp8'` to exclude) limit routing by the serving provider's recorded weight format. If no provider model for the requested model satisfies the capabilities, the request fails.
 
 ```ts
 import type { GatewayProviderOptions } from '@ai-sdk/gateway';
@@ -146508,9 +146953,9 @@ const { video } = await generateVideo({
 ```
 
 <Note>
-  xAI does not support first-last-frame interpolation. A `last_frame` entry in
-  `frameImages` is ignored with a warning — use the `extend-video` mode to
-  continue from a video's last frame instead.
+  `grok-imagine-video-1.5` supports first-last-frame interpolation. Earlier
+  models ignore a `last_frame` entry with a warning. Use `extend-video` when you
+  want to continue an existing video rather than pin its final frame.
 </Note>
 
 ### Video Editing
@@ -146696,17 +147141,17 @@ const { video } = await generateVideo({
 });
 ```
 
-`inputReferences` accepts image references only. A reference with a non-image
-media type (for example a video or audio clip) is ignored with a warning, and a
-reference with no media type is treated as an image. If no image reference
-remains, reference-to-video is not selected and no reference images are sent.
+`inputReferences` accepts image and audio references. Audio references must
+declare an audio media type and can be supplied alone or together with images;
+they are sent through `reference_audios`. A reference with no media type is
+treated as an image. Video references are ignored with a warning.
 
 #### Reference Audio
 
-Reference-to-video can also give the subject a voice. `referenceVoiceIds` takes
-up to 3 xAI **preset** voice ids — you cannot upload your own audio clips.
-Reference the voices from the prompt with `<AUDIO_0>`, `<AUDIO_1>`, and
-`<AUDIO_2>`, in the order the voices are passed.
+Reference-to-video can also give the subject a voice. Use `inputReferences` for
+caller-supplied audio clips, or `referenceVoiceIds` for up to 3 xAI preset voice
+ids. Reference them from the prompt with `<AUDIO_0>`, `<AUDIO_1>`, and
+`<AUDIO_2>`, in the order they are passed.
 
 ```ts
 import { xai, type XaiVideoModelOptions } from '@ai-sdk/xai';
@@ -146741,19 +147186,18 @@ available voices. `referenceVoiceIds` is ignored with a warning when the
 resolved operation is not reference-to-video.
 
 <Note>
-  xAI documents reference audio as available in the United States only, for
-  trusted partners. Requests from accounts without access are rejected by the
-  xAI API.
+  Preset voices are generally available. Caller-supplied voice clips are
+  available to trusted partners on request. xAI accepts at most three audio
+  references per request.
 </Note>
 
 <Note>
   Reference-to-video supports `duration`, `aspectRatio`, and `resolution`. Use
-  `mode` to select the operation — each mode is mutually exclusive. When both
-  are provided, `frameImages` takes precedence over `inputReferences`, and
+  `mode` to select the operation — each mode is mutually exclusive.
   `inputReferences` takes precedence over the legacy `referenceImageUrls`
-  provider option. Reference-to-video is supported by the `grok-imagine-video`
-  and `grok-imagine-video-1.5` models; native 1080p requires
-  `grok-imagine-video-1.5`.
+  provider option and can be combined with pinned frames. Reference-to-video is
+  supported by the `grok-imagine-video` and `grok-imagine-video-1.5` models;
+  native 1080p requires `grok-imagine-video-1.5`.
 </Note>
 
 ### Video Provider Options
@@ -146818,6 +147262,42 @@ You can validate the provider options using the `XaiVideoModelOptions` type.
   `<AUDIO_1>`, and `<AUDIO_2>` tags in the prompt to reference the voices.
   Ignored with a warning outside reference-to-video. Reference audio is
   documented as US-only and limited to trusted partners.
+
+- **storageOptions** _object_
+
+  Stores the generated video in the xAI Files API. Set `filename` and
+  optionally `expiresAfter` (up to 30 days) and `publicUrl`. Stored-file
+  details and storage errors are returned in `providerMetadata.xai.fileOutput`
+  and `providerMetadata.xai.storageError`.
+
+- **keyframes** _Array\<\{ imageUrl: string; timestampSeconds: number \}\>_
+
+  Up to four mid-video image anchors. Each timestamp must fall strictly inside
+  the video duration. Keyframes are supported by `grok-imagine-video-1.5` and
+  are ignored with a warning for editing and extension operations.
+
+### Audio and Frame Controls
+
+Use the provider-neutral `generateAudio` option to request or disable generated
+audio. Use `frameImages` for exact endpoint frames:
+
+```ts
+const { video } = await generateVideo({
+  model: xai.video('grok-imagine-video-1.5'),
+  prompt: 'A paper boat drifting down a rain-soaked street',
+  generateAudio: false,
+  frameImages: [
+    {
+      frameType: 'last_frame',
+      image: 'https://example.com/final-frame.png',
+    },
+  ],
+});
+```
+
+`last_frame` is supported only by `grok-imagine-video-1.5`. The provider emits
+an unsupported-feature warning and omits the field for other model IDs. A
+`first_frame` is sent as xAI's standard `image` input.
 
 <Note>
   Video generation is an asynchronous process that can take several minutes.
@@ -147069,12 +147549,16 @@ The following provider options are available:
   and returns a warning. Use the Responses API for GPT-6 tool calling.
 </Note>
 
-- **reasoningEffortUpdate** _'low' | 'medium' | 'high' | 'xhigh' | 'max'_
+- **reasoningEffortUpdate** _'none' | 'low' | 'medium' | 'high' | 'xhigh' | 'max'_
   Updates the reasoning effort for GPT-6 and later models starting with the
   current response without changing the request-level effort. Use this with
   `previousResponseId` to preserve the original prompt prefix for caching.
   Configuration updates require standard, single-agent mode and cannot be
   combined with automatic compaction or automatic truncation.
+
+  The SDK checks effort values against the selected model for both request-level
+  and message-level updates. For example, GPT-6 Sol and Luna support `none`,
+  while GPT-6 Astra does not.
 
 - **reasoningMode** _'standard' | 'pro'_
   Controls how much model work GPT-5.6 performs before returning a final answer. `'standard'` is the default. Use `'pro'` for difficult tasks where quality matters more than latency and token usage.
@@ -153179,13 +153663,16 @@ This sends `tool_reference` blocks to Anthropic, which loads the corresponding d
 
 ### Mid-Conversation System Controls
 
-With `claude-opus-5-5` and `claude-fable-5-1`, a mid-conversation system message
-can be cleared before the next user message with `clearAt: 'next_user_message'`,
-or set the effort for the next turn without invalidating the prompt cache. The provider adds the required
+With `claude-opus-5-5` and `claude-fable-5-1`, use an empty system message to
+change effort from the next user turn. A separate system message containing text
+can provide a turn-scoped reminder with `clearAt: 'next_user_message'`: its text
+applies until the next user message. Keep the reminder after a user turn and
+before an assistant turn, or at the end of the messages array.
+The provider adds the required
 `mid-conversation-system-clear-at-2026-08-21` and
 `mid-conversation-output-config-2026-07-01` beta headers automatically.
 
-```ts highlight="17-25"
+```ts highlight="16-24,29-37"
 import { anthropic } from '@ai-sdk/anthropic';
 import { generateText } from 'ai';
 
@@ -153203,10 +153690,9 @@ const result = await generateText({
     },
     {
       role: 'system',
-      content: 'For the next turn, verify every compatibility claim.',
+      content: '',
       providerOptions: {
         anthropic: {
-          clearAt: 'next_user_message',
           effort: 'high',
         },
       },
@@ -153215,19 +153701,39 @@ const result = await generateText({
       role: 'user',
       content: 'Complete the plan.',
     },
+    {
+      role: 'system',
+      content: 'For this turn, verify every compatibility claim.',
+      providerOptions: {
+        anthropic: {
+          clearAt: 'next_user_message',
+        },
+      },
+    },
   ],
 });
 ```
 
 An effort-only system message can use an empty content array at the API level;
 in an AI SDK prompt, set `content: ''`. The provider serializes it as
-`content: []`.
+`content: []`. These effort-only messages can appear first or later in the
+conversation, including consecutively. The provider preserves their order. The new
+level applies from the next user turn until a later message changes it.
+Initial instruction text is sent in the top-level `system` field.
+
+Consecutive inline system messages are evaluated as a group. If an effort-only
+message is adjacent to a system message containing text, the whole group must
+follow Anthropic's [content placement rules](https://platform.claude.com/docs/en/build-with-claude/mid-conversation-system-messages#limitations).
+
+Turn-scoped messages with `clearAt` support text only. Put effort updates in a
+separate message, as in the example above.
 
 <Note>
-  `clearAt` and per-message `effort` apply only to mid-conversation system
-  messages. When used on the initial system message, the provider ignores them
-  and emits a warning. Use the top-level `effort` provider option to configure
-  effort for the full request.
+  `clearAt` applies only to mid-conversation system messages. On initial system
+  messages, the provider ignores `clearAt` and effort attached to non-empty
+  content and emits a warning. Use an empty system message for an initial
+  per-message effort setting, or the top-level `effort` provider option to
+  configure effort for the full request.
 </Note>
 
 ### Mid-Conversation Tool Changes
@@ -160756,7 +161262,7 @@ These parts are informational and do not require a tool response. They are
 available from both `generateText` and `streamText`.
 
 For static processing, use `'static'` or provide clipping and frame-rate
-options:
+options. `startOffset` and `endOffset` are measured in seconds:
 
 ```ts
 const video = {
@@ -160767,8 +161273,8 @@ const video = {
     google: {
       processing: {
         type: 'static',
-        startOffset: 1200,
-        endOffset: 1500,
+        startOffset: 0,
+        endOffset: 10.5,
         fps: 0.5,
       },
     } satisfies GoogleInteractionsVideoOptions,
@@ -161844,6 +162350,8 @@ You can use the following optional settings to customize the provider instance:
 - **toolResultDownloads** _object_
 
   Settings for downloading remote files in tool results before sending them to Vertex as inline data.
+  Supported Google Cloud Storage URLs are forwarded directly for Gemini 3 and later models.
+  See [Tool Result Files](#tool-result-files) for the supported MIME types.
   - **maxBytes** _number_
 
     Maximum size in bytes for each downloaded file. Defaults to 7 MiB.
@@ -162416,6 +162924,42 @@ const { text } = await generateText({
 </Note>
 
 See [File Parts](/docs/foundations/prompts#file-parts) for details on how to use files in prompts.
+
+### Tool Result Files
+
+For Gemini 3 and later models, tool results can include Google Cloud Storage
+(`gs://`) file URLs. Vertex receives these references directly as
+`functionResponse.parts[].fileData`, without downloading the files into the SDK
+process. The supported MIME types are `image/png`, `image/jpeg`, `image/webp`,
+`application/pdf`, and `text/plain`. Specify the full MIME type; a top-level type
+such as `image` is not sufficient for GCS tool results.
+
+Use a file part in the tool's `toModelOutput` result:
+
+```ts
+toModelOutput: ({ output }) => ({
+  type: 'content',
+  value: [
+    {
+      type: 'file',
+      mediaType: 'image/png',
+      data: {
+        type: 'url',
+        url: new URL(output.gcsUri),
+        originalUrl: output.gcsUri,
+      },
+    },
+  ],
+}),
+```
+
+Include `originalUrl` when URL parsing changes an opaque GCS URI, such as a path
+containing spaces, so Vertex receives the exact object reference. The Vertex
+caller must have access to the referenced object.
+
+HTTP(S) tool-result files are downloaded and sent as inline data, subject to
+`toolResultDownloads.maxBytes`. Direct GCS tool-result forwarding is not supported
+for older Gemini models or MIME types outside the list above.
 
 ### Cached Content
 
@@ -170317,12 +170861,14 @@ console.log('Elapsed:', metadata?.elapsed);
 
 ---
 title: Perplexity
-description: Learn how to use Perplexity's Sonar API with the AI SDK.
+description: Learn how to use Perplexity's Agent API with the AI SDK.
 ---
 
 # Perplexity Provider
 
-The [Perplexity](https://sonar.perplexity.ai) provider offers access to Sonar API - a language model that uniquely combines real-time web search with natural language processing. Each response is grounded in current web data and includes detailed citations, making it ideal for research, fact-checking, and obtaining up-to-date information.
+The [Perplexity](https://www.perplexity.ai) provider offers access to the
+[Agent API](https://docs.perplexity.ai/docs/agent-api/quickstart). The Agent API
+can route across models, search the web, call tools, and return cited answers.
 
 API keys can be obtained from the [Perplexity Platform](https://docs.perplexity.ai).
 
@@ -170379,10 +170925,18 @@ import { perplexity } from '@ai-sdk/perplexity';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: perplexity('sonar-pro'),
+  model: perplexity('low'),
   prompt: 'What are the latest developments in quantum computing?',
 });
 ```
+
+The Agent API provides the `fast`, `low`, `medium`, `high`, and `xhigh`
+presets. You can also pass an Agent API model ID directly, such as
+`perplexity/sonar`.
+
+Version 5 uses the Agent API exclusively. Legacy Sonar model IDs and provider
+options are not mapped; see [Migrating from v4 Sonar to v5 Agent
+API](#migrating-from-v4-sonar-to-v5-agent-api) before upgrading.
 
 ### Sources
 
@@ -170393,14 +170947,81 @@ import { perplexity } from '@ai-sdk/perplexity';
 import { generateText } from 'ai';
 
 const { text, sources } = await generateText({
-  model: perplexity('sonar-pro'),
+  model: perplexity('low'),
   prompt: 'What are the latest developments in quantum computing?',
 });
 
 console.log(sources);
 ```
 
-### Provider Options & Metadata
+### Agent Tools
+
+Pass native Agent API tools through `providerOptions.perplexity.tools`:
+
+```ts
+import {
+  perplexity,
+  type PerplexityLanguageModelOptions,
+} from '@ai-sdk/perplexity';
+import { generateText } from 'ai';
+
+const { text, sources } = await generateText({
+  model: perplexity('low'),
+  prompt: 'Summarize recent US federal AI policy from official sources.',
+  providerOptions: {
+    perplexity: {
+      tools: [
+        {
+          type: 'web_search',
+          filters: {
+            search_domain_filter: [
+              'whitehouse.gov',
+              'congress.gov',
+              'federalregister.gov',
+            ],
+            search_recency_filter: 'month',
+          },
+          max_results: 10,
+          search_context_size: 'medium',
+        },
+      ],
+    } satisfies PerplexityLanguageModelOptions,
+  },
+});
+```
+
+Supported native tools are `web_search`, `fetch_url`, `people_search`,
+`finance_search`, `sandbox`, `mcp`, and `connector`. Agent API presets include
+preconfigured tools that remain enabled; the `tools` option can add explicit
+tools or supply tools when using a direct model ID.
+
+Search and fetch results are exposed as AI SDK sources. Other native tool traces,
+including finance, sandbox, and MCP results, are available in `response.body`
+and raw stream chunks (`include: { rawChunks: true }`). They are not exposed as
+AI SDK client tool calls. Accounts with zero data retention may reject
+file-capable tools such as `finance_search` and `sandbox`.
+
+AI SDK function tools can be passed through the top-level `tools` option:
+
+```ts
+import { perplexity } from '@ai-sdk/perplexity';
+import { generateText, tool } from 'ai';
+import { z } from 'zod';
+
+const result = await generateText({
+  model: perplexity('low'),
+  prompt: 'What is the weather in San Francisco?',
+  tools: {
+    weather: tool({
+      description: 'Get the weather for a city',
+      inputSchema: z.object({ city: z.string() }),
+      execute: async ({ city }) => ({ city, temperature: 18 }),
+    }),
+  },
+});
+```
+
+### Provider Options and Metadata
 
 The Perplexity provider includes additional metadata in the response through `providerMetadata`.
 Additional configuration options are available through `providerOptions`.
@@ -170413,12 +171034,13 @@ import {
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: perplexity('sonar-pro'),
+  model: perplexity('low'),
   prompt: 'What are the latest developments in quantum computing?',
   providerOptions: {
     perplexity: {
-      return_images: true, // Enable image responses (Tier-2 Perplexity users only)
-      search_recency_filter: 'week', // Filter search results by recency
+      max_steps: 5,
+      store: true,
+      reasoning: { effort: 'low' },
     } satisfies PerplexityLanguageModelOptions,
   },
 });
@@ -170427,86 +171049,159 @@ console.log(result.providerMetadata);
 // Example output:
 // {
 //   perplexity: {
-//     usage: { citationTokens: 5286, numSearchQueries: 1 },
-//     images: [
-//       { imageUrl: "https://example.com/image1.jpg", originUrl: "https://elsewhere.com/page1", height: 1280, width: 720 },
-//       { imageUrl: "https://example.com/image2.jpg", originUrl: "https://elsewhere.com/page2", height: 1280, width: 720 }
-//     ]
+//     usage: { citationTokens: null, numSearchQueries: 1 },
+//     images: null,
+//     cost: { totalCost: 0.006, currency: 'USD', ... },
+//     toolCalls: { search_web: { invocation: 1 } },
 //   },
 // }
 ```
 
 #### Provider Options
 
-The following provider-specific options are available:
+The following Agent API options are available:
 
-- **return_images** _boolean_
+- **instructions** _string_
 
-  Enable image responses. When set to `true`, the response may include relevant images. This feature is only available to Perplexity Tier-2 users and above.
+  Top-level instructions for the Agent API run.
 
-- **search_recency_filter** _string_
+- **tools** _array_
 
-  Filter search results by recency. Possible values: `'hour'`, `'day'`, `'week'`, `'month'`, `'year'`. If not specified, defaults to all time.
+  Native Agent API tools and their configuration.
+
+- **models** _string[]_
+
+  A fallback model list for Agent API routing.
+
+- **max_steps** _number_
+
+  The maximum number of agentic steps.
+
+- **max_tool_calls** _number_
+
+  The maximum number of native tool calls. Setting this to `0` disables all
+  preset tools.
+
+- **previous_response_id** _string_
+
+  Continue a conversation from an earlier Agent API response.
+
+- **store** _boolean_
+
+  Whether the response can be retrieved later. Setting `store: false` hides it
+  from retrieval; it does not disable persistence, and the response can still
+  be used as a `previous_response_id` continuation source. See Perplexity's
+  [conversation state documentation](https://docs.perplexity.ai/docs/agent-api/conversation-state)
+  for retention behavior and account-specific zero data retention restrictions.
+
+- **language_preference** _string_
+
+  Preferred response language as an ISO 639-1 language code.
+
+- **reasoning** _object_
+
+  Reasoning configuration. `effort` supports `'minimal'`, `'low'`, `'medium'`,
+  `'high'`, and `'xhigh'`.
+
+- **skills** _array_
+
+  Agent API skill configuration.
 
 <Note>
-  Any other [Perplexity API
-  parameters](https://docs.perplexity.ai/api-reference/chat-completions) can
-  also be passed through `providerOptions.perplexity`.
+  See the [Perplexity Agent API
+  documentation](https://docs.perplexity.ai/docs/agent-api/quickstart) for
+  details about native request fields.
 </Note>
 
 #### Provider Metadata
 
 The response metadata includes:
 
-- `usage`: Object containing `citationTokens` and `numSearchQueries` metrics
-- `images`: Array of image objects when `return_images` is enabled (Tier-2 users only). Each image contains `imageUrl`, `originUrl`, `height`, and `width`.
+- `usage`: `citationTokens` (always `null` for Agent API responses) and the
+  number of search queries
+- `cost`: Token, tool, and total costs returned by Perplexity
+- `toolCalls`: Invocation counts grouped by native tool
+- `images`: Always `null`; the Agent API does not return Sonar image results
 
-### PDF Support
+### Structured Output
 
-The Perplexity provider supports reading PDF files.
-You can pass PDF files as part of the message content using the `file` type:
+`Output.object` and `Output.array` send an Agent API JSON schema response
+format. JSON output without a schema is not supported.
 
-```ts
-const result = await generateText({
-  model: perplexity('sonar-pro'),
-  messages: [
-    {
-      role: 'user',
-      content: [
-        {
-          type: 'text',
-          text: 'What is this document about?',
-        },
-        {
-          type: 'file',
-          data: fs.readFileSync('./data/ai.pdf'),
-          mediaType: 'application/pdf',
-          filename: 'ai.pdf', // optional
-        },
-      ],
-    },
-  ],
-});
-```
+### Input Images
 
-You can also pass the URL of a PDF:
+Image URL and data inputs are converted to Agent API `input_image` parts.
+The Agent API does not provide a Sonar-equivalent PDF input field, so PDF file
+parts are not supported.
 
-```ts
-{
-  type: 'file',
-  data: new URL('https://example.com/document.pdf'),
-  mediaType: 'application/pdf',
-  filename: 'document.pdf', // optional
-}
-```
-
-The model will have access to the contents of the PDF file and
-respond to questions about it.
+### Migrating from v4 Sonar to v5 Agent API
 
 <Note>
-  For more details about Perplexity's capabilities, see the [Perplexity chat
-  completion docs](https://docs.perplexity.ai/api-reference/chat-completions).
+  Version 5 is a breaking migration from Sonar Chat Completions to the Agent
+  API. It does not provide legacy model aliases, translate Sonar provider
+  options, or emit migration warnings at runtime.
 </Note>
+
+<Warning>
+  Perplexity supports Sonar Chat Completions only until September 27, 2026.
+  Upgrade language-generation applications to the Agent API before that date;
+  staying on version 4 does not preserve service after the Sonar shutdown.
+</Warning>
+
+Replace each Sonar model ID with an Agent API preset or direct Agent API model
+ID. These presets are suggested starting points, not equivalent aliases: a
+preset can select different models and tools, so cost, latency, and output can
+change.
+
+| v4 Sonar model        | Suggested v5 starting point |
+| --------------------- | --------------------------- |
+| `sonar`               | `fast`                      |
+| `sonar-pro`           | `low`                       |
+| `sonar-reasoning`     | `medium`                    |
+| `sonar-reasoning-pro` | `medium`                    |
+| `sonar-deep-research` | `high`                      |
+
+For example:
+
+```ts
+// v4
+perplexity('sonar-pro');
+
+// v5
+perplexity('low');
+```
+
+Move Sonar search and reasoning options to their Agent API locations:
+
+| v4 provider option                       | v5 Agent API option                    |
+| ---------------------------------------- | -------------------------------------- |
+| Domain, recency, and date filters        | `tools[].filters` on `web_search`      |
+| `num_search_results`                     | `tools[].max_results`                  |
+| `web_search_options.search_context_size` | `tools[].search_context_size`          |
+| `web_search_options.user_location`       | `tools[].user_location`                |
+| `reasoning_effort`                       | `reasoning.effort`                     |
+| `disable_search`                         | Omit `web_search` for direct model IDs |
+
+Preset tools cannot be removed individually. Use a direct model ID without a
+`web_search` tool when search must be disabled, or set `max_tool_calls: 0` to
+disable all preset tool calls.
+
+The Agent API has no equivalent for Sonar PDF or video inputs, image or video
+results, `search_language_filter`, or `stream_mode`. Related questions require
+prompting or structured output. Remove these options during migration.
+
+Language requests now use `/v1/agent`. Custom `baseURL` proxies must route that
+path. Raw responses and streams use the Agent API's typed output and SSE event
+formats, and Perplexity provider metadata, usage, cost, and source identifiers
+can differ. The embeddings API is unchanged.
+
+For PDF inputs, extract the document text before sending it to the Agent API,
+or choose another provider that supports PDF input. Move image/video retrieval
+and language-filtered search to a separate service if your application requires
+those features. Rework consumers of raw Sonar stream events for typed Agent
+events. See Perplexity's [migration
+guide](https://docs.perplexity.ai/docs/agent-api/migrate-from-sonar/how-to)
+for the full API-level comparison.
 
 ## Embedding Models
 
@@ -170583,13 +171278,13 @@ The following optional provider options are available for embedding models:
 
 ## Model Capabilities
 
-| Model                 | Image Input | Object Generation | Tool Usage | Tool Streaming |
-| --------------------- | ----------- | ----------------- | ---------- | -------------- |
-| `sonar-deep-research` | <Cross />   | <Check />         | <Cross />  | <Cross />      |
-| `sonar-reasoning-pro` | <Check />   | <Check />         | <Cross />  | <Cross />      |
-| `sonar-reasoning`     | <Check />   | <Check />         | <Cross />  | <Cross />      |
-| `sonar-pro`           | <Check />   | <Check />         | <Cross />  | <Cross />      |
-| `sonar`               | <Check />   | <Check />         | <Cross />  | <Cross />      |
+| Model    | Image Input | Object Generation | Tool Usage | Tool Streaming |
+| -------- | ----------- | ----------------- | ---------- | -------------- |
+| `fast`   | <Check />   | <Check />         | <Check />  | <Check />      |
+| `low`    | <Check />   | <Check />         | <Check />  | <Check />      |
+| `medium` | <Check />   | <Check />         | <Check />  | <Check />      |
+| `high`   | <Check />   | <Check />         | <Check />  | <Check />      |
+| `xhigh`  | <Check />   | <Check />         | <Check />  | <Check />      |
 
 <Note>
   Please see the [Perplexity docs](https://docs.perplexity.ai) for detailed API
@@ -172459,18 +173154,19 @@ import { claudeCode, createClaudeCode } from '@ai-sdk/harness-claude-code';
 ```ts
 import { HarnessAgent } from '@ai-sdk/harness/agent';
 import { claudeCode } from '@ai-sdk/harness-claude-code';
-import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
+import { createVercelNetworkSandboxSession } from '@ai-sdk/sandbox-vercel';
 
 const agent = new HarnessAgent({
   harness: claudeCode,
   model: 'claude-sonnet-4-6',
-  sandbox: createVercelSandbox({
-    runtime: 'node24',
-    ports: [4000],
-  }),
 });
 
-const session = await agent.createSession();
+const sandboxSession = await createVercelNetworkSandboxSession({
+  runtime: 'node24',
+  ports: [4000],
+  template: await agent.getSandboxTemplate(),
+});
+const session = await agent.createSession({ sandboxSession });
 
 let exitCode = 0;
 try {
@@ -172489,6 +173185,7 @@ try {
   console.error(err);
 } finally {
   await session.destroy();
+  await sandboxSession.destroy();
   process.exit(exitCode);
 }
 ```
@@ -172607,9 +173304,10 @@ Claude Code requires a network sandbox with at least one exposed port,
 e.g. `@ai-sdk/sandbox-vercel`:
 
 ```ts
-const sandbox = createVercelSandbox({
+const sandboxSession = await createVercelNetworkSandboxSession({
   runtime: 'node24',
   ports: [4000],
+  template: await agent.getSandboxTemplate(),
 });
 ```
 
@@ -172644,9 +173342,9 @@ description: Learn how to use the Codex harness adapter.
 
 # Codex Harness
 
-The Codex harness adapter connects `HarnessAgent` to Codex through
-`@openai/codex-sdk`. The adapter runs a bridge inside the sandbox and streams
-Codex thread events back to the host over a sandbox-exposed WebSocket.
+The Codex harness adapter connects `HarnessAgent` to the Codex app-server.
+The adapter runs a bridge inside the sandbox and streams Codex thread events
+back to the host over a sandbox-exposed WebSocket.
 
 <Note>
   Harness packages are **experimental**. Expect breaking changes between
@@ -172673,18 +173371,19 @@ import { codex, createCodex } from '@ai-sdk/harness-codex';
 ```ts
 import { HarnessAgent } from '@ai-sdk/harness/agent';
 import { codex } from '@ai-sdk/harness-codex';
-import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
+import { createVercelNetworkSandboxSession } from '@ai-sdk/sandbox-vercel';
 
 const agent = new HarnessAgent({
   harness: codex,
   model: 'gpt-5.6-luna',
-  sandbox: createVercelSandbox({
-    runtime: 'node24',
-    ports: [4000],
-  }),
 });
 
-const session = await agent.createSession();
+const sandboxSession = await createVercelNetworkSandboxSession({
+  runtime: 'node24',
+  ports: [4000],
+  template: await agent.getSandboxTemplate(),
+});
+const session = await agent.createSession({ sandboxSession });
 
 let exitCode = 0;
 try {
@@ -172703,6 +173402,7 @@ try {
   console.error(err);
 } finally {
   await session.destroy();
+  await sandboxSession.destroy();
   process.exit(exitCode);
 }
 ```
@@ -172757,11 +173457,33 @@ Settings:
   random 32-byte token. Custom implementations must return a suitably secret
   token.
 
+## Built-in Tool Filtering
+
+Codex supports `activeTools` and `inactiveTools` for `bash`, `webSearch`,
+`apply_patch`, and `view_image`. Host tools are filtered before they are sent
+to Codex. Native Codex configuration disables `bash`, `view_image`, and
+`webSearch` individually. When `bash`, `apply_patch`, and `view_image` are all
+inactive, the adapter disables Codex environments and explicitly disables
+`bash` and `view_image`. When `apply_patch` is inactive but `bash` or
+`view_image` remains active, the adapter installs a Codex `PreToolUse` hook
+that denies patch execution. Before starting each turn, the adapter checks
+that Codex loaded and trusted the hook and fails the turn if it did not.
+Including `webSearch` in `activeTools` does not enable it on its own; set
+`webSearch: true` on `createCodex()` to allow live search.
+
+```ts
+const agent = new HarnessAgent({
+  harness: createCodex(),
+  sandbox: createVercelSandbox({ runtime: 'node24', ports: [4000] }),
+  inactiveTools: ['apply_patch'],
+});
+```
+
 ## Structured Output
 
 Codex supports schema-backed [`HarnessAgent` structured output](/docs/ai-sdk-harnesses/harness-agent#generate-structured-output).
-The adapter passes the JSON Schema through the Codex SDK's native
-`outputSchema` turn option.
+The adapter passes the JSON Schema through the Codex app-server's `turn/start`
+`outputSchema` parameter.
 
 ## Authentication
 
@@ -172820,21 +173542,21 @@ Codex requires a network sandbox with at least one exposed port,
 e.g. `@ai-sdk/sandbox-vercel`:
 
 ```ts
-const sandbox = createVercelSandbox({
+const sandboxSession = await createVercelNetworkSandboxSession({
   runtime: 'node24',
   ports: [4000],
+  template: await agent.getSandboxTemplate(),
 });
 ```
 
 ## Built-in Tools
 
-The adapter exposes these common Codex built-ins through `agent.tools`:
+The adapter exposes these Codex built-ins through `agent.tools`:
 
-- `bash`
-- `webSearch`
-
-Additional Codex built-ins may also appear in `agent.tools` when they do not
-fit a common tool shape.
+- `bash` and `webSearch` use the common cross-harness tool names.
+- `apply_patch` accepts Codex's freeform patch string.
+- `view_image` accepts a local image `path`, with optional `detail` and
+  `environment_id` fields.
 
 Codex file changes may also appear as dynamic `fileChange` tool parts because
 some Codex file mutations do not originate from a visible model-callable tool.
@@ -172845,9 +173567,9 @@ Codex does not currently support built-in tool approval requests. Use
 `permissionMode: 'allow-all'` with this adapter. Host-executed AI SDK tool
 approvals still work.
 
-Codex does not currently support built-in tool filtering. You can still use
-`activeTools` and `inactiveTools` to filter host-executed tools, but filtering
-Codex built-ins such as `bash` or `webSearch` will throw.
+When the app-server must cold-resume a thread, Codex does not provide raw
+events for `apply_patch` and `view_image`, so those tool calls and results
+cannot be surfaced for that resumed thread.
 
 ## Related
 
@@ -172889,17 +173611,18 @@ import { pi, createPi } from '@ai-sdk/harness-pi';
 ```ts
 import { HarnessAgent } from '@ai-sdk/harness/agent';
 import { pi } from '@ai-sdk/harness-pi';
-import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
+import { createVercelNetworkSandboxSession } from '@ai-sdk/sandbox-vercel';
 
 const agent = new HarnessAgent({
   harness: pi,
   model: 'anthropic/claude-sonnet-4.6',
-  sandbox: createVercelSandbox({
-    runtime: 'node24',
-  }),
 });
 
-const session = await agent.createSession();
+const sandboxSession = await createVercelNetworkSandboxSession({
+  runtime: 'node24',
+  template: await agent.getSandboxTemplate(),
+});
+const session = await agent.createSession({ sandboxSession });
 
 let exitCode = 0;
 try {
@@ -172918,6 +173641,7 @@ try {
   console.error(err);
 } finally {
   await session.destroy();
+  await sandboxSession.destroy();
   process.exit(exitCode);
 }
 ```
@@ -173089,13 +173813,13 @@ const harness = createPi({
 
 ## Sandbox
 
-Pi needs a `HarnessV1SandboxProvider`, but it does not require exposed ports.
-You can use a network sandbox adapter like `@ai-sdk/sandbox-vercel`, or a
-local emulation like `@ai-sdk/sandbox-just-bash`:
+Pi needs a sandbox session but does not require exposed ports. You can create a
+Vercel network session or a local just-bash session:
 
 ```ts
-const sandbox = createVercelSandbox({
+const sandboxSession = await createVercelNetworkSandboxSession({
   runtime: 'node24',
+  template: await agent.getSandboxTemplate(),
 });
 ```
 
@@ -173166,18 +173890,19 @@ import { openCode, createOpenCode } from '@ai-sdk/harness-opencode';
 ```ts
 import { HarnessAgent } from '@ai-sdk/harness/agent';
 import { openCode } from '@ai-sdk/harness-opencode';
-import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
+import { createVercelNetworkSandboxSession } from '@ai-sdk/sandbox-vercel';
 
 const agent = new HarnessAgent({
   harness: openCode,
   model: 'anthropic/claude-sonnet-4-6',
-  sandbox: createVercelSandbox({
-    runtime: 'node24',
-    ports: [4000],
-  }),
 });
 
-const session = await agent.createSession();
+const sandboxSession = await createVercelNetworkSandboxSession({
+  runtime: 'node24',
+  ports: [4000],
+  template: await agent.getSandboxTemplate(),
+});
+const session = await agent.createSession({ sandboxSession });
 
 let exitCode = 0;
 try {
@@ -173196,6 +173921,7 @@ try {
   console.error(err);
 } finally {
   await session.destroy();
+  await sandboxSession.destroy();
   process.exit(exitCode);
 }
 ```
@@ -173323,9 +174049,10 @@ OpenCode requires a network sandbox with at least one exposed port,
 e.g. `@ai-sdk/sandbox-vercel`:
 
 ```ts
-const sandbox = createVercelSandbox({
+const sandboxSession = await createVercelNetworkSandboxSession({
   runtime: 'node24',
   ports: [4000],
+  template: await agent.getSandboxTemplate(),
 });
 ```
 
@@ -173396,18 +174123,19 @@ configuration.
 ```ts
 import { HarnessAgent } from '@ai-sdk/harness/agent';
 import { deepAgents } from '@ai-sdk/harness-deepagents';
-import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
+import { createVercelNetworkSandboxSession } from '@ai-sdk/sandbox-vercel';
 
 const agent = new HarnessAgent({
   harness: deepAgents,
   model: 'anthropic/claude-sonnet-4-6',
-  sandbox: createVercelSandbox({
-    runtime: 'node24',
-    ports: [4000],
-  }),
 });
 
-const session = await agent.createSession();
+const sandboxSession = await createVercelNetworkSandboxSession({
+  runtime: 'node24',
+  ports: [4000],
+  template: await agent.getSandboxTemplate(),
+});
+const session = await agent.createSession({ sandboxSession });
 
 let exitCode = 0;
 try {
@@ -173426,6 +174154,7 @@ try {
   console.error(err);
 } finally {
   await session.destroy();
+  await sandboxSession.destroy();
   process.exit(exitCode);
 }
 ```
@@ -173534,9 +174263,10 @@ Deep Agents requires a network sandbox with at least one exposed port,
 e.g. `@ai-sdk/sandbox-vercel`:
 
 ```ts
-const sandbox = createVercelSandbox({
+const sandboxSession = await createVercelNetworkSandboxSession({
   runtime: 'node24',
   ports: [4000],
+  template: await agent.getSandboxTemplate(),
 });
 ```
 
@@ -173611,18 +174341,19 @@ pass it to `HarnessAgent`:
 
 ```ts
 import { HarnessAgent } from '@ai-sdk/harness/agent';
-import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
+import { createVercelNetworkSandboxSession } from '@ai-sdk/sandbox-vercel';
 import { codexACPHarness } from './codex-acp-harness';
 
 const agent = new HarnessAgent({
   harness: codexACPHarness,
-  sandbox: createVercelSandbox({
-    runtime: 'node24',
-    ports: [4000],
-  }),
 });
 
-const session = await agent.createSession();
+const sandboxSession = await createVercelNetworkSandboxSession({
+  runtime: 'node24',
+  ports: [4000],
+  template: await agent.getSandboxTemplate(),
+});
+const session = await agent.createSession({ sandboxSession });
 try {
   const result = await agent.generate({
     session,
@@ -173631,6 +174362,7 @@ try {
   console.log(result.text);
 } finally {
   await session.destroy();
+  await sandboxSession.destroy();
 }
 ```
 
@@ -173892,9 +174624,10 @@ Every ACP harness requires a network sandbox with at least one exposed port,
 e.g. `@ai-sdk/sandbox-vercel`:
 
 ```ts
-const sandbox = createVercelSandbox({
+const sandboxSession = await createVercelNetworkSandboxSession({
   runtime: 'node24',
   ports: [4000],
+  template: await agent.getSandboxTemplate(),
 });
 ```
 
@@ -174320,18 +175053,19 @@ configuration.
 ```ts
 import { HarnessAgent } from '@ai-sdk/harness/agent';
 import { grokBuild } from '@ai-sdk/harness-grok-build';
-import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
+import { createVercelNetworkSandboxSession } from '@ai-sdk/sandbox-vercel';
 
 const agent = new HarnessAgent({
   harness: grokBuild,
   model: 'grok-build-0.1',
-  sandbox: createVercelSandbox({
-    runtime: 'node24',
-    ports: [4000],
-  }),
 });
 
-const session = await agent.createSession();
+const sandboxSession = await createVercelNetworkSandboxSession({
+  runtime: 'node24',
+  ports: [4000],
+  template: await agent.getSandboxTemplate(),
+});
+const session = await agent.createSession({ sandboxSession });
 
 let exitCode = 0;
 try {
@@ -174350,6 +175084,7 @@ try {
   console.error(err);
 } finally {
   await session.destroy();
+  await sandboxSession.destroy();
   process.exit(exitCode);
 }
 ```
@@ -174466,9 +175201,10 @@ network sandbox with at least one exposed port, such as
 `@ai-sdk/sandbox-vercel`:
 
 ```ts
-const sandbox = createVercelSandbox({
+const sandboxSession = await createVercelNetworkSandboxSession({
   runtime: 'node24',
   ports: [4000],
+  template: await agent.getSandboxTemplate(),
 });
 ```
 
@@ -174558,17 +175294,18 @@ import { cline, createCline } from '@ai-sdk/harness-cline';
 ```ts
 import { HarnessAgent } from '@ai-sdk/harness/agent';
 import { cline } from '@ai-sdk/harness-cline';
-import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
+import { createVercelNetworkSandboxSession } from '@ai-sdk/sandbox-vercel';
 
 const agent = new HarnessAgent({
   harness: cline,
   model: 'anthropic/claude-opus-5',
-  sandbox: createVercelSandbox({
-    runtime: 'node24',
-  }),
 });
 
-const session = await agent.createSession();
+const sandboxSession = await createVercelNetworkSandboxSession({
+  runtime: 'node24',
+  template: await agent.getSandboxTemplate(),
+});
+const session = await agent.createSession({ sandboxSession });
 
 let exitCode = 0;
 try {
@@ -174587,6 +175324,7 @@ try {
   console.error(err);
 } finally {
   await session.destroy();
+  await sandboxSession.destroy();
   process.exit(exitCode);
 }
 ```
@@ -174679,8 +175417,9 @@ The Cline runtime runs on the host and does not need sandbox ports, so any
 network sandbox works — including port-less configurations:
 
 ```ts
-const sandbox = createVercelSandbox({
+const sandboxSession = await createVercelNetworkSandboxSession({
   runtime: 'node24',
+  template: await agent.getSandboxTemplate(),
 });
 ```
 
@@ -174718,7 +175457,7 @@ tool when the task calls for it.
 Conversation state lives in the host-process runtime. On `detach`/`stop` the
 adapter persists the conversation history into the sandbox workspace
 (`.cline-harness/history.json` in the session working directory), so a future
-process can resume the session after the sandbox provider reattaches. Because
+process can resume the session after the caller reattaches the sandbox. Because
 the runtime is host-resident, suspended turns are rerun-continued from the
 persisted history rather than losslessly attached (same trade-off as the
 [Pi adapter](/providers/ai-sdk-harnesses/pi)).
@@ -174773,18 +175512,19 @@ import { createCursor, cursor } from '@ai-sdk/harness-cursor';
 ```ts
 import { HarnessAgent } from '@ai-sdk/harness/agent';
 import { cursor } from '@ai-sdk/harness-cursor';
-import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
+import { createVercelNetworkSandboxSession } from '@ai-sdk/sandbox-vercel';
 
 const agent = new HarnessAgent({
   harness: cursor,
   model: 'gpt-5.6-luna',
-  sandbox: createVercelSandbox({
-    runtime: 'node24',
-    ports: [4000],
-  }),
 });
 
-const session = await agent.createSession();
+const sandboxSession = await createVercelNetworkSandboxSession({
+  runtime: 'node24',
+  ports: [4000],
+  template: await agent.getSandboxTemplate(),
+});
+const session = await agent.createSession({ sandboxSession });
 
 try {
   const result = await agent.generate({
@@ -174794,6 +175534,7 @@ try {
   console.log(result.text);
 } finally {
   await session.destroy();
+  await sandboxSession.destroy();
 }
 ```
 
@@ -174893,9 +175634,10 @@ network sandbox with at least one exposed port, such as
 `@ai-sdk/sandbox-vercel`:
 
 ```ts
-const sandbox = createVercelSandbox({
+const sandboxSession = await createVercelNetworkSandboxSession({
   runtime: 'node24',
   ports: [4000],
+  template: await agent.getSandboxTemplate(),
 });
 ```
 
@@ -174977,18 +175719,19 @@ import { createFx, fx } from '@ai-sdk/harness-fx';
 ```ts
 import { HarnessAgent } from '@ai-sdk/harness/agent';
 import { fx } from '@ai-sdk/harness-fx';
-import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
+import { createVercelNetworkSandboxSession } from '@ai-sdk/sandbox-vercel';
 
 const agent = new HarnessAgent({
   harness: fx,
   model: 'openai/gpt-5.6-luna',
-  sandbox: createVercelSandbox({
-    runtime: 'node24',
-    ports: [4000],
-  }),
 });
 
-const session = await agent.createSession();
+const sandboxSession = await createVercelNetworkSandboxSession({
+  runtime: 'node24',
+  ports: [4000],
+  template: await agent.getSandboxTemplate(),
+});
+const session = await agent.createSession({ sandboxSession });
 
 let exitCode = 0;
 try {
@@ -175007,6 +175750,7 @@ try {
   console.error(err);
 } finally {
   await session.destroy();
+  await sandboxSession.destroy();
   process.exit(exitCode);
 }
 ```
@@ -175105,9 +175849,10 @@ fx runs inside the sandbox through `@ai-sdk/harness-acp`. It requires a network
 sandbox with at least one exposed port:
 
 ```ts
-const sandbox = createVercelSandbox({
+const sandboxSession = await createVercelNetworkSandboxSession({
   runtime: 'node24',
   ports: [4000],
+  template: await agent.getSandboxTemplate(),
 });
 ```
 
@@ -175199,18 +175944,19 @@ configuration.
 ```ts
 import { HarnessAgent } from '@ai-sdk/harness/agent';
 import { githubCopilot } from '@ai-sdk/harness-github-copilot';
-import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
+import { createVercelNetworkSandboxSession } from '@ai-sdk/sandbox-vercel';
 
 const agent = new HarnessAgent({
   harness: githubCopilot,
   model: 'gpt-5.5',
-  sandbox: createVercelSandbox({
-    runtime: 'node24',
-    ports: [4000],
-  }),
 });
 
-const session = await agent.createSession();
+const sandboxSession = await createVercelNetworkSandboxSession({
+  runtime: 'node24',
+  ports: [4000],
+  template: await agent.getSandboxTemplate(),
+});
+const session = await agent.createSession({ sandboxSession });
 
 let exitCode = 0;
 try {
@@ -175229,6 +175975,7 @@ try {
   console.error(err);
 } finally {
   await session.destroy();
+  await sandboxSession.destroy();
   process.exit(exitCode);
 }
 ```
@@ -175355,9 +176102,10 @@ GitHub Copilot runs inside the sandbox through `@ai-sdk/harness-acp`. It
 requires a network sandbox with at least one exposed port:
 
 ```ts
-const sandbox = createVercelSandbox({
+const sandboxSession = await createVercelNetworkSandboxSession({
   runtime: 'node24',
   ports: [4000],
+  template: await agent.getSandboxTemplate(),
 });
 ```
 
@@ -175491,16 +176239,27 @@ All harness adapters are used with `HarnessAgent`:
 ```ts
 import { HarnessAgent } from '@ai-sdk/harness/agent';
 import { codex } from '@ai-sdk/harness-codex';
-import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
+import { createVercelNetworkSandboxSession } from '@ai-sdk/sandbox-vercel';
 
 const agent = new HarnessAgent({
   harness: codex,
   model: 'gpt-5.6-luna',
-  sandbox: createVercelSandbox({
-    runtime: 'node24',
-    ports: [4000],
-  }),
 });
+
+const sandboxSession = await createVercelNetworkSandboxSession({
+  runtime: 'node24',
+  ports: [4000],
+  template: await agent.getSandboxTemplate(),
+});
+const session = await agent.createSession({ sandboxSession });
+try {
+  console.log(
+    (await agent.generate({ session, prompt: 'Inspect this project.' })).text,
+  );
+} finally {
+  await session.destroy();
+  await sandboxSession.destroy();
+}
 ```
 
 Read the [Harnesses](/docs/ai-sdk-harnesses) documentation for sessions,
@@ -175822,6 +176581,112 @@ Use the [ModelRush models endpoint](https://modelrush.ai/docs/api/models) or [mo
 - [ModelRush AI SDK example](https://github.com/Moonveil-AI/modelrush-developer-tools/tree/main/examples/ai-sdk)
 - [ModelRush quick start](https://modelrush.ai/docs/quickstart)
 - [ModelRush Chat Completions documentation](https://modelrush.ai/docs/models/chat)
+- [AI SDK OpenAI Compatible provider](/providers/openai-compatible-providers)
+
+---
+title: Cheaper Inference
+description: Use the Cheaper Inference OpenAI compatible API with the AI SDK.
+---
+
+# Cheaper Inference Provider
+
+[Cheaper Inference](https://cheaperinference.com/) is an API gateway that provides access to models from multiple AI labs through an OpenAI-compatible API. You can use its Chat Completions endpoint with the AI SDK through the `@ai-sdk/openai-compatible` module.
+
+## Setup
+
+Install the OpenAI Compatible provider:
+
+<InstallPackages packages="@ai-sdk/openai-compatible" />
+
+Create a Cheaper Inference API key and set it as a server-side environment variable:
+
+```bash
+export CHEAPER_INFERENCE_API_KEY=your-api-key
+```
+
+See the [Cheaper Inference integration guide](https://cheaperinference.com/docs/integrations#framework-vercel) for instructions on creating an API key.
+
+## Provider Instance
+
+Create a Cheaper Inference provider instance with `createOpenAICompatible`:
+
+```ts
+import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
+
+const cheaperInference = createOpenAICompatible({
+  name: 'cheaper-inference',
+  apiKey: process.env.CHEAPER_INFERENCE_API_KEY,
+  baseURL: 'https://api.cheaperinference.com/v1',
+});
+```
+
+The `apiKey` setting sends your key as a Bearer token in the `Authorization` header.
+
+## Language Models
+
+Create a language model by passing a Cheaper Inference model ID to the provider instance:
+
+```ts
+const model = cheaperInference('gpt-5.4');
+```
+
+### Generate Text
+
+Use `generateText` to generate text with the model:
+
+```ts
+import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
+import { generateText } from 'ai';
+
+const cheaperInference = createOpenAICompatible({
+  name: 'cheaper-inference',
+  apiKey: process.env.CHEAPER_INFERENCE_API_KEY,
+  baseURL: 'https://api.cheaperinference.com/v1',
+});
+
+const { text } = await generateText({
+  model: cheaperInference('gpt-5.4'),
+  prompt: 'Explain what an API gateway does in one sentence.',
+});
+
+console.log(text);
+```
+
+### Stream Text
+
+Use `streamText` to stream text as it is generated:
+
+```ts
+import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
+import { streamText } from 'ai';
+
+const cheaperInference = createOpenAICompatible({
+  name: 'cheaper-inference',
+  apiKey: process.env.CHEAPER_INFERENCE_API_KEY,
+  baseURL: 'https://api.cheaperinference.com/v1',
+});
+
+const result = streamText({
+  model: cheaperInference('gpt-5.4'),
+  prompt: 'Count from 1 to 5, separated by spaces.',
+});
+
+for await (const textPart of result.textStream) {
+  process.stdout.write(textPart);
+}
+```
+
+## Supported Models and Capabilities
+
+This integration uses Cheaper Inference's OpenAI-compatible Chat Completions endpoint for text generation and streaming. Support for tools, vision, and other model-specific features depends on the selected model.
+
+The model catalog changes over time. Use the authenticated [`GET /models`](https://api.cheaperinference.com/v1/models) endpoint to find current model IDs, capabilities, and pricing.
+
+## Resources
+
+- [Cheaper Inference Vercel AI SDK integration guide](https://cheaperinference.com/docs/integrations#framework-vercel)
+- [Cheaper Inference API documentation](https://cheaperinference.com/docs)
+- [Cheaper Inference model catalog](https://cheaperinference.com/models)
 - [AI SDK OpenAI Compatible provider](/providers/openai-compatible-providers)
 
 ---
@@ -176154,6 +177019,7 @@ We provide detailed documentation for the following OpenAI compatible providers:
 - [LM Studio](/providers/openai-compatible-providers/lmstudio)
 - [NIM](/providers/openai-compatible-providers/nim)
 - [ModelRush](/providers/openai-compatible-providers/modelrush)
+- [Cheaper Inference](/providers/openai-compatible-providers/cheaper-inference)
 - [Heroku](/providers/openai-compatible-providers/heroku)
 - [Clarifai](/providers/openai-compatible-providers/clarifai)
 - [NEAR AI Cloud](/providers/openai-compatible-providers/nearai)

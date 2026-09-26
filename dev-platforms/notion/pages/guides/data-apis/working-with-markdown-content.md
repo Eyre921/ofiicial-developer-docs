@@ -517,17 +517,18 @@ All variants return the full page content as markdown after the update:
 
 ### Error responses
 
-| Error code            | Condition                                                                                                                                   |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `validation_error`    | The `content_range` or `after` selection does not match any content in the page, or an `old_str` in `update_content` is not found.          |
-| `validation_error`    | Both `insert_content.after` and `insert_content.position` are provided. Use only one insertion target.                                      |
-| `validation_error`    | An `old_str` in `update_content` matches multiple locations and `replace_all_matches` is not `true`.                                        |
-| `validation_error`    | An `old_str` in `update_content` is an empty string.                                                                                        |
-| `validation_error`    | The operation would delete child pages or databases and `allow_deleting_content` is not `true`. The error message lists the affected items. |
-| `validation_error`    | The provided ID is a database or non-page block (use the appropriate API for those record types).                                           |
-| `validation_error`    | The target page is a synced page (`external_object_instance_page`). Synced pages cannot be updated.                                         |
-| `object_not_found`    | The page does not exist or the connection does not have access to it.                                                                       |
-| `restricted_resource` | The connection lacks `update_content` capability.                                                                                           |
+| Error code            | Condition                                                                                                                                                                                                                                                 |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `validation_error`    | The `content_range` or `after` selection does not match any content in the page, or an `old_str` in `update_content` is not found.                                                                                                                        |
+| `validation_error`    | Both `insert_content.after` and `insert_content.position` are provided. Use only one insertion target.                                                                                                                                                    |
+| `validation_error`    | An `old_str` in `update_content` matches multiple locations and `replace_all_matches` is not `true`.                                                                                                                                                      |
+| `validation_error`    | An `old_str` in `update_content` is an empty string.                                                                                                                                                                                                      |
+| `validation_error`    | The operation would delete child pages or databases and `allow_deleting_content` is not `true`. The error message lists the affected items.                                                                                                               |
+| `validation_error`    | The provided ID is a database or non-page block (use the appropriate API for those record types).                                                                                                                                                         |
+| `validation_error`    | The target page is a synced page (`external_object_instance_page`). Synced pages cannot be updated.                                                                                                                                                       |
+| `validation_error`    | The page content after the edit is too large or too heavily formatted to process in one call. The limit counts the whole page, not the edit, so retrying the same request fails the same way. Move some content into child pages or reduce the page size. |
+| `object_not_found`    | The page does not exist or the connection does not have access to it.                                                                                                                                                                                     |
+| `restricted_resource` | The connection lacks `update_content` capability.                                                                                                                                                                                                         |
 
 ### Meeting note transcripts
 

@@ -49,6 +49,51 @@ Successful Response
 
 Validation Error
 
+- `detail` (list of Validat> This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt. For the full documentation in a single file, fetch https://elevenlabs.io/docs/llms-full.txt.
+
+# Get SIP messages for a conversation
+
+GET https://api.elevenlabs.io/v1/convai/conversations/{conversation_id}/sip-messages
+
+Get SIP messages associated with a conversation's phone call
+
+Reference: https://elevenlabs.io/docs/api-reference/conversations/get-sip-messages
+
+## Servers
+
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
+
+## Request
+
+### Path parameters
+
+- `conversation_id` (string, required) — The id of the conversation you're taking the action on.
+
+### Query parameters
+
+- `page_size` (integer, optional, default: 20)
+- `cursor` (string, optional, nullable) — Used for fetching next page. Cursor is returned in the response.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `sip_messages` (list of SIPLogMessage, required)
+- `next_cursor` (string, optional, nullable)
+- `has_more` (boolean, optional, default: false)
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
 - `detail` (list of ValidationError, optional)
 
 ## Types

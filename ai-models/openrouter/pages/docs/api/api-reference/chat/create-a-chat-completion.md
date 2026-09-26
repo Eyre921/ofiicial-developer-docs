@@ -3244,6 +3244,7 @@ components:
         - Recraft
         - Reka
         - Relace
+        - Respan
         - Sail Research
         - Sakana AI
         - SambaNova
@@ -3613,6 +3614,9 @@ components:
           additionalProperties: {}
           type: object
         replicate:
+          additionalProperties: {}
+          type: object
+        respan:
           additionalProperties: {}
           type: object
         runway:

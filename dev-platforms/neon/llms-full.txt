@@ -640,6 +640,198 @@ Error responses are a JSON object with an `error.message` field:
 - [OpenAI Responses API](https://neon.com/docs/ai-gateway/openai-responses): Responses API endpoint
 - [Authentication](https://neon.com/docs/ai-gateway/authentication): credential scopes and branch binding
 
+--- [Document source](https://neon.com/docs/ai-gateway/embeddings.md) ---
+
+> Summary: Neon AI Gateway serves text-embedding models on an OpenAI-compatible /v1/embeddings endpoint. Use short model IDs like qwen3-embedding-0-6b or gte-large-en, both 1024-dimensional, with the same Neon credential you use for chat completions.
+
+# Embeddings
+
+The OpenAI-compatible embeddings endpoint
+
+Embeddings turn text into vectors that capture meaning, so you can match text by what it means rather than by the exact words. They power semantic search, recommendations, clustering, and retrieval-augmented generation (RAG).
+
+The Neon AI Gateway embeddings endpoint generates those vectors so you can store and search them in Postgres. It's compatible with the [OpenAI Embeddings API](https://platform.openai.com/docs/api-reference/embeddings): the same OpenAI SDK you use elsewhere works against the gateway, using the same Neon credential as the other AI Gateway endpoints.
+
+**Base URL:** `https://<branch-host>/v1`
+
+This endpoint is also reachable at the longer `/ai-gateway/mlflow/v1/embeddings` path. Both behave identically and neither is deprecated. See [Shorter paths](https://neon.com/docs/ai-gateway/models#shorter-paths).
+
+**Important: OpenAI JavaScript SDK v6: pass encoding_format: float**
+
+On the `openai` JavaScript/TypeScript SDK **v6**, pass `encoding_format: "float"` on embedding calls (as shown below), or upgrade to v7 or later. Without it, v6 returns a broken all-zeros vector with no error. The Python SDK and raw HTTP are unaffected.
+
+## Models
+
+Two embedding models are available today. Both return **1024-dimensional** vectors and are billed on **input tokens only**.
+
+| Model ID               | Dimensions | Notes                                                                                                                            |
+| ---------------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `qwen3-embedding-0-6b` | 1024       | Unit-normalized (L2 norm = 1), so dot product equals cosine similarity. Supports the `dimensions` parameter for shorter vectors. |
+| `gte-large-en`         | 1024       | Not normalized (L2 norm ≈ 24). Use cosine distance, or normalize the vectors yourself. Ignores the `dimensions` parameter.       |
+
+Use the short model IDs shown above. The `databricks-` prefixed forms (`databricks-qwen3-embedding-0-6b`, `databricks-gte-large-en`) are also accepted.
+
+## Setup
+
+The examples use two environment variables:
+
+```bash
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://br-...
+```
+
+Run `neon env pull --file .env` to write both to your `.env` for the current branch (`neon deploy` and `neon config apply` also pull them). You can also copy them from the Neon Console's **Connect** panel, on the **AI Gateway** tab. Inside Neon Functions they're injected automatically. See [Authentication](https://neon.com/docs/ai-gateway/authentication) for details.
+
+The examples below use the `openai` SDK. Install it with `npm install openai` or `pip install openai`.
+
+## Basic request
+
+**TypeScript (OpenAI SDK)**
+
+```typescript
+import OpenAI from 'openai';
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const response = await client.embeddings.create({
+  model: 'qwen3-embedding-0-6b',
+  input: 'The quick brown fox jumps over the lazy dog.',
+  encoding_format: 'float', // required on the openai SDK v6; harmless on v7+
+});
+
+console.log(response.data[0].embedding.length); // 1024
+```
+
+**Python (OpenAI SDK)**
+
+```python
+from openai import OpenAI
+import os
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+response = client.embeddings.create(
+    model="qwen3-embedding-0-6b",
+    input="The quick brown fox jumps over the lazy dog.",
+)
+
+print(len(response.data[0].embedding))  # 1024
+```
+
+**cURL**
+
+```bash
+curl -X POST "$NEON_AI_GATEWAY_BASE_URL/v1/embeddings" \
+  -H "Authorization: Bearer $NEON_AI_GATEWAY_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "qwen3-embedding-0-6b",
+    "input": "The quick brown fox jumps over the lazy dog."
+  }'
+```
+
+## Response shape
+
+The response is OpenAI-compatible: a list of embedding objects, one per input, each with the vector and its position.
+
+```json
+{
+  "id": "...",
+  "object": "list",
+  "model": "qwen3-embedding-0-6b-112025",
+  "data": [
+    {
+      "index": 0,
+      "object": "embedding",
+      "embedding": [-0.0149, 0.0172, -0.0119, "..."]
+    }
+  ],
+  "usage": { "prompt_tokens": 11, "total_tokens": 11 }
+}
+```
+
+The `model` field reports the resolved, versioned name that served the request (`qwen3-embedding-0-6b-112025` here), which is handy for logging. Keep sending the short model ID (`qwen3-embedding-0-6b` or `gte-large-en`) in your requests.
+
+## Batch input
+
+Pass an array of strings to embed many inputs in one request. The response returns one embedding per input, in the same order, with a matching `index`.
+
+**TypeScript (OpenAI SDK)**
+
+```typescript
+const response = await client.embeddings.create({
+  model: 'qwen3-embedding-0-6b',
+  input: ['First document.', 'Second document.', 'Third document.'],
+  encoding_format: 'float',
+});
+
+for (const item of response.data) {
+  console.log(item.index, item.embedding.length);
+}
+```
+
+**Python (OpenAI SDK)**
+
+```python
+response = client.embeddings.create(
+    model="qwen3-embedding-0-6b",
+    input=["First document.", "Second document.", "Third document."],
+)
+
+for item in response.data:
+    print(item.index, len(item.embedding))
+```
+
+## Shorter vectors with `dimensions`
+
+`qwen3-embedding-0-6b` supports the `dimensions` parameter to return a shorter, Matryoshka-style vector (for example `dimensions: 256`), which trades some accuracy for smaller storage and faster search. `gte-large-en` ignores this parameter and always returns 1024 dimensions.
+
+```typescript
+const response = await client.embeddings.create({
+  model: 'qwen3-embedding-0-6b',
+  input: 'A shorter embedding.',
+  dimensions: 256,
+  encoding_format: 'float',
+});
+
+console.log(response.data[0].embedding.length); // 256
+```
+
+## Choosing a distance operator
+
+The two models differ in how their vectors are scaled, which affects the pgvector operator class you index and query with:
+
+- **`qwen3-embedding-0-6b`** is unit-normalized (every vector has L2 norm 1), so cosine distance and inner product rank results identically. Cosine (`vector_cosine_ops`, `<=>`) is a safe default.
+- **`gte-large-en`** is not normalized (L2 norm ≈ 24). Use cosine distance (`vector_cosine_ops`, `<=>`), which is scale-invariant, or normalize the vectors before storing them.
+
+For an end-to-end example that stores AI Gateway embeddings in Postgres and searches them, see [Get started with Lakebase Search](https://neon.com/docs/ai/lakebase-search-get-started).
+
+## Not supported
+
+- **Streaming.** Embeddings don't stream. A request with `stream: true` returns `400`.
+- **Wrong endpoint.** An embedding model called on a chat endpoint (or a chat model on this endpoint) is rejected. Send embedding requests to `/v1/embeddings`.
+
+## Error handling
+
+| Status                  | Meaning               | Common cause                                                                                                     |
+| ----------------------- | --------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `400 Bad Request`       | Invalid request       | Unknown model ID, an embedding model used on a chat endpoint, or `stream: true`                                  |
+| `401 Unauthorized`      | Authentication failed | Missing or invalid `NEON_AI_GATEWAY_TOKEN`                                                                       |
+| `403 Forbidden`         | Access denied         | Credential lacks `ai_gateway:invoke` scope, or branch not in credential lineage                                  |
+| `429 Too Many Requests` | Quota or rate limited | Account quota or per-minute token limit. See [Rate limits](https://neon.com/docs/ai-gateway/models#rate-limits). |
+
+## Next steps
+
+- [Get started with Lakebase Search](https://neon.com/docs/ai/lakebase-search-get-started): store and search AI Gateway embeddings in Postgres
+- [Models](https://neon.com/docs/ai-gateway/models): full model catalog
+- [Chat completions](https://neon.com/docs/ai-gateway/chat-completions): the OpenAI-compatible chat endpoint
+
 --- [Document source](https://neon.com/docs/ai-gateway/gemini.md) ---
 
 > Summary: The Gemini endpoint exposes the Google Gemini generateContent and streamGenerateContent APIs through Neon AI Gateway. Use the google-genai SDK with a custom base URL.
@@ -1183,7 +1375,7 @@ Select a linked model for embeddings-specific code examples.
 
 Prices are provider list prices per million tokens. Inference is free during the private preview. Click a model for a copy-paste quickstart.
 
-For full request paths and when to prefer each endpoint, see [Which endpoint to use](https://neon.com/docs/ai-gateway/models#which-endpoint-to-use).
+For full request paths and when to prefer each endpoint, see [Which endpoint to use](https://neon.com/docs/ai-gateway/models#which-endpoint-to-use). For embedding models (dimensions, normalization, and choosing a distance operator), see [Embeddings](https://neon.com/docs/ai-gateway/embeddings).
 
 ## Rate limits
 
@@ -8852,6 +9044,7 @@ To request access to foundation models that aren't enabled for your project yet,
 - [Quickstart](https://neon.com/docs/ai-gateway/get-started): Get a credential and make your first inference request in minutes.
 - [Models](https://neon.com/docs/ai-gateway/models): Browse the full model catalog and learn how to specify models in requests.
 - [Chat completions](https://neon.com/docs/ai-gateway/chat-completions): Use the OpenAI-compatible endpoint with any model in the catalog.
+- [Embeddings](https://neon.com/docs/ai-gateway/embeddings): Turn text into vectors for search with the OpenAI-compatible embeddings endpoint.
 - [Authentication](https://neon.com/docs/ai-gateway/authentication): Understand how Neon credentials work with AI Gateway.
 
 ## Overview
@@ -9334,7 +9527,7 @@ Pi reads the `skills/` directory directly, so there's no separate sync step. Thi
 
 ### neon init
 
-The `neon init` command sets up the current directory to use Neon with your AI coding assistant. Run it in a terminal: it installs agent tooling (either a plugin, or skills and the MCP server), links a Neon project, and optionally writes a `neon.ts` config. In an empty directory, it lets you pick a starter template, name one with `--template`, or skip scaffolding with `--skip-template`.
+The `neon init` command sets up the current directory to use Neon with your AI coding assistant. Run it in a terminal: it installs agent tooling (either a plugin, or skills and the MCP server), links a Neon project, and optionally writes a `neon.ts` config. It sets up the current directory in place.
 
 ```bash
 npx neon@latest init
@@ -11870,7 +12063,10 @@ This guide sets up Lakebase Search on a Neon project: enabling both extensions, 
 - A Neon project. You enable Lakebase Search on it in the first step below.
 - Postgres 16 or later (Lakebase Search requires PG16+)
 - Node.js 18 or later
-- An [OpenAI API key](https://platform.openai.com/api-keys) for generating embeddings (this guide uses OpenAI, but any embedding provider works)
+- Choose an embedding provider to turn text into vectors:
+  - **Neon AI Gateway** (this guide's default): set `NEON_AI_GATEWAY_TOKEN` and `NEON_AI_GATEWAY_BASE_URL` (see [Get started](https://neon.com/docs/ai-gateway/get-started)) and use the [`qwen3-embedding-0-6b`](https://neon.com/docs/ai-gateway/embeddings) model (1024 dimensions). Requires a paid plan in a [Neon AI Gateway region](https://neon.com/docs/ai-gateway/overview).
+  - **OpenAI directly**: set `OPENAI_API_KEY` and drop both client overrides so it's just `new OpenAI()`, then change the model to `text-embedding-3-small` (1536 dimensions).
+  - **Any other provider**: generate the vector with its SDK and match the `VECTOR` column to its dimensions.
 
 ## Enable the extensions
 
@@ -11890,7 +12086,7 @@ CREATE TABLE documents (
   id        SERIAL PRIMARY KEY,
   title     TEXT NOT NULL,
   body      TEXT NOT NULL,
-  embedding VECTOR(1536),
+  embedding VECTOR(1024),
   body_tsv  TSVECTOR GENERATED ALWAYS AS (to_tsvector('english', body)) STORED
 );
 
@@ -11908,11 +12104,14 @@ The remaining steps run from a local TypeScript project. Install dependencies:
 npm install @neondatabase/serverless openai dotenv
 ```
 
-Create a `.env` file with your Neon connection string and OpenAI API key:
+**Note:** This guide uses the `openai` SDK pointed at the Neon AI Gateway. Version 6 of the SDK requires `encoding_format: 'float'` on embedding calls (included below); on v7 and later it's optional. See [Embeddings](https://neon.com/docs/ai-gateway/embeddings) for details.
+
+Create a `.env` file with your Neon connection string and AI Gateway credentials. See [Get started with AI Gateway](https://neon.com/docs/ai-gateway/get-started) for how to obtain the gateway values:
 
 ```ini filename=".env"
 DATABASE_URL=postgresql://[user]:[password]@[neon_hostname]/[dbname]?sslmode=require
-OPENAI_API_KEY=your-openai-api-key
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://[branch-host]
 ```
 
 ## Run the demo
@@ -11925,7 +12124,12 @@ import { neon } from '@neondatabase/serverless';
 import OpenAI from 'openai';
 
 const sql = neon(process.env.DATABASE_URL!);
-const openai = new OpenAI();
+
+// Point the OpenAI SDK at the Neon AI Gateway.
+const openai = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
 
 const documents = [
   {
@@ -11953,8 +12157,9 @@ const documents = [
 async function embedAndInsert() {
   for (const doc of documents) {
     const { data } = await openai.embeddings.create({
-      model: 'text-embedding-3-small',
+      model: 'qwen3-embedding-0-6b',
       input: doc.body,
+      encoding_format: 'float', // required on the openai SDK v6; harmless on v7+
     });
 
     await sql`
@@ -11966,8 +12171,9 @@ async function embedAndInsert() {
 
 async function vectorSearch(query: string, limit = 5) {
   const { data } = await openai.embeddings.create({
-    model: 'text-embedding-3-small',
+    model: 'qwen3-embedding-0-6b',
     input: query,
+    encoding_format: 'float',
   });
 
   return sql`
@@ -12029,8 +12235,9 @@ Add a `hybridSearch` function to `search.ts`, alongside `vectorSearch` and `text
 ```typescript filename="search.ts"
 async function hybridSearch(query: string, limit = 5) {
   const { data } = await openai.embeddings.create({
-    model: 'text-embedding-3-small',
+    model: 'qwen3-embedding-0-6b',
     input: query,
+    encoding_format: 'float',
   });
   const queryVector = JSON.stringify(data[0].embedding);
 
@@ -20125,9 +20332,21 @@ Manage Neon Functions.
 | `neon functions get <slug>`                | Show a function's details                                  |
 | `neon functions list`                      | List functions on the branch                               |
 
+### git
+
+Sync the checked-out Neon branch to your git branch (Preview).
+
+| Subcommand           | Description                                                                                            |
+| -------------------- | ------------------------------------------------------------------------------------------------------ |
+| `neon git cleanup`   | Prune git → Neon mappings whose local git branch is gone; optionally delete the orphaned Neon branches |
+| `neon git install`   | Install a git post-checkout hook that syncs the Neon branch on `git checkout`                          |
+| `neon git status`    | Show the git context, hook state, and current git → Neon mapping                                       |
+| `neon git sync`      | Check out the Neon branch mapped to the current git branch (run by the hook)                           |
+| `neon git uninstall` | Remove the git post-checkout hook installed by `git install`                                           |
+
 ### init
 
-Set up this directory for Neon: agent tooling, a linked project, and optionally neon.ts. In an empty directory, pick a template or skip scaffolding.
+Set up coding agents and this directory for Neon. -y is Recommended. -y with Custom flags applies those answers without prompts.
 
 Usage: `neon init [options]`
 
@@ -20315,14 +20534,14 @@ Manage snapshots.
 | Subcommand                         | Description                                                         |
 | ---------------------------------- | ------------------------------------------------------------------- |
 | `neon snapshots create`            | Create a snapshot from a branch                                     |
-| `neon snapshots delete <id>`       | Delete a snapshot by id or name                                     |
+| `neon snapshots delete <id>`       | Delete a snapshot by id, unique name, or slug                       |
 | `neon snapshots finalize <branch>` | Finalize a previewed snapshot restore (swap the restored branch in) |
-| `neon snapshots get <id>`          | Get a snapshot by id or name                                        |
+| `neon snapshots get <id>`          | Get a snapshot by id, unique name, or slug                          |
 | `neon snapshots list`              | List snapshots in the project                                       |
-| `neon snapshots restore <id>`      | Restore a snapshot into a branch                                    |
+| `neon snapshots restore <id>`      | Restore a snapshot (id, unique name, or slug) into a branch         |
 | `neon snapshots schedule get`      | Get a branch's automatic snapshot schedule                          |
 | `neon snapshots schedule set`      | Set a branch's automatic snapshot schedule                          |
-| `neon snapshots update <id>`       | Update a snapshot's name or expiration                              |
+| `neon snapshots update <id>`       | Update a snapshot's name or expiration by id, unique name, or slug  |
 
 ### status
 
@@ -21722,6 +21941,8 @@ neon checkout dev --create --project-id polished-snowflake-12345678
 
 After checking out a branch, commands such as [`connection-string`](https://neon.com/docs/cli/connection-string) and [`psql`](https://neon.com/docs/cli/psql) use the pinned branch by default.
 
+To run this checkout automatically whenever you switch git branches, see [`neon git`](https://neon.com/docs/cli/git) (Preview), which installs a git hook that checks out the mapped Neon branch on `git checkout`.
+
 --- [Document source](https://neon.com/docs/cli/claim.md) ---
 
 > Summary: The Neon CLI `claim` command (`neon claimable` is an alias) creates a temporary Neon project before anyone signs in. The CLI stores an identity assertion, writes credentials to `.env`, and later opens a claim URL so a human can take the project. See [Claimable Neon](/docs/reference/claimable-neon).
@@ -23078,17 +23299,146 @@ neon functions domains delete docs.example.com
 
 Routing changes are eventually consistent, so the custom URL can continue reaching the function briefly after deletion. Deleting a function doesn't delete its custom-domain registration; delete the domain separately.
 
+--- [Document source](https://neon.com/docs/cli/git.md) ---
+
+> Summary: The Neon CLI `git` command connects git branch switches to Neon checkout. It installs a git post-checkout hook so that switching git branches checks out the mapped Neon branch, with subcommands to install and remove the hook (install, uninstall), run the sync by hand (sync), inspect the current state (status), and prune stale branch mappings (cleanup).
+
+# Neon CLI command: git
+
+Keep your Neon branch in sync with the git branch you have checked out
+
+The `git` command connects your git workflow to Neon branching. After you install its git hook, switching git branches with `git checkout` also checks out the Neon branch mapped to that git branch, so your application code and its database branch stay in sync. Under the hood it delegates to [`neon checkout`](https://neon.com/docs/cli/checkout) and records the git-to-Neon mapping in your local [context file](https://neon.com/docs/cli/link).
+
+**Coming soon: Preview**
+
+The `neon git` command group is in preview. The commands and their behavior may change.
+
+Before you install the hook, link a Neon project at your repository root with [`neon link`](https://neon.com/docs/cli/link) or [`neon checkout`](https://neon.com/docs/cli/checkout). The hook reads the `.neon` context file at the repository root, so the project link has to live there.
+
+Subcommands: [cleanup](https://neon.com/docs/cli/git#cleanup), [install](https://neon.com/docs/cli/git#install), [status](https://neon.com/docs/cli/git#status), [sync](https://neon.com/docs/cli/git#sync), [uninstall](https://neon.com/docs/cli/git#uninstall)
+
+## neon git install
+
+Installs a managed `post-checkout` git hook that runs `neon git sync` whenever you switch branches with `git checkout`. The hook honors your configured git hooks directory and won't overwrite an existing unmanaged `post-checkout` hook.
+
+The command requires a project already linked at the repository root's own `.neon` file. If none is linked, install stops and tells you to run `neon link` or `neon checkout <branch>` there first.
+
+```bash
+neon git install [options]
+```
+
+```bash
+neon git install
+```
+
+```text filename="Output"
+Git → Neon sync installed. `git checkout <branch>` will now check out the mapped Neon branch.
+Hook: /path/to/your/app/.git/hooks/post-checkout
+```
+
+## neon git status
+
+Shows your current git branch, whether the hook is installed, whether sync-on-checkout is enabled, the Neon branch mapped to the current git branch, and all recorded mappings. Use `--output json` or `--output yaml` for scripting.
+
+```bash
+neon git status [options]
+```
+
+```bash
+neon git status
+```
+
+```text filename="Output"
+GitBranch         main
+HookInstalled     false
+FollowOnCheckout  false
+MappedNeonBranch  (unmapped — will derive on next sync)
+Mappings          (none)
+```
+
+## neon git sync
+
+Checks out the Neon branch mapped to the current git branch. This is the command the installed hook runs on every `git checkout`, and you can also run it by hand. If no mapping exists yet, sync derives a Neon branch name from the current git branch and checks it out, then saves the resulting mapping so later checkouts of that git branch stay stable. The Neon branch has to exist already: sync doesn't create it, so a git branch with no matching Neon branch reports `Branch <name> not found. Pass --create to create it.` unless a `checkout.before` hook maps it to an existing branch. A detached HEAD has no git branch, so sync skips it.
+
+Pass `--pull` to run `git pull --ff-only` before syncing, so committed files such as migrations match the branch before any `checkout.after` hook runs. A pull failure warns and sync continues. Pass `--no-env-pull` to skip pulling the branch's Neon environment variables into a local `.env` after sync.
+
+```bash
+neon git sync [options]
+```
+
+| Option       | Description                                                                                                                                                                                                                | Type    | Default | Required |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--env-pull` | Pull the branch's Neon env vars into a local .env after sync. On by default.                                                                                                                                               | boolean | `true`  |    No    |
+| `--pull`     | Run `git pull --ff-only` before syncing so local files (incl. migration files) match the branch before any checkout.after migration runs. Without the flag, prompts when run manually in a TTY and skips in the hook / CI. | boolean | —       |    No    |
+| `--quiet`    | Suppress sync's own routine status lines (git pull result, detached HEAD notice). Warnings and the delegated checkout's own output are unaffected. Used by the installed git hook.                                         | boolean | `false` |    No    |
+
+```bash
+neon git sync --no-pull
+```
+
+```text filename="Output"
+Checked out branch br-billing-a1b2c3d4 on project polished-snowflake-12345678 (org org-example-12345678). Updated /path/to/your/app/.neon.
+Pulled 3 Neon variables into /path/to/your/app/.env.local: DATABASE_URL, DATABASE_URL_UNPOOLED, NEON_BRANCH
+```
+
+## neon git cleanup
+
+Removes git-to-Neon mappings whose local git branch no longer exists. By default it only prunes the mappings. Add `--prune-neon-branches` to also delete the orphaned Neon branches, which never touches the default or a protected branch. Deleting Neon branches prompts for confirmation unless you pass `--yes`.
+
+```bash
+neon git cleanup [options]
+```
+
+| Option                  | Description                                                                       | Type    | Default | Required |
+| ----------------------- | --------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--prune-neon-branches` | Also delete the orphaned Neon branches (never the default or a protected branch). | boolean | `false` |    No    |
+| `--yes`                 | Skip the confirmation prompt before deleting Neon branches.                       | boolean | `false` |    No    |
+
+Prune stale mappings only:
+
+```bash
+neon git cleanup
+```
+
+```text filename="Output"
+Pruned 1 stale mapping(s) from .neon:
+  feature/billing → feature/billing
+These Neon branch(es) are no longer mapped and were not deleted: feature/billing. Delete them with `neon branches delete <name>`, or run `neon git cleanup --prune-neon-branches` next time before a mapping-only cleanup.
+```
+
+Prune stale mappings and delete their Neon branches without a prompt:
+
+```bash
+neon git cleanup --prune-neon-branches --yes
+```
+
+## neon git uninstall
+
+Removes the managed `post-checkout` hook installed by `neon git install` and turns off sync-on-checkout. If the `post-checkout` hook isn't the one Neon manages, uninstall leaves it in place and only clears the sync flag.
+
+```bash
+neon git uninstall [options]
+```
+
+```bash
+neon git uninstall
+```
+
+```text filename="Output"
+Removed the neon git post-checkout hook. Git → Neon sync is off.
+```
+
 --- [Document source](https://neon.com/docs/cli/init.md) ---
 
-> Summary: The `neon init` command sets up the current directory to use Neon with your AI coding assistant. In an empty directory it lets you pick a starter template or skip scaffolding, then installs agent tooling (either a plugin, or skills and the MCP server), links a Neon project, and optionally writes a neon.ts config. It runs interactively by default; pass -y and --agent for an unattended agent setup.
+> Summary: The `neon init` command sets up the current directory to use Neon with your AI coding assistant. It installs agent tooling (either a plugin, or skills and the MCP server), links a Neon project, and optionally writes a neon.ts config. It runs interactively by default; pass -y for the recommended setup with no prompts, or add flags such as --skill, MCP options, or --claimable for the custom setup.
 
 # Neon CLI command: init
 
 Set up the current directory for Neon with agent tooling, a linked project, and an optional neon.ts config
 
-The `init` command sets up the current directory to use Neon with your AI coding assistant. It's a thin wrapper that runs Neon's other setup commands for you: it installs agent tooling, [links a Neon project](https://neon.com/docs/cli/link), and can write a [`neon.ts` config](https://neon.com/docs/cli/config). In an empty directory, it also [scaffolds a starter template](https://neon.com/docs/cli/bootstrap).
+The `init` command sets up the current directory to use Neon with your AI coding assistant. It's a thin wrapper that runs Neon's other setup commands for you: it installs agent tooling, [links a Neon project](https://neon.com/docs/cli/link), and can write a [`neon.ts` config](https://neon.com/docs/cli/config). It sets up the current directory in place.
 
-`init` is interactive, so run it from a terminal. It asks how coding agents should get Neon, and prompts you to pick a project to link. If you don't have the CLI installed, run it with `npx`:
+`init` is interactive, so run it from a terminal. It asks how coding agents should get Neon, prompts you to pick a project to link, and asks whether to write `neon.ts`. If you don't have the CLI installed, run it with `npx`:
 
 ```bash
 npx neon@latest init
@@ -23096,9 +23446,9 @@ npx neon@latest init
 
 For agents, CI, or scripts that can't answer prompts, see [Run it non-interactively](https://neon.com/docs/cli/init#run-it-non-interactively).
 
-**Note: Behavior changed in Neon CLI 5.0.0**
+**Note: Behavior changed in Neon CLI 6.0**
 
-Before 5.0.0, `init -y` prompted for a project and left the branch unpinned. From 5.0.0, the [`neon link`](https://neon.com/docs/cli/link) step writes a complete context (org, project, and branch), and `-y` uses your only org and project or, when you have several, prints the IDs and exits. Pass `--org-id`/`--project-id` in unattended runs.
+Before 6.0, `init` could scaffold a starter template in an empty directory, and it accepted `--template` and `--skip-template`. From 6.0, `init` only sets up the current directory in place, those template flags are gone, and `-y` runs a recommended setup. To scaffold a starter project, use [`neon bootstrap`](https://neon.com/docs/cli/bootstrap) instead.
 
 ## Usage
 
@@ -23106,60 +23456,72 @@ Before 5.0.0, `init -y` prompted for a project and left the branch unpinned. Fro
 neon init [options]
 ```
 
+## Recommended and custom setup
+
+`init` has two setup modes:
+
+- **Recommended setup** installs tooling for your detected coding agents, links a Neon project when the CLI is authenticated (or the session is interactive), and writes a default `neon.ts`. Run it with no prompts using `-y`. When no agents are detected, it writes the default skills in the current directory.
+- **Custom setup** applies the specific answers you pass as flags and falls back to the recommended defaults for anything you don't. Passing `--skill`, an MCP flag (`--mcp-auth`, `--mcp-config-location`, or `--mcp-project-scoped`), `--no-agent-setup`, or `--claimable` selects it.
+
+`-y` alone runs the recommended setup without prompts and never opens a browser. `-y` with any of those flags runs the custom setup with your answers, still without prompts.
+
 ## What it does
-
-What `init` runs depends on whether the directory is empty:
-
-| Directory                  | What `init` does                                                                                                                          |
-| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| Empty (nothing but `.git`) | Scaffolds a starter template with [`neon bootstrap`](https://neon.com/docs/cli/bootstrap), then sets up agent tooling and links a project |
-| Already has files          | Sets up agent tooling, links a project, and optionally writes a [`neon.ts` config](https://neon.com/docs/cli/config)                      |
-
-A directory counts as empty only when it contains nothing but a `.git` folder. Any other entry, including a `README`, a `.env` file, or a `.gitignore`, makes it an existing app. So a directory you just ran `git init` in that already has a `.gitignore` takes the existing-app path.
-
-In an empty directory, pass `--skip-template` to skip scaffolding and take the existing-app path instead: `init` sets up agent tooling, links a project, and optionally writes `neon.ts` without adding template files.
 
 ### Choose how coding agents get Neon
 
-In a directory that already has files, `init` asks how your coding agents should get Neon:
+In a terminal, `init` asks how your coding agents should get Neon:
 
 - **Plugin (recommended)** installs the `neon-postgres` plugin, which bundles agent skills and the MCP server.
 - **Skills and MCP separately** installs [agent skills](https://neon.com/docs/cli/skills), then the [Neon MCP server](https://neon.com/docs/cli/mcp).
 - **Skip agent setup** continues without a plugin, skills, or MCP.
 
-The plugin and the skills-plus-MCP option are mutually exclusive. Installing skills needs Node.js 22.20 or newer.
+You can also make this choice with flags, which skips the prompt:
 
-`init` sets up agent tooling at the project level. It has no global option; for a user-level install, run [`neon skills --global`](https://neon.com/docs/cli/skills) or [`neon plugins --global`](https://neon.com/docs/cli/plugins) directly.
+- `--agent` (without skill or MCP flags) installs the plugin for the named agents, plus skills and MCP for any agent the plugin can't cover.
+- `--skill` selects skills (not the plugin) and skips the skills picker. Combined with an MCP flag, it also configures MCP.
+- An MCP flag (`--mcp-auth`, `--mcp-config-location`, or `--mcp-project-scoped`) selects skills and MCP.
+- `--no-agent-setup` skips agent setup entirely.
+
+The plugin and the skills-plus-MCP option are mutually exclusive; `init` sets up one family per run. Installing skills needs Node.js 22.20 or newer.
+
+Recommended setup installs agent tooling globally for your detected agents, so it's available across projects. Custom setup can set up the current directory instead: pass `--mcp-config-location project` to write the MCP configuration locally. To control the scope yourself, run [`neon skills`](https://neon.com/docs/cli/skills) or [`neon plugins`](https://neon.com/docs/cli/plugins) directly.
 
 ### Link a project and write neon.ts
 
 After agent setup, `init` runs [`neon link`](https://neon.com/docs/cli/link) (unless the directory is already linked). Linking writes a `.neon` file with your org, project, and branch, and pulls the branch's environment variables (including `DATABASE_URL`) into `.env` if one exists, otherwise `.env.local`. Pass `--no-link` to set up agent tooling and `neon.ts` without linking a project; you can link later with `neon link`.
 
-It can also write a [`neon.ts` config](https://neon.com/docs/cli/config) you can edit and apply with `neon config apply`. In a terminal, `init` asks whether to create it. Pass `--config` to create it without asking, `--no-config` to skip it, or `--services` to create it with specific services declared (which implies `--config`). When you scaffold a template, `init` keeps the `neon.ts` that template ships and ignores these flags.
+It can also write a [`neon.ts` config](https://neon.com/docs/cli/config) you can edit and apply with `neon config apply`. In a terminal, `init` asks whether to create it. Pass `--config` to create it without asking, `--no-config` to skip it, or `--services` to create it with specific services declared (which implies `--config`). Pass `--package-manager` (`npm`, `pnpm`, `yarn`, or `bun`) to choose which package manager installs the `neon.ts` dependencies.
 
 ## Options
 
-| Option                    | Description                                                                                                                                                                                                                                                                          | Type    | Default | Required |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------- | ------- | :------: |
-| `--agent`, `-a`           | Coding agent to install into (repeatable). Forwarded to plugins, or to skills and mcp. Skips agent selection. Values listed below                                                                                                                                                    | array   | —       |    No    |
-| `--branch`, `--branch-id` | Forwarded to link: branch name or ID to pin                                                                                                                                                                                                                                          | string  | —       |    No    |
-| `--config`                | Existing app or --skip-template: create neon.ts after linking. Use --no-config to skip. Omitted in a terminal: you will be asked. Scaffolding a template keeps that template's neon.ts                                                                                               | boolean | —       |    No    |
-| `--link`                  | Link a Neon project during setup. Use --no-link to skip without being asked                                                                                                                                                                                                          | boolean | `true`  |    No    |
-| `--org-id`                | Forwarded to link: organization ID to link to                                                                                                                                                                                                                                        | string  | —       |    No    |
-| `--project-id`            | Forwarded to link: existing project ID to link to                                                                                                                                                                                                                                    | string  | —       |    No    |
-| `--project-name`          | Forwarded to link: name for a new project                                                                                                                                                                                                                                            | string  | —       |    No    |
-| `--region-id`             | Forwarded to link: region for a new project                                                                                                                                                                                                                                          | string  | —       |    No    |
-| `--skip-template`         | Do not scaffold a template. Set up agents, link a project, and optionally neon.ts in this directory                                                                                                                                                                                  | boolean | `false` |    No    |
-| `--template`              | Template to scaffold into an empty directory. Conflicts with --skip-template                                                                                                                                                                                                         | string  | —       |    No    |
-| `--yes`, `-y`             | Empty dir: scaffold the default template. --skip-template: plugin, or skills and MCP, for project folders, else the host CLI agent. Exits if none. Then link with defaults and create the bare neon.ts policy. If several organizations or projects exist, link prints IDs and exits | boolean | `false` |    No    |
+| Option                    | Description                                                                                                                                                                                               | Type    | Default | Required |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--agent`, `-a`           | Coding agent to install into (repeatable). Skips agent selection. Values listed below                                                                                                                     | array   | —       |    No    |
+| `--agent-setup`           | Install Neon into coding agents. Use --no-agent-setup to skip. Plugin vs skills is inferred from --skill and MCP flags                                                                                    | boolean | `true`  |    No    |
+| `--branch`, `--branch-id` | Forwarded to link: branch name or ID to pin                                                                                                                                                               | string  | —       |    No    |
+| `--claimable`             | Create a claimable project that expires in 72 hours unless claimed. Selects Custom                                                                                                                        | boolean | `false` |    No    |
+| `--config`                | Create neon.ts after linking. Use --no-config to skip. Omitted in Custom: you will be asked                                                                                                               | boolean | —       |    No    |
+| `--link`                  | Link a Neon project during setup. Use --no-link to skip without being asked                                                                                                                               | boolean | `true`  |    No    |
+| `--mcp-auth`              | MCP authentication. Selects skills and MCP setup. oauth is neon mcp --oauth Possible values: `oauth`, `api-key`                                                                                           | string  | —       |    No    |
+| `--mcp-config-location`   | Where to configure the Neon MCP server: global (user config, same as neon mcp) or project (this directory, same as neon mcp --project). Selects skills and MCP setup Possible values: `global`, `project` | string  | —       |    No    |
+| `--mcp-project-scoped`    | Limit MCP tools to the linked project, same as neon mcp --project-id. Selects skills and MCP setup                                                                                                        | boolean | `false` |    No    |
+| `--org-id`                | Forwarded to link: organization ID to link to                                                                                                                                                             | string  | —       |    No    |
+| `--package-manager`       | Package manager for neon.ts dependencies. -y uses this without asking. Custom asks only when none is detected Possible values: `npm`, `pnpm`, `yarn`, `bun`                                               | string  | —       |    No    |
+| `--project-id`            | Forwarded to link: existing project ID to link to                                                                                                                                                         | string  | —       |    No    |
+| `--project-name`          | Forwarded to link: name for a new project                                                                                                                                                                 | string  | —       |    No    |
+| `--region-id`             | Forwarded to link: region for a new project                                                                                                                                                               | string  | —       |    No    |
+| `--skill`                 | Neon skill to install (repeatable). Selects skills setup (not the plugin) and skips the skills picker. With MCP flags, also configures MCP. Values listed below                                           | array   | —       |    No    |
+| `--yes`, `-y`             | Skip prompts. Alone: Recommended (detected agents, link when authenticated, default neon.ts). With --skill, MCP flags, --no-agent-setup, or --claimable: Custom using those flags                         | boolean | `false` |    No    |
 
-Pass `-y` (alias `--yes`) to run each step with its defaults instead of prompting. In an empty directory it scaffolds the default template. Otherwise it sets up agent tooling, then links and writes `neon.ts`. With `-y`, `init` detects the target agent from the project folders, else the host CLI agent you're running inside. It installs the plugin for a plugin-capable agent (Cursor, Claude Code, or Codex), or skills and MCP for any other agent. If it detects no agent, it exits and asks you to pass `--agent`. Even with `-y`, first-time sign-in still opens a browser. With `-y`, `link` selects your only organization and project, or prints the IDs and exits when you have several (pass `--org-id`/`--project-id` to choose).
+Pass `-y` (alias `--yes`) to run each step with its defaults instead of prompting. On its own, `-y` runs the recommended setup: it detects agents from your global agent configuration, the project folders, and the host CLI agent you're running inside, then installs the plugin globally for each detected agent that supports it, and skills and MCP for the rest. Run `neon init --help` to see which agents fall into each family. If it detects no agent, it writes the default skills in the current directory. `-y` links your only organization and project, or prints the IDs and exits when you have several (pass `--org-id`/`--project-id` to choose), and it never opens a browser.
 
-Pass `--agent` (alias `-a`) to name the coding agents to set up, which skips both detection and the picker. It's repeatable (`neon init --agent cursor --agent claude-code`) and works with `-y`. `init` sets up one family per run, so it forwards the names to the plugin, or to skills and the MCP server, not both. Run `neon init --help` to see which agents each family supports. Passing `--agent` with no value returns an error.
+Pass `--agent` (alias `-a`) to name the coding agents to set up, which skips both detection and the picker. It's repeatable (`neon init --agent cursor --agent claude-code`) and works with `-y`. Without skill or MCP flags, it installs the plugin, plus skills and MCP for any agent the plugin can't cover. Run `neon init --help` to see which agents each family supports. Passing `--agent` with no value returns an error.
+
+Pass `--claimable` to create a [claimable project](https://neon.com/docs/reference/claimable-neon) that expires in 72 hours unless it's claimed. This selects the custom setup.
 
 ## Run it non-interactively
 
-Combine `-y` with `--agent` to do the agent setup without prompts, for example in CI or from an agent:
+Combine `-y` with any of those flags to set up without prompts, for example in CI or from an agent. Without a TTY, pass `-y` or enough flags to answer every question:
 
 ```bash
 neon init -y --agent cursor
@@ -23173,13 +23535,16 @@ neon init -y --agent cursor --project-id <project-id> --org-id <org-id>
 
 # Create a new project and link it
 neon init -y --agent cursor --org-id <org-id> --project-name my-app --region-id aws-us-east-2
+
+# Custom setup: install the neon skill and configure MCP with OAuth in this directory
+neon init -y --skill neon --mcp-auth oauth --mcp-config-location project
 ```
 
-Authenticate without a browser by setting `NEON_API_KEY` or passing `--api-key`. Agents can find the IDs with `neon orgs list --output json` and `neon projects list --org-id <org-id> --output json`. To control `neon.ts` in the same run, add `--config`, `--no-config`, or `--services`; in an empty directory, add `--skip-template` to skip scaffolding.
+Authenticate without a browser by setting `NEON_API_KEY` or passing `--api-key`. Agents can find the IDs with `neon orgs list --output json` and `neon projects list --org-id <org-id> --output json`. To control `neon.ts` in the same run, add `--config`, `--no-config`, or `--services`.
 
 ## What gets created
 
-The files created depend on the path you take. Each one is written by the command `init` runs, so see that command's page for details.
+The files created depend on the flags you pass. Each one is written by the command `init` runs, so see that command's page for details.
 
 | Artifact                                              | Written by                                                                                                                                            | Scope              |
 | ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
@@ -23187,7 +23552,6 @@ The files created depend on the path you take. Each one is written by the comman
 | `.env` or `.env.local` (`DATABASE_URL` and Neon vars) | [`neon link`](https://neon.com/docs/cli/link)                                                                                                         | Project            |
 | `neon.ts` (config-as-code policy)                     | [`neon config init`](https://neon.com/docs/cli/config)                                                                                                | Project            |
 | Agent skills, MCP config, or plugin                   | [`neon skills`](https://neon.com/docs/cli/skills) / [`neon mcp`](https://neon.com/docs/cli/mcp) / [`neon plugins`](https://neon.com/docs/cli/plugins) | Project, per agent |
-| Scaffolded template files (empty dir only)            | [`neon bootstrap`](https://neon.com/docs/cli/bootstrap)                                                                                               | Project            |
 
 ## Examples
 
@@ -23209,6 +23573,50 @@ Pulled 3 Neon variables into /path/to/your/app/.env.local: NEON_BRANCH, DATABASE
 ```
 
 After setup, restart your editor and ask your assistant to "Get started with Neon." The installed [Neon MCP server](https://neon.com/docs/ai/neon-mcp-server) points your assistant to the right docs, so it can connect to your database and use Neon features as you build.
+
+Install the Neon plugin for a specific agent and create a [claimable project](https://neon.com/docs/reference/claimable-neon). Naming an agent with `--agent` selects the custom setup, which installs the plugin at the project level:
+
+```bash
+neon init -y --claimable --agent cursor
+```
+
+<details>
+
+<summary>Show output</summary>
+
+```text
+Installing the Neon plugin...
+INFO: Installing the Neon plugin for Cursor (1/1)...
+Plugins
+Scope    Plugin         Agent   Status
+project  neon-postgres  cursor  installed
+INFO: Installed the Neon plugin (project).
+Creating a claimable project...
+Project Id            sweet-breeze-12345678
+Branch Id             br-restless-wildflower-a1b2c3d4
+State                 unclaimed
+Project Expires At    2026-09-29T01:51:07.360Z
+Granted Capabilities  postgres
+Creating neon.ts...
+Installing Neon dependencies with npm...
+Pulling Neon environment variables...
+INFO: → Pulling env from branch main (br-restless-wildflower-a1b2c3d4)
+INFO: Pulled 3 Neon variables into /path/to/your/app/.env.local: DATABASE_URL, DATABASE_URL_UNPOOLED, NEON_BRANCH
+
+Neon setup complete.
+--------------------
+
+  Agents   Neon plugin: cursor
+  Project  claimable
+  Config   neon.ts created
+
+Next:
+  This project expires at 2026-09-29T01:51:07.360Z.
+  To keep it, open the claim flow and sign in to Neon:
+  neon claim accept
+```
+
+</details>
 
 ## Manual setup
 
@@ -26294,14 +26702,15 @@ Creates a snapshot from a branch. By default, it snapshots the head of the branc
 neon snapshots create [options]
 ```
 
-| Option           | Description                                                                                                                                                 | Type   | Default | Required |
-| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------- | :------: |
-| `--branch`, `-b` | Branch id or name to snapshot. Defaults to the branch in your context, or the project's default branch.                                                     | string | —       |    No    |
-| `--expires-at`   | When the snapshot is automatically deleted (RFC 3339, e.g. 2025-12-31T23:59:59Z). Omit to keep it indefinitely.                                             | string | —       |    No    |
-| `--lsn`          | Take the snapshot at this LSN (e.g. 0/1F3C8A0). Must fall within the branch's restore window. Mutually exclusive with --timestamp.                          | string | —       |    No    |
-| `--name`         | A name for the snapshot                                                                                                                                     | string | —       |    No    |
-| `--timestamp`    | Take the snapshot at this point in time (RFC 3339, e.g. 2025-01-01T00:00:00Z). Must fall within the branch's restore window. Mutually exclusive with --lsn. | string | —       |    No    |
-| `--project-id`   | Project ID                                                                                                                                                  | string | —       |    No    |
+| Option           | Description                                                                                                                                                                                                                                | Type   | Default | Required |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------ | ------- | :------: |
+| `--branch`, `-b` | Branch id or name to snapshot. Defaults to the branch in your context, or the project's default branch.                                                                                                                                    | string | —       |    No    |
+| `--expires-at`   | When the snapshot is automatically deleted (RFC 3339, e.g. 2025-12-31T23:59:59Z). Omit to keep it indefinitely.                                                                                                                            | string | —       |    No    |
+| `--lsn`          | Take the snapshot at this LSN (e.g. 0/1F3C8A0). Must fall within the branch's restore window. Mutually exclusive with --timestamp.                                                                                                         | string | —       |    No    |
+| `--name`         | A name for the snapshot                                                                                                                                                                                                                    | string | —       |    No    |
+| `--slug`         | User-defined resource ID, unique in the project (1-63 characters: start with a lowercase letter, then lowercase letters, digits, or hyphens, ending with a letter or digit). Omit to let the API generate one. It cannot be changed later. | string | —       |    No    |
+| `--timestamp`    | Take the snapshot at this point in time (RFC 3339, e.g. 2025-01-01T00:00:00Z). Must fall within the branch's restore window. Mutually exclusive with --lsn.                                                                                | string | —       |    No    |
+| `--project-id`   | Project ID                                                                                                                                                                                                                                 | string | —       |    No    |
 
 Snapshot the head of a branch with a name:
 
@@ -26321,7 +26730,27 @@ Snapshot a branch at a point in time:
 neon snapshots create --branch main --timestamp 2025-01-01T00:00:00Z
 ```
 
-Timestamps and expiration times use RFC 3339 format. `--timestamp` must be in the past and `--expires-at` in the future. Omit `--expires-at` to keep the snapshot until you delete it; a manual snapshot's expiration has no maximum, unlike the 35-day cap on [scheduled snapshots](https://neon.com/docs/cli/snapshots#schedule-set). Snapshot names must be unique within a project.
+Set a slug to give the snapshot a stable ID you choose, which you can then pass to `get`, `delete`, `update`, and `restore` in place of the generated ID:
+
+```bash
+neon snapshots create --branch main --name "Before migration" --slug before-migration
+```
+
+```text filename="Output"
+Id                snap-crimson-pond-12345678
+Name              Before migration
+Slug              before-migration
+Source Branch Id  br-sweet-dew-12345678
+Created At        2026-09-26T01:40:01Z
+```
+
+You can then reference the snapshot by that slug:
+
+```bash
+neon snapshots get before-migration
+```
+
+Timestamps and expiration times use RFC 3339 format. `--timestamp` must be in the past and `--expires-at` in the future. Omit `--expires-at` to keep the snapshot until you delete it; a manual snapshot's expiration has no maximum, unlike the 35-day cap on [scheduled snapshots](https://neon.com/docs/cli/snapshots#schedule-set). Snapshot names must be unique within a project. A `--slug` is also unique within a project: it must be 1-63 characters, start with a lowercase letter, contain only lowercase letters, digits, or hyphens, end with a letter or digit, and can't be changed after creation. Omit it to let the API generate one.
 
 ## neon snapshots list
 
@@ -26341,7 +26770,7 @@ neon snapshots list
 
 ## neon snapshots get
 
-Retrieves a snapshot by ID or name.
+Retrieves a snapshot by ID, name, or slug.
 
 ```bash
 neon snapshots get <id> [options]
@@ -26384,7 +26813,7 @@ neon snapshots update snap-1234 --clear-expiration
 
 ## neon snapshots delete
 
-Deletes a snapshot by ID or name.
+Deletes a snapshot by ID, name, or slug.
 
 ```bash
 neon snapshots delete <id> [options]
@@ -49889,7 +50318,7 @@ This command generates a table named `items` with an `embedding` column capable 
 
 ## Storing embeddings
 
-After generating embeddings using a service like [OpenAI's Embeddings API](https://platform.openai.com/docs/api-reference/embeddings), you can store them in your database. Using a Postgres client library in your preferred programming language, you can execute an `INSERT` statement similar to the following to store embeddings.
+After generating embeddings using a service like the [Neon AI Gateway](https://neon.com/docs/ai-gateway/embeddings) or [OpenAI's Embeddings API](https://platform.openai.com/docs/api-reference/embeddings), you can store them in your database. The gateway serves embedding models with the same Neon credential you use for the rest of your project. Using a Postgres client library in your preferred programming language, you can execute an `INSERT` statement similar to the following to store embeddings.
 
 - Insert two new rows into the `items` table with the provided embeddings.
 
@@ -65711,7 +66140,7 @@ From your project root, run:
 npx neon@latest init
 ```
 
-`neon init` is interactive, so run it in a terminal. It asks how your coding agents should get Neon (either a plugin, or skills and the MCP server), links a Neon project, and optionally writes a `neon.ts` config. In an empty directory, it lets you pick a starter template, name one with `--template`, or skip scaffolding with `--skip-template`. For the full flow, and a non-interactive setup for agents and CI, see the [`neon init` reference](https://neon.com/docs/cli/init).
+`neon init` is interactive, so run it in a terminal. It asks how your coding agents should get Neon (either a plugin, or skills and the MCP server), links a Neon project, and optionally writes a `neon.ts` config. It sets up the current directory in place. For the full flow, and a non-interactive setup for agents and CI, see the [`neon init` reference](https://neon.com/docs/cli/init).
 
 If you only want the MCP server, without the skills or plugin, run [`npx neon@latest mcp`](https://neon.com/docs/cli/mcp) instead. If you only want agent skills, run [`npx neon@latest skills`](https://neon.com/docs/cli/skills).
 

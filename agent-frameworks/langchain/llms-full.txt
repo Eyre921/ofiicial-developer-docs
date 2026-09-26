@@ -12429,9 +12429,9 @@ LangSmith supports two ways to grade experiments created via the SDK:
 
 1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-bind-evaluator-to-dataset), select a dataset.
 1. Click the **Evaluators** tab.
-1. Click **+ Evaluator** to open the **Add Evaluator** panel.
+1. Click **+ Evaluator** to open the **Configure Evaluator** panel.
 1. Choose one of the following:
-   - **Create from scratch**: Build a new [LLM-as-a-Judge](/langsmith/llm-as-judge), [Code](/langsmith/online-evaluations-code), or [Composite](/langsmith/composite-evaluators-ui) evaluator, or select **From labeled data** to create an LLM-as-a-judge evaluator [aligned to human feedback](/langsmith/improve-judge-evaluator-feedback).
+   - **Create from scratch**: Build a new [LLM-as-a-Judge](/langsmith/llm-as-judge), [Code](/langsmith/online-evaluations-code), or [Composite](/langsmith/composite-evaluators-ui) evaluator, or select **From labeled data** to create an LLM-as-a-judge evaluator [aligned to human feedback](/langsmith/improve-judge-evaluator-feedback). To use a [decision model](/langsmith/decision-model-evaluator) as the judge, select **LLM-as-a-Judge Evaluator**, then select a decision model.
    - **Attach an existing evaluator**: Select an evaluator already in your workspace to reuse it.
    - **Create from a template**: Start from a ready-made evaluator.
 
@@ -12442,6 +12442,10 @@ When you configure an evaluator for a dataset, it will only affect the experimen
 ## LLM-as-a-judge evaluators
 
 The process for binding evaluators to a dataset is very similar to the process for configuring an LLM-as-a-judge evaluator in the Playground. View instructions for [configuring an LLM-as-a-judge evaluator in the Playground.](/langsmith/llm-as-judge?mode=ui)
+
+## Decision model evaluators
+
+A decision model evaluator uses a decision model, such as SemIf or Jev, as the judge. On a dataset, you can map the reference output into the evaluator's state and ask questions that compare it to the run's output. For instructions, see [How to define a decision model evaluator](/langsmith/decision-model-evaluator).
 
 ## Custom code evaluators
 
@@ -18835,7 +18839,7 @@ To build and run a valid application, the LangGraph CLI requires a JSON configur
     - A [**LangSmith API key**](/langsmith/create-account-api-key) with access to Deployments.
     - (Optional) **Docker** must be installed and the Docker daemon must be running for local builds. Not required for remote builds. [Install Docker Desktop](https://docs.docker.com/get-docker/).
 
-    <Note>Works only with LangSmith Cloud.</Note>
+    <Note>On LangSmith Cloud, the CLI pushes to a managed registry. Self-hosted LangSmith, and Cloud workspaces that deploy through a [listener](/langsmith/control-plane#listeners) in your own cluster, push to a registry you manage with `--push-to`. See [Deploy from a registry you manage](#deploy-from-a-registry-you-manage).</Note>
 
     **Usage**
 
@@ -18853,7 +18857,12 @@ To build and run a valid application, the LangGraph CLI requires a JSON configur
     | `--name TEXT`            | Current directory name | Deployment name. Can also be set via `LANGSMITH_DEPLOYMENT_NAME` environment variable or `.env` file.                                                           |
     | `--deployment-id TEXT`   |                      | ID of an existing deployment to update. If omitted, `--name` is used to find or create the deployment.                                                           |
     | `--deployment-type TEXT` | `serverless`         | Deployment type when creating a new deployment on Cloud: `serverless` or `dedicated` on the new usage-based pricing; `dev` or `prod` for organizations still on previous pricing. |
-    | `--remote / --no-remote` |                      | Force remote or local build. By default, builds remotely if Docker is not available locally.
+    | `--remote / --no-remote` |                      | Force remote or local build. By default, builds remotely if Docker is not available locally. |
+    | `--push-to TEXT`         |                      | Push the image to this repository in a registry you manage (for example `123456789.dkr.ecr.us-east-1.amazonaws.com/agents/my-agent`), then deploy from it. Required for self-hosted LangSmith and for workspaces that deploy through a listener. Uses your existing Docker credentials. Give the tag in the value or with `-t`. Cannot be combined with `--remote`. |
+    | `--image TEXT`           |                      | Use an existing local image (for example `my-agent:dev`) instead of building. The image must target `linux/amd64`. With `--push-to`, the image is retagged and pushed. |
+    | `-t, --tag TEXT`         | `latest`             | Tag for the pushed image. |
+    | `--listener-id TEXT`     |                      | Listener that will run the deployment, for workspaces that deploy through a listener in your own cluster. Used only when creating a deployment with `--push-to`. On LangSmith Cloud, defaults to the workspace's only listener. |
+    | `--k8s-namespace TEXT`   |                      | Kubernetes namespace the listener deploys into. Used only when creating a deployment with `--push-to`. Defaults to the listener's only namespace. |
     | `--no-wait`              | `False`              | Skip waiting for deployment status after pushing.                                                                                                                |
     | `--verbose`              | `False`              | Show detailed output including Docker build and push logs.                                                                                                       |
     | `--help`                 |                      | Display command documentation.                                                                                                                                   |
@@ -18882,6 +18891,50 @@ To build and run a valid application, the LangGraph CLI requires a JSON configur
     ```
 
     <Note>Deployments created through other methods (e.g., the LangSmith UI or GitHub integration) can also be updated with the `langgraph deploy` command.</Note>
+
+    #### Deploy from a registry you manage
+
+    Self-hosted LangSmith, and LangSmith Cloud workspaces that deploy through a listener in your own cluster (the [legacy hybrid model](/langsmith/hybrid-legacy)), run images from a registry you manage. Pass `--push-to` with a repository in that registry. The CLI builds the image, pushes it with your existing Docker credentials, and creates or updates the deployment from the pushed image.
+
+    ```bash
+    # Log in to your registry first, for example with AWS ECR
+    aws ecr get-login-password | docker login --username AWS --password-stdin 123456789.dkr.ecr.us-east-1.amazonaws.com
+
+    # Self-hosted: point the CLI at your LangSmith instance
+    LANGSMITH_ENDPOINT=https://langsmith.example.com/api \
+    langgraph deploy --push-to 123456789.dkr.ecr.us-east-1.amazonaws.com/agents/my-agent
+
+    # LangSmith Cloud workspace with a listener: only the image location changes
+    langgraph deploy --push-to 123456789.dkr.ecr.us-east-1.amazonaws.com/agents/my-agent --tag v1.2.0
+
+    # Push an image you already built
+    langgraph deploy --image my-agent:dev --push-to 123456789.dkr.ecr.us-east-1.amazonaws.com/agents/my-agent
+    ```
+
+    The control plane URL is derived from `LANGSMITH_ENDPOINT`, read from the project `.env` file or the environment: `https://<host>/api-host` for a self-hosted instance, and the matching LangSmith Cloud control plane for cloud endpoints. To override it, set the `LANGGRAPH_HOST_URL` environment variable to the full control plane URL, including `/api-host` on a self-hosted instance (for example `https://langsmith.example.com/api-host`).
+
+    #### Choose a listener and namespace
+
+    When a workspace deploys through a listener, the control plane needs to know which listener runs a new deployment and which Kubernetes namespace it deploys into.
+
+    On LangSmith Cloud, you do not have to pass either when there is only one possible answer. If your workspace has a single listener that serves a single namespace, the CLI uses it:
+
+    ```bash
+    langgraph deploy --push-to 123456789.dkr.ecr.us-east-1.amazonaws.com/agents/my-agent
+    ```
+
+    When there is a choice, the CLI lists the listeners with their clusters and namespaces, and you pick one:
+
+    ```bash
+    langgraph deploy --push-to 123456789.dkr.ecr.us-east-1.amazonaws.com/agents/my-agent \
+      --listener-id 2b1f0e9c-2d4a-4f1e-9a3b-2c7d8e5f4a10 --k8s-namespace agents
+    ```
+
+    On a self-hosted instance, the CLI looks up listeners only when you pass `--listener-id` or `--k8s-namespace`.
+
+    The listener and the namespace are fixed when the deployment is created and cannot be changed afterward, so both options are refused on an existing deployment. Later revisions need only `--push-to`.
+
+    Deployments created with `--push-to` use the `external_docker` source. A deployment created without `--push-to` cannot be switched to it; use a new `--name` instead.
 
     #### `deploy list`
 
@@ -24416,6 +24469,8 @@ This guide covers how to set up few-shot examples as part of your LLM-as-a-judge
 Few-shot examples are not currently supported in LLM-as-a-judge evaluators that use the prompt hub and are only compatible with prompts that use mustache formatting.
 
 Few-shot examples are only supported for run-level evaluators, not thread-level. Toggle on **Runs** in the [**Configure Evaluator** panel](/langsmith/evaluators#edit-an-evaluator).
+
+Few-shot examples are not available for [decision model evaluators](/langsmith/decision-model-evaluator).
 </Note>
 
 Before enabling few-shot examples, set up your LLM-as-a-judge evaluator. If you haven't done this yet, follow the steps in the [LLM-as-a-judge evaluator guide](/langsmith/llm-as-judge).
@@ -28070,6 +28125,91 @@ And the transformations look as follows:
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/dataset-transformations.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+</Callout>
+</div>
+
+
+# How to define a decision model evaluator
+Source: https://docs.langchain.com/langsmith/decision-model-evaluator
+
+A decision model evaluator uses a [decision model](/langsmith/online-evaluations-decision-models#decision-models), such as SemIf or Jev, as the judge. Each question you define returns a typed answer that LangSmith records under its own feedback key.
+
+This guide shows you how to define a decision model evaluator in the [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-decision-model-evaluator). You can use it on a dataset to [automatically run evaluations on experiments](/langsmith/bind-evaluator-to-dataset), or on a tracing project as an [online evaluator](/langsmith/online-evaluations-decision-models). To use an LLM as the judge instead, see [How to define an LLM-as-a-judge evaluator](/langsmith/llm-as-judge).
+
+<Note>
+You can create decision model evaluators only in the LangSmith UI. The LangSmith SDKs do not support creating them yet.
+</Note>
+
+<Note>
+SemIf is enabled for US organizations on Free, Developer, and Plus plans.
+</Note>
+
+## Step 1. Create the evaluator
+
+1. (Jev only) Add a TypeSafe API key. Generate an API key from your TypeSafe account. In LangSmith, go to **Settings > Integrations > Provider secrets** and click **+ Secret**. Select **TypeSafe** as the provider and paste your key. LangSmith stores it as the workspace secret `TYPESAFE_API_KEY`. To store it under a different name, select **Custom** and enter your own secret name. For more information, see [Add provider secrets](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets).
+1. In the LangSmith UI, open the **Evaluators** tab of a dataset or tracing project and click **+ Evaluator**.
+1. In the **Configure Evaluator** panel, select **LLM-as-a-Judge Evaluator** under **Create from scratch**.
+1. Name your evaluator.
+
+## Step 2. Configure the evaluator
+
+Decision model evaluators support TypeSafe models, such as Jev, with bring-your-own-key (BYOK), and SemIf through the [LLM Gateway](/langsmith/llm-gateway). You define the state and questions in the evaluator itself. Decision model evaluators cannot load a prompt from the [Prompt Hub](/langsmith/prompt-context-hub#prompts) or use a custom output schema. They also do not support [few-shot examples](/langsmith/create-few-shot-evaluators). To reuse a decision model evaluator on another dataset or tracing project, select **Attach an existing evaluator** in the **Configure Evaluator** panel.
+
+### Model
+
+Under **Prompt & Model**, open **Model Configuration** and select a provider and model:
+
+- For SemIf, select **LangSmith Gateway** as the provider, then select a SemIf model. Click **Apply**.
+- For Jev, select **TypeSafe** as the provider, then select a Jev model. If you stored your key under a name other than `TYPESAFE_API_KEY`, enter that name in **API Key Name**. Click **Apply**.
+- For a TypeSafe-compatible endpoint, select its saved configuration. See [Use a TypeSafe-compatible endpoint](#use-a-typesafe-compatible-endpoint).
+
+For a comparison of the supported models, see [Supported models](/langsmith/online-evaluations-decision-models#supported-models).
+
+#### Use a TypeSafe-compatible endpoint
+
+A TypeSafe-compatible endpoint points the evaluator at any server that implements the [TypeSafe System One API](https://docs.typesafe.ai). Examples include OpenRouter or a decision model you host yourself. An evaluator can use one only after you save it as a model configuration. For the settings, setup steps, and example base URLs, see [Connect to a TypeSafe-compatible model provider](/langsmith/typesafe-compatible-model).
+
+### State
+
+The **State** is the context the decision model evaluates. Map variables from your run or example into it:
+
+- On a dataset, map the input, output, or reference output.
+- On a tracing project, map run or thread variables, such as the run's inputs and outputs.
+
+Unlike a prompt for an LLM judge, the state should not include grading instructions. Put grading criteria in the questions instead.
+
+### Questions
+
+Questions are the scoring criteria your decision model evaluator uses. Each question's name becomes a feedback key on the evaluated run or thread. To define questions:
+
+1. Under **Feedback Configuration**, add one question for each criterion you want to evaluate.
+1. For each question, enter a **Name**, select a **Type**, and write the **Instructions**.
+1. Define the true and false meanings, options, or levels for the question type.
+
+To edit the questions as JSON, click **Advanced**.
+
+For what each question type returns and how answers map to feedback, see [Question types](/langsmith/online-evaluations-decision-models#question-types) and [Map answers to feedback keys](/langsmith/online-evaluations-decision-models#map-answers-to-feedback-keys).
+
+## Step 3. Save the evaluator
+
+To save the evaluator, click **Create** or **Save**.
+
+On a dataset, the evaluator runs on each new experiment. On a tracing project, it evaluates incoming runs or threads that match its filter. For filters, sampling rates, and backfills, see [Set up decision model online evaluators](/langsmith/online-evaluations-decision-models).
+
+## See also
+
+- [Decision models](/langsmith/online-evaluations-decision-models#decision-models): Supported models, question types, and feedback keys.
+- [Connect to a TypeSafe-compatible model provider](/langsmith/typesafe-compatible-model): Base URL format and example endpoints.
+- [Decision models in the LLM Gateway](/langsmith/llm-gateway-decision-models): Call SemIf and Jev directly from code.
+
+---
+
+<div className="source-links">
+<Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+</Callout>
+<Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/decision-model-evaluator.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
 </Callout>
 </div>
 
@@ -43895,6 +44035,7 @@ LangSmith supports several evaluation approaches:
 - [Human](#human)
 - [Code](#code)
 - [LLM-as-judge](#llm-as-judge)
+- [Decision model](#decision-model)
 - [Pairwise](#pairwise)
 
 #### Human
@@ -43926,6 +44067,12 @@ _LLM-as-judge evaluators_ use LLMs to score application outputs. The grading rul
 LLM-as-judge evaluators require careful review of scores and prompt tuning. Few-shot evaluators, which include examples of inputs, outputs, and expected grades in the grader prompt, often improve performance.
 
 Learn about [how to define an LLM-as-a-judge evaluator](/langsmith/llm-as-judge).
+
+#### Decision model
+
+_Decision model evaluators_ use a decision model, such as SemIf or Jev, as the judge. Instead of a prompt and an output schema, you define typed questions: a probability that a statement is true, a choice from a fixed list, or a score along ordered levels. Each question's answer becomes its own piece of feedback.
+
+Learn about [how to define a decision model evaluator](/langsmith/decision-model-evaluator).
 
 #### Pairwise
 
@@ -44666,7 +44813,7 @@ Source: https://docs.langchain.com/langsmith/evaluation-types
 This page covers two aspects of evaluation in LangSmith:
 
 1. **[Evaluation types](#offline-evaluation-types)**: _When and why_ to evaluate. Offline evaluation types (benchmarking, unit tests, regression tests) for pre-deployment testing, and online evaluation types (monitoring, anomaly detection) for production.
-1. **[Evaluator implementations](#implement-evaluators)**: _How_ to evaluate. The available evaluator approaches (LLM-as-judge, code, composite, summary, pairwise) and where to configure them (UI or SDK, offline or online).
+1. **[Evaluator implementations](#implement-evaluators)**: _How_ to evaluate. The available evaluator approaches (LLM-as-judge, decision model, code, composite, summary, pairwise) and where to configure them (UI or SDK, offline or online).
 
 Understanding both aspects helps you build a comprehensive evaluation strategy that validates functionality before deployment and monitors quality in production.
 
@@ -44750,6 +44897,16 @@ Configure LLM-as-a-judge evaluators for:
 - Programmatic offline evaluation: [With the SDK](/langsmith/llm-as-judge-sdk)
 - Offline evaluation on datasets: [In the UI](/langsmith/llm-as-judge)
 - Online evaluation on production traces: [In the UI](/langsmith/online-evaluations-llm-as-judge)
+
+### Decision model evaluators
+
+Use a decision model, such as SemIf or Jev, to answer typed questions about outputs. Each question returns a probability, a selected option, or a score, and becomes its own feedback key, so you do not write a prompt or an output schema.
+
+Configure decision model evaluators for:
+- Offline evaluation on datasets: [In the UI](/langsmith/decision-model-evaluator)
+- Online evaluation on production traces: [In the UI](/langsmith/online-evaluations-decision-models)
+
+The SDK does not support decision model evaluators yet.
 
 ### Code evaluators
 
@@ -45178,7 +45335,7 @@ You can create an evaluator in the [LangSmith UI](https://smith.langchain.com?ut
 1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-evaluators), select **Evaluators** in the left sidebar.
 1. Click **+ Evaluator** to open the new evaluator panel.
 1. The panel lets you:
-   - **Create from scratch**: Build a new [LLM-as-a-Judge](/langsmith/llm-as-judge) or [Code](/langsmith/online-evaluations-code) evaluator.
+   - **Create from scratch**: Build a new [LLM-as-a-Judge](/langsmith/llm-as-judge) or [Code](/langsmith/online-evaluations-code) evaluator. To use a [decision model](/langsmith/decision-model-evaluator) as the judge, select **LLM-as-a-Judge Evaluator**, then select a decision model.
    - **Add a LangChain Tuned Evaluator**: Attach a [specialized judge managed by LangChain](/langsmith/tuned-evaluators) to a compatible tracing project without configuring a prompt, model, or API key.
    - **Create from a template**: Start from a ready-made evaluator (also known as a prebuilt evaluator) for common evaluation patterns. A **Recommended** section surfaces popular templates first, followed by templates organized by the following categories:
 
@@ -45197,6 +45354,8 @@ You can also add an evaluator directly from a [tracing project](/langsmith/obser
 ### Create an evaluator with the SDK
 
 Use the LangSmith SDK to create evaluators programmatically. The SDK is available for [Python](/langsmith/smith-python-sdk) and [TypeScript](/langsmith/smith-js-ts-sdk). Evaluators created through the SDK appear in the **Evaluators** table alongside those created in the UI.
+
+The SDK does not support [decision model evaluators](/langsmith/decision-model-evaluator) yet. To create one, use the UI.
 
 <Note>
 Managing evaluators through the SDK requires `langsmith>=0.9.8` (Python, PyPI) or `langsmith>=0.7.16` (TypeScript, npm).
@@ -58146,6 +58305,7 @@ The command prints each service's default scopes and the page where you register
 | `salesforce` | [Salesforce](https://login.salesforce.com/) | `api` `refresh_token` |
 | `slack` | [Slack](https://api.slack.com/apps) | `chat:write` |
 | `spotify` | [Spotify](https://developer.spotify.com/dashboard) | `user-read-email` |
+| `stripe-link` | [Stripe Link](https://docs.stripe.com/agentic-commerce/link-cli/oauth) | `payment_methods.agentic` `userinfo:read` |
 | `twitch` | [Twitch](https://dev.twitch.tv/console/apps) | `user:read:email` |
 | `x` | [X](https://developer.x.com/en/portal/dashboard) | `tweet.read` `users.read` `offline.access` |
 
@@ -59049,7 +59209,10 @@ LANGSMITH_API_KEY=<LANGSMITH_API_KEY>
 OPENAI_API_KEY=<OPENAI_API_KEY>
 GITHUB_MCP_TOKEN=<GITHUB_MCP_TOKEN>
 DATABASE_URL=<DATABASE_URL>
+MDA_INGRESS_SECRET=<MDA_INGRESS_SECRET>
 ```
+
+`MDA_INGRESS_SECRET` is required only when the project declares [backend identity](/langsmith/javascript/managed-deep-agents-identity#configure-identity-with-your-own-backend). Deploy fails preflight when that declaration is present and the value is missing.
 
 `LANGSMITH_API_KEY`, `LANGGRAPH_HOST_API_KEY`, `LANGCHAIN_API_KEY`, and other platform variables are reserved. They can authenticate the deploy, but they are not uploaded as user-managed deployment secrets.
 
@@ -59322,9 +59485,16 @@ By default, `mda init` requires callers to present a LangSmith API key. Anyone w
 | Goal | Use |
 | --- | --- |
 | Lock down the deployment for SDK clients, scripts, and services | [LangSmith API key (default)](#configure-identity-with-a-langsmith-api-key) |
-| Signed-in end users with private chats | [Supabase](#configure-identity-with-supabase) |
+| Signed-in end users with private chats, verified by Managed Deep Agents | [Supabase](#configure-identity-with-supabase) |
+| Signed-in end users with private chats, already authenticated by your own API | [Your own backend](#configure-identity-with-your-own-backend) |
+
+Supabase and backend identity both give each end user private threads. The difference is who verifies the user. With Supabase, the browser sends its access token and Managed Deep Agents verifies it. With backend identity, your API verifies the user and asserts the resulting user ID.
 
 For more information, see [Project structure](/langsmith/javascript/managed-deep-agents-project-structure).
+
+<Note>
+On hosted deployments, LangSmith Studio reaches the deployment through a separate workspace-authenticated path. A caller with API access to the LangSmith workspace can read and search every thread in the deployment, whichever identity provider you choose. That caller cannot modify threads owned by your end users. Per-user privacy therefore holds against your end users, not against members of your LangSmith workspace.
+</Note>
 
 ## Configure identity with a LangSmith API key
 
@@ -59344,7 +59514,7 @@ export const identity = defineIdentity({
 Clients send the key as `x-api-key`. You do not need to add verification endpoint or tenant settings to your project `.env`. LangSmith Cloud supplies those.
 
 <Warning>
-Anyone with the key can reach the deployment, so treat the key as a secret. This default does not give each end user private threads. If Alice must not see Bob's threads, use [Supabase](#configure-identity-with-supabase).
+Anyone with the key can reach the deployment, so treat the key as a secret. This default does not give each end user private threads. If Alice must not see Bob's threads, use [Supabase](#configure-identity-with-supabase) or [your own backend](#configure-identity-with-your-own-backend).
 </Warning>
 
 ## Configure identity with Supabase
@@ -59409,11 +59579,75 @@ Adding Supabase identity to an existing deployment does not add owner metadata t
   </Step>
 </Steps>
 
+## Configure identity with your own backend
+
+Use backend identity when your own API already authenticates users and calls the deployment on their behalf. Your backend proves itself with a shared secret and names the caller. Managed Deep Agents trusts that name only after the secret matches, then gives each named user private threads.
+
+The browser never reaches the deployment in this mode. Requests go from the browser to your API, and from your API to the deployment.
+
+<Steps>
+  <Step title="Declare identity" id="declare-backend-identity">
+
+
+
+```ts identity.ts
+import { defineIdentity } from "managed-deepagents";
+
+export const identity = defineIdentity({
+  auth: "backend",
+});
+```
+
+
+  </Step>
+  <Step title="Generate the ingress secret" id="generate-the-ingress-secret">
+
+Generate a random value and add it to the project `.env` as `MDA_INGRESS_SECRET`:
+
+```bash
+openssl rand -hex 32
+```
+
+```text .env
+MDA_INGRESS_SECRET=<MDA_INGRESS_SECRET>
+```
+
+`mda deploy` forwards the value as a hosted deployment secret. A project that declares backend identity without this value fails deploy preflight before any build work, because the deployment would reject every request with 401. For how `.env` values reach a deployment, see [Deploy](/langsmith/javascript/managed-deep-agents-deploy#secrets-and-environment-files).
+
+  </Step>
+  <Step title="Send both headers from your backend" id="send-both-headers">
+
+Authenticate the user in your own API, then send the secret and the resolved user ID on every deployment request:
+
+
+
+```ts
+await fetch(`${deploymentUrl}/threads/${threadId}/runs`, {
+  method: "POST",
+  headers: {
+    "x-mda-ingress-secret": mdaIngressSecret,
+    "x-mda-user-id": userId,
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify(runBody),
+});
+```
+
+
+Use the same identifier for `x-mda-user-id` that your own system uses for that user, and keep it stable across sessions. Threads and stored credentials are keyed on this value, so a user who arrives under a new identifier reaches a different set of threads.
+
+  </Step>
+</Steps>
+
+<Warning>
+`MDA_INGRESS_SECRET` is a server-side secret. Managed Deep Agents accepts whatever `x-mda-user-id` accompanies a valid secret, so any holder of the secret can act as any user. Keep it on your backend, never in browser code, a mobile app, or a client bundle.
+</Warning>
+
 ## Test and deploy
 
 Test the project locally with [`mda dev`](/langsmith/javascript/managed-deep-agents-cli#develop-locally), then deploy it with [`mda deploy`](/langsmith/javascript/managed-deep-agents-deploy). Open deployment traces in LangSmith to inspect model calls, tool calls, errors, and latency.
 
-Authentication failures return 401. For the LangSmith API-key default, confirm that clients send `x-api-key`. For Supabase, confirm that clients send `Authorization: Bearer <access_token>`, that `project_ref` / `projectRef` matches your Supabase project, and that callers cannot access another user's threads (403).
+Authentication failures return 401. For the LangSmith API-key default, confirm that clients send `x-api-key`. For Supabase, confirm that clients send `Authorization: Bearer <access_token>`, that `project_ref` / `projectRef` matches your Supabase project, and that callers cannot access another user's threads (403). For backend identity, confirm that your API sends both `x-mda-ingress-secret` and `x-mda-user-id`, that the secret matches `MDA_INGRESS_SECRET` on the deployment, and that one user's identifier cannot reach another user's threads (403).
 
 ---
 
@@ -64491,6 +64725,10 @@ This guide shows you how to define an [LLM-as-a-judge evaluator](/langsmith/eval
 For a quick start, use [openevals](/langsmith/openevals), which provides ready-to-use LLM-as-a-judge evaluators.
 </Tip>
 
+<Note>
+The SDK does not support [decision model evaluators](/langsmith/decision-model-evaluator). These evaluators use a decision model, such as SemIf or Jev, as the judge. To create one, use the UI.
+</Note>
+
 ## Create your own LLM-as-a-judge evaluator
 
 For complete control of evaluator logic, create your own LLM-as-a-judge evaluator and run it using the LangSmith SDK ([Python](https://docs.smith.langchain.com/reference/python/reference) / [TypeScript](https://docs.smith.langchain.com/reference/js)).
@@ -64749,6 +64987,8 @@ Create a custom prompt inline for your evaluator.
 ### Model
 
 Select the desired model from the provided options.
+
+To use a decision model, such as SemIf or Jev, as the judge, see [How to define a decision model evaluator](/langsmith/decision-model-evaluator).
 
 ### Mapping variables
 
@@ -79933,6 +80173,101 @@ Composite scores are attached to a run as **feedback**, similarly to feedback fr
 </div>
 
 
+# Set up decision model online evaluators
+Source: https://docs.langchain.com/langsmith/online-evaluations-decision-models
+
+[Online evaluations](/langsmith/evaluation-concepts#online-evaluations) provide real-time feedback on your production traces. An online evaluator can use a decision model, such as SemIf or Jev, as the judge in place of an LLM. To use an LLM as the judge, see [Set up LLM-as-a-judge online evaluators](/langsmith/online-evaluations-llm-as-judge).
+
+<Note>
+When an online evaluator runs on any run within a trace, LangSmith upgrades the trace to [extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades). This upgrade affects trace pricing.
+</Note>
+
+## Decision models
+
+Decision models answer structured questions about text and return typed answers, such as a probability, a selected option, or a score, rather than free-form text. For how they work, see [Decision models in the LLM Gateway](/langsmith/llm-gateway-decision-models). When you use a decision model as the judge, LangSmith records the answer to each question you define under its own feedback key. You do not need to write an output schema or parse free-text reasoning.
+
+### Supported models
+
+LangSmith supports two decision models for evaluators, on both tracing projects and datasets. Both are configured and behave the same way. They differ only in provider and setup. To call a decision model through another provider or on your own server, use a [TypeSafe-compatible endpoint](/langsmith/typesafe-compatible-model).
+
+| Model | Provider | Setup |
+|-------|----------|-------|
+| [SemIf](/langsmith/llm-gateway-decision-models#semif) | **LangSmith Gateway** | No provider key required. SemIf runs through the [LLM Gateway](/langsmith/llm-gateway). |
+| [Jev](/langsmith/llm-gateway-decision-models#typesafe-jev) | **TypeSafe** | Requires a TypeSafe API key stored as a workspace secret. Defaults to `TYPESAFE_API_KEY`. |
+
+<Note>
+SemIf is enabled for US organizations on Free, Developer, and Plus plans.
+</Note>
+
+<Warning>
+TypeSafe does not offer zero data retention. The provider may retain prompts and outputs sent to Jev for evaluation.
+</Warning>
+
+<Note>
+You can create decision model evaluators only in the LangSmith UI. The LangSmith SDKs do not support creating them yet. To call a decision model directly from code, see [Decision models in the LLM Gateway](/langsmith/llm-gateway-decision-models).
+</Note>
+
+### Question types
+
+Each question you add to a decision model evaluator has one of three types. For full definitions, see the [TypeSafe primitives documentation](https://docs.typesafe.ai/primitives).
+
+- **Noul**: A continuous boolean. Returns the probability, from 0 to 1, that a statement is true. Values near 1 mean yes, values near 0 mean no, and values near 0.5 mean the model is uncertain. Use it for yes or no checks, such as whether the output contains personally identifiable information. Phrase the instructions as a yes or no question, and optionally describe what true and false mean.
+- **Choice**: Picks one option from a fixed, unordered list, such as classifying whether the user is asking a `question`, making a `request`, or neither (`other`). Give each option a name and, unless the name is self-explanatory, a description.
+- **Score**: Rates the state along ordered levels, such as how frustrated the user is, from calm to very angry. Define the levels in order, starting at level 0. The score can fall between two levels.
+
+Each model enforces its own limits on questions. A SemIf evaluator accepts up to 32 questions.
+
+| Limit | Jev | SemIf |
+|-------|-----|-------|
+| Options per choice question | 2 to 255 | 2 to 16 |
+| Levels per score question | 2 to 10 | 2 to 10 |
+
+### Map answers to feedback keys
+
+Each question's name becomes a feedback key on the evaluated run or thread. LangSmith converts each typed answer to feedback as follows:
+
+| Question type | Feedback field | Value |
+|---------------|----------------|-------|
+| Noul | `score` | A number from 0 to 1 |
+| Choice | `value` | The name of the selected option |
+| Score | `score` | A number from 0 to the index of the highest level. For example, a question with four levels returns a score from 0 to 3. |
+
+LangSmith also stores the model's full answer on each feedback entry, under `typesafe` in the feedback source metadata. For choice and score questions, the answer includes `probabilities` and `confidence`. Because each answer is standard feedback, you can filter, chart, and alert on it, and trigger [automations](/langsmith/rules) from it, as you would with any other evaluator's feedback.
+
+Question names follow the same limits as other feedback keys, and each name must be unique within the evaluator.
+
+## Add a decision model online evaluator
+
+To add a decision model online evaluator:
+
+1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-online-evaluations-decision-models), navigate to the **Tracing** page and select a tracing project.
+1. Click the **Evaluators** tab.
+1. Click **+ Evaluator** to open the **Configure Evaluator** panel.
+1. Under **Create from scratch**, select **LLM-as-a-Judge Evaluator**, then name your evaluator.
+1. Select a decision model, map run or thread variables into the **State**, and add questions. For each setting, see [How to define a decision model evaluator](/langsmith/decision-model-evaluator).
+1. (Optional) Apply a [filter](/langsmith/online-evaluations-llm-as-judge#apply-a-filter-to-runs-that-trigger-the-evaluator), set a [sampling rate](/langsmith/online-evaluations-llm-as-judge#configure-a-sampling-rate), or [apply the rule to past runs or threads](/langsmith/online-evaluations-llm-as-judge#apply-a-rule-to-past-runs-or-threads). These settings work the same way as for LLM-as-a-judge online evaluators.
+1. To save the evaluator, click **Create** or **Save**.
+
+The evaluator checks each new run or thread that matches its filter. Each question's answer appears under its own feedback key.
+
+## See also
+
+- [How to define a decision model evaluator](/langsmith/decision-model-evaluator): Configure the model, state, and questions.
+- [Connect to a TypeSafe-compatible model provider](/langsmith/typesafe-compatible-model): Base URL format and example endpoints.
+- [Decision models in the LLM Gateway](/langsmith/llm-gateway-decision-models): Call SemIf and Jev directly from code.
+
+---
+
+<div className="source-links">
+<Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+</Callout>
+<Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/online-evaluations-decision-models.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+</Callout>
+</div>
+
+
 # Set up LLM-as-a-judge online evaluators
 Source: https://docs.langchain.com/langsmith/online-evaluations-llm-as-judge
 
@@ -80010,6 +80345,10 @@ For details, refer to [Track and limit evaluator spend](/langsmith/evaluator-spe
 ## Configure the LLM-as-a-judge evaluator
 
 View [LLM-as-a-judge evaluators](/langsmith/llm-as-judge#evaluator-templates) for more information.
+
+## Use a decision model as the judge
+
+You can use a decision model, such as SemIf or Jev, as the judge in place of an LLM. Each question you define returns a typed answer, such as a probability, a selected option, or a score, and LangSmith records each one under its own feedback key. See [Set up decision model online evaluators](/langsmith/online-evaluations-decision-models).
 
 ## Map multimodal content to evaluator
 
@@ -86894,6 +87233,7 @@ The command prints each service's default scopes and the page where you register
 | `salesforce` | [Salesforce](https://login.salesforce.com/) | `api` `refresh_token` |
 | `slack` | [Slack](https://api.slack.com/apps) | `chat:write` |
 | `spotify` | [Spotify](https://developer.spotify.com/dashboard) | `user-read-email` |
+| `stripe-link` | [Stripe Link](https://docs.stripe.com/agentic-commerce/link-cli/oauth) | `payment_methods.agentic` `userinfo:read` |
 | `twitch` | [Twitch](https://dev.twitch.tv/console/apps) | `user:read:email` |
 | `x` | [X](https://developer.x.com/en/portal/dashboard) | `tweet.read` `users.read` `offline.access` |
 
@@ -87666,7 +88006,10 @@ LANGSMITH_API_KEY=<LANGSMITH_API_KEY>
 OPENAI_API_KEY=<OPENAI_API_KEY>
 GITHUB_MCP_TOKEN=<GITHUB_MCP_TOKEN>
 DATABASE_URL=<DATABASE_URL>
+MDA_INGRESS_SECRET=<MDA_INGRESS_SECRET>
 ```
+
+`MDA_INGRESS_SECRET` is required only when the project declares [backend identity](/langsmith/python/managed-deep-agents-identity#configure-identity-with-your-own-backend). Deploy fails preflight when that declaration is present and the value is missing.
 
 `LANGSMITH_API_KEY`, `LANGGRAPH_HOST_API_KEY`, `LANGCHAIN_API_KEY`, and other platform variables are reserved. They can authenticate the deploy, but they are not uploaded as user-managed deployment secrets.
 
@@ -87929,9 +88272,16 @@ By default, `mda init` requires callers to present a LangSmith API key. Anyone w
 | Goal | Use |
 | --- | --- |
 | Lock down the deployment for SDK clients, scripts, and services | [LangSmith API key (default)](#configure-identity-with-a-langsmith-api-key) |
-| Signed-in end users with private chats | [Supabase](#configure-identity-with-supabase) |
+| Signed-in end users with private chats, verified by Managed Deep Agents | [Supabase](#configure-identity-with-supabase) |
+| Signed-in end users with private chats, already authenticated by your own API | [Your own backend](#configure-identity-with-your-own-backend) |
+
+Supabase and backend identity both give each end user private threads. The difference is who verifies the user. With Supabase, the browser sends its access token and Managed Deep Agents verifies it. With backend identity, your API verifies the user and asserts the resulting user ID.
 
 For more information, see [Project structure](/langsmith/python/managed-deep-agents-project-structure).
+
+<Note>
+On hosted deployments, LangSmith Studio reaches the deployment through a separate workspace-authenticated path. A caller with API access to the LangSmith workspace can read and search every thread in the deployment, whichever identity provider you choose. That caller cannot modify threads owned by your end users. Per-user privacy therefore holds against your end users, not against members of your LangSmith workspace.
+</Note>
 
 ## Configure identity with a LangSmith API key
 
@@ -87949,7 +88299,7 @@ identity = define_identity(auth=auth.langsmith_api_key())
 Clients send the key as `x-api-key`. You do not need to add verification endpoint or tenant settings to your project `.env`. LangSmith Cloud supplies those.
 
 <Warning>
-Anyone with the key can reach the deployment, so treat the key as a secret. This default does not give each end user private threads. If Alice must not see Bob's threads, use [Supabase](#configure-identity-with-supabase).
+Anyone with the key can reach the deployment, so treat the key as a secret. This default does not give each end user private threads. If Alice must not see Bob's threads, use [Supabase](#configure-identity-with-supabase) or [your own backend](#configure-identity-with-your-own-backend).
 </Warning>
 
 ## Configure identity with Supabase
@@ -88016,11 +88366,75 @@ Adding Supabase identity to an existing deployment does not add owner metadata t
   </Step>
 </Steps>
 
+## Configure identity with your own backend
+
+Use backend identity when your own API already authenticates users and calls the deployment on their behalf. Your backend proves itself with a shared secret and names the caller. Managed Deep Agents trusts that name only after the secret matches, then gives each named user private threads.
+
+The browser never reaches the deployment in this mode. Requests go from the browser to your API, and from your API to the deployment.
+
+<Steps>
+  <Step title="Declare identity" id="declare-backend-identity">
+
+```python identity.py
+from managed_deepagents import define_identity
+
+identity = define_identity(auth="backend")
+```
+
+
+
+
+  </Step>
+  <Step title="Generate the ingress secret" id="generate-the-ingress-secret">
+
+Generate a random value and add it to the project `.env` as `MDA_INGRESS_SECRET`:
+
+```bash
+openssl rand -hex 32
+```
+
+```text .env
+MDA_INGRESS_SECRET=<MDA_INGRESS_SECRET>
+```
+
+`mda deploy` forwards the value as a hosted deployment secret. A project that declares backend identity without this value fails deploy preflight before any build work, because the deployment would reject every request with 401. For how `.env` values reach a deployment, see [Deploy](/langsmith/python/managed-deep-agents-deploy#secrets-and-environment-files).
+
+  </Step>
+  <Step title="Send both headers from your backend" id="send-both-headers">
+
+Authenticate the user in your own API, then send the secret and the resolved user ID on every deployment request:
+
+```python
+import httpx
+
+response = httpx.post(
+    f"{deployment_url}/threads/{thread_id}/runs",
+    headers={
+        "x-mda-ingress-secret": mda_ingress_secret,
+        "x-mda-user-id": user_id,
+        "Content-Type": "application/json",
+    },
+    json=run_body,
+)
+```
+
+
+
+
+Use the same identifier for `x-mda-user-id` that your own system uses for that user, and keep it stable across sessions. Threads and stored credentials are keyed on this value, so a user who arrives under a new identifier reaches a different set of threads.
+
+  </Step>
+</Steps>
+
+<Warning>
+`MDA_INGRESS_SECRET` is a server-side secret. Managed Deep Agents accepts whatever `x-mda-user-id` accompanies a valid secret, so any holder of the secret can act as any user. Keep it on your backend, never in browser code, a mobile app, or a client bundle.
+</Warning>
+
 ## Test and deploy
 
 Test the project locally with [`mda dev`](/langsmith/python/managed-deep-agents-cli#develop-locally), then deploy it with [`mda deploy`](/langsmith/python/managed-deep-agents-deploy). Open deployment traces in LangSmith to inspect model calls, tool calls, errors, and latency.
 
-Authentication failures return 401. For the LangSmith API-key default, confirm that clients send `x-api-key`. For Supabase, confirm that clients send `Authorization: Bearer <access_token>`, that `project_ref` / `projectRef` matches your Supabase project, and that callers cannot access another user's threads (403).
+Authentication failures return 401. For the LangSmith API-key default, confirm that clients send `x-api-key`. For Supabase, confirm that clients send `Authorization: Bearer <access_token>`, that `project_ref` / `projectRef` matches your Supabase project, and that callers cannot access another user's threads (403). For backend identity, confirm that your API sends both `x-mda-ingress-secret` and `x-mda-user-id`, that the secret matches `MDA_INGRESS_SECRET` on the deployment, and that one user's identifier cannot reach another user's threads (403).
 
 ---
 
@@ -137268,7 +137682,7 @@ Always call `complete_recording`, including on failure with `data=None`. Otherwi
 # Trace Mastra applications
 Source: https://docs.langchain.com/langsmith/trace-with-mastra
 
-[Mastra](https://mastra.ai/docs) is a TypeScript framework for building AI-powered applications and agents. Using Mastra’s [LangSmith exporter](https://mastra.ai/docs/observability/ai-tracing/exporters/langsmith), you can send traces from your Mastra agents and workflows to LangSmith for debugging, evaluation, and observability.
+[Mastra](https://mastra.ai/docs) is a TypeScript framework for building AI-powered applications and agents. Using Mastra’s [LangSmith exporter](https://mastra.ai/reference/observability/tracing/exporters/langsmith), you can send traces from your Mastra agents and workflows to LangSmith for debugging, evaluation, and observability.
 
 This guide shows you how to integrate Mastra with LangSmith using Mastra’s AI tracing system.
 
@@ -137347,11 +137761,11 @@ export const mastra = new Mastra({
 });
 ```
 
-- [Storage is required for tracing](https://mastra.ai/docs/observability/ai-tracing/overview#basic-config) (even when exporting traces externally).
+- [Storage is required for tracing](https://mastra.ai/docs/observability/integrations/exporters/mastra-storage) (even when exporting traces externally).
 - The LangSmith exporter reads credentials from environment variables.
 - The [deprecated telemetry system](https://mastra.ai/docs/observability/overview#otel-tracing-deprecated) is disabled to avoid warnings.
 - No separate instrumentation file is required when running Mastra outside of the Mastra server.
-For more details, refer to the [Mastra docs](https://mastra.ai/docs/observability/ai-tracing/overview).
+For more details, refer to the [Mastra docs](https://mastra.ai/docs/observability/overview).
 
 ### Define an agent
 
@@ -143188,6 +143602,66 @@ Organization settings can take a few seconds to propagate. If LangSmith reports 
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/tuned-evaluators.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+</Callout>
+</div>
+
+
+# Connect to a TypeSafe-compatible model provider
+Source: https://docs.langchain.com/langsmith/typesafe-compatible-model
+
+A TypeSafe-compatible endpoint is a saved [model configuration](/langsmith/model-configurations). It sends a decision model evaluator's requests to any server that implements the [TypeSafe System One API](https://docs.typesafe.ai). With a TypeSafe-compatible endpoint, you can call TypeSafe models through another provider, such as OpenRouter, or call a decision model you host yourself. For models that implement the OpenAI API, see [Connect to an OpenAI compliant model provider/proxy](/langsmith/custom-openai-compliant-model).
+
+TypeSafe-compatible endpoints are available in [decision model evaluators](/langsmith/decision-model-evaluator). To use Jev directly from TypeSafe or SemIf through the LLM Gateway, you do not need a compatible endpoint.
+
+## Configuration
+
+A TypeSafe-compatible endpoint has three settings:
+
+- **Model**: The model ID the server expects. Defaults to `jev-latest`.
+- **API Key Name**: The name of the workspace secret that stores the server's API key. Defaults to `TYPESAFE_API_KEY`.
+- **Base URL**: The root of the server's System One API. See [Base URL format](#base-url-format).
+
+## Use the endpoint in an evaluator
+
+An evaluator can use a TypeSafe-compatible endpoint only after you save the endpoint as a model configuration.
+
+To use a TypeSafe-compatible endpoint in an evaluator:
+
+1. Add the server's API key as a workspace secret. Go to **Settings > Integrations > Provider secrets**, click **+ Secret**, and select **Custom** to enter your own secret name. To use the default name, select **TypeSafe** instead.
+1. In the evaluator, under **Prompt & Model**, open **Model Configuration**.
+1. For **Provider**, select **TypeSafe Compatible Endpoint**. It appears under **Other**.
+1. Enter the **Model**, **API Key Name**, and **Base URL**.
+1. Click **Save as preset** and name the configuration.
+1. Select the saved configuration as the evaluator's model.
+
+When the evaluator runs, it calls the endpoint with the API key stored in the secret you entered in **API Key Name**. Next, add questions and save the evaluator, as described in [How to define a decision model evaluator](/langsmith/decision-model-evaluator).
+
+## Base URL format
+
+The **Base URL** should point to the root of the server's System One API. LangSmith appends `/v1/systemone` automatically. Do not include it in the Base URL.
+
+### Example base URLs
+
+| Provider | Model | Example Base URL |
+|----------|-------|------------------|
+| [TypeSafe](https://docs.typesafe.ai) | `jev-latest` | `https://api.typesafe.ai` |
+| [OpenRouter](https://openrouter.ai) | `~typesafe/jev-latest` | `https://openrouter.ai/api` |
+| Self-hosted (remote) | Your model ID | `https://my-model-server.example.com` |
+
+## See also
+
+- [How to define a decision model evaluator](/langsmith/decision-model-evaluator): Set up an evaluator that uses a decision model.
+- [Decision models in the LLM Gateway](/langsmith/llm-gateway-decision-models): Call SemIf and Jev directly through the LLM Gateway.
+- [Model configurations](/langsmith/model-configurations): Manage saved model configurations for your workspace.
+
+---
+
+<div className="source-links">
+<Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+</Callout>
+<Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/typesafe-compatible-model.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
 </Callout>
 </div>
 
@@ -156550,6 +157024,10 @@ Source: https://docs.langchain.com/langsmith/smith-api/bulk-exports/get-bulk-exp
 Source: https://docs.langchain.com/langsmith/smith-api/bulk-exports/update-bulk-export-destination
 
 
+# Delete bulk export destination
+Source: https://docs.langchain.com/langsmith/smith-api/bulk-exports/delete-bulk-export-destination
+
+
 # Get bulk export runs
 Source: https://docs.langchain.com/langsmith/smith-api/bulk-exports/get-bulk-export-runs
 
@@ -157964,6 +158442,10 @@ Source: https://docs.langchain.com/langsmith/smith-api/data_planes/list-data-pla
 
 # Create a new data plane
 Source: https://docs.langchain.com/langsmith/smith-api/data_planes/create-a-new-data-plane
+
+
+# Get a data plane
+Source: https://docs.langchain.com/langsmith/smith-api/data_planes/get-a-data-plane
 
 
 # Delete a data plane

@@ -149,8 +149,8 @@ See [Secrets](/workers/guides/secrets) for more ways to manage worker environmen
 
 <Warning>
   After 5 consecutive `WebhookVerificationError` failures, Notion blocks that
-  webhook before running your handler. Redeploy the worker to reset the failure
-  counter.
+  webhook before running your handler. Redeploy the worker, or turn synchronous
+  verification off or on, to reset the failure counter.
 </Warning>
 
 This check runs after Notion has already answered the provider with `202 Accepted`, so the provider never sees the result. Use it when all you need is to drop unsigned events. If the provider expects verification in the HTTP response itself, add a `verify` handler instead.
@@ -223,16 +223,42 @@ Like `execute`, `verify` receives the capability context as its second argument.
 
 ### The response object
 
-| Property      | Type                                 | Description                                                 |
-| :------------ | :----------------------------------- | :---------------------------------------------------------- |
-| `status`      | `number`                             | Response status code. Only 2xx and 4xx are allowed.         |
-| `body`        | `string`                             | Optional response body, at most 8KB.                        |
-| `contentType` | `"application/json" \| "text/plain"` | Optional response content type. Defaults to `"text/plain"`. |
+| Property      | Type                                 | Description                                                                                                                                   |
+| :------------ | :----------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------- |
+| `status`      | `number`                             | Response status code. Only 2xx and 4xx are allowed.                                                                                           |
+| `body`        | `string`                             | Optional response body, at most 8KB.                                                                                                          |
+| `contentType` | `"application/json" \| "text/plain"` | Optional response content type. Defaults to `"text/plain"`.                                                                                   |
+| `deliver`     | `boolean`                            | Optional delivery decision. `true` queues the request for `execute`; `false` skips `execute`. When omitted, delivery follows the status code. |
 
 The returned status dictates whether or not the Webhook actually executes:
 
 * **2xx** — Notion returns your status, body, and content type to the provider, then queues the request for `execute`.
 * **4xx** — Notion returns your response and queues nothing. `execute` never runs.
+
+Set `deliver` when the provider-facing status and delivery decision differ. For
+example, answer a successful challenge without executing the webhook:
+
+```typescript theme={null}
+return { status: 200, body: challenge, deliver: false };
+```
+
+Or acknowledge and retain a rejected payload for asynchronous handling:
+
+```typescript theme={null}
+return { status: 401, deliver: true };
+```
+
+You can disable synchronous verification without redeploying the worker. POST
+requests then return to the normal `202` asynchronous delivery path. Changing
+the setting also clears a block caused by repeated verification failures:
+
+```bash theme={null}
+ntn workers webhooks verification disable onProviderEvent
+ntn workers webhooks verification enable onProviderEvent
+```
+
+The same setting is available from the webhook's **Sync verification** control
+in the Workers UI.
 
 ### Timing and failures
 
@@ -248,7 +274,8 @@ The returned status dictates whether or not the Webhook actually executes:
 <Warning>
   A handler that throws or returns an invalid response counts toward the same
   five-consecutive-failure limit as `WebhookVerificationError`, after which
-  Notion blocks the webhook until you redeploy. Deliberately returning a 4xx is
+  Notion blocks the webhook until you redeploy or toggle synchronous
+  verification. Deliberately returning a 4xx is
   not a failure and resets the counter.
 </Warning>
 

@@ -136,7 +136,7 @@ Custom emojis are icons uploaded and managed in your workspace. Use the [List cu
 
 ### Example: set a page icon to a custom emoji
 
-When writing, only the `id` field is required inside `custom_emoji`.
+When writing, only the `id` field is required inside `custom_emoji`. The ID must belong to a custom emoji in the same workspace as the integration. Otherwise, the request returns a `validation_error`.
 
 <CodeGroup>
   ```bash cURL theme={null}
