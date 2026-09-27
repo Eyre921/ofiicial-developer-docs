@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 386 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 387 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -285,11 +285,12 @@
 - `nexus/cli-reference` — [CLI Reference](pages/nexus/cli-reference.md) · [原文](https://docs.fireworks.ai/nexus/cli-reference)
 - `nexus/fireconnect` — [FireConnect](pages/nexus/fireconnect.md) · [原文](https://docs.fireworks.ai/nexus/fireconnect)
 - `nexus/firerouter` — [FireRouter](pages/nexus/firerouter.md) · [原文](https://docs.fireworks.ai/nexus/firerouter)
+- `nexus/firerouter/setup` — [FireRouter Setup](pages/nexus/firerouter/setup.md) · [原文](https://docs.fireworks.ai/nexus/firerouter/setup)
 - `nexus/harness-compatibility` — [Harness Compatibility](pages/nexus/harness-compatibility.md) · [原文](https://docs.fireworks.ai/nexus/harness-compatibility)
 - `nexus/harnesses` — [Coding Harnesses](pages/nexus/harnesses.md) · [原文](https://docs.fireworks.ai/nexus/harnesses)
 - `nexus/llm-gateways` — [LLM Gateways](pages/nexus/llm-gateways.md) · [原文](https://docs.fireworks.ai/nexus/llm-gateways)
 - `nexus/metrics` — [Usage and Cost](pages/nexus/metrics.md) · [原文](https://docs.fireworks.ai/nexus/metrics)
-- `nexus/microsoft-foundry` — [Microsoft Foundry](pages/nexus/microsoft-foundry.md) · [原文](https://docs.fireworks.ai/nexus/microsoft-foundry)
+- `nexus/microsoft-foundry` — [Foundry for Coding Harnesses](pages/nexus/microsoft-foundry.md) · [原文](https://docs.fireworks.ai/nexus/microsoft-foundry)
 - `nexus/open-models` — [Open Models](pages/nexus/open-models.md) · [原文](https://docs.fireworks.ai/nexus/open-models)
 - `nexus/provider-keys` — [Provider Keys](pages/nexus/provider-keys.md) · [原文](https://docs.fireworks.ai/nexus/provider-keys)
 - `nexus/provider-keys/bedrock` — [Amazon Bedrock](pages/nexus/provider-keys/bedrock.md) · [原文](https://docs.fireworks.ai/nexus/provider-keys/bedrock)

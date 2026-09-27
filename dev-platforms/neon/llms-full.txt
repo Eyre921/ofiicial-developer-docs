@@ -43040,7 +43040,7 @@ Browse supported Postgres extensions by category.
 ## AI / Machine Learning
 
 - [pg_tiktoken](https://neon.com/docs/extensions/pg_tiktoken): Tokenize data in Postgres using the OpenAI tiktoken library
-- [pgrag](https://neon.com/docs/extensions/pgrag): Create end-to-end Retrieval-Augmented Generation (RAG) pipelines
+- [lakebase_vector](https://neon.com/docs/extensions/lakebase-vector): Scalable vector similarity search for RAG and semantic search
 - [pgvector](https://neon.com/docs/extensions/pgvector): Store vector embeddings and perform vector similarity search in Postgres
 
 ## Analytics
@@ -43153,6 +43153,7 @@ Browse supported Postgres extensions by category.
 - [citext](https://neon.com/docs/extensions/citext): Provides a case-insensitive character string type that internally calls lower when comparing values in Postgres
 - [dict_int](https://neon.com/docs/extensions/dict_int): Provides a text search dictionary template for indexing integer data in Postgres
 - [fuzzystrmatch](https://neon.com/docs/extensions/fuzzystrmatch): Provides several functions to determine similarities and distance between strings in Postgres
+- [lakebase_text](https://neon.com/docs/extensions/lakebase-text): BM25 keyword and full-text search for Postgres, compatible with tsvector
 - [pg_trgm](https://neon.com/docs/extensions/pg_trgm): Provides functions and operators for determining the similarity of alphanumeric text based on trigram matching, and index operator classes for fast string similarity search
 - [prefix](https://github.com/dimitri/prefix): A prefix range module that supports efficient queries on text columns with prefix-based searching and matching capabilities
 - [unaccent](https://neon.com/docs/extensions/unaccent): A text search dictionary that removes accents from characters, simplifying text search in Postgres
@@ -44921,7 +44922,7 @@ Move BM25 full-text search from the deprecated pg_search extension to the lakeba
 
 **Warning: pg_search is deprecated**
 
-`pg_search` (ParadeDB) is deprecated on Neon: new installs are blocked, and existing installs will be removed on **September 21, 2026**. [`lakebase_text`](https://neon.com/docs/extensions/lakebase-text) is its replacement for BM25 search.
+`pg_search` (ParadeDB) was deprecated on Neon: new installs were blocked, and existing installs were retired on **September 21, 2026**. [`lakebase_text`](https://neon.com/docs/extensions/lakebase-text) is its replacement for BM25 search.
 
 This guide migrates your BM25 full-text search from `pg_search` to `lakebase_text`. You map your existing indexes and queries to their `lakebase_text` equivalents, verify the results, then remove `pg_search`. `lakebase_text` runs BM25 search through a `lakebase_bm25` index built on standard Postgres `tsvector` types.
 
@@ -47452,17 +47453,17 @@ Running `pg_repack` can temporarily **increase** your Neon project's storage siz
 
 --- [Document source](https://neon.com/docs/extensions/pg_search.md) ---
 
-> Summary: The `pg_search` extension by ParadeDB adds BM25 full-text search to Postgres using inverted indexes, supporting keyword, phrase, fuzzy, hybrid BM25+pgvector, and faceted search via standard SQL and a JSON query DSL. As of March 19, 2026, `pg_search` is deprecated for new Neon projects; existing projects retain access. Recommended alternatives include tsvector, pg_trgm, and pgvector. The page covers enabling the extension, BM25 scoring and inverted index concepts, and examples for creating indexes, sorting by relevance, highlighting matches, and tuning performance.
+> Summary: The `pg_search` extension by ParadeDB added BM25 full-text search to Postgres. It was deprecated for new Neon projects on March 19, 2026, and retired from existing projects on September 21, 2026. Its replacement for BM25 search is the `lakebase_text` extension; other alternatives include tsvector, pg_trgm, and pgvector.
 
 # The pg_search extension
 
-An Elasticsearch alternative for full-text search and analytics on Postgres
+Deprecated BM25 full-text search extension (ParadeDB)
 
-**Warning: Neon's support for pg_search has been deprecated.**
+**Warning: Neon's support for pg_search has been removed.**
 
-As of March 19, 2026, `pg_search` is no longer available for new Neon projects.
+`pg_search` was deprecated for new Neon projects on March 19, 2026.
 
-**If you already use `pg_search`:** you will continue to have access to the extension on existing projects until September 21, 2026, when it will be removed. Our team will contact you to discuss alternative options and timelines. You do not need to take action before we reach out, but we recommend planning your migration ahead of that date. When you're ready to move to BM25 search on Neon, see [Migrate from pg_search to lakebase_text](https://neon.com/docs/extensions/migrate-pg-search-to-lakebase-text).
+**If you used `pg_search`:** the extension was retired from existing projects on September 21, 2026. Its replacement for BM25 search on Neon is `lakebase_text`; see [Migrate from pg_search to lakebase_text](https://neon.com/docs/extensions/migrate-pg-search-to-lakebase-text).
 
 Depending on your use case, consider these alternatives:
 
@@ -47471,505 +47472,9 @@ Depending on your use case, consider these alternatives:
 - **Semantic/vector search**: [`pgvector`](https://neon.com/docs/extensions/pgvector) for embedding-based search
 - **BM25 search**: [`lakebase_text`](https://neon.com/docs/extensions/lakebase-text), a BM25 index for Neon, fully compatible with `tsvector`; or [ParadeDB](https://www.paradedb.com/) for continued `pg_search` functionality
 
-The `pg_search` extension by [ParadeDB](https://www.paradedb.com/) adds functions and operators to Postgres that use [BM25 (Best Matching 25)](https://en.wikipedia.org/wiki/Okapi_BM25) indexes for efficient, high-relevance text searches. It supports standard SQL syntax and JSON query objects, offering features similar to those in Elasticsearch.
+The `pg_search` extension by [ParadeDB](https://www.paradedb.com/) added BM25 full-text search to Postgres, using inverted indexes and the `@@@` operator to run keyword, phrase, fuzzy, and faceted search through SQL and a JSON query DSL. It's no longer available on Neon.
 
-`pg_search` eliminates the need to integrate external search engines, simplifying your architecture and providing real-time search functionality that's tightly coupled with your transactional data.
-
-This guide covers how to enable `pg_search` on Neon, how BM25 scoring and inverted indexes work, and hands-on examples for creating indexes and running full-text searches.
-
-**Note: pg_search on Neon**
-
-`pg_search` is currently only available on Neon projects created in an [AWS region](https://neon.com/docs/introduction/regions#aws-regions). It is not yet supported on Neon projects created in Azure regions.
-
-## Enable the `pg_search` extension
-
-**Postgres 17**
-
-Install the `pg_search` extension by running the following `CREATE EXTENSION` statement in the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor) or from a client such as [psql](https://neon.com/docs/connect/query-with-psql-editor) that is connected to your Neon database.
-
-```sql
-CREATE EXTENSION IF NOT EXISTS pg_search;
-```
-
-**Postgres 14 - 16**
-
-The `pg_search` extension is supported on Postgres 14–16 for Neon projects in AWS regions. Contact Neon support to enable it for your project.
-
-## Understanding text search with `pg_search`
-
-`pg_search` enables text searching within your Postgres database, helping you find rows containing specific keywords or phrases in text columns. Unlike basic `LIKE` queries, `pg_search` offers advanced scoring, relevance ranking, and language handling to deliver more accurate and context-aware search results. It also addresses major performance limitations of native Postgres full-text search (FTS) by using a **BM25 covering index**, which indexes text along with metadata (numeric, datetime, JSON, etc.), enabling complex boolean, aggregate, and ordered queries to be processed significantly faster, often reducing query times from minutes to seconds.
-
-Key features include:
-
-- **Advanced relevance ranking:** Orders search results by relevance, incorporating phrase, regex, fuzzy matching, and other specialized FTS queries.
-- **Powerful indexing with flexible tokenization:** Supports multiple tokenizers (for example, ICU, Lindera) and token filters (for example, language-aware stemmers), improving search accuracy across different languages.
-- **Hybrid search:** Combines BM25 scores with `pgvector` embeddings to enhance search experiences.
-- **Faceted search:** Allows categorization and filtering of search results based on query parameters.
-- **Expressive query builder:** Provides an Elastic DSL-like query syntax for constructing complex search queries.
-
-By leveraging these features, `pg_search` enhances both performance and flexibility, making full-text search in Postgres more efficient and developer-friendly.
-
-### BM25: The Relevance scoring algorithm
-
-`pg_search` uses the [**BM25 (Best Matching 25)**](https://en.wikipedia.org/wiki/Okapi_BM25) algorithm, a widely adopted ranking function by modern search engines, to calculate relevance scores for full-text search results. BM25 considers several factors to determine relevance:
-
-- **Term Frequency (TF):** How often a search term appears in a row's text. More occurrences suggest higher relevance.
-- **Inverse Document Frequency (IDF):** How common or rare your search term is across all rows. Less common words often indicate more specific results.
-- **Document Length Normalization:** BM25 adjusts for text length, preventing longer rows from automatically seeming more relevant.
-
-BM25 assigns a relevance score to each row, with higher scores indicating better matches.
-
-### Inverted Index for efficient searching
-
-For fast searching, `pg_search` uses an **inverted index**. Think of it as an index in the back of a book, but instead of mapping topics to page numbers, it maps words (terms) to the database rows (documents) where they appear.
-
-This index structure lets `pg_search` quickly find rows containing your search terms without scanning every table row, greatly speeding up queries.
-
-With these basics in mind, let's learn how to create a BM25 index and start performing full-text searches with `pg_search` on Neon.
-
-## Getting started with `pg_search`
-
-`pg_search` has a special operator, `@@@`, that you can use in SQL queries to perform full-text searches. This operator allows you to search for specific words or phrases within text columns, returning rows that match your search criteria. You can also sort results by relevance and highlight matched terms. Let us create a sample table, set up a BM25 index, and run some search queries to explore `pg_search` in action.
-
-### Creating a sample table for text search
-
-To demonstrate how `pg_search` functions, we'll begin by creating a sample table named `mock_items` and populating it with example data. ParadeDB provides a convenient tool to generate a test table with sample data for experimentation.
-
-First, connect to your Neon database using the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor) or a client like [psql](https://neon.com/docs/connect/query-with-psql-editor). Once connected, execute the following SQL command:
-
-```sql
-CALL paradedb.create_bm25_test_table(
-  schema_name => 'public',
-  table_name => 'mock_items'
-);
-```
-
-It will generate a table named `mock_items`, which include the columns: `id`, `description`, `rating`, and `category`, which we'll use in our search examples.
-
-Let's examine the initial items within our newly created `mock_items` table. Run the following SQL query:
-
-```sql
-SELECT description, rating, category
-FROM mock_items
-LIMIT 3;
-```
-
-The output will display the first three rows from the `mock_items` table:
-
-```text
-       description               | rating |  category
---------------------------+--------+-------------
- Ergonomic metal keyboard |      4 | Electronics
- Plastic Keyboard         |      4 | Electronics
- Sleek running shoes      |      5 | Footwear
-(3 rows)
-```
-
-Next, let's create our first search index, named `item_search_idx`, on the `mock_items` table. This index will enable searching across the `id`, `description`, and `category` columns. It's necessary to designate one column as the `key_field`; we will use `id` for this purpose. The `key_field` serves as a unique identifier for each item within the index.
-
-**Note: Key Field Selection**
-
-It is crucial to select a column that consistently contains a unique value for every row. This ensures the search index operates as intended.
-
-Run the following SQL command to create the `item_search_idx` index:
-
-```sql
-CREATE INDEX item_search_idx ON mock_items
-USING bm25 (id, description, category)
-WITH (key_field='id');
-```
-
-This will create a BM25 index on the `mock_items` table, enabling us to search within the `id`, `description`, and `category` columns. The `key_field` parameter specifies that the `id` column serves as the unique identifier for each row in the index.
-
-Now that we have our `item_search_idx` index, let's explore some searches using the `@@@` operator in our SQL queries.
-
-### Simple keyword search
-
-Let's begin by finding all items where the `description` contains the word **'shoes'**. Run the following SQL query:
-
-```sql
-SELECT description, category
-FROM mock_items
-WHERE description @@@ 'shoes';
-```
-
-This query will locate all rows in `mock_items` where the `description` column includes the word **'shoes'**.
-
-```text
-     description           | category
-----------------------+----------
- Sleek running shoes  | Footwear
- White jogging shoes  | Footwear
- Generic shoes        | Footwear
-(3 rows)
-```
-
-### Searching for exact phrases
-
-To search for a specific phrase, enclose it in double quotes. Let's find items where the `description` contains the exact phrase **"metal keyboard"**:
-
-```sql
-SELECT description, category
-FROM mock_items
-WHERE description @@@ '"metal keyboard"';
-```
-
-This search will exclusively find rows that contain the exact phrase **"metal keyboard"**.
-
-```text
-description               | category
---------------------------+------------
- Ergonomic metal keyboard | Electronics
-(1 row)
-```
-
-If we remove the double quotes, the search will find rows containing both **'metal'** and **'keyboard'**, but the words are not required to be adjacent.
-
-```sql
-
-SELECT description, category
-FROM mock_items
-WHERE description @@@ 'metal keyboard';
-```
-
-The output is:
-
-```text
-description               | category
---------------------------+------------
- Ergonomic metal keyboard | Electronics
- Plastic Keyboard         | Electronics
-(2 rows)
-```
-
-### Advanced search options
-
-#### paradedb.match: Similar word search and keyword matching
-
-The `paradedb.match` function is used for keyword searches and for finding words similar to your search term, even with typos.
-
-For example, to find items similar to **'running shoes'**, use:
-
-```sql
-SELECT description, category
-FROM mock_items
-WHERE id @@@ paradedb.match('description', 'running shoes');
-```
-
-```text
-  description            | category
------------------------+----------
-  Sleek running shoes  | Footwear
-  White jogging shoes  | Footwear
-  Generic shoes        | Footwear
-(3 rows)
-```
-
-You can also use `paradedb.match` with JSON syntax. For instance, to find items with a description similar to **'running shoes'**:
-
-```sql
-SELECT description, category
-FROM mock_items
-WHERE id @@@ '{"match": {"field": "description", "value": "running shoes"}}'::jsonb;
-```
-
-#### Searching with typos: Fuzzy matching
-
-To retrieve results even with minor errors in the search term, you can use `paradedb.match` with the `distance` option.
-
-Suppose you mistyped **`running`** as **`runing`**. You can still find relevant results using fuzzy matching:
-
-```sql
-SELECT description, category
-FROM mock_items
-WHERE id @@@ paradedb.match('description', 'runing', distance => 1);
-```
-
-This will find items where the `description` is similar to **`runing`** within a [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance) of 1.
-
-```text
-  description              | category
--------------------------+----------
-    Sleek running shoes  | Footwear
-(1 rows)
-```
-
-#### paradedb.phrase: Searching for phrases with words nearby
-
-The `paradedb.phrase` function, combined with the `slop` option, helps you find phrases even if the words are not immediately adjacent. The `slop` value specifies the number of intervening words allowed. A `slop` of 1 permits one extra word in between.
-
-```sql
-SELECT description, category
-FROM mock_items
-WHERE id @@@ paradedb.phrase('description', ARRAY['white', 'shoes'], slop => 1);
-```
-
-This query will find rows where **'white'** and **'shoes'** are within one word or less of each other.
-
-```text
-  description              | category
--------------------------+----------
-    White jogging shoes  | Footwear
-(1 rows)
-```
-
-### Sorting search results by relevance
-
-To ensure the most relevant results are displayed first, you can sort your search results by relevance. Utilize `paradedb.score()` with `ORDER BY` to achieve this:
-
-```sql
-SELECT description, category, rating, paradedb.score(id)
-FROM mock_items
-WHERE description @@@ 'shoes'
-ORDER BY paradedb.score(id) DESC;
-```
-
-This query will find items matching **'shoes'** and then present them in order from most to least relevant based on their search score (BM25 relevance score).
-
-```text
-description           | category | rating | score
-----------------------+----------+--------+-------------
-  Generic shoes       |	Footwear |	 4   |	2.8772602
-  Sleek running shoes |	Footwear |	 5   |	2.4849067
-  White jogging shoes |	Footwear |   3   |	2.4849067
-(3 rows)
-```
-
-### Highlighting search results
-
-To highlight matched terms in the search results, you can use the `paradedb.snippet()` function. This function generates snippets of text containing the matched words, making it easier to identify relevant content.
-
-```sql
-SELECT id, paradedb.snippet(description)
-FROM mock_items
-WHERE description @@@ 'shoes'
-LIMIT 3;
-```
-
-This will provide snippets of the `description` where the words matching your search are wrapped in `<b></b>` tags by default. This visual cue makes the matched terms stand out when results are displayed in your application.
-
-```text
-  id  | snippet
-----+-----------------------------------
-  3 | Sleek running <b>shoes</b>
-  4 | White jogging <b>shoes</b>
-  5 | Generic <b>shoes</b>
-(3 rows)
-```
-
-If you prefer different tags, you can customize the tags using the `start_tag` and `end_tag` options with `paradedb.snippet()`. For example:
-
-```sql
-SELECT id, paradedb.snippet(description, start_tag => '<start>', end_tag => '</end>')
-FROM mock_items
-WHERE description @@@ 'shoes'
-LIMIT 3;
-```
-
-This will wrap the matched words in `<start>` and `</end>` tags instead of the default `<b>` and `</b>`.
-
-```text
-  id  | snippet
-----+-----------------------------------
-  3 | Sleek running <start>shoes</end>
-  4 | White jogging <start>shoes</end>
-  5 | Generic <start>shoes</end>
-(3 rows)
-```
-
-### Combining search words with `AND/OR`
-
-To create more complex searches, you can use `OR` and `AND` operators to combine keywords. For instance, to retrieve items with **'shoes'** in the `description` OR **'Electronics'** in the `category`, you can use:
-
-```sql
-SELECT description, category
-FROM mock_items
-WHERE description @@@ 'shoes' OR category @@@ 'Electronics'
-LIMIT 3;
-```
-
-This will find items that satisfy either of these conditions.
-
-```text
-     description               | category
---------------------------+------------
-Ergonomic metal keyboard | Electronics
-Plastic Keyboard         | Electronics
-Sleek running shoes      | Footwear
-(3 rows)
-```
-
-### Query builder functions
-
-In addition to query strings, query builder functions can be used to compose various types of complex queries.
-
-For a list of supported query builder functions, refer to ParadeDB's [Query Builder](https://docs.paradedb.com/documentation/advanced/overview) documentation.
-
-### Joined search with multiple tables
-
-`pg_search` supports full-text search over JOINs, which is crucial for database schemas that store data in a normalized fashion. Let's create a table called `orders` that references our `mock_items` table:
-
-```sql
-CALL paradedb.create_bm25_test_table(
-  schema_name => 'public',
-  table_name => 'orders',
-  table_type => 'Orders'
-);
-
-ALTER TABLE orders
-ADD CONSTRAINT foreign_key_product_id
-FOREIGN KEY (product_id)
-REFERENCES mock_items(id);
-
-SELECT * FROM orders LIMIT 3;
-```
-
-Next, let's create a BM25 index over the `orders` table:
-
-```sql
-CREATE INDEX orders_idx ON orders
-USING bm25 (order_id, customer_name)
-WITH (key_field='order_id');
-```
-
-Now we can perform a search across both tables using a JOIN. The following query searches for rows where `customer_name` matches 'Johnson' and `description` matches 'shoes':
-
-```sql
-SELECT o.order_id, o.customer_name, m.description
-FROM orders o
-JOIN mock_items m ON o.product_id = m.id
-WHERE o.customer_name @@@ 'Johnson' AND m.description @@@ 'shoes'
-ORDER BY order_id
-LIMIT 5;
-```
-
-This demonstrates how `pg_search` can be used to search across related tables, allowing for powerful queries that combine data from multiple sources.
-
-## Performance optimizations for `pg_search`
-
-To optimize `pg_search` performance, adjust both Postgres and `pg_search` settings for indexing and query speed.
-
-`pg_search` parameter names start with `paradedb`. You can configure both Postgres and `pg_search` settings for the current session using `SET`.
-
-### Index build time
-
-Optimize index build time with these settings. The `maintenance_work_mem` setting is typically only one requiring tuning. The other two setting have proven default values that typically do not require modification.
-
-- **`maintenance_work_mem`**: : Sets the maximum amount of memory used for maintenance operations such as `CREATE INDEX`. Increasing this setting can speed up index builds by improving Write-Ahead Log (WAL) performance. For example, on a 100-million-row table, allocating multiple GBs can reduce index build time from hours to minutes.
-
-  In Neon, `maintenance_work_mem` is set based on your compute size. You can increase it for the current session. Do not exceed 50–60% of your compute's available RAM. See [Neon parameter settings by compute size](https://neon.com/docs/reference/compatibility#parameter-settings-that-differ-by-compute-size).
-
-  ```sql
-  SET maintenance_work_mem = '10 GB';
-  ```
-
-- **`paradedb.create_index_memory_budget`**: Defines the memory per indexing thread before writing index segments to disk. The default is 1024 MB (1 GB). Large tables may need a higher value. If set to `0`, the budget is derived from `maintenance_work_mem` and `paradedb.create_index_parallelism`.
-
-  ```sql
-  SET paradedb.create_index_memory_budget = 2048;
-  ```
-
-- **`paradedb.create_index_parallelism`**: Controls the number of threads used during `CREATE INDEX`. The default is `0`, which automatically detects the available parallelism of your Neon compute. You can explicitly set:
-
-  ```sql
-  SET paradedb.create_index_parallelism = 8;
-  ```
-
-For more information about optimizing BM25 index size, see [ParadeDB: Index Size](https://docs.paradedb.com/documentation/configuration/index_size).
-
-### Throughput
-
-**Note:** Most users will not need to adjust these advanced throughput settings.
-
-Tune `INSERT/UPDATE/COPY` throughput for the BM25 index with these settings:
-
-- **`paradedb.statement_parallelism`**: Controls indexing threads during `INSERT/UPDATE/COPY`. Default is `0` (auto-detects parallelism).
-  - Use `1` for single-row atomic inserts/updates to avoid unnecessary threading.
-  - Use a higher value for bulk inserts and updates.
-
-    ```sql
-    SET paradedb.statement_parallelism = 1;
-    ```
-
-- **`paradedb.statement_memory_budget`**: Memory per indexing thread before writing to disk. Default is 1024 MB (1 GB). Higher values may improve indexing performance. See [ParadeDB: Statement Memory Budget](https://docs.paradedb.com/documentation/configuration/write#statement-memory-budget).
-  - If set to `0`, `maintenance_work_mem / paradedb.statement_parallelism` is used.
-  - For single-row updates, 15 MB prevents excess memory allocation.
-  - For bulk inserts/updates, increase as needed.
-
-    ```sql
-    SET paradedb.statement_memory_budget = 15;
-    ```
-
-### Search performance
-
-Search performance can benefit from parallel workers, more memory provided by larger Neon compute sizes, and preloading indexes into memory.
-
-#### Parallel workers
-
-Increase parallel workers to speed up indexing:
-
-- **`max_worker_processes`**: Controls total worker processes across all connections.
-
-  ```sql
-  SET max_worker_processes = 8;
-  ```
-
-- **`max_parallel_workers`**: Defines the number of workers available for parallel scans.
-
-  ```sql
-  SET max_parallel_workers = 8;
-  ```
-
-- **`max_parallel_workers_per_gather`**: Limits parallel workers per query. The default in Neon is `2`, but you can adjust. The total number of parallel workers should not exceed your Neon compute's CU count. See [Neon parameter settings by compute size](https://neon.com/docs/reference/compatibility#parameter-settings-that-differ-by-compute-size).
-  `sql
-  SET max_parallel_workers_per_gather = 8;
-  `
-
-#### Keeping indexes in memory
-
-Keeping indexes in memory improves query performance by reducing disk access. In Postgres, `shared_buffers` defines the buffer cache size, which determines how much memory is allocated for caching data. In Neon, this value is set automatically based on your compute size.
-
-In Neon, up to 75% of your compute's RAM is used for data caching. This allows frequently accessed indexes and data to remain in memory, improving performance.
-
-The amount of memory available for caching depends on your compute size. For details, see [How to size your compute](https://neon.com/docs/manage/computes#how-to-size-your-compute).
-
-To further optimize performance, you can use the Postgres `pg_prewarm` extension to preload indexes into memory. This ensures fast query response times by warming up the cache after index creation or a restart of your Neon compute.
-
-To run `pg_prewarm` on an index:
-
-```sql
-pg_prewarm('index_name')
-```
-
-For additional details, see [Running pg_prewarm on indexes](https://neon.com/docs/extensions/pg_prewarm#running-pgprewarm-on-indexes).
-
-## Best practices for using `pg_search`
-
-To optimize your search functionality and ensure efficient performance, consider the following best practices when using `pg_search`:
-
-- **Analyze query plans:** Use `EXPLAIN` to analyze query plans and identify potential bottlenecks.
-- **Index all relevant columns:** Include all columns used in search queries, sorting, or filtering for optimal performance.
-- **Use query builder functions:** Use query builder functions or JSON syntax for complex queries like fuzzy matching and phrase matching.
-
-## Conclusion
-
-`pg_search` brings full-text search directly into your Postgres database using BM25 scoring and inverted indexes, with no external search engine required and full ACID compliance.
-
-While this guide provides a comprehensive introduction to `pg_search` on Neon, it is not exhaustive. We haven't covered topics like:
-
-- **Advanced tokenization and language handling:** Exploring specialized [tokenizers](https://docs.paradedb.com/documentation/indexing/tokenizers#tokenizers) and language-specific features.
-- **The full range of query types:** Exploring the full range of query functions like `more_like_this`, `regex_phrase`, and compound queries for complex search needs.
-- **Leveraging fast fields:** Optimizing performance with [fast fields](https://docs.paradedb.com/documentation/indexing/fast_fields#fast-fields) for aggregations, filtering, and sorting, and understanding their configuration.
-- **Query-time boosting:** Fine-tuning search relevance by applying [boosts](https://docs.paradedb.com/documentation/advanced/compound/boost#boost) to specific fields or terms within your queries.
-
-For a deeper dive into these and other advanced features, please refer to the official [ParadeDB documentation](https://docs.paradedb.com/welcome/introduction).
-
-## Resources
-
-- [ParadeDB Documentation](https://docs.paradedb.com/welcome/introduction)
-- [Stemming in ParadeDB](https://docs.paradedb.com/documentation/indexing/token_filters#stemmer)
-- [BM25 Algorithm](https://en.wikipedia.org/wiki/Okapi_BM25)
-- [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance)
+To replace `pg_search` with `lakebase_text` on Neon, see [Migrate from pg_search to lakebase_text](https://neon.com/docs/extensions/migrate-pg-search-to-lakebase-text). For the full `pg_search` feature reference, see the [ParadeDB documentation](https://docs.paradedb.com/welcome/introduction).
 
 --- [Document source](https://neon.com/docs/extensions/pg_session_jwt.md) ---
 
@@ -49001,13 +48506,13 @@ Neon supports the Postgres extensions shown below. Extension versions may differ
 | [pg\_uuidv7](https://neon.com/docs/extensions/pg_uuidv7)                                                       |     1.6 |     1.6 |     1.6 |     1.6 |    1.6 | PostgreSQL 18 and later include the built-in `uuidv7()` function. If you only need to generate UUIDv7 values on Postgres 18+, you don't need this extension. See [Native UUIDv7 support in PostgreSQL 18](https://neon.com/docs/extensions/pg_uuidv7#native-uuidv7-support-in-postgresql-18).                                                                                                                                                                  |
 | [pgcrypto](https://neon.com/docs/extensions/pgcrypto)                                                          |     1.3 |     1.3 |     1.3 |     1.3 |    1.4 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | [pgjwt](https://github.com/michelp/pgjwt)                                                                      |   0.2.0 |   0.2.0 |   0.2.0 |   0.2.0 |  0.2.0 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| [pgrag](https://neon.com/docs/extensions/pgrag)                                                                |   0.0.0 |   0.0.0 |   0.0.0 |   0.0.0 |  0.0.0 | This extension is **experimental**. Using a separate, dedicated Neon project is recommended. Run `SET neon.allow_unstable_extensions='true';` before installing.                                                                                                                                                                                                                                                                                               |
+| [pgrag](https://neon.com/docs/extensions/pgrag)                                                                |   0.0.0 |   0.0.0 |   0.0.0 |   0.0.0 |  0.0.0 | **Deprecated.** For search and RAG, see [Lakebase Search](https://neon.com/docs/ai/lakebase-search).                                                                                                                                                                                                                                                                                                                                                           |
 | [pgrouting](https://neon.com/docs/extensions/postgis-related-extensions#pgrouting)                             |   3.4.2 |   3.4.2 |   3.4.2 |   3.6.2 |  3.8.0 | The PostGIS extension must be installed first.                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | [pgrowlocks](https://neon.com/docs/extensions/pgrowlocks)                                                      |     1.2 |     1.2 |     1.2 |     1.2 |    1.2 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | [pgstattuple](https://neon.com/docs/extensions/pgstattuple)                                                    |     1.5 |     1.5 |     1.5 |     1.5 |    1.5 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | [pgtap](https://pgtap.org/documentation.html)                                                                  |   1.3.3 |   1.3.3 |   1.3.3 |   1.3.3 |  1.3.3 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | [pgvector](https://neon.com/docs/extensions/pgvector)                                                          |   0.8.0 |   0.8.0 |   0.8.0 |   0.8.0 |  0.8.6 | Install with `CREATE EXTENSION vector;`                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| [pg\_search](https://neon.com/docs/extensions/pg_search)                                                       | 0.15.26 | 0.15.26 | 0.15.26 | 0.15.26 |      - | **Deprecated.** Not available for new Neon projects. Existing installs must migrate before September 21, 2026. See [The pg\_search extension](https://neon.com/docs/extensions/pg_search) for details and alternatives.                                                                                                                                                                                                                                        |
+| [pg\_search](https://neon.com/docs/extensions/pg_search)                                                       | 0.15.26 | 0.15.26 | 0.15.26 | 0.15.26 |      - | **Deprecated.** See [The pg\_search extension](https://neon.com/docs/extensions/pg_search) for alternatives.                                                                                                                                                                                                                                                                                                                                                   |
 | [pgx\_ulid](https://github.com/pksunkara/pgx_ulid)                                                             |   0.1.5 |   0.1.5 |   0.1.5 |   0.2.0 |  0.2.2 | Install with `CREATE EXTENSION ulid;` on Postgres 14, 15, 16. Install with `CREATE EXTENSION pgx_ulid;` on Postgres 17 and 18.                                                                                                                                                                                                                                                                                                                                 |
 | [plcoffee](https://coffeescript.org/)                                                                          |  3.1.10 |  3.1.10 |  3.1.10 |       - |      - |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | [plls](https://livescript.net/)                                                                                |  3.1.10 |  3.1.10 |  3.1.10 |       - |      - |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
@@ -49164,7 +48669,7 @@ For attribute definitions, find the [List preloaded libraries](https://neon.com/
     },
     {
       "library_name": "rag_bge_small_en_v15,rag_jina_reranker_v1_tiny_en",
-      "description": "Shared libraries for pgrag extensions",
+      "description": "Deprecated. Shared libraries for the pgrag extension. Not for new projects; see the pgrag extension docs.",
       "is_default": true,
       "is_experimental": true,
       "version": "0.0.0"
@@ -49224,7 +48729,7 @@ curl --request PATCH \
     "settings": {
       "preload_libraries": {
         "enabled_libraries": [
-          "neon","pg_stat_statements","timescaledb","pg_cron","pg_partman_bgw","rag_bge_small_en_v15,rag_jina_reranker_v1_tiny_en"
+          "neon","pg_stat_statements","timescaledb","pg_cron","pg_partman_bgw"
         ]
       }
     }
@@ -49239,7 +48744,8 @@ When running a `Create project` or `Update project` API call to enable libraries
 - Specify all libraries that should be enabled. If a library is not included in the API call, it will not be enabled.
 - The "use_defaults": true`option overrides the`"enabled_libraries"` option, enabling only default libraries
 - The `neon` and `pg_stat_statements` libraries will remain enabled whether you include them in your API call or not; they're used by a Neon system-managed database.
-- If you do not use one of the libraries enabled by default, you can exclude it from your API call. For example, if you do not use the `pgrag` extension, you can exclude its libraries (`"rag_bge_small_en_v15,rag_jina_reranker_v1_tiny_en"`).
+- If you do not use one of the libraries enabled by default, you can exclude it from your API call.
+- The `pgrag` libraries (`"rag_bge_small_en_v15,rag_jina_reranker_v1_tiny_en"`) are **deprecated**; leave them out of your API call. For search and RAG, see [Lakebase Search](https://neon.com/docs/ai/lakebase-search).
 - The `pg_search` library is **deprecated**; do not add it for new projects. Existing projects that still preload it should plan migration; see [The pg_search extension](https://neon.com/docs/extensions/pg_search).
 - The **`plv8`** extension is **deprecated**; **`CREATE EXTENSION plv8`** is rejected. See [The plv8 extension](https://neon.com/docs/extensions/plv8).
 
@@ -49487,246 +48993,26 @@ When using `pgcrypto`, it's crucial to adhere to security best practices:
 
 --- [Document source](https://neon.com/docs/extensions/pgrag.md) ---
 
-> Summary: pgrag is an experimental Postgres extension that runs a complete Retrieval-Augmented Generation (RAG) pipeline in SQL, covering text extraction from PDF, DOCX, and HTML, chunking, local embedding, reranking, and OpenAI chat completion, with pgvector handling vector storage. Use pgrag when you need a full RAG pipeline inside Postgres without Python or external services. Because it is experimental, enable it with `SET neon.allow_unstable_extensions='true'` and use a dedicated Neon project.
+> Summary: pgrag is a deprecated experimental Postgres extension for building Retrieval-Augmented Generation (RAG) pipelines in SQL. It uses small local embedding and reranking models and is not recommended for new projects. For search and RAG on Neon, use Lakebase Search with AI Gateway embeddings instead.
 
 # The pgrag extension
 
-Create end-to-end Retrieval-Augmented Generation (RAG) pipelines
+Deprecated experimental RAG extension
 
-**What you will learn:**
+**Warning: The pgrag extension is deprecated**
 
-- What is RAG?
-- What's included in a RAG pipeline?
-- `pgrag` functions
-- How to use `pgrag`
+`pgrag` is a deprecated experimental extension and is not recommended for new projects. It runs small local models directly on your Postgres server: `rag_bge_small_en_v15` for embedding and `rag_jina_reranker_v1_tiny_en` for reranking.
 
-**Related resources**
+For search and RAG on Neon, use these instead:
 
-- [The pgvector extension](https://neon.com/docs/extensions/pgvector)
-- [YouTube: pgrag video demonstration](https://www.youtube.com/watch?v=QDNsxw_3ris\&t=1356s)
+- **[Lakebase Search](https://neon.com/docs/ai/lakebase-search)**: vector, keyword, and hybrid search for Postgres, built on the `lakebase_vector` and `lakebase_text` extensions. Start with the [Get started guide](https://neon.com/docs/ai/lakebase-search-get-started).
+- **[AI Gateway embeddings](https://neon.com/docs/ai-gateway/embeddings)**: generate high-quality embeddings from frontier and open-source models through a single API.
 
-**Source code**
+The `pgrag` extension was an experimental way to build end-to-end Retrieval-Augmented Generation (RAG) pipelines in SQL, using local models for embedding and reranking alongside `pgvector` for storage. It remains available on existing projects, but it's no longer recommended for new work.
 
-- [pgrag GitHub repository](https://github.com/neondatabase-labs/pgrag)
+## Source code
 
-The `pgrag` extension and its accompanying model extensions are designed for creating end-to-end Retrieval-Augmented Generation (RAG) pipelines without leaving your SQL client. No additional programming languages or libraries are required. With functions provided by `pgrag` and a Postgres database with `pgvector`, you can build a complete RAG pipeline via SQL.
-
-**Info: Experimental Feature**
-
-The `pgrag` extension is experimental and actively being developed. Use it with caution as functionality may change.
-
-## What is RAG?
-
-**RAG stands for Retrieval-Augmented Generation**. It's the search for information relevant to a question that includes information alongside the question in a prompt to an AI chat model. For example, "_ChatGPT, please answer questions x using information Y_".
-
----
-
-## What's included in a RAG pipeline?
-
-A RAG pipeline includes a number of steps, as illustrated in the following diagram.
-
-![The steps in a RAG pipeline](https://neon.com/docs/extensions/rag_pipeline.jpg)
-
-The steps outlined above can be organized into two main stages:
-
-1. **Preparing and indexing the information**:
-   1. Load documents and extract text
-   2. Split documents into chunks
-   3. Generate embeddings for chunks
-   4. Store the embeddings alongside chunks
-2. **Handling incoming questions**: 5. Vectorize question 6. Use question embedding to find relevant document chunks 7. Retrieve document chunks from database 8. Rerank and take only best-match chunks to answer question 9. Prompt with question + relevant document chunks to answer question 10. Generated answer
-
----
-
-## What does pgrag support?
-
-With the exception of (4) storing embeddings in the database and (7) Retrieve document chunks from database, which is supported by Postgres with `pgvector`, `pgrag` supports all of the steps listed above. Specifically, `pgrag` supports:
-
-- **Text extraction and conversion**
-  - Simple text extraction from PDF documents (using [pdf-extract](https://github.com/jrmuizel/pdf-extract)). Currently, there is no Optical Character Recognition (OCR) or support for complex layout and formatting.
-  - Simple text extraction from `.docx` documents (using [docx-rs](https://github.com/cstkingkey/docx-rs)).
-  - HTML conversion to Markdown (using [htmd](https://github.com/letmutex/htmd)).
-
-- **Text chunking**
-  - Text chunking by character count (using [text-splitter](https://github.com/benbrandt/text-splitter)).
-  - Text chunking by token count (also using [text-splitter](https://github.com/benbrandt/text-splitter)).
-
-- **Local embedding and reranking models**
-
-  - Local tokenising + embedding generation with 33M parameter model [bge-small-en-v1.5](https://huggingface.co/Xenova/bge-small-en-v1.5) (using [ort](https://github.com/pykeio/ort) via [fastembed](https://github.com/Anush008/fastembed-rs)).
-  - Local tokenising + reranking with 33M parameter model [jina-reranker-v1-tiny-en](https://huggingface.co/jinaai/jina-reranker-v1-tiny-en) (also using [ort](https://github.com/pykeio/ort) via [fastembed](https://github.com/Anush008/fastembed-rs)).
-
-  **Note:** These models run locally on your Postgres server. They are packaged as separate extensions that accompany `pgrag`, because they are large (>100MB), and because we may want to add support for more models in future in the form of additional `pgrag` model extensions.
-
-- **Remote embedding and chat models**
-
----
-
-## Installation
-
-**Warning:**
-
-As an experimental extension, `pgrag` may be unstable or introduce backward-incompatible changes. We recommend using it only in a separate, dedicated Neon project. To proceed with the installation, you will need to run the following command first:
-
-```sql
-SET neon.allow_unstable_extensions='true';
-```
-
-To install `pgrag` to a Lakebase Postgres database, run the following commands:
-
-```sql
-create extension if not exists rag cascade;
-create extension if not exists rag_bge_small_en_v15 cascade;
-create extension if not exists rag_jina_reranker_v1_tiny_en cascade;
-```
-
-The first extension is the `pgrag` extension. The other two extensions are the model extensions for local tokenising, embedding generation, and reranking. The three extensions have no dependencies on each other, but all depend on `pgvector`. Specifying `cascade` ensures that `pgvector` is installed.
-
----
-
-## pgrag functions
-
-This section lists the functions provided by `pgrag`. For function usage examples, refer to the [end-to-end RAG example](https://neon.com/docs/extensions/pgrag#end-to-end-rag-example) below or the [pgrag GitHub repository](https://github.com/neondatabase-labs/pgrag).
-
-- **Text extraction**
-
-  These functions extract text from PDFs, Word files, and HTML.
-
-  - `rag.text_from_pdf(bytea) -> text`
-  - `rag.text_from_docx(bytea) -> text`
-  - `rag.markdown_from_html(text) -> text`
-
-- **Splitting text into chunks**
-
-  These functions split the extracted text into chunks by character count or token count.
-
-  - `rag.chunks_by_character_count(text, max_chars, overlap) -> text[]`
-  - `rag_bge_small_en_v15.chunks_by_token_count(text, max_tokens, overlap) -> text[]`
-
-- **Generating embeddings for chunks**
-
-  These functions generate embeddings for chunks either directly in the extension using a small but best-in-class model on the database server or by calling out to a 3rd-party API such as OpenAI.
-
-  - `rag_bge_small_en_v15.embedding_for_passage(text) -> vector(384)`
-  - `rag.openai_text_embedding_3_small(text) -> vector(1536)`
-
-- **Generating embeddings for questions**
-
-  These functions generate embeddings for the questions.
-
-  - `rag_bge_small_en_v15.embedding_for_query(text) -> vector(384)`
-  - `rag.openai_text_embedding_3_small(text) -> vector(1536)`
-
-- **Reranking**
-
-  This function reranks chunks against the question using a small but best-in-class model that runs locally on your Postgres server.
-
-  - `rag_jina_reranker_v1_tiny_en.rerank_distance(text, text) -> real`
-
-- **Calling out to chat models**
-
-  This function makes API calls to AI chat models such as ChatGPT to generate an answer using the question and the chunks together.
-
-  - `rag.openai_chat_completion(json) -> json`
-
----
-
-## End-to-end RAG example
-
-**1. Create a `docs` table and ingest some PDF documents as text**
-
-```sql
-drop table docs cascade;
-create table docs
-( id int primary key generated always as identity
-, name text not null
-, fulltext text not null
-);
-
-\set contents `base64 < /path/to/first.pdf`
-insert into docs (name, fulltext)
-values ('first.pdf', rag.text_from_pdf(decode(:'contents','base64')));
-
-\set contents `base64 < /path/to/second.pdf`
-insert into docs (name, fulltext)
-values ('second.pdf', rag.text_from_pdf(decode(:'contents','base64')));
-
-\set contents `base64 < /path/to/third.pdf`
-insert into docs (name, fulltext)
-values ('third.pdf', rag.text_from_pdf(decode(:'contents','base64'))));
-```
-
-**2. Create an `embeddings` table, chunk the text, and generate embeddings for the chunks (performed locally)**
-
-```sql
-drop table embeddings;
-create table embeddings
-( id int primary key generated always as identity
-, doc_id int not null references docs(id)
-, chunk text not null
-, embedding vector(384) not null
-);
-
-create index on embeddings using hnsw (embedding vector_cosine_ops);
-
-with chunks as (
-  select id, unnest(rag_bge_small_en_v15.chunks_by_token_count(fulltext, 192, 8)) as chunk
-  from docs
-)
-insert into embeddings (doc_id, chunk, embedding) (
-  select id, chunk, rag_bge_small_en_v15.embedding_for_passage(chunk) from chunks
-);
-```
-
-**3. Query the embeddings and rerank the results (performed locally)**
-
-```sql
-\set query 'what is [...]? how does it work?'
-
-with ranked as (
-  select
-    id, doc_id, chunk, embedding <=> rag_bge_small_en_v15.embedding_for_query(:'query') as cosine_distance
-  from embeddings
-  order by cosine_distance
-  limit 10
-)
-select *, rag_jina_reranker_v1_tiny_en.rerank_distance(:'query', chunk)
-from ranked
-order by rerank_distance;
-```
-
-**4. Feed the query and top chunks to a remote AI chat model such as ChatGPT to complete the RAG pipeline**
-
-````sql
-\set query 'what is [...]? how does it work?'
-
-with ranked as (
-  select
-    id, doc_id, chunk, embedding <=> rag_bge_small_en_v15.embedding_for_query(:'query') as cosine_distance
-  from embeddings
-  order by cosine_distance
-  limit 10
-),
-reranked as (
-  select *, rag_jina_reranker_v1_tiny_en.rerank_distance(:'query', chunk)
-  from ranked
-  order by rerank_distance limit 5
-)
-select rag.openai_chat_completion(json_object(
-  'model': 'gpt-4o-mini',
-  'messages': json_array(
-    json_object(
-      'role': 'system',
-      'content': E'The user is [...].\n\nTry to answer the user''s QUESTION using only the provided CONTEXT.\n\nThe CONTEXT represents extracts from [...] which have been selected as most relevant to this question.\n\nIf the context is not relevant or complete enough to confidently answer the question, your best response is: "I''m afraid I don''t have the information to answer that question".'
-    ),
-    json_object(
-      'role': 'user',
-      'content': E'# CONTEXT\n\n```\n' || string_agg(chunk, E'\n\n') || E'\n```\n\n# QUESTION\n\n```\n' || :'query' || E'```'
-    )
-  )
-)) -> 'choices' -> 0 -> 'message' -> 'content' as answer
-from reranked;
-````
+The `pgrag` source remains available in the [pgrag GitHub repository](https://github.com/neondatabase-labs/pgrag).
 
 --- [Document source](https://neon.com/docs/extensions/pgrowlocks.md) ---
 
@@ -116930,7 +116216,7 @@ We're accelerating work on improving and scaling the core database on Neon as we
 - **Archive storage on the Free plan**: Archive storage is now available on the Free plan for automatically archiving inactive branches. This feature helps minimize storage costs, allowing us to expand the Free plan even further. Learn more in [Branch Archiving](https://neon.com/docs/guides/branch-archiving).
 - **Neon RLS**: This feature integrates with third-party **authentication providers** like Auth0, Clerk, and Stack Auth to bring authorization to your code base by leveraging Postgres [Row-Level Security (RLS)](https://www.postgresql.org/docs/current/ddl-rowsecurity.html). [Read the announcement](https://neon.com/blog/introducing-neon-authorize) and check out the docs.
 - **Neon on Azure**: You can deploy Neon databases on Azure, starting with the East US 2 region. This marks the first milestone on our Azure roadmap. Many more exciting updates are on the way, including deeper integrations with the Azure ecosystem. [Read the announcement](https://neon.com/blog/first-azure-region-available-in-neon).
-- **End-to-end RAG pipelines in Postgres**: Our new and open source [pgrag](https://neon.com/docs/extensions/pgrag) extension lets you create end-to-end Retrieval-Augmented Generation (RAG) pipelines in Postgres. There's no need for additional programming languages or libraries. With the functions provided by `pgrag`, you can build a complete RAG pipeline directly within your SQL client.
+- **End-to-end RAG pipelines in Postgres**: Shipped the open source [pgrag](https://neon.com/docs/extensions/pgrag) extension for RAG in SQL. Now deprecated; see [Lakebase Search](https://neon.com/docs/ai/lakebase-search).
 - **Support for analytics with pg_mooncake**: This new extension, brought to the community by [mooncake.dev](https://mooncake.dev/), introduces native columnstore tables with DuckDB execution for _fast_ analytics directly in Postgres. [Read the announcement](https://www.mooncake.dev/blog/pgmooncake-neon).
 - **Datadog integration**: Scale users can now export Neon metrics to Datadog.
 - **Deletion of backup branches created by restore operations**: To help minimize storage and keep your Neon project organized, we added support for deleting obsolete backup branches created by [restore](https://neon.com/docs/guides/branch-restore) operations. Previously, these backup branches could not be removed. [Learn more](https://neon.com/docs/guides/branch-restore#deleting-backup-branches).

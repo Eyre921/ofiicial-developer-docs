@@ -6,13 +6,17 @@ path: nexus/web-search
 
 Use native web search and fetch in Claude Code, Codex, and ChatGPT while connected through FireConnect.
 
-FireConnect preserves native web search when a supported harness routes through Fireworks. Connect the harness through [Coding Harnesses](/nexus/harnesses). You do not need a separate search service or command.
+Web search is built into Fireworks. When Claude Code calls its native `WebSearch` tool, Fireworks runs the search server-side and returns the results, with no MCP server or search service to set up. Connect the harness through [Coding Harnesses](/nexus/harnesses).
 
 | Harness                                                          | Search behavior                                    | Wire API       |
 | ---------------------------------------------------------------- | -------------------------------------------------- | -------------- |
 | Claude Code                                                      | Native `WebSearch` and `WebFetch` remain available | Messages       |
-| Codex and ChatGPT                                                | Native web search remains available                | Responses      |
+| Codex CLI, Codex app, and ChatGPT desktop                        | Native web search remains available                | Responses      |
 | OpenCode, Pi, Cursor IDE, VS Code, Copilot, and DeepSeek Harness | FireConnect does not add web search                | Not applicable |
+
+<Info>
+  Web search pricing will be published soon.
+</Info>
 
 ## See native search in action
 
@@ -28,7 +32,7 @@ Native web search works with any Fireworks model. Both examples use FireRouter, 
 
 ## Upgrade from the retired MCP
 
-Earlier FireConnect versions installed the `fireworks-websearch` MCP for Claude Code. That MCP is retired because the Fireworks Messages endpoint supports Claude Code's native search tools.
+FireConnect versions before 0.9.7 installed the `fireworks-websearch` MCP for Claude Code. That MCP is no longer available, because Fireworks now handles Claude Code's native search tools server-side.
 
 ```bash wrap theme={null}
 fireconnect upgrade

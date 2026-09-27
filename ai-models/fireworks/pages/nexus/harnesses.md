@@ -4,303 +4,693 @@ source: https://docs.fireworks.ai/nexus/harnesses
 path: nexus/harnesses
 ---
 
-Connect Claude Code, OpenCode, Codex, Pi, Cursor IDE, VS Code, Copilot, or DeepSeek Harness to Fireworks
+Connect Claude Code, the Claude Agent SDK, OpenCode, Codex, Pi, Cursor IDE, VS Code, Copilot, or DeepSeek Harness to Fireworks, with FireConnect or by editing the harness settings yourself.
 
-Install [FireConnect](/nexus/fireconnect) and run `fireconnect login` once. Then choose your harness below. Each section shows the connect command, the settings FireConnect writes, and how to apply a new `--model`.
+Every harness below works two ways. **FireConnect** writes the settings for you and restores them with `off`. **Manual setup** shows the same settings so you can apply them yourself, with no extra tool installed.
 
-## Shared rules
+<Columns>
+  <Card title="Claude Code" icon="asterisk" href="#claude-code">
+    Messages API
+  </Card>
 
-* **Auth:** `fireconnect login` once, then `fireconnect <harness>`. You do not need `--api-key` on connect when a key is already saved.
-* **Quit first:** fully quit Cursor IDE, VS Code, and the Copilot App before connecting or running `off`. Restart other harnesses after connect.
-* **`status` is read-only** while the app is open.
-* **Models:** Pass `--model <id>` when you connect. Browse IDs with `fireconnect model list`. See [FireRouter](/nexus/firerouter) for router behavior.
-* **Web search:** Claude Code, Codex, and ChatGPT keep native search. See [Web Search](/nexus/web-search) for details.
+  <Card title="Codex CLI, Codex app, and ChatGPT" icon="square-terminal" href="#codex">
+    Responses API
+  </Card>
+
+  <Card title="OpenCode" icon="code" href="#opencode">
+    Chat Completions
+  </Card>
+
+  <Card title="Pi" icon="terminal" href="#pi">
+    Chat Completions
+  </Card>
+
+  <Card title="Cursor IDE" icon="arrow-pointer" href="#cursor-ide">
+    Chat Completions
+  </Card>
+
+  <Card title="VS Code" icon="window-maximize" href="#vs-code">
+    Chat Completions
+  </Card>
+
+  <Card title="Copilot App" icon="github" href="#copilot-app">
+    Chat Completions
+  </Card>
+
+  <Card title="Copilot CLI" icon="github" href="#copilot-cli">
+    Chat Completions
+  </Card>
+
+  <Card title="DeepSeek Harness" icon="fish" href="#deepseek-harness">
+    Chat Completions
+  </Card>
+</Columns>
+
+## Before you start
+
+<Tabs>
+  <Tab title="FireConnect" icon="bolt">
+    [Install FireConnect](/nexus/fireconnect#quick-start) and sign in once:
+
+    ```bash wrap theme={null}
+    fireconnect login
+    ```
+
+    * **Connect:** `fireconnect <harness>`. Add `--model <id>` to choose a model or router. Browse IDs with `fireconnect model list`.
+    * **Quit first:** fully quit Cursor IDE, VS Code, and the Copilot App before connecting or running `off`. Restart other harnesses after connecting.
+    * **Check:** `fireconnect <harness> status` is read-only and safe while the app is open.
+    * **Undo:** `fireconnect <harness> off` restores the settings FireConnect saved under `~/.fireconnect/`.
+  </Tab>
+
+  <Tab title="Manual setup" icon="wrench">
+    Create an API key in [Fireworks settings](https://app.fireworks.ai/settings/users/api-keys) and export it:
+
+    ```bash wrap theme={null}
+    export FIREWORKS_API_KEY="fw_..."
+    ```
+
+    Every harness uses the same Fireworks endpoints:
+
+    | Harness API                          | Base URL                                |
+    | ------------------------------------ | --------------------------------------- |
+    | Anthropic Messages                   | `https://api.fireworks.ai/inference`    |
+    | OpenAI Chat Completions or Responses | `https://api.fireworks.ai/inference/v1` |
+
+    Use any model ID from [Open Models](/nexus/open-models), such as `glm-latest`, or a router from [FireRouter](/nexus/firerouter#supported-models), such as `firerouter/opus`. Back up a settings file before you edit it.
+  </Tab>
+</Tabs>
 
 ## Claude Code
 
+<Badge>Anthropic Messages</Badge> <Badge>FireRouter</Badge> <Badge>Native web search</Badge>
+
+<Tabs>
+  <Tab title="FireConnect" icon="bolt">
+    ```bash wrap theme={null}
+    fireconnect claude
+    fireconnect claude status
+    ```
+
+    Start a new session, or exit and run `claude --resume <id>`. FireConnect selects FireRouter by default. To choose another model, pass `--model`:
+
+    ```bash wrap theme={null}
+    fireconnect claude --model glm-5p3-flash
+    ```
+
+    `--model` sets the default model for new sessions. Anthropic tier slots stay native, and `/model` lists `auto`, the routers, and the Fireworks catalog.
+
+    <Tree>
+      <Tree.Folder name="~">
+        <Tree.Folder name=".claude">
+          <Tree.File name="settings.json" />
+        </Tree.Folder>
+
+        <Tree.File name=".claude.json" />
+
+        <Tree.Folder name=".fireconnect">
+          <Tree.File name="backup for off" />
+        </Tree.Folder>
+      </Tree.Folder>
+    </Tree>
+
+    <Accordion title="See what FireConnect writes">
+      ```json ~/.claude/settings.json theme={null}
+      {
+        "env": {
+          "ANTHROPIC_BASE_URL": "https://api.fireworks.ai/inference",
+          "ANTHROPIC_CUSTOM_HEADERS": "X-Fireworks-Api-Key: fw_...",
+          "DISABLE_TELEMETRY": "1",
+          "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
+          "ENABLE_TOOL_SEARCH": "true"
+        },
+        "modelPicker": {
+          "options": [
+            { "model": "firerouter[1m]", "label": "FireRouter" },
+            { "model": "auto[1m]", "label": "Auto" }
+          ]
+        },
+        "model": "firerouter[1m]",
+        "statusLine": { "type": "command", "command": "... claude-statusline.mjs" }
+      }
+      ```
+
+      * The Fireworks key goes in a custom header, so your Claude login stays available for routes with Claude models.
+      * `[1m]` marks 1M-context models.
+      * The status line shows the estimated session cost. It is added only if you do not already have one.
+      * FireConnect also turns off Claude Code telemetry and nonessential traffic, and enables MCP tool search.
+      * `~/.claude.json` records approval for the FireConnect credential so Claude Code does not prompt for it.
+    </Accordion>
+  </Tab>
+
+  <Tab title="Manual setup" icon="wrench">
+    <Steps>
+      <Step title="Point Claude Code at Fireworks" icon="file-pen">
+        Add these values to `~/.claude/settings.json`:
+
+        ```json ~/.claude/settings.json theme={null}
+        {
+          "env": {
+            "ANTHROPIC_BASE_URL": "https://api.fireworks.ai/inference",
+            "ANTHROPIC_AUTH_TOKEN": "fw_YOUR_FIREWORKS_API_KEY"
+          },
+          "model": "glm-latest"
+        }
+        ```
+
+        Or set them for one shell:
+
+        ```bash wrap theme={null}
+        export ANTHROPIC_BASE_URL="https://api.fireworks.ai/inference"
+        export ANTHROPIC_API_KEY="$FIREWORKS_API_KEY"
+        claude --model glm-latest
+        ```
+      </Step>
+
+      <Step title="Start a session" icon="play">
+        Run `claude`. Claude Code may ask once whether to use the API key; approve it.
+        <Check>The first reply comes from the Fireworks model you set.</Check>
+      </Step>
+
+      <Step title="Optional: use FireRouter" icon="shuffle">
+        Set `"model": "firerouter/opus"`. For Claude models in the route, connect an Anthropic [Provider Key](/nexus/provider-keys), or add `x-anthropic-api-key` to `ANTHROPIC_CUSTOM_HEADERS`.
+      </Step>
+    </Steps>
+
+    Claude Code's `/model` picker does not list Fireworks models you set by hand. Change models in `settings.json` or with `claude --model <id>`. Claude Code may log `unrecognized_model` for Fireworks IDs; requests still succeed.
+  </Tab>
+</Tabs>
+
+<AccordionGroup>
+  <Accordion title="Routers and credentials">
+    * Bare `firerouter` and routes with Claude models can use your Claude login when you connect with FireConnect.
+    * `firerouter/astra`, `firerouter/sol`, and other GPT routes need an OpenAI key in [Provider Keys](/nexus/provider-keys) with FireConnect, or an `x-openai-api-key` header in manual setup.
+    * See [Routing Preferences](/nexus/routing-preferences) for `--routing-preference` and [Harness Compatibility](/nexus/harness-compatibility) for cross-harness support.
+  </Accordion>
+
+  <Accordion title="Usage and cost">
+    For the status line and `fireconnect claude usage`, see [Usage and Cost](/nexus/metrics). Claude Code's own in-app cost uses Anthropic list prices; use the FireConnect status line for the Fireworks estimate. For a side-by-side comparison, see the [Side-by-Side Demo](/nexus/demo).
+  </Accordion>
+
+  <Accordion title="Troubleshooting">
+    * Text-only models fail on pasted images. Use `/rewind`, or switch to a vision model such as `glm-5p3-flash`.
+    * Resume or restart the session after changing models.
+  </Accordion>
+</AccordionGroup>
+
+## Claude Agent SDK
+
+<Badge>Anthropic Messages</Badge>
+
+The Claude Agent SDK can reuse the Claude Code settings above. Connect Claude Code first, with FireConnect or manually:
+
 ```bash wrap theme={null}
-fireconnect login
-fireconnect claude                  # appends the catalog to /model
-fireconnect claude status
+fireconnect claude --model firerouter/opus
 ```
 
-Connection and model changes take effect in a new or resumed session. Exit and resume with `claude --resume <id>`, or start a new session.
+In the SDK query options, include `settingSources: ["user"]`. The SDK then reads the Fireworks endpoint, model, and credentials from `~/.claude/settings.json`.
 
-**Model picker.** FireConnect adds `auto`, model routers, and Fireworks models to `/model`. Native Anthropic tiers remain unchanged. `--model` adds a row; it does not pin the default:
-
-```bash wrap theme={null}
-fireconnect claude --model firerouter
-fireconnect claude --model glm-5p3-flash
-```
-
-**What gets written**
-
-* Fireworks key in `ANTHROPIC_CUSTOM_HEADERS` (`X-Fireworks-Api-Key`), backup under `~/.fireconnect/` for `off`.
-* Serverless rows in `/model`; `[1m]` tag on 1M-context models.
-* Optional `statusLine` unless you already have one.
-* Native web search and fetch stay on.
-
-**Usage.** For the status line and `fireconnect claude usage`, see [Usage and Cost](/nexus/metrics). For a side-by-side model comparison, see the [Side-by-Side Demo](/nexus/demo).
-
-**Routers**
-
-* Bare `firerouter` and routes containing a Claude family alias or Anthropic model ID can use your Claude login.
-* `firerouter/astra` requires an OpenAI key configured in [Provider Keys](/nexus/provider-keys).
-* See [Harness Compatibility](/nexus/harness-compatibility) for `--routing-preference` and `--anthropic-api-key`.
-
-**Troubleshooting**
-
-* Text-only models fail on pasted images. Use `/rewind`.
-* Claude Code calculates its in-app cost with Anthropic list prices. Use the FireConnect status line for the Fireworks estimate.
-* Resume or restart the session after changing models.
-
-## OpenCode
-
-```bash wrap theme={null}
-fireconnect login
-fireconnect opencode
-fireconnect opencode status
-```
-
-Restart OpenCode after connecting. With a standard Fireworks key, the default model is `auto`, stored as `fireworks-ai/auto`. FireConnect expands short model IDs to full Fireworks paths automatically.
-
-<Frame>
-  <img alt="OpenCode model picker showing Auto selected and Fireworks DeepSeek, GLM, Kimi, and other models" />
-</Frame>
-
-**What gets written**
-
-* A `fireworks-ai` provider using the OpenAI-compatible endpoint at `https://api.fireworks.ai/inference/v1`
-* The default model and serverless `/model` catalog in `~/.config/opencode/opencode.json`
-* The API key in that file with mode `0600`
-
-FireConnect snapshots the original file under `~/.fireconnect/opencode/`. It never changes `auth.json`. Use `--config-path` for a configuration stored elsewhere.
-
-```bash wrap theme={null}
-fireconnect model list --search glm
-fireconnect opencode --model glm-5p2
-```
-
-Without FireConnect, OpenCode can also connect directly: `/connect` → search **fireworks.ai** → paste your key → `/models` to pick.
+<Note>
+  Claude Desktop is not supported. `fireconnect claude` does not configure Claude Desktop's third-party inference provider.
+</Note>
 
 ## Codex
 
-`fireconnect codex` and `fireconnect chatgpt` share one config. The Codex CLI and the ChatGPT desktop app route through Fireworks with a single command. **Quit the ChatGPT app** before connecting or running `off` so its model list refreshes. Native web search stays on.
+<Badge>OpenAI Responses</Badge> <Badge>FireRouter</Badge> <Badge>Native web search</Badge>
 
-**ChatGPT connectors.** Connectors you added before connecting continue to work. You cannot add a new connector while connected.
+The Codex CLI, the Codex app, and the ChatGPT desktop app share one config in `~/.codex/config.toml`, so one setup covers all three. **Quit the Codex app and the ChatGPT app** before you change it so their model lists refresh.
 
-```bash wrap theme={null}
-fireconnect login
-fireconnect codex
-```
+<Warning>
+  MCP servers and plugins in the ChatGPT desktop app don't work reliably while
+  FireConnect is on. See [Harness Compatibility](/nexus/harness-compatibility#mcp).
+</Warning>
 
-`config.toml` updates immediately; exit Codex and `codex resume <id>` (or start fresh) to load it. With a standard Fireworks key, the default model is `auto`.
+<Tabs>
+  <Tab title="FireConnect" icon="bolt">
+    ```bash wrap theme={null}
+    fireconnect codex
+    fireconnect codex status
+    ```
 
-To add FireRouter to the Codex and ChatGPT pickers, reconnect with `fireconnect codex --model firerouter`.
+    The default model is `auto`. To add FireRouter to the Codex and ChatGPT model pickers, run `fireconnect codex --model firerouter`. Exit Codex and run `codex resume <id>`, or start a new session.
 
-<Frame>
-  <img alt="Codex CLI model picker showing Auto selected, FireRouter, and Fireworks DeepSeek, GLM, and Kimi models" />
-</Frame>
+    <Frame>
+      <img alt="Codex CLI model picker showing Auto selected, FireRouter, and Fireworks DeepSeek, GLM, and Kimi models" />
+    </Frame>
+
+    <Tree>
+      <Tree.Folder name="~/.codex">
+        <Tree.File name="config.toml" />
+
+        <Tree.File name="fireworks-model-catalog.json" />
+      </Tree.Folder>
+    </Tree>
+
+    <Accordion title="See what FireConnect writes">
+      ```toml ~/.codex/config.toml theme={null}
+      model_provider = "fireworks-ai"
+      model_catalog_json = "~/.codex/fireworks-model-catalog.json"
+      model = "auto"
+
+      [model_providers.fireworks-ai]
+      name = "Fireworks"
+      base_url = "https://api.fireworks.ai/inference/v1"
+      wire_api = "responses"
+      experimental_bearer_token = "fw_..."
+      requires_openai_auth = false
+      ```
+
+      FireConnect keeps your other TOML settings, saves the key with file mode `0600`, and writes a model catalog so Codex knows each model's context window and capabilities.
+    </Accordion>
+  </Tab>
+
+  <Tab title="Manual setup" icon="wrench">
+    <Steps>
+      <Step title="Add a Fireworks provider" icon="file-pen">
+        ```toml ~/.codex/config.toml theme={null}
+        model_provider = "fireworks-ai"
+        model = "glm-latest"
+
+        [model_providers.fireworks-ai]
+        name = "Fireworks"
+        base_url = "https://api.fireworks.ai/inference/v1"
+        wire_api = "responses"
+        env_key = "FIREWORKS_API_KEY"
+        ```
+      </Step>
+
+      <Step title="Run Codex" icon="play">
+        ```bash wrap theme={null}
+        codex
+        ```
+
+        <Check>Codex answers from `glm-latest`.</Check>
+      </Step>
+    </Steps>
+
+    Without a model catalog, Codex warns that it has no metadata for Fireworks models and uses fallback limits. FireConnect writes that catalog for you.
+  </Tab>
+</Tabs>
 
 <Frame>
   <img alt="ChatGPT desktop model picker showing FireRouter selected alongside Auto and Fireworks models" />
 </Frame>
 
-**What gets written**
-
-* Root `model_provider` and `model` values in `~/.codex/config.toml`
-* A `[model_providers.fireworks-ai]` block using the Responses API
-* The API key in `config.toml` with mode `0600`
-* A serverless catalog at `~/.codex/fireworks-model-catalog.json`, linked through `model_catalog_json`
-
-FireConnect preserves unrelated TOML settings and snapshots the original under `~/.fireconnect/codex/`. Use `--config-path` for a configuration stored elsewhere.
+When you resume an old session, select the provider explicitly:
 
 ```bash wrap theme={null}
-fireconnect codex status
-fireconnect codex --model glm-5p2
+codex resume <id> -c model_provider="fireworks-ai"
 ```
 
-When you resume an old session, explicitly select its provider: `codex resume <id> -c model_provider="fireworks-ai"` (or `"fireworks-azure"` on the Foundry path).
-
 <Warning>
-  **MiniMax models don't work on Codex.** Codex may insert assistant messages between `tool_calls` and `tool_results`, which MiniMax templates reject. Use a Chat Completions harness (Claude Code, OpenCode) for MiniMax.
+  **MiniMax models don't work on Codex.** Codex may insert assistant messages between `tool_calls` and `tool_results`, which MiniMax templates reject. Use a Chat Completions harness such as OpenCode for MiniMax.
 </Warning>
+
+## OpenCode
+
+<Badge>OpenAI Chat Completions</Badge> <Badge>FireRouter</Badge>
+
+<Tabs>
+  <Tab title="FireConnect" icon="bolt">
+    ```bash wrap theme={null}
+    fireconnect opencode
+    fireconnect opencode status
+    ```
+
+    Restart OpenCode. The default model is `auto`, stored as `fireworks-ai/auto`. Short IDs such as `glm-5p2` expand to full Fireworks paths.
+
+    <Frame>
+      <img alt="OpenCode model picker showing Auto selected and Fireworks DeepSeek, GLM, Kimi, and other models" />
+    </Frame>
+
+    <Accordion title="See what FireConnect writes">
+      ```json ~/.config/opencode/opencode.json theme={null}
+      {
+        "provider": {
+          "fireworks-ai": {
+            "options": { "apiKey": "fw_..." },
+            "models": {
+              "auto": { "name": "Auto", "limit": { "context": 1048575, "output": 131072 } },
+              "glm-latest": { "name": "GLM (Latest)" }
+            }
+          }
+        },
+        "model": "fireworks-ai/auto"
+      }
+      ```
+
+      The file is saved with mode `0600`. FireConnect never changes `auth.json`. Use `--config-path` for a config stored elsewhere.
+    </Accordion>
+  </Tab>
+
+  <Tab title="Manual setup" icon="wrench">
+    **Fastest:** in OpenCode, run `/connect`, search **fireworks.ai**, paste your key, and pick a model with `/models`.
+
+    **Or edit the config** to add routers and pin a default:
+
+    ```json ~/.config/opencode/opencode.json theme={null}
+    {
+      "$schema": "https://opencode.ai/config.json",
+      "provider": {
+        "fireworks-ai": {
+          "options": { "apiKey": "{env:FIREWORKS_API_KEY}" },
+          "models": {
+            "glm-latest": { "name": "GLM (Latest)" },
+            "firerouter/opus": { "name": "FireRouter Opus" }
+          }
+        }
+      },
+      "model": "fireworks-ai/glm-latest"
+    }
+    ```
+
+    <Check>`opencode run -m fireworks-ai/firerouter/opus "hello"` answers through FireRouter.</Check>
+  </Tab>
+</Tabs>
 
 ## Pi
 
-```bash wrap theme={null}
-fireconnect login
-fireconnect pi
-fireconnect pi status
-```
+<Badge>OpenAI Chat Completions</Badge> <Badge>FireRouter</Badge>
 
-Restart Pi after connecting if it was already running. With a standard Fireworks key, the default model is `auto`.
+<Tabs>
+  <Tab title="FireConnect" icon="bolt">
+    ```bash wrap theme={null}
+    fireconnect pi
+    fireconnect pi status
+    ```
 
-**What gets written**
+    Restart Pi if it was running. The default model is `auto`.
 
-* `defaultProvider` and `defaultModel` in `~/.pi/agent/settings.json`
-* The API key in `auth.json` with mode `0600`
-* The serverless catalog in `~/.pi/agent/models.json`
+    <Tree>
+      <Tree.Folder name="~/.pi/agent">
+        <Tree.File name="settings.json" />
 
-FireConnect snapshots all three files under `~/.fireconnect/pi/`. It tracks the IDs it adds so `off` removes only those entries. Use `--settings-path` for a settings file stored elsewhere.
+        <Tree.File name="auth.json" />
 
-```bash wrap theme={null}
-fireconnect model list --search glm
-fireconnect pi --model glm-5p2
-```
+        <Tree.File name="models.json" />
+      </Tree.Folder>
+    </Tree>
+
+    <Accordion title="See what FireConnect writes">
+      ```json ~/.pi/agent/settings.json theme={null}
+      {
+        "defaultProvider": "fireworks",
+        "defaultModel": "auto",
+        "enabledModels": ["fireworks/accounts/fireworks/routers/*", "fireworks/auto"]
+      }
+      ```
+
+      ```json ~/.pi/agent/auth.json theme={null}
+      { "fireworks": { "type": "api_key", "key": "fw_..." } }
+      ```
+
+      `models.json` adds the Fireworks catalog to Pi's built-in `fireworks` provider. FireConnect tracks the IDs it adds so `off` removes only those. Use `--settings-path` for a settings file stored elsewhere.
+    </Accordion>
+  </Tab>
+
+  <Tab title="Manual setup" icon="wrench">
+    Pi has a built-in `fireworks` provider that reads `FIREWORKS_API_KEY`. Set it as the default:
+
+    ```json ~/.pi/agent/settings.json theme={null}
+    {
+      "defaultProvider": "fireworks",
+      "defaultModel": "accounts/fireworks/routers/glm-latest"
+    }
+    ```
+
+    <Check>`pi -p "hello"` answers from GLM.</Check>
+  </Tab>
+</Tabs>
 
 ## Cursor IDE
 
-`fireconnect cursor` configures Cursor IDE. Cursor CLI (`agent` or `cursor-agent`) is not supported.
+<Badge>OpenAI Chat Completions</Badge> <Badge>FireRouter with Provider Keys</Badge>
 
-Cursor IDE keeps AI settings in SQLite (`state.vscdb`). **Fully quit Cursor IDE before connecting or running `off`.** In an interactive terminal FireConnect waits for you (or `--force` to write anyway). `status` is read-only while Cursor IDE runs.
+`fireconnect cursor` configures Cursor IDE. Cursor CLI (`agent` or `cursor-agent`) is not supported. **Fully quit Cursor IDE before connecting or running `off`.**
 
-```bash wrap theme={null}
-fireconnect login
-fireconnect cursor
-fireconnect cursor status
-```
+<Tabs>
+  <Tab title="FireConnect" icon="bolt">
+    ```bash wrap theme={null}
+    fireconnect cursor
+    fireconnect cursor status
+    ```
 
-Connecting updates every existing mode in `modelConfig` to use the Fireworks default. FireConnect never creates modes. It also registers the serverless catalog in the picker. `status` shows the model assigned to each mode. Reopen Cursor IDE and choose a Fireworks model.
+    FireConnect points every existing mode in `modelConfig` at the Fireworks default and registers the catalog in the picker. Reopen Cursor IDE and choose a Fireworks model.
 
-<Frame>
-  <img alt="Cursor IDE model picker showing Auto selected with Fireworks DeepSeek, GLM, Kimi, and MiniMax models" />
-</Frame>
+    <Frame>
+      <img alt="Cursor IDE model picker showing Auto selected with Fireworks DeepSeek, GLM, Kimi, and MiniMax models" />
+    </Frame>
 
-**What gets written** (under `~/.config/Cursor`, `~/Library/Application Support/Cursor`, or `%APPDATA%\Cursor`):
+    <Accordion title="See what FireConnect writes">
+      Cursor IDE stores AI settings in SQLite (`state.vscdb` under `~/.config/Cursor`, `~/Library/Application Support/Cursor`, or `%APPDATA%\Cursor`):
 
-| Setting          | Location                                                  |
-| ---------------- | --------------------------------------------------------- |
-| API key          | `cursorAuth/openAIKey`                                    |
-| Base URL         | `openAIBaseUrl` → `https://api.fireworks.ai/inference/v1` |
-| Custom models    | `aiSettings.userAddedModels` (tracked for clean `off`)    |
-| Hidden built-ins | `aiSettings.modelOverrideDisabled`                        |
-| Per-mode model   | `aiSettings.modelConfig[<mode>]`                          |
+      | Setting                            | Value                                            |
+      | ---------------------------------- | ------------------------------------------------ |
+      | `cursorAuth/openAIKey`             | Your Fireworks key                               |
+      | `openAIBaseUrl`                    | `https://api.fireworks.ai/inference/v1`          |
+      | `aiSettings.userAddedModels`       | The Fireworks catalog, tracked for a clean `off` |
+      | `aiSettings.modelOverrideDisabled` | Cursor's built-in models, hidden while connected |
+      | `aiSettings.modelConfig[<mode>]`   | The Fireworks model for each mode                |
 
-Your previous auth state is snapshotted under `~/.fireconnect/cursor/`. Use `--db-path` for a non-default `state.vscdb` (for example Insiders).
+      Your previous auth state is saved under `~/.fireconnect/cursor/`. Use `--db-path` for a non-default `state.vscdb`.
+    </Accordion>
+  </Tab>
+
+  <Tab title="Manual setup" icon="wrench">
+    <Steps>
+      <Step title="Open model settings" icon="gear">
+        In Cursor IDE, open **Settings**, then **Models**.
+      </Step>
+
+      <Step title="Add your Fireworks key" icon="key">
+        Under **API Keys**, paste your Fireworks key into **OpenAI API Key**. Turn on **Override OpenAI Base URL** and enter `https://api.fireworks.ai/inference/v1`.
+      </Step>
+
+      <Step title="Add a model" icon="plus">
+        Add a custom model with a Fireworks ID, such as `glm-latest`, then select it in chat.
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
 
 <Warning>
-  **While connected, only Fireworks models work.** Built-ins are hidden. `off` brings them back. Cursor IDE also enforces a server-side allowlist, so not every Fireworks model is selectable even after registering. Some Cursor IDE features may still use the IDE's own backend depending on plan and version.
+  **While connected, only Fireworks models work.** Cursor IDE's built-in models are hidden until you run `off`. Cursor IDE also enforces a server-side allowlist, so not every Fireworks model is selectable. Some features may still use Cursor's own backend, depending on plan and version.
 </Warning>
-
-Without FireConnect: add a Custom Model with a Fireworks ID, set Override OpenAI Base URL to `https://api.fireworks.ai/inference/v1`, paste your key.
 
 ## VS Code
 
-FireConnect adds a `Fireworks` provider to GitHub Copilot Chat's custom endpoints. Requires Copilot **Pro or Enterprise** (free tier only supports Auto). **Quit VS Code before connecting or running `off`**; `status` is read-only while running.
+<Badge>OpenAI Chat Completions</Badge> <Badge>FireRouter</Badge>
 
-```bash wrap theme={null}
-fireconnect login
-fireconnect vscode
-fireconnect vscode status
-```
+FireConnect adds a **Fireworks** provider to GitHub Copilot Chat's custom endpoints. This requires Copilot **Pro or Enterprise**. **Quit VS Code before connecting or running `off`.**
 
-Restart VS Code, then pick a Fireworks model under **Other Models → Fireworks** in Copilot Chat. Vision support comes from the current model catalog. `glm-latest` and `glm-fast-latest` are text-only; `glm-5p3-flash` supports images. Run `fireconnect model list` to check other model IDs.
+<Tabs>
+  <Tab title="FireConnect" icon="bolt">
+    ```bash wrap theme={null}
+    fireconnect vscode
+    fireconnect vscode status
+    ```
 
-<Frame>
-  <img alt="VS Code Chat model picker showing the Fireworks provider with Auto selected and DeepSeek, GLM, and Kimi models" />
-</Frame>
+    Restart VS Code, then pick a model under **Other Models → Fireworks** in Copilot Chat. `glm-latest` and `glm-fast-latest` are text-only; `glm-5p3-flash` supports images.
 
-**What gets written.** FireConnect adds a custom endpoint to `chatLanguageModels.json`. VS Code appends `/v1/chat/completions` to `https://api.fireworks.ai/inference`. FireConnect also stores the API key in `state.vscdb` under `chat.lm.secret.fw-*`, encrypted through Electron `safeStorage`:
+    <Frame>
+      <img alt="VS Code Chat model picker showing the Fireworks provider with Auto selected and DeepSeek, GLM, and Kimi models" />
+    </Frame>
 
-| Platform | `chatLanguageModels.json`                  | `state.vscdb`                                            |
-| -------- | ------------------------------------------ | -------------------------------------------------------- |
-| Linux    | `~/.config/Code/User/`                     | `~/.config/Code/User/globalStorage/`                     |
-| macOS    | `~/Library/Application Support/Code/User/` | `~/Library/Application Support/Code/User/globalStorage/` |
-| Windows  | `%APPDATA%\Code\User\`                     | `%APPDATA%\Code\User\globalStorage\`                     |
+    <Accordion title="See what FireConnect writes">
+      ```json chatLanguageModels.json theme={null}
+      [
+        {
+          "name": "Fireworks",
+          "vendor": "customendpoint",
+          "apiType": "chat-completions",
+          "apiKey": "${input:chat.lm.secret.fw-...}",
+          "models": [
+            {
+              "id": "auto",
+              "name": "Auto",
+              "url": "https://api.fireworks.ai/inference",
+              "maxInputTokens": 1048575,
+              "maxOutputTokens": 131072,
+              "vision": true,
+              "toolCalling": true
+            }
+          ]
+        }
+      ]
+      ```
 
-On macOS, VS Code encrypts the key through the login Keychain. Open VS Code once before connecting. On Linux, encryption requires `libsecret`; otherwise, Chromium uses obfuscation and FireConnect warns you.
+      The key is stored separately in `state.vscdb`, encrypted with Electron `safeStorage`. On Linux, encryption needs `libsecret`; without it, VS Code only obfuscates the key and FireConnect warns you.
 
-FireConnect snapshots the original JSON under `~/.fireconnect/vscode/`. `off` restores that file and deletes the secret row. Use `--vscode-path` for a non-default configuration path. For UI setup, see [GitHub Copilot](/ecosystem/integrations/github-copilot).
+      | Platform | `chatLanguageModels.json`                  | `state.vscdb`                                            |
+      | -------- | ------------------------------------------ | -------------------------------------------------------- |
+      | Linux    | `~/.config/Code/User/`                     | `~/.config/Code/User/globalStorage/`                     |
+      | macOS    | `~/Library/Application Support/Code/User/` | `~/Library/Application Support/Code/User/globalStorage/` |
+      | Windows  | `%APPDATA%\Code\User\`                     | `%APPDATA%\Code\User\globalStorage\`                     |
+    </Accordion>
+  </Tab>
+
+  <Tab title="Manual setup" icon="wrench">
+    In Copilot Chat, open **Language Models**, click **+ Add Models...**, and choose **Custom Endpoint**. Use `https://api.fireworks.ai/inference/v1`, your Fireworks key, and a model ID such as `glm-latest`.
+
+    Follow the step-by-step screenshots in [GitHub Copilot](/ecosystem/integrations/github-copilot).
+  </Tab>
+</Tabs>
 
 ## Copilot App
 
-The GitHub Copilot **desktop app** routes through Fireworks without changing its built-in models. FireConnect adds a provider alongside them. **Quit the app before connecting or running `off`.** `status` is read-only while the app runs. The app and CLI both store files under `~/.copilot`, but they use separate settings and are configured independently.
+<Badge>OpenAI Chat Completions</Badge> <Badge>FireRouter with Provider Keys</Badge>
 
-```bash wrap theme={null}
-fireconnect login
-fireconnect copilot-app
-fireconnect copilot-app status
-```
+The GitHub Copilot **desktop app** keeps its built-in models and adds Fireworks alongside them. **Quit the app before connecting or running `off`.**
 
-Reopen the app and pick a Fireworks model in Settings → Model providers.
+<Tabs>
+  <Tab title="FireConnect" icon="bolt">
+    ```bash wrap theme={null}
+    fireconnect copilot-app
+    fireconnect copilot-app status
+    ```
 
-To add FireRouter to the picker, reconnect with `fireconnect copilot-app --model firerouter`.
+    Reopen the app and pick a Fireworks model in **Settings → Model providers**.
 
-<Frame>
-  <img alt="GitHub Copilot desktop app model picker showing Auto selected from Fireworks alongside FireRouter, DeepSeek, GLM, Kimi, and MiniMax models" />
-</Frame>
+    <Accordion title="See what FireConnect writes">
+      FireConnect writes to `~/.copilot/data.db` (SQLite, movable with `COPILOT_HOME`):
 
-**What gets written** to `~/.copilot/data.db` (SQLite, movable via `COPILOT_HOME`):
+      | Table             | What FireConnect adds                                                                                                                              |
+      | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+      | `model_providers` | One `Fireworks` provider of type `openai`, with base URL `https://api.fireworks.ai/inference/v1` and your key as an `Authorization: Bearer` header |
+      | `provider_models` | One row per model, with token limits and reasoning efforts (`low`, `medium`, `high`, `max`)                                                        |
 
-| Table             | What FireConnect adds                                                                                              |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `model_providers` | One row, id starting `fc-`, named `Fireworks`, type `openai`                                                       |
-| `settings_json`   | `baseUrl` → `https://api.fireworks.ai/inference/v1`, `wireApi: completions`, your key as an `Authorization` header |
-| `provider_models` | One row per model: name, display name, token limits, reasoning efforts (`low`/`medium`/`high`/`max`)               |
+      `off` deletes the provider and its models. Use `--db-path` for a non-default database.
+    </Accordion>
+  </Tab>
 
-`off` deletes the `fc-` provider and its models. The desktop app's BYOK path does not support image input, the hover-card Context row, or AI-credits pricing. Billing runs through Fireworks. Use `--db-path` for a non-default database.
+  <Tab title="Manual setup" icon="wrench">
+    In **Settings → Model providers**, add a provider with the values FireConnect uses:
+
+    | Field    | Value                                                |
+    | -------- | ---------------------------------------------------- |
+    | Base URL | `https://api.fireworks.ai/inference/v1`              |
+    | API key  | Your Fireworks key                                   |
+    | Models   | Fireworks IDs, such as `glm-latest` or `kimi-latest` |
+  </Tab>
+</Tabs>
+
+The app's bring-your-own-key path does not support image input, the hover-card Context row, or AI-credits pricing. Routes that need a local Anthropic key are not available. See [Harness Compatibility](/nexus/harness-compatibility).
 
 ## Copilot CLI
 
-The **`copilot` command** (`@github/copilot`) reads plain JSON, never the desktop app's database.
+<Badge>OpenAI Chat Completions</Badge> <Badge>FireRouter with manual setup</Badge>
 
-```bash wrap theme={null}
-fireconnect login
-fireconnect copilot-cli
-fireconnect copilot-cli status
-```
+The `copilot` command (`@github/copilot`) reads plain JSON under `~/.copilot`, separate from the desktop app.
 
-Restart `copilot` after enabling.
+<Tabs>
+  <Tab title="FireConnect" icon="bolt">
+    ```bash wrap theme={null}
+    fireconnect copilot-cli
+    fireconnect copilot-cli status
+    ```
 
-<Frame>
-  <img alt="Copilot CLI model picker showing Auto selected and Fireworks DeepSeek, GLM, Kimi, and MiniMax models" />
-</Frame>
+    Start a new `copilot` session. Switch models with `copilot --model fireworks/<name>` or `/model`.
 
-**What gets written** under `~/.copilot`:
+    <Frame>
+      <img alt="Copilot CLI model picker showing Auto selected and Fireworks DeepSeek, GLM, Kimi, and MiniMax models" />
+    </Frame>
 
-| File             | What FireConnect writes                                                                                                       |
-| ---------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| `providers.json` | One `providers[]` entry named `fireworks` + one `models[]` entry per model (limits, per-model vision, and a reasoning toggle) |
-| `settings.json`  | The selected `model`. The CLI requires this because BYOK providers do not define a default                                    |
+    `off` restores `providers.json` from its snapshot, or deletes it if FireConnect created it. Use `--providers-path` for a non-default location.
+  </Tab>
 
-**Use provider-prefixed model IDs:** use `fireworks/glm-latest`, not bare `glm-latest`. The CLI rejects a bare model name and silently falls back to its configured model.
+  <Tab title="Manual setup" icon="wrench">
+    ```json ~/.copilot/providers.json theme={null}
+    {
+      "providers": [
+        {
+          "name": "fireworks",
+          "type": "openai",
+          "wireApi": "completions",
+          "baseUrl": "https://api.fireworks.ai/inference/v1",
+          "apiKey": "fw_YOUR_FIREWORKS_API_KEY"
+        }
+      ],
+      "models": [
+        {
+          "id": "glm-latest",
+          "provider": "fireworks",
+          "wireModel": "glm-latest",
+          "name": "GLM (Latest)",
+          "maxPromptTokens": 1048576,
+          "maxContextWindowTokens": 1048576,
+          "maxOutputTokens": 131072,
+          "capabilities": { "supports": { "reasoningEffort": true } }
+        }
+      ]
+    }
+    ```
 
-Switch models with `copilot --model fireworks/<name>` or `/model`. The CLI supports image input according to each model's catalog entry.
+    ```json ~/.copilot/settings.json theme={null}
+    { "model": "fireworks/glm-latest" }
+    ```
 
-Because `providers.json` is user-editable, `off` restores its snapshot or deletes the file if FireConnect created it. Your existing entries remain intact. Use `--providers-path` for a non-default location.
+    For a FireRouter route with Claude or GPT models, add a `headers` map to the provider, such as `"headers": { "x-anthropic-api-key": "sk-ant-..." }`, and use the router ID, such as `firerouter/opus`, as the model `id` and `wireModel`. FireConnect cannot add these routes to Copilot CLI yet. The [harness setup](/nexus/firerouter/setup#set-up-your-harness) generates the full file.
+  </Tab>
+</Tabs>
+
+<Note>
+  Use provider-prefixed model IDs such as `fireworks/glm-latest`. The CLI rejects a bare `glm-latest` and silently falls back to its configured model.
+</Note>
 
 ## DeepSeek Harness
 
-DeepSeek's coding agent (`dsh`) routes through a custom OpenAI-compatible provider under `$DSH_HOME` (default `~/.dsh`). Restart `dsh` after connecting or running `off`.
+<Badge>OpenAI Chat Completions</Badge> <Badge>FireRouter with manual setup</Badge>
 
-```bash wrap theme={null}
-fireconnect login
-fireconnect deepseek
-fireconnect deepseek status
-```
+DeepSeek's coding agent (`dsh`) runs named profiles, such as `tui`, `web`, and `headless`, under `$DSH_HOME`, which defaults to `~/.dsh`. Restart `dsh` after changing a profile.
 
-With a standard Fireworks key, the default model is `auto`.
+<Tabs>
+  <Tab title="FireConnect" icon="bolt">
+    ```bash wrap theme={null}
+    fireconnect deepseek
+    fireconnect deepseek status
+    ```
 
-**What gets written**
+    FireConnect writes a `fireworks` provider to `~/.dsh/settings.yaml` and snapshots it under `~/.fireconnect/deepseek/`. The default model is `auto`.
 
-* A `fireworks` provider under `llm-pi-ai.providers` in `settings.yaml`
-* `agent-default-model` set to the selected model
-* The API key as `FIREWORKS_API_KEY` in `.credentials.yaml` with mode `0600`
+    <Warning>
+      `dsh` 0.1.7 reads provider settings from each profile's
+      `cordis.patch.yml` and ignores `~/.dsh/settings.yaml`. If `dsh` still
+      uses its DeepSeek provider after you connect, use manual setup.
+    </Warning>
+  </Tab>
 
-FireConnect snapshots both files under `~/.fireconnect/deepseek/`. Use `--config-path` for a different `settings.yaml`; the credentials file stays beside it.
+  <Tab title="Manual setup" icon="wrench">
+    Create the profile folder once, then add a patch to it. Repeat for each profile you use.
 
-```bash wrap theme={null}
-fireconnect model list --search glm
-fireconnect deepseek --model glm-5p2
-```
+    ```bash wrap theme={null}
+    dsh --profile tui --dump-config > /dev/null
+    ```
 
-## Foundry across harnesses
+    ```yaml ~/.dsh/profiles/tui/cordis.patch.yml theme={null}
+    - id: llm-pi-ai
+      config:
+        providers:
+          fireworks:
+            displayName: Fireworks
+            apiKeyEnv: FIREWORKS_API_KEY
+            api: openai-completions
+            baseURL: https://api.fireworks.ai/inference/v1
+            models:
+              - id: glm-latest
+                name: GLM (Latest)
+                reasoning: true
+                contextWindow: 1048576
+                maxTokens: 131072
+    - id: agent-default-model
+      config:
+        provider: fireworks
+        model: glm-latest
+    ```
 
-[Microsoft Foundry](/nexus/microsoft-foundry) runs Fireworks models in your Azure subscription and bills usage through Azure. Direct FireConnect routing supports **OpenCode, Codex, Pi, Cursor IDE, and VS Code**. Direct routing does not support Claude Code, DeepSeek Harness, Copilot, or model routers.
+    ```bash wrap theme={null}
+    export FIREWORKS_API_KEY="fw_..."
+    dsh tui
+    ```
 
-Pass the Foundry **deployment name** (`FW-GLM-5.2`), not a Fireworks short ID. Setup, switching, and restore behavior: [Microsoft Foundry](/nexus/microsoft-foundry).
-
-<Note>
-  **Need Claude Code on Foundry?** Use an LLM gateway between Claude Code and Foundry. Two proven patterns are Claude Code to Envoy AI Gateway to Foundry, and Claude Code to LiteLLM to Foundry. The gateway translates requests and responses. FireConnect does not configure this path. See [Microsoft Foundry](/nexus/microsoft-foundry#claude-code-through-a-gateway) for details and a reference implementation.
-</Note>
+    For a FireRouter route with Claude or GPT models, add `headers` to the provider, such as `x-anthropic-api-key: sk-ant-...`, and use the router ID as the model. The [harness setup](/nexus/firerouter/setup#set-up-your-harness) generates the full patch.
+  </Tab>
+</Tabs>

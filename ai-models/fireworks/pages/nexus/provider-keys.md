@@ -4,9 +4,20 @@ source: https://docs.fireworks.ai/nexus/provider-keys
 path: nexus/provider-keys
 ---
 
-Connect an account-level Anthropic, OpenAI, or Amazon Bedrock Provider Key once so model routers can call closed families without developers sending the key.
+Connect an account-level Anthropic, OpenAI, or Amazon Bedrock Provider Key once, where available, so model routers can call closed families without developers sending the key.
 
-Connect an account-level Anthropic, OpenAI, or Amazon Bedrock Provider Key once to let model routers call closed models. After that, developers authenticate with only their Fireworks API key. When a router selects a closed model, Fireworks sends the request with the stored provider credential.
+Connect an Anthropic, OpenAI, or [Amazon Bedrock](/nexus/provider-keys/bedrock) key once to let [FireRouter](/nexus/firerouter) call closed models. After that, developers and gateways authenticate with only their Fireworks API key. When FireRouter selects a closed model, Fireworks sends the request with the stored provider credential.
+
+<Note>
+  Provider Keys is not yet available on every account. If **Provider Keys**
+  does not appear in [Settings](https://app.fireworks.ai/settings/provider-keys),
+  [contact the Fireworks team](https://fireworks.ai/demo-request) to enable it.
+  Self-serve setup is coming soon. Until then, send a per-request Anthropic or
+  OpenAI header from [APIs and SDKs](/nexus/apis-and-sdks#credentials) or
+  [LLM Gateways](/nexus/llm-gateways#provide-closed-model-credentials). For
+  coding harnesses, review local support in
+  [Harness Compatibility](/nexus/harness-compatibility).
+</Note>
 
 FireConnect configures the developer's Fireworks credential through `fireconnect login`. The provider key stays with the account, so it is never distributed to developers or pasted into a chat. Fireworks encrypts it at rest and never shows it in full again.
 
@@ -43,11 +54,11 @@ Each provider is always in one of these states:
 
 ## Connect a key in the dashboard
 
-Connect a Provider Key from **Settings** without using a terminal.
+Connect a Provider Key from **Settings** without using a terminal. You can open [Provider Keys](https://app.fireworks.ai/settings/provider-keys) directly.
 
 <Steps>
   <Step title="Open Provider Keys">
-    Open **Settings** and go to **Provider Keys**.
+    Open **Settings** and go to **Provider Keys**, or open the [Provider Keys page](https://app.fireworks.ai/settings/provider-keys) directly.
   </Step>
 
   <Step title="Connect a provider">

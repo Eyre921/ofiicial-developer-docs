@@ -12,7 +12,7 @@ Create a codespace to start developing in a secure, configurable, and dedicated 
 
 * [Quickstart for GitHub Codespaces](/en/codespaces/quickstart)
 
-  <p>Get started with GitHub Codespaces quickly.</p>
+  Get started with GitHub Codespaces quickly.
 
 * [What are GitHub Codespaces?](/en/codespaces/about-codespaces/what-are-codespaces)
 
@@ -40,7 +40,7 @@ Create a codespace to start developing in a secure, configurable, and dedicated 
 
 * [Enabling or disabling GitHub Codespaces for your organization](/en/codespaces/managing-codespaces-for-your-organization/enabling-or-disabling-github-codespaces-for-your-organization)
 
-  You can control which users can use GitHub Codespaces in your organization's private repositories.
+  <p>You can control which users can use GitHub Codespaces in your organization's private repositories.</p>
 
 * [Security in GitHub Codespaces](/en/codespaces/reference/security-in-github-codespaces)
 

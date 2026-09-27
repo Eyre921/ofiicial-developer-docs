@@ -50,13 +50,17 @@ fireconnect opencode --model firerouter --routing-preference 2
 fireconnect pi --model firerouter --routing-preference 5
 ```
 
-| Harness                                      | Supported model IDs                                 |
-| -------------------------------------------- | --------------------------------------------------- |
-| Claude Code                                  | Bare `firerouter` only                              |
-| OpenCode, Pi, VS Code                        | `firerouter` or any ID beginning with `firerouter/` |
-| Codex, Cursor IDE, Copilot, DeepSeek Harness | Not supported                                       |
+Every harness can use any FireRouter ID. The table shows which IDs accept FireConnect's `--routing-preference` flag:
 
-FireConnect accepts values `1` to `5` or the corresponding level names. Claude Code returns an error if you combine `--routing-preference` with a compound ID such as `firerouter/opus`. Cursor CLI is not supported.
+| Harness                                                       | IDs that accept `--routing-preference`              |
+| ------------------------------------------------------------- | --------------------------------------------------- |
+| Claude Code                                                   | Bare `firerouter` only                              |
+| OpenCode, Pi, VS Code                                         | `firerouter` or any ID beginning with `firerouter/` |
+| Codex, Cursor IDE, Copilot App, Copilot CLI, DeepSeek Harness | None                                                |
+
+FireConnect accepts values `1` to `5` or the corresponding level names. In Claude Code, `fireconnect claude --model firerouter/opus` works, but adding `--routing-preference` to that ID returns an error: `--routing-preference requires --model firerouter`.
+
+To set a preference where FireConnect does not support it, send the `x-routing-preference` header with [manual setup](/nexus/firerouter/setup#set-up-your-harness), for example in `ANTHROPIC_CUSTOM_HEADERS` for Claude Code or `http_headers` for Codex. Cursor IDE and the Copilot App cannot send extra headers. Cursor CLI is not supported.
 
 ## When to adjust
 
@@ -66,6 +70,6 @@ FireConnect accepts values `1` to `5` or the corresponding level names. Claude C
 
 ## Related
 
-* [FireRouter](/nexus/firerouter): `firerouter`, `firerouter/opus`, and `firerouter/astra`
+* [FireRouter](/nexus/firerouter): `firerouter`, `firerouter/opus`, `firerouter/astra`, and `firerouter/sol`
 * [APIs and SDKs](/nexus/apis-and-sdks): HTTP headers and Provider Keys
 * [FireConnect](/nexus/fireconnect): enable a router in a coding harness

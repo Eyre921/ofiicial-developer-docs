@@ -112,28 +112,16 @@ All Fireworks on Foundry usage is billed through Azure. You do not need a separa
 | Custom Model deployment failing | Confirm weights are full-weight (not LoRA adapters) and the architecture is in the [supported list](https://learn.microsoft.com/en-us/azure/foundry/how-to/fireworks/enable-fireworks-models#supported-model-architectures) |
 | PTU provisioning questions      | Contact [sales@fireworks.ai](mailto:sales@fireworks.ai)                                                                                                                                                                     |
 
-## FireConnect
+## Coding harnesses
 
-Use FireConnect to route local coding harnesses through your Foundry deployments without hand-editing config files.
+Use your Foundry deployments from Claude Code, OpenCode, Cursor IDE, VS Code, and other coding harnesses.
 
-<Card title="Microsoft Foundry" icon="terminal" href="/nexus/microsoft-foundry">
-  Configure `--provider azure`, then run `fireconnect opencode`, `fireconnect codex`, `fireconnect cursor`, `fireconnect vscode`, or `fireconnect pi --model FW-GLM-5.2`
+<Card title="Foundry for Coding Harnesses" icon="terminal" href="/nexus/microsoft-foundry">
+  Connect with FireConnect, configure a harness manually, or route Claude Code
+  through an LLM gateway.
 </Card>
 
-FireConnect implements Azure routing for **OpenCode**, **Codex**, **Pi**, **Cursor**, and **VS Code** in v0.9.0+. Direct routing does not cover **Claude Code** and **DeepSeek Harness**. Running `fireconnect claude` or `fireconnect deepseek` always wires direct Fireworks, regardless of global `--provider azure`. To run Claude Code against Foundry, place an LLM gateway such as Envoy AI Gateway or LiteLLM between Claude Code and Foundry. See [Claude Code through a gateway](/nexus/microsoft-foundry#claude-code-through-a-gateway).
-
-```bash theme={null}
-export AZURE_API_KEY=<your-azure-api-key>
-
-fireconnect configure \
-  --provider azure \
-  --base-url https://<resource>.services.ai.azure.com \
-  --api-key $AZURE_API_KEY
-
-fireconnect opencode --model FW-GLM-5.2
-```
-
-See [Microsoft Foundry](/nexus/microsoft-foundry) for Foundry models, per-harness config details, one-off `--azure` routing, [switching or disconnecting](/nexus/microsoft-foundry#switch-or-disconnect), and returning to direct Fireworks.
+This page covers enabling and operating Fireworks models in Foundry itself.
 
 ## Additional resources
 

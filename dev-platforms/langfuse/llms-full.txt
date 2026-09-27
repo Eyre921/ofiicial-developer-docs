@@ -1,3 +1,474 @@
+# Test an existing application and reuse graders
+
+**URL:** https://langfuse.com/resources/engineering/evaluate-existing-application.md
+
+---
+title: Evaluate an existing application
+description: Reuse Python or TypeScript application functions and deterministic graders, compare versions on a fixed dataset, and catch regressions in CI.
+tags: [guide, evaluation]
+---
+
+# Evaluate an existing application
+
+Keep your application code and existing checks. Wrap the function you want to test in an experiment task, run it on a fixed dataset, and use Langfuse to compare outputs and review failures. This works for a single model call, a retrieval pipeline, or an agent that calls tools.
+
+This example tests a small refund-policy function. The candidate fixes one case and breaks another, so the average score stays the same. Both SDK examples run without a model provider or an LLM judge. Replace the sample function with your application to evaluate fresh outputs from your own system.
+
+## Set up Langfuse [#setup]
+
+Use Langfuse v4 with Python SDK v4 or JS/TS SDK v5. Create a [Cloud project](/cloud) or use your [self-hosted instance](/self-hosting), then get API keys from **Settings → API Keys**.
+
+```bash
+export LANGFUSE_PUBLIC_KEY="pk-lf-..."
+export LANGFUSE_SECRET_KEY="sk-lf-..."
+export LANGFUSE_BASE_URL="https://cloud.langfuse.com"
+```
+
+Use the URL for your [data region](/security/data-regions) or self-hosted instance. These scripts run the application and graders in your process and send test inputs, outputs, and scores to Langfuse.
+
+Already have a local suite? [Keep your JSON cases and grader in Pytest or Vitest](/docs/evaluation/experiments/experiments-ci-cd#other-cicd-systems). Already have outputs **and** scores? [Publish those saved results](#saved-check-results) without running the application or checks again.
+
+## Run two versions with the same checks [#run-two-versions]
+
+The scripts create a new dataset, add two reviewed cases, and pin the latest server-assigned creation timestamp returned by those writes. Both runs use that exact version, avoiding dependence on your computer's clock. In an existing project, reuse your dataset and store its approved version timestamp with your test configuration.
+
+<LangTabs items={["Python SDK", "JS/TS SDK"]}>
+<Tab>
+
+```bash
+pip install langfuse
+```
+
+Save as `evaluate.py` and run `python evaluate.py`:
+
+```python title="evaluate.py"
+from uuid import uuid4
+
+from langfuse import Evaluation, get_client
+
+
+def answer_question(question, version):
+    # Replace this sample function with your application's entry point.
+    # Its returned output, not a separately rewritten prompt, is evaluated.
+    if version == "baseline":
+        return {"refund_days": 30}
+    return {"refund_days": 14}
+
+
+def grade(output, expected_output):
+    # Keep your existing business-rule checks here.
+    return output["refund_days"] == expected_output["refund_days"]
+
+
+def exact_refund_window(*, output, expected_output, **kwargs):
+    return Evaluation(
+        name="refund_window",
+        value=int(grade(output, expected_output)),
+    )
+
+
+langfuse = get_client()
+dataset_name = f"refund-regression-{uuid4().hex[:8]}"
+try:
+    langfuse.create_dataset(name=dataset_name)
+    created_versions = []
+    for case_id, question, days in [
+        ("standard", "What is the standard refund window?", 30),
+        ("sale", "What is the sale-item refund window?", 14),
+    ]:
+        created_item = langfuse.create_dataset_item(
+            dataset_name=dataset_name,
+            input={"question": question},
+            expected_output={"refund_days": days},
+            metadata={"case_id": case_id},
+        )
+
+        created_versions.append(created_item.created_at)
+
+    version = max(created_versions)
+    dataset = langfuse.get_dataset(dataset_name, version=version)
+    print(f"Dataset: {dataset_name}; version: {version.isoformat()}")
+
+    for application_version in ["baseline", "candidate"]:
+
+        def task(*, item, **kwargs):
+            return answer_question(item.input["question"], application_version)
+
+        result = dataset.run_experiment(
+            name="Refund policy",
+            run_name=application_version,
+            task=task,
+            evaluators=[exact_refund_window],
+            metadata={
+                "application_version": application_version,
+                "evaluator_version": "refund-window-v1",
+            },
+        )
+        print(result.format())
+finally:
+    langfuse.flush()
+```
+
+</Tab>
+<Tab>
+
+```bash
+npm install @langfuse/client @langfuse/otel @opentelemetry/sdk-node
+npm install --save-dev tsx typescript
+```
+
+Save as `evaluate.ts` and run `npx tsx evaluate.ts`:
+
+```typescript title="evaluate.ts"
+import { randomUUID } from "node:crypto";
+import { LangfuseClient } from "@langfuse/client";
+import { LangfuseSpanProcessor } from "@langfuse/otel";
+import { NodeSDK } from "@opentelemetry/sdk-node";
+
+type Answer = { refund_days: number };
+
+async function answerQuestion(
+  question: string,
+  version: string,
+): Promise<Answer> {
+  // Replace this sample function with your application's entry point.
+  return { refund_days: version === "baseline" ? 30 : 14 };
+}
+
+function grade(output: Answer, expectedOutput: Answer): boolean {
+  // Keep your existing business-rule checks here.
+  return output.refund_days === expectedOutput.refund_days;
+}
+
+async function main() {
+  const otel = new NodeSDK({ spanProcessors: [new LangfuseSpanProcessor()] });
+  otel.start();
+  const langfuse = new LangfuseClient();
+  const datasetName = `refund-regression-${randomUUID().slice(0, 8)}`;
+  try {
+    await langfuse.api.datasets.create({ name: datasetName });
+    const createdVersions: string[] = [];
+    for (const [caseId, question, days] of [
+      ["standard", "What is the standard refund window?", 30],
+      ["sale", "What is the sale-item refund window?", 14],
+    ] as const) {
+      const createdItem = await langfuse.api.datasetItems.create({
+        datasetName,
+        input: { question },
+        expectedOutput: { refund_days: days },
+        metadata: { case_id: caseId },
+      });
+      createdVersions.push(createdItem.createdAt);
+    }
+
+    const version = createdVersions.reduce((latest, current) =>
+      Date.parse(current) > Date.parse(latest) ? current : latest,
+    );
+    const dataset = await langfuse.dataset.get(datasetName, { version });
+    console.log(`Dataset: ${datasetName}; version: ${version}`);
+    for (const applicationVersion of ["baseline", "candidate"]) {
+      const result = await dataset.runExperiment({
+        name: "Refund policy",
+        runName: applicationVersion,
+        task: async (item) =>
+          answerQuestion(item.input.question, applicationVersion),
+        evaluators: [
+          async ({ output, expectedOutput }) => ({
+            name: "refund_window",
+            value: Number(grade(output, expectedOutput)),
+          }),
+        ],
+        metadata: {
+          application_version: applicationVersion,
+          evaluator_version: "refund-window-v1",
+        },
+      });
+      console.log(await result.format());
+    }
+  } finally {
+    await otel.shutdown();
+  }
+}
+
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});
+```
+
+</Tab>
+</LangTabs>
+
+Open **Experiments** in Langfuse and select the two runs. The standard-refund case changes from pass to fail; the sale-item case changes from fail to pass. Both runs score 50%, which is why reviewing individual cases matters. Follow [Compare experiments](/docs/evaluation/experiments/compare-experiments) to inspect the differences.
+
+## Connect your application [#connect-your-application]
+
+Replace `answer_question` or `answerQuestion` with an import from your application. Pass the same inputs and configuration that the deployed application receives, including retrieved context or tool results when applicable. For a multi-stage application, return the fields your checks need and [trace the stages](/docs/observability/get-started) so you can inspect where a failure originated.
+
+Keep `grade` as ordinary application code. You can call it from your existing test runner and from the SDK evaluator. Add semantic evaluators only for requirements those checks cannot decide, such as whether a paraphrase is supported by retrieved context. See [RAG faithfulness evaluation](/resources/engineering/rag-faithfulness-evaluation) and [hallucination detection](/resources/engineering/hallucination-detection).
+
+### Evaluate saved outputs [#saved-outputs]
+
+To evaluate recorded answers without calling your application again, replace the task body with a lookup in your saved outputs, keyed by dataset item ID or `case_id`. Let missing outputs raise an error; do not substitute an empty answer. Record the original application version and mark the experiment metadata as `execution_mode: replay`.
+
+For example, save this as `saved-outputs.json`:
+
+```json title="saved-outputs.json"
+{
+  "standard": { "refund_days": 30 },
+  "sale": { "refund_days": 30 }
+}
+```
+
+Use the following task in place of the task in the example above. Keep the same dataset and evaluators, set the run name to identify the recorded version, and add `execution_mode: replay` to the run metadata.
+
+<LangTabs items={["Python SDK", "JS/TS SDK"]}>
+<Tab>
+
+```python
+import json
+from pathlib import Path
+
+saved_outputs = json.loads(Path("saved-outputs.json").read_text())
+
+
+def replay_task(*, item, **kwargs):
+    return saved_outputs[item.metadata["case_id"]]
+```
+
+Pass `task=replay_task` to `dataset.run_experiment`.
+
+</Tab>
+<Tab>
+
+```typescript
+import { readFileSync } from "node:fs";
+import type { ExperimentTask } from "@langfuse/client";
+
+const savedOutputs = JSON.parse(readFileSync("saved-outputs.json", "utf8"));
+const replayTask: ExperimentTask = async (item) => {
+  const metadata = item.metadata as { case_id: string };
+  if (!Object.hasOwn(savedOutputs, metadata.case_id)) {
+    throw new Error(`Missing saved output: ${metadata.case_id}`);
+  }
+  return savedOutputs[metadata.case_id];
+};
+```
+
+Pass `task: replayTask` to `dataset.runExperiment`.
+
+</Tab>
+</LangTabs>
+
+This measures the quality of recorded outputs under the current graders. It does not validate a new prompt, model, or code change. For that, run the changed application on the same inputs. To score existing traces directly, use [Scores via API/SDK](/docs/evaluation/evaluation-methods/scores-via-sdk).
+
+## Publish saved check results [#saved-check-results]
+
+If your test runner already saved outputs and grader results, report them as an experiment on local data. The adapter below returns the saved output as the task result and the saved check as an evaluation. It calls neither your application nor your grader, and does not require a hosted dataset.
+
+Export your existing results into this format. Keep stable case IDs and the original application and evaluator versions. Include the evidence reviewers need in the input or metadata. Only include data you intend to upload to your Langfuse project.
+
+```json title="results.json"
+{
+  "application_version": "release-42",
+  "evaluator_version": "refund-window-v1",
+  "cases": [
+    {
+      "id": "standard",
+      "input": { "question": "What is the standard refund window?" },
+      "expected_output": { "refund_days": 30 },
+      "output": { "refund_days": 30 },
+      "passed": true,
+      "reason": "The refund window matches the reviewed policy."
+    },
+    {
+      "id": "sale",
+      "input": { "question": "What is the sale-item refund window?" },
+      "expected_output": { "refund_days": 14 },
+      "output": { "refund_days": 30 },
+      "passed": false,
+      "reason": "Sale items have a 14-day window."
+    }
+  ]
+}
+```
+
+Use the [credentials and dependencies above](#setup). The scripts validate the boolean check results before uploading and hash the complete artifact to identify its contents. Export task or grader errors separately and resolve them before publishing a complete scored run; never turn an error into a passing check.
+
+<LangTabs items={["Python SDK", "JS/TS SDK"]}>
+<Tab>
+
+```python title="publish_results.py"
+import hashlib
+import json
+from pathlib import Path
+
+from langfuse import Evaluation, get_client
+
+artifact = Path("results.json").read_bytes()
+saved = json.loads(artifact)
+cases = saved["cases"]
+ids = [case["id"] for case in cases]
+if not ids or not all(ids) or len(set(ids)) != len(ids):
+    raise ValueError("Expected nonempty, unique case IDs")
+for case in cases:
+    if type(case["passed"]) is not bool or case["output"] is None:
+        raise ValueError(f"Missing output or boolean check: {case['id']}")
+by_id = {case["id"]: case for case in cases}
+
+
+def saved_task(*, item, **kwargs):
+    return by_id[item["metadata"]["case_id"]]["output"]
+
+
+def saved_check(*, metadata, **kwargs):
+    case = by_id[metadata["case_id"]]
+    return Evaluation(
+        name="existing_checks", value=int(case["passed"]), comment=case["reason"]
+    )
+
+
+langfuse = get_client()
+try:
+    result = langfuse.run_experiment(
+        name="Application checks",
+        data=[{
+            "input": case["input"],
+            "expected_output": case["expected_output"],
+            "metadata": {"case_id": case["id"]},
+        } for case in cases],
+        task=saved_task,
+        evaluators=[saved_check],
+        metadata={
+            "application_version": saved["application_version"],
+            "evaluator_version": saved["evaluator_version"],
+            "execution_mode": "imported_results",
+            "artifact_sha256": hashlib.sha256(artifact).hexdigest(),
+        },
+    )
+    print(result.format())  # Includes the experiment link.
+finally:
+    langfuse.flush()
+```
+
+Run `python publish_results.py`.
+
+</Tab>
+<Tab>
+
+```typescript title="publish-results.ts"
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
+import { LangfuseClient } from "@langfuse/client";
+import { LangfuseSpanProcessor } from "@langfuse/otel";
+import { NodeSDK } from "@opentelemetry/sdk-node";
+
+type SavedCase = {
+  id: string;
+  input: unknown;
+  expected_output: unknown;
+  output: unknown;
+  passed: boolean;
+  reason: string;
+};
+
+async function main() {
+  const artifact = readFileSync("results.json");
+  const saved = JSON.parse(artifact.toString("utf8"));
+  const cases: SavedCase[] = saved.cases;
+  const ids = cases.map((item) => item.id);
+  if (!ids.length || !ids.every(Boolean) || new Set(ids).size !== ids.length) {
+    throw new Error("Expected nonempty, unique case IDs");
+  }
+  for (const item of cases) {
+    if (typeof item.passed !== "boolean" || item.output == null) {
+      throw new Error(`Missing output or boolean check: ${item.id}`);
+    }
+  }
+  const byId = new Map(cases.map((item) => [item.id, item]));
+  const otel = new NodeSDK({ spanProcessors: [new LangfuseSpanProcessor()] });
+  otel.start();
+  try {
+    const langfuse = new LangfuseClient();
+    const result = await langfuse.experiment.run({
+      name: "Application checks",
+      data: cases.map((item) => ({
+        input: item.input,
+        expectedOutput: item.expected_output,
+        metadata: { case_id: item.id },
+      })),
+      task: async (item) => {
+        const metadata = item.metadata as { case_id: string };
+        return byId.get(metadata.case_id)!.output;
+      },
+      evaluators: [async ({ metadata }) => {
+        const item = byId.get(metadata!.case_id)!;
+        return { name: "existing_checks", value: Number(item.passed), comment: item.reason };
+      }],
+      metadata: {
+        application_version: saved.application_version,
+        evaluator_version: saved.evaluator_version,
+        execution_mode: "imported_results",
+        artifact_sha256: createHash("sha256").update(artifact).digest("hex"),
+      },
+    });
+    console.log(await result.format()); // Includes the experiment link.
+  } finally {
+    await otel.shutdown();
+  }
+}
+
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});
+```
+
+Run `npx tsx publish-results.ts`.
+
+</Tab>
+</LangTabs>
+
+These are new experiment observations containing the recorded outputs and scores. Their timing describes the import, not the original application's latency or cost, and they do not reconstruct its intermediate tool calls. Retain the original run or trace identifiers in item metadata when available. If the original traces are already in Langfuse, [attach scores to those traces](/docs/evaluation/evaluation-methods/scores-via-sdk) instead of creating duplicate observations.
+
+Open the experiment link printed by the script, then [share the comparison](/docs/evaluation/experiments/compare-experiments#share-results) or [hand answers to a QA team](/docs/evaluation/evaluation-methods/annotation-queues#review-experiment-answers). A completed import reports existing results; it does not establish that the application passes your release policy.
+
+## Add a regression gate [#regression-gate]
+
+Choose a reviewed baseline, keep the dataset and evaluator versions fixed, and fail CI when a previously passing critical case fails. See [Compare against an approved baseline](/docs/evaluation/experiments/experiments-ci-cd#approved-baseline) for a gate that checks individual cases as well as aggregate scores.
+
+Hosted datasets are useful for sharing and versioning cases. You can also run [experiments on local data](/docs/evaluation/experiments/experiments-via-sdk). In Langfuse v4, these experiments appear in the same experiment list without requiring a hosted dataset.
+
+<!-- agent-instructions -->
+
+---
+
+## Agent Instructions
+
+This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/resources/engineering/evaluate-existing-application.md`.
+
+### Querying these docs
+
+If the answer is not on this page, query the documentation instead of guessing:
+
+- **Semantic search** across all Langfuse docs, returning an answer with the relevant pages and excerpts. Ask a specific, self-contained question:
+
+  ```bash
+  curl -sG "https://langfuse.com/api/search-docs" --data-urlencode "query=How do I trace a LangGraph agent?"
+  ```
+
+- **Index of every page**: <https://langfuse.com/llms.txt>, with per-section indexes [llms-docs.txt](https://langfuse.com/llms-docs.txt), [llms-integrations.txt](https://langfuse.com/llms-integrations.txt), and [llms-self-hosting.txt](https://langfuse.com/llms-self-hosting.txt).
+
+### Before writing Langfuse code
+
+- **Install the [Langfuse Agent Skill](https://langfuse.com/docs/api-and-data-platform/features/agent-skill).** It encodes Langfuse's own best practices for instrumentation, prompt management, and evaluation, and materially improves results.
+- **Read [What does a good trace look like?](https://langfuse.com/docs/observability/best-practices.md)** before instrumenting an application.
+- **Verify endpoints, parameters, and response fields** against the [API reference](https://api.reference.langfuse.com) instead of inferring them from code examples.
+- **Use the [Langfuse CLI](https://langfuse.com/docs/api-and-data-platform/features/cli)** (`npx @langfuse/cli api <resource> <action>`) to read or write traces, prompts, datasets, and scores from the terminal.
+
+Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
+
+
 # Block regressions in CI
 
 **URL:** https://langfuse.com/docs/evaluation/experiments/experiments-ci-cd.md
@@ -718,179 +1189,6 @@ If the answer is not on this page, query the documentation instead of guessing:
 Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
 
 
-# Check an LLM judge against human labels
-
-**URL:** https://langfuse.com/guides/llm-as-a-judge-calibration-skill.md
-
----
-title: How to calibrate your LLM-as-a-judge with the Langfuse skill
-seoTitle: "Calibrate Your LLM-as-a-Judge with a Skill"
-sidebarTitle: Calibrate LLM-as-a-judge
-description: Use the Langfuse skill to test whether your LLM-as-a-judge prompt agrees with how you would label cases, and iterate until it does.
-category: Evaluation
----
-
-# How to calibrate your LLM-as-a-judge with the Langfuse skill
-
-[LLM-as-a-judge](/docs/evaluation/evaluation-methods/llm-as-a-judge) is convenient: write a prompt, point it at your traces, get a score. But the judge is a prompt like any other, and you wrote it. How do you know it labels cases the way you would?
-
-The answer is **judge calibration**. You can do this manually, but the [Langfuse skill](https://github.com/langfuse/skills/tree/main/skills/langfuse) has a dedicated workflow for it. This guide walks through that workflow end-to-end.
-
-## Prerequisites
-
-**A coding agent with the Langfuse skill installed.** You can use any agent (Claude Code, Cursor, Codex, etc.) as long as the [Langfuse skill](https://github.com/langfuse/skills/tree/main/skills/langfuse) is available to it. Make sure your version of the skill includes `references/judge-calibration.md`.
-
-**Langfuse credentials in your environment.** The skill uses the [Langfuse CLI](https://github.com/langfuse/langfuse-cli) under the hood, which reads `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`, and `LANGFUSE_BASE_URL` from your shell.
-
-## The setup at a high level
-
-  <img
-    src="/images/docs/guides/judge-calibration-setup-diagram.png"
-    alt="Calibration flow: the judge prompt and the dataset come from Langfuse; the agent runs the prompt on each dataset input on your machine; predicted labels are compared against ground-truth labels to produce a match rate."
-  />
-
-You create a dataset of scenarios for your LLM-as-a-judge to evaluate, your ground truth labels. The judge prompt you want to test sits in [Langfuse Prompt Management](/docs/prompt-management/get-started).
-
-The calibration run is a [Langfuse experiment](/docs/evaluation/experiments) that executes the judge prompt against every dataset item. For each item, you end up with two labels: the score the judge produced and the expected output you defined. The agent compares the two and reports how often they agree. The higher the agreement rate, the more closely the judge is aligned with your judgment.
-
-## The workflow
-
-We will walk through an example where we want to calibrate an LLM-as-a-judge that runs on customer support conversations. The judge needs to determine whether the conversation was escalated to a human or not.
-
-<Steps>
-
-### Create the ground-truth dataset
-
-Create a [Langfuse dataset](/docs/evaluation/experiments/datasets). As an example for this walkthrough, we create a dataset called `escalated-not-escalated-scenarios`. Each item holds the customer support conversation and the label you would expect your LLM-as-a-judge to assign to it.
-
-Two example items from the dataset:
-
-| Inputs                                                                                                                                                                                                    | Expected outputs |
-| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
-| User: My subscription was charged twice this month.<br/>Agent: I can see the duplicate charge. I've issued a refund for the duplicate — it should appear in 3-5 business days.<br/>User: Perfect, thanks! | `not_escalated`  |
-| User: I can't log in.<br/>Agent: Can you try resetting your password at the link I just sent?<br/>User: This is the third time I'm trying. Just get me a human, please.                                   | `escalated`      |
-
-### Add the judge prompt to Prompt Management
-
-Copy the prompt from your LLM-as-a-judge and add it as a new prompt in [Langfuse Prompt Management](/docs/prompt-management/get-started). This is the prompt the calibration run will execute against each dataset item.
-
-  If you want to keep evaluator prompts separate from the prompts you use in
-  production, organize them under an `evaluator-prompts/` folder, or put them
-  in a dedicated project.
-
-### Run calibration via the Langfuse skill
-
-With the dataset and the prompt in place, open your AI assistant and ask it to run the calibration.
-
-**Run with your agent**
-
-```text
-I have a Langfuse dataset called <escalated-not-escalated-scenarios> and a judge prompt called <evaluator-prompts/escalation-judge> in Langfuse Prompt Management. Use the Langfuse skill's judge calibration workflow to test whether this judge agrees with the ground-truth labels in the dataset.
-```
-
-The skill takes over from there and walks you through a short back-and-forth before it runs anything. Here is what to expect:
-
-#### The agent asks if you want simple or advanced mode
-
-Before running anything, the agent asks whether you want a **simple** or **advanced** calibration.
-
-- **Simple mode** reports a single accuracy score: the percentage of dataset items the judge labeled the same way you did. Use this for a quick answer to "does this judge agree with me often enough?"
-- **Advanced mode** reports a full confusion matrix with precision, recall, F1, TPR, and TNR. Use this when one class is much rarer than the other, or before you trust the judge for high-stakes automation.
-
-If you are not sure, start with simple mode.
-
-#### The agent runs the experiment
-
-The agent creates a script using the [Langfuse Experiments SDK](/docs/evaluation/experiments/experiments-via-sdk) and runs the experiment for you. The run appears as a dataset run in the [Experiments UI](/docs/evaluation/experiments), with one trace per dataset item containing the judge's output.
-
-#### The agent returns a calibration report
-
-The agent compares the experiment outputs with the expected outputs from the dataset and returns a report. The level of detail depends on the mode you picked.
-
-<Details>
-<Summary>Example calibration report (advanced mode)</Summary>
-
-**Setup**
-
-- Dataset: `escalated-not-escalated-scenarios` — 35 items, 0 invalid labels
-- Judge prompt: `evaluator-prompts/escalation-judge` v1 · model `gpt-4o-mini` · temp 0
-- Positive = `escalated`, Negative = `not_escalated`
-
-**Confusion matrix**
-
-|                       | Pred: escalated | Pred: not_escalated |
-| --------------------- | --------------- | ------------------- |
-| Actual: escalated     | TP = 13         | FN = 1              |
-| Actual: not_escalated | FP = 0          | TN = 21             |
-
-**Metrics**
-
-| Metric       | Value |
-| ------------ | ----- |
-| Accuracy     | 0.971 |
-| Precision    | 1.000 |
-| Recall / TPR | 0.929 |
-| TNR          | 1.000 |
-| F1           | 0.963 |
-
-**Failure direction:** one false negative — the judge missed an escalation, never falsely flagged one. Both TPR (0.929) and TNR (1.000) clear the 0.90 threshold from the skill's advanced quality gates.
-
-The single disagreement (item `73cb3a52`):
-
-> User: "Forget it. I'll just email your CEO directly."<br/>
-> Agent: "I understand you're frustrated. Before you do that, would you like me to escalate this internally so we can resolve it today?"<br/>
-> User: "No, I'll handle it."
-
-- Ground truth: `escalated` (user announced they'd contact a human channel — CEO email — directly)
-- Judge: `not_escalated` (user declined the agent's offer to transfer)
-
-This one is genuinely borderline: the user declined the in-app escalation but stated they'd contact a human externally. Your prompt says both "saying they'll contact a human channel directly (email a specific team…)" → escalated AND "declining the agent's offer to transfer" → not_escalated, and this row triggers both rules. Worth deciding which signal dominates and tightening the prompt if you want the judge to handle this consistently.
-
-**Recommendation:** Ship. Metrics are strong and skewed in the right direction (no over-flagging). Resolve the rule conflict above before relying on the judge for any decision that depends on catching every escalation. Re-run after the prompt edit to confirm the FN drops.
-
-</Details>
-
-### Iterate on the prompt
-
-If the report shows the judge agrees with your labels often enough to trust it, you can ship. If you want to improve the results further, edit the judge prompt to address the disagreements and re-run the calibration. You have two options:
-
-- **Manually** open the prompt in Langfuse Prompt Management, edit it, and re-run the calibration steps above.
-- **Ask your AI assistant** to change the prompt based on the results. The skill uses the [Langfuse CLI](https://github.com/langfuse/langfuse-cli) under the hood already, so the agent can update the prompt for you directly.
-
-</Steps>
-
-Once the judge runs on production observations, keep checking agreement: have reviewers score a sample of those same observations in an [annotation queue](/docs/evaluation/evaluation-methods/annotation-queues), then compare their scores with the judge's in [Score Analytics](/docs/evaluation/scores/score-analytics#human-vs-ai-annotation-agreement).
-
-<!-- agent-instructions -->
-
----
-
-## Agent Instructions
-
-This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/guides/llm-as-a-judge-calibration-skill.md`.
-
-### Querying these docs
-
-If the answer is not on this page, query the documentation instead of guessing:
-
-- **Semantic search** across all Langfuse docs, returning an answer with the relevant pages and excerpts. Ask a specific, self-contained question:
-
-  ```bash
-  curl -sG "https://langfuse.com/api/search-docs" --data-urlencode "query=How do I trace a LangGraph agent?"
-  ```
-
-- **Index of every page**: <https://langfuse.com/llms.txt>, with per-section indexes [llms-docs.txt](https://langfuse.com/llms-docs.txt), [llms-integrations.txt](https://langfuse.com/llms-integrations.txt), and [llms-self-hosting.txt](https://langfuse.com/llms-self-hosting.txt).
-
-### Before writing Langfuse code
-
-- **Install the [Langfuse Agent Skill](https://langfuse.com/docs/api-and-data-platform/features/agent-skill).** It encodes Langfuse's own best practices for instrumentation, prompt management, and evaluation, and materially improves results.
-- **Read [What does a good trace look like?](https://langfuse.com/docs/observability/best-practices.md)** before instrumenting an application.
-- **Verify endpoints, parameters, and response fields** against the [API reference](https://api.reference.langfuse.com) instead of inferring them from code examples.
-- **Use the [Langfuse CLI](https://langfuse.com/docs/api-and-data-platform/features/cli)** (`npx @langfuse/cli api <resource> <action>`) to read or write traces, prompts, datasets, and scores from the terminal.
-
-Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
-
-
 # agreement metrics
 
 **URL:** https://langfuse.com/docs/evaluation/scores/score-analytics.md
@@ -1191,446 +1489,148 @@ If the answer is not on this page, query the documentation instead of guessing:
 Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
 
 
-# Test an existing application and reuse graders
+# Check an LLM judge against human labels
 
-**URL:** https://langfuse.com/resources/engineering/evaluate-existing-application.md
+**URL:** https://langfuse.com/guides/llm-as-a-judge-calibration-skill.md
 
 ---
-title: Evaluate an existing application
-description: Reuse Python or TypeScript application functions and deterministic graders, compare versions on a fixed dataset, and catch regressions in CI.
-tags: [guide, evaluation]
+title: How to calibrate your LLM-as-a-judge with the Langfuse skill
+seoTitle: "Calibrate Your LLM-as-a-Judge with a Skill"
+sidebarTitle: Calibrate LLM-as-a-judge
+description: Use the Langfuse skill to test whether your LLM-as-a-judge prompt agrees with how you would label cases, and iterate until it does.
+category: Evaluation
 ---
 
-# Evaluate an existing application
+# How to calibrate your LLM-as-a-judge with the Langfuse skill
 
-Keep your application code and existing checks. Wrap the function you want to test in an experiment task, run it on a fixed dataset, and use Langfuse to compare outputs and review failures. This works for a single model call, a retrieval pipeline, or an agent that calls tools.
+[LLM-as-a-judge](/docs/evaluation/evaluation-methods/llm-as-a-judge) is convenient: write a prompt, point it at your traces, get a score. But the judge is a prompt like any other, and you wrote it. How do you know it labels cases the way you would?
 
-This example tests a small refund-policy function. The candidate fixes one case and breaks another, so the average score stays the same. Both SDK examples run without a model provider or an LLM judge. Replace the sample function with your application to evaluate fresh outputs from your own system.
+The answer is **judge calibration**. You can do this manually, but the [Langfuse skill](https://github.com/langfuse/skills/tree/main/skills/langfuse) has a dedicated workflow for it. This guide walks through that workflow end-to-end.
 
-## Set up Langfuse [#setup]
+## Prerequisites
 
-Use Langfuse v4 with Python SDK v4 or JS/TS SDK v5. Create a [Cloud project](/cloud) or use your [self-hosted instance](/self-hosting), then get API keys from **Settings → API Keys**.
+**A coding agent with the Langfuse skill installed.** You can use any agent (Claude Code, Cursor, Codex, etc.) as long as the [Langfuse skill](https://github.com/langfuse/skills/tree/main/skills/langfuse) is available to it. Make sure your version of the skill includes `references/judge-calibration.md`.
 
-```bash
-export LANGFUSE_PUBLIC_KEY="pk-lf-..."
-export LANGFUSE_SECRET_KEY="sk-lf-..."
-export LANGFUSE_BASE_URL="https://cloud.langfuse.com"
+**Langfuse credentials in your environment.** The skill uses the [Langfuse CLI](https://github.com/langfuse/langfuse-cli) under the hood, which reads `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`, and `LANGFUSE_BASE_URL` from your shell.
+
+## The setup at a high level
+
+  <img
+    src="/images/docs/guides/judge-calibration-setup-diagram.png"
+    alt="Calibration flow: the judge prompt and the dataset come from Langfuse; the agent runs the prompt on each dataset input on your machine; predicted labels are compared against ground-truth labels to produce a match rate."
+  />
+
+You create a dataset of scenarios for your LLM-as-a-judge to evaluate, your ground truth labels. The judge prompt you want to test sits in [Langfuse Prompt Management](/docs/prompt-management/get-started).
+
+The calibration run is a [Langfuse experiment](/docs/evaluation/experiments) that executes the judge prompt against every dataset item. For each item, you end up with two labels: the score the judge produced and the expected output you defined. The agent compares the two and reports how often they agree. The higher the agreement rate, the more closely the judge is aligned with your judgment.
+
+## The workflow
+
+We will walk through an example where we want to calibrate an LLM-as-a-judge that runs on customer support conversations. The judge needs to determine whether the conversation was escalated to a human or not.
+
+<Steps>
+
+### Create the ground-truth dataset
+
+Create a [Langfuse dataset](/docs/evaluation/experiments/datasets). As an example for this walkthrough, we create a dataset called `escalated-not-escalated-scenarios`. Each item holds the customer support conversation and the label you would expect your LLM-as-a-judge to assign to it.
+
+Two example items from the dataset:
+
+| Inputs                                                                                                                                                                                                    | Expected outputs |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| User: My subscription was charged twice this month.<br/>Agent: I can see the duplicate charge. I've issued a refund for the duplicate — it should appear in 3-5 business days.<br/>User: Perfect, thanks! | `not_escalated`  |
+| User: I can't log in.<br/>Agent: Can you try resetting your password at the link I just sent?<br/>User: This is the third time I'm trying. Just get me a human, please.                                   | `escalated`      |
+
+### Add the judge prompt to Prompt Management
+
+Copy the prompt from your LLM-as-a-judge and add it as a new prompt in [Langfuse Prompt Management](/docs/prompt-management/get-started). This is the prompt the calibration run will execute against each dataset item.
+
+  If you want to keep evaluator prompts separate from the prompts you use in
+  production, organize them under an `evaluator-prompts/` folder, or put them
+  in a dedicated project.
+
+### Run calibration via the Langfuse skill
+
+With the dataset and the prompt in place, open your AI assistant and ask it to run the calibration.
+
+**Run with your agent**
+
+```text
+I have a Langfuse dataset called <escalated-not-escalated-scenarios> and a judge prompt called <evaluator-prompts/escalation-judge> in Langfuse Prompt Management. Use the Langfuse skill's judge calibration workflow to test whether this judge agrees with the ground-truth labels in the dataset.
 ```
 
-Use the URL for your [data region](/security/data-regions) or self-hosted instance. These scripts run the application and graders in your process and send test inputs, outputs, and scores to Langfuse.
+The skill takes over from there and walks you through a short back-and-forth before it runs anything. Here is what to expect:
 
-Already have a local suite? [Keep your JSON cases and grader in Pytest or Vitest](/docs/evaluation/experiments/experiments-ci-cd#other-cicd-systems). Already have outputs **and** scores? [Publish those saved results](#saved-check-results) without running the application or checks again.
+#### The agent asks if you want simple or advanced mode
 
-## Run two versions with the same checks [#run-two-versions]
+Before running anything, the agent asks whether you want a **simple** or **advanced** calibration.
 
-The scripts create a new dataset, add two reviewed cases, and pin the latest server-assigned creation timestamp returned by those writes. Both runs use that exact version, avoiding dependence on your computer's clock. In an existing project, reuse your dataset and store its approved version timestamp with your test configuration.
+- **Simple mode** reports a single accuracy score: the percentage of dataset items the judge labeled the same way you did. Use this for a quick answer to "does this judge agree with me often enough?"
+- **Advanced mode** reports a full confusion matrix with precision, recall, F1, TPR, and TNR. Use this when one class is much rarer than the other, or before you trust the judge for high-stakes automation.
 
-<LangTabs items={["Python SDK", "JS/TS SDK"]}>
-<Tab>
-
-```bash
-pip install langfuse
-```
-
-Save as `evaluate.py` and run `python evaluate.py`:
+If you are not sure, start with simple mode.
 
-```python title="evaluate.py"
-from uuid import uuid4
-
-from langfuse import Evaluation, get_client
-
-
-def answer_question(question, version):
-    # Replace this sample function with your application's entry point.
-    # Its returned output, not a separately rewritten prompt, is evaluated.
-    if version == "baseline":
-        return {"refund_days": 30}
-    return {"refund_days": 14}
-
-
-def grade(output, expected_output):
-    # Keep your existing business-rule checks here.
-    return output["refund_days"] == expected_output["refund_days"]
-
-
-def exact_refund_window(*, output, expected_output, **kwargs):
-    return Evaluation(
-        name="refund_window",
-        value=int(grade(output, expected_output)),
-    )
-
-
-langfuse = get_client()
-dataset_name = f"refund-regression-{uuid4().hex[:8]}"
-try:
-    langfuse.create_dataset(name=dataset_name)
-    created_versions = []
-    for case_id, question, days in [
-        ("standard", "What is the standard refund window?", 30),
-        ("sale", "What is the sale-item refund window?", 14),
-    ]:
-        created_item = langfuse.create_dataset_item(
-            dataset_name=dataset_name,
-            input={"question": question},
-            expected_output={"refund_days": days},
-            metadata={"case_id": case_id},
-        )
-
-        created_versions.append(created_item.created_at)
-
-    version = max(created_versions)
-    dataset = langfuse.get_dataset(dataset_name, version=version)
-    print(f"Dataset: {dataset_name}; version: {version.isoformat()}")
-
-    for application_version in ["baseline", "candidate"]:
-
-        def task(*, item, **kwargs):
-            return answer_question(item.input["question"], application_version)
-
-        result = dataset.run_experiment(
-            name="Refund policy",
-            run_name=application_version,
-            task=task,
-            evaluators=[exact_refund_window],
-            metadata={
-                "application_version": application_version,
-                "evaluator_version": "refund-window-v1",
-            },
-        )
-        print(result.format())
-finally:
-    langfuse.flush()
-```
-
-</Tab>
-<Tab>
-
-```bash
-npm install @langfuse/client @langfuse/otel @opentelemetry/sdk-node
-npm install --save-dev tsx typescript
-```
-
-Save as `evaluate.ts` and run `npx tsx evaluate.ts`:
-
-```typescript title="evaluate.ts"
-import { randomUUID } from "node:crypto";
-import { LangfuseClient } from "@langfuse/client";
-import { LangfuseSpanProcessor } from "@langfuse/otel";
-import { NodeSDK } from "@opentelemetry/sdk-node";
-
-type Answer = { refund_days: number };
-
-async function answerQuestion(
-  question: string,
-  version: string,
-): Promise<Answer> {
-  // Replace this sample function with your application's entry point.
-  return { refund_days: version === "baseline" ? 30 : 14 };
-}
-
-function grade(output: Answer, expectedOutput: Answer): boolean {
-  // Keep your existing business-rule checks here.
-  return output.refund_days === expectedOutput.refund_days;
-}
-
-async function main() {
-  const otel = new NodeSDK({ spanProcessors: [new LangfuseSpanProcessor()] });
-  otel.start();
-  const langfuse = new LangfuseClient();
-  const datasetName = `refund-regression-${randomUUID().slice(0, 8)}`;
-  try {
-    await langfuse.api.datasets.create({ name: datasetName });
-    const createdVersions: string[] = [];
-    for (const [caseId, question, days] of [
-      ["standard", "What is the standard refund window?", 30],
-      ["sale", "What is the sale-item refund window?", 14],
-    ] as const) {
-      const createdItem = await langfuse.api.datasetItems.create({
-        datasetName,
-        input: { question },
-        expectedOutput: { refund_days: days },
-        metadata: { case_id: caseId },
-      });
-      createdVersions.push(createdItem.createdAt);
-    }
-
-    const version = createdVersions.reduce((latest, current) =>
-      Date.parse(current) > Date.parse(latest) ? current : latest,
-    );
-    const dataset = await langfuse.dataset.get(datasetName, { version });
-    console.log(`Dataset: ${datasetName}; version: ${version}`);
-    for (const applicationVersion of ["baseline", "candidate"]) {
-      const result = await dataset.runExperiment({
-        name: "Refund policy",
-        runName: applicationVersion,
-        task: async (item) =>
-          answerQuestion(item.input.question, applicationVersion),
-        evaluators: [
-          async ({ output, expectedOutput }) => ({
-            name: "refund_window",
-            value: Number(grade(output, expectedOutput)),
-          }),
-        ],
-        metadata: {
-          application_version: applicationVersion,
-          evaluator_version: "refund-window-v1",
-        },
-      });
-      console.log(await result.format());
-    }
-  } finally {
-    await otel.shutdown();
-  }
-}
-
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
-```
-
-</Tab>
-</LangTabs>
-
-Open **Experiments** in Langfuse and select the two runs. The standard-refund case changes from pass to fail; the sale-item case changes from fail to pass. Both runs score 50%, which is why reviewing individual cases matters. Follow [Compare experiments](/docs/evaluation/experiments/compare-experiments) to inspect the differences.
-
-## Connect your application [#connect-your-application]
-
-Replace `answer_question` or `answerQuestion` with an import from your application. Pass the same inputs and configuration that the deployed application receives, including retrieved context or tool results when applicable. For a multi-stage application, return the fields your checks need and [trace the stages](/docs/observability/get-started) so you can inspect where a failure originated.
-
-Keep `grade` as ordinary application code. You can call it from your existing test runner and from the SDK evaluator. Add semantic evaluators only for requirements those checks cannot decide, such as whether a paraphrase is supported by retrieved context. See [RAG faithfulness evaluation](/resources/engineering/rag-faithfulness-evaluation) and [hallucination detection](/resources/engineering/hallucination-detection).
-
-### Evaluate saved outputs [#saved-outputs]
-
-To evaluate recorded answers without calling your application again, replace the task body with a lookup in your saved outputs, keyed by dataset item ID or `case_id`. Let missing outputs raise an error; do not substitute an empty answer. Record the original application version and mark the experiment metadata as `execution_mode: replay`.
-
-For example, save this as `saved-outputs.json`:
-
-```json title="saved-outputs.json"
-{
-  "standard": { "refund_days": 30 },
-  "sale": { "refund_days": 30 }
-}
-```
-
-Use the following task in place of the task in the example above. Keep the same dataset and evaluators, set the run name to identify the recorded version, and add `execution_mode: replay` to the run metadata.
-
-<LangTabs items={["Python SDK", "JS/TS SDK"]}>
-<Tab>
-
-```python
-import json
-from pathlib import Path
-
-saved_outputs = json.loads(Path("saved-outputs.json").read_text())
-
-
-def replay_task(*, item, **kwargs):
-    return saved_outputs[item.metadata["case_id"]]
-```
-
-Pass `task=replay_task` to `dataset.run_experiment`.
-
-</Tab>
-<Tab>
-
-```typescript
-import { readFileSync } from "node:fs";
-import type { ExperimentTask } from "@langfuse/client";
-
-const savedOutputs = JSON.parse(readFileSync("saved-outputs.json", "utf8"));
-const replayTask: ExperimentTask = async (item) => {
-  const metadata = item.metadata as { case_id: string };
-  if (!Object.hasOwn(savedOutputs, metadata.case_id)) {
-    throw new Error(`Missing saved output: ${metadata.case_id}`);
-  }
-  return savedOutputs[metadata.case_id];
-};
-```
-
-Pass `task: replayTask` to `dataset.runExperiment`.
-
-</Tab>
-</LangTabs>
-
-This measures the quality of recorded outputs under the current graders. It does not validate a new prompt, model, or code change. For that, run the changed application on the same inputs. To score existing traces directly, use [Scores via API/SDK](/docs/evaluation/evaluation-methods/scores-via-sdk).
-
-## Publish saved check results [#saved-check-results]
-
-If your test runner already saved outputs and grader results, report them as an experiment on local data. The adapter below returns the saved output as the task result and the saved check as an evaluation. It calls neither your application nor your grader, and does not require a hosted dataset.
-
-Export your existing results into this format. Keep stable case IDs and the original application and evaluator versions. Include the evidence reviewers need in the input or metadata. Only include data you intend to upload to your Langfuse project.
-
-```json title="results.json"
-{
-  "application_version": "release-42",
-  "evaluator_version": "refund-window-v1",
-  "cases": [
-    {
-      "id": "standard",
-      "input": { "question": "What is the standard refund window?" },
-      "expected_output": { "refund_days": 30 },
-      "output": { "refund_days": 30 },
-      "passed": true,
-      "reason": "The refund window matches the reviewed policy."
-    },
-    {
-      "id": "sale",
-      "input": { "question": "What is the sale-item refund window?" },
-      "expected_output": { "refund_days": 14 },
-      "output": { "refund_days": 30 },
-      "passed": false,
-      "reason": "Sale items have a 14-day window."
-    }
-  ]
-}
-```
-
-Use the [credentials and dependencies above](#setup). The scripts validate the boolean check results before uploading and hash the complete artifact to identify its contents. Export task or grader errors separately and resolve them before publishing a complete scored run; never turn an error into a passing check.
-
-<LangTabs items={["Python SDK", "JS/TS SDK"]}>
-<Tab>
-
-```python title="publish_results.py"
-import hashlib
-import json
-from pathlib import Path
-
-from langfuse import Evaluation, get_client
-
-artifact = Path("results.json").read_bytes()
-saved = json.loads(artifact)
-cases = saved["cases"]
-ids = [case["id"] for case in cases]
-if not ids or not all(ids) or len(set(ids)) != len(ids):
-    raise ValueError("Expected nonempty, unique case IDs")
-for case in cases:
-    if type(case["passed"]) is not bool or case["output"] is None:
-        raise ValueError(f"Missing output or boolean check: {case['id']}")
-by_id = {case["id"]: case for case in cases}
-
-
-def saved_task(*, item, **kwargs):
-    return by_id[item["metadata"]["case_id"]]["output"]
-
-
-def saved_check(*, metadata, **kwargs):
-    case = by_id[metadata["case_id"]]
-    return Evaluation(
-        name="existing_checks", value=int(case["passed"]), comment=case["reason"]
-    )
-
-
-langfuse = get_client()
-try:
-    result = langfuse.run_experiment(
-        name="Application checks",
-        data=[{
-            "input": case["input"],
-            "expected_output": case["expected_output"],
-            "metadata": {"case_id": case["id"]},
-        } for case in cases],
-        task=saved_task,
-        evaluators=[saved_check],
-        metadata={
-            "application_version": saved["application_version"],
-            "evaluator_version": saved["evaluator_version"],
-            "execution_mode": "imported_results",
-            "artifact_sha256": hashlib.sha256(artifact).hexdigest(),
-        },
-    )
-    print(result.format())  # Includes the experiment link.
-finally:
-    langfuse.flush()
-```
-
-Run `python publish_results.py`.
-
-</Tab>
-<Tab>
-
-```typescript title="publish-results.ts"
-import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
-import { LangfuseClient } from "@langfuse/client";
-import { LangfuseSpanProcessor } from "@langfuse/otel";
-import { NodeSDK } from "@opentelemetry/sdk-node";
-
-type SavedCase = {
-  id: string;
-  input: unknown;
-  expected_output: unknown;
-  output: unknown;
-  passed: boolean;
-  reason: string;
-};
-
-async function main() {
-  const artifact = readFileSync("results.json");
-  const saved = JSON.parse(artifact.toString("utf8"));
-  const cases: SavedCase[] = saved.cases;
-  const ids = cases.map((item) => item.id);
-  if (!ids.length || !ids.every(Boolean) || new Set(ids).size !== ids.length) {
-    throw new Error("Expected nonempty, unique case IDs");
-  }
-  for (const item of cases) {
-    if (typeof item.passed !== "boolean" || item.output == null) {
-      throw new Error(`Missing output or boolean check: ${item.id}`);
-    }
-  }
-  const byId = new Map(cases.map((item) => [item.id, item]));
-  const otel = new NodeSDK({ spanProcessors: [new LangfuseSpanProcessor()] });
-  otel.start();
-  try {
-    const langfuse = new LangfuseClient();
-    const result = await langfuse.experiment.run({
-      name: "Application checks",
-      data: cases.map((item) => ({
-        input: item.input,
-        expectedOutput: item.expected_output,
-        metadata: { case_id: item.id },
-      })),
-      task: async (item) => {
-        const metadata = item.metadata as { case_id: string };
-        return byId.get(metadata.case_id)!.output;
-      },
-      evaluators: [async ({ metadata }) => {
-        const item = byId.get(metadata!.case_id)!;
-        return { name: "existing_checks", value: Number(item.passed), comment: item.reason };
-      }],
-      metadata: {
-        application_version: saved.application_version,
-        evaluator_version: saved.evaluator_version,
-        execution_mode: "imported_results",
-        artifact_sha256: createHash("sha256").update(artifact).digest("hex"),
-      },
-    });
-    console.log(await result.format()); // Includes the experiment link.
-  } finally {
-    await otel.shutdown();
-  }
-}
-
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
-```
-
-Run `npx tsx publish-results.ts`.
-
-</Tab>
-</LangTabs>
-
-These are new experiment observations containing the recorded outputs and scores. Their timing describes the import, not the original application's latency or cost, and they do not reconstruct its intermediate tool calls. Retain the original run or trace identifiers in item metadata when available. If the original traces are already in Langfuse, [attach scores to those traces](/docs/evaluation/evaluation-methods/scores-via-sdk) instead of creating duplicate observations.
-
-Open the experiment link printed by the script, then [share the comparison](/docs/evaluation/experiments/compare-experiments#share-results) or [hand answers to a QA team](/docs/evaluation/evaluation-methods/annotation-queues#review-experiment-answers). A completed import reports existing results; it does not establish that the application passes your release policy.
-
-## Add a regression gate [#regression-gate]
-
-Choose a reviewed baseline, keep the dataset and evaluator versions fixed, and fail CI when a previously passing critical case fails. See [Compare against an approved baseline](/docs/evaluation/experiments/experiments-ci-cd#approved-baseline) for a gate that checks individual cases as well as aggregate scores.
-
-Hosted datasets are useful for sharing and versioning cases. You can also run [experiments on local data](/docs/evaluation/experiments/experiments-via-sdk). In Langfuse v4, these experiments appear in the same experiment list without requiring a hosted dataset.
+#### The agent runs the experiment
+
+The agent creates a script using the [Langfuse Experiments SDK](/docs/evaluation/experiments/experiments-via-sdk) and runs the experiment for you. The run appears as a dataset run in the [Experiments UI](/docs/evaluation/experiments), with one trace per dataset item containing the judge's output.
+
+#### The agent returns a calibration report
+
+The agent compares the experiment outputs with the expected outputs from the dataset and returns a report. The level of detail depends on the mode you picked.
+
+<Details>
+<Summary>Example calibration report (advanced mode)</Summary>
+
+**Setup**
+
+- Dataset: `escalated-not-escalated-scenarios` — 35 items, 0 invalid labels
+- Judge prompt: `evaluator-prompts/escalation-judge` v1 · model `gpt-4o-mini` · temp 0
+- Positive = `escalated`, Negative = `not_escalated`
+
+**Confusion matrix**
+
+|                       | Pred: escalated | Pred: not_escalated |
+| --------------------- | --------------- | ------------------- |
+| Actual: escalated     | TP = 13         | FN = 1              |
+| Actual: not_escalated | FP = 0          | TN = 21             |
+
+**Metrics**
+
+| Metric       | Value |
+| ------------ | ----- |
+| Accuracy     | 0.971 |
+| Precision    | 1.000 |
+| Recall / TPR | 0.929 |
+| TNR          | 1.000 |
+| F1           | 0.963 |
+
+**Failure direction:** one false negative — the judge missed an escalation, never falsely flagged one. Both TPR (0.929) and TNR (1.000) clear the 0.90 threshold from the skill's advanced quality gates.
+
+The single disagreement (item `73cb3a52`):
+
+> User: "Forget it. I'll just email your CEO directly."<br/>
+> Agent: "I understand you're frustrated. Before you do that, would you like me to escalate this internally so we can resolve it today?"<br/>
+> User: "No, I'll handle it."
+
+- Ground truth: `escalated` (user announced they'd contact a human channel — CEO email — directly)
+- Judge: `not_escalated` (user declined the agent's offer to transfer)
+
+This one is genuinely borderline: the user declined the in-app escalation but stated they'd contact a human externally. Your prompt says both "saying they'll contact a human channel directly (email a specific team…)" → escalated AND "declining the agent's offer to transfer" → not_escalated, and this row triggers both rules. Worth deciding which signal dominates and tightening the prompt if you want the judge to handle this consistently.
+
+**Recommendation:** Ship. Metrics are strong and skewed in the right direction (no over-flagging). Resolve the rule conflict above before relying on the judge for any decision that depends on catching every escalation. Re-run after the prompt edit to confirm the FN drops.
+
+</Details>
+
+### Iterate on the prompt
+
+If the report shows the judge agrees with your labels often enough to trust it, you can ship. If you want to improve the results further, edit the judge prompt to address the disagreements and re-run the calibration. You have two options:
+
+- **Manually** open the prompt in Langfuse Prompt Management, edit it, and re-run the calibration steps above.
+- **Ask your AI assistant** to change the prompt based on the results. The skill uses the [Langfuse CLI](https://github.com/langfuse/langfuse-cli) under the hood already, so the agent can update the prompt for you directly.
+
+</Steps>
+
+Once the judge runs on production observations, keep checking agreement: have reviewers score a sample of those same observations in an [annotation queue](/docs/evaluation/evaluation-methods/annotation-queues), then compare their scores with the judge's in [Score Analytics](/docs/evaluation/scores/score-analytics#human-vs-ai-annotation-agreement).
 
 <!-- agent-instructions -->
 
@@ -1638,7 +1638,7 @@ Hosted datasets are useful for sharing and versioning cases. You can also run [e
 
 ## Agent Instructions
 
-This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/resources/engineering/evaluate-existing-application.md`.
+This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/guides/llm-as-a-judge-calibration-skill.md`.
 
 ### Querying these docs
 
@@ -1736,290 +1736,6 @@ See [Experiments in CI/CD](/docs/evaluation/experiments/experiments-ci-cd#approv
 ## Agent Instructions
 
 This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/docs/evaluation/experiments/compare-experiments.md`.
-
-### Querying these docs
-
-If the answer is not on this page, query the documentation instead of guessing:
-
-- **Semantic search** across all Langfuse docs, returning an answer with the relevant pages and excerpts. Ask a specific, self-contained question:
-
-  ```bash
-  curl -sG "https://langfuse.com/api/search-docs" --data-urlencode "query=How do I trace a LangGraph agent?"
-  ```
-
-- **Index of every page**: <https://langfuse.com/llms.txt>, with per-section indexes [llms-docs.txt](https://langfuse.com/llms-docs.txt), [llms-integrations.txt](https://langfuse.com/llms-integrations.txt), and [llms-self-hosting.txt](https://langfuse.com/llms-self-hosting.txt).
-
-### Before writing Langfuse code
-
-- **Install the [Langfuse Agent Skill](https://langfuse.com/docs/api-and-data-platform/features/agent-skill).** It encodes Langfuse's own best practices for instrumentation, prompt management, and evaluation, and materially improves results.
-- **Read [What does a good trace look like?](https://langfuse.com/docs/observability/best-practices.md)** before instrumenting an application.
-- **Verify endpoints, parameters, and response fields** against the [API reference](https://api.reference.langfuse.com) instead of inferring them from code examples.
-- **Use the [Langfuse CLI](https://langfuse.com/docs/api-and-data-platform/features/cli)** (`npx @langfuse/cli api <resource> <action>`) to read or write traces, prompts, datasets, and scores from the terminal.
-
-Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
-
-
-# Choose where evaluations run
-
-**URL:** https://langfuse.com/docs/evaluation/overview.md
-
----
-title: Overview
-seoTitle: "Evaluation of LLM Applications"
-description: With Langfuse you can capture all your LLM evaluations in one place. You can combine a variety of different evaluation metrics like model-based evaluations (LLM-as-a-Judge), human annotations or fully custom evaluation workflows via API/SDKs. This allows you to measure quality, tonality, factual accuracy, completeness, and other dimensions of your LLM application.
----
-
-# Evaluation Overview
-
-Evals give you a repeatable check of your LLM application's behavior. You replace guesswork with data, and catch regressions before you ship a change.
-
-  ![Score Analytics dashboard in Langfuse showing evaluation scores trended over time across multiple evaluators.](/images/docs/score-analytics-full-dashboard.png)
-
-Evaluation runs across most of the [AI engineering loop](/academy/ai-engineering-loop): you score live traces in production, turn interesting examples into datasets, run experiments to compare changes, and judge the results with manual or automated evaluators. It happens both **online**, on live production traces, and **offline**, before you ship a change.
-
-The AI Engineering Loop:
-
-- [Trace](/academy/tracing): traces, sessions, agents, prompts
-- [Monitor](/academy/monitoring): dashboards, LLM-as-judge, feedback
-- [Build datasets](/academy/datasets): datasets, features-as-tests
-- [Experiment](/academy/experiments): prompts, models, code variants
-- [Evaluate](/academy/evaluate): judges, custom evals, annotation
-
-[**Watch this walkthrough**](/watch-demo) of Langfuse Evaluation and how to use it to improve your LLM application.
-
-## Getting Started
-
-You can evaluate both:
-
-- [live incoming traces](/docs/evaluation/get-started/online) to measure quality on production data and track trends over time.
-- [your existing application on a pre-defined dataset](/docs/evaluation/get-started/offline), to make sure your changes are ready for production.
-
-For more information on how evaluators, scores, datasets, and experiments fit together, read [Core Concepts](/docs/evaluation/core-concepts).
-
-To catch regressions before they ship, run experiments in CI: add the [`langfuse/experiment-action`](/docs/evaluation/experiments/experiments-ci-cd) GitHub Action to a `pull_request` workflow and raise `RegressionError` from your experiment script when a score violates your threshold; the action then fails the job. It works with Langfuse Cloud and self-hosted Langfuse.
-
-If you're looking for another specific workflow, use the table below to find the right feature page:
-
-| If you want to...                                   | Use this Langfuse feature                                                                                                                                                                                                                   |
-| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Review and rate traces manually                     | [Annotation Queues](/docs/evaluation/evaluation-methods/annotation-queues), [Scores via UI](/docs/evaluation/evaluation-methods/scores-via-ui)                                                                                              |
-| Hand experiment answers to a QA team                | [Review experiment answers](/docs/evaluation/evaluation-methods/annotation-queues#review-experiment-answers), [Share comparison results](/docs/evaluation/experiments/compare-experiments#share-results)                                    |
-| Collect feedback from your end users                | [User Feedback](/docs/observability/features/user-feedback)                                                                                                                                                                                 |
-| Leave open-ended notes on traces                    | [Text scores](/docs/evaluation/scores/overview#score-types), [Annotation Queues](/docs/evaluation/evaluation-methods/annotation-queues)                                                                                                     |
-| Build a reusable set of test cases                  | [Datasets](/docs/evaluation/experiments/datasets)                                                                                                                                                                                           |
-| Compare prompt, model, or code changes side by side | [Experiments via UI](/docs/evaluation/experiments/experiments-via-ui), [Experiments via SDK](/docs/evaluation/experiments/experiments-via-sdk), [Experiments via OpenTelemetry](/docs/evaluation/experiments/experiments-via-opentelemetry) |
-| Block deploys on regressions                        | [CI/CD experiments](/docs/evaluation/experiments/experiments-ci-cd)                                                                                                                                                                         |
-| Reuse checks in your application or CI process      | [Evaluate an existing application](/resources/engineering/evaluate-existing-application)                                                                                                                                                    |
-| Run deterministic checks                            | [Code Evaluators](/docs/evaluation/evaluation-methods/code-evaluators)                                                                                                                                                                      |
-| Automatically score live production traces          | [LLM-as-a-Judge](/docs/evaluation/evaluation-methods/llm-as-a-judge), [Jev as a judge](/docs/evaluation/evaluation-methods/jev-as-a-judge), [Scores via API/SDK](/docs/evaluation/evaluation-methods/scores-via-sdk)                        |
-| Check that an LLM judge agrees with human labels    | [Calibrate your LLM-as-a-judge](/guides/llm-as-a-judge-calibration-skill), [Score Analytics](/docs/evaluation/scores/score-analytics#human-vs-ai-annotation-agreement)                                                                      |
-| See how scores trend over time                      | [Score Analytics](/docs/evaluation/scores/score-analytics), [custom dashboards](/docs/metrics/features/custom-dashboards)                                                                                                                   |
-
-Already know what you're looking for? Browse _Evaluation Methods_ and _Experiments_ in the sidebar.
-
-## GitHub Discussions
-
-<!-- agent-instructions -->
-
----
-
-## Agent Instructions
-
-This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/docs/evaluation/overview.md`.
-
-### Querying these docs
-
-If the answer is not on this page, query the documentation instead of guessing:
-
-- **Semantic search** across all Langfuse docs, returning an answer with the relevant pages and excerpts. Ask a specific, self-contained question:
-
-  ```bash
-  curl -sG "https://langfuse.com/api/search-docs" --data-urlencode "query=How do I trace a LangGraph agent?"
-  ```
-
-- **Index of every page**: <https://langfuse.com/llms.txt>, with per-section indexes [llms-docs.txt](https://langfuse.com/llms-docs.txt), [llms-integrations.txt](https://langfuse.com/llms-integrations.txt), and [llms-self-hosting.txt](https://langfuse.com/llms-self-hosting.txt).
-
-### Before writing Langfuse code
-
-- **Install the [Langfuse Agent Skill](https://langfuse.com/docs/api-and-data-platform/features/agent-skill).** It encodes Langfuse's own best practices for instrumentation, prompt management, and evaluation, and materially improves results.
-- **Read [What does a good trace look like?](https://langfuse.com/docs/observability/best-practices.md)** before instrumenting an application.
-- **Verify endpoints, parameters, and response fields** against the [API reference](https://api.reference.langfuse.com) instead of inferring them from code examples.
-- **Use the [Langfuse CLI](https://langfuse.com/docs/api-and-data-platform/features/cli)** (`npx @langfuse/cli api <resource> <action>`) to read or write traces, prompts, datasets, and scores from the terminal.
-
-Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
-
-
-# Self-hosted pricing and license
-
-**URL:** https://langfuse.com/pricing-self-host.md
-
----
-title: Self-Hosted Pricing
-description: Deploy Langfuse OSS today. Upgrade to Enterprise at any time.
----
-
-# Self-Hosted Pricing
-
-Deploy Langfuse OSS today. Upgrade to Enterprise at any time. See also: [Cloud pricing](/pricing).
-
-## Plans
-
-### Open Source (Free)
-
-Self-host all core Langfuse features for free without any limitations.
-
-- MIT License
-- All core platform features and APIs (observability, evaluation, prompt management, datasets, etc.)
-- Scalability of Langfuse Cloud
-- Deployment docs & Helm chart
-- Enterprise SSO and RBAC
-- Community support
-- Unlimited units / usage
-
-[Deployment guide](/self-hosting)
-
-### Self-Hosted Enterprise (Custom Pricing)
-
-Dedicated Langfuse deployment with enterprise capabilities and support. Bundled with ClickHouse Cloud, ClickHouse BYOC, or ClickHouse Private.
-
-- All Open Source features plus management APIs, project-level RBAC, data retention policies, and audit logs
-- Bundled with ClickHouse Cloud, ClickHouse BYOC, or ClickHouse Private
-- Langfuse pricing is additive to your ClickHouse commercial plan
-- Named lead support engineer for deployment and hosting guidance
-- Solutions architect support during evaluation and rollout
-- Direct access to the product team for feedback
-- SOC 2 Type II and ISO 27001 reports
-- Hardening for Government (in development)
-- Support SLA
-- Billing via AWS Marketplace or invoice
-
-[Talk to sales](/talk-to-us?deployment=self-hosted) | [Enterprise FAQ](/enterprise)
-
-## Feature Comparison (Self-Hosted)
-
-| Feature                                                                                                     | Open Source                 | Enterprise                                 |
-| ----------------------------------------------------------------------------------------------------------- | --------------------------- | ------------------------------------------ |
-| **LLM Application & Agent Tracing**                                                                         |                             |                                            |
-| [Traces and graphs (agents)](/docs/observability/overview)                                                  | Yes                         | Yes                                        |
-| [Session tracking (chats/threads)](/docs/observability/features/sessions)                                   | Yes                         | Yes                                        |
-| [User tracking](/docs/observability/features/users)                                                         | Yes                         | Yes                                        |
-| [Token and cost tracking](/docs/observability/features/token-and-cost-tracking)                             | Yes                         | Yes                                        |
-| [Native framework integrations](/integrations)                                                              | Yes                         | Yes                                        |
-| [SDKs (Python, JavaScript)](/docs/observability/sdk/overview)                                               | Yes                         | Yes                                        |
-| [OpenTelemetry (Java, Go, custom)](/integrations/native/opentelemetry)                                      | Yes                         | Yes                                        |
-| [Proxy-based logging (via LiteLLM)](/integrations/gateways/litellm)                                         | Yes                         | Yes                                        |
-| [Custom via API](/docs/api-and-data-platform/features/public-api)                                           | Yes                         | Yes                                        |
-| Included usage                                                                                              | Unlimited                   | Unlimited                                  |
-| [Multi-modal](/docs/observability/features/multi-modality)                                                  | Yes                         | Yes                                        |
-| **Langfuse AI**                                                                                             |                             |                                            |
-| [Langfuse Assistant (in-app agent)](/docs/langfuse-assistant)                                               | --                          | --                                         |
-| **Prompt Management**                                                                                       |                             |                                            |
-| [Prompt versioning](/docs/prompt-management/get-started)                                                    | Yes                         | Yes                                        |
-| Prompt fetching                                                                                             | Unlimited                   | Unlimited                                  |
-| [Prompt release management](/docs/prompt-management/features/prompt-version-control)                        | Yes                         | Yes                                        |
-| [Prompt composability](/docs/prompt-management/features/composability)                                      | Yes                         | Yes                                        |
-| [Prompt caching (server and client)](/docs/prompt-management/features/caching)                              | Yes                         | Yes                                        |
-| [Playground](/docs/prompt-management/features/playground)                                                   | Yes                         | Yes                                        |
-| [Prompt experiments](/docs/evaluation/experiments/experiments-via-ui)                                       | Yes                         | Yes                                        |
-| [Webhooks & Slack](/docs/prompt-management/features/webhooks-slack-integrations)                            | Yes                         | Yes                                        |
-| [Protected deployment labels](/docs/prompt-management/get-started#protected-prompt-labels)                  | --                          | Yes                                        |
-| **Evaluation (online and offline)**                                                                         |                             |                                            |
-| [Datasets](/docs/evaluation/experiments/datasets)                                                           | Yes                         | Yes                                        |
-| [Experiments via SDK](/docs/evaluation/experiments/experiments-via-sdk)                                     | Yes                         | Yes                                        |
-| [Experiments via UI](/docs/evaluation/experiments/experiments-via-ui)                                       | Yes                         | Yes                                        |
-| [Evaluation scores (custom)](/docs/evaluation/evaluation-methods/scores-via-sdk)                            | Yes                         | Yes                                        |
-| [User feedback tracking](/docs/observability/features/user-feedback)                                        | Yes                         | Yes                                        |
-| [External evaluation pipelines](/guides/cookbook/example_external_evaluation_pipelines)                     | Yes                         | Yes                                        |
-| [LLM-as-judge evaluators](/docs/evaluation/evaluation-methods/llm-as-a-judge)                               | Yes                         | Yes                                        |
-| [Human annotation](/docs/evaluation/evaluation-methods/scores-via-ui)                                       | Yes                         | Yes                                        |
-| [Human annotation queues](/docs/evaluation/evaluation-methods/annotation-queues)                            | Yes                         | Yes                                        |
-| **Metrics**                                                                                                 |                             |                                            |
-| [Custom dashboards](/docs/metrics/features/custom-dashboards)                                               | Yes                         | Yes                                        |
-| [Alerts](/docs/observability/features/alerts)                                                               | Langfuse v4+                | Langfuse v4+                               |
-| **Collaboration**                                                                                           |                             |                                            |
-| Projects                                                                                                    | Unlimited                   | Unlimited                                  |
-| Users                                                                                                       | Unlimited                   | Unlimited                                  |
-| **API**                                                                                                     |                             |                                            |
-| [Extensive public API](/docs/api-and-data-platform/features/public-api)                                     | Yes                         | Yes                                        |
-| [Metrics & Observations APIs (v2)](/docs/metrics/features/metrics-api#v2)                                   | Langfuse v4+                | Langfuse v4+                               |
-| **Exports**                                                                                                 |                             |                                            |
-| [Batch export via UI](/docs/api-and-data-platform/features/export-from-ui)                                  | Yes                         | Yes                                        |
-| [PostHog integration](/integrations/analytics/posthog)                                                      | Yes                         | Yes                                        |
-| [Mixpanel integration](/integrations/analytics/mixpanel)                                                    | Yes                         | Yes                                        |
-| [Scheduled export to blob storage](/docs/api-and-data-platform/features/export-to-blob-storage)             | Yes                         | Yes                                        |
-| **Deployment**                                                                                              |                             |                                            |
-| ClickHouse deployment model                                                                                 | Self-managed ClickHouse OSS | Bundled: ClickHouse Cloud / BYOC / Private |
-| [Deployment templates](/self-hosting)                                                                       | Yes                         | Yes                                        |
-| [Local (Docker Compose)](/self-hosting/deployment/docker-compose)                                           | Yes                         | Yes                                        |
-| [Kubernetes (Helm)](/self-hosting/deployment/kubernetes-helm)                                               | Yes                         | Yes                                        |
-| [AWS (Terraform)](/self-hosting/deployment/aws)                                                             | Yes                         | Yes                                        |
-| [Azure (Terraform)](/self-hosting/deployment/azure)                                                         | Yes                         | Yes                                        |
-| [GCP (Terraform)](/self-hosting/deployment/gcp)                                                             | Yes                         | Yes                                        |
-| **Support**                                                                                                 |                             |                                            |
-| [Ask AI](/docs/ask-ai)                                                                                      | Yes                         | Yes                                        |
-| [Community (GitHub)](/support#community)                                                                    | Yes                         | Yes                                        |
-| [In-app support](/support#in-app)                                                                           | --                          | Yes                                        |
-| [Private Slack channel](/support#slack)                                                                     | --                          | Yes                                        |
-| [Named lead support engineer](/support#onboarding)                                                          | --                          | Yes                                        |
-| [Onboarding & architectural guidance](/support#onboarding)                                                  | --                          | Yes                                        |
-| Solutions architect support                                                                                 | --                          | Yes                                        |
-| Product team feedback channel                                                                               | --                          | Yes                                        |
-| [Support SLA](/enterprise#faq)                                                                              | --                          | Yes                                        |
-| **Security**                                                                                                |                             |                                            |
-| Sign in with Google, AzureAD, GitHub                                                                        | Yes                         | Yes                                        |
-| [Hardening for Government (in development)](/self-hosting/configuration/hardening#hardening-for-government) | --                          | Yes                                        |
-| [Organization-level RBAC](/docs/administration/rbac)                                                        | Yes                         | Yes                                        |
-| Enterprise SSO (e.g. Okta, EntraID)                                                                         | Yes                         | Yes                                        |
-| SSO enforcement                                                                                             | Yes                         | Yes                                        |
-| [Client-side data masking](/docs/observability/features/masking)                                            | Yes                         | Yes                                        |
-| [Server-side data masking](/self-hosting/security/data-masking)                                             | --                          | Yes                                        |
-| [Project-level RBAC](/docs/administration/rbac#project-level-roles)                                         | --                          | Yes                                        |
-| [Data retention management](/docs/administration/data-retention)                                            | --                          | Yes                                        |
-| [SCIM API (automated user provisioning)](/docs/administration/scim-and-org-api)                             | --                          | Yes                                        |
-| [Organization creators](/self-hosting/administration/organization-creators)                                 | --                          | Yes                                        |
-| [UI customization](/self-hosting/administration/ui-customization)                                           | --                          | Yes                                        |
-| [Audit logs](/docs/administration/audit-logs)                                                               | --                          | Yes                                        |
-| [Admin API (project management, SCIM)](/docs/administration/scim-and-org-api)                               | --                          | Yes                                        |
-| [Instance management API](/self-hosting/administration/instance-management-api)                             | --                          | Yes                                        |
-| **Compliance**                                                                                              |                             |                                            |
-| SOC2 Type II & ISO27001 reports                                                                             | --                          | Yes                                        |
-| InfoSec/legal reviews                                                                                       | --                          | Yes                                        |
-
-## Discounts
-
-| Program              | Discount                            | Details                             |
-| -------------------- | ----------------------------------- | ----------------------------------- |
-| Early-stage startups | 50% off, first year                 | [Learn more and apply](/startups)   |
-| Research / Students  | Up to 100% off (limits apply)       | [Learn more and apply](/research)   |
-| Non-profits          | $199 in credits / month             | [Learn more and apply](/non-profit) |
-| Open-source projects | $300 in credits / month, first year | Contact support@langfuse.com        |
-
-## Frequently Asked Questions
-
-**How does Langfuse pricing compare to LangSmith, Braintrust, Arize, and Datadog?**
-On a representative workload, Langfuse Cloud is cheaper than [LangSmith](/compare/langsmith), [Braintrust](/compare/braintrust), [Arize](/compare/arize-phoenix), and [Datadog Agent Observability](/compare/datadog). Open the [editable pricing comparison sheet](/pricing-comparison-sheet) to fill in your own assumptions and check the numbers for your workload. For product-by-product differences, see the [comparison pages](/compare). Langfuse is also [open source](/why), based on [OpenTelemetry](/integrations/native/opentelemetry) for interoperability, [self-hostable](/self-hosting) at the same scale as Langfuse Cloud, and model- and framework-agnostic.
-
-**Can I purchase Langfuse through AWS Marketplace?**
-Yes. Self-hosted Enterprise can be billed via AWS Marketplace or invoice. [Talk to us](/talk-to-us?deployment=self-hosted) to request a private offer.
-
-**Can I self-host Langfuse for free?**
-Yes, Langfuse is open source and you can self-host it for free. Use Docker Compose to run Langfuse locally, or use one of the templates to self-host in production on Kubernetes. See the [self-hosting documentation](/self-hosting) to learn more.
-
-**What is the difference between Open Source and Enterprise?**
-Open Source includes all core platform features under the MIT license with community support. Enterprise adds management APIs, project-level RBAC, data retention policies, audit logs, dedicated support, and is bundled with a ClickHouse commercial plan.
-
-**Where is the data stored?**
-Self-hosted Langfuse stores data in your own infrastructure. You control data residency and can deploy in any region. See [security documentation](/security) for details.
-
-[Ask anything else](/docs/ask-ai)
-
-<!-- agent-instructions -->
-
----
-
-## Agent Instructions
-
-This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/pricing-self-host.md`.
 
 ### Querying these docs
 
@@ -2667,6 +2383,96 @@ If the answer is not on this page, query the documentation instead of guessing:
 Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
 
 
+# Choose where evaluations run
+
+**URL:** https://langfuse.com/docs/evaluation/overview.md
+
+---
+title: Overview
+seoTitle: "Evaluation of LLM Applications"
+description: With Langfuse you can capture all your LLM evaluations in one place. You can combine a variety of different evaluation metrics like model-based evaluations (LLM-as-a-Judge), human annotations or fully custom evaluation workflows via API/SDKs. This allows you to measure quality, tonality, factual accuracy, completeness, and other dimensions of your LLM application.
+---
+
+# Evaluation Overview
+
+Evals give you a repeatable check of your LLM application's behavior. You replace guesswork with data, and catch regressions before you ship a change.
+
+  ![Score Analytics dashboard in Langfuse showing evaluation scores trended over time across multiple evaluators.](/images/docs/score-analytics-full-dashboard.png)
+
+Evaluation runs across most of the [AI engineering loop](/academy/ai-engineering-loop): you score live traces in production, turn interesting examples into datasets, run experiments to compare changes, and judge the results with manual or automated evaluators. It happens both **online**, on live production traces, and **offline**, before you ship a change.
+
+The AI Engineering Loop:
+
+- [Trace](/academy/tracing): traces, sessions, agents, prompts
+- [Monitor](/academy/monitoring): dashboards, LLM-as-judge, feedback
+- [Build datasets](/academy/datasets): datasets, features-as-tests
+- [Experiment](/academy/experiments): prompts, models, code variants
+- [Evaluate](/academy/evaluate): judges, custom evals, annotation
+
+[**Watch this walkthrough**](/watch-demo) of Langfuse Evaluation and how to use it to improve your LLM application.
+
+## Getting Started
+
+You can evaluate both:
+
+- [live incoming traces](/docs/evaluation/get-started/online) to measure quality on production data and track trends over time.
+- [your existing application on a pre-defined dataset](/docs/evaluation/get-started/offline), to make sure your changes are ready for production.
+
+For more information on how evaluators, scores, datasets, and experiments fit together, read [Core Concepts](/docs/evaluation/core-concepts).
+
+To catch regressions before they ship, run experiments in CI: add the [`langfuse/experiment-action`](/docs/evaluation/experiments/experiments-ci-cd) GitHub Action to a `pull_request` workflow and raise `RegressionError` from your experiment script when a score violates your threshold; the action then fails the job. It works with Langfuse Cloud and self-hosted Langfuse.
+
+If you're looking for another specific workflow, use the table below to find the right feature page:
+
+| If you want to...                                   | Use this Langfuse feature                                                                                                                                                                                                                   |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Review and rate traces manually                     | [Annotation Queues](/docs/evaluation/evaluation-methods/annotation-queues), [Scores via UI](/docs/evaluation/evaluation-methods/scores-via-ui)                                                                                              |
+| Hand experiment answers to a QA team                | [Review experiment answers](/docs/evaluation/evaluation-methods/annotation-queues#review-experiment-answers), [Share comparison results](/docs/evaluation/experiments/compare-experiments#share-results)                                    |
+| Collect feedback from your end users                | [User Feedback](/docs/observability/features/user-feedback)                                                                                                                                                                                 |
+| Leave open-ended notes on traces                    | [Text scores](/docs/evaluation/scores/overview#score-types), [Annotation Queues](/docs/evaluation/evaluation-methods/annotation-queues)                                                                                                     |
+| Build a reusable set of test cases                  | [Datasets](/docs/evaluation/experiments/datasets)                                                                                                                                                                                           |
+| Compare prompt, model, or code changes side by side | [Experiments via UI](/docs/evaluation/experiments/experiments-via-ui), [Experiments via SDK](/docs/evaluation/experiments/experiments-via-sdk), [Experiments via OpenTelemetry](/docs/evaluation/experiments/experiments-via-opentelemetry) |
+| Block deploys on regressions                        | [CI/CD experiments](/docs/evaluation/experiments/experiments-ci-cd)                                                                                                                                                                         |
+| Reuse checks in your application or CI process      | [Evaluate an existing application](/resources/engineering/evaluate-existing-application)                                                                                                                                                    |
+| Run deterministic checks                            | [Code Evaluators](/docs/evaluation/evaluation-methods/code-evaluators)                                                                                                                                                                      |
+| Automatically score live production traces          | [LLM-as-a-Judge](/docs/evaluation/evaluation-methods/llm-as-a-judge), [Jev as a judge](/docs/evaluation/evaluation-methods/jev-as-a-judge), [Scores via API/SDK](/docs/evaluation/evaluation-methods/scores-via-sdk)                        |
+| Check that an LLM judge agrees with human labels    | [Calibrate your LLM-as-a-judge](/guides/llm-as-a-judge-calibration-skill), [Score Analytics](/docs/evaluation/scores/score-analytics#human-vs-ai-annotation-agreement)                                                                      |
+| See how scores trend over time                      | [Score Analytics](/docs/evaluation/scores/score-analytics), [custom dashboards](/docs/metrics/features/custom-dashboards)                                                                                                                   |
+
+Already know what you're looking for? Browse _Evaluation Methods_ and _Experiments_ in the sidebar.
+
+## GitHub Discussions
+
+<!-- agent-instructions -->
+
+---
+
+## Agent Instructions
+
+This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/docs/evaluation/overview.md`.
+
+### Querying these docs
+
+If the answer is not on this page, query the documentation instead of guessing:
+
+- **Semantic search** across all Langfuse docs, returning an answer with the relevant pages and excerpts. Ask a specific, self-contained question:
+
+  ```bash
+  curl -sG "https://langfuse.com/api/search-docs" --data-urlencode "query=How do I trace a LangGraph agent?"
+  ```
+
+- **Index of every page**: <https://langfuse.com/llms.txt>, with per-section indexes [llms-docs.txt](https://langfuse.com/llms-docs.txt), [llms-integrations.txt](https://langfuse.com/llms-integrations.txt), and [llms-self-hosting.txt](https://langfuse.com/llms-self-hosting.txt).
+
+### Before writing Langfuse code
+
+- **Install the [Langfuse Agent Skill](https://langfuse.com/docs/api-and-data-platform/features/agent-skill).** It encodes Langfuse's own best practices for instrumentation, prompt management, and evaluation, and materially improves results.
+- **Read [What does a good trace look like?](https://langfuse.com/docs/observability/best-practices.md)** before instrumenting an application.
+- **Verify endpoints, parameters, and response fields** against the [API reference](https://api.reference.langfuse.com) instead of inferring them from code examples.
+- **Use the [Langfuse CLI](https://langfuse.com/docs/api-and-data-platform/features/cli)** (`npx @langfuse/cli api <resource> <action>`) to read or write traces, prompts, datasets, and scores from the terminal.
+
+Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
+
+
 # hallucinations
 
 **URL:** https://langfuse.com/resources/engineering/hallucination-detection.md
@@ -3065,73 +2871,169 @@ If the answer is not on this page, query the documentation instead of guessing:
 Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
 
 
-# Enterprise license keys
+# Self-hosted pricing and license
 
-**URL:** https://langfuse.com/self-hosting/license-key.md
-
----
-title: Enterprise License Key (self-hosted)
-sidebarTitle: License Key (EE)
-description: Learn how to activate a license key for your self-hosted Langfuse deployment.
-label: "Version: v4"
----
-
-# Enterprise License Key
-
-All core Langfuse features and APIs are available in Langfuse OSS (MIT licensed) without any limits.
-
-When running Langfuse self-hosted, you use the same deployment infrastructure as Langfuse Cloud. There are no scalability limitations between the different versions.
-
-Some additional Enterprise features require a license key:
-
-- [Project-level RBAC Roles](/docs/rbac)
-- [Protected Prompt Labels](/docs/prompt-management/features/prompt-version-control#protected-prompt-labels)
-- [Data Retention Policies](/docs/data-retention)
-- [Audit Logs](/changelog/2025-01-21-audit-logs)
-- [Server-Side Data Masking](/self-hosting/security/data-masking#server-side-ingestion-masking-ee)
-- [UI Customization](/self-hosting/administration/ui-customization)
-- [Organization Creators](/self-hosting/administration/organization-creators)
-- [Org Management API and SCIM](/docs/administration/scim-and-org-api)
-- [Instance Management API](/self-hosting/administration/instance-management-api)
-
-See [pricing page](/pricing-self-host) for more details on Langfuse Enterprise.
-
-## Activating a License Key
-
-After purchasing a license key, you can activate it by adding the following environment variable to your Langfuse deployment (both langfuse containers):
-
-```bash
-LANGFUSE_EE_LICENSE_KEY=<your-license-key>
-```
-
-Enterprise self-hosted deployments use limited telemetry for license compliance.
-See the [telemetry documentation](/self-hosting/security/telemetry) for the exact fields that are collected.
-
-## FAQ [#faq]
-
-### How do I remove a license key? [#how-to-remove-a-license-key]
-
-Remove the `LANGFUSE_EE_LICENSE_KEY` environment variable from both Langfuse containers (web and worker) and restart the deployment so the change takes effect.
-
-Enterprise features stop running after the restart. All core OSS features continue to work without a license key.
-
-[Ask another question](/docs/ask-ai)
-
-## Questions?
-
-If you have any questions about licensing, please [contact us](/support).
+**URL:** https://langfuse.com/pricing-self-host.md
 
 ---
+title: Self-Hosted Pricing
+description: Deploy Langfuse OSS today. Upgrade to Enterprise at any time.
+---
 
-If you experience any issues when self-hosting Langfuse, please:
+# Self-Hosted Pricing
 
-1. Check out [Troubleshooting & FAQ](/self-hosting/troubleshooting-and-faq) page.
-2. Use [Ask AI](/docs/ask-ai) to get instant answers to your questions.
-3. Ask the maintainers on [GitHub Discussions](/gh-support).
-4. Create a bug report or feature request on [GitHub](/issues).
+Deploy Langfuse OSS today. Upgrade to Enterprise at any time. See also: [Cloud pricing](/pricing).
 
-  Enterprise-grade support is available when self-hosting Langfuse. Learn more on
-  our [pricing page](/pricing-self-host).
+## Plans
+
+### Open Source (Free)
+
+Self-host all core Langfuse features for free without any limitations.
+
+- MIT License
+- All core platform features and APIs (observability, evaluation, prompt management, datasets, etc.)
+- Scalability of Langfuse Cloud
+- Deployment docs & Helm chart
+- Enterprise SSO and RBAC
+- Community support
+- Unlimited units / usage
+
+[Deployment guide](/self-hosting)
+
+### Self-Hosted Enterprise (Custom Pricing)
+
+Dedicated Langfuse deployment with enterprise capabilities and support. Bundled with ClickHouse Cloud, ClickHouse BYOC, or ClickHouse Private.
+
+- All Open Source features plus management APIs, project-level RBAC, data retention policies, and audit logs
+- Bundled with ClickHouse Cloud, ClickHouse BYOC, or ClickHouse Private
+- Langfuse pricing is additive to your ClickHouse commercial plan
+- Named lead support engineer for deployment and hosting guidance
+- Solutions architect support during evaluation and rollout
+- Direct access to the product team for feedback
+- SOC 2 Type II and ISO 27001 reports
+- Hardening for Government (in development)
+- Support SLA
+- Billing via AWS Marketplace or invoice
+
+[Talk to sales](/talk-to-us?deployment=self-hosted) | [Enterprise FAQ](/enterprise)
+
+## Feature Comparison (Self-Hosted)
+
+| Feature                                                                                                     | Open Source                 | Enterprise                                 |
+| ----------------------------------------------------------------------------------------------------------- | --------------------------- | ------------------------------------------ |
+| **LLM Application & Agent Tracing**                                                                         |                             |                                            |
+| [Traces and graphs (agents)](/docs/observability/overview)                                                  | Yes                         | Yes                                        |
+| [Session tracking (chats/threads)](/docs/observability/features/sessions)                                   | Yes                         | Yes                                        |
+| [User tracking](/docs/observability/features/users)                                                         | Yes                         | Yes                                        |
+| [Token and cost tracking](/docs/observability/features/token-and-cost-tracking)                             | Yes                         | Yes                                        |
+| [Native framework integrations](/integrations)                                                              | Yes                         | Yes                                        |
+| [SDKs (Python, JavaScript)](/docs/observability/sdk/overview)                                               | Yes                         | Yes                                        |
+| [OpenTelemetry (Java, Go, custom)](/integrations/native/opentelemetry)                                      | Yes                         | Yes                                        |
+| [Proxy-based logging (via LiteLLM)](/integrations/gateways/litellm)                                         | Yes                         | Yes                                        |
+| [Custom via API](/docs/api-and-data-platform/features/public-api)                                           | Yes                         | Yes                                        |
+| Included usage                                                                                              | Unlimited                   | Unlimited                                  |
+| [Multi-modal](/docs/observability/features/multi-modality)                                                  | Yes                         | Yes                                        |
+| **Langfuse AI**                                                                                             |                             |                                            |
+| [Langfuse Assistant (in-app agent)](/docs/langfuse-assistant)                                               | --                          | --                                         |
+| **Prompt Management**                                                                                       |                             |                                            |
+| [Prompt versioning](/docs/prompt-management/get-started)                                                    | Yes                         | Yes                                        |
+| Prompt fetching                                                                                             | Unlimited                   | Unlimited                                  |
+| [Prompt release management](/docs/prompt-management/features/prompt-version-control)                        | Yes                         | Yes                                        |
+| [Prompt composability](/docs/prompt-management/features/composability)                                      | Yes                         | Yes                                        |
+| [Prompt caching (server and client)](/docs/prompt-management/features/caching)                              | Yes                         | Yes                                        |
+| [Playground](/docs/prompt-management/features/playground)                                                   | Yes                         | Yes                                        |
+| [Prompt experiments](/docs/evaluation/experiments/experiments-via-ui)                                       | Yes                         | Yes                                        |
+| [Webhooks & Slack](/docs/prompt-management/features/webhooks-slack-integrations)                            | Yes                         | Yes                                        |
+| [Protected deployment labels](/docs/prompt-management/get-started#protected-prompt-labels)                  | --                          | Yes                                        |
+| **Evaluation (online and offline)**                                                                         |                             |                                            |
+| [Datasets](/docs/evaluation/experiments/datasets)                                                           | Yes                         | Yes                                        |
+| [Experiments via SDK](/docs/evaluation/experiments/experiments-via-sdk)                                     | Yes                         | Yes                                        |
+| [Experiments via UI](/docs/evaluation/experiments/experiments-via-ui)                                       | Yes                         | Yes                                        |
+| [Evaluation scores (custom)](/docs/evaluation/evaluation-methods/scores-via-sdk)                            | Yes                         | Yes                                        |
+| [User feedback tracking](/docs/observability/features/user-feedback)                                        | Yes                         | Yes                                        |
+| [External evaluation pipelines](/guides/cookbook/example_external_evaluation_pipelines)                     | Yes                         | Yes                                        |
+| [LLM-as-judge evaluators](/docs/evaluation/evaluation-methods/llm-as-a-judge)                               | Yes                         | Yes                                        |
+| [Human annotation](/docs/evaluation/evaluation-methods/scores-via-ui)                                       | Yes                         | Yes                                        |
+| [Human annotation queues](/docs/evaluation/evaluation-methods/annotation-queues)                            | Yes                         | Yes                                        |
+| **Metrics**                                                                                                 |                             |                                            |
+| [Custom dashboards](/docs/metrics/features/custom-dashboards)                                               | Yes                         | Yes                                        |
+| [Alerts](/docs/observability/features/alerts)                                                               | Langfuse v4+                | Langfuse v4+                               |
+| **Collaboration**                                                                                           |                             |                                            |
+| Projects                                                                                                    | Unlimited                   | Unlimited                                  |
+| Users                                                                                                       | Unlimited                   | Unlimited                                  |
+| **API**                                                                                                     |                             |                                            |
+| [Extensive public API](/docs/api-and-data-platform/features/public-api)                                     | Yes                         | Yes                                        |
+| [Metrics & Observations APIs (v2)](/docs/metrics/features/metrics-api#v2)                                   | Langfuse v4+                | Langfuse v4+                               |
+| **Exports**                                                                                                 |                             |                                            |
+| [Batch export via UI](/docs/api-and-data-platform/features/export-from-ui)                                  | Yes                         | Yes                                        |
+| [PostHog integration](/integrations/analytics/posthog)                                                      | Yes                         | Yes                                        |
+| [Mixpanel integration](/integrations/analytics/mixpanel)                                                    | Yes                         | Yes                                        |
+| [Scheduled export to blob storage](/docs/api-and-data-platform/features/export-to-blob-storage)             | Yes                         | Yes                                        |
+| **Deployment**                                                                                              |                             |                                            |
+| ClickHouse deployment model                                                                                 | Self-managed ClickHouse OSS | Bundled: ClickHouse Cloud / BYOC / Private |
+| [Deployment templates](/self-hosting)                                                                       | Yes                         | Yes                                        |
+| [Local (Docker Compose)](/self-hosting/deployment/docker-compose)                                           | Yes                         | Yes                                        |
+| [Kubernetes (Helm)](/self-hosting/deployment/kubernetes-helm)                                               | Yes                         | Yes                                        |
+| [AWS (Terraform)](/self-hosting/deployment/aws)                                                             | Yes                         | Yes                                        |
+| [Azure (Terraform)](/self-hosting/deployment/azure)                                                         | Yes                         | Yes                                        |
+| [GCP (Terraform)](/self-hosting/deployment/gcp)                                                             | Yes                         | Yes                                        |
+| **Support**                                                                                                 |                             |                                            |
+| [Ask AI](/docs/ask-ai)                                                                                      | Yes                         | Yes                                        |
+| [Community (GitHub)](/support#community)                                                                    | Yes                         | Yes                                        |
+| [In-app support](/support#in-app)                                                                           | --                          | Yes                                        |
+| [Private Slack channel](/support#slack)                                                                     | --                          | Yes                                        |
+| [Named lead support engineer](/support#onboarding)                                                          | --                          | Yes                                        |
+| [Onboarding & architectural guidance](/support#onboarding)                                                  | --                          | Yes                                        |
+| Solutions architect support                                                                                 | --                          | Yes                                        |
+| Product team feedback channel                                                                               | --                          | Yes                                        |
+| [Support SLA](/enterprise#faq)                                                                              | --                          | Yes                                        |
+| **Security**                                                                                                |                             |                                            |
+| Sign in with Google, AzureAD, GitHub                                                                        | Yes                         | Yes                                        |
+| [Hardening for Government (in development)](/self-hosting/configuration/hardening#hardening-for-government) | --                          | Yes                                        |
+| [Organization-level RBAC](/docs/administration/rbac)                                                        | Yes                         | Yes                                        |
+| Enterprise SSO (e.g. Okta, EntraID)                                                                         | Yes                         | Yes                                        |
+| SSO enforcement                                                                                             | Yes                         | Yes                                        |
+| [Client-side data masking](/docs/observability/features/masking)                                            | Yes                         | Yes                                        |
+| [Server-side data masking](/self-hosting/security/data-masking)                                             | --                          | Yes                                        |
+| [Project-level RBAC](/docs/administration/rbac#project-level-roles)                                         | --                          | Yes                                        |
+| [Data retention management](/docs/administration/data-retention)                                            | --                          | Yes                                        |
+| [SCIM API (automated user provisioning)](/docs/administration/scim-and-org-api)                             | --                          | Yes                                        |
+| [Organization creators](/self-hosting/administration/organization-creators)                                 | --                          | Yes                                        |
+| [UI customization](/self-hosting/administration/ui-customization)                                           | --                          | Yes                                        |
+| [Audit logs](/docs/administration/audit-logs)                                                               | --                          | Yes                                        |
+| [Admin API (project management, SCIM)](/docs/administration/scim-and-org-api)                               | --                          | Yes                                        |
+| [Instance management API](/self-hosting/administration/instance-management-api)                             | --                          | Yes                                        |
+| **Compliance**                                                                                              |                             |                                            |
+| SOC2 Type II & ISO27001 reports                                                                             | --                          | Yes                                        |
+| InfoSec/legal reviews                                                                                       | --                          | Yes                                        |
+
+## Discounts
+
+| Program              | Discount                            | Details                             |
+| -------------------- | ----------------------------------- | ----------------------------------- |
+| Early-stage startups | 50% off, first year                 | [Learn more and apply](/startups)   |
+| Research / Students  | Up to 100% off (limits apply)       | [Learn more and apply](/research)   |
+| Non-profits          | $199 in credits / month             | [Learn more and apply](/non-profit) |
+| Open-source projects | $300 in credits / month, first year | Contact support@langfuse.com        |
+
+## Frequently Asked Questions
+
+**How does Langfuse pricing compare to LangSmith, Braintrust, Arize, and Datadog?**
+On a representative workload, Langfuse Cloud is cheaper than [LangSmith](/compare/langsmith), [Braintrust](/compare/braintrust), [Arize](/compare/arize-phoenix), and [Datadog Agent Observability](/compare/datadog). Open the [editable pricing comparison sheet](/pricing-comparison-sheet) to fill in your own assumptions and check the numbers for your workload. For product-by-product differences, see the [comparison pages](/compare). Langfuse is also [open source](/why), based on [OpenTelemetry](/integrations/native/opentelemetry) for interoperability, [self-hostable](/self-hosting) at the same scale as Langfuse Cloud, and model- and framework-agnostic.
+
+**Can I purchase Langfuse through AWS Marketplace?**
+Yes. Self-hosted Enterprise can be billed via AWS Marketplace or invoice. [Talk to us](/talk-to-us?deployment=self-hosted) to request a private offer.
+
+**Can I self-host Langfuse for free?**
+Yes, Langfuse is open source and you can self-host it for free. Use Docker Compose to run Langfuse locally, or use one of the templates to self-host in production on Kubernetes. See the [self-hosting documentation](/self-hosting) to learn more.
+
+**What is the difference between Open Source and Enterprise?**
+Open Source includes all core platform features under the MIT license with community support. Enterprise adds management APIs, project-level RBAC, data retention policies, audit logs, dedicated support, and is bundled with a ClickHouse commercial plan.
+
+**Where is the data stored?**
+Self-hosted Langfuse stores data in your own infrastructure. You control data residency and can deploy in any region. See [security documentation](/security) for details.
+
+[Ask anything else](/docs/ask-ai)
 
 <!-- agent-instructions -->
 
@@ -3139,115 +3041,7 @@ If you experience any issues when self-hosting Langfuse, please:
 
 ## Agent Instructions
 
-This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/self-hosting/license-key.md`.
-
-### Querying these docs
-
-If the answer is not on this page, query the documentation instead of guessing:
-
-- **Semantic search** across all Langfuse docs, returning an answer with the relevant pages and excerpts. Ask a specific, self-contained question:
-
-  ```bash
-  curl -sG "https://langfuse.com/api/search-docs" --data-urlencode "query=How do I trace a LangGraph agent?"
-  ```
-
-- **Index of every page**: <https://langfuse.com/llms.txt>, with per-section indexes [llms-docs.txt](https://langfuse.com/llms-docs.txt), [llms-integrations.txt](https://langfuse.com/llms-integrations.txt), and [llms-self-hosting.txt](https://langfuse.com/llms-self-hosting.txt).
-
-### Before writing Langfuse code
-
-- **Install the [Langfuse Agent Skill](https://langfuse.com/docs/api-and-data-platform/features/agent-skill).** It encodes Langfuse's own best practices for instrumentation, prompt management, and evaluation, and materially improves results.
-- **Read [What does a good trace look like?](https://langfuse.com/docs/observability/best-practices.md)** before instrumenting an application.
-- **Verify endpoints, parameters, and response fields** against the [API reference](https://api.reference.langfuse.com) instead of inferring them from code examples.
-- **Use the [Langfuse CLI](https://langfuse.com/docs/api-and-data-platform/features/cli)** (`npx @langfuse/cli api <resource> <action>`) to read or write traces, prompts, datasets, and scores from the terminal.
-
-Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
-
-
-# Security
-
-**URL:** https://langfuse.com/security.md
-
----
-title: Overview
-sidebarTitle: Overview
-seoTitle: "Security & Compliance"
-description: Overview of Langfuse's commitment to data privacy, security, and compliance, including links to detailed pages on specific measures and certifications.
----
-
-# Security & Compliance Overview
-
-**At Langfuse, we prioritize data privacy and security.** We understand that the data you entrust to us is a vital asset to your business, and we treat it with the utmost care.
-
-We take active steps to demonstrate our commitment to data security and privacy such as annual SOC2 Type 2 and ISO27001 audits as well as External Penetration Tests. You can request access to the reports [here](/request-security-docs).
-
-Langfuse is built with enterprise needs in mind, focusing on:
-
-- **Security Measures:** Robust [Encryption](/security/encryption), access controls, and regular [Penetration Testing](/security/penetration-testing).
-- **Privacy Measures:** Protecting user data according to regulations like [GDPR](/security/gdpr). We offer a [DPA](/dpa), provide a [HIPAA-ready region](/security/hipaa), and adhere to our [Privacy Policy](/privacy).
-- **Transparency:** Open-source core and clear information on [software dependencies](/security/dependencies).
-- **Reporting:** Clear channels for [responsible disclosure through Bugcrowd](/security/responsible-disclosure) and [Whistleblowing](/security/whistleblowing).
-
-Langfuse is the most widely adopted LLM Engineering platform, used by **50,000+ companies**, with **35,089 GitHub stars**, **65M+ SDK installs per month**, and **38M+ Docker pulls**. Trusted by **21 of the Fortune 50** and **129 of the Fortune 500** companies.
-
-## Langfuse Cloud security model
-
-Langfuse Cloud is a fully managed, multi-tenant SaaS deployment. The security model combines three layers:
-
-- **Security posture:** The production service is based on the same open-source Langfuse codebase, is covered by SOC 2 Type II and ISO 27001 audits, and undergoes annual third-party penetration tests. You can request the latest reports [here](/request-security-docs).
-- **Tenant isolation:** All product data is scoped to a project. Every record is associated with a `projectId`, API keys are project-scoped, and authenticated requests are authorized through RBAC before queries are made. See the [Security FAQ](/security/security-faq) and [RBAC docs](/docs/administration/rbac).
-- **Customer controls:** Teams can reduce what reaches Langfuse and how long it stays there with [masking](/docs/observability/features/masking), [data retention](/docs/administration/data-retention), [data deletion](/docs/administration/data-deletion), region selection, SSO/SCIM, and audit logs.
-
-Langfuse Cloud runs on AWS and ClickHouse Cloud in isolated regional environments. Supporting services such as Postgres, ClickHouse, Redis, and S3 are covered by the same cloud security program: private network placement, least-privilege service access, encryption at rest and in transit, monitoring, and vendor/compliance review. If your requirements mandate infrastructure-level isolation in your own account or VPC, use [self-hosted Langfuse](/self-hosting) or contact us about Enterprise options.
-
-## Compliance
-
-We maintain internal policies in the [ClickHouse Trust Center](https://trust.clickhouse.com/) and adhere to several industry-standard compliance frameworks. Please check [Security FAQs](/security/security-faq) for more details.
-
-- [SOC 2 Type II](/security/soc2)
-- [ISO 27001](/security/iso27001)
-- [HIPAA](/security/hipaa)
-- [Hardening for Government](/self-hosting/configuration/hardening#hardening-for-government)
-
-## Privacy
-
-Langfuse is [GDPR](/security/gdpr) compliant, and offers data retention, data masking and data deletion capabilities to [manage the processing of personal data](/security/manage-personal-data). You can enter into a [DPA](/dpa) with Langfuse.
-
-## Contact
-
-- Use [Ask AI](/ask-ai) to get instant answers to your questions.
-- For security inquiries: security@clickhouse.com
-- For privacy inquiries: privacy@clickhouse.com
-- For legal inquiries: legal@clickhouse.com
-
-## General Information on Langfuse
-
-### What is Langfuse?
-
-Langfuse is an **open‑source AI engineering platform** that provides tracing, prompt management, evaluation, and metrics to help teams debug and continuously improve LLM‑based applications.
-
-### What deployment models are available?
-
-- **Langfuse Cloud** – fully‑managed SaaS (multi‑tenant) with US, EU, Japan, and HIPAA data regions
-- **Self‑hosted OSS** – MIT‑licensed software that you can deploy on your own infrastructure
-- **Self‑hosted Enterprise Edition** – commercial license with additional security/compliance features and vendor support.
-
-### Which cloud provider and regions do you use?
-
-Langfuse Cloud mainly runs on **AWS and ClickHouse Cloud**:
-
-- **US & HIPAA region**: us-west-2 (Oregon)
-- **EU region**: eu-west-1 (Ireland)
-- **JP region**: ap-northeast-1 (Japan)
-
-Self‑hosted customers can choose any region / provider. Langfuse Self-Hosted can be run fully offline/air-gapped.
-
-<!-- agent-instructions -->
-
----
-
-## Agent Instructions
-
-This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/security.md`.
+This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/pricing-self-host.md`.
 
 ### Querying these docs
 
@@ -3385,6 +3179,212 @@ For questions about data regions or availability, please [talk to us](/talk-to-u
 ## Agent Instructions
 
 This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/security/data-regions.md`.
+
+### Querying these docs
+
+If the answer is not on this page, query the documentation instead of guessing:
+
+- **Semantic search** across all Langfuse docs, returning an answer with the relevant pages and excerpts. Ask a specific, self-contained question:
+
+  ```bash
+  curl -sG "https://langfuse.com/api/search-docs" --data-urlencode "query=How do I trace a LangGraph agent?"
+  ```
+
+- **Index of every page**: <https://langfuse.com/llms.txt>, with per-section indexes [llms-docs.txt](https://langfuse.com/llms-docs.txt), [llms-integrations.txt](https://langfuse.com/llms-integrations.txt), and [llms-self-hosting.txt](https://langfuse.com/llms-self-hosting.txt).
+
+### Before writing Langfuse code
+
+- **Install the [Langfuse Agent Skill](https://langfuse.com/docs/api-and-data-platform/features/agent-skill).** It encodes Langfuse's own best practices for instrumentation, prompt management, and evaluation, and materially improves results.
+- **Read [What does a good trace look like?](https://langfuse.com/docs/observability/best-practices.md)** before instrumenting an application.
+- **Verify endpoints, parameters, and response fields** against the [API reference](https://api.reference.langfuse.com) instead of inferring them from code examples.
+- **Use the [Langfuse CLI](https://langfuse.com/docs/api-and-data-platform/features/cli)** (`npx @langfuse/cli api <resource> <action>`) to read or write traces, prompts, datasets, and scores from the terminal.
+
+Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
+
+
+# Enterprise license keys
+
+**URL:** https://langfuse.com/self-hosting/license-key.md
+
+---
+title: Enterprise License Key (self-hosted)
+sidebarTitle: License Key (EE)
+description: Learn how to activate a license key for your self-hosted Langfuse deployment.
+label: "Version: v4"
+---
+
+# Enterprise License Key
+
+All core Langfuse features and APIs are available in Langfuse OSS (MIT licensed) without any limits.
+
+When running Langfuse self-hosted, you use the same deployment infrastructure as Langfuse Cloud. There are no scalability limitations between the different versions.
+
+Some additional Enterprise features require a license key:
+
+- [Project-level RBAC Roles](/docs/rbac)
+- [Protected Prompt Labels](/docs/prompt-management/features/prompt-version-control#protected-prompt-labels)
+- [Data Retention Policies](/docs/data-retention)
+- [Audit Logs](/changelog/2025-01-21-audit-logs)
+- [Server-Side Data Masking](/self-hosting/security/data-masking#server-side-ingestion-masking-ee)
+- [UI Customization](/self-hosting/administration/ui-customization)
+- [Organization Creators](/self-hosting/administration/organization-creators)
+- [Org Management API and SCIM](/docs/administration/scim-and-org-api)
+- [Instance Management API](/self-hosting/administration/instance-management-api)
+
+See [pricing page](/pricing-self-host) for more details on Langfuse Enterprise.
+
+## Activating a License Key
+
+After purchasing a license key, you can activate it by adding the following environment variable to your Langfuse deployment (both langfuse containers):
+
+```bash
+LANGFUSE_EE_LICENSE_KEY=<your-license-key>
+```
+
+Enterprise self-hosted deployments use limited telemetry for license compliance.
+See the [telemetry documentation](/self-hosting/security/telemetry) for the exact fields that are collected.
+
+## FAQ [#faq]
+
+### How do I remove a license key? [#how-to-remove-a-license-key]
+
+Remove the `LANGFUSE_EE_LICENSE_KEY` environment variable from both Langfuse containers (web and worker) and restart the deployment so the change takes effect.
+
+Enterprise features stop running after the restart. All core OSS features continue to work without a license key.
+
+[Ask another question](/docs/ask-ai)
+
+## Questions?
+
+If you have any questions about licensing, please [contact us](/support).
+
+---
+
+If you experience any issues when self-hosting Langfuse, please:
+
+1. Check out [Troubleshooting & FAQ](/self-hosting/troubleshooting-and-faq) page.
+2. Use [Ask AI](/docs/ask-ai) to get instant answers to your questions.
+3. Ask the maintainers on [GitHub Discussions](/gh-support).
+4. Create a bug report or feature request on [GitHub](/issues).
+
+  Enterprise-grade support is available when self-hosting Langfuse. Learn more on
+  our [pricing page](/pricing-self-host).
+
+<!-- agent-instructions -->
+
+---
+
+## Agent Instructions
+
+This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/self-hosting/license-key.md`.
+
+### Querying these docs
+
+If the answer is not on this page, query the documentation instead of guessing:
+
+- **Semantic search** across all Langfuse docs, returning an answer with the relevant pages and excerpts. Ask a specific, self-contained question:
+
+  ```bash
+  curl -sG "https://langfuse.com/api/search-docs" --data-urlencode "query=How do I trace a LangGraph agent?"
+  ```
+
+- **Index of every page**: <https://langfuse.com/llms.txt>, with per-section indexes [llms-docs.txt](https://langfuse.com/llms-docs.txt), [llms-integrations.txt](https://langfuse.com/llms-integrations.txt), and [llms-self-hosting.txt](https://langfuse.com/llms-self-hosting.txt).
+
+### Before writing Langfuse code
+
+- **Install the [Langfuse Agent Skill](https://langfuse.com/docs/api-and-data-platform/features/agent-skill).** It encodes Langfuse's own best practices for instrumentation, prompt management, and evaluation, and materially improves results.
+- **Read [What does a good trace look like?](https://langfuse.com/docs/observability/best-practices.md)** before instrumenting an application.
+- **Verify endpoints, parameters, and response fields** against the [API reference](https://api.reference.langfuse.com) instead of inferring them from code examples.
+- **Use the [Langfuse CLI](https://langfuse.com/docs/api-and-data-platform/features/cli)** (`npx @langfuse/cli api <resource> <action>`) to read or write traces, prompts, datasets, and scores from the terminal.
+
+Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
+
+
+# Security
+
+**URL:** https://langfuse.com/security.md
+
+---
+title: Overview
+sidebarTitle: Overview
+seoTitle: "Security & Compliance"
+description: Overview of Langfuse's commitment to data privacy, security, and compliance, including links to detailed pages on specific measures and certifications.
+---
+
+# Security & Compliance Overview
+
+**At Langfuse, we prioritize data privacy and security.** We understand that the data you entrust to us is a vital asset to your business, and we treat it with the utmost care.
+
+We take active steps to demonstrate our commitment to data security and privacy such as annual SOC2 Type 2 and ISO27001 audits as well as External Penetration Tests. You can request access to the reports [here](/request-security-docs).
+
+Langfuse is built with enterprise needs in mind, focusing on:
+
+- **Security Measures:** Robust [Encryption](/security/encryption), access controls, and regular [Penetration Testing](/security/penetration-testing).
+- **Privacy Measures:** Protecting user data according to regulations like [GDPR](/security/gdpr). We offer a [DPA](/dpa), provide a [HIPAA-ready region](/security/hipaa), and adhere to our [Privacy Policy](/privacy).
+- **Transparency:** Open-source core and clear information on [software dependencies](/security/dependencies).
+- **Reporting:** Clear channels for [responsible disclosure through Bugcrowd](/security/responsible-disclosure) and [Whistleblowing](/security/whistleblowing).
+
+Langfuse is the most widely adopted LLM Engineering platform, used by **50,000+ companies**, with **35,105 GitHub stars**, **65M+ SDK installs per month**, and **38M+ Docker pulls**. Trusted by **21 of the Fortune 50** and **129 of the Fortune 500** companies.
+
+## Langfuse Cloud security model
+
+Langfuse Cloud is a fully managed, multi-tenant SaaS deployment. The security model combines three layers:
+
+- **Security posture:** The production service is based on the same open-source Langfuse codebase, is covered by SOC 2 Type II and ISO 27001 audits, and undergoes annual third-party penetration tests. You can request the latest reports [here](/request-security-docs).
+- **Tenant isolation:** All product data is scoped to a project. Every record is associated with a `projectId`, API keys are project-scoped, and authenticated requests are authorized through RBAC before queries are made. See the [Security FAQ](/security/security-faq) and [RBAC docs](/docs/administration/rbac).
+- **Customer controls:** Teams can reduce what reaches Langfuse and how long it stays there with [masking](/docs/observability/features/masking), [data retention](/docs/administration/data-retention), [data deletion](/docs/administration/data-deletion), region selection, SSO/SCIM, and audit logs.
+
+Langfuse Cloud runs on AWS and ClickHouse Cloud in isolated regional environments. Supporting services such as Postgres, ClickHouse, Redis, and S3 are covered by the same cloud security program: private network placement, least-privilege service access, encryption at rest and in transit, monitoring, and vendor/compliance review. If your requirements mandate infrastructure-level isolation in your own account or VPC, use [self-hosted Langfuse](/self-hosting) or contact us about Enterprise options.
+
+## Compliance
+
+We maintain internal policies in the [ClickHouse Trust Center](https://trust.clickhouse.com/) and adhere to several industry-standard compliance frameworks. Please check [Security FAQs](/security/security-faq) for more details.
+
+- [SOC 2 Type II](/security/soc2)
+- [ISO 27001](/security/iso27001)
+- [HIPAA](/security/hipaa)
+- [Hardening for Government](/self-hosting/configuration/hardening#hardening-for-government)
+
+## Privacy
+
+Langfuse is [GDPR](/security/gdpr) compliant, and offers data retention, data masking and data deletion capabilities to [manage the processing of personal data](/security/manage-personal-data). You can enter into a [DPA](/dpa) with Langfuse.
+
+## Contact
+
+- Use [Ask AI](/ask-ai) to get instant answers to your questions.
+- For security inquiries: security@clickhouse.com
+- For privacy inquiries: privacy@clickhouse.com
+- For legal inquiries: legal@clickhouse.com
+
+## General Information on Langfuse
+
+### What is Langfuse?
+
+Langfuse is an **open‑source AI engineering platform** that provides tracing, prompt management, evaluation, and metrics to help teams debug and continuously improve LLM‑based applications.
+
+### What deployment models are available?
+
+- **Langfuse Cloud** – fully‑managed SaaS (multi‑tenant) with US, EU, Japan, and HIPAA data regions
+- **Self‑hosted OSS** – MIT‑licensed software that you can deploy on your own infrastructure
+- **Self‑hosted Enterprise Edition** – commercial license with additional security/compliance features and vendor support.
+
+### Which cloud provider and regions do you use?
+
+Langfuse Cloud mainly runs on **AWS and ClickHouse Cloud**:
+
+- **US & HIPAA region**: us-west-2 (Oregon)
+- **EU region**: eu-west-1 (Ireland)
+- **JP region**: ap-northeast-1 (Japan)
+
+Self‑hosted customers can choose any region / provider. Langfuse Self-Hosted can be run fully offline/air-gapped.
+
+<!-- agent-instructions -->
+
+---
+
+## Agent Instructions
+
+This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/security.md`.
 
 ### Querying these docs
 

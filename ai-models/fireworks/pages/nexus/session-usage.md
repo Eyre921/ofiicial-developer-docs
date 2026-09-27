@@ -39,12 +39,13 @@ In the meter, press Tab to move between agents, Esc to return to the session lis
 
 Each call is split into disjoint token buckets, priced at that model's rate:
 
-| Column     | What it is                                | How it bills                                                    |
-| ---------- | ----------------------------------------- | --------------------------------------------------------------- |
-| `uncached` | Input tokens that missed the cache        | Full input rate                                                 |
-| `cached`   | Input tokens served from the prompt cache | The model's cached-input rate; the discount varies by model     |
-| `write`    | Tokens written into the cache             | Anthropic charges a write premium. Fireworks models show 0 here |
-| `out`      | Generated tokens                          | Output rate                                                     |
+| Column     | What it is                                  | How it bills                                                    |
+| ---------- | ------------------------------------------- | --------------------------------------------------------------- |
+| `uncached` | Input tokens that missed the cache          | Full input rate                                                 |
+| `cached`   | Input tokens served from the prompt cache   | The model's cached-input rate; the discount varies by model     |
+| `write`    | Tokens written into the cache               | Anthropic charges a write premium. Fireworks models show 0 here |
+| `cache%`   | Share of input tokens served from the cache | Not billed separately                                           |
+| `out`      | Generated tokens                            | Output rate                                                     |
 
 ## Understand the estimate
 

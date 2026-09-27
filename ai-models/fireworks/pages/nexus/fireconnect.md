@@ -6,53 +6,73 @@ path: nexus/fireconnect
 
 Point Claude Code, Cursor IDE, Codex, Copilot, and the rest at Fireworks with one FireConnect command
 
-[FireConnect](https://github.com/fw-ai/fireconnect) is an open-source CLI that connects your existing coding harness to Fireworks. Install it, sign in once, then run one command for each harness you use. You do not need to host another service.
+[FireConnect](https://github.com/fw-ai/fireconnect) is the easiest way to use Fireworks models in the coding harness you already use. It is an open-source CLI that rewrites your harness settings to call Fireworks, adds Fireworks models and FireRouter to the model picker, and restores your original settings when you turn it off. You do not need to host a service or edit config files by hand.
 
-<Tip>
-  Start with [Quick start](#quick-start). Then review the setup details for your app in [Coding Harnesses](/nexus/harnesses). To choose a router, see [FireRouter](/nexus/firerouter).
-</Tip>
+<Columns>
+  <Card title="Claude Code" icon="asterisk" href="/nexus/harnesses#claude-code" />
+
+  <Card title="Codex CLI, Codex app, and ChatGPT" icon="square-terminal" href="/nexus/harnesses#codex" />
+
+  <Card title="OpenCode" icon="code" href="/nexus/harnesses#opencode" />
+
+  <Card title="Cursor IDE" icon="arrow-pointer" href="/nexus/harnesses#cursor-ide" />
+
+  <Card title="VS Code" icon="window-maximize" href="/nexus/harnesses#vs-code" />
+
+  <Card title="More harnesses" icon="grid-2" href="/nexus/harnesses">
+    Pi, Copilot App and CLI, and DeepSeek Harness
+  </Card>
+</Columns>
 
 ## Quick start
 
-**1. Install from Bash** (Node.js 18 or later):
+<Steps>
+  <Step title="Install" icon="download">
+    ```bash wrap theme={null}
+    curl -fsSL https://fireconnect.fireworks.ai/install.sh | bash
+    ```
 
-```bash wrap theme={null}
-curl -fsSL https://fireconnect.fireworks.ai/install.sh | bash
-```
+    Requires Node.js 18 or later. On Windows, run it from Git Bash; PowerShell breaks the script's line endings.
 
-Alternative installer:
+    <Accordion title="Alternative installer">
+      ```bash wrap theme={null}
+      curl -fsSL \
+        https://raw.githubusercontent.com/fw-ai/fireconnect/main/install.sh \
+        | bash
+      ```
+    </Accordion>
+  </Step>
 
-```bash wrap theme={null}
-curl -fsSL \
-  https://raw.githubusercontent.com/fw-ai/fireconnect/main/install.sh \
-  | bash
-```
+  <Step title="Sign in" icon="key">
+    ```bash wrap theme={null}
+    fireconnect login
+    ```
 
-**2. Sign in** (browser flow, or paste a Fireworks key):
+    Sign in with your browser, or paste a Fireworks key.
+  </Step>
 
-```bash wrap theme={null}
-fireconnect login
-```
+  <Step title="Connect a harness" icon="plug">
+    ```bash wrap theme={null}
+    fireconnect claude
+    ```
 
-**3. Connect** (example: Claude Code):
+    Replace `claude` with any harness from [Coding Harnesses](/nexus/harnesses). `cursor` means **Cursor IDE** only; Cursor CLI is not supported.
+  </Step>
 
-```bash wrap theme={null}
-fireconnect claude
-```
+  <Step title="Restart and check" icon="circle-check">
+    ```bash wrap theme={null}
+    fireconnect claude status
+    ```
 
-**4. Restart the harness, then check:**
+    <Check>`status` shows the configured model and the Fireworks models in the picker.</Check>
+  </Step>
+</Steps>
 
-```bash wrap theme={null}
-fireconnect claude status
-```
-
-`status` shows the configured model and which Fireworks models appear in the picker.
-
-Replace `claude` with a supported harness name from [Coding Harnesses](/nexus/harnesses). `cursor` means **Cursor IDE** only; Cursor CLI is not supported.
-
-<Note>
-  **Windows:** run the install command from Git Bash. PowerShell breaks the install script line endings.
-</Note>
+<Tip>
+  **Rather edit settings yourself?** Each harness in
+  [Coding Harnesses](/nexus/harnesses) has a **Manual setup** tab with the
+  exact settings FireConnect would write.
+</Tip>
 
 ## In Claude Code
 
@@ -76,13 +96,30 @@ Open `/model` to choose FireRouter, an open-model router, or a Fireworks model:
 
 ## Choose a model
 
-Connecting registers coding-ready Fireworks models, including `auto`. Use `--model` only when you want to add or select an explicit model:
+Connecting registers coding-ready Fireworks models, including `auto`. Use `--model` when you want to add or select an explicit model or router:
 
 ```bash wrap theme={null}
-fireconnect claude --model glm-latest
+fireconnect claude --model firerouter/opus
 ```
 
-See [FireRouter](/nexus/firerouter) for router behavior. See [Coding Harnesses](/nexus/harnesses) for app-specific restart rules. See [Harness Compatibility](/nexus/harness-compatibility) for credentials and explicit model changes. See [Open Models](/nexus/open-models) for aliases, fast tiers, and pinned versions.
+Restart or reopen the harness after changing a model. See [Coding Harnesses](/nexus/harnesses) for app-specific rules.
+
+See [FireRouter](/nexus/firerouter) for router behavior, [Open Models](/nexus/open-models) for aliases and pinned versions, and [Harness Compatibility](/nexus/harness-compatibility) for FireRouter and MCP support.
+
+### Use closed models without an LLM gateway
+
+FireConnect does not require an LLM gateway. In Claude Code, routes with Claude models can use your Claude login. Some other harnesses accept a local Anthropic key. OpenAI models need an OpenAI key in [Provider Keys](/nexus/provider-keys). See [Harness Compatibility](/nexus/harness-compatibility) for each harness.
+
+## Web search
+
+Web search works through Fireworks with no extra setup. In Claude Code, the native `WebSearch` and `WebFetch` tools run server-side on Fireworks. The Codex CLI, the Codex app, and the ChatGPT desktop app keep their native web search. Search works with any Fireworks model or FireRouter ID. Web search pricing will be published soon; see [Web Search](/nexus/web-search).
+
+<Note>
+  Earlier FireConnect versions installed a `fireworks-websearch` MCP server for
+  Claude Code. That MCP is no longer available. Run `fireconnect upgrade` to
+  remove it; your own MCP servers are not changed. See
+  [Web Search](/nexus/web-search).
+</Note>
 
 ## Upgrade and uninstall
 

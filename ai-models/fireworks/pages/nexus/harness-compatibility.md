@@ -4,60 +4,189 @@ source: https://docs.fireworks.ai/nexus/harness-compatibility
 path: nexus/harness-compatibility
 ---
 
-Connect credentials for closed model families, understand harness support, and troubleshoot explicit model changes.
+Compare FireRouter support, closed-model credentials, and MCP behavior across coding harnesses connected through FireConnect.
 
-Start with [Coding Harnesses](/nexus/harnesses) for setup by client. This page covers explicit model changes, closed-model credentials, and Foundry support.
+Use this page to check whether FireConnect can add FireRouter to your harness and what it changes about Model Context Protocol (MCP) configuration. For setup commands and restart rules, see [Coding Harnesses](/nexus/harnesses).
 
-## Add an explicit model
+<Tabs>
+  <Tab title="FireRouter">
+    | Harness                    | Request API      | FireRouter compatibility                                                                             | Local provider credentials                     |
+    | -------------------------- | ---------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
+    | Claude Code                | Messages         | Supports `firerouter` and `firerouter/...` IDs                                                       | Anthropic login, OAuth, or `ANTHROPIC_API_KEY` |
+    | Claude Agent SDK           | Messages         | Supported when the SDK reads the user settings written by FireConnect                                | Same as Claude Code                            |
+    | OpenCode                   | Chat Completions | Supports `firerouter` and `firerouter/...` IDs                                                       | Anthropic key                                  |
+    | Codex                      | Responses        | Supports `firerouter` and `firerouter/...` IDs                                                       | `ANTHROPIC_API_KEY` environment reference      |
+    | Codex app, ChatGPT desktop | Responses        | Uses the FireRouter IDs registered through the shared Codex configuration                            | No separate local provider-key configuration   |
+    | Pi                         | Chat Completions | Supports `firerouter` and `firerouter/...` IDs                                                       | Anthropic key                                  |
+    | Cursor IDE                 | Chat Completions | Partial: FireConnect rejects routes that require an Anthropic credential                             | None                                           |
+    | VS Code                    | Chat Completions | Supports `firerouter` and `firerouter/...` IDs                                                       | Anthropic key                                  |
+    | Copilot App                | Chat Completions | Partial: FireConnect rejects routes that require an Anthropic credential                             | None                                           |
+    | Copilot CLI                | Chat Completions | Partial: FireConnect rejects routes that require an Anthropic credential. Manual setup supports them | Provider-key headers in manual setup           |
+    | DeepSeek Harness           | Chat Completions | Partial: FireConnect rejects routes that require an Anthropic credential. Manual setup supports them | Provider-key headers in manual setup           |
+    | Claude Desktop             | Not applicable   | Not supported by FireConnect                                                                         | Not applicable                                 |
 
-Connecting a harness already registers coding-ready Fireworks models, including `auto`. Use `--model` only when you want an explicit model or router:
+    **Provide a local Anthropic key.** Where a harness supports one, pass it
+    when you connect, or store it once for every harness:
 
-```bash wrap theme={null}
-fireconnect claude --model glm-latest
-```
+    ```bash wrap theme={null}
+    fireconnect opencode --model firerouter/opus --anthropic-api-key "$ANTHROPIC_API_KEY"
+    fireconnect configure --anthropic-api-key "$ANTHROPIC_API_KEY"
+    ```
 
-Replace `claude` and `glm-latest` with the harness and model you want. On Claude Code, `--model` adds the model to `/model` without replacing native Anthropic tiers. After changing a model, follow the restart or reopen instructions in [Coding Harnesses](/nexus/harnesses).
+    FireConnect also reads `ANTHROPIC_API_KEY` from your environment. Codex
+    stores an `ANTHROPIC_API_KEY` environment reference, so export the key in
+    the shell that starts Codex.
 
-For model IDs, aliases, fast tiers, pinned versions, image support, and US-only models, see [Open Models](/nexus/open-models).
+    FireConnect refuses routes that need a local Anthropic key on Cursor IDE,
+    Copilot App, Copilot CLI, and DeepSeek Harness. Cursor IDE and the Copilot
+    App cannot send extra headers, so they need an Anthropic Provider Key and
+    manual setup. Copilot CLI and DeepSeek Harness can send the header with
+    [manual setup](/nexus/firerouter/setup#set-up-your-harness). Routes with
+    only Fireworks models work on every harness.
 
-## Connect credentials for closed model families
+    **OpenAI models.** FireConnect has no local OpenAI-key option yet. Connect
+    an OpenAI key in [Provider Keys](/nexus/provider-keys), or send
+    `x-openai-api-key` with manual setup on any harness except Cursor IDE and
+    the Copilot App. Provider Keys is not yet
+    available on every account; [contact the Fireworks team](https://fireworks.ai/demo-request)
+    to enable it. For direct HTTP calls, see
+    [APIs and SDKs](/nexus/apis-and-sdks#credentials) or
+    [LLM Gateways](/nexus/llm-gateways#provide-closed-model-credentials).
 
-Your Fireworks key pays for the open-model leg. A closed model family also needs a credential for its provider.
+    Automated live-inference validation covers Claude Code, OpenCode, Codex,
+    Pi, and DeepSeek Harness. Cursor IDE, VS Code, Copilot App, Copilot CLI,
+    and ChatGPT desktop are validated at the configuration layer.
+  </Tab>
 
-<Tip>
-  For a route containing Claude or another Anthropic model, connect an
-  account-level Anthropic key in [Provider Keys](/nexus/provider-keys) when possible.
-  Developers then need only their Fireworks API key, which `fireconnect login`
-  configures for them. The table below shows harness-local alternatives and
-  current FireConnect constraints.
-</Tip>
+  <Tab title="MCP">
+    Your MCP servers keep working after you connect a harness to Fireworks.
+    FireConnect changes where model requests go, not which tools the harness
+    loads. Fireworks models call MCP tools the same way the harness's default
+    models do.
 
-| Harness                                    | Local alternative for an Anthropic route                                                        | Astra or another OpenAI route                       |
-| ------------------------------------------ | ----------------------------------------------------------------------------------------------- | --------------------------------------------------- |
-| Claude Code                                | Existing Claude login, OAuth, or `ANTHROPIC_API_KEY`                                            | OpenAI key in [Provider Keys](/nexus/provider-keys) |
-| OpenCode, Pi, VS Code                      | Local Anthropic key from `--anthropic-api-key`, `ANTHROPIC_API_KEY`, or `fireconnect configure` | OpenAI Provider Key                                 |
-| Codex                                      | Local Anthropic key forwarded through an `ANTHROPIC_API_KEY` environment reference              | OpenAI Provider Key                                 |
-| Cursor IDE                                 | Not supported because Cursor IDE cannot send the additional Anthropic header                    | OpenAI Provider Key                                 |
-| Copilot App, Copilot CLI, DeepSeek Harness | Not yet configured by FireConnect                                                               | OpenAI Provider Key                                 |
+    <Columns>
+      <Card title="Your servers stay" icon="plug">
+        FireConnect keeps every MCP server you configured, and
+        `fireconnect <harness> off` leaves them in place.
+      </Card>
 
-FireConnect currently refuses routes that require Anthropic credentials on Cursor IDE, Copilot App, Copilot CLI, and DeepSeek Harness. For Cursor IDE, this is a client header limitation. For Copilot and DeepSeek, it is a FireConnect integration gap.
+      <Card title="Tool search stays on" icon="magnifying-glass">
+        In Claude Code, FireConnect sets `ENABLE_TOOL_SEARCH` so large MCP
+        tool sets still load on demand.
+      </Card>
 
-OpenAI models use an account-level OpenAI Provider Key. FireConnect does not have a local OpenAI-key flag. For direct HTTP calls, see [APIs and SDKs](/nexus/apis-and-sdks#credentials).
+      <Card title="Web search is built in" icon="globe" href="/nexus/web-search">
+        The Fireworks WebSearch MCP is retired. Claude Code's native
+        `WebSearch` tool replaces it.
+      </Card>
+    </Columns>
 
-To control the balance between predicted quality and cost, see [Routing Preferences](/nexus/routing-preferences).
+    ### What FireConnect changes
 
-## Foundry compatibility
+    | Harness                                                             | What happens to MCP                                                                                                                    |
+    | ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+    | Claude Code                                                         | Your servers stay in `~/.claude.json`. FireConnect removes only its retired `fireworks-websearch` server and sets `ENABLE_TOOL_SEARCH` |
+    | Codex                                                               | Your servers stay in `[mcp_servers]` in `~/.codex/config.toml`                                                                         |
+    | OpenCode                                                            | Your servers stay in the `mcp` block of `opencode.json`                                                                                |
+    | Codex app                                                           | FireConnect doesn't touch MCP. Set up servers in the app as usual                                                                      |
+    | ChatGPT desktop                                                     | <Badge>Unreliable</Badge> MCP servers and plugins don't work reliably while FireConnect is on                                          |
+    | Pi, Cursor IDE, VS Code, Copilot App, Copilot CLI, DeepSeek Harness | FireConnect doesn't touch MCP. Set up servers in the harness as usual                                                                  |
+    | Claude Agent SDK                                                    | FireConnect doesn't touch MCP. MCP follows the setting sources your application loads                                                  |
+    | Claude Desktop                                                      | <Badge>Not supported</Badge> FireConnect doesn't connect Claude Desktop                                                                |
 
-On the Foundry path, pass the Azure deployment name, such as `FW-GLM-5.2`, instead of a short Fireworks ID.
+    <Warning>
+      MCP servers and plugins in ChatGPT desktop don't work reliably while
+      FireConnect is on. If you depend on them there, run
+      `fireconnect codex off` before using them.
+    </Warning>
 
-Model routers are not available on the Foundry path. Direct FireConnect routing does not support Claude Code, DeepSeek Harness, Copilot App, and Copilot CLI on Foundry.
+    ### Check that an MCP tool works
 
-To run Claude Code against a Foundry deployment, place an LLM gateway between Claude Code and Foundry. See [Microsoft Foundry](/nexus/microsoft-foundry#claude-code-through-a-gateway).
+    <Steps>
+      <Step title="Connect the harness" icon="plug">
+        ```bash theme={null}
+        fireconnect claude
+        ```
+
+        Use `fireconnect codex` or `fireconnect opencode` for the other
+        harnesses.
+      </Step>
+
+      <Step title="Confirm the server is configured" icon="list-check">
+        <CodeGroup>
+          ```bash Claude Code theme={null}
+          claude mcp list
+          # docs: npx -y your-mcp-server - ✔ Connected
+          ```
+
+          ```toml Codex theme={null}
+          # ~/.codex/config.toml, next to the settings FireConnect adds
+          [mcp_servers.docs]
+          command = "npx"
+          args = ["-y", "your-mcp-server"]
+          ```
+
+          ```json OpenCode theme={null}
+          // ~/.config/opencode/opencode.json
+          {
+            "mcp": {
+              "docs": {
+                "type": "local",
+                "command": ["npx", "-y", "your-mcp-server"],
+                "enabled": true
+              }
+            }
+          }
+          ```
+        </CodeGroup>
+
+        In Claude Code, add a server with `claude mcp add <name> -- <command>`.
+      </Step>
+
+      <Step title="Ask the model to call a tool" icon="wrench">
+        Start a new session and ask for something only the tool can answer,
+        such as "Call the docs search tool and summarize the first result."
+        The harness shows the tool call, and the answer uses the tool's output.
+      </Step>
+    </Steps>
+
+    <Tip>
+      Setting up Claude Code by hand? Add `"ENABLE_TOOL_SEARCH": "true"` to
+      `env` in `~/.claude/settings.json`. Claude Code turns MCP tool search off
+      when `ANTHROPIC_BASE_URL` points anywhere other than Anthropic.
+    </Tip>
+
+    <Note>
+      Upgrading from the Fireworks WebSearch MCP? `fireconnect claude` removes
+      the `fireworks-websearch` server for you and leaves your other servers
+      in place. See [Web Search](/nexus/web-search) for which harnesses have
+      native web search.
+    </Note>
+  </Tab>
+</Tabs>
 
 ## Troubleshooting
 
 <AccordionGroup>
   <Accordion title="Nothing changed after --model">
-    Follow the restart or reopen instructions for your client in [Coding Harnesses](/nexus/harnesses).
+    Restart or reopen the harness. Claude Code and Codex load a new model in a
+    new or resumed session. See [Coding Harnesses](/nexus/harnesses) for each
+    harness.
+  </Accordion>
+
+  <Accordion title="FireConnect refuses a FireRouter route">
+    The harness cannot send an Anthropic key. Use a route with only Fireworks
+    models, or use a harness that supports a local Anthropic key.
   </Accordion>
 </AccordionGroup>
+
+## Microsoft Foundry
+
+FireRouter is not available on Microsoft Foundry, and Foundry support differs by harness. See the compatibility matrix in [Foundry for Coding Harnesses](/nexus/microsoft-foundry#choose-a-path), including [Claude Code through a gateway](/nexus/microsoft-foundry#claude-code-through-a-gateway).
+
+## Related setup
+
+* [Coding Harnesses](/nexus/harnesses): connect commands, files changed, and restart rules
+* [FireRouter](/nexus/firerouter): router IDs and composition
+* [Provider Keys](/nexus/provider-keys): account-level closed-model credentials
+* [Routing Preferences](/nexus/routing-preferences): quality and savings controls by harness

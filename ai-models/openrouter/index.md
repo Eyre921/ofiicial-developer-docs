@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 466 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 470 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -107,6 +107,8 @@
 - `docs/api/api-reference/oauth/openrouter-access-token-signing-keys` — [OpenRouter access token signing keys](pages/docs/api/api-reference/oauth/openrouter-access-token-signing-keys.md) · [原文](https://openrouter.ai/docs/api/api-reference/oauth/openrouter-access-token-signing-keys.md)
 - `docs/api/api-reference/observability/create-an-observability-destination` — [Create an observability destination](pages/docs/api/api-reference/observability/create-an-observability-destination.md) · [原文](https://openrouter.ai/docs/api/api-reference/observability/create-an-observability-destination.md)
 - `docs/api/api-reference/observability/delete-an-observability-destination` — [Delete an observability destination](pages/docs/api/api-reference/observability/delete-an-observability-destination.md) · [原文](https://openrouter.ai/docs/api/api-reference/observability/delete-an-observability-destination.md)
+- `docs/api/api-reference/observability/get-an-observability-destination` — [Get an observability destination](pages/docs/api/api-reference/observability/get-an-observability-destination.md) · [原文](https://openrouter.ai/docs/api/api-reference/observability/get-an-observability-destination.md)
+- `docs/api/api-reference/observability/list-observability-destinations` — [List observability destinations](pages/docs/api/api-reference/observability/list-observability-destinations.md) · [原文](https://openrouter.ai/docs/api/api-reference/observability/list-observability-destinations.md)
 - `docs/api/api-reference/observability/update-an-observability-destination` — [Update an observability destination](pages/docs/api/api-reference/observability/update-an-observability-destination.md) · [原文](https://openrouter.ai/docs/api/api-reference/observability/update-an-observability-destination.md)
 - `docs/api/api-reference/organization/list-organization-members` — [List organization members](pages/docs/api/api-reference/organization/list-organization-members.md) · [原文](https://openrouter.ai/docs/api/api-reference/organization/list-organization-members.md)
 - `docs/api/api-reference/presets/create-a-preset-from-a-chat-completions-request-body` — [Create a preset from a chat-completions request body](pages/docs/api/api-reference/presets/create-a-preset-from-a-chat-completions-request-body.md) · [原文](https://openrouter.ai/docs/api/api-reference/presets/create-a-preset-from-a-chat-completions-request-body.md)
@@ -386,6 +388,7 @@
 - `docs/guides/features/containers` — [Containers](pages/docs/guides/features/containers.md) · [原文](https://openrouter.ai/docs/guides/features/containers.md)
 - `docs/guides/features/files-api` — [Files API](pages/docs/guides/features/files-api.md) · [原文](https://openrouter.ai/docs/guides/features/files-api.md)
 - `docs/guides/features/guardrails` — [Guardrails](pages/docs/guides/features/guardrails.md) · [原文](https://openrouter.ai/docs/guides/features/guardrails.md)
+- `docs/guides/features/guardrails` — [guardrails](pages/docs/guides/features/guardrails-2.md) · [原文](https://openrouter.ai/docs/guides/features/guardrails.md)
 - `docs/guides/features/guardrails/prompt-injection` — [Prompt Injection Detection](pages/docs/guides/features/guardrails/prompt-injection.md) · [原文](https://openrouter.ai/docs/guides/features/guardrails/prompt-injection.md)
 - `docs/guides/features/guardrails/prompt-injection/allowlist` — [Allowlist](pages/docs/guides/features/guardrails/prompt-injection/allowlist.md) · [原文](https://openrouter.ai/docs/guides/features/guardrails/prompt-injection/allowlist.md)
 - `docs/guides/features/guardrails/secret-formats` — [Detected Secret Formats](pages/docs/guides/features/guardrails/secret-formats.md) · [原文](https://openrouter.ai/docs/guides/features/guardrails/secret-formats.md)
@@ -453,6 +456,7 @@
 - `docs/guides/overview/terraform` — [Terraform Provider](pages/docs/guides/overview/terraform.md) · [原文](https://openrouter.ai/docs/guides/overview/terraform.md)
 - `docs/guides/privacy/data-collection` — [Data Collection](pages/docs/guides/privacy/data-collection.md) · [原文](https://openrouter.ai/docs/guides/privacy/data-collection.md)
 - `docs/guides/privacy/provider-logging` — [Provider Logging](pages/docs/guides/privacy/provider-logging.md) · [原文](https://openrouter.ai/docs/guides/privacy/provider-logging.md)
+- `docs/guides/privacy/provider-logging` — [privacy settings](pages/docs/guides/privacy/provider-logging-2.md) · [原文](https://openrouter.ai/docs/guides/privacy/provider-logging.md)
 - `docs/guides/routing/auto-exacto` — [Auto Exacto](pages/docs/guides/routing/auto-exacto.md) · [原文](https://openrouter.ai/docs/guides/routing/auto-exacto.md)
 - `docs/guides/routing/model-fallbacks` — [Model Fallbacks](pages/docs/guides/routing/model-fallbacks.md) · [原文](https://openrouter.ai/docs/guides/routing/model-fallbacks.md)
 - `docs/guides/routing/model-variants/exacto` — [Exacto Variant](pages/docs/guides/routing/model-variants/exacto.md) · [原文](https://openrouter.ai/docs/guides/routing/model-variants/exacto.md)

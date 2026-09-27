@@ -4,11 +4,11 @@ source: https://docs.fireworks.ai/nexus/cli-reference
 path: nexus/cli-reference
 ---
 
-FireConnect global commands, providers, authentication, and migration
+FireConnect global commands, providers, authentication, and model selection
 
 Connect a harness with `fireconnect <harness>`. Use `off` to restore its previous settings, `status` to inspect the connection, and `help` to see harness-specific options. The optional `on` command remains available for backward compatibility.
 
-For model selection and credentials, see [Open Models](/nexus/open-models) and [Harness Compatibility](/nexus/harness-compatibility). For router behavior, see [FireRouter](/nexus/firerouter).
+For model selection, see [Open Models](/nexus/open-models). For router behavior and account-level credentials, see [FireRouter](/nexus/firerouter) and [Provider Keys](/nexus/provider-keys). For cross-harness support, see [Harness Compatibility](/nexus/harness-compatibility).
 
 ## Global commands
 
@@ -77,7 +77,7 @@ In `configure`, `--api-key` is the **Azure** endpoint key and requires `--provid
 | `fireworks` (default) | Fireworks gateway              | Fireworks API key |
 | `azure`               | Fireworks on Microsoft Foundry | Azure API key     |
 
-See [Coding Harnesses](/nexus/harnesses#foundry-across-harnesses) for current Foundry compatibility. Connections use the configured provider by default. To use Foundry for one command, pass `--azure`, or pass both `--base-url` and `--api-key`.
+See [Foundry for Coding Harnesses](/nexus/microsoft-foundry#choose-a-path) for current compatibility. Connections use the configured provider by default. To use Foundry for one command, pass `--azure`, or pass both `--base-url` and `--api-key`.
 
 ## Harness commands
 
@@ -123,20 +123,3 @@ When no global key resolves, connect can reuse a Fireworks key already stored in
 2. Existing Azure key stored by the harness
 3. Literal Azure key saved by `fireconnect configure`
 4. `AZURE_API_KEY`, including a saved environment reference
-
-## Legacy syntax
-
-Current usage is `fireconnect <harness> --model <id>`.
-
-| Earlier syntax                       | Current syntax                       |
-| ------------------------------------ | ------------------------------------ |
-| `fireconnect on`                     | `fireconnect claude`                 |
-| `fireconnect off`                    | `fireconnect claude off`             |
-| `fireconnect on --harness opencode`  | `fireconnect opencode`               |
-| `fireconnect <harness> model list`   | `fireconnect model list`             |
-| `fireconnect <harness> model select` | `fireconnect <harness> --model <id>` |
-| `fireconnect <harness> model reset`  | `fireconnect <harness>`              |
-| `fireconnect demo`                   | `fireconnect claude demo`            |
-| `fireconnect deepagents`             | `fireconnect deepseek`               |
-
-`--main` is rejected with a hint to use `--model`. Claude tier flags such as `--opus` and `--sonnet` are rejected on connect. `--interactive` is not supported for Claude Code.
