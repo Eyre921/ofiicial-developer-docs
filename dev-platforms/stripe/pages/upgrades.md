@@ -22,7 +22,7 @@ Review the [Changelog](https://docs.stripe.com/changelog.md) to find the target 
 
 ## Specify the API version in your SDK
 
-Your account has a *default API version* (The API version set the first time you make an API request. If your API requests don't specify an API, Stripe uses your account's default API version) that defines how you call the API, what functionality you have access to, and the structure of API responses. When you use a [server-side SDK](https://docs.stripe.com/sdks.md#server-side-libraries), your API calls to Stripe use the API version that was current when the SDK was released. You can’t target a different API version when using a strongly typed language, such as Java, Go, or .NET.
+Your account has a *default API version* (If an API request doesn’t specify a version, Stripe uses your account’s default API version, which you can set in the Stripe Dashboard. We recommend specifying the version for each request (either with the Stripe-Version HTTP header or by using a pinned SDK) so your code determines the API version instead of your Dashboard settings) that defines how you call the API, what functionality you have access to, and the structure of API responses. When you use a [server-side SDK](https://docs.stripe.com/sdks.md#server-side-libraries), your API calls to Stripe use the API version that was current when the SDK was released. You can’t target a different API version when using a strongly typed language, such as Java, Go, or .NET.
 
 #### Ruby
 

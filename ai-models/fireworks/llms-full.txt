@@ -22851,8 +22851,9 @@ Easy prompts tend to stay on the open model. Harder prompts tend to use the fami
 | Fireworks API key (`fw_...`) | `Authorization` bearer token or `X-Fireworks-Api-Key` header    | Every request; bills open-model traffic to your Fireworks account                      |
 | Anthropic                    | [Provider Keys](/nexus/provider-keys), or `x-anthropic-api-key` | Bare `firerouter`, or any route containing a Claude family alias or Anthropic model ID |
 | OpenAI                       | Provider Keys, or `x-openai-api-key`                            | Any route containing Astra or another OpenAI model                                     |
+| Amazon Bedrock               | [Amazon Bedrock](/nexus/provider-keys/bedrock)                  | A route that includes one of your mapped models. Usage bills to your AWS account.      |
 
-A provider key in a request header applies only to that request. A key connected through Provider Keys is available at the account level, so clients and gateways do not need to send it with every call.
+An Anthropic or OpenAI key in a request header applies only to that request. A key connected through Provider Keys is available at the account level, so clients and gateways do not need to send it with every call.
 
 Fireworks also accepts Anthropic credentials in `x-api-key` or `Authorization: Bearer`. One `Authorization` header cannot carry both the Fireworks and Anthropic keys. If it carries the Anthropic key, send the Fireworks key in `X-Fireworks-Api-Key`. Prefer `x-anthropic-api-key` for new integrations.
 
@@ -22878,13 +22879,13 @@ Drop `default_headers` when an OpenAI Provider Key is already connected.
 
 ## Errors
 
-| Response                                 | Cause                                             | Fix                                                                                 |
-| ---------------------------------------- | ------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `401`                                    | Fireworks key is missing or invalid               | Send a valid `fw_...` key with `Authorization: Bearer` or `X-Fireworks-Api-Key`     |
-| Request rejected for data residency      | The requested route is not residency-compatible   | Pin a residency-compatible serverless model                                         |
-| `404` `Model id not found`               | Unknown id, or the account cannot use this router | Check the model id and account access                                               |
-| `400` `no_credential`                    | The closed model you named has no provider key    | Connect [Provider Keys](/nexus/provider-keys), or send the provider header          |
-| Upstream provider authentication failure | The provider key is wrong or revoked              | Check the Anthropic or OpenAI key; exact status and message come from that provider |
+| Response                                 | Cause                                             | Fix                                                                                                               |
+| ---------------------------------------- | ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `401`                                    | Fireworks key is missing or invalid               | Send a valid `fw_...` key with `Authorization: Bearer` or `X-Fireworks-Api-Key`                                   |
+| Request rejected for data residency      | The requested route is not residency-compatible   | Pin a residency-compatible serverless model                                                                       |
+| `404` `Model id not found`               | Unknown id, or the account cannot use this router | Check the model id and account access                                                                             |
+| `400` `no_credential`                    | The closed model you named has no provider key    | Connect [Provider Keys](/nexus/provider-keys). For Anthropic or OpenAI, you can instead send the provider header. |
+| Upstream provider authentication failure | The provider key is wrong or revoked              | Check the Anthropic, OpenAI, or Amazon Bedrock key; exact status and message come from that provider              |
 
 ## Model routers and deployment routers
 
@@ -23693,7 +23694,7 @@ curl http://localhost:4000/chat/completions \
 
 ### Model routers
 
-Account-level Provider Keys determine whether closed models are eligible. An Anthropic key covers bare `firerouter` and routes containing a Claude family alias or Anthropic model ID. An OpenAI key covers routes containing Astra or another OpenAI model. For credentials on direct API calls, see [APIs and SDKs](/nexus/apis-and-sdks#credentials).
+Account-level Provider Keys determine whether closed models are eligible. An Anthropic key covers bare `firerouter` and routes containing a Claude family alias or Anthropic model ID. An OpenAI key covers routes containing Astra or another OpenAI model. A Bedrock key covers routes that include a model you mapped in [Amazon Bedrock](/nexus/provider-keys/bedrock). For credentials on direct API calls, see [APIs and SDKs](/nexus/apis-and-sdks#credentials).
 
 
 # Usage and Cost
@@ -23946,9 +23947,9 @@ Open models bill to your Fireworks account at [Serverless Pricing](/serverless/p
 # Provider Keys
 Source: https://docs.fireworks.ai/nexus/provider-keys
 
-Connect an account-level Anthropic or OpenAI Provider Key once so model routers can call closed families without developers sending the key.
+Connect an account-level Anthropic, OpenAI, or Amazon Bedrock Provider Key once so model routers can call closed families without developers sending the key.
 
-Connect an account-level Anthropic or OpenAI Provider Key once to let model routers call closed models. After that, developers authenticate with only their Fireworks API key. When a router selects a closed model, Fireworks sends the request with the stored provider credential.
+Connect an account-level Anthropic, OpenAI, or Amazon Bedrock Provider Key once to let model routers call closed models. After that, developers authenticate with only their Fireworks API key. When a router selects a closed model, Fireworks sends the request with the stored provider credential.
 
 FireConnect configures the developer's Fireworks credential through `fireconnect login`. The provider key stays with the account, so it is never distributed to developers or pasted into a chat. Fireworks encrypts it at rest and never shows it in full again.
 
@@ -23959,7 +23960,7 @@ FireConnect configures the developer's Fireworks credential through `fireconnect
 
 <Note>
   Router availability in FireConnect varies by harness. See
-  [Harness Compatibility](/nexus/harness-compatibility) for current support.
+  <a href="/nexus/harness-compatibility">Harness Compatibility</a> for current support.
 </Note>
 
 <Note>
@@ -23970,8 +23971,9 @@ FireConnect configures the developer's Fireworks credential through `fireconnect
 
 ## Check provider support and connection states
 
-* **Providers:** You can connect Anthropic and OpenAI in the dashboard. The API and `firectl` also accept Grok and Bedrock when enabled for your account.
+* **Providers:** The dashboard supports Anthropic, OpenAI, and Amazon Bedrock. The API and `firectl` support those providers, plus Grok when enabled for your account.
 * **One active key per provider:** You can upload several keys for one provider, but only one can be active for routing at a time.
+* **Bedrock also needs routes:** a Bedrock key is not enough. Each model you want to send through your AWS account needs a Bedrock model ID and region. See <a href="/nexus/provider-keys/bedrock">Amazon Bedrock</a>.
 
 Each provider is always in one of these states:
 
@@ -23992,15 +23994,17 @@ Connect a Provider Key from **Settings** without using a terminal.
   </Step>
 
   <Step title="Connect a provider">
-    Find the provider you want (Anthropic or OpenAI) and click **Connect**.
+    Find the provider you want (Anthropic, OpenAI, or Amazon Bedrock) and click **Connect**.
   </Step>
 
   <Step title="Paste your key">
-    Paste your key and click **Connect**. You will see a confirmation once it is saved.
+    For Anthropic or OpenAI, paste your key and click **Connect**. You will see a confirmation once it is saved.
+
+    For Amazon Bedrock, paste the key and select models. After the card connects, fill in each model's Bedrock model ID and region, then click **Save**. Full steps are in <a href="/nexus/provider-keys/bedrock">Amazon Bedrock</a>.
   </Step>
 </Steps>
 
-The provider then shows **Connected**. Requests typically begin using the key within 30–60 seconds of connecting it.
+The provider then shows **Connected**. Requests typically begin using the key within 30–60 seconds of connecting it. Bedrock traffic starts only after the model routes are saved.
 
 <Frame>
   <img alt="Connecting a provider key from the Provider Keys page in Settings" />
@@ -24010,13 +24014,13 @@ The provider then shows **Connected**. Requests typically begin using the key wi
 
 Open the menu on any connected provider to:
 
-* **Replace:** swap in a new key value for that provider.
+* **Replace:** swap in a new key value for that provider. Bedrock routes stay in place when you update only the key.
 
 <Frame>
   <img alt="Replacing the key value for a connected provider" />
 </Frame>
 
-* **Remove:** remove the key.
+* **Remove:** remove the key. For Bedrock, this also deletes every Bedrock route.
 
 <Frame>
   <img alt="Removing a connected provider key" />
@@ -24031,13 +24035,14 @@ You can also connect, replace, remove, and inspect Provider Keys with `firectl`.
 The CLI can also stop using a key for routing without deleting it (`provider-key-binding unbind`). The key remains stored, so you can bind it again without re-uploading it.
 
 <Tip>
-  First time using `firectl`? Follow [Getting started](/tools-sdks/firectl/firectl) to install it.
+  First time using `firectl`? Follow <a href="/tools-sdks/firectl/firectl">Getting started</a> to install it.
 </Tip>
 
 | Action                 | Step                               | Command                                                                                             |
 | ---------------------- | ---------------------------------- | --------------------------------------------------------------------------------------------------- |
 | **Connect or replace** | Upload a key                       | `firectl provider-key upload --provider-type PROVIDER --api-key $PROVIDER_KEY` / `--from-file PATH` |
 |                        | Use the key                        | `firectl provider-key-binding bind PROVIDER KEY_ID`                                                 |
+|                        | Use a Bedrock key                  | `firectl provider-key-binding bind bedrock KEY_ID --routes-file=./routes.json`                      |
 | **Check status**       | Check stored keys                  | `firectl provider-key list` / `firectl provider-key list --provider-type PROVIDER`                  |
 |                        | Check keys in routing              | `firectl provider-key-binding list` or `firectl provider-key-binding get PROVIDER`                  |
 | **Remove**             | Stop using a key (but keep stored) | `firectl provider-key-binding unbind PROVIDER`                                                      |
@@ -24045,9 +24050,9 @@ The CLI can also stop using a key for routing without deleting it (`provider-key
 
 ### Add or replace a key
 
-`upload` stores a key but does not make it active for routing. Use `bind` to make it active. `--provider-type` is required and accepts `anthropic`, `openai`, `grok`, or `bedrock` where enabled.
+`upload` stores a key but does not make it active for routing. Use `bind` to make it active. `--provider-type` is required and accepts `anthropic`, `openai`, `grok`, or `bedrock`.
 
-For the quickest setup, pass an environment variable to `--api-key`. This keeps the value out of your shell history:
+For the quickest Anthropic or OpenAI setup, pass an environment variable to `--api-key`. This keeps the value out of your shell history:
 
 ```bash wrap theme={null}
 firectl provider-key upload --provider-type anthropic --api-key $ANTHROPIC_KEY
@@ -24069,6 +24074,8 @@ firectl provider-key upload --provider-type anthropic --from-file ./anthropic.ke
 
 To rotate a provider, upload the new key and bind that key's ID. The old key stays stored until you delete it.
 
+For Amazon Bedrock, upload with `--from-file` and bind with `--routes-file`. Omitting `--routes-file` binds an empty route set, which serves no Bedrock traffic and replaces any existing routes. See <a href="/nexus/provider-keys/bedrock#manage-with-firectl">Amazon Bedrock</a>.
+
 ### Check status
 
 ```bash wrap theme={null}
@@ -24083,7 +24090,7 @@ firectl provider-key-binding list --provider-type openai
 firectl provider-key-binding get openai
 ```
 
-`provider-key list` shows each stored key's ID, provider, masked preview, and display name. `provider-key-binding list` and `get` show each provider's connection state and active `key_id`.
+`provider-key list` shows each stored key's ID, provider, masked preview, and display name. `provider-key-binding list` and `get` show each provider's connection state and active `key_id`. For Bedrock, also confirm that `routes` lists every model you intend to send through AWS.
 
 ### Delete a key
 
@@ -24097,9 +24104,171 @@ firectl provider-key delete KEY_ID
 
 ## Key behavior and security
 
-* **An explicitly provided key on a request takes precedence.** If a request already includes a provider key, that key is used and the stored one is skipped.
+* **Request-level credentials take precedence when supported.** If a request includes a provider key, that key is used and the stored one is skipped.
 * **Changes are not instant.** After you connect, replace, or remove a key, allow 30–60 seconds for the change to reach requests.
 * **Your key stays private.** The full key is stored securely and never returned. The dashboard and API only show the provider, state, masked preview, and dates.
+
+
+# Amazon Bedrock
+Source: https://docs.fireworks.ai/nexus/provider-keys/bedrock
+
+Connect a Bedrock API key so FireRouter can call supported models with credentials from your AWS account.
+
+An Amazon Bedrock Provider Key lets FireRouter use an API key from your AWS account for supported models. Fireworks stores the key securely and never returns its full value. Bedrock usage and charges remain in your AWS account.
+
+Bedrock uses the same account-admin workflow as Anthropic and OpenAI, but each model also needs a Bedrock model ID and region. See <a href="/nexus/provider-keys">Provider Keys</a> for shared states, rotation, and security.
+
+<Warning>
+  Before setup, confirm that your AWS account can invoke every model you plan to add. Some third-party or restricted models require explicit Bedrock model access, a Marketplace agreement, or approval from AWS or the model provider. Anthropic may also require a one-time use-case form.
+</Warning>
+
+## Supported models
+
+| Model           | Served model ID   | Example Bedrock Runtime model ID                    | AWS reference                                                                                                                                                                                                                                                                                                                                                    |
+| --------------- | ----------------- | --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Claude Opus 5   | `claude-opus-5`   | `global.anthropic.claude-opus-5`                    | <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-anthropic-claude-opus-5.html#model-card-anthropic-claude-opus-5-programmatic-access">Model ID</a> · <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-anthropic-claude-opus-5.html#model-card-anthropic-claude-opus-5-regional-availability">Regions</a>         |
+| Claude Opus 5.5 | `claude-opus-5-5` | `global.anthropic.claude-opus-5-5`                  | <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-anthropic-claude-opus-5-5.html#model-card-anthropic-claude-opus-5-5-programmatic-access">Model ID</a> · <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-anthropic-claude-opus-5-5.html#model-card-anthropic-claude-opus-5-5-regional-availability">Regions</a> |
+| GPT-5.6 Sol     | `gpt-5.6-sol`     | `global.openai.gpt-5.6-sol`                         | <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-56-sol.html#model-card-openai-gpt-56-sol-programmatic-access">Model ID</a> · <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-56-sol.html#model-card-openai-gpt-56-sol-regional-availability">Regions</a>                                 |
+| GPT-6 Sol       | `gpt-6-sol`       | `global.openai.gpt-6-sol` (confirm in your account) | <a href="https://aws.amazon.com/blogs/machine-learning/bring-more-intelligence-to-everyday-work-with-gpt-6-sol-and-gpt-6-luna-on-amazon-bedrock/">AWS launch announcement</a>. AWS has not yet published a model card for this model.                                                                                                                            |
+| GPT-6 Astra     | `gpt-6-astra`     | `global.openai.gpt-6-astra`                         | <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-astra.html#model-card-openai-gpt-6-astra-programmatic-access">Model ID</a> · <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-astra.html#model-card-openai-gpt-6-astra-regional-availability">Regions</a>                             |
+
+Where each column is used:
+
+* **Model:** the name shown in the dashboard model picker. You select it; you never type an ID.
+* **Served model ID:** the ID in the response `model` field, such as `claude-opus-5-5`. Your application still sends a router slug such as `firerouter/claude-opus-5-5`. `firectl` uses the served ID as `routes[].firerouter_model_id`. You do not type it in the dashboard.
+* **Bedrock model ID:** the AWS identifier. Copy it exactly from AWS. Paste it into each route's **Model ID** field, or set `routes[].bedrock.model_id`. Any geo/global profile or ARN that AWS lists for the model also works, as long as your region can invoke it.
+* **Region:** the AWS source region. In Fireworks, select it in each route's **Region** field, or set `routes[].bedrock.aws_region`. The supported regions are `us-east-1`, `us-east-2`, `us-west-1`, and `us-west-2`.
+
+## Prepare AWS
+
+Do this once, regardless of which setup path you use.
+
+1. In the AWS account that will pay for inference, <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/model-access.html">request or verify access to each model</a>.
+   * For Anthropic models, complete the one-time use-case form and Marketplace agreement if AWS requires them.
+   * For restricted models, complete any additional AWS/provider approval before continuing.
+   * Confirm that the API key can invoke the selected model or inference profile.
+2. Generate the key: Amazon Bedrock console → **API keys** → copy the key. See <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys-generate.html">Generate an Amazon Bedrock API key</a>.
+
+<Note>
+  Fireworks accepts a Bedrock bearer API key, not an IAM role or SigV4 credentials. Short-term keys are valid only in the Region where they were generated and for at most 12 hours, and Fireworks does not refresh them. Use a long-term key.
+</Note>
+
+## Connect in the dashboard
+
+<Steps>
+  <Step title="Connect the key">
+    Open **Settings → <a href="https://app.fireworks.ai/settings/provider-keys">Provider Keys</a>**. On the **Amazon Bedrock** row, click **Connect**, then paste your Bedrock key into **API key** and click **Continue**.
+
+    <Frame>
+      <img alt="Connecting a Bedrock API key in the Provider Keys dashboard" />
+    </Frame>
+
+    In **Add models to Amazon Bedrock**, select the models that should use this key, then click **Connect**. You must select at least one.
+
+    <Frame>
+      <img alt="Model picker for connecting models to the Bedrock key" />
+    </Frame>
+
+    The card shows **Connecting** while the binding propagates. This usually finishes within 30–60 seconds.
+  </Step>
+
+  <Step title="Fill in the model routes">
+    Connecting stores the key but does not route any traffic yet. Once the card is connected, the models you picked appear as empty rows that you must complete.
+
+    1. For each row under **Models using Bedrock**, paste the AWS **Model ID** and select a **Region**.
+    2. Click **Save**. Save stays disabled until every row has both values.
+
+    <Frame>
+      <img alt="Bedrock model rows with Model ID and Region fields before saving" />
+    </Frame>
+
+    After saving, each row displays its Model ID and Region. Traffic for those models is now billed to your AWS account. Every other model keeps its current provider.
+  </Step>
+</Steps>
+
+### Change model routes later
+
+Use **Add model** or the trash icon on a row to add or remove models. Use **Edit models** to change the Model ID or Region of existing rows. Then click **Save**.
+
+Use **Update Key** to replace the key value without changing the routes. This is the **Replace** action described in <a href="/nexus/provider-keys#replace-or-remove-a-key">Provider Keys</a>. Use **Remove** to delete the Bedrock key and all of its routes.
+
+<Frame>
+  <img alt="Amazon Bedrock card menu with Add model, Edit models, Update Key, and Remove" />
+</Frame>
+
+## Manage with `firectl`
+
+### Upload the key
+
+Save the bearer key to a local file, then upload it with `--from-file`. This keeps the key out of your shell history and process list. See <a href="/nexus/provider-keys#manage-keys-with-firectl">Manage keys with `firectl`</a>.
+
+```bash wrap theme={null}
+firectl provider-key upload \
+  --provider-type bedrock \
+  --from-file ./bedrock.key \
+  --display-name production-bedrock
+```
+
+Save the returned key ID as `KEY_ID`, then delete the local file. `upload` only stores the key; it does not route traffic.
+
+### Write the routes file
+
+Create `routes.json`. Each entry maps one FireRouter model to one Bedrock region and model ID. The file holds only model and region values, not the key.
+
+```json theme={null}
+{
+  "routes": [
+    {
+      "firerouter_model_id": "claude-opus-5-5",
+      "bedrock": {
+        "aws_region": "us-east-1",
+        "model_id": "global.anthropic.claude-opus-5-5"
+      }
+    },
+    {
+      "firerouter_model_id": "gpt-5.6-sol",
+      "bedrock": {
+        "aws_region": "us-east-1",
+        "model_id": "global.openai.gpt-5.6-sol"
+      }
+    }
+  ]
+}
+```
+
+Rules:
+
+* Use only the served model IDs in <a href="#supported-models">Supported models</a>.
+* Each model appears once and maps to one `(aws_region, model_id)` target.
+* Copy `model_id` exactly from AWS; geo/global prefixes and ARNs are significant.
+
+### Bind the key and routes
+
+```bash wrap theme={null}
+firectl provider-key-binding bind \
+  bedrock KEY_ID \
+  --routes-file ./routes.json
+```
+
+* **Always pass the complete route file.** Every bind replaces the whole route set; omitted routes are deleted.
+* **Confirm removed routes.** If a bind removes routes, `firectl` asks for confirmation. Pass `--yes` to skip the prompt.
+
+Confirm both the state and the route list. `CONNECTED` with empty `routes` serves no Bedrock traffic. Before the first bind, `get` returns `NOT_FOUND`.
+
+```bash wrap theme={null}
+firectl provider-key-binding get bedrock -o json
+```
+
+Unbind and delete are the same as other providers. See <a href="/nexus/provider-keys#delete-a-key">Delete a key</a>.
+
+## Troubleshooting
+
+* **Access denied / unauthorized:** check model access, Marketplace or provider approval, key permissions, and key expiration in the same AWS account. Expiring or revoking the key in AWS does not change the Fireworks state. Upload and bind a replacement.
+* **Model not found:** copy the exact model or profile ID from AWS. Never derive it from the served model ID.
+* **Region unavailable:** confirm the region can invoke that exact inference profile.
+* **Save button stays disabled (dashboard):** a row is missing its Model ID or Region.
+* **A route disappeared (`firectl`):** every bind replaces the whole route set. Include all routes you want to keep.
+* **Connected but traffic does not reach Bedrock:** confirm the route list is not empty and that requests use a route containing one of the configured served model IDs.
 
 
 # Quickstart

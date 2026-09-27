@@ -513,6 +513,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/ServiceUnavailableResponse'
           description: Service Unavailable - Service temporarily unavailable
+        '504':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 504
+                  message: The operation was aborted due to timeout
+              schema:
+                $ref: '#/components/schemas/GatewayTimeoutResponse'
+          description: >-
+            Gateway Timeout - Provider did not respond before the upstream
+            deadline
         '524':
           content:
             application/json:
@@ -1017,6 +1029,27 @@ components:
       properties:
         error:
           $ref: '#/components/schemas/ServiceUnavailableResponseErrorData'
+        openrouter_metadata:
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
+        user_id:
+          type:
+            - string
+            - 'null'
+      required:
+        - error
+      type: object
+    GatewayTimeoutResponse:
+      description: Gateway Timeout - Provider did not respond before the upstream deadline
+      example:
+        error:
+          code: 504
+          message: The operation was aborted due to timeout
+      properties:
+        error:
+          $ref: '#/components/schemas/GatewayTimeoutResponseErrorData'
         openrouter_metadata:
           additionalProperties: {}
           type:
@@ -1924,6 +1957,25 @@ components:
       example:
         code: 503
         message: Service temporarily unavailable
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        metadata:
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
+      required:
+        - code
+        - message
+      type: object
+    GatewayTimeoutResponseErrorData:
+      description: Error data for GatewayTimeoutResponse
+      example:
+        code: 504
+        message: The operation was aborted due to timeout
       properties:
         code:
           type: integer

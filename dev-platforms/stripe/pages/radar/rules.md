@@ -235,6 +235,16 @@ Use traffic allocation to control the percentage of matching payments affected b
 
 For example, if you set a block rule’s traffic allocation to 5%, Radar blocks 5% of the payments that match the rule. Monitor the rule’s performance and increase the allocation as you gain confidence in the results. Set the allocation to 100% to apply the rule to every matching payment. Rules use 100% traffic allocation by default.
 
+Traffic allocation remains consistent across retries. Radar assigns all attempts for the same transaction to the same allocation bucket, so each retry receives the same outcome as the original attempt.
+
+For card payments, Radar groups retry attempts using the following signals, in order of priority:
+
+1. The same invoice.
+2. The same customer and amount, if no invoice is present.
+3. The same card and amount, if no customer is present.
+
+For other payment methods, Radar assigns retries for the same payment to the same allocation bucket.
+
 To evaluate a rule without affecting payments, set its traffic allocation to 0%. At this allocation (shadow), Radar evaluates the rule and reports what would have happened without applying the rule’s action.
 
 Traffic allocation is available only for custom transaction rules.

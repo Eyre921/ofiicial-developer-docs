@@ -9,7 +9,7 @@ path: payments/affirm
 Offer your US, Canadian, and United Kingdom customers flexible financing while getting paid upfront with Affirm.
 
 [Affirm](https://www.affirm.com/) is a popular payment method in the US, Canada, and the United Kingdom that gives your customers a way to split purchases over a series of payments. Pay in 4 interest-free installments or in monthly installments of up to 36 months.
-Payment method family: Buy Now, Pay Later
+Payment method family: Buy now, pay later
 Usability: Single-use
 Access type: Instant provisional access
 Payment confirmation timing: Immediate

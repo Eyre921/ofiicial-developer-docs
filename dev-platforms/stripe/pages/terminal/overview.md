@@ -56,7 +56,7 @@ Stripe P2PE is an optional, paid feature. See [pricing](https://stripe.com/prici
 
 P2PE standards, which are developed by the PCI Council, add an additional decryption step through hardware security modules (HSM) before Stripe sends payment data to card networks. Our P2PE solution simplifies PCI compliance and reduces PCI audit scope and audit costs. It’s validated by a third party, ensuring compliance with PCI P2PE standards, and doesn’t require any additional integration to get started.
 
-If you’ve enabled P2PE, consult the [P2PE Instruction Manual (PIM)](https://docs.stripecdn.com/Stripe_PCI-P2PE-PIM_v2.3.pdf) for detailed guidance. This manual provides instructions on how to properly implement our validated P2PE solution.
+If you’ve enabled P2PE, consult the [P2PE Instruction Manual (PIM)](https://docs.stripecdn.com/Stripe_PCI-P2PE-PIM_v2.4.pdf) for detailed guidance. This manual provides instructions on how to properly implement our validated P2PE solution.
 
 ## See also
 

@@ -100,4 +100,4 @@ curl http://localhost:4000/chat/completions \
 
 ### Model routers
 
-Account-level Provider Keys determine whether closed models are eligible. An Anthropic key covers bare `firerouter` and routes containing a Claude family alias or Anthropic model ID. An OpenAI key covers routes containing Astra or another OpenAI model. For credentials on direct API calls, see [APIs and SDKs](/nexus/apis-and-sdks#credentials).
+Account-level Provider Keys determine whether closed models are eligible. An Anthropic key covers bare `firerouter` and routes containing a Claude family alias or Anthropic model ID. An OpenAI key covers routes containing Astra or another OpenAI model. A Bedrock key covers routes that include a model you mapped in [Amazon Bedrock](/nexus/provider-keys/bedrock). For credentials on direct API calls, see [APIs and SDKs](/nexus/apis-and-sdks#credentials).

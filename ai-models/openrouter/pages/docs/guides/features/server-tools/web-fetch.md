@@ -205,6 +205,207 @@ The web fetch server tool supports multiple fetch engines:
 
 ### Engine Capabilities
 
+| Featur> ## Documentation Index
+> Fetch the complete documentation index at: https://openrouter.ai/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Web Fetch
+
+> Give any model the ability to fetch content from URLs
+
+export const Template = ({children, data}) => {
+  const replace = s => s.replace(/\{\{(\w+)\}\}/g, (_, k) => (k in data) ? data[k] : `{{${k}}}`);
+  const leafText = node => typeof node === 'string' ? node : node?.$$typeof && typeof node.props?.children === 'string' ? node.props.children : null;
+  const collapseTokens = nodes => {
+    const out = [];
+    let i = 0;
+    while (i < nodes.length) {
+      const ta = leafText(nodes[i]);
+      const tb = leafText(nodes[i + 1]);
+      const tc = leafText(nodes[i + 2]);
+      if (ta != null && tb != null && tc != null) {
+        const m = (ta + tb + tc).match(/^([\s\S]*)\{\{(\w+)\}\}([\s\S]*)$/);
+        if (m && (m[2] in data)) {
+          out.push(m[1] + data[m[2]] + m[3]);
+          i += 3;
+          continue;
+        }
+      }
+      out.push(nodes[i]);
+      i++;
+    }
+    return out;
+  };
+  const process = node => {
+    if (typeof node === 'string') return replace(node);
+    if (Array.isArray(node)) return collapseTokens(node.map(process));
+    if (node && typeof node === 'object') {
+      if (node.$$typeof) return {
+        ...node,
+        props: process(node.props)
+      };
+      return Object.fromEntries(Object.entries(node).map(([k, v]) => [k, process(v)]));
+    }
+    return node;
+  };
+  return <>{process(children)}</>;
+};
+
+export const API_KEY_REF = '<OPENROUTER_API_KEY>';
+
+<Badge color="blue">Beta</Badge>
+
+<Note>
+  **Beta**
+
+  Server tools are currently in beta. The API and behavior may change.
+</Note>
+
+The `openrouter:web_fetch` server tool gives any model the ability to fetch
+content from a specific URL. When the model needs to read a web page or PDF
+document, it calls the tool with the URL. OpenRouter fetches and extracts the
+content, returning text that the model can use in its response.
+
+## How It Works
+
+1. You include `{ "type": "openrouter:web_fetch" }` in your `tools` array.
+2. Based on the user's prompt, the model decides whether it needs to fetch a
+   URL and generates the request.
+3. OpenRouter fetches the URL using the configured engine (defaults to `auto`,
+   which uses native provider fetch when available or falls back to
+   [Exa](https://exa.ai)).
+4. The page content (text, title, and URL) is returned to the model.
+5. The model incorporates the fetched content into its response. It may fetch
+   multiple URLs in a single request if needed.
+
+## Quick Start
+
+<Template
+  data={{
+API_KEY_REF,
+MODEL: 'openai/gpt-5.2'
+}}
+>
+  <CodeGroup>
+    ```typescript title="TypeScript" expandable lines theme={null}
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        Authorization: 'Bearer {{API_KEY_REF}}',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: '{{MODEL}}',
+        messages: [
+          {
+            role: 'user',
+            content: 'Summarize the content at https://example.com/article'
+          }
+        ],
+        tools: [
+          { type: 'openrouter:web_fetch' }
+        ]
+      }),
+    });
+
+    const data = await response.json();
+    console.log(data.choices[0].message.content);
+    ```
+
+    ```python title="Python" expandable lines theme={null}
+    import requests
+
+    response = requests.post(
+      "https://openrouter.ai/api/v1/chat/completions",
+      headers={
+        "Authorization": f"Bearer {{API_KEY_REF}}",
+        "Content-Type": "application/json",
+      },
+      json={
+        "model": "{{MODEL}}",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Summarize the content at https://example.com/article"
+          }
+        ],
+        "tools": [
+          {"type": "openrouter:web_fetch"}
+        ]
+      }
+    )
+
+    data = response.json()
+    print(data["choices"][0]["message"]["content"])
+    ```
+
+    ```bash title="cURL" lines theme={null}
+    curl https://openrouter.ai/api/v1/chat/completions \
+      -H "Authorization: Bearer {{API_KEY_REF}}" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "model": "{{MODEL}}",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Summarize the content at https://example.com/article"
+          }
+        ],
+        "tools": [
+          {"type": "openrouter:web_fetch"}
+        ]
+      }'
+    ```
+  </CodeGroup>
+</Template>
+
+## Configuration
+
+The web fetch tool accepts optional `parameters` to customize behavior:
+
+```json lines theme={null}
+{
+  "type": "openrouter:web_fetch",
+  "parameters": {
+    "engine": "exa",
+    "max_uses": 10,
+    "max_content_tokens": 100000,
+    "allowed_domains": ["docs.example.com"],
+    "blocked_domains": ["private.example.com"]
+  }
+}
+```
+
+| Parameter            | Type      | Default | Description                                                                            |
+| -------------------- | --------- | ------- | -------------------------------------------------------------------------------------- |
+| `engine`             | string    | `auto`  | Fetch engine to use: `auto`, `native`, `exa`, `openrouter`, `firecrawl`, or `parallel` |
+| `max_uses`           | integer   | N/A     | Maximum fetches per request. Once exceeded, the tool returns an error                  |
+| `max_content_tokens` | integer   | N/A     | Maximum content length in approximate tokens. Content exceeding this is truncated      |
+| `allowed_domains`    | string\[] | N/A     | Only fetch from these domains                                                          |
+| `blocked_domains`    | string\[] | N/A     | Never fetch from these domains                                                         |
+
+## Engine Selection
+
+The web fetch server tool supports multiple fetch engines:
+
+* **`auto`** (default): Uses native fetch if the provider supports it,
+  otherwise falls back to Exa
+* **`native`**: Prefers the provider's built-in web fetch; falls back to the
+  `openrouter` engine if the model doesn't support native fetch. When a
+  workspace admin has set an engine list on the Server Tools page, the
+  fallback is the first non-native engine in that list instead; a
+  list of only `native` rejects the request with a 403 on models without
+  native fetch
+* **`exa`**: Uses [Exa](https://exa.ai)'s Contents API to extract page content
+  (supports BYOK)
+* **`openrouter`**: Uses direct HTTP fetch with content extraction
+* **`firecrawl`**: Uses [Firecrawl](https://firecrawl.dev)'s scrape API
+  (BYOK, bring your own key)
+* **`parallel`**: Uses [Parallel](https://parallel.ai)'s extract API for
+  high-quality content extraction
+
+### Engine Capabilities
+
 | Feature              | Exa                 | Parallel    | Firecrawl       | OpenRouter  | Native           |
 | -------------------- | ------------------- | ----------- | --------------- | ----------- | ---------------- |
 | **Domain filtering** | Yes                 | Yes         | Yes             | Yes         | Varies           |

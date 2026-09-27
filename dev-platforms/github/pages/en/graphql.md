@@ -32,7 +32,7 @@ To create integrations, retrieve data, and automate your workflows, use the GitH
 
 * [Rate limits and query limits for the GraphQL API](/en/graphql/overview/rate-limits-and-query-limits-for-the-graphql-api)
 
-  The GitHub GraphQL API has limitations in place to protect against excessive or abusive calls to GitHub's servers.
+  <p>The GitHub GraphQL API has limitations in place to protect against excessive or abusive calls to GitHub's servers.</p>
 
 ## Links
 

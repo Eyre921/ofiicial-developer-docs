@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 385 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 386 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -292,6 +292,7 @@
 - `nexus/microsoft-foundry` — [Microsoft Foundry](pages/nexus/microsoft-foundry.md) · [原文](https://docs.fireworks.ai/nexus/microsoft-foundry)
 - `nexus/open-models` — [Open Models](pages/nexus/open-models.md) · [原文](https://docs.fireworks.ai/nexus/open-models)
 - `nexus/provider-keys` — [Provider Keys](pages/nexus/provider-keys.md) · [原文](https://docs.fireworks.ai/nexus/provider-keys)
+- `nexus/provider-keys/bedrock` — [Amazon Bedrock](pages/nexus/provider-keys/bedrock.md) · [原文](https://docs.fireworks.ai/nexus/provider-keys/bedrock)
 - `nexus/quickstart` — [Quickstart](pages/nexus/quickstart.md) · [原文](https://docs.fireworks.ai/nexus/quickstart)
 - `nexus/routing-preferences` — [Routing Preferences](pages/nexus/routing-preferences.md) · [原文](https://docs.fireworks.ai/nexus/routing-preferences)
 - `nexus/session-usage` — [Session Cost](pages/nexus/session-usage.md) · [原文](https://docs.fireworks.ai/nexus/session-usage)

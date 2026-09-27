@@ -20,11 +20,11 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 
 * [Authenticating to the REST API](/en/rest/authentication/authenticating-to-the-rest-api)
 
-  <p>You can authenticate to the REST API to access more endpoints and have a higher rate limit.</p>
+  You can authenticate to the REST API to access more endpoints and have a higher rate limit.
 
 * [Best practices for using the REST API](/en/rest/using-the-rest-api/best-practices-for-using-the-rest-api)
 
-  Follow these best practices when using GitHub's API.
+  <p>Follow these best practices when using GitHub's API.</p>
 
 * [Rate limits for the REST API](/en/rest/using-the-rest-api/rate-limits-for-the-rest-api)
 

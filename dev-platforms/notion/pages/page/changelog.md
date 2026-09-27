@@ -14,6 +14,10 @@ path: page/changelog
   ### Rate limit waits in the response body
 
   Any 429 or 529 response that includes a `Retry-After` header now repeats the wait in the body as `additional_data.retry_after`, so clients that can't read headers, such as MCP clients, can still see how long to wait. Two new `rate_limit_reason` values identify an endpoint's own limit (`public_api_endpoint_rate_limit`) and a connection whose API access has been restricted (`public_api_request_blocked`). A workspace-limit 429 now says that the limit is shared by all of the workspace's connections. See [Request limits](/reference/request-limits#rate-limit-responses).
+
+  ### Page writes return 504 when a request times out
+
+  [Update a page's content as markdown](/reference/update-page-markdown) and the `notion-update-page` MCP tool now return HTTP 504 `gateway_timeout` when a request runs past its deadline. Before, they returned HTTP 500 `internal_server_error`. The `notion-create-pages` and `notion-convert-page-to-skill` MCP tools already returned 504 in this case. A 504 does not mean the write was undone, so check whether the change was saved before you retry it. A write that runs out of its time budget still returns 503 `service_unavailable`, with `additional_data.retry_guidance`. See [Request limits](/reference/request-limits) for when to retry each status.
 </Update>
 
 <Update label="September 23, 2026">
