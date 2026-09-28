@@ -69,6 +69,8 @@ Validation Error
 - `runs_diverged_from_version` (boolean, optional, default: false) — Whether the test runs in this invocation did not all execute against the same version, which happens when a subset of runs was resubmitted after the original run. When true, version_id describes the most recent resubmit rather than every run.
 - `access_info` (ResourceAccessInfo, optional) — The access information of the test invocation
 - `repeat_count` (integer, optional, default: 1) — Number of times each test was repeated in this invocation
+- `credits_used` (integer, optional) — Total credits billed across test runs in this invocation. None when no run has cost data.
+- `total_price` (double, optional) — Total USD price across test runs in this invocation. None when no run has price data.
 
 ### ListResponseMeta
 
@@ -123,7 +125,9 @@ Validation Error
         "role": "admin",
         "access_source": "creator"
       },
-      "repeat_count": 1
+      "repeat_count": 1,
+      "credits_used": 1,
+      "total_price": 1.1
     }
   ],
   "has_more": true,

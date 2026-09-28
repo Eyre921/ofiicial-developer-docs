@@ -12,7 +12,7 @@ path: docs/eleven-agents/best-practices/prompting-guide
 
 Effective prompting transforms [ElevenLabs Agents](/docs/eleven-agents/overview) from robotic to lifelike.
 
-![ElevenLabs Agents prompting guide](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/255df05f53675feaf54c765c4ee294fda00a7c14de1b02f155922012bf0a5433/assets/images/conversational-ai/prompting-guide.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T205438Z&X-Amz-Expires=604800&X-Amz-Signature=b46cb96e03a94def9c3e0e1f207555a0d7b075caf95241a00ad13883d5f8fda0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![ElevenLabs Agents prompting guide](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/255df05f53675feaf54c765c4ee294fda00a7c14de1b02f155922012bf0a5433/assets/images/conversational-ai/prompting-guide.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T104858Z&X-Amz-Expires=604800&X-Amz-Signature=f056609ef117d1a1d56c5c8f9b5d39385b73a6d7186707c578fb63990a704b60&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 A system prompt is the personality and policy blueprint of your AI agent. In enterprise use, it tends to be elaborate—defining the agent's role, goals, allowable tools, step-by-step instructions for certain tasks, and guardrails describing what the agent should not do. The way you structure this prompt directly impacts reliability.
 
@@ -29,7 +29,7 @@ A system prompt is the personality and policy blueprint of your AI agent. In ent
 > conversationally.
 
 ![Enterprise agent reliability
-framework](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/18c7dd3bf58a6715656d588834a278dbc1f368eaed2cbf91aeea3e977c2631ed/assets/images/conversational-ai/system-prompt-principles.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T205438Z&X-Amz-Expires=604800&X-Amz-Signature=36e33f91656799f68f1cbf3f52575b1382468eb8a2831d6c511d8b9335e21a0f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+framework](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/18c7dd3bf58a6715656d588834a278dbc1f368eaed2cbf91aeea3e977c2631ed/assets/images/conversational-ai/system-prompt-principles.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T104858Z&X-Amz-Expires=604800&X-Amz-Signature=dc2799729986d3a4cb964c931a8c2466c3e08455f8b21dd2c4d47263a56cb89d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Prompt engineering fundamentals
 

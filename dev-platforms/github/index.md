@@ -1,6 +1,6 @@
 # dev-platforms/github 文档索引
 
-> 共 105 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 102 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## api
@@ -54,7 +54,6 @@
 - `en/copilot/concepts/models/auto-model-selection` — [Auto model selection](pages/en/copilot/concepts/models/auto-model-selection.md) · [原文](https://docs.github.com/en/copilot/concepts/models/auto-model-selection.md)
 - `en/copilot/get-started/best-practices` — [Best practices](pages/en/copilot/get-started/best-practices.md) · [原文](https://docs.github.com/en/copilot/get-started/best-practices.md)
 - `en/copilot/get-started/plans` — [Plans](pages/en/copilot/get-started/plans.md) · [原文](https://docs.github.com/en/copilot/get-started/plans.md)
-- `en/copilot/how-tos/copilot-cli/set-up-copilot-cli/install-copilot-cli` — [Install Copilot CLI](pages/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/install-copilot-cli.md) · [原文](https://docs.github.com/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/install-copilot-cli.md)
 - `en/copilot/how-tos/copilot-cli/use-copilot-cli/overview` — [Overview](pages/en/copilot/how-tos/copilot-cli/use-copilot-cli/overview.md) · [原文](https://docs.github.com/en/copilot/how-tos/copilot-cli/use-copilot-cli/overview.md)
 - `en/copilot/how-tos/get-code-suggestions/get-ide-code-suggestions` — [Get IDE code suggestions](pages/en/copilot/how-tos/get-code-suggestions/get-ide-code-suggestions.md) · [原文](https://docs.github.com/en/copilot/how-tos/get-code-suggestions/get-ide-code-suggestions.md)
 - `en/copilot/how-tos/manage-your-account/manage-policies` — [Manage policies](pages/en/copilot/how-tos/manage-your-account/manage-policies.md) · [原文](https://docs.github.com/en/copilot/how-tos/manage-your-account/manage-policies.md)
@@ -63,10 +62,8 @@
 - `en/copilot/how-tos/provide-context/use-mcp-in-your-ide/use-the-github-mcp-server` — [Use the GitHub MCP Server](pages/en/copilot/how-tos/provide-context/use-mcp-in-your-ide/use-the-github-mcp-server.md) · [原文](https://docs.github.com/en/copilot/how-tos/provide-context/use-mcp-in-your-ide/use-the-github-mcp-server.md)
 - `en/copilot/how-tos/set-up/install-copilot-extension` — [Install Copilot extension](pages/en/copilot/how-tos/set-up/install-copilot-extension.md) · [原文](https://docs.github.com/en/copilot/how-tos/set-up/install-copilot-extension.md)
 - `en/copilot/how-tos/use-copilot-agents/cloud-agent/create-custom-agents-in-your-ide` — [Create custom agents in your IDE](pages/en/copilot/how-tos/use-copilot-agents/cloud-agent/create-custom-agents-in-your-ide.md) · [原文](https://docs.github.com/en/copilot/how-tos/use-copilot-agents/cloud-agent/create-custom-agents-in-your-ide.md)
-- `en/copilot/how-tos/use-copilot-agents/request-a-code-review/use-code-review` — [Use code review](pages/en/copilot/how-tos/use-copilot-agents/request-a-code-review/use-code-review.md) · [原文](https://docs.github.com/en/copilot/how-tos/use-copilot-agents/request-a-code-review/use-code-review.md)
 - `en/copilot/reference/ai-models/supported-models` — [Supported models](pages/en/copilot/reference/ai-models/supported-models.md) · [原文](https://docs.github.com/en/copilot/reference/ai-models/supported-models.md)
 - `en/copilot/reference/copilot-billing/models-and-pricing` — [Models and pricing](pages/en/copilot/reference/copilot-billing/models-and-pricing.md) · [原文](https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing.md)
-- `en/copilot/responsible-use/chat` — [Chat](pages/en/copilot/responsible-use/chat.md) · [原文](https://docs.github.com/en/copilot/responsible-use/chat.md)
 - `en/desktop/installing-and-authenticating-to-github-desktop/installing-github-desktop` — [Installation](pages/en/desktop/installing-and-authenticating-to-github-desktop/installing-github-desktop.md) · [原文](https://docs.github.com/en/desktop/installing-and-authenticating-to-github-desktop/installing-github-desktop.md)
 - `en/get-started` — [Get started](pages/en/get-started.md) · [原文](https://docs.github.com/en/get-started.md)
 - `en/get-started/git-basics/about-remote-repositories` — [About remote repositories](pages/en/get-started/git-basics/about-remote-repositories.md) · [原文](https://docs.github.com/en/get-started/git-basics/about-remote-repositories.md)

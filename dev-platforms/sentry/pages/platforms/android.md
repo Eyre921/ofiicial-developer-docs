@@ -184,6 +184,7 @@ public class MyActivity extends AppCompatActivity {
 * [Learn how to enhance stack traces of your Sentry errors](https://docs.sentry.io/platforms/android/enhance-errors.md)
 * [Enrich events with additional context to make debugging simpler](https://docs.sentry.io/platforms/android/enriching-events.md)
 * [Diagnose ANRs](https://docs.sentry.io/platforms/android/configuration/app-not-respond.md) with profiling and automatic fingerprinting
+* Monitor [Memory Limiter process deaths](https://docs.sentry.io/platforms/android/configuration/memory-limiter.md) on supported Android 17+ devices
 
 ## Topics
 

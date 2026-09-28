@@ -20073,308 +20073,348 @@ Use [Exporting metrics](/deployments/exporting-metrics) for per-deployment Prome
 # Responses API
 Source: https://docs.fireworks.ai/guides/response-api
 
+Build stateful, tool-using applications on Fireworks with the OpenAI-compatible Responses API.
 
-
-Fireworks.ai offers a powerful Responses API that allows for more complex and stateful interactions with models. This guide will walk you through the key features and how to use them.
+The Responses API is an OpenAI-compatible endpoint for stateful, tool-using applications. Unlike chat completions, it can store conversation state server-side, execute MCP tools on your behalf, and run long jobs in the background.
 
 <Warning title="Data Retention Policy">
   The Responses API has a different data retention policy than the chat completions endpoint. See [Data Privacy & security](/guides/security_compliance/data_handling#response-api-data-retention).
 </Warning>
 
-## Overview
+## Endpoint and authentication
 
-The Responses API is designed for building conversational applications and complex workflows. It allows you to:
-
-* **Continue conversations**: Maintain context across multiple turns without resending the entire history.
-* **Use external tools**: Integrate with external services and data sources through MCP/SSE tools (server-executed) or function tools (client-executed).
-* **Stream responses**: Receive results as they are generated, enabling real-time applications.
-* **Control tool usage**: Set limits on tool calls with `max_tool_calls` parameter.
-* **Manage data retention**: Choose whether to store conversations (default) or opt-out with `store=false`.
-
-## Basic Usage
-
-You can interact with the Response API using the Fireworks Python SDK or by making direct HTTP requests.
-
-### Creating a Response
-
-To start a new conversation, you use the `client.responses.create` method. For a complete example, see the [getting started notebook](https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/fireworks_mcp_examples.ipynb).
-
-```python OpenAI SDK theme={null}
-import os
-from openai import OpenAI
-
-client = OpenAI(
-    base_url="https://api.fireworks.ai/inference/v1",
-    api_key=os.getenv("FIREWORKS_API_KEY", "YOUR_FIREWORKS_API_KEY_HERE")
-)
-
-response = client.responses.create(
-    model="accounts/fireworks/models/qwen3-235b-a22b",
-    input="What is reward-kit and what are its 2 main features? Keep it short Please analyze the fw-ai-external/reward-kit repository.",
-    tools=[{"type": "sse", "server_url": "https://gitmcp.io/docs"}]
-)
-
-print(response.output[-1].content[0].text.split("</think>")[-1])
-```
-
-### Using Function Tools
-
-Function tools follow the OpenAI-compatible format and are returned to the client for execution.
-
-```python OpenAI SDK theme={null}
-import os
-from openai import OpenAI
-
-client = OpenAI(
-    base_url="https://api.fireworks.ai/inference/v1",
-    api_key=os.getenv("FIREWORKS_API_KEY", "YOUR_FIREWORKS_API_KEY_HERE")
-)
-
-response = client.responses.create(
-    model="accounts/fireworks/models/qwen3-235b-a22b",
-    input="What is the weather like in San Francisco?",
-    tools=[{
-        "type": "function",
-        "name": "get_weather",
-        "description": "Get the current weather for a location",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "location": {
-                    "type": "string",
-                    "description": "The city and state, e.g. San Francisco, CA"
-                }
-            },
-            "required": ["location"]
-        }
-    }],
-    tool_choice="auto"
-)
-
-# Check if the model wants to call a function
-for item in response.output:
-    if hasattr(item, 'type') and item.type == "tool_call":
-        print(f"Function: {item.function.name}")
-        print(f"Arguments: {item.function.arguments}")
-```
-
-### Continuing a Conversation with `previous_response_id`
-
-To continue a conversation, you can use the `previous_response_id` parameter. This tells the API to use the context from a previous response, so you don't have to send the entire conversation history again. For a complete example, see the [previous response ID notebook](https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/fireworks_previous_response_cookbook.ipynb).
-
-```python OpenAI SDK theme={null}
-import os
-from openai import OpenAI
-
-client = OpenAI(
-    base_url="https://api.fireworks.ai/inference/v1",
-    api_key=os.getenv("FIREWORKS_API_KEY", "YOUR_FIREWORKS_API_KEY_HERE")
-)
-
-# First, create an initial response
-initial_response = client.responses.create(
-    model="accounts/fireworks/models/qwen3-235b-a22b",
-    input="What are the key features of reward-kit?",
-    tools=[{"type": "sse", "server_url": "https://gitmcp.io/docs"}]
-)
-initial_response_id = initial_response.id
-
-# Now, continue the conversation
-continuation_response = client.responses.create(
-    model="accounts/fireworks/models/qwen3-235b-a22b",
-    input="How do I install it?",
-    previous_response_id=initial_response_id,
-    tools=[{"type": "sse", "server_url": "https://gitmcp.io/docs"}]
-)
-
-print(continuation_response.output[-1].content[0].text.split("</think>")[-1])
-```
-
-## Streaming Responses
-
-For real-time applications, you can stream the response as it's being generated. For a complete example, see the [streaming example notebook](https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/fireworks_streaming_example.ipynb).
-
-```python OpenAI SDK theme={null}
-import os
-from openai import OpenAI
-
-client = OpenAI(
-    base_url="https://api.fireworks.ai/inference/v1",
-    api_key=os.getenv("FIREWORKS_API_KEY", "YOUR_FIREWORKS_API_KEY_HERE")
-)
-
-stream = client.responses.create(
-    model="accounts/fireworks/models/qwen3-235b-a22b",
-    input="give me 5 interesting facts on modelcontextprotocol/python-sdk -- keep it short!",
-    stream=True,
-    tools=[{"type": "mcp", "server_url": "https://mcp.deepwiki.com/mcp"}]
-)
-
-for chunk in stream:
-    print(chunk)
-```
-
-## Cookbook Examples
-
-For more in-depth examples, check out the following notebooks:
-
-* [General MCP Examples](https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/fireworks_mcp_examples.ipynb)
-* [Using `previous_response_id`](https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/fireworks_previous_response_cookbook.ipynb)
-* [Streaming Responses](https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/fireworks_streaming_example.ipynb)
-* [Using `store=False`](https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/mcp_server_with_store_false_argument.ipynb)
-* [MCP with Streaming](https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/fireworks_mcp_with_streaming.ipynb)
-
-## Storing Responses
-
-By default, responses are stored and can be referenced by their ID. You can disable this by setting `store=False`. If you do this, you will not be able to use the `previous_response_id` to continue the conversation. For a complete example, see the [store=False notebook](https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/mcp_server_with_store_false_argument.ipynb).
-
-```python OpenAI SDK theme={null}
-import os
-from openai import OpenAI
-
-client = OpenAI(
-    base_url="https://api.fireworks.ai/inference/v1",
-    api_key=os.getenv("FIREWORKS_API_KEY", "YOUR_FIREWORKS_API_KEY_HERE")
-)
-
-response = client.responses.create(
-    model="accounts/fireworks/models/qwen3-235b-a22b",
-    input="give me 5 interesting facts on modelcontextprotocol/python-sdk -- keep it short!",
-    store=False,
-    tools=[{"type": "mcp", "server_url": "https://mcp.deepwiki.com/mcp"}]
-)
-
-# This will fail because the previous response was not stored
-try:
-    continuation_response = client.responses.create(
-        model="accounts/fireworks/models/qwen3-235b-a22b",
-        input="Explain the second fact in more detail.",
-        previous_response_id=response.id
-    )
-except Exception as e:
-    print(e)
-```
-
-## Deleting Stored Responses
-
-When responses are stored (the default behavior with `store=True`), you can immediately delete them from storage using the DELETE endpoint. This permanently removes the conversation data.
+The Responses API is served at `https://api.fireworks.ai/inference/v1/responses`. Authenticate with your Fireworks API key as a bearer token, and set `model` to a Fireworks model resource name.
 
 <CodeGroup>
-  ```python Python (OpenAI SDK) theme={null}
+  ```python OpenAI SDK theme={null}
   import os
   from openai import OpenAI
-  import requests
 
   client = OpenAI(
       base_url="https://api.fireworks.ai/inference/v1",
-      api_key=os.getenv("FIREWORKS_API_KEY", "YOUR_FIREWORKS_API_KEY_HERE")
+      api_key=os.environ["FIREWORKS_API_KEY"],
   )
 
-  # Create a response
   response = client.responses.create(
       model="accounts/fireworks/models/qwen3-235b-a22b",
       input="What is the capital of France?",
-      store=True  # This is the default
   )
 
-  response_id = response.id
-  print(f"Created response with ID: {response_id}")
-
-  # Delete the response immediately
-  headers = {
-      "Authorization": f"Bearer {os.getenv('FIREWORKS_API_KEY')}",
-      "x-fireworks-account-id": "your-account-id"
-  }
-  delete_response = requests.delete(
-      f"https://api.fireworks.ai/inference/v1/responses/{response_id}",
-      headers=headers
-  )
-
-  if delete_response.status_code == 200:
-      print("Response deleted successfully")
-  else:
-      print(f"Failed to delete response: {delete_response.status_code}")
+  print(response.output_text)
   ```
 
   ```bash cURL theme={null}
-  # First create a response and capture the ID
-  RESPONSE=$(curl -X POST https://api.fireworks.ai/inference/v1/responses \
+  curl -X POST https://api.fireworks.ai/inference/v1/responses \
     -H "Authorization: Bearer $FIREWORKS_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
       "model": "accounts/fireworks/models/qwen3-235b-a22b",
-      "input": "What is the capital of France?",
-      "store": true
-    }')
-
-  # Extract the response ID (using jq or similar JSON parser)
-  RESPONSE_ID=$(echo $RESPONSE | jq -r '.id')
-
-  # Delete the response
-  curl -X DELETE "https://api.fireworks.ai/inference/v1/responses/$RESPONSE_ID" \
-    -H "Authorization: Bearer $FIREWORKS_API_KEY" \
-    -H "x-fireworks-account-id: your-account-id"
+      "input": "What is the capital of France?"
+    }'
   ```
 </CodeGroup>
 
+<Note>
+  The OpenAI SDK base URL includes `/v1`; the SDK appends `/responses`. Only `model` and `input` are required.
+</Note>
+
+## Streaming
+
+Set `stream=True` to receive semantic events as the response is produced.
+
+```python OpenAI SDK theme={null}
+stream = client.responses.create(
+    model="accounts/fireworks/models/qwen3-235b-a22b",
+    input="Give me 5 interesting facts about the Model Context Protocol.",
+    stream=True,
+)
+
+for event in stream:
+    if event.type == "response.output_text.delta":
+        print(event.delta, end="", flush=True)
+```
+
+Events follow the OpenAI Responses event vocabulary, including `response.created`, `response.output_text.delta`, `response.output_text.done`, the `response.web_search_call.*` and `response.reasoning_summary_text.*` families, and a terminal `response.completed`.
+
+## Conversation state
+
+By default responses are stored, and you can continue a conversation by referencing the previous response instead of resending the full history.
+
+```python OpenAI SDK theme={null}
+first = client.responses.create(
+    model="accounts/fireworks/models/qwen3-235b-a22b",
+    input="What are the key features of reward-kit?",
+)
+
+second = client.responses.create(
+    model="accounts/fireworks/models/qwen3-235b-a22b",
+    input="How do I install it?",
+    previous_response_id=first.id,
+)
+
+print(second.output_text)
+```
+
+Set `store=False` to opt out of storage. Responses created with `store=False` cannot be referenced by `previous_response_id`, so you must manage history yourself by passing prior turns in `input`.
+
+### Managing stored responses
+
+| Operation           | Endpoint                             |
+| ------------------- | ------------------------------------ |
+| Retrieve a response | `GET /v1/responses/{response_id}`    |
+| List responses      | `GET /v1/responses`                  |
+| Delete a response   | `DELETE /v1/responses/{response_id}` |
+
+Listing responses is a Fireworks extension; OpenAI does not offer it.
+
+```bash cURL theme={null}
+curl -X DELETE "https://api.fireworks.ai/inference/v1/responses/$RESPONSE_ID" \
+  -H "Authorization: Bearer $FIREWORKS_API_KEY"
+```
+
 <Warning>
-  Once a response is deleted, it cannot be recovered.
+  Deletion is permanent. Once a response is deleted it cannot be recovered.
 </Warning>
 
-## Response Structure
+## Tools
 
-All response objects include the following fields:
+Tools fall into two groups, and you can mix them in a single request:
 
-* `id`: Unique identifier for the response (e.g., `resp_abc123...`)
-* `created_at`: Unix timestamp when the response was created
-* `status`: Status of the response (typically `"completed"`)
-* `model`: The model used to generate the response
-* `output`: Array of message objects, tool calls, and tool outputs
-* `usage`: Token usage information:
-  * `prompt_tokens`: Number of tokens in the prompt
-  * `completion_tokens`: Number of tokens in the completion
-  * `total_tokens`: Total tokens used
-  * `prompt_tokens_details`: Details about prompt tokens:
-    * `cached_tokens`: Number of prompt tokens served from cache
-* `previous_response_id`: ID of the previous response in the conversation (if any)
-* `store`: Whether the response was stored (boolean)
-* `max_tool_calls`: Maximum number of tool calls allowed (if set)
+* **Server-executed** (`mcp`, `sse`, `web_search`, `python`) run on Fireworks. The results come back in the output array and the model continues automatically.
+* **Client-executed** (`function`, and Codex `namespace`) are returned to you as `function_call` items. You run them and send the results back.
 
-### Example Response
+Use `max_tool_calls` to cap the total number of tool calls in a single response.
+
+### MCP servers
+
+Pass an MCP server and Fireworks will discover its tools, call them, and feed the results back to the model.
+
+```python OpenAI SDK theme={null}
+response = client.responses.create(
+    model="accounts/fireworks/models/qwen3-235b-a22b",
+    input="Summarize the README of modelcontextprotocol/python-sdk.",
+    tools=[{"type": "mcp", "server_url": "https://mcp.deepwiki.com/mcp"}],
+)
+
+print(response.output_text)
+```
+
+Use `{"type": "sse", "server_url": "..."}` for servers that speak the SSE transport. Server-executed calls appear in `output` as `mcp_call` items.
+
+### Client-side functions
+
+```python OpenAI SDK theme={null}
+response = client.responses.create(
+    model="accounts/fireworks/models/qwen3-235b-a22b",
+    input="What is the weather in Paris?",
+    tools=[{
+        "type": "function",
+        "name": "get_weather",
+        "description": "Get the current weather for a city.",
+        "parameters": {
+            "type": "object",
+            "properties": {"city": {"type": "string"}},
+            "required": ["city"],
+        },
+    }],
+)
+
+for item in response.output:
+    if item.type == "function_call":
+        print(item.name, item.arguments)
+```
+
+### Web search
+
+Add the built-in `web_search` tool to let the model search the web. Results appear as `web_search_call` items in the output array.
+
+```python OpenAI SDK theme={null}
+response = client.responses.create(
+    model="accounts/fireworks/models/qwen3-235b-a22b",
+    input="What happened in AI research this week?",
+    tools=[{"type": "web_search"}],
+)
+```
+
+Web search must be enabled for your account. If it is not, the request fails with a `403`.
+
+### Codex namespace tools
+
+Codex packs MCP tools into `type: "namespace"` wrappers. Fireworks expands these into individual callable tools, exposing them to the model as `<namespace>__<tool>` and splitting the call back into `{namespace, name}` in the response so Codex can dispatch it.
 
 ```json theme={null}
 {
-  "id": "resp_abc123...",
-  "created_at": 1735000000,
-  "status": "completed",
-  "model": "accounts/fireworks/models/qwen3-235b-a22b",
-  "output": [
-    {
-      "id": "msg_xyz789...",
-      "role": "user",
-      "content": [{"type": "input_text", "text": "What is 2+2?"}],
-      "status": "completed"
-    },
-    {
-      "id": "msg_def456...",
-      "role": "assistant",
-      "content": [{"type": "output_text", "text": "2 + 2 equals 4."}],
-      "status": "completed"
-    }
-  ],
-  "usage": {
-    "prompt_tokens": 15,
-    "completion_tokens": 8,
-    "total_tokens": 23,
-    "prompt_tokens_details": {
-      "cached_tokens": 0
-    }
-  },
-  "previous_response_id": null,
-  "store": true,
-  "max_tool_calls": null
+  "type": "namespace",
+  "name": "mcp__jira__",
+  "tools": [{ "type": "function", "name": "search", "parameters": {} }]
 }
 ```
+
+Two constraints apply:
+
+* Nested entries must be `function` tools. Other nested types are rejected.
+* Flattened names must be unique. If two namespaces collapse to the same flat name, or a flat name collides with a top-level `function` tool, the request is rejected rather than silently mis-dispatched.
+
+The reserved Codex namespaces `multi_tool_use`, `functions`, `web`, and `python` are passed through without expansion.
+
+<Note>
+  `defer_loading` has no effect on the Responses API — there is no tool-search protocol here, so deferred tools are exposed to the model eagerly. Deferred tool loading *is* supported on the [Anthropic-compatible Messages API](/tools-sdks/anthropic-compatibility#tool-search-and-deferred-tool-loading).
+</Note>
+
+## Reasoning
+
+Set `reasoning.effort` to control how much the model thinks. Reasoning appears in the output array as `reasoning` items with `summary_text` parts.
+
+```python OpenAI SDK theme={null}
+response = client.responses.create(
+    model="accounts/fireworks/models/qwen3-235b-a22b",
+    input="Prove that the square root of 2 is irrational.",
+    reasoning={"effort": "high"},
+)
+```
+
+`reasoning.summary` is not configurable — summaries are always included when the model produces reasoning content.
+
+## Structured output
+
+Constrain output to a JSON schema with `text.format`:
+
+```python OpenAI SDK theme={null}
+response = client.responses.create(
+    model="accounts/fireworks/models/qwen3-235b-a22b",
+    input="Extract the city and country from: 'The Eiffel Tower is in Paris, France.'",
+    text={
+        "format": {
+            "type": "json_schema",
+            "name": "location",
+            "strict": True,
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "city": {"type": "string"},
+                    "country": {"type": "string"},
+                },
+                "required": ["city", "country"],
+            },
+        }
+    },
+)
+```
+
+`{"type": "json_object"}` is also supported for unconstrained JSON. See [Structured outputs](/structured-responses/structured-output-grammar-based) for schema guidance.
+
+## Background mode
+
+For long-running work, set `background=True`. The request returns immediately with `status: "queued"`, and you poll for completion.
+
+```python OpenAI SDK theme={null}
+import time
+
+response = client.responses.create(
+    model="accounts/fireworks/models/qwen3-235b-a22b",
+    input="Write a detailed migration plan for our monolith.",
+    background=True,
+)
+
+while response.status in ("queued", "in_progress"):
+    time.sleep(2)
+    response = client.responses.retrieve(response.id)
+
+print(response.output_text)
+```
+
+Cancel an in-flight background response with `POST /v1/responses/{response_id}/cancel`. Cancellation is idempotent: responses still running move to `cancelling` and finalize as `cancelled`, while already-terminal responses are returned unchanged with a `200`.
+
+Two limits apply:
+
+* `background=True` cannot be combined with `stream=True`. Choose polling or streaming.
+* Not every model supports background mode. Unsupported models fail with `model_not_supported_for_background`.
+
+## Logprobs
+
+Set `top_logprobs` and request `include=["message.output_text.logprobs"]` to get token log probabilities attached to `output_text` content parts. `message.output_text.logprobs` is the only supported `include` value.
+
+## Errors
+
+Errors use the OpenAI Responses error envelope:
+
+```json theme={null}
+{
+  "error": {
+    "type": "invalid_request_error",
+    "code": "model_not_supported_for_background",
+    "message": "Model ... is not supported for background mode.",
+    "param": null
+  }
+}
+```
+
+Status codes are preserved from the underlying inference call, so a `429` stays a `429` and client SDK retry logic behaves normally. In streaming and background requests — where an error cannot be raised as an HTTP status after the response has begun — the error is embedded in the response object or emitted as an SSE error event instead.
+
+See [Inference error codes](/guides/inference-error-codes) for the shared status-code catalog.
+
+## Compatibility with OpenAI
+
+Supported request fields: `model`, `input`, `instructions`, `stream`, `store`, `previous_response_id`, `background`, `include`, `tools`, `tool_choice`, `parallel_tool_calls`, `max_tool_calls`, `max_output_tokens`, `metadata`, `reasoning`, `text`, `temperature`, `top_p`, `top_logprobs`, `truncation`, `user`, and `prompt_cache_key`.
+
+Not currently supported:
+
+| Feature                                                     | Status                                  |
+| ----------------------------------------------------------- | --------------------------------------- |
+| `code_interpreter`, `file_search`, `image_generation` tools | Not supported                           |
+| `refusal` content parts                                     | Not supported                           |
+| `GET /v1/responses/{id}/input_items`                        | Not supported                           |
+| `background` + `stream` together                            | Not supported                           |
+| `include` values other than `message.output_text.logprobs`  | Not supported                           |
+| `reasoning.summary` configuration                           | Always on when reasoning content exists |
+
+For the full request and response schema, see the [Responses API reference](/api-reference/post-responses).
+
+## Use with Codex
+
+Configure Codex to use Fireworks by adding a provider to `~/.codex/config.toml`:
+
+```toml theme={null}
+model = "accounts/fireworks/models/qwen3-235b-a22b"
+model_provider = "fireworks"
+
+[model_providers.fireworks]
+name = "Fireworks"
+base_url = "https://api.fireworks.ai/inference/v1"
+env_key = "FIREWORKS_API_KEY"
+wire_api = "responses"
+```
+
+Set `wire_api = "responses"` so Codex targets this endpoint rather than chat completions, and export `FIREWORKS_API_KEY` in your shell.
+
+### Troubleshooting
+
+| Symptom                                                    | Cause and fix                                                                                                                                 |
+| ---------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `404` "Model not found, inaccessible, and/or not deployed" | `model` is not a Fireworks model resource name, or it is not deployed to your account. Use the full `accounts/<account>/models/<model>` form. |
+| MCP tools never get called                                 | The namespace wrapper was rejected or its nested entries are not `function` tools. Check the error body for the offending namespace.          |
+| Ambiguous flattened tool name                              | Two namespaces expand to the same `<namespace>__<tool>` name. Rename one of the MCP servers.                                                  |
+| `400` combining background and streaming                   | Codex requested both. Disable one.                                                                                                            |
+
+## Cookbook examples
+
+<CardGroup>
+  <Card title="MCP examples" href="https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/fireworks_mcp_examples.ipynb" icon="plug">
+    Calling MCP servers from the Responses API
+  </Card>
+
+  <Card title="Continuing conversations" href="https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/fireworks_previous_response_cookbook.ipynb" icon="comments">
+    Using `previous_response_id`
+  </Card>
+
+  <Card title="Streaming" href="https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/fireworks_streaming_example.ipynb" icon="bolt">
+    Streaming responses end to end
+  </Card>
+
+  <Card title="Stateless requests" href="https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/mcp_server_with_store_false_argument.ipynb" icon="database">
+    Using `store=false`
+  </Card>
+</CardGroup>
 
 
 # Inference for RL Rollouts
@@ -27166,28 +27206,106 @@ Anthropic compatibility is supported for serverless and on-demand deployments. R
 The following parameters and fields are handled differently or are not supported:
 
 * **`model`**: Must be a Fireworks model identifier (for example, `accounts/fireworks/models/deepseek-v3p2`) instead of an Anthropic model name. See the [Fireworks Model Library](https://app.fireworks.ai/models) for available models.
-* **`max_tokens`**: Optional on Fireworks (required on Anthropic).
+* **`max_tokens`**: Required and must be greater than `0`, the same as on Anthropic. Omitting it returns `400 invalid_request_error`.
 * **`anthropic-version` header**: Not required. Fireworks ignores this header.
 * **`usage` field**: Included in both non-streaming and streaming responses. See [Token usage](#token-usage) for details.
 * **`service_tier`**: Supported. Set `service_tier: "priority"` to opt into [Priority tier](/serverless/serverless-modes).
 * **`inference_geo`**: Deprecated in favor of [data residency](/accounts/data-residency). Remove it from request bodies and headers.
 
-### Reasoning effort mapping
+### Reasoning
 
-When you use the `thinking` parameter with `output_config.effort`, Anthropic effort values map to Fireworks [`reasoning_effort`](/api-reference/post-chatcompletions#body-reasoning-effort-one-of-0):
+There are two ways to control reasoning, and both resolve to Fireworks [`reasoning_effort`](/api-reference/post-chatcompletions#body-reasoning-effort-one-of-0).
 
-| Anthropic effort | Fireworks mapping |
-| ---------------- | ----------------- |
-| `low`            | `low`             |
-| `medium`         | `medium`          |
-| `high`           | `high`            |
-| `max`            | `high`            |
+**`output_config.effort`** maps directly:
 
-<Note>
-  The `adaptive` thinking type is not supported yet.
-</Note>
+| Anthropic effort | Fireworks `reasoning_effort` |
+| ---------------- | ---------------------------- |
+| `low`            | `low`                        |
+| `medium`         | `medium`                     |
+| `high`           | `high`                       |
+| `max`            | `max`                        |
+| `xhigh`          | `max`                        |
+
+**`thinking.budget_tokens`** is converted to an effort band, because Fireworks models take an effort level rather than a token budget:
+
+| `budget_tokens` | Fireworks `reasoning_effort` |
+| --------------- | ---------------------------- |
+| `>= 10000`      | `high`                       |
+| `5000`–`9999`   | `medium`                     |
+| `1024`–`4999`   | `low`                        |
+
+When both are present, `output_config.effort` wins. Setting `thinking.type: "disabled"` sends `reasoning_effort: "none"`.
+
+These constraints are enforced and return `400 invalid_request_error`:
+
+* `thinking.budget_tokens` is required when `thinking.type` is `enabled`, and must be at least `1024`.
+* `max_tokens` must be greater than `thinking.budget_tokens`.
+* Enabled thinking cannot be combined with a forced `tool_choice` of `any` or `tool`.
+* You cannot pre-fill an assistant turn while thinking is enabled or adaptive.
+
+Set `thinking.display: "omitted"` to run reasoning without returning `thinking` blocks. `thinking.type: "adaptive"` is accepted, but it does not by itself select an effort level — pair it with `output_config.effort`.
 
 For more details on reasoning, including interleaved thinking with tool use, see the [Reasoning guide](/guides/reasoning).
+
+### Thinking history and context management
+
+Long agentic conversations accumulate `thinking` blocks that inflate the prompt. Use `context_management` to control how much of that reasoning history is replayed:
+
+```json theme={null}
+{
+  "context_management": {
+    "edits": [{ "type": "clear_thinking_20251015", "keep": "all" }]
+  }
+}
+```
+
+| `keep`                                   | Behavior                                                |
+| ---------------------------------------- | ------------------------------------------------------- |
+| `"all"`                                  | Replay the full reasoning history                       |
+| `"none"`                                 | Drop reasoning history entirely                         |
+| `"interleaved"`                          | Keep reasoning interleaved with the turns it belongs to |
+| `{"type": "thinking_turns", "value": N}` | Keep reasoning for the last `N` thinking turns          |
+
+When an edit is applied, streaming responses report it on the final `message_delta` event as `context_management.applied_edits`.
+
+### Structured output
+
+Request JSON that conforms to a schema with `output_config.format` (or the top-level `output_format`):
+
+```json theme={null}
+{
+  "output_config": {
+    "format": {
+      "type": "json_schema",
+      "schema": {
+        "type": "object",
+        "properties": { "city": { "type": "string" } },
+        "required": ["city"]
+      }
+    }
+  }
+}
+```
+
+Schema adherence is strict. See [Structured outputs](/structured-responses/structured-output-grammar-based) for guidance on writing schemas.
+
+### Images and documents
+
+Image blocks are supported with both `source.type: "base64"` and `source.type: "url"`:
+
+```json theme={null}
+{
+  "type": "image",
+  "source": { "type": "base64", "media_type": "image/png", "data": "<BASE64>" }
+}
+```
+
+Two content shapes are rejected by the backend, and the error names the Anthropic field so it is clear what to change:
+
+* `document` blocks (PDF and text documents).
+* `image` blocks using `source.type: "file"`.
+
+Use a vision-capable model — see [Querying vision-language models](/guides/querying-vision-language-models).
 
 ### Tool search and deferred tool loading
 
@@ -27210,7 +27328,8 @@ This covers both Anthropic-native `tool_search_tool_*` tool names and clients th
 
 The following Anthropic features are not available on Fireworks:
 
-* **Server tools**: Server-side execution of tool families such as code execution, memory, web fetch, and web search is not supported. Tool search discovery and deferred tool loading are supported — see [Tool search and deferred tool loading](#tool-search-and-deferred-tool-loading).
+* **Other `/v1/messages` routes**: Only `POST /v1/messages` is served. `POST /v1/messages/count_tokens` returns `404`, and `/v1/messages/batches` is not available — use the Fireworks [Batch API](/guides/batch-inference) instead.
+* **Server tools**: Server-side execution of tool families such as code execution, memory, web fetch, and web search is not supported. Declaring Anthropic's server-side `web_search_20250305` tool returns a `400` telling you to declare `web_search` as a client-side tool with an `input_schema` and execute it yourself. Tool search discovery and deferred tool loading are supported — see [Tool search and deferred tool loading](#tool-search-and-deferred-tool-loading).
 * **Server-tool metadata**: Fields such as `caller` and `container` are not supported.
 * **Tool schema fields**: `eager_input_streaming`, `cache_control`, `allowed_callers`, and `input_examples` are not supported.
 * **`server_tool_use`**: Not included in usage tracking.
@@ -27222,9 +27341,66 @@ The following Fireworks-specific extension is available on the Anthropic-compati
 
 * **`raw_output`**: A request parameter (boolean) that returns low-level details of what the model sees, including formatted prompts and function call data.
 
+## Errors
+
+Errors use the Anthropic error envelope, so the `APIError` subclasses in the Anthropic SDKs behave as they do against Anthropic:
+
+```json theme={null}
+{
+  "type": "error",
+  "error": {
+    "type": "invalid_request_error",
+    "message": "max_tokens is required and must be > 0"
+  }
+}
+```
+
+`error.type` is one of `invalid_request_error`, `authentication_error`, `billing_error`, `permission_error`, `not_found_error`, `request_too_large`, `rate_limit_error`, `overloaded_error`, or `api_error`. Status codes follow Anthropic's conventions rather than the underlying Fireworks ones — a `422` is reported as `400`, a billing failure as `402`, and an oversized request as `413`.
+
+Error messages refer to the Anthropic field you sent, not its Fireworks equivalent. If you send `stop_sequences`, a validation error names `stop_sequences` even though the field is called `stop` on the Fireworks chat completions API.
+
+<Note>
+  A few failures are raised before the request reaches the Anthropic-compatible layer — an unknown model or an unrouted path, for example. Those return the standard Fireworks error body (`{"error": {"code": "NOT_FOUND", ...}, "request_id": "..."}`) instead of the Anthropic envelope. Treat the HTTP status as authoritative and do not assume every error body has an `error.type`.
+</Note>
+
+For the shared status-code catalog, see [Inference error codes](/guides/inference-error-codes).
+
+## Use with Claude Code
+
+Point Claude Code at Fireworks by setting the base URL and using your Fireworks API key as the auth token:
+
+```bash theme={null}
+export ANTHROPIC_BASE_URL="https://api.fireworks.ai/inference"
+export ANTHROPIC_AUTH_TOKEN="$FIREWORKS_API_KEY"
+export ANTHROPIC_MODEL="accounts/fireworks/models/kimi-k2p5"
+
+claude
+```
+
+Use `ANTHROPIC_AUTH_TOKEN` (sent as a `Bearer` credential) rather than `ANTHROPIC_API_KEY`. Claude Code's login gate only recognizes OAuth, `ANTHROPIC_AUTH_TOKEN`, or an already-approved `ANTHROPIC_API_KEY`, so a Fireworks key placed in `ANTHROPIC_API_KEY` can leave the client reporting "Not logged in".
+
+The same settings work for the [Claude Agent SDK](https://github.com/anthropics/claude-agent-sdk-python), which reads `ANTHROPIC_BASE_URL` and `ANTHROPIC_AUTH_TOKEN` from the environment.
+
+### Troubleshooting
+
+| Symptom                                                         | Cause and fix                                                                                                                                                                                  |
+| --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `404` with "Model not found, inaccessible, and/or not deployed" | `ANTHROPIC_MODEL` is not a Fireworks model resource name, or the model is not deployed to your account. Use the full `accounts/<account>/models/<model>` form.                                 |
+| `404` "Path not found"                                          | The base URL includes `/v1`. Set `ANTHROPIC_BASE_URL` to `https://api.fireworks.ai/inference`; the client appends `/v1/messages`.                                                              |
+| "Not logged in"                                                 | The key is in `ANTHROPIC_API_KEY`. Move it to `ANTHROPIC_AUTH_TOKEN`.                                                                                                                          |
+| `400` "max\_tokens is required and must be > 0"                 | A client or proxy dropped `max_tokens`. It is required on every request.                                                                                                                       |
+| `400` naming `web_search_20250305`                              | Claude Code's WebSearch tool requested server-side execution in a region where it is unavailable. Disable WebSearch, or supply your own client-side `web_search` tool.                         |
+| Slow multi-turn responses                                       | Prompt-cache misses. Claude Code sends a session header that Fireworks uses to route follow-up turns to the same replica; avoid stripping `X-Claude-Code-Session-Id` in an intermediate proxy. |
+
+<Note>
+  Claude Code's built-in WebSearch tool is served by Fireworks only in regions where the search backend is enabled, and only for the single-turn search shape Claude Code emits. It is not a general-purpose server-side web search tool.
+</Note>
+
 ## Token usage
 
 Token usage (`input_tokens` and `output_tokens`) is included in both non-streaming and streaming responses.
+
+Following Anthropic's accounting, `input_tokens` **excludes** tokens served from the prompt cache; those are reported separately as `cache_read_input_tokens`. Total prompt tokens are therefore `input_tokens + cache_read_input_tokens`. This differs from the Fireworks chat completions API, where `prompt_tokens` includes cached tokens. `cache_creation_input_tokens` is always `0`.
 
 ### Non-streaming
 

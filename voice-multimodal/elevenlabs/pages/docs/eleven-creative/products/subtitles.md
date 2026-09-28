@@ -8,7 +8,7 @@ path: docs/eleven-creative/products/subtitles
 
 # Subtitles
 
-![Subtitle Editor Product Feature](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c27d860735dc78c9c1c8962fbf0b9ec190a08a4ed2a324719f626fc0f7e60f36/assets/images/product-guides/subtitles/subtitles-landing.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T233104Z&X-Amz-Expires=604800&X-Amz-Signature=0dd1250bae23ee449ca9683e719f46678c624dde1bf87145f38d17b813995506&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Subtitle Editor Product Feature](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c27d860735dc78c9c1c8962fbf0b9ec190a08a4ed2a324719f626fc0f7e60f36/assets/images/product-guides/subtitles/subtitles-landing.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T113155Z&X-Amz-Expires=604800&X-Amz-Signature=2ec8dab8686046e19d123b8c0746d8a8c1b84abfb713b28c37d4d631f1666be4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Subtitle Editor
 
@@ -16,13 +16,13 @@ path: docs/eleven-creative/products/subtitles
 
 You can use the subtitling mode of our transcript editor to edit your subtitles. Navigate to the Speech to Text page of your ElevenLabs account and click any transcript to get started.
 
-![Open transcript](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2359a7f6f5c82bf570c68adf2d41c78916a62f81f1dfc9445532de39eb5f2292/assets/images/product-guides/speech-to-text/click-transcript.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T233104Z&X-Amz-Expires=604800&X-Amz-Signature=e319193fb5c48011e4484a53e4101fb6b19bc6ba7bfaef193e0b318f1d6f75b0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Open transcript](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2359a7f6f5c82bf570c68adf2d41c78916a62f81f1dfc9445532de39eb5f2292/assets/images/product-guides/speech-to-text/click-transcript.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T113155Z&X-Amz-Expires=604800&X-Amz-Signature=924111f46771d3cc8b794b1099405950c5b8e7fac8e19c96e234b9f6b1d292a3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Edit basic details
 
 You can rename your subtitles in the panel on the right side of the screen.
 
-![Edit details](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/db9d9ad8c65bc54a6e99b7b9ce6797308cde744f35ebdfdaa9a8a3a29f10678d/assets/images/product-guides/transcripts/v2-editor-details.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T233104Z&X-Amz-Expires=604800&X-Amz-Signature=8b72f27e16517911a58ab014eb785aa0c547d8de3bd223f157d238e828cb3746&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Edit details](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/db9d9ad8c65bc54a6e99b7b9ce6797308cde744f35ebdfdaa9a8a3a29f10678d/assets/images/product-guides/transcripts/v2-editor-details.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T113155Z&X-Amz-Expires=604800&X-Amz-Signature=25aacf0fa2811771843d729f4f0a287aa23964ae8841939481d00c6ff108c157&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Add subtitles
 
@@ -31,9 +31,9 @@ You can switch between transcription and subtitling mode at any time using the t
 
 **Tip:** you can also add subtitles during the transcript creation process by enabling the 'Include subtitles' toggle.
 
-![Add subtitles](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d129c29b30a9add87a984eb9aa861745be2d0701bf1734a06e805b43872f591c/assets/images/product-guides/subtitles/subtitles-add.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T233104Z&X-Amz-Expires=604800&X-Amz-Signature=8c04636cb74deb2dd7166b8c4319534f299ff3d81d92d4f65f2f3e3cca3bf40e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Add subtitles](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d129c29b30a9add87a984eb9aa861745be2d0701bf1734a06e805b43872f591c/assets/images/product-guides/subtitles/subtitles-add.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T113155Z&X-Amz-Expires=604800&X-Amz-Signature=cba3a43d1c36d4d9759cc170177a5c11a74070cdff76bb583cf24e596297a173&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-![Add subtitles](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/239e34f933d4464e5887458985117ab8dad9cbb5e2a37acb6beecd96e8c096ca/assets/images/product-guides/subtitles/subtitles-dialog.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T233104Z&X-Amz-Expires=604800&X-Amz-Signature=03342a56b271760494ccd9a3f05d02fae17785a1bbc1ef778313a3cfdbf5097c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Add subtitles](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/239e34f933d4464e5887458985117ab8dad9cbb5e2a37acb6beecd96e8c096ca/assets/images/product-guides/subtitles/subtitles-dialog.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T113155Z&X-Amz-Expires=604800&X-Amz-Signature=ce76506c10ee69f77042ed384a409fd7beb7b3b0acb94b2b2791fc3aa7b3c94c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Edit rules/constraints
 
@@ -41,9 +41,9 @@ Our subtitle editor uses red and green colors to give you real-time feedback on 
 
 To edit these rules, click the three dots next to 'Subtitles' in the panel on the right side of the screen and select 'Edit rules'
 
-![Edit rules](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/675daf87d4ca043271f57c3c584b0eb6ddb1ff13e80ee5e55c39997aaa059fea/assets/images/product-guides/subtitles/subtitles-warning.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T233104Z&X-Amz-Expires=604800&X-Amz-Signature=de844ec8aa49a55c49dc8aab24d4147454c99203061a001c4bca2ca81cebfef7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Edit rules](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/675daf87d4ca043271f57c3c584b0eb6ddb1ff13e80ee5e55c39997aaa059fea/assets/images/product-guides/subtitles/subtitles-warning.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T113155Z&X-Amz-Expires=604800&X-Amz-Signature=296d8b2bc5d740c4ca659a20b4aeb085b01059c4442716ac39dc42b8d482ed81&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-![Edit rules](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/208f20af0e907858ab03896fd0ba40276ec402ee9ec7094b3ee60c8dcdc67012/assets/images/product-guides/subtitles/subtitles-rules.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T233104Z&X-Amz-Expires=604800&X-Amz-Signature=2b157e7dc12b9b2c8c3c0445e4cdddb2cee32dc3a940d4e1aa537ca0c8b011a8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Edit rules](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/208f20af0e907858ab03896fd0ba40276ec402ee9ec7094b3ee60c8dcdc67012/assets/images/product-guides/subtitles/subtitles-rules.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T113155Z&X-Amz-Expires=604800&X-Amz-Signature=ae0ecfe92f28237aff3ae0d77a4fc18b41925b33b9693157a1e40debedbb4255&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Edit text
 
@@ -51,7 +51,7 @@ Our subtitle editor is WYSIWYG. Click anywhere and start typing to edit the text
 
 **Tip:** Use command+z to undo changes easily.
 
-![Edit text](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6b17224c439b82f5824b3d0abfc9d8634155bcd4d4bbb3726faec2dda8af9520/assets/images/product-guides/subtitles/subtitles-edit-text.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T233104Z&X-Amz-Expires=604800&X-Amz-Signature=2747b86a7af4c307a20360f7472fb456b395ec8f5a97cf07491b442368d47d59&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Edit text](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6b17224c439b82f5824b3d0abfc9d8634155bcd4d4bbb3726faec2dda8af9520/assets/images/product-guides/subtitles/subtitles-edit-text.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T113155Z&X-Amz-Expires=604800&X-Amz-Signature=eee473b75f4499e7d177a51d136b0804292a05aef749fbac598d488540193b9a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Adjust cue start and end times
 
@@ -59,7 +59,7 @@ Drag the handles on the timeline to adjust the start and end timestamps for a cu
 
 **Important:** the transcript and subtitles for a video are completely separate from each other. Changes you make to subtitles (e.g. changing cue start/end times, adding/removing words, etc.) do NOT affect the transcription, and vice versa.
 
-![Adjust times](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ab1595d83ebc540738f29b079bac0e137bb15719f8e9840fbfc54373f6929f74/assets/images/product-guides/subtitles/subtitles-adjust-times.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T233104Z&X-Amz-Expires=604800&X-Amz-Signature=d74de3b95fdcc884febfe29971e9bc55e5e6e76bb2e2e0bab25806e1089b7d84&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Adjust times](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ab1595d83ebc540738f29b079bac0e137bb15719f8e9840fbfc54373f6929f74/assets/images/product-guides/subtitles/subtitles-adjust-times.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T113155Z&X-Amz-Expires=604800&X-Amz-Signature=9a5187874a7e4b7214550b79ef582375123757ac34a15bd530b60160f297f342&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Split and merge cues
 
@@ -67,7 +67,7 @@ To split a cue, click in the text where you want to split and press **Enter.**
 
 To merge two cues, click the 'merge cues' button.
 
-![Split and merge](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5de3d80fd08a0ca5599dbea713012a4ca125f641d8e70b4c822b8bc2ceb41381/assets/images/product-guides/subtitles/subtitles-split-merge.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T233104Z&X-Amz-Expires=604800&X-Amz-Signature=7c377f2c5af09e032cf9ab9179c9c29591a8c503abee1bfdb39c3aefae587e77&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Split and merge](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5de3d80fd08a0ca5599dbea713012a4ca125f641d8e70b4c822b8bc2ceb41381/assets/images/product-guides/subtitles/subtitles-split-merge.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T113155Z&X-Amz-Expires=604800&X-Amz-Signature=1f24e853523c26f91061ebca3783c37cd45eb88117c4bf866d0947c01cd8d1c6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Add or remove cues
 
@@ -75,13 +75,13 @@ To add a cue, click 'Add cue' and select a location on the timeline.
 
 To delete a cue, select the cue and click ‘Delete’ in the panel on the right side of the screen, or press the Delete key.
 
-![Add/remove segments](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5f5408ba7d6410a5f1052811c71e841449e6a69de0875f3335950e9204a67c20/assets/images/product-guides/subtitles/subtitles-add-delete.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T233104Z&X-Amz-Expires=604800&X-Amz-Signature=d9d179aaa8c6b0d5904c700b6068dfb2500cd45749876a671f3995ec1d90b88f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Add/remove segments](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5f5408ba7d6410a5f1052811c71e841449e6a69de0875f3335950e9204a67c20/assets/images/product-guides/subtitles/subtitles-add-delete.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T113155Z&X-Amz-Expires=604800&X-Amz-Signature=942fd16247aaa78d39ee8bd264671d25edb0365304520af5b5102b58e530984a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Adjust playback speed
 
 You can adjust the playback speed of the source media by clicking the indicator next to the play button.
 
-![Playback speed](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7e585e9029ecb71342124be24a0a40d7620f0551c362460cb460307222b53b65/assets/images/product-guides/transcripts/v2-editor-speed.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T233104Z&X-Amz-Expires=604800&X-Amz-Signature=54cc218996f6cf9d4a701267eb5647ddc31c5627e437a3a9f12572083b53b0ee&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Playback speed](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7e585e9029ecb71342124be24a0a40d7620f0551c362460cb460307222b53b65/assets/images/product-guides/transcripts/v2-editor-speed.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T113155Z&X-Amz-Expires=604800&X-Amz-Signature=a9dc3c79218c3e5521bee7ef10429b2cb6602c28eba22a529ce09d95f700b050&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Export subtitles
 
@@ -90,7 +90,7 @@ Click the export button in the top right of the screen and select one of the sub
 * SRT
 * VTT
 
-![Exports](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5ba313e9580586330fe51c8ef12f3dc6babc734e4503bf6d1c7bee3d2a4b8b0c/assets/images/product-guides/transcripts/v2-editor-exports.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T233104Z&X-Amz-Expires=604800&X-Amz-Signature=c0c00320e93538adfa738e338c1c233be317125da0e6e9614aced6a0eeb66835&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Exports](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5ba313e9580586330fe51c8ef12f3dc6babc734e4503bf6d1c7bee3d2a4b8b0c/assets/images/product-guides/transcripts/v2-editor-exports.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T113155Z&X-Amz-Expires=604800&X-Amz-Signature=3ae6b4cf73fcfeab8703244bf077d14e227d2ae28b5c09e9248eb9e7232ffbbd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## FAQ
 

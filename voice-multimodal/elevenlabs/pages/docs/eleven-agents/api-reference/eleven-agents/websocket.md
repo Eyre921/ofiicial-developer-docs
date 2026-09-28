@@ -1466,6 +1466,7 @@ components:
         - gpt-oss-120b
         - glm-45-air-fp8
         - glm-52
+        - deepseek-v41-flash
         - gemini-2.5-flash-preview-09-2025
         - gemini-2.5-flash-lite-preview-09-2025
         - gemini-2.5-flash-preview-05-20

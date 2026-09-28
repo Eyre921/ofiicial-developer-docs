@@ -56,20 +56,20 @@ Our language detection tool triggers language switching in two cases, both based
 
 The languages that the agent can switch to must be defined in the `Agent` settings tab.
 
-![Agent languages](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/633707d54276febd3baa054c4f41b186225b74f606307a46e8262607befc8381/assets/images/conversational-ai/agent-languages.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T233133Z&X-Amz-Expires=604800&X-Amz-Signature=0c1f005a767ad15b9db5224d56348e6a3a40dd60c96f6a708a2f3d3588fa9ee3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Agent languages](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/633707d54276febd3baa054c4f41b186225b74f606307a46e8262607befc8381/assets/images/conversational-ai/agent-languages.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T111829Z&X-Amz-Expires=604800&X-Amz-Signature=ac87e2e7a3342151ca97b4ed15bcbddd5401b9ff9559d151fb5d0fd216e41c01&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Add the language detection tool
 
 Enable language detection by selecting the pre-configured system tool to your agent's tools in the `Agent` tab.
 This is automatically available as an option when selecting `add tool`.
 
-![System tool](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3d17048ab2bc1a0547c49056abb98f624caf866927ff1714af27f898b06ab18f/assets/images/conversational-ai/language-detection-preconfig.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T233133Z&X-Amz-Expires=604800&X-Amz-Signature=467cd37f65adf760413c3fe2930ffaf64f993d989d599ec73c356132b6595e99&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![System tool](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3d17048ab2bc1a0547c49056abb98f624caf866927ff1714af27f898b06ab18f/assets/images/conversational-ai/language-detection-preconfig.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T111829Z&X-Amz-Expires=604800&X-Amz-Signature=95c26d33bad7cfaf24f321be477369d06eac06a4259ce066f5cd0fb575d7430f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Configure tool description
 
 Add a description that specifies when to call the tool
 
-![Description](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3bebc9fe07dba7121bce7793f3793858c710fc8ea1c221347604eb05929271df/assets/images/conversational-ai/language_detection.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T233133Z&X-Amz-Expires=604800&X-Amz-Signature=494c61abf51771abb0571b781de3783cc0c031d5b73acbff52e29df57f768fcc&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Description](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3bebc9fe07dba7121bce7793f3793858c710fc8ea1c221347604eb05929271df/assets/images/conversational-ai/language_detection.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T111829Z&X-Amz-Expires=604800&X-Amz-Signature=19fbdf330792af01b2da3b0f7410e95c5a98172e41b96e747412e3b43e0c511f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Restricting switching to the start of the conversation
 

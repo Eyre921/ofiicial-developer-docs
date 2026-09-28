@@ -21,12 +21,12 @@ To add a new part to your song (like a bridge, a solo, or a second verse):
 * In the song structure, find the section you want the new section to follow. On the left-hand side of that section, you'll see a "+" symbol that will say "Add section below" when you hover over.\
 
 
-  ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6c23aeecbe607b133b6940ae30a60ba168772a8c351f68cfa42cec1f8705c95c/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T233415Z&X-Amz-Expires=604800&X-Amz-Signature=2d7d850d7b3bd78b0e42c0377f392af7590d3dcdb8400295b7cea0324ba08f66&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+  ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6c23aeecbe607b133b6940ae30a60ba168772a8c351f68cfa42cec1f8705c95c/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T113520Z&X-Amz-Expires=604800&X-Amz-Signature=7d58567b5bdf7f507be51e1564e7ea7feb03c09f1d6d20d66d234b3953a409ba&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 * In the timeline, scroll to the end of your song structure and click the "+" sign, which will add a new empty section at the end.\
 
 
-  ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/071d9a8998758844dd15d1c512c5bbd3d335950c7b4ca784604182042eb14c80/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T233415Z&X-Amz-Expires=604800&X-Amz-Signature=c8fc5fa2eda52dea1b66b37a2ec54bdf4b34c8000b40c4b2391fca745c90a03d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+  ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/071d9a8998758844dd15d1c512c5bbd3d335950c7b4ca784604182042eb14c80/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T113520Z&X-Amz-Expires=604800&X-Amz-Signature=6b2156e6a02d74927f97a37bf13f7f5e5bacc8f6a54db6ee22d99720eb7a9a39&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 * Once you've added this new empty section, you can drag it to extend the duration, add lyrics, or a descriptive prompt (e.g., "\[energetic guitar solo]").
 
@@ -44,7 +44,7 @@ For more advanced control, you can define specific musical elements to include o
 * Hover over the section you want to edit and click the **"Edit styles of this section"** link.\
 
 
-  ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c9086f7935759344e852854e10af5a38b27760359897a7c315824c1c6e2ef124/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music-3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T233415Z&X-Amz-Expires=604800&X-Amz-Signature=da089b7ab3f6abe34b29de7adb536792568b93755198c04758d82e9f4c347625&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+  ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c9086f7935759344e852854e10af5a38b27760359897a7c315824c1c6e2ef124/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music-3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T113520Z&X-Amz-Expires=604800&X-Amz-Signature=760a4a46fa25c75a76c928f9846aaa2f03baaad6e4444a1cc4ed4a6e64d64908&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 * A "Section styles" window will pop up. Here you can:
 
@@ -63,7 +63,7 @@ If you want to remove a part of your song entirely:
 * Hover over the section you wish to remove in the timeline.\
 
 
-  ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c8506897c18519729967118d2d2f1136f302023a890685b8aba786d1034c8943/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music-4.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T233415Z&X-Amz-Expires=604800&X-Amz-Signature=3651fda6cc803398cd73bdaec07421a917e34a7ed41b48883e970719dc615ebb&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+  ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c8506897c18519729967118d2d2f1136f302023a890685b8aba786d1034c8943/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music-4.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T113520Z&X-Amz-Expires=604800&X-Amz-Signature=ea5fe9804af642af9104b0f136c3b49e7085414a3330457045c050c3ccb76440&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 * Click the delete icon, the "X", in the upper left corner of the section.
 

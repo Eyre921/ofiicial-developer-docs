@@ -116,6 +116,8 @@ channels:
             entity_detection:
               $ref: >-
                 #/components/schemas/_v1_speech-to-text_realtime_entity_detection
+            transcript_edit:
+              type: string
             filter_background_audio:
               type: boolean
               default: false
@@ -444,6 +446,24 @@ components:
         - entities
       description: Payload for detected entities on a committed transcript.
       title: CommittedTranscriptEntities
+    EditedTranscript:
+      type: object
+      properties:
+        message_type:
+          type: string
+          default: edited_transcript
+        text:
+          type: string
+          description: The committed transcript text the edit instruction was applied to.
+        edited_text:
+          type: string
+          description: >-
+            The edited transcript text. If no edits were made it will be
+            identical to the `text` field.
+      required:
+        - text
+        - edited_text
+      title: EditedTranscript
     ScribeWarning:
       type: object
       properties:
@@ -683,6 +703,7 @@ components:
         - $ref: '#/components/schemas/CommittedTranscript'
         - $ref: '#/components/schemas/CommittedTranscriptWithTimestamps'
         - $ref: '#/components/schemas/CommittedTranscriptEntities'
+        - $ref: '#/components/schemas/EditedTranscript'
         - $ref: '#/components/schemas/ScribeWarning'
         - $ref: '#/components/schemas/ScribeError'
         - $ref: '#/components/schemas/ScribeAuthError'

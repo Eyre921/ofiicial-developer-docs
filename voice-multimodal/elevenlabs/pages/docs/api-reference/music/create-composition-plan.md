@@ -25,10 +25,6 @@ Reference: https://elevenlabs.io/docs/api-reference/music/create-composition-pla
 
 ## Request
 
-### Query parameters
-
-- `enable_logging` (string, optional) — When enable_logging is set to false zero retention mode will be used for the request. Zero retention mode may only be used by enterprise customers.
-
 ### Body (application/json)
 
 This endpoint expects a Body_Generate_composition_plan_v1_music_plan_post.

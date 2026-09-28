@@ -51,7 +51,7 @@ This process ensures that relevant information to the user's query is passed to 
 
 In your agent's settings, navigate to the **Knowledge Base** section and toggle on the **Use RAG** option. Configure the embedding model, maximum document chunks, and maximum vector distance under the **Advanced** tab as needed.
 
-![RAG configuration options including embedding model selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6e8a6273d26090d92a2ed237ffbc488f44e5e9a408aca6511afa94461d177c86/assets/images/conversational-ai/rag-config.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T233130Z&X-Amz-Expires=604800&X-Amz-Signature=ea382e0bc7fefb3c22d474e5f3bda5ddfb0da27a379d0949f827156b95ea997b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![RAG configuration options including embedding model selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6e8a6273d26090d92a2ed237ffbc488f44e5e9a408aca6511afa94461d177c86/assets/images/conversational-ai/rag-config.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T104323Z&X-Amz-Expires=604800&X-Amz-Signature=3d4971b7193edd38cd99ef62ceca987844c16ac75877920d857f572d834a7eb7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Update via the CLI
 
@@ -110,7 +110,7 @@ For each document in your knowledge base, you can choose how it's used:
 * **Auto (default)**: The document is only retrieved when relevant to the query
 * **Prompt**: The document is always included in the system prompt, regardless of relevance
 
-![Document usage mode options in the knowledge base](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/265aa612b4ad2da915b617552312b47c965892559b2a8615ecb42551763de4a5/assets/images/conversational-ai/rag-prompt.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T233130Z&X-Amz-Expires=604800&X-Amz-Signature=2857796b3985a9e054f7777efa946eba276cf8c9e8723f4956bb23b72f1ea078&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Document usage mode options in the knowledge base](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/265aa612b4ad2da915b617552312b47c965892559b2a8615ecb42551763de4a5/assets/images/conversational-ai/rag-prompt.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T104323Z&X-Amz-Expires=604800&X-Amz-Signature=42ae44b191e6cc35ecc65d3c061399cc3d3b029c369fe1cb17d0f9f6493a0ffe&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 > **Warning**
 >

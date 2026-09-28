@@ -12,7 +12,7 @@ path: docs/eleven-creative/services/productions/overview
 
 Productions is a service that lets you order human-edited transcripts, subtitles, dubs, and audiobooks directly on the ElevenLabs platform. A team of expert linguists and localization professionals vetted and trained by ElevenLabs works on your content and delivers you polished final assets.
 
-![Productions Get Human Review Option](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/cd072dfc01c9b277960c0583a3900ca963ee0ca766f204f5fac602117f5a8174/assets/images/productions/productions-home.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T233115Z&X-Amz-Expires=604800&X-Amz-Signature=fd18831ebfee4b21f2d8a23326c1a912243f072bb852fbb4e761ff11df5748c8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Productions Get Human Review Option](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/cd072dfc01c9b277960c0583a3900ca963ee0ca766f204f5fac602117f5a8174/assets/images/productions/productions-home.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T094223Z&X-Amz-Expires=604800&X-Amz-Signature=1b12ad2f5d98cec03a16c0f896a977607ba5e946584e2521af0fb42fdc958867&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Why use Productions?
 
@@ -49,11 +49,11 @@ Support for single and multi-speaker voice casting
 
 **Ordering a new asset**: head to the [Productions](https://elevenlabs.io/app/productions) page of your ElevenLabs account and create a new order. You may also see a *Productions* option when using the order dialog for other products like [Speech to Text](https://elevenlabs.io/app/speech-to-text) or [Dubbing](https://elevenlabs.io/app/dubbing)
 
-![Productions STT Dialog](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1d18c451ce48b05fb9943a11707e86cd7a8c883b30e7557551f1bdccc05851a9/assets/images/productions/productions-stt-dialog.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T233115Z&X-Amz-Expires=604800&X-Amz-Signature=a5d24a74135a4f571a15ae6d1eb27750a113ba6da23340a5af7e8f807d6855bd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Productions STT Dialog](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1d18c451ce48b05fb9943a11707e86cd7a8c883b30e7557551f1bdccc05851a9/assets/images/productions/productions-stt-dialog.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T094223Z&X-Amz-Expires=604800&X-Amz-Signature=7878ff5297797c442aa0329ddad4361f3281e75072351f202cff4e4617aa0847&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 **Starting from an existing asset**: you can also order human-edited versions of existing assets in your ElevenLabs account. Look for the 'Get human review' button in the top right of the editor view for this option.
 
-![Productions Get Human Review Option](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b25a0e08ad610f29b352c4cf9a1ef8f29061487c61f51de7c5c0b2cfb0533863/assets/images/productions/productions-get-human-review.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T233115Z&X-Amz-Expires=604800&X-Amz-Signature=e5d741b531e25edf4219a975aa70da64b166979fd0ab809723bf237b42189bd1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Productions Get Human Review Option](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b25a0e08ad610f29b352c4cf9a1ef8f29061487c61f51de7c5c0b2cfb0533863/assets/images/productions/productions-get-human-review.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T094223Z&X-Amz-Expires=604800&X-Amz-Signature=0e77929a2deb0cf875b5da85c7cacd83f774dea4ec908af1cbc0513600dd20bf&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Review and confirm quote
 
@@ -61,7 +61,7 @@ Once you upload a file, select a language, and choose your style guide options, 
 
 When you click *Continue*, the file will be analyzed and the final price will be returned.
 
-![Productions quote](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ae927b61d36a1b1bd5e2d01f8213acc89c5609a1823bef127a20a92510b9022f/assets/images/productions/productions-quote.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T233115Z&X-Amz-Expires=604800&X-Amz-Signature=d52f8eb8f2a789629aa5d715c2bb48f903c6f5ad92e36c31aa8d5c8a546b8185&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Productions quote](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ae927b61d36a1b1bd5e2d01f8213acc89c5609a1823bef127a20a92510b9022f/assets/images/productions/productions-quote.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T094223Z&X-Amz-Expires=604800&X-Amz-Signature=cc658c3cc9a95c9f800ab1a2fa0d1265d9a218a13cbea87cd1f959d26a4d79ca&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 > **Info**
 >
@@ -81,7 +81,7 @@ Head to the [Productions](https://elevenlabs.io/app/productions) page of your El
 
 You'll also receive an email when your order is ready.
 
-![Sidebar](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7febf81821dfd24da99d0d1ddc0c58ed66866a61ee9f849f75f1b150b02332bf/assets/images/productions/productions-sidebar-small.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T233115Z&X-Amz-Expires=604800&X-Amz-Signature=8c022e53597b0fcbe5aa8b4d25a928a45131b918ecb0f88bb7ce712dd8a8caeb&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Sidebar](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7febf81821dfd24da99d0d1ddc0c58ed66866a61ee9f849f75f1b150b02332bf/assets/images/productions/productions-sidebar-small.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T094223Z&X-Amz-Expires=604800&X-Amz-Signature=b6b1315d337862d845e7147a61535b89f524741ee2cc20a5f07cbda3359e1aaa&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### View and download your completed assets and invoices
 
@@ -89,13 +89,13 @@ Open a completed Production and click the *View* button to open a read only copy
 
 To export your completed assets, use the export menu in the sidebar or inside the read only copy.
 
-![Export menu](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7ba125ad4d96992a9a078b275cc0b85e3a21f6d5ca6bea1f36f775c10c98856b/assets/images/productions/productions-export.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T233115Z&X-Amz-Expires=604800&X-Amz-Signature=78f9885842c2ccd80fd4bcf18d7d961a84a580788fcb3e7f17aa296f598510ef&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Export menu](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7ba125ad4d96992a9a078b275cc0b85e3a21f6d5ca6bea1f36f775c10c98856b/assets/images/productions/productions-export.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T094223Z&X-Amz-Expires=604800&X-Amz-Signature=f34e5abe6ed7a45498762c08a2038b33fa250b621fed8a5452923193948fa304&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Organize your assets into folders
 
 Productions has a folder system to help you organize your assets. Click *New folder* to create a new folder. Click *Manage* and use the *Move to Folder* option in the toolbar to nest folders inside other folders.
 
-![Folders](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/660a49d56be4c962ae583498654f83a1342edf8904bd2d35b806a9cd4e01373e/assets/images/productions/productions-folders.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T233115Z&X-Amz-Expires=604800&X-Amz-Signature=4bf74244a4dd39c9104d402f80dcf0507e36819dfe94e417d45bd868a1bd6edc&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Folders](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/660a49d56be4c962ae583498654f83a1342edf8904bd2d35b806a9cd4e01373e/assets/images/productions/productions-folders.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T094223Z&X-Amz-Expires=604800&X-Amz-Signature=11ef917b9c562e84697b52a61e8c31990ece153df051cfd727db17b9e2766a92&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Enterprise
 

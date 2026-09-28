@@ -59,6 +59,7 @@ Chunk-level detail of the transcription with timing information.
 - `transcription_id` (string, optional, nullable) — The transcription ID of the response.
 - `entities` (list of DetectedEntity, optional, nullable) — List of detected entities with their text, type, and character positions in the transcript.
 - `audio_duration_secs` (double, optional, nullable) — The duration of the audio that was transcribed in seconds.
+- `edited_transcript` (SpeechToTextChunkResponseModelEditedTranscript, optional, nullable) — Result of the optional transcript edit: the edited text, or an error if it could not be produced. Absent when no edit was requested.
 
 ### MultichannelSpeechToTextResponseModel
 
@@ -104,6 +105,18 @@ An entity detected within transcribed text.
 - `entity_type` (string, required) — The type of entity detected (e.g., 'credit_card', 'email_address', 'person_name').
 - `start_char` (integer, required) — Start character position in the transcript text.
 - `end_char` (integer, required) — End character position in the transcript text.
+
+### SpeechToTextChunkResponseModelEditedTranscript
+
+Result of the optional transcript edit: the edited text, or an error if it could not be produced. Absent when no edit was requested.
+
+- `kind`: `error` (TranscriptEditError)
+  - `error_type` ("edit_failed", required) — edit_failed: the edit could not be produced.
+  - `message` (string, required) — A short, user-facing explanation of the failure.
+- `kind`: `transcript` (EditedTranscript)
+  - `edited_text` (string, required) — The edited transcript text. If no edits were made it will be identical to the `text` field.
+  - `text` (string, required) — The committed transcript text the edit instruction was applied to.
+  - `message_type` (string, optional, default: edited_transcript)
 
 ### ValidationErrorLocItems
 

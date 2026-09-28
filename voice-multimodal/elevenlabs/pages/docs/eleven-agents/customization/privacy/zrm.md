@@ -40,7 +40,7 @@ For workspaces not operating under global Zero Retention Mode, you can enable ZR
 
 Open your agent in the dashboard, navigate to the **Privacy** settings block, select the **Advanced** tab, and toggle **Zero Retention Mode** on. Save your changes.
 
-![Enable Zero Retention Mode for Agent](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b11c36caf8829dd90829c3b51df2be879a77f718834af8988ecd33e9ae44a071/assets/images/conversational-ai/enabled-zrm.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T195238Z&X-Amz-Expires=604800&X-Amz-Signature=273e49b387e64352b4d3453720b9ce02f861c3caab26c45e49791c877c80ed9b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Enable Zero Retention Mode for Agent](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b11c36caf8829dd90829c3b51df2be879a77f718834af8988ecd33e9ae44a071/assets/images/conversational-ai/enabled-zrm.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T104740Z&X-Amz-Expires=604800&X-Amz-Signature=2b43d840c855a83fd4e3a0627848f9e53520e3b1d730a85005335b31f2a4f442&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Update via the CLI
 

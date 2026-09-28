@@ -18,6 +18,6 @@ The new dubbing project will appear at the top of your list of dubbing projects,
 
 Once it has completed processing, click the three dots icon and select **Edit** to open your dubbing project.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/88ae8853b135c164e1b969cc7ffdf4a427ec9e6ca56a50a646fceb54a0210656/assets/images/help-center/product/dubbing/how-do-i-access-dubbing-studio-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T233508Z&X-Amz-Expires=604800&X-Amz-Signature=be63433b1d91337643c360bc6fd48dd04352b947469195633a5d6c0bfa0dc04a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/88ae8853b135c164e1b969cc7ffdf4a427ec9e6ca56a50a646fceb54a0210656/assets/images/help-center/product/dubbing/how-do-i-access-dubbing-studio-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T111918Z&X-Amz-Expires=604800&X-Amz-Signature=84b93a641d9c26a50affbce4ec938dac46f113426c87db629b53446ad1837f55&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 For more information about Dubbing Studio, please see our [overview.](/docs/product-guides/products/dubbing/dubbing-studio)

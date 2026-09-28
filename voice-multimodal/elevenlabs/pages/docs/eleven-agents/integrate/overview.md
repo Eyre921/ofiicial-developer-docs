@@ -10,7 +10,7 @@ path: docs/eleven-agents/integrate/overview
 
 The Integrate section provides everything you need to connect your agents to your users, whether through web widgets, mobile apps, phone systems, or custom integrations.
 
-![Integration options](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7375358c43ac5dd1a170937123f0874e01b3d8b6cf178c282805588a11d39593/assets/images/agents/agents-overview-integrate.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T233151Z&X-Amz-Expires=604800&X-Amz-Signature=30ad88221a743331dae991264127dc73a0d84cb666571e59d53b9b0f6e25a092&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Integration options](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7375358c43ac5dd1a170937123f0874e01b3d8b6cf178c282805588a11d39593/assets/images/agents/agents-overview-integrate.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T113230Z&X-Amz-Expires=604800&X-Amz-Signature=c1da9226340f8f90a91ce6d1a1cff82d83b311bb27b5c7ff80967f06ad04a716&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Connect and deploy
 

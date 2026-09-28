@@ -30,7 +30,7 @@ Speed is controlled through the [`speed` parameter](/docs/api-reference/agents/c
 
 Open your agent in the dashboard, navigate to the **Voice** tab, and adjust the speed control. Save your changes.
 
-![Speed control settings under the Voice tab](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4a1dfe1db33f9f03bb614b56173c7c00596f2d6c36b0f17ce43f151bd4d07f66/assets/images/conversational-ai/speed-control.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260927T201849Z&X-Amz-Expires=604800&X-Amz-Signature=29c6b2b7d716d637ddbe29a0445763a505f07fd68d3038fe54e82b6f48f3ed18&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Speed control settings under the Voice tab](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4a1dfe1db33f9f03bb614b56173c7c00596f2d6c36b0f17ce43f151bd4d07f66/assets/images/conversational-ai/speed-control.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T113214Z&X-Amz-Expires=604800&X-Amz-Signature=f43326a35c2f993200f4b02595fc3f9639dd924132f1df28a15129db7ef34cf6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Update via the CLI
 
